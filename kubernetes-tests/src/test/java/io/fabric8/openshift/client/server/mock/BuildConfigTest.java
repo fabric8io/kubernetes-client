@@ -201,23 +201,6 @@ public class BuildConfigTest {
     assertTrue(deleted);
   }
 
-  @Test
-  void testCreateOrReplaceOpenShift3() {
-    // Given
-    BuildConfig buildConfig = getBuildConfig();
-    server.expect().post().withPath("/oapi/v1/namespaces/ns1/buildconfigs")
-      .andReturn(HttpURLConnection.HTTP_OK, buildConfig)
-      .once();
-    OpenShiftClient client = server.getOpenshiftClient();
-
-    // When
-    buildConfig = client.buildConfigs().inNamespace("ns1").createOrReplace(buildConfig);
-
-    // Then
-    assertNotNull(buildConfig);
-    assertEquals("ruby-sample-build", buildConfig.getMetadata().getName());
-  }
-
   private BuildConfig getBuildConfig() {
     return new BuildConfigBuilder()
       .withNewMetadata().withName("ruby-sample-build").endMetadata()
