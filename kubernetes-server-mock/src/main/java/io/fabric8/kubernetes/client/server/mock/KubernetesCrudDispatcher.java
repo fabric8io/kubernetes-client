@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.server.mock;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.mockwebserver.Context;
 import io.fabric8.mockwebserver.crud.Attribute;
@@ -30,6 +31,7 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -52,7 +54,11 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
   private final Set<WatchEventsListener> watchEventListeners = new CopyOnWriteArraySet<>();
 
   public KubernetesCrudDispatcher() {
-    this(new KubernetesCrudAttributesExtractor(), new KubernetesResponseComposer());
+    this(Collections.emptyList());
+  }
+
+  public KubernetesCrudDispatcher(List<CustomResourceDefinitionContext> crdContexts) {
+    this(new KubernetesCrudAttributesExtractor(crdContexts), new KubernetesResponseComposer());
   }
 
   public KubernetesCrudDispatcher(KubernetesCrudAttributesExtractor attributeExtractor, ResponseComposer responseComposer) {

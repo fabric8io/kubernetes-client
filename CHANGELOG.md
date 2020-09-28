@@ -23,6 +23,7 @@
 #### New Features
 * Fix #2340: Adding support for Knative Eventing Contrib 
 * Fix #2111: Support automatic refreshing for expired OIDC tokens
+* Fix #2146: Add Support for specifying CustomResourceDefinitionContext while initializing KubernetesServer
 * Fix #2314: Fetch logs should wait for the job's associated pod to be ready
 * Fix #2043: Support for Tekton Triggers
 * Fix #2460: Querying for an event based on InvolvedObject fields 

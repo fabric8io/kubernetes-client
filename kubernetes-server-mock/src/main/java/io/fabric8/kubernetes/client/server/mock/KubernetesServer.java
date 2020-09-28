@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.server.mock;
 
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
+import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.mockwebserver.Context;
 import io.fabric8.mockwebserver.dsl.MockServerExpectation;
 import okhttp3.mockwebserver.MockWebServer;
@@ -23,7 +24,9 @@ import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.rules.ExternalResource;
 
 import java.net.InetAddress;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 public class KubernetesServer extends ExternalResource {
 
@@ -36,6 +39,7 @@ public class KubernetesServer extends ExternalResource {
   private boolean crudMode;
   private final InetAddress address;
   private int port;
+  private List<CustomResourceDefinitionContext> crdContextList;
 
   public KubernetesServer() {
     this(true);
@@ -46,19 +50,24 @@ public class KubernetesServer extends ExternalResource {
   }
 
   public KubernetesServer(boolean https, boolean crudMode) {
-    this(https, crudMode, InetAddress.getLoopbackAddress(), 0);
+    this(https, crudMode, InetAddress.getLoopbackAddress(), 0, Collections.emptyList());
   }
 
-  public KubernetesServer(boolean https, boolean crudMode, InetAddress address, int port) {
+  public KubernetesServer(boolean https, boolean crudMode, List<CustomResourceDefinitionContext> crdContextList) {
+    this(https, crudMode, InetAddress.getLoopbackAddress(), 0, crdContextList);
+  }
+
+  public KubernetesServer(boolean https, boolean crudMode, InetAddress address, int port, List<CustomResourceDefinitionContext> crdContextList) {
     this.https = https;
     this.crudMode = crudMode;
     this.address = address;
     this.port = port;
+    this.crdContextList = crdContextList;
   }
 
   public void before() {
     mock = crudMode
-      ? new KubernetesMockServer(new Context(), new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(), https)
+      ? new KubernetesMockServer(new Context(), new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(crdContextList), https)
       : new KubernetesMockServer(https);
     mock.init(address, port);
     client = mock.createClient();
