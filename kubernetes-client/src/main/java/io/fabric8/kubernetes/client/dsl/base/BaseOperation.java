@@ -47,7 +47,6 @@ import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Replaceable;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.Watchable;
 import io.fabric8.kubernetes.client.dsl.base.WaitForConditionWatcher.WatchException;
 import io.fabric8.kubernetes.client.dsl.internal.DefaultOperationInfo;
 import io.fabric8.kubernetes.client.dsl.internal.WatchConnectionManager;
@@ -79,6 +78,8 @@ import java.util.function.Predicate;
 
 import okhttp3.HttpUrl;
 import okhttp3.Request;
+
+import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
 public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, D extends Doneable<T>, R extends Resource<T, D>>
   extends OperationSupport
@@ -420,13 +421,13 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withLabels(Map<String, String> labels) {
+  public FilterWatchListDeletable<T, L, Boolean, Watch> withLabels(Map<String, String> labels) {
     this.labels.putAll(labels);
     return this;
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withLabelSelector(LabelSelector selector) {
+  public FilterWatchListDeletable<T, L, Boolean, Watch> withLabelSelector(LabelSelector selector) {
     Map<String, String> matchLabels = selector.getMatchLabels();
     if (matchLabels != null) {
       this.labels.putAll(matchLabels);
@@ -465,37 +466,37 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
    */
   @Override
   @Deprecated
-  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withoutLabels(Map<String, String> labels) {
+  public FilterWatchListDeletable<T, L, Boolean, Watch> withoutLabels(Map<String, String> labels) {
     // Re-use "withoutLabel" to convert values from String to String[]
     labels.forEach(this::withoutLabel);
     return this;
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withLabelIn(String key, String... values) {
+  public FilterWatchListDeletable<T, L, Boolean, Watch> withLabelIn(String key, String... values) {
     labelsIn.put(key, values);
     return this;
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withLabelNotIn(String key, String... values) {
+  public FilterWatchListDeletable<T, L, Boolean, Watch> withLabelNotIn(String key, String... values) {
     labelsNotIn.put(key, values);
     return this;
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withLabel(String key, String value) {
+  public FilterWatchListDeletable<T, L, Boolean, Watch> withLabel(String key, String value) {
     labels.put(key, value);
     return this;
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withLabel(String key) {
+  public FilterWatchListDeletable<T, L, Boolean, Watch> withLabel(String key) {
     return withLabel(key, null);
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withoutLabel(String key, String value) {
+  public FilterWatchListDeletable<T, L, Boolean, Watch> withoutLabel(String key, String value) {
     labelsNot.merge(key, new String[]{value}, (oldList, newList) -> {
       final String[] concatList = (String[]) Array.newInstance(String.class, oldList.length + newList.length);
       System.arraycopy(oldList, 0, concatList, 0, oldList.length);
@@ -506,24 +507,24 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withoutLabel(String key) {
+  public FilterWatchListDeletable<T, L, Boolean, Watch> withoutLabel(String key) {
     return withoutLabel(key, null);
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withFields(Map<String, String> fields) {
+  public FilterWatchListDeletable<T, L, Boolean, Watch> withFields(Map<String, String> fields) {
     this.fields.putAll(fields);
     return this;
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withField(String key, String value) {
+  public FilterWatchListDeletable<T, L, Boolean, Watch> withField(String key, String value) {
     fields.put(key, value);
     return this;
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withInvolvedObject(ObjectReference objectReference) {
+  public FilterWatchListDeletable<T, L, Boolean, Watch> withInvolvedObject(ObjectReference objectReference) {
     if (objectReference != null) {
       if (objectReference.getName() != null) {
         fields.put(INVOLVED_OBJECT_NAME, objectReference.getName());
@@ -561,14 +562,14 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
    */
   @Override
   @Deprecated
-  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withoutFields(Map<String, String> fields) {
+  public FilterWatchListDeletable<T, L, Boolean, Watch> withoutFields(Map<String, String> fields) {
     // Re-use "withoutField" to convert values from String to String[]
     labels.forEach(this::withoutField);
     return this;
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withoutField(String key, String value) {
+  public FilterWatchListDeletable<T, L, Boolean, Watch> withoutField(String key, String value) {
     fieldsNot.merge(key, new String[]{value}, (oldList, newList) -> {
       if (Utils.isNotNullOrEmpty(newList[0])) { // Only add new values when not null
         final String[] concatList = (String[]) Array.newInstance(String.class, oldList.length + newList.length);
@@ -782,8 +783,8 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public Watchable<Watch, Watcher<T>> withResourceVersion(String resourceVersion) {
-    return newInstance(context.withResourceVersion(resourceVersion));
+  public R withResourceVersion(String resourceVersion) {
+    return (R) newInstance(context.withResourceVersion(resourceVersion));
   }
 
   public Watch watch(final Watcher<T> watcher) {
@@ -803,9 +804,9 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   public Watch watch(ListOptions options, final Watcher<T> watcher) {
     WatcherToggle<T> watcherToggle = new WatcherToggle<>(watcher, true);
     options.setWatch(Boolean.TRUE);
-    WatchConnectionManager watch = null;
+    WatchConnectionManager<T, L> watch = null;
     try {
-      watch = new WatchConnectionManager(
+      watch = new WatchConnectionManager<>(
         client,
         this,
         options,
@@ -839,7 +840,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       // HTTP GET. This is meant to handle cases like kubectl local proxy which does not support
       // websockets. Issue: https://github.com/kubernetes/kubernetes/issues/25126
       try {
-        return new WatchHTTPManager(
+        return new WatchHTTPManager<>(
           client,
           this,
           options,
@@ -1034,7 +1035,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean, Watch, Watcher<T>> withGracePeriod(long gracePeriodSeconds) {
+  public FilterWatchListDeletable<T, L, Boolean, Watch> withGracePeriod(long gracePeriodSeconds) {
     return newInstance(context.withGracePeriodSeconds(gracePeriodSeconds));
   }
 
@@ -1114,40 +1115,54 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   private T waitUntilConditionWithRetries(Predicate<T> condition, long timeoutNanos, long backoffMillis)
     throws InterruptedException {
+    ListOptions options = null;
 
-    T item = fromServer().get();
-    if (condition.test(item)) {
-      return item;
+    if (resourceVersion != null) {
+      options = createListOptions(resourceVersion);
     }
 
-    long end = System.nanoTime() + timeoutNanos;
+    long currentBackOff = backoffMillis;
+    long remainingNanosToWait = timeoutNanos;
+    while (remainingNanosToWait > 0) {
 
-    WaitForConditionWatcher<T> watcher = new WaitForConditionWatcher<>(condition);
-    Watch watch = item == null
-      ? watch(new ListOptionsBuilder()
-      .withResourceVersion(null)
-      .build(), watcher)
-      : watch(item.getMetadata().getResourceVersion(), watcher);
-
-    try {
-      return watcher.getFuture()
-        .get(timeoutNanos, TimeUnit.NANOSECONDS);
-    } catch (ExecutionException e) {
-      if (e.getCause() instanceof WatchException && ((WatchException) e.getCause()).isShouldRetry()) {
-        watch.close();
-        LOG.debug("retryable watch exception encountered, retrying after {} millis", backoffMillis, e.getCause());
-        Thread.sleep(backoffMillis);
-        long newTimeout = end - System.nanoTime();
-        long newBackoff = (long) (backoffMillis * watchRetryBackoffMultiplier);
-        return waitUntilConditionWithRetries(condition, newTimeout, newBackoff);
+      T item = fromServer().get();
+      if (condition.test(item)) {
+        return item;
+      } else if (options == null) {
+        options = createListOptions(getResourceVersion(item));
       }
-      throw KubernetesClientException.launderThrowable(e.getCause());
-    } catch (TimeoutException e) {
-      LOG.debug("ran out of time waiting for watcher, wait condition not met");
-      throw new IllegalArgumentException(type.getSimpleName() + " with name:[" + name + "] in namespace:[" + namespace + "] matching condition not found!");
-    } finally {
-      watch.close();
+
+      final WaitForConditionWatcher<T> watcher = new WaitForConditionWatcher<>(condition);
+      final long startTime = System.nanoTime();
+      try (Watch ignored = watch(options, watcher)) {
+        return watcher.getFuture().get(remainingNanosToWait, NANOSECONDS);
+      } catch (ExecutionException e) {
+        Throwable cause = e.getCause();
+        if (cause instanceof WatchException && ((WatchException) cause).isShouldRetry()) {
+          LOG.debug("retryable watch exception encountered, retrying after {} millis", currentBackOff, cause);
+          Thread.sleep(currentBackOff);
+          currentBackOff *= watchRetryBackoffMultiplier;
+          remainingNanosToWait -= (System.nanoTime() - startTime);
+        } else {
+          throw KubernetesClientException.launderThrowable(cause);
+        }
+      } catch (TimeoutException e) {
+        break;
+      }
     }
+
+    LOG.debug("ran out of time waiting for watcher, wait condition not met");
+    throw new IllegalArgumentException(type.getSimpleName() + " with name:[" + name + "] in namespace:[" + namespace + "] matching condition not found!");
+  }
+
+  private static String getResourceVersion(HasMetadata item) {
+    return (item == null) ? null : item.getMetadata().getResourceVersion();
+  }
+
+  private static ListOptions createListOptions(String resourceVersion) {
+    return new ListOptionsBuilder()
+      .withResourceVersion(resourceVersion)
+      .build();
   }
 
   public void setType(Class<T> type) {

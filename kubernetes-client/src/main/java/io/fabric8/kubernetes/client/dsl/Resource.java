@@ -16,7 +16,6 @@
 package io.fabric8.kubernetes.client.dsl;
 
 import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.Watcher;
 
 /**
  * Interface that describes the operation that can be done on a Kubernetes resource (e.g. Pod, Service etc).
@@ -27,6 +26,6 @@ import io.fabric8.kubernetes.client.Watcher;
 public interface Resource<T, D> extends CreateOrReplaceable<T, T, D>,
   CreateFromServerGettable<T, T, D>,
   CascadingEditReplacePatchDeletable<T, T, D, Boolean>,
-  VersionWatchable<Watch, Watcher<T>>,
-  Waitable<T, T>, Requirable<T>, Readiable {
+  VersionWatchAndWaitable<Watch, T>,
+  Requirable<T>, Readiable {
 }

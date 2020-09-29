@@ -38,8 +38,6 @@ import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 
-import java.net.HttpURLConnection;
-import java.util.function.Predicate;
 import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,17 +45,22 @@ import org.slf4j.LoggerFactory;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.TimeoutException;
+import java.util.function.Predicate;
 
 public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl extends OperationSupport implements ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean>,
 Waitable<List<HasMetadata>, HasMetadata>, Readiable {
@@ -74,7 +77,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
     private final List<Visitor> visitors;
     private final long watchRetryInitialBackoffMillis;
     private final double watchRetryBackoffMultiplier;
-  private final Object item;
+    private final Object item;
     private final InputStream inputStream;
 
     private final long gracePeriodSeconds;
@@ -108,8 +111,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
               LOGGER.info("{} {} does not support readiness. skipping..", meta.getKind(), meta.getMetadata().getName());
               latch.countDown();
             } catch (IllegalStateException t) {
-              LOGGER.warn("Error while waiting for: [{}] with name: [{}] in namespace: [{}]: {}. The resource will be considered not ready.", meta.getKind(), meta.getMetadata().getName(), meta.getMetadata().getNamespace(), t.getMessage());
-              LOGGER.debug("The error stack trace:", t);
+              logAsNotReady(t, meta);
             } finally {
               // Resource got ready and was returned properly
               latch.countDown();
@@ -129,49 +131,75 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
   }
 
   @Override
-  public List<HasMetadata> waitUntilCondition(Predicate<HasMetadata> condition, long amount,
-    TimeUnit timeUnit) throws InterruptedException {
+  public List<HasMetadata> waitUntilCondition(Predicate<HasMetadata> condition,
+                                              long amount,
+                                              TimeUnit timeUnit) throws InterruptedException {
     List<HasMetadata> items = acceptVisitors(asHasMetadata(item, true), visitors);
-    if (items.size() == 0) {
+    if (items.isEmpty()) {
       return Collections.emptyList();
     }
 
-    final List<HasMetadata> result = new ArrayList<>();
-    final List<HasMetadata> itemsWithConditionNotMatched = new ArrayList<>(items);
-    final int size = items.size();
-    final AtomicInteger conditionMatched = new AtomicInteger(0);
-    final ExecutorService executor = Executors.newFixedThreadPool(size);
-
-    try {
-      final CountDownLatch latch = new CountDownLatch(size);
-      for (final HasMetadata meta : items) {
-        final ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
-        if (!executor.isShutdown()) {
-          executor.submit(() -> {
-            try {
-              result.add(h.waitUntilCondition(client, config, meta.getMetadata().getNamespace(), meta, condition, amount, timeUnit));
-              conditionMatched.incrementAndGet();
-              itemsWithConditionNotMatched.remove(meta);
-            } catch (Throwable t) {
-              //consider all errors as not ready.
-              LOGGER.warn("Error while waiting for: [{}] with name: [{}] in namespace: [{}]: {}. The resource will be considered not ready.", meta.getKind(), meta.getMetadata().getName(), meta.getMetadata().getNamespace(), t.getMessage());
-              LOGGER.debug("The error stack trace:", t);
-            } finally {
-              //We don't want to wait for items that will never become ready
-              latch.countDown();
-            }
-          });
+    final List<CompletableFuture<HasMetadata>> futures = new ArrayList<>(items.size());
+    for (final HasMetadata meta : items) {
+      final ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
+      futures.add(CompletableFuture.supplyAsync(() -> {
+        try {
+          return h.waitUntilCondition(client, config, meta.getMetadata().getNamespace(), meta, condition, amount, timeUnit);
+        } catch (Exception e) {
+          //consider all errors as not ready.
+          logAsNotReady(e, meta);
+          return null;
         }
-      }
-      if (checkConditionMetForAll(latch, size, conditionMatched, amount, timeUnit)) {
-        return result;
-      } else {
-        throw new KubernetesClientTimeoutException(itemsWithConditionNotMatched, amount, timeUnit);
-      }
-    } finally {
-      executor.shutdown();
+      }));
     }
 
+    try {
+      // All of the individual futures have the same timeout period,
+      // but they may not all necessarily start executing together.
+      CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).get(amount, timeUnit);
+    } catch (TimeoutException | ExecutionException e) {
+      // We don't allow individual futures to complete with an exception,
+      // which means we should never catch ExecutionException here.
+      LOGGER.debug("Global timeout reached", e);
+    }
+
+    final List<HasMetadata> results = new ArrayList<>();
+    final List<HasMetadata> itemsWithConditionNotMatched = new ArrayList<>();
+
+    // Iterate over the items because we don't know what kind of List it is.
+    // But the futures use an ArrayList, so accessing by index is efficient.
+    int i = 0;
+    for (final HasMetadata meta : items) {
+      try {
+        CompletableFuture<HasMetadata> future = futures.get(i);
+        HasMetadata result = future.getNow(null);
+        if (result != null) {
+          results.add(result);
+        } else {
+          // Cancel this future, just in case it never had
+          // an opportunity to execute in the first place.
+          future.cancel(true);
+          itemsWithConditionNotMatched.add(meta);
+        }
+      } catch (CompletionException e) {
+        // We should never reach here, because individual futures
+        // aren't allowed to complete with an exception.
+        itemsWithConditionNotMatched.add(meta);
+        logAsNotReady(e.getCause(), meta);
+      }
+      ++i;
+    }
+
+    if (!itemsWithConditionNotMatched.isEmpty()) {
+      throw new KubernetesClientTimeoutException(itemsWithConditionNotMatched, amount, timeUnit);
+    }
+
+    return results;
+  }
+
+  private static void logAsNotReady(Throwable t, HasMetadata meta) {
+    LOGGER.warn("Error while waiting for: [{}] with name: [{}] in namespace: [{}]: {}. The resource will be considered not ready.", meta.getKind(), meta.getMetadata().getName(), meta.getMetadata().getNamespace(), t.getMessage());
+    LOGGER.debug("The error stack trace:", t);
   }
 
   @Override
@@ -427,26 +455,4 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
       throw new IllegalArgumentException("Could not find a registered handler for item: [" + item + "].");
     }
   }
-
-  /**
-   * Waits until the latch reaches to zero and then checks if the expected result
-   * @param latch       The latch.
-   * @param expected    The expected number.
-   * @param actual      The actual number.
-   * @param amount      The amount of time to wait.
-   * @param timeUnit    The timeUnit.
-   * @return
-   */
-  private static boolean checkConditionMetForAll(CountDownLatch latch, int expected, AtomicInteger actual, long amount, TimeUnit timeUnit) {
-    try {
-      if (latch.await(amount, timeUnit)) {
-        return actual.intValue() == expected;
-      }
-      return false;
-    } catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-      return false;
-    }
-  }
-
 }
