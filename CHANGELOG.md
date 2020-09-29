@@ -9,6 +9,7 @@
 * Fix #2474: Config.fromKubeconfig throws NullPointerException
 * Fix #2399: Cannot change the type of the Service from ClusterIP to ExternalName
 * Fix #2479: KuberentesDeserializer works on OSGi runtime environments
+* Fix #2488: Unable to derive module descriptors for kubernetes-model jars
 
 #### Improvements
 * Enable user to select custom address and port for KubernetesMockServer
