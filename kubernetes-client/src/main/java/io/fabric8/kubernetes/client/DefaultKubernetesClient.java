@@ -158,100 +158,156 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
     return new DefaultKubernetesClient(Serialization.unmarshal(is, Config.class));
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public MixedOperation<ComponentStatus, ComponentStatusList, DoneableComponentStatus, Resource<ComponentStatus, DoneableComponentStatus>> componentstatuses() {
     return new ComponentStatusOperationsImpl(httpClient, getConfiguration());
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> load(InputStream is) {
     return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, new ArrayList<>(), is, null, true, DeletionPropagation.BACKGROUND) {
     };
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(KubernetesResourceList item) {
     return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, new ArrayList<>(), item, null, DeletionPropagation.BACKGROUND, true) {
     };
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(HasMetadata... items) {
     return resourceList(new KubernetesListBuilder().withItems(items).build());
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(Collection<HasMetadata> items) {
     return resourceList(new KubernetesListBuilder().withItems(new ArrayList<>(items)).build());
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(String s) {
     return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, new ArrayList<>(), s, null, DeletionPropagation.BACKGROUND, true) {
     };
   }
 
-
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata, Boolean> resource(HasMetadata item) {
     return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, new ArrayList<>(), item, -1, DeletionPropagation.BACKGROUND, true, Waitable.DEFAULT_INITIAL_BACKOFF_MILLIS, Waitable.DEFAULT_BACKOFF_MULTIPLIER);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata, Boolean> resource(String s) {
     return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, new ArrayList<>(), s, -1, DeletionPropagation.BACKGROUND, true, Waitable.DEFAULT_INITIAL_BACKOFF_MILLIS, Waitable.DEFAULT_BACKOFF_MULTIPLIER);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public MixedOperation<Binding, KubernetesResourceList<Binding>, DoneableBinding, Resource<Binding, DoneableBinding>> bindings() {
     return new BindingOperationsImpl(httpClient, getConfiguration());
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public MixedOperation<Endpoints, EndpointsList, DoneableEndpoints, Resource<Endpoints, DoneableEndpoints>> endpoints() {
     return new EndpointsOperationsImpl(httpClient, getConfiguration());
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public MixedOperation<Event, EventList, DoneableEvent, Resource<Event, DoneableEvent>> events() {
     return new EventOperationsImpl(httpClient, getConfiguration());
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public NonNamespaceOperation<Namespace, NamespaceList, DoneableNamespace, Resource<Namespace, DoneableNamespace>> namespaces() {
     return new NamespaceOperationsImpl(httpClient, getConfiguration());
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public NonNamespaceOperation<Node, NodeList, DoneableNode, Resource<Node, DoneableNode>> nodes() {
     return new NodeOperationsImpl(httpClient, getConfiguration());
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public NonNamespaceOperation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, Resource<PersistentVolume, DoneablePersistentVolume>> persistentVolumes() {
     return new PersistentVolumeOperationsImpl(httpClient, getConfiguration());
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public MixedOperation<PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, Resource<PersistentVolumeClaim, DoneablePersistentVolumeClaim>> persistentVolumeClaims() {
     return new PersistentVolumeClaimOperationsImpl(httpClient, getConfiguration());
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public MixedOperation<Pod, PodList, DoneablePod, PodResource<Pod, DoneablePod>> pods() {
     return new PodOperationsImpl(httpClient, getConfiguration());
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public MixedOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, RollableScalableResource<ReplicationController, DoneableReplicationController>> replicationControllers() {
     return new ReplicationControllerOperationsImpl(httpClient, getConfiguration());
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public MixedOperation<ResourceQuota, ResourceQuotaList, DoneableResourceQuota, Resource<ResourceQuota, DoneableResourceQuota>> resourceQuotas() {
     return new ResourceQuotaOperationsImpl(httpClient, getConfiguration());
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public SchedulingAPIGroupDSL scheduling() {
     return adapt(SchedulingAPIGroupClient.class);
@@ -262,61 +318,97 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
     return new SecretOperationsImpl(httpClient, getConfiguration());
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public MixedOperation<Service, ServiceList, DoneableService, ServiceResource<Service, DoneableService>> services() {
     return new ServiceOperationsImpl(httpClient, getConfiguration());
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public MixedOperation<ServiceAccount, ServiceAccountList, DoneableServiceAccount, Resource<ServiceAccount, DoneableServiceAccount>> serviceAccounts() {
     return new ServiceAccountOperationsImpl(httpClient, getConfiguration());
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public MixedOperation<APIService, APIServiceList, DoneableAPIService, Resource<APIService, DoneableAPIService>> apiServices() {
     return new APIServiceOperationsImpl(httpClient, getConfiguration());
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public KubernetesListMixedOperation lists() {
     return new KubernetesListOperationsImpl(httpClient, getConfiguration(), getNamespace());
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public MixedOperation<ConfigMap, ConfigMapList, DoneableConfigMap, Resource<ConfigMap, DoneableConfigMap>> configMaps() {
     return new ConfigMapOperationsImpl(httpClient, getConfiguration());
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public MixedOperation<LimitRange, LimitRangeList, DoneableLimitRange, Resource<LimitRange, DoneableLimitRange>> limitRanges() {
     return new LimitRangeOperationsImpl(httpClient, getConfiguration());
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public NonNamespaceOperation<CustomResourceDefinition, CustomResourceDefinitionList, DoneableCustomResourceDefinition, Resource<CustomResourceDefinition, DoneableCustomResourceDefinition>> customResourceDefinitions() {
     return new CustomResourceDefinitionOperationsImpl(httpClient, getConfiguration());
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public ApiextensionsAPIGroupDSL apiextensions() {
     return adapt(ApiextensionsAPIGroupClient.class);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public NonNamespaceOperation<CertificateSigningRequest, CertificateSigningRequestList, DoneableCertificateSigningRequest, Resource<CertificateSigningRequest, DoneableCertificateSigningRequest>> certificateSigningRequests() {
     return new CertificateSigningRequestOperationsImpl(httpClient, getConfiguration());
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public AuthorizationAPIGroupDSL authorization() {
     return adapt(AuthorizationAPIGroupClient.class);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public Createable<TokenReview, TokenReview, DoneableTokenReview> tokenReviews() {
     return new CreateOnlyResourceOperationsImpl<>(httpClient, getConfiguration(), "authentication.k8s.io", "v1", Utils.getPluralFromKind(TokenReview.class.getSimpleName()), TokenReview.class);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public <T extends HasMetadata, L extends KubernetesResourceList<T>, D extends Doneable<T>> MixedOperation<T, L, D, Resource<T, D>> customResources(CustomResourceDefinitionContext crdContext, Class<T> resourceType, Class<L> listClass, Class<D> doneClass) {
     return new CustomResourceOperationsImpl<>(new CustomResourceOperationContext().withOkhttpClient(httpClient).withConfig(getConfiguration())
@@ -327,6 +419,9 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
       .withDoneableType(doneClass));
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public <T extends HasMetadata, L extends KubernetesResourceList<T>, D extends Doneable<T>> MixedOperation<T, L, D, Resource<T, D>> customResources(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass, Class<D> doneClass) {
     return new CustomResourceOperationsImpl<>(new CustomResourceOperationContext().withOkhttpClient(httpClient).withConfig(getConfiguration())
@@ -337,16 +432,25 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
       .withDoneableType(doneClass));
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public RawCustomResourceOperationsImpl customResource(CustomResourceDefinitionContext customResourceDefinition) {
     return new RawCustomResourceOperationsImpl(httpClient, getConfiguration(), customResourceDefinition);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public <T extends HasMetadata, L extends KubernetesResourceList<T>, D extends Doneable<T>> MixedOperation<T, L, D, Resource<T, D>> customResource(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass, Class<D> doneClass) {
     return customResources(crd, resourceType, listClass, doneClass);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public NamespacedKubernetesClient inNamespace(String namespace)
   {
@@ -354,73 +458,124 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
     return new DefaultKubernetesClient(httpClient, updated);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public NamespacedKubernetesClient inAnyNamespace() {
     return inNamespace(null);
   }
 
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public FunctionCallable<NamespacedKubernetesClient> withRequestConfig(RequestConfig requestConfig) {
     return new WithRequestCallable<>(this, requestConfig);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public ExtensionsAPIGroupDSL extensions() {
     return adapt(ExtensionsAPIGroupClient.class);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public VersionInfo getVersion() {
     return new ClusterOperationsImpl(httpClient, getConfiguration(), ClusterOperationsImpl.KUBERNETES_VERSION_ENDPOINT).fetchVersion();
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public V1APIGroupDSL v1() {
     return adapt(V1APIGroupClient.class);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public AdmissionRegistrationAPIGroupDSL admissionRegistration() {
     return adapt(AdmissionRegistrationAPIGroupClient.class);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public AppsAPIGroupDSL apps() {
     return adapt(AppsAPIGroupClient.class);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public AutoscalingAPIGroupDSL autoscaling() {
     return adapt(AutoscalingAPIGroupClient.class);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public NetworkAPIGroupDSL network() { return adapt(NetworkAPIGroupClient.class); }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public StorageAPIGroupDSL storage() { return adapt(StorageAPIGroupClient.class); }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public BatchAPIGroupDSL batch() { return adapt(BatchAPIGroupClient.class); }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public MetricAPIGroupDSL top() { return adapt(MetricAPIGroupClient.class); }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public PolicyAPIGroupDSL policy() { return adapt(PolicyAPIGroupClient.class); }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public RbacAPIGroupDSL rbac() { return adapt(RbacAPIGroupClient.class); }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public SettingsAPIGroupDSL settings() { return adapt(SettingsAPIGroupClient.class); }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public SharedInformerFactory informers() {
     return new SharedInformerFactory(ForkJoinPool.commonPool(), httpClient, getConfiguration());
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public SharedInformerFactory informers(ExecutorService executorService) {
     return new SharedInformerFactory(executorService, httpClient, getConfiguration());
@@ -442,6 +597,9 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
     return new LeaseOperationsImpl(httpClient, getConfiguration());
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public RunOperations run() {
     return new RunOperations(httpClient, getConfiguration(), getNamespace(), new RunConfigBuilder());

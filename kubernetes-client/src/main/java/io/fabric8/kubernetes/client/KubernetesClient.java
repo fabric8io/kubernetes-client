@@ -124,11 +124,19 @@ public interface KubernetesClient extends Client {
    * CustomResource into this and with it you would be able to instantiate a client
    * specific to CustomResource.
    *
+   * <p>
+   *   Note: your CustomResource POJO (T in this context) must implement
+   *   <a href="https://github.com/fabric8io/kubernetes-client/blob/master/kubernetes-model-generator/kubernetes-model-core/src/main/java/io/fabric8/kubernetes/api/model/Namespaced.java">
+   *     io.fabric8.kubernetes.api.model.Namespaced
+   *   </a> if it is a Namespaced scoped resource.
+   * </p>
+   *
    * @param crdContext CustomResourceDefinitionContext describes the core fields used to search for CustomResources
    * @param resourceType Class for CustomResource
    * @param listClass Class for list object for CustomResource
    * @param doneClass Class for Doneable CustomResource object
-   * @param <T> T type represents CustomResource type
+   * @param <T> T type represents CustomResource type. If it's Namespaced resource, it must implement
+   *           io.fabric8.kubernetes.api.model.Namespaced
    * @param <L> L type represents CustomResourceList type
    * @param <D> D type represents DoneableCustomResource type
    * @return returns a MixedOperation object with which you can do basic CustomResource operations
@@ -140,6 +148,13 @@ public interface KubernetesClient extends Client {
    * CustomResource into this and with it you would be able to instantiate a client
    * specific to CustomResource.
    *
+   * <p>
+   *   Note: your CustomResource POJO (T in this context) must implement
+   *   <a href="https://github.com/fabric8io/kubernetes-client/blob/master/kubernetes-model-generator/kubernetes-model-core/src/main/java/io/fabric8/kubernetes/api/model/Namespaced.java">
+   *     io.fabric8.kubernetes.api.model.Namespaced
+   *   </a> if it is a Namespaced scoped resource.
+   * </p>
+   *
    * @deprecated use {@link #customResources(CustomResourceDefinitionContext, Class, Class, Class)}, which takes a {@link CustomResourceDefinitionContext}
    * instead of a full {@link CustomResourceDefinition}.
    *
@@ -147,7 +162,8 @@ public interface KubernetesClient extends Client {
    * @param resourceType Class for CustomResource
    * @param listClass Class for list object for CustomResource
    * @param doneClass Class for Doneable CustomResource object
-   * @param <T> T type represents CustomResource type
+   * @param <T> T type represents CustomResource type. If it's Namespaced resource, it must implement
+   *            io.fabric8.kubernetes.api.model.Namespaced
    * @param <L> L type represents CustomResourceList type
    * @param <D> D type represents DoneableCustomResource type
    * @return returns a MixedOperation object with which you can do basic CustomResource operations
@@ -161,11 +177,19 @@ public interface KubernetesClient extends Client {
    * @deprecated use {@link #customResources(CustomResourceDefinitionContext, Class, Class, Class)}, which takes a {@link CustomResourceDefinitionContext}
    * instead of a full {@link CustomResourceDefinition}.
    *
+   * <p>
+   *   Note: your CustomResource POJO (T in this context) must implement
+   *   <a href="https://github.com/fabric8io/kubernetes-client/blob/master/kubernetes-model-generator/kubernetes-model-core/src/main/java/io/fabric8/kubernetes/api/model/Namespaced.java">
+   *     io.fabric8.kubernetes.api.model.Namespaced
+   *   </a> if it is a Namespaced scoped resource.
+   * </p>
+   *
    * @param crd Custom Resource Definition
    * @param resourceType resource type Pojo
    * @param listClass list class Pojo
    * @param doneClass Done class Pojo
-   * @param <T> template argument for resource
+   * @param <T> template argument for resource. If it's Namespaced resource, it must implement
+   *            io.fabric8.kubernetes.api.model.Namespaced
    * @param <L> template argument for list
    * @param <D> template argument for doneable resource
    * @return Kubernetes client object for manipulating custom resource.

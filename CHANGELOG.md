@@ -131,8 +131,16 @@ _**Note**_: Some classes have been moved to other packages:
 * Add support for Namespaced SharedInformers, fixed probelms with OperationContext argument
 * Fix #1821: ListOptions now supported when watching a Kubernetes Resource
 
-_**Note**_: Some classes have been renamed:
-- `io.fabric8.tekton.pipeline.v1beta1.WorkspacePipelineDeclaration` is now `io.fabric8.tekton.pipeline.v1beta1.PipelineWorkspaceDeclaration`
+_**Note**_:
+- Some classes have been renamed:
+   - `io.fabric8.tekton.pipeline.v1beta1.WorkspacePipelineDeclaration` is now `io.fabric8.tekton.pipeline.v1beta1.PipelineWorkspaceDeclaration`
+- Breaking changes in `KubernetesClient` `customResource()` typed API:
+  - We've introduced a major breaking change in customResource(...) typed API. We have introduced a new interface `io.fabric8.kubernetes.api.model.Namespaced` which needs to
+    be added to your Custom Types using typed API. For example, for a custom resource named `Animals` which is a [Namespaced](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) resource; It should be declared like this:
+    ```
+    public class Animals extends CustomResource implements Namespaced { ... }
+    ```
+    You can also checkout an example in our test suite for this: [PodSet.java](https://github.com/fabric8io/kubernetes-client/blob/master/kubernetes-tests/src/test/java/io/fabric8/kubernetes/client/mock/crd/PodSet.java#L22)
 
 ### 4.10.1 (2020-05-06)
 #### Bugs
