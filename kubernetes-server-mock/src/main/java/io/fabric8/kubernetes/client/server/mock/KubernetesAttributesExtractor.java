@@ -22,11 +22,14 @@ import static io.fabric8.mockwebserver.crud.AttributeType.WITHOUT;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -74,6 +77,15 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
   // values are not important, HttpUrl expects the scheme to be http or https.
   private static final String SCHEME = "http";
   private static final String HOST = "localhost";
+  private List<CustomResourceDefinitionContext> crdContexts;
+
+  public KubernetesAttributesExtractor() {
+    this.crdContexts = Collections.emptyList();
+  }
+
+  public KubernetesAttributesExtractor(List<CustomResourceDefinitionContext> crdContexts) {
+    this.crdContexts = crdContexts;
+  }
 
   private HttpUrl parseUrlFromPathAndQuery(String s) {
     if (!s.startsWith("/")) {
@@ -92,7 +104,7 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
     HttpUrl url = parseUrlFromPathAndQuery(s);
     Matcher m = PATTERN.matcher(url.encodedPath());
     if (m.matches()) {
-      AttributeSet set = extract(m);
+      AttributeSet set = extract(m, crdContexts);
       set = AttributeSet.merge(set, extractQueryParameters(url));
       LOGGER.debug("fromPath {} : {}", s, set);
       return set;
@@ -155,34 +167,12 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
     return metadataAttributes;
   }
 
-  private static AttributeSet extract(Matcher m) {
+  private static AttributeSet extract(Matcher m, List<CustomResourceDefinitionContext> crdContexts) {
     AttributeSet attributes = new AttributeSet();
     if (m.matches()) {
       String kind = m.group(KIND);
       if (!Utils.isNullOrEmpty(kind)) {
-
-        //Poor mans to singular.
-        //Special Case for PodSecurityPolicies and NetworkPolicies because
-        //we need to return PodSecurityPolicy and NetworkPolicy respectively
-        //because it is returning PodSecurityPolicie and NetworkPolicie now
-        //Right now not adding generalised case of "ies" because it may break other resource not sure
-
-        if (kind.endsWith("ses")) {
-          kind = kind.substring(0, kind.length() - 2);
-        }
-        else if (kind.equalsIgnoreCase("PodSecurityPolicies") ||
-          kind.equalsIgnoreCase("NetworkPolicies")){
-          kind = kind.substring(0,kind.length() - 3) + "y";
-        }
-        else if (kind.equalsIgnoreCase("securityContextConstraints") ||
-          kind.equalsIgnoreCase("endpoints")){
-          // do nothing
-          // because its a case which is ending with s but its name is
-          // like that, it is not plural
-        }
-        else if (kind.endsWith("s")) {
-          kind = kind.substring(0, kind.length() - 1);
-        }
+        kind = resolveKindFromPlural(crdContexts, kind);
         attributes = attributes.add(new Attribute(KIND, kind));
       }
 
@@ -201,6 +191,38 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
       }
     }
     return attributes;
+  }
+
+  private static String resolveKindFromPlural(List<CustomResourceDefinitionContext> crdContexts, String kind) {
+    if (isCustomResourceKind(crdContexts, kind)) {
+      return getCustomResourceKindFromPlural(crdContexts, kind);
+    }
+    return getKindFromPluralForKubernetesTypes(kind);
+  }
+
+  private static String getKindFromPluralForKubernetesTypes(String kind) {
+    //Poor mans to singular.
+    //Special Case for PodSecurityPolicies and NetworkPolicies because
+    //we need to return PodSecurityPolicy and NetworkPolicy respectively
+    //because it is returning PodSecurityPolicie and NetworkPolicie now
+    //Right now not adding generalised case of "ies" because it may break other resource not sure
+
+    if (kind.endsWith("ses")) {
+      kind = kind.substring(0, kind.length() - 2);
+    }
+    else if (kind.equalsIgnoreCase("PodSecurityPolicies") ||
+      kind.equalsIgnoreCase("NetworkPolicies")){
+      kind = kind.substring(0, kind.length() - 3) + "y";
+    } else if (kind.equalsIgnoreCase("securityContextConstraints") ||
+      kind.equalsIgnoreCase("endpoints")){
+      // do nothing
+      // because its a case which is ending with s but its name is
+      // like that, it is not plural
+    }
+    else if (kind.endsWith("s")) {
+      kind = kind.substring(0, kind.length() - 1);
+    }
+    return kind;
   }
 
   private static AttributeSet extractQueryParameters(HttpUrl url) {
@@ -258,5 +280,18 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
     } catch (Exception e) {
       return null;
     }
+  }
+
+  private static boolean isCustomResourceKind(List<CustomResourceDefinitionContext> crdContexts, String kind) {
+    return crdContexts.stream()
+      .anyMatch(c -> c.getPlural().equals(kind));
+  }
+
+  private static String getCustomResourceKindFromPlural(List<CustomResourceDefinitionContext> crdContexts, String kind) {
+    CustomResourceDefinitionContext crdContext = crdContexts.stream()
+      .filter(c -> c.getPlural().equals(kind))
+      .findAny()
+      .orElse(null);
+    return crdContext != null && crdContext.getKind() != null ? crdContext.getKind().toLowerCase() : null;
   }
 }

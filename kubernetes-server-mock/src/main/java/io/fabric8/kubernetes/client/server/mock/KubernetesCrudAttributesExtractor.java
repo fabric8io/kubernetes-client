@@ -16,9 +16,21 @@
 package io.fabric8.kubernetes.client.server.mock;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.mockwebserver.crud.AttributeSet;
 
+import java.util.Collections;
+import java.util.List;
+
 public class KubernetesCrudAttributesExtractor extends KubernetesAttributesExtractor {
+  public KubernetesCrudAttributesExtractor() {
+    super(Collections.emptyList());
+  }
+
+  public KubernetesCrudAttributesExtractor(List<CustomResourceDefinitionContext> crdContexts) {
+    super(crdContexts);
+  }
+
     @Override
     public AttributeSet extract(HasMetadata hasMetadata) {
         return extractMetadataAttributes(hasMetadata);

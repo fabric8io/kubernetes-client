@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.server.mock;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -91,7 +92,7 @@ public class KubernetesMockServerExtension implements AfterEachCallback, AfterAl
   private void createKubernetesClient(Class<?> testClass) {
     EnableKubernetesMockClient a = testClass.getAnnotation(EnableKubernetesMockClient.class);
     mock = a.crud()
-      ? new KubernetesMockServer(new Context(), new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(), a.https())
+      ? new KubernetesMockServer(new Context(), new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(Collections.emptyList()), a.https())
       : new KubernetesMockServer(a.https());
     mock.init();
     client = mock.createClient();
