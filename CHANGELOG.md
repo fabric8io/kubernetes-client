@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 4.11-SNAPSHOT
+### 4.12.0 (2020-10-02)
 
 #### Bugs
 * Fix #2442: Wrong resource kind in `ProjectRequestHandler` causes ClassCastException when handling Project resources.
@@ -27,7 +27,11 @@
 * Fix #2146: Add Support for specifying CustomResourceDefinitionContext while initializing KubernetesServer
 * Fix #2314: Fetch logs should wait for the job's associated pod to be ready
 * Fix #2043: Support for Tekton Triggers
-* Fix #2460: Querying for an event based on InvolvedObject fields 
+* Fix #2460: Querying for an event based on InvolvedObject fields
+
+_**Note**_ Minor breaking changes:
+* PR #2424 (#2414) slightly changes the API by adding the new `WatchAndWaitable` "combiner" interface.
+  Most projects shouldn't require any additional changes.
 
 ### 4.11.1 (2020-09-02)
 
