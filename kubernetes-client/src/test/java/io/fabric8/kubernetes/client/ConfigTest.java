@@ -84,6 +84,8 @@ public class ConfigTest {
     System.getProperties().remove(Config.KUBERNETES_CLIENT_KEY_ALGO_SYSTEM_PROPERTY);
     System.getProperties().remove(Config.KUBERNETES_CLIENT_KEY_PASSPHRASE_SYSTEM_PROPERTY);
     System.getProperties().remove(Config.KUBERNETES_CLIENT_KEY_FILE_SYSTEM_PROPERTY);
+    System.getProperties().remove(Config.KUBERNETES_MAX_CONCURRENT_REQUESTS);
+    System.getProperties().remove(Config.KUBERNETES_MAX_CONCURRENT_REQUESTS_PER_HOST);
     System.getProperties().remove(Config.KUBERNETES_WATCH_RECONNECT_INTERVAL_SYSTEM_PROPERTY);
     System.getProperties().remove(Config.KUBERNETES_WATCH_RECONNECT_LIMIT_SYSTEM_PROPERTY);
     System.getProperties().remove(Config.KUBERNETES_REQUEST_TIMEOUT_SYSTEM_PROPERTY);
@@ -165,6 +167,8 @@ public class ConfigTest {
       .withClientKeyData("clientkeydata")
       .withClientKeyAlgo("algo")
       .withClientKeyPassphrase("passphrase")
+      .withMaxConcurrentRequests(120)
+      .withMaxConcurrentRequestsPerHost(20)
       .withWatchReconnectInterval(5000)
       .withWatchReconnectLimit(5)
       .withRequestTimeout(5000)
