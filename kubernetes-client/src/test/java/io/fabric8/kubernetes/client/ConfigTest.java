@@ -125,6 +125,8 @@ public class ConfigTest {
     System.setProperty(Config.KUBERNETES_CLIENT_KEY_ALGO_SYSTEM_PROPERTY, "algo");
     System.setProperty(Config.KUBERNETES_CLIENT_KEY_PASSPHRASE_SYSTEM_PROPERTY, "passphrase");
     System.setProperty(Config.KUBERNETES_CLIENT_KEY_FILE_SYSTEM_PROPERTY, "/path/to/clientkey");
+    System.setProperty(Config.KUBERNETES_MAX_CONCURRENT_REQUESTS, "120");
+    System.setProperty(Config.KUBERNETES_MAX_CONCURRENT_REQUESTS_PER_HOST, "20");
     System.setProperty(Config.KUBERNETES_WATCH_RECONNECT_INTERVAL_SYSTEM_PROPERTY, "5000");
     System.setProperty(Config.KUBERNETES_WATCH_RECONNECT_LIMIT_SYSTEM_PROPERTY, "5");
     System.setProperty(Config.KUBERNETES_REQUEST_TIMEOUT_SYSTEM_PROPERTY, "5000");
@@ -197,6 +199,8 @@ public class ConfigTest {
     System.setProperty(Config.KUBERNETES_CLIENT_KEY_ALGO_SYSTEM_PROPERTY, "algo");
     System.setProperty(Config.KUBERNETES_CLIENT_KEY_PASSPHRASE_SYSTEM_PROPERTY, "passphrase");
     System.setProperty(Config.KUBERNETES_CLIENT_KEY_FILE_SYSTEM_PROPERTY, "/path/to/clientkey");
+    System.setProperty(Config.KUBERNETES_MAX_CONCURRENT_REQUESTS, "120");
+    System.setProperty(Config.KUBERNETES_MAX_CONCURRENT_REQUESTS_PER_HOST, "20");
     System.setProperty(Config.KUBERNETES_WATCH_RECONNECT_INTERVAL_SYSTEM_PROPERTY, "5000");
     System.setProperty(Config.KUBERNETES_WATCH_RECONNECT_LIMIT_SYSTEM_PROPERTY, "5");
     System.setProperty(Config.KUBERNETES_REQUEST_TIMEOUT_SYSTEM_PROPERTY, "5000");
@@ -590,6 +594,9 @@ public class ConfigTest {
     assertEquals("truststorePassphrase", config.getTrustStorePassphrase());
     assertEquals("/path/to/keystore", config.getKeyStoreFile());
     assertEquals("keystorePassphrase", config.getKeyStorePassphrase());
+
+    assertEquals(120, config.getMaxConcurrentRequests());
+    assertEquals(20, config.getMaxConcurrentRequestsPerHost());
   }
 
   @Test
