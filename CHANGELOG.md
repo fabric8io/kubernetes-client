@@ -10,6 +10,7 @@
 
 #### New Features
 
+* Fix #2531: Allow setting the maximum concurrent requests via system property / environment variable
 
 ### 4.12.0 (2020-10-02)
 
