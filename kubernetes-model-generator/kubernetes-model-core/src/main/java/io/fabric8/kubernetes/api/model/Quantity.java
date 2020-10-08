@@ -26,8 +26,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.Inline;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -45,8 +43,6 @@ import java.io.Serializable;
  */
 @JsonDeserialize(using = Quantity.Deserializer.class)
 @JsonSerialize(using = Quantity.Serializer.class)
-@ToString
-@EqualsAndHashCode
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage=true, builderPackage = "io.fabric8.kubernetes.api.builder", inline = @Inline(type = Doneable.class, prefix = "Doneable", value = "done"))
 public class Quantity  implements Serializable {
 
