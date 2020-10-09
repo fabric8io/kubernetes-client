@@ -323,6 +323,7 @@ class DeploymentConfigTest {
     assertNotNull(deploymentConfig);
     assertEquals(1, deploymentConfig.getStatus().getAvailableReplicas().intValue());
     assertTrue(deploymentConfig.getStatus().getConditions().stream().anyMatch(c -> c.getType().equals("Available")));
+    assertTrue(client.deploymentConfigs().inNamespace("ns1").withName("dc1").isReady());
   }
 
   private DeploymentConfigBuilder getDeploymentConfig() {
