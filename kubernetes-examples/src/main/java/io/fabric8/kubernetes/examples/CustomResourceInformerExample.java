@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
-import io.fabric8.kubernetes.client.informers.SharedInformerEventListener;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
 import io.fabric8.kubernetes.examples.crds.Dummy;
 import io.fabric8.kubernetes.examples.crds.DummyList;
@@ -33,7 +32,7 @@ import java.util.concurrent.TimeUnit;
 public class CustomResourceInformerExample {
   private static final Logger logger = LoggerFactory.getLogger(CustomResourceInformerExample.class);
 
-  public static void main(String args[]) {
+  public static void main(String[] args) {
     try (KubernetesClient client = new DefaultKubernetesClient()) {
       CustomResourceDefinitionContext crdContext = new CustomResourceDefinitionContext.Builder()
         .withVersion("v1")
@@ -65,12 +64,7 @@ public class CustomResourceInformerExample {
         }
       );
 
-      sharedInformerFactory.addSharedInformerEventListener(new SharedInformerEventListener() {
-        @Override
-        public void onException(Exception exception) {
-          System.out.println("Exception occurred, but caught");
-        }
-      });
+      sharedInformerFactory.addSharedInformerEventListener(exception -> logger.error("Exception occurred, but caught"));
 
       logger.info("Starting all registered informers");
       sharedInformerFactory.startAllRegisteredInformers();
@@ -80,9 +74,10 @@ public class CustomResourceInformerExample {
         try {
           for (;;) {
             logger.info("podInformer.hasSynced() : {}", podInformer.hasSynced());
-            Thread.sleep(200);
+            Thread.sleep(10 * 1000L);
           }
         } catch (InterruptedException inEx) {
+          Thread.currentThread().interrupt();
           logger.info("HAS_SYNCED_THREAD INTERRUPTED!");
         }
       });
@@ -90,6 +85,7 @@ public class CustomResourceInformerExample {
       // Wait for some time now
       TimeUnit.MINUTES.sleep(60);
     } catch (InterruptedException interruptedException) {
+      Thread.currentThread().interrupt();
       logger.info("interrupted: {}", interruptedException.getMessage());
     }
   }
