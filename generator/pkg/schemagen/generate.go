@@ -317,7 +317,8 @@ func (g *schemaGenerator) getFields(t reflect.Type) []reflect.StructField {
 
 		if fieldType == EMBEDDED {
 			// flatten embedded fields
-			embeddedFields := g.getFields(field.Type)
+			etype := g.resolvePointer(field.Type)
+			embeddedFields := g.getFields(etype)
 			for _, ef := range embeddedFields {
 				fields = append(fields, ef)
 			}

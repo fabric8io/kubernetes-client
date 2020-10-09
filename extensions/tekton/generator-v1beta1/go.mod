@@ -2,8 +2,8 @@ module github.com/fabric8io/kubernetes-client/extensions/tekton/generator
 
 require (
 	github.com/fabric8io/kubernetes-client/generator v0.0.0
-	github.com/tektoncd/pipeline v0.15.1
-	k8s.io/apimachinery v0.17.6
+	github.com/tektoncd/pipeline v0.17.0
+	k8s.io/apimachinery v0.19.0
 )
 
 replace (
