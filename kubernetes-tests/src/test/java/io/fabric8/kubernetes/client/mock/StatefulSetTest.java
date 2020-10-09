@@ -17,6 +17,13 @@
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
+import io.fabric8.kubernetes.api.model.OwnerReferenceBuilder;
+import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.PodBuilder;
+import io.fabric8.kubernetes.api.model.PodListBuilder;
+import io.fabric8.kubernetes.api.model.apps.ControllerRevision;
+import io.fabric8.kubernetes.api.model.apps.ControllerRevisionBuilder;
+import io.fabric8.kubernetes.api.model.apps.ControllerRevisionListBuilder;
 import io.fabric8.kubernetes.api.model.apps.StatefulSet;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetBuilder;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetList;
@@ -24,12 +31,18 @@ import io.fabric8.kubernetes.api.model.apps.StatefulSetListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.Deletable;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.utils.Utils;
+import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.Disabled;
 import org.junit.Rule;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
+import java.net.HttpURLConnection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -248,4 +261,261 @@ public class StatefulSetTest {
     assertNotNull(repl1);
   }
 
+  @Test
+  @DisplayName("Should update image based in single argument")
+  void testRolloutUpdateSingleImage() throws InterruptedException {
+    // Given
+    String imageToUpdate = "nginx:latest";
+    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/statefulsets/statefulset1")
+      .andReturn(HttpURLConnection.HTTP_OK, getStatefulSetBuilder().build()).times(3);
+    server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/statefulsets/statefulset1")
+      .andReturn(HttpURLConnection.HTTP_OK, getStatefulSetBuilder()
+        .editSpec().editTemplate().editSpec().editContainer(0)
+        .withImage(imageToUpdate)
+        .endContainer().endSpec().endTemplate().endSpec()
+        .build()).once();
+    KubernetesClient client = server.getClient();
+
+    // When
+    StatefulSet statefulSet = client.apps().statefulSets().inNamespace("ns1").withName("statefulset1")
+      .rolling().updateImage(imageToUpdate);
+
+    // Then
+    assertNotNull(statefulSet);
+    assertEquals(imageToUpdate, statefulSet.getSpec().getTemplate().getSpec().getContainers().get(0).getImage());
+    RecordedRequest recordedRequest = server.getLastRequest();
+    assertEquals("PATCH", recordedRequest.getMethod());
+    assertTrue(recordedRequest.getBody().readUtf8().contains(imageToUpdate));
+  }
+
+  @Test
+  @DisplayName("Should update image based in map based argument")
+  void testRolloutUpdateImage() throws InterruptedException {
+    // Given
+    Map<String, String> containerToImageMap = Collections.singletonMap("nginx", "nginx:latest");
+    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/statefulsets/statefulset1")
+      .andReturn(HttpURLConnection.HTTP_OK, getStatefulSetBuilder().build()).times(3);
+    server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/statefulsets/statefulset1")
+      .andReturn(HttpURLConnection.HTTP_OK, getStatefulSetBuilder()
+        .editSpec().editTemplate().editSpec().editContainer(0)
+        .withImage(containerToImageMap.get("nginx"))
+        .endContainer().endSpec().endTemplate().endSpec()
+        .build()).once();
+    KubernetesClient client = server.getClient();
+
+    // When
+    StatefulSet deployment = client.apps().statefulSets().inNamespace("ns1").withName("statefulset1")
+      .rolling().updateImage(containerToImageMap);
+
+    // Then
+    assertNotNull(deployment);
+    assertEquals(containerToImageMap.get("nginx"), deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getImage());
+    RecordedRequest recordedRequest = server.getLastRequest();
+    assertEquals("PATCH", recordedRequest.getMethod());
+    assertTrue(recordedRequest.getBody().readUtf8().contains(containerToImageMap.get("nginx")));
+  }
+
+  @Test
+  @DisplayName("Should pause resource")
+  void testRolloutPause() throws InterruptedException {
+    // Given
+    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/statefulsets/statefulset1")
+      .andReturn(HttpURLConnection.HTTP_OK, getStatefulSetBuilder().build()).times(3);
+    server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/statefulsets/statefulset1")
+      .andReturn(HttpURLConnection.HTTP_OK, getStatefulSetBuilder().build()).once();
+    KubernetesClient client = server.getClient();
+
+    // When
+    StatefulSet deployment = client.apps().statefulSets().inNamespace("ns1").withName("statefulset1")
+      .rolling().pause();
+
+    // Then
+    RecordedRequest recordedRequest = server.getLastRequest();
+    assertNotNull(deployment);
+    assertEquals("PATCH", recordedRequest.getMethod());
+    assertEquals("{\"spec\":{\"paused\":true}}", recordedRequest.getBody().readUtf8());
+  }
+
+  @Test
+  @DisplayName("Should resume rollout")
+  void testRolloutResume() throws InterruptedException {
+    // Given
+    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/statefulsets/statefulset1")
+      .andReturn(HttpURLConnection.HTTP_OK, getStatefulSetBuilder().build()).times(3);
+    server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/statefulsets/statefulset1")
+      .andReturn(HttpURLConnection.HTTP_OK, getStatefulSetBuilder().build()).once();
+    KubernetesClient client = server.getClient();
+
+    // When
+    StatefulSet deployment = client.apps().statefulSets().inNamespace("ns1").withName("statefulset1")
+      .rolling().resume();
+
+    // Then
+    RecordedRequest recordedRequest = server.getLastRequest();
+    assertNotNull(deployment);
+    assertEquals("PATCH", recordedRequest.getMethod());
+    assertEquals("{\"spec\":{\"paused\":null}}", recordedRequest.getBody().readUtf8());
+  }
+
+  @Test
+  @DisplayName("Should restart rollout")
+  void testRolloutRestart() throws InterruptedException {
+    // Given
+    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/statefulsets/statefulset1")
+      .andReturn(HttpURLConnection.HTTP_OK, getStatefulSetBuilder().build()).times(3);
+    server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/statefulsets/statefulset1")
+      .andReturn(HttpURLConnection.HTTP_OK, getStatefulSetBuilder().build()).once();
+    KubernetesClient client = server.getClient();
+
+    // When
+    StatefulSet deployment = client.apps().statefulSets().inNamespace("ns1").withName("statefulset1")
+      .rolling().restart();
+
+    // Then
+    RecordedRequest recordedRequest = server.getLastRequest();
+    assertNotNull(deployment);
+    assertEquals("PATCH", recordedRequest.getMethod());
+    assertTrue(recordedRequest.getBody().readUtf8().contains("kubectl.kubernetes.io/restartedAt"));
+  }
+
+  @Test
+  @DisplayName("Should undo rollout")
+  void testRolloutUndo() throws InterruptedException {
+    // Given
+    ControllerRevision controllerRevision1 = new ControllerRevisionBuilder()
+      .withNewMetadata()
+      .addToAnnotations("deployment.kubernetes.io/revision", "1")
+      .withName("rs1")
+      .endMetadata()
+      .withRevision(1L)
+      .withNewStatefulSetData()
+      .withNewSpec()
+      .withReplicas(0)
+      .withNewSelector().addToMatchLabels("app", "nginx").endSelector()
+      .withNewTemplate()
+      .withNewMetadata()
+      .addToAnnotations("kubectl.kubernetes.io/restartedAt", "2020-06-08T11:52:50.022")
+      .addToAnnotations("app", "rs1")
+      .addToLabels("app", "nginx")
+      .endMetadata()
+      .withNewSpec()
+      .addNewContainer()
+      .withName("nginx")
+      .withImage("nginx:perl")
+      .addNewPort().withContainerPort(80).endPort()
+      .endContainer()
+      .endSpec()
+      .endTemplate()
+      .endSpec()
+      .endStatefulSetData()
+      .build();
+    ControllerRevision controllerRevision2 = new ControllerRevisionBuilder()
+      .withNewMetadata()
+      .addToAnnotations("deployment.kubernetes.io/revision", "2")
+      .withName("rs2")
+      .endMetadata()
+      .withRevision(2L)
+      .withNewStatefulSetData()
+      .withNewSpec()
+      .withReplicas(1)
+      .withNewSelector().addToMatchLabels("app", "nginx").endSelector()
+      .withNewTemplate()
+      .withNewMetadata()
+      .addToAnnotations("kubectl.kubernetes.io/restartedAt", "2020-06-08T11:52:50.022")
+      .addToAnnotations("app", "rs2")
+      .addToLabels("app", "nginx")
+      .endMetadata()
+      .withNewSpec()
+      .addNewContainer()
+      .withName("nginx")
+      .withImage("nginx:1.19")
+      .addNewPort().withContainerPort(80).endPort()
+      .endContainer()
+      .endSpec()
+      .endTemplate()
+      .endSpec()
+      .endStatefulSetData()
+      .build();
+
+    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/controllerrevisions?labelSelector=" + Utils.toUrlEncoded("app=nginx"))
+      .andReturn(HttpURLConnection.HTTP_OK, new ControllerRevisionListBuilder().withItems(controllerRevision1, controllerRevision2).build()).once();
+    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/statefulsets/statefulset1")
+      .andReturn(HttpURLConnection.HTTP_OK, getStatefulSetBuilder().build()).times(3);
+    server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/statefulsets/statefulset1")
+      .andReturn(HttpURLConnection.HTTP_OK, getStatefulSetBuilder().build()).once();
+    KubernetesClient client = server.getClient();
+
+    // When
+    StatefulSet deployment = client.apps().statefulSets().inNamespace("ns1").withName("statefulset1")
+      .rolling().undo();
+
+    // Then
+    RecordedRequest recordedRequest = server.getLastRequest();
+    assertNotNull(deployment);
+    assertEquals("PATCH", recordedRequest.getMethod());
+    assertTrue(recordedRequest.getBody().readUtf8().contains("\"app\":\"rs1\""));
+  }
+
+  @Test
+  @DisplayName("Should test get logs from statefulset")
+  void testGetLogStatefulSet() {
+    // Given
+    Pod jobPod = new PodBuilder()
+      .withNewMetadata()
+      .withOwnerReferences(new OwnerReferenceBuilder().withApiVersion("apps/v1")
+        .withBlockOwnerDeletion(true)
+        .withController(true)
+        .withKind("StatefulSet")
+        .withName("pi")
+        .withUid("3Dc4c8746c-94fd-47a7-ac01-11047c0323b4")
+        .build())
+      .withName("ss-hk9nf").addToLabels("controller-uid", "3Dc4c8746c-94fd-47a7-ac01-11047c0323b4")
+      .endMetadata()
+      .build();
+
+    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/statefulsets/statefulset1")
+      .andReturn(HttpURLConnection.HTTP_OK, getStatefulSetBuilder().build())
+      .always();
+
+    server.expect().get().withPath("/api/v1/namespaces/ns1/pods?labelSelector=app%3Dnginx")
+      .andReturn(HttpURLConnection.HTTP_OK, new PodListBuilder().withItems(jobPod).build())
+      .once();
+    server.expect().get().withPath("/api/v1/namespaces/ns1/pods/ss-hk9nf/log?pretty=false")
+      .andReturn(HttpURLConnection.HTTP_OK, "hello")
+      .once();
+    KubernetesClient client = server.getClient();
+
+    // When
+    String log = client.apps().statefulSets().inNamespace("ns1").withName("statefulset1").getLog();
+
+    // Then
+    assertNotNull(log);
+    assertEquals("hello", log);
+  }
+
+  private StatefulSetBuilder getStatefulSetBuilder() {
+    return new StatefulSetBuilder()
+      .withNewMetadata()
+      .withName("statefulset1")
+      .withUid("3Dc4c8746c-94fd-47a7-ac01-11047c0323b4")
+      .addToLabels("app", "nginx")
+      .addToAnnotations("app", "nginx")
+      .endMetadata()
+      .withNewSpec()
+      .withReplicas(1)
+      .withNewSelector()
+      .addToMatchLabels("app", "nginx")
+      .endSelector()
+      .withNewTemplate()
+      .withNewMetadata().addToLabels("app", "nginx").endMetadata()
+      .withNewSpec()
+      .addNewContainer()
+      .withName("nginx")
+      .withImage("nginx:1.7.9")
+      .addNewPort().withContainerPort(80).endPort()
+      .endContainer()
+      .endSpec()
+      .endTemplate()
+      .endSpec();
+  }
 }

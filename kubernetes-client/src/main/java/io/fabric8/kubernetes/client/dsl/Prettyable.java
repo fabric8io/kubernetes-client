@@ -18,5 +18,9 @@ package io.fabric8.kubernetes.client.dsl;
 
 public interface Prettyable<T> {
 
+   /**
+   * Get logs with pretty output
+   * @return returns pod log operation with specified PodLogOption configured
+   */
     T withPrettyOutput();
 }

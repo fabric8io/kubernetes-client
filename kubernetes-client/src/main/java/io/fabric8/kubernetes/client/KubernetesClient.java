@@ -16,8 +16,11 @@
 
 package io.fabric8.kubernetes.client;
 
+import io.fabric8.kubernetes.api.model.APIService;
+import io.fabric8.kubernetes.api.model.APIServiceList;
 import io.fabric8.kubernetes.api.model.Binding;
 import io.fabric8.kubernetes.api.model.Doneable;
+import io.fabric8.kubernetes.api.model.DoneableAPIService;
 import io.fabric8.kubernetes.api.model.DoneableBinding;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
@@ -30,9 +33,9 @@ import io.fabric8.kubernetes.api.model.DoneableComponentStatus;
 import io.fabric8.kubernetes.api.model.Endpoints;
 import io.fabric8.kubernetes.api.model.EndpointsList;
 import io.fabric8.kubernetes.api.model.DoneableEndpoints;
-import io.fabric8.kubernetes.api.model.events.Event;
-import io.fabric8.kubernetes.api.model.events.EventList;
-import io.fabric8.kubernetes.api.model.events.DoneableEvent;
+import io.fabric8.kubernetes.api.model.Event;
+import io.fabric8.kubernetes.api.model.EventList;
+import io.fabric8.kubernetes.api.model.DoneableEvent;
 import io.fabric8.kubernetes.api.model.LimitRange;
 import io.fabric8.kubernetes.api.model.LimitRangeList;
 import io.fabric8.kubernetes.api.model.DoneableLimitRange;
@@ -66,16 +69,22 @@ import io.fabric8.kubernetes.api.model.DoneableService;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.api.model.DoneableServiceAccount;
+import io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequest;
+import io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequestList;
+import io.fabric8.kubernetes.api.model.certificates.DoneableCertificateSigningRequest;
+import io.fabric8.kubernetes.api.model.authentication.DoneableTokenReview;
+import io.fabric8.kubernetes.api.model.authentication.TokenReview;
 import io.fabric8.kubernetes.api.model.coordination.v1.DoneableLease;
 import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseList;
 import io.fabric8.kubernetes.client.dsl.*;
-import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinition;
-import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionList;
-import io.fabric8.kubernetes.api.model.apiextensions.DoneableCustomResourceDefinition;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionList;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.DoneableCustomResourceDefinition;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.RawCustomResourceOperationsImpl;
 import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectorBuilder;
+import io.fabric8.kubernetes.client.extended.run.RunOperations;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
 
 import java.io.InputStream;
@@ -96,35 +105,96 @@ public interface KubernetesClient extends Client {
   NonNamespaceOperation<CustomResourceDefinition, CustomResourceDefinitionList, DoneableCustomResourceDefinition, Resource<CustomResourceDefinition, DoneableCustomResourceDefinition>> customResourceDefinitions();
 
   /**
+   * API entrypoint for apiextensions resources. Currently support both
+   * v1 and v1beta1
+   *
+   * @return ApiextensionsAPIGroupDSL which routes to v1 or v1beta1
+   */
+  ApiextensionsAPIGroupDSL apiextensions();
+
+  /**
+   * API entrypoint for using CertificateSigningRequest(certificates.k8s.io/v1beta1)
+   *
+   * @return {@link NonNamespaceOperation} for CertificateSigningRequest class
+   */
+  NonNamespaceOperation<CertificateSigningRequest, CertificateSigningRequestList, DoneableCertificateSigningRequest, Resource<CertificateSigningRequest, DoneableCertificateSigningRequest>> certificateSigningRequests();
+
+  /**
    * Typed API for managing CustomResources. You would need to provide POJOs for
    * CustomResource into this and with it you would be able to instantiate a client
    * specific to CustomResource.
+   *
+   * <p>
+   *   Note: your CustomResource POJO (T in this context) must implement
+   *   <a href="https://github.com/fabric8io/kubernetes-client/blob/master/kubernetes-model-generator/kubernetes-model-core/src/main/java/io/fabric8/kubernetes/api/model/Namespaced.java">
+   *     io.fabric8.kubernetes.api.model.Namespaced
+   *   </a> if it is a Namespaced scoped resource.
+   * </p>
+   *
+   * @param crdContext CustomResourceDefinitionContext describes the core fields used to search for CustomResources
+   * @param resourceType Class for CustomResource
+   * @param listClass Class for list object for CustomResource
+   * @param doneClass Class for Doneable CustomResource object
+   * @param <T> T type represents CustomResource type. If it's Namespaced resource, it must implement
+   *           io.fabric8.kubernetes.api.model.Namespaced
+   * @param <L> L type represents CustomResourceList type
+   * @param <D> D type represents DoneableCustomResource type
+   * @return returns a MixedOperation object with which you can do basic CustomResource operations
+   */
+  <T extends HasMetadata, L extends KubernetesResourceList<T>, D extends Doneable<T>> MixedOperation<T, L, D, Resource<T, D>> customResources(CustomResourceDefinitionContext crdContext, Class<T> resourceType, Class<L> listClass, Class<D> doneClass);
+
+  /**
+   * Typed API for managing CustomResources. You would need to provide POJOs for
+   * CustomResource into this and with it you would be able to instantiate a client
+   * specific to CustomResource.
+   *
+   * <p>
+   *   Note: your CustomResource POJO (T in this context) must implement
+   *   <a href="https://github.com/fabric8io/kubernetes-client/blob/master/kubernetes-model-generator/kubernetes-model-core/src/main/java/io/fabric8/kubernetes/api/model/Namespaced.java">
+   *     io.fabric8.kubernetes.api.model.Namespaced
+   *   </a> if it is a Namespaced scoped resource.
+   * </p>
+   *
+   * @deprecated use {@link #customResources(CustomResourceDefinitionContext, Class, Class, Class)}, which takes a {@link CustomResourceDefinitionContext}
+   * instead of a full {@link CustomResourceDefinition}.
    *
    * @param crd CustomResourceDefinition object on basic of which this CustomResource was created
    * @param resourceType Class for CustomResource
    * @param listClass Class for list object for CustomResource
    * @param doneClass Class for Doneable CustomResource object
-   * @param <T> T type represents CustomResource type
+   * @param <T> T type represents CustomResource type. If it's Namespaced resource, it must implement
+   *            io.fabric8.kubernetes.api.model.Namespaced
    * @param <L> L type represents CustomResourceList type
    * @param <D> D type represents DoneableCustomResource type
    * @return returns a MixedOperation object with which you can do basic CustomResource operations
    */
-  <T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>> MixedOperation<T, L, D, Resource<T, D>> customResources(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass, Class<D> doneClass);
+  @Deprecated
+  <T extends HasMetadata, L extends KubernetesResourceList<T>, D extends Doneable<T>> MixedOperation<T, L, D, Resource<T, D>> customResources(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass, Class<D> doneClass);
 
   /**
    * Old API for dealing with CustomResources.
    *
-   * @deprecated Use {@link #customResources(CustomResourceDefinition, Class, Class, Class)} instead.
+   * @deprecated use {@link #customResources(CustomResourceDefinitionContext, Class, Class, Class)}, which takes a {@link CustomResourceDefinitionContext}
+   * instead of a full {@link CustomResourceDefinition}.
+   *
+   * <p>
+   *   Note: your CustomResource POJO (T in this context) must implement
+   *   <a href="https://github.com/fabric8io/kubernetes-client/blob/master/kubernetes-model-generator/kubernetes-model-core/src/main/java/io/fabric8/kubernetes/api/model/Namespaced.java">
+   *     io.fabric8.kubernetes.api.model.Namespaced
+   *   </a> if it is a Namespaced scoped resource.
+   * </p>
+   *
    * @param crd Custom Resource Definition
    * @param resourceType resource type Pojo
    * @param listClass list class Pojo
    * @param doneClass Done class Pojo
-   * @param <T> template argument for resource
+   * @param <T> template argument for resource. If it's Namespaced resource, it must implement
+   *            io.fabric8.kubernetes.api.model.Namespaced
    * @param <L> template argument for list
    * @param <D> template argument for doneable resource
    * @return Kubernetes client object for manipulating custom resource.
    */
-  <T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>> MixedOperation<T, L, D, Resource<T, D>> customResource(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass, Class<D> doneClass);
+  <T extends HasMetadata, L extends KubernetesResourceList<T>, D extends Doneable<T>> MixedOperation<T, L, D, Resource<T, D>> customResource(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass, Class<D> doneClass);
 
   /**
    * Extensions API entrypoint for APIGroup extensions/v1beta1
@@ -149,6 +219,13 @@ public interface KubernetesClient extends Client {
    * @return a RawCustomResourceOperations object which offers several functions for creating, deleting, updating, watching CustomResources.
    */
   RawCustomResourceOperationsImpl customResource(CustomResourceDefinitionContext customResourceDefinition);
+
+  /**
+   * API entrypoint for kubernetes resources with APIGroup admissionregistration.k8s.io/v1beta1
+   *
+   * @return AdmissionRegistrationAPIGroupDSL which offers entrypoints to specific resources in this API group
+   */
+  AdmissionRegistrationAPIGroupDSL admissionRegistration();
 
   /**
    * API entrypoint for kubernetes resources with APIGroup apps/v1
@@ -291,7 +368,7 @@ public interface KubernetesClient extends Client {
    *
    * @return MixedOperation object for doing operations for Binding
    */
-  MixedOperation<Binding, KubernetesResourceList, DoneableBinding, Resource<Binding, DoneableBinding>> bindings();
+  MixedOperation<Binding, KubernetesResourceList<Binding>, DoneableBinding, Resource<Binding, DoneableBinding>> bindings();
 
   /**
    * API entrypoint for Endpoints with APIGroup core/v1
@@ -301,8 +378,9 @@ public interface KubernetesClient extends Client {
   MixedOperation<Endpoints, EndpointsList, DoneableEndpoints, Resource<Endpoints, DoneableEndpoints>> endpoints();
 
   /**
-   * API entrypoint for getting events in Kubernetes. Events (events/v1beta1)
+   * API entrypoint for getting events in Kubernetes. Events (core/v1)
    *
+   * @deprecated Use KubernetesClient#v1#events instead.
    * @return MixedOperation object for doing operations for Events
    */
   MixedOperation<Event, EventList, DoneableEvent, Resource<Event, DoneableEvent>> events();
@@ -378,6 +456,13 @@ public interface KubernetesClient extends Client {
   MixedOperation<ServiceAccount, ServiceAccountList, DoneableServiceAccount, Resource<ServiceAccount, DoneableServiceAccount>> serviceAccounts();
 
   /**
+   * API entrypoint for APIService related operations. APIService (apiregistration.k8s.io/v1)
+   *
+   * @return MixedOperation object for APIService related operations
+   */
+  MixedOperation<APIService, APIServiceList, DoneableAPIService, Resource<APIService, DoneableAPIService>> apiServices();
+
+  /**
    * List related operations.
    *
    * @return KubernetesListMixedOperations object for Kubernetes List
@@ -399,11 +484,18 @@ public interface KubernetesClient extends Client {
   MixedOperation<LimitRange, LimitRangeList, DoneableLimitRange, Resource<LimitRange, DoneableLimitRange>> limitRanges();
 
   /**
-   * SubjectAccessReview operations. (authorization/v1)
+   * Authorization operations. (authorization.k8s.io/v1 and authorization.k8s.io/v1beta1)
    *
-   * @return SubjectAccessReviewDSL object for dealing with SubjectAccessReviewOperations
+   * @return AuthorizationAPIGroupDSL object for dealing with Authorization objects
    */
-  SubjectAccessReviewDSL subjectAccessReviewAuth();
+  AuthorizationAPIGroupDSL authorization();
+
+  /**
+   * API for creating authentication.k8s.io/v1 TokenReviews
+   *
+   * @return CreateOnlyResourceOperations instance for creating TokenReview object
+   */
+  Createable<TokenReview, TokenReview, DoneableTokenReview> tokenReviews();
 
   /**
    * Get an instance of Kubernetes Client informer factory. It allows you to construct and
@@ -439,5 +531,19 @@ public interface KubernetesClient extends Client {
    */
   MixedOperation<Lease, LeaseList, DoneableLease, Resource<Lease, DoneableLease>> leases();
 
+  /**
+   * API entrypoint for Core Kubernetes Resources (core/v1). Right now other core
+   * resources have their own DSL entrypoints. But in future, all core/v1 resources
+   * would be added here.
+   *
+   * @return V1APIGroupDSL DSL object for core v1 resources
+   */
   V1APIGroupDSL v1();
+
+  /**
+   * Run a Pod (core/v1)
+   *
+   * @return returns {@link RunOperations} that allows you to run a pod based on few parameters(e.g. name, image etc)
+   */
+  RunOperations run();
 }

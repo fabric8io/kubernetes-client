@@ -25,6 +25,7 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.channels.WritableByteChannel;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -56,7 +57,7 @@ public class PortForwarderWebsocket implements PortForwarder {
 
   private static final Logger LOG = LoggerFactory.getLogger(PortForwarderWebsocket.class);
 
-  private OkHttpClient client;
+  private final OkHttpClient client;
 
   public PortForwarderWebsocket(OkHttpClient client) {
     this.client = client;
@@ -192,7 +193,7 @@ public class PortForwarderWebsocket implements PortForwarder {
 
       private int messagesRead = 0;
 
-      private ExecutorService pumperService = Executors.newSingleThreadExecutor();
+      private final ExecutorService pumperService = Executors.newSingleThreadExecutor();
 
       @Override
       public void onOpen(final WebSocket webSocket, Response response) {
@@ -228,14 +229,8 @@ public class PortForwarderWebsocket implements PortForwarder {
       @Override
       public void onMessage(WebSocket webSocket, String text) {
         LOG.debug("{}: onMessage(String)", logPrefix);
-        try {
-          onMessage(webSocket, ByteBuffer.wrap(text.getBytes("UTF-8")));
-        } catch (IOException e) {
-          serverThrowables.add(e);
-          LOG.error("Error while converting string to byte buffer", e);
-          closeBothWays(webSocket, 1002, "Protocol error");
-        }
-      }
+        onMessage(webSocket, ByteBuffer.wrap(text.getBytes(StandardCharsets.UTF_8)));
+	  }
 
       @Override
       public void onMessage(WebSocket webSocket, ByteString bytes) {
@@ -303,7 +298,7 @@ public class PortForwarderWebsocket implements PortForwarder {
         LOG.debug("{}: onFailure", logPrefix);
         if (alive.get()) {
           serverThrowables.add(t);
-          LOG.error(logPrefix + ": Throwable received from websocket", t);
+          LOG.error("{}: Throwable received from websocket", logPrefix, t);
           closeForwarder();
         }
       }
@@ -326,14 +321,14 @@ public class PortForwarderWebsocket implements PortForwarder {
           try {
             in.close();
           } catch (IOException e) {
-            LOG.error(logPrefix + ": Error while closing the client input channel", e);
+            LOG.error("{}: Error while closing the client input channel", logPrefix, e);
           }
         }
         if (out != null && out != in) {
           try {
             out.close();
           } catch (IOException e) {
-            LOG.error(logPrefix + ": Error while closing the client output channel", e);
+            LOG.error("{}: Error while closing the client output channel", logPrefix, e);
           }
         }
         closeExecutor(pumperService);
@@ -393,6 +388,7 @@ public class PortForwarderWebsocket implements PortForwarder {
             c.close();
           }
         } catch (IOException ioe) {
+          // Ignored
         }
       }
     }

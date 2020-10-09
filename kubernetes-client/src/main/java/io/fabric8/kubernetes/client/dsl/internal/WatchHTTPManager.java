@@ -19,13 +19,16 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
+import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.WatchEvent;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.Watcher.Action;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
+import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.*;
@@ -52,6 +55,7 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
   private final BaseOperation<T, L, ?, ?> baseOperation;
   private final Watcher<T> watcher;
   private final AtomicBoolean forceClosed = new AtomicBoolean();
+  private final ListOptions listOptions;
   private final AtomicReference<String> resourceVersion;
   private final int reconnectLimit;
   private final int reconnectInterval;
@@ -70,20 +74,21 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
 
   public WatchHTTPManager(final OkHttpClient client,
                           final BaseOperation<T, L, ?, ?> baseOperation,
-                          final String version, final Watcher<T> watcher, final int reconnectInterval,
+                          final ListOptions listOptions, final Watcher<T> watcher, final int reconnectInterval,
                           final int reconnectLimit, long connectTimeout)
     throws MalformedURLException {
     // Default max 32x slowdown from base interval
-    this(client, baseOperation, version, watcher, reconnectInterval, reconnectLimit, connectTimeout, 5);
+    this(client, baseOperation, listOptions, watcher, reconnectInterval, reconnectLimit, connectTimeout, 5);
   }
 
   public WatchHTTPManager(final OkHttpClient client,
                           final BaseOperation<T, L, ?, ?> baseOperation,
-                          final String version, final Watcher<T> watcher, final int reconnectInterval,
+                          final ListOptions listOptions, final Watcher<T> watcher, final int reconnectInterval,
                           final int reconnectLimit, long connectTimeout, int maxIntervalExponent)
     throws MalformedURLException {
 
-    this.resourceVersion = new AtomicReference<>(version); // may be a reference to null
+    this.resourceVersion = new AtomicReference<>(listOptions.getResourceVersion());
+    this.listOptions = listOptions;
     this.baseOperation = baseOperation;
     this.watcher = watcher;
     this.reconnectInterval = reconnectInterval;
@@ -139,12 +144,8 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
       httpUrlBuilder.addQueryParameter("fieldSelector", fieldQueryString);
     }
 
-    if (this.resourceVersion.get() != null) {
-      httpUrlBuilder.addQueryParameter("resourceVersion", this.resourceVersion.get());
-    }
-
-    httpUrlBuilder.addQueryParameter("watch", "true");
-
+    listOptions.setResourceVersion(resourceVersion.get());
+    HttpClientUtils.appendListOptionParams(httpUrlBuilder, listOptions);
     String origin = requestUrl.getProtocol() + "://" + requestUrl.getHost();
     if (requestUrl.getPort() != -1) {
         origin += ":" + requestUrl.getPort();
@@ -273,6 +274,7 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
           return;
         }
 
+        watcher.eventReceived(Action.ERROR, null);
         logger.error("Error received: {}", status.toString());
       } else {
         logger.error("Unknown message received: {}", messageSource);

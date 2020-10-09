@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-declare -a modules=("generator-v1alpha1" "generator-v1beta1"
+declare -a modules=("generator-v1alpha1" "generator-v1beta1" "generator-triggers"
 )
 
 for module in ${modules[*]}

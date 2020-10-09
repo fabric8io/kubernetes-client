@@ -40,14 +40,87 @@ import io.fabric8.tekton.pipeline.v1alpha1.TaskRunList;
 import io.fabric8.tekton.resource.v1alpha1.DoneablePipelineResource;
 import io.fabric8.tekton.resource.v1alpha1.PipelineResource;
 import io.fabric8.tekton.resource.v1alpha1.PipelineResourceList;
+import io.fabric8.tekton.triggers.v1alpha1.*;
+import io.fabric8.tekton.triggers.v1alpha1.DoneableClusterTriggerBinding;
+import io.fabric8.tekton.triggers.v1alpha1.DoneableEventListener;
+import io.fabric8.tekton.triggers.v1alpha1.DoneableTriggerBinding;
+import io.fabric8.tekton.triggers.v1alpha1.DoneableTriggerTemplate;
 
 public interface V1alpha1APIGroupDSL extends Client {
+  /**
+   * API entrypoint for Pipeline(tekton.dev/v1alpha1)
+   *
+   * @return MixedOperation for Pipeline class
+   */
   MixedOperation<Pipeline, PipelineList, DoneablePipeline, Resource<Pipeline, DoneablePipeline>> pipelines();
+
+  /**
+   * API entrypoint for PipelineRun(tekton.dev/v1alpha1)
+   *
+   * @return MixedOperation for PipelineRun class
+   */
   MixedOperation<PipelineRun, PipelineRunList, DoneablePipelineRun, Resource<PipelineRun, DoneablePipelineRun>> pipelineRuns();
+
+  /**
+   * API entrypoint for PipelineResource(tekton.dev/v1alpha1)
+   *
+   * @return MixedOperation for PipelineResource class
+   */
   MixedOperation<PipelineResource, PipelineResourceList, DoneablePipelineResource, Resource<PipelineResource, DoneablePipelineResource>> pipelineResources();
+
+  /**
+   * API entrypoint for Task(tekton.dev/v1alpha1)
+   *
+   * @return MixedOperation for Task class
+   */
   MixedOperation<Task, TaskList, DoneableTask, Resource<Task, DoneableTask>> tasks();
+
+  /**
+   * API entrypoint for TaskRun(tekton.dev/v1alpha1)
+   *
+   * @return MixedOperation for TaskRun class
+   */
   MixedOperation<TaskRun, TaskRunList, DoneableTaskRun, Resource<TaskRun, DoneableTaskRun>> taskRuns();
+
+  /**
+   * API entrypoint for Condition(tekton.dev/v1alpha1)
+   *
+   * @return MixedOperation for Condition class
+   */
   MixedOperation<Condition, ConditionList, DoneableCondition, Resource<Condition, DoneableCondition>> conditions();
 
+  /**
+   * API entrypoint for TriggerTemplate(triggers.tekton.dev/v1alpha1)
+   *
+   * @return MixedOperation for TriggerTemplate class
+   */
+  MixedOperation<TriggerTemplate, TriggerTemplateList, DoneableTriggerTemplate, Resource<TriggerTemplate,DoneableTriggerTemplate>> triggerTemplates();
+
+  /**
+   * API entrypoint for TriggerBinding(triggers.tekton.dev/v1alpha1)
+   *
+   * @return MixedOperation for TriggerBinding class
+   */
+  MixedOperation<TriggerBinding, TriggerBindingList, DoneableTriggerBinding, Resource<TriggerBinding,DoneableTriggerBinding>> triggerBindings();
+
+  /**
+   * API entrypoint for EventListener(triggers.tekton.dev/v1alpha1)
+   *
+   * @return MixedOperation for EventListener class
+   */
+  MixedOperation<EventListener, EventListenerList, DoneableEventListener, Resource<EventListener, DoneableEventListener>> eventListeners();
+
+  /**
+   * API entrypoint for ClusterTask(tekton.dev/v1alpha1)
+   *
+   * @return MixedOperation for ClusterTask class
+   */
   NonNamespaceOperation<ClusterTask, ClusterTaskList, DoneableClusterTask, Resource<ClusterTask, DoneableClusterTask>> clusterTasks();
+
+  /**
+   * API entrypoint for ClusterTriggerBinding(triggers.tekton.dev/v1alpha1)
+   *
+   * @return MixedOperation for ClusterTriggerBinding class
+   */
+  NonNamespaceOperation<ClusterTriggerBinding, ClusterTriggerBindingList, DoneableClusterTriggerBinding, Resource<ClusterTriggerBinding, DoneableClusterTriggerBinding>> clusterTriggerBindings();
 }

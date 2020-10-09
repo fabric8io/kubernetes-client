@@ -16,16 +16,13 @@
 package io.fabric8.kubernetes.client.dsl.internal.batch.v1;
 
 import io.fabric8.kubernetes.api.model.DoneablePod;
-import io.fabric8.kubernetes.api.model.OwnerReference;
 import io.fabric8.kubernetes.api.model.Pod;
-import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
+import io.fabric8.kubernetes.client.dsl.Loggable;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
-import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
-import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
+import io.fabric8.kubernetes.client.utils.PodOperationUtil;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.batch.DoneableJob;
 import io.fabric8.kubernetes.api.model.batch.Job;
@@ -40,8 +37,9 @@ import org.slf4j.LoggerFactory;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
@@ -54,6 +52,7 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Doneab
   implements ScalableResource<Job, DoneableJob> {
 
   static final transient Logger LOG = LoggerFactory.getLogger(JobOperationsImpl.class);
+  private Integer podLogWaitTimeout;
 
   public JobOperationsImpl(OkHttpClient client, Config config) {
     this(client, config, null);
@@ -71,6 +70,11 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Doneab
     this.type = Job.class;
     this.listType = JobList.class;
     this.doneableType = DoneableJob.class;
+  }
+
+  private JobOperationsImpl(OperationContext context, Integer podLogWaitTimeout) {
+    this(context);
+    this.podLogWaitTimeout = podLogWaitTimeout;
   }
 
   @Override
@@ -173,26 +177,10 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Doneab
   }
 
   private List<PodResource<Pod, DoneablePod>> doGetLog(boolean isPretty) {
-    List<PodResource<Pod, DoneablePod>> pods = new ArrayList<>();
     Job job = fromServer().get();
-    String jobUid = job.getMetadata().getUid();
 
-    PodOperationsImpl podOperations = new PodOperationsImpl(new PodOperationContext(context.getClient(),
-      context.getConfig(), context.getPlural(), context.getNamespace(), context.getName(), null,
-      "v1", context.getCascading(), context.getItem(), context.getLabels(), context.getLabelsNot(),
-      context.getLabelsIn(), context.getLabelsNotIn(), context.getFields(), context.getFieldsNot(), context.getResourceVersion(),
-      context.getReloadingFromServer(), context.getGracePeriodSeconds(), context.getPropagationPolicy(), null, null, null, null, null,
-      null, null, null, null, false, false, false, null, null,
-      null, isPretty, null, null, null, null, null));
-    PodList jobPodList = podOperations.withLabel("controller-uid", jobUid).list();
-
-    for (Pod pod : jobPodList.getItems()) {
-      OwnerReference ownerReference = KubernetesResourceUtil.getControllerUid(pod);
-      if (ownerReference != null && ownerReference.getUid().equals(jobUid)) {
-        pods.add(podOperations.withName(pod.getMetadata().getName()));
-      }
-    }
-    return pods;
+    return PodOperationUtil.getPodOperationsForController(context, job.getMetadata().getUid(),
+      getJobPodLabels(job), isPretty, podLogWaitTimeout);
   }
 
   /**
@@ -227,6 +215,11 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Doneab
   }
 
   @Override
+  public Loggable<String, LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
+    return new JobOperationsImpl(context, logWaitTimeout);
+  }
+
+  @Override
   public Job replace(Job job) {
     if (job == null) {
       job = getItem();
@@ -244,5 +237,13 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Doneab
     }
 
     return super.replace(job);
+  }
+
+  static Map<String, String> getJobPodLabels(Job job) {
+    Map<String, String> labels = new HashMap<>();
+    if (job != null && job.getMetadata() != null && job.getMetadata().getUid() != null) {
+      labels.put("controller-uid", job.getMetadata().getUid());
+    }
+    return labels;
   }
 }

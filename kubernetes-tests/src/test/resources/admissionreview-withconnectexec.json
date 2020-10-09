@@ -1,0 +1,54 @@
+{
+  "kind": "AdmissionReview",
+  "apiVersion": "admission.k8s.io/v1beta1",
+  "request": {
+    "uid": "66105089-3471-46ff-b4c8-293546c2aa6c",
+    "kind": {
+      "group": "",
+      "version": "v1",
+      "kind": "PodExecOptions"
+    },
+    "resource": {
+      "group": "",
+      "version": "v1",
+      "resource": "pods"
+    },
+    "subResource":"exec",
+    "requestKind": {
+      "group": "",
+      "version": "v1",
+      "kind": "PodExecOptions"
+    },
+    "requestResource": {
+      "group": "",
+      "version": "v1",
+      "resource": "pods"
+    },
+    "requestSubResource":"exec",
+    "name":"myPod-xxxxxxxxxx-xxxxx",
+    "namespace": "myNamespace",
+    "operation": "CONNECT",
+    "userInfo": {
+      "username": "III#John.Doe@something.com",
+      "groups": [
+        "Group2"
+      ]
+    },
+    "object": {
+      "kind":"PodExecOptions",
+      "apiVersion":"v1",
+      "stdin":true,
+      "stdout":true,
+      "tty":true,
+      "container":"myContainer",
+      "command":[
+        "sh",
+        "-c",
+        "command -v bash \u003e/dev/null \u0026\u0026 exec bash || exec sh"
+      ]
+    },
+    "oldObject": null,
+    "dryRun": false,
+    "options": null
+  }
+}

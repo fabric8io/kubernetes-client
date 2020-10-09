@@ -19,10 +19,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import org.junit.jupiter.api.Test;
 
 import io.fabric8.kubernetes.api.model.Pod;
@@ -32,7 +34,6 @@ import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.mockwebserver.crud.Attribute;
 import io.fabric8.mockwebserver.crud.AttributeSet;
-import io.fabric8.zjsonpatch.internal.guava.Lists;
 
 public class KubernetesAttributesExtractorTest {
 
@@ -92,10 +93,23 @@ public class KubernetesAttributesExtractorTest {
 		expected = expected.add(new Attribute("namespace", "myns"));
 		expected = expected.add(new Attribute("name", "mypod"));
 		assertTrue(attributes.matches(expected));
-
 	}
 
-	@Test
+  @Test
+  void shouldHandleRawResource() {
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+    String resource = "{\"metadata\":{\"name\":\"myresource\",\"namespace\":\"myns\"}, \"kind\":\"raw\", \"apiVersion\":\"v1\"}";
+
+    AttributeSet attributes = extractor.extract(resource);
+
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("kind", "raw"));
+    expected = expected.add(new Attribute("namespace", "myns"));
+    expected = expected.add(new Attribute("name", "myresource"));
+    assertTrue(attributes.matches(expected));
+  }
+
+  @Test
 	public void shouldHandleResourceWithLabel() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
 		Map<String, String> labels = new HashMap<>();
@@ -377,5 +391,28 @@ public class KubernetesAttributesExtractorTest {
     List<Deployment> deployments = kubernetesClient.apps().deployments().withoutLabel("keepUntil").list().getItems();
     assertEquals(1, deployments.size());
     assertEquals("withoutKeepUntil", deployments.get(0).getMetadata().getName());
+  }
+
+  @Test
+  void testCustomResourceAttributesExtraction() {
+    // Given
+    CustomResourceDefinitionContext crdContext = new CustomResourceDefinitionContext.Builder()
+      .withScope("Namespaced")
+      .withPlural("customdatabases")
+      .withVersion("v1alpha1")
+      .withGroup("demo.fabric8.io")
+      .withKind("CustomDatabase")
+      .build();
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor(Collections.singletonList(crdContext));
+
+    // When
+    AttributeSet attributes = extractor
+      .extract("/apis/demo.fabric8.io/v1alpha1/namespaces/ns1/customdatabases");
+
+    // Then
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("namespace", "ns1"));
+    expected = expected.add(new Attribute("kind", "customdatabase"));
+    assertTrue(attributes.matches(expected));
   }
 }

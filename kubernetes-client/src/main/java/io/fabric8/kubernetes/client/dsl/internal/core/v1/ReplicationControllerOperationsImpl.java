@@ -16,14 +16,10 @@
 package io.fabric8.kubernetes.client.dsl.internal.core.v1;
 
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.ContainerBuilder;
 import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.DoneableReplicationController;
-import io.fabric8.kubernetes.api.model.OwnerReference;
 import io.fabric8.kubernetes.api.model.Pod;
-import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.ReplicationController;
-import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
 import io.fabric8.kubernetes.api.model.ReplicationControllerList;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
@@ -31,36 +27,36 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
+import io.fabric8.kubernetes.client.dsl.Loggable;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
-import io.fabric8.kubernetes.client.dsl.internal.core.v1.ReplicationControllerRollingUpdater;
+import io.fabric8.kubernetes.client.utils.PodOperationUtil;
 import io.fabric8.kubernetes.client.dsl.internal.RollingOperationContext;
-import io.fabric8.kubernetes.client.dsl.internal.apps.v1.ReplicaSetOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.RollableScalableResourceOperation;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.RollingUpdater;
-import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import okhttp3.OkHttpClient;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class ReplicationControllerOperationsImpl extends RollableScalableResourceOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, RollableScalableResource<ReplicationController, DoneableReplicationController>>
   implements TimeoutImageEditReplacePatchable<ReplicationController, ReplicationController, DoneableReplicationController> {
 
+  private Integer podLogWaitTimeout;
   public ReplicationControllerOperationsImpl(OkHttpClient client, Config config) {
     this(client, config, null);
   }
 
   public ReplicationControllerOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(new RollingOperationContext().withOkhttpClient(client).withConfig(config).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
+    this(new RollingOperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
 
   public ReplicationControllerOperationsImpl(RollingOperationContext context) {
@@ -70,6 +66,11 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
     this.doneableType = DoneableReplicationController.class;
   }
 
+  private ReplicationControllerOperationsImpl(RollingOperationContext context, Integer podLogWaitTimeout) {
+    this(context);
+    this.podLogWaitTimeout = podLogWaitTimeout;
+  }
+
   @Override
   public ReplicationControllerOperationsImpl newInstance(OperationContext context) {
     return new ReplicationControllerOperationsImpl((RollingOperationContext) context);
@@ -77,12 +78,8 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
 
   @Override
   public RollableScalableResource<ReplicationController, DoneableReplicationController> load(InputStream is) {
-    try {
       ReplicationController item = unmarshal(is, ReplicationController.class);
       return new ReplicationControllerOperationsImpl((RollingOperationContext) context.withItem(item));
-    } catch (Throwable t) {
-      throw KubernetesClientException.launderThrowable(t);
-    }
   }
 
   @Override
@@ -112,6 +109,26 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
   }
 
   @Override
+  public ReplicationController updateImage(Map<String, String> containerToImageMap) {
+    ReplicationController replicationController = get();
+    if (replicationController == null) {
+      throw new KubernetesClientException("Existing replica set doesn't exist");
+    }
+    if (replicationController.getSpec().getTemplate().getSpec().getContainers().isEmpty()) {
+      throw new KubernetesClientException("Pod has no containers!");
+    }
+
+    List<Container> containers = replicationController.getSpec().getTemplate().getSpec().getContainers();
+    for (Container container : containers) {
+      if (containerToImageMap.containsKey(container.getName())) {
+        container.setImage(containerToImageMap.get(container.getName()));
+      }
+    }
+    replicationController.getSpec().getTemplate().getSpec().setContainers(containers);
+    return sendPatchedObject(get(), replicationController);
+  }
+
+  @Override
   public ReplicationController updateImage(String image) {
     ReplicationController oldRC = get();
 
@@ -121,22 +138,17 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
     if (oldRC.getSpec().getTemplate().getSpec().getContainers().size() > 1) {
       throw new KubernetesClientException("Image update is not supported for multicontainer pods");
     }
-    if (oldRC.getSpec().getTemplate().getSpec().getContainers().size() == 0) {
+    if (oldRC.getSpec().getTemplate().getSpec().getContainers().isEmpty()) {
       throw new KubernetesClientException("Pod has no containers!");
     }
 
-    Container updatedContainer = new ContainerBuilder(oldRC.getSpec().getTemplate().getSpec().getContainers().iterator().next()).withImage(image).build();
-
-    ReplicationControllerBuilder newRCBuilder = new ReplicationControllerBuilder(oldRC);
-    newRCBuilder.editMetadata().withResourceVersion(null).endMetadata()
-      .editSpec().editTemplate().editSpec().withContainers(Collections.singletonList(updatedContainer))
-      .endSpec().endTemplate().endSpec();
-
-    return new ReplicationControllerRollingUpdater(client, config, namespace).rollUpdate(oldRC, newRCBuilder.build());
+    Container container = oldRC.getSpec().getTemplate().getSpec().getContainers().iterator().next();
+    return updateImage(Collections.singletonMap(container.getName(), image));
   }
+
   @Override
   public TimeoutImageEditReplacePatchable rolling() {
-    return new ReplicaSetOperationsImpl(((RollingOperationContext)context).withRolling(true));
+    return new ReplicationControllerOperationsImpl(((RollingOperationContext)context).withRolling(true));
   }
 
   @Override
@@ -168,26 +180,10 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
   }
 
   private List<PodResource<Pod, DoneablePod>> doGetLog(boolean isPretty) {
-    List<PodResource<Pod, DoneablePod>> pods = new ArrayList<>();
     ReplicationController rc = fromServer().get();
-    String rcUid = rc.getMetadata().getUid();
 
-    PodOperationsImpl podOperations = new PodOperationsImpl(new PodOperationContext(context.getClient(),
-      context.getConfig(), context.getPlural(), context.getNamespace(), context.getName(), null,
-      "v1", context.getCascading(), context.getItem(), context.getLabels(), context.getLabelsNot(),
-      context.getLabelsIn(), context.getLabelsNotIn(), context.getFields(), context.getFieldsNot(), context.getResourceVersion(),
-      context.getReloadingFromServer(), context.getGracePeriodSeconds(), context.getPropagationPolicy(), null, null, null, null, null,
-      null, null, null, null, false, false, false, null, null,
-      null, isPretty, null, null, null, null, null));
-    PodList jobPodList = podOperations.withLabels(rc.getMetadata().getLabels()).list();
-
-    for (Pod pod : jobPodList.getItems()) {
-      OwnerReference ownerReference = KubernetesResourceUtil.getControllerUid(pod);
-      if (ownerReference != null && ownerReference.getUid().equals(rcUid)) {
-        pods.add(podOperations.withName(pod.getMetadata().getName()));
-      }
-    }
-    return pods;
+    return PodOperationUtil.getPodOperationsForController(context, rc.getMetadata().getUid(),
+      getReplicationControllerPodLabels(rc), isPretty, podLogWaitTimeout);
   }
 
   /**
@@ -219,5 +215,38 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
       return podResources.get(0).watchLog(out);
     }
     return null;
+  }
+
+  @Override
+  public Loggable<String, LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
+    return new ReplicationControllerOperationsImpl((RollingOperationContext)context, logWaitTimeout);
+  }
+
+  @Override
+  public ReplicationController pause() {
+    throw new UnsupportedOperationException(context.getPlural() + " \"" + name + "\" pausing is not supported");
+  }
+
+  @Override
+  public ReplicationController resume() {
+    throw new UnsupportedOperationException(context.getPlural() + " \"" + name + "\" resuming is not supported");
+  }
+
+  @Override
+  public ReplicationController restart() {
+    throw new UnsupportedOperationException(context.getPlural() + " \"" + name + "\" restarting is not supported");
+  }
+
+  @Override
+  public ReplicationController undo() {
+    throw new UnsupportedOperationException("no rollbacker has been implemented for \"" + get().getKind() +"\"");
+  }
+
+  static Map<String, String> getReplicationControllerPodLabels(ReplicationController replicationController) {
+    Map<String, String> labels = new HashMap<>();
+    if (replicationController != null && replicationController.getSpec() != null && replicationController.getSpec().getSelector() != null) {
+      labels.putAll(replicationController.getSpec().getSelector());
+    }
+    return labels;
   }
 }

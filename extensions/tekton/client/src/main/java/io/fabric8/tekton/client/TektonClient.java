@@ -19,7 +19,20 @@ import io.fabric8.kubernetes.client.Client;
 import io.fabric8.tekton.client.dsl.V1alpha1APIGroupDSL;
 import io.fabric8.tekton.client.dsl.V1beta1APIGroupDSL;
 
+/**
+ * Main interface for Tekton client library.
+ */
 public interface TektonClient extends Client {
+  /**
+   * API entrypoint for tekton.dev/v1beta1 API group resources
+   *
+   * @return {@link V1beta1APIGroupDSL} for Tekton resource operations in this API group.
+   */
   V1beta1APIGroupDSL v1beta1();
+
+  /**
+   * API entrypoint for tekton.dev/v1alpha1 API group resources
+   * @return {@link V1alpha1APIGroupDSL} for Tekton resource operations in this API group.
+   */
   V1alpha1APIGroupDSL v1alpha1();
 }

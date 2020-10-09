@@ -17,18 +17,27 @@
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
+import io.fabric8.kubernetes.api.model.PodBuilder;
+import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.api.model.PodListBuilder;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
 import io.fabric8.kubernetes.api.model.ReplicationControllerList;
 import io.fabric8.kubernetes.api.model.ReplicationControllerListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.utils.Utils;
+import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.Disabled;
 import org.junit.Rule;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
+import java.net.HttpURLConnection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -38,12 +47,12 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @EnableRuleMigrationSupport
-public class ReplicationControllerTest {
+class ReplicationControllerTest {
   @Rule
   public KubernetesServer server = new KubernetesServer();
 
   @Test
-  public void testList() {
+  void testList() {
    server.expect().withPath("/api/v1/namespaces/test/replicationcontrollers").andReturn(200, new ReplicationControllerListBuilder().build()).once();
    server.expect().withPath("/api/v1/namespaces/ns1/replicationcontrollers").andReturn(200,  new ReplicationControllerListBuilder()
       .addNewItem().and()
@@ -62,7 +71,7 @@ public class ReplicationControllerTest {
 
 
   @Test
-  public void testGet() {
+  void testGet() {
    server.expect().withPath("/api/v1/namespaces/test/replicationcontrollers/repl1").andReturn(200, new ReplicationControllerBuilder().build()).once();
    server.expect().withPath("/api/v1/namespaces/ns1/replicationcontrollers/repl2").andReturn(200, new ReplicationControllerBuilder().build()).once();
 
@@ -80,7 +89,7 @@ public class ReplicationControllerTest {
 
 
   @Test
-  public void testDelete() {
+  void testDelete() {
    server.expect().withPath("/api/v1/namespaces/test/replicationcontrollers/repl1").andReturn(200, new ReplicationControllerBuilder() .withNewMetadata()
       .withName("repl1")
       .withResourceVersion("1")
@@ -142,7 +151,7 @@ public class ReplicationControllerTest {
   }
 
   @Test
-  public void testScale() {
+  void testScale() {
    server.expect().withPath("/api/v1/namespaces/test/replicationcontrollers/repl1").andReturn(200, new ReplicationControllerBuilder()
       .withNewMetadata()
       .withName("repl1")
@@ -165,7 +174,7 @@ public class ReplicationControllerTest {
   }
 
   @Test
-  public void testScaleAndWait() {
+  void testScaleAndWait() {
    server.expect().withPath("/api/v1/namespaces/test/replicationcontrollers/repl1").andReturn(200, new ReplicationControllerBuilder()
       .withNewMetadata()
       .withName("repl1")
@@ -202,7 +211,7 @@ public class ReplicationControllerTest {
 
   @Disabled
   @Test
-  public void testUpdate() {
+  void testUpdate() {
     ReplicationController repl1 = new ReplicationControllerBuilder()
       .withNewMetadata()
       .withName("repl1")
@@ -234,6 +243,120 @@ public class ReplicationControllerTest {
       .withTimeout(5, TimeUnit.MINUTES)
       .updateImage("");
     assertNotNull(repl1);
+  }
+
+  @Test
+  @DisplayName("Should update image based in single argument")
+  void testRolloutUpdateSingleImage() throws InterruptedException {
+    // Given
+    String imageToUpdate = "nginx:latest";
+    server.expect().get().withPath("/api/v1/namespaces/ns1/replicationcontrollers/replicationcontroller1")
+      .andReturn(HttpURLConnection.HTTP_OK, getReplicationControllerBuilder().build()).times(3);
+    server.expect().patch().withPath("/api/v1/namespaces/ns1/replicationcontrollers/replicationcontroller1")
+      .andReturn(HttpURLConnection.HTTP_OK, getReplicationControllerBuilder()
+        .editSpec().editTemplate().editSpec().editContainer(0)
+        .withImage(imageToUpdate)
+        .endContainer().endSpec().endTemplate().endSpec()
+        .build()).once();
+    KubernetesClient client = server.getClient();
+
+    // When
+    ReplicationController replicationController = client.replicationControllers().inNamespace("ns1").withName("replicationcontroller1")
+      .rolling().updateImage(imageToUpdate);
+
+    // Then
+    assertNotNull(replicationController);
+    assertEquals(imageToUpdate, replicationController.getSpec().getTemplate().getSpec().getContainers().get(0).getImage());
+    RecordedRequest recordedRequest = server.getLastRequest();
+    assertEquals("PATCH", recordedRequest.getMethod());
+    assertTrue(recordedRequest.getBody().readUtf8().contains(imageToUpdate));
+  }
+
+  @Test
+  @DisplayName("Should update image based in map based argument")
+  void testRolloutUpdateImage() throws InterruptedException {
+    // Given
+    Map<String, String> containerToImageMap = Collections.singletonMap("nginx", "nginx:latest");
+    server.expect().get().withPath("/api/v1/namespaces/ns1/replicationcontrollers/replicationcontroller1")
+      .andReturn(HttpURLConnection.HTTP_OK, getReplicationControllerBuilder().build()).times(3);
+    server.expect().patch().withPath("/api/v1/namespaces/ns1/replicationcontrollers/replicationcontroller1")
+      .andReturn(HttpURLConnection.HTTP_OK, getReplicationControllerBuilder()
+        .editSpec().editTemplate().editSpec().editContainer(0)
+        .withImage(containerToImageMap.get("nginx"))
+        .endContainer().endSpec().endTemplate().endSpec()
+        .build()).once();
+    KubernetesClient client = server.getClient();
+
+    // When
+    ReplicationController replicationController = client.replicationControllers().inNamespace("ns1").withName("replicationcontroller1")
+      .rolling().updateImage(containerToImageMap);
+
+    // Then
+    assertNotNull(replicationController);
+    assertEquals(containerToImageMap.get("nginx"), replicationController.getSpec().getTemplate().getSpec().getContainers().get(0).getImage());
+    RecordedRequest recordedRequest = server.getLastRequest();
+    assertEquals("PATCH", recordedRequest.getMethod());
+    assertTrue(recordedRequest.getBody().readUtf8().contains(containerToImageMap.get("nginx")));
+  }
+
+  @Test
+  void testGetLog() {
+    // Given
+    ReplicationController replicationController = getReplicationControllerBuilder().build();
+    server.expect().get().withPath("/api/v1/namespaces/ns1/replicationcontrollers/replicationcontroller1")
+      .andReturn(HttpURLConnection.HTTP_OK, replicationController).times(3);
+    server.expect().get().withPath("/api/v1/namespaces/ns1/pods?labelSelector=" + Utils.toUrlEncoded("app=nginx"))
+      .andReturn(HttpURLConnection.HTTP_OK, getReplicationControllerPodList(replicationController)).once();
+    server.expect().get().withPath("/api/v1/namespaces/ns1/pods/pod1/log?pretty=true")
+      .andReturn(HttpURLConnection.HTTP_OK, "testlog").once();
+    KubernetesClient client = server.getClient();
+
+    // When
+    String log = client.replicationControllers().inNamespace("ns1").withName("replicationcontroller1").getLog(true);
+
+    // Then
+    assertNotNull(log);
+    assertEquals("testlog", log);
+  }
+
+  private ReplicationControllerBuilder getReplicationControllerBuilder() {
+    return new ReplicationControllerBuilder()
+      .withNewMetadata()
+      .withName("replicationcontroller1")
+      .withUid("0a133177-0c55-49de-82bb-0d97d9444cb2")
+      .addToLabels("app", "nginx")
+      .addToLabels("foo", "bar")
+      .addToAnnotations("app", "nginx")
+      .endMetadata()
+      .withNewSpec()
+      .addToSelector("app", "nginx")
+      .withReplicas(1)
+      .withNewTemplate()
+      .withNewMetadata().addToLabels("app", "nginx").endMetadata()
+      .withNewSpec()
+      .addNewContainer()
+      .withName("nginx")
+      .withImage("nginx:1.7.9")
+      .addNewPort().withContainerPort(80).endPort()
+      .endContainer()
+      .endSpec()
+      .endTemplate()
+      .endSpec();
+  }
+
+  private PodList getReplicationControllerPodList(ReplicationController rc) {
+    return new PodListBuilder()
+      .addToItems(new PodBuilder().withNewMetadata()
+        .withName("pod1")
+        .addToLabels("app", "nginx")
+        .addNewOwnerReference()
+        .withApiVersion("v1")
+        .withController(true)
+        .withUid(rc.getMetadata().getUid())
+        .endOwnerReference()
+        .endMetadata()
+        .build())
+      .build();
   }
 
 }

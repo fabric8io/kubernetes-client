@@ -18,7 +18,18 @@ package io.fabric8.kubernetes.client.dsl;
 public interface Timeable<T> {
 
 
+  /**
+   * Only return logs after a specific date (RFC3339)
+   *
+   * @param timestamp timestamp as string
+   * @return log operation with PodLogOptions configured
+   */
     T sinceTime(String timestamp);
 
+  /**
+   * Get logs after a duration of seconds:
+   * @param seconds number of seconds
+   * @return log operation with PodLogOptions configured
+   */
     T sinceSeconds(int seconds);
 }

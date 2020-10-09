@@ -35,9 +35,6 @@ import io.fabric8.kubernetes.api.model.apps.StatefulSet;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetSpec;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetStatus;
 import io.fabric8.kubernetes.client.utils.Utils;
-import io.fabric8.openshift.api.model.DeploymentConfig;
-import io.fabric8.openshift.api.model.DeploymentConfigSpec;
-import io.fabric8.openshift.api.model.DeploymentConfigStatus;
 
 public class Readiness {
 
@@ -48,9 +45,9 @@ public class Readiness {
 
   public static boolean isReadinessApplicable(Class<? extends HasMetadata> itemClass) {
     return Deployment.class.isAssignableFrom(itemClass)
+      || io.fabric8.kubernetes.api.model.extensions.Deployment.class.isAssignableFrom(itemClass)
       || ReplicaSet.class.isAssignableFrom(itemClass)
       || Pod.class.isAssignableFrom(itemClass)
-      || DeploymentConfig.class.isAssignableFrom(itemClass)
       || ReplicationController.class.isAssignableFrom(itemClass)
       || Endpoints.class.isAssignableFrom(itemClass)
       || Node.class.isAssignableFrom(itemClass)
@@ -59,14 +56,22 @@ public class Readiness {
   }
 
   public static boolean isReady(HasMetadata item) {
+    if (isReadiableKubernetesResource(item)) {
+      return isKubernetesResourceReady(item);
+    } else {
+      throw new IllegalArgumentException("Item needs to be one of [Node, Deployment, ReplicaSet, StatefulSet, Pod, ReplicationController], but was: [" + (item != null ? item.getKind() : "Unknown (null)") + "]");
+    }
+  }
+
+  private static boolean isKubernetesResourceReady(HasMetadata item) {
     if (item instanceof Deployment) {
       return isDeploymentReady((Deployment) item);
+    } else if (item instanceof io.fabric8.kubernetes.api.model.extensions.Deployment) {
+      return isExtensionsDeploymentReady((io.fabric8.kubernetes.api.model.extensions.Deployment) item);
     } else if (item instanceof ReplicaSet) {
       return isReplicaSetReady((ReplicaSet) item);
     } else if (item instanceof Pod) {
       return isPodReady((Pod) item);
-    } else if (item instanceof DeploymentConfig) {
-      return isDeploymentConfigReady((DeploymentConfig) item);
     } else if (item instanceof ReplicationController) {
       return isReplicationControllerReady((ReplicationController) item);
     } else if (item instanceof Endpoints) {
@@ -75,9 +80,8 @@ public class Readiness {
       return isNodeReady((Node) item);
     } else if (item instanceof StatefulSet) {
       return isStatefulSetReady((StatefulSet) item);
-    } else {
-      throw new IllegalArgumentException("Item needs to be one of [Node, Deployment, ReplicaSet, StatefulSet, Pod, DeploymentConfig, ReplicationController], but was: [" + (item != null ? item.getKind() : "Unknown (null)") + "]");
     }
+    return false;
   }
 
   public static boolean isStatefulSetReady(StatefulSet ss) {
@@ -114,7 +118,26 @@ public class Readiness {
     }
 
     return spec.getReplicas().intValue() == status.getReplicas() &&
-      spec.getReplicas().intValue() <= status.getAvailableReplicas();
+      spec.getReplicas() <= status.getAvailableReplicas();
+  }
+
+
+  public static boolean isExtensionsDeploymentReady(io.fabric8.kubernetes.api.model.extensions.Deployment d) {
+    Utils.checkNotNull(d, "Deployment can't be null.");
+    io.fabric8.kubernetes.api.model.extensions.DeploymentSpec spec = d.getSpec();
+    io.fabric8.kubernetes.api.model.extensions.DeploymentStatus status = d.getStatus();
+
+    if (status == null || status.getReplicas() == null || status.getAvailableReplicas() == null) {
+      return false;
+    }
+
+    //Can be true in testing, so handle it to make test writing easier.
+    if (spec == null || spec.getReplicas() == null) {
+      return false;
+    }
+
+    return spec.getReplicas().intValue() == status.getReplicas() &&
+      spec.getReplicas() <= status.getAvailableReplicas();
   }
 
 
@@ -134,24 +157,6 @@ public class Readiness {
     return spec.getReplicas().intValue() == status.getReadyReplicas();
   }
 
-
-  public static boolean isDeploymentConfigReady(DeploymentConfig d) {
-    Utils.checkNotNull(d, "Deployment can't be null.");
-    DeploymentConfigSpec spec = d.getSpec();
-    DeploymentConfigStatus status = d.getStatus();
-
-    if (status == null || status.getReplicas() == null || status.getAvailableReplicas() == null) {
-      return false;
-    }
-
-    //Can be true in testing, so handle it to make test writing easier.
-    if (spec == null || spec.getReplicas() == null) {
-      return false;
-    }
-
-    return spec.getReplicas().intValue() == status.getReplicas() &&
-      spec.getReplicas().intValue() <= status.getAvailableReplicas();
-  }
 
   public static boolean isReplicationControllerReady(ReplicationController r) {
     Utils.checkNotNull(r, "ReplicationController can't be null.");
@@ -247,6 +252,17 @@ public class Readiness {
       }
     }
     return null;
+  }
+
+  protected static boolean isReadiableKubernetesResource(HasMetadata item) {
+    return (item instanceof Deployment ||
+      item instanceof io.fabric8.kubernetes.api.model.extensions.Deployment ||
+    item instanceof ReplicaSet ||
+    item instanceof Pod ||
+    item instanceof ReplicationController ||
+    item instanceof Endpoints ||
+    item instanceof Node ||
+    item instanceof StatefulSet);
   }
 }
 

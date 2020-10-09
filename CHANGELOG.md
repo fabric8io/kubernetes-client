@@ -1,14 +1,162 @@
 ## CHANGELOG
 
-### 4.10-SNAPSHOT
+### 4.12-SNAPSHOT
+
 #### Bugs
-* Fix #2066: Uber Jar includes merged service entry for multiple implementations of the same interface
 
 #### Improvements
 
 #### Dependency Upgrade
 
 #### New Features
+
+
+### 4.12.0 (2020-10-02)
+
+#### Bugs
+* Fix #2442: Wrong resource kind in `ProjectRequestHandler` causes ClassCastException when handling Project resources.
+* Fix #2467: OpenShiftClient cannot replace existing resource with API version =! v1
+* Fix #2458: Creating new instance of the DefaultKubernetesClient is hanging
+* Fix #2474: Config.fromKubeconfig throws NullPointerException
+* Fix #2399: Cannot change the type of the Service from ClusterIP to ExternalName
+* Fix #2479: KuberentesDeserializer works on OSGi runtime environments
+* Fix #2488: Unable to derive module descriptors for kubernetes-model jars
+
+#### Improvements
+* Enable user to select custom address and port for KubernetesMockServer
+* Fix #2473: Removed unused ValidationMessages.properties
+* Fix #2408: Add documentation for Pod log options
+* Fix #2141: Decouple OpenShift Model from Kubernetes Client
+* Fix #2452: Make Readiness.isReady publicly available from a wrapper method in KubernetesResourceUtil
+
+#### Dependency Upgrade
+* Bump Knative Serving to v0.17.2 & Knative Eventing to v0.17.3 
+
+#### New Features
+* Fix #2340: Adding support for Knative Eventing Contrib 
+* Fix #2111: Support automatic refreshing for expired OIDC tokens
+* Fix #2146: Add Support for specifying CustomResourceDefinitionContext while initializing KubernetesServer
+* Fix #2314: Fetch logs should wait for the job's associated pod to be ready
+* Fix #2043: Support for Tekton Triggers
+* Fix #2460: Querying for an event based on InvolvedObject fields
+
+_**Note**_ Minor breaking changes:
+* PR #2424 (#2414) slightly changes the API by adding the new `WatchAndWaitable` "combiner" interface.
+  Most projects shouldn't require any additional changes.
+
+### 4.11.1 (2020-09-02)
+
+#### Bugs
+* Fix #2445: ConfigMap and other resources are replaced
+
+### 4.11.0 (2020-08-26)
+#### Bugs
+* Fix #2373: Unable to create a Template on OCP3
+* Fix #2308: Fix kubernetes client `Config` loading KUBECONFIG with external authentication command
+* Fix #2316: Cannot load resource from stream without apiVersion
+* Fix #2354: Fix NullPointerException in ResourceCompare when no resource is returned from fromServer.get()
+* Fix #2389: KubernetesServer does not use value from https in crud mode
+* Fix #2306: Make KubernetesServer CRUD mode work with informers
+* Fix #2418: CertificateSigningRequest doesn't implement Namespaced
+* Fix #2265: InAnyNamespace uses invalid api endpoint for SelfSubjectAccessReviews
+* Fix #2404: Readiness.isReady doesn't handle extensions/v1beta1 Deployment
+* Fix #2389: KubernetesServer JUnit rule ignores value of https when using crud mode
+
+#### Improvements
+* Fix #2331: Fixed documentation for namespaced informer for all custom types implementing `Namespaced` interface
+* Fix #2406: Add documentation for serializing resources to YAML
+* Fix #2414: Allow withResourceVersion() to be followed by waitUntilCondition(), enabling recovery from HTTP 410 GONE errors.
+
+#### Dependency Upgrade
+* Fix #2360: bump mockito-core from 3.4.0 to 3.4.2
+* Fix #2355: bump jandex from 2.1.3.Final to 2.2.0.Final 
+* Fix #2353: chore: bump workflow action-setup versions + kubernetes to 1.18.6
+* Fix #2292: Update createOrReplace to do replace when create fails with conflict
+* Fix: Bump SnakeYaml to version 1.26 (as required for OSGi bundle for jackson-dataformat-yaml)
+* Fix #2401: bump maven-resources-plugin from 3.1.0 to 3.2.0
+* Fix #2405: bump mockito-core from 3.4.4 to 3.5.0
+
+#### New Features
+* CSI Volume Snapshot extension
+* Fix #2311: Add Support for creating bootstrap project template
+* Fix #2287: Add support for V1 and V1Beta1 CustomResourceDefinition
+* Fix #2319: Create Config without using auto-configure functionality or setting env variables
+* Fix #2284: Supports create and run a particular image in a pod operation using client
+* Fix #2321: Add Support for new resources in OpenShift Model
+
+_**Note**_: Some classes have been moved to other packages:
+- CustomResourceDefinition has been moved to `io.fabric8.kubernetes.api.model.apiextensions.v1` and `io.fabric8.kubernetes.api.model.apiextensions.v1beta1`
+- SubjectAccessReview, SelfSubjectAccessReview, LocalSubjectAccessReview and SelfSubjectRulesReview have been moved to `io.fabric8.kubernetes.api.model.authorization.v1` and `io.fabric8.kubernetes.api.model.authorization.v1beta1`
+- `io.fabric8.tekton.pipeline.v1beta1.WorkspacePipelineDeclaration` is now `io.fabric8.tekton.pipeline.v1beta1.PipelineWorkspaceDeclaration`
+
+### 4.10.3 (2020-07-14)
+#### Bugs
+* Fix #2285: Raw CustomResource API createOrReplace does not propagate exceptions from create
+* Fix Raw CustomResource API path generation to not having trailing slash
+* Fix #2131: Failing to parse CustomResourceDefinition with OpenAPIV3Schema using JSONSchemaPropOr\* fields
+* Fix #2297: Resuscitate ProjectRequestHandler in openshift-client
+* Fix #2328: Failure in deserialization while watching events
+* Fix #2299: Improve error handling of RejectedExecutionException from ExecutorService
+* Fix KubernetesAttributesExctractor to extract metadata from unregistered custom resources, such when using Raw CustomResource API 
+* Fix #2296: No adapter available for type:interface io.fabric8.kubernetes.client.dsl.V1APIGroupDSL
+* Fix #2269: Setting a grace period when deleting resource using `withPropagationPolicy()`
+* Fix #2342: watchLogs for deployment is broken
+* Fix #2309: Move HasMetadataComparator to exported package
+
+#### Improvements
+* Fix #2233: client.service().getUrl(..) should be able to fetch URL for ClusterIP based services
+* Fix #2278: Added type parameters for KubernetesList in KubernetesClient + test verifying waitUntilCondition **always** retrieves resource from server
+* Fix #2336: Test and fix for the wrong "Kind" declared on KubernetesListHandle
+* Fix #2320: Added JUnit5 extension for mocking KubernetesClient in tests using @EnableKubernetesMockClient
+* Fix #2332: Added PodExecOptions model
+* Improve error handling on stream closing errors in S2I binary builds(#2032)
+* Fix #2288: Adds configurable serializers and deserializers to json schema codegen
+
+#### Dependency Upgrade
+* Fix #2333: bump bouncycastle.version from 1.65 to 1.66
+* Fix #2262: bump maven-shade-plugin from 3.2.3 to 3.2.4
+* Fix #2261: bump exec-maven-plugin from 1.6.0 to 3.0.0
+* Fix #2345: bump mockito-core from 3.3.3 to 3.4.0
+* Fix #2260: bump tektoncd pipeline to v0.12.1
+
+#### New Features
+* Fix #1868: Add Support for rolling update
+* Fix #2266: Support for APIServices in Kubernetes Client
+* Fix #2215: `io.fabric8.kubernetes.client.Config` should expose all and the current context defined in kubeconfig
+
+### 4.10.2 (2020-06-02)
+#### Bugs
+* Fix #2251: Modify KubernetesDeserializer for handling classes with same name but different apiVersions 
+* Fix #2205: Event model classes from core v1 have been lost
+* Fix #2226: SharedIndexInformer for non-namespaced resources not working
+* Fix #2201: Uberjar doesn't contain model classes anymore
+* Fix #2066: Uber Jar includes merged service entry for multiple implementations of the same interface
+* Fix #2195: Annotation processors and build time dependencies transitive
+* Fix #1760: The bundle version of kubernetes-client is missing ServiceLoader files
+* Fix #2218: Uberjar: Package rewrite issues in `META-INF/services`
+* Fix #2212: JDK8 always uses http/1.1 protocol (Prevent OkHttp from wrongly enabling http/2)
+
+#### Improvements
+* Fix #2199: KubernetesClient#customResources now accepts CustomResourceDefinitionContext
+* Adds basic support for Pod Eviction API
+
+#### Dependency Upgrade
+
+#### New Features
+* Added DSL support for `admissionregistration.k8s.io/v1beta1` resources
+* Add support for Namespaced SharedInformers, fixed probelms with OperationContext argument
+* Fix #1821: ListOptions now supported when watching a Kubernetes Resource
+
+_**Note**_:
+- Some classes have been renamed:
+   - `io.fabric8.tekton.pipeline.v1beta1.WorkspacePipelineDeclaration` is now `io.fabric8.tekton.pipeline.v1beta1.PipelineWorkspaceDeclaration`
+- Breaking changes in `KubernetesClient` `customResource()` typed API:
+  - We've introduced a major breaking change in customResource(...) typed API. We have introduced a new interface `io.fabric8.kubernetes.api.model.Namespaced` which needs to
+    be added to your Custom Types using typed API. For example, for a custom resource named `Animals` which is a [Namespaced](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) resource; It should be declared like this:
+    ```
+    public class Animals extends CustomResource implements Namespaced { ... }
+    ```
+    You can also checkout an example in our test suite for this: [PodSet.java](https://github.com/fabric8io/kubernetes-client/blob/master/kubernetes-tests/src/test/java/io/fabric8/kubernetes/client/mock/crd/PodSet.java#L22)
 
 ### 4.10.1 (2020-05-06)
 #### Bugs
@@ -23,6 +171,7 @@
 
 ### 4.10.0 (2020-05-04)
 #### Bugs
+* Feature #1456: Added Watch support on MockServer in Crud mode
 * Fix #2163: fix kubernetes-client not support cert chain
 * Fix #2144: CRD's schema Default fields do not handle boolean and are prefixed with Raw keyword
 * KubernetesAttributeExtractor: handle possible /status subpath due to using status subresource on crd
@@ -42,6 +191,16 @@
 * Fix #2115: Keep tekton v1alpha1 api
 * Fix #2002: DSL Support for PodTemplate 
 * Fix #2015: Add Support for v1, v2beta1, and v2beta2 apiVersions in case of HorizontalPodAutoscaler
+
+### 4.9.2 (2020-05-19)
+#### Bugs
+* Fix #2212: JDK8 always uses http/1.1 protocol (Prevent OkHttp from wrongly enabling http/2)
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
 
 ### 4.9.1 (2020-04-17)
 #### Bugs

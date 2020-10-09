@@ -145,7 +145,7 @@ func (g *schemaGenerator) jsonDescriptor(t reflect.Type) *JSONDescriptor {
 	t = g.resolvePointer(t)
 
 	switch t.Kind() {
-	case reflect.Int, reflect.Int32, reflect.Int64:
+	case reflect.Int, reflect.Uint8, reflect.Int16, reflect.Int32, reflect.Int64:
 		return &JSONDescriptor{Type: "integer"}
 	case reflect.Bool:
 		return &JSONDescriptor{Type: "boolean"}
@@ -186,7 +186,7 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 		switch t.Kind() {
 		case reflect.Bool:
 			return "Boolean"
-		case reflect.Int, reflect.Int32:
+		case reflect.Int, reflect.Uint8, reflect.Int16, reflect.Int32:
 			return "Integer"
 		case reflect.String:
 			return "String"
@@ -197,6 +197,10 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 
 	if t.Kind() == reflect.Map {
 		return "java.util.Map<" + g.javaType(t.Key()) + "," + g.javaType(t.Elem()) + ">"
+	}
+
+	if t.Kind() == reflect.Slice {
+		return "java.util.List<" + g.javaType(t.Elem()) + ">"
 	}
 
 	// part of provided packages?
@@ -335,31 +339,8 @@ func (g *schemaGenerator) getStructProperties(t reflect.Type) map[string]JSONPro
 
 	fieldList := g.getFields(t)
 	for _, field := range fieldList {
-
-		fieldCategory := g.fieldCategory(field)
-
-		fieldType := field.Type
-		fieldType = g.resolvePointer(fieldType)
-
-		if fieldCategory == SIMPLE {
-			jsonName := g.jsonFieldName(field)
-			result[jsonName] = g.propertyDescriptorForSimpleField(field, t)
-		}
-
-		if fieldCategory == MAP {
-			jsonName := g.jsonFieldName(field)
-			result[jsonName] = g.propertyDescriptorForMap(field)
-		}
-
-		if fieldCategory == OBJECT {
-			jsonName := g.jsonFieldName(field)
-			result[jsonName] = g.propertyDescriptorForObject(field)
-		}
-
-		if fieldCategory == LIST {
-			jsonName := g.jsonFieldName(field)
-			result[jsonName] = g.propertyDescriptorForList(field)
-		}
+		jsonName := g.jsonFieldName(field)
+		result[jsonName] = g.propertyDescriptor(field, t)
 	}
 
 	// setting api version default values
@@ -373,6 +354,37 @@ func (g *schemaGenerator) getStructProperties(t reflect.Type) map[string]JSONPro
 	}
 
 	return result
+}
+
+func (g *schemaGenerator) propertyDescriptor(field reflect.StructField, parentType reflect.Type) JSONPropertyDescriptor {
+
+	// type might have manual overwrite
+	if g.isManualType(field.Type) {
+		return JSONPropertyDescriptor{
+			JSONReferenceDescriptor: g.referenceDescriptor(field.Type),
+			JavaTypeDescriptor:      g.javaTypeDescriptor(field.Type),
+		}
+	}
+
+	fieldCategory := g.fieldCategory(field)
+
+	if fieldCategory == SIMPLE {
+		return g.propertyDescriptorForSimpleField(field, parentType)
+	}
+
+	if fieldCategory == MAP {
+		return g.propertyDescriptorForMap(field)
+	}
+
+	if fieldCategory == OBJECT {
+		return g.propertyDescriptorForObject(field)
+	}
+
+	if fieldCategory == LIST {
+		return g.propertyDescriptorForList(field)
+	}
+
+	panic("Failed to get property descriptor for field")
 }
 
 func (g *schemaGenerator) referenceDescriptor(valueType reflect.Type) *JSONReferenceDescriptor {
@@ -451,7 +463,7 @@ func isSimpleJavaType(fieldType reflect.Type) bool {
 	switch fieldType.Kind() {
 	case reflect.Bool:
 		return true
-	case reflect.Int, reflect.Int32:
+	case reflect.Int, reflect.Uint8, reflect.Int16, reflect.Int32:
 		return true
 	case reflect.String:
 		return true
@@ -471,8 +483,23 @@ func (g *schemaGenerator) handleType(t reflect.Type) {
 		return
 	}
 
+	// type discovery for Map (key & value)
 	if t.Kind() == reflect.Map {
-		// is this a good idea?!
+		keyType := g.resolvePointer(t.Key())
+		g.handleType(keyType)
+		valueType := g.resolvePointer(t.Elem())
+		g.handleType(valueType)
+	}
+
+	// type discovery for Lists (value)
+	if t.Kind() == reflect.Slice {
+		valueType := g.resolvePointer(t.Elem())
+		g.handleType(valueType)
+	}
+
+	// skip type registration if not required
+	// e.g. something like ExtraValue does not require registration -> it directly maps to List<String>
+	if t.Kind() != reflect.Struct {
 		return
 	}
 
@@ -626,6 +653,21 @@ func (g *schemaGenerator) propertyDescriptorForObject(field reflect.StructField)
 func (g *schemaGenerator) propertyDescriptorForList(field reflect.StructField) JSONPropertyDescriptor {
 
 	listValueType := g.resolvePointer(field.Type.Elem())
+
+	if g.isManualType(listValueType) {
+		return JSONPropertyDescriptor{
+			JSONDescriptor: &JSONDescriptor{
+				Type:          "array",
+				JavaOmitEmpty: g.isOmitEmpty(field),
+			},
+			JSONArrayDescriptor: &JSONArrayDescriptor{
+				Items: JSONPropertyDescriptor{
+					JSONReferenceDescriptor: g.referenceDescriptor(listValueType),
+					JavaTypeDescriptor:      g.javaTypeDescriptor(listValueType),
+				},
+			},
+		}
+	}
 
 	// "type discovery"
 	g.handleType(listValueType)

@@ -23,7 +23,7 @@ import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
 import io.fabric8.kubernetes.api.model.SecretBuilder;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
-import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionBuilder;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionBuilder;
 import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetBuilder;
 import io.fabric8.kubernetes.api.model.batch.JobBuilder;
@@ -37,8 +37,8 @@ import io.fabric8.kubernetes.client.mock.crd.PodSetList;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.Rule;
-import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.io.IOException;
@@ -49,13 +49,13 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @EnableRuleMigrationSupport
-public class PropagationPolicyTest {
+class PropagationPolicyTest {
   @Rule
   public KubernetesServer server = new KubernetesServer();
 
   @Test
   @DisplayName("Should delete a ConfigMap with PropagationPolicy=Background")
-  public void testDeleteConfigMap() throws InterruptedException {
+  void testDeleteConfigMap() throws InterruptedException {
     // Given
     server.expect().delete().withPath("/api/v1/namespaces/ns1/configmaps/myconfigMap")
       .andReturn(HttpURLConnection.HTTP_OK, new ConfigMapBuilder().build())
@@ -72,7 +72,7 @@ public class PropagationPolicyTest {
 
   @Test
   @DisplayName("Should delete a ConfigMap with specified PropagationPolicy")
-  public void testDeleteConfigMapWithExplicitPropagationPolicy() throws InterruptedException {
+  void testDeleteConfigMapWithExplicitPropagationPolicy() throws InterruptedException {
     // Given
     server.expect().delete().withPath("/api/v1/namespaces/ns1/configmaps/myconfigMap")
       .andReturn(HttpURLConnection.HTTP_OK, new ConfigMapBuilder().build())
@@ -89,7 +89,7 @@ public class PropagationPolicyTest {
 
   @Test
   @DisplayName("Should delete a Service with PropagationPolicy=Background")
-  public void testDeleteService() throws InterruptedException {
+  void testDeleteService() throws InterruptedException {
     // Given
     server.expect().delete().withPath("/api/v1/namespaces/ns1/services/myservice")
       .andReturn(HttpURLConnection.HTTP_OK, new ServiceBuilder().build())
@@ -106,7 +106,7 @@ public class PropagationPolicyTest {
 
   @Test
   @DisplayName("Should delete a Service with specified PropagationPolicy")
-  public void testDeleteServiceWithPropagationPolicy() throws InterruptedException {
+  void testDeleteServiceWithPropagationPolicy() throws InterruptedException {
     // Given
     server.expect().delete().withPath("/api/v1/namespaces/ns1/services/myservice")
       .andReturn(HttpURLConnection.HTTP_OK, new ServiceBuilder().build())
@@ -123,7 +123,7 @@ public class PropagationPolicyTest {
 
   @Test
   @DisplayName("Should delete a Service with PropagationPolicy=Background")
-  public void testDeleteSecret() throws InterruptedException {
+  void testDeleteSecret() throws InterruptedException {
     // Given
     server.expect().delete().withPath("/api/v1/namespaces/ns1/secrets/mysecret")
       .andReturn(HttpURLConnection.HTTP_OK, new SecretBuilder().build())
@@ -140,7 +140,7 @@ public class PropagationPolicyTest {
 
   @Test
   @DisplayName("Should delete a Secret with specified PropagationPolicy")
-  public void testDeleteSecretWithExplicitPropagationPolicy() throws InterruptedException {
+  void testDeleteSecretWithExplicitPropagationPolicy() throws InterruptedException {
     // Given
     server.expect().delete().withPath("/api/v1/namespaces/ns1/secrets/mysecret")
       .andReturn(HttpURLConnection.HTTP_OK, new SecretBuilder().build())
@@ -157,7 +157,7 @@ public class PropagationPolicyTest {
 
   @Test
   @DisplayName("Should delete a Deployment with PropagationPolicy=Background")
-  public void testDeleteDeployment() throws InterruptedException {
+  void testDeleteDeployment() throws InterruptedException {
     // Given
     server.expect().delete().withPath("/apis/apps/v1/namespaces/ns1/deployments/mydeployment")
       .andReturn(HttpURLConnection.HTTP_OK, new DeploymentBuilder().build())
@@ -174,7 +174,7 @@ public class PropagationPolicyTest {
 
   @Test
   @DisplayName("Should delete a Deployment with explicitly set PropagationPolicy")
-  public void testDeleteDeploymentWithExplicitPropagationPolicy() throws InterruptedException {
+  void testDeleteDeploymentWithExplicitPropagationPolicy() throws InterruptedException {
     // Given
     server.expect().delete().withPath("/apis/apps/v1/namespaces/ns1/deployments/mydeployment")
       .andReturn(HttpURLConnection.HTTP_OK, new DeploymentBuilder().build())
@@ -190,8 +190,25 @@ public class PropagationPolicyTest {
   }
 
   @Test
+  @DisplayName("Should delete a Deployment with explicitly set PropagationPolicy And Grace Period")
+  void testDeleteDeploymentWithExplicitPropagationPolicyAndGracePeriod() throws InterruptedException {
+    // Given
+    server.expect().delete().withPath("/apis/apps/v1/namespaces/ns1/deployments/mydeployment")
+      .andReturn(HttpURLConnection.HTTP_OK, new DeploymentBuilder().build())
+      .once();
+    KubernetesClient client = server.getClient();
+
+    // When
+    Boolean isDeleted = client.apps().deployments().inNamespace("ns1").withName("mydeployment").withPropagationPolicy(DeletionPropagation.FOREGROUND).withGracePeriod(10).delete();
+
+    // Then
+    assertTrue(isDeleted);
+    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"gracePeriodSeconds\":10,\"propagationPolicy\":\"" + DeletionPropagation.FOREGROUND + "\"}", server.getLastRequest().getBody().readUtf8());
+  }
+
+  @Test
   @DisplayName("Should delete a StatefulSet with PropagationPolicy=Background")
-  public void testDeleteStatefulSet() throws InterruptedException {
+  void testDeleteStatefulSet() throws InterruptedException {
     // Given
     server.expect().delete().withPath("/apis/apps/v1/namespaces/ns1/statefulsets/mystatefulset")
       .andReturn(HttpURLConnection.HTTP_OK, new StatefulSetBuilder().build())
@@ -208,7 +225,7 @@ public class PropagationPolicyTest {
 
   @Test
   @DisplayName("Should delete a StatefulSet with explicitly set PropagationPolicy")
-  public void testDeleteStatefulSetWithExplicitPropagationPolicy() throws InterruptedException {
+  void testDeleteStatefulSetWithExplicitPropagationPolicy() throws InterruptedException {
     // Given
     server.expect().delete().withPath("/apis/apps/v1/namespaces/ns1/statefulsets/mystatefulset")
       .andReturn(HttpURLConnection.HTTP_OK, new StatefulSetBuilder().build())
@@ -225,7 +242,7 @@ public class PropagationPolicyTest {
 
   @Test
   @DisplayName("Should delete a ReplicationController with PropagationPolicy=Background")
-  public void testDeleteReplicationController() throws InterruptedException {
+  void testDeleteReplicationController() throws InterruptedException {
     // Given
     server.expect().delete().withPath("/api/v1/namespaces/ns1/replicationcontrollers/myreplicationcontroller")
       .andReturn(HttpURLConnection.HTTP_OK, new ReplicationControllerBuilder().build())
@@ -242,7 +259,7 @@ public class PropagationPolicyTest {
 
   @Test
   @DisplayName("Should delete a ReplicationController with explicitly specified PropagationPolicy")
-  public void testDeleteReplicationControllerWithExplicitPropagationPolicy() throws InterruptedException {
+  void testDeleteReplicationControllerWithExplicitPropagationPolicy() throws InterruptedException {
     // Given
     server.expect().delete().withPath("/api/v1/namespaces/ns1/replicationcontrollers/myreplicationcontroller")
       .andReturn(HttpURLConnection.HTTP_OK, new ReplicationControllerBuilder().build())
@@ -259,7 +276,7 @@ public class PropagationPolicyTest {
 
   @Test
   @DisplayName("Should delete a Job with PropagationPolicy=Background")
-  public void testDeleteJob() throws InterruptedException {
+  void testDeleteJob() throws InterruptedException {
     // Given
     server.expect().delete().withPath("/apis/batch/v1/namespaces/ns1/jobs/myjob")
       .andReturn(HttpURLConnection.HTTP_OK, new JobBuilder().build())
@@ -276,7 +293,7 @@ public class PropagationPolicyTest {
 
   @Test
   @DisplayName("Should delete a Job with explicitly set PropagationPolicy")
-  public void testDeleteJobWithExplicitPropagationPolicy() throws InterruptedException {
+  void testDeleteJobWithExplicitPropagationPolicy() throws InterruptedException {
     // Given
     server.expect().delete().withPath("/apis/batch/v1/namespaces/ns1/jobs/myjob")
       .andReturn(HttpURLConnection.HTTP_OK, new JobBuilder().build())
@@ -293,7 +310,7 @@ public class PropagationPolicyTest {
 
   @Test
   @DisplayName("Should delete a resource with PropagationPolicy=Background")
-  public void testDeleteResource() throws InterruptedException {
+  void testDeleteResource() throws InterruptedException {
     // Given
     Pod testPod = new PodBuilder().withNewMetadata().withName("testpod").endMetadata().build();
     server.expect().delete().withPath("/api/v1/namespaces/foo/pods/testpod")
@@ -311,7 +328,7 @@ public class PropagationPolicyTest {
 
   @Test
   @DisplayName("Should delete a resource with specified PropagationPolicy")
-  public void testDeleteResourceWithSpecifiedPropagationPolicy() throws InterruptedException {
+  void testDeleteResourceWithSpecifiedPropagationPolicy() throws InterruptedException {
     // Given
     Pod testPod = new PodBuilder().withNewMetadata().withName("testpod").endMetadata().build();
     server.expect().delete().withPath("/api/v1/namespaces/foo/pods/testpod")
@@ -329,7 +346,7 @@ public class PropagationPolicyTest {
 
   @Test
   @DisplayName("Should delete a resource list with PropagationPolicy=Background")
-  public void testDeleteResourceList() throws InterruptedException {
+  void testDeleteResourceList() throws InterruptedException {
     // Given
     Pod testPod = new PodBuilder().withNewMetadata().withName("testpod").endMetadata().build();
     server.expect().delete().withPath("/api/v1/namespaces/foo/pods/testpod")
@@ -347,7 +364,7 @@ public class PropagationPolicyTest {
 
   @Test
   @DisplayName("Should delete a resource list with specified PropagationPolicy")
-  public void testDeleteResourceListWithSpecifiedPropagationPolicy() throws InterruptedException {
+  void testDeleteResourceListWithSpecifiedPropagationPolicy() throws InterruptedException {
     // Given
     Pod testPod = new PodBuilder().withNewMetadata().withName("testpod").endMetadata().build();
     server.expect().delete().withPath("/api/v1/namespaces/foo/pods/testpod")
@@ -365,7 +382,7 @@ public class PropagationPolicyTest {
 
   @Test
   @DisplayName("Should delete a Raw Custom Resource with PropagationPolicy=Background")
-  public void testDeleteRawCustomResource() throws InterruptedException, IOException {
+  void testDeleteRawCustomResource() throws InterruptedException, IOException {
     // Given
     server.expect().delete().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/example-hello")
       .andReturn(HttpURLConnection.HTTP_OK, "{\"metadata\":{},\"apiVersion\":\"v1\",\"kind\":\"Status\",\"details\":{\"name\":\"prometheus-example-rules\",\"group\":\"monitoring.coreos.com\",\"kind\":\"prometheusrules\",\"uid\":\"b3d085bd-6a5c-11e9-8787-525400b18c1d\"},\"status\":\"Success\"}").once();
@@ -387,7 +404,7 @@ public class PropagationPolicyTest {
 
   @Test
   @DisplayName("Should delete a Custom Resource with PropagationPolicy=Background")
-  public void testDeleteCustomResource() throws InterruptedException {
+  void testDeleteCustomResource() throws InterruptedException {
     // Given
     server.expect().delete().withPath("/apis/demo.k8s.io/v1alpha1/namespaces/test/podsets/example-podset").andReturn(HttpURLConnection.HTTP_OK, new PodSet()).once();
     MixedOperation<PodSet, PodSetList, DoneablePodSet, Resource<PodSet, DoneablePodSet>> podSetClient = server.getClient().customResources(new CustomResourceDefinitionBuilder()

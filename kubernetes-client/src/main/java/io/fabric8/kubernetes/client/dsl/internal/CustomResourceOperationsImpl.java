@@ -19,29 +19,18 @@ import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinition;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.Watcher;
-import io.fabric8.kubernetes.client.dsl.EditReplacePatchDeletable;
-import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
-import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
-import io.fabric8.kubernetes.client.dsl.Replaceable;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.Watchable;
+import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.internal.KubernetesDeserializer;
 import okhttp3.OkHttpClient;
 
-import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Map;
-
 /**
  */
-public class CustomResourceOperationsImpl<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>> extends HasMetadataOperation<T, L, D,
+public class CustomResourceOperationsImpl<T extends HasMetadata, L extends KubernetesResourceList<T>, D extends Doneable<T>> extends HasMetadataOperation<T, L, D,
     Resource<T, D>> implements MixedOperation<T, L, D, Resource<T, D>> {
 
   private final boolean resourceNamespaced;
@@ -51,21 +40,18 @@ public class CustomResourceOperationsImpl<T extends HasMetadata, L extends Kuber
   }
 
   public CustomResourceOperationsImpl(CustomResourceOperationContext context) {
-    super(context.withApiGroupName(apiGroup((CustomResourceDefinition) context.getCrd()))
-      .withApiGroupVersion(apiVersion((CustomResourceDefinition) context.getCrd()))
-      .withPlural(resourceT((CustomResourceDefinition) context.getCrd()))
-      .withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
+    super(context.withApiGroupName(context.getCrdContext().getGroup())
+      .withApiGroupVersion(context.getCrdContext().getVersion())
+      .withPlural(context.getCrdContext().getPlural()));
 
     this.type = context.getType();
     this.listType = context.getListType();
     this.doneableType = context.getDoneableType();
 
-    this.resourceNamespaced = resourceNamespaced((CustomResourceDefinition) context.getCrd());
+    this.resourceNamespaced = resourceNamespaced(context.getCrdContext());
     this.apiVersion = getAPIGroup() + "/" + getAPIVersion();
 
-    CustomResourceDefinition crd = (CustomResourceDefinition) context.getCrd();
-
-    KubernetesDeserializer.registerCustomKind(crd.getSpec().getGroup() + "/" + crd.getSpec().getVersion(), crd.getSpec().getNames().getKind(), type);
+    KubernetesDeserializer.registerCustomKind(apiVersion, kind(context.getCrdContext()), type);
     if (KubernetesResource.class.isAssignableFrom(listType)) {
       KubernetesDeserializer.registerCustomKind(listType.getSimpleName(), (Class<? extends KubernetesResource>) listType);
     }
@@ -76,24 +62,12 @@ public class CustomResourceOperationsImpl<T extends HasMetadata, L extends Kuber
     return new CustomResourceOperationsImpl((CustomResourceOperationContext) context);
   }
 
-  protected static String apiGroup(CustomResourceDefinition crd) {
-    return crd.getSpec().getGroup();
+  protected static boolean resourceNamespaced(CustomResourceDefinitionContext crdContext) {
+    return "Namespaced".equals(crdContext.getScope());
   }
 
-  protected static String apiVersion(CustomResourceDefinition crd) {
-    return crd.getSpec().getVersion();
-  }
-
-  protected static String resourceT(CustomResourceDefinition crd) {
-    return crd.getSpec().getNames().getPlural();
-  }
-
-  protected static String name(CustomResourceDefinition crd) {
-    return crd.getMetadata().getName();
-  }
-
-  protected static boolean resourceNamespaced(CustomResourceDefinition crd) {
-    return "Namespaced".equals(crd.getSpec().getScope());
+  private String kind(CustomResourceDefinitionContext crdContext) {
+    return crdContext.getKind() != null ? crdContext.getKind() : getKind();
   }
 
   @Override

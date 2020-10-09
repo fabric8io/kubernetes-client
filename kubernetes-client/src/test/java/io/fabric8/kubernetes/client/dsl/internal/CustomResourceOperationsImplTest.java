@@ -18,10 +18,11 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import java.io.IOException;
 
 import io.fabric8.kubernetes.api.model.KubernetesResource;
-import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinition;
-import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionBuilder;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionBuilder;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.CustomResourceList;
+import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.internal.KubernetesDeserializer;
 
 import org.junit.jupiter.api.Test;
@@ -58,20 +59,36 @@ public class CustomResourceOperationsImplTest {
     .endSpec()
   .build();
 
-  private final CustomResourceOperationContext context = new CustomResourceOperationContext()
-    .withCrd(crd)
-    .withType(MyCustomResource.class)
-    .withListType(MyCustomResourceList.class);
-
   @Test
   public void shouldRegisterWithKubernetesDeserializer() throws IOException {
+    assertForContext(new CustomResourceOperationContext()
+      .withCrd(crd)
+      .withType(MyCustomResource.class)
+      .withListType(MyCustomResourceList.class));
+  }
+
+  @Test
+  void itFallsBackOnTypeKindIfNoKindSpecifiedInContext() throws IOException {
+    assertForContext(new CustomResourceOperationContext()
+      .withCrdContext(new CustomResourceDefinitionContext.Builder()
+      .withGroup(crd.getSpec().getGroup())
+      .withVersion(crd.getSpec().getVersion())
+      .withScope(crd.getSpec().getScope())
+      .withName(crd.getMetadata().getName())
+      .withPlural(crd.getSpec().getNames().getPlural())
+      .build())
+      .withType(MyCustomResource.class)
+      .withListType(MyCustomResourceList.class));
+  }
+
+  private void assertForContext(CustomResourceOperationContext context) throws IOException {
     // CustomResourceOperationsImpl constructor invokes KubernetesDeserializer::registerCustomKind
     new CustomResourceOperationsImpl<>(context);
 
     JsonFactory factory = new MappingJsonFactory();
-    JsonParser parser = factory.createParser("{\n" + 
-      "    \"apiVersion\": \"custom.group/v1alpha1\",\n" + 
-      "    \"kind\": \"MyCustomResource\"\n" + 
+    JsonParser parser = factory.createParser("{\n" +
+      "    \"apiVersion\": \"custom.group/v1alpha1\",\n" +
+      "    \"kind\": \"MyCustomResource\"\n" +
       "}");
 
     KubernetesDeserializer deserializer = new KubernetesDeserializer();
@@ -80,5 +97,4 @@ public class CustomResourceOperationsImplTest {
     assertThat(resource, instanceOf(MyCustomResource.class));
     assertEquals("custom.group/v1alpha1", ((MyCustomResource) resource).getApiVersion());
   }
-
 }

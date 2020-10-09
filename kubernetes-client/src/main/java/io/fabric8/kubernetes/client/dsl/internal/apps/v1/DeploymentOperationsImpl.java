@@ -16,10 +16,8 @@
 package io.fabric8.kubernetes.client.dsl.internal.apps.v1;
 
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.ContainerBuilder;
 import io.fabric8.kubernetes.api.model.OwnerReference;
 import io.fabric8.kubernetes.api.model.Status;
-import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.apps.DoneableReplicaSet;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetList;
@@ -38,14 +36,18 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -56,6 +58,8 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
   implements TimeoutImageEditReplacePatchable<Deployment, Deployment, DoneableDeployment>  {
 
   static final transient Logger LOG = LoggerFactory.getLogger(DeploymentOperationsImpl.class);
+  public static final String DEPLOYMENT_KUBERNETES_IO_REVISION = "deployment.kubernetes.io/revision";
+  private Integer podLogWaitTimeout;
 
   public DeploymentOperationsImpl(OkHttpClient client, Config config) {
     this(client, config, null);
@@ -75,6 +79,11 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
     this.type = Deployment .class;
     this.listType = DeploymentList.class;
     this.doneableType = DoneableDeployment.class;
+  }
+
+  private DeploymentOperationsImpl(RollingOperationContext context, Integer podLogWaitTimeout) {
+    this(context);
+    this.podLogWaitTimeout = podLogWaitTimeout;
   }
 
   @Override
@@ -165,20 +174,69 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
       throw new KubernetesClientException("Existing replica set doesn't exist");
     }
     if (oldRC.getSpec().getTemplate().getSpec().getContainers().size() > 1) {
-      throw new KubernetesClientException("Image update is not supported for multicontainer pods");
+      throw new KubernetesClientException("updateImage(image) does not supported for multicontainer pods, use updateImage(Map<String, String>) instead");
     }
-    if (oldRC.getSpec().getTemplate().getSpec().getContainers().size() == 0) {
+    if (oldRC.getSpec().getTemplate().getSpec().getContainers().isEmpty()) {
       throw new KubernetesClientException("Pod has no containers!");
     }
 
-    Container updatedContainer = new ContainerBuilder(oldRC.getSpec().getTemplate().getSpec().getContainers().iterator().next()).withImage(image).build();
+    Container container = oldRC.getSpec().getTemplate().getSpec().getContainers().iterator().next();
+    return updateImage(Collections.singletonMap(container.getName(), image));
+  }
 
-    DeploymentBuilder newRCBuilder = new DeploymentBuilder(oldRC);
-    newRCBuilder.editMetadata().withResourceVersion(null).endMetadata()
-      .editSpec().editTemplate().editSpec().withContainers(Collections.singletonList(updatedContainer))
-      .endSpec().endTemplate().endSpec();
+  @Override
+  public Deployment updateImage(Map<String, String> containerToImageMap) {
+    Deployment deployment = get();
+    if (deployment == null) {
+      throw new KubernetesClientException("Existing replica set doesn't exist");
+    }
+    if (deployment.getSpec().getTemplate().getSpec().getContainers().isEmpty()) {
+      throw new KubernetesClientException("Pod has no containers!");
+    }
 
-    return new DeploymentRollingUpdater(client, config, namespace).rollUpdate(oldRC, newRCBuilder.build());
+    List<Container> containers = deployment.getSpec().getTemplate().getSpec().getContainers();
+    for (Container container : containers) {
+      if (containerToImageMap.containsKey(container.getName())) {
+        container.setImage(containerToImageMap.get(container.getName()));
+      }
+    }
+    deployment.getSpec().getTemplate().getSpec().setContainers(containers);
+    return sendPatchedObject(get(), deployment);
+  }
+
+
+  @Override
+  public Deployment resume() {
+    return sendPatchedDeployment(RollingUpdater.requestPayLoadForRolloutResume());
+  }
+
+  @Override
+  public Deployment pause() {
+    return sendPatchedDeployment(RollingUpdater.requestPayLoadForRolloutPause());
+  }
+
+  @Override
+  public Deployment restart() {
+    return sendPatchedDeployment(RollingUpdater.requestPayLoadForRolloutRestart());
+  }
+
+  @Override
+  public Deployment undo() {
+    List<ReplicaSet> replicaSets = getReplicaSetListForDeployment(get()).getItems();
+    // Sort list of replicaSets based on revision annotation
+    replicaSets.sort((o1, o2) -> {
+      String revisionO1 = o1.getMetadata().getAnnotations().get(DEPLOYMENT_KUBERNETES_IO_REVISION);
+      String revisionO2 = o2.getMetadata().getAnnotations().get(DEPLOYMENT_KUBERNETES_IO_REVISION);
+      return Integer.parseInt(revisionO2) - Integer.parseInt(revisionO1);
+    });
+
+    ReplicaSet latestReplicaSet = replicaSets.get(0);
+    ReplicaSet previousRevisionReplicaSet = replicaSets.get(1);
+    Deployment deployment = get();
+    deployment.getMetadata().getAnnotations().put(DEPLOYMENT_KUBERNETES_IO_REVISION, latestReplicaSet.getMetadata().getAnnotations().get(DEPLOYMENT_KUBERNETES_IO_REVISION));
+    deployment.getSpec().setTemplate(previousRevisionReplicaSet.getSpec().getTemplate());
+
+    return sendPatchedObject(get(), deployment);
   }
 
   @Override
@@ -264,8 +322,14 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
     Deployment deployment = fromServer().get();
     String rcUid = deployment.getMetadata().getUid();
 
-    ReplicaSetOperationsImpl rsOperations = new ReplicaSetOperationsImpl((RollingOperationContext) context);
-    ReplicaSetList rcList = rsOperations.withLabels(deployment.getSpec().getTemplate().getMetadata().getLabels()).list();
+    ReplicaSetOperationsImpl rsOperations = new ReplicaSetOperationsImpl(
+      new RollingOperationContext(context.getClient(), context.getConfig(), context.getPlural(), context.getNamespace(),
+        null, context.getApiGroupName(), context.getApiGroupVersion(), context.getCascading(), null, context.getLabels(),
+        context.getLabelsNot(), context.getLabelsIn(), context.getLabelsNotIn(), context.getFields(), context.getFieldsNot(),
+        context.getResourceVersion(), context.getReloadingFromServer(), context.getGracePeriodSeconds(), context.getPropagationPolicy(),
+        context.getWatchRetryInitialBackoffMillis(), context.getWatchRetryBackoffMultiplier(), false, 0, null
+        ), podLogWaitTimeout);
+    ReplicaSetList rcList = rsOperations.withLabels(getDeploymentSelectorLabels(deployment)).list();
 
     for (ReplicaSet rs : rcList.getItems()) {
       OwnerReference ownerReference = KubernetesResourceUtil.getControllerUid(rs);
@@ -305,5 +369,36 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
       return podResources.get(0).watchLog(out);
     }
     return null;
+  }
+
+  @Override
+  public Loggable<String, LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
+    return new DeploymentOperationsImpl(((RollingOperationContext)context), logWaitTimeout);
+  }
+
+  private Deployment sendPatchedDeployment(Map<String, Object> patchedUpdate) {
+    Deployment oldDeployment = get();
+    try {
+      return handlePatch(oldDeployment, patchedUpdate);
+    } catch (InterruptedException interruptedException) {
+      Thread.currentThread().interrupt();
+      throw KubernetesClientException.launderThrowable(interruptedException);
+    } catch (ExecutionException | IOException e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
+  }
+
+  private ReplicaSetList getReplicaSetListForDeployment(Deployment deployment) {
+    return new ReplicaSetOperationsImpl(client, config, getNamespace()).withLabels(deployment.getSpec().getSelector().getMatchLabels()).list();
+  }
+
+  static Map<String, String> getDeploymentSelectorLabels(Deployment deployment) {
+    Map<String, String> labels = new HashMap<>();
+    if (deployment != null && deployment.getSpec() != null &&
+      deployment.getSpec().getTemplate() != null &&
+      deployment.getSpec().getTemplate().getMetadata() != null) {
+      labels.putAll(deployment.getSpec().getTemplate().getMetadata().getLabels());
+    }
+    return labels;
   }
 }

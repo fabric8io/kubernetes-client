@@ -24,6 +24,4 @@ import io.fabric8.openshift.api.model.ProjectRequest;
 public interface ProjectRequestOperation extends
         Createable<ProjectRequest, ProjectRequest, DoneableProjectRequest>,
         Listable<Status> {
-
-
 }

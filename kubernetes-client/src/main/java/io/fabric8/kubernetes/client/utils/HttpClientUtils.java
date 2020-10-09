@@ -15,21 +15,23 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
+import io.fabric8.kubernetes.api.model.AuthInfo;
+import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.internal.KubeConfigUtils;
 import io.fabric8.kubernetes.client.internal.SSLUtils;
 import okhttp3.*;
 import okhttp3.logging.HttpLoggingInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-import java.io.IOException;
+import java.io.File;
+import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.Proxy;
@@ -67,6 +69,43 @@ public class HttpClientUtils {
 
   public static OkHttpClient createHttpClientForMockServer(final Config config) {
       return createHttpClient(config, b -> b.protocols(Collections.singletonList(Protocol.HTTP_1_1)));
+  }
+
+  public static HttpUrl.Builder appendListOptionParams(HttpUrl.Builder urlBuilder, ListOptions listOptions) {
+    if (listOptions == null) {
+      return urlBuilder;
+    }
+    if (listOptions.getLimit() != null) {
+      urlBuilder.addQueryParameter("limit", listOptions.getLimit().toString());
+    }
+    if (listOptions.getContinue() != null) {
+      urlBuilder.addQueryParameter("continue", listOptions.getContinue());
+    }
+
+    if (listOptions.getResourceVersion() != null) {
+      urlBuilder.addQueryParameter("resourceVersion", listOptions.getResourceVersion());
+    }
+
+    if (listOptions.getFieldSelector() != null) {
+      urlBuilder.addQueryParameter("fieldSelector", listOptions.getFieldSelector());
+    }
+
+    if (listOptions.getLabelSelector() != null) {
+      urlBuilder.addQueryParameter("labelSelector", listOptions.getLabelSelector());
+    }
+
+    if (listOptions.getTimeoutSeconds() != null) {
+      urlBuilder.addQueryParameter("timeoutSeconds", listOptions.getTimeoutSeconds().toString());
+    }
+
+    if (listOptions.getAllowWatchBookmarks() != null) {
+      urlBuilder.addQueryParameter("allowWatchBookmarks", listOptions.getAllowWatchBookmarks().toString());
+    }
+
+    if (listOptions.getWatch() != null) {
+      urlBuilder.addQueryParameter("watch", listOptions.getWatch().toString());
+    }
+    return urlBuilder;
   }
 
   private static OkHttpClient createHttpClient(final Config config, final Consumer<OkHttpClient.Builder> additionalConfig) {
@@ -113,6 +152,7 @@ public class HttpClientUtils {
             }
             return chain.proceed(request);
           }).addInterceptor(new ImpersonatorInterceptor(config))
+            .addInterceptor(new OIDCTokenRefreshInterceptor(config))
             .addInterceptor(new BackwardsCompatibilityInterceptor());
 
             Logger reqLogger = LoggerFactory.getLogger(HttpLoggingInterceptor.class);
@@ -176,7 +216,7 @@ public class HttpClientUtils {
               httpClientBuilder.connectionSpecs(Arrays.asList(spec, CLEARTEXT));
             }
 
-            if (config.isHttp2Disable()) {
+            if (shouldDisableHttp2() || config.isHttp2Disable()) {
                 httpClientBuilder.protocols(Collections.singletonList(Protocol.HTTP_1_1));
             }
 
@@ -229,5 +269,16 @@ public class HttpClientUtils {
     private static boolean isIpAddress(String ipAddress) {
         Matcher ipMatcher = VALID_IPV4_PATTERN.matcher(ipAddress);
         return ipMatcher.matches();
+    }
+
+  /**
+   * OkHttp wrongfully detects >JDK8u251 as {@link okhttp3.internal.platform.Jdk9Platform} which enables Http2
+   * unsupported for JDK8.
+   *
+   * @return true if JDK8 is detected, false otherwise-
+   * @see <a href="https://github.com/fabric8io/kubernetes-client/issues/2212">#2212</a>
+   */
+  private static boolean shouldDisableHttp2() {
+      return System.getProperty("java.version", "").startsWith("1.8");
     }
 }

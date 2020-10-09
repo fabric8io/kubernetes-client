@@ -30,7 +30,15 @@
     <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.conscrypt-openjdk/${conscrypt-openjdk-uber.bundle.version}</bundle>
     <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.okhttp/${okhttp.bundle.version}</bundle>
     <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.okio/${okio.bundle.version}</bundle>
+    <bundle dependency='true'>mvn:org.apache.aries.spifly/org.apache.aries.spifly.dynamic.bundle/${aries-spifly.bundle.version}</bundle>
+    <bundle dependency='true'>mvn:org.ow2.asm/asm/${asm.bundle.version}</bundle>
+    <bundle dependency='true'>mvn:org.ow2.asm/asm-analysis/${asm.bundle.version}</bundle>
+    <bundle dependency='true'>mvn:org.ow2.asm/asm-commons/${asm.bundle.version}</bundle>
+    <bundle dependency='true'>mvn:org.ow2.asm/asm-tree/${asm.bundle.version}</bundle>
+    <bundle dependency='true'>mvn:org.ow2.asm/asm-util/${asm.bundle.version}</bundle>
+    <bundle dependency='true'>mvn:io.fabric8/kubernetes-model-common/${project.version}</bundle>
     <bundle>mvn:io.fabric8/zjsonpatch/${zjsonpatch.version}</bundle>
+
     <bundle>mvn:io.fabric8/kubernetes-model-core/${project.version}</bundle>
     <bundle>mvn:io.fabric8/kubernetes-model-rbac/${project.version}</bundle>
     <bundle>mvn:io.fabric8/kubernetes-model-admissionregistration/${project.version}</bundle>
@@ -56,6 +64,10 @@
   <feature name="openshift-client" description="Fabric8 Openshift Client" version="${project.version}">
     <feature>kubernetes-client</feature>
     <bundle>mvn:io.fabric8/openshift-client/${project.version}/jar/bundle</bundle>
+    <bundle>mvn:io.fabric8/openshift-model-console/${project.version}</bundle>
+    <bundle>mvn:io.fabric8/openshift-model-monitoring/${project.version}</bundle>
+    <bundle>mvn:io.fabric8/openshift-model-operator/${project.version}</bundle>
+    <bundle>mvn:io.fabric8/openshift-model-operatorhub/${project.version}</bundle>
   </feature>
 
 </features>

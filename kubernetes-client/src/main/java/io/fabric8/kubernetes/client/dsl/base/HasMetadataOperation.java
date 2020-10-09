@@ -16,24 +16,20 @@
 
 package io.fabric8.kubernetes.client.dsl.base;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.concurrent.TimeUnit;
+
 import io.fabric8.kubernetes.api.builder.Function;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
-import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.internal.readiness.Readiness;
-import io.fabric8.kubernetes.client.internal.readiness.ReadinessWatcher;
-import java.lang.reflect.InvocationTargetException;
-import java.util.concurrent.TimeUnit;
 
-public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesResourceList, D extends Doneable<T>, R extends Resource<T, D>>
+public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, D extends Doneable<T>, R extends Resource<T, D>>
   extends BaseOperation< T, L, D, R> {
-  protected static final DeletionPropagation DEFAULT_PROPAGATION_POLICY = DeletionPropagation.BACKGROUND;
+  public static final DeletionPropagation DEFAULT_PROPAGATION_POLICY = DeletionPropagation.BACKGROUND;
 
   public HasMetadataOperation(OperationContext ctx) {
     super(ctx);
@@ -156,54 +152,5 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
       }
     }
     throw KubernetesClientException.launderThrowable(forOperationType("patch"), caught);
-  }
-
-  /**
-   * A wait method that combines watching and polling.
-   * The need for that is that in some cases a pure watcher approach consistently fails.
-   * @param i           The number of iterations to perform.
-   * @param started     Time in milliseconds where the watch started.
-   * @param interval    The amount of time in millis to wait on each iteration.
-   * @param amount      The maximum amount in millis of time since started to wait.
-   * @return            The {@link ReplicationController} if ready.
-   */
-  protected T periodicWatchUntilReady(int i, long started, long interval, long amount) {
-    T item = fromServer().get();
-    if (Readiness.isReady(item)) {
-      return item;
-    }
-
-    ReadinessWatcher<T> watcher = new ReadinessWatcher<>(item);
-    try (Watch watch = watch(item.getMetadata().getResourceVersion(), watcher)) {
-      try {
-        return watcher.await(interval, TimeUnit.NANOSECONDS);
-      } catch (KubernetesClientTimeoutException e) {
-        if (i <= 0) {
-          throw e;
-        }
-      }
-
-      long remaining =  (started + amount) - System.nanoTime();
-      long next = Math.max(0, Math.min(remaining, interval));
-      return periodicWatchUntilReady(i - 1, started, next, amount);
-    }
-  }
-
-  @Override
-  public T waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException {
-    if (Readiness.isReadinessApplicable(getType())) {
-      long started = System.nanoTime();
-      waitUntilExists(amount, timeUnit);
-      long alreadySpent = System.nanoTime() - started;
-
-      long remaining = timeUnit.toNanos(amount) - alreadySpent;
-      if (remaining <= 0) {
-        return periodicWatchUntilReady(0, System.nanoTime(), 0, 0);
-      }
-
-      return periodicWatchUntilReady(10, System.nanoTime(), Math.max(remaining / 10, 1000000000L), remaining);
-    }
-
-    return super.waitUntilReady(amount, timeUnit);
   }
 }

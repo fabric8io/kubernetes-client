@@ -22,7 +22,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>kubernetes-client-project</artifactId>
-    <version>4.10-SNAPSHOT</version>
+    <version>4.12-SNAPSHOT</version>
   </parent>
 
   <artifactId>model-annotator</artifactId>
@@ -31,22 +31,24 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.jsonschema2pojo</groupId>
-      <artifactId>jsonschema2pojo-core</artifactId>
-      <version>${jsonschema2pojo.version}</version>
-    </dependency>
-    <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model-common</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-    </dependency>
-    <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-jaxb-annotations</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jsonschema2pojo</groupId>
+      <artifactId>jsonschema2pojo-core</artifactId>
+      <version>${jsonschema2pojo.version}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>io.sundr</groupId>

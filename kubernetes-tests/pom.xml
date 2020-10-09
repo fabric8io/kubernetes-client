@@ -21,7 +21,7 @@
   <parent>
     <artifactId>kubernetes-client-project</artifactId>
     <groupId>io.fabric8</groupId>
-    <version>4.10-SNAPSHOT</version>
+    <version>4.12-SNAPSHOT</version>
   </parent>
 
   <artifactId>kubernetes-test</artifactId>
@@ -98,8 +98,10 @@
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <version>${assertj.core.version}</version>
-      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.awaitility</groupId>
+      <artifactId>awaitility</artifactId>
     </dependency>
 
     <dependency>
@@ -112,7 +114,6 @@
       <artifactId>bcpkix-jdk15on</artifactId>
       <version>${bouncycastle.version}</version>
     </dependency>
-
   </dependencies>
 
   <build>
@@ -152,7 +153,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
-        <version>1.6.0</version>
+        <version>3.0.0</version>
         <executions>
           <execution>
             <goals>

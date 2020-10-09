@@ -24,6 +24,7 @@ import okhttp3.Response;
 import okio.Buffer;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -127,7 +128,7 @@ public class BackwardsCompatibilityInterceptor implements Interceptor {
     openshiftOAPITransformations.put("imagestreams", new ResourceKey("ImageStream", "imagestreams", "image.openshift.io", "v1"));
     openshiftOAPITransformations.put("imagestreamtags", new ResourceKey("ImageStream", "imagestreamtags", "image.openshift.io", "v1"));
     openshiftOAPITransformations.put("securitycontextconstraints", new ResourceKey("SecurityContextConstraints", "securitycontextconstraints", "security.openshift.io", "v1"));
-}
+  }
 
   public Response intercept(Chain chain) throws IOException {
     Request request = chain.request();
@@ -142,9 +143,9 @@ public class BackwardsCompatibilityInterceptor implements Interceptor {
       if (target != null) {
         response.close(); // At this point, we know we won't reuse or return the response; so close it to avoid a connection leak.
         String newUrl = new StringBuilder(url)
-            .replace(matcher.start(API_VERSION), matcher.end(API_VERSION), target.version) // Order matters: We need to substitute right to left, so that former substitution don't affect the indexes of later.
-            .replace(matcher.start(API_GROUP), matcher.end(API_GROUP), target.group)
-            .toString();
+          .replace(matcher.start(API_VERSION), matcher.end(API_VERSION), target.version) // Order matters: We need to substitute right to left, so that former substitution don't affect the indexes of later.
+          .replace(matcher.start(API_GROUP), matcher.end(API_GROUP), target.group)
+          .toString();
 
         return handleNewRequestAndProceed(request, newUrl, target, chain);
       }
@@ -170,7 +171,7 @@ public class BackwardsCompatibilityInterceptor implements Interceptor {
   }
 
   private static Response handleOpenshiftOapiRequests(Request request, Response response, Chain chain) throws IOException{
-    if (!response.isSuccessful()) {
+    if (!response.isSuccessful() && response.code() == HttpURLConnection.HTTP_NOT_FOUND) {
       String requestUrl = request.url().toString();
       // handle case when /oapi is not available
       String[] parts = requestUrl.split("/");

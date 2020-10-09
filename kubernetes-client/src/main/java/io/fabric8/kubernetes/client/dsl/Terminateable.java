@@ -18,5 +18,10 @@ package io.fabric8.kubernetes.client.dsl;
 
 public interface Terminateable<T> {
 
+  /**
+   * Get logs for the previous instance of the container in a pod if it exists:
+   *
+   * @return returns pod log operation with specified PodLogOption configured
+   */
     T terminated();
 }

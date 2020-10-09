@@ -1,0 +1,56 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+---
+kind: Pod
+apiVersion: v1
+metadata:
+  name: test-pod
+---
+kind: DeploymentConfig
+apiVersion: apps.openshift.io/v1
+metadata:
+  name: test-deploymentconfig-v1
+---
+kind: ConsoleLink
+apiVersion: console.openshift.io/v1
+metadata:
+  name: test-consolelink-v1
+---
+kind: PodMonitor
+apiVersion: monitoring.coreos.com/v1
+metadata:
+  name: test-podmonitor-v1
+---
+kind: Authentication
+apiVersion: operator.openshift.io/v1
+metadata:
+  name: test-authentication-v1
+---
+kind: ImageContentSourcePolicy
+apiVersion: operator.openshift.io/v1alpha1
+metadata:
+  name: test-imagecontentsourcepolicy-v1alpha1
+---
+kind: OperatorGroup
+apiVersion: operators.coreos.com/v1
+metadata:
+  name: test-operatorgroup-v1
+---
+kind: CatalogSource
+apiVersion: operators.coreos.com/v1alpha1
+metadata:
+  name: test-catalogsource-v1alpha1

@@ -16,20 +16,22 @@
 package io.fabric8.kubernetes.client.mock;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
-import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinition;
-import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionBuilder;
-import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionList;
-import io.fabric8.kubernetes.api.model.apiextensions.JSONSchemaProps;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionBuilder;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionList;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import org.junit.Before;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 
 import static junit.framework.TestCase.assertNull;
 import static org.junit.Assert.assertEquals;
@@ -37,14 +39,14 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @EnableRuleMigrationSupport
-public class CustomResourceDefinitionTest {
+class CustomResourceDefinitionTest {
   @Rule
   public KubernetesServer server = new KubernetesServer();
 
   private CustomResourceDefinition customResourceDefinition;
 
-  @Before
-  public void setupCrd() throws IOException {
+  @BeforeEach
+  void setupCrd() throws IOException {
     customResourceDefinition = new CustomResourceDefinitionBuilder()
       .withApiVersion("apiextensions.k8s.io/v1beta1")
       .withNewMetadata().withName("sparkclusters.radanalytics.io")
@@ -66,29 +68,37 @@ public class CustomResourceDefinitionTest {
   }
 
   @Test
-  public void testLoad() {
+  void testLoad() {
     KubernetesClient client = server.getClient();
-    CustomResourceDefinition customResourceDefinition = client.customResourceDefinitions().load(getClass().getResourceAsStream("/sparkapplication-crd.yml")).get();
-    assertNotNull(customResourceDefinition);
-    assertEquals("sparkapplications.sparkoperator.k8s.io", customResourceDefinition.getMetadata().getName());
+    List<HasMetadata> crdList = client.load(getClass().getResourceAsStream("/crd-list.yml")).get();
+    assertNotNull(crdList);
+    assertEquals(5, crdList.size());
   }
 
   @Test
-  public void testGet() {
+  void testLoadWithJsonSchemaPropsOrBool() {
+    KubernetesClient client = server.getClient();
+    CustomResourceDefinition customResourceDefinition = client.apiextensions().v1beta1().customResourceDefinitions().load(getClass().getResourceAsStream("/kafka-crd.yml")).get();
+    assertNotNull(customResourceDefinition);
+    assertEquals("kafkatopics.kafka.test", customResourceDefinition.getMetadata().getName());
+  }
+
+  @Test
+  void testGet() {
     server.expect().get().withPath("/apis/apiextensions.k8s.io/v1beta1/customresourcedefinitions/sparkclusters.radanalytics.io").andReturn(200, customResourceDefinition).once();
     KubernetesClient client = server.getClient();
 
-    CustomResourceDefinition crd = client.customResourceDefinitions().withName("sparkclusters.radanalytics.io").get();
+    CustomResourceDefinition crd = client.apiextensions().v1beta1().customResourceDefinitions().withName("sparkclusters.radanalytics.io").get();
     assertNotNull(crd);
     assertEquals("sparkclusters.radanalytics.io", crd.getMetadata().getName());
   }
 
   @Test
-  public void testCreate() {
+  void testCreate() {
     server.expect().post().withPath("/apis/apiextensions.k8s.io/v1beta1/customresourcedefinitions").andReturn(200, customResourceDefinition).once();
     KubernetesClient client = server.getClient();
 
-    CustomResourceDefinition crd = client.customResourceDefinitions().createOrReplace(customResourceDefinition);
+    CustomResourceDefinition crd = client.apiextensions().v1beta1().customResourceDefinitions().createOrReplace(customResourceDefinition);
     assertNotNull(crd);
     assertEquals("sparkclusters.radanalytics.io", crd.getMetadata().getName());
     // Assertion to test behavior in https://github.com/fabric8io/kubernetes-client/issues/1486
@@ -96,26 +106,26 @@ public class CustomResourceDefinitionTest {
   }
 
   @Test
-  public void testList() {
+  void testList() {
     server.expect().get().withPath("/apis/apiextensions.k8s.io/v1beta1/customresourcedefinitions").andReturn(200, new KubernetesListBuilder().withItems(customResourceDefinition).build()).once();
     KubernetesClient client = server.getClient();
 
-    CustomResourceDefinitionList crdList = client.customResourceDefinitions().list();
+    CustomResourceDefinitionList crdList = client.apiextensions().v1beta1().customResourceDefinitions().list();
     assertNotNull(crdList);
     assertEquals(1, crdList.getItems().size());
     assertEquals("sparkclusters.radanalytics.io", crdList.getItems().get(0).getMetadata().getName());
   }
 
   @Test
-  public void testDelete() {
+  void testDelete() {
     server.expect().delete().withPath("/apis/apiextensions.k8s.io/v1beta1/customresourcedefinitions/sparkclusters.radanalytics.io").andReturn(200, customResourceDefinition).once();
     KubernetesClient client = server.getClient();
 
-    Boolean deleted = client.customResourceDefinitions().withName("sparkclusters.radanalytics.io").delete();
+    Boolean deleted = client.apiextensions().v1beta1().customResourceDefinitions().withName("sparkclusters.radanalytics.io").delete();
     assertTrue(deleted);
   }
 
-  public JSONSchemaProps readSchema() throws IOException {
+  JSONSchemaProps readSchema() throws IOException {
     ObjectMapper mapper = new ObjectMapper();
     final URL resource = getClass().getResource("/test-crd-validation-schema.json");
 

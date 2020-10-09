@@ -20,6 +20,7 @@ import java.util.Map;
 
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.dsl.Waitable;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.OkHttpClient;
@@ -44,6 +45,9 @@ public class OperationContext {
   protected long gracePeriodSeconds = -1L;
   protected DeletionPropagation propagationPolicy;
 
+  protected long watchRetryInitialBackoffMillis = Waitable.DEFAULT_INITIAL_BACKOFF_MILLIS;
+  protected double watchRetryBackoffMultiplier = Waitable.DEFAULT_BACKOFF_MULTIPLIER;
+
   protected Map<String, String> labels;
   protected Map<String, String[]> labelsNot;
   protected Map<String, String[]> labelsIn;
@@ -55,7 +59,7 @@ public class OperationContext {
   public OperationContext() {
   }
 
-  public OperationContext(OkHttpClient client, Config config, String plural, String namespace, String name, String apiGroupName, String apiGroupVersion, boolean cascading, Object item, Map<String, String> labels, Map<String, String[]> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields, Map<String, String[]> fieldsNot, String resourceVersion, boolean reloadingFromServer, long gracePeriodSeconds, DeletionPropagation propagationPolicy) {
+  public OperationContext(OkHttpClient client, Config config, String plural, String namespace, String name, String apiGroupName, String apiGroupVersion, boolean cascading, Object item, Map<String, String> labels, Map<String, String[]> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields, Map<String, String[]> fieldsNot, String resourceVersion, boolean reloadingFromServer, long gracePeriodSeconds, DeletionPropagation propagationPolicy, long watchRetryInitialBackoffMillis, double watchRetryBackoffMultiplier) {
     this.client = client;
     this.config = config;
     this.plural = plural;
@@ -72,6 +76,8 @@ public class OperationContext {
     this.reloadingFromServer = reloadingFromServer;
     this.gracePeriodSeconds = gracePeriodSeconds;
     this.propagationPolicy = propagationPolicy;
+    this.watchRetryInitialBackoffMillis = watchRetryInitialBackoffMillis;
+    this.watchRetryBackoffMultiplier = watchRetryBackoffMultiplier;
     this.item = item;
     this.apiGroupName =  ApiVersionUtil.apiGroup(item, apiGroupName);
     this.apiGroupVersion = ApiVersionUtil.apiVersion(item, apiGroupVersion);
@@ -153,80 +159,204 @@ public class OperationContext {
     return propagationPolicy;
   }
 
+  public long getWatchRetryInitialBackoffMillis() {
+    return watchRetryInitialBackoffMillis;
+  }
+
+  public double getWatchRetryBackoffMultiplier() {
+    return watchRetryBackoffMultiplier;
+  }
+
   public OperationContext withOkhttpClient(OkHttpClient client) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading, item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy);
+    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading, item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
 
   public OperationContext withConfig(Config config) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy);
+    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
 
   public OperationContext withPlural(String plural) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy);
+    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
 
   public OperationContext withNamespace(String namespace) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy);
+    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
 
   public OperationContext withName(String name) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy);
+    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
 
 
   public OperationContext withApiGroupName(String apiGroupName) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy);
+    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
 
   public OperationContext withApiGroupVersion(String apiGroupVersion) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy);
+    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
 
   public OperationContext withItem(Object item) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy);
+    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
 
   public OperationContext withCascading(boolean cascading) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy);
+    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
 
   public OperationContext withLabels(Map<String, String> labels) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy);
+    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
 
   public OperationContext withLabelsIn(Map<String, String[]> labelsIn) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy);
+    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
 
   public OperationContext withLabelsNot(Map<String, String[]> labelsNot) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy);
+    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
 
   public OperationContext withLabelsNotIn(Map<String, String[]> labelsNotIn) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy);
+    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
 
   public OperationContext withFields(Map<String, String> fields) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy);
+    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
 
   public OperationContext withFieldsNot(Map<String, String[]> fieldsNot) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy);
+    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
 
   public OperationContext withResourceVersion(String resourceVersion) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy);
+    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
 
   public OperationContext withReloadingFromServer(boolean reloadingFromServer) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy);
+    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
 
   public OperationContext withGracePeriodSeconds(long gracePeriodSeconds) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy);
+    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
 
   public OperationContext withPropagationPolicy(DeletionPropagation propagationPolicy) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy);
+    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
+  }
+
+  public OperationContext withWatchRetryInitialBackoffMillis(long watchRetryInitialBackoffMillis) {
+    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
+  }
+
+  public OperationContext withWatchRetryBackoffMultiplier(double watchRetryBackoffMultiplier) {
+    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
+  }
+
+  /**
+   * Returns an OperationContext object merged with current object
+   *
+   * @param operationContext object with modifications
+   * @return a merged object between passed argument and current object
+   */
+  public OperationContext withOperationContext(OperationContext operationContext) {
+    OkHttpClient clientCloned = getClient();
+    Config configCloned = getConfig();
+    Object itemCloned = getItem();
+    String resourceVersionCloned = getResourceVersion();
+    String pluralCloned = getPlural();
+    String apiGroupNameCloned = getApiGroupName();
+    String apiGroupVersionCloned = getApiGroupVersion();
+    String namespaceCloned = getNamespace();
+    String nameCloned = getName();
+    boolean cascadingCloned = getCascading();
+    boolean reloadingFromServerCloned = getReloadingFromServer();
+    long gracePeriodSecondsCloned = getGracePeriodSeconds();
+    long watchRetryInitialBackoffMillis = getWatchRetryInitialBackoffMillis();
+    double watchRetryBackoffMultiplier = getWatchRetryBackoffMultiplier();
+    DeletionPropagation propagationPolicyCloned = getPropagationPolicy();
+    Map<String, String> labelsCloned = getLabels();
+    Map<String, String[]> labelsNotCloned = getLabelsNot();
+    Map<String, String[]> labelsInCloned = getLabelsIn();
+    Map<String, String[]> labelsNotInCloned = getLabelsNotIn();
+    Map<String, String> fieldsCloned = getFields();
+    Map<String, String[]> fieldsNotCloned = getFieldsNot();
+
+    if (operationContext.getApiGroupVersion() != null) {
+      apiGroupVersionCloned = operationContext.getApiGroupVersion();
+    }
+
+    if (operationContext.getClient() != null) {
+      clientCloned = operationContext.getClient();
+    }
+
+    if (operationContext.getConfig() != null) {
+      configCloned = operationContext.getConfig();
+    }
+
+    if (operationContext.getPlural() != null) {
+      pluralCloned = operationContext.getPlural();
+    }
+
+    if (operationContext.getNamespace() != null) {
+      namespaceCloned = operationContext.getNamespace();
+    }
+
+    if (operationContext.getName() != null) {
+      nameCloned = operationContext.getName();
+    }
+
+    if (operationContext.getApiGroupName() != null) {
+      apiGroupNameCloned = operationContext.getApiGroupName();
+    }
+
+    if (operationContext.getCascading()) {
+      cascadingCloned = operationContext.getCascading();
+    }
+
+    if (operationContext.getItem() != null) {
+      itemCloned = operationContext.getItem();
+    }
+
+    if (operationContext.getLabels() != null) {
+      labelsCloned = operationContext.getLabels();
+    }
+
+    if (operationContext.getLabelsNot() != null) {
+      labelsNotCloned = operationContext.getLabelsNot();
+    }
+
+    if (operationContext.getLabelsIn() != null) {
+      labelsInCloned = operationContext.getLabelsIn();
+    }
+
+    if (operationContext.getLabelsNotIn() != null) {
+      labelsNotInCloned = operationContext.getLabelsNotIn();
+    }
+
+    if (operationContext.getFields() != null) {
+      fieldsCloned = operationContext.getFields();
+    }
+
+    if (operationContext.getFieldsNot() != null) {
+      fieldsNotCloned = operationContext.getFieldsNot();
+    }
+
+    if (operationContext.getResourceVersion() != null) {
+      resourceVersionCloned = operationContext.getResourceVersion();
+    }
+
+    if (operationContext.getReloadingFromServer()) {
+      reloadingFromServerCloned = operationContext.getReloadingFromServer();
+    }
+
+    if (operationContext.getGracePeriodSeconds() > 0) {
+      gracePeriodSecondsCloned = operationContext.getGracePeriodSeconds();
+    }
+
+    if (operationContext.getPropagationPolicy() != null) {
+      propagationPolicyCloned = operationContext.getPropagationPolicy();
+    }
+
+    return new OperationContext(clientCloned, configCloned, pluralCloned, namespaceCloned, nameCloned, apiGroupNameCloned, apiGroupVersionCloned, cascadingCloned, itemCloned, labelsCloned, labelsNotCloned, labelsInCloned, labelsNotInCloned, fieldsCloned, fieldsNotCloned, resourceVersionCloned, reloadingFromServerCloned, gracePeriodSecondsCloned, propagationPolicyCloned, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
 }

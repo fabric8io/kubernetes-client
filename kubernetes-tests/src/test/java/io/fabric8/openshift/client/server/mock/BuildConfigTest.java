@@ -36,6 +36,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.util.concurrent.TimeUnit;
 
@@ -143,7 +144,7 @@ public class BuildConfigTest {
     File warFile = new File("target/test.war");
     warFile.createNewFile();
 
-    server.expect().post().withPath("/apis/build.openshift.io/v1/namespaces/ns1/buildconfigs/bc2/instantiatebinary?commit=&asFile=" + warFile.getName())
+    server.expect().post().withPath("/apis/build.openshift.io/v1/namespaces/ns1/buildconfigs/bc2/instantiatebinary?name=bc2&namespace=ns1&asFile=" + warFile.getName())
       .andReturn(201, new BuildBuilder()
       .withNewMetadata().withName("bc2").endMetadata().build()).once();
 
@@ -155,6 +156,8 @@ public class BuildConfigTest {
       .instantiateBinary()
       .asFile(warFile.getName())
       .fromFile(warFile);
+    assertNotNull(build);
+    assertEquals("bc2", build.getMetadata().getName());
   }
 
   // TODO Add delay to mockwebserver. Disabled as too dependent on timing issues right now.
@@ -196,6 +199,33 @@ public class BuildConfigTest {
 
     deleted = client.buildConfigs().inNamespace("ns1").withName("bc2").delete();
     assertTrue(deleted);
+  }
+
+  private BuildConfig getBuildConfig() {
+    return new BuildConfigBuilder()
+      .withNewMetadata().withName("ruby-sample-build").endMetadata()
+      .withNewSpec()
+      .withRunPolicy("Serial")
+      .addNewTrigger().withType("GitHub").withNewGithub().withSecret("secret101").endGithub().endTrigger()
+      .addNewTrigger().withType("Generic").withNewGeneric().withSecret("secret101").endGeneric().endTrigger()
+      .addNewTrigger().withType("ImageChange").endTrigger()
+      .withNewSource()
+      .withNewGit().withUri("https://github.com/openshift/ruby-hello-world").endGit()
+      .endSource()
+      .withNewStrategy()
+      .withNewSourceStrategy()
+      .withNewFrom()
+      .withKind("ImageStreamTag")
+      .withName("ruby-20-centos7:latest")
+      .endFrom()
+      .endSourceStrategy()
+      .endStrategy()
+      .withNewOutput()
+      .withNewTo().withKind("ImageStreamTag").withName("origin-ruby-sample:latest").endTo()
+      .endOutput()
+      .withNewPostCommit().withScript("bundle exec rake test").endPostCommit()
+      .endSpec()
+      .build();
   }
 
 }

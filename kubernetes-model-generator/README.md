@@ -1,0 +1,119 @@
+# JSON Schema Generator for Kubernetes and OpenShift v3 Origin API Objects
+
+* kubernetes-model-core: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/kubernetes-model-core.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Akubernetes-model-core)
+[![javadoc](https://javadoc.io/badge2/io.fabric8/kubernetes-model-core/javadoc.svg)](https://javadoc.io/doc/io.fabric8/kubernetes-model-core)
+* kubernetes-model-admissionregistration: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/kubernetes-model-admissionregistration.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Akubernetes-model-admissionregistration)
+[![javadoc](https://javadoc.io/badge2/io.fabric8/kubernetes-model-admissionregistration/javadoc.svg)](https://javadoc.io/doc/io.fabric8/kubernetes-model-admissionregistration)
+* kubernetes-model-apiextensions: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/kubernetes-model-apiextensions.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Akubernetes-model-apiextensions)
+[![javadoc](https://javadoc.io/badge2/io.fabric8/kubernetes-model-apiextensions/javadoc.svg)](https://javadoc.io/doc/io.fabric8/kubernetes-model-apiextensions)
+* kubernetes-model-apps: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/kubernetes-model-apps.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Akubernetes-model-apps)
+[![javadoc](https://javadoc.io/badge2/io.fabric8/kubernetes-model-apps/javadoc.svg)](https://javadoc.io/doc/io.fabric8/kubernetes-model-apps)
+* kubernetes-model-autoscaling: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/kubernetes-model-autoscaling.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Akubernetes-model-autoscaling)
+[![javadoc](https://javadoc.io/badge2/io.fabric8/kubernetes-model-autoscaling/javadoc.svg)](https://javadoc.io/doc/io.fabric8/kubernetes-model-autoscaling)
+* kubernetes-model-batch: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/kubernetes-model-batch.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Akubernetes-model-batch)
+[![javadoc](https://javadoc.io/badge2/io.fabric8/kubernetes-model-batch/javadoc.svg)](https://javadoc.io/doc/io.fabric8/kubernetes-model-batch)
+* kubernetes-model-certificates: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/kubernetes-model-certificates.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Akubernetes-model-certificates)
+[![javadoc](https://javadoc.io/badge2/io.fabric8/kubernetes-model-certificates/javadoc.svg)](https://javadoc.io/doc/io.fabric8/kubernetes-model-certificates)
+* kubernetes-model-coordination: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/kubernetes-model-coordination.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Akubernetes-model-coordination)
+[![javadoc](https://javadoc.io/badge2/io.fabric8/kubernetes-model-coordination/javadoc.svg)](https://javadoc.io/doc/io.fabric8/kubernetes-model-coordination)
+* kubernetes-model-discovery: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/kubernetes-model-discovery.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Akubernetes-model-discovery)
+[![javadoc](https://javadoc.io/badge2/io.fabric8/kubernetes-model-discovery/javadoc.svg)](https://javadoc.io/doc/io.fabric8/kubernetes-model-discovery)
+* kubernetes-model-events: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/kubernetes-model-events.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Akubernetes-model-events)
+[![javadoc](https://javadoc.io/badge2/io.fabric8/kubernetes-model-events/javadoc.svg)](https://javadoc.io/doc/io.fabric8/kubernetes-model-events)
+* kubernetes-model-extensions: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/kubernetes-model-extensions.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Akubernetes-model-extensions)
+[![javadoc](https://javadoc.io/badge2/io.fabric8/kubernetes-model-extensions/javadoc.svg)](https://javadoc.io/doc/io.fabric8/kubernetes-model-extensions)
+* kubernetes-model-metrics: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/kubernetes-model-metrics.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Akubernetes-model-metrics)
+[![javadoc](https://javadoc.io/badge2/io.fabric8/kubernetes-model-metrics/javadoc.svg)](https://javadoc.io/doc/io.fabric8/kubernetes-model-metrics)
+* kubernetes-model-networking: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/kubernetes-model-networking.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Akubernetes-model-networking)
+[![javadoc](https://javadoc.io/badge2/io.fabric8/kubernetes-model-networking/javadoc.svg)](https://javadoc.io/doc/io.fabric8/kubernetes-model-networking)
+* kubernetes-model-policy: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/kubernetes-model-policy.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Akubernetes-model-policy)
+[![javadoc](https://javadoc.io/badge2/io.fabric8/kubernetes-model-policy/javadoc.svg)](https://javadoc.io/doc/io.fabric8/kubernetes-model-policy)
+* kubernetes-model-rbac: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/kubernetes-model-rbac.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Akubernetes-model-rbac)
+[![javadoc](https://javadoc.io/badge2/io.fabric8/kubernetes-model-rbac/javadoc.svg)](https://javadoc.io/doc/io.fabric8/kubernetes-model-rbac)
+* kubernetes-model-scheduling: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/kubernetes-model-scheduling.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Akubernetes-model-scheduling)
+[![javadoc](https://javadoc.io/badge2/io.fabric8/kubernetes-model-scheduling/javadoc.svg)](https://javadoc.io/doc/io.fabric8/kubernetes-model-scheduling)
+* kubernetes-model-settings: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/kubernetes-model-settings.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Akubernetes-model-settings)
+[![javadoc](https://javadoc.io/badge2/io.fabric8/kubernetes-model-settings/javadoc.svg)](https://javadoc.io/doc/io.fabric8/kubernetes-model-settings)
+* kubernetes-model-storageclass: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/kubernetes-model-storageclass.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Akubernetes-model-storageclass)
+[![javadoc](https://javadoc.io/badge2/io.fabric8/kubernetes-model-storageclass/javadoc.svg)](https://javadoc.io/doc/io.fabric8/kubernetes-model-storageclass)
+* openshift-model: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/openshift-model.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Aopenshift-model)
+[![javadoc](https://javadoc.io/badge2/io.fabric8/openshift-model/javadoc.svg)](https://javadoc.io/doc/io.fabric8/openshift-model)
+
+Uses [Go reflection](https://blog.golang.org/laws-of-reflection) to generate a JSON schema that describes one or more
+API resources in Kubernetes and OpenShift.
+
+## Prerequisites
+
+- Install [Go](https://golang.org/doc/install)
+
+
+## Getting the code
+
+  ```
+  git clone https://github.com/fabric8io/kubernetes-client $GOPATH/src/github.com/fabric8io/kubernetes-client
+  ```
+
+
+## Building
+
+- Navigate into the cloned repo:
+
+  ```
+  cd $GOPATH/src/github.com/fabric8io/kubernetes-client/kubernetes-model-generator
+  ```
+
+- Run:
+  ```
+  sh generateModel.sh
+  ```
+
+  You should now be able to view the generated schema in `kube-schema.json`
+
+## Update dependency API's/ Updating Kubernetes/Openshift model
+
+You need to modify `go.mod` files. We fetch go sources from Kubernetes Github repos and make a
+JSON schema from it, which is then fed to jsonschema2pojo maven plugin. In order to upgrade you need to update
+tags/references from these repos:
+
+- [Kubernetes API](https://github.com/kubernetes/api)
+- [Kubernetes APIextensions](https://github.com/kubernetes/apiextensions-apiserver)
+- [Kubernetes pkg/watch](https://github.com/kubernetes/kubernetes/tree/master/pkg/watch/json)
+- [Kubernetes APIMachinery](https://github.com/kubernetes/apimachinery)
+- [Openshift API](https://github.com/openshift/api)
+- [Kubernetes Client Go](https://github.com/kubernetes/client-go)
+
+After modifying just run:
+```
+sh generateModel.sh
+```
+
+If everything works well, you would have model upgraded to specified Kubernetes/Openshift models.
+
+ ## Project Structure
+ 
+ The project contains the following "modules":
+ 
+ ### Go Schema Generator
+ 
+ This is the module that must be run first to generate the schema files that will be consumed
+ by Java (jsonschema2pojo and after sundr.io).
+ 
+ - `cmd/generate/generate.go` contains the main entry point and the descriptor of the schema.
+   Add new entries to the `Schema` struct and `schemagen.PackageDescriptor` to generate
+   an entry for any additional Go structs.
+ - `pkg/schemagen` package contains the source files with the logic to generate the schema.
+ 
+ ### Kubernetes-Model-Annotator
+ 
+ Defines a `KubernetesTypeAnnotator` with the sundr.io configuration.
+ 
+ jsonschema2pojo annotates all of the generated classes with this custom annotator
+ that is consumed by sundr.io.
+ 
+ ### Kubernetes-Model
+ 
+ This is the main project, its generated artifacts will be consumed by the rest of the
+ kubernetes-client modules.
+ 
+ The pom.xml file contains the necessary configuration to process the Go generated
+ schema and build the model with jsonschema2pojo and sundr.io.

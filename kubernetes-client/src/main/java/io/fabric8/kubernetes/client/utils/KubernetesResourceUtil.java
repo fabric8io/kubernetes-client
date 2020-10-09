@@ -16,11 +16,17 @@
 
 package io.fabric8.kubernetes.client.utils;
 
+import io.fabric8.kubernetes.api.model.EnvVar;
+import io.fabric8.kubernetes.api.model.EnvVarBuilder;
+import io.fabric8.kubernetes.api.model.Event;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.OwnerReference;
+import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -28,6 +34,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 public class KubernetesResourceUtil {
+  private KubernetesResourceUtil() {}
 
   public static final Pattern KUBERNETES_DNS1123_LABEL_REGEX = Pattern.compile("[a-z0-9]([-a-z0-9]*[a-z0-9])?");
 
@@ -50,6 +57,21 @@ public class KubernetesResourceUtil {
       }
     }
     return null;
+  }
+
+  /**
+   * Set resource version of a kubernetes resource
+   *
+   * @param entity entity provided
+   * @param resourceVersion updated resource version
+   */
+  public static void setResourceVersion(HasMetadata entity, String resourceVersion) {
+    if (entity != null) {
+      ObjectMeta metadata = entity.getMetadata();
+      if (metadata != null) {
+        metadata.setResourceVersion(resourceVersion);
+      }
+    }
   }
 
   /**
@@ -232,7 +254,7 @@ public class KubernetesResourceUtil {
         return labels;
       }
     }
-    return Collections.EMPTY_MAP;
+    return Collections.emptyMap();
   }
 
   /**
@@ -298,5 +320,40 @@ public class KubernetesResourceUtil {
       }
     }
     return null;
+  }
+
+  public static void sortEventListBasedOnTimestamp(List<Event> eventList) {
+    if (eventList != null) {
+      // Sort to get latest events in begining
+      eventList.sort((o1, o2) -> {
+          Instant d1 = Instant.parse(o1.getLastTimestamp());
+          Instant d2 = Instant.parse(o2.getLastTimestamp());
+          return (int) (d2.getEpochSecond() - d1.getEpochSecond());
+      });
+    }
+  }
+
+  public static List<EnvVar> convertMapToEnvVarList(Map<String, String> envVarMap) {
+    List<EnvVar> envVars = new ArrayList<>();
+    for (Map.Entry<String, String> entry : envVarMap.entrySet()) {
+      if (entry.getKey() != null && entry.getValue() != null) {
+        envVars.add(new EnvVarBuilder()
+          .withName(entry.getKey())
+          .withValue(entry.getValue())
+          .build());
+      }
+    }
+    return envVars;
+  }
+
+  /**
+   * Check whether a Kubernetes resource is Ready or not. Applicable only to
+   * Deployment, ReplicaSet, Pod, ReplicationController, Endpoints, Node and
+   * StatefulSet
+   * @param item item which needs to be checked
+   * @return boolean value indicating it's status
+   */
+  public static boolean isResourceReady(HasMetadata item) {
+    return Readiness.isReady(item);
   }
 }

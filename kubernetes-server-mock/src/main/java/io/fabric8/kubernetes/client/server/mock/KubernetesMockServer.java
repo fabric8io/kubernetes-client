@@ -29,6 +29,7 @@ import io.fabric8.mockwebserver.ServerResponse;
 import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockWebServer;
 
+import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
@@ -56,12 +57,16 @@ public class KubernetesMockServer extends DefaultMockServer {
         super(context, server, responses, useHttps);
     }
 
-  public KubernetesMockServer(Context context, MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses, Dispatcher dispatcher, boolean useHttps) {
-    super(context, server, responses, dispatcher, useHttps);
-  }
+    public KubernetesMockServer(Context context, MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses, Dispatcher dispatcher, boolean useHttps) {
+        super(context, server, responses, dispatcher, useHttps);
+    }
 
-  public void init() {
+    public void init() {
         start();
+    }
+
+    public void init(InetAddress address, int port) {
+        start(address, port);
     }
 
     public void destroy() {
@@ -85,7 +90,4 @@ public class KubernetesMockServer extends DefaultMockServer {
                 .build();
         return new DefaultKubernetesClient(createHttpClientForMockServer(config), config);
     }
-
-
-
 }

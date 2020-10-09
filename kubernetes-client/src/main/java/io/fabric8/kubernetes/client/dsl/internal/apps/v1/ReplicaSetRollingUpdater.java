@@ -25,7 +25,6 @@ import io.fabric8.kubernetes.api.model.apps.ReplicaSetBuilder;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.Operation;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
@@ -57,7 +56,7 @@ class ReplicaSetRollingUpdater extends RollingUpdater<ReplicaSet, ReplicaSetList
 
   @Override
   protected PodList listSelectedPods(ReplicaSet obj) {
-    FilterWatchListDeletable<Pod, PodList, Boolean, Watch, Watcher<Pod>> podLister = pods().inNamespace(namespace);
+    FilterWatchListDeletable<Pod, PodList, Boolean, Watch> podLister = pods().inNamespace(namespace);
     if (obj.getSpec().getSelector().getMatchLabels() != null) {
       podLister.withLabels(obj.getSpec().getSelector().getMatchLabels());
     }

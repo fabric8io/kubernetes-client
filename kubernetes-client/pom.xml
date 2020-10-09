@@ -21,7 +21,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>kubernetes-client-project</artifactId>
-    <version>4.10-SNAPSHOT</version>
+    <version>4.12-SNAPSHOT</version>
   </parent>
 
   <artifactId>kubernetes-client</artifactId>
@@ -29,9 +29,21 @@
   <name>Fabric8 :: Kubernetes :: Java Client</name>
 
   <properties>
+    <osgi.require-capability>
+      osgi.extender;
+      filter:="(osgi.extender=osgi.serviceloader.processor)",
+      osgi.serviceloader;
+      filter:="(osgi.serviceloader=io.fabric8.kubernetes.client.ResourceHandler)";
+      cardinality:=multiple
+    </osgi.require-capability>
+    <osgi.provide-capability>
+      osgi.serviceloader;
+      osgi.serviceloader=io.fabric8.kubernetes.client.ResourceHandler
+    </osgi.provide-capability>
     <osgi.import>
       !android.util*,
-      *
+      *,
+      io.fabric8.openshift.client.handlers;resolution:=optional,
     </osgi.import>
     <osgi.export>
       io.fabric8.kubernetes.client*;-noimport:=true,
@@ -119,10 +131,6 @@
       <artifactId>kubernetes-model-storageclass</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>openshift-model</artifactId>
-    </dependency>
-    <dependency>
       <groupId>com.squareup.okhttp3</groupId>
       <artifactId>okhttp</artifactId>
       <version>${okhttp.version}</version>
@@ -193,20 +201,14 @@
     <dependency>
       <groupId>io.sundr</groupId>
       <artifactId>builder-annotations</artifactId>
-      <scope>compile</scope>
-      <optional>true</optional>
-      <exclusions>
-        <exclusion>
-          <groupId>com.sun</groupId>
-          <artifactId>tools</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>io.sundr</groupId>
       <artifactId>transform-annotations</artifactId>
-      <scope>compile</scope>
-      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
     </dependency>
     <dependency>
       <groupId>org.apache.felix</groupId>
@@ -214,11 +216,6 @@
       <version>${scr.annotations.version}</version>
       <scope>compile</scope>
       <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <scope>provided</scope>
     </dependency>
 
     <!-- Testing Dependencies -->
@@ -248,6 +245,10 @@
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
     </dependency>
   </dependencies>
 
@@ -336,11 +337,17 @@
                 <Export-Package>${osgi.export}</Export-Package>
                 <Import-Package>${osgi.import}</Import-Package>
                 <DynamicImport-Package>${osgi.dynamic.import}</DynamicImport-Package>
+                <Require-Capability>${osgi.require-capability}</Require-Capability>
+                <Provide-Capability>${osgi.provide-capability}</Provide-Capability>
                 <Private-Package>${osgi.private}</Private-Package>
                 <Require-Bundle>${osgi.bundles}</Require-Bundle>
                 <Bundle-Activator>${osgi.activator}</Bundle-Activator>
                 <Export-Service>${osgi.export.service}</Export-Service>
-                <Include-Resource>/META-INF/services/io.fabric8.kubernetes.client.ResourceHandler=target/classes/META-INF/services/io.fabric8.kubernetes.client.ResourceHandler</Include-Resource>
+                <Include-Resource>
+                  /META-INF/services/io.fabric8.kubernetes.client.ResourceHandler=target/classes/META-INF/services/io.fabric8.kubernetes.client.ResourceHandler,
+                  /META-INF/services/io.fabric8.kubernetes.client.ServiceToURLProvider=target/classes/META-INF/services/io.fabric8.kubernetes.client.ServiceToURLProvider,
+                  /META-INF/services/io.fabric8.kubernetes.client.ExtensionAdapter=target/classes/META-INF/services/io.fabric8.kubernetes.client.ExtensionAdapter
+                </Include-Resource>
               </instructions>
               <classifier>bundle</classifier>
             </configuration>

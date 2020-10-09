@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.networking.v1beta1.Ingress;
 import io.fabric8.kubernetes.api.model.networking.v1beta1.IngressBuilder;
 import io.fabric8.kubernetes.api.model.networking.v1beta1.IngressList;
@@ -28,6 +29,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
+import java.net.HttpURLConnection;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -40,7 +44,18 @@ public class NetworkingV1beta1IngressTest {
   public KubernetesServer server = new KubernetesServer();
 
   @Test
-  public void testList() {
+  void testLoad() {
+    KubernetesClient client = server.getClient();
+    List<HasMetadata> itemList = client.load(getClass().getResourceAsStream("/test-v1beta1-ingress.yml")).get();
+
+    assertEquals(1, itemList.size());
+    Ingress ingress = (Ingress) itemList.get(0);
+    assertEquals("tls-example-ingress", ingress.getMetadata().getName());
+    assertEquals(1, ingress.getSpec().getTls().size());
+  }
+
+  @Test
+  void testList() {
     server.expect().withPath("/apis/networking.k8s.io/v1beta1/namespaces/test/ingresses").andReturn(200, new IngressListBuilder().build()).once();
     server.expect().withPath("/apis/networking.k8s.io/v1beta1/namespaces/ns1/ingresses").andReturn(200, new IngressListBuilder()
       .addNewItem().and()
@@ -68,7 +83,7 @@ public class NetworkingV1beta1IngressTest {
   }
 
   @Test
-  public void testListWithLables() {
+  void testListWithLables() {
     server.expect().withPath("/apis/networking.k8s.io/v1beta1/namespaces/test/ingresses?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new IngressListBuilder().build()).always();
     server.expect().withPath("/apis/networking.k8s.io/v1beta1/namespaces/test/ingresses?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new IngressListBuilder()
       .addNewItem().and()
@@ -98,7 +113,7 @@ public class NetworkingV1beta1IngressTest {
 
 
   @Test
-  public void testGet() {
+  void testGet() {
     server.expect().withPath("/apis/networking.k8s.io/v1beta1/namespaces/test/ingresses/ingress1").andReturn(200, new IngressBuilder().build()).once();
     server.expect().withPath("/apis/networking.k8s.io/v1beta1/namespaces/ns1/ingresses/ingress2").andReturn(200, new IngressBuilder().build()).once();
 
@@ -116,7 +131,7 @@ public class NetworkingV1beta1IngressTest {
 
 
   @Test
-  public void testDelete() {
+  void testDelete() {
     server.expect().withPath("/apis/networking.k8s.io/v1beta1/namespaces/test/ingresses/ingress1").andReturn(200, new IngressBuilder().build()).once();
     server.expect().withPath("/apis/networking.k8s.io/v1beta1/namespaces/ns1/ingresses/ingress2").andReturn(200, new IngressBuilder().build()).once();
 
@@ -134,7 +149,7 @@ public class NetworkingV1beta1IngressTest {
 
 
   @Test
-  public void testDeleteMulti() {
+  void testDeleteMulti() {
     Ingress ingress1 = new IngressBuilder().withNewMetadata().withName("ingress1").withNamespace("test").and().build();
     Ingress ingress2 = new IngressBuilder().withNewMetadata().withName("ingress2").withNamespace("ns1").and().build();
     Ingress ingress3 = new IngressBuilder().withNewMetadata().withName("ingress3").withNamespace("any").and().build();
@@ -152,7 +167,7 @@ public class NetworkingV1beta1IngressTest {
   }
 
   @Test
-  public void testDeleteWithNamespaceMismatch() {
+  void testDeleteWithNamespaceMismatch() {
     Assertions.assertThrows(KubernetesClientException.class, () -> {
       Ingress ingress1 = new IngressBuilder().withNewMetadata().withName("ingress1").withNamespace("test").and().build();
       Ingress ingress2 = new IngressBuilder().withNewMetadata().withName("ingress2").withNamespace("ns1").and().build();
@@ -164,7 +179,7 @@ public class NetworkingV1beta1IngressTest {
   }
 
   @Test
-  public void testCreateWithNameMismatch() {
+  void testCreateWithNameMismatch() {
     Assertions.assertThrows(KubernetesClientException.class, () -> {
       Ingress ingress1 = new IngressBuilder().withNewMetadata().withName("ingress1").withNamespace("test").and().build();
       Ingress ingress2 = new IngressBuilder().withNewMetadata().withName("ingress2").withNamespace("ns1").and().build();
@@ -172,6 +187,44 @@ public class NetworkingV1beta1IngressTest {
 
       client.network().ingress().inNamespace("test1").withName("myingress1").create(ingress1);
     });
+  }
+
+  @Test
+  void testIngressLoadWithoutApiVersion() {
+    // Given
+    KubernetesClient client = server.getClient();
+
+    // When
+    List<HasMetadata> items = client.load(getClass().getResourceAsStream("/test-ingress-no-apiversion.yml")).get();
+
+    // Then
+    assertNotNull(items);
+    assertEquals(1, items.size());
+    assertTrue(items.get(0) instanceof Ingress);
+  }
+
+  @Test
+  void testCreateOrReplaceWhenAnnotationUpdated() {
+    // Given
+    Ingress ingressFromServer = new IngressBuilder().withNewMetadata().withName("ing1").endMetadata().build();
+    Ingress ingressUpdated = new IngressBuilder(ingressFromServer).editOrNewMetadata()
+      .addToAnnotations("nginx.ingress.kubernetes.io/rewrite-target", "/")
+      .endMetadata().build();
+    server.expect().post().withPath("/apis/networking.k8s.io/v1beta1/namespaces/ns1/ingresses")
+      .andReturn(HttpURLConnection.HTTP_CONFLICT, ingressFromServer).once();
+    server.expect().get().withPath("/apis/networking.k8s.io/v1beta1/namespaces/ns1/ingresses/ing1")
+      .andReturn(HttpURLConnection.HTTP_OK, ingressFromServer).times(2);
+    server.expect().put().withPath("/apis/networking.k8s.io/v1beta1/namespaces/ns1/ingresses/ing1")
+      .andReturn(HttpURLConnection.HTTP_OK, ingressUpdated).once();
+    KubernetesClient client = server.getClient();
+
+    // When
+    ingressUpdated = client.network().ingresses().inNamespace("ns1").createOrReplace(ingressUpdated);
+
+    // Then
+    assertNotNull(ingressUpdated);
+    assertNotNull(ingressUpdated.getMetadata());
+    assertTrue(ingressUpdated.getMetadata().getAnnotations().containsKey("nginx.ingress.kubernetes.io/rewrite-target"));
   }
 
 }

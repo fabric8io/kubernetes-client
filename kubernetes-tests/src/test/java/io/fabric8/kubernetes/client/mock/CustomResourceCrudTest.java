@@ -15,36 +15,51 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
-import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinition;
-import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionBuilder;
-import io.fabric8.kubernetes.api.model.apiextensions.JSONSchemaProps;
-import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.dsl.MixedOperation;
-import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.mock.crd.CronTabSpec;
-import io.fabric8.kubernetes.client.mock.crd.DoneableCronTab;
-import io.fabric8.kubernetes.client.mock.crd.CronTab;
-import io.fabric8.kubernetes.client.mock.crd.CronTabList;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import io.fabric8.kubernetes.internal.KubernetesDeserializer;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.Rule;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
-import java.io.IOException;
-import java.net.URL;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
+import io.fabric8.kubernetes.client.dsl.internal.RawCustomResourceOperationsImpl;
+import io.fabric8.kubernetes.client.mock.crd.CronTab;
+import io.fabric8.kubernetes.client.mock.crd.CronTabList;
+import io.fabric8.kubernetes.client.mock.crd.CronTabSpec;
+import io.fabric8.kubernetes.client.mock.crd.DoneableCronTab;
+import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.internal.KubernetesDeserializer;
 
 @EnableRuleMigrationSupport
 public class CustomResourceCrudTest {
   @Rule
   public KubernetesServer kubernetesServer = new KubernetesServer(true,true);
+  
+  private CustomResourceDefinition cronTabCrd;
+  private CustomResourceDefinitionContext crdContext;
 
-  private MixedOperation<CronTab, CronTabList, DoneableCronTab, Resource<CronTab, DoneableCronTab>> podSetClient;
+  @BeforeEach
+  void setUp() {
+    KubernetesDeserializer.registerCustomKind("stable.example.com/v1", "CronTab", CronTab.class);
+    cronTabCrd = kubernetesServer.getClient()
+      .customResourceDefinitions()
+      .load(getClass().getResourceAsStream("/crontab-crd.yml"))
+      .get();
+    kubernetesServer.getClient().customResourceDefinitions().create(cronTabCrd);
+    crdContext = CustomResourceDefinitionContext.fromCrd(cronTabCrd);
+  }
 
   @Test
   public void testCrud() throws IOException {
@@ -53,12 +68,8 @@ public class CustomResourceCrudTest {
     CronTab cronTab3 = createCronTab("my-third-cron-object", "* * * * */3", 1, "my-third-cron-image");
     KubernetesClient client = kubernetesServer.getClient();
 
-    KubernetesDeserializer.registerCustomKind("stable.example.com/v1", "CronTab", CronTab.class);
-    CustomResourceDefinition cronTabCrd = client.customResourceDefinitions().load(getClass().getResourceAsStream("/crontab-crd.yml")).get();
-    client.customResourceDefinitions().create(cronTabCrd);
-
     MixedOperation<CronTab, CronTabList, DoneableCronTab, Resource<CronTab, DoneableCronTab>> cronTabClient = client
-      .customResources(cronTabCrd, CronTab.class, CronTabList.class, DoneableCronTab.class);
+      .customResources(crdContext, CronTab.class, CronTabList.class, DoneableCronTab.class);
 
     cronTabClient.inNamespace("test-ns").create(cronTab1);
     cronTabClient.inNamespace("test-ns").create(cronTab2);
@@ -85,6 +96,27 @@ public class CustomResourceCrudTest {
     assertEquals(2, cronTabList.getItems().size());
   }
 
+  @Test
+  void testCreateOrReplaceRaw() throws IOException {
+    RawCustomResourceOperationsImpl raw = kubernetesServer.getClient().customResource(CustomResourceDefinitionContext.fromCrd(cronTabCrd));
+
+    Map<String, Object> object = new HashMap<>();
+    Map<String, Object> metadata = new HashMap<>();
+    metadata.put("name", "foo");
+
+    object.put("metadata", metadata);
+    object.put("spec", "initial");
+
+    Map<String, Object> created = raw.createOrReplace(object);
+
+    assertEquals(object, created);
+
+    object.put("spec", "updated");
+
+    Map<String, Object> updated = raw.createOrReplace(object);
+    assertNotEquals(created, updated);
+    assertEquals(object, updated);
+  }
 
   @Test
   public void testCrudWithDashSymbolInCRDName() throws IOException {
@@ -92,10 +124,6 @@ public class CustomResourceCrudTest {
     CronTab cronTab2 = createCronTab("my-second-cron-object", "* * * * */4", 2, "my-second-cron-image");
     CronTab cronTab3 = createCronTab("my-third-cron-object", "* * * * */3", 1, "my-third-cron-image");
     KubernetesClient client = kubernetesServer.getClient();
-
-    KubernetesDeserializer.registerCustomKind("stable.example.com/v1", "CronTab", CronTab.class);
-    CustomResourceDefinition cronTabCrd = cronTabCRDWithDashSymbolName();
-    client.customResourceDefinitions().create(cronTabCrd);
 
     MixedOperation<CronTab, CronTabList, DoneableCronTab, Resource<CronTab, DoneableCronTab>> cronTabClient = client
       .customResources(cronTabCrd, CronTab.class, CronTabList.class, DoneableCronTab.class);
@@ -141,36 +169,5 @@ public class CustomResourceCrudTest {
     cronTabSpec.setReplicas(replicas);
     cronTab.setSpec(cronTabSpec);
     return cronTab;
-  }
-
-  public CustomResourceDefinition cronTabCRDWithDashSymbolName() throws IOException {
-      return new CustomResourceDefinitionBuilder()
-      .withApiVersion("apiextensions.k8s.io/v1beta1")
-      .withNewMetadata().withName("crontabs.stable.example.com")
-      .endMetadata()
-      .withNewSpec()
-      .withNewNames()
-      .withKind("CronTab")
-      .withPlural("cron-tabs")
-      .withSingular("cron-tab")
-      .endNames()
-      .withGroup("stable.example.com")
-      .withVersion("v1")
-      .withScope("Namespaced")
-      .withNewValidation()
-      .withNewOpenAPIV3SchemaLike(readSchema())
-      .endOpenAPIV3Schema()
-      .endValidation()
-      .endSpec()
-      .build();
-
-  }
-
-  private JSONSchemaProps readSchema() throws IOException {
-    ObjectMapper mapper = new ObjectMapper();
-    final URL resource = getClass().getResource("/test-crd-validation-schema.json");
-
-    final JSONSchemaProps jsonSchemaProps = mapper.readValue(resource, JSONSchemaProps.class);
-    return jsonSchemaProps;
   }
 }

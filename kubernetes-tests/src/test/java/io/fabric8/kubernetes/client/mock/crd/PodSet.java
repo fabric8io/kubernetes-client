@@ -15,10 +15,11 @@
  */
 package io.fabric8.kubernetes.client.mock.crd;
 
+import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.CustomResource;
 
-public class PodSet extends CustomResource {
+public class PodSet extends CustomResource implements Namespaced {
     public PodSetSpec getSpec() {
         return spec;
     }

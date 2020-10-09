@@ -16,23 +16,23 @@
 
 package io.fabric8.kubernetes;
 
-import io.fabric8.commons.DeleteEntity;
+import io.fabric8.commons.ClusterEntity;
 import io.fabric8.commons.ReadyEntity;
-import io.fabric8.kubernetes.api.model.*;
-import io.fabric8.kubernetes.api.model.extensions.Ingress;
+import io.fabric8.kubernetes.api.model.IntOrString;
+import io.fabric8.kubernetes.api.model.Service;
+import io.fabric8.kubernetes.api.model.ServiceBuilder;
+import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.openshift.api.model.RouteBuilder;
-import io.fabric8.openshift.client.OpenShiftClient;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
+import org.assertj.core.internal.bytebuddy.build.ToStringPlugin;
 import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 import static junit.framework.TestCase.assertNotNull;
@@ -50,80 +50,37 @@ public class ServiceIT {
   @ArquillianResource
   Session session;
 
-  private Service svc1, svc2;
+  private Service svc1;
 
-  private String currentNamespace;
-
-  @Before
-  public void init() {
-    currentNamespace = session.getNamespace();
-    svc1 = new ServiceBuilder()
-      .withNewMetadata()
-      .withName("svc1")
-      .endMetadata()
-      .withNewSpec()
-      .withSelector(Collections.singletonMap("app", "MyApp"))
-      .addNewPort()
-      .withName("http")
-      .withProtocol("TCP")
-      .withPort(80)
-      .withTargetPort(new IntOrString(9376))
-      .endPort()
-      .withType("LoadBalancer")
-      .endSpec()
-      .withNewStatus()
-      .withNewLoadBalancer()
-      .addNewIngress()
-      .withIp("146.148.47.155")
-      .endIngress()
-      .endLoadBalancer()
-      .endStatus()
-      .build();
-    svc2 = new ServiceBuilder()
-      .withNewMetadata().withName("svc2").endMetadata()
-      .withNewSpec().withType("ExternalName").withExternalName("my.database.example.com")
-      .addNewPort().withName("80").withProtocol("TCP").withPort(80).endPort()
-      .endSpec()
-      .withNewStatus()
-      .withNewLoadBalancer()
-      .addNewIngress()
-      .withIp("146.148.47.155")
-      .endIngress()
-      .endLoadBalancer()
-      .endStatus()
-      .build();
-
-    client.services().inNamespace(currentNamespace).createOrReplace(svc1);
-    client.services().inNamespace(currentNamespace).createOrReplace(svc2);
+  @BeforeClass
+  public static void init() {
+    ClusterEntity.apply(ServiceIT.class.getResourceAsStream("/service-it.yml"));
   }
 
   @Test
   public void load() {
-    String currentNamespace = session.getNamespace();
-    Service aService = client.services().inNamespace(currentNamespace).load(getClass().getResourceAsStream("/test-service.yml")).get();
+    Service aService = client.services().inNamespace(session.getNamespace()).load(getClass().getResourceAsStream("/test-service.yml")).get();
     assertThat(aService).isNotNull();
     assertEquals("my-service", aService.getMetadata().getName());
   }
 
   @Test
   public void get() {
-    svc1 = client.services().inNamespace(currentNamespace).withName("svc1").get();
+    svc1 = client.services().inNamespace(session.getNamespace()).withName("service-get").get();
     assertNotNull(svc1);
-    svc2 = client.services().inNamespace(currentNamespace).withName("svc2").get();
-    assertNotNull(svc2);
   }
 
   @Test
   public void list() {
-    ServiceList aServiceList = client.services().inNamespace(currentNamespace).list();
+    ServiceList aServiceList = client.services().inNamespace(session.getNamespace()).list();
     assertThat(aServiceList).isNotNull();
-    assertEquals(2, aServiceList.getItems().size());
+    assertTrue(aServiceList.getItems().size() >= 1);
   }
 
   @Test
   public void update() {
-    ReadyEntity<Service> serviceReady = new ReadyEntity<>(Service.class, client, "svc1", currentNamespace);
-    svc1 = client.services().inNamespace(currentNamespace).withName("svc1").edit()
+    ReadyEntity<Service> serviceReady = new ReadyEntity<>(Service.class, client, "service-update", session.getNamespace());
+    svc1 = client.services().inNamespace(session.getNamespace()).withName("service-update").edit()
       .editSpec().addNewPort().withName("https").withProtocol("TCP").withPort(443).withTargetPort(new IntOrString(9377)).endPort().endSpec()
       .done();
     await().atMost(30, TimeUnit.SECONDS).until(serviceReady);
@@ -133,57 +90,144 @@ public class ServiceIT {
 
   @Test
   public void delete() {
-    ReadyEntity<Service> serviceReady = new ReadyEntity<>(Service.class, client, "svc2", currentNamespace);
+    ReadyEntity<Service> serviceReady = new ReadyEntity<>(Service.class, client, "service-delete", session.getNamespace());
     await().atMost(30, TimeUnit.SECONDS).until(serviceReady);
-    boolean bDeleted = client.services().inNamespace(currentNamespace).withName("svc2").delete();
+    boolean bDeleted = client.services().inNamespace(session.getNamespace()).withName("service-delete").delete();
     assertTrue(bDeleted);
   }
 
   @Test
-  public void getURL() {
-    // Testing NodePort Impl
-    String url = client.services().inNamespace(currentNamespace).withName("svc1").getURL("http");
-    assertNotNull(url);
+  public void testChangeServiceType() {
+    // Given
+    Service svc = client.services().inNamespace(session.getNamespace()).withName("service-change-service-type").get();
 
-    // Testing Ingress Impl
-    Ingress ingress = client.extensions().ingresses().load(getClass().getResourceAsStream("/test-ingress.yml")).get();
-    client.extensions().ingresses().inNamespace(currentNamespace).create(ingress);
+    // When
+    svc.getSpec().setType("ExternalName");
+    svc.getSpec().setExternalName("my.database.example.com");
+    svc.getSpec().setClusterIP("");
+    svc = client.services().inNamespace(session.getNamespace()).createOrReplace(svc);
 
-    url = client.services().inNamespace(currentNamespace).withName("svc2").getURL("80");
-    assertNotNull(url);
+    // Then
+    assertNotNull(svc);
+    assertEquals("ExternalName", svc.getSpec().getType());
+    assertEquals("my.database.example.com", svc.getSpec().getExternalName());
+  }
 
-    // Testing OpenShift Route Impl
-    Service svc3 = client.services().inNamespace(currentNamespace).create(new ServiceBuilder()
-        .withNewMetadata().withName("svc3").endMetadata()
-        .withNewSpec()
-        .addNewPort().withName("80").withProtocol("TCP").withPort(80).endPort()
-        .endSpec()
-        .build());
-
-    OpenShiftClient openshiftClient = client.adapt(OpenShiftClient.class);
-    openshiftClient.routes().inNamespace(currentNamespace).create(new RouteBuilder()
-      .withNewMetadata().withName(svc3.getMetadata().getName()).endMetadata()
+  @Test
+  public void testClusterIPCreateOrReplace() {
+    // Given
+    Service clusterIPSvc = new ServiceBuilder()
+      .withNewMetadata().withName("serviceit-clusterip-createorreplace").endMetadata()
       .withNewSpec()
-      .withHost("www.example.com")
-      .withNewTo().withName(svc3.getMetadata().getName()).withKind("Service").endTo()
+      .addToSelector("app", "myapp")
+      .addNewPort()
+      .withName("http")
+      .withProtocol("TCP")
+      .withPort(80)
+      .withTargetPort(new IntOrString(9376))
+      .endPort()
       .endSpec()
-      .build());
+      .build();
 
-    url = client.services().inNamespace(currentNamespace).withName("svc3").getURL("80");
-    assertNotNull(url);
+    // When
+    // Create resource
+    client.services().inNamespace(session.getNamespace()).createOrReplace(clusterIPSvc);
+    // Modify resource
+    clusterIPSvc.getSpec().getPorts().get(0).setTargetPort(new IntOrString(9380));
+    // Do createOrReplace again; resource should get updated
+    clusterIPSvc = client.services().inNamespace(session.getNamespace()).createOrReplace(clusterIPSvc);
+
+    // Then
+    assertNotNull(clusterIPSvc);
+    assertEquals("ClusterIP", clusterIPSvc.getSpec().getType());
+    assertEquals(9380, clusterIPSvc.getSpec().getPorts().get(0).getTargetPort().getIntVal().intValue());
   }
 
-  @After
-  public void cleanup() throws InterruptedException {
-    if (client.services().inNamespace(currentNamespace).list().getItems().size()!= 0) {
-      client.services().inNamespace(currentNamespace).delete();
-    }
+  @Test
+  public void testNodePortCreateOrReplace() {
+    // Given
+    Service clusterIPSvc = new ServiceBuilder()
+      .withNewMetadata().withName("serviceit-nodeport-createorreplace").endMetadata()
+      .withNewSpec()
+      .withType("NodePort")
+      .addToSelector("app", "myapp")
+      .addNewPort()
+      .withPort(80)
+      .withTargetPort(new IntOrString(80))
+      .endPort()
+      .endSpec()
+      .build();
 
-    // Wait for resources to get destroyed
-    DeleteEntity<Service> service1Delete = new DeleteEntity<>(Service.class, client, "svc1", currentNamespace);
-    await().atMost(30, TimeUnit.SECONDS).until(service1Delete);
+    // When
+    // Create resource
+    client.services().inNamespace(session.getNamespace()).createOrReplace(clusterIPSvc);
+    // Modify resource
+    clusterIPSvc.getSpec().getPorts().get(0).setTargetPort(new IntOrString(81));
+    // Do createOrReplace again; resource should get updated
+    clusterIPSvc = client.services().inNamespace(session.getNamespace()).createOrReplace(clusterIPSvc);
 
-    DeleteEntity<Service> service2Delete = new DeleteEntity<>(Service.class, client, "svc2", currentNamespace);
-    await().atMost(30, TimeUnit.SECONDS).until(service2Delete);
+    // Then
+    assertNotNull(clusterIPSvc);
+    assertEquals("NodePort", clusterIPSvc.getSpec().getType());
+    assertEquals(81, clusterIPSvc.getSpec().getPorts().get(0).getTargetPort().getIntVal().intValue());
   }
+
+  @Test
+  public void testLoadBalancerCreateOrReplace() {
+    // Given
+    Service clusterIPSvc = new ServiceBuilder()
+      .withNewMetadata().withName("serviceit-loadbalancer-createorreplace").endMetadata()
+      .withNewSpec()
+      .withType("LoadBalancer")
+      .addToSelector("app", "myapp")
+      .addNewPort()
+      .withProtocol("TCP")
+      .withPort(80)
+      .withTargetPort(new IntOrString(9376))
+      .endPort()
+      .endSpec()
+      .build();
+
+    // When
+    // Create resource
+    client.services().inNamespace(session.getNamespace()).createOrReplace(clusterIPSvc);
+    // Modify resource
+    clusterIPSvc.getSpec().getPorts().get(0).setTargetPort(new IntOrString(9380));
+    // Do createOrReplace again; resource should get updated
+    clusterIPSvc = client.services().inNamespace(session.getNamespace()).createOrReplace(clusterIPSvc);
+
+    // Then
+    assertNotNull(clusterIPSvc);
+    assertEquals("LoadBalancer", clusterIPSvc.getSpec().getType());
+    assertEquals(9380, clusterIPSvc.getSpec().getPorts().get(0).getTargetPort().getIntVal().intValue());
+  }
+
+  @Test
+  public void testExternalNameCreateOrReplace() {
+    // Given
+    Service service = new ServiceBuilder()
+      .withNewMetadata().withName("serviceit-externalname-createorreplace").endMetadata()
+      .withNewSpec()
+      .withType("ExternalName")
+      .withExternalName("my.database.example.com")
+      .endSpec()
+      .build();
+
+    // When
+    client.services().inNamespace(session.getNamespace()).createOrReplace(service);
+    service.getSpec().setExternalName("his.database.example.com");
+    service = client.services().inNamespace(session.getNamespace()).createOrReplace(service);
+
+    // Then
+    assertNotNull(service);
+    assertEquals("serviceit-externalname-createorreplace", service.getMetadata().getName());
+    assertEquals("ExternalName", service.getSpec().getType());
+    assertEquals("his.database.example.com", service.getSpec().getExternalName());
+  }
+
+  @AfterClass
+  public static void cleanup() {
+    ClusterEntity.remove(ServiceIT.class.getResourceAsStream("/service-it.yml"));
+  }
+
 }

@@ -30,6 +30,7 @@ import io.fabric8.openshift.api.model.OAuthAccessToken;
 import io.fabric8.openshift.api.model.OAuthAuthorizeToken;
 import io.fabric8.openshift.api.model.OAuthClient;
 import io.fabric8.openshift.api.model.Project;
+import io.fabric8.openshift.api.model.ProjectRequest;
 import io.fabric8.openshift.api.model.Route;
 import io.fabric8.openshift.api.model.SecurityContextConstraints;
 import io.fabric8.openshift.api.model.User;
@@ -46,19 +47,20 @@ import io.fabric8.openshift.client.handlers.OAuthAccessTokenHandler;
 import io.fabric8.openshift.client.handlers.OAuthAuthorizeTokenHandler;
 import io.fabric8.openshift.client.handlers.OAuthClientHandler;
 import io.fabric8.openshift.client.handlers.ProjectHandler;
+import io.fabric8.openshift.client.handlers.ProjectRequestHandler;
 import io.fabric8.openshift.client.handlers.RouteHandler;
 import io.fabric8.openshift.client.handlers.SecurityContextConstraintsHandler;
 import io.fabric8.openshift.client.handlers.UserHandler;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.assertEquals;
 
 import java.util.Locale;
 
-public class HandlersTest {
+class HandlersTest {
 
   @Test
-  public void checkHandlers() {
+  void checkHandlers() {
     checkHandler(new BuildConfig(), new BuildConfigHandler());
     checkHandler(new Build(), new BuildHandler());
     checkHandler(new DeploymentConfig(), new DeploymentConfigHandler());
@@ -72,6 +74,7 @@ public class HandlersTest {
     checkHandler(new OAuthAuthorizeToken(), new OAuthAuthorizeTokenHandler());
     checkHandler(new OAuthClient(), new OAuthClientHandler());
     checkHandler(new Project(), new ProjectHandler());
+    checkHandler(new ProjectRequest(), new ProjectRequestHandler());
     checkHandler(new Route(), new RouteHandler());
     checkHandler(new SecurityContextConstraints(), new SecurityContextConstraintsHandler());
     checkHandler(new User(), new UserHandler());

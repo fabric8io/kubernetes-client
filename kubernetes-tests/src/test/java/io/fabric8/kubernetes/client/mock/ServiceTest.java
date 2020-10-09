@@ -15,37 +15,34 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
-import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
-import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.api.model.ListMeta;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
+import io.fabric8.kubernetes.api.model.extensions.IngressListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.dsl.ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import okhttp3.mockwebserver.RecordedRequest;
-import org.junit.Before;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
+import java.net.HttpURLConnection;
 import java.util.Collections;
-import java.util.List;
 
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
 @EnableRuleMigrationSupport
-public class ServiceTest {
+class ServiceTest {
   @Rule
   public KubernetesServer server = new KubernetesServer();
 
-  public Service service;
+  Service service;
 
-  @Before
-  public void prepareService() {
+  @BeforeEach
+  void prepareService() {
     service = new ServiceBuilder()
       .withNewMetadata()
       .withName("httpbin")
@@ -63,7 +60,7 @@ public class ServiceTest {
   }
 
   @Test
-  public void testLoad() {
+  void testLoad() {
     KubernetesClient client = server.getClient();
     Service svc = client.services().load(getClass().getResourceAsStream("/test-service.yml")).get();
     assertNotNull(svc);
@@ -71,7 +68,7 @@ public class ServiceTest {
   }
 
   @Test
-  public void testCreate() {
+  void testCreate() {
     server.expect().post()
       .withPath("/api/v1/namespaces/test/services")
       .andReturn(200, service)
@@ -84,33 +81,42 @@ public class ServiceTest {
   }
 
   @Test
-  public void testReplace() throws InterruptedException {
+  void testReplace() throws InterruptedException {
     Service serviceFromServer = new ServiceBuilder(service)
       .editOrNewSpec().withClusterIP("10.96.129.1").endSpec().build();
+    Service serviceUpdated = new ServiceBuilder(service)
+      .editOrNewSpec().withClusterIP("10.96.129.1").endSpec()
+      .editMetadata().addToAnnotations("foo", "bar").endMetadata()
+      .build();
 
     server.expect().get()
       .withPath("/api/v1/namespaces/test/services/httpbin")
-      .andReturn(200, serviceFromServer)
+      .andReturn(HttpURLConnection.HTTP_OK, serviceFromServer)
       .times(3);
+
+    server.expect().post()
+      .withPath("/api/v1/namespaces/test/services")
+      .andReturn(HttpURLConnection.HTTP_CONFLICT, serviceFromServer)
+      .once();
 
     server.expect().put()
       .withPath("/api/v1/namespaces/test/services/httpbin")
-      .andReturn(200, serviceFromServer)
+      .andReturn(HttpURLConnection.HTTP_OK, serviceUpdated)
       .once();
 
     KubernetesClient client = server.getClient();
-    Service responseSvc = client.services().inNamespace("test").createOrReplace(service);
+    Service responseSvc = client.services().inNamespace("test").createOrReplace(serviceUpdated);
     assertNotNull(responseSvc);
     assertEquals("httpbin", responseSvc.getMetadata().getName());
 
     RecordedRequest recordedRequest = server.getLastRequest();
     assertEquals("PUT", recordedRequest.getMethod());
-    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"Service\",\"metadata\":{\"labels\":{\"app\":\"httpbin\"},\"name\":\"httpbin\"},\"spec\":{\"clusterIP\":\"10.96.129.1\",\"ports\":[{\"name\":\"http\",\"port\":5511,\"targetPort\":8080}],\"selector\":{\"deploymentconfig\":\"httpbin\"}}}",
+    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"Service\",\"metadata\":{\"annotations\":{\"foo\":\"bar\"},\"labels\":{\"app\":\"httpbin\"},\"name\":\"httpbin\"},\"spec\":{\"clusterIP\":\"10.96.129.1\",\"ports\":[{\"name\":\"http\",\"port\":5511,\"targetPort\":8080}],\"selector\":{\"deploymentconfig\":\"httpbin\"}}}",
       recordedRequest.getBody().readUtf8());
   }
 
   @Test
-  public void testDelete() {
+  void testDelete() {
     server.expect().delete()
       .withPath("/api/v1/namespaces/test/services/httpbin")
       .andReturn(200, service)
@@ -122,7 +128,7 @@ public class ServiceTest {
   }
 
   @Test
-  public void testUpdate() {
+  void testUpdate() {
     Service serviceFromServer = new ServiceBuilder(service)
       .editOrNewMetadata().addToLabels("foo", "bar").endMetadata()
       .editOrNewSpec().withClusterIP("10.96.129.1").endSpec().build();
@@ -143,5 +149,34 @@ public class ServiceTest {
 
     assertNotNull(responseFromServer);
     assertEquals("bar", responseFromServer.getMetadata().getLabels().get("foo"));
+  }
+
+  @Test
+  void testGetUrlFromClusterIPService() {
+    // Given
+    Service service = new ServiceBuilder()
+      .withNewMetadata().withName("svc1").endMetadata()
+      .withNewSpec()
+      .withClusterIP("187.30.14.32")
+      .addNewPort()
+      .withName("http")
+      .withPort(8080)
+      .withProtocol("TCP")
+      .withNewTargetPort().withIntVal(8080).endTargetPort()
+      .endPort()
+      .withType("ClusterIP")
+      .endSpec()
+      .build();
+    server.expect().get().withPath("/api/v1/namespaces/ns1/services/svc1")
+      .andReturn(HttpURLConnection.HTTP_OK, service).always();
+    server.expect().get().withPath("/apis/extensions/v1beta1/namespaces/ns1/ingresses")
+      .andReturn(HttpURLConnection.HTTP_OK, new IngressListBuilder().build()).always();
+    KubernetesClient client = server.getClient();
+
+    // When
+    String url = client.services().inNamespace("ns1").withName("svc1").getURL("http");
+
+    // Then
+    assertEquals("tcp://187.30.14.32:8080", url);
   }
 }

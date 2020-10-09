@@ -16,11 +16,12 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
+import io.fabric8.kubernetes.api.model.ListOptions;
+import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.kubernetes.client.utils.Utils;
-import java.util.function.Predicate;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.net.HttpURLConnection;
+import java.util.function.Predicate;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -54,14 +55,12 @@ import io.fabric8.kubernetes.client.dsl.Waitable;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.handlers.KubernetesListHandler;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
-import io.fabric8.kubernetes.client.utils.ResourceCompare;
 import okhttp3.OkHttpClient;
 
-public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl extends OperationSupport implements NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata, Boolean>,
-Waitable<HasMetadata, HasMetadata>,
+public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl extends OperationSupport implements
+  NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata, Boolean>,
+  Waitable<HasMetadata, HasMetadata>,
   Readiable {
-
-  private static final Logger LOGGER = LoggerFactory.getLogger(NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl.class);
 
   private final String fallbackNamespace;
   private final String explicitNamespace;
@@ -74,6 +73,8 @@ Waitable<HasMetadata, HasMetadata>,
   private final long gracePeriodSeconds;
   private final DeletionPropagation propagationPolicy;
   private final Boolean cascading;
+  private final long watchRetryInitialBackoffMillis;
+  private final double watchRetryBackoffMultiplier;
 
   /**
    * We need to be able to either use an explicit namespace or fallback to the client default.
@@ -100,11 +101,11 @@ Waitable<HasMetadata, HasMetadata>,
     }
   }
 
-  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, InputStream is, Boolean cascading) {
-    this(client, config, namespace, explicitNamespace, fromServer, deletingExisting, visitors, unmarshal(is), -1, null, cascading);
+  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, InputStream is, Boolean cascading, long watchRetryInitialBackoffMillis, double watchRetryBackoffMultiplier) {
+    this(client, config, namespace, explicitNamespace, fromServer, deletingExisting, visitors, unmarshal(is), -1, null, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
 
-  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, Object item, long gracePeriodSeconds, DeletionPropagation propagationPolicy, Boolean cascading) {
+  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, Object item, long gracePeriodSeconds, DeletionPropagation propagationPolicy, Boolean cascading, long watchRetryInitialBackoffMillis, double watchRetryBackoffMultiplier) {
     super(client, config);
     this.fallbackNamespace = namespace;
     this.explicitNamespace = explicitNamespace;
@@ -114,6 +115,8 @@ Waitable<HasMetadata, HasMetadata>,
     this.item = item;
     this.handler = handlerOf(item);
     this.cascading = cascading;
+    this.watchRetryInitialBackoffMillis = watchRetryInitialBackoffMillis;
+    this.watchRetryBackoffMultiplier = watchRetryBackoffMultiplier;
     if (handler == null) {
       throw new KubernetesClientException("No handler found for object:" + item);
     }
@@ -131,28 +134,35 @@ Waitable<HasMetadata, HasMetadata>,
   public HasMetadata createOrReplace() {
     HasMetadata meta = acceptVisitors(asHasMetadata(item), visitors);
     ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
-    HasMetadata r = h.reload(client, config, meta.getMetadata().getNamespace(), meta);
     String namespaceToUse = meta.getMetadata().getNamespace();
 
-    if (r == null) {
+    String resourceVersion = KubernetesResourceUtil.getResourceVersion(meta);
+    try {
+      // Create
+      KubernetesResourceUtil.setResourceVersion(meta, null);
       return h.create(client, config, namespaceToUse, meta);
-    } else if (deletingExisting) {
-      Boolean deleted = h.delete(client, config, namespaceToUse, propagationPolicy, meta);
-      if (!deleted) {
-        throw new KubernetesClientException("Failed to delete existing item:" + meta);
+    } catch (KubernetesClientException exception) {
+      if (exception.getCode() != HttpURLConnection.HTTP_CONFLICT) {
+        throw exception;
       }
-      return h.create(client, config, namespaceToUse, meta);
-    } else if (ResourceCompare.equals(r, meta)) {
-      LOGGER.debug("Item has not changed. Skipping");
-      return meta;
-    } else {
-      return h.replace(client, config, namespaceToUse, meta);
+
+      // Conflict; check deleteExisting flag otherwise replace
+      if (Boolean.TRUE.equals(deletingExisting)) {
+        Boolean deleted = h.delete(client, config, namespaceToUse, propagationPolicy, meta);
+        if (Boolean.FALSE.equals(deleted)) {
+          throw new KubernetesClientException("Failed to delete existing item:" + meta);
+        }
+        return h.create(client, config, namespaceToUse, meta);
+      } else {
+        KubernetesResourceUtil.setResourceVersion(meta, resourceVersion);
+        return h.replace(client, config, namespaceToUse, meta);
+      }
     }
   }
 
   @Override
   public Waitable<HasMetadata, HasMetadata> createOrReplaceAnd() {
-    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, deletingExisting, visitors, createOrReplace(), gracePeriodSeconds, propagationPolicy, cascading);
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, deletingExisting, visitors, createOrReplace(), gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
 
   @Override
@@ -185,40 +195,46 @@ Waitable<HasMetadata, HasMetadata>,
 
   @Override
   public VisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata, Boolean> inNamespace(String explicitNamespace) {
-    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, deletingExisting, visitors, item, gracePeriodSeconds, propagationPolicy, cascading);
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, deletingExisting, visitors, item, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
 
   @Override
   public Gettable<HasMetadata> fromServer() {
-    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(client, config, fallbackNamespace, explicitNamespace, true, deletingExisting, visitors, item, gracePeriodSeconds, propagationPolicy, cascading);
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(client, config, fallbackNamespace, explicitNamespace, true, deletingExisting, visitors, item, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
 
   @Override
   public Applicable<HasMetadata> deletingExisting() {
-    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, gracePeriodSeconds, propagationPolicy, cascading);
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
 
   @Override
   public VisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata, Boolean> accept(Visitor visitor) {
     List<Visitor> newVisitors = new ArrayList<>(visitors);
     newVisitors.add(visitor);
-    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, newVisitors, item, gracePeriodSeconds, propagationPolicy, cascading);
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, newVisitors, item, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
 
   @Override
   public CascadingDeletable<Boolean> withGracePeriod(long gracePeriodSeconds) {
-    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, gracePeriodSeconds, propagationPolicy, cascading);
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
 
   @Override
   public CascadingDeletable<Boolean> withPropagationPolicy(DeletionPropagation propagationPolicy) {
-    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, gracePeriodSeconds, propagationPolicy, cascading);
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
 
 
   @Override
   public Deletable<Boolean> cascading(boolean cascading) {
-    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, gracePeriodSeconds, propagationPolicy, cascading);
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
+  }
+
+  @Override
+  public Waitable<HasMetadata, HasMetadata> withWaitRetryBackoff(long initialBackoff, TimeUnit backoffUnit, double backoffMultiplier) {
+    long watchRetryInitialBackoffMillis = backoffUnit.toMillis(initialBackoff);
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, backoffMultiplier);
   }
 
   @Override
@@ -232,7 +248,14 @@ Waitable<HasMetadata, HasMetadata>,
   public Watch watch(String resourceVersion, Watcher<HasMetadata> watcher) {
     HasMetadata meta = acceptVisitors(asHasMetadata(item), visitors);
     ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
-    return h.watch(client, config, meta.getMetadata().getNamespace(), meta, watcher);
+    return h.watch(client, config, meta.getMetadata().getNamespace(), meta, resourceVersion, watcher);
+  }
+
+  @Override
+  public Watch watch(ListOptions options, Watcher<HasMetadata> watcher) {
+    HasMetadata meta = acceptVisitors(asHasMetadata(item), visitors);
+    ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
+    return h.watch(client, config, meta.getMetadata().getNamespace(), meta, options, watcher);
   }
 
   @Override

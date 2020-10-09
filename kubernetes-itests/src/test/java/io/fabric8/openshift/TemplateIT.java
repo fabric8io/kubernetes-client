@@ -16,10 +16,10 @@
 
 package io.fabric8.openshift;
 
-import io.fabric8.commons.DeleteEntity;
+import io.fabric8.commons.ClusterEntity;
 import io.fabric8.commons.ReadyEntity;
-import io.fabric8.kubernetes.api.model.Service;
-import io.fabric8.kubernetes.api.model.ServiceBuilder;
+import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateBuilder;
 import io.fabric8.openshift.api.model.TemplateList;
@@ -28,16 +28,13 @@ import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.openshift.impl.requirement.RequiresOpenshift;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
-
-import static io.fabric8.kubernetes.client.utils.ReplaceValueStream.replaceValues;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -55,35 +52,16 @@ public class TemplateIT {
 
   private Template template1;
 
-  private String currentNamespace;
-
-  @Before
-  public void init() {
-    currentNamespace = session.getNamespace();
-    Service aService = new ServiceBuilder()
-      .withNewMetadata().withName("bar").endMetadata()
-      .withNewSpec()
-      .addNewPort()
-      .withPort(80).endPort()
-      .addToSelector("cheese", "edam")
-      .withType("ExternalName")
-      .endSpec()
-      .build();
-
-    template1 = new TemplateBuilder()
-      .withApiVersion("template.openshift.io/v1")
-      .withNewMetadata().withName("foo").endMetadata()
-      .addToObjects(aService)
-      .build();
-
-    client.templates().inNamespace(currentNamespace).create(template1);
+  @BeforeClass
+  public static void init() {
+    ClusterEntity.apply(TemplateIT.class.getResourceAsStream("/template-it.yml"));
   }
 
   @Test
   public void load() {
     Template template = client.templates()
       .withParameters(Collections.singletonMap("REDIS_PASSWORD", "secret"))
-      .inNamespace(currentNamespace)
+      .inNamespace(session.getNamespace())
       .load(getClass().getResourceAsStream("/test-template.yml")).get();
     assertThat(template).isNotNull();
     assertEquals(1, template.getObjects().size());
@@ -91,32 +69,63 @@ public class TemplateIT {
 
   @Test
   public void get() {
-    template1 = client.templates().inNamespace(currentNamespace).withName("foo").get();
+    template1 = client.templates().inNamespace(session.getNamespace()).withName("template-get").get();
     assertNotNull(template1);
   }
 
   @Test
   public void list() {
-    TemplateList aList = client.templates().inNamespace(currentNamespace).list();
+    TemplateList aList = client.templates().inNamespace(session.getNamespace()).list();
     assertThat(aList).isNotNull();
-    assertEquals(1, aList.getItems().size());
+    assertTrue(aList.getItems().size() >= 1);
   }
 
   @Test
   public void delete() {
-    ReadyEntity<Template> template1Ready = new ReadyEntity<>(Template.class, client, "foo", this.currentNamespace);
+    ReadyEntity<Template> template1Ready = new ReadyEntity<>(Template.class, client, "template-delete", this.session.getNamespace());
     await().atMost(30, TimeUnit.SECONDS).until(template1Ready);
-    boolean bDeleted = client.templates().inNamespace(currentNamespace).withName("foo").delete();
+    boolean bDeleted = client.templates().inNamespace(session.getNamespace()).withName("template-delete").delete();
     assertTrue(bDeleted);
   }
 
-  @After
-  public void cleanup() throws InterruptedException {
-    if (client.templates().inNamespace(currentNamespace).list().getItems().size()!= 0) {
-      client.templates().inNamespace(currentNamespace).withName("foo").delete();
-    }
+  @Test
+  public void testCreateWithVersionV1() {
+    // Given
+    Pod pod = new PodBuilder()
+      .withNewMetadata().withName("redis-master").endMetadata()
+      .withNewSpec()
+      .addNewContainer()
+      .addNewEnv().withName("REDIS_PASSWORD").withValue("${REDIS_PASSWORD}").endEnv()
+      .withImage("dockerfile/redis")
+      .addNewPort()
+      .withContainerPort(6379)
+      .withProtocol("TCP")
+      .endPort()
+      .endContainer()
+      .endSpec()
+      .build();
+    Template template =  new TemplateBuilder()
+      .withNewMetadata()
+      .withName("templateit-createv1")
+      .addToAnnotations("description", "Description")
+      .addToAnnotations("iconClass", "icon-redis")
+      .addToAnnotations("tags", "database,nosql")
+      .endMetadata()
+      .addToObjects(pod)
+      .addNewParameter()
+      .withDescription("Password used for Redis authentication")
+      .withFrom("[A-Z0-9]{8}")
+      .withGenerate("expression")
+      .withName("REDIS_PASSWORD")
+      .endParameter()
+      .addToLabels("redis", "master")
+      .build();
 
-    DeleteEntity<Template> templateDelete = new DeleteEntity<>(Template.class, client, "foo", currentNamespace);
-    await().atMost(30, TimeUnit.SECONDS).until(templateDelete);
+    // When
+    // Set v1 Api
+    template.setApiVersion("v1");
+    template = client.templates().inNamespace(session.getNamespace()).create(template);
+    assertNotNull(template);
+    assertEquals("template.openshift.io/v1", template.getApiVersion());
   }
 }

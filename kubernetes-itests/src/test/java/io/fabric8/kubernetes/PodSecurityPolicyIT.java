@@ -16,12 +16,11 @@
 
 package io.fabric8.kubernetes;
 
+import io.fabric8.commons.ClusterEntity;
 import io.fabric8.commons.DeleteEntity;
 import io.fabric8.kubernetes.api.model.policy.PodSecurityPolicy;
-import io.fabric8.kubernetes.api.model.policy.PodSecurityPolicyBuilder;
 import io.fabric8.kubernetes.api.model.policy.PodSecurityPolicyList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -31,8 +30,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import org.junit.Before;
-import org.junit.After;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -46,28 +46,9 @@ public class PodSecurityPolicyIT {
   @ArquillianResource
   KubernetesClient client;
 
-  @ArquillianResource
-  Session session;
-
-  private PodSecurityPolicy podSecurityPolicy;
-
-  @Before
-  public void init(){
-
-    podSecurityPolicy = new PodSecurityPolicyBuilder().withNewMetadata()
-      .withName("test-example")
-      .addToLabels("foo","bar")
-      .endMetadata()
-      .withNewSpec()
-      .withPrivileged(false)
-      .withNewRunAsUser().withRule("RunAsAny").endRunAsUser()
-      .withNewFsGroup().withRule("RunAsAny").endFsGroup()
-      .withNewSeLinux().withRule("RunAsAny").endSeLinux()
-      .withNewSupplementalGroups().withRule("RunAsAny").endSupplementalGroups()
-      .endSpec()
-      .build();
-
-    client.policy().podSecurityPolicies().create(podSecurityPolicy);
+  @BeforeClass
+  public static void init() {
+    ClusterEntity.apply(PodSecurityPolicyIT.class.getResourceAsStream("/podsecuritypolicy-it.yml"));
   }
 
   @Test
@@ -87,11 +68,10 @@ public class PodSecurityPolicyIT {
 
   @Test
   public void get() {
-
     PodSecurityPolicy getPodSecurityPolicy = client.policy().podSecurityPolicies()
-      .withName("test-example").get();
+      .withName("psp-get").get();
     assertNotNull(getPodSecurityPolicy);
-    assertEquals("test-example", getPodSecurityPolicy.getMetadata().getName());
+    assertEquals("psp-get", getPodSecurityPolicy.getMetadata().getName());
   }
 
   @Test
@@ -101,7 +81,7 @@ public class PodSecurityPolicyIT {
       .withLabels(Collections.singletonMap("foo","bar")).list();
     assertNotNull(podSecurityPolicyList);
     assertEquals(1,podSecurityPolicyList.getItems().size());
-    assertEquals("test-example",podSecurityPolicyList.getItems().get(0).getMetadata().getName());
+    assertEquals("psp-list",podSecurityPolicyList.getItems().get(0).getMetadata().getName());
     assertEquals("RunAsAny",podSecurityPolicyList.getItems().get(0).getSpec().getRunAsUser().getRule());
     assertEquals("RunAsAny",podSecurityPolicyList.getItems().get(0).getSpec().getFsGroup().getRule());
     assertEquals("RunAsAny",podSecurityPolicyList.getItems().get(0).getSpec().getSeLinux().getRule());
@@ -111,34 +91,31 @@ public class PodSecurityPolicyIT {
   @Test
   public void update(){
 
-    podSecurityPolicy = client.policy().podSecurityPolicies().withName("test-example").edit()
+    PodSecurityPolicy podSecurityPolicy = client.policy().podSecurityPolicies().withName("psp-update").edit()
       .editSpec().withPrivileged(true).endSpec()
       .done();
 
     assertNotNull(podSecurityPolicy);
-    assertEquals("test-example",podSecurityPolicy.getMetadata().getName());
+    assertEquals("psp-update", podSecurityPolicy.getMetadata().getName());
     assertTrue(podSecurityPolicy.getSpec().getPrivileged());
-    assertEquals("RunAsAny",podSecurityPolicy.getSpec().getRunAsUser().getRule());
-    assertEquals("RunAsAny",podSecurityPolicy.getSpec().getFsGroup().getRule());
-    assertEquals("RunAsAny",podSecurityPolicy.getSpec().getSeLinux().getRule());
-    assertEquals("RunAsAny",podSecurityPolicy.getSpec().getSupplementalGroups().getRule());
+    assertEquals("RunAsAny", podSecurityPolicy.getSpec().getRunAsUser().getRule());
+    assertEquals("RunAsAny", podSecurityPolicy.getSpec().getFsGroup().getRule());
+    assertEquals("RunAsAny", podSecurityPolicy.getSpec().getSeLinux().getRule());
+    assertEquals("RunAsAny", podSecurityPolicy.getSpec().getSupplementalGroups().getRule());
   }
 
   @Test
   public void delete(){
-    boolean deleted = client.policy().podSecurityPolicies().delete(podSecurityPolicy);
+    boolean deleted = client.policy().podSecurityPolicies().withName("psp-delete").delete();
     assertTrue(deleted);
 
-    DeleteEntity<PodSecurityPolicy> deleteEntity = new DeleteEntity<>(PodSecurityPolicy.class, client, "test-example", null);
+    DeleteEntity<PodSecurityPolicy> deleteEntity = new DeleteEntity<>(PodSecurityPolicy.class, client, "psp-delete", null);
     await().atMost(30, TimeUnit.SECONDS).until(deleteEntity);
-    PodSecurityPolicyList podSecurityPolicyList = client.policy().podSecurityPolicies().list();
-    assertEquals(0,podSecurityPolicyList.getItems().size());
   }
 
-  @After
-  public void cleanup() {
-    client.policy().podSecurityPolicies().withName("test-example").delete();
-    DeleteEntity<PodSecurityPolicy> deleteEntity = new DeleteEntity<>(PodSecurityPolicy.class, client, "test-example", null);
-    await().atMost(30, TimeUnit.SECONDS).until(deleteEntity);
+  @AfterClass
+  public static void cleanup() {
+    ClusterEntity.remove(PodSecurityPolicyIT.class.getResourceAsStream("/podsecuritypolicy-it.yml"));
   }
+
 }

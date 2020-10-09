@@ -18,5 +18,10 @@ package io.fabric8.kubernetes.client.dsl;
 
 public interface Tailable<T> {
 
+  /**
+   * Get logs lines of recent log file to display.
+   * @param lines number of lines to tail
+   * @return returns pod log operation with specified PodLogOption configured
+   */
     T tailingLines(int lines);
 }

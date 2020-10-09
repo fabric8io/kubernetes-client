@@ -67,7 +67,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
       return listerWatcher.list(new ListOptionsBuilder()
         .withWatch(Boolean.FALSE)
         .withResourceVersion(null)
-        .withTimeoutSeconds(null).build(), null, operationContext);
+        .withTimeoutSeconds(null).build(), operationContext.getNamespace(), operationContext);
     } catch (Exception exception) {
       store.isPopulated(false);
       throw new RejectedExecutionException("Error while doing ReflectorRunnable list", exception);
@@ -122,7 +122,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
       watch.set(
         listerWatcher.watch(new ListOptionsBuilder()
           .withWatch(Boolean.TRUE).withResourceVersion(lastSyncResourceVersion.get()).withTimeoutSeconds(null).build(),
-        null, operationContext, watcher)
+        operationContext.getNamespace(), operationContext, watcher)
       );
     }
   }

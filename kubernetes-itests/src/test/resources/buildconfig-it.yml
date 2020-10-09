@@ -1,0 +1,162 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+---
+kind: "BuildConfig"
+apiVersion: "v1"
+metadata:
+  name: bc-get
+spec:
+  triggers:
+    - type: "GitHub"
+      github:
+        secret: "secret101"
+    - type: "Generic"
+      generic:
+        secret: "secret101"
+    - type: "ImageChange"
+  source:
+    type: "Git"
+    git:
+      uri: "https://github.com/openshift/ruby-hello-world"
+    dockerfile: "FROM openshift/ruby-22-centos7\nUSER example"
+  strategy:
+    type: "Source"
+    sourceStrategy:
+      from:
+        kind: "ImageStreamTag"
+        name: "ruby-20-centos7:latest"
+  output:
+    to:
+      kind: "ImageStreamTag"
+      name: "origin-ruby-sample:latest"
+---
+kind: "BuildConfig"
+apiVersion: "v1"
+metadata:
+  name: bc-list
+spec:
+  triggers:
+    - type: "GitHub"
+      github:
+        secret: "secret101"
+    - type: "Generic"
+      generic:
+        secret: "secret101"
+    - type: "ImageChange"
+  source:
+    type: "Git"
+    git:
+      uri: "https://github.com/openshift/ruby-hello-world"
+    dockerfile: "FROM openshift/ruby-22-centos7\nUSER example"
+  strategy:
+    type: "Source"
+    sourceStrategy:
+      from:
+        kind: "ImageStreamTag"
+        name: "ruby-20-centos7:latest"
+  output:
+    to:
+      kind: "ImageStreamTag"
+      name: "origin-ruby-sample:latest"
+---
+kind: "BuildConfig"
+apiVersion: "v1"
+metadata:
+  name: bc-update
+spec:
+  triggers:
+    - type: "GitHub"
+      github:
+        secret: "secret101"
+    - type: "Generic"
+      generic:
+        secret: "secret101"
+    - type: "ImageChange"
+  source:
+    type: "Git"
+    git:
+      uri: "https://github.com/openshift/ruby-hello-world"
+    dockerfile: "FROM openshift/ruby-22-centos7\nUSER example"
+  strategy:
+    type: "Source"
+    sourceStrategy:
+      from:
+        kind: "ImageStreamTag"
+        name: "ruby-20-centos7:latest"
+  output:
+    to:
+      kind: "ImageStreamTag"
+      name: "origin-ruby-sample:latest"
+---
+kind: "BuildConfig"
+apiVersion: "v1"
+metadata:
+  name: bc-delete
+spec:
+  triggers:
+    - type: "GitHub"
+      github:
+        secret: "secret101"
+    - type: "Generic"
+      generic:
+        secret: "secret101"
+    - type: "ImageChange"
+  source:
+    type: "Git"
+    git:
+      uri: "https://github.com/openshift/ruby-hello-world"
+    dockerfile: "FROM openshift/ruby-22-centos7\nUSER example"
+  strategy:
+    type: "Source"
+    sourceStrategy:
+      from:
+        kind: "ImageStreamTag"
+        name: "ruby-20-centos7:latest"
+  output:
+    to:
+      kind: "ImageStreamTag"
+      name: "origin-ruby-sample:latest"
+---
+kind: "BuildConfig"
+apiVersion: "v1"
+metadata:
+  name: bc-createorreplace
+spec:
+  triggers:
+    - type: "GitHub"
+      github:
+        secret: "secret101"
+    - type: "Generic"
+      generic:
+        secret: "secret101"
+    - type: "ImageChange"
+  source:
+    type: "Git"
+    git:
+      uri: "https://github.com/openshift/ruby-hello-world"
+    dockerfile: "FROM openshift/ruby-22-centos7\nUSER example"
+  strategy:
+    type: "Source"
+    sourceStrategy:
+      from:
+        kind: "ImageStreamTag"
+        name: "ruby-20-centos7:latest"
+  output:
+    to:
+      kind: "ImageStreamTag"
+      name: "origin-ruby-sample:latest"
+

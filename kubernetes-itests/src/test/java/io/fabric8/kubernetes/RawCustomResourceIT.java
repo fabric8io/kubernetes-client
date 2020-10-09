@@ -15,10 +15,14 @@
  */
 package io.fabric8.kubernetes;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinition;
-import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
@@ -28,13 +32,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 
 @RunWith(ArquillianConditionalRunner.class)
 @RequiresKubernetes
@@ -48,8 +50,6 @@ public class RawCustomResourceIT {
   private String currentNamespace;
 
   private CustomResourceDefinitionContext customResourceDefinitionContext;
-
-  private CustomResourceDefinitionContext customResourceDefinitionContextWithOpenAPIV3Schema;
 
   @Before
   public void initCustomResourceDefinition() {
@@ -66,18 +66,6 @@ public class RawCustomResourceIT {
       .withPlural("animals")
       .withScope("Namespaced")
       .build();
-
-    // Create a Custom Resource Definition with OpenAPIV3 validation schema
-    CustomResourceDefinition aComplexCrd = client.customResourceDefinitions().load(getClass().getResourceAsStream("/kafka-crd.yml")).get();
-    client.customResourceDefinitions().create(aComplexCrd);
-
-    customResourceDefinitionContextWithOpenAPIV3Schema = new CustomResourceDefinitionContext.Builder()
-      .withName("kafkas.kafka.strimzi.io")
-      .withGroup("kafka.strimzi.io")
-      .withPlural("kafkas")
-      .withScope("Namespaced")
-      .withVersion("v1beta1")
-      .build();
   }
 
   @Test
@@ -85,12 +73,20 @@ public class RawCustomResourceIT {
     // Test Create via file
     Map<String, Object> object = client.customResource(customResourceDefinitionContext).create(currentNamespace, getClass().getResourceAsStream("/test-rawcustomresource.yml"));
     assertThat(((HashMap<String, String>)object.get("metadata")).get("name")).isEqualTo("otter");
+
     // Test Create via raw json string
     String rawJsonCustomResourceObj = "{\"apiVersion\":\"jungle.example.com/v1\"," +
       "\"kind\":\"Animal\",\"metadata\": {\"name\": \"walrus\"}," +
       "\"spec\": {\"image\": \"my-awesome-walrus-image\"}}";
-    object = client.customResource(customResourceDefinitionContext).create(currentNamespace, rawJsonCustomResourceObj);
+    object = client.customResource(customResourceDefinitionContext).createOrReplace(currentNamespace, rawJsonCustomResourceObj);
     assertThat(((HashMap<String, String>)object.get("metadata")).get("name")).isEqualTo("walrus");
+    assertThat(((HashMap<String, String>)object.get("spec")).get("image")).isEqualTo("my-awesome-walrus-image");
+
+    // Test replace with object
+    ((HashMap<String, String>)object.get("spec")).put("image", "new-walrus-image");
+    object = client.customResource(customResourceDefinitionContext).createOrReplace(currentNamespace, object);
+    assertThat(((HashMap<String, String>)object.get("metadata")).get("name")).isEqualTo("walrus");
+    assertThat(((HashMap<String, String>)object.get("spec")).get("image")).isEqualTo("new-walrus-image");
 
     // Test Get:
     object = client.customResource(customResourceDefinitionContext).get(currentNamespace, "otter");
@@ -110,14 +106,8 @@ public class RawCustomResourceIT {
     object = client.customResource(customResourceDefinitionContext).edit(currentNamespace, "walrus", new ObjectMapper().writeValueAsString(object));
     assertThat(((HashMap<String, Object>)object.get("spec")).get("image")).isEqualTo("my-updated-awesome-walrus-image");
 
-    // Test creation with openAPIV3Schema
-    Map<String, Object> ret = client.customResource(customResourceDefinitionContextWithOpenAPIV3Schema).create(currentNamespace, getClass().getResourceAsStream("/kafka-cr.yml"));
-    assertThat(ret).isNotNull();
-    assertThat(((Map<String, Object>)ret.get("metadata")).get("name")).isEqualTo("kafka-single");
-
     // Test Delete:
     client.customResource(customResourceDefinitionContext).delete(currentNamespace, "otter");
-    client.customResource(customResourceDefinitionContextWithOpenAPIV3Schema).delete(currentNamespace, "kafka-single");
     client.customResource(customResourceDefinitionContext).delete(currentNamespace);
   }
 
@@ -125,6 +115,5 @@ public class RawCustomResourceIT {
   public void cleanup() {
     // Delete Custom Resource Definition Animals:
     client.customResourceDefinitions().withName(customResourceDefinitionContext.getName()).delete();
-    client.customResourceDefinitions().withName(customResourceDefinitionContextWithOpenAPIV3Schema.getName()).delete();
   }
 }

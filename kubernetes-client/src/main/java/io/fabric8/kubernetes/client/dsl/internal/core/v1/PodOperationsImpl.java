@@ -15,6 +15,8 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal.core.v1;
 
+import static io.fabric8.kubernetes.client.utils.OptionalDependencyWrapper.wrapRunWithOptionalDependency;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -23,16 +25,22 @@ import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.Reader;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
+import io.fabric8.kubernetes.api.model.DeleteOptions;
 import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.api.model.policy.Eviction;
+import io.fabric8.kubernetes.api.model.policy.EvictionBuilder;
 import io.fabric8.kubernetes.client.Callback;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -60,21 +68,23 @@ import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.ExecWebSocketListener;
 import io.fabric8.kubernetes.client.dsl.internal.LogWatchCallback;
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
+import io.fabric8.kubernetes.client.utils.PodOperationUtil;
 import io.fabric8.kubernetes.client.dsl.internal.PortForwarderWebsocket;
 import io.fabric8.kubernetes.client.dsl.internal.uploadable.PodUpload;
 import io.fabric8.kubernetes.client.utils.BlockingInputStreamPumper;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
-import okhttp3.HttpUrl;
-
-import static io.fabric8.kubernetes.client.utils.OptionalDependencyWrapper.wrapRunWithOptionalDependency;
 
 public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, DoneablePod, PodResource<Pod, DoneablePod>> implements PodResource<Pod, DoneablePod>,CopyOrReadable<Boolean,InputStream, Boolean> {
 
+    public static final int HTTP_TOO_MANY_REQUESTS = 429;
+    private static final Integer DEFAULT_POD_LOG_WAIT_TIMEOUT = 5;
     private static final String[] EMPTY_COMMAND = {"/bin/sh", "-i"};
 
     private final String containerId;
@@ -177,8 +187,8 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
       ResponseBody body = response.body();
       assertResponseCode(request, response);
       return body;
-    } catch (Throwable t) {
-      throw KubernetesClientException.launderThrowable(forOperationType("doGetLog"), t);
+    } catch (IOException ioException) {
+      throw KubernetesClientException.launderThrowable(forOperationType("doGetLog"), ioException);
     }
   }
 
@@ -213,6 +223,9 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
   @Override
   public LogWatch watchLog(OutputStream out) {
     try {
+      PodOperationUtil.waitUntilReadyBeforeFetchingLogs(this, getContext().getLogWaitTimeout() != null ?
+        getContext().getLogWaitTimeout() : DEFAULT_POD_LOG_WAIT_TIMEOUT);
+      // Issue Pod Logs HTTP request
       URL url = new URL(URLUtils.join(getResourceUrl().toString(), getLogParameters() + "&follow=true"));
       Request request = new Request.Builder().url(url).get().build();
       final LogWatchCallback callback = new LogWatchCallback(out);
@@ -220,9 +233,14 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
       clone.newCall(request).enqueue(callback);
       callback.waitUntilReady();
       return callback;
-    } catch (Throwable t) {
-      throw KubernetesClientException.launderThrowable(forOperationType("watchLog"), t);
+    } catch (IOException ioException) {
+      throw KubernetesClientException.launderThrowable(forOperationType("watchLog"), ioException);
     }
+  }
+
+  @Override
+  public Loggable<String, LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
+    return new PodOperationsImpl(getContext().withLogWaitTimeout(logWaitTimeout));
   }
 
   @Override
@@ -250,6 +268,49 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
+  }
+
+  @Override
+  public Boolean evict() {
+    try {
+      evictThis();
+      return true;
+    } catch (KubernetesClientException e) {
+      if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND && e.getCode() != HTTP_TOO_MANY_REQUESTS) {
+        throw e;
+      }
+      return false;
+    }
+  }
+
+  private void evictThis() {
+    try {
+      if (Utils.isNullOrEmpty(getNamespace())) {
+        throw new KubernetesClientException("Namespace not specified, but operation requires it.");
+      }
+      if (Utils.isNullOrEmpty(getName())) {
+        throw new KubernetesClientException("Name not specified, but operation requires it.");
+      }
+      handleEvict(getResourceUrl(), getNamespace(), getName());
+    } catch (Exception e) {
+      throw KubernetesClientException.launderThrowable(forOperationType("evict"), e);
+    }
+  }
+
+  private void handleEvict(URL podUrl, String namespace, String name) throws ExecutionException, InterruptedException, IOException {
+    Eviction eviction = new EvictionBuilder()
+      .withNewMetadata()
+      .withName(name)
+      .withNamespace(namespace)
+      .endMetadata()
+      .withDeleteOptions(new DeleteOptions())
+      .build();
+
+    RequestBody requestBody = RequestBody.create(JSON, JSON_MAPPER.writeValueAsString(eviction));
+
+    URL requestUrl = new URL(URLUtils.join(podUrl.toString(), "eviction"));
+    Request.Builder requestBuilder = new Request.Builder().post(requestBody).url(requestUrl);
+    handleResponse(requestBuilder, null, Collections.<String, String>emptyMap());
   }
 
   @Override

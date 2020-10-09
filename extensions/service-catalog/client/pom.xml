@@ -21,7 +21,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>service-catalog</artifactId>
-    <version>4.10-SNAPSHOT</version>
+    <version>4.12-SNAPSHOT</version>
   </parent>
 
   <artifactId>servicecatalog-client</artifactId>
@@ -30,6 +30,14 @@
 
   <properties>
     <useIncrementalCompilation>false</useIncrementalCompilation>
+    <osgi.require-capability>
+      osgi.extender;
+      filter:="(osgi.extender=osgi.serviceloader.registrar)"
+    </osgi.require-capability>
+    <osgi.provide-capability>
+      osgi.serviceloader;
+      osgi.serviceloader=io.fabric8.kubernetes.client.ResourceHandler
+    </osgi.provide-capability>
     <osgi.import>
       io.fabric8.kubernetes.api.builder,
       !io.fabric8.servicecatalog.client.*,
@@ -69,31 +77,14 @@
     <dependency>
       <groupId>io.sundr</groupId>
       <artifactId>builder-annotations</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>com.sun</groupId>
-          <artifactId>tools</artifactId>
-        </exclusion>
-      </exclusions>
-      <scope>compile</scope>
-      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>io.sundr</groupId>
       <artifactId>transform-annotations</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>com.sun</groupId>
-          <artifactId>tools</artifactId>
-        </exclusion>
-      </exclusions>
-      <scope>compile</scope>
-      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -194,7 +185,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
-        <version>${maven.resources.plugin.version}</version>
         <configuration>
           <nonFilteredFileExtensions>
             <nonFilteredFileExtension>zip</nonFilteredFileExtension>

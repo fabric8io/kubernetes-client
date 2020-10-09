@@ -17,6 +17,11 @@ package io.fabric8.kubernetes.client.dsl;
 
 public interface BytesLimitable<T> {
 
+  /**
+   * Configure Maximum bytes of logs to return. Defaults to no limit.
+   * @param limitBytes number of bytes
+   * @return returns pod log operation with specified PodLogOption configured
+   */
     T limitBytes(int limitBytes);
 
 }

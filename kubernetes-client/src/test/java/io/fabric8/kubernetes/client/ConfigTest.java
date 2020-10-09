@@ -16,19 +16,22 @@
 
 package io.fabric8.kubernetes.client;
 
+import io.fabric8.kubernetes.api.model.ExecConfig;
+import io.fabric8.kubernetes.api.model.ExecConfigBuilder;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.OkHttpClient;
 import okhttp3.TlsVersion;
 import org.apache.commons.lang.SystemUtils;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -41,8 +44,10 @@ import java.util.Map;
 
 import static okhttp3.TlsVersion.TLS_1_1;
 import static okhttp3.TlsVersion.TLS_1_2;
+import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -58,6 +63,9 @@ public class ConfigTest {
   private static final String TEST_TOKEN_GENERATOR_FILE = Utils.filePath(ConfigTest.class.getResource("/token-generator"));
 
   private static final String TEST_KUBECONFIG_EXEC_WIN_FILE = Utils.filePath(ConfigTest.class.getResource("/test-kubeconfig-exec-win"));
+
+  private static final String TEST_KUBECONFIG_NO_CURRENT_CONTEXT_FILE = Utils.filePath(ConfigTest.class.getResource("/test-kubeconfig-nocurrentctxt.yml"));
+  
   @BeforeEach
   public void setUp() {
     System.getProperties().remove(Config.KUBERNETES_MASTER_SYSTEM_PROPERTY);
@@ -99,7 +107,7 @@ public class ConfigTest {
   }
 
   @Test
-  public void testWithSystemProperties() {
+  void testWithSystemProperties() {
     System.setProperty(Config.KUBERNETES_MASTER_SYSTEM_PROPERTY, "http://somehost:80");
     System.setProperty(Config.KUBERNETES_NAMESPACE_SYSTEM_PROPERTY, "testns");
 
@@ -137,7 +145,7 @@ public class ConfigTest {
   }
 
   @Test
-  public void testWithBuilder() {
+  void testWithBuilder() {
     Config config = new ConfigBuilder()
       .withMasterUrl("http://somehost:80")
       .withApiVersion("v1")
@@ -171,7 +179,7 @@ public class ConfigTest {
 
 
   @Test
-  public void testWithBuilderAndSystemProperties() {
+  void testWithBuilderAndSystemProperties() {
     System.setProperty(Config.KUBERNETES_MASTER_SYSTEM_PROPERTY, "http://tobeoverriden:80");
     System.setProperty(Config.KUBERNETES_NAMESPACE_SYSTEM_PROPERTY, "tobeoverriden");
 
@@ -210,27 +218,29 @@ public class ConfigTest {
   }
 
   @Test
-  public void testMasterUrlWithServiceAccount() {
+  void testMasterUrlWithServiceAccount() {
     System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, "/dev/null");
     System.setProperty(Config.KUBERNETES_SERVICE_HOST_PROPERTY, "10.0.0.1");
     System.setProperty(Config.KUBERNETES_SERVICE_PORT_PROPERTY, "443");
     Config config = Config.autoConfigure(null);
     assertNotNull(config);
     assertEquals("https://10.0.0.1:443/", config.getMasterUrl());
+    assertEquals(null, config.getFile());
   }
 
   @Test
-  public void testMasterUrlWithServiceAccountIPv6() {
+  void testMasterUrlWithServiceAccountIPv6() {
     System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, "/dev/null");
     System.setProperty(Config.KUBERNETES_SERVICE_HOST_PROPERTY, "2001:db8:1f70::999:de8:7648:6e8");
     System.setProperty(Config.KUBERNETES_SERVICE_PORT_PROPERTY, "443");
     Config config = Config.autoConfigure(null);
     assertNotNull(config);
     assertEquals("https://[2001:db8:1f70::999:de8:7648:6e8]:443/", config.getMasterUrl());
+    assertEquals(null, config.getFile());
   }
 
   @Test
-  public void testWithKubeConfig() {
+  void testWithKubeConfig() {
     System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, TEST_KUBECONFIG_FILE);
     Config config = new Config();
     assertNotNull(config);
@@ -240,10 +250,11 @@ public class ConfigTest {
     assertEquals("token", config.getOauthToken());
     assertTrue(config.getCaCertFile().endsWith("testns/ca.pem".replace("/", File.separator)));
     assertTrue(new File(config.getCaCertFile()).isAbsolute());
+    assertEquals(new File(TEST_KUBECONFIG_FILE), config.getFile());
   }
 
   @Test
-  public void testWithKubeConfigAndOverrideContext() {
+  void testWithKubeConfigAndOverrideContext() {
     System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, TEST_KUBECONFIG_FILE);
     Config config = Config.autoConfigure("production/172-28-128-4:8443/root");
     assertNotNull(config);
@@ -256,7 +267,7 @@ public class ConfigTest {
   }
 
   @Test
-  public void testWithMultipleKubeConfigAndOverrideContext() {
+  void testWithMultipleKubeConfigAndOverrideContext() {
     System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, TEST_KUBECONFIG_FILE + File.pathSeparator + "some-other-file");
 
     Config config = Config.autoConfigure("production/172-28-128-4:8443/root");
@@ -270,7 +281,7 @@ public class ConfigTest {
   }
 
   @Test
-  public void testWithKubeConfigAndSystemProperties() {
+  void testWithKubeConfigAndSystemProperties() {
     System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, TEST_KUBECONFIG_FILE);
     System.setProperty(Config.KUBERNETES_MASTER_SYSTEM_PROPERTY, "http://somehost:80");
 
@@ -279,10 +290,11 @@ public class ConfigTest {
     assertEquals("http://somehost:80/", config.getMasterUrl());
     assertEquals("testns", config.getNamespace());
     assertEquals("token", config.getOauthToken());
+    assertEquals(new File(TEST_KUBECONFIG_FILE), config.getFile());
   }
 
   @Test
-  public void testWithKubeConfigAndSytemPropertiesAndBuilder() {
+  void testWithKubeConfigAndSytemPropertiesAndBuilder() {
     System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, TEST_KUBECONFIG_FILE);
     System.setProperty(Config.KUBERNETES_MASTER_SYSTEM_PROPERTY, "http://somehost:80");
 
@@ -297,7 +309,15 @@ public class ConfigTest {
   }
 
   @Test
-  public void testWithNamespacePath() {
+  void testFromKubeconfigContent() throws IOException {
+    File configFile = new File(TEST_KUBECONFIG_FILE);
+    final String configYAML = String.join("\n", Files.readAllLines(configFile.toPath()));
+    final Config config = Config.fromKubeconfig(configYAML);
+    assertEquals("https://172.28.128.4:8443", config.getMasterUrl());
+  }
+
+  @Test
+  void testWithNamespacePath() {
     System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, "nokubeconfigfile");
     System.setProperty(Config.KUBERNETES_NAMESPACE_FILE, TEST_NAMESPACE_FILE);
     System.setProperty(Config.KUBERNETES_MASTER_SYSTEM_PROPERTY, "http://somehost:80");
@@ -309,7 +329,7 @@ public class ConfigTest {
   }
 
   @Test
-  public void testWithNonExistingNamespacePath() {
+  void testWithNonExistingNamespacePath() {
     System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, "nokubeconfigfile");
     System.setProperty(Config.KUBERNETES_NAMESPACE_FILE, "nonamespace");
     System.setProperty(Config.KUBERNETES_MASTER_SYSTEM_PROPERTY, "http://somehost:80");
@@ -317,11 +337,11 @@ public class ConfigTest {
     Config config = new Config();
     assertNotNull(config);
     assertEquals("http://somehost:80/", config.getMasterUrl());
-    assertEquals(null, config.getNamespace());
+    Assertions.assertNull(config.getNamespace());
   }
 
   @Test
-  public void testWithNamespacePathAndSystemProperties() {
+  void testWithNamespacePathAndSystemProperties() {
     System.setProperty(Config.KUBERNETES_NAMESPACE_FILE, TEST_NAMESPACE_FILE);
     System.setProperty(Config.KUBERNETES_MASTER_SYSTEM_PROPERTY, "http://somehost:80");
     System.setProperty(Config.KUBERNETES_NAMESPACE_SYSTEM_PROPERTY, "testns");
@@ -333,7 +353,19 @@ public class ConfigTest {
   }
 
   @Test
-  public void testWithNamespacePathAndSytemPropertiesAndBuilder() {
+  void testWithKubeConfigAndNoContext() {
+    System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, TEST_KUBECONFIG_NO_CURRENT_CONTEXT_FILE);
+    Config config = new Config();
+    assertNotNull(config);
+
+    assertNull(config.getCurrentContext());
+    assertEquals(3, config.getContexts().size());
+    assertEquals(Config.DEFAULT_MASTER_URL + "/", config.getMasterUrl());
+    assertNull(config.getNamespace());
+  }
+
+  @Test
+  void testWithNamespacePathAndSytemPropertiesAndBuilder() {
     System.setProperty(Config.KUBERNETES_NAMESPACE_FILE, TEST_NAMESPACE_FILE);
     System.setProperty(Config.KUBERNETES_MASTER_SYSTEM_PROPERTY, "http://somehost:80");
     System.setProperty(Config.KUBERNETES_NAMESPACE_SYSTEM_PROPERTY, "tobeoverriden");
@@ -347,10 +379,9 @@ public class ConfigTest {
     assertEquals("testns2", config.getNamespace());
   }
 
-
   @Test
-  public void testWithCustomHeader() {
-    Map<String,String> customHeaders = new HashMap();
+  void testWithCustomHeader() {
+    Map<String,String> customHeaders = new HashMap<>();
     customHeaders.put("user-id","test-user");
     customHeaders.put("cluster-id","test-cluster");
     Config config = new ConfigBuilder()
@@ -363,7 +394,7 @@ public class ConfigTest {
   }
 
   @Test
-  public void shouldSetImpersonateUsernameAndGroupFromSystemProperty() {
+  void shouldSetImpersonateUsernameAndGroupFromSystemProperty() {
 
     System.setProperty(Config.KUBERNETES_IMPERSONATE_USERNAME, "username");
     System.setProperty(Config.KUBERNETES_IMPERSONATE_GROUP, "group");
@@ -378,12 +409,12 @@ public class ConfigTest {
 
     assertEquals("a", config.getImpersonateUsername());
     assertArrayEquals(new String[]{"group"}, config.getImpersonateGroups());
-    assertEquals(Arrays.asList("d"), config.getImpersonateExtras().get("c"));
+    assertEquals(Collections.singletonList("d"), config.getImpersonateExtras().get("c"));
 
   }
 
   @Test
-  public void shouldInstantiateClientUsingYaml() throws MalformedURLException {
+  void shouldInstantiateClientUsingYaml() {
     File configYml = new File(TEST_CONFIG_YML_FILE);
     try (InputStream is = new FileInputStream(configYml)){
       KubernetesClient client = DefaultKubernetesClient.fromConfig(is);
@@ -394,7 +425,7 @@ public class ConfigTest {
   }
 
   @Test
-  public void shouldInstantiateClientUsingSerializeDeserialize() throws MalformedURLException {
+  void shouldInstantiateClientUsingSerializeDeserialize() {
     DefaultKubernetesClient original = new DefaultKubernetesClient();
     String json = Serialization.asJson(original.getConfiguration());
     DefaultKubernetesClient copy = DefaultKubernetesClient.fromConfig(json);
@@ -407,7 +438,7 @@ public class ConfigTest {
   }
 
   @Test
-  public void shouldRespectMaxRequests() {
+  void shouldRespectMaxRequests() {
     Config config = new ConfigBuilder()
       .withMaxConcurrentRequests(120)
       .build();
@@ -420,7 +451,7 @@ public class ConfigTest {
   }
   
   @Test
-  public void shouldRespectMaxRequestsPerHost() {
+  void shouldRespectMaxRequestsPerHost() {
     Config config = new ConfigBuilder()
       .withMaxConcurrentRequestsPerHost(20)
       .build();
@@ -433,7 +464,7 @@ public class ConfigTest {
   }
 
   @Test
-  public void shouldPropagateImpersonateSettings() {
+  void shouldPropagateImpersonateSettings() {
 
     final Map<String, List<String>> extras = new HashMap<>();
     extras.put("c", Collections.singletonList("d"));
@@ -449,11 +480,11 @@ public class ConfigTest {
 
     assertEquals("a", currentConfig.getImpersonateUsername());
     assertArrayEquals(new String[]{"b"}, currentConfig.getImpersonateGroups());
-    assertEquals(Arrays.asList("d"), currentConfig.getImpersonateExtras().get("c"));
+    assertEquals(Collections.singletonList("d"), currentConfig.getImpersonateExtras().get("c"));
   }
 
   @Test
-  public void honorClientAuthenticatorCommands() throws Exception {
+  void honorClientAuthenticatorCommands() throws Exception {
     if (SystemUtils.IS_OS_WINDOWS) {
       System.setProperty(Config.KUBERNETES_KUBECONFIG_FILE, TEST_KUBECONFIG_EXEC_WIN_FILE);
     } else {
@@ -467,7 +498,7 @@ public class ConfigTest {
   }
 
   @Test
-  public void shouldBeUsedTokenSuppliedByProvider() throws Exception {
+  void shouldBeUsedTokenSuppliedByProvider() {
 
     Config config = new ConfigBuilder().withOauthToken("oauthToken")
                                        .withOauthTokenProvider(() -> "PROVIDER_TOKEN")
@@ -477,20 +508,55 @@ public class ConfigTest {
   }
 
   @Test
-  public void shouldHonorDefaultWebsocketPingInterval() {
+  void shouldHonorDefaultWebsocketPingInterval() {
     Config config = new ConfigBuilder().build();
 
     assertEquals(30000L, config.getWebsocketPingInterval());
   }
 
   @Test
-  public void testKubeConfigWithAuthConfigProvider() throws URISyntaxException  {
+  void testKubeConfigWithAuthConfigProvider() throws URISyntaxException  {
     System.setProperty("kubeconfig", new File(getClass().getResource("/test-kubeconfig").toURI()).getAbsolutePath());
     Config config = Config.autoConfigure("production/172-28-128-4:8443/mmosley");
 
     assertEquals("https://172.28.128.4:8443/", config.getMasterUrl());
     assertEquals("eyJraWQiOiJDTj1vaWRjaWRwLnRyZW1vbG8ubGFuLCBPVT1EZW1vLCBPPVRybWVvbG8gU2VjdXJpdHksIEw9QXJsaW5ndG9uLCBTVD1WaXJnaW5pYSwgQz1VUy1DTj1rdWJlLWNhLTEyMDIxNDc5MjEwMzYwNzMyMTUyIiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJodHRwczovL29pZGNpZHAudHJlbW9sby5sYW46ODQ0My9hdXRoL2lkcC9PaWRjSWRQIiwiYXVkIjoia3ViZXJuZXRlcyIsImV4cCI6MTQ4MzU0OTUxMSwianRpIjoiMm96US15TXdFcHV4WDlHZUhQdy1hZyIsImlhdCI6MTQ4MzU0OTQ1MSwibmJmIjoxNDgzNTQ5MzMxLCJzdWIiOiI0YWViMzdiYS1iNjQ1LTQ4ZmQtYWIzMC0xYTAxZWU0MWUyMTgifQ.w6p4J_6qQ1HzTG9nrEOrubxIMb9K5hzcMPxc9IxPx2K4xO9l-oFiUw93daH3m5pluP6K7eOE6txBuRVfEcpJSwlelsOsW8gb8VJcnzMS9EnZpeA0tW_p-mnkFc3VcfyXuhe5R3G7aa5d8uHv70yJ9Y3-UhjiN9EhpMdfPAoEB9fYKKkJRzF7utTTIPGrSaSU6d2pcpfYKaxIwePzEkT4DfcQthoZdy9ucNvvLoi1DIC-UocFD8HLs8LYKEqSxQvOcvnThbObJ9af71EwmuE21fO5KzMW20KtAeget1gnldOosPtz1G5EwvaQ401-RPQzPGMVBld0_zMCAwZttJ4knw",
       config.getOauthToken());
+  }
+
+  @Test
+  void testEmptyConfig() {
+    // Given
+    Config emptyConfig = null;
+
+    // When
+    emptyConfig = Config.empty();
+
+    // Then
+    assertNotNull(emptyConfig);
+    assertEquals("https://kubernetes.default.svc", emptyConfig.getMasterUrl());
+    assertTrue(emptyConfig.getContexts().isEmpty());
+    assertNull(emptyConfig.getCurrentContext());
+    assertEquals(64, emptyConfig.getMaxConcurrentRequests());
+    assertEquals(5, emptyConfig.getMaxConcurrentRequestsPerHost());
+    assertFalse(emptyConfig.isTrustCerts());
+    assertFalse(emptyConfig.isDisableHostnameVerification());
+    assertEquals("RSA", emptyConfig.getClientKeyAlgo());
+    assertEquals("changeit", emptyConfig.getClientKeyPassphrase());
+    assertEquals(1000, emptyConfig.getWatchReconnectInterval());
+    assertEquals(-1, emptyConfig.getWatchReconnectLimit());
+    assertEquals(10000, emptyConfig.getConnectionTimeout());
+    assertEquals(10000, emptyConfig.getRequestTimeout());
+    assertEquals(900000, emptyConfig.getRollingTimeout());
+    assertEquals(600000, emptyConfig.getScaleTimeout());
+    assertEquals(20000, emptyConfig.getLoggingInterval());
+    assertEquals(5000, emptyConfig.getWebsocketTimeout());
+    assertEquals(30000, emptyConfig.getWebsocketPingInterval());
+    assertTrue(emptyConfig.getImpersonateExtras().isEmpty());
+    assertEquals(0, emptyConfig.getImpersonateGroups().length);
+    assertFalse(emptyConfig.isHttp2Disable());
+    assertEquals(1, emptyConfig.getTlsVersions().length);
+    assertTrue(emptyConfig.getErrorMessages().isEmpty());
   }
 
   private void assertConfig(Config config) {
@@ -524,5 +590,54 @@ public class ConfigTest {
     assertEquals("truststorePassphrase", config.getTrustStorePassphrase());
     assertEquals("/path/to/keystore", config.getKeyStoreFile());
     assertEquals("keystorePassphrase", config.getKeyStorePassphrase());
+  }
+
+  @Test
+  void testGetAuthenticatorCommandFromExecConfig() throws IOException {
+    // Given
+    File commandFolder = Files.createTempDirectory("test").toFile();
+    File commandFile = new File(commandFolder, "aws");
+    boolean isNewFileCreated = commandFile.createNewFile();
+    String systemPathValue = getTestPathValue(commandFolder);
+    ExecConfig execConfig = new ExecConfigBuilder()
+      .withApiVersion("client.authentication.k8s.io/v1alpha1")
+      .addToArgs("--region", "us-west2", "eks", "get-token", "--cluster-name", "api-eks.example.com")
+      .withCommand("aws")
+      .build();
+
+    // When
+    List<String> processBuilderArgs = Config.getAuthenticatorCommandFromExecConfig(execConfig, new File("~/.kube/config"), systemPathValue);
+
+    // Then
+    assertTrue(isNewFileCreated);
+    assertNotNull(processBuilderArgs);
+    assertEquals(3, processBuilderArgs.size());
+    assertPlatformPrefixes(processBuilderArgs);
+    List<String> commandParts = Arrays.asList(processBuilderArgs.get(2).split(" "));
+    assertEquals(commandFile.getAbsolutePath(), commandParts.get(0));
+    assertEquals("--region", commandParts.get(1));
+    assertEquals("us-west2", commandParts.get(2));
+    assertEquals("eks", commandParts.get(3));
+    assertEquals("get-token", commandParts.get(4));
+    assertEquals("--cluster-name", commandParts.get(5));
+    assertEquals("api-eks.example.com", commandParts.get(6));
+  }
+
+  private void assertPlatformPrefixes(List<String> processBuilderArgs) {
+    List<String> platformArgsExpected = Utils.getCommandPlatformPrefix();
+    assertEquals(platformArgsExpected.get(0), processBuilderArgs.get(0));
+    assertEquals(platformArgsExpected.get(1), processBuilderArgs.get(1));
+  }
+
+  private String getTestPathValue(File commandFolder) {
+    if (Utils.isWindowsOperatingSystem()) {
+      return "C:\\Program Files\\Java\\jdk14.0_23\\bin" + File.pathSeparator +
+        commandFolder.getAbsolutePath() + File.pathSeparator +
+        "C:\\Program Files\\Apache Software Foundation\\apache-maven-3.3.1";
+    } else {
+      return "/usr/java/jdk-14.0.1/bin" + File.pathSeparator +
+        commandFolder.getAbsolutePath() + File.pathSeparator +
+        "/opt/apache-maven/bin";
+    }
   }
 }

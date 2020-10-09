@@ -35,7 +35,12 @@ import org.slf4j.LoggerFactory;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
@@ -169,6 +174,36 @@ public abstract class RollingUpdater<T extends HasMetadata, L, D extends Doneabl
     } catch (NoSuchAlgorithmException | JsonProcessingException e) {
       throw new KubernetesClientException("Could not calculate MD5 of RC", e);
     }
+  }
+
+  public static Map<String, Object> requestPayLoadForRolloutPause() {
+    Map<String, Object> jsonPatchPayload = new HashMap<>();
+    Map<String, Object> spec = new HashMap<>();
+    spec.put("paused", true);
+    jsonPatchPayload.put("spec", spec);
+    return jsonPatchPayload;
+  }
+
+  public static Map<String, Object> requestPayLoadForRolloutResume() {
+    Map<String, Object> jsonPatchPayload = new HashMap<>();
+    Map<String, Object> spec = new HashMap<>();
+    spec.put("paused", null);
+    jsonPatchPayload.put("spec", spec);
+    return jsonPatchPayload;
+  }
+
+  public static Map<String, Object> requestPayLoadForRolloutRestart() {
+    Map<String, Object> jsonPatchPayload = new HashMap<>();
+    Map<String, String> annotations = new HashMap<>();
+    annotations.put("kubectl.kubernetes.io/restartedAt", new Date().toInstant().atOffset(ZoneOffset.UTC).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+    Map<String, Object> templateMetadata = new HashMap<>();
+    templateMetadata.put("annotations", annotations);
+    Map<String, Object> template = new HashMap<>();
+    template.put("metadata", templateMetadata);
+    Map<String, Object> deploymentSpec = new HashMap<>();
+    deploymentSpec.put("template", template);
+    jsonPatchPayload.put("spec", deploymentSpec);
+    return jsonPatchPayload;
   }
 
   /**

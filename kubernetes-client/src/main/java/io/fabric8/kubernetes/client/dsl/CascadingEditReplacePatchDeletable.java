@@ -16,8 +16,11 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
+import io.fabric8.kubernetes.client.PropagationPolicyConfigurable;
+
 public interface CascadingEditReplacePatchDeletable<I,D,T,B> extends
   EditReplacePatchDeletable<I,D,T,B>,
   Cascading<EditReplacePatchDeletable<I,D,T,B>>,
+  PropagationPolicyConfigurable<EditReplacePatchDeletable<I,D,T,B>>,
   Lockable<Replaceable<I, I>> {
 }

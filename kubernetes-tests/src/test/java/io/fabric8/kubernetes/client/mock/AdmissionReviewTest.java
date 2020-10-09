@@ -15,21 +15,21 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.api.model.PodExecOptions;
 import io.fabric8.kubernetes.api.model.admission.AdmissionReview;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class AdmissionReviewTest {
+class AdmissionReviewTest {
   @Test
   @DisplayName("Should be able to deserialize from AdmissionRequest option set to CreateOption")
-  public void testJacksonParsingWithCreateOptions() throws IOException {
+  void testJacksonParsingWithCreateOptions() {
     InputStream jsonStream = getClass().getResourceAsStream("/admissionreview.json");
     AdmissionReview admissionReview = Serialization.unmarshal(jsonStream, AdmissionReview.class);
     assertEquals("CREATE", admissionReview.getRequest().getOperation());
@@ -38,7 +38,7 @@ public class AdmissionReviewTest {
 
   @Test
   @DisplayName("Should be able to deserialize from AdmissionRequest option set to UpdateOption")
-  public void testJacksonParsingWithUpdateOptions() throws IOException {
+  void testJacksonParsingWithUpdateOptions() {
     InputStream jsonStream = getClass().getResourceAsStream("/admissionreview-withupdateoptions.json");
     AdmissionReview admissionReview = Serialization.unmarshal(jsonStream, AdmissionReview.class);
     assertEquals("UPDATE", admissionReview.getRequest().getOperation());
@@ -47,10 +47,22 @@ public class AdmissionReviewTest {
 
   @Test
   @DisplayName("Should be able to deserialize from AdmissionRequest option set to PatchOption")
-  public void testJacksonParsingWithPathOptions() throws IOException {
+  void testJacksonParsingWithPathOptions() {
     InputStream jsonStream = getClass().getResourceAsStream("/admissionreview-withpatchoptions.json");
     AdmissionReview admissionReview = Serialization.unmarshal(jsonStream, AdmissionReview.class);
     assertEquals("PATCH", admissionReview.getRequest().getOperation());
+    assertRequest(admissionReview);
+  }
+
+  @Test
+  @DisplayName("Should be able to deserialize from AdmissionRequest object set to PodExecOptions")
+  void testJacksonParsingWithPodExecOptions() {
+    InputStream jsonStream = getClass().getResourceAsStream("/admissionreview-withconnectexec.json");
+    AdmissionReview admissionReview = Serialization.unmarshal(jsonStream, AdmissionReview.class);
+    assertEquals("CONNECT", admissionReview.getRequest().getOperation());
+    PodExecOptions podExecOptions = (PodExecOptions) admissionReview.getRequest().getObject();
+    assertEquals("PodExecOptions", podExecOptions.getKind());
+    assertEquals("myContainer", podExecOptions.getContainer());
     assertRequest(admissionReview);
   }
 
