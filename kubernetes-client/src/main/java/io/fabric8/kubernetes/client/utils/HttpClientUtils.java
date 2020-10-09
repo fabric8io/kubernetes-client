@@ -174,7 +174,7 @@ public class HttpClientUtils {
               httpClientBuilder.pingInterval(config.getWebsocketPingInterval(), TimeUnit.MILLISECONDS);
             }
 
-            if (config.getMaxConcurrentRequestsPerHost() > 0) {
+            if (config.getMaxConcurrentRequests() > 0 && config.getMaxConcurrentRequestsPerHost() > 0) {
               Dispatcher dispatcher = new Dispatcher();
               dispatcher.setMaxRequests(config.getMaxConcurrentRequests());
               dispatcher.setMaxRequestsPerHost(config.getMaxConcurrentRequestsPerHost());
