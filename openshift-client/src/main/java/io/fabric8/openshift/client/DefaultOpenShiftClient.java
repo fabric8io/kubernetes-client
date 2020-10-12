@@ -48,6 +48,9 @@ import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseList;
 import io.fabric8.kubernetes.api.model.Event;
 import io.fabric8.kubernetes.api.model.EventList;
+import io.fabric8.kubernetes.api.model.node.v1beta1.DoneableRuntimeClass;
+import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClass;
+import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClassList;
 import io.fabric8.kubernetes.client.*;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.*;
@@ -594,6 +597,11 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   @Override
   public RunOperations run() {
     return new RunOperations(httpClient, getConfiguration(), getNamespace(), new RunConfigBuilder());
+  }
+
+  @Override
+  public NonNamespaceOperation<RuntimeClass, RuntimeClassList, DoneableRuntimeClass, Resource<RuntimeClass, DoneableRuntimeClass>> runtimeClasses() {
+    return delegate.runtimeClasses();
   }
 
   @Override

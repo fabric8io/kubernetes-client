@@ -36,8 +36,18 @@
 [![javadoc](https://javadoc.io/badge2/io.fabric8/kubernetes-model-settings/javadoc.svg)](https://javadoc.io/doc/io.fabric8/kubernetes-model-settings)
 * kubernetes-model-storageclass: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/kubernetes-model-storageclass.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Akubernetes-model-storageclass)
 [![javadoc](https://javadoc.io/badge2/io.fabric8/kubernetes-model-storageclass/javadoc.svg)](https://javadoc.io/doc/io.fabric8/kubernetes-model-storageclass)
+* kubernetes-model-node: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/kubernetes-model-node.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Akubernetes-model-node)
+[![javadoc](https://javadoc.io/badge2/io.fabric8/kubernetes-model-node/javadoc.svg)](https://javadoc.io/doc/io.fabric8/kubernetes-model-node)
 * openshift-model: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/openshift-model.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Aopenshift-model)
 [![javadoc](https://javadoc.io/badge2/io.fabric8/openshift-model/javadoc.svg)](https://javadoc.io/doc/io.fabric8/openshift-model)
+* openshift-model-console: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/openshift-model-console.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Aopenshift-model-console)
+[![javadoc](https://javadoc.io/badge2/io.fabric8/openshift-model-console/javadoc.svg)](https://javadoc.io/doc/io.fabric8/openshift-model-console)
+* openshift-model-monitoring: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/openshift-model-monitoring.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Aopenshift-model-monitoring)
+[![javadoc](https://javadoc.io/badge2/io.fabric8/openshift-model-monitoring/javadoc.svg)](https://javadoc.io/doc/io.fabric8/openshift-model-monitoring)
+* openshift-model-operator: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/openshift-model-operator.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Aopenshift-model-operator)
+[![javadoc](https://javadoc.io/badge2/io.fabric8/openshift-model-operator/javadoc.svg)](https://javadoc.io/doc/io.fabric8/openshift-model-operator)
+* openshift-model-operatorhub: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/openshift-model-operatorhub.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Aopenshift-model-operatorhub)
+[![javadoc](https://javadoc.io/badge2/io.fabric8/openshift-model-operatorhub/javadoc.svg)](https://javadoc.io/doc/io.fabric8/openshift-model-operatorhub)
 
 Uses [Go reflection](https://blog.golang.org/laws-of-reflection) to generate a JSON schema that describes one or more
 API resources in Kubernetes and OpenShift.

@@ -614,6 +614,10 @@
           "type": "string",
           "description": ""
         },
+        "resourceVersionMatch": {
+          "type": "string",
+          "description": ""
+        },
         "timeoutSeconds": {
           "type": "integer",
           "description": "",
@@ -1329,6 +1333,10 @@
           "type": "boolean",
           "description": ""
         },
+        "proxy-url": {
+          "type": "string",
+          "description": ""
+        },
         "server": {
           "type": "string",
           "description": ""
@@ -1463,6 +1471,10 @@
             "$ref": "#/definitions/kubernetes_config_ExecEnvVar",
             "javaType": "io.fabric8.kubernetes.api.model.ExecEnvVar"
           }
+        },
+        "installHint": {
+          "type": "string",
+          "description": ""
         }
       },
       "additionalProperties": true,
@@ -3314,6 +3326,25 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_core_EphemeralVolumeSource": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "readOnly": {
+          "type": "boolean",
+          "description": ""
+        },
+        "volumeClaimTemplate": {
+          "$ref": "#/definitions/kubernetes_core_PersistentVolumeClaimTemplate",
+          "javaType": "io.fabric8.kubernetes.api.model.PersistentVolumeClaimTemplate"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.EphemeralVolumeSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_core_Event": {
       "type": "object",
       "description": "",
@@ -3445,10 +3476,6 @@
         "lastObservedTime": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_MicroTime",
           "javaType": "io.fabric8.kubernetes.api.model.MicroTime"
-        },
-        "state": {
-          "type": "string",
-          "description": ""
         }
       },
       "additionalProperties": true,
@@ -5158,6 +5185,25 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_core_PersistentVolumeClaimTemplate": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_ObjectMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/kubernetes_core_PersistentVolumeClaimSpec",
+          "javaType": "io.fabric8.kubernetes.api.model.PersistentVolumeClaimSpec"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.PersistentVolumeClaimTemplate",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_core_PersistentVolumeClaimVolumeSource": {
       "type": "object",
       "description": "",
@@ -5862,6 +5908,10 @@
           "$ref": "#/definitions/kubernetes_core_SELinuxOptions",
           "javaType": "io.fabric8.kubernetes.api.model.SELinuxOptions"
         },
+        "seccompProfile": {
+          "$ref": "#/definitions/kubernetes_core_SeccompProfile",
+          "javaType": "io.fabric8.kubernetes.api.model.SeccompProfile"
+        },
         "supplementalGroups": {
           "type": "array",
           "description": "",
@@ -6046,6 +6096,10 @@
         },
         "serviceAccountName": {
           "type": "string",
+          "description": ""
+        },
+        "setHostnameAsFQDN": {
+          "type": "boolean",
           "description": ""
         },
         "shareProcessNamespace": {
@@ -7046,6 +7100,25 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_core_SeccompProfile": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "localhostProfile": {
+          "type": "string",
+          "description": ""
+        },
+        "type": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.SeccompProfile",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_core_Secret": {
       "type": "object",
       "description": "",
@@ -7298,6 +7371,10 @@
         "seLinuxOptions": {
           "$ref": "#/definitions/kubernetes_core_SELinuxOptions",
           "javaType": "io.fabric8.kubernetes.api.model.SELinuxOptions"
+        },
+        "seccompProfile": {
+          "$ref": "#/definitions/kubernetes_core_SeccompProfile",
+          "javaType": "io.fabric8.kubernetes.api.model.SeccompProfile"
         },
         "windowsOptions": {
           "$ref": "#/definitions/kubernetes_core_WindowsSecurityContextOptions",
@@ -7947,6 +8024,10 @@
           "$ref": "#/definitions/kubernetes_core_EmptyDirVolumeSource",
           "javaType": "io.fabric8.kubernetes.api.model.EmptyDirVolumeSource"
         },
+        "ephemeral": {
+          "$ref": "#/definitions/kubernetes_core_EphemeralVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.EphemeralVolumeSource"
+        },
         "fc": {
           "$ref": "#/definitions/kubernetes_core_FCVolumeSource",
           "javaType": "io.fabric8.kubernetes.api.model.FCVolumeSource"
@@ -8171,6 +8252,10 @@
         "emptyDir": {
           "$ref": "#/definitions/kubernetes_core_EmptyDirVolumeSource",
           "javaType": "io.fabric8.kubernetes.api.model.EmptyDirVolumeSource"
+        },
+        "ephemeral": {
+          "$ref": "#/definitions/kubernetes_core_EphemeralVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.EphemeralVolumeSource"
         },
         "fc": {
           "$ref": "#/definitions/kubernetes_core_FCVolumeSource",
@@ -9203,6 +9288,10 @@
         },
         "insecure-skip-tls-verify": {
           "type": "boolean",
+          "description": ""
+        },
+        "proxy-url": {
+          "type": "string",
           "description": ""
         },
         "server": {
@@ -10516,6 +10605,19 @@
       },
       "additionalProperties": true
     },
+    "ephemeralvolumesource": {
+      "properties": {
+        "readOnly": {
+          "type": "boolean",
+          "description": ""
+        },
+        "volumeClaimTemplate": {
+          "$ref": "#/definitions/kubernetes_core_PersistentVolumeClaimTemplate",
+          "javaType": "io.fabric8.kubernetes.api.model.PersistentVolumeClaimTemplate"
+        }
+      },
+      "additionalProperties": true
+    },
     "event": {
       "properties": {
         "action": {
@@ -10631,10 +10733,6 @@
         "lastObservedTime": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_MicroTime",
           "javaType": "io.fabric8.kubernetes.api.model.MicroTime"
-        },
-        "state": {
-          "type": "string",
-          "description": ""
         }
       },
       "additionalProperties": true
@@ -10691,6 +10789,10 @@
             "$ref": "#/definitions/kubernetes_config_ExecEnvVar",
             "javaType": "io.fabric8.kubernetes.api.model.ExecEnvVar"
           }
+        },
+        "installHint": {
+          "type": "string",
+          "description": ""
         }
       },
       "additionalProperties": true
@@ -11507,6 +11609,10 @@
           "javaType": "Long"
         },
         "resourceVersion": {
+          "type": "string",
+          "description": ""
+        },
+        "resourceVersionMatch": {
           "type": "string",
           "description": ""
         },
@@ -12580,6 +12686,19 @@
       },
       "additionalProperties": true
     },
+    "persistentvolumeclaimtemplate": {
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_ObjectMeta",
+          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/kubernetes_core_PersistentVolumeClaimSpec",
+          "javaType": "io.fabric8.kubernetes.api.model.PersistentVolumeClaimSpec"
+        }
+      },
+      "additionalProperties": true
+    },
     "persistentvolumeclaimvolumesource": {
       "properties": {
         "claimName": {
@@ -13177,6 +13296,10 @@
           "$ref": "#/definitions/kubernetes_core_SELinuxOptions",
           "javaType": "io.fabric8.kubernetes.api.model.SELinuxOptions"
         },
+        "seccompProfile": {
+          "$ref": "#/definitions/kubernetes_core_SeccompProfile",
+          "javaType": "io.fabric8.kubernetes.api.model.SeccompProfile"
+        },
         "supplementalGroups": {
           "type": "array",
           "description": "",
@@ -13355,6 +13478,10 @@
         },
         "serviceAccountName": {
           "type": "string",
+          "description": ""
+        },
+        "setHostnameAsFQDN": {
+          "type": "boolean",
           "description": ""
         },
         "shareProcessNamespace": {
@@ -14218,6 +14345,19 @@
       },
       "additionalProperties": true
     },
+    "seccompprofile": {
+      "properties": {
+        "localhostProfile": {
+          "type": "string",
+          "description": ""
+        },
+        "type": {
+          "type": "string",
+          "description": ""
+        }
+      },
+      "additionalProperties": true
+    },
     "secret": {
       "properties": {
         "apiVersion": {
@@ -14424,6 +14564,10 @@
         "seLinuxOptions": {
           "$ref": "#/definitions/kubernetes_core_SELinuxOptions",
           "javaType": "io.fabric8.kubernetes.api.model.SELinuxOptions"
+        },
+        "seccompProfile": {
+          "$ref": "#/definitions/kubernetes_core_SeccompProfile",
+          "javaType": "io.fabric8.kubernetes.api.model.SeccompProfile"
         },
         "windowsOptions": {
           "$ref": "#/definitions/kubernetes_core_WindowsSecurityContextOptions",
@@ -15144,6 +15288,10 @@
           "$ref": "#/definitions/kubernetes_core_EmptyDirVolumeSource",
           "javaType": "io.fabric8.kubernetes.api.model.EmptyDirVolumeSource"
         },
+        "ephemeral": {
+          "$ref": "#/definitions/kubernetes_core_EphemeralVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.EphemeralVolumeSource"
+        },
         "fc": {
           "$ref": "#/definitions/kubernetes_core_FCVolumeSource",
           "javaType": "io.fabric8.kubernetes.api.model.FCVolumeSource"
@@ -15338,6 +15486,10 @@
         "emptyDir": {
           "$ref": "#/definitions/kubernetes_core_EmptyDirVolumeSource",
           "javaType": "io.fabric8.kubernetes.api.model.EmptyDirVolumeSource"
+        },
+        "ephemeral": {
+          "$ref": "#/definitions/kubernetes_core_EphemeralVolumeSource",
+          "javaType": "io.fabric8.kubernetes.api.model.EphemeralVolumeSource"
         },
         "fc": {
           "$ref": "#/definitions/kubernetes_core_FCVolumeSource",

@@ -39,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableRuleMigrationSupport
-public class NetworkingV1beta1IngressTest {
+class NetworkingV1beta1IngressTest {
   @Rule
   public KubernetesServer server = new KubernetesServer();
 
@@ -200,7 +200,7 @@ public class NetworkingV1beta1IngressTest {
     // Then
     assertNotNull(items);
     assertEquals(1, items.size());
-    assertTrue(items.get(0) instanceof Ingress);
+    assertTrue(items.get(0) instanceof io.fabric8.kubernetes.api.model.networking.v1.Ingress);
   }
 
   @Test

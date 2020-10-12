@@ -20,7 +20,7 @@ declare -a modules=("kubernetes-model-core" "kubernetes-model-rbac" "kubernetes-
     "kubernetes-model-discovery" "kubernetes-model-events" "kubernetes-model-extensions"
     "kubernetes-model-networking" "kubernetes-model-metrics" "kubernetes-model-policy"
     "kubernetes-model-scheduling" "kubernetes-model-settings" "kubernetes-model-storageclass"
-    "openshift-model"
+    "openshift-model" "openshift-model-operator" "openshift-model-operatorhub" "openshift-model-console"
 )
 
 for module in ${modules[*]}

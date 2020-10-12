@@ -17,12 +17,12 @@
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.IntOrString;
-import io.fabric8.kubernetes.api.model.networking.NetworkPolicy;
-import io.fabric8.kubernetes.api.model.networking.NetworkPolicyBuilder;
-import io.fabric8.kubernetes.api.model.networking.NetworkPolicyIngressRuleBuilder;
-import io.fabric8.kubernetes.api.model.networking.NetworkPolicyPeerBuilder;
-import io.fabric8.kubernetes.api.model.networking.NetworkPolicyPortBuilder;
-import io.fabric8.kubernetes.api.model.networking.NetworkPolicyList;
+import io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicy;
+import io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicyBuilder;
+import io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicyIngressRuleBuilder;
+import io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicyPeerBuilder;
+import io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicyPortBuilder;
+import io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicyList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import org.junit.Rule;
@@ -38,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @EnableRuleMigrationSupport
-public class NetworkPolicyCrudTest {
+class NetworkPolicyCrudTest {
 
   private static final Logger logger = LoggerFactory.getLogger(NetworkPolicyCrudTest.class);
 
@@ -46,7 +46,7 @@ public class NetworkPolicyCrudTest {
   public KubernetesServer kubernetesServer = new KubernetesServer(true,true);
 
   @Test
-  public void crudTest(){
+  void crudTest(){
 
     KubernetesClient client = kubernetesServer.getClient();
 
@@ -76,7 +76,7 @@ public class NetworkPolicyCrudTest {
       .build();
 
     //test of Creation
-    networkPolicy = client.network().networkPolicies().create(networkPolicy);
+    networkPolicy = client.network().v1().networkPolicies().create(networkPolicy);
 
     assertNotNull(networkPolicy);
     assertEquals("networkpolicy", networkPolicy.getMetadata().getName());

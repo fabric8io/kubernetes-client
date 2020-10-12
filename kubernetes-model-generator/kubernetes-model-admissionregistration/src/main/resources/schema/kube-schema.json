@@ -121,6 +121,15 @@
         "uid": {
           "type": "string",
           "description": ""
+        },
+        "warnings": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
         }
       },
       "additionalProperties": true,
@@ -1408,6 +1417,10 @@
           "javaType": "Long"
         },
         "resourceVersion": {
+          "type": "string",
+          "description": ""
+        },
+        "resourceVersionMatch": {
           "type": "string",
           "description": ""
         },
@@ -2702,8 +2715,7 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.authorization.v1beta1.SelfSubjectAccessReview",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata",
-        "io.fabric8.kubernetes.api.model.Namespaced"
+        "io.fabric8.kubernetes.api.model.HasMetadata"
       ]
     },
     "kubernetes_authorization_v1beta1_SelfSubjectAccessReviewSpec": {
@@ -2757,8 +2769,7 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.authorization.v1beta1.SelfSubjectRulesReview",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata",
-        "io.fabric8.kubernetes.api.model.Namespaced"
+        "io.fabric8.kubernetes.api.model.HasMetadata"
       ]
     },
     "kubernetes_authorization_v1beta1_SelfSubjectRulesReviewSpec": {
@@ -2808,8 +2819,7 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.authorization.v1beta1.SubjectAccessReview",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata",
-        "io.fabric8.kubernetes.api.model.Namespaced"
+        "io.fabric8.kubernetes.api.model.HasMetadata"
       ]
     },
     "kubernetes_authorization_v1beta1_SubjectAccessReviewSpec": {

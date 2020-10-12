@@ -342,6 +342,10 @@
           "type": "string",
           "description": ""
         },
+        "resourceVersionMatch": {
+          "type": "string",
+          "description": ""
+        },
         "timeoutSeconds": {
           "type": "integer",
           "description": "",
@@ -2377,7 +2381,15 @@
           "type": "boolean",
           "description": ""
         },
+        "fsGroupPolicy": {
+          "type": "string",
+          "description": ""
+        },
         "podInfoOnMount": {
+          "type": "boolean",
+          "description": ""
+        },
+        "storageCapacity": {
           "type": "boolean",
           "description": ""
         },

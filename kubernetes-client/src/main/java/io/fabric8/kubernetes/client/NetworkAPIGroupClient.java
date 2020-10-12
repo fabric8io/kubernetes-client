@@ -15,9 +15,9 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.api.model.networking.DoneableNetworkPolicy;
-import io.fabric8.kubernetes.api.model.networking.NetworkPolicy;
-import io.fabric8.kubernetes.api.model.networking.NetworkPolicyList;
+import io.fabric8.kubernetes.api.model.networking.v1.DoneableNetworkPolicy;
+import io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicy;
+import io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicyList;
 import io.fabric8.kubernetes.api.model.networking.v1beta1.DoneableIngress;
 import io.fabric8.kubernetes.api.model.networking.v1beta1.Ingress;
 import io.fabric8.kubernetes.api.model.networking.v1beta1.IngressList;
@@ -36,6 +36,16 @@ public class NetworkAPIGroupClient extends BaseClient implements NetworkAPIGroup
 
   public NetworkAPIGroupClient(OkHttpClient httpClient, final Config config) throws KubernetesClientException {
     super(httpClient, config);
+  }
+
+  @Override
+  public V1NetworkAPIGroupDSL v1() {
+    return adapt(V1NetworkAPIGroupClient.class);
+  }
+
+  @Override
+  public V1beta1NetworkAPIGroupDSL v1beta1() {
+    return adapt(V1beta1NetworkAPIGroupClient.class);
   }
 
   @Override

@@ -81,6 +81,9 @@ import io.fabric8.kubernetes.api.model.authentication.TokenReview;
 import io.fabric8.kubernetes.api.model.coordination.v1.DoneableLease;
 import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseList;
+import io.fabric8.kubernetes.api.model.node.v1beta1.DoneableRuntimeClass;
+import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClass;
+import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClassList;
 import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.ClusterOperationsImpl;
@@ -111,6 +114,7 @@ import io.fabric8.kubernetes.client.dsl.internal.core.v1.ResourceQuotaOperations
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.SecretOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.ServiceAccountOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.EventOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.node.v1beta1.RuntimeClassOperationsImpl;
 import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectorBuilder;
 import io.fabric8.kubernetes.client.extended.run.RunConfigBuilder;
 import io.fabric8.kubernetes.client.extended.run.RunOperations;
@@ -603,5 +607,13 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
   @Override
   public RunOperations run() {
     return new RunOperations(httpClient, getConfiguration(), getNamespace(), new RunConfigBuilder());
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public NonNamespaceOperation<RuntimeClass, RuntimeClassList, DoneableRuntimeClass, Resource<RuntimeClass, DoneableRuntimeClass>> runtimeClasses() {
+    return new RuntimeClassOperationsImpl(httpClient, getConfiguration());
   }
 }
