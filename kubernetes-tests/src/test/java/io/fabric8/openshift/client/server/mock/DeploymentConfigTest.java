@@ -323,7 +323,27 @@ class DeploymentConfigTest {
     assertNotNull(deploymentConfig);
     assertEquals(1, deploymentConfig.getStatus().getAvailableReplicas().intValue());
     assertTrue(deploymentConfig.getStatus().getConditions().stream().anyMatch(c -> c.getType().equals("Available")));
-    assertTrue(client.deploymentConfigs().inNamespace("ns1").withName("dc1").isReady());
+  }
+
+  @Test
+  void testIsReady() {
+    // Given
+    DeploymentConfig deploymentConfig = getDeploymentConfig().withNewStatus()
+      .addNewCondition()
+      .withType("Available")
+      .endCondition()
+      .withReplicas(1).withAvailableReplicas(1)
+      .endStatus().build();
+    server.expect().get().withPath("/apis/apps.openshift.io/v1/namespaces/ns1/deploymentconfigs/dc1")
+      .andReturn(HttpURLConnection.HTTP_OK, deploymentConfig)
+      .always();
+    OpenShiftClient client = server.getOpenshiftClient();
+
+    // When
+    boolean result =  client.deploymentConfigs().inNamespace("ns1").withName("dc1").isReady();
+
+    // Then
+    assertTrue(result);
   }
 
   private DeploymentConfigBuilder getDeploymentConfig() {
