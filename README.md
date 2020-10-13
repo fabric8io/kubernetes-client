@@ -292,98 +292,98 @@ More details on usage can be found at: https://github.com/fabric8io/mockwebserve
 This mode has been extensively used for testing the client itself. Make sure you check [kubernetes-test](kubernetes-tests/src/test/java/io/fabric8/kubernetes/client/mock).
 
 To add a Kubernetes server to your test:
-
-     @Rule
-     public KubernetesServer server = new KubernetesServer();
-
+```java
+@Rule
+public KubernetesServer server = new KubernetesServer();
+```
 ### CRUD mode
 
 Defining every single request and response can become tiresome. Given that in most cases the mock webserver is used to perform simple crud based operations, a crud mode has been added.
 When using the crud mode, the mock web server will store, read, update and delete kubernetes resources using an in memory map and will appear as a real api server.
 
 To add a Kubernetes Server in crud mode to your test:
-
-     @Rule
-     public KubernetesServer server = new KubernetesServer(true, true);
-
+```java
+@Rule
+public KubernetesServer server = new KubernetesServer(true, true);
+```
 Then you can use the server like:
-
-    @Test
-    public void testInCrudMode() {
+```java
+@Test
+public void testInCrudMode() {
     KubernetesClient client = server.getClient();
     final CountDownLatch deleteLatch = new CountDownLatch(1);
     final CountDownLatch closeLatch = new CountDownLatch(1);
 
-      //CREATE
-      client.pods().inNamespace("ns1").create(new PodBuilder().withNewMetadata().withName("pod1").endMetadata().build());
+    //CREATE
+    client.pods().inNamespace("ns1").create(new PodBuilder().withNewMetadata().withName("pod1").endMetadata().build());
 
-      //READ
-      podList = client.pods().inNamespace("ns1").list();
-      assertNotNull(podList);
-      assertEquals(1, podList.getItems().size());
+    //READ
+    podList = client.pods().inNamespace("ns1").list();
+    assertNotNull(podList);
+    assertEquals(1, podList.getItems().size());
 
-      //WATCH
-      Watch watch = client.pods().inNamespace("ns1").withName("pod1").watch(new Watcher<Pod>() {
-          @Override
-          public void eventReceived(Action action, Pod resource) {
+    //WATCH
+    Watch watch = client.pods().inNamespace("ns1").withName("pod1").watch(new Watcher<Pod>() {
+        @Override
+        public void eventReceived(Action action, Pod resource) {
             switch (action) {
-              case DELETED:
-                deleteLatch.countDown();
-                break;
-              default:
-                throw new AssertionFailedError(action.toString().concat(" isn't recognised."));
+                case DELETED:
+                    deleteLatch.countDown();
+                    break;
+                default:
+                    throw new AssertionFailedError(action.toString().concat(" isn't recognised."));
             }
-          }
-      
-          @Override
-          public void onClose(KubernetesClientException cause) {
+        }
+
+        @Override
+        public void onClose(KubernetesClientException cause) {
             closeLatch.countDown();
-          }
-      });
+        }
+    });
 
-      //DELETE
-      client.pods().inNamespace("ns1").withName("pod1").delete();
+    //DELETE
+    client.pods().inNamespace("ns1").withName("pod1").delete();
 
-      //READ AGAIN
-      podList = client.pods().inNamespace("ns1").list();
-      assertNotNull(podList);
-      assertEquals(0, podList.getItems().size());
+    //READ AGAIN
+    podList = client.pods().inNamespace("ns1").list();
+    assertNotNull(podList);
+    assertEquals(0, podList.getItems().size());
 
-      assertTrue(deleteLatch.await(1, TimeUnit.MINUTES));
-      watch.close();
-      assertTrue(closeLatch.await(1, TimeUnit.MINUTES));
-    }
-
+    assertTrue(deleteLatch.await(1, TimeUnit.MINUTES));
+    watch.close();
+    assertTrue(closeLatch.await(1, TimeUnit.MINUTES));
+}
+```
 ### JUnit5 support through extension
 
 You can use KubernetesClient mocking mechanism with JUnit5. Since it doesn't support `@Rule` and `@ClassRule` there is dedicated annotation `@EnableKubernetesMockClient`.
 If you would like to create instance of mocked `KubernetesClient` for each test (JUnit4 `@Rule`) you need to declare instance of `KubernetesClient` as shown below.
+```java
+@EnableKubernetesMockClient
+class ExampleTest {
 
-    @EnableKubernetesMockClient
-    class ExampleTest {
-    
-        KubernetesClient client;
-    
-        @Test
-        public void testInStandardMode() {
+    KubernetesClient client;
+
+    @Test
+    public void testInStandardMode() {
             ...
-        }
     }
-
+}
+```
 In case you would like to define static instance of mocked server per all the test (JUnit4 `@ClassRule`) you need to declare instance of `KubernetesClient` as shown below.
 You can also enable crudMode by using annotation field `crud`.
+```java
+@EnableKubernetesMockClient(crud = true)
+class ExampleTest {
 
-    @EnableKubernetesMockClient(crud = true)
-    class ExampleTest {
-    
-        static KubernetesClient client;
-    
-        @Test
-        public void testInCrudMode() {
+    static KubernetesClient client;
+
+    @Test
+    public void testInCrudMode() {
             ...
-        }
     }
-    
+}
+```
 ## Compatibility Matrix
 
 |                           | Kubernetes 1.4.9 | Kubernetes 1.6.0 | Kubernetes 1.7.0  | Kubernetes 1.9.0  | Kubernetes 1.10.0 | Kubernetes 1.11.0 | Kubernetes 1.12.0 | Kubernetes 1.14.2 | Kubernetes 1.15.3 | Kubernetes 1.17.0 | Kubernetes 1.18.0 |
