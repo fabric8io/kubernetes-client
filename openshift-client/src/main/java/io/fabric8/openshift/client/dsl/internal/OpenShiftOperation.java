@@ -103,6 +103,11 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
   }
 
   @Override
+  public Boolean isReady() {
+    return OpenShiftReadiness.isReady(get());
+  }
+
+  @Override
   public T waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException {
     return waitUntilCondition(resource -> Objects.nonNull(resource) && OpenShiftReadiness.isReady(resource), amount, timeUnit);
   }

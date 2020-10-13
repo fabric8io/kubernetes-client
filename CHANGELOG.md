@@ -4,6 +4,8 @@
 
 #### Bugs
 
+* Fix #2537: Checking for Readiness of DeploymentConfig
+
 #### Improvements
 
 #### Dependency Upgrade
