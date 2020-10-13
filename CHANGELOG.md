@@ -13,6 +13,11 @@
 #### New Features
 
 * Fix #2531: Allow setting the maximum concurrent requests via system property / environment variable
+* Fix #2534: Tekton model based on Tekton Pipeline 0.17.0
+
+_**Note**_: Breaking changes in the API
+* Tekton Pipeline v1beta1 *sidecars* field from a task step is now a list of `io.fabric8.tekton.pipeline.v1beta1.Sidecar` instead of a list of `io.fabric8.tekton.pipeline.v1beta1.Step`
+
 
 ### 4.12.0 (2020-10-02)
 
