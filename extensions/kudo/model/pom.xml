@@ -68,7 +68,7 @@
 
         <dependency>
             <groupId>io.fabric8</groupId>
-            <version>4.10.0</version>
+          <version>${project.version}</version>
             <artifactId>kudo-model-annotator</artifactId>
         </dependency>
     </dependencies>
