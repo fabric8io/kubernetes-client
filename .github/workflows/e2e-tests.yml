@@ -40,7 +40,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Setup Minikube-Kubernetes
-        uses: manusa/actions-setup-minikube@v1.1.0
+        uses: manusa/actions-setup-minikube@v2.0.1
         with:
           minikube version: v1.12.1
           kubernetes version: ${{ matrix.kubernetes }}
@@ -67,7 +67,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Setup OpenShift
-        uses: manusa/actions-setup-openshift@v1.0.5
+        uses: manusa/actions-setup-openshift@v1.1.2
         with:
           oc version: ${{ matrix.openshift }}
           github token: ${{ secrets.GITHUB_TOKEN }}
