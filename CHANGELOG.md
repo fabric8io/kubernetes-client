@@ -7,6 +7,7 @@
 * Fix #2537: Checking for Readiness of DeploymentConfig
 
 #### Improvements
+* Fix #2507: Add a test for creating a Job with generateName
 
 #### Dependency Upgrade
 

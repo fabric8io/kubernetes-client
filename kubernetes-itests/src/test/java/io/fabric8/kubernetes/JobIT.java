@@ -31,7 +31,9 @@ import java.util.concurrent.TimeUnit;
 
 import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(ArquillianConditionalRunner.class)
 @RequiresKubernetes
@@ -45,21 +47,7 @@ public class JobIT {
   @Test
   public void testGetLog() {
     // Given
-    Job job = new JobBuilder()
-      .withNewMetadata().withName("hello").endMetadata()
-      .withNewSpec()
-      .withNewTemplate()
-      .withNewSpec()
-      .addNewContainer()
-      .withName("hello")
-      .withImage("busybox:1.32.0")
-      .withCommand("echo", "This is a message!")
-      .endContainer()
-      .withRestartPolicy("Never")
-      .endSpec()
-      .endTemplate()
-      .endSpec()
-      .build();
+    Job job = getJobBuilder().build();
 
     // When
     client.batch().jobs().inNamespace(session.getNamespace()).createOrReplace(job);
@@ -73,5 +61,42 @@ public class JobIT {
     assertNotNull(baos.toString());
     assertEquals("This is a message!\n", baos.toString());
     logWatch.close();
+  }
+
+  @Test
+  public void testCreateWithGenerateName() {
+    // Given
+    Job job = getJobBuilder().editMetadata()
+      .withName(null)
+      .withGenerateName("test-job-")
+      .endMetadata().build();
+
+    // When
+    Job jobCreated = client.batch().jobs().inNamespace(session.getNamespace()).create(job);
+
+    // Then
+    assertNotNull(jobCreated);
+    assertTrue(jobCreated.getMetadata().getName().contains("test-job-"));
+    assertEquals("test-job-", jobCreated.getMetadata().getGenerateName());
+    assertNotNull(jobCreated.getMetadata().getName());
+    assertNotEquals("test-job-", jobCreated.getMetadata().getName());
+    assertTrue(client.batch().jobs().inNamespace(session.getNamespace()).withName(jobCreated.getMetadata().getName()).delete());
+  }
+
+  private JobBuilder getJobBuilder() {
+    return new JobBuilder()
+      .withNewMetadata().withName("hello").endMetadata()
+      .withNewSpec()
+      .withNewTemplate()
+      .withNewSpec()
+      .addNewContainer()
+      .withName("hello")
+      .withImage("busybox:1.32.0")
+      .withCommand("echo", "This is a message!")
+      .endContainer()
+      .withRestartPolicy("Never")
+      .endSpec()
+      .endTemplate()
+      .endSpec();
   }
 }
