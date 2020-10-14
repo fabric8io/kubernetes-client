@@ -20,9 +20,7 @@
 _**Note**_: Breaking changes in the API
 * Tekton Pipeline v1beta1 *sidecars* field from a task step is now a list of `io.fabric8.tekton.pipeline.v1beta1.Sidecar` instead of a list of `io.fabric8.tekton.pipeline.v1beta1.Step`
 
-
-_**Note**_ Minor breaking changes:
-- `NetworkPolicy` moved to `io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicy` from
+* `NetworkPolicy` moved to `io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicy` from
   `io.fabric8.kubernetes.api.model.networking.NetworkPolicy`
 
 ### 4.12.0 (2020-10-02)

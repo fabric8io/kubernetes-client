@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
+import io.fabric8.kubernetes.client.VersionInfo;
 
 import java.io.InputStream;
 import java.util.List;
@@ -46,6 +47,17 @@ public class ClusterEntity {
     try (KubernetesClient client = new DefaultKubernetesClient()) {
       List<HasMetadata> items = client.load(inputStream).get();
       client.resourceList(items).inNamespace(getArquillianNamespace()).withPropagationPolicy(DeletionPropagation.BACKGROUND).delete();
+    }
+  }
+
+  public static boolean kubernetesVersionAtLeast(String majorVersion, String minorVersion) {
+    try (KubernetesClient client = new DefaultKubernetesClient()) {
+      VersionInfo versionInfo = client.getVersion();
+      String clusterMajorVersion = versionInfo.getMajor();
+      String clusterMinorVersion = versionInfo.getMinor();
+
+      return Integer.parseInt(clusterMajorVersion) >= Integer.parseInt(majorVersion) &&
+        Integer.parseInt(clusterMinorVersion) >= Integer.parseInt(minorVersion);
     }
   }
 
