@@ -56,6 +56,10 @@ public class ClusterEntity {
       String clusterMajorVersion = versionInfo.getMajor();
       String clusterMinorVersion = versionInfo.getMinor();
 
+      if (Integer.parseInt(majorVersion) < Integer.parseInt(clusterMajorVersion)) {
+        return true;
+      }
+
       return Integer.parseInt(clusterMajorVersion) >= Integer.parseInt(majorVersion) &&
         Integer.parseInt(clusterMinorVersion) >= Integer.parseInt(minorVersion);
     }
