@@ -3,7 +3,7 @@
 ### 4.12-SNAPSHOT
 
 #### Bugs
-
+* Fix #2517: Replace does not work in CRUD mockwebserver
 * Fix #2537: Checking for Readiness of DeploymentConfig
 
 #### Improvements
