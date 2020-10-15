@@ -22,22 +22,24 @@ import io.fabric8.kubernetes.api.model.apps.DeploymentList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import org.junit.Rule;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.util.Collections;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @EnableRuleMigrationSupport
-public class DeploymentCrudTest {
+class DeploymentCrudTest {
   @Rule
   public KubernetesServer server = new KubernetesServer(true, true);
 
   @Test
-  public void testCrud() {
+  void testCrud() {
     KubernetesClient client = server.getClient();
 
     Deployment deployment1 = new DeploymentBuilder().withNewMetadata()
@@ -97,6 +99,32 @@ public class DeploymentCrudTest {
       .editMetadata().addToLabels("key1", "value1").endMetadata().done();
     assertNotNull(deployment2);
     assertEquals("value1", deployment2.getMetadata().getLabels().get("key1"));
+  }
+
+  @Test
+  @DisplayName("Should replace Deployment in CRUD server")
+  void testReplace() {
+    // Given
+    KubernetesClient client = server.getClient();
+    Deployment deployment1 = new DeploymentBuilder().withNewMetadata()
+      .withName("d1")
+      .withNamespace("ns1")
+      .addToLabels("testKey", "testValue")
+      .endMetadata()
+      .withNewSpec()
+      .endSpec()
+      .build();
+    deployment1 = client.apps().deployments().inNamespace("ns1").create(deployment1);
+
+    // When
+    deployment1.getMetadata().getLabels().put("testKey", "one");
+    client.apps().deployments().inNamespace("ns1").withName("d1").replace(deployment1);
+    Deployment replacedDeployment = client.apps().deployments().inNamespace("ns1").withName("d1").get();
+
+    // Then
+    assertNotNull(replacedDeployment);
+    assertFalse(replacedDeployment.getMetadata().getLabels().isEmpty());
+    assertEquals("one", replacedDeployment.getMetadata().getLabels().get("testKey"));
   }
 }
 

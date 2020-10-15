@@ -162,7 +162,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
         JsonNode updated = JsonPatch.apply(patch, source);
         String updatedAsString = context.getMapper().writeValueAsString(updated);
 
-        AttributeSet attributeSet = null;
+        AttributeSet attributeSet;
 
         AttributeSet query = attributeExtractor.fromPath(path);
 
@@ -293,13 +293,14 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
 
     if (items.isEmpty()) return HttpURLConnection.HTTP_NOT_FOUND;
 
-    items.stream().forEach(item -> {
+
+    items.forEach(item -> {
       if (event != null && !event.isEmpty()) {
         watchEventListeners.stream()
           .filter(listener -> listener.attributeMatches(item))
           .forEach(listener -> listener.sendWebSocketResponse(map.get(item), event));
-        map.remove(item);
       }
+      map.remove(item);
     });
     return HttpURLConnection.HTTP_OK;
   }
