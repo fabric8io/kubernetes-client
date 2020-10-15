@@ -8,6 +8,7 @@
 
 #### Improvements
 * Fix #2507: Add a test for creating a Job with generateName
+* Fix #2509: Reversed order + Add Kubernetes 1.16.0 + OpenShift 4.5.14 to Compatibility matrix
 
 #### Dependency Upgrade
 
