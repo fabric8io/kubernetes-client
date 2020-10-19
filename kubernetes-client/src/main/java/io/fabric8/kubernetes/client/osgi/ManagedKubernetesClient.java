@@ -80,6 +80,9 @@ import io.fabric8.kubernetes.api.model.authentication.TokenReview;
 import io.fabric8.kubernetes.api.model.coordination.v1.DoneableLease;
 import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseList;
+import io.fabric8.kubernetes.api.model.node.v1beta1.DoneableRuntimeClass;
+import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClass;
+import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClassList;
 import io.fabric8.kubernetes.client.Adapters;
 import io.fabric8.kubernetes.client.AdmissionRegistrationAPIGroupDSL;
 import io.fabric8.kubernetes.client.Config;
@@ -563,5 +566,10 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
   @Override
   public RunOperations run() {
     return new RunOperations(httpClient, getConfiguration(), getNamespace(), new RunConfigBuilder());
+  }
+
+  @Override
+  public NonNamespaceOperation<RuntimeClass, RuntimeClassList, DoneableRuntimeClass, Resource<RuntimeClass, DoneableRuntimeClass>> runtimeClasses() {
+    return delegate.runtimeClasses();
   }
 }

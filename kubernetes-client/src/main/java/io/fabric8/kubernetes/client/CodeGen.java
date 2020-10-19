@@ -39,6 +39,7 @@ import io.sundr.transform.annotations.VelocityTransformations;
     @ResourceSelector("events.properties"),
     @ResourceSelector("extensions.properties"),
     @ResourceSelector("networking.properties"),
+    @ResourceSelector("node.properties"),
     @ResourceSelector("metrics.properties"),
     @ResourceSelector("policy.properties"),
     @ResourceSelector("scheduling.properties"),

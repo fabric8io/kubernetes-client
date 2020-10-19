@@ -343,6 +343,10 @@
           "type": "string",
           "description": ""
         },
+        "resourceVersionMatch": {
+          "type": "string",
+          "description": ""
+        },
         "timeoutSeconds": {
           "type": "integer",
           "description": "",
@@ -1553,6 +1557,10 @@
           "javaType": "Long"
         },
         "resourceVersion": {
+          "type": "string",
+          "description": ""
+        },
+        "resourceVersionMatch": {
           "type": "string",
           "description": ""
         },

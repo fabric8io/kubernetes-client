@@ -77,6 +77,9 @@ import io.fabric8.kubernetes.api.model.authentication.TokenReview;
 import io.fabric8.kubernetes.api.model.coordination.v1.DoneableLease;
 import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseList;
+import io.fabric8.kubernetes.api.model.node.v1beta1.DoneableRuntimeClass;
+import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClass;
+import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClassList;
 import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionList;
@@ -546,4 +549,11 @@ public interface KubernetesClient extends Client {
    * @return returns {@link RunOperations} that allows you to run a pod based on few parameters(e.g. name, image etc)
    */
   RunOperations run();
+
+  /**
+   * API entrypoint for RuntimeClass (node.k8s.io/v1beta1)
+   *
+   * @return {@link NonNamespaceOperation} for RuntimeClass
+   */
+  NonNamespaceOperation<RuntimeClass, RuntimeClassList, DoneableRuntimeClass, Resource<RuntimeClass, DoneableRuntimeClass>> runtimeClasses();
 }

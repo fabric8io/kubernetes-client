@@ -10,6 +10,7 @@
 * Fix #2507: Add a test for creating a Job with generateName
 
 #### Dependency Upgrade
+* Fix #2513: Update Kubernetes Model to v1.19.1
 
 #### New Features
 
@@ -19,6 +20,8 @@
 _**Note**_: Breaking changes in the API
 * Tekton Pipeline v1beta1 *sidecars* field from a task step is now a list of `io.fabric8.tekton.pipeline.v1beta1.Sidecar` instead of a list of `io.fabric8.tekton.pipeline.v1beta1.Step`
 
+* `NetworkPolicy` moved to `io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicy` from
+  `io.fabric8.kubernetes.api.model.networking.NetworkPolicy`
 
 ### 4.12.0 (2020-10-02)
 

@@ -60,8 +60,15 @@ type Schema struct {
 
   NetworkPolicy                            networking.NetworkPolicy
   NetworkPolicyList                        networking.NetworkPolicyList
+  V1Ingress                                networking.Ingress
+  V1IngressList                            networking.IngressList
+  V1IngressClass                           networking.IngressClass
+  V1IngressClassList                       networking.IngressClassList
   Ingress                                  networkingv1beta1.Ingress
   IngressList                              networkingv1beta1.IngressList
+  IngressClass                             networkingv1beta1.IngressClass
+  IngressClassList                         networkingv1beta1.IngressClassList
+
 }
 
 func main() {
@@ -71,7 +78,7 @@ func main() {
     {"k8s.io/apimachinery/pkg/version", "", "io.fabric8.kubernetes.api.model.version", "kubernetes_apimachinery_pkg_version_"},
     {"k8s.io/apimachinery/pkg/apis/meta/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_"},
     {"k8s.io/api/core/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_core_"},
-    {"k8s.io/api/networking/v1", "networking.k8s.io", "io.fabric8.kubernetes.api.model.networking", "kubernetes_networking_"},
+    {"k8s.io/api/networking/v1", "networking.k8s.io", "io.fabric8.kubernetes.api.model.networking.v1", "kubernetes_networking_v1_"},
     {"k8s.io/api/networking/v1beta1", "networking.k8s.io", "io.fabric8.kubernetes.api.model.networking.v1beta1", "kubernetes_networking_v1beta1_"},
   }
 

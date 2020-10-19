@@ -19,8 +19,8 @@ package io.fabric8.kubernetes;
 import io.fabric8.commons.ClusterEntity;
 import io.fabric8.commons.DeleteEntity;
 import io.fabric8.commons.ReadyEntity;
-import io.fabric8.kubernetes.api.model.networking.NetworkPolicy;
-import io.fabric8.kubernetes.api.model.networking.NetworkPolicyList;
+import io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicy;
+import io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicyList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
@@ -56,7 +56,7 @@ public class NetworkPolicyIT {
 
   @Test
   public void load() {
-    NetworkPolicy loadedNetworkPolicy = client.network().networkPolicies()
+    NetworkPolicy loadedNetworkPolicy = client.network().v1().networkPolicies()
       .load(getClass().getResourceAsStream("/test-networkpolicy.yml")).get();
 
     assertNotNull(loadedNetworkPolicy);
@@ -72,7 +72,7 @@ public class NetworkPolicyIT {
 
   @Test
   public void get() {
-    NetworkPolicy getNetworkPolicy = client.network().networkPolicies()
+    NetworkPolicy getNetworkPolicy = client.network().v1().networkPolicies()
       .withName("networkpolicy-get").get();
     assertNotNull(getNetworkPolicy);
     assertEquals("networkpolicy-get", getNetworkPolicy.getMetadata().getName());
@@ -89,7 +89,7 @@ public class NetworkPolicyIT {
   @Test
   public void list() {
 
-    NetworkPolicyList networkPolicyList = client.network().networkPolicies()
+    NetworkPolicyList networkPolicyList = client.network().v1().networkPolicies()
       .withLabels(Collections.singletonMap("test","list")).list();
     assertNotNull(networkPolicyList);
     assertTrue(networkPolicyList.getItems().size() >= 1);
@@ -110,7 +110,7 @@ public class NetworkPolicyIT {
   @Test
   public void update() {
     ReadyEntity<NetworkPolicy> networkPolicyReady = new ReadyEntity<>(NetworkPolicy.class, client, "networkpolicy-update", session.getNamespace());
-    NetworkPolicy networkPolicy = client.network().networkPolicies()
+    NetworkPolicy networkPolicy = client.network().v1().networkPolicies()
       .withName("networkpolicy-update").edit()
       .editMetadata().addToLabels("bar", "foo").endMetadata()
       .done();
@@ -133,7 +133,7 @@ public class NetworkPolicyIT {
   public void delete() {
     ReadyEntity<NetworkPolicy> networkPolicyReady = new ReadyEntity<>(NetworkPolicy.class, client, "networkpolicy-delete", session.getNamespace());
     await().atMost(30, TimeUnit.SECONDS).until(networkPolicyReady);
-    boolean deleted = client.network().networkPolicies().inNamespace(session.getNamespace()).withName("networkpolicy-delete").delete();
+    boolean deleted = client.network().v1().networkPolicies().inNamespace(session.getNamespace()).withName("networkpolicy-delete").delete();
 
     assertTrue(deleted);
 

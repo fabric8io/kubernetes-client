@@ -302,6 +302,14 @@
             "javaType": "io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceColumnDefinition"
           }
         },
+        "deprecated": {
+          "type": "boolean",
+          "description": ""
+        },
+        "deprecationWarning": {
+          "type": "string",
+          "description": ""
+        },
         "name": {
           "type": "string",
           "description": ""
@@ -1127,6 +1135,14 @@
             "javaType": "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceColumnDefinition"
           }
         },
+        "deprecated": {
+          "type": "boolean",
+          "description": ""
+        },
+        "deprecationWarning": {
+          "type": "string",
+          "description": ""
+        },
         "name": {
           "type": "string",
           "description": ""
@@ -1935,6 +1951,10 @@
           "javaType": "Long"
         },
         "resourceVersion": {
+          "type": "string",
+          "description": ""
+        },
+        "resourceVersionMatch": {
           "type": "string",
           "description": ""
         },

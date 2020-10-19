@@ -342,6 +342,10 @@
           "type": "string",
           "description": ""
         },
+        "resourceVersionMatch": {
+          "type": "string",
+          "description": ""
+        },
         "timeoutSeconds": {
           "type": "integer",
           "description": "",

@@ -342,6 +342,10 @@
           "type": "string",
           "description": ""
         },
+        "resourceVersionMatch": {
+          "type": "string",
+          "description": ""
+        },
         "timeoutSeconds": {
           "type": "integer",
           "description": "",
@@ -922,6 +926,10 @@
       "type": "object",
       "description": "",
       "properties": {
+        "lastTransitionTime": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "javaType": "String"
+        },
         "lastUpdateTime": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
           "javaType": "String"
@@ -931,6 +939,10 @@
           "description": ""
         },
         "reason": {
+          "type": "string",
+          "description": ""
+        },
+        "status": {
           "type": "string",
           "description": ""
         },
@@ -1255,6 +1267,10 @@
     },
     "certificatesigningrequestcondition": {
       "properties": {
+        "lastTransitionTime": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "javaType": "String"
+        },
         "lastUpdateTime": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
           "javaType": "String"
@@ -1264,6 +1280,10 @@
           "description": ""
         },
         "reason": {
+          "type": "string",
+          "description": ""
+        },
+        "status": {
           "type": "string",
           "description": ""
         },
@@ -1614,6 +1634,10 @@
           "javaType": "Long"
         },
         "resourceVersion": {
+          "type": "string",
+          "description": ""
+        },
+        "resourceVersionMatch": {
           "type": "string",
           "description": ""
         },

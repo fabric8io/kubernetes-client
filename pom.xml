@@ -283,6 +283,11 @@
       </dependency>
       <dependency>
         <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-model-node</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
         <artifactId>openshift-model-operator</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -712,6 +717,7 @@
                   <include>io.fabric8:kubernetes-model-events*</include>
                   <include>io.fabric8:kubernetes-model-extensions*</include>
                   <include>io.fabric8:kubernetes-model-networking*</include>
+                  <include>io.fabric8:kubernetes-model-node*</include>
                   <include>io.fabric8:kubernetes-model-metrics*</include>
                   <include>io.fabric8:kubernetes-model-policy*</include>
                   <include>io.fabric8:kubernetes-model-scheduling*</include>

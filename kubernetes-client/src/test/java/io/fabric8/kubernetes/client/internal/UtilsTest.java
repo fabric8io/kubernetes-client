@@ -52,7 +52,7 @@ import io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequest;
 import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.discovery.EndpointSlice;
 import io.fabric8.kubernetes.api.model.extensions.Ingress;
-import io.fabric8.kubernetes.api.model.networking.NetworkPolicy;
+import io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicy;
 import io.fabric8.kubernetes.api.model.policy.PodDisruptionBudget;
 import io.fabric8.kubernetes.api.model.policy.PodSecurityPolicy;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRole;

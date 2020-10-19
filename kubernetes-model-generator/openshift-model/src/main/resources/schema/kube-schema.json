@@ -1001,8 +1001,7 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.authentication.TokenReview",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata",
-        "io.fabric8.kubernetes.api.model.Namespaced"
+        "io.fabric8.kubernetes.api.model.HasMetadata"
       ]
     },
     "kubernetes_authentication_TokenReviewSpec": {
@@ -1237,6 +1236,10 @@
           "type": "boolean",
           "description": ""
         },
+        "proxy-url": {
+          "type": "string",
+          "description": ""
+        },
         "server": {
           "type": "string",
           "description": ""
@@ -1371,6 +1374,10 @@
             "$ref": "#/definitions/kubernetes_config_ExecEnvVar",
             "javaType": "io.fabric8.kubernetes.api.model.ExecEnvVar"
           }
+        },
+        "installHint": {
+          "type": "string",
+          "description": ""
         }
       },
       "additionalProperties": true,
@@ -3162,8 +3169,7 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.PersistentVolumeClaimTemplate",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata",
-        "io.fabric8.kubernetes.api.model.Namespaced"
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
     "kubernetes_core_PersistentVolumeClaimVolumeSource": {

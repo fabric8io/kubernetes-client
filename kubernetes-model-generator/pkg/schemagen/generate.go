@@ -214,7 +214,7 @@ func (g *schemaGenerator) resourceListWithGeneric(t reflect.Type) string {
 }
 
 func (g *schemaGenerator) javaInterfaces(t reflect.Type) []string {
-	if _, ok := t.FieldByName("ObjectMeta"); t.Name() != "JobTemplateSpec" && t.Name() != "PodTemplateSpec" && ok {
+	if _, ok := t.FieldByName("ObjectMeta"); t.Name() != "JobTemplateSpec" && t.Name() != "PodTemplateSpec" && t.Name() != "PersistentVolumeClaimTemplate" && ok {
 		scope := g.crdScope(t)
 
 		if scope == Namespaced {
@@ -616,6 +616,8 @@ func (g *schemaGenerator) crdScope(t reflect.Type) CrdScope {
                 "RangeAllocation",
                 "NetNamespace",
                 "ClusterNetwork",
+                "RuntimeClass",
+                "IngressClass",
 		"APIService":
 		return Cluster
 	default:
