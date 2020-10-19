@@ -114,7 +114,7 @@ public class ServiceIT {
   }
 
   @Test
-  public void testClusterIPCreateOrReplace() {
+  public void testClusterIpServiceCreateOrReplace() {
     // Given
     Service clusterIPSvc = new ServiceBuilder()
       .withNewMetadata().withName("serviceit-clusterip-createorreplace").endMetadata()
@@ -144,9 +144,9 @@ public class ServiceIT {
   }
 
   @Test
-  public void testNodePortCreateOrReplace() {
+  public void testNodePortServiceCreateOrReplace() {
     // Given
-    Service clusterIPSvc = new ServiceBuilder()
+    Service nodePortSvc = new ServiceBuilder()
       .withNewMetadata().withName("serviceit-nodeport-createorreplace").endMetadata()
       .withNewSpec()
       .withType("NodePort")
@@ -160,22 +160,24 @@ public class ServiceIT {
 
     // When
     // Create resource
-    client.services().inNamespace(session.getNamespace()).createOrReplace(clusterIPSvc);
+    client.services().inNamespace(session.getNamespace()).createOrReplace(nodePortSvc);
     // Modify resource
-    clusterIPSvc.getSpec().getPorts().get(0).setTargetPort(new IntOrString(81));
+    nodePortSvc.getSpec().getPorts().get(0).setTargetPort(new IntOrString(81));
+    nodePortSvc.getSpec().getPorts().get(0).setNodePort(32124);
     // Do createOrReplace again; resource should get updated
-    clusterIPSvc = client.services().inNamespace(session.getNamespace()).createOrReplace(clusterIPSvc);
+    nodePortSvc = client.services().inNamespace(session.getNamespace()).createOrReplace(nodePortSvc);
 
     // Then
-    assertNotNull(clusterIPSvc);
-    assertEquals("NodePort", clusterIPSvc.getSpec().getType());
-    assertEquals(81, clusterIPSvc.getSpec().getPorts().get(0).getTargetPort().getIntVal().intValue());
+    assertNotNull(nodePortSvc);
+    assertEquals("NodePort", nodePortSvc.getSpec().getType());
+    assertEquals(81, nodePortSvc.getSpec().getPorts().get(0).getTargetPort().getIntVal().intValue());
+    assertEquals(32124, nodePortSvc.getSpec().getPorts().get(0).getNodePort().intValue());
   }
 
   @Test
-  public void testLoadBalancerCreateOrReplace() {
+  public void testLoadBalancerServiceCreateOrReplace() {
     // Given
-    Service clusterIPSvc = new ServiceBuilder()
+    Service loadBalancerSvc = new ServiceBuilder()
       .withNewMetadata().withName("serviceit-loadbalancer-createorreplace").endMetadata()
       .withNewSpec()
       .withType("LoadBalancer")
@@ -190,20 +192,20 @@ public class ServiceIT {
 
     // When
     // Create resource
-    client.services().inNamespace(session.getNamespace()).createOrReplace(clusterIPSvc);
+    client.services().inNamespace(session.getNamespace()).createOrReplace(loadBalancerSvc);
     // Modify resource
-    clusterIPSvc.getSpec().getPorts().get(0).setTargetPort(new IntOrString(9380));
+    loadBalancerSvc.getSpec().getPorts().get(0).setTargetPort(new IntOrString(9380));
     // Do createOrReplace again; resource should get updated
-    clusterIPSvc = client.services().inNamespace(session.getNamespace()).createOrReplace(clusterIPSvc);
+    loadBalancerSvc = client.services().inNamespace(session.getNamespace()).createOrReplace(loadBalancerSvc);
 
     // Then
-    assertNotNull(clusterIPSvc);
-    assertEquals("LoadBalancer", clusterIPSvc.getSpec().getType());
-    assertEquals(9380, clusterIPSvc.getSpec().getPorts().get(0).getTargetPort().getIntVal().intValue());
+    assertNotNull(loadBalancerSvc);
+    assertEquals("LoadBalancer", loadBalancerSvc.getSpec().getType());
+    assertEquals(9380, loadBalancerSvc.getSpec().getPorts().get(0).getTargetPort().getIntVal().intValue());
   }
 
   @Test
-  public void testExternalNameCreateOrReplace() {
+  public void testExternalNameServiceCreateOrReplace() {
     // Given
     Service service = new ServiceBuilder()
       .withNewMetadata().withName("serviceit-externalname-createorreplace").endMetadata()
