@@ -16,7 +16,7 @@
 package io.fabric8.kubernetes.client.dsl.base;
 
 import io.fabric8.kubernetes.api.model.ObjectReference;
-import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
+import io.fabric8.kubernetes.client.utils.CreateOrReplaceHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,7 +71,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -405,37 +404,22 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
       return withName(itemToCreateOrReplace.getMetadata().getName()).createOrReplace(itemToCreateOrReplace);
     }
-
-    final CompletableFuture<T> future = new CompletableFuture<>();
-    while (!future.isDone()) {
-      try {
-        // Create
-        KubernetesResourceUtil.setResourceVersion(itemToCreateOrReplace, null);
-        future.complete(create(itemToCreateOrReplace));
-      } catch (KubernetesClientException exception) {
-        final T itemFromServer;
-        if (exception.getCode() == HttpURLConnection.HTTP_INTERNAL_ERROR) {
-          itemFromServer = fromServer().get();
-          if (itemFromServer == null) {
-            try {
-              Thread.sleep(200);
-            } catch (InterruptedException e) {
-              Thread.currentThread().interrupt();
-            }
-            continue;
-          }
-        } else if (exception.getCode() != HttpURLConnection.HTTP_CONFLICT) {
-          throw exception;
-        } else {
-          itemFromServer = fromServer().get();
+    T finalItemToCreateOrReplace = itemToCreateOrReplace;
+    CreateOrReplaceHelper<T> createOrReplaceHelper = new CreateOrReplaceHelper<>(
+      this::create,
+      this::replace,
+      m -> {
+        try {
+          return waitUntilCondition(Objects::nonNull, 1, TimeUnit.SECONDS);
+        } catch (InterruptedException interruptedException) {
+          interruptedException.printStackTrace();
         }
+        return null;
+      },
+      m -> fromServer().get()
+    );
 
-        // Conflict; Do Replace
-        KubernetesResourceUtil.setResourceVersion(itemToCreateOrReplace, KubernetesResourceUtil.getResourceVersion(itemFromServer));
-        future.complete(replace(itemToCreateOrReplace));
-      }
-    }
-    return future.join();
+    return createOrReplaceHelper.createOrReplace(finalItemToCreateOrReplace);
   }
 
   @Override

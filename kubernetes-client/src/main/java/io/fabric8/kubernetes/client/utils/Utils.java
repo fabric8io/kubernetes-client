@@ -472,4 +472,5 @@ public class Utils {
   private static String getOperatingSystemFromSystemProperty() {
     return System.getProperty(OS_NAME);
   }
+
 }
