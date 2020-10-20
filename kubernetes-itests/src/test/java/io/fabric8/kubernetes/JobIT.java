@@ -54,6 +54,7 @@ public class JobIT {
     ByteArrayOutputStream baos = new ByteArrayOutputStream(1024);
     LogWatch logWatch = client.batch().jobs().inNamespace(session.getNamespace())
       .withName(job.getMetadata().getName())
+      .withLogWaitTimeout(30)
       .watchLog(baos);
 
     await().atMost(5, TimeUnit.SECONDS).until(() -> baos.toString().length() > 0);
