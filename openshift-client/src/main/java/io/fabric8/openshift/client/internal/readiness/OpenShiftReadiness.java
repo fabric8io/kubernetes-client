@@ -23,6 +23,12 @@ import io.fabric8.openshift.api.model.DeploymentConfigSpec;
 import io.fabric8.openshift.api.model.DeploymentConfigStatus;
 
 public class OpenShiftReadiness extends Readiness {
+  public static boolean isReadinessApplicable(Class<? extends HasMetadata> itemClass) {
+    return Readiness.isReadinessApplicable(itemClass)
+      || DeploymentConfig.class.isAssignableFrom(itemClass)
+      ;
+  }
+
   public static boolean isReady(HasMetadata item) {
     if (Readiness.isReadiableKubernetesResource(item)) {
       return Readiness.isReady(item);
