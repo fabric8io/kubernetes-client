@@ -153,7 +153,7 @@ public class FullExample {
 
                 // Update the RC via rolling update with inline builder
                 client.replicationControllers().inNamespace("thisisatest").withName("nginx-controller")
-                        .rolling().edit().editMetadata().addToLabels("testing", "rolling-update").endMetadata().done();
+                        .rolling().updateImage("nginx:stable-alpine");
 
                 Thread.sleep(1000);
 
