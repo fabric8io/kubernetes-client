@@ -91,7 +91,7 @@
     <jsr305.version>3.0.2</jsr305.version>
 
     <!-- Testing versions -->
-    <assertj.core.version>3.17.2</assertj.core.version>
+    <assertj.core.version>3.18.0</assertj.core.version>
     <arquillian.core.version>1.2.0.Final</arquillian.core.version>
     <awaitility.version>4.0.3</awaitility.version>
     <jsonassert.version>1.5.0</jsonassert.version>
