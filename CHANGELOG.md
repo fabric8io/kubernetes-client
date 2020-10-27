@@ -24,6 +24,7 @@ _**Note**_: Breaking changes in the API
 
 * `NetworkPolicy` moved to `io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicy` from
   `io.fabric8.kubernetes.api.model.networking.NetworkPolicy`
+* Fix #2557: add missing `OpenShiftReadiness.isReadinessApplicable`
 
 ### 4.12.0 (2020-10-02)
 
