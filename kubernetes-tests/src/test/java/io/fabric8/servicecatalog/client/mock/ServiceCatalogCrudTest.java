@@ -38,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @EnableRuleMigrationSupport
-public class ServiceCatalogCrudTest {
+class ServiceCatalogCrudTest {
 
   @Rule
   public ServiceCatalogServer server = new ServiceCatalogServer(true, true);
@@ -49,7 +49,7 @@ public class ServiceCatalogCrudTest {
    */
   @Test
   @Order(1)
-  public void testList() {
+  void testList() {
     ServiceCatalogClient client = server.getServiceCatalogClient();
 
     ClusterServiceBroker broker1 = new ClusterServiceBrokerBuilder()
@@ -85,7 +85,7 @@ public class ServiceCatalogCrudTest {
    */
   @Test
   @Order(2)
-  public void testGet() {
+  void testGet() {
     ServiceCatalogClient client = server.getServiceCatalogClient();
 
     ClusterServiceBroker brokerMock = new ClusterServiceBrokerBuilder()
@@ -110,7 +110,7 @@ public class ServiceCatalogCrudTest {
    */
   @Test
   @Order(3)
-  public void testLoadFromFile() {
+  void testLoadFromFile() {
     ServiceCatalogClient client = server.getServiceCatalogClient();
 
 
@@ -130,7 +130,7 @@ public class ServiceCatalogCrudTest {
    */
   @Test
   @Order(4)
-  public void testDelete() {
+  void testDelete() {
     ServiceCatalogClient client = server.getServiceCatalogClient();
 
     ClusterServiceBroker broker = new ClusterServiceBrokerBuilder()

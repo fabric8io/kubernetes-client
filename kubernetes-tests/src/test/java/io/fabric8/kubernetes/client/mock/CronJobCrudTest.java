@@ -32,12 +32,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @EnableRuleMigrationSupport
-public class CronJobCrudTest {
+class CronJobCrudTest {
   @Rule
   public KubernetesServer server = new KubernetesServer(true, true);
 
   @Test
-  public void testCrud() {
+  void testCrud() {
     KubernetesClient client = server.getClient();
 
     CronJob cronJob1 = new CronJobBuilder().withNewMetadata()

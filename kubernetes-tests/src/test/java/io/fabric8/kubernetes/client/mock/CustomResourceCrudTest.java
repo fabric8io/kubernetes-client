@@ -43,7 +43,7 @@ import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import io.fabric8.kubernetes.internal.KubernetesDeserializer;
 
 @EnableRuleMigrationSupport
-public class CustomResourceCrudTest {
+class CustomResourceCrudTest {
   @Rule
   public KubernetesServer kubernetesServer = new KubernetesServer(true,true);
   
@@ -62,7 +62,7 @@ public class CustomResourceCrudTest {
   }
 
   @Test
-  public void testCrud() throws IOException {
+  void testCrud() throws IOException {
     CronTab cronTab1 = createCronTab("my-new-cron-object", "* * * * */5", 3, "my-awesome-cron-image");
     CronTab cronTab2 = createCronTab("my-second-cron-object", "* * * * */4", 2, "my-second-cron-image");
     CronTab cronTab3 = createCronTab("my-third-cron-object", "* * * * */3", 1, "my-third-cron-image");
@@ -119,7 +119,7 @@ public class CustomResourceCrudTest {
   }
 
   @Test
-  public void testCrudWithDashSymbolInCRDName() throws IOException {
+  void testCrudWithDashSymbolInCRDName() throws IOException {
     CronTab cronTab1 = createCronTab("my-new-cron-object", "* * * * */5", 3, "my-awesome-cron-image");
     CronTab cronTab2 = createCronTab("my-second-cron-object", "* * * * */4", 2, "my-second-cron-image");
     CronTab cronTab3 = createCronTab("my-third-cron-object", "* * * * */3", 1, "my-third-cron-image");
@@ -153,14 +153,14 @@ public class CustomResourceCrudTest {
     assertEquals(2, cronTabList.getItems().size());
   }
 
-  public void assertCronTab(CronTab cronTab, String name, String cronTabSpec, int replicas, String image) {
+  void assertCronTab(CronTab cronTab, String name, String cronTabSpec, int replicas, String image) {
     assertEquals(name, cronTab.getMetadata().getName());
     assertEquals(cronTabSpec, cronTab.getSpec().getCronSpec());
     assertEquals(replicas, cronTab.getSpec().getReplicas());
     assertEquals(image, cronTab.getSpec().getImage());
   }
 
-  public CronTab createCronTab(String name, String cronTabSpecStr, int replicas, String image) {
+  CronTab createCronTab(String name, String cronTabSpecStr, int replicas, String image) {
     CronTab cronTab = new CronTab();
     cronTab.setMetadata(new ObjectMetaBuilder().withName(name).build());
     CronTabSpec cronTabSpec = new CronTabSpec();

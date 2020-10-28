@@ -40,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class LoadAsTemplateTest {
+class LoadAsTemplateTest {
 
   private OpenShiftClient client;
 
@@ -50,13 +50,13 @@ public class LoadAsTemplateTest {
   }
 
   @AfterEach
-  public void tearDown() {
+  void tearDown() {
     client.close();
     client = null;
   }
 
   @Test
-  public void shouldLoadPodAsTemplate() {
+  void shouldLoadPodAsTemplate() {
     KubernetesList list = client.templates().load(getClass().getResourceAsStream("/test-pod-create-from-load.yml")).processLocally();
     assertNotNull(list);
     assertNotNull(list.getItems());
@@ -64,7 +64,7 @@ public class LoadAsTemplateTest {
   }
 
   @Test
-  public void shouldProcessLocally() {
+  void shouldProcessLocally() {
     Map<String, String> map = new HashMap<>();
     map.put("USERNAME", "root");
     map.put("REQUIRED", "requiredValue");
@@ -74,14 +74,14 @@ public class LoadAsTemplateTest {
   }
 
   @Test
-  public void shouldProcessLocallyWithParametersInYaml() {
+  void shouldProcessLocallyWithParametersInYaml() {
     KubernetesList list = client.templates().load(getClass().getResourceAsStream("/template-with-params.yml"))
       .processLocally(new File(getClass().getResource("/parameters.yml").getFile()));
     assertListIsProcessed(list);
   }
 
   @Test
-  public void shouldProcessLocallyDoubleBracedParameters() {
+  void shouldProcessLocallyDoubleBracedParameters() {
     // Given
     final Map<String, String> nonStringParamsToBeAbleToLoad = Collections.singletonMap("CONTAINER_PORT", "8080");
     final Map<String, String> localRequiredParameters = new HashMap<>();
@@ -102,7 +102,7 @@ public class LoadAsTemplateTest {
   }
 
   @Test
-  public void shouldProcessLocallyWithDoubleBracedParametersAndParametersInYaml() {
+  void shouldProcessLocallyWithDoubleBracedParametersAndParametersInYaml() {
     // Given
     final Map<String, String> nonStringParamsToBeAbleToLoad = Collections.singletonMap("CONTAINER_PORT", "8080");
     // When

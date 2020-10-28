@@ -32,12 +32,12 @@ import io.fabric8.openshift.api.model.RoleListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 
 @EnableRuleMigrationSupport
-public class OpenshiftRoleTest {
+class OpenshiftRoleTest {
   @Rule
   public OpenShiftServer server = new OpenShiftServer();
 
   @Test
-  public void testList() {
+  void testList() {
    server.expect().withPath("/apis/authorization.openshift.io/v1/namespaces/test/roles").andReturn(200, new RoleListBuilder().build()).once();
    server.expect().withPath("/apis/authorization.openshift.io/v1/namespaces/ns1/roles").andReturn(200, new RoleListBuilder()
       .addNewItem().and()
@@ -75,7 +75,7 @@ public class OpenshiftRoleTest {
   }
 
   @Test
-  public void testGet() {
+  void testGet() {
    server.expect().withPath("/apis/authorization.openshift.io/v1/namespaces/test/roles/role1").andReturn(200, new RoleBuilder()
       .withNewMetadata().withName("role1").endMetadata()
       .build()).once();

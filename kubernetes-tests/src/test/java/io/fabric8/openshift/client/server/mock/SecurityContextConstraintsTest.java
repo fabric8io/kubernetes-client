@@ -37,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableRuleMigrationSupport
-public class SecurityContextConstraintsTest {
+class SecurityContextConstraintsTest {
   @Rule
   public OpenShiftServer server = new OpenShiftServer();
 
@@ -85,7 +85,7 @@ public class SecurityContextConstraintsTest {
   }
 
   @Test
-  public void testList() {
+  void testList() {
    server.expect().withPath("/apis/security.openshift.io/v1/securitycontextconstraints").andReturn(200, new SecurityContextConstraintsListBuilder()
             .addNewItem().endItem()
             .build()).once();
@@ -98,7 +98,7 @@ public class SecurityContextConstraintsTest {
   }
 
   @Test
-  public void testDelete() {
+  void testDelete() {
    server.expect().withPath("/apis/security.openshift.io/v1/securitycontextconstraints/scc1").andReturn(200, new SecurityContextConstraintsBuilder().build()).once();
    server.expect().withPath("/apis/security.openshift.io/v1/securitycontextconstraints/scc2").andReturn(200, new SecurityContextConstraintsBuilder().build()).once();
 
@@ -115,7 +115,7 @@ public class SecurityContextConstraintsTest {
   }
 
   @Test
-  public void testEdit() {
+  void testEdit() {
    server.expect().withPath("/apis/security.openshift.io/v1/securitycontextconstraints/scc1").andReturn(200, new SecurityContextConstraintsBuilder().withNewMetadata().withName("scc1").and().build()).times(2);
    server.expect().withPath("/apis/security.openshift.io/v1/securitycontextconstraints/scc1").andReturn(200, new SecurityContextConstraintsBuilder().withNewMetadata().withName("scc1").and().addToAllowedCapabilities("allowed").build()).once();
 

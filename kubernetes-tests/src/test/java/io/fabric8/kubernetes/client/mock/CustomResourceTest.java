@@ -54,7 +54,7 @@ import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import io.fabric8.kubernetes.client.utils.Utils;
 
 @EnableRuleMigrationSupport
-public class CustomResourceTest {
+class CustomResourceTest {
   private static final Long WATCH_EVENT_PERIOD = 5L;
 
   @Rule
@@ -69,7 +69,7 @@ public class CustomResourceTest {
     .build();
 
   @Test
-  public void testLoad() throws IOException {
+  void testLoad() throws IOException {
     KubernetesClient client = server.getClient();
     Map<String, Object> customResource = client.customResource(customResourceDefinitionContext).load(getClass().getResourceAsStream("/test-hello-cr.yml"));
     assertNotNull(customResource);
@@ -78,7 +78,7 @@ public class CustomResourceTest {
 
   @SuppressWarnings("unchecked")
   @Test
-  public void testCreate() throws IOException {
+  void testCreate() throws IOException {
     final String createResponse = "{\"apiVersion\": \"test.fabric8.io/v1alpha1\",\"kind\": \"Hello\"," +
       "\"metadata\": {\"name\": \"example-hello\", \"resourceVersion\": \"1\"},\"spec\": {\"size\": 3, \"creationTimestamp\": \"19851026T090000Z\"}}";
     server.expect().post().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos")
@@ -95,7 +95,7 @@ public class CustomResourceTest {
   }
 
   @Test
-  public void testCreateOrReplace() throws IOException {
+  void testCreateOrReplace() throws IOException {
     String jsonObject = "{\"apiVersion\": \"test.fabric8.io/v1alpha1\",\"kind\": \"Hello\"," +
       "\"metadata\": {\"resourceVersion\":\"1\", \"name\": \"example-hello\"},\"spec\": {\"size\": 3}}";
 
@@ -118,7 +118,7 @@ public class CustomResourceTest {
   }
 
   @Test
-  public void testList() {
+  void testList() {
     String jsonObject = "{\"metadata\":{\"continue\":\"\",\"resourceVersion\":\"539617\",\"selfLink\":\"test.fabric8.io/v1alpha1/namespaces/ns1/hellos/\"},\"apiVersion\":\"test.fabric8.io/v1alpha1\",\"kind\":\"HelloList\",\"items\":[{\"apiVersion\": \"test.fabric8.io/v1alpha1\",\"kind\": \"Hello\"," +
       "\"metadata\": {\"name\": \"example-hello\"},\"spec\": {\"size\": 3},\"uid\":\"3525437a-6a56-11e9-8787-525400b18c1d\"}]}";
 
@@ -132,7 +132,7 @@ public class CustomResourceTest {
   }
 
   @Test
-  public void testListWithLabels() {
+  void testListWithLabels() {
     String jsonObject = "{\"metadata\":{\"continue\":\"\",\"resourceVersion\":\"539617\",\"selfLink\":\"test.fabric8.io/v1alpha1/namespaces/ns1/hellos/\"},\"apiVersion\":\"test.fabric8.io/v1alpha1\",\"kind\":\"HelloList\",\"items\":[{\"apiVersion\": \"test.fabric8.io/v1alpha1\",\"kind\": \"Hello\"," +
       "\"metadata\": {\"name\": \"example-hello\", \"labels\": {\"scope\":\"test\"}},\"spec\": {\"size\": 3},\"uid\":\"3525437a-6a56-11e9-8787-525400b18c1d\"}]}";
 
@@ -149,7 +149,7 @@ public class CustomResourceTest {
   }
 
   @Test
-  public void testListWithFields() {
+  void testListWithFields() {
     final CustomResourceDefinitionList customResourceDefinitionList = new CustomResourceDefinitionListBuilder()
       .addNewItem().and()
       .addNewItem().and()
@@ -172,7 +172,7 @@ public class CustomResourceTest {
   }
 
   @Test
-  public void testGet() {
+  void testGet() {
     String jsonObject = "{\"apiVersion\": \"test.fabric8.io/v1alpha1\",\"kind\": \"Hello\"," +
       "\"metadata\": {\"name\": \"example-hello\"},\"spec\": {\"size\": 3}}";
     server.expect().get().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/example-hello").andReturn(HttpURLConnection.HTTP_OK, jsonObject).once();
@@ -184,7 +184,7 @@ public class CustomResourceTest {
   }
 
   @Test
-  public void testEdit() throws IOException {
+  void testEdit() throws IOException {
     String jsonObjectNew = "{\"apiVersion\": \"test.fabric8.io/v1alpha1\",\"kind\": \"Hello\"," +
       "\"metadata\": {\"resourceVersion\": \"1\", \"name\": \"example-hello\"},\"spec\": {\"size\": 4}}";
     server.expect().put().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/example-hello").andReturn(HttpURLConnection.HTTP_OK, jsonObjectNew).once();
@@ -197,7 +197,7 @@ public class CustomResourceTest {
   }
 
   @Test
-  public void testDelete() throws IOException {
+  void testDelete() throws IOException {
     server.expect().delete().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/example-hello").andReturn(HttpURLConnection.HTTP_OK, "{\"metadata\":{},\"apiVersion\":\"v1\",\"kind\":\"Status\",\"details\":{\"name\":\"prometheus-example-rules\",\"group\":\"monitoring.coreos.com\",\"kind\":\"prometheusrules\",\"uid\":\"b3d085bd-6a5c-11e9-8787-525400b18c1d\"},\"status\":\"Success\"}").once();
 
     KubernetesClient client = server.getClient();
@@ -206,7 +206,7 @@ public class CustomResourceTest {
   }
 
   @Test
-  public void testCascadingDeletion() throws IOException, InterruptedException {
+  void testCascadingDeletion() throws IOException, InterruptedException {
     server.expect().delete().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/example-hello").andReturn(HttpURLConnection.HTTP_OK, "{\"metadata\":{},\"apiVersion\":\"v1\",\"kind\":\"Status\",\"details\":{\"name\":\"prometheus-example-rules\",\"group\":\"monitoring.coreos.com\",\"kind\":\"prometheusrules\",\"uid\":\"b3d085bd-6a5c-11e9-8787-525400b18c1d\"},\"status\":\"Success\"}").once();
 
     KubernetesClient client = server.getClient();
@@ -221,7 +221,7 @@ public class CustomResourceTest {
   }
 
   @Test
-  public void testPropagationPolicy() throws IOException, InterruptedException {
+  void testPropagationPolicy() throws IOException, InterruptedException {
     server.expect().delete().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/example-hello").andReturn(HttpURLConnection.HTTP_OK, "{\"metadata\":{},\"apiVersion\":\"v1\",\"kind\":\"Status\",\"details\":{\"name\":\"prometheus-example-rules\",\"group\":\"monitoring.coreos.com\",\"kind\":\"prometheusrules\",\"uid\":\"b3d085bd-6a5c-11e9-8787-525400b18c1d\"},\"status\":\"Success\"}").once();
 
     KubernetesClient client = server.getClient();
@@ -236,7 +236,7 @@ public class CustomResourceTest {
   }
 
   @Test
-  public void testDeleteOptions() throws InterruptedException, IOException {
+  void testDeleteOptions() throws InterruptedException, IOException {
     server.expect().delete().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/example-hello").andReturn(HttpURLConnection.HTTP_OK, "{\"metadata\":{},\"apiVersion\":\"v1\",\"kind\":\"Status\",\"details\":{\"name\":\"prometheus-example-rules\",\"group\":\"monitoring.coreos.com\",\"kind\":\"prometheusrules\",\"uid\":\"b3d085bd-6a5c-11e9-8787-525400b18c1d\"},\"status\":\"Success\"}").once();
 
     KubernetesClient client = server.getClient();
@@ -256,7 +256,7 @@ public class CustomResourceTest {
   }
 
   @Test
-  public void testDeleteWithNamespaceMismatch() {
+  void testDeleteWithNamespaceMismatch() {
     Assertions.assertThrows(KubernetesClientException.class, () -> {
       KubernetesClient client = server.getClient();
       client.customResource(customResourceDefinitionContext).delete("ns2", "example-hello");
@@ -264,7 +264,7 @@ public class CustomResourceTest {
   }
 
   @Test
-  public void testStatusUpdate() throws IOException {
+  void testStatusUpdate() throws IOException {
     String objectAsJsonString = "{\"metadata\":{},\"apiVersion\":\"v1\",\"kind\":\"Status\",\"details\":{\"name\":\"prometheus-example-rules\",\"group\":\"monitoring.coreos.com\",\"kind\":\"prometheusrules\",\"uid\":\"b3d085bd-6a5c-11e9-8787-525400b18c1d\"},\"status\":\"Success\"}";
     server.expect().put().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/example-hello/status").andReturn(HttpURLConnection.HTTP_OK, objectAsJsonString).once();
 
@@ -275,7 +275,7 @@ public class CustomResourceTest {
 
   @Test
   @DisplayName("Should be able to watch some resource in a namespace with null name, labelSelector and ListOptions")
-  public void testWatchAllResource() throws IOException, InterruptedException {
+  void testWatchAllResource() throws IOException, InterruptedException {
     // Given
     server.expect().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos?watch=true")
       .andUpgradeToWebSocket()
@@ -304,7 +304,7 @@ public class CustomResourceTest {
 
   @Test
   @DisplayName("Should be able to watch a single resource with some name")
-  public void testWatchSingleResource() throws IOException, InterruptedException {
+  void testWatchSingleResource() throws IOException, InterruptedException {
     // Given
     server.expect().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos"+ "?fieldSelector=" + Utils.toUrlEncoded("metadata.name=example-hello")+"&watch=true")
       .andUpgradeToWebSocket()
@@ -333,7 +333,7 @@ public class CustomResourceTest {
 
   @Test
   @DisplayName("Should be able to watch with labelSelectors")
-  public void testWatchWithLabels() throws IOException, InterruptedException {
+  void testWatchWithLabels() throws IOException, InterruptedException {
     // Given
     server.expect().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos?labelSelector="+ Utils.toUrlEncoded("foo=bar")+ "&watch=true")
       .andUpgradeToWebSocket()
@@ -362,7 +362,7 @@ public class CustomResourceTest {
 
   @Test
   @DisplayName("Should be able to test watch with some specific resourceVersion")
-  public void testWatchSomeResourceVersion() throws IOException, InterruptedException {
+  void testWatchSomeResourceVersion() throws IOException, InterruptedException {
     // Given
     String watchResourceVersion = "1001";
     server.expect().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos?watch=true&resourceVersion=" + watchResourceVersion)
@@ -393,7 +393,7 @@ public class CustomResourceTest {
 
   @Test
   @DisplayName("Should be able to test watch with ListOptions provided")
-  public void testWatchWithListOptions() throws IOException, InterruptedException {
+  void testWatchWithListOptions() throws IOException, InterruptedException {
     // Given
     server.expect().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos?timeoutSeconds=30&allowWatchBookmarks=true&watch=true&resourceVersion=1003")
       .andUpgradeToWebSocket()

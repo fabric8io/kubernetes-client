@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @EnableRuleMigrationSupport
-public class ComponentStatusTest {
+class ComponentStatusTest {
   @Rule
   public KubernetesServer server = new KubernetesServer();
 
@@ -41,7 +41,7 @@ public class ComponentStatusTest {
 			.and().endItem().build();
 
 	@Test
-	public void testComponentStatus() {
+	void testComponentStatus() {
     server.expect().withPath("/api/v1/componentstatuses/scheduler").andReturn(200, status).once();
 
 		KubernetesClient client = server.getClient();
@@ -51,7 +51,7 @@ public class ComponentStatusTest {
 	}
 
 	@Test
-	public void testComponentStatusList() {
+	void testComponentStatusList() {
     server.expect().withPath("/api/v1/componentstatuses").andReturn(200, status).once();
 
 		KubernetesClient client = server.getClient();

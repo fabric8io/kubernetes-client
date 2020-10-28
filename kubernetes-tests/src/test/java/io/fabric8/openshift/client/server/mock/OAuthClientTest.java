@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableRuleMigrationSupport
-public class OAuthClientTest {
+class OAuthClientTest {
   @Rule
   public OpenShiftServer server = new OpenShiftServer();
 
@@ -53,7 +53,7 @@ public class OAuthClientTest {
 
 
   @Test
-  public void testGet() {
+  void testGet() {
    server.expect().withPath("/apis/oauth.openshift.io/v1/oauthclients/client1").andReturn(200, new OAuthClientBuilder()
       .withNewMetadata().withName("client1").endMetadata()
       .build()).once();
@@ -78,7 +78,7 @@ public class OAuthClientTest {
 
 
   @Test
-  public void testDelete() {
+  void testDelete() {
    server.expect().withPath("/apis/oauth.openshift.io/v1/oauthclients/client1").andReturn(200, new OAuthClientBuilder().build()).once();
    server.expect().withPath("/apis/oauth.openshift.io/v1/oauthclients/client2").andReturn(200, new OAuthClientBuilder().build()).once();
 

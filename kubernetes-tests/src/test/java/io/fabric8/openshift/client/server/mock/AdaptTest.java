@@ -31,13 +31,13 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @EnableRuleMigrationSupport
-public class AdaptTest {
+class AdaptTest {
 
   @Rule
   public KubernetesServer server = new KubernetesServer();
 
   @Test
-  public void testSharedClient() {
+  void testSharedClient() {
     server.expect().withPath("/apis").andReturn(200, new APIGroupListBuilder()
       .addNewGroup()
       .withApiVersion("v1")

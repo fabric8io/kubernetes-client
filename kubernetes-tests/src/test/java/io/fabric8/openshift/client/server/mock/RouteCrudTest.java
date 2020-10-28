@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @EnableRuleMigrationSupport
-public class RouteCrudTest {
+class RouteCrudTest {
   @Rule
   public OpenShiftServer server = new OpenShiftServer(true, true);
 

@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @EnableRuleMigrationSupport
-public class SecurityContextConstraintsCrudTest {
+class SecurityContextConstraintsCrudTest {
 
   private static final Logger logger = LoggerFactory.getLogger(SecurityContextConstraintsCrudTest.class);
 
@@ -41,7 +41,7 @@ public class SecurityContextConstraintsCrudTest {
   public OpenShiftServer openshiftServer = new OpenShiftServer(true,true);
 
   @Test
-  public void crudTest(){
+  void crudTest(){
     OpenShiftClient client = openshiftServer.getOpenshiftClient();
 
     logger.info("Current User " + client.currentUser());

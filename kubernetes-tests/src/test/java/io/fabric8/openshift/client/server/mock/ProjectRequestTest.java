@@ -30,12 +30,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @EnableRuleMigrationSupport
-public class ProjectRequestTest {
+class ProjectRequestTest {
   @Rule
   public OpenShiftServer server = new OpenShiftServer();
 
   @Test
-  public void testList() {
+  void testList() {
    server.expect().withPath("/apis/project.openshift.io/v1/projectrequests").andReturn(200, new StatusBuilder().withMessage("success").build()).once();
     OpenShiftClient client = server.getOpenshiftClient();
 
@@ -47,7 +47,7 @@ public class ProjectRequestTest {
 
 
   @Test
-  public void testCreate() {
+  void testCreate() {
     ProjectRequest req1 = new ProjectRequestBuilder().withApiVersion("v1").withNewMetadata().withName("req1").and().build();
 
    server.expect().withPath("/apis/project.openshift.io/v1/projectrequests").andReturn(201, req1).once();
