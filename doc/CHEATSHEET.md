@@ -688,6 +688,10 @@ ConfigMap configMap = client.configMaps().load(new FileInputStream("configmap1.y
 ```
 ConfigMap configMap = client.configMaps().inNamespace("default").withName("configmap1").get();
 ```
+- Check `ConfigMap` from API server:
+```
+Boolean ready = client.configMaps().inNamespace("default").withName("configmap1").isReady();
+```
 - Create `ConfigMap`:
 ```
 ConfigMap configMap1 = new ConfigMapBuilder()
