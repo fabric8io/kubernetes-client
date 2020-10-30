@@ -38,12 +38,12 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableRuleMigrationSupport
-public class ProjectTest {
+class ProjectTest {
   @Rule
   public OpenShiftServer server = new OpenShiftServer();
 
   @Test
-  public void testList() {
+  void testList() {
    server.expect().withPath("/apis/project.openshift.io/v1/projects").andReturn(200, new ProjectListBuilder()
       .addNewItem().and()
       .addNewItem().and().build()).once();
@@ -58,7 +58,7 @@ public class ProjectTest {
 
 
   @Test
-  public void testGet() {
+  void testGet() {
    server.expect().withPath("/apis/project.openshift.io/v1/projects/project1").andReturn(200, new ProjectBuilder()
       .withNewMetadata().withName("project1").endMetadata()
       .build()).once();
@@ -83,7 +83,7 @@ public class ProjectTest {
 
 
   @Test
-  public void testDelete() {
+  void testDelete() {
    server.expect().withPath("/apis/project.openshift.io/v1/projects/project1").andReturn(200, new ProjectBuilder().build()).once();
    server.expect().withPath("/apis/project.openshift.io/v1/projects/project2").andReturn( 200, new ProjectBuilder().build()).once();
 

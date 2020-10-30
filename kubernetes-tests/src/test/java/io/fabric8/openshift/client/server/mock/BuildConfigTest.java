@@ -48,12 +48,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 @EnableRuleMigrationSupport
-public class BuildConfigTest {
+class BuildConfigTest {
   @Rule
   public OpenShiftServer server = new OpenShiftServer();
 
   @Test
-  public void testList() {
+  void testList() {
    server.expect().withPath("/apis/build.openshift.io/v1/namespaces/test/buildconfigs").andReturn(200, new BuildConfigListBuilder().build()).once();
 
    server.expect().withPath("/apis").andReturn(200, new APIGroupListBuilder()
@@ -94,7 +94,7 @@ public class BuildConfigTest {
 
 
   @Test
-  public void testGet() {
+  void testGet() {
    server.expect().withPath("/apis/build.openshift.io/v1/namespaces/test/buildconfigs/bc1").andReturn(200, new BuildConfigBuilder()
       .withNewMetadata().withName("bc1").endMetadata()
       .build()).once();
@@ -119,7 +119,7 @@ public class BuildConfigTest {
 
   @Test
   @Disabled //Seems that in this version of mockwebserver, posting using an inputstream doesn't work that well, so we'll have to ignore.
-  public void testBinaryBuildFromInputStream() {
+  void testBinaryBuildFromInputStream() {
    server.expect().post().withPath("/apis/build.openshift.io/v1/namespaces/ns1/buildconfigs/bc2/instantiatebinary?commit=some%20commit&revision.authorName=author%20name&revision.authorEmail=author@someorg.com&revision.committerName=committer%20name&revision.committerEmail=committer@someorg.com")
       .andReturn(201, new BuildBuilder()
       .withNewMetadata().withName("bc2").endMetadata().build()).once();
@@ -140,7 +140,7 @@ public class BuildConfigTest {
   }
 
   @Test
-  public void testBinaryBuildFromFile() throws IOException {
+  void testBinaryBuildFromFile() throws IOException {
     File warFile = new File("target/test.war");
     warFile.createNewFile();
 
@@ -162,7 +162,7 @@ public class BuildConfigTest {
 
   // TODO Add delay to mockwebserver. Disabled as too dependent on timing issues right now.
   //@Test
-  public void testBinaryBuildWithTimeout() {
+  void testBinaryBuildWithTimeout() {
    server.expect().post().delay(200).withPath("/apis/build.openshift.io/v1/namespaces/ns1/buildconfigs/bc2/instantiatebinary?commit=")
       .andReturn(201, new BuildBuilder()
       .withNewMetadata().withName("bc2").endMetadata().build()).once();
@@ -183,7 +183,7 @@ public class BuildConfigTest {
 
 
   @Test
-  public void testDelete() {
+  void testDelete() {
    server.expect().withPath("/apis/build.openshift.io/v1/namespaces/test/buildconfigs/bc1").andReturn(200, new BuildConfigBuilder().withNewMetadata().withName("bc1").and().build()).once();
    server.expect().withPath("/apis/build.openshift.io/v1/namespaces/test/builds?labelSelector=openshift.io%2Fbuild-config.name%3Dbc1").andReturn( 200, new BuildListBuilder().build()).once();
    server.expect().withPath("/apis/build.openshift.io/v1/namespaces/ns1/buildconfigs/bc2").andReturn( 200, new BuildConfigBuilder().withNewMetadata().withName("bc2").and().build()).once();

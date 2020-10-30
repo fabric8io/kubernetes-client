@@ -42,7 +42,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @EnableRuleMigrationSupport
-public class CreateOrReplaceResourceTest {
+class CreateOrReplaceResourceTest {
 
   @Rule
   public KubernetesServer server = new KubernetesServer();

@@ -36,12 +36,12 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableRuleMigrationSupport
-public class GroupTest {
+class GroupTest {
   @Rule
   public OpenShiftServer server = new OpenShiftServer();
 
   @Test
-  public void testList() {
+  void testList() {
    server.expect().withPath("/apis/user.openshift.io/v1/groups").andReturn(200, new GroupListBuilder()
       .addNewItem().and()
       .addNewItem().and().build()).always();
@@ -72,7 +72,7 @@ public class GroupTest {
 
 
   @Test
-  public void testGet() {
+  void testGet() {
    server.expect().withPath("/apis/user.openshift.io/v1/groups/group1").andReturn(200, new GroupBuilder()
       .withNewMetadata().withName("group1").endMetadata()
       .build()).once();
@@ -97,7 +97,7 @@ public class GroupTest {
 
 
   @Test
-  public void testDelete() {
+  void testDelete() {
    server.expect().withPath("/apis/user.openshift.io/v1/groups/group1").andReturn(200, new GroupBuilder().build()).once();
    server.expect().withPath("/apis/user.openshift.io/v1/groups/Group2").andReturn( 200, new GroupBuilder().build()).once();
 
@@ -114,7 +114,7 @@ public class GroupTest {
   }
 
   @Test
-  public void testDeleteWithPropagationPolicy() {
+  void testDeleteWithPropagationPolicy() {
     server.expect().withPath("/apis/user.openshift.io/v1/groups/group1").andReturn(200, new GroupBuilder().build()).once();
     server.expect().withPath("/apis/user.openshift.io/v1/groups/Group2").andReturn( 200, new GroupBuilder().build()).once();
 

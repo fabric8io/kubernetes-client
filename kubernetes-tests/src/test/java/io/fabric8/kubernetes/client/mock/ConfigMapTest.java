@@ -32,13 +32,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @EnableRuleMigrationSupport
-public class ConfigMapTest {
+class ConfigMapTest {
 
   @Rule
   public KubernetesServer server = new KubernetesServer();
 
   @Test
-  public void testLiteralConfigMap() throws InterruptedException {
+  void testLiteralConfigMap() throws InterruptedException {
     HashMap<String, String> data = new HashMap<>();
     data.put("foo", "bar");
     data.put("cheese", "gouda");
@@ -62,7 +62,7 @@ public class ConfigMapTest {
   }
 
   @Test
-  public void testFromResourceWithFileConfigMap() throws InterruptedException {
+  void testFromResourceWithFileConfigMap() throws InterruptedException {
     KubernetesClient client = server.getClient();
     ConfigMap configMap = client.configMaps().load(getClass().getResourceAsStream("/test-application-properties-config-map.yml")).get();
     assertEquals("cfg1", configMap.getMetadata().getName());
@@ -80,7 +80,7 @@ public class ConfigMapTest {
   }
 
   @Test
-  public void testFromResourceConfigMap() throws InterruptedException {
+  void testFromResourceConfigMap() throws InterruptedException {
     KubernetesClient client = server.getClient();
     ConfigMap configMap = client.configMaps().load(getClass().getResourceAsStream("/test-config-map.yml")).get();
     assertEquals("cfg1", configMap.getMetadata().getName());

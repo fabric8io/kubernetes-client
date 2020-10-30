@@ -31,12 +31,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @EnableRuleMigrationSupport
-public class ConfigMapCrudTest {
+class ConfigMapCrudTest {
   @Rule
   public KubernetesServer server = new KubernetesServer(true, true);
 
   @Test
-  public void testCrud() {
+  void testCrud() {
     KubernetesClient client = server.getClient();
 
     ConfigMap configmap1 = new ConfigMapBuilder().withNewMetadata().withName("configmap1").endMetadata()

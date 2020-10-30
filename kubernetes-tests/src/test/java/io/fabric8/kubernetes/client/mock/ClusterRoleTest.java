@@ -32,12 +32,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @EnableRuleMigrationSupport
-public class ClusterRoleTest {
+class ClusterRoleTest {
   @Rule
   public KubernetesServer server = new KubernetesServer();
 
   @Test
-  public void testLoadFromFile() {
+  void testLoadFromFile() {
     KubernetesClient client = server.getClient();
     ClusterRole kubernetesClusterRole = client.rbac().clusterRoles().load(getClass().getResourceAsStream("/test-clusterrole.yml")).get();
 
@@ -45,7 +45,7 @@ public class ClusterRoleTest {
   }
 
   @Test
-  public void testHandlersLoadFromFile() {
+  void testHandlersLoadFromFile() {
     KubernetesClient client = server.getClient();
 
     ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> load = client.load(getClass().getResourceAsStream("/test-clusterrole.yml"));

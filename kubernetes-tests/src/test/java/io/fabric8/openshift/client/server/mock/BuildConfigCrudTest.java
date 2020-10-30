@@ -29,13 +29,13 @@ import java.util.Collections;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @EnableRuleMigrationSupport
-public class BuildConfigCrudTest {
+class BuildConfigCrudTest {
 
   @Rule
   public OpenShiftServer server = new OpenShiftServer(true, true);
 
   @Test
-  public void testCrud() {
+  void testCrud() {
     OpenShiftClient client = server.getOpenshiftClient();
 
     BuildConfig buildConfig = new BuildConfigBuilder()

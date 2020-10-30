@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableRuleMigrationSupport
-public class ImageStreamTagCrudTest {
+class ImageStreamTagCrudTest {
 
   private static final Logger logger = LoggerFactory.getLogger(ImageStreamTagCrudTest.class);
 
@@ -39,7 +39,7 @@ public class ImageStreamTagCrudTest {
   public OpenShiftServer openshiftServer = new OpenShiftServer(true, true);
 
   @Test
-  public void crudTest() {
+  void crudTest() {
 
     OpenShiftClient client = openshiftServer.getOpenshiftClient();
 

@@ -35,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @EnableRuleMigrationSupport
-public class CrudInformerTest {
+class CrudInformerTest {
   @Rule
   public KubernetesServer server = new KubernetesServer(true, true);
 

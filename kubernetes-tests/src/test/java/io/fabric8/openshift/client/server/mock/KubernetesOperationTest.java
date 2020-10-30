@@ -30,12 +30,12 @@ import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableRuleMigrationSupport
-public class KubernetesOperationTest {
+class KubernetesOperationTest {
   @Rule
   public OpenShiftServer server = new OpenShiftServer();
 
   @Test
-  public void testDelete() {
+  void testDelete() {
    server.expect().withPath("/api/v1/namespaces/test/replicationcontrollers/rc1").andReturn(200, new ReplicationControllerBuilder().build()).once();
    server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, new PodBuilder().build()).once();
 
@@ -49,7 +49,7 @@ public class KubernetesOperationTest {
   }
 
   @Test
-  public void testDeleteWithAdapt() {
+  void testDeleteWithAdapt() {
    server.expect().withPath("/api/v1/namespaces/test/replicationcontrollers/rc1").andReturn(200, new ReplicationControllerBuilder().build()).once();
    server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, new PodBuilder().build()).once();
    server.expect().withPath("/apis").andReturn(200, new APIGroupListBuilder()

@@ -30,12 +30,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @EnableRuleMigrationSupport
-public class DeploymentConfigCrudTest {
+class DeploymentConfigCrudTest {
   @Rule
   public OpenShiftServer server = new OpenShiftServer(true, true);
 
   @Test
-  public void testCrud() {
+  void testCrud() {
     OpenShiftClient client = server.getOpenshiftClient();
 
     DeploymentConfig deploymentConfig1 = new DeploymentConfigBuilder().withNewMetadata()

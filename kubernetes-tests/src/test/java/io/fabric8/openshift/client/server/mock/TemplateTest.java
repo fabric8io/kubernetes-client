@@ -53,7 +53,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableRuleMigrationSupport
-public class TemplateTest {
+class TemplateTest {
   @Rule
   public OpenShiftServer server = new OpenShiftServer();
 

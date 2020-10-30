@@ -31,12 +31,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @EnableRuleMigrationSupport
-public class SubjectAccessReviewTest {
+class SubjectAccessReviewTest {
   @Rule
   public OpenShiftServer server = new OpenShiftServer();
 
   @Test
-  public void testCreate() {
+  void testCreate() {
     server.expect().withPath("/apis/authorization.openshift.io/v1/subjectaccessreviews").andReturn(201, new SubjectAccessReviewResponseBuilder()
       .withReason("r1")
       .build()).once();
@@ -51,7 +51,7 @@ public class SubjectAccessReviewTest {
 
 
   @Test
-  public void testCreateInLine() {
+  void testCreateInLine() {
     server.expect().withPath("/apis/authorization.openshift.io/v1/subjectaccessreviews").andReturn(201, new SubjectAccessReviewResponseBuilder()
       .withReason("r2")
       .build()).once();
@@ -66,7 +66,7 @@ public class SubjectAccessReviewTest {
 
 
   @Test
-  public void testCreateLocal() {
+  void testCreateLocal() {
    server.expect().withPath("/apis/authorization.openshift.io/v1/namespaces/test/localsubjectaccessreviews").andReturn(201, new SubjectAccessReviewResponseBuilder()
       .withReason("r1")
       .build()).once();
@@ -84,7 +84,7 @@ public class SubjectAccessReviewTest {
 
 
   @Test
-  public void testCreateLocalInLine() {
+  void testCreateLocalInLine() {
    server.expect().withPath("/apis/authorization.openshift.io/v1/namespaces/test/localsubjectaccessreviews").andReturn( 201, new SubjectAccessReviewResponseBuilder()
       .withReason("r2")
       .build()).once();

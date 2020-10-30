@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @EnableRuleMigrationSupport
-public class ClusterRoleBindingCrudTest {
+class ClusterRoleBindingCrudTest {
 
   private static final Logger logger = LoggerFactory.getLogger(ClusterRoleBindingCrudTest.class);
 
@@ -41,7 +41,7 @@ public class ClusterRoleBindingCrudTest {
   public KubernetesServer kubernetesServer = new KubernetesServer(true,true);
 
   @Test
-  public void crudTest() {
+  void crudTest() {
 
     KubernetesClient client = kubernetesServer.getClient();
 

@@ -36,12 +36,12 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @EnableRuleMigrationSupport
-public class CronJobTest {
+class CronJobTest {
   @Rule
   public KubernetesServer server = new KubernetesServer();
 
   @Test
-  public void testList() {
+  void testList() {
     server.expect().withPath("/apis/batch/v1beta1/namespaces/test/cronjobs").andReturn(200, new CronJobListBuilder().build()).once();
     server.expect().withPath("/apis/batch/v1beta1/namespaces/ns1/cronjobs").andReturn(200, new CronJobListBuilder()
       .addNewItem().and()
@@ -68,7 +68,7 @@ public class CronJobTest {
   }
 
   @Test
-  public void testListWithLables() {
+  void testListWithLables() {
     server.expect().withPath("/apis/batch/v1beta1/namespaces/test/cronjobs?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new CronJobListBuilder().build()).always();
     server.expect().withPath("/apis/batch/v1beta1/namespaces/test/cronjobs?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new CronJobListBuilder()
       .addNewItem().and()
@@ -96,7 +96,7 @@ public class CronJobTest {
     assertEquals(3, cronJobList.getItems().size());
   }
   @Test
-  public void testGet() {
+  void testGet() {
     server.expect().withPath("/apis/batch/v1beta1/namespaces/test/cronjobs/cronjob1").andReturn(200, new CronJobBuilder().build()).once();
     server.expect().withPath("/apis/batch/v1beta1/namespaces/ns1/cronjobs/cronjob2").andReturn(200, new CronJobBuilder().build()).once();
 
@@ -113,7 +113,7 @@ public class CronJobTest {
   }
 
   @Test
-  public void testDelete() {
+  void testDelete() {
     server.expect().withPath("/apis/batch/v1beta1/namespaces/test/cronjobs/cronJob1").andReturn(200, new CronJobBuilder().withNewMetadata()
       .withName("cronJob1")
       .withResourceVersion("1")
@@ -188,7 +188,7 @@ public class CronJobTest {
   }
 
   @Test
-  public void testDeleteMulti() {
+  void testDeleteMulti() {
     CronJob cronjob1 = new CronJobBuilder().withNewMetadata()
       .withNamespace("test")
       .withName("cronjob1")
@@ -228,7 +228,7 @@ public class CronJobTest {
   }
 
   @Test
-  public void testDeleteWithNamespaceMismatch() {
+  void testDeleteWithNamespaceMismatch() {
     Assertions.assertThrows(KubernetesClientException.class, () -> {
       CronJob cronjob1 = new CronJobBuilder().withNewMetadata().withName("cronjob1").withNamespace("test").and().build();
       KubernetesClient client = server.getClient();
@@ -239,7 +239,7 @@ public class CronJobTest {
   }
 
   @Test
-  public void testCreateWithNameMismatch() {
+  void testCreateWithNameMismatch() {
     Assertions.assertThrows(KubernetesClientException.class, () -> {
       CronJob cronjob1 = new CronJobBuilder().withNewMetadata().withName("cronjob1").withNamespace("test").and().build();
       KubernetesClient client = server.getClient();
@@ -249,12 +249,12 @@ public class CronJobTest {
   }
 
   @Test
-  public void testLoadFromFile() {
+  void testLoadFromFile() {
     KubernetesClient client = server.getClient();
     assertNotNull(client.batch().cronjobs().load(getClass().getResourceAsStream("/test-cronjob.yml")).get());
   }
   @Test
-  public void testHandlersLoadFromFile() {
+  void testHandlersLoadFromFile() {
     KubernetesClient client = server.getClient();
     List<HasMetadata> hasMetadata = client.load(getClass().getResourceAsStream("/test-cronjob.yml")).get();
 
