@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigList;
 import io.fabric8.openshift.api.model.DeploymentConfigSpec;
-import io.fabric8.openshift.api.model.DoneableDeploymentConfig;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftAPIGroups;
 import io.fabric8.openshift.client.OpenShiftClient;
@@ -53,7 +52,7 @@ public class DeploymentConfigScale {
         System.out.println("WARNING this cluster does not support the API Group " + OpenShiftAPIGroups.APPS);
         return;
       }
-      DeployableScalableResource<DeploymentConfig, DoneableDeploymentConfig> resource = client.deploymentConfigs().withName(name);
+      DeployableScalableResource<DeploymentConfig> resource = client.deploymentConfigs().withName(name);
       DeploymentConfig deploymentConfig = resource.get();
       if (deploymentConfig == null) {
         System.out.println("Could not find a DeploymentConfig for name: " + name);

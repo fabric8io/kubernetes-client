@@ -18,9 +18,8 @@ package io.fabric8.servicecatalog.client.internal;
 import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.servicecatalog.api.model.*;
-import io.fabric8.servicecatalog.api.model.DoneableServiceBinding;
 
-public interface ServiceBindingResource extends Resource<ServiceBinding, DoneableServiceBinding> {
+public interface ServiceBindingResource extends Resource<ServiceBinding> {
 
     Secret getSecret();
 }

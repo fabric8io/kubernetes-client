@@ -71,8 +71,8 @@ public class ConfigMapIT {
 
   @Test
   public void update() {
-    configMap = client.configMaps().inNamespace(session.getNamespace()).withName("configmap-update").edit()
-      .addToData("MSSQL", "Microsoft Database").done();
+    configMap = client.configMaps().inNamespace(session.getNamespace()).withName("configmap-update").edit(c -> new ConfigMapBuilder(c)
+                      .addToData("MSSQL", "Microsoft Database").build());
 
     assertNotNull(configMap);
     assertEquals("Microsoft Database", configMap.getData().get("MSSQL"));

@@ -18,7 +18,6 @@ package io.fabric8.kubernetes.client.dsl.internal.apps.v1;
 import io.fabric8.kubernetes.api.model.LabelSelectorRequirement;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
-import io.fabric8.kubernetes.api.model.apps.DoneableStatefulSet;
 import io.fabric8.kubernetes.api.model.apps.StatefulSet;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetBuilder;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetList;
@@ -29,7 +28,7 @@ import io.fabric8.kubernetes.client.dsl.Operation;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import okhttp3.OkHttpClient;
 
-class StatefulSetRollingUpdater extends RollingUpdater<StatefulSet, StatefulSetList, DoneableStatefulSet> {
+class StatefulSetRollingUpdater extends RollingUpdater<StatefulSet, StatefulSetList> {
 
   StatefulSetRollingUpdater(OkHttpClient client, Config config, String namespace) {
     super(client, config, namespace);
@@ -56,7 +55,7 @@ class StatefulSetRollingUpdater extends RollingUpdater<StatefulSet, StatefulSetL
 
   @Override
   protected PodList listSelectedPods(StatefulSet obj) {
-    FilterWatchListDeletable<Pod, PodList, Boolean, Watch> podLister = pods().inNamespace(namespace);
+    FilterWatchListDeletable<Pod, PodList> podLister = pods().inNamespace(namespace);
     if (obj.getSpec().getSelector().getMatchLabels() != null) {
       podLister.withLabels(obj.getSpec().getSelector().getMatchLabels());
     }
@@ -82,19 +81,26 @@ class StatefulSetRollingUpdater extends RollingUpdater<StatefulSet, StatefulSetL
   }
 
   @Override
-  protected void updateDeploymentKey(DoneableStatefulSet obj, String hash) {
-    obj.editSpec()
-      .editSelector().addToMatchLabels(DEPLOYMENT_KEY, hash).endSelector()
-      .editTemplate().editMetadata().addToLabels(DEPLOYMENT_KEY, hash).endMetadata().endTemplate()
-      .endSpec();
+  protected StatefulSet updateDeploymentKey(String name, String hash) {
+     StatefulSet old = resources().inNamespace(namespace).withName(name).get();
+     StatefulSet updated = new StatefulSetBuilder(old).editSpec()
+       .editSelector().addToMatchLabels(DEPLOYMENT_KEY, hash).endSelector()
+       .editTemplate().editMetadata().addToLabels(DEPLOYMENT_KEY, hash).endMetadata().endTemplate()
+       .endSpec() 
+       .build();
+     return resources().inNamespace(namespace).withName(name).replace(updated);
   }
 
   @Override
-  protected void removeDeploymentKey(DoneableStatefulSet obj) {
-    obj.editSpec()
-      .editSelector().removeFromMatchLabels(DEPLOYMENT_KEY).endSelector()
-      .editTemplate().editMetadata().removeFromLabels(DEPLOYMENT_KEY).endMetadata().endTemplate()
-      .endSpec();
+  protected StatefulSet removeDeploymentKey(String name) {
+     StatefulSet old = resources().inNamespace(namespace).withName(name).get();
+     StatefulSet updated = new StatefulSetBuilder(old)
+       .editSpec()
+       .editSelector().removeFromMatchLabels(DEPLOYMENT_KEY).endSelector()
+       .editTemplate().editMetadata().removeFromLabels(DEPLOYMENT_KEY).endMetadata().endTemplate()
+       .endSpec()
+       .build();
+     return resources().inNamespace(namespace).withName(name).replace(updated);
   }
 
   @Override
@@ -108,7 +114,7 @@ class StatefulSetRollingUpdater extends RollingUpdater<StatefulSet, StatefulSetL
   }
 
   @Override
-  protected Operation<StatefulSet, StatefulSetList, DoneableStatefulSet, RollableScalableResource<StatefulSet, DoneableStatefulSet>> resources() {
+  protected Operation<StatefulSet, StatefulSetList, RollableScalableResource<StatefulSet>> resources() {
     return new StatefulSetOperationsImpl(client, config);
   }
 }

@@ -15,8 +15,6 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.api.model.networking.v1beta1.DoneableIngress;
-import io.fabric8.kubernetes.api.model.networking.v1beta1.DoneableIngressClass;
 import io.fabric8.kubernetes.api.model.networking.v1beta1.Ingress;
 import io.fabric8.kubernetes.api.model.networking.v1beta1.IngressClass;
 import io.fabric8.kubernetes.api.model.networking.v1beta1.IngressClassList;
@@ -26,6 +24,6 @@ import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 
 public interface V1beta1NetworkAPIGroupDSL extends Client {
-  MixedOperation<Ingress, IngressList, DoneableIngress, Resource<Ingress, DoneableIngress>> ingresses();
-  NonNamespaceOperation<IngressClass, IngressClassList, DoneableIngressClass, Resource<IngressClass, DoneableIngressClass>> ingressClasses();
+  MixedOperation<Ingress, IngressList, Resource<Ingress>> ingresses();
+  NonNamespaceOperation<IngressClass, IngressClassList, Resource<IngressClass>> ingressClasses();
 }

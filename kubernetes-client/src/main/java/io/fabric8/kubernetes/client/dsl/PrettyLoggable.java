@@ -16,5 +16,5 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-public interface PrettyLoggable<T, W> extends Loggable<T, W>, Prettyable<Loggable<T, W>> {
+public interface PrettyLoggable<W> extends Loggable<W>, Prettyable<Loggable<W>> {
 }

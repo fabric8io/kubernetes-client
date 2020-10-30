@@ -24,15 +24,6 @@ import io.fabric8.openshift.api.model.ClusterOperator;
 import io.fabric8.openshift.api.model.ClusterOperatorList;
 import io.fabric8.openshift.api.model.ClusterVersion;
 import io.fabric8.openshift.api.model.ClusterVersionList;
-import io.fabric8.openshift.api.model.DoneableAPIServer;
-import io.fabric8.openshift.api.model.DoneableClusterOperator;
-import io.fabric8.openshift.api.model.DoneableClusterVersion;
-import io.fabric8.openshift.api.model.DoneableFeatureGate;
-import io.fabric8.openshift.api.model.DoneableInfrastructure;
-import io.fabric8.openshift.api.model.DoneableOAuth;
-import io.fabric8.openshift.api.model.DoneableOperatorHub;
-import io.fabric8.openshift.api.model.DoneableProxy;
-import io.fabric8.openshift.api.model.DoneableScheduler;
 import io.fabric8.openshift.api.model.FeatureGate;
 import io.fabric8.openshift.api.model.FeatureGateList;
 import io.fabric8.openshift.api.model.Infrastructure;
@@ -52,53 +43,53 @@ public interface OpenShiftConfigAPIGroupDSL extends Client {
    *
    * @return NonNamespaceOperation object for APIServer type
    */
-  NonNamespaceOperation<APIServer, APIServerList, DoneableAPIServer, Resource<APIServer, DoneableAPIServer>> apiServers();
+  NonNamespaceOperation<APIServer, APIServerList, Resource<APIServer>> apiServers();
   /**
    * API entrypoint for ClusterOperator related operations(config.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for ClusterOperator type
    */
-  NonNamespaceOperation<ClusterOperator, ClusterOperatorList, DoneableClusterOperator, Resource<ClusterOperator, DoneableClusterOperator>> clusterOperators();
+  NonNamespaceOperation<ClusterOperator, ClusterOperatorList, Resource<ClusterOperator>> clusterOperators();
   /**
    * API entrypoint for ClusterVersion related operations(config.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for ClusterVersion type
    */
-  NonNamespaceOperation<ClusterVersion, ClusterVersionList, DoneableClusterVersion, Resource<ClusterVersion, DoneableClusterVersion>> clusterVersions();
+  NonNamespaceOperation<ClusterVersion, ClusterVersionList, Resource<ClusterVersion>> clusterVersions();
   /**
    * API entrypoint for FeatureGate related operations(config.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for FeatureGate type
    */
-  NonNamespaceOperation<FeatureGate, FeatureGateList, DoneableFeatureGate, Resource<FeatureGate, DoneableFeatureGate>> featureGates();
+  NonNamespaceOperation<FeatureGate, FeatureGateList, Resource<FeatureGate>> featureGates();
   /**
    * API entrypoint for Infrastructure related operations(config.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for Infrastructure type
    */
-  NonNamespaceOperation<Infrastructure, InfrastructureList, DoneableInfrastructure, Resource<Infrastructure, DoneableInfrastructure>> infrastructures();
+  NonNamespaceOperation<Infrastructure, InfrastructureList, Resource<Infrastructure>> infrastructures();
   /**
    * API entrypoint for OAuth related operations(config.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for OAuth type
    */
-  NonNamespaceOperation<OAuth, OAuthList, DoneableOAuth, Resource<OAuth, DoneableOAuth>> oAuths();
+  NonNamespaceOperation<OAuth, OAuthList, Resource<OAuth>> oAuths();
   /**
    * API entrypoint for OperatorHub related operations(config.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for OperatorHub type
    */
-  NonNamespaceOperation<OperatorHub, OperatorHubList, DoneableOperatorHub, Resource<OperatorHub, DoneableOperatorHub>> operatorHubs();
+  NonNamespaceOperation<OperatorHub, OperatorHubList, Resource<OperatorHub>> operatorHubs();
   /**
    * API entrypoint for Proxy related operations(config.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for Proxy type
    */
-  NonNamespaceOperation<Proxy, ProxyList, DoneableProxy, Resource<Proxy, DoneableProxy>> proxies();
+  NonNamespaceOperation<Proxy, ProxyList, Resource<Proxy>> proxies();
   /**
    * API entrypoint for Scheduler related operations(config.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for Scheduler type
    */
-  NonNamespaceOperation<Scheduler, SchedulerList, DoneableScheduler, Resource<Scheduler, DoneableScheduler>> schedulers();
+  NonNamespaceOperation<Scheduler, SchedulerList, Resource<Scheduler>> schedulers();
 }

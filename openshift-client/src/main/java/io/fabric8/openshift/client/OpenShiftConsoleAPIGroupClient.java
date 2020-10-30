@@ -29,11 +29,6 @@ import io.fabric8.openshift.api.model.console.v1.ConsoleNotification;
 import io.fabric8.openshift.api.model.console.v1.ConsoleNotificationList;
 import io.fabric8.openshift.api.model.console.v1.ConsoleYAMLSample;
 import io.fabric8.openshift.api.model.console.v1.ConsoleYAMLSampleList;
-import io.fabric8.openshift.api.model.console.v1.DoneableConsoleCLIDownload;
-import io.fabric8.openshift.api.model.console.v1.DoneableConsoleExternalLogLink;
-import io.fabric8.openshift.api.model.console.v1.DoneableConsoleLink;
-import io.fabric8.openshift.api.model.console.v1.DoneableConsoleNotification;
-import io.fabric8.openshift.api.model.console.v1.DoneableConsoleYAMLSample;
 import io.fabric8.openshift.client.dsl.OpenShiftConsoleAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.internal.ConsoleCLIDownloadOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.ConsoleExternalLogLinkOperationsImpl;
@@ -52,27 +47,27 @@ public class OpenShiftConsoleAPIGroupClient extends BaseClient implements OpenSh
   }
 
   @Override
-  public NonNamespaceOperation<ConsoleCLIDownload, ConsoleCLIDownloadList, DoneableConsoleCLIDownload, Resource<ConsoleCLIDownload, DoneableConsoleCLIDownload>> consoleCLIDownloads() {
+  public NonNamespaceOperation<ConsoleCLIDownload, ConsoleCLIDownloadList, Resource<ConsoleCLIDownload>> consoleCLIDownloads() {
     return new ConsoleCLIDownloadOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public NonNamespaceOperation<ConsoleExternalLogLink, ConsoleExternalLogLinkList, DoneableConsoleExternalLogLink, Resource<ConsoleExternalLogLink, DoneableConsoleExternalLogLink>> consoleExternalLogLinks() {
+  public NonNamespaceOperation<ConsoleExternalLogLink, ConsoleExternalLogLinkList, Resource<ConsoleExternalLogLink>> consoleExternalLogLinks() {
     return new ConsoleExternalLogLinkOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public NonNamespaceOperation<ConsoleLink, ConsoleLinkList, DoneableConsoleLink, Resource<ConsoleLink, DoneableConsoleLink>> consoleLinks() {
+  public NonNamespaceOperation<ConsoleLink, ConsoleLinkList, Resource<ConsoleLink>> consoleLinks() {
     return new ConsoleLinkOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public NonNamespaceOperation<ConsoleNotification, ConsoleNotificationList, DoneableConsoleNotification, Resource<ConsoleNotification, DoneableConsoleNotification>> consoleNotifications() {
+  public NonNamespaceOperation<ConsoleNotification, ConsoleNotificationList, Resource<ConsoleNotification>> consoleNotifications() {
     return new ConsoleNotificationOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public NonNamespaceOperation<ConsoleYAMLSample, ConsoleYAMLSampleList, DoneableConsoleYAMLSample, Resource<ConsoleYAMLSample, DoneableConsoleYAMLSample>> consoleYAMLSamples() {
+  public NonNamespaceOperation<ConsoleYAMLSample, ConsoleYAMLSampleList, Resource<ConsoleYAMLSample>> consoleYAMLSamples() {
     return new ConsoleYAMLSampleOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 }

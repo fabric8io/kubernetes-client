@@ -45,16 +45,14 @@ import io.fabric8.openshift.client.OpenShiftConfig;
 
 import okhttp3.OkHttpClient;
 
-import ${model.packageName}.Doneable${model.name};
 import ${model.packageName}.${model.name};
 import ${model.packageName}.${model.name}List;
-import ${model.packageName}.Doneable${model.name};
 
 import java.util.Map;
 import java.util.TreeMap;
 
 
-public class ${model.name}OperationsImpl extends OpenShiftOperation<${model.name}, ${model.name}List, Doneable${model.name}, Resource<${model.name}, Doneable${model.name}>> {
+public class ${model.name}OperationsImpl extends OpenShiftOperation<${model.name}, ${model.name}List, Resource<${model.name}>> {
 
   public ${model.name}OperationsImpl(OkHttpClient client, OpenShiftConfig config) {
     this(new OperationContext().withOkhttpClient(client).withConfig(config).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
@@ -66,7 +64,6 @@ public class ${model.name}OperationsImpl extends OpenShiftOperation<${model.name
     .withPlural("#pluralize ($model.name.toLowerCase())"));
     this.type = ${model.name}.class;
     this.listType = ${model.name}List.class;
-    this.doneableType = Doneable${model.name}.class;
   }
 
   public ${model.name}OperationsImpl newInstance(OperationContext context) {

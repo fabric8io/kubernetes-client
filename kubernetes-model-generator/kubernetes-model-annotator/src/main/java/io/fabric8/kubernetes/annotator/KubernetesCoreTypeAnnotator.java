@@ -157,21 +157,12 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
   }
 
   protected void processBuildable(JDefinedClass clazz) {
-    try {
       clazz.annotate(Buildable.class)
         .param("editableEnabled", false)
         .param("validationEnabled", false)
         .param("generateBuilderPackage", true)
         .param("lazyCollectionInitEnabled", false)
-        .param("builderPackage", "io.fabric8.kubernetes.api.builder")
-        .annotationParam("inline", Inline.class)
-        .param("type", new JCodeModel()._class("io.fabric8.kubernetes.api.model.Doneable"))
-        .param("prefix", "Doneable")
-        .param(ANNOTATION_VALUE, "done");
-
-    } catch (JClassAlreadyExistsException e) {
-      e.printStackTrace();
-    }
+        .param("builderPackage", "io.fabric8.kubernetes.api.builder");
   }
 
   protected void addClassesToPropertyFiles(JDefinedClass clazz) {

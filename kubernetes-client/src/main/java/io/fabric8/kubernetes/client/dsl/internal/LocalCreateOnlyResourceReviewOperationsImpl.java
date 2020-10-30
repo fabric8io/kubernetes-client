@@ -20,7 +20,7 @@ import io.fabric8.kubernetes.client.dsl.Namespaceable;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import okhttp3.OkHttpClient;
 
-public class LocalCreateOnlyResourceReviewOperationsImpl<T, D> extends CreateOnlyResourceOperationsImpl<T, D> implements Namespaceable<LocalCreateOnlyResourceReviewOperationsImpl<T, D>> {
+public class LocalCreateOnlyResourceReviewOperationsImpl<T> extends CreateOnlyResourceOperationsImpl<T> implements Namespaceable<LocalCreateOnlyResourceReviewOperationsImpl<T>> {
   private Class<T> subjectAccessRequestClass;
   private String subjectAccessApiGroupName;
   private String subjectAccessApiGroupVersion;
@@ -43,7 +43,7 @@ public class LocalCreateOnlyResourceReviewOperationsImpl<T, D> extends CreateOnl
   }
 
   @Override
-  public LocalCreateOnlyResourceReviewOperationsImpl<T, D> inNamespace(String namespace) {
+  public LocalCreateOnlyResourceReviewOperationsImpl<T> inNamespace(String namespace) {
     this.namespace = namespace;
     return new LocalCreateOnlyResourceReviewOperationsImpl<>(context.withNamespace(namespace), subjectAccessApiGroupName, subjectAccessApiGroupVersion, plural, subjectAccessRequestClass);
   }

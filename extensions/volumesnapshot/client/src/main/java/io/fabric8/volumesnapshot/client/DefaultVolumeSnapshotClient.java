@@ -23,9 +23,6 @@ import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
-import io.fabric8.volumesnapshot.api.model.DoneableVolumeSnapshot;
-import io.fabric8.volumesnapshot.api.model.DoneableVolumeSnapshotClass;
-import io.fabric8.volumesnapshot.api.model.DoneableVolumeSnapshotContent;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshot;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotClass;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotClassList;
@@ -54,15 +51,15 @@ public class DefaultVolumeSnapshotClient extends BaseClient implements Namespace
     super(httpClient, configuration);
   }
 
-  public NonNamespaceOperation<VolumeSnapshotClass, VolumeSnapshotClassList, DoneableVolumeSnapshotClass, VolumeSnapshotClassResource> volumeSnapshotClasses() {
+  public NonNamespaceOperation<VolumeSnapshotClass, VolumeSnapshotClassList, VolumeSnapshotClassResource> volumeSnapshotClasses() {
     return new VolumeSnapshotClassOperationsImpl(this.getHttpClient(), this.getConfiguration());
   }
 
-  public NonNamespaceOperation<VolumeSnapshotContent, VolumeSnapshotContentList, DoneableVolumeSnapshotContent, VolumeSnapshotContentResource> volumeSnapshotContents() {
+  public NonNamespaceOperation<VolumeSnapshotContent, VolumeSnapshotContentList, VolumeSnapshotContentResource> volumeSnapshotContents() {
     return new VolumeSnapshotContentOperationsImpl(this.getHttpClient(), this.getConfiguration());
   }
 
-  public MixedOperation<VolumeSnapshot, VolumeSnapshotList, DoneableVolumeSnapshot, VolumeSnapshotResource> volumeSnapshots() {
+  public MixedOperation<VolumeSnapshot, VolumeSnapshotList, VolumeSnapshotResource> volumeSnapshots() {
     return new VolumeSnapshotOperationsImpl(this.getHttpClient(), this.getConfiguration());
   }
 

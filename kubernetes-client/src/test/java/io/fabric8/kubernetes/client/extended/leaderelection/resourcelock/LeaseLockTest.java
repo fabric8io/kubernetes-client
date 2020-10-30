@@ -16,7 +16,6 @@
 package io.fabric8.kubernetes.client.extended.leaderelection.resourcelock;
 
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
-import io.fabric8.kubernetes.api.model.coordination.v1.DoneableLease;
 import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseBuilder;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseList;
@@ -49,22 +48,21 @@ import static org.mockito.Mockito.when;
 class LeaseLockTest {
 
   private DefaultKubernetesClient kc;
-  private MixedOperation<Lease, LeaseList, DoneableLease, Resource<Lease, DoneableLease>> leases;
-  private DoneableLease doneableLease;
-  private DoneableLease.MetadataNested<DoneableLease> metadata;
-  private DoneableLease.SpecNested<DoneableLease> spec;
+  private MixedOperation<Lease, LeaseList, Resource<Lease>> leases;
+  private LeaseBuilder leaserBuilder;
+  private LeaseBuilder.MetadataNested<LeaseBuilder> metadata;
+  private LeaseBuilder.SpecNested<LeaseBuilder> spec;
 
   @BeforeEach
   void setUp() {
     kc = mock(DefaultKubernetesClient.class, Answers.RETURNS_DEEP_STUBS);
     leases = mock(MixedOperation.class, Answers.RETURNS_DEEP_STUBS);
-    doneableLease = mock(DoneableLease.class, Answers.RETURNS_DEEP_STUBS);
-    metadata = mock(DoneableLease.MetadataNested.class, Answers.RETURNS_DEEP_STUBS);
-    spec = mock(DoneableLease.SpecNested.class, Answers.RETURNS_DEEP_STUBS);
+    leaserBuilder = mock(LeaseBuilder.class, Answers.RETURNS_DEEP_STUBS);
+    metadata = mock(LeaseBuilder.MetadataNested.class, Answers.RETURNS_DEEP_STUBS);
+    spec = mock(LeaseBuilder.SpecNested.class, Answers.RETURNS_DEEP_STUBS);
     when(kc.inNamespace(anyString()).leases()).thenReturn(leases);
-    when(leases.withName(anyString()).createNew()).thenReturn(doneableLease);
-    when(doneableLease.withNewMetadata()).thenReturn(metadata);
-    when(doneableLease.withNewSpec()).thenReturn(spec);
+    when(leaserBuilder.withNewMetadata()).thenReturn(metadata);
+    when(leaserBuilder.withNewSpec()).thenReturn(spec);
   }
   @Test
   void missingNamespaceShouldThrowException() {
@@ -116,7 +114,7 @@ class LeaseLockTest {
   @Test
   void createWithValidLeaderElectionRecordShouldSendPostRequest() throws Exception {
     // Given
-    when(metadata.withNamespace("namespace").withName("name").endMetadata()).thenReturn(doneableLease);
+    when(metadata.withNamespace("namespace").withName("name").endMetadata()).thenReturn(leaserBuilder);
     when(spec
       .withHolderIdentity(eq("1"))
       .withLeaseDurationSeconds(eq(1))
@@ -124,21 +122,20 @@ class LeaseLockTest {
       .withRenewTime(any())
       .withLeaseTransitions(anyInt())
       .endSpec()
-    ).thenReturn(doneableLease);
+    ).thenReturn(leaserBuilder);
     final LeaderElectionRecord record = new LeaderElectionRecord(
       "1", Duration.ofSeconds(1), ZonedDateTime.now(), ZonedDateTime.now(), 0);
     final LeaseLock lock = new LeaseLock("namespace", "name", "1337");
     // When
     lock.create(kc, record);
     // Then
-    verify(doneableLease, times(1)).done();
   }
 
   @Test
   void updateWithValidLeaderElectionRecordShouldSendPutRequest() throws Exception {
     // Given
-    final Resource<Lease, ?> leaseResource = leases.withName("name");
-    final Replaceable<Lease, Lease> replaceable = mock(Replaceable.class, Answers.RETURNS_DEEP_STUBS);
+    final Resource<Lease> leaseResource = leases.withName("name");
+    final Replaceable<Lease> replaceable = mock(Replaceable.class, Answers.RETURNS_DEEP_STUBS);
     when(leaseResource.lockResourceVersion(any())).thenReturn(replaceable);
     final Lease leaseInTheCluster = new Lease();
     leaseInTheCluster.setSpec(new LeaseSpec());

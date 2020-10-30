@@ -15,10 +15,6 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.api.model.authorization.v1.DoneableLocalSubjectAccessReview;
-import io.fabric8.kubernetes.api.model.authorization.v1.DoneableSelfSubjectAccessReview;
-import io.fabric8.kubernetes.api.model.authorization.v1.DoneableSelfSubjectRulesReview;
-import io.fabric8.kubernetes.api.model.authorization.v1.DoneableSubjectAccessReview;
 import io.fabric8.kubernetes.api.model.authorization.v1.LocalSubjectAccessReview;
 import io.fabric8.kubernetes.api.model.authorization.v1.SelfSubjectAccessReview;
 import io.fabric8.kubernetes.api.model.authorization.v1.SelfSubjectRulesReview;
@@ -42,22 +38,22 @@ public class V1AuthorizationAPIGroupClient extends BaseClient implements V1Autho
   }
 
   @Override
-  public Createable<SelfSubjectAccessReview, SelfSubjectAccessReview, DoneableSelfSubjectAccessReview> selfSubjectAccessReview() {
+  public Createable<SelfSubjectAccessReview> selfSubjectAccessReview() {
     return new CreateOnlyResourceOperationsImpl<>(getHttpClient(), getConfiguration(), AUTHORIZATION_APIGROUP, AUTHORIZATION_APIVERSION, Utils.getPluralFromKind(io.fabric8.kubernetes.api.model.authorization.v1beta1.SelfSubjectAccessReview.class.getSimpleName()), SelfSubjectAccessReview.class);
   }
 
   @Override
-  public Createable<SubjectAccessReview, SubjectAccessReview, DoneableSubjectAccessReview> subjectAccessReview() {
+  public Createable<SubjectAccessReview> subjectAccessReview() {
     return new CreateOnlyResourceOperationsImpl<>(getHttpClient(), getConfiguration(), AUTHORIZATION_APIGROUP, AUTHORIZATION_APIVERSION, Utils.getPluralFromKind(io.fabric8.kubernetes.api.model.authorization.v1beta1.SubjectAccessReview.class.getSimpleName()), SubjectAccessReview.class);
   }
 
   @Override
-  public LocalCreateOnlyResourceReviewOperationsImpl<LocalSubjectAccessReview, DoneableLocalSubjectAccessReview> localSubjectAccessReview() {
+  public LocalCreateOnlyResourceReviewOperationsImpl<LocalSubjectAccessReview> localSubjectAccessReview() {
     return new LocalCreateOnlyResourceReviewOperationsImpl<>(getHttpClient(), getConfiguration(), AUTHORIZATION_APIGROUP, AUTHORIZATION_APIVERSION, Utils.getPluralFromKind(io.fabric8.kubernetes.api.model.authorization.v1beta1.LocalSubjectAccessReview.class.getSimpleName()), LocalSubjectAccessReview.class);
   }
 
   @Override
-  public Createable<SelfSubjectRulesReview, SelfSubjectRulesReview, DoneableSelfSubjectRulesReview> selfSubjectRulesReview() {
+  public Createable<SelfSubjectRulesReview> selfSubjectRulesReview() {
     return new CreateOnlyResourceOperationsImpl<>(getHttpClient(), getConfiguration(), AUTHORIZATION_APIGROUP, AUTHORIZATION_APIVERSION,  Utils.getPluralFromKind(io.fabric8.kubernetes.api.model.authorization.v1beta1.SelfSubjectRulesReview.class.getSimpleName()), SelfSubjectRulesReview.class);
   }
 }

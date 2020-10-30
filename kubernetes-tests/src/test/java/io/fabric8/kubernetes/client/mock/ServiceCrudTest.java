@@ -68,8 +68,8 @@ public class ServiceCrudTest {
     assertNotNull(aServiceList);
     assertEquals(2, aServiceList.getItems().size());
 
-    service2 = client.services().inNamespace("ns2").withName("svc2").edit()
-      .editMetadata().addToLabels("key1", "value1").endMetadata().done();
+    service2 = client.services().inNamespace("ns2").withName("svc2").edit(s -> new ServiceBuilder(s)
+                     .editMetadata().addToLabels("key1", "value1").endMetadata().build());
 
     assertNotNull(service2);
     assertEquals("value1", service2.getMetadata().getLabels().get("key1"));

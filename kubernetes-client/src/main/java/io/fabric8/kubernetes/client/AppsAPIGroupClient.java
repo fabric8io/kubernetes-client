@@ -17,16 +17,12 @@ package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.api.model.apps.DaemonSet;
 import io.fabric8.kubernetes.api.model.apps.DaemonSetList;
-import io.fabric8.kubernetes.api.model.apps.DoneableDaemonSet;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DeploymentList;
-import io.fabric8.kubernetes.api.model.apps.DoneableDeployment;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetList;
-import io.fabric8.kubernetes.api.model.apps.DoneableReplicaSet;
 import io.fabric8.kubernetes.api.model.apps.StatefulSet;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetList;
-import io.fabric8.kubernetes.api.model.apps.DoneableStatefulSet;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
@@ -49,22 +45,22 @@ public class AppsAPIGroupClient extends BaseClient implements AppsAPIGroupDSL {
   }
 
   @Override
-  public MixedOperation<DaemonSet, DaemonSetList, DoneableDaemonSet, Resource<DaemonSet, DoneableDaemonSet>> daemonSets() {
+  public MixedOperation<DaemonSet, DaemonSetList, Resource<DaemonSet>> daemonSets() {
     return new DaemonSetOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
-  public MixedOperation<Deployment, DeploymentList, DoneableDeployment, RollableScalableResource<Deployment, DoneableDeployment>> deployments() {
+  public MixedOperation<Deployment, DeploymentList, RollableScalableResource<Deployment>> deployments() {
     return new DeploymentOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
-  public MixedOperation<ReplicaSet, ReplicaSetList, DoneableReplicaSet, RollableScalableResource<ReplicaSet, DoneableReplicaSet>> replicaSets() {
+  public MixedOperation<ReplicaSet, ReplicaSetList, RollableScalableResource<ReplicaSet>> replicaSets() {
     return new ReplicaSetOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
-  public MixedOperation<StatefulSet, StatefulSetList, DoneableStatefulSet, RollableScalableResource<StatefulSet, DoneableStatefulSet>> statefulSets() {
+  public MixedOperation<StatefulSet, StatefulSetList, RollableScalableResource<StatefulSet>> statefulSets() {
     return new StatefulSetOperationsImpl(httpClient, getConfiguration());
   }
 }

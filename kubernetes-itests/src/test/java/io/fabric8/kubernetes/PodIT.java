@@ -109,8 +109,8 @@ public class PodIT {
 
   @Test
   public void update() {
-    pod1 = client.pods().inNamespace(session.getNamespace()).withName("pod-standard").edit()
-      .editMetadata().addToLabels("foo", "bar").endMetadata().done();
+    pod1 = client.pods().inNamespace(session.getNamespace()).withName("pod-standard").edit(p -> new PodBuilder(p)
+                 .editMetadata().addToLabels("foo", "bar").endMetadata().build());
     assertEquals("bar", pod1.getMetadata().getLabels().get("foo"));
   }
 

@@ -15,7 +15,6 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
-import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.Config;
@@ -34,8 +33,8 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, D extends Doneable<T>, R extends Resource<T, D>>
-  extends HasMetadataOperation<T, L, D, R> {
+public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>>
+  extends HasMetadataOperation<T, L, R> {
 
   public static final String OPENSHIFT_APIGROUP_SUFFIX = "openshift.io";
 

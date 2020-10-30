@@ -16,7 +16,7 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-public interface ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<T, B>
-  extends NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<T, B>, Parameterizable<NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<T, B>> {
+public interface ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<T>
+  extends NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<T>, Parameterizable<NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<T>> {
 
 }

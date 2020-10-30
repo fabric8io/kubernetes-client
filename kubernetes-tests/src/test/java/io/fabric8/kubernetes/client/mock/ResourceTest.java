@@ -16,7 +16,6 @@
 
 package io.fabric8.kubernetes.client.mock;
 
-import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
@@ -84,7 +83,7 @@ public class ResourceTest {
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
     server.expect().post().withPath("/api/v1/namespaces/test/pods").andReturn(HttpURLConnection.HTTP_BAD_REQUEST, pod1).once();
     KubernetesClient client = server.getClient();
-    NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<Pod, Boolean> podOperation = client.resource(pod1);
+    NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<Pod> podOperation = client.resource(pod1);
 
     // When
     assertThrows(KubernetesClientException.class, podOperation::createOrReplace);
@@ -136,7 +135,7 @@ public class ResourceTest {
     void testRequire() {
       server.expect().get().withPath("/api/v1/namespaces/ns1/pods/pod1").andReturn(HttpURLConnection.HTTP_NOT_FOUND, "").once();
       KubernetesClient client = server.getClient();
-      PodResource<Pod, DoneablePod> podOp = client.pods().inNamespace("ns1").withName("pod1");
+      PodResource<Pod> podOp = client.pods().inNamespace("ns1").withName("pod1");
 
       Assertions.assertThrows(ResourceNotFoundException.class, podOp::require);
     }
@@ -341,7 +340,7 @@ public class ResourceTest {
       .anyMatch(c -> "True".equals(c.getStatus()));
 
     try (KubernetesClient client = server.getClient()) {
-      final PodResource<Pod, DoneablePod> ops = client.pods().withName("pod1");
+      final PodResource<Pod> ops = client.pods().withName("pod1");
       KubernetesClientException ex = assertThrows(KubernetesClientException.class, () ->
         ops.waitUntilCondition(isReady, 4, SECONDS)
       );

@@ -15,11 +15,10 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.api.model.settings.DoneablePodPreset;
 import io.fabric8.kubernetes.api.model.settings.PodPreset;
 import io.fabric8.kubernetes.api.model.settings.PodPresetList;
 import io.fabric8.kubernetes.client.Client;
 
 public interface SettingsAPIGroupDSL extends Client {
-  MixedOperation<PodPreset, PodPresetList, DoneablePodPreset, Resource<PodPreset, DoneablePodPreset>> podPresets();
+  MixedOperation<PodPreset, PodPresetList, Resource<PodPreset>> podPresets();
 }

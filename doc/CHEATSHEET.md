@@ -1879,8 +1879,8 @@ CustomResourceDefinitionContext context = new CustomResourceDefinitionContext.Bu
       .withPlural("crontabs")
       .withKind("CronTab")
       .build()
-MixedOperation<CronTab, CronTabList, DoneableCronTab, Resource<CronTab, DoneableCronTab>> cronTabClient = client
-  .customResources(cronTabCrd, CronTab.class, CronTabList.class, DoneableCronTab.class);
+MixedOperation<CronTab, CronTabList, Resource<CronTab>> cronTabClient = client
+  .customResources(cronTabCrd, CronTab.class, CronTabList.class);
 ```
 - Register your `CustomResource` to `KubernetesDeserializer`:
 ```

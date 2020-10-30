@@ -21,11 +21,6 @@ import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.openshift.api.model.monitoring.v1.Alertmanager;
 import io.fabric8.openshift.api.model.monitoring.v1.AlertmanagerList;
-import io.fabric8.openshift.api.model.monitoring.v1.DoneableAlertmanager;
-import io.fabric8.openshift.api.model.monitoring.v1.DoneablePodMonitor;
-import io.fabric8.openshift.api.model.monitoring.v1.DoneablePrometheus;
-import io.fabric8.openshift.api.model.monitoring.v1.DoneablePrometheusRule;
-import io.fabric8.openshift.api.model.monitoring.v1.DoneableServiceMonitor;
 import io.fabric8.openshift.api.model.monitoring.v1.PodMonitor;
 import io.fabric8.openshift.api.model.monitoring.v1.PodMonitorList;
 import io.fabric8.openshift.api.model.monitoring.v1.Prometheus;
@@ -52,27 +47,27 @@ public class OpenShiftMonitoringAPIGroupClient extends BaseClient implements Ope
   }
 
   @Override
-  public MixedOperation<Prometheus, PrometheusList, DoneablePrometheus, Resource<Prometheus, DoneablePrometheus>> prometheuses() {
+  public MixedOperation<Prometheus, PrometheusList, Resource<Prometheus>> prometheuses() {
     return new PrometheusOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public MixedOperation<PodMonitor, PodMonitorList, DoneablePodMonitor, Resource<PodMonitor, DoneablePodMonitor>> podMonitors() {
+  public MixedOperation<PodMonitor, PodMonitorList, Resource<PodMonitor>> podMonitors() {
     return new PodMonitorOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public MixedOperation<Alertmanager, AlertmanagerList, DoneableAlertmanager, Resource<Alertmanager, DoneableAlertmanager>> alertmanagers() {
+  public MixedOperation<Alertmanager, AlertmanagerList, Resource<Alertmanager>> alertmanagers() {
     return new AlertmanagerOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public MixedOperation<PrometheusRule, PrometheusRuleList, DoneablePrometheusRule, Resource<PrometheusRule, DoneablePrometheusRule>> prometheusRules() {
+  public MixedOperation<PrometheusRule, PrometheusRuleList, Resource<PrometheusRule>> prometheusRules() {
     return new PrometheusRuleOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public MixedOperation<ServiceMonitor, ServiceMonitorList, DoneableServiceMonitor, Resource<ServiceMonitor, DoneableServiceMonitor>> serviceMonitors() {
+  public MixedOperation<ServiceMonitor, ServiceMonitorList, Resource<ServiceMonitor>> serviceMonitors() {
     return new ServiceMonitorOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 }

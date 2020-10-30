@@ -23,8 +23,6 @@ import io.fabric8.openshift.api.model.AppliedClusterResourceQuota;
 import io.fabric8.openshift.api.model.AppliedClusterResourceQuotaList;
 import io.fabric8.openshift.api.model.ClusterResourceQuota;
 import io.fabric8.openshift.api.model.ClusterResourceQuotaList;
-import io.fabric8.openshift.api.model.DoneableAppliedClusterResourceQuota;
-import io.fabric8.openshift.api.model.DoneableClusterResourceQuota;
 import io.fabric8.openshift.client.dsl.OpenShiftQuotaAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.internal.AppliedClusterResourceQuotaOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.ClusterResourceQuotaOperationsImpl;
@@ -40,12 +38,12 @@ public class OpenShiftQuotaAPIGroupClient extends BaseClient implements OpenShif
   }
 
   @Override
-  public MixedOperation<AppliedClusterResourceQuota, AppliedClusterResourceQuotaList, DoneableAppliedClusterResourceQuota, Resource<AppliedClusterResourceQuota, DoneableAppliedClusterResourceQuota>> appliedClusterResourceQuotas() {
+  public MixedOperation<AppliedClusterResourceQuota, AppliedClusterResourceQuotaList, Resource<AppliedClusterResourceQuota>> appliedClusterResourceQuotas() {
     return new AppliedClusterResourceQuotaOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public MixedOperation<ClusterResourceQuota, ClusterResourceQuotaList, DoneableClusterResourceQuota, Resource<ClusterResourceQuota, DoneableClusterResourceQuota>> clusterResourceQuotas() {
+  public MixedOperation<ClusterResourceQuota, ClusterResourceQuotaList, Resource<ClusterResourceQuota>> clusterResourceQuotas() {
     return new ClusterResourceQuotaOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 }

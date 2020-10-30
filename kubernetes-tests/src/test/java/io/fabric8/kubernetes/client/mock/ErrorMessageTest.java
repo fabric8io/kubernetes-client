@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.StatusBuilder;
+import io.fabric8.kubernetes.api.model.EventBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import org.junit.Rule;
@@ -70,6 +71,6 @@ public class ErrorMessageTest {
 
     KubernetesClient client = server.getClient();
 
-    client.v1().events().inNamespace("test").createNew().withNewMetadata().withName("event1").endMetadata().done();
+    client.v1().events().inNamespace("test").create(new EventBuilder().withNewMetadata().withName("event1").endMetadata().build());
   }
 }

@@ -18,7 +18,6 @@ package io.fabric8.openshift.client.dsl.internal;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import okhttp3.OkHttpClient;
-import io.fabric8.openshift.api.model.DoneableOAuthAccessToken;
 import io.fabric8.openshift.api.model.OAuthAccessToken;
 import io.fabric8.openshift.api.model.OAuthAccessTokenList;
 import io.fabric8.openshift.client.OpenShiftConfig;
@@ -26,8 +25,8 @@ import io.fabric8.openshift.client.OpenShiftConfig;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.OAUTH;
 
-public class OAuthAccessTokenOperationsImpl extends OpenShiftOperation<OAuthAccessToken, OAuthAccessTokenList, DoneableOAuthAccessToken,
-  Resource<OAuthAccessToken, DoneableOAuthAccessToken>> {
+public class OAuthAccessTokenOperationsImpl extends OpenShiftOperation<OAuthAccessToken, OAuthAccessTokenList,
+  Resource<OAuthAccessToken>> {
 
   public OAuthAccessTokenOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
     this(new OperationContext().withOkhttpClient(client).withConfig(config));
@@ -38,7 +37,6 @@ public class OAuthAccessTokenOperationsImpl extends OpenShiftOperation<OAuthAcce
       .withPlural("oauthaccesstokens"));
     this.type = OAuthAccessToken.class;
     this.listType = OAuthAccessTokenList.class;
-    this.doneableType = DoneableOAuthAccessToken.class;
   }
 
   @Override

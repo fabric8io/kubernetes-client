@@ -80,11 +80,11 @@ class VolumeSnapshotClassTest {
     assertNotNull(sc1);
 
     //Update
-    VolumeSnapshotClass u1 = client.volumeSnapshotClasses().withName("csi-snapclass2").edit()
+    VolumeSnapshotClass u1 = client.volumeSnapshotClasses().withName("csi-snapclass2").edit(v -> new VolumeSnapshotClassBuilder(v)
       .editMetadata()
       .addToLabels("updated", "true")
       .endMetadata()
-      .done();
+      .build());
 
     assertNotNull(u1);
     assertEquals("true", u1.getMetadata().getLabels().get("updated"));

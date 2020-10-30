@@ -82,8 +82,8 @@ public class PodCrudTest {
     assertEquals(2, podList.getItems().size());
 
     // test update
-    pod2 = client.pods().inNamespace("ns1").withName("pod2").edit()
-      .editMetadata().addToLabels("key1", "value1").endMetadata().done();
+    pod2 = client.pods().inNamespace("ns1").withName("pod2").edit(p -> new PodBuilder(p)
+                 .editMetadata().addToLabels("key1", "value1").endMetadata().build());
     assertNotNull(pod2);
     assertEquals("value1", pod2.getMetadata().getLabels().get("key1"));
 

@@ -20,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 import io.fabric8.commons.ClusterEntity;
 import io.fabric8.commons.DeleteEntity;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRole;
+import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBuilder;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRoleList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.arquillian.cube.kubernetes.api.Session;
@@ -142,8 +143,8 @@ public class ClusterRoleIT {
   @Test
   public void update() {
 
-    clusterRole = client.rbac().clusterRoles().withName("node-reader-update").edit()
-      .editRule(0).addToApiGroups(1, "extensions").endRule().done();
+    clusterRole = client.rbac().clusterRoles().withName("node-reader-update").edit(c -> new ClusterRoleBuilder(c)
+                        .editRule(0).addToApiGroups(1, "extensions").endRule().build());
 
     assertNotNull(clusterRole);
     assertEquals("ClusterRole", clusterRole.getKind());

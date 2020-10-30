@@ -108,9 +108,9 @@ class NetworkPolicyCrudTest {
 
     //test of updation
     networkPolicy = client.network().networkPolicies()
-      .withName("networkpolicy").edit()
+      .withName("networkpolicy").edit(n -> new NetworkPolicyBuilder(n)
       .editSpec().editIngress(0).editFirstPort().withPort(new IntOrString(6679)).endPort().endIngress().endSpec()
-      .done();
+      .build());
 
     logger.info("Updated PodSecurityPolicy : " + networkPolicy.toString());
     assertNotNull(networkPolicy);

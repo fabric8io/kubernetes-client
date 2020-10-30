@@ -19,6 +19,7 @@ package io.fabric8.openshift;
 import io.fabric8.commons.ClusterEntity;
 import io.fabric8.commons.ReadyEntity;
 import io.fabric8.openshift.api.model.DeploymentConfig;
+import io.fabric8.openshift.api.model.DeploymentConfigBuilder;
 import io.fabric8.openshift.api.model.DeploymentConfigList;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.arquillian.cube.kubernetes.api.Session;
@@ -74,8 +75,8 @@ public class DeploymentConfigIT {
   @Test
   public void update() {
     ReadyEntity<DeploymentConfig> deploymentConfigReady = new ReadyEntity<>(DeploymentConfig.class, client, "dc-update", session.getNamespace());
-    DeploymentConfig deploymentConfig1 = client.deploymentConfigs().inNamespace(session.getNamespace()).withName("dc-update").edit()
-      .editSpec().withReplicas(3).endSpec().done();
+    DeploymentConfig deploymentConfig1 = client.deploymentConfigs().inNamespace(session.getNamespace()).withName("dc-update").edit(d -> new DeploymentConfigBuilder(d)
+                                               .editSpec().withReplicas(3).endSpec().build());
     await().atMost(60, TimeUnit.SECONDS).until(deploymentConfigReady);
     assertThat(deploymentConfig1).isNotNull();
     assertEquals(3, deploymentConfig1.getSpec().getReplicas().intValue());

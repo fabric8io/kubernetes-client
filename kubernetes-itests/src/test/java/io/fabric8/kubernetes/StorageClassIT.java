@@ -17,6 +17,7 @@ package io.fabric8.kubernetes;
 
 import io.fabric8.commons.ClusterEntity;
 import io.fabric8.kubernetes.api.model.storage.StorageClass;
+import io.fabric8.kubernetes.api.model.storage.StorageClassBuilder;
 import io.fabric8.kubernetes.api.model.storage.StorageClassList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import static junit.framework.TestCase.assertNotNull;
@@ -71,7 +72,7 @@ public class StorageClassIT {
 
   @Test
   public void update() {
-    storageClass = client.storage().storageClasses().withName("storageclass-update").edit().editMetadata().addToLabels("testLabel", "testLabelValue").endMetadata().done();
+    storageClass = client.storage().storageClasses().withName("storageclass-update").edit(s -> new StorageClassBuilder(s).editMetadata().addToLabels("testLabel", "testLabelValue").endMetadata().build());
     assertNotNull(storageClass);
     assertEquals("testLabelValue", storageClass.getMetadata().getLabels().get("testLabel"));
   }

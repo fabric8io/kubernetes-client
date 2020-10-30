@@ -21,7 +21,7 @@ import io.fabric8.kubernetes.client.PortForward;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 
-public interface ServiceResource<T, D> extends Resource<T, D> ,
+public interface ServiceResource<T> extends Resource<T> ,
   PortForwardable<PortForward, LocalPortForward, ReadableByteChannel, WritableByteChannel> {
 
   String getURL(String portName);

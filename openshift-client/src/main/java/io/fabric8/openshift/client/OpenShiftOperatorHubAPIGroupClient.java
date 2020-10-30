@@ -19,17 +19,12 @@ import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.openshift.api.model.operatorhub.v1.DoneableOperatorGroup;
 import io.fabric8.openshift.api.model.operatorhub.v1.OperatorGroup;
 import io.fabric8.openshift.api.model.operatorhub.v1.OperatorGroupList;
 import io.fabric8.openshift.api.model.operatorhub.v1alpha1.CatalogSource;
 import io.fabric8.openshift.api.model.operatorhub.v1alpha1.CatalogSourceList;
 import io.fabric8.openshift.api.model.operatorhub.v1alpha1.ClusterServiceVersion;
 import io.fabric8.openshift.api.model.operatorhub.v1alpha1.ClusterServiceVersionList;
-import io.fabric8.openshift.api.model.operatorhub.v1alpha1.DoneableCatalogSource;
-import io.fabric8.openshift.api.model.operatorhub.v1alpha1.DoneableClusterServiceVersion;
-import io.fabric8.openshift.api.model.operatorhub.v1alpha1.DoneableInstallPlan;
-import io.fabric8.openshift.api.model.operatorhub.v1alpha1.DoneableSubscription;
 import io.fabric8.openshift.api.model.operatorhub.v1alpha1.InstallPlan;
 import io.fabric8.openshift.api.model.operatorhub.v1alpha1.InstallPlanList;
 import io.fabric8.openshift.api.model.operatorhub.v1alpha1.Subscription;
@@ -52,27 +47,27 @@ public class OpenShiftOperatorHubAPIGroupClient extends BaseClient implements Op
   }
 
   @Override
-  public MixedOperation<CatalogSource, CatalogSourceList, DoneableCatalogSource, Resource<CatalogSource, DoneableCatalogSource>> catalogSources() {
+  public MixedOperation<CatalogSource, CatalogSourceList, Resource<CatalogSource>> catalogSources() {
     return new CatalogSourceOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public MixedOperation<OperatorGroup, OperatorGroupList, DoneableOperatorGroup, Resource<OperatorGroup, DoneableOperatorGroup>> operatorGroups() {
+  public MixedOperation<OperatorGroup, OperatorGroupList, Resource<OperatorGroup>> operatorGroups() {
     return new OperatorGroupOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public MixedOperation<Subscription, SubscriptionList, DoneableSubscription, Resource<Subscription, DoneableSubscription>> subscriptions() {
+  public MixedOperation<Subscription, SubscriptionList, Resource<Subscription>> subscriptions() {
     return new SubscriptionOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public MixedOperation<InstallPlan, InstallPlanList, DoneableInstallPlan, Resource<InstallPlan, DoneableInstallPlan>> installPlans() {
+  public MixedOperation<InstallPlan, InstallPlanList, Resource<InstallPlan>> installPlans() {
     return new InstallPlanOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public MixedOperation<ClusterServiceVersion, ClusterServiceVersionList, DoneableClusterServiceVersion, Resource<ClusterServiceVersion, DoneableClusterServiceVersion>> clusterServiceVersions() {
+  public MixedOperation<ClusterServiceVersion, ClusterServiceVersionList, Resource<ClusterServiceVersion>> clusterServiceVersions() {
     return new ClusterServiceVersionOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 }

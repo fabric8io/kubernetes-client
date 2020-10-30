@@ -27,6 +27,7 @@ import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildRequestBuilder;
+import io.fabric8.openshift.api.model.DeploymentConfigBuilder;
 import io.fabric8.openshift.api.model.DeploymentTriggerPolicy;
 import io.fabric8.openshift.api.model.ProjectRequest;
 import io.fabric8.openshift.api.model.ProjectRequestBuilder;
@@ -58,7 +59,7 @@ public class DeploymentConfigExamples {
 
       client.serviceAccounts().inNamespace("thisisatest").createOrReplace(fabric8);
 
-      log("Created deployment", client.deploymentConfigs().inNamespace("thisisatest").createOrReplaceWithNew()
+      log("Created deployment", client.deploymentConfigs().inNamespace("thisisatest").createOrReplace(new DeploymentConfigBuilder()
         .withNewMetadata()
           .withName("nginx")
         .endMetadata()
@@ -83,7 +84,7 @@ public class DeploymentConfigExamples {
             .endSpec()
           .endTemplate()
         .endSpec()
-        .done());
+        .build()));
 
 
       client.deploymentConfigs().inNamespace("thisisatest").withName("nginx").scale(2, true);

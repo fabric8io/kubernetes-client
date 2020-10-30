@@ -85,11 +85,11 @@ class ClusterServiceBrokerTest {
         assertNotNull(r1);
 
         //Update
-        ClusterServiceBroker u1 = client.clusterServiceBrokers().withName("broker1").edit()
+        ClusterServiceBroker u1 = client.clusterServiceBrokers().withName("broker1").edit(c -> new ClusterServiceBrokerBuilder(c)
                 .editMetadata()
                 .addToLabels("updated", "true")
                 .endMetadata()
-                .done();
+                .build());
 
         assertNotNull(u1);
         assertEquals("true", u1.getMetadata().getLabels().get("updated"));

@@ -15,10 +15,8 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.api.model.networking.v1.DoneableNetworkPolicy;
 import io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicy;
 import io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicyList;
-import io.fabric8.kubernetes.api.model.networking.v1beta1.DoneableIngress;
 import io.fabric8.kubernetes.api.model.networking.v1beta1.Ingress;
 import io.fabric8.kubernetes.api.model.networking.v1beta1.IngressList;
 import io.fabric8.kubernetes.client.Client;
@@ -29,8 +27,8 @@ public interface NetworkAPIGroupDSL extends Client {
   V1NetworkAPIGroupDSL v1();
   V1beta1NetworkAPIGroupDSL v1beta1();
 
-  MixedOperation<NetworkPolicy, NetworkPolicyList, DoneableNetworkPolicy, Resource<NetworkPolicy, DoneableNetworkPolicy>> networkPolicies();
-  MixedOperation<Ingress, IngressList, DoneableIngress, Resource<Ingress, DoneableIngress>> ingress();
+  MixedOperation<NetworkPolicy, NetworkPolicyList, Resource<NetworkPolicy>> networkPolicies();
+  MixedOperation<Ingress, IngressList, Resource<Ingress>> ingress();
 
-  MixedOperation<Ingress, IngressList, DoneableIngress, Resource<Ingress, DoneableIngress>> ingresses();
+  MixedOperation<Ingress, IngressList, Resource<Ingress>> ingresses();
 }

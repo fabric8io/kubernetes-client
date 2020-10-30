@@ -17,10 +17,9 @@ package io.fabric8.servicecatalog.client.internal;
 
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.servicecatalog.api.model.*;
-import io.fabric8.servicecatalog.api.model.DoneableServiceInstance;
 
 
-public interface ServiceInstanceResource extends Resource<ServiceInstance, DoneableServiceInstance> {
+public interface ServiceInstanceResource extends Resource<ServiceInstance> {
 
     ServiceBinding bind(String secretName);
 }

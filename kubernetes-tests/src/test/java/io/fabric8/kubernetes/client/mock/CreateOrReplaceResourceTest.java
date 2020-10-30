@@ -19,7 +19,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
-import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
@@ -84,7 +83,7 @@ class CreateOrReplaceResourceTest {
     server.expect().post().withPath("/api/v1/namespaces/test/pods").andReturn(HttpURLConnection.HTTP_BAD_REQUEST, new PodBuilder()
       .withNewMetadata().withResourceVersion("12345").endMetadata().build()).once();
     KubernetesClient client = server.getClient();
-    NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<Pod, Boolean> podOperation = client.resource(new PodBuilder().withNewMetadata().withName("pod123").endMetadata().build());
+    NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<Pod> podOperation = client.resource(new PodBuilder().withNewMetadata().withName("pod123").endMetadata().build());
 
     // When
     assertThrows(KubernetesClientException.class, podOperation::createOrReplace);
@@ -97,7 +96,7 @@ class CreateOrReplaceResourceTest {
       .withNewMetadata().withResourceVersion("12345").and().build()).once();
 
     KubernetesClient client = server.getClient();
-    Pod pod = client.pods().createOrReplaceWithNew().withNewMetadata().withName("pod123").and().withNewSpec().and().done();
+    Pod pod = client.pods().createOrReplace(new PodBuilder().withNewMetadata().withName("pod123").and().withNewSpec().and().build());
     assertNotNull(pod);
     assertEquals("12345", pod.getMetadata().getResourceVersion());
   }
@@ -112,7 +111,7 @@ class CreateOrReplaceResourceTest {
       .withNewMetadata().withResourceVersion("12345").and().build()).once();
 
     KubernetesClient client = server.getClient();
-    Pod pod = client.pods().createOrReplaceWithNew().withNewMetadata().withName("pod123").and().withNewSpec().and().done();
+    Pod pod = client.pods().createOrReplace(new PodBuilder().withNewMetadata().withName("pod123").and().withNewSpec().and().build());
     assertNotNull(pod);
     assertEquals("12345", pod.getMetadata().getResourceVersion());
   }
@@ -126,10 +125,9 @@ class CreateOrReplaceResourceTest {
     server.expect().put().withPath("/api/v1/namespaces/test/pods/pod123").andReturn(HttpURLConnection.HTTP_BAD_REQUEST, new PodBuilder()
       .withNewMetadata().withResourceVersion("12345").and().build()).once();
     KubernetesClient client = server.getClient();
-    DoneablePod podOperation = client.pods().createOrReplaceWithNew();
 
     // When
-    assertThrows(KubernetesClientException.class, () -> podOperation.withNewMetadata().withName("pod123").and().withNewSpec().and().done());
+    assertThrows(KubernetesClientException.class, () -> client.pods().create(new PodBuilder().withNewMetadata().withName("pod123").and().withNewSpec().and().build()));
   }
 
   @Test

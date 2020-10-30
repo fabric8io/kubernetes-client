@@ -19,6 +19,7 @@ package io.fabric8.openshift.examples;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.openshift.api.model.ProjectRequest;
+import io.fabric8.openshift.api.model.ProjectRequestBuilder;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.slf4j.Logger;
@@ -38,7 +39,7 @@ public class NewProjectExamples {
     try (OpenShiftClient client = new DefaultOpenShiftClient(config)) {
       ProjectRequest request = null;
       try {
-        request = client.projectrequests().createNew().withNewMetadata().withName("thisisatest").endMetadata().withDescription("Jimmi").withDisplayName("Jimmi").done();
+          request = client.projectrequests().create(new ProjectRequestBuilder().withNewMetadata().withName("thisisatest").endMetadata().withDescription("Jimmi").withDisplayName("Jimmi").build());
       } finally {
         if (request != null) {
           client.projects().withName(request.getMetadata().getName()).delete();

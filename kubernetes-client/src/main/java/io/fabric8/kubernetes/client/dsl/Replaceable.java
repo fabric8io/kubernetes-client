@@ -15,8 +15,8 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface Replaceable<I, T> {
+public interface Replaceable<T> {
 
-  T replace(I item);
+  T replace(T item);
 
 }

@@ -21,7 +21,6 @@ import io.fabric8.kubernetes.client.dsl.KubernetesListOperation;
 import io.fabric8.kubernetes.client.dsl.Loadable;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
-import io.fabric8.kubernetes.api.model.DoneableKubernetesList;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.client.Config;
@@ -48,8 +47,8 @@ public class KubernetesListOperationsImpl
   extends OperationSupport
   implements KubernetesListOperation,
   KubernetesListMixedOperation,
-  Loadable<RecreateFromServerGettable<KubernetesList, KubernetesList, DoneableKubernetesList>>,
-        RecreateFromServerGettable<KubernetesList, KubernetesList, DoneableKubernetesList> {
+  Loadable<RecreateFromServerGettable<KubernetesList>>,
+        RecreateFromServerGettable<KubernetesList> {
 
   private final KubernetesList item;
   private final Boolean fromServer;
@@ -92,18 +91,7 @@ public class KubernetesListOperationsImpl
   }
 
   @Override
-  public DoneableKubernetesList createNew() {
-    return new DoneableKubernetesList(item -> {
-      try {
-        return create(item);
-      } catch (Exception e) {
-        throw KubernetesClientException.launderThrowable(e);
-      }
-    });
-  }
-
-  @Override
-  public RecreateFromServerGettable<KubernetesList, KubernetesList, DoneableKubernetesList> load(URL url) {
+  public RecreateFromServerGettable<KubernetesList> load(URL url) {
     try (InputStream inputStream = url.openStream()) {
       return load(inputStream);
     } catch (IOException e) {
@@ -112,7 +100,7 @@ public class KubernetesListOperationsImpl
   }
 
   @Override
-  public RecreateFromServerGettable<KubernetesList, KubernetesList, DoneableKubernetesList>  load(File file) {
+  public RecreateFromServerGettable<KubernetesList>  load(File file) {
     try (FileInputStream fis = new FileInputStream(file)) {
       return load(fis);
     } catch (IOException e) {
@@ -121,12 +109,12 @@ public class KubernetesListOperationsImpl
   }
 
   @Override
-  public RecreateFromServerGettable<KubernetesList, KubernetesList, DoneableKubernetesList>  load(String path) {
+  public RecreateFromServerGettable<KubernetesList>  load(String path) {
     return load(new File(path));
   }
 
   @Override
-  public RecreateFromServerGettable<KubernetesList, KubernetesList, DoneableKubernetesList> load(InputStream is) {
+  public RecreateFromServerGettable<KubernetesList> load(InputStream is) {
     return new KubernetesListOperationsImpl(client, config, namespace, null, DeletionPropagation.BACKGROUND, fromServer, deletingExisting, unmarshal(is, KubernetesList.class), null);
   }
 
@@ -167,7 +155,7 @@ public class KubernetesListOperationsImpl
   }
 
   @Override
-  public Createable<KubernetesList, KubernetesList, DoneableKubernetesList> deletingExisting() {
+  public Createable<KubernetesList> deletingExisting() {
     return new KubernetesListOperationsImpl(client, config, namespace, null, DeletionPropagation.BACKGROUND, fromServer, true, item, null);
   }
 

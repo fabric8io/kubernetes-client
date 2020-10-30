@@ -17,12 +17,11 @@
 package io.fabric8.kubernetes.client.dsl;
 
 /**
+ * @param <X>   The exec input.
  * @param <O>   Where to write err and out to.
  * @param <PO>  Where to pipe err and out to
- * @param <PI>  Where to pipe input to
  * @param <I>   Where to read input from.
- * @param <T>   The return type.
- * @param <X>   The exec input.
+ * @param <PI>  Where to pipe input to
  * @param <T>   The exec output.
  */
 public interface TtyExecInputOutputErrorable<X, O, PO, I, PI, T> extends

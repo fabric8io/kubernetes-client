@@ -19,6 +19,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.ConfigMap;
+import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.Namespaceable;
@@ -79,11 +80,11 @@ public class ConfigMapLock implements Lock {
     C client, LeaderElectionRecord leaderElectionRecord) throws LockException {
 
     try {
-      client.inNamespace(configMapNamespace).configMaps().withName(configMapName).createNew()
+        client.inNamespace(configMapNamespace).configMaps().withName(configMapName).create(new ConfigMapBuilder()
         .editOrNewMetadata().withNamespace(configMapNamespace).withName(configMapName)
         .addToAnnotations(LEADER_ELECTION_RECORD_ANNOTATION_KEY, objectMapper.writeValueAsString(leaderElectionRecord))
         .endMetadata()
-        .done();
+        .build());
     } catch (Exception e) {
       throw new LockException("Unable to create ConfigMapLock", e);
     }

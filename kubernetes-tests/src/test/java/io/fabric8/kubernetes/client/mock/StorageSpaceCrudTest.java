@@ -75,9 +75,9 @@ public class StorageSpaceCrudTest {
     assertNull(storageClassList.getItems().get(0).getMetadata().getLabels());
 
     //test update
-    storageClass = client.storage().storageClasses().withName(name).edit().editOrNewMetadata()
+    storageClass = client.storage().storageClasses().withName(name).edit(s -> new StorageClassBuilder(s).editOrNewMetadata()
       .addToLabels("key1", "value1")
-      .endMetadata().done();
+      .endMetadata().build());
     logger.info("Updated Storage Class: {} ", storageClass.toString());
     assertNotNull(storageClass);
     assertEquals(1, storageClass.getMetadata().getLabels().size());

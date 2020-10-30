@@ -21,12 +21,11 @@ import okhttp3.OkHttpClient;
 
 import io.fabric8.kubernetes.api.model.ComponentStatus;
 import io.fabric8.kubernetes.api.model.ComponentStatusList;
-import io.fabric8.kubernetes.api.model.DoneableComponentStatus;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 
-public class ComponentStatusOperationsImpl extends HasMetadataOperation<ComponentStatus, ComponentStatusList, DoneableComponentStatus,
-  Resource<ComponentStatus, DoneableComponentStatus>> {
+public class ComponentStatusOperationsImpl extends HasMetadataOperation<ComponentStatus, ComponentStatusList,
+  Resource<ComponentStatus>> {
 
   public ComponentStatusOperationsImpl(OkHttpClient client, Config config) {
     this(client, config, null);
@@ -40,7 +39,6 @@ public class ComponentStatusOperationsImpl extends HasMetadataOperation<Componen
     super(context.withPlural("componentstatuses"));
     this.type = ComponentStatus.class;
     this.listType = ComponentStatusList.class;
-    this.doneableType = DoneableComponentStatus.class;
   }
 
   @Override

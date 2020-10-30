@@ -98,7 +98,7 @@ public class EndpointsTest {
       server.expect().withPath("/api/v1/namespaces/test/endpoints/endpoint").andReturn(404, "error message from kubernetes").always();
       KubernetesClient client = server.getClient();
 
-      client.endpoints().withName("endpoint").edit();
+      client.endpoints().withName("endpoint").edit(r -> r);
     });
   }
 

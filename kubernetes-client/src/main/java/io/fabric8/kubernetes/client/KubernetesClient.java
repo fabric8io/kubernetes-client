@@ -19,71 +19,48 @@ package io.fabric8.kubernetes.client;
 import io.fabric8.kubernetes.api.model.APIService;
 import io.fabric8.kubernetes.api.model.APIServiceList;
 import io.fabric8.kubernetes.api.model.Binding;
-import io.fabric8.kubernetes.api.model.Doneable;
-import io.fabric8.kubernetes.api.model.DoneableAPIService;
-import io.fabric8.kubernetes.api.model.DoneableBinding;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapList;
-import io.fabric8.kubernetes.api.model.DoneableConfigMap;
 import io.fabric8.kubernetes.api.model.ComponentStatus;
 import io.fabric8.kubernetes.api.model.ComponentStatusList;
-import io.fabric8.kubernetes.api.model.DoneableComponentStatus;
 import io.fabric8.kubernetes.api.model.Endpoints;
 import io.fabric8.kubernetes.api.model.EndpointsList;
-import io.fabric8.kubernetes.api.model.DoneableEndpoints;
 import io.fabric8.kubernetes.api.model.Event;
 import io.fabric8.kubernetes.api.model.EventList;
-import io.fabric8.kubernetes.api.model.DoneableEvent;
 import io.fabric8.kubernetes.api.model.LimitRange;
 import io.fabric8.kubernetes.api.model.LimitRangeList;
-import io.fabric8.kubernetes.api.model.DoneableLimitRange;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.NamespaceList;
-import io.fabric8.kubernetes.api.model.DoneableNamespace;
 import io.fabric8.kubernetes.api.model.Node;
 import io.fabric8.kubernetes.api.model.NodeList;
-import io.fabric8.kubernetes.api.model.DoneableNode;
 import io.fabric8.kubernetes.api.model.PersistentVolume;
 import io.fabric8.kubernetes.api.model.PersistentVolumeList;
-import io.fabric8.kubernetes.api.model.DoneablePersistentVolume;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaimList;
-import io.fabric8.kubernetes.api.model.DoneablePersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
-import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerList;
-import io.fabric8.kubernetes.api.model.DoneableReplicationController;
 import io.fabric8.kubernetes.api.model.ResourceQuota;
 import io.fabric8.kubernetes.api.model.ResourceQuotaList;
-import io.fabric8.kubernetes.api.model.DoneableResourceQuota;
 import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.api.model.SecretList;
-import io.fabric8.kubernetes.api.model.DoneableSecret;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceList;
-import io.fabric8.kubernetes.api.model.DoneableService;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
-import io.fabric8.kubernetes.api.model.DoneableServiceAccount;
 import io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequest;
 import io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequestList;
-import io.fabric8.kubernetes.api.model.certificates.DoneableCertificateSigningRequest;
-import io.fabric8.kubernetes.api.model.authentication.DoneableTokenReview;
 import io.fabric8.kubernetes.api.model.authentication.TokenReview;
-import io.fabric8.kubernetes.api.model.coordination.v1.DoneableLease;
 import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseList;
-import io.fabric8.kubernetes.api.model.node.v1beta1.DoneableRuntimeClass;
 import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClass;
 import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClassList;
 import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionList;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.DoneableCustomResourceDefinition;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.RawCustomResourceOperationsImpl;
 import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectorBuilder;
@@ -105,7 +82,7 @@ public interface KubernetesClient extends Client {
    *
    * @return NonNamespaceOperation object for CustomResourceDefinition
    */
-  NonNamespaceOperation<CustomResourceDefinition, CustomResourceDefinitionList, DoneableCustomResourceDefinition, Resource<CustomResourceDefinition, DoneableCustomResourceDefinition>> customResourceDefinitions();
+  NonNamespaceOperation<CustomResourceDefinition, CustomResourceDefinitionList, Resource<CustomResourceDefinition>> customResourceDefinitions();
 
   /**
    * API entrypoint for apiextensions resources. Currently support both
@@ -120,7 +97,7 @@ public interface KubernetesClient extends Client {
    *
    * @return {@link NonNamespaceOperation} for CertificateSigningRequest class
    */
-  NonNamespaceOperation<CertificateSigningRequest, CertificateSigningRequestList, DoneableCertificateSigningRequest, Resource<CertificateSigningRequest, DoneableCertificateSigningRequest>> certificateSigningRequests();
+  NonNamespaceOperation<CertificateSigningRequest, CertificateSigningRequestList, Resource<CertificateSigningRequest>> certificateSigningRequests();
 
   /**
    * Typed API for managing CustomResources. You would need to provide POJOs for
@@ -137,14 +114,12 @@ public interface KubernetesClient extends Client {
    * @param crdContext CustomResourceDefinitionContext describes the core fields used to search for CustomResources
    * @param resourceType Class for CustomResource
    * @param listClass Class for list object for CustomResource
-   * @param doneClass Class for Doneable CustomResource object
    * @param <T> T type represents CustomResource type. If it's Namespaced resource, it must implement
    *           io.fabric8.kubernetes.api.model.Namespaced
    * @param <L> L type represents CustomResourceList type
-   * @param <D> D type represents DoneableCustomResource type
    * @return returns a MixedOperation object with which you can do basic CustomResource operations
    */
-  <T extends HasMetadata, L extends KubernetesResourceList<T>, D extends Doneable<T>> MixedOperation<T, L, D, Resource<T, D>> customResources(CustomResourceDefinitionContext crdContext, Class<T> resourceType, Class<L> listClass, Class<D> doneClass);
+  <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(CustomResourceDefinitionContext crdContext, Class<T> resourceType, Class<L> listClass);
 
   /**
    * Typed API for managing CustomResources. You would need to provide POJOs for
@@ -158,26 +133,24 @@ public interface KubernetesClient extends Client {
    *   </a> if it is a Namespaced scoped resource.
    * </p>
    *
-   * @deprecated use {@link #customResources(CustomResourceDefinitionContext, Class, Class, Class)}, which takes a {@link CustomResourceDefinitionContext}
+   * @deprecated use {@link #customResources(CustomResourceDefinitionContext, Class, Class)}, which takes a {@link CustomResourceDefinitionContext}
    * instead of a full {@link CustomResourceDefinition}.
    *
    * @param crd CustomResourceDefinition object on basic of which this CustomResource was created
    * @param resourceType Class for CustomResource
    * @param listClass Class for list object for CustomResource
-   * @param doneClass Class for Doneable CustomResource object
    * @param <T> T type represents CustomResource type. If it's Namespaced resource, it must implement
    *            io.fabric8.kubernetes.api.model.Namespaced
    * @param <L> L type represents CustomResourceList type
-   * @param <D> D type represents DoneableCustomResource type
    * @return returns a MixedOperation object with which you can do basic CustomResource operations
    */
   @Deprecated
-  <T extends HasMetadata, L extends KubernetesResourceList<T>, D extends Doneable<T>> MixedOperation<T, L, D, Resource<T, D>> customResources(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass, Class<D> doneClass);
+  <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass);
 
   /**
    * Old API for dealing with CustomResources.
    *
-   * @deprecated use {@link #customResources(CustomResourceDefinitionContext, Class, Class, Class)}, which takes a {@link CustomResourceDefinitionContext}
+   * @deprecated use {@link #customResources(CustomResourceDefinitionContext, Class, Class)}, which takes a {@link CustomResourceDefinitionContext}
    * instead of a full {@link CustomResourceDefinition}.
    *
    * <p>
@@ -190,14 +163,12 @@ public interface KubernetesClient extends Client {
    * @param crd Custom Resource Definition
    * @param resourceType resource type Pojo
    * @param listClass list class Pojo
-   * @param doneClass Done class Pojo
    * @param <T> template argument for resource. If it's Namespaced resource, it must implement
    *            io.fabric8.kubernetes.api.model.Namespaced
    * @param <L> template argument for list
-   * @param <D> template argument for doneable resource
    * @return Kubernetes client object for manipulating custom resource.
    */
-  <T extends HasMetadata, L extends KubernetesResourceList<T>, D extends Doneable<T>> MixedOperation<T, L, D, Resource<T, D>> customResource(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass, Class<D> doneClass);
+  <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResource(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass);
 
   /**
    * Extensions API entrypoint for APIGroup extensions/v1beta1
@@ -305,7 +276,7 @@ public interface KubernetesClient extends Client {
    *
    * @return MixedOperation object with which you can do basic operations for ComponentStatus
    */
-  MixedOperation<ComponentStatus, ComponentStatusList, DoneableComponentStatus, Resource<ComponentStatus, DoneableComponentStatus>> componentstatuses();
+  MixedOperation<ComponentStatus, ComponentStatusList, Resource<ComponentStatus>> componentstatuses();
 
   /**
    * Load a Kubernetes resource object from file InputStream
@@ -313,7 +284,7 @@ public interface KubernetesClient extends Client {
    * @param is File input stream object containing json/yaml content
    * @return deserialized object
    */
-  ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata,Boolean> load(InputStream is);
+  ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> load(InputStream is);
 
   /**
    * Load a Kubernetes list object
@@ -321,7 +292,7 @@ public interface KubernetesClient extends Client {
    * @param s kubernetes list as string
    * @return deserialized KubernetesList object
    */
-  ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(String s);
+  ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(String s);
 
   /**
    * KubernetesResourceList operations
@@ -329,7 +300,7 @@ public interface KubernetesClient extends Client {
    * @param list KubernetesResourceList object containing kubernetes resource items
    * @return operations object for KubernetesResourceList
    */
-  NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(KubernetesResourceList list);
+  NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(KubernetesResourceList list);
 
   /**
    * KubernetesResourceList operations
@@ -337,7 +308,7 @@ public interface KubernetesClient extends Client {
    * @param items array of HasMetadata values
    * @return operations object for Kubernetes list
    */
-  NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(HasMetadata... items);
+  NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(HasMetadata... items);
 
   /**
    * KubernetesResourceList operations
@@ -345,7 +316,7 @@ public interface KubernetesClient extends Client {
    * @param items a collection containing HasMetadata values
    * @return operations object for Kubernetes list
    */
-  NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(Collection<HasMetadata> items);
+  NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(Collection<HasMetadata> items);
 
   /**
    * KubernetesResource operations. You can pass any Kubernetes resource as a HasMetadata object and do
@@ -355,7 +326,7 @@ public interface KubernetesClient extends Client {
    * @param <T> type of Kubernetes resource
    * @return operations object for Kubernetes resource
    */
-  <T extends HasMetadata> NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<T ,Boolean> resource(T is);
+  <T extends HasMetadata> NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<T> resource(T is);
 
   /**
    * KubernetesResource operations. You can pass any Kubernetes resource as string object and do
@@ -364,21 +335,21 @@ public interface KubernetesClient extends Client {
    * @param s Kubernetes resource object as string
    * @return operations object for Kubernetes resource
    */
-  NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata,Boolean> resource(String s);
+  NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata> resource(String s);
 
   /**
    * Operations for Binding resource in APIgroup core/v1
    *
    * @return MixedOperation object for doing operations for Binding
    */
-  MixedOperation<Binding, KubernetesResourceList<Binding>, DoneableBinding, Resource<Binding, DoneableBinding>> bindings();
+  MixedOperation<Binding, KubernetesResourceList<Binding>, Resource<Binding>> bindings();
 
   /**
    * API entrypoint for Endpoints with APIGroup core/v1
    *
    * @return MixedOperation object for doing operations for Endpoints
    */
-  MixedOperation<Endpoints, EndpointsList, DoneableEndpoints, Resource<Endpoints, DoneableEndpoints>> endpoints();
+  MixedOperation<Endpoints, EndpointsList, Resource<Endpoints>> endpoints();
 
   /**
    * API entrypoint for getting events in Kubernetes. Events (core/v1)
@@ -386,84 +357,84 @@ public interface KubernetesClient extends Client {
    * @deprecated Use KubernetesClient#v1#events instead.
    * @return MixedOperation object for doing operations for Events
    */
-  MixedOperation<Event, EventList, DoneableEvent, Resource<Event, DoneableEvent>> events();
+  MixedOperation<Event, EventList, Resource<Event>> events();
 
   /**
    * API entrypoint for namespace related operations in Kubernetes. Namespace (core/v1)
    *
    * @return NonNamespaceOperation object for Namespace related operations
    */
-  NonNamespaceOperation< Namespace, NamespaceList, DoneableNamespace, Resource<Namespace, DoneableNamespace>> namespaces();
+  NonNamespaceOperation< Namespace, NamespaceList, Resource<Namespace>> namespaces();
 
   /**
    * API entrypoint for node related operations in Kubernetes. Node (core/v1)
    *
    * @return NonNamespaceOperation object for Node related operations
    */
-  NonNamespaceOperation<Node, NodeList, DoneableNode, Resource<Node, DoneableNode>> nodes();
+  NonNamespaceOperation<Node, NodeList, Resource<Node>> nodes();
 
   /**
    * API entrypoint for PersistentVolume related operations. PersistentVolume (core/v1)
    *
    * @return NonNamespaceOperation object for PersistentVolume related operations.
    */
-  NonNamespaceOperation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, Resource<PersistentVolume, DoneablePersistentVolume>> persistentVolumes();
+  NonNamespaceOperation<PersistentVolume, PersistentVolumeList, Resource<PersistentVolume>> persistentVolumes();
 
   /**
    * API entrypoint for PersistentVolumeClaim related operations. PersistentVolumeClaim (core/v1)
    *
    * @return MixedOperation object for PersistentVolumeClaim related operations.
    */
-  MixedOperation<PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, Resource<PersistentVolumeClaim, DoneablePersistentVolumeClaim>> persistentVolumeClaims();
+  MixedOperation<PersistentVolumeClaim, PersistentVolumeClaimList, Resource<PersistentVolumeClaim>> persistentVolumeClaims();
 
   /**
    * API entrypoint for Pod related operations. Pod (core/v1)
    *
    * @return MixedOperation object for Pod related operations
    */
-  MixedOperation<Pod, PodList, DoneablePod, PodResource<Pod, DoneablePod>> pods();
+  MixedOperation<Pod, PodList, PodResource<Pod>> pods();
 
   /**
    * API entrypoint for ReplicationController related operations. ReplicationController (core/v1)
    *
    * @return MixedOperation object for ReplicationController related operations.
    */
-  MixedOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, RollableScalableResource<ReplicationController, DoneableReplicationController>> replicationControllers();
+  MixedOperation<ReplicationController, ReplicationControllerList, RollableScalableResource<ReplicationController>> replicationControllers();
 
   /**
    * API entrypoint for ResourceQuota related operations. ResourceQuota (core/v1)
    *
    * @return MixedOperation object for ResourceQuota related operations.
    */
-  MixedOperation<ResourceQuota, ResourceQuotaList, DoneableResourceQuota, Resource<ResourceQuota, DoneableResourceQuota>> resourceQuotas();
+  MixedOperation<ResourceQuota, ResourceQuotaList, Resource<ResourceQuota>> resourceQuotas();
 
   /**
    * API entrypoint for Secret related operations. Secret (core/v1)
    *
    * @return MixedOperation object for Secret related operations.
    */
-  MixedOperation<Secret, SecretList, DoneableSecret, Resource<Secret, DoneableSecret>> secrets();
+  MixedOperation<Secret, SecretList, Resource<Secret>> secrets();
 
   /**
    * API entrypoint for Service related operations. Service (core/v1)
    *
    * @return MixedOperation object for Service related operations.
    */
-  MixedOperation<Service, ServiceList, DoneableService, ServiceResource<Service, DoneableService>> services();
+  MixedOperation<Service, ServiceList, ServiceResource<Service>> services();
 
   /**
    * API entrypoint for ServiceAccount related operations. ServiceAccount (core/v1)
    *
    * @return MixedOperation object for ServiceAccount related operations.
    */
-  MixedOperation<ServiceAccount, ServiceAccountList, DoneableServiceAccount, Resource<ServiceAccount, DoneableServiceAccount>> serviceAccounts();
+  MixedOperation<ServiceAccount, ServiceAccountList, Resource<ServiceAccount>> serviceAccounts();
 
   /**
    * API entrypoint for APIService related operations. APIService (apiregistration.k8s.io/v1)
    *
    * @return MixedOperation object for APIService related operations
    */
-  MixedOperation<APIService, APIServiceList, DoneableAPIService, Resource<APIService, DoneableAPIService>> apiServices();
+  MixedOperation<APIService, APIServiceList, Resource<APIService>> apiServices();
 
   /**
    * List related operations.
@@ -477,14 +448,14 @@ public interface KubernetesClient extends Client {
    *
    * @return MixedOperation object for ConfigMap related operations.
    */
-  MixedOperation<ConfigMap, ConfigMapList, DoneableConfigMap, Resource<ConfigMap, DoneableConfigMap>> configMaps();
+  MixedOperation<ConfigMap, ConfigMapList, Resource<ConfigMap>> configMaps();
 
   /**
    * API entrypoint for LimitRange related operations. LimitRange (core/v1)
    *
    * @return MixedOperation object for LimitRange related operations.
    */
-  MixedOperation<LimitRange, LimitRangeList, DoneableLimitRange, Resource<LimitRange, DoneableLimitRange>> limitRanges();
+  MixedOperation<LimitRange, LimitRangeList, Resource<LimitRange>> limitRanges();
 
   /**
    * Authorization operations. (authorization.k8s.io/v1 and authorization.k8s.io/v1beta1)
@@ -498,7 +469,7 @@ public interface KubernetesClient extends Client {
    *
    * @return CreateOnlyResourceOperations instance for creating TokenReview object
    */
-  Createable<TokenReview, TokenReview, DoneableTokenReview> tokenReviews();
+  Createable<TokenReview> tokenReviews();
 
   /**
    * Get an instance of Kubernetes Client informer factory. It allows you to construct and
@@ -532,7 +503,7 @@ public interface KubernetesClient extends Client {
    *
    * @return MixedOperation object for Lease related operations.
    */
-  MixedOperation<Lease, LeaseList, DoneableLease, Resource<Lease, DoneableLease>> leases();
+  MixedOperation<Lease, LeaseList, Resource<Lease>> leases();
 
   /**
    * API entrypoint for Core Kubernetes Resources (core/v1). Right now other core
@@ -555,5 +526,5 @@ public interface KubernetesClient extends Client {
    *
    * @return {@link NonNamespaceOperation} for RuntimeClass
    */
-  NonNamespaceOperation<RuntimeClass, RuntimeClassList, DoneableRuntimeClass, Resource<RuntimeClass, DoneableRuntimeClass>> runtimeClasses();
+  NonNamespaceOperation<RuntimeClass, RuntimeClassList, Resource<RuntimeClass>> runtimeClasses();
 }

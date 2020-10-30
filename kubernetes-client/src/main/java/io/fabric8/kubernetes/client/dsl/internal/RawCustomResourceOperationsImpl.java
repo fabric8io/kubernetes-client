@@ -488,6 +488,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @param namespace desired namespace
    * @param name custom resource's name
    * @return object as HashMap
+   * @throws IOException in case of any network/object parse problems
    */
   public Map<String, Object> delete(String namespace, String name) throws IOException {
     return makeCall(fetchUrl(namespace, name, null), objectMapper.writeValueAsString(fetchDeleteOptions(false, DeletionPropagation.BACKGROUND.toString())), HttpCallMethod.DELETE);
@@ -601,6 +602,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @param labels HashMap containing labels (optional)
    * @param resourceVersion resource version to start watch from
    * @param watcher watcher object which reports events
+   * @return watch object for watching resource
    * @throws IOException in case of network error
    */
   public Watch watch(String namespace, String name, Map<String, String> labels, String resourceVersion, Watcher<String> watcher) throws IOException {

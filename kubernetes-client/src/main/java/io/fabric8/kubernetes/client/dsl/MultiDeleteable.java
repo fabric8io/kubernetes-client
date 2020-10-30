@@ -18,9 +18,9 @@ package io.fabric8.kubernetes.client.dsl;
 
 import java.util.List;
 
-public interface MultiDeleteable<I, B> {
+public interface MultiDeleteable<T> {
 
-  B delete(I... items);
+  Boolean delete(T... items);
 
-  B delete(List<I> items);
+  Boolean delete(List<T> items);
 }

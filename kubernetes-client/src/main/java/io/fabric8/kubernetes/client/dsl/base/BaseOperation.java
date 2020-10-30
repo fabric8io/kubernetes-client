@@ -20,9 +20,7 @@ import io.fabric8.kubernetes.client.utils.CreateOrReplaceHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fabric8.kubernetes.api.builder.Function;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
-import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -74,6 +72,8 @@ import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 import okhttp3.HttpUrl;
@@ -81,12 +81,12 @@ import okhttp3.Request;
 
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
-public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, D extends Doneable<T>, R extends Resource<T, D>>
+public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>>
   extends OperationSupport
   implements
   OperationInfo,
-  MixedOperation<T, L, D, R>,
-  Resource<T, D> {
+  MixedOperation<T, L, R>,
+  Resource<T> {
 
   private static final Logger LOG = LoggerFactory.getLogger(BaseOperation.class);
   private static final String INVOLVED_OBJECT_NAME = "involvedObject.name";
@@ -119,7 +119,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   protected Class<T> type;
   protected Class<L> listType;
-  protected Class<D> doneableType;
 
   protected BaseOperation(OperationContext ctx) {
     super(ctx);
@@ -139,7 +138,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     this.watchRetryBackoffMultiplier = ctx.getWatchRetryBackoffMultiplier();
   }
 
-  public BaseOperation<T, L, D, R> newInstance(OperationContext context) {
+  public BaseOperation<T, L, R> newInstance(OperationContext context) {
     return new BaseOperation<>(context);
   }
 
@@ -245,7 +244,12 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
  }
 
   @Override
-  public D edit() {
+  public T edit(Function<T, T> function) {
+    throw new KubernetesClientException("Cannot edit read-only resources");
+  }
+
+  @Override
+  public T accept(Consumer<T> consumer) {
     throw new KubernetesClientException("Cannot edit read-only resources");
   }
 
@@ -258,24 +262,24 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public Replaceable<T, T> lockResourceVersion(String resourceVersion) {
+  public Replaceable<T> lockResourceVersion(String resourceVersion) {
     return newInstance(context.withResourceVersion(resourceVersion));
   }
 
   @Override
-  public NonNamespaceOperation<T, L, D, R> inNamespace(String namespace) {
+  public NonNamespaceOperation<T, L, R> inNamespace(String namespace) {
     return newInstance(context.withNamespace(namespace));
   }
 
   @Override
-  public NonNamespaceOperation<T, L, D, R> inAnyNamespace() {
+  public NonNamespaceOperation<T, L, R> inAnyNamespace() {
     Config updated = new ConfigBuilder(config).withNamespace(null).build();
     return newInstance(context.withConfig(updated).withNamespace(null));
   }
 
 
   @Override
-  public EditReplacePatchDeletable<T, T, D, Boolean> cascading(boolean cascading) {
+  public EditReplacePatchDeletable<T> cascading(boolean cascading) {
     return newInstance(context.withCascading(cascading).withPropagationPolicy(null));
   }
 
@@ -351,41 +355,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   }
 
-  @Override
-  public D createNew() {
-    final Function<T, T> visitor = resource -> {
-      try {
-        return create(resource);
-      } catch (Exception e) {
-        throw KubernetesClientException.launderThrowable(forOperationType("create"), e);
-      }
-    };
-
-    try {
-      return getDoneableType().getDeclaredConstructor(Function.class).newInstance(visitor);
-    } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException | InstantiationException e) {
-      throw KubernetesClientException.launderThrowable(forOperationType("create"), e);
-    }
-  }
-
-
-  @Override
-  public D createOrReplaceWithNew() {
-    final Function<T, T> visitor = resource -> {
-      try {
-        return createOrReplace(resource);
-      } catch (Exception e) {
-        throw KubernetesClientException.launderThrowable(forOperationType("create or replace"), e);
-      }
-    };
-
-    try {
-      return getDoneableType().getDeclaredConstructor(Function.class).newInstance(visitor);
-    } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException | InstantiationException e) {
-      throw KubernetesClientException.launderThrowable(forOperationType("create or replace"), e);
-    }
-  }
-
   @SafeVarargs
   @Override
   public final T createOrReplace(T... items) {
@@ -423,13 +392,13 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean, Watch> withLabels(Map<String, String> labels) {
+  public FilterWatchListDeletable<T, L> withLabels(Map<String, String> labels) {
     this.labels.putAll(labels);
     return this;
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean, Watch> withLabelSelector(LabelSelector selector) {
+  public FilterWatchListDeletable<T, L> withLabelSelector(LabelSelector selector) {
     Map<String, String> matchLabels = selector.getMatchLabels();
     if (matchLabels != null) {
       this.labels.putAll(matchLabels);
@@ -468,37 +437,37 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
    */
   @Override
   @Deprecated
-  public FilterWatchListDeletable<T, L, Boolean, Watch> withoutLabels(Map<String, String> labels) {
+  public FilterWatchListDeletable<T, L> withoutLabels(Map<String, String> labels) {
     // Re-use "withoutLabel" to convert values from String to String[]
     labels.forEach(this::withoutLabel);
     return this;
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean, Watch> withLabelIn(String key, String... values) {
+  public FilterWatchListDeletable<T, L> withLabelIn(String key, String... values) {
     labelsIn.put(key, values);
     return this;
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean, Watch> withLabelNotIn(String key, String... values) {
+  public FilterWatchListDeletable<T, L> withLabelNotIn(String key, String... values) {
     labelsNotIn.put(key, values);
     return this;
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean, Watch> withLabel(String key, String value) {
+  public FilterWatchListDeletable<T, L> withLabel(String key, String value) {
     labels.put(key, value);
     return this;
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean, Watch> withLabel(String key) {
+  public FilterWatchListDeletable<T, L> withLabel(String key) {
     return withLabel(key, null);
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean, Watch> withoutLabel(String key, String value) {
+  public FilterWatchListDeletable<T, L> withoutLabel(String key, String value) {
     labelsNot.merge(key, new String[]{value}, (oldList, newList) -> {
       final String[] concatList = (String[]) Array.newInstance(String.class, oldList.length + newList.length);
       System.arraycopy(oldList, 0, concatList, 0, oldList.length);
@@ -509,24 +478,24 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean, Watch> withoutLabel(String key) {
+  public FilterWatchListDeletable<T, L> withoutLabel(String key) {
     return withoutLabel(key, null);
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean, Watch> withFields(Map<String, String> fields) {
+  public FilterWatchListDeletable<T, L> withFields(Map<String, String> fields) {
     this.fields.putAll(fields);
     return this;
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean, Watch> withField(String key, String value) {
+  public FilterWatchListDeletable<T, L> withField(String key, String value) {
     fields.put(key, value);
     return this;
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean, Watch> withInvolvedObject(ObjectReference objectReference) {
+  public FilterWatchListDeletable<T, L> withInvolvedObject(ObjectReference objectReference) {
     if (objectReference != null) {
       if (objectReference.getName() != null) {
         fields.put(INVOLVED_OBJECT_NAME, objectReference.getName());
@@ -564,14 +533,14 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
    */
   @Override
   @Deprecated
-  public FilterWatchListDeletable<T, L, Boolean, Watch> withoutFields(Map<String, String> fields) {
+  public FilterWatchListDeletable<T, L> withoutFields(Map<String, String> fields) {
     // Re-use "withoutField" to convert values from String to String[]
     labels.forEach(this::withoutField);
     return this;
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean, Watch> withoutField(String key, String value) {
+  public FilterWatchListDeletable<T, L> withoutField(String key, String value) {
     fieldsNot.merge(key, new String[]{value}, (oldList, newList) -> {
       if (Utils.isNotNullOrEmpty(newList[0])) { // Only add new values when not null
         final String[] concatList = (String[]) Array.newInstance(String.class, oldList.length + newList.length);
@@ -763,7 +732,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   }
 
-  public BaseOperation<T, L, D, R> withItem(T item) {
+  public BaseOperation<T, L, R> withItem(T item) {
     return newInstance(context.withItem(item));
   }
 
@@ -993,10 +962,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     return listType;
   }
 
-  public Class<D> getDoneableType() {
-    return doneableType;
-  }
-
   protected Map<String, String> getLabels() {
     return labels;
   }
@@ -1037,17 +1002,17 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public FilterWatchListDeletable<T, L, Boolean, Watch> withGracePeriod(long gracePeriodSeconds) {
+  public FilterWatchListDeletable<T, L> withGracePeriod(long gracePeriodSeconds) {
     return newInstance(context.withGracePeriodSeconds(gracePeriodSeconds));
   }
 
   @Override
-  public EditReplacePatchDeletable<T, T, D, Boolean> withPropagationPolicy(DeletionPropagation propagationPolicy) {
+  public EditReplacePatchDeletable<T> withPropagationPolicy(DeletionPropagation propagationPolicy) {
     return newInstance(context.withPropagationPolicy(propagationPolicy));
   }
 
   @Override
-  public BaseOperation<T, L, D, R> withWaitRetryBackoff(long initialBackoff, TimeUnit backoffUnit, double backoffMultiplier) {
+  public BaseOperation<T, L, R> withWaitRetryBackoff(long initialBackoff, TimeUnit backoffUnit, double backoffMultiplier) {
     return newInstance(context.withWatchRetryInitialBackoffMillis(backoffUnit.toMillis(initialBackoff)).withWatchRetryBackoffMultiplier(backoffMultiplier));
   }
 

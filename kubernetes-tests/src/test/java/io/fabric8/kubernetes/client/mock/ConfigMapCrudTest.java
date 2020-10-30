@@ -82,7 +82,7 @@ class ConfigMapCrudTest {
     assertNotNull(aConfigMapList);
     assertEquals(1, aConfigMapList.getItems().size());
 
-    configmap2 = client.configMaps().inNamespace("ns1").withName("configmap2").edit().addToData("II", "TWO").done();
+    configmap2 = client.configMaps().inNamespace("ns1").withName("configmap2").edit(c -> new ConfigMapBuilder(c).addToData("II", "TWO").build());
     assertNotNull(configmap2);
     assertEquals("TWO", configmap2.getData().get("II"));
   }

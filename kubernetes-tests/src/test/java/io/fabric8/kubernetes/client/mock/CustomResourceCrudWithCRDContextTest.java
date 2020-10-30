@@ -22,7 +22,6 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.mock.crd.EntandoBundleRelease;
 import io.fabric8.kubernetes.client.mock.crd.EntandoBundleReleaseList;
-import io.fabric8.kubernetes.client.mock.crd.DoneableEntandoBundleRelease;
 import io.fabric8.kubernetes.client.mock.crd.EntandoBundleReleaseSpec;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import io.fabric8.kubernetes.internal.KubernetesDeserializer;
@@ -58,8 +57,8 @@ class CustomResourceCrudWithCRDContextTest {
       .build();
     KubernetesClient client = kubernetesServer.getClient();
     KubernetesDeserializer.registerCustomKind("demo.fabric8.io/v1alpha1", "EntandoBundleRelease", EntandoBundleRelease.class);
-    MixedOperation<EntandoBundleRelease, EntandoBundleReleaseList, DoneableEntandoBundleRelease, Resource<EntandoBundleRelease, DoneableEntandoBundleRelease>> ebrClient = client
-      .customResources(crdContext, EntandoBundleRelease.class, EntandoBundleReleaseList.class, DoneableEntandoBundleRelease.class);
+    MixedOperation<EntandoBundleRelease, EntandoBundleReleaseList, Resource<EntandoBundleRelease>> ebrClient = client
+      .customResources(crdContext, EntandoBundleRelease.class, EntandoBundleReleaseList.class);
 
     // When
     ebrClient.inNamespace("ns1").create(getMockedEntandoBundleRelease());

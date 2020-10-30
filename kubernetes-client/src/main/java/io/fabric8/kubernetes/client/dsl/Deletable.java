@@ -15,13 +15,13 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface Deletable<B> {
+public interface Deletable {
 
   /**
    * Deletes resource and all managed resources, returns null or false if not found.
    * @return value indicating object was deleted or not
    * @throws io.fabric8.kubernetes.client.KubernetesClientException if an error occurs.
    */
-  B delete();
+  Boolean delete();
 
 }

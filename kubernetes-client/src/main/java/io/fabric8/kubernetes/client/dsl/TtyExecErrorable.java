@@ -17,10 +17,9 @@ package io.fabric8.kubernetes.client.dsl;
 
 
 /**
+ * @param <X>   The exec input.
  * @param <O>   Where to write err to.
  * @param <P>   Where to read err from.
- * @param <T>   The return type.
- * @param <X>   The exec input.
  * @param <T>   The exec output.
  */
 public interface TtyExecErrorable<X, O, P, T> extends

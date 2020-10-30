@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.mock.crd;
+package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.api.builder.Function;
-import io.fabric8.kubernetes.client.CustomResourceDoneable;
+public interface InOutCreateable<I,O>  {
 
-public class DoneableEntandoBundleRelease extends CustomResourceDoneable<EntandoBundleRelease> {
-  public DoneableEntandoBundleRelease(EntandoBundleRelease resource, Function function) { super(resource, function); }
+  O create(I... item);
+
+  O create(I item);
+
 }
-

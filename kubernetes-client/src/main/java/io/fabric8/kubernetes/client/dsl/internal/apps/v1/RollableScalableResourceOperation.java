@@ -16,7 +16,6 @@
 package io.fabric8.kubernetes.client.dsl.internal.apps.v1;
 
 import io.fabric8.kubernetes.api.builder.Visitor;
-import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
@@ -37,12 +36,13 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 
 /**
  * Operations for resources that represent scalable, rolling-updatable sets of Pods.
  */
-public abstract class RollableScalableResourceOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, D extends Doneable<T>, R extends Resource<T, D>>
-  extends HasMetadataOperation<T, L, D, R> implements RollableScalableResource<T, D> {
+public abstract class RollableScalableResourceOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>>
+  extends HasMetadataOperation<T, L, R> implements RollableScalableResource<T> {
 
   private final Logger Log = LoggerFactory.getLogger(this.getClass());
 
@@ -58,7 +58,7 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
   }
 
   protected abstract T withReplicas(int count);
-  protected abstract RollingUpdater<T, L, D> getRollingUpdater(long rollingTimeout, TimeUnit rollingTimeUnit);
+  protected abstract RollingUpdater<T, L> getRollingUpdater(long rollingTimeout, TimeUnit rollingTimeUnit);
 
   // There are no common interfaces through which we could get these values.
   protected abstract int getCurrentReplicas(T current);
@@ -144,23 +144,16 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
   }
 
   @Override
-  public D edit() {
+  public T edit(Function<T,T> function) {
     if (!rolling) {
-      return super.edit();
+      return super.edit(function);
     }
-
-    final Visitor<T> visitor = t -> {
-      try {
-        getRollingUpdater(rollingTimeout, rollingTimeUnit).rollUpdate(getMandatory(), t);
-      } catch (Exception e) {
-        throw KubernetesClientException.launderThrowable(e);
-      }
-    };
-
     try {
-      return getDoneableType().getDeclaredConstructor(getType(), Visitor.class).newInstance(get(), visitor);
-    } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException | InstantiationException e) {
-      throw KubernetesClientException.launderThrowable(e);
+        T oldObj = getMandatory();
+        T newObj = function.apply(oldObj);
+        return getRollingUpdater(rollingTimeout, rollingTimeUnit).rollUpdate(oldObj, newObj);
+    } catch (Exception e) {
+        throw KubernetesClientException.launderThrowable(e);
     }
   }
 

@@ -143,9 +143,9 @@ class ServiceTest {
       .once();
 
     KubernetesClient client = server.getClient();
-    Service responseFromServer = client.services().inNamespace("test").withName("httpbin").edit()
+    Service responseFromServer = client.services().inNamespace("test").withName("httpbin").edit(s -> new ServiceBuilder(s)
       .editOrNewMetadata().addToLabels("foo", "bar").endMetadata()
-      .done();
+      .build());
 
     assertNotNull(responseFromServer);
     assertEquals("bar", responseFromServer.getMetadata().getLabels().get("foo"));

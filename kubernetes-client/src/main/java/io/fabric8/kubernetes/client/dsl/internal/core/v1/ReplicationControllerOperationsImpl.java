@@ -16,8 +16,6 @@
 package io.fabric8.kubernetes.client.dsl.internal.core.v1;
 
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.DoneablePod;
-import io.fabric8.kubernetes.api.model.DoneableReplicationController;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerList;
@@ -47,8 +45,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public class ReplicationControllerOperationsImpl extends RollableScalableResourceOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, RollableScalableResource<ReplicationController, DoneableReplicationController>>
-  implements TimeoutImageEditReplacePatchable<ReplicationController, ReplicationController, DoneableReplicationController> {
+public class ReplicationControllerOperationsImpl extends RollableScalableResourceOperation<ReplicationController, ReplicationControllerList, RollableScalableResource<ReplicationController>>
+  implements TimeoutImageEditReplacePatchable<ReplicationController> {
 
   private Integer podLogWaitTimeout;
   public ReplicationControllerOperationsImpl(OkHttpClient client, Config config) {
@@ -63,7 +61,6 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
     super(context.withPlural("replicationcontrollers"));
     this.type = ReplicationController.class;
     this.listType = ReplicationControllerList.class;
-    this.doneableType = DoneableReplicationController.class;
   }
 
   private ReplicationControllerOperationsImpl(RollingOperationContext context, Integer podLogWaitTimeout) {
@@ -77,18 +74,18 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
   }
 
   @Override
-  public RollableScalableResource<ReplicationController, DoneableReplicationController> load(InputStream is) {
+  public RollableScalableResource<ReplicationController> load(InputStream is) {
       ReplicationController item = unmarshal(is, ReplicationController.class);
       return new ReplicationControllerOperationsImpl((RollingOperationContext) context.withItem(item));
   }
 
   @Override
   public ReplicationController withReplicas(int count) {
-    return cascading(false).edit().editSpec().withReplicas(count).endSpec().done();
+      return cascading(false).accept(r -> r.getSpec().setReplicas(count));
   }
 
   @Override
-  public RollingUpdater<ReplicationController, ReplicationControllerList, DoneableReplicationController> getRollingUpdater(long rollingTimeout, TimeUnit rollingTimeUnit) {
+  public RollingUpdater<ReplicationController, ReplicationControllerList> getRollingUpdater(long rollingTimeout, TimeUnit rollingTimeUnit) {
     return new ReplicationControllerRollingUpdater(client, config, namespace, rollingTimeUnit.toMillis(rollingTimeout), config.getLoggingInterval());
   }
 
@@ -157,12 +154,12 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
   }
 
   @Override
-  public ImageEditReplacePatchable<ReplicationController, ReplicationController, DoneableReplicationController> withTimeout(long timeout, TimeUnit unit) {
+  public ImageEditReplacePatchable<ReplicationController> withTimeout(long timeout, TimeUnit unit) {
     return new ReplicationControllerOperationsImpl(((RollingOperationContext)context).withRollingTimeout(unit.toMillis(timeout)).withRollingTimeUnit(TimeUnit.MILLISECONDS));
   }
 
   @Override
-  public ImageEditReplacePatchable<ReplicationController, ReplicationController, DoneableReplicationController> withTimeoutInMillis(long timeoutInMillis) {
+  public ImageEditReplacePatchable<ReplicationController> withTimeoutInMillis(long timeoutInMillis) {
     return new ReplicationControllerOperationsImpl(((RollingOperationContext)context).withRollingTimeout(timeoutInMillis));
   }
 
@@ -172,14 +169,14 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
 
   public String getLog(Boolean isPretty) {
     StringBuilder stringBuilder = new StringBuilder();
-    List<PodResource<Pod, DoneablePod>> podOperationList = doGetLog(isPretty);
-    for (PodResource<Pod, DoneablePod> podOperation : podOperationList) {
+    List<PodResource<Pod>> podOperationList = doGetLog(isPretty);
+    for (PodResource<Pod> podOperation : podOperationList) {
       stringBuilder.append(podOperation.getLog(isPretty));
     }
     return stringBuilder.toString();
   }
 
-  private List<PodResource<Pod, DoneablePod>> doGetLog(boolean isPretty) {
+  private List<PodResource<Pod>> doGetLog(boolean isPretty) {
     ReplicationController rc = fromServer().get();
 
     return PodOperationUtil.getPodOperationsForController(context, rc.getMetadata().getUid(),
@@ -192,7 +189,7 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
    */
   @Override
   public Reader getLogReader() {
-    List<PodResource<Pod, DoneablePod>> podResources = doGetLog(false);
+    List<PodResource<Pod>> podResources = doGetLog(false);
     if (podResources.size() > 1) {
       throw new KubernetesClientException("Reading logs is not supported for multicontainer jobs");
     } else if (podResources.size() == 1) {
@@ -208,7 +205,7 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
 
   @Override
   public LogWatch watchLog(OutputStream out) {
-    List<PodResource<Pod, DoneablePod>> podResources = doGetLog(false);
+    List<PodResource<Pod>> podResources = doGetLog(false);
     if (podResources.size() > 1) {
       throw new KubernetesClientException("Watching logs is not supported for multicontainer jobs");
     } else if (podResources.size() == 1) {
@@ -218,7 +215,7 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
   }
 
   @Override
-  public Loggable<String, LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
+  public Loggable<LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
     return new ReplicationControllerOperationsImpl((RollingOperationContext)context, logWaitTimeout);
   }
 

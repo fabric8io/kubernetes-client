@@ -19,6 +19,7 @@ package io.fabric8.kubernetes;
 import io.fabric8.commons.ClusterEntity;
 import io.fabric8.commons.ReadyEntity;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
+import io.fabric8.kubernetes.api.model.apps.ReplicaSetBuilder;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import java.util.concurrent.TimeUnit;
@@ -80,8 +81,8 @@ public class ReplicaSetIT {
     ReadyEntity<ReplicaSet> replicaSetReady = new ReadyEntity<>(ReplicaSet.class, client, "replicaset-update", session.getNamespace());
     await().atMost(30, TimeUnit.SECONDS).until(replicaSetReady);
 
-    replicaset1 = client.apps().replicaSets().inNamespace(session.getNamespace()).withName("replicaset-update").edit()
-      .editSpec().withReplicas(2).endSpec().done();
+    replicaset1 = client.apps().replicaSets().inNamespace(session.getNamespace()).withName("replicaset-update").edit(r -> new ReplicaSetBuilder(r)
+                        .editSpec().withReplicas(2).endSpec().build());
     assertThat(replicaset1).isNotNull();
     assertEquals(2, replicaset1.getSpec().getReplicas().intValue());
   }

@@ -15,7 +15,6 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
-import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.client.Config;
@@ -42,6 +41,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
@@ -54,14 +55,13 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigList;
-import io.fabric8.openshift.api.model.DoneableDeploymentConfig;
 import io.fabric8.openshift.client.dsl.DeployableScalableResource;
 import okhttp3.OkHttpClient;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.APPS;
 
-public class DeploymentConfigOperationsImpl extends OpenShiftOperation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig,
-  DeployableScalableResource<DeploymentConfig, DoneableDeploymentConfig>> implements DeployableScalableResource<DeploymentConfig, DoneableDeploymentConfig> {
+public class DeploymentConfigOperationsImpl extends OpenShiftOperation<DeploymentConfig, DeploymentConfigList,
+  DeployableScalableResource<DeploymentConfig>> implements DeployableScalableResource<DeploymentConfig> {
 
   private static final Logger LOG = LoggerFactory.getLogger(DeploymentConfigOperationsImpl.class);
   private static final Integer DEFAULT_POD_LOG_WAIT_TIMEOUT = 5;
@@ -76,7 +76,6 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
     super(context.withApiGroupName(APPS).withPlural("deploymentconfigs"));
     this.type = DeploymentConfig.class;
     this.listType = DeploymentConfigList.class;
-    this.doneableType = DoneableDeploymentConfig.class;
   }
 
   private DeploymentConfigOperationsImpl(RollingOperationContext context, Integer podLogWaitTimeout) {
@@ -90,12 +89,21 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
   }
 
   @Override
-  public DoneableDeploymentConfig edit() {
+  public DeploymentConfig edit(Function<DeploymentConfig,DeploymentConfig> function) {
     if (isCascading()) {
-      return cascading(false).edit();
+      return cascading(false).edit(function);
     }
-    return super.edit();
+    return super.edit(function);
   }
+
+  @Override
+  public DeploymentConfig accept(Consumer<DeploymentConfig> consumer) {
+    if (isCascading()) {
+      return cascading(false).accept(consumer);
+    }
+    return super.accept(consumer);
+  }
+
 
   @Override
   public DeploymentConfig replace(DeploymentConfig item) {
@@ -124,7 +132,8 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
     if(currentVersion == null){
       currentVersion = 1L;
     }
-    DeploymentConfig deployment = cascading(false).edit().editStatus().withLatestVersion(++currentVersion).endStatus().done();
+    final Long latestVersion = currentVersion + 1;
+    DeploymentConfig deployment = cascading(false).accept(d -> d.getStatus().setLatestVersion(latestVersion));
     if (wait) {
       waitUntilDeploymentConfigIsScaled(deployment.getSpec().getReplicas());
       deployment = getMandatory();
@@ -139,7 +148,7 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
 
   @Override
   public DeploymentConfig scale(int count, boolean wait) {
-    DeploymentConfig deployment = cascading(false).edit().editSpec().withReplicas(count).endSpec().done();
+    DeploymentConfig deployment = cascading(false).accept(d -> d.getSpec().setReplicas(count));
     if (wait) {
       waitUntilDeploymentConfigIsScaled(count);
       deployment = getMandatory();
@@ -276,19 +285,19 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
   }
 
   @Override
-  public Loggable<String, LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
+  public Loggable<LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
     return new DeploymentConfigOperationsImpl((RollingOperationContext)context, podLogWaitTimeout);
   }
 
   private void waitUntilDeploymentConfigPodBecomesReady(DeploymentConfig deploymentConfig) {
-    List<PodResource<Pod, DoneablePod>> podOps = PodOperationUtil.getPodOperationsForController(context, deploymentConfig.getMetadata().getUid(),
+    List<PodResource<Pod>> podOps = PodOperationUtil.getPodOperationsForController(context, deploymentConfig.getMetadata().getUid(),
       getDeploymentConfigPodLabels(deploymentConfig), false, podLogWaitTimeout);
 
     waitForBuildPodToBecomeReady(podOps, podLogWaitTimeout != null ? podLogWaitTimeout : DEFAULT_POD_LOG_WAIT_TIMEOUT);
   }
 
-  private static void waitForBuildPodToBecomeReady(List<PodResource<Pod, DoneablePod>> podOps, Integer podLogWaitTimeout) {
-    for (PodResource<Pod, DoneablePod> podOp : podOps) {
+  private static void waitForBuildPodToBecomeReady(List<PodResource<Pod>> podOps, Integer podLogWaitTimeout) {
+    for (PodResource<Pod> podOp : podOps) {
       PodOperationUtil.waitUntilReadyBeforeFetchingLogs(podOp, podLogWaitTimeout);
     }
   }

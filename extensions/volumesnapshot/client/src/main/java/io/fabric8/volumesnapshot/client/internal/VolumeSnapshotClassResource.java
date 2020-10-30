@@ -16,10 +16,9 @@
 package io.fabric8.volumesnapshot.client.internal;
 
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.volumesnapshot.api.model.DoneableVolumeSnapshotClass;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotClass;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotList;
 
-public interface VolumeSnapshotClassResource extends Resource<VolumeSnapshotClass, DoneableVolumeSnapshotClass> {
+public interface VolumeSnapshotClassResource extends Resource<VolumeSnapshotClass> {
   VolumeSnapshotList listSnapshots();
 }

@@ -15,8 +15,6 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.api.model.policy.DoneablePodDisruptionBudget;
-import io.fabric8.kubernetes.api.model.policy.DoneablePodSecurityPolicy;
 import io.fabric8.kubernetes.api.model.policy.PodDisruptionBudget;
 import io.fabric8.kubernetes.api.model.policy.PodDisruptionBudgetList;
 import io.fabric8.kubernetes.api.model.policy.PodSecurityPolicy;
@@ -35,12 +33,12 @@ public class PolicyAPIGroupClient extends BaseClient implements PolicyAPIGroupDS
   }
 
   @Override
-  public MixedOperation<PodSecurityPolicy, PodSecurityPolicyList, DoneablePodSecurityPolicy, Resource<PodSecurityPolicy, DoneablePodSecurityPolicy>> podSecurityPolicies() {
+  public MixedOperation<PodSecurityPolicy, PodSecurityPolicyList, Resource<PodSecurityPolicy>> podSecurityPolicies() {
     return new PodSecurityPolicyOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
-  public MixedOperation<PodDisruptionBudget, PodDisruptionBudgetList, DoneablePodDisruptionBudget, Resource<PodDisruptionBudget, DoneablePodDisruptionBudget>> podDisruptionBudget() {
+  public MixedOperation<PodDisruptionBudget, PodDisruptionBudgetList, Resource<PodDisruptionBudget>> podDisruptionBudget() {
     return new PodDisruptionBudgetOperationsImpl(httpClient, getConfiguration());
   }
 }

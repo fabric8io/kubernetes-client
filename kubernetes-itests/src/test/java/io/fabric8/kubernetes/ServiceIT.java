@@ -80,9 +80,9 @@ public class ServiceIT {
   @Test
   public void update() {
     ReadyEntity<Service> serviceReady = new ReadyEntity<>(Service.class, client, "service-update", session.getNamespace());
-    svc1 = client.services().inNamespace(session.getNamespace()).withName("service-update").edit()
+    svc1 = client.services().inNamespace(session.getNamespace()).withName("service-update").edit(s -> new ServiceBuilder (s)
       .editSpec().addNewPort().withName("https").withProtocol("TCP").withPort(443).withTargetPort(new IntOrString(9377)).endPort().endSpec()
-      .done();
+      .build());
     await().atMost(30, TimeUnit.SECONDS).until(serviceReady);
     assertThat(svc1).isNotNull();
     assertEquals(2, svc1.getSpec().getPorts().size());

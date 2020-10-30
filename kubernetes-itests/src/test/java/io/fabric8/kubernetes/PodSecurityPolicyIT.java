@@ -19,6 +19,7 @@ package io.fabric8.kubernetes;
 import io.fabric8.commons.ClusterEntity;
 import io.fabric8.commons.DeleteEntity;
 import io.fabric8.kubernetes.api.model.policy.PodSecurityPolicy;
+import io.fabric8.kubernetes.api.model.policy.PodSecurityPolicyBuilder;
 import io.fabric8.kubernetes.api.model.policy.PodSecurityPolicyList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
@@ -91,9 +92,9 @@ public class PodSecurityPolicyIT {
   @Test
   public void update(){
 
-    PodSecurityPolicy podSecurityPolicy = client.policy().podSecurityPolicies().withName("psp-update").edit()
+    PodSecurityPolicy podSecurityPolicy = client.policy().podSecurityPolicies().withName("psp-update").edit(p -> new PodSecurityPolicyBuilder(p)
       .editSpec().withPrivileged(true).endSpec()
-      .done();
+      .build());
 
     assertNotNull(podSecurityPolicy);
     assertEquals("psp-update", podSecurityPolicy.getMetadata().getName());

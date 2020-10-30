@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.api.model.scheduling.DoneablePriorityClass;
 import io.fabric8.kubernetes.api.model.scheduling.PriorityClass;
 import io.fabric8.kubernetes.api.model.scheduling.PriorityClassList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
@@ -30,7 +29,7 @@ public class SchedulingAPIGroupClient extends BaseClient implements SchedulingAP
   }
 
   @Override
-  public MixedOperation<PriorityClass, PriorityClassList, DoneablePriorityClass, Resource<PriorityClass, DoneablePriorityClass>> priorityClass() {
+  public MixedOperation<PriorityClass, PriorityClassList, Resource<PriorityClass>> priorityClass() {
     return new PriorityClassOperationsImpl(httpClient, getConfiguration());
   }
 }

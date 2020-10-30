@@ -121,8 +121,8 @@ public class RoleCrudTest {
 
     //test of updation
 
-    kubernetesRole = client.rbac().roles().withName("job-reader").edit()
-      .editRule(0).addToApiGroups(1, "extensions").endRule().done();
+    kubernetesRole = client.rbac().roles().withName("job-reader").edit(r -> new RoleBuilder(r)
+                           .editRule(0).addToApiGroups(1, "extensions").endRule().build());
 
     assertNotNull(kubernetesRole);
     assertEquals("Role", kubernetesRole.getKind());

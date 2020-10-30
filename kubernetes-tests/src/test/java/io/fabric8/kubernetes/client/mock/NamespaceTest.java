@@ -102,7 +102,7 @@ public class NamespaceTest {
       server.expect().withPath("/api/v1/namespaces/namespace1").andReturn(404, "error message from kubernetes").always();
       KubernetesClient client = server.getClient();
 
-      client.namespaces().withName("namespace1").edit();
+      client.namespaces().withName("namespace1").edit(n -> n);
     });
   }
 

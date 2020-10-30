@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal.core.v1;
 
-import io.fabric8.kubernetes.api.model.DoneableService;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.api.model.ServiceList;
@@ -34,7 +33,7 @@ import java.nio.channels.WritableByteChannel;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-public class ServiceOperationsImpl extends HasMetadataOperation<Service, ServiceList, DoneableService, ServiceResource<Service, DoneableService>> implements ServiceResource<Service, DoneableService> {
+public class ServiceOperationsImpl extends HasMetadataOperation<Service, ServiceList, ServiceResource<Service>> implements ServiceResource<Service> {
 
   public static final String EXTERNAL_NAME = "ExternalName";
 
@@ -50,7 +49,6 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
     super(context.withPlural("services"));
     this.type = Service.class;
     this.listType = ServiceList.class;
-    this.doneableType = DoneableService.class;
   }
 
   @Override

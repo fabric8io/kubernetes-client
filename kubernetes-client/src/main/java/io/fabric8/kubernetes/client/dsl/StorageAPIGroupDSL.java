@@ -15,13 +15,12 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.api.model.storage.DoneableStorageClass;
 import io.fabric8.kubernetes.api.model.storage.StorageClass;
 import io.fabric8.kubernetes.api.model.storage.StorageClassList;
 import io.fabric8.kubernetes.client.Client;
 
 public interface StorageAPIGroupDSL extends Client{
 
-  MixedOperation<StorageClass, StorageClassList, DoneableStorageClass, Resource<StorageClass, DoneableStorageClass>> storageClasses();
+  MixedOperation<StorageClass, StorageClassList, Resource<StorageClass>> storageClasses();
 
 }

@@ -18,6 +18,7 @@ package io.fabric8.kubernetes;
 import io.fabric8.commons.ClusterEntity;
 import io.fabric8.commons.DeleteEntity;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBinding;
+import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBindingBuilder;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBindingList;
 
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -130,8 +131,8 @@ public class ClusterRoleBindingIT {
   @Test
   public void update() {
 
-    clusterRoleBinding = client.rbac().clusterRoleBindings().withName("read-nodes-update").edit()
-      .editSubject(0).withName("jane-new").endSubject().done();
+    clusterRoleBinding = client.rbac().clusterRoleBindings().withName("read-nodes-update").edit(c -> new ClusterRoleBindingBuilder(c)
+                               .editSubject(0).withName("jane-new").endSubject().build());
 
     assertNotNull(clusterRoleBinding);
     assertEquals("ClusterRoleBinding", clusterRoleBinding.getKind());

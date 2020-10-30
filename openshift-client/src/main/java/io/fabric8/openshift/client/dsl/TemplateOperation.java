@@ -17,10 +17,9 @@ package io.fabric8.openshift.client.dsl;
 
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.client.dsl.ParameterMixedOperation;
-import io.fabric8.openshift.api.model.DoneableTemplate;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateList;
 
-public interface TemplateOperation extends TemplateResource<Template, KubernetesList, DoneableTemplate>,
-  ParameterMixedOperation<Template, TemplateList, DoneableTemplate, TemplateResource<Template, KubernetesList, DoneableTemplate>> {
+public interface TemplateOperation extends TemplateResource<Template, KubernetesList>,
+  ParameterMixedOperation<Template, TemplateList, TemplateResource<Template, KubernetesList>> {
 }

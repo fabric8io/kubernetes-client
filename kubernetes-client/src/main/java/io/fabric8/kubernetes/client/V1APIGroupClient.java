@@ -15,12 +15,10 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.api.model.DoneablePodTemplate;
 import io.fabric8.kubernetes.api.model.Event;
 import io.fabric8.kubernetes.api.model.EventList;
 import io.fabric8.kubernetes.api.model.PodTemplate;
 import io.fabric8.kubernetes.api.model.PodTemplateList;
-import io.fabric8.kubernetes.api.model.DoneableEvent;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.V1APIGroupDSL;
@@ -38,12 +36,12 @@ public class V1APIGroupClient extends BaseClient implements V1APIGroupDSL {
   }
 
   @Override
-  public MixedOperation<PodTemplate, PodTemplateList, DoneablePodTemplate, Resource<PodTemplate, DoneablePodTemplate>> podTemplates() {
+  public MixedOperation<PodTemplate, PodTemplateList, Resource<PodTemplate>> podTemplates() {
     return new PodTemplateOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
-  public MixedOperation<Event, EventList, DoneableEvent, Resource<Event, DoneableEvent>> events() {
+  public MixedOperation<Event, EventList, Resource<Event>> events() {
     return new EventOperationsImpl(httpClient, getConfiguration());
   }
 }

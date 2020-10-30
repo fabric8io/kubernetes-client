@@ -89,7 +89,7 @@ public class PersistentVolumeTest {
       server.expect().withPath("/api/v1/persistentvolumes/persistentvolume").andReturn(404, "error message from kubernetes").always();
       KubernetesClient client = server.getClient();
 
-      client.persistentVolumes().withName("persistentvolume").edit();
+      client.persistentVolumes().withName("persistentvolume").edit(p -> p);
     });
 
   }

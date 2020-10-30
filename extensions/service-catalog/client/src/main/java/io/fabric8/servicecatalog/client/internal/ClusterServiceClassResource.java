@@ -17,9 +17,8 @@ package io.fabric8.servicecatalog.client.internal;
 
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.servicecatalog.api.model.*;
-import io.fabric8.servicecatalog.api.model.DoneableClusterServiceClass;
 
-public interface ClusterServiceClassResource extends Resource<ClusterServiceClass, DoneableClusterServiceClass> {
+public interface ClusterServiceClassResource extends Resource<ClusterServiceClass> {
 
     ClusterServicePlanList listPlans();
 
