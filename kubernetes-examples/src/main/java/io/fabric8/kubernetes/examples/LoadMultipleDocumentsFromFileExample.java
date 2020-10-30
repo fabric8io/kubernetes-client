@@ -36,25 +36,25 @@ public class LoadMultipleDocumentsFromFileExample {
     }
 
     Config config = new ConfigBuilder().withMasterUrl(master).build();
-    KubernetesClient client = new DefaultKubernetesClient(config);
+    try (KubernetesClient client = new DefaultKubernetesClient(config)) {
+      List<HasMetadata> list = client.load(LoadMultipleDocumentsFromFileExample.class.getResourceAsStream("/multiple-document-template.yml")).get();
+      System.out.println("Found in file:" + list.size() + " items.");
+      for (HasMetadata meta : list) {
+        System.out.println(display(meta));
+      }
 
-    List<HasMetadata> list = client.load(LoadMultipleDocumentsFromFileExample.class.getResourceAsStream("/multiple-document-template.yml")).get();
-    System.out.println("Found in file:" + list.size() + " items.");
-    for (HasMetadata meta : list) {
-      System.out.println(display(meta));
-    }
+      list = client.load(LoadMultipleDocumentsFromFileExample.class.getResourceAsStream("/multiple-document-template.yml"))
+        .accept(new Visitor<ObjectMetaBuilder>() {
+          @Override
+          public void visit(ObjectMetaBuilder item) {
+            item.addToLabels("visitorkey", "visitorvalue");
+          }
+        }).get();
 
-    list = client.load(LoadMultipleDocumentsFromFileExample.class.getResourceAsStream("/multiple-document-template.yml"))
-      .accept(new Visitor<ObjectMetaBuilder>() {
-        @Override
-        public void visit(ObjectMetaBuilder item) {
-          item.addToLabels("visitorkey", "visitorvalue");
-        }
-      }).get();
-
-    System.out.println("Visited:" + list.size() + " items.");
-    for (HasMetadata meta : list) {
-      System.out.println(display(meta));
+      System.out.println("Visited:" + list.size() + " items.");
+      for (HasMetadata meta : list) {
+        System.out.println(display(meta));
+      }
     }
   }
 
