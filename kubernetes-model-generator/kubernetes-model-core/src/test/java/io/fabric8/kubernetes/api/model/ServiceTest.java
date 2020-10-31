@@ -98,18 +98,18 @@ public class ServiceTest {
 
         assertNotNull(service);
         assertEquals("fabric8-maven-sample-zero-config",service.getMetadata().getName());
-        assertTrue(service.getMetadata().getLabels().get("expose").equals("true"));
-        assertTrue(service.getMetadata().getLabels().get("app").equals("fabric8-maven-sample-zero-config"));
-        assertTrue(service.getMetadata().getLabels().get("provider").equals("fabric8"));
-        assertTrue(service.getMetadata().getLabels().get("version").equals("3.5-SNAPSHOT"));
-        assertTrue(service.getMetadata().getLabels().get("group").equals("io.fabric8"));
-        assertTrue(service.getMetadata().getAnnotations().get("prometheus.io/port").equals("9779"));
-        assertTrue(service.getMetadata().getAnnotations().get("fabric8.io/scm-url")
-                .equals("https://github.com/spring-projects/" +
-                        "spring-boot/spring-boot-starter-parent/fabric8-maven-sample-zero-config"));
-        assertTrue(service.getMetadata().getAnnotations().get("fabric8.io/iconUrl").equals("img/icons/spring-boot.svg"));
-        assertTrue(service.getMetadata().getAnnotations().get("prometheus.io/scrape").equals("true"));
-        assertTrue(service.getMetadata().getAnnotations().get("fabric8.io/scm-tag").equals("HEAD"));
+        assertEquals("true", service.getMetadata().getLabels().get("expose"));
+
+        assertEquals("fabric8-maven-sample-zero-config",service.getMetadata().getLabels().get("app"));
+        assertEquals("fabric8",service.getMetadata().getLabels().get("provider"));
+        assertEquals("3.5-SNAPSHOT",service.getMetadata().getLabels().get("version"));
+        assertEquals("io.fabric8",service.getMetadata().getLabels().get("group"));
+        assertEquals("9779",service.getMetadata().getAnnotations().get("prometheus.io/port"));
+        assertEquals("https://github.com/spring-projects/spring-boot/spring-boot-starter-parent/" +
+            "fabric8-maven-sample-zero-config", service.getMetadata().getAnnotations().get("fabric8.io/scm-url"));
+        assertEquals("img/icons/spring-boot.svg",service.getMetadata().getAnnotations().get("fabric8.io/iconUrl"));
+        assertEquals("true",service.getMetadata().getAnnotations().get("prometheus.io/scrape"));
+        assertEquals("HEAD",service.getMetadata().getAnnotations().get("fabric8.io/scm-tag"));
         assertNotNull(service.getSpec().getPorts());
         assertEquals(2,service.getSpec().getPorts().size());
         assertEquals("http",service.getSpec().getPorts().get(0).getName());
@@ -123,21 +123,21 @@ public class ServiceTest {
         assertEquals(30043,service.getSpec().getPorts().get(1).getNodePort().intValue());
         assertEquals(9000,service.getSpec().getPorts().get(1).getTargetPort().getIntVal().intValue());
         assertEquals(3,service.getSpec().getSelector().size());
-        assertTrue(service.getSpec().getSelector().get("app").equals("fabric8-maven-sample-zero-config"));
-        assertTrue(service.getSpec().getSelector().get("provider").equals("fabric8"));
-        assertTrue(service.getSpec().getSelector().get("group").equals("io.fabric8"));
+        assertEquals("fabric8-maven-sample-zero-config",service.getSpec().getSelector().get("app"));
+        assertEquals("fabric8",service.getSpec().getSelector().get("provider"));
+        assertEquals("io.fabric8",service.getSpec().getSelector().get("group"));
         assertEquals("10.0.171.239",service.getSpec().getClusterIP());
         assertEquals("78.11.24.19",service.getSpec().getLoadBalancerIP());
         assertEquals(50000,service.getSpec().getHealthCheckNodePort().intValue());
         assertEquals("LoadBalancer",service.getSpec().getType());
         assertEquals(2,service.getSpec().getExternalIPs().size());
-        assertTrue(service.getSpec().getExternalIPs().get(0).equals("80.11.12.10"));
-        assertTrue(service.getSpec().getExternalIPs().get(1).equals("80.12.13.11"));
+        assertEquals("80.11.12.10",service.getSpec().getExternalIPs().get(0));
+        assertEquals("80.12.13.11",service.getSpec().getExternalIPs().get(1));
         assertEquals("my.database.example.com",service.getSpec().getExternalName());
         assertEquals("Local",service.getSpec().getExternalTrafficPolicy());
         assertEquals(2,service.getSpec().getLoadBalancerSourceRanges().size());
-        assertTrue(service.getSpec().getLoadBalancerSourceRanges().get(0).equals("130.211.204.1/32"));
-        assertTrue(service.getSpec().getLoadBalancerSourceRanges().get(1).equals("130.211.204.2/32"));
+        assertEquals("130.211.204.1/32",service.getSpec().getLoadBalancerSourceRanges().get(0));
+        assertEquals("130.211.204.2/32",service.getSpec().getLoadBalancerSourceRanges().get(1));
         assertEquals("ClientIP", service.getSpec().getSessionAffinity());
     }
 }
