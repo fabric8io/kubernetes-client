@@ -31,11 +31,11 @@ import okhttp3.OkHttpClient;
 
 public class RbacAPIGroupClient extends BaseClient implements RbacAPIGroupDSL {
 
-  public RbacAPIGroupClient() throws KubernetesClientException {
+  public RbacAPIGroupClient() {
     super();
   }
 
-  public RbacAPIGroupClient(OkHttpClient httpClient, final Config config) throws KubernetesClientException {
+  public RbacAPIGroupClient(OkHttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

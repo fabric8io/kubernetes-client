@@ -31,11 +31,11 @@ import okhttp3.OkHttpClient;
 
 public class BatchAPIGroupClient extends BaseClient implements BatchAPIGroupDSL {
 
-  public BatchAPIGroupClient() throws KubernetesClientException {
+  public BatchAPIGroupClient() {
     super();
   }
 
-  public BatchAPIGroupClient(OkHttpClient httpClient, final Config config) throws KubernetesClientException {
+  public BatchAPIGroupClient(OkHttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

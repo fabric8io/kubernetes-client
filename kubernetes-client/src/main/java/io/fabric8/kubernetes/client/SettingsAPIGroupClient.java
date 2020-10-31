@@ -25,7 +25,7 @@ import io.fabric8.kubernetes.client.dsl.internal.settings.v1alpha1.PodPresetOper
 import okhttp3.OkHttpClient;
 
 public class SettingsAPIGroupClient extends BaseClient implements SettingsAPIGroupDSL {
-  public SettingsAPIGroupClient(OkHttpClient httpClient, final Config config) throws KubernetesClientException {
+  public SettingsAPIGroupClient(OkHttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
   @Override

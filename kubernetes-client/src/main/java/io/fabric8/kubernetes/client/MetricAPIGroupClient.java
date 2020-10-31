@@ -21,11 +21,11 @@ import io.fabric8.kubernetes.client.dsl.internal.PodMetricOperationsImpl;
 import okhttp3.OkHttpClient;
 
 public class MetricAPIGroupClient extends BaseClient implements MetricAPIGroupDSL {
-  public MetricAPIGroupClient() throws KubernetesClientException {
+  public MetricAPIGroupClient() {
     super();
   }
 
-  public MetricAPIGroupClient(OkHttpClient httpClient, final Config config) throws KubernetesClientException {
+  public MetricAPIGroupClient(OkHttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

@@ -40,11 +40,11 @@ import okhttp3.OkHttpClient;
 
 public class AppsAPIGroupClient extends BaseClient implements AppsAPIGroupDSL {
 
-  public AppsAPIGroupClient() throws KubernetesClientException {
+  public AppsAPIGroupClient() {
     super();
   }
 
-  public AppsAPIGroupClient(OkHttpClient httpClient, final Config config) throws KubernetesClientException {
+  public AppsAPIGroupClient(OkHttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

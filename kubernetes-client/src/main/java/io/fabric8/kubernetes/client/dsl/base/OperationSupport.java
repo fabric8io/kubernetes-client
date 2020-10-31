@@ -16,7 +16,6 @@
 package io.fabric8.kubernetes.client.dsl.base;
 
 import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -243,10 +242,9 @@ public class OperationSupport {
    * @return returns de-serialized version of apiserver response in form of type provided
    * @throws ExecutionException Execution Exception
    * @throws InterruptedException Interrupted Exception
-   * @throws KubernetesClientException KubernetesClientException
    * @throws IOException IOException
    */
-  protected <T, I> T handleCreate(I resource, Class<T> outputType) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+  protected <T, I> T handleCreate(I resource, Class<T> outputType) throws ExecutionException, InterruptedException, IOException {
     RequestBody body = RequestBody.create(JSON, JSON_MAPPER.writeValueAsString(resource));
     Request.Builder requestBuilder = new Request.Builder().post(body).url(getNamespacedUrl(checkNamespace(resource)));
     return handleResponse(requestBuilder, outputType, Collections.<String, String>emptyMap());
@@ -263,10 +261,9 @@ public class OperationSupport {
    * @return returns de-serialized version of api server response
    * @throws ExecutionException Execution Exception
    * @throws InterruptedException Interrupted Exception
-   * @throws KubernetesClientException KubernetesClientException
    * @throws IOException IOException
    */
-  protected <T> T handleReplace(T updated, Class<T> type) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+  protected <T> T handleReplace(T updated, Class<T> type) throws ExecutionException, InterruptedException, IOException {
     return handleReplace(updated, type, Collections.<String, String>emptyMap());
   }
 
@@ -281,10 +278,9 @@ public class OperationSupport {
    * @return returns de-serialized version of api server response.
    * @throws ExecutionException Execution Exception
    * @throws InterruptedException Interrupted Exception
-   * @throws KubernetesClientException KubernetesClientException
    * @throws IOException IOException
    */
-  protected <T> T handleReplace(T updated, Class<T> type, Map<String, String> parameters) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+  protected <T> T handleReplace(T updated, Class<T> type, Map<String, String> parameters) throws ExecutionException, InterruptedException, IOException {
     RequestBody body = RequestBody.create(JSON, JSON_MAPPER.writeValueAsString(updated));
     Request.Builder requestBuilder = new Request.Builder().put(body).url(getResourceUrl(checkNamespace(updated), checkName(updated)));
     return handleResponse(requestBuilder, type, parameters);
@@ -307,10 +303,9 @@ public class OperationSupport {
    * @return returns de-serialized version of api server response
    * @throws ExecutionException Execution Exception
    * @throws InterruptedException Interrupted Exception
-   * @throws KubernetesClientException KubernetesClientException
    * @throws IOException IOException
    */
-  protected <T> T handlePatch(T current, T updated, Class<T> type) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+  protected <T> T handlePatch(T current, T updated, Class<T> type) throws ExecutionException, InterruptedException, IOException {
     JsonNode diff = JsonDiff.asJson(patchMapper().valueToTree(current), patchMapper().valueToTree(updated));
     RequestBody body = RequestBody.create(JSON_PATCH, JSON_MAPPER.writeValueAsString(diff));
     Request.Builder requestBuilder = new Request.Builder().patch(body).url(getResourceUrl(checkNamespace(updated), checkName(updated)));
@@ -328,7 +323,6 @@ public class OperationSupport {
    * @return returns de-serialized version of api server response
    * @throws ExecutionException Execution Exception
    * @throws InterruptedException Interrupted Exception
-   * @throws KubernetesClientException KubernetesClientException
    * @throws IOException IOException
    */
   protected <T> T handlePatch(T current, Map<String, Object> patchForUpdate, Class<T> type) throws ExecutionException, InterruptedException, IOException {
@@ -345,12 +339,9 @@ public class OperationSupport {
    * @return updated Scale object
    * @throws ExecutionException in case of any execution exception
    * @throws InterruptedException in case thread is interrupted
-   * @throws KubernetesClientException in case error from Kubernetes API
-   * @throws MalformedURLException in case URL formed in invalid
-   * @throws JsonProcessingException in case Json processing fails
    * @throws IOException in some other I/O problem
    */
-  protected Scale handleScale(String resourceUrl, Scale scale) throws ExecutionException, InterruptedException, KubernetesClientException, MalformedURLException, JsonProcessingException, IOException {
+  protected Scale handleScale(String resourceUrl, Scale scale) throws ExecutionException, InterruptedException, IOException {
     Request.Builder requestBuilder;
     if (scale != null) {
       RequestBody body = RequestBody.create(JSON, JSON_MAPPER.writeValueAsString(scale));
@@ -369,12 +360,9 @@ public class OperationSupport {
    * @return Status
    * @throws ExecutionException in case of any execution exception
    * @throws InterruptedException in case thread is interrupted
-   * @throws KubernetesClientException in case error from Kubernetes API
-   * @throws MalformedURLException in case URL formed in invalid
-   * @throws JsonProcessingException in case Json processing fails
    * @throws IOException in some other I/O problem
    */
-  protected Status handleDeploymentRollback(String resourceUrl, DeploymentRollback deploymentRollback) throws ExecutionException, InterruptedException, KubernetesClientException, MalformedURLException, JsonProcessingException, IOException {
+  protected Status handleDeploymentRollback(String resourceUrl, DeploymentRollback deploymentRollback) throws ExecutionException, InterruptedException, IOException {
     RequestBody body = RequestBody.create(JSON, JSON_MAPPER.writeValueAsString(deploymentRollback));
     Request.Builder requestBuilder = new Request.Builder().post(body).url(resourceUrl + "/rollback");
     return handleResponse(requestBuilder, Status.class);
@@ -390,10 +378,9 @@ public class OperationSupport {
    * @return returns a deserialized object as api server response of provided type.
    * @throws ExecutionException Execution Exception
    * @throws InterruptedException Interrupted Exception
-   * @throws KubernetesClientException KubernetesClientException
    * @throws IOException IOException
    */
-  protected <T> T handleGet(URL resourceUrl, Class<T> type) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+  protected <T> T handleGet(URL resourceUrl, Class<T> type) throws ExecutionException, InterruptedException, IOException {
     return handleGet(resourceUrl, type, Collections.<String, String>emptyMap());
   }
 
@@ -408,10 +395,9 @@ public class OperationSupport {
    * @return Returns a deserialized object as api server response of provided type.
    * @throws ExecutionException Execution Exception
    * @throws InterruptedException Interrupted Exception
-   * @throws KubernetesClientException KubernetesClientException
    * @throws IOException IOException
    */
-  protected <T> T handleGet(URL resourceUrl, Class<T> type, Map<String, String> parameters) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+  protected <T> T handleGet(URL resourceUrl, Class<T> type, Map<String, String> parameters) throws ExecutionException, InterruptedException, IOException {
     Request.Builder requestBuilder = new Request.Builder().get().url(resourceUrl);
     return handleResponse(requestBuilder, type, parameters);
   }
@@ -426,10 +412,9 @@ public class OperationSupport {
    * @return Returns a de-serialized object as api server response of provided type.
    * @throws ExecutionException Execution Exception
    * @throws InterruptedException Interrupted Exception
-   * @throws KubernetesClientException KubernetesClientException
    * @throws IOException IOException
    */
-  protected <T> T handleResponse(Request.Builder requestBuilder, Class<T> type) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+  protected <T> T handleResponse(Request.Builder requestBuilder, Class<T> type) throws ExecutionException, InterruptedException, IOException {
     return handleResponse(requestBuilder, type, Collections.<String, String>emptyMap());
   }
 
@@ -444,10 +429,9 @@ public class OperationSupport {
    * @return Returns a de-serialized object as api server response of provided type.
    * @throws ExecutionException Execution Exception
    * @throws InterruptedException Interrupted Exception
-   * @throws KubernetesClientException KubernetesClientException
    * @throws IOException IOException
    */
-  protected <T> T handleResponse(Request.Builder requestBuilder, Class<T> type, Map<String, String> parameters) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+  protected <T> T handleResponse(Request.Builder requestBuilder, Class<T> type, Map<String, String> parameters) throws ExecutionException, InterruptedException, IOException {
     return handleResponse(client, requestBuilder, type, parameters);
   }
 
@@ -462,10 +446,9 @@ public class OperationSupport {
    * @return Returns a de-serialized object as api server response of provided type.
    * @throws ExecutionException Execution Exception
    * @throws InterruptedException Interrupted Exception
-   * @throws KubernetesClientException KubernetesClientException
    * @throws IOException IOException
    */
-  protected <T> T handleResponse(OkHttpClient client, Request.Builder requestBuilder, Class<T> type) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+  protected <T> T handleResponse(OkHttpClient client, Request.Builder requestBuilder, Class<T> type) throws ExecutionException, InterruptedException, IOException {
     return handleResponse(client, requestBuilder, type, Collections.<String, String>emptyMap());
   }
 
@@ -481,10 +464,9 @@ public class OperationSupport {
    * @return                      Returns a de-serialized object as api server response of provided type.
    * @throws ExecutionException   Execution Exception
    * @throws InterruptedException Interrupted Exception
-   * @throws KubernetesClientException KubernetesClientException
    * @throws IOException IOException
    */
-  protected <T> T handleResponse(OkHttpClient client, Request.Builder requestBuilder, Class<T> type, Map<String, String> parameters) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+  protected <T> T handleResponse(OkHttpClient client, Request.Builder requestBuilder, Class<T> type, Map<String, String> parameters) throws ExecutionException, InterruptedException, IOException {
     VersionUsageUtils.log(this.resourceT, this.apiGroupVersion);
     Request request = requestBuilder.build();
     Response response = client.newCall(request).execute();
@@ -514,7 +496,6 @@ public class OperationSupport {
    *
    * @param request            The {#link Request} object.
    * @param response           The {@link Response} object.
-   * @throws KubernetesClientException When the response code is not the expected.
    */
   protected void assertResponseCode(Request request, Response response) {
     int statusCode = response.code();
@@ -598,15 +579,15 @@ public class OperationSupport {
     return new KubernetesClientException(sb.toString(), e);
   }
 
-  protected static <T> T unmarshal(InputStream is) throws KubernetesClientException {
+  protected static <T> T unmarshal(InputStream is) {
     return Serialization.unmarshal(is);
   }
 
-  protected static <T> T unmarshal(InputStream is, final Class<T> type) throws KubernetesClientException {
+  protected static <T> T unmarshal(InputStream is, final Class<T> type) {
     return Serialization.unmarshal(is, type);
   }
 
-  protected static <T> T unmarshal(InputStream is, TypeReference<T> type) throws KubernetesClientException {
+  protected static <T> T unmarshal(InputStream is, TypeReference<T> type) {
    return Serialization.unmarshal(is, type);
   }
 

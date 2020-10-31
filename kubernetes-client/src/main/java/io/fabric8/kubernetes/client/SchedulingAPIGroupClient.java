@@ -25,7 +25,7 @@ import io.fabric8.kubernetes.client.dsl.internal.scheduling.v1beta1.PriorityClas
 import okhttp3.OkHttpClient;
 
 public class SchedulingAPIGroupClient extends BaseClient implements SchedulingAPIGroupDSL {
-  public SchedulingAPIGroupClient(OkHttpClient httpClient, final Config config) throws KubernetesClientException {
+  public SchedulingAPIGroupClient(OkHttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 
