@@ -33,13 +33,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @EnableRuleMigrationSupport
-public class ClusterServiceBrokerTest {
+class ClusterServiceBrokerTest {
 
     @Rule
     public ServiceCatalogServer server = new ServiceCatalogServer(true, true);
 
     @Test
-    public void testCrud() {
+    void testCrud() {
         ServiceCatalogClient client = server.getServiceCatalogClient();
         ClusterServiceBroker broker1 = new ClusterServiceBrokerBuilder()
                 .withNewMetadata()

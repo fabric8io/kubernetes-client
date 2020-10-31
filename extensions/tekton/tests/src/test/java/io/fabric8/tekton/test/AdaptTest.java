@@ -28,7 +28,7 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class AdaptTest {
+class AdaptTest {
 
   private TektonMockServer mock = new TektonMockServer();
 
@@ -38,12 +38,12 @@ public class AdaptTest {
   }
 
   @AfterEach
-  public void tearDown() throws IOException {
+  void tearDown() throws IOException {
     mock.destroy();
   }
 
   @Test
-  public void testAdapt() {
+  void testAdapt() {
     TektonClient sc = mock.createTekton();
     KubernetesClient kc = new DefaultKubernetesClient(sc.getConfiguration());
     assertNotNull(kc.adapt(TektonClient.class));

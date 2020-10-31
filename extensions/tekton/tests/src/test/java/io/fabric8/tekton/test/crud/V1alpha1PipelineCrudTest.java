@@ -34,13 +34,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableRuleMigrationSupport
-public class V1alpha1PipelineCrudTest {
+class V1alpha1PipelineCrudTest {
 
   @Rule
   public TektonServer server = new TektonServer(true, true);
 
   @Test
-  public void shouldReturnEmptyList() {
+  void shouldReturnEmptyList() {
     TektonClient client = server.getTektonClient();
     PipelineList pipelineList = client.v1alpha1().pipelines().inNamespace("ns1").list();
     assertNotNull(pipelineList);
@@ -48,7 +48,7 @@ public class V1alpha1PipelineCrudTest {
   }
 
   @Test
-  public void shouldListAndGetPipeline() {
+  void shouldListAndGetPipeline() {
     TektonClient client = server.getTektonClient();
     Pipeline pipeline2 = new PipelineBuilder().withNewMetadata().withName("pipeline2").endMetadata().build();
 
@@ -62,7 +62,7 @@ public class V1alpha1PipelineCrudTest {
   }
 
   @Test
-  public void shouldDeleteAPipeline() {
+  void shouldDeleteAPipeline() {
     TektonClient client = server.getTektonClient();
     Pipeline pipeline3 = new PipelineBuilder().withNewMetadata().withName("pipeline3").endMetadata().build();
 
@@ -72,7 +72,7 @@ public class V1alpha1PipelineCrudTest {
   }
 
   @Test
-  public void shouldLoadAPipelineWithParams() {
+  void shouldLoadAPipelineWithParams() {
     TektonClient client = server.getTektonClient();
 
     String pipelineDefinition = String.join("\n", Arrays.asList(

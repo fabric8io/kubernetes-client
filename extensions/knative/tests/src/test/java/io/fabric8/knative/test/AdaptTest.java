@@ -30,36 +30,36 @@ import io.fabric8.knative.mock.KnativeMockServer;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 
-public class AdaptTest {
+class AdaptTest {
 
   private KnativeMockServer mock = new KnativeMockServer();
 
   @BeforeEach
-  public void setUp() {
+  void setUp() {
     mock.init();
   }
 
   @AfterEach
-  public void tearDown() throws IOException {
+  void tearDown() throws IOException {
     mock.destroy();
   }
 
   @Test
-  public void testAdapt() {
+  void testAdapt() {
     KnativeClient sc = mock.createKnative();
     KubernetesClient kc = new DefaultKubernetesClient(sc.getConfiguration());
     assertNotNull(kc.adapt(KnativeClient.class));
   }
 
   @Test
-  public void testAdaptServingV1() {
+  void testAdaptServingV1() {
     KnativeClient sc = mock.createKnative();
     KubernetesClient kc = new DefaultKubernetesClient(sc.getConfiguration());
     assertNotNull(kc.adapt(ServingV1Client.class));
   }
 
   @Test
-  public void testAdaptServingV1Beta1() {
+  void testAdaptServingV1Beta1() {
     KnativeClient sc = mock.createKnative();
     KubernetesClient kc = new DefaultKubernetesClient(sc.getConfiguration());
     assertNotNull(kc.adapt(ServingV1Beta1Client.class));

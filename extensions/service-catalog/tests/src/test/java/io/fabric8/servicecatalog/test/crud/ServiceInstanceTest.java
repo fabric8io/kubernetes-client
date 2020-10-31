@@ -31,13 +31,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @EnableRuleMigrationSupport
-public class ServiceInstanceTest {
+class ServiceInstanceTest {
 
     @Rule
     public ServiceCatalogServer server = new ServiceCatalogServer(true, true);
 
     @Test
-    public void testCrud() {
+    void testCrud() {
         ServiceCatalogClient client = server.getServiceCatalogClient();
         ServiceInstance instance1 = new ServiceInstanceBuilder()
                 .withNewMetadata()
