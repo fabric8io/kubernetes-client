@@ -5,6 +5,7 @@
 #### Bugs
 * Fix #2517: Replace does not work in CRUD mockwebserver
 * Fix #2537: Checking for Readiness of DeploymentConfig
+* Fix #2300: Remove job extensions/v1beta1 from backward compatibiliy interceptor
 
 #### Improvements
 * Fix #2507: Add a test for creating a Job with generateName
