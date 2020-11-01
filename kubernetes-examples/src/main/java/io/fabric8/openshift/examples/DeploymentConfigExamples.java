@@ -40,10 +40,9 @@ public class DeploymentConfigExamples {
 
   public static void main(String[] args) throws InterruptedException {
     Config config = new ConfigBuilder().build();
-    KubernetesClient kubernetesClient = new DefaultKubernetesClient(config);
-    OpenShiftClient client = kubernetesClient.adapt(OpenShiftClient.class);
+    try (KubernetesClient kubernetesClient = new DefaultKubernetesClient(config)) {
+      OpenShiftClient client = kubernetesClient.adapt(OpenShiftClient.class);
 
-    try {
       ProjectRequest  projectRequest = new ProjectRequestBuilder()
           .withNewMetadata()
             .withName("thisisatest")
@@ -93,9 +92,6 @@ public class DeploymentConfigExamples {
       log("Replication Controllers:", client.replicationControllers().inNamespace("thisisatest").list().getItems());
 
       log("Done.");
-    }finally {
-     // client.projects().withName("thisisatest").delete();
-      client.close();
     }
   }
 

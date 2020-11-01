@@ -27,8 +27,7 @@ import java.util.List;
  */
 public class ListCustomResourceDefinitions {
   public static void main(String[] args) {
-    try {
-      KubernetesClient client = new DefaultKubernetesClient();
+    try(KubernetesClient client = new DefaultKubernetesClient()){
       if (!client.supportsApiPath("/apis/apiextensions.k8s.io/v1beta1") && !client.supportsApiPath("/apis/apiextensions.k8s.io/v1")) {
         System.out.println("WARNING this cluster does not support the API Group apiextensions.k8s.io");
         return;
