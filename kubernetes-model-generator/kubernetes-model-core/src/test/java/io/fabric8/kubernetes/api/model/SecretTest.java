@@ -74,11 +74,11 @@ public class SecretTest {
         assertEquals("my-namespace",secret.getMetadata().getNamespace());
         assertEquals("opaque", secret.getType());
         assertEquals(3,secret.getData().size());
-        assertTrue(secret.getData().get("username").equals("dmFsdWUtMQ0K"));
-        assertTrue(secret.getData().get("password").equals("dmFsdWUtMg0KDQo="));
-        assertTrue(secret.getData().get(".secret-file").equals("dmFsdWUtMg0KDQo="));
+        assertEquals("dmFsdWUtMQ0K",secret.getData().get("username"));
+        assertEquals("dmFsdWUtMg0KDQo=",secret.getData().get("password"));
+        assertEquals("dmFsdWUtMg0KDQo=",secret.getData().get(".secret-file"));
         assertEquals(2,secret.getStringData().size());
-        assertTrue(secret.getStringData().get("hostname").equals("myapp.mydomain.com"));
-        assertTrue(secret.getStringData().get("secret.properties").equals("property1=valueA\nproperty2=valueB"));
+        assertEquals("myapp.mydomain.com",secret.getStringData().get("hostname"));
+        assertEquals("property1=valueA\nproperty2=valueB",secret.getStringData().get("secret.properties"));
     }
 }
