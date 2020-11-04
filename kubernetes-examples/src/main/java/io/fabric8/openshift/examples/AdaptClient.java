@@ -22,8 +22,9 @@ import io.fabric8.openshift.client.OpenShiftClient;
 
 public class AdaptClient {
   public static void main(String[] args) {
-    KubernetesClient client = new DefaultKubernetesClient();
-    OpenShiftClient oclient = client.adapt(OpenShiftClient.class);
-    System.out.println("Adapted to an openshift client: " + oclient);
+    try (KubernetesClient client = new DefaultKubernetesClient()) {
+      OpenShiftClient oclient = client.adapt(OpenShiftClient.class);
+      System.out.println("Adapted to an openshift client: " + oclient);
+    }
   }
 }
