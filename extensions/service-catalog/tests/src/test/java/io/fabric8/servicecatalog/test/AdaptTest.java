@@ -30,22 +30,22 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.io.IOException;
 
 @EnableRuleMigrationSupport
-public class AdaptTest {
+class AdaptTest {
 
   private ServiceCatalogMockServer mock = new ServiceCatalogMockServer();
 
   @BeforeEach
-  public void setUp() {
+  void setUp() {
     mock.init();
   }
 
   @AfterEach
-  public void tearDown() throws IOException {
+  void tearDown() throws IOException {
     mock.destroy();
   }
 
   @Test
-  public void testAdapt() {
+  void testAdapt() {
     ServiceCatalogClient sc = mock.createServiceCatalog();
     KubernetesClient kc = new DefaultKubernetesClient(sc.getConfiguration());
     assertNotNull(kc.adapt(ServiceCatalogClient.class));

@@ -32,13 +32,13 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @EnableRuleMigrationSupport
-public class PipelineCrudTest {
+class PipelineCrudTest {
 
   @Rule
   public TektonServer server = new TektonServer(true, true);
 
   @Test
-  public void shouldReturnEmptyList() {
+  void shouldReturnEmptyList() {
     TektonClient client = server.getTektonClient();
     PipelineList pipelineList = client.v1beta1().pipelines().inNamespace("ns1").list();
     assertNotNull(pipelineList);
@@ -46,7 +46,7 @@ public class PipelineCrudTest {
   }
 
   @Test
-  public void shouldListAndGetPipeline() {
+  void shouldListAndGetPipeline() {
     TektonClient client = server.getTektonClient();
     Pipeline pipeline2 = new PipelineBuilder().withNewMetadata().withName("pipeline2").endMetadata().build();
 
@@ -60,7 +60,7 @@ public class PipelineCrudTest {
   }
 
   @Test
-  public void shouldDeleteAPipeline() {
+  void shouldDeleteAPipeline() {
     TektonClient client = server.getTektonClient();
     Pipeline pipeline3 = new PipelineBuilder().withNewMetadata().withName("pipeline3").endMetadata().build();
 
@@ -70,7 +70,7 @@ public class PipelineCrudTest {
   }
 
   @Test
-  public void shouldLoadAPipelineWithParams() {
+  void shouldLoadAPipelineWithParams() {
     TektonClient client = server.getTektonClient();
 
     String pipelineDefinition = String.join("\n", Arrays.asList(

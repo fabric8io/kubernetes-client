@@ -30,13 +30,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableRuleMigrationSupport
-public class ServiceCrudTest {
+class ServiceCrudTest {
 
   @Rule
   public KnativeServer server = new KnativeServer(true, true);
 
   @Test
-  public void shouldReturnEmptyList() {
+  void shouldReturnEmptyList() {
     KnativeClient client = server.getKnativeClient();
     ServiceList serviceList = client.services().inNamespace("ns1").list();
     assertNotNull(serviceList);
@@ -44,7 +44,7 @@ public class ServiceCrudTest {
   }
 
   @Test
-  public void shouldListAndGetService() {
+  void shouldListAndGetService() {
     KnativeClient client = server.getKnativeClient();
     Service service2 = new ServiceBuilder().withNewMetadata().withName("service2").endMetadata().build();
 
@@ -59,7 +59,7 @@ public class ServiceCrudTest {
 
 
   @Test
-  public void shouldIncludeServiceStatus() {
+  void shouldIncludeServiceStatus() {
     KnativeClient client = server.getKnativeClient();
     Service service = new ServiceBuilder()
       .withNewMetadata().withName("service").endMetadata()
@@ -75,7 +75,7 @@ public class ServiceCrudTest {
   }
 
   @Test
-  public void shouldDeleteAService() {
+  void shouldDeleteAService() {
     KnativeClient client = server.getKnativeClient();
     Service service3 = new ServiceBuilder().withNewMetadata().withName("service3").endMetadata().build();
 
