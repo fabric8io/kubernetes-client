@@ -52,11 +52,11 @@ import okhttp3.OkHttpClient;
 
 public class ExtensionsAPIGroupClient extends BaseClient implements ExtensionsAPIGroupDSL {
 
-  public ExtensionsAPIGroupClient() throws KubernetesClientException {
+  public ExtensionsAPIGroupClient() {
     super();
   }
 
-  public ExtensionsAPIGroupClient(OkHttpClient httpClient, final Config config) throws KubernetesClientException {
+  public ExtensionsAPIGroupClient(OkHttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

@@ -19,7 +19,6 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
@@ -153,7 +152,7 @@ public class SharedInformerFactory extends BaseOperation {
 
     return new ListerWatcher<T, L>() {
       @Override
-      public L list(ListOptions params, String namespace, OperationContext context) throws KubernetesClientException {
+      public L list(ListOptions params, String namespace, OperationContext context) {
         BaseOperation<T, L, ?, ?> listBaseOperation = baseOperation.newInstance(context.withNamespace(namespace));
         listBaseOperation.setType(apiTypeClass);
         listBaseOperation.setListType(apiListTypeClass);
@@ -162,7 +161,7 @@ public class SharedInformerFactory extends BaseOperation {
       }
 
       @Override
-      public Watch watch(ListOptions params, String namespace, OperationContext context, Watcher<T> resourceWatcher) throws KubernetesClientException {
+      public Watch watch(ListOptions params, String namespace, OperationContext context, Watcher<T> resourceWatcher) {
         BaseOperation<T, L, ?, ?> watchBaseOperation = baseOperation.newInstance(context);
         watchBaseOperation.setType(apiTypeClass);
         watchBaseOperation.setListType(apiListTypeClass);

@@ -112,10 +112,9 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    *
    * @param object object a HashMap
    * @return Object as HashMap
-   * @throws KubernetesClientException in case of error from Kubernetes API
    * @throws IOException in case of problems while reading HashMap
    */
-  public Map<String, Object> create(Map<String, Object> object) throws KubernetesClientException, IOException {
+  public Map<String, Object> create(Map<String, Object> object) throws IOException {
     return validateAndSubmitRequest(null, null, objectMapper.writeValueAsString(object), HttpCallMethod.POST);
   }
 
@@ -125,10 +124,9 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @param namespace namespace in which we want object to be created.
    * @param objectAsString Object as JSON string
    * @return Object as HashMap
-   * @throws KubernetesClientException in case of error from Kubernetes API
    * @throws IOException in case of problems while reading JSON object
    */
-  public Map<String, Object> create(String namespace, String objectAsString) throws KubernetesClientException, IOException {
+  public Map<String, Object> create(String namespace, String objectAsString) throws IOException {
     return validateAndSubmitRequest(namespace, null, objectAsString, HttpCallMethod.POST);
   }
 
@@ -137,10 +135,9 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    *
    * @param objectAsStream object as a file input stream
    * @return Object as HashMap
-   * @throws KubernetesClientException in case of error from Kubernetes API
    * @throws IOException in case of problems while reading file
    */
-  public Map<String, Object> create(InputStream objectAsStream) throws KubernetesClientException, IOException {
+  public Map<String, Object> create(InputStream objectAsStream) throws IOException {
     return validateAndSubmitRequest(null, null, IOHelpers.readFully(objectAsStream), HttpCallMethod.POST);
   }
 
@@ -150,10 +147,9 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @param namespace namespace in which we want object to be created
    * @param objectAsStream object as file input stream
    * @return Object as HashMap
-   * @throws KubernetesClientException in case of error from Kubernetes API
    * @throws IOException in case of problems while reading file
    */
-  public Map<String, Object> create(String namespace, InputStream objectAsStream) throws KubernetesClientException, IOException {
+  public Map<String, Object> create(String namespace, InputStream objectAsStream) throws IOException {
     return validateAndSubmitRequest(namespace, null, IOHelpers.readFully(objectAsStream), HttpCallMethod.POST);
   }
 
@@ -163,10 +159,9 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @param namespace namespace in which we want object to be created.
    * @param object object as a HashMap
    * @return Object as HashMap
-   * @throws KubernetesClientException in case of error from Kubernetes API
    * @throws IOException in case of problems faced while serializing HashMap
    */
-  public Map<String, Object> create(String namespace, Map<String, Object> object) throws KubernetesClientException, IOException {
+  public Map<String, Object> create(String namespace, Map<String, Object> object) throws IOException {
     return validateAndSubmitRequest(namespace, null, objectMapper.writeValueAsString(object), HttpCallMethod.POST);
   }
 
@@ -302,7 +297,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @return Object as HashMap
    * @throws IOException in case of network/serialization failures or failures from Kubernetes API
    */
-  public Map<String, Object> edit(String name, InputStream objectAsStream) throws IOException, KubernetesClientException {
+  public Map<String, Object> edit(String name, InputStream objectAsStream) throws IOException {
     return validateAndSubmitRequest(null, name, IOHelpers.readFully(objectAsStream), HttpCallMethod.PUT);
   }
 
@@ -315,7 +310,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @return Object as HashMap
    * @throws IOException in case of network/serialization failures or failures from Kubernetes API
    */
-  public Map<String, Object> edit(String namespace, String name, InputStream objectAsStream) throws IOException, KubernetesClientException {
+  public Map<String, Object> edit(String namespace, String name, InputStream objectAsStream) throws IOException {
     return validateAndSubmitRequest(namespace, name, IOHelpers.readFully(objectAsStream), HttpCallMethod.PUT);
   }
 
@@ -327,9 +322,8 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @param objectAsMap custom resource as a HashMap
    * @return updated CustomResource as HashMap
    * @throws IOException in case any failure to parse Map
-   * @throws KubernetesClientException in case any failure from Kubernetes APIs
    */
-  public Map<String, Object> updateStatus(String name, Map<String, Object> objectAsMap) throws IOException, KubernetesClientException {
+  public Map<String, Object> updateStatus(String name, Map<String, Object> objectAsMap) throws IOException {
     return validateAndSubmitRequest(fetchUrl(null, name, null) + "/status", objectMapper.writeValueAsString(objectAsMap), HttpCallMethod.PUT);
   }
 
@@ -341,9 +335,8 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @param objectAsJsonString CustomResource as a JSON string
    * @return updated CustomResource as a HashMap
    * @throws IOException in case any failure to parse Map
-   * @throws KubernetesClientException in case any failure from Kubernetes APIs
    */
-  public Map<String, Object> updateStatus(String name, String objectAsJsonString) throws IOException, KubernetesClientException {
+  public Map<String, Object> updateStatus(String name, String objectAsJsonString) throws IOException {
     return validateAndSubmitRequest(fetchUrl(null, name, null) + "/status", objectAsJsonString, HttpCallMethod.PUT);
   }
 
@@ -356,9 +349,8 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @param objectAsMap CustomResource as a HashMap
    * @return updated CustomResource as a HashMap
    * @throws IOException in case any failure to parse Map
-   * @throws KubernetesClientException in case any failure from Kubernetes APIs
    */
-  public Map<String, Object> updateStatus(String namespace, String name, Map<String, Object> objectAsMap) throws IOException, KubernetesClientException {
+  public Map<String, Object> updateStatus(String namespace, String name, Map<String, Object> objectAsMap) throws IOException {
     return validateAndSubmitRequest(fetchUrl(namespace, name, null) + "/status", objectMapper.writeValueAsString(objectAsMap), HttpCallMethod.PUT);
   }
 
@@ -370,9 +362,8 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @param objectAsStream stream pointing to CustomResource
    * @return updated CustomResource as a HashMap
    * @throws IOException in case any failure to parse Map
-   * @throws KubernetesClientException in case any failure from Kubernetes APIs
    */
-  public Map<String, Object> updateStatus(String name, InputStream objectAsStream) throws IOException, KubernetesClientException {
+  public Map<String, Object> updateStatus(String name, InputStream objectAsStream) throws IOException {
     return validateAndSubmitRequest(fetchUrl(null, name, null) + "/status", IOHelpers.readFully(objectAsStream), HttpCallMethod.PUT);
   }
 
@@ -385,9 +376,8 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @param objectAsStream CustomResource object as a stream
    * @return updated CustomResource as a HashMap
    * @throws IOException in case any failure to parse Map
-   * @throws KubernetesClientException in case any failure from Kubernetes APIs
    */
-  public Map<String, Object> updateStatus(String namespace, String name, InputStream objectAsStream) throws IOException, KubernetesClientException {
+  public Map<String, Object> updateStatus(String namespace, String name, InputStream objectAsStream) throws IOException {
     return validateAndSubmitRequest(fetchUrl(namespace, name, null) + "/status", IOHelpers.readFully(objectAsStream), HttpCallMethod.PUT);
   }
 
@@ -400,9 +390,8 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @param objectAsJsonString CustomResource object as a JSON string
    * @return updated CustomResource as a HashMap
    * @throws IOException in case any failure to parse Map
-   * @throws KubernetesClientException in case any failure from Kubernetes APIs
    */
-  public Map<String, Object> updateStatus(String namespace, String name, String objectAsJsonString) throws IOException, KubernetesClientException {
+  public Map<String, Object> updateStatus(String namespace, String name, String objectAsJsonString) throws IOException {
     return validateAndSubmitRequest(fetchUrl(namespace, name, null) + "/status", objectAsJsonString, HttpCallMethod.PUT);
   }
 

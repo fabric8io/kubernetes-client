@@ -74,19 +74,19 @@ public class AutoAdaptableKubernetesClient extends DefaultKubernetesClient {
 
   private KubernetesClient delegate;
 
-  public AutoAdaptableKubernetesClient() throws KubernetesClientException {
+  public AutoAdaptableKubernetesClient() {
     delegate = adapt(new DefaultKubernetesClient());
   }
 
-  public AutoAdaptableKubernetesClient(OkHttpClient httpClient, Config config) throws KubernetesClientException {
+  public AutoAdaptableKubernetesClient(OkHttpClient httpClient, Config config) {
     delegate = adapt(new DefaultKubernetesClient(httpClient, config));
   }
 
-  public AutoAdaptableKubernetesClient(Config config) throws KubernetesClientException {
+  public AutoAdaptableKubernetesClient(Config config) {
     delegate = adapt(new DefaultKubernetesClient(config));
   }
 
-  public AutoAdaptableKubernetesClient(String masterUrl) throws KubernetesClientException {
+  public AutoAdaptableKubernetesClient(String masterUrl) {
     delegate = adapt(new DefaultKubernetesClient(masterUrl));
   }
 

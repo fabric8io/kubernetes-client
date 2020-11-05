@@ -184,19 +184,19 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   private URL openShiftUrl;
   private NamespacedKubernetesClient delegate;
 
-  public DefaultOpenShiftClient() throws KubernetesClientException {
+  public DefaultOpenShiftClient() {
     this(new OpenShiftConfigBuilder().build());
   }
 
-  public DefaultOpenShiftClient(String masterUrl) throws KubernetesClientException {
+  public DefaultOpenShiftClient(String masterUrl) {
     this(new OpenShiftConfigBuilder().withMasterUrl(masterUrl).build());
   }
 
-  public DefaultOpenShiftClient(final Config config) throws KubernetesClientException {
+  public DefaultOpenShiftClient(final Config config) {
     this(new OpenShiftConfig(config));
   }
 
-  public DefaultOpenShiftClient(final OpenShiftConfig config) throws KubernetesClientException {
+  public DefaultOpenShiftClient(final OpenShiftConfig config) {
     super(configWithApiGroupsEnabled(clientWithOpenShiftOAuthInterceptor(config), config));
     try {
       this.httpClient = clientWithOpenShiftOAuthInterceptor(this.httpClient, config);
@@ -207,7 +207,7 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
     }
   }
 
-  public DefaultOpenShiftClient(OkHttpClient httpClient, OpenShiftConfig config) throws KubernetesClientException {
+  public DefaultOpenShiftClient(OkHttpClient httpClient, OpenShiftConfig config) {
     super(httpClient, configWithApiGroupsEnabled(httpClient, config));
     try {
       this.httpClient = clientWithOpenShiftOAuthInterceptor(httpClient, getConfiguration());

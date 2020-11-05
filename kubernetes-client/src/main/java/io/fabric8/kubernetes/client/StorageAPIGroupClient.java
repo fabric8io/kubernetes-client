@@ -26,11 +26,11 @@ import okhttp3.OkHttpClient;
 
 public class StorageAPIGroupClient extends BaseClient implements StorageAPIGroupDSL {
 
-  public StorageAPIGroupClient() throws KubernetesClientException {
+  public StorageAPIGroupClient() {
     super();
   }
 
-  public StorageAPIGroupClient(OkHttpClient httpClient, final Config config) throws KubernetesClientException {
+  public StorageAPIGroupClient(OkHttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

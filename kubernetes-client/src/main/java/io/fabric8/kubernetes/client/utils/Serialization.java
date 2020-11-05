@@ -79,7 +79,6 @@ public class Serialization {
    * @param <T>   The target type.
    *
    * @return returns de-serialized object
-   * @throws KubernetesClientException KubernetesClientException
    */
   public static <T> T unmarshal(InputStream is) {
     return unmarshal(is, JSON_MAPPER);
@@ -91,7 +90,6 @@ public class Serialization {
    * @param parameters  A {@link Map} with parameters for placeholder substitution.
    * @param <T>   The target type.
    * @return returns returns de-serialized object
-   * @throws KubernetesClientException KubernetesClientException
    */
   @SuppressWarnings("unchecked")
   public static <T> T unmarshal(InputStream is, Map<String, String> parameters) {
@@ -161,7 +159,6 @@ public class Serialization {
    * @param parameters  A hashmap containing parameters
    *
    * @return returns de-serialized object
-   * @throws KubernetesClientException KubernetesClientException
    */
   public static <T> T unmarshal(String str, final Class<T> type, Map<String, String> parameters) {
     try (InputStream is = new ByteArrayInputStream(str.getBytes(StandardCharsets.UTF_8))) {
@@ -194,7 +191,6 @@ public class Serialization {
    * @param parameters      A {@link Map} with parameters for placeholder substitution.
    * @param <T>             Template argument denoting type
    * @return returns de-serialized object
-   * @throws KubernetesClientException KubernetesClientException
    */
   public static <T> T unmarshal(InputStream is, final Class<T> type, Map<String, String> parameters) {
     return unmarshal(is, new TypeReference<T>() {
@@ -226,7 +222,6 @@ public class Serialization {
    * @param <T>           Template argument denoting type
    *
    * @return returns de-serialized object
-   * @throws KubernetesClientException KubernetesClientException
    */
   public static <T> T unmarshal(InputStream is, TypeReference<T> type, Map<String, String> parameters) {
     try (

@@ -30,11 +30,11 @@ import okhttp3.OkHttpClient;
 
 public class NetworkAPIGroupClient extends BaseClient implements NetworkAPIGroupDSL {
 
-  public NetworkAPIGroupClient() throws KubernetesClientException {
+  public NetworkAPIGroupClient() {
     super();
   }
 
-  public NetworkAPIGroupClient(OkHttpClient httpClient, final Config config) throws KubernetesClientException {
+  public NetworkAPIGroupClient(OkHttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

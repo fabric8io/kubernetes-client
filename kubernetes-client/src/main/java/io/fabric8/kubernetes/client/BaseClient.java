@@ -39,19 +39,19 @@ public abstract class BaseClient implements Client, HttpClientAware {
   private String namespace;
   private Config configuration;
 
-  public BaseClient() throws KubernetesClientException {
+  public BaseClient() {
     this(new ConfigBuilder().build());
   }
 
-  public BaseClient(String masterUrl) throws KubernetesClientException {
+  public BaseClient(String masterUrl) {
     this(new ConfigBuilder().withMasterUrl(masterUrl).build());
   }
 
-  public BaseClient(final Config config) throws KubernetesClientException {
+  public BaseClient(final Config config) {
     this(HttpClientUtils.createHttpClient(config), config);
   }
 
-  public BaseClient(final OkHttpClient httpClient, Config config) throws KubernetesClientException {
+  public BaseClient(final OkHttpClient httpClient, Config config) {
     try {
       this.httpClient = httpClient;
       this.namespace = config.getNamespace();
