@@ -17,10 +17,8 @@ package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.ListOptions;
-import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.kubernetes.client.utils.Utils;
 
-import java.net.HttpURLConnection;
 import java.util.function.Predicate;
 
 import java.io.ByteArrayInputStream;
@@ -56,6 +54,9 @@ import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.handlers.KubernetesListHandler;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import okhttp3.OkHttpClient;
+
+import static io.fabric8.kubernetes.client.utils.CreateOrReplaceHelper.createOrReplaceItem;
+import static io.fabric8.kubernetes.client.utils.DeleteAndCreateHelper.deleteAndCreateItem;
 
 public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl extends OperationSupport implements
   NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata, Boolean>,
@@ -135,29 +136,10 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl ex
     HasMetadata meta = acceptVisitors(asHasMetadata(item), visitors);
     ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
     String namespaceToUse = meta.getMetadata().getNamespace();
-
-    String resourceVersion = KubernetesResourceUtil.getResourceVersion(meta);
-    try {
-      // Create
-      KubernetesResourceUtil.setResourceVersion(meta, null);
-      return h.create(client, config, namespaceToUse, meta);
-    } catch (KubernetesClientException exception) {
-      if (exception.getCode() != HttpURLConnection.HTTP_CONFLICT) {
-        throw exception;
-      }
-
-      // Conflict; check deleteExisting flag otherwise replace
-      if (Boolean.TRUE.equals(deletingExisting)) {
-        Boolean deleted = h.delete(client, config, namespaceToUse, propagationPolicy, meta);
-        if (Boolean.FALSE.equals(deleted)) {
-          throw new KubernetesClientException("Failed to delete existing item:" + meta);
-        }
-        return h.create(client, config, namespaceToUse, meta);
-      } else {
-        KubernetesResourceUtil.setResourceVersion(meta, resourceVersion);
-        return h.replace(client, config, namespaceToUse, meta);
-      }
+    if (Boolean.TRUE.equals(deletingExisting)) {
+      return deleteAndCreateItem(client, config, meta, h, namespaceToUse, propagationPolicy);
     }
+    return createOrReplaceItem(client, config, meta, h, namespaceToUse);
   }
 
   @Override
@@ -327,5 +309,4 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl ex
       throw new IllegalArgumentException("Could not find a registered handler for item: [" + item + "].");
     }
   }
-
 }

@@ -38,16 +38,13 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import org.junit.jupiter.api.Test;
 
-import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.Watcher;
-import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
 
-public class BaseOperationTest {
+class BaseOperationTest {
 
   @Test
-  public void testSimpleFieldQueryParamConcatenation() {
+  void testSimpleFieldQueryParamConcatenation() {
     Map<String, String> fieldsMap = new HashMap<>();
     fieldsMap.put("yesKey1", "yesValue1");
     fieldsMap.put("yesKey2", "yesValue2");
@@ -68,7 +65,7 @@ public class BaseOperationTest {
   }
 
   @Test
-  public void testSkippingFieldNotMatchingNullValues() {
+  void testSkippingFieldNotMatchingNullValues() {
     final PodOperationsImpl operation = new PodOperationsImpl(new PodOperationContext());
     operation
       .withField("key1", "value1")
@@ -83,14 +80,14 @@ public class BaseOperationTest {
   }
 
   @Test
-  public void testDefaultGracePeriod() {
+  void testDefaultGracePeriod() {
     final BaseOperation operation = new BaseOperation(new OperationContext());
 
     assertThat(operation.getGracePeriodSeconds(), is(-1L));
   }
 
   @Test
-  public void testChainingGracePeriodAndPropagationPolicy() {
+  void testChainingGracePeriodAndPropagationPolicy() {
     final BaseOperation operation = new BaseOperation(new OperationContext());
     EditReplacePatchDeletable<?, ?, ?, Boolean> operationWithPropagationPolicy = operation.withPropagationPolicy(DeletionPropagation.FOREGROUND);
     assertThat(operationWithPropagationPolicy, is(notNullValue()));
@@ -98,7 +95,7 @@ public class BaseOperationTest {
   }
 
   @Test
-  public void testListOptions() throws MalformedURLException {
+  void testListOptions() throws MalformedURLException {
     // Given
     URL url = new URL("https://172.17.0.2:8443/api/v1/namespaces/default/pods");
     final BaseOperation<Pod, PodList, DoneablePod, Resource<Pod, DoneablePod>> operation = new BaseOperation<>(new OperationContext());

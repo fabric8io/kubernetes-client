@@ -16,7 +16,7 @@
 package io.fabric8.kubernetes.client.dsl.base;
 
 import io.fabric8.kubernetes.api.model.ObjectReference;
-import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
+import io.fabric8.kubernetes.client.utils.CreateOrReplaceHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -404,20 +404,22 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
       return withName(itemToCreateOrReplace.getMetadata().getName()).createOrReplace(itemToCreateOrReplace);
     }
+    T finalItemToCreateOrReplace = itemToCreateOrReplace;
+    CreateOrReplaceHelper<T> createOrReplaceHelper = new CreateOrReplaceHelper<>(
+      this::create,
+      this::replace,
+      m -> {
+        try {
+          return waitUntilCondition(Objects::nonNull, 1, TimeUnit.SECONDS);
+        } catch (InterruptedException interruptedException) {
+          interruptedException.printStackTrace();
+        }
+        return null;
+      },
+      m -> fromServer().get()
+    );
 
-    try {
-      // Create
-      KubernetesResourceUtil.setResourceVersion(itemToCreateOrReplace, null);
-      return create(itemToCreateOrReplace);
-    } catch (KubernetesClientException exception) {
-      if (exception.getCode() != HttpURLConnection.HTTP_CONFLICT) {
-        throw exception;
-      }
-      // Conflict; Do Replace
-      final T itemFromServer = fromServer().get();
-      KubernetesResourceUtil.setResourceVersion(itemToCreateOrReplace, KubernetesResourceUtil.getResourceVersion(itemFromServer));
-      return replace(itemToCreateOrReplace);
-    }
+    return createOrReplaceHelper.createOrReplace(finalItemToCreateOrReplace);
   }
 
   @Override

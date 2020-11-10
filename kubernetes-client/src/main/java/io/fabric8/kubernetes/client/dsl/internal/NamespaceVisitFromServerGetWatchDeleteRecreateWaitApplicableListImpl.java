@@ -34,7 +34,6 @@ import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.handlers.KubernetesListHandler;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
-import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 
@@ -45,7 +44,6 @@ import org.slf4j.LoggerFactory;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -61,6 +59,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Predicate;
+
+import static io.fabric8.kubernetes.client.utils.CreateOrReplaceHelper.createOrReplaceItem;
+import static io.fabric8.kubernetes.client.utils.DeleteAndCreateHelper.deleteAndCreateItem;
 
 public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl extends OperationSupport implements ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean>,
 Waitable<List<HasMetadata>, HasMetadata>, Readiable {
@@ -285,29 +286,11 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
     List<HasMetadata> result = new ArrayList<>();
     for (HasMetadata meta : acceptVisitors(asHasMetadata(item, true), visitors)) {
       ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
-      String namespaceToUse =  meta.getMetadata().getNamespace();
+      String namespaceToUse = meta.getMetadata().getNamespace();
 
-      String resourceVersion = KubernetesResourceUtil.getResourceVersion(meta);
-      try {
-        // Create
-        KubernetesResourceUtil.setResourceVersion(meta, null);
-        result.add(h.create(client, config, namespaceToUse, meta));
-      } catch (KubernetesClientException exception) {
-        if (exception.getCode() != HttpURLConnection.HTTP_CONFLICT) {
-          throw exception;
-        }
-
-        // Conflict; check deleteExisting flag otherwise replace
-        if (Boolean.TRUE.equals(deletingExisting)) {
-          Boolean deleted = h.delete(client, config, namespaceToUse, propagationPolicy, meta);
-          if (Boolean.FALSE.equals(deleted)) {
-            throw new KubernetesClientException("Failed to delete existing item:" + meta);
-          }
-          result.add(h.create(client, config, namespaceToUse, meta));
-        } else {
-          KubernetesResourceUtil.setResourceVersion(meta, resourceVersion);
-          result.add(h.replace(client, config, namespaceToUse, meta));
-        }
+      HasMetadata createdItem = createOrReplaceOrDeleteExisting(meta, h, namespaceToUse);
+      if (createdItem != null) {
+        result.add(createdItem);
       }
     }
     return result;
@@ -455,4 +438,12 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
       throw new IllegalArgumentException("Could not find a registered handler for item: [" + item + "].");
     }
   }
+
+  private HasMetadata createOrReplaceOrDeleteExisting(HasMetadata meta, ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h, String namespaceToUse) {
+      if (Boolean.TRUE.equals(deletingExisting)) {
+        return deleteAndCreateItem(client, config, meta, h, namespaceToUse, propagationPolicy);
+      }
+      return createOrReplaceItem(client, config, meta, h, namespaceToUse);
+  }
+
 }

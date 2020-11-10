@@ -155,8 +155,6 @@ public class ResourceListTest {
 
   @Test
   void testCreateOrReplaceWithDeleteExisting() throws Exception {
-    server.expect().post().withPath("/api/v1/namespaces/ns1/services").andReturn(HTTP_CONFLICT, service).once();
-    server.expect().post().withPath("/api/v1/namespaces/ns1/configmaps").andReturn(HTTP_CONFLICT, configMap).once();
     server.expect().delete().withPath("/api/v1/namespaces/ns1/services/my-service").andReturn(HTTP_OK , service).once();
     server.expect().delete().withPath("/api/v1/namespaces/ns1/configmaps/my-configmap").andReturn(HTTP_OK, configMap).once();
     server.expect().post().withPath("/api/v1/namespaces/ns1/services").andReturn(HTTP_OK, updatedService).once();
@@ -164,7 +162,7 @@ public class ResourceListTest {
 
     client.resourceList(resourcesToUpdate).inNamespace("ns1").deletingExisting().createOrReplace();
 
-    assertEquals(6, server.getMockServer().getRequestCount());
+    assertEquals(4, server.getMockServer().getRequestCount());
     RecordedRequest request = server.getLastRequest();
     assertEquals("/api/v1/namespaces/ns1/configmaps", request.getPath());
     assertEquals("POST", request.getMethod());
