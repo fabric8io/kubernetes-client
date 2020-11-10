@@ -31,7 +31,7 @@ import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 public class InformerExample {
-  private static Logger logger = LoggerFactory.getLogger(InformerExample.class);
+  private static final Logger logger = LoggerFactory.getLogger(InformerExample.class);
 
   public static void main(String[] args) throws InterruptedException {
     try (final KubernetesClient client = new DefaultKubernetesClient()) {

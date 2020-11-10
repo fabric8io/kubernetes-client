@@ -69,6 +69,13 @@ class DefaultSharedIndexInformerTest {
   @Rule
   public KubernetesServer server = new KubernetesServer(false);
 
+  private final CustomResourceDefinitionContext podSetCustomResourceContext = new CustomResourceDefinitionContext.Builder()
+    .withVersion("v1alpha1")
+    .withScope("Namespaced")
+    .withGroup("demo.k8s.io")
+    .withPlural("podsets")
+    .build();
+
   static final Status outdatedStatus = new StatusBuilder().withCode(HttpURLConnection.HTTP_GONE)
     .withMessage(
       "401: The event in requested index is outdated and cleared (the requested history has been cleared [3/1]) [2]")
@@ -80,6 +87,7 @@ class DefaultSharedIndexInformerTest {
   static final int LATCH_AWAIT_PERIOD_IN_SECONDS = 10;
 
   @Test
+  @DisplayName("Pod Informer should watch in test(as specified in OperationContext)")
   void testNamespacedPodInformer() throws InterruptedException {
     String startResourceVersion = "1000", endResourceVersion = "1001";
 
@@ -95,7 +103,7 @@ class DefaultSharedIndexInformerTest {
 
     KubernetesClient client = server.getClient();
     SharedInformerFactory factory = client.informers();
-    SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, PodList.class,RESYNC_PERIOD);
+    SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, PodList.class, new OperationContext().withNamespace("test"), RESYNC_PERIOD);
 
     CountDownLatch foundExistingPod = new CountDownLatch(1);
     podInformer.addEventHandler(
@@ -125,12 +133,13 @@ class DefaultSharedIndexInformerTest {
   }
 
   @Test
+  @DisplayName("Pod Informer should watch in all namespaces")
   void testAllNamespacedInformer() throws InterruptedException {
     String startResourceVersion = "1000", endResourceVersion = "1001";
 
-    server.expect().withPath("/api/v1/namespaces/test/pods")
+    server.expect().withPath("/api/v1/pods")
       .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(startResourceVersion).endMetadata().withItems(Collections.emptyList()).build()).once();
-    server.expect().withPath("/api/v1/namespaces/test/pods?resourceVersion=" + startResourceVersion + "&watch=true")
+    server.expect().withPath("/api/v1/pods?resourceVersion=" + startResourceVersion + "&watch=true")
       .andUpgradeToWebSocket()
       .open()
       .waitFor(WATCH_EVENT_EMIT_TIME)
@@ -168,12 +177,13 @@ class DefaultSharedIndexInformerTest {
   }
 
   @Test
+  @DisplayName("Pod Informer should reconnect on 410")
   void shouldReconnectInCaseOf410() throws InterruptedException {
     String startResourceVersion = "1000", midResourceVersion = "1001", mid2ResourceVersion = "1002", endResourceVersion = "1003";
 
-    server.expect().withPath("/api/v1/namespaces/test/pods")
+    server.expect().withPath("/api/v1/pods")
       .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(startResourceVersion).endMetadata().withItems(Collections.emptyList()).build()).once();
-    server.expect().withPath("/api/v1/namespaces/test/pods?resourceVersion=" + startResourceVersion + "&watch=true")
+    server.expect().withPath("/api/v1/pods?resourceVersion=" + startResourceVersion + "&watch=true")
       .andUpgradeToWebSocket()
       .open()
       .waitFor(WATCH_EVENT_EMIT_TIME)
@@ -181,9 +191,9 @@ class DefaultSharedIndexInformerTest {
       .waitFor(OUTDATED_WATCH_EVENT_EMIT_TIME)
       .andEmit(outdatedEvent)
       .done().always();
-    server.expect().withPath("/api/v1/namespaces/test/pods")
+    server.expect().withPath("/api/v1/pods")
       .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(mid2ResourceVersion).endMetadata().withItems(Collections.emptyList()).build()).times(2);
-    server.expect().withPath("/api/v1/namespaces/test/pods?resourceVersion=" + mid2ResourceVersion + "&watch=true")
+    server.expect().withPath("/api/v1/pods?resourceVersion=" + mid2ResourceVersion + "&watch=true")
       .andUpgradeToWebSocket()
       .open()
       .waitFor(WATCH_EVENT_EMIT_TIME)
@@ -221,6 +231,7 @@ class DefaultSharedIndexInformerTest {
   }
 
   @Test
+  @DisplayName("PodInformer's hasSynced() method should return false when it's not able to resync")
   void testHasSynced() {
     String startResourceVersion = "1000", endResourceVersion = "1001";
     server.expect().withPath("/api/v1/namespaces/test/pods")
@@ -286,7 +297,7 @@ class DefaultSharedIndexInformerTest {
 
   @Test
   @DisplayName("Should create Informer for Namespace resource")
-  void testWithNamespacedResource() throws InterruptedException {
+  void testWithNamespaceInformer() throws InterruptedException {
     String startResourceVersion = "1000", endResourceVersion = "1001";
 
     server.expect().withPath("/api/v1/namespaces")
@@ -421,6 +432,7 @@ class DefaultSharedIndexInformerTest {
   }
 
   @Test
+  @DisplayName("Pod Informer should watch in ns1")
   void testWithOperationContextArgument() throws InterruptedException {
     String startResourceVersion = "1000", endResourceVersion = "1001";
 
@@ -466,13 +478,58 @@ class DefaultSharedIndexInformerTest {
   }
 
   @Test
-  void testWithOperationContextArgumentForCustomResource() throws InterruptedException {
+  @DisplayName("PodSet Informer should watch in all namespaces")
+  void testPodSetCustomResourceInformerShouldWatchInAllNamespaces() throws InterruptedException {
     String startResourceVersion = "1000", endResourceVersion = "1001";
-    PodSetList podSetList = new PodSetList();
-    podSetList.setMetadata(new ListMetaBuilder().withResourceVersion(startResourceVersion).build());
+
+    server.expect().withPath("/apis/demo.k8s.io/v1alpha1/podsets")
+      .andReturn(HttpURLConnection.HTTP_OK, getPodSetList(startResourceVersion)).once();
+
+    server.expect().withPath("/apis/demo.k8s.io/v1alpha1/podsets?resourceVersion=" + startResourceVersion + "&watch=true")
+      .andUpgradeToWebSocket()
+      .open()
+      .waitFor(WATCH_EVENT_EMIT_TIME)
+      .andEmit(new WatchEvent(getPodSet("podset1", endResourceVersion), "ADDED"))
+      .waitFor(OUTDATED_WATCH_EVENT_EMIT_TIME)
+      .andEmit(outdatedEvent).done().always();
+    KubernetesClient client = server.getClient();
+
+
+    SharedInformerFactory sharedInformerFactory = client.informers();
+    SharedIndexInformer<PodSet> podSetSharedIndexInformer = sharedInformerFactory.sharedIndexInformerForCustomResource(podSetCustomResourceContext, PodSet.class, PodSetList.class, 60 * WATCH_EVENT_EMIT_TIME);
+    CountDownLatch foundExistingPodSet = new CountDownLatch(1);
+    podSetSharedIndexInformer.addEventHandler(
+      new ResourceEventHandler<PodSet>() {
+        @Override
+        public void onAdd(PodSet podSet) {
+          if (podSet.getMetadata().getName().equalsIgnoreCase("podset1")) {
+            foundExistingPodSet.countDown();
+          }
+        }
+
+        @Override
+        public void onUpdate(PodSet oldPodSet, PodSet newPodSet) { }
+
+        @Override
+        public void onDelete(PodSet podSet, boolean deletedFinalStateUnknown) { }
+      });
+    sharedInformerFactory.startAllRegisteredInformers();
+
+    // Namespace set in Client's Configuration from MockWebServer
+    assertEquals("test", client.getConfiguration().getNamespace());
+    foundExistingPodSet.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
+    assertEquals(0, foundExistingPodSet.getCount());
+
+    sharedInformerFactory.stopAllRegisteredInformers();
+  }
+
+  @Test
+  @DisplayName("PodSet Informer should watch in ns1(as specified in OperationContext)")
+  void testWithPodSetCustomResourceInformerShouldWatchInSpecifiedNamespace() throws InterruptedException {
+    String startResourceVersion = "1000", endResourceVersion = "1001";
 
     server.expect().withPath("/apis/demo.k8s.io/v1alpha1/namespaces/ns1/podsets")
-      .andReturn(200, podSetList).once();
+      .andReturn(HttpURLConnection.HTTP_OK, getPodSetList(startResourceVersion)).once();
 
     server.expect().withPath("/apis/demo.k8s.io/v1alpha1/namespaces/ns1/podsets?resourceVersion=" + startResourceVersion + "&watch=true")
       .andUpgradeToWebSocket()
@@ -483,15 +540,8 @@ class DefaultSharedIndexInformerTest {
       .andEmit(outdatedEvent).done().always();
     KubernetesClient client = server.getClient();
 
-    CustomResourceDefinitionContext crdContext = new CustomResourceDefinitionContext.Builder()
-      .withVersion("v1alpha1")
-      .withScope("Namespaced")
-      .withGroup("demo.k8s.io")
-      .withPlural("podsets")
-      .build();
-
     SharedInformerFactory sharedInformerFactory = client.informers();
-    SharedIndexInformer<PodSet> podSetSharedIndexInformer = sharedInformerFactory.sharedIndexInformerForCustomResource(crdContext, PodSet.class, PodSetList.class, new OperationContext().withNamespace("ns1"), 60 * WATCH_EVENT_EMIT_TIME);
+    SharedIndexInformer<PodSet> podSetSharedIndexInformer = sharedInformerFactory.sharedIndexInformerForCustomResource(podSetCustomResourceContext, PodSet.class, PodSetList.class, new OperationContext().withNamespace("ns1"), 60 * WATCH_EVENT_EMIT_TIME);
     CountDownLatch foundExistingPodSet = new CountDownLatch(1);
     podSetSharedIndexInformer.addEventHandler(
       new ResourceEventHandler<PodSet>() {
@@ -589,6 +639,12 @@ class DefaultSharedIndexInformerTest {
     podSet.setSpec(podSetSpec);
 
     return podSet;
+  }
+
+  private PodSetList getPodSetList(String startResourceVersion) {
+    PodSetList podSetList = new PodSetList();
+    podSetList.setMetadata(new ListMetaBuilder().withResourceVersion(startResourceVersion).build());
+    return podSetList;
   }
 
 }

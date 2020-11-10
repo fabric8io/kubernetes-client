@@ -6,6 +6,7 @@
 * Fix #2517: Replace does not work in CRUD mockwebserver
 * Fix #2537: Checking for Readiness of DeploymentConfig
 * Fix #2300: Remove job extensions/v1beta1 from backward compatibiliy interceptor
+* Fix #2514: SharedIndexInformer watches only pods of its own namespace when run in the cluster
 
 #### Improvements
 * Fix #2507: Add a test for creating a Job with generateName
@@ -16,7 +17,6 @@
 * Fix #2513: Update Kubernetes Model to v1.19.1
 
 #### New Features
-
 * Fix #2531: Allow setting the maximum concurrent requests via system property / environment variable
 * Fix #2534: Tekton model based on Tekton Pipeline 0.17.0
 * Fix #2574: Add support for Condition type
