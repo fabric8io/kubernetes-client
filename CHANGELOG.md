@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 4.12-SNAPSHOT
+### 4.13.0 (2020-11-10)
 
 #### Bugs
 * Fix #2517: Replace does not work in CRUD mockwebserver
