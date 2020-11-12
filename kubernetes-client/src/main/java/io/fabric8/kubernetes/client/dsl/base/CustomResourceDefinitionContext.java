@@ -18,10 +18,15 @@ package io.fabric8.kubernetes.client.dsl.base;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersion;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.Pluralize;
 import io.fabric8.kubernetes.client.utils.Utils;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionSpec;
+import io.fabric8.kubernetes.client.utils.KubernetesVersionPriority;
+
+import java.util.stream.Collectors;
 
 public class CustomResourceDefinitionContext {
   private String name;
@@ -81,12 +86,23 @@ public class CustomResourceDefinitionContext {
   public static CustomResourceDefinitionContext fromCrd(CustomResourceDefinition crd) {
     return new CustomResourceDefinitionContext.Builder()
       .withGroup(crd.getSpec().getGroup())
-      .withVersion(crd.getSpec().getVersion())
+      .withVersion(getVersion(crd.getSpec()))
       .withScope(crd.getSpec().getScope())
       .withName(crd.getMetadata().getName())
       .withPlural(crd.getSpec().getNames().getPlural())
       .withKind(crd.getSpec().getNames().getKind())
       .build();
+  }
+
+  private static String getVersion(CustomResourceDefinitionSpec spec) {
+    String version = KubernetesVersionPriority.highestPriority(
+            spec.getVersions().stream()
+                    .map(CustomResourceDefinitionVersion::getName)
+                    .collect(Collectors.toList()));
+    if (version == null) {
+      version = spec.getVersion();
+    }
+    return version;
   }
 
   public static class Builder {
