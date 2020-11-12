@@ -28,11 +28,6 @@ import io.fabric8.openshift.api.model.console.v1.ConsoleNotification;
 import io.fabric8.openshift.api.model.console.v1.ConsoleNotificationList;
 import io.fabric8.openshift.api.model.console.v1.ConsoleYAMLSample;
 import io.fabric8.openshift.api.model.console.v1.ConsoleYAMLSampleList;
-import io.fabric8.openshift.api.model.console.v1.DoneableConsoleCLIDownload;
-import io.fabric8.openshift.api.model.console.v1.DoneableConsoleExternalLogLink;
-import io.fabric8.openshift.api.model.console.v1.DoneableConsoleLink;
-import io.fabric8.openshift.api.model.console.v1.DoneableConsoleNotification;
-import io.fabric8.openshift.api.model.console.v1.DoneableConsoleYAMLSample;
 
 public interface OpenShiftConsoleAPIGroupDSL extends Client {
   /**
@@ -40,29 +35,29 @@ public interface OpenShiftConsoleAPIGroupDSL extends Client {
    *
    * @return NonNamespaceOperation object for ConsoleCLIDownload type
    */
-  NonNamespaceOperation<ConsoleCLIDownload, ConsoleCLIDownloadList, DoneableConsoleCLIDownload, Resource<ConsoleCLIDownload, DoneableConsoleCLIDownload>> consoleCLIDownloads();
+  NonNamespaceOperation<ConsoleCLIDownload, ConsoleCLIDownloadList, Resource<ConsoleCLIDownload>> consoleCLIDownloads();
   /**
    * API entrypoint for ConsoleExternalLogLink related operations(console.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for ConsoleExternalLogLink type
    */
-  NonNamespaceOperation<ConsoleExternalLogLink, ConsoleExternalLogLinkList, DoneableConsoleExternalLogLink, Resource<ConsoleExternalLogLink, DoneableConsoleExternalLogLink>> consoleExternalLogLinks();
+  NonNamespaceOperation<ConsoleExternalLogLink, ConsoleExternalLogLinkList, Resource<ConsoleExternalLogLink>> consoleExternalLogLinks();
   /**
    * API entrypoint for ConsoleLink related operations(console.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for ConsoleLink type
    */
-  NonNamespaceOperation<ConsoleLink, ConsoleLinkList, DoneableConsoleLink, Resource<ConsoleLink, DoneableConsoleLink>> consoleLinks();
+  NonNamespaceOperation<ConsoleLink, ConsoleLinkList, Resource<ConsoleLink>> consoleLinks();
   /**
    * API entrypoint for ConsoleNotification related operations(console.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for ConsoleNotification type
    */
-  NonNamespaceOperation<ConsoleNotification, ConsoleNotificationList, DoneableConsoleNotification, Resource<ConsoleNotification, DoneableConsoleNotification>> consoleNotifications();
+  NonNamespaceOperation<ConsoleNotification, ConsoleNotificationList, Resource<ConsoleNotification>> consoleNotifications();
   /**
    * API entrypoint for ConsoleYAMLSample related operations(console.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for ConsoleYAMLSample type
    */
-  NonNamespaceOperation<ConsoleYAMLSample, ConsoleYAMLSampleList, DoneableConsoleYAMLSample, Resource<ConsoleYAMLSample, DoneableConsoleYAMLSample>> consoleYAMLSamples();
+  NonNamespaceOperation<ConsoleYAMLSample, ConsoleYAMLSampleList, Resource<ConsoleYAMLSample>> consoleYAMLSamples();
 }

@@ -18,6 +18,7 @@ package io.fabric8.kubernetes;
 import io.fabric8.commons.ClusterEntity;
 import io.fabric8.commons.DeleteEntity;
 import io.fabric8.kubernetes.api.model.rbac.RoleBinding;
+import io.fabric8.kubernetes.api.model.rbac.RoleBindingBuilder;
 import io.fabric8.kubernetes.api.model.rbac.RoleBindingList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.arquillian.cube.kubernetes.api.Session;
@@ -123,8 +124,8 @@ public class RoleBindingIT {
   @Test
   public void update() {
 
-    roleBinding = client.rbac().roleBindings().inNamespace(session.getNamespace()).withName("rb-update").edit()
-      .editSubject(0).withName("jane-new").endSubject().done();
+    roleBinding = client.rbac().roleBindings().inNamespace(session.getNamespace()).withName("rb-update").edit(r -> new RoleBindingBuilder(r)
+                        .editSubject(0).withName("jane-new").endSubject().build());
 
     assertNotNull(roleBinding);
     assertEquals("RoleBinding", roleBinding.getKind());

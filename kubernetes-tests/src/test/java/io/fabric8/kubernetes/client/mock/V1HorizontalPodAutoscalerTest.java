@@ -123,7 +123,7 @@ public class V1HorizontalPodAutoscalerTest {
       server.expect().withPath("/apis/autoscaling/v1/namespaces/test/horizontalpodautoscalers/horizontalpodautoscaler").andReturn(404, "error message from kubernetes").always();
       KubernetesClient client = server.getClient();
 
-      client.autoscaling().v1().horizontalPodAutoscalers().inNamespace("test").withName("horizontalpodautoscaler").edit();
+      client.autoscaling().v1().horizontalPodAutoscalers().inNamespace("test").withName("horizontalpodautoscaler").edit(h -> h);
     });
   }
 

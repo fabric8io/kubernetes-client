@@ -48,7 +48,7 @@ class ClusterRoleTest {
   void testHandlersLoadFromFile() {
     KubernetesClient client = server.getClient();
 
-    ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> load = client.load(getClass().getResourceAsStream("/test-clusterrole.yml"));
+    ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> load = client.load(getClass().getResourceAsStream("/test-clusterrole.yml"));
 
     assertNotNull(load);
 

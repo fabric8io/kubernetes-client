@@ -18,23 +18,16 @@ package io.fabric8.kubernetes.client.dsl;
 
 import io.fabric8.kubernetes.api.model.extensions.DaemonSet;
 import io.fabric8.kubernetes.api.model.extensions.DaemonSetList;
-import io.fabric8.kubernetes.api.model.extensions.DoneableDaemonSet;
 import io.fabric8.kubernetes.api.model.extensions.Deployment;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentList;
-import io.fabric8.kubernetes.api.model.extensions.DoneableDeployment;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSet;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSetList;
-import io.fabric8.kubernetes.api.model.extensions.DoneableReplicaSet;
 import io.fabric8.kubernetes.api.model.batch.Job;
 import io.fabric8.kubernetes.api.model.batch.JobList;
-import io.fabric8.kubernetes.api.model.batch.DoneableJob;
 import io.fabric8.kubernetes.api.model.extensions.Ingress;
 import io.fabric8.kubernetes.api.model.extensions.IngressList;
-import io.fabric8.kubernetes.api.model.extensions.DoneableIngress;
 import io.fabric8.kubernetes.api.model.extensions.NetworkPolicy;
 import io.fabric8.kubernetes.api.model.extensions.NetworkPolicyList;
-import io.fabric8.kubernetes.api.model.extensions.DoneableNetworkPolicy;
-import io.fabric8.kubernetes.api.model.policy.DoneablePodSecurityPolicy;
 import io.fabric8.kubernetes.api.model.policy.PodSecurityPolicy;
 import io.fabric8.kubernetes.api.model.policy.PodSecurityPolicyList;
 import io.fabric8.kubernetes.client.Client;
@@ -42,29 +35,29 @@ import io.fabric8.kubernetes.client.Client;
 public interface ExtensionsAPIGroupDSL extends Client {
 
   @Deprecated
-  MixedOperation<DaemonSet, DaemonSetList, DoneableDaemonSet, Resource<DaemonSet, DoneableDaemonSet>> daemonSets();
+  MixedOperation<DaemonSet, DaemonSetList, Resource<DaemonSet>> daemonSets();
 
   @Deprecated
-  MixedOperation<Deployment, DeploymentList, DoneableDeployment, RollableScalableResource<Deployment, DoneableDeployment>> deployments();
+  MixedOperation<Deployment, DeploymentList, RollableScalableResource<Deployment>> deployments();
 
   @Deprecated
-  MixedOperation<Ingress, IngressList, DoneableIngress, Resource<Ingress, DoneableIngress>> ingress();
+  MixedOperation<Ingress, IngressList, Resource<Ingress>> ingress();
 
-  MixedOperation<Ingress, IngressList, DoneableIngress, Resource<Ingress, DoneableIngress>> ingresses();
-
-  @Deprecated
-  MixedOperation<Job, JobList, DoneableJob, ScalableResource<Job, DoneableJob>> jobs();
+  MixedOperation<Ingress, IngressList, Resource<Ingress>> ingresses();
 
   @Deprecated
-  MixedOperation<NetworkPolicy, NetworkPolicyList, DoneableNetworkPolicy, Resource<NetworkPolicy, DoneableNetworkPolicy>> networkPolicies();
+  MixedOperation<Job, JobList, ScalableResource<Job>> jobs();
 
   @Deprecated
-  MixedOperation<ReplicaSet, ReplicaSetList, DoneableReplicaSet, RollableScalableResource<ReplicaSet, DoneableReplicaSet>> replicaSets();
+  MixedOperation<NetworkPolicy, NetworkPolicyList, Resource<NetworkPolicy>> networkPolicies();
+
+  @Deprecated
+  MixedOperation<ReplicaSet, ReplicaSetList, RollableScalableResource<ReplicaSet>> replicaSets();
 
   @Deprecated
   /**
    * @deprecated Replaced by {@link PolicyAPIGroupDSL#podSecurityPolicies()}
    */
-  MixedOperation<PodSecurityPolicy, PodSecurityPolicyList, DoneablePodSecurityPolicy, Resource<PodSecurityPolicy, DoneablePodSecurityPolicy>> podSecurityPolicies();
+  MixedOperation<PodSecurityPolicy, PodSecurityPolicyList, Resource<PodSecurityPolicy>> podSecurityPolicies();
 
 }

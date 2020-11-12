@@ -19,13 +19,12 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.volumesnapshot.api.model.DoneableVolumeSnapshotContent;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotContent;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotContentList;
 import okhttp3.OkHttpClient;
 
 
-public class VolumeSnapshotContentOperationsImpl extends HasMetadataOperation<VolumeSnapshotContent, VolumeSnapshotContentList, DoneableVolumeSnapshotContent, VolumeSnapshotContentResource> implements VolumeSnapshotContentResource {
+public class VolumeSnapshotContentOperationsImpl extends HasMetadataOperation<VolumeSnapshotContent, VolumeSnapshotContentList, VolumeSnapshotContentResource> implements VolumeSnapshotContentResource {
 
   public VolumeSnapshotContentOperationsImpl(OkHttpClient client, Config config) {
     this(new OperationContext().withOkhttpClient(client).withConfig(config));
@@ -35,11 +34,10 @@ public class VolumeSnapshotContentOperationsImpl extends HasMetadataOperation<Vo
     super(context.withApiGroupName("snapshot.storage.k8s.io").withApiGroupVersion("v1beta1").withPlural("volumesnapshotcontents"));
     this.type = VolumeSnapshotContent.class;
     this.listType = VolumeSnapshotContentList.class;
-    this.doneableType = DoneableVolumeSnapshotContent.class;
   }
 
   @Override
-  public BaseOperation<VolumeSnapshotContent, VolumeSnapshotContentList, DoneableVolumeSnapshotContent, VolumeSnapshotContentResource> newInstance(OperationContext context) {
+  public BaseOperation<VolumeSnapshotContent, VolumeSnapshotContentList, VolumeSnapshotContentResource> newInstance(OperationContext context) {
     return new VolumeSnapshotContentOperationsImpl(context);
   }
 

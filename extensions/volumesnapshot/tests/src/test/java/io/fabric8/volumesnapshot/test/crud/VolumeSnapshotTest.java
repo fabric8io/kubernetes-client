@@ -91,11 +91,11 @@ class VolumeSnapshotTest {
 
 
     //Update
-    VolumeSnapshot u1 = client.volumeSnapshots().withName("my-snapshot1").edit()
+    VolumeSnapshot u1 = client.volumeSnapshots().withName("my-snapshot1").edit(v -> new VolumeSnapshotBuilder(v)
       .editMetadata()
       .addToLabels("updated", "true")
       .endMetadata()
-      .done();
+      .build());
 
     assertNotNull(u1);
     assertEquals("true", u1.getMetadata().getLabels().get("updated"));

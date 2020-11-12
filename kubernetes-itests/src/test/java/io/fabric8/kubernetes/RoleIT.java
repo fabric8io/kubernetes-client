@@ -18,6 +18,7 @@ package io.fabric8.kubernetes;
 import io.fabric8.commons.ClusterEntity;
 import io.fabric8.commons.DeleteEntity;
 import io.fabric8.kubernetes.api.model.rbac.Role;
+import io.fabric8.kubernetes.api.model.rbac.RoleBuilder;
 import io.fabric8.kubernetes.api.model.rbac.RoleList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.arquillian.cube.kubernetes.api.Session;
@@ -150,8 +151,8 @@ public class RoleIT {
   @Test
   public void update() {
 
-    role = client.rbac().roles().inNamespace(currentNamespace).withName("role-update").edit()
-      .editRule(0).addToApiGroups(1, "extensions").endRule().done();
+    role = client.rbac().roles().inNamespace(currentNamespace).withName("role-update").edit(r -> new RoleBuilder(r)
+                 .editRule(0).addToApiGroups(1, "extensions").endRule().build());
 
     assertNotNull(role);
     assertEquals("Role", role.getKind());

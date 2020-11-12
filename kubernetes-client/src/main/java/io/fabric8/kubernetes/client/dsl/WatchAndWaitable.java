@@ -17,5 +17,5 @@ package io.fabric8.kubernetes.client.dsl;
 
 import io.fabric8.kubernetes.client.Watcher;
 
-public interface WatchAndWaitable<H, T> extends Watchable<H, Watcher<T>>, Waitable<T, T> {
+public interface WatchAndWaitable<T> extends Watchable<Watcher<T>>, Waitable<T, T> {
 }

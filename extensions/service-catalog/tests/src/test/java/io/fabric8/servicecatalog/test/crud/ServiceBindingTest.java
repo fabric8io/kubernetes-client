@@ -103,11 +103,11 @@ class ServiceBindingTest {
         assertNotNull(r1);
 
         //Update
-        ServiceBinding u1 = client.serviceBindings().inNamespace("testns").withName("binding1").edit()
+        ServiceBinding u1 = client.serviceBindings().inNamespace("testns").withName("binding1").edit(s -> new ServiceBindingBuilder(s)
                 .editMetadata()
                 .addToLabels("updated", "true")
                 .endMetadata()
-                .done();
+                .build());
 
         assertNotNull(u1);
         assertEquals("true", u1.getMetadata().getLabels().get("updated"));

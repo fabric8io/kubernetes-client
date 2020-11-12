@@ -29,24 +29,6 @@ import io.fabric8.openshift.api.model.operator.v1.DNS;
 import io.fabric8.openshift.api.model.operator.v1.DNSList;
 import io.fabric8.openshift.api.model.operator.v1.DNSRecord;
 import io.fabric8.openshift.api.model.operator.v1.DNSRecordList;
-import io.fabric8.openshift.api.model.operator.v1.DoneableAuthentication;
-import io.fabric8.openshift.api.model.operator.v1.DoneableCSISnapshotController;
-import io.fabric8.openshift.api.model.operator.v1.DoneableConsole;
-import io.fabric8.openshift.api.model.operator.v1.DoneableDNS;
-import io.fabric8.openshift.api.model.operator.v1.DoneableDNSRecord;
-import io.fabric8.openshift.api.model.operator.v1.DoneableEtcd;
-import io.fabric8.openshift.api.model.operator.v1.DoneableImagePruner;
-import io.fabric8.openshift.api.model.operator.v1.DoneableIngressController;
-import io.fabric8.openshift.api.model.operator.v1.DoneableKubeAPIServer;
-import io.fabric8.openshift.api.model.operator.v1.DoneableKubeControllerManager;
-import io.fabric8.openshift.api.model.operator.v1.DoneableKubeScheduler;
-import io.fabric8.openshift.api.model.operator.v1.DoneableKubeStorageVersionMigrator;
-import io.fabric8.openshift.api.model.operator.v1.DoneableNetwork;
-import io.fabric8.openshift.api.model.operator.v1.DoneableOpenShiftAPIServer;
-import io.fabric8.openshift.api.model.operator.v1.DoneableOpenShiftControllerManager;
-import io.fabric8.openshift.api.model.operator.v1.DoneableServiceCA;
-import io.fabric8.openshift.api.model.operator.v1.DoneableServiceCatalogAPIServer;
-import io.fabric8.openshift.api.model.operator.v1.DoneableServiceCatalogControllerManager;
 import io.fabric8.openshift.api.model.operator.v1.Etcd;
 import io.fabric8.openshift.api.model.operator.v1.EtcdList;
 import io.fabric8.openshift.api.model.operator.v1.ImagePruner;
@@ -73,7 +55,6 @@ import io.fabric8.openshift.api.model.operator.v1.ServiceCatalogAPIServer;
 import io.fabric8.openshift.api.model.operator.v1.ServiceCatalogAPIServerList;
 import io.fabric8.openshift.api.model.operator.v1.ServiceCatalogControllerManager;
 import io.fabric8.openshift.api.model.operator.v1.ServiceCatalogControllerManagerList;
-import io.fabric8.openshift.api.model.operator.v1alpha1.DoneableImageContentSourcePolicy;
 import io.fabric8.openshift.api.model.operator.v1alpha1.ImageContentSourcePolicy;
 import io.fabric8.openshift.api.model.operator.v1alpha1.ImageContentSourcePolicyList;
 
@@ -83,113 +64,113 @@ public interface OpenShiftOperatorAPIGroupDSL extends Client {
    *
    * @return NonNamespaceOperation object for Etcd type
    */
-  NonNamespaceOperation<Etcd, EtcdList, DoneableEtcd, Resource<Etcd, DoneableEtcd>> etcds();
+  NonNamespaceOperation<Etcd, EtcdList, Resource<Etcd>> etcds();
   /**
    * API entrypoint for KubeStorageVersionMigrator related operations(operator.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for KubeStorageVersionMigrator type
    */
-  NonNamespaceOperation<KubeStorageVersionMigrator, KubeStorageVersionMigratorList, DoneableKubeStorageVersionMigrator, Resource<KubeStorageVersionMigrator, DoneableKubeStorageVersionMigrator>> kubeStorageVersionMigrators();
+  NonNamespaceOperation<KubeStorageVersionMigrator, KubeStorageVersionMigratorList, Resource<KubeStorageVersionMigrator>> kubeStorageVersionMigrators();
   /**
    * API entrypoint for KubeControllerManager related operations(operator.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for KubeControllerManager type
    */
-  NonNamespaceOperation<KubeControllerManager, KubeControllerManagerList, DoneableKubeControllerManager, Resource<KubeControllerManager, DoneableKubeControllerManager>> kubeControllerManagers();
+  NonNamespaceOperation<KubeControllerManager, KubeControllerManagerList, Resource<KubeControllerManager>> kubeControllerManagers();
   /**
    * API entrypoint for CSISnapshotController related operations(operator.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for CSISnapshotController type
    */
-  NonNamespaceOperation<CSISnapshotController, CSISnapshotControllerList, DoneableCSISnapshotController, Resource<CSISnapshotController, DoneableCSISnapshotController>> csiSnapshotControllers();
+  NonNamespaceOperation<CSISnapshotController, CSISnapshotControllerList, Resource<CSISnapshotController>> csiSnapshotControllers();
   /**
    * API entrypoint for Network related operations(operator.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for Network type
    */
-  NonNamespaceOperation<Network, NetworkList, DoneableNetwork, Resource<Network, DoneableNetwork>> networks();
+  NonNamespaceOperation<Network, NetworkList, Resource<Network>> networks();
   /**
    * API entrypoint for KubeScheduler related operations(operator.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for KubeScheduler type
    */
-  NonNamespaceOperation<KubeScheduler, KubeSchedulerList, DoneableKubeScheduler, Resource<KubeScheduler, DoneableKubeScheduler>> kubeSchedulers();
+  NonNamespaceOperation<KubeScheduler, KubeSchedulerList, Resource<KubeScheduler>> kubeSchedulers();
   /**
    * API entrypoint for Console related operations(operator.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for Console type
    */
-  NonNamespaceOperation<Console, ConsoleList, DoneableConsole, Resource<Console, DoneableConsole>> consoles();
+  NonNamespaceOperation<Console, ConsoleList, Resource<Console>> consoles();
   /**
    * API entrypoint for ServiceCatalogControllerManager related operations(operator.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for ServiceCatalogControllerManager type
    */
-  NonNamespaceOperation<ServiceCatalogControllerManager, ServiceCatalogControllerManagerList, DoneableServiceCatalogControllerManager, Resource<ServiceCatalogControllerManager, DoneableServiceCatalogControllerManager>> serviceCatalogControllerManagers();
+  NonNamespaceOperation<ServiceCatalogControllerManager, ServiceCatalogControllerManagerList, Resource<ServiceCatalogControllerManager>> serviceCatalogControllerManagers();
   /**
    * API entrypoint for ServiceCA related operations(operator.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for ServiceCA type
    */
-  NonNamespaceOperation<ServiceCA, ServiceCAList, DoneableServiceCA, Resource<ServiceCA, DoneableServiceCA>> serviceCAs();
+  NonNamespaceOperation<ServiceCA, ServiceCAList, Resource<ServiceCA>> serviceCAs();
   /**
    * API entrypoint for ImageContentSourcePolicy related operations(operator.openshift.io/v1alpha1)
    *
    * @return NonNamespaceOperation object for ImageContentSourcePolicy type
    */
-  NonNamespaceOperation<ImageContentSourcePolicy, ImageContentSourcePolicyList, DoneableImageContentSourcePolicy, Resource<ImageContentSourcePolicy, DoneableImageContentSourcePolicy>> imageContentSourcePolicies();
+  NonNamespaceOperation<ImageContentSourcePolicy, ImageContentSourcePolicyList, Resource<ImageContentSourcePolicy>> imageContentSourcePolicies();
   /**
    * API entrypoint for DNS related operations(operator.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for DNS type
    */
-  NonNamespaceOperation<DNS, DNSList, DoneableDNS, Resource<DNS, DoneableDNS>> dnses();
+  NonNamespaceOperation<DNS, DNSList, Resource<DNS>> dnses();
   /**
    * API entrypoint for DNSRecord related operations(operator.openshift.io/v1)
    *
    * @return MixedOperation object for DNSRecord type
    */
-  MixedOperation<DNSRecord, DNSRecordList, DoneableDNSRecord, Resource<DNSRecord, DoneableDNSRecord>> dnsRecords();
+  MixedOperation<DNSRecord, DNSRecordList, Resource<DNSRecord>> dnsRecords();
   /**
    * API entrypoint for OpenShiftControllerManager related operations(operator.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for OpenShiftControllerManager type
    */
-  NonNamespaceOperation<OpenShiftControllerManager, OpenShiftControllerManagerList, DoneableOpenShiftControllerManager, Resource<OpenShiftControllerManager, DoneableOpenShiftControllerManager>> openShiftControllerManagers();
+  NonNamespaceOperation<OpenShiftControllerManager, OpenShiftControllerManagerList, Resource<OpenShiftControllerManager>> openShiftControllerManagers();
   /**
    * API entrypoint for OpenShiftAPIServer related operations(operator.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for OpenShiftAPIServer type
    */
-  NonNamespaceOperation<OpenShiftAPIServer, OpenShiftAPIServerList, DoneableOpenShiftAPIServer, Resource<OpenShiftAPIServer, DoneableOpenShiftAPIServer>> openShiftAPIServers();
+  NonNamespaceOperation<OpenShiftAPIServer, OpenShiftAPIServerList, Resource<OpenShiftAPIServer>> openShiftAPIServers();
   /**
    * API entrypoint for KubeAPIServer related operations(operator.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for KubeAPIServer type
    */
-  NonNamespaceOperation<KubeAPIServer, KubeAPIServerList, DoneableKubeAPIServer, Resource<KubeAPIServer, DoneableKubeAPIServer>> kubeAPIServers();
+  NonNamespaceOperation<KubeAPIServer, KubeAPIServerList, Resource<KubeAPIServer>> kubeAPIServers();
   /**
    * API entrypoint for IngressController related operations(operator.openshift.io/v1)
    *
    * @return MixedOperation object for IngressController type
    */
-  MixedOperation<IngressController, IngressControllerList, DoneableIngressController, Resource<IngressController, DoneableIngressController>> ingressControllers();
+  MixedOperation<IngressController, IngressControllerList, Resource<IngressController>> ingressControllers();
   /**
    * API entrypoint for ImagePruner related operations(imageregistry.operator.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for ImagePruner type
    */
-  NonNamespaceOperation<ImagePruner, ImagePrunerList, DoneableImagePruner, Resource<ImagePruner, DoneableImagePruner>> imagePruners();
+  NonNamespaceOperation<ImagePruner, ImagePrunerList, Resource<ImagePruner>> imagePruners();
   /**
    * API entrypoint for ServiceCatalogAPIServer related operations(operator.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for ServiceCatalogAPIServer type
    */
-  NonNamespaceOperation<ServiceCatalogAPIServer, ServiceCatalogAPIServerList, DoneableServiceCatalogAPIServer, Resource<ServiceCatalogAPIServer, DoneableServiceCatalogAPIServer>> serviceCatalogAPIServers();
+  NonNamespaceOperation<ServiceCatalogAPIServer, ServiceCatalogAPIServerList, Resource<ServiceCatalogAPIServer>> serviceCatalogAPIServers();
   /**
    * API entrypoint for Authentication related operations(operator.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for Authentication type
    */
-  NonNamespaceOperation<Authentication, AuthenticationList, DoneableAuthentication, Resource<Authentication, DoneableAuthentication>> authentications();
+  NonNamespaceOperation<Authentication, AuthenticationList, Resource<Authentication>> authentications();
 }

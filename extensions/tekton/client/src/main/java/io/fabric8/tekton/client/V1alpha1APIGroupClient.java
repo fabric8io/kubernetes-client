@@ -26,12 +26,6 @@ import io.fabric8.tekton.pipeline.v1alpha1.ClusterTask;
 import io.fabric8.tekton.pipeline.v1alpha1.ClusterTaskList;
 import io.fabric8.tekton.pipeline.v1alpha1.Condition;
 import io.fabric8.tekton.pipeline.v1alpha1.ConditionList;
-import io.fabric8.tekton.pipeline.v1alpha1.DoneableClusterTask;
-import io.fabric8.tekton.pipeline.v1alpha1.DoneableCondition;
-import io.fabric8.tekton.pipeline.v1alpha1.DoneablePipeline;
-import io.fabric8.tekton.pipeline.v1alpha1.DoneablePipelineRun;
-import io.fabric8.tekton.pipeline.v1alpha1.DoneableTask;
-import io.fabric8.tekton.pipeline.v1alpha1.DoneableTaskRun;
 import io.fabric8.tekton.pipeline.v1alpha1.Pipeline;
 import io.fabric8.tekton.pipeline.v1alpha1.PipelineList;
 import io.fabric8.tekton.pipeline.v1alpha1.PipelineRun;
@@ -40,14 +34,9 @@ import io.fabric8.tekton.pipeline.v1alpha1.Task;
 import io.fabric8.tekton.pipeline.v1alpha1.TaskList;
 import io.fabric8.tekton.pipeline.v1alpha1.TaskRun;
 import io.fabric8.tekton.pipeline.v1alpha1.TaskRunList;
-import io.fabric8.tekton.resource.v1alpha1.DoneablePipelineResource;
 import io.fabric8.tekton.resource.v1alpha1.PipelineResource;
 import io.fabric8.tekton.resource.v1alpha1.PipelineResourceList;
 import io.fabric8.tekton.triggers.v1alpha1.*;
-import io.fabric8.tekton.triggers.v1alpha1.DoneableClusterTriggerBinding;
-import io.fabric8.tekton.triggers.v1alpha1.DoneableEventListener;
-import io.fabric8.tekton.triggers.v1alpha1.DoneableTriggerBinding;
-import io.fabric8.tekton.triggers.v1alpha1.DoneableTriggerTemplate;
 import okhttp3.OkHttpClient;
 
 public class V1alpha1APIGroupClient extends BaseClient implements V1alpha1APIGroupDSL {
@@ -60,57 +49,57 @@ public class V1alpha1APIGroupClient extends BaseClient implements V1alpha1APIGro
   }
 
   @Override
-  public MixedOperation<Pipeline, PipelineList, DoneablePipeline, Resource<Pipeline, DoneablePipeline>> pipelines() {
+  public MixedOperation<Pipeline, PipelineList, Resource<Pipeline>> pipelines() {
     return new PipelineOperationsImpl(this.getHttpClient(), this.getConfiguration());
   }
 
   @Override
-  public MixedOperation<PipelineRun, PipelineRunList, DoneablePipelineRun, Resource<PipelineRun, DoneablePipelineRun>> pipelineRuns() {
+  public MixedOperation<PipelineRun, PipelineRunList, Resource<PipelineRun>> pipelineRuns() {
     return new PipelineRunOperationsImpl(this.getHttpClient(), this.getConfiguration());
   }
 
   @Override
-  public MixedOperation<PipelineResource, PipelineResourceList, DoneablePipelineResource, Resource<PipelineResource, DoneablePipelineResource>> pipelineResources() {
+  public MixedOperation<PipelineResource, PipelineResourceList, Resource<PipelineResource>> pipelineResources() {
     return new PipelineResourceOperationsImpl(this.getHttpClient(), this.getConfiguration());
   }
 
   @Override
-  public MixedOperation<Task, TaskList, DoneableTask, Resource<Task, DoneableTask>> tasks() {
+  public MixedOperation<Task, TaskList, Resource<Task>> tasks() {
     return new TaskOperationsImpl(this.getHttpClient(), this.getConfiguration());
   }
 
   @Override
-  public MixedOperation<TaskRun, TaskRunList, DoneableTaskRun, Resource<TaskRun, DoneableTaskRun>> taskRuns() {
+  public MixedOperation<TaskRun, TaskRunList, Resource<TaskRun>> taskRuns() {
     return new TaskRunOperationsImpl(this.getHttpClient(), this.getConfiguration());
   }
 
   @Override
-  public MixedOperation<Condition, ConditionList, DoneableCondition, Resource<Condition, DoneableCondition>> conditions() {
+  public MixedOperation<Condition, ConditionList, Resource<Condition>> conditions() {
     return new ConditionOperationsImpl(this.getHttpClient(), this.getConfiguration());
   }
 
   @Override
-  public MixedOperation<TriggerTemplate, TriggerTemplateList, DoneableTriggerTemplate, Resource<TriggerTemplate, DoneableTriggerTemplate>> triggerTemplates() {
+  public MixedOperation<TriggerTemplate, TriggerTemplateList, Resource<TriggerTemplate>> triggerTemplates() {
     return new TriggerTemplateOperationsImpl(this.getHttpClient(),this.getConfiguration());
   }
 
   @Override
-  public MixedOperation<TriggerBinding, TriggerBindingList, DoneableTriggerBinding, Resource<TriggerBinding, DoneableTriggerBinding>> triggerBindings() {
+  public MixedOperation<TriggerBinding, TriggerBindingList, Resource<TriggerBinding>> triggerBindings() {
     return new TriggerBindingOperationsImpl(this.getHttpClient(),this.getConfiguration());
   }
 
   @Override
-  public MixedOperation<EventListener, EventListenerList, DoneableEventListener, Resource<EventListener, DoneableEventListener>> eventListeners() {
+  public MixedOperation<EventListener, EventListenerList, Resource<EventListener>> eventListeners() {
     return new EventListenerOperationsImpl(this.getHttpClient(),this.getConfiguration());
   }
 
   @Override
-  public NonNamespaceOperation<ClusterTask, ClusterTaskList, DoneableClusterTask, Resource<ClusterTask, DoneableClusterTask>> clusterTasks() {
+  public NonNamespaceOperation<ClusterTask, ClusterTaskList, Resource<ClusterTask>> clusterTasks() {
     return new ClusterTaskOperationsImpl(this.getHttpClient(), this.getConfiguration());
   }
 
   @Override
-  public NonNamespaceOperation<ClusterTriggerBinding, ClusterTriggerBindingList, DoneableClusterTriggerBinding, Resource<ClusterTriggerBinding, DoneableClusterTriggerBinding>> clusterTriggerBindings() {
+  public NonNamespaceOperation<ClusterTriggerBinding, ClusterTriggerBindingList, Resource<ClusterTriggerBinding>> clusterTriggerBindings() {
     return new ClusterTriggerBindingOperationsImpl(this.getHttpClient(),this.getConfiguration());
   }
 }

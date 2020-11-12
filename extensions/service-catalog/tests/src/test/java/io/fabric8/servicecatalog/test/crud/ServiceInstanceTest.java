@@ -103,11 +103,11 @@ class ServiceInstanceTest {
         assertNotNull(r1);
 
         //Update
-        ServiceInstance u1 = client.serviceInstances().inNamespace("testns").withName("instance1").edit()
+        ServiceInstance u1 = client.serviceInstances().inNamespace("testns").withName("instance1").edit(s -> new ServiceInstanceBuilder(s)
                 .editMetadata()
                 .addToLabels("updated", "true")
                 .endMetadata()
-                .done();
+                .build());
 
         assertNotNull(u1);
         assertEquals("true", u1.getMetadata().getLabels().get("updated"));

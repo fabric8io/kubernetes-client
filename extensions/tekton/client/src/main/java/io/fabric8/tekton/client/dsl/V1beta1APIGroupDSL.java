@@ -21,11 +21,6 @@ import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.tekton.pipeline.v1beta1.ClusterTask;
 import io.fabric8.tekton.pipeline.v1beta1.ClusterTaskList;
-import io.fabric8.tekton.pipeline.v1beta1.DoneableClusterTask;
-import io.fabric8.tekton.pipeline.v1beta1.DoneablePipeline;
-import io.fabric8.tekton.pipeline.v1beta1.DoneablePipelineRun;
-import io.fabric8.tekton.pipeline.v1beta1.DoneableTask;
-import io.fabric8.tekton.pipeline.v1beta1.DoneableTaskRun;
 import io.fabric8.tekton.pipeline.v1beta1.Pipeline;
 import io.fabric8.tekton.pipeline.v1beta1.PipelineList;
 import io.fabric8.tekton.pipeline.v1beta1.PipelineRun;
@@ -41,34 +36,34 @@ public interface V1beta1APIGroupDSL extends Client {
    *
    * @return MixedOperation for Pipeline class
    */
-  MixedOperation<Pipeline, PipelineList, DoneablePipeline, Resource<Pipeline, DoneablePipeline>> pipelines();
+  MixedOperation<Pipeline, PipelineList, Resource<Pipeline>> pipelines();
 
   /**
    * API entrypoint for PipelineRun(tekton.dev/v1beta1)
    *
    * @return MixedOperation for PipelineRun class
    */
-  MixedOperation<PipelineRun, PipelineRunList, DoneablePipelineRun, Resource<PipelineRun, DoneablePipelineRun>> pipelineRuns();
+  MixedOperation<PipelineRun, PipelineRunList, Resource<PipelineRun>> pipelineRuns();
 
   /**
    * API entrypoint for Task(tekton.dev/v1beta1)
    *
    * @return MixedOperation for Task class
    */
-  MixedOperation<Task, TaskList, DoneableTask, Resource<Task, DoneableTask>> tasks();
+  MixedOperation<Task, TaskList, Resource<Task>> tasks();
 
   /**
    * API entrypoint for TaskRun(tekton.dev/v1beta1)
    *
    * @return MixedOperation for TaskRun class
    */
-  MixedOperation<TaskRun, TaskRunList, DoneableTaskRun, Resource<TaskRun, DoneableTaskRun>> taskRuns();
+  MixedOperation<TaskRun, TaskRunList, Resource<TaskRun>> taskRuns();
 
   /**
    * API entrypoint for ClusterTask(tekton.dev/v1beta1)
    *
    * @return MixedOperation for ClusterTask class
    */
-  NonNamespaceOperation<ClusterTask, ClusterTaskList, DoneableClusterTask, Resource<ClusterTask, DoneableClusterTask>> clusterTasks();
+  NonNamespaceOperation<ClusterTask, ClusterTaskList, Resource<ClusterTask>> clusterTasks();
 
 }

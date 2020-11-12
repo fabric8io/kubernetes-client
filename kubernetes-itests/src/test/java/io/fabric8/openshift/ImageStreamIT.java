@@ -19,6 +19,7 @@ package io.fabric8.openshift;
 import io.fabric8.commons.ClusterEntity;
 import io.fabric8.commons.ReadyEntity;
 import io.fabric8.openshift.api.model.ImageStream;
+import io.fabric8.openshift.api.model.ImageStreamBuilder;
 import io.fabric8.openshift.api.model.ImageStreamList;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.arquillian.cube.kubernetes.api.Session;
@@ -75,9 +76,9 @@ public class ImageStreamIT {
   public void update() {
     ReadyEntity<ImageStream> imageStreamReady = new ReadyEntity<>(ImageStream.class, client, "is-update", this.session.getNamespace());
     await().atMost(30, TimeUnit.SECONDS).until(imageStreamReady);
-    ImageStream imageStream1 = client.imageStreams().inNamespace(session.getNamespace()).withName("is-update").edit()
+    ImageStream imageStream1 = client.imageStreams().inNamespace(session.getNamespace()).withName("is-update").edit(i -> new ImageStreamBuilder(i)
       .editSpec().withDockerImageRepository("fabric8/s2i-java").endSpec()
-      .done();
+      .build());
     assertThat(imageStream1).isNotNull();
     assertEquals("fabric8/s2i-java", imageStream1.getSpec().getDockerImageRepository());
   }

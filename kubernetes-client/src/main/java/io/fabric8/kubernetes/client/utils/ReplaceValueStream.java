@@ -36,6 +36,7 @@ public class ReplaceValueStream {
    * @param is {@link InputStream} inputstream for
    * @param valuesMap a hashmap containing parameters
    * @return returns stream with template parameter expressions replaced
+   * @throws IOException in case of any network/object parse problems
    */
   public static InputStream replaceValues(InputStream is, Map<String, String> valuesMap) throws IOException {
     return new ReplaceValueStream(valuesMap).createInputStream(is);

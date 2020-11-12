@@ -84,11 +84,11 @@ class ClusterServicePlanTest {
         assertNotNull(r1);
 
         //Update
-        ClusterServicePlan u1 = client.clusterServicePlans().withName("plan1").edit()
+        ClusterServicePlan u1 = client.clusterServicePlans().withName("plan1").edit(c -> new ClusterServicePlanBuilder(c)
                 .editMetadata()
                 .addToLabels("updated", "true")
                 .endMetadata()
-                .done();
+                .build()); 
 
         assertNotNull(u1);
         assertEquals("true", u1.getMetadata().getLabels().get("updated"));

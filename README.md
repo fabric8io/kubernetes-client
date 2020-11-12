@@ -144,35 +144,35 @@ Service myservice = client.services().inNamespace("default").withName("myservice
 Editing resources uses the inline builders from the Kubernetes Model:
 
 ```java
-Namespace myns = client.namespaces().withName("myns").edit()
+Namespace myns = client.namespaces().withName("myns").edit(n -> new NamespaceBuilder(n))
                    .editMetadata()
                      .addToLabels("a", "label")
                    .endMetadata()
-                   .done();
+                   .build());
 
-Service myservice = client.services().inNamespace("default").withName("myservice").edit()
+Service myservice = client.services().inNamespace("default").withName("myservice").edit(s -> new ServiceBuilder(s))
                      .editMetadata()
                        .addToLabels("another", "label")
                      .endMetadata()
-                     .done();
+                     .build());
 ```
 
 In the same spirit you can inline builders to create:
 
 ```java
-Namespace myns = client.namespaces().createNew()
+Namespace myns = client.namespaces().create(new NamespaceBuilder()
                    .withNewMetadata()
                      .withName("myns")
                      .addToLabels("a", "label")
                    .endMetadata()
-                   .done();
+                   .build());
 
-Service myservice = client.services().inNamespace("default").createNew()
+Service myservice = client.services().inNamespace("default").create(new ServiceBuilder()
                      .withNewMetadata()
                        .withName("myservice")
                        .addToLabels("another", "label")
                      .endMetadata()
-                     .done();
+                     .build());
 ```
 
 You can also set the apiVersion of the resource like in the case of SecurityContextConstraints :

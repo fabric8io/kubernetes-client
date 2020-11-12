@@ -52,7 +52,7 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
   Watch {
   private static final Logger logger = LoggerFactory.getLogger(WatchHTTPManager.class);
 
-  private final BaseOperation<T, L, ?, ?> baseOperation;
+  private final BaseOperation<T, L, ?> baseOperation;
   private final Watcher<T> watcher;
   private final AtomicBoolean forceClosed = new AtomicBoolean();
   private final ListOptions listOptions;
@@ -73,7 +73,7 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
   });
 
   public WatchHTTPManager(final OkHttpClient client,
-                          final BaseOperation<T, L, ?, ?> baseOperation,
+                          final BaseOperation<T, L, ?> baseOperation,
                           final ListOptions listOptions, final Watcher<T> watcher, final int reconnectInterval,
                           final int reconnectLimit, long connectTimeout)
     throws MalformedURLException {
@@ -82,7 +82,7 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
   }
 
   public WatchHTTPManager(final OkHttpClient client,
-                          final BaseOperation<T, L, ?, ?> baseOperation,
+                          final BaseOperation<T, L, ?> baseOperation,
                           final ListOptions listOptions, final Watcher<T> watcher, final int reconnectInterval,
                           final int reconnectLimit, long connectTimeout, int maxIntervalExponent)
     throws MalformedURLException {

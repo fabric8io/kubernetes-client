@@ -18,10 +18,9 @@ package io.fabric8.kubernetes.client.dsl.internal.apps.v1;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
 import okhttp3.OkHttpClient;
-import io.fabric8.kubernetes.api.model.Doneable;
-import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodCondition;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.client.Config;
@@ -51,7 +50,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static io.fabric8.kubernetes.client.internal.SerializationUtils.dumpWithoutRuntimeStateAsYaml;
 
-public abstract class RollingUpdater<T extends HasMetadata, L, D extends Doneable<T>> {
+public abstract class RollingUpdater<T extends HasMetadata, L> {
   public static final String DEPLOYMENT_KEY = "deployment";
 
   private static final Long DEFAULT_ROLLING_TIMEOUT = 15 * 60 * 1000L; // 15 mins
@@ -82,9 +81,9 @@ public abstract class RollingUpdater<T extends HasMetadata, L, D extends Doneabl
 
   protected abstract PodList listSelectedPods(T obj);
 
-  protected abstract void updateDeploymentKey(D obj, String hash);
+  protected abstract T updateDeploymentKey(String name, String hash);
 
-  protected abstract void removeDeploymentKey(D obj);
+  protected abstract T removeDeploymentKey(String name);
 
   protected abstract int getReplicas(T obj);
 
@@ -105,19 +104,19 @@ public abstract class RollingUpdater<T extends HasMetadata, L, D extends Doneabl
 
       for (Pod pod : oldPods.getItems()) {
         try {
-          pods().inNamespace(namespace).withName(pod.getMetadata().getName())
-            .edit()
-            .editMetadata().addToLabels(DEPLOYMENT_KEY, oldDeploymentHash)
-            .and().done();
+            Pod old = pods().inNamespace(namespace).withName(pod.getMetadata().getName()).get();
+            Pod updated = new PodBuilder(old)
+                .editMetadata().addToLabels(DEPLOYMENT_KEY, oldDeploymentHash).endMetadata()
+                .build();
+            pods().inNamespace(namespace).withName(pod.getMetadata().getName()).replace(updated);
         } catch (KubernetesClientException e) {
           LOG.warn("Unable to add deployment key to pod: {}", e.getMessage());
         }
       }
 
       // Now we can update the old object with the new selector
-      D editable = resources().inNamespace(namespace).withName(oldName).cascading(false).edit();
-      updateDeploymentKey(editable, oldDeploymentHash);
-      oldObj = editable.done();
+
+      oldObj = updateDeploymentKey(oldName, oldDeploymentHash);
 
       // Get a hash of the new RC for
       String newDeploymentHash = md5sum(newObj);
@@ -164,10 +163,7 @@ public abstract class RollingUpdater<T extends HasMetadata, L, D extends Doneabl
         createdObj.getMetadata().setName(oldName);
 
         createdObj = resources().inNamespace(namespace).create(createdObj);
-
-        editable = resources().inNamespace(namespace).withName(createdObj.getMetadata().getName()).cascading(false).edit();
-        removeDeploymentKey(editable);
-        createdObj = editable.done();
+        createdObj = removeDeploymentKey(createdObj.getMetadata().getName());
       }
 
       return createdObj;
@@ -289,9 +285,9 @@ public abstract class RollingUpdater<T extends HasMetadata, L, D extends Doneabl
     return String.format("%1$032x", i);
   }
 
-  protected abstract Operation<T, L, D, RollableScalableResource<T, D>> resources();
+  protected abstract Operation<T, L, RollableScalableResource<T>> resources();
 
-  protected Operation<Pod, PodList, DoneablePod, PodResource<Pod, DoneablePod>> pods() {
+  protected Operation<Pod, PodList, PodResource<Pod>> pods() {
     return new PodOperationsImpl(client, config);
   }
 

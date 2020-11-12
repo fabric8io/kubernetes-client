@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
@@ -30,8 +29,7 @@ import okhttp3.OkHttpClient;
 
 /**
  */
-public class CustomResourceOperationsImpl<T extends HasMetadata, L extends KubernetesResourceList<T>, D extends Doneable<T>> extends HasMetadataOperation<T, L, D,
-    Resource<T, D>> implements MixedOperation<T, L, D, Resource<T, D>> {
+public class CustomResourceOperationsImpl<T extends HasMetadata, L extends KubernetesResourceList<T>> extends HasMetadataOperation<T, L, Resource<T>> implements MixedOperation<T, L, Resource<T>> {
 
   private final boolean resourceNamespaced;
 
@@ -46,7 +44,6 @@ public class CustomResourceOperationsImpl<T extends HasMetadata, L extends Kuber
 
     this.type = context.getType();
     this.listType = context.getListType();
-    this.doneableType = context.getDoneableType();
 
     this.resourceNamespaced = resourceNamespaced(context.getCrdContext());
     this.apiVersion = getAPIGroup() + "/" + getAPIVersion();

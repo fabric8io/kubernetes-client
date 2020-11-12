@@ -32,11 +32,6 @@ public class KubernetesTypeAnnotator extends KubernetesCoreTypeAnnotator {
           .param("lazyCollectionInitEnabled", false)
           .param("builderPackage", "io.fabric8.kubernetes.api.builder");
 
-        buildable.paramArray("inline").annotate(Inline.class)
-          .param("type", new JCodeModel()._class("io.fabric8.kubernetes.api.model.Doneable"))
-          .param("prefix", "Doneable")
-          .param("value", "done");
-
         JAnnotationArrayMember arrayMember = buildable.paramArray("refs");
         arrayMember.annotate(BuildableReference.class).param("value", new JCodeModel()._class("io.fabric8.kubernetes.api.model.ObjectMeta"));
         arrayMember.annotate(BuildableReference.class).param("value", new JCodeModel()._class("io.fabric8.kubernetes.api.model.LabelSelector"));

@@ -18,6 +18,7 @@ package io.fabric8.kubernetes;
 
 import io.fabric8.commons.ClusterEntity;
 import io.fabric8.kubernetes.api.model.batch.CronJob;
+import io.fabric8.kubernetes.api.model.batch.CronJobBuilder;
 import io.fabric8.kubernetes.api.model.batch.CronJobList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.arquillian.cube.kubernetes.api.Session;
@@ -78,11 +79,11 @@ public class CronJobIT {
   public void update() {
     currentNamespace = session.getNamespace();
     cronJob1 = client.batch().cronjobs().inNamespace(currentNamespace).withName("hello-update")
-      .edit()
+      .edit(c -> new CronJobBuilder(c)
       .editSpec()
       .withSchedule("*/1 * * * *")
       .endSpec()
-      .done();
+      .build());
     assertEquals("*/1 * * * *", cronJob1.getSpec().getSchedule());
   }
 

@@ -27,6 +27,7 @@ import io.fabric8.kubernetes.api.model.rbac.SubjectBuilder;
 import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.RequestConfigBuilder;
 import io.fabric8.openshift.api.model.ProjectRequest;
+import io.fabric8.openshift.api.model.ProjectRequestBuilder;
 import io.fabric8.openshift.api.model.User;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.arquillian.cube.kubernetes.api.Session;
@@ -132,11 +133,11 @@ public class UserImpersonationIT {
     .build();
 
     // Create a project
-    ProjectRequest projectRequest = client.withRequestConfig(requestConfig).call(c -> c.projectrequests().createNew()
+    ProjectRequest projectRequest = client.withRequestConfig(requestConfig).call(c -> c.projectrequests().create(new ProjectRequestBuilder()
       .withNewMetadata()
       .withName(NEW_PROJECT)
       .endMetadata()
-      .done());
+      .build()));
 
     // Grab the requester annotation
     String requester = projectRequest.getMetadata().getAnnotations().get("openshift.io/requester");

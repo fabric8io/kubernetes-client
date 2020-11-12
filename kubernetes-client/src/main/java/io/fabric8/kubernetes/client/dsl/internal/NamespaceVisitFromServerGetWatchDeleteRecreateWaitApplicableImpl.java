@@ -59,7 +59,7 @@ import static io.fabric8.kubernetes.client.utils.CreateOrReplaceHelper.createOrR
 import static io.fabric8.kubernetes.client.utils.DeleteAndCreateHelper.deleteAndCreateItem;
 
 public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl extends OperationSupport implements
-  NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata, Boolean>,
+  NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata>,
   Waitable<HasMetadata, HasMetadata>,
   Readiable {
 
@@ -176,7 +176,7 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl ex
   }
 
   @Override
-  public VisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata, Boolean> inNamespace(String explicitNamespace) {
+  public VisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata> inNamespace(String explicitNamespace) {
     return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, deletingExisting, visitors, item, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
 
@@ -191,25 +191,25 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl ex
   }
 
   @Override
-  public VisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata, Boolean> accept(Visitor visitor) {
+  public VisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata> accept(Visitor visitor) {
     List<Visitor> newVisitors = new ArrayList<>(visitors);
     newVisitors.add(visitor);
     return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, newVisitors, item, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
 
   @Override
-  public CascadingDeletable<Boolean> withGracePeriod(long gracePeriodSeconds) {
+  public CascadingDeletable withGracePeriod(long gracePeriodSeconds) {
     return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
 
   @Override
-  public CascadingDeletable<Boolean> withPropagationPolicy(DeletionPropagation propagationPolicy) {
+  public CascadingDeletable withPropagationPolicy(DeletionPropagation propagationPolicy) {
     return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
 
 
   @Override
-  public Deletable<Boolean> cascading(boolean cascading) {
+  public Deletable cascading(boolean cascading) {
     return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
 

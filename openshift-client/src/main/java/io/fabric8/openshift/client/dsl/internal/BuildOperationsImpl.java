@@ -15,7 +15,6 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
-import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.BytesLimitTerminateTimeTailPrettyLoggable;
@@ -35,7 +34,6 @@ import io.fabric8.openshift.client.internal.patchmixins.BuildMixIn;
 import okhttp3.OkHttpClient;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildList;
-import io.fabric8.openshift.api.model.DoneableBuild;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -55,9 +53,9 @@ import java.util.concurrent.TimeUnit;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.BUILD;
 
-public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList, DoneableBuild,
-  BuildResource<Build, DoneableBuild, String, LogWatch>> implements
-  BuildResource<Build, DoneableBuild, String, LogWatch> {
+public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList,
+  BuildResource<Build, LogWatch>> implements
+  BuildResource<Build, LogWatch> {
 
   public static final String OPENSHIFT_IO_BUILD_NAME = "openshift.io/build.name";
   private final InputStream in;
@@ -89,7 +87,6 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList, Do
       .withPlural("builds"));
     this.type = Build.class;
     this.listType = BuildList.class;
-    this.doneableType = DoneableBuild.class;
 
     this.in = context.getIn();
     this.out = context.getOut();
@@ -209,54 +206,54 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList, Do
   }
 
   @Override
-  public Loggable<String, LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
+  public Loggable<LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
     return new BuildOperationsImpl((BuildOperationContext)context, logWaitTimeout);
   }
 
   @Override
-  public Loggable<String, LogWatch> withPrettyOutput() {
+  public Loggable<LogWatch> withPrettyOutput() {
     return new BuildOperationsImpl(getContext().withPrettyOutput(true));
   }
 
   @Override
-  public PrettyLoggable<String, LogWatch> tailingLines(int tailingLines) {
+  public PrettyLoggable<LogWatch> tailingLines(int tailingLines) {
     return new BuildOperationsImpl(getContext().withTailingLines(tailingLines));
   }
 
   @Override
-  public TimeTailPrettyLoggable<String, LogWatch> terminated() {
+  public TimeTailPrettyLoggable<LogWatch> terminated() {
     return new BuildOperationsImpl(getContext().withTerminatedStatus(true));
   }
 
   @Override
-  public TailPrettyLoggable<String, LogWatch> sinceTime(String sinceTimestamp) {
+  public TailPrettyLoggable<LogWatch> sinceTime(String sinceTimestamp) {
     return new BuildOperationsImpl(getContext().withSinceTimestamp(sinceTimestamp));
   }
 
   @Override
-  public TailPrettyLoggable<String, LogWatch> sinceSeconds(int sinceSeconds) {
+  public TailPrettyLoggable<LogWatch> sinceSeconds(int sinceSeconds) {
     return new BuildOperationsImpl(getContext().withSinceSeconds(sinceSeconds));
   }
 
   @Override
-  public BytesLimitTerminateTimeTailPrettyLoggable<String, LogWatch> limitBytes(int limitBytes) {
+  public BytesLimitTerminateTimeTailPrettyLoggable<LogWatch> limitBytes(int limitBytes) {
     return new BuildOperationsImpl(getContext().withLimitBytes(limitBytes));
   }
 
   @Override
-  public BytesLimitTerminateTimeTailPrettyLoggable<String, LogWatch> usingTimestamps() {
+  public BytesLimitTerminateTimeTailPrettyLoggable<LogWatch> usingTimestamps() {
     return new BuildOperationsImpl(getContext().withTimestamps(true));
   }
 
   private void waitUntilBuildPodBecomesReady(Build build) {
-    List<PodResource<Pod, DoneablePod>> podOps = PodOperationUtil.getPodOperationsForController(context, build.getMetadata().getUid(),
+    List<PodResource<Pod>> podOps = PodOperationUtil.getPodOperationsForController(context, build.getMetadata().getUid(),
       getBuildPodLabels(build), withPrettyOutput, podLogWaitTimeout);
 
     waitForBuildPodToBecomeReady(podOps, podLogWaitTimeout != null ? podLogWaitTimeout : DEFAULT_POD_LOG_WAIT_TIMEOUT);
   }
 
-  private static void waitForBuildPodToBecomeReady(List<PodResource<Pod, DoneablePod>> podOps, Integer podLogWaitTimeout) {
-    for (PodResource<Pod, DoneablePod> podOp : podOps) {
+  private static void waitForBuildPodToBecomeReady(List<PodResource<Pod>> podOps, Integer podLogWaitTimeout) {
+    for (PodResource<Pod> podOp : podOps) {
       PodOperationUtil.waitUntilReadyBeforeFetchingLogs(podOp, podLogWaitTimeout);
     }
   }

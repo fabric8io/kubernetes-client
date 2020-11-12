@@ -54,7 +54,7 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
   private final AtomicBoolean forceClosed = new AtomicBoolean();
   private final AtomicReference<String> resourceVersion;
   private final ListOptions listOptions;
-  private final BaseOperation<T, L, ?, ?> baseOperation;
+  private final BaseOperation<T, L, ?> baseOperation;
   private final Watcher<T> watcher;
   private final int reconnectLimit;
   private final int reconnectInterval;
@@ -74,7 +74,7 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
   private WebSocket webSocket;
   private OkHttpClient clonedClient;
 
-  public WatchConnectionManager(final OkHttpClient client, final BaseOperation<T, L, ?, ?> baseOperation, final ListOptions listOptions, final Watcher<T> watcher, final int reconnectInterval, final int reconnectLimit, long websocketTimeout, int maxIntervalExponent) throws MalformedURLException {
+  public WatchConnectionManager(final OkHttpClient client, final BaseOperation<T, L, ?> baseOperation, final ListOptions listOptions, final Watcher<T> watcher, final int reconnectInterval, final int reconnectLimit, long websocketTimeout, int maxIntervalExponent) throws MalformedURLException {
     this.listOptions = listOptions;
     this.resourceVersion = new AtomicReference<>(listOptions.getResourceVersion());
     this.baseOperation = baseOperation;
@@ -102,7 +102,7 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
     runWatch();
   }
 
-  public WatchConnectionManager(final OkHttpClient client, final BaseOperation<T, L, ?, ?> baseOperation, final ListOptions listOptions, final Watcher<T> watcher, final int reconnectInterval, final int reconnectLimit, long websocketTimeout) throws MalformedURLException {
+  public WatchConnectionManager(final OkHttpClient client, final BaseOperation<T, L, ?> baseOperation, final ListOptions listOptions, final Watcher<T> watcher, final int reconnectInterval, final int reconnectLimit, long websocketTimeout) throws MalformedURLException {
     // Default max 32x slowdown from base interval
     this(client, baseOperation, listOptions, watcher, reconnectInterval, reconnectLimit, websocketTimeout, 5);
   }

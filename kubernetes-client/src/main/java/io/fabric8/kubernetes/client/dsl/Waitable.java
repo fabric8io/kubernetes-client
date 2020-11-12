@@ -32,7 +32,7 @@ public interface Waitable<T, P> {
    * @param initialBackoff the value for the initial backoff on first error
    * @param backoffUnit the TimeUnit for the initial backoff value
    * @param backoffMultiplier what to multiply the backoff by on each subsequent error
-   * @return
+   * @return the waitable
    */
   Waitable<T, P> withWaitRetryBackoff(long initialBackoff, TimeUnit backoffUnit, double backoffMultiplier);
 }

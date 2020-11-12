@@ -19,6 +19,7 @@ package io.fabric8.openshift;
 import io.fabric8.commons.ClusterEntity;
 import io.fabric8.commons.ReadyEntity;
 import io.fabric8.openshift.api.model.Route;
+import io.fabric8.openshift.api.model.RouteBuilder;
 import io.fabric8.openshift.api.model.RouteList;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.arquillian.cube.kubernetes.api.Session;
@@ -80,8 +81,8 @@ public class RouteIT {
   @Test
   public void update() {
     ReadyEntity<Route> route1Ready = new ReadyEntity<>(Route.class, client, "route-update", this.currentNamespace);
-    route1 = client.routes().inNamespace(currentNamespace).withName("route-update").edit()
-      .editSpec().withPath("/test").endSpec().done();
+    route1 = client.routes().inNamespace(currentNamespace).withName("route-update").edit(r -> new RouteBuilder (r)
+                   .editSpec().withPath("/test").endSpec().build());
     await().atMost(30, TimeUnit.SECONDS).until(route1Ready);
     assertThat(route1).isNotNull();
     assertEquals("/test", route1.getSpec().getPath());

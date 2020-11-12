@@ -77,7 +77,7 @@ public class StorageClassExamples {
       logger.info("List of storage classes: {}", storageClassList.toString());
 
       //update storage class. add label
-      storageClass = client.storage().storageClasses().withName(name).edit().editMetadata().addToLabels("testLabel", "testLabelValue").endMetadata().done();
+      storageClass = client.storage().storageClasses().withName(name).edit(s -> new StorageClassBuilder(s).editMetadata().addToLabels("testLabel", "testLabelValue").endMetadata().build());
 
       //list all storage classes
       storageClassList = client.storage().storageClasses().list();

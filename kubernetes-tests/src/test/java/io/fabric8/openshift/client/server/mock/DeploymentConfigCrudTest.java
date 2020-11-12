@@ -80,9 +80,9 @@ class DeploymentConfigCrudTest {
     assertNotNull(aDeploymentConfigList);
     assertEquals(2, aDeploymentConfigList.getItems().size());
 
-    deploymentConfig3 = client.deploymentConfigs().inNamespace("ns2").withName("deploymentConfig3").edit()
+    deploymentConfig3 = client.deploymentConfigs().inNamespace("ns2").withName("deploymentConfig3").edit(d -> new DeploymentConfigBuilder(d)
       .editMetadata().addToLabels("testkey1","testvalue2").endMetadata()
-      .done();
+      .build());
     assertNotNull(deploymentConfig3);
     assertEquals(2, deploymentConfig3.getMetadata().getLabels().size());
 

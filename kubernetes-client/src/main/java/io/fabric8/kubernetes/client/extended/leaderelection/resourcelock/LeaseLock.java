@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.extended.leaderelection.resourcelock;
 
 import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
+import io.fabric8.kubernetes.api.model.coordination.v1.LeaseBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.Namespaceable;
 
@@ -66,7 +67,7 @@ public class LeaseLock implements Lock {
     C client, LeaderElectionRecord leaderElectionRecord) throws LockException {
 
     try {
-      client.inNamespace(leaseNamespace).leases().withName(leaseName).createNew()
+      client.inNamespace(leaseNamespace).leases().withName(leaseName).create(new LeaseBuilder()
         .withNewMetadata().withNamespace(leaseNamespace).withName(leaseName).endMetadata()
         .withNewSpec()
         .withHolderIdentity(leaderElectionRecord.getHolderIdentity())
@@ -75,7 +76,7 @@ public class LeaseLock implements Lock {
         .withRenewTime(leaderElectionRecord.getRenewTime())
         .withLeaseTransitions(leaderElectionRecord.getLeaderTransitions())
         .endSpec()
-        .done();
+        .build());
     } catch (Exception e) {
       throw new LockException("Unable to create LeaseLock", e);
     }

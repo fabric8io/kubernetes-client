@@ -20,6 +20,7 @@ import io.fabric8.commons.ClusterEntity;
 import io.fabric8.commons.ReadyEntity;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
+import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.apps.DeploymentList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
@@ -79,7 +80,7 @@ public class DeploymentIT {
   @Test
   public void update() {
     deployment1 = client.apps().deployments().inNamespace(session.getNamespace()).withName("deployment-standard")
-      .edit().editMetadata().addToAnnotations("updated", "true").endMetadata().done();
+      .edit(d -> new DeploymentBuilder(d).editMetadata().addToAnnotations("updated", "true").endMetadata().build());
     assertThat(deployment1).isNotNull();
     assertEquals("true", deployment1.getMetadata().getAnnotations().get("updated"));
   }

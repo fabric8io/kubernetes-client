@@ -15,6 +15,6 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface RollableScalableResource<T, D> extends ScalableResource<T, D>,
-  Rollable<TimeoutImageEditReplacePatchable<T, T, D>> {
+public interface RollableScalableResource<T> extends ScalableResource<T>,
+  Rollable<TimeoutImageEditReplacePatchable<T>> {
 }

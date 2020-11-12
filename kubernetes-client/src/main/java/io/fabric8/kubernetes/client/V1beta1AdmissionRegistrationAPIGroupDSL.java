@@ -15,8 +15,6 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.DoneableMutatingWebhookConfiguration;
-import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.DoneableValidatingWebhookConfiguration;
 import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingWebhookConfiguration;
 import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingWebhookConfigurationList;
 import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingWebhookConfiguration;
@@ -25,6 +23,6 @@ import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 
 public interface V1beta1AdmissionRegistrationAPIGroupDSL extends Client {
-  MixedOperation<ValidatingWebhookConfiguration, ValidatingWebhookConfigurationList, DoneableValidatingWebhookConfiguration, Resource<ValidatingWebhookConfiguration, DoneableValidatingWebhookConfiguration>> validatingWebhookConfigurations();
-  MixedOperation<MutatingWebhookConfiguration, MutatingWebhookConfigurationList, DoneableMutatingWebhookConfiguration, Resource<MutatingWebhookConfiguration, DoneableMutatingWebhookConfiguration>> mutatingWebhookConfigurations();
+  MixedOperation<ValidatingWebhookConfiguration, ValidatingWebhookConfigurationList, Resource<ValidatingWebhookConfiguration>> validatingWebhookConfigurations();
+  MixedOperation<MutatingWebhookConfiguration, MutatingWebhookConfigurationList, Resource<MutatingWebhookConfiguration>> mutatingWebhookConfigurations();
 }

@@ -21,7 +21,6 @@ import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.extensions.Deployment;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentList;
-import io.fabric8.kubernetes.api.model.extensions.DoneableDeployment;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
@@ -31,7 +30,7 @@ import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.RollingUpdater;
 import okhttp3.OkHttpClient;
 
-class DeploymentRollingUpdater extends RollingUpdater<Deployment, DeploymentList, DoneableDeployment> {
+class DeploymentRollingUpdater extends RollingUpdater<Deployment, DeploymentList> {
 
   DeploymentRollingUpdater(OkHttpClient client, Config config, String namespace) {
     super(client, config, namespace);
@@ -58,7 +57,7 @@ class DeploymentRollingUpdater extends RollingUpdater<Deployment, DeploymentList
 
   @Override
   protected PodList listSelectedPods(Deployment obj) {
-    FilterWatchListDeletable<Pod, PodList, Boolean, Watch>  podLister = pods().inNamespace(namespace);
+    FilterWatchListDeletable<Pod, PodList>  podLister = pods().inNamespace(namespace);
     if (obj.getSpec().getSelector().getMatchLabels() != null) {
       podLister.withLabels(obj.getSpec().getSelector().getMatchLabels());
     }
@@ -82,20 +81,26 @@ class DeploymentRollingUpdater extends RollingUpdater<Deployment, DeploymentList
     }
     return podLister.list();
   }
-
   @Override
-  protected void updateDeploymentKey(DoneableDeployment obj, String hash) {
-    obj.editSpec()
-      .editTemplate().editMetadata().addToAnnotations(DEPLOYMENT_KEY, hash).endMetadata().endTemplate()
-      .endSpec();
+  protected Deployment updateDeploymentKey(String name, String hash) {
+     Deployment old = resources().inNamespace(namespace).withName(name).get();
+     Deployment updated = new DeploymentBuilder(old).editSpec()
+       .editSelector().addToMatchLabels(DEPLOYMENT_KEY, hash).endSelector()
+       .editTemplate().editMetadata().addToLabels(DEPLOYMENT_KEY, hash).endMetadata().endTemplate()
+       .endSpec()
+       .build();
+     return resources().inNamespace(namespace).withName(name).replace(updated);
   }
 
   @Override
-  protected void removeDeploymentKey(DoneableDeployment obj) {
-    obj.editSpec()
-      .editSelector().removeFromMatchLabels(DEPLOYMENT_KEY).endSelector()
-      .editTemplate().editMetadata().removeFromLabels(DEPLOYMENT_KEY).endMetadata().endTemplate()
-      .endSpec();
+  protected Deployment removeDeploymentKey(String name) {
+     Deployment old = resources().inNamespace(namespace).withName(name).get();
+     Deployment updated = new DeploymentBuilder(old).editSpec()
+       .editSelector().removeFromMatchLabels(DEPLOYMENT_KEY).endSelector()
+       .editTemplate().editMetadata().removeFromLabels(DEPLOYMENT_KEY).endMetadata().endTemplate()
+       .endSpec()
+       .build();
+     return resources().inNamespace(namespace).withName(name).replace(updated);
   }
 
   @Override
@@ -109,7 +114,7 @@ class DeploymentRollingUpdater extends RollingUpdater<Deployment, DeploymentList
   }
 
   @Override
-  protected Operation<Deployment, DeploymentList, DoneableDeployment, RollableScalableResource<Deployment, DoneableDeployment>> resources() {
+  protected Operation<Deployment, DeploymentList, RollableScalableResource<Deployment>> resources() {
     return new DeploymentOperationsImpl(client, config);
   }
 }

@@ -25,7 +25,6 @@ import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatc
 import io.fabric8.openshift.api.model.ProjectBuilder;
 import io.fabric8.openshift.client.dsl.ProjectOperation;
 import okhttp3.OkHttpClient;
-import io.fabric8.openshift.api.model.DoneableProject;
 import io.fabric8.openshift.api.model.Project;
 import io.fabric8.openshift.api.model.ProjectList;
 import io.fabric8.openshift.client.OpenShiftConfig;
@@ -35,8 +34,8 @@ import java.util.List;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.PROJECT;
 
-public class ProjectOperationsImpl extends OpenShiftOperation<Project, ProjectList, DoneableProject,
-  Resource<Project, DoneableProject>> implements ProjectOperation {
+public class ProjectOperationsImpl extends OpenShiftOperation<Project, ProjectList,
+  Resource<Project>> implements ProjectOperation {
   public static final String OPENSHIFT_IO_DESCRIPTION_ANNOTATION = "openshift.io/description";
   public static final String OPENSHIFT_IO_DISPLAY_NAME_ANNOTATION = "openshift.io/display-name";
   public static final String OPENSHIFT_IO_REQUESTER_ANNOTATION = "openshift.io/requester";
@@ -53,7 +52,6 @@ public class ProjectOperationsImpl extends OpenShiftOperation<Project, ProjectLi
       .withPlural("projects"));
     this.type = Project.class;
     this.listType = ProjectList.class;
-    this.doneableType = DoneableProject.class;
   }
   @Override
   public ProjectOperationsImpl newInstance(OperationContext context) {

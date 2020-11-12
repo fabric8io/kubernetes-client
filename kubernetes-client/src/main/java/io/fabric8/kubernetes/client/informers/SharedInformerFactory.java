@@ -164,14 +164,14 @@ public class SharedInformerFactory extends BaseOperation {
     return new ListerWatcher<T, L>() {
       @Override
       public L list(ListOptions params, String namespace, OperationContext context) {
-        BaseOperation<T, L, ?, ?> listBaseOperation = getConfiguredBaseOperation(namespace, context, apiTypeClass, apiListTypeClass);
+        BaseOperation<T, L, ?> listBaseOperation = getConfiguredBaseOperation(namespace, context, apiTypeClass, apiListTypeClass);
 
         return listBaseOperation.list();
       }
 
       @Override
       public Watch watch(ListOptions params, String namespace, OperationContext context, Watcher<T> resourceWatcher) {
-        BaseOperation<T, L, ?, ?> watchBaseOperation = getConfiguredBaseOperation(namespace, context, apiTypeClass, apiListTypeClass);
+        BaseOperation<T, L, ?> watchBaseOperation = getConfiguredBaseOperation(namespace, context, apiTypeClass, apiListTypeClass);
 
         // Register Custom Kind in case of CustomResource
         if (context.getApiGroupName() != null && context.getApiGroupVersion() != null) {
@@ -242,8 +242,8 @@ public class SharedInformerFactory extends BaseOperation {
     this.eventListeners.add(event);
   }
 
-  private <T extends HasMetadata, L extends KubernetesResourceList<T>> BaseOperation<T, L, ?, ?> getConfiguredBaseOperation(String namespace, OperationContext context, Class<T> apiTypeClass, Class<L> apiListTypeClass) {
-    BaseOperation<T, L, ?, ?> baseOperationWithContext;
+  private <T extends HasMetadata, L extends KubernetesResourceList<T>> BaseOperation<T, L, ?> getConfiguredBaseOperation(String namespace, OperationContext context, Class<T> apiTypeClass, Class<L> apiListTypeClass) {
+    BaseOperation<T, L, ?> baseOperationWithContext;
     // Avoid adding Namespace if it's picked from Global Configuration
     if (context.isNamespaceFromGlobalConfig()) {
       // SharedInformer default behavior is to watch in all namespaces

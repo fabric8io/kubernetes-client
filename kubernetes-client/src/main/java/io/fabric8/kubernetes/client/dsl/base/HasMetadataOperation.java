@@ -18,17 +18,17 @@ package io.fabric8.kubernetes.client.dsl.base;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
-import io.fabric8.kubernetes.api.builder.Function;
+import io.fabric8.kubernetes.api.builder.Builder;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
-import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Resource;
 
-public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, D extends Doneable<T>, R extends Resource<T, D>>
-  extends BaseOperation< T, L, D, R> {
+public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>> extends BaseOperation< T, L, R> {
   public static final DeletionPropagation DEFAULT_PROPAGATION_POLICY = DeletionPropagation.BACKGROUND;
 
   public HasMetadataOperation(OperationContext ctx) {
@@ -36,21 +36,16 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   }
 
   @Override
-  public D edit() {
-    final Function<T, T> visitor = resource -> {
-      try {
-        return patch(resource);
-      } catch (Exception e) {
-        throw KubernetesClientException.launderThrowable(forOperationType("edit"), e);
-      }
-    };
+  public T edit(Function<T, T> function) {
+    T item = getMandatory();
+    return patch(function.apply(item));
+  }
 
-    try {
-      T item = getMandatory();
-      return getDoneableType().getDeclaredConstructor(getType(), Function.class).newInstance(item, visitor);
-    } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException | InstantiationException e) {
-      throw KubernetesClientException.launderThrowable(forOperationType("edit"), e);
-    }
+  @Override
+  public T accept(Consumer<T> consumer) {
+    T item = getMandatory();
+    consumer.accept(item);
+    return patch(item);
   }
 
   @Override
@@ -83,8 +78,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
             throw KubernetesClientException.launderThrowable(forOperationType("replace"), e);
           }
         };
-        D doneable = getDoneableType().getDeclaredConstructor(getType(), Function.class).newInstance(item, visitor);
-        return doneable.done();
+        return visitor.apply(item);
       } catch (KubernetesClientException e) {
         caught = e;
         // Only retry if there's a conflict and using dynamic resource version - this is normally to do with resource version & server updates.
@@ -130,8 +124,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
             throw KubernetesClientException.launderThrowable(forOperationType("patch"), e);
           }
         };
-        D doneable = getDoneableType().getDeclaredConstructor(getType(), Function.class).newInstance(item, visitor);
-        return doneable.done();
+        return visitor.apply(item);
       } catch (KubernetesClientException e) {
         caught = e;
         // Only retry if there's a conflict - this is normally to do with resource version & server updates.

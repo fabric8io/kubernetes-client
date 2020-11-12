@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.examples;
 
 import io.fabric8.kubernetes.api.model.NamespaceBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
@@ -40,7 +41,7 @@ public class ReplaceExamples {
       try {
         log("Create namespace:", client.namespaces().create(new NamespaceBuilder().withNewMetadata().withName("thisisatest").endMetadata().build()));
 
-        Pod createdPod = client.pods().inNamespace("thisisatest").createNew()
+        Pod createdPod = client.pods().inNamespace("thisisatest").create(new PodBuilder()
           .withNewMetadata()
           .withName("testpod")
           .addToLabels("server", "nginx")
@@ -49,13 +50,14 @@ public class ReplaceExamples {
           .addNewContainer().withName("nginx").withImage("nginx")
           .addNewPort().withContainerPort(80).endPort()
           .endContainer()
-          .endSpec().done();
+          .endSpec()
+          .build());
         log("Created testPod:", createdPod);
 
-        Pod updatedPod = client.pods().inNamespace("thisisatest").withName("testpod").edit()
+        Pod updatedPod = client.pods().inNamespace("thisisatest").withName("testpod").edit(p -> new PodBuilder(p)
           .editMetadata()
           .addToLabels("server2", "nginx2")
-          .and().done();
+          .and().build());
         log("Replaced testPod:", updatedPod);
 
       } catch (KubernetesClientException e) {

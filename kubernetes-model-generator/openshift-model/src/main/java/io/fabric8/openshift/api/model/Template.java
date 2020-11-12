@@ -23,7 +23,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
@@ -62,7 +61,7 @@ import java.util.Map;
 @JsonDeserialize(using = JsonDeserializer.None.class)
 @EqualsAndHashCode
 @ToString
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage=false, builderPackage = "io.fabric8.kubernetes.api.builder", inline = @Inline(type = Doneable.class, prefix = "Doneable", value = "done"))
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage=false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @ApiVersion("v1")
 @ApiGroup("")
 @VelocityTransformations({

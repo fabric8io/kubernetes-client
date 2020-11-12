@@ -16,5 +16,5 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-public interface TimeTailPrettyLoggable<T, W> extends Timeable<TailPrettyLoggable<T, W>>, TailPrettyLoggable<T, W> {
+public interface TimeTailPrettyLoggable<W> extends Timeable<TailPrettyLoggable<W>>, TailPrettyLoggable<W> {
 }

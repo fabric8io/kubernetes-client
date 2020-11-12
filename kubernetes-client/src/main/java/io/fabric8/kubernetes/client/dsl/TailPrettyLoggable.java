@@ -16,5 +16,5 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-public interface TailPrettyLoggable<T, W> extends Tailable<PrettyLoggable<T, W>>, PrettyLoggable<T, W> {
+public interface TailPrettyLoggable<W> extends Tailable<PrettyLoggable<W>>, PrettyLoggable<W> {
 }

@@ -19,6 +19,7 @@ package io.fabric8.openshift;
 import io.fabric8.commons.ClusterEntity;
 import io.fabric8.commons.ReadyEntity;
 import io.fabric8.openshift.api.model.BuildConfig;
+import io.fabric8.openshift.api.model.BuildConfigBuilder;
 import io.fabric8.openshift.api.model.BuildConfigList;
 import io.fabric8.openshift.api.model.BuildSourceBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
@@ -75,8 +76,8 @@ public class BuildConfigIT {
   @Test
   public void update() {
     ReadyEntity<BuildConfig> buildConfigReady = new ReadyEntity<>(BuildConfig.class, client, "bc-update", session.getNamespace());
-    BuildConfig buildConfig1 = client.buildConfigs().inNamespace(session.getNamespace()).withName("bc-update").edit()
-      .editSpec().withFailedBuildsHistoryLimit(5).endSpec().done();
+    BuildConfig buildConfig1 = client.buildConfigs().inNamespace(session.getNamespace()).withName("bc-update").edit(b -> new BuildConfigBuilder(b)
+                                     .editSpec().withFailedBuildsHistoryLimit(5).endSpec().build());
     await().atMost(30, TimeUnit.SECONDS).until(buildConfigReady);
     assertEquals(5, buildConfig1.getSpec().getFailedBuildsHistoryLimit().intValue());
   }

@@ -77,10 +77,10 @@ public class WatchIT {
       }
     });
 
-    client.pods().inNamespace(currentNamespace).withName("sample-watch-pod").edit()
+    client.pods().inNamespace(currentNamespace).withName("sample-watch-pod").edit(p -> new PodBuilder(p)
       .editMetadata().addToLabels("foo", "bar")
       .endMetadata()
-      .done();
+      .build());
 
     assertTrue(eventLatch.await(10, TimeUnit.SECONDS));
     watch.close();

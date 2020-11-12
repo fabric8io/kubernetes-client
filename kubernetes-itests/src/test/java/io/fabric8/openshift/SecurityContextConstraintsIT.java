@@ -18,6 +18,7 @@ package io.fabric8.openshift;
 
 import io.fabric8.commons.ClusterEntity;
 import io.fabric8.openshift.api.model.SecurityContextConstraints;
+import io.fabric8.openshift.api.model.SecurityContextConstraintsBuilder;
 import io.fabric8.openshift.api.model.SecurityContextConstraintsList;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.arquillian.cube.openshift.impl.requirement.RequiresOpenshift;
@@ -103,9 +104,9 @@ public class SecurityContextConstraintsIT {
   @Test
   public void update(){
 
-    scc = client.securityContextConstraints().withName("scc-update").edit()
+    scc = client.securityContextConstraints().withName("scc-update").edit(s -> new SecurityContextConstraintsBuilder(s)
       .withAllowPrivilegedContainer(false)
-      .done();
+      .build());
 
     assertNotNull(scc);
     assertEquals("scc-update",scc.getMetadata().getName());

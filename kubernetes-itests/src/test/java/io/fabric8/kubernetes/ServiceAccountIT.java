@@ -77,10 +77,10 @@ public class ServiceAccountIT {
   @Test
   public void update() {
     ReadyEntity<ServiceAccount> serviceAccountReady = new ReadyEntity<>(ServiceAccount.class, client, "sa-update", session.getNamespace());
-    serviceAccount1 = client.serviceAccounts().inNamespace(session.getNamespace()).withName("sa-update").edit()
+    serviceAccount1 = client.serviceAccounts().inNamespace(session.getNamespace()).withName("sa-update").edit(s -> new ServiceAccountBuilder(s)
       .addNewSecret().withName("default-token-uudp").endSecret()
       .addNewImagePullSecret().withName("myregistrykey").endImagePullSecret()
-      .done();
+      .build());
     await().atMost(30, TimeUnit.SECONDS).until(serviceAccountReady);
     assertThat(serviceAccount1).isNotNull();
   }

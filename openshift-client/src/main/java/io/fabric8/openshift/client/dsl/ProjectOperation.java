@@ -18,13 +18,12 @@ package io.fabric8.openshift.client.dsl;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.openshift.api.model.DoneableProject;
 import io.fabric8.openshift.api.model.Project;
 import io.fabric8.openshift.api.model.ProjectList;
 
 import java.util.List;
 
-public interface ProjectOperation extends NonNamespaceOperation<Project, ProjectList, DoneableProject, Resource<Project, DoneableProject>> {
+public interface ProjectOperation extends NonNamespaceOperation<Project, ProjectList, Resource<Project>> {
   /**
    * Creating Bootstrap Project Template
    *

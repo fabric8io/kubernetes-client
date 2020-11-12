@@ -30,24 +30,6 @@ import io.fabric8.openshift.api.model.operator.v1.DNS;
 import io.fabric8.openshift.api.model.operator.v1.DNSList;
 import io.fabric8.openshift.api.model.operator.v1.DNSRecord;
 import io.fabric8.openshift.api.model.operator.v1.DNSRecordList;
-import io.fabric8.openshift.api.model.operator.v1.DoneableAuthentication;
-import io.fabric8.openshift.api.model.operator.v1.DoneableCSISnapshotController;
-import io.fabric8.openshift.api.model.operator.v1.DoneableConsole;
-import io.fabric8.openshift.api.model.operator.v1.DoneableDNS;
-import io.fabric8.openshift.api.model.operator.v1.DoneableDNSRecord;
-import io.fabric8.openshift.api.model.operator.v1.DoneableEtcd;
-import io.fabric8.openshift.api.model.operator.v1.DoneableImagePruner;
-import io.fabric8.openshift.api.model.operator.v1.DoneableIngressController;
-import io.fabric8.openshift.api.model.operator.v1.DoneableKubeAPIServer;
-import io.fabric8.openshift.api.model.operator.v1.DoneableKubeControllerManager;
-import io.fabric8.openshift.api.model.operator.v1.DoneableKubeScheduler;
-import io.fabric8.openshift.api.model.operator.v1.DoneableKubeStorageVersionMigrator;
-import io.fabric8.openshift.api.model.operator.v1.DoneableNetwork;
-import io.fabric8.openshift.api.model.operator.v1.DoneableOpenShiftAPIServer;
-import io.fabric8.openshift.api.model.operator.v1.DoneableOpenShiftControllerManager;
-import io.fabric8.openshift.api.model.operator.v1.DoneableServiceCA;
-import io.fabric8.openshift.api.model.operator.v1.DoneableServiceCatalogAPIServer;
-import io.fabric8.openshift.api.model.operator.v1.DoneableServiceCatalogControllerManager;
 import io.fabric8.openshift.api.model.operator.v1.Etcd;
 import io.fabric8.openshift.api.model.operator.v1.EtcdList;
 import io.fabric8.openshift.api.model.operator.v1.ImagePruner;
@@ -74,7 +56,6 @@ import io.fabric8.openshift.api.model.operator.v1.ServiceCatalogAPIServer;
 import io.fabric8.openshift.api.model.operator.v1.ServiceCatalogAPIServerList;
 import io.fabric8.openshift.api.model.operator.v1.ServiceCatalogControllerManager;
 import io.fabric8.openshift.api.model.operator.v1.ServiceCatalogControllerManagerList;
-import io.fabric8.openshift.api.model.operator.v1alpha1.DoneableImageContentSourcePolicy;
 import io.fabric8.openshift.api.model.operator.v1alpha1.ImageContentSourcePolicy;
 import io.fabric8.openshift.api.model.operator.v1alpha1.ImageContentSourcePolicyList;
 import io.fabric8.openshift.client.dsl.OpenShiftOperatorAPIGroupDSL;
@@ -109,97 +90,97 @@ public class OpenShiftOperatorAPIGroupClient extends BaseClient implements OpenS
   }
 
   @Override
-  public NonNamespaceOperation<Etcd, EtcdList, DoneableEtcd, Resource<Etcd, DoneableEtcd>> etcds() {
+  public NonNamespaceOperation<Etcd, EtcdList, Resource<Etcd>> etcds() {
     return new EtcdOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public NonNamespaceOperation<KubeStorageVersionMigrator, KubeStorageVersionMigratorList, DoneableKubeStorageVersionMigrator, Resource<KubeStorageVersionMigrator, DoneableKubeStorageVersionMigrator>> kubeStorageVersionMigrators() {
+  public NonNamespaceOperation<KubeStorageVersionMigrator, KubeStorageVersionMigratorList, Resource<KubeStorageVersionMigrator>> kubeStorageVersionMigrators() {
     return new KubeStorageVersionMigratorOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public NonNamespaceOperation<KubeControllerManager, KubeControllerManagerList, DoneableKubeControllerManager, Resource<KubeControllerManager, DoneableKubeControllerManager>> kubeControllerManagers() {
+  public NonNamespaceOperation<KubeControllerManager, KubeControllerManagerList, Resource<KubeControllerManager>> kubeControllerManagers() {
     return new KubeControllerManagerOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public NonNamespaceOperation<CSISnapshotController, CSISnapshotControllerList, DoneableCSISnapshotController, Resource<CSISnapshotController, DoneableCSISnapshotController>> csiSnapshotControllers() {
+  public NonNamespaceOperation<CSISnapshotController, CSISnapshotControllerList, Resource<CSISnapshotController>> csiSnapshotControllers() {
     return new CSISnapshotControllerOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public NonNamespaceOperation<Network, NetworkList, DoneableNetwork, Resource<Network, DoneableNetwork>> networks() {
+  public NonNamespaceOperation<Network, NetworkList, Resource<Network>> networks() {
     return new NetworkOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public NonNamespaceOperation<KubeScheduler, KubeSchedulerList, DoneableKubeScheduler, Resource<KubeScheduler, DoneableKubeScheduler>> kubeSchedulers() {
+  public NonNamespaceOperation<KubeScheduler, KubeSchedulerList, Resource<KubeScheduler>> kubeSchedulers() {
     return new KubeSchedulerOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public NonNamespaceOperation<Console, ConsoleList, DoneableConsole, Resource<Console, DoneableConsole>> consoles() {
+  public NonNamespaceOperation<Console, ConsoleList, Resource<Console>> consoles() {
     return new ConsoleOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public NonNamespaceOperation<ServiceCatalogControllerManager, ServiceCatalogControllerManagerList, DoneableServiceCatalogControllerManager, Resource<ServiceCatalogControllerManager, DoneableServiceCatalogControllerManager>> serviceCatalogControllerManagers() {
+  public NonNamespaceOperation<ServiceCatalogControllerManager, ServiceCatalogControllerManagerList, Resource<ServiceCatalogControllerManager>> serviceCatalogControllerManagers() {
     return new ServiceCatalogControllerManagerOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public NonNamespaceOperation<ServiceCA, ServiceCAList, DoneableServiceCA, Resource<ServiceCA, DoneableServiceCA>> serviceCAs() {
+  public NonNamespaceOperation<ServiceCA, ServiceCAList, Resource<ServiceCA>> serviceCAs() {
     return new ServiceCAOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public NonNamespaceOperation<ImageContentSourcePolicy, ImageContentSourcePolicyList, DoneableImageContentSourcePolicy, Resource<ImageContentSourcePolicy, DoneableImageContentSourcePolicy>> imageContentSourcePolicies() {
+  public NonNamespaceOperation<ImageContentSourcePolicy, ImageContentSourcePolicyList, Resource<ImageContentSourcePolicy>> imageContentSourcePolicies() {
     return new ImageContentSourcePolicyOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public NonNamespaceOperation<DNS, DNSList, DoneableDNS, Resource<DNS, DoneableDNS>> dnses() {
+  public NonNamespaceOperation<DNS, DNSList, Resource<DNS>> dnses() {
     return new DNSOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public MixedOperation<DNSRecord, DNSRecordList, DoneableDNSRecord, Resource<DNSRecord, DoneableDNSRecord>> dnsRecords() {
+  public MixedOperation<DNSRecord, DNSRecordList, Resource<DNSRecord>> dnsRecords() {
     return new DNSRecordOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public NonNamespaceOperation<OpenShiftControllerManager, OpenShiftControllerManagerList, DoneableOpenShiftControllerManager, Resource<OpenShiftControllerManager, DoneableOpenShiftControllerManager>> openShiftControllerManagers() {
+  public NonNamespaceOperation<OpenShiftControllerManager, OpenShiftControllerManagerList, Resource<OpenShiftControllerManager>> openShiftControllerManagers() {
     return new OpenShiftControllerManagerOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public NonNamespaceOperation<OpenShiftAPIServer, OpenShiftAPIServerList, DoneableOpenShiftAPIServer, Resource<OpenShiftAPIServer, DoneableOpenShiftAPIServer>> openShiftAPIServers() {
+  public NonNamespaceOperation<OpenShiftAPIServer, OpenShiftAPIServerList, Resource<OpenShiftAPIServer>> openShiftAPIServers() {
     return new OpenShiftAPIServerOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public NonNamespaceOperation<KubeAPIServer, KubeAPIServerList, DoneableKubeAPIServer, Resource<KubeAPIServer, DoneableKubeAPIServer>> kubeAPIServers() {
+  public NonNamespaceOperation<KubeAPIServer, KubeAPIServerList, Resource<KubeAPIServer>> kubeAPIServers() {
     return new KubeAPIServerOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public MixedOperation<IngressController, IngressControllerList, DoneableIngressController, Resource<IngressController, DoneableIngressController>> ingressControllers() {
+  public MixedOperation<IngressController, IngressControllerList, Resource<IngressController>> ingressControllers() {
     return new IngressControllerOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public NonNamespaceOperation<ImagePruner, ImagePrunerList, DoneableImagePruner, Resource<ImagePruner, DoneableImagePruner>> imagePruners() {
+  public NonNamespaceOperation<ImagePruner, ImagePrunerList, Resource<ImagePruner>> imagePruners() {
     return new ImagePrunerOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public NonNamespaceOperation<ServiceCatalogAPIServer, ServiceCatalogAPIServerList, DoneableServiceCatalogAPIServer, Resource<ServiceCatalogAPIServer, DoneableServiceCatalogAPIServer>> serviceCatalogAPIServers() {
+  public NonNamespaceOperation<ServiceCatalogAPIServer, ServiceCatalogAPIServerList, Resource<ServiceCatalogAPIServer>> serviceCatalogAPIServers() {
     return new ServiceCatalogAPIServerOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public NonNamespaceOperation<Authentication, AuthenticationList, DoneableAuthentication, Resource<Authentication, DoneableAuthentication>> authentications() {
+  public NonNamespaceOperation<Authentication, AuthenticationList, Resource<Authentication>> authentications() {
     return new AuthenticationOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 }

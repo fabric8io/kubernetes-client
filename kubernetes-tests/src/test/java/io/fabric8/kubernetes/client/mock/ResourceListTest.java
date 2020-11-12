@@ -100,7 +100,7 @@ public class ResourceListTest {
     // Given
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
     server.expect().post().withPath("/api/v1/namespaces/test/pods").andReturn(HTTP_UNAVAILABLE, pod1).once();
-    NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> listOp = client.resourceList(new PodListBuilder().addToItems(pod1).build());
+    NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> listOp = client.resourceList(new PodListBuilder().addToItems(pod1).build());
 
     // When
     assertThrows(KubernetesClientException.class, listOp::createOrReplace);
@@ -256,7 +256,7 @@ public class ResourceListTest {
 
     try (KubernetesClient client = server.getClient()) {
       KubernetesList list = new KubernetesListBuilder().withItems(pod1, pod2).build();
-      final ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> ops = client.resourceList(list).inNamespace("ns1");
+      final ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> ops = client.resourceList(list).inNamespace("ns1");
       KubernetesClientTimeoutException ex = assertThrows(KubernetesClientTimeoutException.class, () ->
         ops.waitUntilCondition(isReady, 5, SECONDS)
       );
@@ -307,7 +307,7 @@ public class ResourceListTest {
 
     try (KubernetesClient client = server.getClient()) {
       KubernetesList list = new KubernetesListBuilder().withItems(pod1, pod2).build();
-      final ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> ops = client.resourceList(list).inNamespace("ns1");
+      final ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> ops = client.resourceList(list).inNamespace("ns1");
       KubernetesClientTimeoutException ex = assertThrows(KubernetesClientTimeoutException.class, () ->
         ops.waitUntilCondition(isReady, 5, SECONDS)
       );

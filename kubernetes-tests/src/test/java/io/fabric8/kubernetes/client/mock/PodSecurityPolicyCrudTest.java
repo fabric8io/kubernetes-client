@@ -82,9 +82,9 @@ public class PodSecurityPolicyCrudTest {
     assertEquals("RunAsAny",podSecurityPolicyList.getItems().get(0).getSpec().getSupplementalGroups().getRule());
 
     //test of updation
-    podSecurityPolicy = client.policy().podSecurityPolicies().withName("test-example").edit()
+    podSecurityPolicy = client.policy().podSecurityPolicies().withName("test-example").edit(p -> new PodSecurityPolicyBuilder(p)
         .editSpec().withPrivileged(true).endSpec()
-        .done();
+        .build());
 
     logger.info("Updated PodSecurityPolicy : " + podSecurityPolicy.toString());
 

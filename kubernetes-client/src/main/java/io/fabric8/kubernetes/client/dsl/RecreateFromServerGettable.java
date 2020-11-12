@@ -18,5 +18,5 @@ package io.fabric8.kubernetes.client.dsl;
 
 import io.fabric8.kubernetes.client.FromServerGettable;
 
-public interface RecreateFromServerGettable<I, T, D> extends RecreateCreateable<I, T, D>, FromServerGettable<T> {
+public interface RecreateFromServerGettable<T> extends RecreateCreateable<T>, FromServerGettable<T> {
 }

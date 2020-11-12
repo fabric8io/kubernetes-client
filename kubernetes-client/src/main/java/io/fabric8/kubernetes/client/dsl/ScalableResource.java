@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface ScalableResource<T, D> extends Resource<T, D>,
-  Scaleable<T>
-  , Loggable<String, LogWatch> {
+public interface ScalableResource<T> extends Resource<T>,
+  Scaleable<T> , Loggable<LogWatch> {
 }

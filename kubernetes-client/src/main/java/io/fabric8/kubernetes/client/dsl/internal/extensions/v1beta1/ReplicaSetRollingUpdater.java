@@ -18,7 +18,6 @@ package io.fabric8.kubernetes.client.dsl.internal.extensions.v1beta1;
 import io.fabric8.kubernetes.api.model.LabelSelectorRequirement;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
-import io.fabric8.kubernetes.api.model.extensions.DoneableReplicaSet;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSet;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSetBuilder;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSetList;
@@ -31,7 +30,7 @@ import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.RollingUpdater;
 import okhttp3.OkHttpClient;
 
-class ReplicaSetRollingUpdater extends RollingUpdater<ReplicaSet, ReplicaSetList, DoneableReplicaSet> {
+class ReplicaSetRollingUpdater extends RollingUpdater<ReplicaSet, ReplicaSetList> {
 
   ReplicaSetRollingUpdater(OkHttpClient client, Config config, String namespace) {
     super(client, config, namespace);
@@ -58,7 +57,7 @@ class ReplicaSetRollingUpdater extends RollingUpdater<ReplicaSet, ReplicaSetList
 
   @Override
   protected PodList listSelectedPods(ReplicaSet obj) {
-    FilterWatchListDeletable<Pod, PodList, Boolean, Watch>  podLister = pods().inNamespace(namespace);
+    FilterWatchListDeletable<Pod, PodList>  podLister = pods().inNamespace(namespace);
     if (obj.getSpec().getSelector().getMatchLabels() != null) {
       podLister.withLabels(obj.getSpec().getSelector().getMatchLabels());
     }
@@ -84,19 +83,23 @@ class ReplicaSetRollingUpdater extends RollingUpdater<ReplicaSet, ReplicaSetList
   }
 
   @Override
-  protected void updateDeploymentKey(DoneableReplicaSet obj, String hash) {
-    obj.editSpec()
+  protected ReplicaSet updateDeploymentKey(String name, String hash) {
+      return resources().inNamespace(namespace).withName(name).edit(r -> new ReplicaSetBuilder(r)
+      .editSpec()
       .editSelector().addToMatchLabels(DEPLOYMENT_KEY, hash).endSelector()
       .editTemplate().editMetadata().addToLabels(DEPLOYMENT_KEY, hash).endMetadata().endTemplate()
-      .endSpec();
+      .endSpec()
+      .build());
   }
 
   @Override
-  protected void removeDeploymentKey(DoneableReplicaSet obj) {
-    obj.editSpec()
+  protected ReplicaSet removeDeploymentKey(String name) {
+      return resources().inNamespace(namespace).withName(name).edit(r -> new ReplicaSetBuilder(r)
+      .editSpec()
       .editSelector().removeFromMatchLabels(DEPLOYMENT_KEY).endSelector()
       .editTemplate().editMetadata().removeFromLabels(DEPLOYMENT_KEY).endMetadata().endTemplate()
-      .endSpec();
+      .endSpec()
+      .build());
   }
 
   @Override
@@ -110,7 +113,7 @@ class ReplicaSetRollingUpdater extends RollingUpdater<ReplicaSet, ReplicaSetList
   }
 
   @Override
-  protected Operation<ReplicaSet, ReplicaSetList, DoneableReplicaSet, RollableScalableResource<ReplicaSet, DoneableReplicaSet>> resources() {
+  protected Operation<ReplicaSet, ReplicaSetList, RollableScalableResource<ReplicaSet>> resources() {
     return new ReplicaSetOperationsImpl(client, config);
   }
 }

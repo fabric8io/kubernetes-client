@@ -29,7 +29,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
-import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
@@ -89,7 +88,7 @@ class BaseOperationTest {
   @Test
   void testChainingGracePeriodAndPropagationPolicy() {
     final BaseOperation operation = new BaseOperation(new OperationContext());
-    EditReplacePatchDeletable<?, ?, ?, Boolean> operationWithPropagationPolicy = operation.withPropagationPolicy(DeletionPropagation.FOREGROUND);
+    EditReplacePatchDeletable<?> operationWithPropagationPolicy = operation.withPropagationPolicy(DeletionPropagation.FOREGROUND);
     assertThat(operationWithPropagationPolicy, is(notNullValue()));
     assertNotNull(operationWithPropagationPolicy.withGracePeriod(10));
   }
@@ -98,7 +97,7 @@ class BaseOperationTest {
   void testListOptions() throws MalformedURLException {
     // Given
     URL url = new URL("https://172.17.0.2:8443/api/v1/namespaces/default/pods");
-    final BaseOperation<Pod, PodList, DoneablePod, Resource<Pod, DoneablePod>> operation = new BaseOperation<>(new OperationContext());
+    final BaseOperation<Pod, PodList, Resource<Pod>> operation = new BaseOperation<>(new OperationContext());
 
     // When and Then
     assertEquals(URLUtils.join(url.toString(), "?limit=5"),

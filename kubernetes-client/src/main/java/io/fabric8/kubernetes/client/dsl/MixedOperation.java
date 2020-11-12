@@ -22,10 +22,9 @@ package io.fabric8.kubernetes.client.dsl;
  *
  * @param <T> The Kubernetes resource type.
  * @param <L> The list variant of the Kubernetes resource type.
- * @param <D> The doneable variant of the Kubernetes resource type.
  * @param <R> The resource operations.
  */
-public interface MixedOperation<T, L, D, R extends Resource<T, D>>
-  extends Operation<T, L, D, R>,
-  NonNamespaceOperation<T, L, D, R> {
+public interface MixedOperation<T, L, R extends Resource<T>>
+  extends Operation<T, L, R>,
+  NonNamespaceOperation<T, L, R> {
 }

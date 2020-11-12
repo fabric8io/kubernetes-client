@@ -15,5 +15,5 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface RecreateCreateable<I, T, D> extends Createable<I, T, D>, Recreateable<Createable<I, T, D>> {
+public interface RecreateCreateable<T> extends Createable<T>, Recreateable<Createable<T>> {
 }

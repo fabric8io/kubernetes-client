@@ -15,11 +15,10 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface Createable<I, T, D>  {
+public interface Createable<T>  {
 
-  T create(I... item);
+  T create(T... item);
 
-  T create(I item);
+  T create(T item);
 
-  D createNew();
 }

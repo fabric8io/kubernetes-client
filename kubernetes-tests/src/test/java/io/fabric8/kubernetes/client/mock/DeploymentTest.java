@@ -27,7 +27,6 @@ import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.apps.DeploymentList;
 import io.fabric8.kubernetes.api.model.apps.DeploymentListBuilder;
-import io.fabric8.kubernetes.api.model.apps.DoneableDeployment;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetBuilder;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetListBuilder;
@@ -291,7 +290,7 @@ class DeploymentTest {
       .endSpec()
       .build();
     KubernetesClient client = server.getClient();
-    NonNamespaceOperation<Deployment, DeploymentList, DoneableDeployment, RollableScalableResource<Deployment, DoneableDeployment>> deployOp =
+    NonNamespaceOperation<Deployment, DeploymentList, RollableScalableResource<Deployment>> deployOp =
       client.apps().deployments().inNamespace("test1");
     assertThrows(KubernetesClientException.class, () -> deployOp.delete(deployment1));
   }
@@ -300,7 +299,7 @@ class DeploymentTest {
   void testCreateWithNameMismatch() {
     Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withName("deployment1").withNamespace("test").and().build();
     KubernetesClient client = server.getClient();
-    RollableScalableResource<Deployment, DoneableDeployment> deployOp = client
+    RollableScalableResource<Deployment> deployOp = client
       .apps().deployments()
       .inNamespace("test1")
       .withName("mydeployment1");
@@ -468,7 +467,7 @@ class DeploymentTest {
       .once();
 
     KubernetesClient client = server.getClient();
-    NonNamespaceOperation<Deployment, DeploymentList, DoneableDeployment, RollableScalableResource<Deployment, DoneableDeployment>> deployOp =
+    NonNamespaceOperation<Deployment, DeploymentList, RollableScalableResource<Deployment>> deployOp =
       client.apps().deployments().inNamespace("test");
     // Will throw exception
     IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> deployOp.create(deployment1, deployment2));

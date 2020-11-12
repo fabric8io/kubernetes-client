@@ -27,11 +27,6 @@ import io.fabric8.tekton.client.internal.v1beta1.TaskOperationsImpl;
 import io.fabric8.tekton.client.internal.v1beta1.TaskRunOperationsImpl;
 import io.fabric8.tekton.pipeline.v1beta1.ClusterTask;
 import io.fabric8.tekton.pipeline.v1beta1.ClusterTaskList;
-import io.fabric8.tekton.pipeline.v1beta1.DoneableClusterTask;
-import io.fabric8.tekton.pipeline.v1beta1.DoneablePipeline;
-import io.fabric8.tekton.pipeline.v1beta1.DoneablePipelineRun;
-import io.fabric8.tekton.pipeline.v1beta1.DoneableTask;
-import io.fabric8.tekton.pipeline.v1beta1.DoneableTaskRun;
 import io.fabric8.tekton.pipeline.v1beta1.Pipeline;
 import io.fabric8.tekton.pipeline.v1beta1.PipelineList;
 import io.fabric8.tekton.pipeline.v1beta1.PipelineRun;
@@ -53,27 +48,27 @@ public class V1beta1APIGroupClient extends BaseClient implements V1beta1APIGroup
   }
 
   @Override
-  public MixedOperation<Pipeline, PipelineList, DoneablePipeline, Resource<Pipeline, DoneablePipeline>> pipelines() {
+  public MixedOperation<Pipeline, PipelineList, Resource<Pipeline>> pipelines() {
     return new PipelineOperationsImpl(this.getHttpClient(), this.getConfiguration());
   }
 
   @Override
-  public MixedOperation<PipelineRun, PipelineRunList, DoneablePipelineRun, Resource<PipelineRun, DoneablePipelineRun>> pipelineRuns() {
+  public MixedOperation<PipelineRun, PipelineRunList, Resource<PipelineRun>> pipelineRuns() {
     return new PipelineRunOperationsImpl(this.getHttpClient(), this.getConfiguration());
   }
 
   @Override
-  public MixedOperation<Task, TaskList, DoneableTask, Resource<Task, DoneableTask>> tasks() {
+  public MixedOperation<Task, TaskList, Resource<Task>> tasks() {
     return new TaskOperationsImpl(this.getHttpClient(), this.getConfiguration());
   }
 
   @Override
-  public MixedOperation<TaskRun, TaskRunList, DoneableTaskRun, Resource<TaskRun, DoneableTaskRun>> taskRuns() {
+  public MixedOperation<TaskRun, TaskRunList, Resource<TaskRun>> taskRuns() {
     return new TaskRunOperationsImpl(this.getHttpClient(), this.getConfiguration());
   }
 
   @Override
-  public NonNamespaceOperation<ClusterTask, ClusterTaskList, DoneableClusterTask, Resource<ClusterTask, DoneableClusterTask>> clusterTasks() {
+  public NonNamespaceOperation<ClusterTask, ClusterTaskList, Resource<ClusterTask>> clusterTasks() {
     return new ClusterTaskOperationsImpl(this.getHttpClient(), this.getConfiguration());
   }
 }

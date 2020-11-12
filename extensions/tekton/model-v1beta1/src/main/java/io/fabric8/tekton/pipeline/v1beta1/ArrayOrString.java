@@ -24,7 +24,6 @@ import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.Inline;
@@ -44,7 +43,7 @@ import java.util.*;
 @JsonSerialize(using = ArrayOrString.Serializer.class)
 @ToString
 @EqualsAndHashCode
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, builderPackage = "io.fabric8.kubernetes.api.builder", inline = @Inline(type = Doneable.class, prefix = "Doneable", value = "done"))
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 public class ArrayOrString implements KubernetesResource {
 
   private static final String TYPE_STRING = "string";

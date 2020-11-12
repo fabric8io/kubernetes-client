@@ -34,6 +34,9 @@ public class ClusterEntity {
   public static final String FRAMEWORK = "framework";
   public static final String ARQUILLIAN = "arquillian";
 
+  public static final String NON_NUMERIC_CHARACTERS = "[^\\d.]";
+  public static final String EMPTY = "";
+
   public static void apply(InputStream inputStream) {
     try (KubernetesClient client = new DefaultKubernetesClient()) {
       String namespace = getArquillianNamespace();
@@ -53,8 +56,8 @@ public class ClusterEntity {
   public static boolean kubernetesVersionAtLeast(String majorVersion, String minorVersion) {
     try (KubernetesClient client = new DefaultKubernetesClient()) {
       VersionInfo versionInfo = client.getVersion();
-      String clusterMajorVersion = versionInfo.getMajor();
-      String clusterMinorVersion = versionInfo.getMinor();
+      String clusterMajorVersion = versionInfo.getMajor().replaceAll(NON_NUMERIC_CHARACTERS, EMPTY);
+      String clusterMinorVersion = versionInfo.getMinor().replaceAll(NON_NUMERIC_CHARACTERS, EMPTY);
 
       if (Integer.parseInt(majorVersion) < Integer.parseInt(clusterMajorVersion)) {
         return true;

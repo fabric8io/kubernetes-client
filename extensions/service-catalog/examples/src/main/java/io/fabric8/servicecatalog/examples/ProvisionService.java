@@ -15,6 +15,7 @@ package io.fabric8.servicecatalog.examples; /**
  */
 
 import io.fabric8.servicecatalog.api.model.ServiceInstance;
+import io.fabric8.servicecatalog.api.model.ServiceInstanceBuilder;
 import io.fabric8.servicecatalog.client.ServiceCatalogClient;
 
 public class ProvisionService {
@@ -22,7 +23,7 @@ public class ProvisionService {
     public static void main(String[] args) {
         ServiceCatalogClient client = ClientFactory.newClient(args);
         System.out.println("Provisioning a service");
-        ServiceInstance instance = client.serviceInstances().inNamespace("iocanel").createNew()
+        ServiceInstance instance = client.serviceInstances().inNamespace("iocanel").create(new ServiceInstanceBuilder()
                 .withNewMetadata()
                 .withName("myserivce")
                 .endMetadata()
@@ -30,7 +31,7 @@ public class ProvisionService {
                 .withClusterServiceClassExternalName("jenkins-ephemeral")
                 .withClusterServicePlanExternalName("default")
                 .endSpec()
-            .done();
+                .build());
         System.out.println("Done");
     }
 }

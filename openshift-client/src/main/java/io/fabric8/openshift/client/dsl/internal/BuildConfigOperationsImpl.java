@@ -31,7 +31,6 @@ import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildConfigList;
 import io.fabric8.openshift.api.model.BuildList;
 import io.fabric8.openshift.api.model.BuildRequest;
-import io.fabric8.openshift.api.model.DoneableBuildConfig;
 import io.fabric8.openshift.api.model.WebHookTrigger;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.dsl.BuildConfigOperation;
@@ -66,8 +65,7 @@ import java.util.concurrent.TimeUnit;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.BUILD;
 
-public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, BuildConfigList, DoneableBuildConfig,
-  BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Build>>
+public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, BuildConfigList, BuildConfigResource<BuildConfig, Void, Build>>
         implements BuildConfigOperation {
 
   private static final Logger logger = LoggerFactory.getLogger(BuildConfigOperationsImpl.class);
@@ -98,7 +96,6 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
 
     this.type = BuildConfig.class;
     this.listType = BuildConfigList.class;
-    this.doneableType = DoneableBuildConfig.class;
 
     this.triggerType = context.getTriggerType();
     this.secret = context.getSecret();
@@ -164,7 +161,7 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
   }
 
   @Override
-  public BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Build> withResourceVersion(String resourceVersion) {
+  public BuildConfigResource<BuildConfig, Void, Build> withResourceVersion(String resourceVersion) {
     return new BuildConfigOperationsImpl(getContext().withResourceVersion(resourceVersion));
   }
 
