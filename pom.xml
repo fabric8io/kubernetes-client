@@ -130,7 +130,7 @@
     <maven.surefire.plugin.version>3.0.0-M5</maven.surefire.plugin.version>
     <maven.scr.plugin.version>1.26.4</maven.scr.plugin.version>
     <maven.resources.plugin.version>3.2.0</maven.resources.plugin.version>
-    <maven.release.plugin.version>2.5.3</maven.release.plugin.version>
+    <maven.release.plugin.version>3.0.0-M1</maven.release.plugin.version>
     <maven.javadoc.plugin.version>3.2.0</maven.javadoc.plugin.version>
     <maven.source.plugin.version>3.2.1</maven.source.plugin.version>
     <maven.enforcer.plugin.version>3.0.0-M3</maven.enforcer.plugin.version>
@@ -167,6 +167,7 @@
     <osgi.export.service />
     <osgi.include.resources>{maven-resources}</osgi.include.resources>
     <karaf.itest.skip>false</karaf.itest.skip>
+    <project.build.outputTimestamp>2020-11-14T12:24:00Z</project.build.outputTimestamp>
   </properties>
 
   <modules>
@@ -667,6 +668,8 @@
             <Bundle-Activator>${osgi.activator}</Bundle-Activator>
             <Export-Service>${osgi.export.service}</Export-Service>
             <Include-Resource>${osgi.include.resources}</Include-Resource>
+            <_removeheaders>Bnd-LastModified</_removeheaders>
+            <_reproducible>true</_reproducible>
           </instructions>
         </configuration>
       </plugin>
