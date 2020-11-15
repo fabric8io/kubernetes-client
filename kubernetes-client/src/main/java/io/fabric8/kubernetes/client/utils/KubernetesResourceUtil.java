@@ -25,6 +25,7 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.OwnerReference;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -355,5 +356,15 @@ public class KubernetesResourceUtil {
    */
   public static boolean isResourceReady(HasMetadata item) {
     return Readiness.isReady(item);
+  }
+
+  /**
+   * Calculates age of a kubernetes resource
+   * @param kubernetesResource
+   * @return a positive duration indicating age of the kubernetes resource
+   */
+  public static Duration getAge(HasMetadata kubernetesResource) {
+    Instant instant = Instant.parse(kubernetesResource.getMetadata().getCreationTimestamp());
+    return Duration.between(instant, Instant.now()).abs();
   }
 }
