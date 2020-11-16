@@ -23,9 +23,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-public class HasMetadataTest {
+class HasMetadataTest {
   @Test
-  public void validFinalizersShouldBeAddedAndCanBeRemoved() {
+  void validFinalizersShouldBeAddedAndCanBeRemoved() {
     HasMetadata hasMetadata = new Default();
     final String finalizer = "example.fabric8.io/finalizer";
     assertTrue(hasMetadata.addFinalizer(finalizer));
@@ -36,7 +36,7 @@ public class HasMetadataTest {
   }
   
   @Test
-  public void shouldNotAddFinalizerToMarkedForDeletion() {
+  void shouldNotAddFinalizerToMarkedForDeletion() {
     HasMetadata hasMetadata = new Default() {
       @Override
       public boolean isMarkedForDeletion() {
@@ -48,7 +48,7 @@ public class HasMetadataTest {
   }
   
   @Test
-  public void invalidFinalizersShouldFail() {
+  void invalidFinalizersShouldFail() {
     HasMetadata hasMetadata = new Default();
     assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer(null));
     assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer(""));
