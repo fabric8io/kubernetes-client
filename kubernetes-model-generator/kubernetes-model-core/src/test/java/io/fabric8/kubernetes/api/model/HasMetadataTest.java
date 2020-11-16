@@ -1,0 +1,81 @@
+/**
+ * Copyright 2020 Red Hat, Inc. and/or its affiliates.
+ *
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.fabric8.kubernetes.api.model;
+
+import org.junit.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+
+public class HasMetadataTest {
+  @Test
+  public void validFinalizersShouldBeAddedAndCanBeRemoved() {
+    HasMetadata hasMetadata = new Default();
+    final String finalizer = "example.fabric8.io/finalizer";
+    assertTrue(hasMetadata.addFinalizer(finalizer));
+    assertEquals(hasMetadata.getMetadata().getFinalizers().contains(finalizer), hasMetadata.hasFinalizer(finalizer));
+    
+    assertTrue(hasMetadata.removeFinalizer(finalizer));
+    assertFalse(hasMetadata.hasFinalizer(finalizer));
+  }
+  
+  @Test
+  public void invalidFinalizersShouldFail() {
+    HasMetadata hasMetadata = new Default();
+    assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer(null));
+    assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer(""));
+    assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer("/"));
+    assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer("-fabric8.io/finalizer"));
+    assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer("fabric8.i/finalizer"));
+    assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer(".io/finalizer"));
+    assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer("fabric8.io/-finalizer"));
+    assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer("fabric8.io/finalizer-"));
+    assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer("fabric8.io/finalizerreallyreallywaywaywaytooooooooooooooooooooolooooooooonnnnnnnnnnng"));
+  }
+  
+  private static class Default implements HasMetadata {
+    private final ObjectMeta meta = new ObjectMeta();
+    
+    @Override
+    public ObjectMeta getMetadata() {
+      return meta;
+    }
+    
+    @Override
+    public void setMetadata(ObjectMeta metadata) {
+      throw new RuntimeException("shouldn't be called");
+    }
+    
+    @Override
+    public String getKind() {
+      throw new RuntimeException("shouldn't be called");
+    }
+    
+    @Override
+    public String getApiVersion() {
+      throw new RuntimeException("shouldn't be called");
+    }
+    
+    @Override
+    public void setApiVersion(String version) {
+      throw new RuntimeException("shouldn't be called");
+    }
+  }
+}

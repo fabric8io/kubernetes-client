@@ -80,24 +80,4 @@ public abstract class CustomResource implements HasMetadata {
   public void setMetadata(ObjectMeta metadata) {
     this.metadata = metadata;
   }
-  
-  public boolean isMarkedForDeletion() {
-    final String deletionTimestamp = metadata.getDeletionTimestamp();
-    return deletionTimestamp != null && !deletionTimestamp.isEmpty();
-  }
-  
-  public boolean hasFinalizer(String finalizer) {
-    return metadata.getFinalizers().contains(finalizer);
-  }
-  
-  public boolean addFinalizer(String finalizer) {
-    if ((isMarkedForDeletion() || hasFinalizer(finalizer))) {
-      return false;
-    }
-    return metadata.getFinalizers().add(finalizer);
-  }
-  
-  public boolean removeFinalizer(String finalizer) {
-    return metadata.getFinalizers().remove(finalizer);
-  }
 }
