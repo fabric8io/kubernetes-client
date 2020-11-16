@@ -367,6 +367,12 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
+  public <T extends HasMetadata>  MixedOperation<T, KubernetesResourceList<T>, Resource<T>> customResources(Class<T> resourceType ) {
+    return new CustomResourceOperationsImpl<>(new CustomResourceOperationContext().withOkhttpClient(httpClient).withConfig(getConfiguration()).withCrdContext(CustomResourceDefinitionContext.fromCustomResourceType(resourceType)).withType(resourceType));
+  }
+
+
+  @Override
   public <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(Class<T> resourceType, Class<L> listClass) {
     return new CustomResourceOperationsImpl<>(new CustomResourceOperationContext().withOkhttpClient(httpClient).withConfig(getConfiguration()).withCrdContext(CustomResourceDefinitionContext.fromCustomResourceType(resourceType)).withType(resourceType).withListType(listClass));
   }

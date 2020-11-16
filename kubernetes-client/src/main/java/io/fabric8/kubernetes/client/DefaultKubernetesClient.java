@@ -391,6 +391,15 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
    * {@inheritDoc}
    */
   @Override
+  public <T extends HasMetadata> MixedOperation<T, KubernetesResourceList<T>, Resource<T>> customResources(Class<T> resourceType) {
+    return customResources(CustomResourceDefinitionContext.fromCustomResourceType(resourceType), resourceType, null);
+  }
+
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(Class<T> resourceType, Class<L> listClass) {
     return customResources(CustomResourceDefinitionContext.fromCustomResourceType(resourceType), resourceType, listClass);
   }
