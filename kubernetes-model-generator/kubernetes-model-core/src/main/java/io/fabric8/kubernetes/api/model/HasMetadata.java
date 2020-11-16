@@ -18,6 +18,8 @@ package io.fabric8.kubernetes.api.model;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public interface HasMetadata extends KubernetesResource {
   String DNS_NAME_REGEXP = "(?!-)[A-Za-z0-9-]{1,63}(?<!-)";
   Matcher DOMAIN_NAME_MATCHER = Pattern.compile("^(" + DNS_NAME_REGEXP + "\\.)+[A-Za-z]{2,6}/" + DNS_NAME_REGEXP).matcher("");
@@ -37,6 +39,7 @@ public interface HasMetadata extends KubernetesResource {
    *
    * @return {@code true} if the cluster marked this {@code HasMetadata} for deletion, {@code false} otherwise
    */
+  @JsonIgnore
   default boolean isMarkedForDeletion() {
     final String deletionTimestamp = getMetadata().getDeletionTimestamp();
     return deletionTimestamp != null && !deletionTimestamp.isEmpty();
