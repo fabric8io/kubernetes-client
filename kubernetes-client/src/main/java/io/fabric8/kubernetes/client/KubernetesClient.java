@@ -106,15 +106,13 @@ public interface KubernetesClient extends Client {
    *
    * <p>
    *   Note: your CustomResource POJO (T in this context) must implement
-   *   <a href="https://github.com/fabric8io/kubernetes-client/blob/master/kubernetes-model-generator/kubernetes-model-core/src/main/java/io/fabric8/kubernetes/api/model/Namespaced.java">
-   *     io.fabric8.kubernetes.api.model.Namespaced
-   *   </a> if it is a Namespaced scoped resource.
+   *   {@link io.fabric8.kubernetes.api.model.Namespaced} if it is a namespace-scoped resource.
    * </p>
    *
    * @param resourceType Class for CustomResource
    * @param listClass Class for list object for CustomResource
-   * @param <T> T type represents CustomResource type. If it's Namespaced resource, it must implement
-   *           io.fabric8.kubernetes.api.model.Namespaced
+   * @param <T> T type represents CustomResource type. If it's a namespaced resource, it must implement
+   *           {@link io.fabric8.kubernetes.api.model.Namespaced}
    * @return returns a MixedOperation object with which you can do basic CustomResource operations
    */
   <T extends HasMetadata> MixedOperation<T, KubernetesResourceList<T>, Resource<T>> customResources(Class<T> resourceType);
@@ -127,15 +125,13 @@ public interface KubernetesClient extends Client {
    *
    * <p>
    *   Note: your CustomResource POJO (T in this context) must implement
-   *   <a href="https://github.com/fabric8io/kubernetes-client/blob/master/kubernetes-model-generator/kubernetes-model-core/src/main/java/io/fabric8/kubernetes/api/model/Namespaced.java">
-   *     io.fabric8.kubernetes.api.model.Namespaced
-   *   </a> if it is a Namespaced scoped resource.
+   *   {@link io.fabric8.kubernetes.api.model.Namespaced} if it is a namespace-scoped resource.
    * </p>
    *
    * @param resourceType Class for CustomResource
    * @param listClass Class for list object for CustomResource
-   * @param <T> T type represents CustomResource type. If it's Namespaced resource, it must implement
-   *           io.fabric8.kubernetes.api.model.Namespaced
+   * @param <T> T type represents CustomResource type. If it's a namespace-scoped resource, it must implement
+   *           {@link io.fabric8.kubernetes.api.model.Namespaced}
    * @param <L> L type represents CustomResourceList type
    * @return returns a MixedOperation object with which you can do basic CustomResource operations
    */
