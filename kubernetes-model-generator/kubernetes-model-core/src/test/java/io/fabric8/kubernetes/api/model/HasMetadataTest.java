@@ -36,6 +36,18 @@ public class HasMetadataTest {
   }
   
   @Test
+  public void shouldNotAddFinalizerToMarkedForDeletion() {
+    HasMetadata hasMetadata = new Default() {
+      @Override
+      public boolean isMarkedForDeletion() {
+        return true;
+      }
+    };
+    
+    assertFalse(hasMetadata.addFinalizer("example.fabric8.io/finalizer"));
+  }
+  
+  @Test
   public void invalidFinalizersShouldFail() {
     HasMetadata hasMetadata = new Default();
     assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer(null));
