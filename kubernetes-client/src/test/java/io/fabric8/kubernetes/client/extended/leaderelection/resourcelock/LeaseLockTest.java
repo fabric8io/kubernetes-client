@@ -37,7 +37,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -114,21 +113,13 @@ class LeaseLockTest {
   @Test
   void createWithValidLeaderElectionRecordShouldSendPostRequest() throws Exception {
     // Given
-    when(metadata.withNamespace("namespace").withName("name").endMetadata()).thenReturn(leaserBuilder);
-    when(spec
-      .withHolderIdentity(eq("1"))
-      .withLeaseDurationSeconds(eq(1))
-      .withAcquireTime(any())
-      .withRenewTime(any())
-      .withLeaseTransitions(anyInt())
-      .endSpec()
-    ).thenReturn(leaserBuilder);
     final LeaderElectionRecord record = new LeaderElectionRecord(
       "1", Duration.ofSeconds(1), ZonedDateTime.now(), ZonedDateTime.now(), 0);
     final LeaseLock lock = new LeaseLock("namespace", "name", "1337");
     // When
     lock.create(kc, record);
     // Then
+    verify(leases.withName("name"), times(1)).create(any(Lease.class));
   }
 
   @Test

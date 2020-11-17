@@ -6,8 +6,9 @@
 * Fix #2596: Add buildable references for Container, Port and Volume
 
 #### Improvements
-* Eliminated the use of Doneables and simplified the internal DSL implementation.
-* Provide a `customResources` alternative that simply accepts the resource type as an argument.
+* Fix #2571: Eliminated the use of Doneables and simplified the internal DSL implementation.
+* Fix #2607: add isMarkedForDeletion and finalizer-related default methods to HasMetadata (@metacosm)
+* Fix #2605: Provide a `customResources` alternative that simply accepts the resource type as an argument.
 
 #### Dependency Upgrade
 

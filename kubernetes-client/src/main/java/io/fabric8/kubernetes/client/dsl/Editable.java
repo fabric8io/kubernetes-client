@@ -16,11 +16,11 @@
 package io.fabric8.kubernetes.client.dsl;
 
 import java.util.function.Consumer;
-import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 public interface Editable<T> {
 
-    T edit(Function<T, T> function);
+    T edit(UnaryOperator<T> function);
 
 
     T accept(Consumer<T> function);

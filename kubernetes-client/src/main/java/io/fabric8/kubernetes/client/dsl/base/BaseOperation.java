@@ -60,7 +60,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Array;
-import java.lang.reflect.InvocationTargetException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -73,8 +72,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
 
 import okhttp3.HttpUrl;
 import okhttp3.Request;
@@ -244,7 +243,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
  }
 
   @Override
-  public T edit(Function<T, T> function) {
+  public T edit(UnaryOperator<T> function) {
     throw new KubernetesClientException("Cannot edit read-only resources");
   }
 

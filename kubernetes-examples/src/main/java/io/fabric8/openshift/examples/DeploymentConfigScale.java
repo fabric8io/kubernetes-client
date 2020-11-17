@@ -26,8 +26,7 @@ import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.dsl.DeployableScalableResource;
 
 import java.util.List;
-
-import static org.junit.Assert.assertNotNull;
+import java.util.Objects;
 
 public class DeploymentConfigScale {
   public static void main(String[] args) {
@@ -71,10 +70,10 @@ public class DeploymentConfigScale {
 
 
       // now lets find the DC via list
-      DeploymentConfigList list = client.deploymentConfigs().list();
-      assertNotNull("No DeploymentConfigList returned", list);
-      List<DeploymentConfig> items = list.getItems();
-      assertNotNull("No DeploymentConfigList.getItems() returned", items);
+      DeploymentConfigList list = Objects.requireNonNull(client.deploymentConfigs().list(),
+        "No DeploymentConfigList returned");
+      List<DeploymentConfig> items = Objects.requireNonNull(list.getItems(),
+        "No DeploymentConfigList.getItems() returned");
 
       DeploymentConfig found = null;
       for (DeploymentConfig item : items) {
@@ -83,7 +82,7 @@ public class DeploymentConfigScale {
           break;
         }
       }
-      assertNotNull("Could not find DeploymentConfig in list.getItems() for name: " + name, found);
+      Objects.requireNonNull(found, "Could not find DeploymentConfig in list.getItems() for name: " + name);
       found.getSpec().setReplicas(oldReplicas);
 
       try {

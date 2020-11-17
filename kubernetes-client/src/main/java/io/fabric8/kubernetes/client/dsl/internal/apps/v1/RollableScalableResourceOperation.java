@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal.apps.v1;
 
-import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
@@ -28,7 +27,6 @@ import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Executors;
@@ -36,7 +34,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 /**
  * Operations for resources that represent scalable, rolling-updatable sets of Pods.
@@ -44,7 +42,7 @@ import java.util.function.Function;
 public abstract class RollableScalableResourceOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>>
   extends HasMetadataOperation<T, L, R> implements RollableScalableResource<T> {
 
-  private final Logger Log = LoggerFactory.getLogger(this.getClass());
+  private static final Logger Log = LoggerFactory.getLogger(RollableScalableResourceOperation.class);
 
   final boolean rolling;
   final long rollingTimeout;
@@ -144,7 +142,7 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
   }
 
   @Override
-  public T edit(Function<T,T> function) {
+  public T edit(UnaryOperator<T> function) {
     if (!rolling) {
       return super.edit(function);
     }

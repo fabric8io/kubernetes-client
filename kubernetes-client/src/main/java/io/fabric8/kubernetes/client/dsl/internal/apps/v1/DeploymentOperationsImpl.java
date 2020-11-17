@@ -44,7 +44,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
@@ -53,6 +52,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.UnaryOperator;
 
 public class DeploymentOperationsImpl extends RollableScalableResourceOperation<Deployment, DeploymentList, RollableScalableResource<Deployment>>
   implements TimeoutImageEditReplacePatchable<Deployment>  {
@@ -106,7 +106,7 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
   }
 
   @Override
-  public Deployment edit(Function<Deployment,Deployment> function) {
+  public Deployment edit(UnaryOperator<Deployment> function) {
     if (isCascading()) {
       return cascading(false).edit(function);
     }
