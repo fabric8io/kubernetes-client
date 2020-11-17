@@ -19,6 +19,8 @@ import org.junit.jupiter.api.Test;
 
 import io.fabric8.knative.serving.v1.*;
 
+import static org.junit.Assert.assertNotNull;
+
 class ModelTest {
 
   @Test
@@ -34,7 +36,7 @@ class ModelTest {
       .endTemplate()
       .endSpec()
       .build();
-                                
+    assertNotNull(service);
   }
 }
 

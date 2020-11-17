@@ -120,17 +120,13 @@ class ConfigMapLockTest {
   @Test
   void createWithValidLeaderElectionRecordShouldSendPostRequest() throws Exception {
     // Given
-    when(metadata
-      .withNamespace("namespace")
-      .withName("name")
-      .addToAnnotations(eq("control-plane.alpha.kubernetes.io/leader"), anyString()).endMetadata()
-    ).thenReturn(configMapBuilder);
     final LeaderElectionRecord record = new LeaderElectionRecord(
       "1", Duration.ofSeconds(1), ZonedDateTime.now(), ZonedDateTime.now(), 0);
     final ConfigMapLock lock = new ConfigMapLock("namespace", "name", "1337");
     // When
     lock.create(kc, record);
     // Then
+    verify(configMaps.withName("name"), times(1)).create(any(ConfigMap.class));
   }
 
   @Test

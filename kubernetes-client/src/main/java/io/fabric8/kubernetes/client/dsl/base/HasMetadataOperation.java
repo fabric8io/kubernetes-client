@@ -16,12 +16,11 @@
 
 package io.fabric8.kubernetes.client.dsl.base;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
-import io.fabric8.kubernetes.api.builder.Builder;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
@@ -36,7 +35,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   }
 
   @Override
-  public T edit(Function<T, T> function) {
+  public T edit(UnaryOperator<T> function) {
     T item = getMandatory();
     return patch(function.apply(item));
   }

@@ -22,10 +22,12 @@ import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
+import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable;
-import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl;
+import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.Rule;
@@ -124,10 +126,10 @@ class CreateOrReplaceResourceTest {
     server.expect().get().withPath("/api/v1/namespaces/test/pods/pod123").andReturn(HttpURLConnection.HTTP_OK, new PodBuilder().withNewMetadata().withResourceVersion("12345").and().build()).times(2);
     server.expect().put().withPath("/api/v1/namespaces/test/pods/pod123").andReturn(HttpURLConnection.HTTP_BAD_REQUEST, new PodBuilder()
       .withNewMetadata().withResourceVersion("12345").and().build()).once();
-    KubernetesClient client = server.getClient();
-
+    final Pod toCreate = new PodBuilder().withNewMetadata().withName("pod123").and().withNewSpec().and().build();
+    final MixedOperation<Pod, PodList, PodResource<Pod>> pods = server.getClient().pods();
     // When
-    assertThrows(KubernetesClientException.class, () -> client.pods().create(new PodBuilder().withNewMetadata().withName("pod123").and().withNewSpec().and().build()));
+    assertThrows(KubernetesClientException.class, () -> pods.create(toCreate));
   }
 
   @Test

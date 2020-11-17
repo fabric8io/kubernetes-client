@@ -19,6 +19,8 @@ import org.junit.jupiter.api.Test;
 
 import io.fabric8.tekton.pipeline.v1beta1.*;
 
+import static org.junit.Assert.assertNotNull;
+
 class ModelTest {
 
   @Test
@@ -48,6 +50,7 @@ class ModelTest {
       .endStep()
       .endSpec()
       .build();
+    assertNotNull(service);
   }
 }
 

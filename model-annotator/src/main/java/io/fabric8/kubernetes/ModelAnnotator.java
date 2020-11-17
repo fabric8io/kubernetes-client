@@ -35,6 +35,8 @@ import java.util.Set;
 
 public class ModelAnnotator extends AbstractAnnotator {
 
+  private static final String BUILDABLE_REFERENCE_VALUE = "value";
+
   private final Set<String> handledClasses = new HashSet<>();
 
   @Override
@@ -58,13 +60,13 @@ public class ModelAnnotator extends AbstractAnnotator {
         .param("builderPackage", "io.fabric8.kubernetes.api.builder");
 
         JAnnotationArrayMember refs = buildable.paramArray("refs");
-        refs.annotate(BuildableReference.class).param("value", new JCodeModel()._class("io.fabric8.kubernetes.api.model.ObjectMeta"));
-        refs.annotate(BuildableReference.class).param("value", new JCodeModel()._class("io.fabric8.kubernetes.api.model.LabelSelector"));
-        refs.annotate(BuildableReference.class).param("value", new JCodeModel()._class("io.fabric8.kubernetes.api.model.Container"));
-        refs.annotate(BuildableReference.class).param("value", new JCodeModel()._class("io.fabric8.kubernetes.api.model.EnvVar"));
-        refs.annotate(BuildableReference.class).param("value", new JCodeModel()._class("io.fabric8.kubernetes.api.model.ContainerPort"));
-        refs.annotate(BuildableReference.class).param("value", new JCodeModel()._class("io.fabric8.kubernetes.api.model.Volume"));
-        refs.annotate(BuildableReference.class).param("value", new JCodeModel()._class("io.fabric8.kubernetes.api.model.VolumeMount"));
+        refs.annotate(BuildableReference.class).param(BUILDABLE_REFERENCE_VALUE, new JCodeModel()._class("io.fabric8.kubernetes.api.model.ObjectMeta"));
+        refs.annotate(BuildableReference.class).param(BUILDABLE_REFERENCE_VALUE, new JCodeModel()._class("io.fabric8.kubernetes.api.model.LabelSelector"));
+        refs.annotate(BuildableReference.class).param(BUILDABLE_REFERENCE_VALUE, new JCodeModel()._class("io.fabric8.kubernetes.api.model.Container"));
+        refs.annotate(BuildableReference.class).param(BUILDABLE_REFERENCE_VALUE, new JCodeModel()._class("io.fabric8.kubernetes.api.model.EnvVar"));
+        refs.annotate(BuildableReference.class).param(BUILDABLE_REFERENCE_VALUE, new JCodeModel()._class("io.fabric8.kubernetes.api.model.ContainerPort"));
+        refs.annotate(BuildableReference.class).param(BUILDABLE_REFERENCE_VALUE, new JCodeModel()._class("io.fabric8.kubernetes.api.model.Volume"));
+        refs.annotate(BuildableReference.class).param(BUILDABLE_REFERENCE_VALUE, new JCodeModel()._class("io.fabric8.kubernetes.api.model.VolumeMount"));
 
       if (isCRD(clazz, propertiesNode) || isCRDList(clazz, propertiesNode)) { // add CRD-specific annotations
         String apiVersion = getApiVersion(propertiesNode);
