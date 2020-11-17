@@ -29,6 +29,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -184,5 +186,19 @@ class KubernetesResourceUtilTest {
 
     // Then
     assertFalse(result);
+  }
+
+  @Test
+  void testGetAge(){
+    // Given
+    Pod pod = new PodBuilder()
+      .withNewMetadata().withName("test").withCreationTimestamp("2020-11-03T13:22:22Z").endMetadata()
+      .build();
+
+    // When
+    Duration duration = KubernetesResourceUtil.getAge(pod);
+
+    // Then
+    assertFalse(duration.isNegative());
   }
 }
