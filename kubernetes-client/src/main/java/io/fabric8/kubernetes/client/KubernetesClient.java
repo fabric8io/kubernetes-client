@@ -110,7 +110,6 @@ public interface KubernetesClient extends Client {
    * </p>
    *
    * @param resourceType Class for CustomResource
-   * @param listClass Class for list object for CustomResource
    * @param <T> T type represents CustomResource type. If it's a namespaced resource, it must implement
    *           {@link io.fabric8.kubernetes.api.model.Namespaced}
    * @return returns a MixedOperation object with which you can do basic CustomResource operations
