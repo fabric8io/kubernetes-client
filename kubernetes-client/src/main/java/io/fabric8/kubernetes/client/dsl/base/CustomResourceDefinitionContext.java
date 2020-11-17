@@ -15,7 +15,15 @@
  */
 package io.fabric8.kubernetes.client.dsl.base;
 
+import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
+import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
+import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
+import io.fabric8.kubernetes.client.utils.Pluralize;
+import io.fabric8.kubernetes.client.utils.Utils;
 
 public class CustomResourceDefinitionContext {
   private String name;
@@ -45,6 +53,31 @@ public class CustomResourceDefinitionContext {
 
   public String getKind() {
     return kind;
+  }
+
+  public static CustomResourceDefinitionContext fromCustomResourceType(Class<? extends HasMetadata> customResource) {
+    HasMetadata instance;
+    try {
+      instance = customResource.newInstance();
+
+      String kind = Utils.isNullOrEmpty(instance.getKind()) ? customResource.getSimpleName() : instance.getKind();
+      String name = kind.toLowerCase();
+      String plural = Pluralize.toPlural(name);
+      String group = ApiVersionUtil.apiGroup(instance, null);
+      String version = ApiVersionUtil.apiVersion(instance, "v1");
+      String scope = instance instanceof Namespaced ? "Namespaced" : "Cluster";
+
+      return new CustomResourceDefinitionContext.Builder()
+        .withGroup(group)
+        .withVersion(version)
+        .withScope(scope)
+        .withName(name)
+        .withPlural(plural)
+        .withKind(kind)
+        .build();
+    } catch (InstantiationException | IllegalAccessException e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
   }
 
   public static CustomResourceDefinitionContext fromCrd(CustomResourceDefinition crd) {

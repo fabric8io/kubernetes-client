@@ -7,6 +7,7 @@
 
 #### Improvements
 * Eliminated the use of Doneables and simplified the internal DSL implementation.
+* Provide a `customResources` alternative that simply accepts the resource type as an argument.
 
 #### Dependency Upgrade
 

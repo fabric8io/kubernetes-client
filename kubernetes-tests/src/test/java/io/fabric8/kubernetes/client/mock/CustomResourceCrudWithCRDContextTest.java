@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
@@ -68,6 +69,23 @@ class CustomResourceCrudWithCRDContextTest {
     assertNotNull(ebr1);
     assertEquals("ebr1", ebr1.getMetadata().getName());
   }
+
+  @Test
+  void testCreateAndGetWithInferredContext() {
+    // Given
+    KubernetesClient client = kubernetesServer.getClient();
+    KubernetesDeserializer.registerCustomKind("demo.fabric8.io/v1alpha1", "EntandoBundleRelease", EntandoBundleRelease.class);
+    MixedOperation<EntandoBundleRelease, KubernetesResourceList<EntandoBundleRelease>, Resource<EntandoBundleRelease>> ebrClient = client.customResources(EntandoBundleRelease.class);
+
+    // When
+    ebrClient.inNamespace("ns1").create(getMockedEntandoBundleRelease());
+    EntandoBundleRelease ebr1 = ebrClient.inNamespace("ns1").withName("ebr1").get();
+
+    // Then
+    assertNotNull(ebr1);
+    assertEquals("ebr1", ebr1.getMetadata().getName());
+  }
+
 
   private EntandoBundleRelease getMockedEntandoBundleRelease() {
     EntandoBundleReleaseSpec entandoBundleReleaseSpec = new EntandoBundleReleaseSpec();
