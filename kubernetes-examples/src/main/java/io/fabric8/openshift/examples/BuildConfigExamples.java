@@ -39,10 +39,8 @@ public class BuildConfigExamples {
 
   public static void main(String[] args) throws InterruptedException {
     Config config = new ConfigBuilder().build();
-    KubernetesClient kubernetesClient = new DefaultKubernetesClient(config);
-    OpenShiftClient client = kubernetesClient.adapt(OpenShiftClient.class);
-
-    try {
+    try(KubernetesClient kubernetesClient = new DefaultKubernetesClient(config)){
+      OpenShiftClient client = kubernetesClient.adapt(OpenShiftClient.class);
       // Create a namespace for all our stuff
       Namespace ns = new NamespaceBuilder().withNewMetadata().withName("thisisatest").addToLabels("this", "rocks").endMetadata().build();
       log("Created namespace", client.namespaces().create(ns));
@@ -136,9 +134,6 @@ public class BuildConfigExamples {
 
 
       log("Done.");
-    }finally {
-      client.namespaces().withName("thisisatest").delete();
-      client.close();
     }
   }
 
