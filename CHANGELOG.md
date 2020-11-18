@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 5.0-SNAPSHOT
+### 5.0.0-alpha-1 (2020-11-18)
 
 #### Bugs
 * Fix #2596: Add buildable references for Container, Port and Volume
