@@ -80,6 +80,12 @@ public class CustomResourceOperationsImplTest {
       .withType(MyCustomResource.class)
       .withListType(MyCustomResourceList.class));
   }
+  
+  @Test
+  void canProperlyInferListType() {
+    assertEquals(MyCustomResourceList.class, CustomResourceOperationsImpl.inferListType(MyCustomResource.class));
+    assertEquals(FooList.class, CustomResourceOperationsImpl.inferListType(Foo.class));
+  }
 
   private void assertForContext(CustomResourceOperationContext context) throws IOException {
     // CustomResourceOperationsImpl constructor invokes KubernetesDeserializer::registerCustomKind

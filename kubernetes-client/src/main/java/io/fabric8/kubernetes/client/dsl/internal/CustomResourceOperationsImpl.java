@@ -75,7 +75,7 @@ public class CustomResourceOperationsImpl<T extends HasMetadata, L extends Kuber
 
   public static <T extends HasMetadata> Class<KubernetesResourceList<T>> inferListType(Class<T> customResource) {
     try {
-		return (Class<KubernetesResourceList<T>>) Class.forName(customResource.getCanonicalName() + "List");
+      return (Class<KubernetesResourceList<T>>) Class.forName(customResource.getName() + "List");
     } catch (ClassNotFoundException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
