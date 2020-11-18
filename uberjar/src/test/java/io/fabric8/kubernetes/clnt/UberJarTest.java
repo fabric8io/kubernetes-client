@@ -153,7 +153,7 @@ class UberJarTest {
   private String getMinorVersion(String projectVersion) {
     String[] versionParts = projectVersion.split("\\.");
     String minorPatchVersion = projectVersion.substring(versionParts[0].length() + 1);
-    if (minorPatchVersion.contains("-")) { // SNAPSHOT VERSION
+    if (minorPatchVersion.contains("-SNAPSHOT")) { // SNAPSHOT VERSION
       return minorPatchVersion.split("-")[0];
     } else { // RELEASE VERSION
       return versionParts[1];
