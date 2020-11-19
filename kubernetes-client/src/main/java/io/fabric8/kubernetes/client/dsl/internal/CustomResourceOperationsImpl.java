@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.CustomResourceList;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
@@ -73,11 +74,11 @@ public class CustomResourceOperationsImpl<T extends HasMetadata, L extends Kuber
     return resourceNamespaced;
   }
 
-  public static <T extends HasMetadata> Class<KubernetesResourceList<T>> inferListType(Class<T> customResource) {
+  public static <T extends HasMetadata> Class<? extends KubernetesResourceList> inferListType(Class<T> customResource) {
     try {
       return (Class<KubernetesResourceList<T>>) Class.forName(customResource.getName() + "List");
     } catch (ClassNotFoundException e) {
-      throw KubernetesClientException.launderThrowable(e);
+      return CustomResourceList.class;
     }
   }
 }

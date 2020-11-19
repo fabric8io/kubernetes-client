@@ -35,6 +35,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.MappingJsonFactory;
 
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
@@ -105,6 +106,7 @@ public class CustomResourceOperationsImplTest {
   void canProperlyInferListType() {
     assertEquals(MyCustomResourceList.class, CustomResourceOperationsImpl.inferListType(MyCustomResource.class));
     assertEquals(FooList.class, CustomResourceOperationsImpl.inferListType(Foo.class));
+    assertEquals(CustomResourceList.class, CustomResourceOperationsImpl.inferListType(Bar.class));
   }
 
   private void assertForContext(CustomResourceOperationContext context) throws IOException {
