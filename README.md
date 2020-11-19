@@ -22,6 +22,8 @@ This client provides access to the full [Kubernetes](http://kubernetes.io/) &
 [![Javadocs](http://www.javadoc.io/badge/io.fabric8/tekton-client.svg?color=blue)](http://www.javadoc.io/doc/io.fabric8/tekton-client)
 * servicecatalog-client: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/servicecatalog-client.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Aservicecatalog-client)
 [![Javadocs](http://www.javadoc.io/badge/io.fabric8/servicecatalog-client.svg?color=blue)](http://www.javadoc.io/doc/io.fabric8/servicecatalog-client)
+* chaosmesh-client: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/chaosmesh-client.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Achaosmesh-client)
+[![Javadocs](http://www.javadoc.io/badge/io.fabric8/chaosmesh-client.svg?color=blue)](http://www.javadoc.io/doc/io.fabric8/chaosmesh-client)
 
 - [Usage](#usage)
     - [Creating a client](#creating-a-client)

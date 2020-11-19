@@ -23,6 +23,7 @@
 #### Dependency Upgrade
 
 #### New Features
+* Fix #2556: Chaos Mesh model based on Chaos Mesh v1.0.1
 
 ### 4.13.0 (2020-11-10)
 
