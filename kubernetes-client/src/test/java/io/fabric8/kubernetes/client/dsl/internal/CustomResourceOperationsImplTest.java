@@ -22,6 +22,9 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefin
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionBuilder;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.CustomResourceList;
+import io.fabric8.kubernetes.client.DefaultKubernetesClient;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.internal.KubernetesDeserializer;
 
@@ -32,7 +35,9 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.MappingJsonFactory;
 
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 public class CustomResourceOperationsImplTest {
@@ -42,6 +47,8 @@ public class CustomResourceOperationsImplTest {
 
   public static class MyCustomResourceList extends CustomResourceList<MyCustomResource> {
   }
+  
+  public static class Bar extends CustomResource {}
 
   private final CustomResourceDefinition crd = new CustomResourceDefinitionBuilder()
     .withNewMetadata()
@@ -60,11 +67,25 @@ public class CustomResourceOperationsImplTest {
   .build();
 
   @Test
+  void shouldBeAbleToReturnOperationsWithoutSpecificList() {
+    final MixedOperation<Bar, CustomResourceList, Resource<Bar>> operation = new DefaultKubernetesClient().customResources(Bar.class, CustomResourceList.class);
+    assertNotNull(operation);
+  }
+  
+  @Test
   public void shouldRegisterWithKubernetesDeserializer() throws IOException {
     assertForContext(new CustomResourceOperationContext()
       .withCrd(crd)
       .withType(MyCustomResource.class)
       .withListType(MyCustomResourceList.class));
+  }
+  
+  @Test
+  public void shouldWorkWithPlainCustomResourceList() throws IOException {
+    assertForContext(new CustomResourceOperationContext()
+      .withCrd(crd)
+      .withType(MyCustomResource.class)
+      .withListType(CustomResourceList.class));
   }
 
   @Test
@@ -79,6 +100,13 @@ public class CustomResourceOperationsImplTest {
       .build())
       .withType(MyCustomResource.class)
       .withListType(MyCustomResourceList.class));
+  }
+  
+  @Test
+  void canProperlyInferListType() {
+    assertEquals(MyCustomResourceList.class, CustomResourceOperationsImpl.inferListType(MyCustomResource.class));
+    assertEquals(FooList.class, CustomResourceOperationsImpl.inferListType(Foo.class));
+    assertEquals(CustomResourceList.class, CustomResourceOperationsImpl.inferListType(Bar.class));
   }
 
   private void assertForContext(CustomResourceOperationContext context) throws IOException {
