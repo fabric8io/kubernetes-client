@@ -23,9 +23,9 @@ import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.WatchEvent;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.Watcher.Action;
+import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
@@ -44,27 +44,18 @@ import java.util.List;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static java.net.HttpURLConnection.HTTP_GONE;
 
-public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourceList<T>> implements
-  Watch {
+public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourceList<T>> extends AbstractWatchManager<T> {
   private static final Logger logger = LoggerFactory.getLogger(WatchHTTPManager.class);
 
   private final BaseOperation<T, L, ?> baseOperation;
-  private final Watcher<T> watcher;
   private final AtomicBoolean forceClosed = new AtomicBoolean();
-  private final ListOptions listOptions;
-  private final AtomicReference<String> resourceVersion;
-  private final int reconnectLimit;
-  private final int reconnectInterval;
 
   private final AtomicBoolean reconnectPending = new AtomicBoolean(false);
-  private int maxIntervalExponent;
   private final URL requestUrl;
   private final AtomicInteger currentReconnectAttempt = new AtomicInteger(0);
-  private OkHttpClient clonedClient;
 
   private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor(r -> {
     Thread ret = new Thread(r, "Executor for Watch " + System.identityHashCode(WatchHTTPManager.this));
@@ -87,19 +78,16 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
                           final int reconnectLimit, long connectTimeout, int maxIntervalExponent)
     throws MalformedURLException {
 
-    this.resourceVersion = new AtomicReference<>(listOptions.getResourceVersion());
-    this.listOptions = listOptions;
+    super(
+      watcher, listOptions, reconnectLimit, reconnectInterval, maxIntervalExponent,
+      client.newBuilder()
+        .connectTimeout(connectTimeout, TimeUnit.MILLISECONDS)
+        .readTimeout(0, TimeUnit.MILLISECONDS)
+        .cache(null)
+        .build()
+    );
     this.baseOperation = baseOperation;
-    this.watcher = watcher;
-    this.reconnectInterval = reconnectInterval;
-    this.reconnectLimit = reconnectLimit;
-    this.maxIntervalExponent = maxIntervalExponent;
 
-    OkHttpClient clonedClient = client.newBuilder()
-      .connectTimeout(connectTimeout, TimeUnit.MILLISECONDS)
-      .readTimeout(0, TimeUnit.MILLISECONDS)
-      .cache(null)
-      .build();
 
     // If we set the HttpLoggingInterceptor's logging level to Body (as it is by default), it does
     // not let us stream responses from the server.
@@ -110,12 +98,11 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
       }
     }
 
-    this.clonedClient = clonedClient;
     requestUrl = baseOperation.getNamespacedUrl();
     runWatch();
   }
 
-  private final void runWatch() {
+  private void runWatch() {
     logger.debug("Watching via HTTP GET ... {}", this);
 
     HttpUrl.Builder httpUrlBuilder = HttpUrl.get(requestUrl).newBuilder();
@@ -198,7 +185,7 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
     }
 
     if (currentReconnectAttempt.get() >= reconnectLimit && reconnectLimit >= 0) {
-      watcher.onClose(new KubernetesClientException("Connection unexpectedly closed"));
+      watcher.onClose(new WatcherException("Connection unexpectedly closed"));
       return;
     }
 
@@ -224,7 +211,7 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
               // An unexpected error occurred and we didn't even get an onFailure callback.
               logger.error("Exception in reconnect", e);
               close();
-              watcher.onClose(new KubernetesClientException("Unhandled exception in reconnect attempt", e));
+              watcher.onClose(new WatcherException("Unhandled exception in reconnect attempt", e));
             }
           }, nextReconnectInterval(), TimeUnit.MILLISECONDS);
         } catch (RejectedExecutionException e) {
@@ -270,7 +257,7 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
           // exception
           // shut down executor, etc.
           close();
-          watcher.onClose(new KubernetesClientException(status));
+          watcher.onClose(new WatcherException(status.getMessage(), new KubernetesClientException(status)));
           return;
         }
 

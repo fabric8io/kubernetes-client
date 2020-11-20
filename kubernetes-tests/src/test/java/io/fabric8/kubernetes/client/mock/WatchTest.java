@@ -33,6 +33,7 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.Watchable;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 
@@ -86,8 +87,8 @@ class WatchTest {
       }
 
       @Override
-      public void onClose(KubernetesClientException cause) {
-        assertEquals(410, cause.getCode());
+      public void onClose(WatcherException cause) {
+        assertTrue(cause.isHttpGone());
         closeLatch.countDown();
       }
     };
@@ -115,7 +116,7 @@ class WatchTest {
       }
 
       @Override
-      public void onClose(KubernetesClientException cause) {
+      public void onClose(WatcherException cause) {
         assertNull("Close event should be invoked by try-with-resources successful completion, not by exception", cause);
         closeLatch.countDown();
       }
@@ -151,7 +152,7 @@ class WatchTest {
       public void eventReceived(Action action, Pod resource) { eventReceivedLatch.countDown(); }
 
       @Override
-      public void onClose(KubernetesClientException cause) { }
+      public void onClose(WatcherException cause) { }
     });
 
     // Then
@@ -181,8 +182,8 @@ class WatchTest {
       }
 
       @Override
-      public void onClose(KubernetesClientException cause) {
-        assertEquals(410, cause.getCode());
+      public void onClose(WatcherException cause) {
+        assertTrue(cause.isHttpGone());
         closeLatch.countDown();
       }
     };
@@ -211,7 +212,7 @@ class WatchTest {
       }
 
       @Override
-      public void onClose(KubernetesClientException cause) {
+      public void onClose(WatcherException cause) {
         closeLatch.countDown();
       }
     });
@@ -257,7 +258,7 @@ class WatchTest {
       }
 
       @Override
-      public void onClose(KubernetesClientException cause) {
+      public void onClose(WatcherException cause) {
       }
     });
 

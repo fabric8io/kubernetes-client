@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.dsl.base;
 
 import io.fabric8.kubernetes.api.model.ObjectReference;
+import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.utils.CreateOrReplaceHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +46,6 @@ import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Replaceable;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.base.WaitForConditionWatcher.WatchException;
 import io.fabric8.kubernetes.client.dsl.internal.DefaultOperationInfo;
 import io.fabric8.kubernetes.client.dsl.internal.WatchConnectionManager;
 import io.fabric8.kubernetes.client.dsl.internal.WatchHTTPManager;
@@ -1104,7 +1104,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
         return watcher.getFuture().get(remainingNanosToWait, NANOSECONDS);
       } catch (ExecutionException e) {
         Throwable cause = e.getCause();
-        if (cause instanceof WatchException && ((WatchException) cause).isShouldRetry()) {
+        if (cause instanceof WatcherException && ((WatcherException) cause).isShouldRetry()) {
           LOG.debug("retryable watch exception encountered, retrying after {} millis", currentBackOff, cause);
           Thread.sleep(currentBackOff);
           currentBackOff *= watchRetryBackoffMultiplier;

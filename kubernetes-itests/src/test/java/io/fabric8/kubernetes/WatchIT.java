@@ -71,7 +71,7 @@ public class WatchIT {
       }
 
       @Override
-      public void onClose(KubernetesClientException e) {
+      public void onClose(WatcherException e) {
         closeLatch.countDown();
         logger.info("watch closed...");
       }

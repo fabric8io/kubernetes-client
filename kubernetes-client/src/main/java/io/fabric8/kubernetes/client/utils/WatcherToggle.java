@@ -16,8 +16,8 @@
 
 package io.fabric8.kubernetes.client.utils;
 
-import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.WatcherException;
 
 import java.util.Objects;
 
@@ -26,7 +26,7 @@ import java.util.Objects;
  */
 public class WatcherToggle<T> implements Watcher<T> {
 
-  private Watcher<T> delegate;
+  private final Watcher<T> delegate;
 
   private boolean enabled;
 
@@ -51,7 +51,7 @@ public class WatcherToggle<T> implements Watcher<T> {
   }
 
   @Override
-  public void onClose(KubernetesClientException cause) {
+  public void onClose(WatcherException cause) {
     if (enabled) {
       delegate.onClose(cause);
     }

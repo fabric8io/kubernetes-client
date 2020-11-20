@@ -22,9 +22,9 @@ import io.fabric8.kubernetes.api.model.EventListBuilder;
 import io.fabric8.kubernetes.api.model.ObjectReferenceBuilder;
 import io.fabric8.kubernetes.api.model.WatchEvent;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.Rule;
@@ -72,7 +72,7 @@ class EventTest {
       }
 
       @Override
-      public void onClose(KubernetesClientException cause) {
+      public void onClose(WatcherException cause) {
 
       }
     });

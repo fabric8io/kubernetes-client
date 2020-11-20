@@ -18,8 +18,8 @@ package io.fabric8.kubernetes.examples.kubectl.equivalents;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.WatcherException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,14 +42,14 @@ public class PodWatchEquivalent {
                 @Override
                 public void eventReceived(Action action, Pod pod) {
                     logger.info("{} {}", action.name(), pod.getMetadata().getName());
-                    switch (action.name()) {
-                        case "ADDED":
+                    switch (action) {
+                        case ADDED:
                             logger.info("{} got added", pod.getMetadata().getName());
                             break;
-                        case "DELETED":
+                        case DELETED:
                             logger.info("{} got deleted", pod.getMetadata().getName());
                             break;
-                        case "MODIFIED":
+                      case MODIFIED:
                             logger.info("{} got modified",  pod.getMetadata().getName());
                             break;
                         default:
@@ -58,7 +58,7 @@ public class PodWatchEquivalent {
                 }
 
                 @Override
-                public void onClose(KubernetesClientException e) {
+                public void onClose(WatcherException e) {
                     logger.info( "Closed");
                     isWatchClosed.countDown();
                 }

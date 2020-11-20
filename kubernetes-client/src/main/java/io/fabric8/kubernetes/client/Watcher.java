@@ -24,7 +24,7 @@ public interface Watcher<T> {
    *
    * @param cause What caused the watcher to be closed. Null means normal close.
    */
-  void onClose(KubernetesClientException cause);
+  void onClose(WatcherException cause);
 
   enum Action {
     ADDED, MODIFIED, DELETED, ERROR

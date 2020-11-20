@@ -19,8 +19,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.HttpUrl;
@@ -53,17 +53,12 @@ import static java.net.HttpURLConnection.HTTP_OK;
  * instead of using a solid type for deserializing events, it uses plain strings.
  *
  */
-public class RawWatchConnectionManager implements Watch {
+public class RawWatchConnectionManager extends AbstractWatchManager<String> {
   private static final Logger logger = LoggerFactory.getLogger(RawWatchConnectionManager.class);
   private ObjectMapper objectMapper;
-  private Watcher<String> watcher;
   private HttpUrl.Builder watchUrlBuilder;
 
   private final AtomicBoolean forceClosed = new AtomicBoolean();
-  private final AtomicReference<String> resourceVersion;
-  private final int reconnectLimit;
-  private final int reconnectInterval;
-  private int maxIntervalExponent;
   private final AtomicInteger currentReconnectAttempt = new AtomicInteger(0);
   private final AtomicReference<WebSocket> webSocketRef = new AtomicReference<>();
   // single threaded serial executor
@@ -75,17 +70,14 @@ public class RawWatchConnectionManager implements Watch {
   private final ArrayBlockingQueue<Object> queue = new ArrayBlockingQueue<>(1);
 
   private WebSocket webSocket;
-  private OkHttpClient clonedClient;
 
   public RawWatchConnectionManager(OkHttpClient okHttpClient, HttpUrl.Builder watchUrlBuilder, ListOptions listOptions, ObjectMapper objectMapper, final Watcher<String> watcher, int reconnectLimit, int reconnectInterval, int maxIntervalExponent)  {
-    this.clonedClient = okHttpClient;
+    super(
+      watcher, listOptions, reconnectLimit, reconnectInterval, maxIntervalExponent,
+      okHttpClient.newBuilder().build()
+    );
     this.watchUrlBuilder = watchUrlBuilder;
     this.objectMapper = objectMapper;
-    this.watcher = watcher;
-    this.reconnectLimit = reconnectLimit;
-    this.reconnectInterval = reconnectInterval;
-    this.resourceVersion = new AtomicReference<>(listOptions.getResourceVersion());
-    this.maxIntervalExponent = maxIntervalExponent;
     executor = Executors.newSingleThreadScheduledExecutor(r -> {
       Thread ret = new Thread(r, "Executor for Watch " + System.identityHashCode(RawWatchConnectionManager.this));
       ret.setDaemon(true);
@@ -156,7 +148,7 @@ public class RawWatchConnectionManager implements Watch {
           return;
         }
         if (currentReconnectAttempt.get() >= reconnectLimit && reconnectLimit >= 0) {
-          closeEvent(new KubernetesClientException("Connection unexpectedly closed"));
+          closeEvent(new WatcherException("Connection unexpectedly closed"));
           return;
         }
         scheduleReconnect();
@@ -204,7 +196,7 @@ public class RawWatchConnectionManager implements Watch {
         }
 
         if (currentReconnectAttempt.get() >= reconnectLimit && reconnectLimit >= 0) {
-          closeEvent(new KubernetesClientException("Connection failure", t));
+          closeEvent(new WatcherException("Connection failure", t));
           return;
         }
 
@@ -242,7 +234,7 @@ public class RawWatchConnectionManager implements Watch {
                   // An unexpected error occurred and we didn't even get an onFailure callback.
                   logger.error("Exception in reconnect", e);
                   webSocketRef.set(null);
-                  closeEvent(new KubernetesClientException("Unhandled exception in reconnect attempt", e));
+                  closeEvent(new WatcherException("Unhandled exception in reconnect attempt", e));
                   close();
                 }
               }
@@ -273,27 +265,6 @@ public class RawWatchConnectionManager implements Watch {
         }
       } catch (Throwable t) {
         throw KubernetesClientException.launderThrowable(t);
-      }
-    }
-  }
-
-  private void closeEvent(KubernetesClientException cause) {
-    if (forceClosed.getAndSet(true)) {
-      logger.debug("Ignoring duplicate firing of onClose event");
-      return;
-    }
-    watcher.onClose(cause);
-  }
-
-  private void closeWebSocket(WebSocket ws) {
-    if (ws != null) {
-      logger.debug("Closing websocket {}", ws);
-      try {
-        if (!ws.close(1000, null)) {
-          logger.warn("Failed to close websocket");
-        }
-      } catch (IllegalStateException e) {
-        logger.error("Called close on already closed websocket: {} {}", e.getClass(), e.getMessage());
       }
     }
   }

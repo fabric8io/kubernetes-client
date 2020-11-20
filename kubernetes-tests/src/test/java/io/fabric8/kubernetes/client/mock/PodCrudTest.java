@@ -21,9 +21,9 @@ import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.PodSpecBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import junit.framework.AssertionFailedError;
 import org.junit.Rule;
@@ -41,13 +41,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @EnableRuleMigrationSupport
-public class PodCrudTest {
+class PodCrudTest {
 
   @Rule
   public KubernetesServer server = new KubernetesServer(true, true);
 
   @Test
-  public void testCrud() { KubernetesClient client = server.getClient();
+  void testCrud() { KubernetesClient client = server.getClient();
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").addToLabels("testKey", "testValue").endMetadata().build();
     Pod pod2 = new PodBuilder().withNewMetadata().withName("pod2").addToLabels("testKey", "testValue").endMetadata().build();
     Pod pod3 = new PodBuilder().withNewMetadata().withName("pod3").endMetadata().build();
@@ -97,7 +97,7 @@ public class PodCrudTest {
   }
 
   @Test
-  public void testPodWatchOnName() throws InterruptedException {
+  void testPodWatchOnName() throws InterruptedException {
     KubernetesClient client = server.getClient();
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").addToLabels("testKey", "testValue").endMetadata().build();
     final CountDownLatch deleteLatch = new CountDownLatch(1);
@@ -124,7 +124,7 @@ public class PodCrudTest {
         }
       }
       @Override
-      public void onClose(KubernetesClientException cause) {
+      public void onClose(WatcherException cause) {
         closeLatch.countDown();
       }
     });
@@ -151,7 +151,7 @@ public class PodCrudTest {
   }
 
   @Test
-  public void testPodWatchOnNamespace() throws InterruptedException {
+  void testPodWatchOnNamespace() throws InterruptedException {
     KubernetesClient client = server.getClient();
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").addToLabels("testKey", "testValue").endMetadata().build();
 
@@ -179,7 +179,7 @@ public class PodCrudTest {
         }
       }
       @Override
-      public void onClose(KubernetesClientException cause) {
+      public void onClose(WatcherException cause) {
         closeLatch.countDown();
       }
     });
@@ -205,7 +205,7 @@ public class PodCrudTest {
   }
 
   @Test
-  public void testPodWatchOnLabels() throws InterruptedException {
+  void testPodWatchOnLabels() throws InterruptedException {
     KubernetesClient client = server.getClient();
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").addToLabels("test", "watch").endMetadata().build();
 
@@ -236,7 +236,7 @@ public class PodCrudTest {
         }
 
         @Override
-        public void onClose(KubernetesClientException cause) {
+        public void onClose(WatcherException cause) {
           closeLatch.countDown();
         }
     });
@@ -278,7 +278,7 @@ public class PodCrudTest {
   }
 
   @Test
-  public void testPodWatchClientSocketError() throws InterruptedException {
+  void testPodWatchClientSocketError() throws InterruptedException {
     KubernetesClient client = server.getClient();
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").addToLabels("testKey", "testValue").endMetadata().build();
 
@@ -308,7 +308,7 @@ public class PodCrudTest {
         }
 
         @Override
-        public void onClose(KubernetesClientException e) {
+        public void onClose(WatcherException e) {
             closeLatch.countDown();
         }
       })) {
