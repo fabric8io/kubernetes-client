@@ -3,6 +3,7 @@
 ### 5.0-SNAPSHOT
 
 #### Bugs
+* Fix #2519: Generated schemas contains a valid meta-schema URI reference (`http://json-schema.org/draft-05/schema#`)
 
 #### Improvements
 

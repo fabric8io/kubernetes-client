@@ -1,6 +1,6 @@
 {
   "id": "http://fabric8.io/fabric8/v2/Schema#",
-  "$schema": "http://json-schema.org/schema#",
+  "$schema": "http://json-schema.org/draft-05/schema#",
   "$module": "extensions",
   "definitions": {
     "k8s_io_apimachinery_pkg_api_resource_Quantity": {

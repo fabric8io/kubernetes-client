@@ -1,3 +1,4 @@
+#!/bin/bash
 #
 # Copyright (C) 2015 Red Hat, Inc.
 #
@@ -14,19 +15,39 @@
 # limitations under the License.
 #
 
-declare -a modules=("kubernetes-model-core" "kubernetes-model-rbac" "kubernetes-model-admissionregistration"
-    "kubernetes-model-apiextensions" "kubernetes-model-apps" "kubernetes-model-autoscaling"
-    "kubernetes-model-batch" "kubernetes-model-certificates" "kubernetes-model-coordination"
-    "kubernetes-model-discovery" "kubernetes-model-events" "kubernetes-model-extensions"
-    "kubernetes-model-networking" "kubernetes-model-metrics" "kubernetes-model-policy"
-    "kubernetes-model-scheduling" "kubernetes-model-settings" "kubernetes-model-storageclass"
-    "openshift-model" "openshift-model-operator" "openshift-model-operatorhub" "openshift-model-console"
+set -e
+
+declare -a modules=(
+    "kubernetes-model-core"
+    "kubernetes-model-rbac"
+    "kubernetes-model-admissionregistration"
+    "kubernetes-model-apiextensions"
+    "kubernetes-model-apps"
+    "kubernetes-model-autoscaling"
+    "kubernetes-model-batch"
+    "kubernetes-model-certificates"
+    "kubernetes-model-coordination"
+    "kubernetes-model-discovery"
+    "kubernetes-model-events"
+    "kubernetes-model-extensions"
+    "kubernetes-model-networking"
+    "kubernetes-model-metrics"
+    "kubernetes-model-node"
+    "kubernetes-model-policy"
+    "kubernetes-model-scheduling"
+    "kubernetes-model-settings"
+    "kubernetes-model-storageclass"
+    "openshift-model"
+    "openshift-model-operator"
+    "openshift-model-operatorhub"
+    "openshift-model-console"
+    "openshift-model-monitoring"
 )
 
 for module in ${modules[*]}
 do
     echo "Compiling ${module}"
-    cd $module
-    make
-    cd ..
-done    
+    cd "$module" || exit 1
+    make "${1:-"gobuild"}"
+    cd .. || exit 1
+done

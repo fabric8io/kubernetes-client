@@ -1,6 +1,6 @@
 {
   "id": "http://fabric8.io/csi/ChaosMeshSchema#",
-  "$schema": "http://json-schema.org/schema#",
+  "$schema": "http://json-schema.org/draft-05/schema#",
   "definitions": {
     "github_com_chaos-mesh_chaos-mesh_api_v1alpha1_AttrOverrideSpec": {
       "type": "object",

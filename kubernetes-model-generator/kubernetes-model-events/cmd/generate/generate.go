@@ -60,7 +60,6 @@ type Schema struct {
   Event                                    events.Event
   EventList                                events.EventList
   EventSeries                              events.EventSeries
-  EventSeriesState                         events.EventSeriesState
 }
 
 func main() {
