@@ -331,7 +331,7 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
   @Override
   public void close() {
     logger.debug("Force closing the watch {}", this);
-    closeEvent(null);
+    closeEvent();
     closeWebSocket(webSocketRef.getAndSet(null));
     if (!executor.isShutdown()) {
       try {

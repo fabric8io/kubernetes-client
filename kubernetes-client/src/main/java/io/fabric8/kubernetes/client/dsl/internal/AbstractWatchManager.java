@@ -63,6 +63,14 @@ public abstract class AbstractWatchManager<T> implements Watch {
     watcher.onClose(cause);
   }
 
+  final void closeEvent() {
+    if (forceClosed.getAndSet(true)) {
+      logger.debug("Ignoring duplicate firing of onClose event");
+      return;
+    }
+    watcher.onClose();
+  }
+
   static void closeWebSocket(WebSocket webSocket) {
     if (webSocket != null) {
       logger.debug("Closing websocket {}", webSocket);

@@ -58,7 +58,11 @@ public class WaitForConditionWatcher<T extends HasMetadata> implements Watcher<T
 
   @Override
   public void onClose(WatcherException cause) {
-    future.completeExceptionally(cause == null ? new WatcherException("Watcher closed") : cause);
+    future.completeExceptionally(cause);
   }
 
+  @Override
+  public void onClose() {
+    future.completeExceptionally(new WatcherException("Watcher closed"));
+  }
 }

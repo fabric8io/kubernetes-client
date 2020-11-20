@@ -56,4 +56,11 @@ public class WatcherToggle<T> implements Watcher<T> {
       delegate.onClose(cause);
     }
   }
+
+  @Override
+  public void onClose() {
+    if (enabled) {
+      delegate.onClose();
+    }
+  }
 }

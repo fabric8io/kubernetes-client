@@ -81,4 +81,9 @@ public class ReflectorWatcher<T extends HasMetadata> implements Watcher<T> {
     onClose.run();
   }
 
+  @Override
+  public void onClose() {
+    log.info("Watch gracefully closed");
+    onClose.run();
+  }
 }

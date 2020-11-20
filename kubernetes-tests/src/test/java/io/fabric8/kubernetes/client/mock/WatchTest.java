@@ -117,7 +117,11 @@ class WatchTest {
 
       @Override
       public void onClose(WatcherException cause) {
-        assertNull("Close event should be invoked by try-with-resources successful completion, not by exception", cause);
+        fail("Close event should be invoked by try-with-resources successful completion, not by exception");
+      }
+
+      @Override
+      public void onClose() {
         closeLatch.countDown();
       }
     };
@@ -213,6 +217,11 @@ class WatchTest {
 
       @Override
       public void onClose(WatcherException cause) {
+        fail();
+      }
+
+      @Override
+      public void onClose() {
         closeLatch.countDown();
       }
     });

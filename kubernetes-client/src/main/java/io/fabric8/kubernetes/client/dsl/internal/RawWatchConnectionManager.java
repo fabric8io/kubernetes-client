@@ -254,7 +254,7 @@ public class RawWatchConnectionManager extends AbstractWatchManager<String> {
   @Override
   public void close() {
     logger.debug("Force closing the watch {}", this);
-    closeEvent(null);
+    closeEvent();
     closeWebSocket(webSocketRef.getAndSet(null));
     if (!executor.isShutdown()) {
       try {

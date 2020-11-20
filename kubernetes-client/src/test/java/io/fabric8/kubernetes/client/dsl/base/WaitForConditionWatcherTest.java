@@ -151,6 +151,22 @@ class WaitForConditionWatcherTest {
     assertFalse(condition.isCalled());
   }
 
+  @Test
+  void itCompletesExceptionallyWithRetryOnGracefulClose() throws Exception {
+    TrackingPredicate condition = condition(ss -> true);
+    WaitForConditionWatcher<ConfigMap> watcher = new WaitForConditionWatcher<>(condition);
+    watcher.onClose();
+    assertTrue(watcher.getFuture().isDone());
+    try {
+      watcher.getFuture().get();
+      fail("should have thrown exception");
+    } catch (ExecutionException e) {
+      assertEquals(WatcherException.class, e.getCause().getClass());
+      assertEquals("Watcher closed", e.getCause().getMessage());
+      assertTrue(((WatcherException) e.getCause()).isShouldRetry());
+    }
+    assertFalse(condition.isCalled());
+  }
   private TrackingPredicate condition(Predicate<ConfigMap> condition) {
     return new TrackingPredicate(condition);
   }

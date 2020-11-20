@@ -37,23 +37,32 @@ class AbstractWatchManagerTest {
   @DisplayName("closeEvent, is idempotent, multiple calls only close watcher once")
   void closeEventIsIdempotent() {
     // Given
-    final AtomicInteger closeCount = new AtomicInteger();
-    final Watcher<Object> watcher = new WatcherAdapter<Object>() {
-
-      @Override
-      public void onClose(WatcherException cause) {
-        closeCount.addAndGet(1);
-      }
-    };
+    final WatcherAdapter<Object> watcher = new WatcherAdapter<>();
     final WatchManager<Object> awm = new WatchManager<>(
       watcher, mock(ListOptions.class, RETURNS_DEEP_STUBS), 0, 0, 0,
       mock(OkHttpClient.class));
     // When
     for (int it = 0; it < 10; it++) {
-      awm.closeEvent(null);
+      awm.closeEvent();
     }
     // Then
-    assertThat(closeCount.get()).isEqualTo(1);
+    assertThat(watcher.closeCount.get()).isEqualTo(1);
+  }
+
+  @Test
+  @DisplayName("closeEvent with Exception, is idempotent, multiple calls only close watcher once")
+  void closeEventWithExceptionIsIdempotent() {
+    // Given
+    final WatcherAdapter<Object> watcher = new WatcherAdapter<>();
+    final WatchManager<Object> awm = new WatchManager<>(
+      watcher, mock(ListOptions.class, RETURNS_DEEP_STUBS), 0, 0, 0,
+      mock(OkHttpClient.class));
+    // When
+    for (int it = 0; it < 10; it++) {
+      awm.closeEvent();
+    }
+    // Then
+    assertThat(watcher.closeCount.get()).isEqualTo(1);
   }
 
   @Test
@@ -68,13 +77,20 @@ class AbstractWatchManagerTest {
   }
 
   private static class WatcherAdapter<T> implements Watcher<T> {
+    private final AtomicInteger closeCount = new AtomicInteger(0);
+
     @Override
     public void eventReceived(Action action, T resource) {
 
     }
     @Override
     public void onClose(WatcherException cause) {
+      closeCount.addAndGet(1);
+    }
 
+    @Override
+    public void onClose() {
+      closeCount.addAndGet(1);
     }
   }
 
