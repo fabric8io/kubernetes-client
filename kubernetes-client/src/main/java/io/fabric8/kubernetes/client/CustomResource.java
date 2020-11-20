@@ -45,7 +45,7 @@ public abstract class CustomResource implements HasMetadata {
 
   @Override
   public String toString() {
-    return "CustomResourceSupport{" +
+    return "CustomResource{" +
         "kind='" + kind + '\'' +
         ", apiVersion='" + apiVersion + '\'' +
         ", metadata=" + metadata +
