@@ -21,8 +21,10 @@ import java.util.regex.Pattern;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public interface HasMetadata extends KubernetesResource {
-  String DNS_NAME_REGEXP = "(?!-)[A-Za-z0-9-]{1,63}(?<!-)";
-  Matcher DOMAIN_NAME_MATCHER = Pattern.compile("^(" + DNS_NAME_REGEXP + "\\.)+[A-Za-z]{2,6}/" + DNS_NAME_REGEXP).matcher("");
+  String DNS_LABEL_START = "(?!-)[A-Za-z0-9-]{";
+  String DNS_LABEL_END = ",63}(?<!-)";
+  String DNS_LABEL_REGEXP = DNS_LABEL_START + 1 + DNS_LABEL_END;
+  Matcher FINALIZER_NAME_MATCHER = Pattern.compile("^(" + DNS_LABEL_REGEXP + "\\.)+" + DNS_LABEL_START + 2 + DNS_LABEL_END + "/" + DNS_LABEL_REGEXP).matcher("");
   
   ObjectMeta getMetadata();
   
@@ -71,7 +73,7 @@ public interface HasMetadata extends KubernetesResource {
     if (isMarkedForDeletion() || hasFinalizer(finalizer)) {
       return false;
     }
-    if (DOMAIN_NAME_MATCHER.reset(finalizer).matches()) {
+    if (FINALIZER_NAME_MATCHER.reset(finalizer).matches()) {
       return getMetadata().getFinalizers().add(finalizer);
     } else {
       throw new IllegalArgumentException("Invalid finalizer name: '" + finalizer + "'. Must consist of a domain name, a forward slash and the valid kubernetes name.");

@@ -55,6 +55,8 @@ class HasMetadataTest {
     assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer("/"));
     assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer("-fabric8.io/finalizer"));
     assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer("fabric8.i/finalizer"));
+    assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer("fabric8./finalizer"));
+    assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer("fabric8.label12345678901234567890123456789012345678901234567890qwertyuiopasdfghjkl/finalizer"));
     assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer(".io/finalizer"));
     assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer("fabric8.io/-finalizer"));
     assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer("fabric8.io/finalizer-"));
