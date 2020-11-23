@@ -86,7 +86,7 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
   }
 
   private void runWatch() {
-    logger.debug("Connecting websocket ... {}", this);
+    logger.debug("Connecting websocket to {}...", requestUrl);
 
     HttpUrl.Builder httpUrlBuilder = HttpUrl.get(requestUrl).newBuilder();
 
@@ -208,8 +208,7 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
           if (object instanceof HasMetadata) {
             @SuppressWarnings("unchecked")
             T obj = (T) object;
-            // Dirty cast - should always be valid though
-            resourceVersion.set(((HasMetadata) obj).getMetadata().getResourceVersion());
+            resourceVersion.set(obj.getMetadata().getResourceVersion());
             Watcher.Action action = Watcher.Action.valueOf(event.getType());
             watcher.eventReceived(action, obj);
           } else if (object instanceof KubernetesResourceList) {
@@ -237,7 +236,7 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
             }
 
             watcher.eventReceived(Action.ERROR, null);
-            logger.error("Error received: {}", status.toString());
+            logger.error("Error received: {}", status);
           } else {
             logger.error("Unknown message received: {}", message);
           }
