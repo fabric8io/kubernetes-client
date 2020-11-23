@@ -5,6 +5,7 @@
 #### Bugs
 
 #### Improvements
+* Fix #2614: Watcher.onClose has dedicated WatcherException as parameter.
 
 #### Dependency Upgrade
 

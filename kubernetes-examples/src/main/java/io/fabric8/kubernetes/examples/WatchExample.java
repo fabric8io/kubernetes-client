@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.WatcherException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,7 +45,7 @@ public class WatchExample {
         }
 
         @Override
-        public void onClose(KubernetesClientException e) {
+        public void onClose(WatcherException e) {
           logger.debug("Watcher onClose");
           if (e != null) {
             logger.error(e.getMessage(), e);

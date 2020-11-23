@@ -20,12 +20,11 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
 import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.WatcherException;
 
 public class ReadinessWatcher<T extends HasMetadata> implements Watcher<T> {
-
 
   private final CountDownLatch latch = new CountDownLatch(1);
   private final AtomicReference<T> reference = new AtomicReference<>();
@@ -49,7 +48,7 @@ public class ReadinessWatcher<T extends HasMetadata> implements Watcher<T> {
   }
 
   @Override
-  public void onClose(KubernetesClientException e) {
+  public void onClose(WatcherException e) {
 
   }
 

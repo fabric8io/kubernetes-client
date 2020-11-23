@@ -21,9 +21,9 @@ import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.PodSpecBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import junit.framework.AssertionFailedError;
 import org.junit.Rule;
@@ -41,13 +41,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @EnableRuleMigrationSupport
-public class PodCrudTest {
+class PodCrudTest {
 
   @Rule
   public KubernetesServer server = new KubernetesServer(true, true);
 
   @Test
-  public void testCrud() { KubernetesClient client = server.getClient();
+  void testCrud() { KubernetesClient client = server.getClient();
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").addToLabels("testKey", "testValue").endMetadata().build();
     Pod pod2 = new PodBuilder().withNewMetadata().withName("pod2").addToLabels("testKey", "testValue").endMetadata().build();
     Pod pod3 = new PodBuilder().withNewMetadata().withName("pod3").endMetadata().build();
@@ -97,37 +97,13 @@ public class PodCrudTest {
   }
 
   @Test
-  public void testPodWatchOnName() throws InterruptedException {
+  void testPodWatchOnName() throws InterruptedException {
     KubernetesClient client = server.getClient();
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").addToLabels("testKey", "testValue").endMetadata().build();
-    final CountDownLatch deleteLatch = new CountDownLatch(1);
-    final CountDownLatch closeLatch = new CountDownLatch(1);
-    final CountDownLatch editLatch = new CountDownLatch(2);
-    final CountDownLatch addLatch = new CountDownLatch(1);
+    final LatchedWatcher lw = new LatchedWatcher(1, 2, 1, 1, 1);
 
     pod1 = client.pods().inNamespace("ns1").create(pod1);
-    Watch watch = client.pods().inNamespace("ns1").withName(pod1.getMetadata().getName()).watch(new Watcher<Pod>() {
-      @Override
-      public void eventReceived(Action action, Pod resource) {
-        switch (action) {
-          case DELETED:
-            deleteLatch.countDown();
-            break;
-          case MODIFIED:
-            editLatch.countDown();
-            break;
-          case ADDED:
-            addLatch.countDown();
-            break;
-          default:
-            throw new AssertionFailedError(action.toString().concat(" isn't recognised."));
-        }
-      }
-      @Override
-      public void onClose(KubernetesClientException cause) {
-        closeLatch.countDown();
-      }
-    });
+    Watch watch = client.pods().inNamespace("ns1").withName(pod1.getMetadata().getName()).watch(lw);
 
     pod1 = client.pods().inNamespace("ns1").withName(pod1.getMetadata().getName())
       .patch(new PodBuilder().withNewMetadataLike(pod1.getMetadata()).endMetadata().build());
@@ -141,49 +117,24 @@ public class PodCrudTest {
     client.pods().inNamespace("ns1").create(new PodBuilder().withNewMetadata().withName("pod1").addToLabels("testKey", "testValue").endMetadata().build());
 
     assertEquals(1, client.pods().inNamespace("ns1").list().getItems().size());
-    assertTrue(addLatch.await(1, TimeUnit.MINUTES));
-    assertTrue(editLatch.await(1, TimeUnit.MINUTES));
-    assertTrue(deleteLatch.await(1, TimeUnit.MINUTES));
+    assertTrue(lw.addLatch.await(1, TimeUnit.MINUTES));
+    assertTrue(lw.editLatch.await(1, TimeUnit.MINUTES));
+    assertTrue(lw.deleteLatch.await(1, TimeUnit.MINUTES));
 
     watch.close();
 
-    assertTrue(closeLatch.await(1, TimeUnit.MINUTES));
+    assertTrue(lw.closeLatch.await(1, TimeUnit.MINUTES));
   }
 
   @Test
-  public void testPodWatchOnNamespace() throws InterruptedException {
+  void testPodWatchOnNamespace() throws InterruptedException {
     KubernetesClient client = server.getClient();
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").addToLabels("testKey", "testValue").endMetadata().build();
 
-    final CountDownLatch deleteLatch = new CountDownLatch(3);
-    final CountDownLatch closeLatch = new CountDownLatch(1);
-    final CountDownLatch addLatch = new CountDownLatch(3);
-    final CountDownLatch editLatch = new CountDownLatch(2);
+    final LatchedWatcher lw = new LatchedWatcher();
 
     client.pods().inNamespace("ns1").create(pod1);
-    Watch watch = client.pods().inNamespace("ns1").watch(new Watcher<Pod>() {
-      @Override
-      public void eventReceived(Action action, Pod resource) {
-        switch (action) {
-          case DELETED:
-            deleteLatch.countDown();
-            break;
-          case ADDED:
-            addLatch.countDown();
-            break;
-          case MODIFIED:
-            editLatch.countDown();
-            break;
-          default:
-            throw new AssertionFailedError(action.toString());
-        }
-      }
-      @Override
-      public void onClose(KubernetesClientException cause) {
-        closeLatch.countDown();
-      }
-    });
-
+    Watch watch = client.pods().inNamespace("ns1").watch(lw);
 
     client.pods().inNamespace("ns1").withName(pod1.getMetadata().getName())
       .patch(new PodBuilder().withNewMetadataLike(pod1.getMetadata()).endMetadata().build());
@@ -201,45 +152,20 @@ public class PodCrudTest {
     assertEquals(0, client.pods().inNamespace("ns1").list().getItems().size());
 
     watch.close();
-    assertTrue(closeLatch.await(2, TimeUnit.MINUTES));
+    assertTrue(lw.closeLatch.await(1, TimeUnit.MINUTES));
   }
 
   @Test
-  public void testPodWatchOnLabels() throws InterruptedException {
+  void testPodWatchOnLabels() throws InterruptedException {
     KubernetesClient client = server.getClient();
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").addToLabels("test", "watch").endMetadata().build();
 
-    final CountDownLatch deleteLatch = new CountDownLatch(1);
-    final CountDownLatch closeLatch = new CountDownLatch(1);
-    final CountDownLatch addLatch = new CountDownLatch(2);
-    final CountDownLatch editLatch = new CountDownLatch(1);
+    final LatchedWatcher lw = new LatchedWatcher(2, 1, 1, 1, 1);
 
     client.pods().inNamespace("ns1").create(pod1);
     Watch watch = client.pods().inNamespace("ns1")
       .withLabels(new HashMap<String, String>() {{ put("test", "watch");}})
-      .watch(new Watcher<Pod>() {
-        @Override
-        public void eventReceived(Action action, Pod resource) {
-          switch (action) {
-            case DELETED:
-              deleteLatch.countDown();
-              break;
-            case ADDED:
-              addLatch.countDown();
-              break;
-            case MODIFIED:
-              editLatch.countDown();
-              break;
-            default:
-              throw new AssertionFailedError(action.toString());
-          }
-        }
-
-        @Override
-        public void onClose(KubernetesClientException cause) {
-          closeLatch.countDown();
-        }
-    });
+      .watch(lw);
 
     Map<String, String> m = pod1.getMetadata().getLabels();
     m.put("foo", "bar");
@@ -253,8 +179,8 @@ public class PodCrudTest {
       .build());
 
     assertEquals(1, client.pods().inNamespace("ns1").list().getItems().size());
-    assertTrue(deleteLatch.await(1, TimeUnit.MINUTES));
-    assertTrue(editLatch.await(1, TimeUnit.MINUTES));
+    assertTrue(lw.deleteLatch.await(1, TimeUnit.MINUTES));
+    assertTrue(lw.editLatch.await(1, TimeUnit.MINUTES));
 
     Pod pod2 = client.pods().inNamespace("ns1").create(new PodBuilder()
       .withNewMetadata().withName("pod2").addToLabels("foo", "bar").endMetadata()
@@ -271,60 +197,82 @@ public class PodCrudTest {
 
     assertEquals(2, client.pods().inNamespace("ns1").list().getItems().size());
     assertEquals(2, client.pods().inNamespace("ns1").withLabel("test", "watch").list().getItems().size());
-    assertTrue(addLatch.await(1, TimeUnit.MINUTES));
+    assertTrue(lw.addLatch.await(1, TimeUnit.MINUTES));
 
     watch.close();
-    assertTrue(closeLatch.await(1, TimeUnit.MINUTES));
+    assertTrue(lw.closeLatch.await(1, TimeUnit.MINUTES));
   }
 
   @Test
-  public void testPodWatchClientSocketError() throws InterruptedException {
+  void testPodWatchTryWithResources() throws InterruptedException {
     KubernetesClient client = server.getClient();
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").addToLabels("testKey", "testValue").endMetadata().build();
 
-    final CountDownLatch deleteLatch = new CountDownLatch(1);
-    final CountDownLatch closeLatch = new CountDownLatch(1);
-    final CountDownLatch editLatch = new CountDownLatch(1);
-    final CountDownLatch addLatch = new CountDownLatch(1);
+    final LatchedWatcher lw = new LatchedWatcher();
 
     client.pods().inNamespace("ns1").create(pod1);
 
-    try (Watch watch = client.pods().inNamespace("ns1").withName(pod1.getMetadata().getName()).watch(new Watcher<Pod>() {
-        @Override
-        public void eventReceived(Action action, Pod resource) {
-          switch (action) {
-            case DELETED:
-              deleteLatch.countDown();
-              break;
-            case MODIFIED:
-              editLatch.countDown();
-              break;
-            case ADDED:
-              addLatch.countDown();
-              break;
-            default:
-              throw new AssertionFailedError(action.toString().concat(" isn't recognised."));
-          }
-        }
-
-        @Override
-        public void onClose(KubernetesClientException e) {
-            closeLatch.countDown();
-        }
-      })) {
-        client.pods().inNamespace("ns1").withName(pod1.getMetadata().getName())
+    try (
+      Watch watch = client.pods().inNamespace("ns1").withName(pod1.getMetadata().getName()).watch(lw)
+    ) {
+      client.pods().inNamespace("ns1").withName(pod1.getMetadata().getName())
         .patch(new PodBuilder().withNewMetadataLike(pod1.getMetadata()).endMetadata().build());
 
-        client.pods().inNamespace("ns1").withName(pod1.getMetadata().getName()).delete();
+      client.pods().inNamespace("ns1").withName(pod1.getMetadata().getName()).delete();
 
-        client.pods().inNamespace("ns1").create(new PodBuilder().withNewMetadata().withName("pod1").addToLabels("testKey", "testValue").endMetadata().build());
+      client.pods().inNamespace("ns1").create(new PodBuilder().withNewMetadata().withName("pod1").addToLabels("testKey", "testValue").endMetadata().build());
 
-        assertEquals(1, client.pods().inNamespace("ns1").list().getItems().size());
-        assertTrue(addLatch.await(1, TimeUnit.SECONDS));
-        assertTrue(editLatch.await(1, TimeUnit.SECONDS));
-        assertTrue(deleteLatch.await(1, TimeUnit.SECONDS));
-      } finally {
-        assertTrue(closeLatch.await(3, TimeUnit.SECONDS));
+      assertEquals(1, client.pods().inNamespace("ns1").list().getItems().size());
+      assertTrue(lw.addLatch.await(1, TimeUnit.SECONDS));
+      assertTrue(lw.editLatch.await(1, TimeUnit.SECONDS));
+      assertTrue(lw.deleteLatch.await(1, TimeUnit.SECONDS));
+    }
+    assertTrue(lw.closeLatch.await(3, TimeUnit.SECONDS));
+  }
+
+    private static final class LatchedWatcher implements Watcher<Pod> {
+      final CountDownLatch addLatch;
+      final CountDownLatch editLatch;
+      final CountDownLatch deleteLatch;
+      final CountDownLatch closeErrorLatch;
+      final CountDownLatch closeLatch;
+
+      public LatchedWatcher() {
+        this(1, 1, 1, 1, 1);
+      }
+      public LatchedWatcher(int addLatch, int editLatch, int deleteLatch, int closeErrorLatch, int closeLatch) {
+        this.addLatch = new CountDownLatch(addLatch);
+        this.editLatch = new CountDownLatch(editLatch);
+        this.deleteLatch = new CountDownLatch(deleteLatch);
+        this.closeErrorLatch = new CountDownLatch(closeErrorLatch);
+        this.closeLatch = new CountDownLatch(closeLatch);
+      }
+
+      @Override
+      public void eventReceived(Action action, Pod resource) {
+        switch (action) {
+          case DELETED:
+            deleteLatch.countDown();
+            break;
+          case MODIFIED:
+            editLatch.countDown();
+            break;
+          case ADDED:
+            addLatch.countDown();
+            break;
+          default:
+            throw new AssertionFailedError(action.toString().concat(" isn't recognised."));
+        }
+      }
+
+      @Override
+      public void onClose(WatcherException e) {
+        closeErrorLatch.countDown();
+      }
+
+      @Override
+      public void onClose() {
+        closeLatch.countDown();
       }
     }
 }

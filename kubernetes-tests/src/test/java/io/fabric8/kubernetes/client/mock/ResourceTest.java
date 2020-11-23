@@ -27,13 +27,14 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.ResourceNotFoundException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.Applicable;
 import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.PodResource;
-import io.fabric8.kubernetes.client.dsl.base.WaitForConditionWatcher;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import okhttp3.mockwebserver.RecordedRequest;
+import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.jupiter.api.Assertions;
@@ -58,7 +59,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @EnableRuleMigrationSupport
-public class ResourceTest {
+class ResourceTest {
 
   @Rule
   public KubernetesServer server = new KubernetesServer();
@@ -186,7 +187,7 @@ public class ResourceTest {
       }
 
       @Override
-      public void onClose(KubernetesClientException cause) {
+      public void onClose(WatcherException cause) {
 
       }
     });
@@ -345,10 +346,11 @@ public class ResourceTest {
         ops.waitUntilCondition(isReady, 4, SECONDS)
       );
       assertThat(ex)
-        .hasCauseExactlyInstanceOf(WaitForConditionWatcher.WatchException.class);
-      assertThat(ex.getCause())
-        .hasCauseExactlyInstanceOf(KubernetesClientException.class)
-        .hasMessage("Watcher closed");
+        .hasCauseExactlyInstanceOf(WatcherException.class)
+        .extracting(Throwable::getCause)
+        .asInstanceOf(InstanceOfAssertFactories.type(WatcherException.class))
+        .extracting(WatcherException::isHttpGone)
+        .isEqualTo(true);
 
       Pod pod = client.pods()
         .withName("pod1")
@@ -473,7 +475,7 @@ public class ResourceTest {
       client.resource(noReady).waitUntilReady(5, SECONDS);
       fail("should have thrown KubernetesClientException");
     } catch (KubernetesClientException e) {
-      assertTrue(e.getCause() instanceof WaitForConditionWatcher.WatchException);
+      assertTrue(e.getCause() instanceof WatcherException);
     }
   }
 

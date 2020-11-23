@@ -33,7 +33,7 @@ import java.util.concurrent.TimeUnit;
 public class CronJobExample {
   private static final Logger logger = LoggerFactory.getLogger(CronJobExample.class);
 
-  public static void main(String args[]) throws InterruptedException {
+  public static void main(String[] args) {
     String master = "https://localhost:8443/";
     if (args.length == 1) {
       master = args[0];
@@ -86,7 +86,7 @@ public class CronJobExample {
         }
 
         @Override
-        public void onClose(KubernetesClientException e) {
+        public void onClose(WatcherException e) {
           // Ignore
         }
       })) {
