@@ -20,27 +20,50 @@ import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
 import okhttp3.OkHttpClient;
 import okhttp3.WebSocket;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class AbstractWatchManagerTest {
+
+  private MockedStatic<Executors> executors;
+  private ScheduledExecutorService executorService;
+
+  @BeforeEach
+  void setUp() {
+    executorService = mock(ScheduledExecutorService.class, RETURNS_DEEP_STUBS);
+    executors = mockStatic(Executors.class);
+    executors.when(() -> Executors.newSingleThreadScheduledExecutor(any())).thenReturn(executorService);
+  }
+
+  @AfterEach
+  void tearDown() {
+    executors.close();
+  }
 
   @Test
   @DisplayName("closeEvent, is idempotent, multiple calls only close watcher once")
   void closeEventIsIdempotent() {
     // Given
     final WatcherAdapter<Object> watcher = new WatcherAdapter<>();
-    final WatchManager<Object> awm = new WatchManager<>(
-      watcher, mock(ListOptions.class, RETURNS_DEEP_STUBS), 0, 0, 0,
-      mock(OkHttpClient.class));
+    final WatchManager<Object> awm = withDefaultWatchManager(watcher);
     // When
     for (int it = 0; it < 10; it++) {
       awm.closeEvent();
@@ -54,12 +77,10 @@ class AbstractWatchManagerTest {
   void closeEventWithExceptionIsIdempotent() {
     // Given
     final WatcherAdapter<Object> watcher = new WatcherAdapter<>();
-    final WatchManager<Object> awm = new WatchManager<>(
-      watcher, mock(ListOptions.class, RETURNS_DEEP_STUBS), 0, 0, 0,
-      mock(OkHttpClient.class));
+    final WatchManager<Object> awm = withDefaultWatchManager(watcher);
     // When
     for (int it = 0; it < 10; it++) {
-      awm.closeEvent();
+      awm.closeEvent(new WatcherException("Mock"));
     }
     // Then
     assertThat(watcher.closeCount.get()).isEqualTo(1);
@@ -74,6 +95,100 @@ class AbstractWatchManagerTest {
     AbstractWatchManager.closeWebSocket(webSocket);
     // Then
     verify(webSocket, times(1)).close(1000, null);
+  }
+
+  @Test
+  @DisplayName("closeExecutorService, with graceful termination")
+  void closeExecutorServiceGracefully() throws InterruptedException{
+    // Given
+    final WatchManager<Object> awm = withDefaultWatchManager(null);
+    when(executorService.awaitTermination(1, TimeUnit.SECONDS)).thenReturn(true);
+    // When
+    awm.closeExecutorService();
+    // Then
+    verify(executorService, times(1)).shutdown();
+    verify(executorService, times(0)).shutdownNow();
+  }
+
+  @Test
+  @DisplayName("closeExecutorService, with shutdownNow")
+  void closeExecutorServiceNow() throws InterruptedException {
+    // Given
+    final WatchManager<Object> awm = withDefaultWatchManager(null);
+    when(executorService.awaitTermination(1, TimeUnit.SECONDS)).thenReturn(false);
+    // When
+    awm.closeExecutorService();
+    // Then
+    verify(executorService, times(1)).shutdown();
+    verify(executorService, times(1)).shutdownNow();
+  }
+
+  @Test
+  @DisplayName("submit, executor not shutdown, should submit")
+  void submitWhenIsNotShutdown() {
+    // Given
+    final WatchManager<Object> awm = withDefaultWatchManager(null);
+    // When
+    awm.submit(() -> {});
+    // Then
+    verify(executorService, times(1)).submit(any(Runnable.class));
+  }
+
+  @Test
+  @DisplayName("submit, executor shutdown, should NOT submit")
+  void submitWhenIsShutdown() {
+    // Given
+    final WatchManager<Object> awm = withDefaultWatchManager(null);
+    when(executorService.isShutdown()).thenReturn(true);
+    // When
+    awm.submit(() -> {});
+    // Then
+    verify(executorService, times(0)).submit(any(Runnable.class));
+  }
+
+  @Test
+  @DisplayName("schedule, executor not shutdown, should submit")
+  void scheduleWhenIsNotShutdown() {
+    // Given
+    final WatchManager<Object> awm = withDefaultWatchManager(null);
+    // When
+    awm.schedule(() -> {}, 0, TimeUnit.SECONDS);
+    // Then
+    verify(executorService, times(1)).schedule(any(Runnable.class), anyLong(), any());
+  }
+
+  @Test
+  @DisplayName("schedule, executor shutdown, should NOT submit")
+  void scheduleWhenIsShutdown() {
+    // Given
+    final WatchManager<Object> awm = withDefaultWatchManager(null);
+    when(executorService.isShutdown()).thenReturn(true);
+    // When
+    awm.schedule(() -> {}, 0, TimeUnit.SECONDS);
+    // Then
+    verify(executorService, times(0)).schedule(any(Runnable.class), anyLong(), any());
+  }
+
+  @Test
+  @DisplayName("nextReconnectInterval, returns exponential interval values up to the provided limit")
+  void nextReconnectInterval() {
+    // Given
+    final WatchManager<Object> awm = new WatchManager<>(
+      null, mock(ListOptions.class), 0, 10, 5, null);
+    // When-Then
+    assertThat(awm.nextReconnectInterval()).isEqualTo(10);
+    assertThat(awm.nextReconnectInterval()).isEqualTo(20);
+    assertThat(awm.nextReconnectInterval()).isEqualTo(40);
+    assertThat(awm.nextReconnectInterval()).isEqualTo(80);
+    assertThat(awm.nextReconnectInterval()).isEqualTo(160);
+    assertThat(awm.nextReconnectInterval()).isEqualTo(320);
+    assertThat(awm.nextReconnectInterval()).isEqualTo(320);
+  }
+
+  private static <T> WatchManager<T> withDefaultWatchManager(Watcher<T> watcher) {
+    return new WatchManager<>(
+      watcher, mock(ListOptions.class, RETURNS_DEEP_STUBS), 0, 0, 0,
+      mock(OkHttpClient.class));
   }
 
   private static class WatcherAdapter<T> implements Watcher<T> {
@@ -95,12 +210,12 @@ class AbstractWatchManagerTest {
   }
 
   private static final class WatchManager<T> extends AbstractWatchManager<T> {
+
     public WatchManager(Watcher<T> watcher, ListOptions listOptions, int reconnectLimit, int reconnectInterval, int maxIntervalExponent, OkHttpClient clonedClient) {
       super(watcher, listOptions, reconnectLimit, reconnectInterval, maxIntervalExponent, clonedClient);
     }
     @Override
     public void close() {
-
     }
   }
 }

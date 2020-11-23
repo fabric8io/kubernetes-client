@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.api.model.ListOptions;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
@@ -24,7 +25,11 @@ import okhttp3.WebSocket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class AbstractWatchManager<T> implements Watch {
@@ -32,14 +37,17 @@ public abstract class AbstractWatchManager<T> implements Watch {
   private static final Logger logger = LoggerFactory.getLogger(AbstractWatchManager.class);
 
   final Watcher<T> watcher;
-  final int reconnectLimit;
-  final int reconnectInterval;
-  final int maxIntervalExponent;
   final ListOptions listOptions;
   final AtomicReference<String> resourceVersion;
   final OkHttpClient clonedClient;
 
-  private final AtomicBoolean forceClosed;
+  final AtomicBoolean forceClosed;
+  private final int reconnectLimit;
+  private final int reconnectInterval;
+  private final int maxIntervalExponent;
+  final AtomicInteger currentReconnectAttempt;
+  private final ScheduledExecutorService executorService;
+
 
   AbstractWatchManager(
     Watcher<T> watcher, ListOptions listOptions, int reconnectLimit, int reconnectInterval, int maxIntervalExponent,
@@ -52,7 +60,13 @@ public abstract class AbstractWatchManager<T> implements Watch {
     this.maxIntervalExponent = maxIntervalExponent;
     this.clonedClient = clonedClient;
     this.resourceVersion = new AtomicReference<>(listOptions.getResourceVersion());
+    this.currentReconnectAttempt = new AtomicInteger(0);
     this.forceClosed = new AtomicBoolean();
+    this.executorService = Executors.newSingleThreadScheduledExecutor(r -> {
+      Thread ret = new Thread(r, "Executor for Watch " + System.identityHashCode(AbstractWatchManager.this));
+      ret.setDaemon(true);
+      return ret;
+    });
   }
 
   final void closeEvent(WatcherException cause) {
@@ -69,6 +83,46 @@ public abstract class AbstractWatchManager<T> implements Watch {
       return;
     }
     watcher.onClose();
+  }
+
+  final void closeExecutorService() {
+    if (executorService != null && !executorService.isShutdown()) {
+      logger.debug("Closing ExecutorService");
+      try {
+        executorService.shutdown();
+        if (!executorService.awaitTermination(1, TimeUnit.SECONDS)) {
+          logger.warn("Executor didn't terminate in time after shutdown in close(), killing it.");
+          executorService.shutdownNow();
+        }
+      } catch (Exception t) {
+        throw KubernetesClientException.launderThrowable(t);
+      }
+    }
+  }
+
+  void submit(Runnable task) {
+    if (!executorService.isShutdown()) {
+      executorService.submit(task);
+    }
+  }
+
+  void schedule(Runnable command, long delay, TimeUnit timeUnit) {
+    if (!executorService.isShutdown()) {
+      executorService.schedule(command, delay, timeUnit);
+    }
+  }
+
+  final boolean cannotReconnect() {
+    return currentReconnectAttempt.get() >= reconnectLimit && reconnectLimit >= 0;
+  }
+
+  final long nextReconnectInterval() {
+    int exponentOfTwo = currentReconnectAttempt.getAndIncrement();
+    if (exponentOfTwo > maxIntervalExponent)
+      exponentOfTwo = maxIntervalExponent;
+    long ret = (long)reconnectInterval * (1 << exponentOfTwo);
+    logger.debug("Current reconnect backoff is {} milliseconds (T{})", ret, exponentOfTwo);
+    return ret;
   }
 
   static void closeWebSocket(WebSocket webSocket) {

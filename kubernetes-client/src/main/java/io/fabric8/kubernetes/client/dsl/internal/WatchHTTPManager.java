@@ -31,7 +31,13 @@ import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
-import okhttp3.*;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.HttpUrl;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import okio.BufferedSource;
 import org.slf4j.Logger;
@@ -41,9 +47,9 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static java.net.HttpURLConnection.HTTP_GONE;
 
@@ -51,17 +57,9 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
   private static final Logger logger = LoggerFactory.getLogger(WatchHTTPManager.class);
 
   private final BaseOperation<T, L, ?> baseOperation;
-  private final AtomicBoolean forceClosed = new AtomicBoolean();
 
   private final AtomicBoolean reconnectPending = new AtomicBoolean(false);
   private final URL requestUrl;
-  private final AtomicInteger currentReconnectAttempt = new AtomicInteger(0);
-
-  private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor(r -> {
-    Thread ret = new Thread(r, "Executor for Watch " + System.identityHashCode(WatchHTTPManager.this));
-    ret.setDaemon(true);
-    return ret;
-  });
 
   public WatchHTTPManager(final OkHttpClient client,
                           final BaseOperation<T, L, ?> baseOperation,
@@ -184,48 +182,45 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
       return;
     }
 
-    if (currentReconnectAttempt.get() >= reconnectLimit && reconnectLimit >= 0) {
+    if (cannotReconnect()) {
       watcher.onClose(new WatcherException("Connection unexpectedly closed"));
       return;
     }
 
     logger.debug("Submitting reconnect task to the executor");
-    // Don't submit new tasks after having called shutdown() on executor
-    if(!executor.isShutdown()) {
-      // make sure that whichever thread calls this method, the tasks are
-      // performed serially in the executor.
-      executor.submit(() -> {
-        if (!reconnectPending.compareAndSet(false, true)) {
-          logger.debug("Reconnect already scheduled");
-          return;
-        }
-        try {
-          // actual reconnect only after the back-off time has passed, without
-          // blocking the thread
-          logger.debug("Scheduling reconnect task");
-          executor.schedule(() -> {
-            try {
-              WatchHTTPManager.this.runWatch();
-              reconnectPending.set(false);
-            } catch (Exception e) {
-              // An unexpected error occurred and we didn't even get an onFailure callback.
-              logger.error("Exception in reconnect", e);
-              close();
-              watcher.onClose(new WatcherException("Unhandled exception in reconnect attempt", e));
-            }
-          }, nextReconnectInterval(), TimeUnit.MILLISECONDS);
-        } catch (RejectedExecutionException e) {
-          // This is a standard exception if we close the scheduler. We should not print it
-          if (!forceClosed.get()) {
+    // make sure that whichever thread calls this method, the tasks are
+    // performed serially in the executor.
+    submit(() -> {
+      if (!reconnectPending.compareAndSet(false, true)) {
+        logger.debug("Reconnect already scheduled");
+        return;
+      }
+      try {
+        // actual reconnect only after the back-off time has passed, without
+        // blocking the thread
+        logger.debug("Scheduling reconnect task");
+        schedule(() -> {
+          try {
+            WatchHTTPManager.this.runWatch();
+            reconnectPending.set(false);
+          } catch (Exception e) {
+            // An unexpected error occurred and we didn't even get an onFailure callback.
             logger.error("Exception in reconnect", e);
+            close();
+            watcher.onClose(new WatcherException("Unhandled exception in reconnect attempt", e));
           }
-          reconnectPending.set(false);
+        }, nextReconnectInterval(), TimeUnit.MILLISECONDS);
+      } catch (RejectedExecutionException e) {
+        // This is a standard exception if we close the scheduler. We should not print it
+        if (!forceClosed.get()) {
+          logger.error("Exception in reconnect", e);
         }
-      });
-    }
+        reconnectPending.set(false);
+      }
+    });
   }
 
-  public void onMessage(String messageSource) throws IOException {
+  public void onMessage(String messageSource) {
     try {
       WatchEvent event = readWatchEvent(messageSource);
       KubernetesResource object = event.getObject();
@@ -233,19 +228,16 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
         @SuppressWarnings("unchecked")
         T obj = (T) object;
         // Dirty cast - should always be valid though
-        resourceVersion.set(((HasMetadata) obj).getMetadata().getResourceVersion());
+        resourceVersion.set(obj.getMetadata().getResourceVersion());
         Watcher.Action action = Watcher.Action.valueOf(event.getType());
         watcher.eventReceived(action, obj);
       } else if (object instanceof KubernetesResourceList) {
-        @SuppressWarnings("unchecked")
-
         KubernetesResourceList list = (KubernetesResourceList) object;
         // Dirty cast - should always be valid though
         resourceVersion.set(list.getMetadata().getResourceVersion());
         Watcher.Action action = Watcher.Action.valueOf(event.getType());
         List<HasMetadata> items = list.getItems();
         if (items != null) {
-          String name = baseOperation.getName();
           for (HasMetadata item : items) {
             watcher.eventReceived(action, (T) item);
           }
@@ -262,12 +254,10 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
         }
 
         watcher.eventReceived(Action.ERROR, null);
-        logger.error("Error received: {}", status.toString());
+        logger.error("Error received: {}", status);
       } else {
         logger.error("Unknown message received: {}", messageSource);
       }
-    } catch (IOException e) {
-      logger.error("Could not deserialize watch event: {}", messageSource, e);
     } catch (ClassCastException e) {
       logger.error("Received wrong type of object for watch", e);
     } catch (IllegalArgumentException e) {
@@ -275,11 +265,11 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
     }
   }
 
-  protected static WatchEvent readWatchEvent(String messageSource) throws IOException {
+  protected static WatchEvent readWatchEvent(String messageSource) {
     WatchEvent event = Serialization.unmarshal(messageSource, WatchEvent.class);
     KubernetesResource object = null;
     if (event != null) {
-      object = event.getObject();;
+      object = event.getObject();
     }
     // when watching API Groups we don't get a WatchEvent resource
     // so the object will be null
@@ -299,29 +289,10 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
     return event;
   }
 
-  private long nextReconnectInterval() {
-    int exponentOfTwo = currentReconnectAttempt.getAndIncrement();
-    if (exponentOfTwo > maxIntervalExponent)
-      exponentOfTwo = maxIntervalExponent;
-    long ret = reconnectInterval * (1 << exponentOfTwo);
-    logger.debug("Current reconnect backoff is " + ret + " milliseconds (T" + exponentOfTwo + ")");
-    return ret;
-  }
-
   @Override
   public void close() {
     logger.debug("Force closing the watch {}", this);
-    forceClosed.set(true);
-    if (!executor.isShutdown()) {
-      try {
-        executor.shutdown();
-        if (!executor.awaitTermination(1, TimeUnit.SECONDS)) {
-          logger.warn("Executor didn't terminate in time after shutdown in close(), killing it in: {}", this);
-          executor.shutdownNow();
-        }
-      } catch (Throwable t) {
-        throw KubernetesClientException.launderThrowable(t);
-      }
-    }
+    closeEvent();
+    closeExecutorService();
   }
 }
