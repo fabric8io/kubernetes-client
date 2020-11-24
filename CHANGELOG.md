@@ -1,15 +1,20 @@
 ## CHANGELOG
 
-### 5.0.0-alpha-2
+### 5.0-SNAPSHOT
 
 #### Bugs
 
 #### Improvements
-* Fix #2614: Watcher.onClose has dedicated WatcherException as parameter.
 
 #### Dependency Upgrade
 
 #### New Features
+
+### 5.0.0-alpha-2 (2020-11-24)
+
+#### Improvements
+* Fix #2614: Watcher.onClose has dedicated WatcherException as parameter.
+
 
 ### 5.0.0-alpha-1 (2020-11-18)
 
