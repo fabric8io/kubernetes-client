@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 5.0-SNAPSHOT
+### 5.0.0-alpha-2
 
 #### Bugs
 
@@ -20,8 +20,6 @@
 * Fix #2571: Eliminated the use of Doneables and simplified the internal DSL implementation.
 * Fix #2607: add isMarkedForDeletion and finalizer-related default methods to HasMetadata (@metacosm)
 * Fix #2605: Provide a `customResources` alternative that simply accepts the resource type as an argument.
-
-#### Dependency Upgrade
 
 #### New Features
 * Fix #2556: Chaos Mesh model based on Chaos Mesh v1.0.1
