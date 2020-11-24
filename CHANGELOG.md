@@ -10,6 +10,11 @@
 
 #### New Features
 
+### 5.0.0-alpha-3 (2020-11-24)
+
+#### Improvements
+* Fix #2628: Add `isFinalizerValid` method on `HasMetadata` to encapsulate validation logic
+
 ### 5.0.0-alpha-2 (2020-11-24)
 
 #### Improvements

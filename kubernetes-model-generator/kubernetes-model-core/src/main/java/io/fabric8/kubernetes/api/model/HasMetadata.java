@@ -24,7 +24,7 @@ public interface HasMetadata extends KubernetesResource {
   String DNS_LABEL_START = "(?!-)[A-Za-z0-9-]{";
   String DNS_LABEL_END = ",63}(?<!-)";
   String DNS_LABEL_REGEXP = DNS_LABEL_START + 1 + DNS_LABEL_END;
-  Matcher FINALIZER_NAME_MATCHER = Pattern.compile("^(" + DNS_LABEL_REGEXP + "\\.)+" + DNS_LABEL_START + 2 + DNS_LABEL_END + "/" + DNS_LABEL_REGEXP).matcher("");
+  Pattern FINALIZER_NAME_MATCHER = Pattern.compile("^((" + DNS_LABEL_REGEXP + "\\.)+" + DNS_LABEL_START + 2 + DNS_LABEL_END + ")/" + DNS_LABEL_REGEXP);
   
   ObjectMeta getMetadata();
   
@@ -58,25 +58,43 @@ public interface HasMetadata extends KubernetesResource {
   }
   
   /**
-   * Adds the specified finalizer to this {@code HasMetadata}.
-   * <p>
-   * See https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizers for more details.
+   * Adds the specified finalizer to this {@code HasMetadata} if it's valid. See {@link #isFinalizerValid(String)}.
    *
    * @param finalizer the identifier of the finalizer to add to this {@code HasMetadata} in {@code <domain name>/<finalizer name>} format.
    * @return {@code true} if the finalizer was successfully added, {@code false} otherwise (in particular, if the object is marked for deletion)
-   * @throws IllegalArgumentException if the specified is null or is invalid
+   * @throws IllegalArgumentException if the specified finalizer identifier is null or is invalid
    */
   default boolean addFinalizer(String finalizer) {
-    if (finalizer == null) {
-      throw new IllegalArgumentException("Must pass a non-null finalizer.");
+    if (finalizer == null || finalizer.trim().isEmpty()) {
+      throw new IllegalArgumentException("Must pass a non-null, non-blank finalizer.");
     }
     if (isMarkedForDeletion() || hasFinalizer(finalizer)) {
       return false;
     }
-    if (FINALIZER_NAME_MATCHER.reset(finalizer).matches()) {
+    if (isFinalizerValid(finalizer)) {
       return getMetadata().getFinalizers().add(finalizer);
     } else {
       throw new IllegalArgumentException("Invalid finalizer name: '" + finalizer + "'. Must consist of a domain name, a forward slash and the valid kubernetes name.");
+    }
+  }
+  
+  /**
+   * Determines whether the specified finalizer is valid according to the
+   * <a href='https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizer'>finalizer specification</a>.
+   * 
+   * @param finalizer the identifier of the finalizer which validity we want to check
+   * @return {@code true} if the identifier is valid, {@code false} otherwise
+   */
+  default boolean isFinalizerValid(String finalizer) {
+    if (finalizer == null) {
+      return false;
+    }
+    final Matcher matcher = FINALIZER_NAME_MATCHER.matcher(finalizer);
+    if (matcher.matches()) {
+      final String group = matcher.group(1);
+      return group.length() < 256;
+    } else {
+      return false;
     }
   }
   
