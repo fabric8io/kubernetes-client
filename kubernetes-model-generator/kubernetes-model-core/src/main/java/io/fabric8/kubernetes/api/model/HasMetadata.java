@@ -20,10 +20,16 @@ import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+/**
+ * Represents any {@link KubernetesResource} which possesses a {@link ObjectMeta} and is associated with a kind and API version.
+ */
 public interface HasMetadata extends KubernetesResource {
   String DNS_LABEL_START = "(?!-)[A-Za-z0-9-]{";
   String DNS_LABEL_END = ",63}(?<!-)";
   String DNS_LABEL_REGEXP = DNS_LABEL_START + 1 + DNS_LABEL_END;
+  /**
+   * Pattern that checks the format of finalizer identifiers, which should be in {@code <domain name>/<finalizer name>} format.
+   */
   Pattern FINALIZER_NAME_MATCHER = Pattern.compile("^((" + DNS_LABEL_REGEXP + "\\.)+" + DNS_LABEL_START + 2 + DNS_LABEL_END + ")/" + DNS_LABEL_REGEXP);
   
   ObjectMeta getMetadata();
