@@ -80,8 +80,12 @@ public interface KubernetesClient extends Client {
    * API entrypoint for CustomResourcedefinition(CRDs). This offers basic operations like
    * load, get, create, update, delete and watch for APIGroup apiextensions/v1beta1
    *
+   * @deprecated Use {@link #apiextensions()}: {@link ApiextensionsAPIGroupDSL#v1beta1()}
+   * or {@link ApiextensionsAPIGroupDSL#v1()} to access Custom Resource Definition DSL for specific API versions.
+   *
    * @return NonNamespaceOperation object for CustomResourceDefinition
    */
+  @Deprecated
   NonNamespaceOperation<CustomResourceDefinition, CustomResourceDefinitionList, Resource<CustomResourceDefinition>> customResourceDefinitions();
 
   /**
