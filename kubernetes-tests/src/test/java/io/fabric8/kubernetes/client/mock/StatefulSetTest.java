@@ -162,7 +162,7 @@ public class StatefulSetTest {
 
     KubernetesClient client = server.getClient();
 
-    Deletable<Boolean> items = client.load(getClass().getResourceAsStream("/test-statefulset.yml"));
+    Deletable items = client.load(getClass().getResourceAsStream("/test-statefulset.yml"));
     assertTrue(items.delete());
   }
 

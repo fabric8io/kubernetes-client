@@ -45,7 +45,7 @@ public abstract class CustomResource implements HasMetadata {
 
   @Override
   public String toString() {
-    return "CustomResourceSupport{" +
+    return "CustomResource{" +
         "kind='" + kind + '\'' +
         ", apiVersion='" + apiVersion + '\'' +
         ", metadata=" + metadata +
@@ -70,12 +70,12 @@ public abstract class CustomResource implements HasMetadata {
   public void setApiVersion(String apiVersion) {
     this.apiVersion = apiVersion;
   }
-
+  
   @Override
   public ObjectMeta getMetadata() {
     return metadata;
   }
-
+  
   @Override
   public void setMetadata(ObjectMeta metadata) {
     this.metadata = metadata;

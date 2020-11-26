@@ -1,12 +1,43 @@
 ## CHANGELOG
 
-### 4.12-SNAPSHOT
+### 5.0-SNAPSHOT
+
+#### Bugs
+* Fix #2592: ConcurrentModificationException in CRUD KubernetesMockServer
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
+### 5.0.0-alpha-2 (2020-11-24)
+
+#### Improvements
+* Fix #2614: Watcher.onClose has dedicated WatcherException as parameter.
+
+
+### 5.0.0-alpha-1 (2020-11-18)
+
+#### Bugs
+* Fix #2596: Add buildable references for Container, Port and Volume
+
+#### Improvements
+* Fix #2571: Eliminated the use of Doneables and simplified the internal DSL implementation.
+* Fix #2607: add isMarkedForDeletion and finalizer-related default methods to HasMetadata (@metacosm)
+* Fix #2605: Provide a `customResources` alternative that simply accepts the resource type as an argument.
+
+#### New Features
+* Fix #2556: Chaos Mesh model based on Chaos Mesh v1.0.1
+
+### 4.13.0 (2020-11-10)
 
 #### Bugs
 * Fix #2517: Replace does not work in CRUD mockwebserver
 * Fix #2537: Checking for Readiness of DeploymentConfig
 * Fix #2300: Remove job extensions/v1beta1 from backward compatibiliy interceptor
-* Fix #2592: ConcurrentModificationException in CRUD KubernetesMockServer
+* Fix #2514: SharedIndexInformer watches only pods of its own namespace when run in the cluster
+
 
 #### Improvements
 * Fix #2507: Add a test for creating a Job with generateName
@@ -17,7 +48,6 @@
 * Fix #2513: Update Kubernetes Model to v1.19.1
 
 #### New Features
-
 * Fix #2531: Allow setting the maximum concurrent requests via system property / environment variable
 * Fix #2534: Tekton model based on Tekton Pipeline 0.17.0
 * Fix #2574: Add support for Condition type

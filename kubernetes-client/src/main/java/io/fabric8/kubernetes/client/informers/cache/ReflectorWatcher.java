@@ -16,13 +16,12 @@
 package io.fabric8.kubernetes.client.informers.cache;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.WatcherException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.HttpURLConnection;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -70,18 +69,21 @@ public class ReflectorWatcher<T extends HasMetadata> implements Watcher<T> {
   }
 
   @Override
-  public void onClose(KubernetesClientException exception) {
+  public void onClose(WatcherException exception) {
     log.error("Watch closing");
     Optional.ofNullable(exception)
       .map(e -> {
         log.debug("Exception received during watch", e);
         return exception;
       })
-      .map(KubernetesClientException::getStatus)
-      .map(Status::getCode)
-      .filter(c -> c.equals(HttpURLConnection.HTTP_GONE))
+      .filter(WatcherException::isHttpGone)
       .ifPresent(c -> onHttpGone.run());
     onClose.run();
   }
 
+  @Override
+  public void onClose() {
+    log.info("Watch gracefully closed");
+    onClose.run();
+  }
 }

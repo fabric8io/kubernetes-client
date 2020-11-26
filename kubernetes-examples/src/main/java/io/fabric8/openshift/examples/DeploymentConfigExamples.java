@@ -27,6 +27,7 @@ import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildRequestBuilder;
+import io.fabric8.openshift.api.model.DeploymentConfigBuilder;
 import io.fabric8.openshift.api.model.DeploymentTriggerPolicy;
 import io.fabric8.openshift.api.model.ProjectRequest;
 import io.fabric8.openshift.api.model.ProjectRequestBuilder;
@@ -40,10 +41,9 @@ public class DeploymentConfigExamples {
 
   public static void main(String[] args) throws InterruptedException {
     Config config = new ConfigBuilder().build();
-    KubernetesClient kubernetesClient = new DefaultKubernetesClient(config);
-    OpenShiftClient client = kubernetesClient.adapt(OpenShiftClient.class);
+    try (KubernetesClient kubernetesClient = new DefaultKubernetesClient(config)) {
+      OpenShiftClient client = kubernetesClient.adapt(OpenShiftClient.class);
 
-    try {
       ProjectRequest  projectRequest = new ProjectRequestBuilder()
           .withNewMetadata()
             .withName("thisisatest")
@@ -58,7 +58,7 @@ public class DeploymentConfigExamples {
 
       client.serviceAccounts().inNamespace("thisisatest").createOrReplace(fabric8);
 
-      log("Created deployment", client.deploymentConfigs().inNamespace("thisisatest").createOrReplaceWithNew()
+      log("Created deployment", client.deploymentConfigs().inNamespace("thisisatest").createOrReplace(new DeploymentConfigBuilder()
         .withNewMetadata()
           .withName("nginx")
         .endMetadata()
@@ -83,7 +83,7 @@ public class DeploymentConfigExamples {
             .endSpec()
           .endTemplate()
         .endSpec()
-        .done());
+        .build()));
 
 
       client.deploymentConfigs().inNamespace("thisisatest").withName("nginx").scale(2, true);
@@ -93,9 +93,6 @@ public class DeploymentConfigExamples {
       log("Replication Controllers:", client.replicationControllers().inNamespace("thisisatest").list().getItems());
 
       log("Done.");
-    }finally {
-     // client.projects().withName("thisisatest").delete();
-      client.close();
     }
   }
 

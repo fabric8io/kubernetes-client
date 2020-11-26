@@ -16,18 +16,19 @@
 package io.fabric8.volumesnapshot.examples;
 
 import io.fabric8.volumesnapshot.client.VolumeSnapshotClient;
-
+import io.fabric8.volumesnapshot.api.model.VolumeSnapshotClassBuilder;
+    
 public class CreateVolumeSnapshotClass {
 
   public static void main(String[] args) {
     try (VolumeSnapshotClient client = ClientFactory.newClient(args)) {
-      client.volumeSnapshotClasses().createNew()
+        client.volumeSnapshotClasses().create(new VolumeSnapshotClassBuilder()
         .withNewMetadata()
         .withName("my-snapshot-class")
         .endMetadata()
         .withNewDriver("my-csi-driver")
         .withDeletionPolicy("Delete")
-        .done();
+        .build());
     }
   }
 }

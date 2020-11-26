@@ -106,8 +106,8 @@ class ClusterRoleBindingCrudTest {
     assertEquals("rbac.authorization.k8s.io", kubernetesClusterRoleBindingList.getItems().get(0).getRoleRef().getApiGroup());
 
     //test of updation
-    kubernetesClusterRoleBinding = client.rbac().clusterRoleBindings().withName("read-nodes").edit()
-      .editSubject(0).withName("jane-new").endSubject().done();
+    kubernetesClusterRoleBinding = client.rbac().clusterRoleBindings().withName("read-nodes").edit(c -> new ClusterRoleBindingBuilder(c)
+                                          .editSubject(0).withName("jane-new").endSubject().build());
 
     assertNotNull(kubernetesClusterRoleBinding);
     assertEquals("ClusterRoleBinding", kubernetesClusterRoleBinding.getKind());

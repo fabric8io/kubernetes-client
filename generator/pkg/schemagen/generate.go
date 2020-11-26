@@ -145,7 +145,7 @@ func (g *schemaGenerator) jsonDescriptor(t reflect.Type) *JSONDescriptor {
 	t = g.resolvePointer(t)
 
 	switch t.Kind() {
-	case reflect.Int, reflect.Uint8, reflect.Int16, reflect.Int32, reflect.Int64:
+	case reflect.Int, reflect.Uint8, reflect.Int16, reflect.Int32, reflect.Int64, reflect.Uint32, reflect.Uint64, reflect.Uint16:
 		return &JSONDescriptor{Type: "integer"}
 	case reflect.Bool:
 		return &JSONDescriptor{Type: "boolean"}
@@ -186,11 +186,11 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 		switch t.Kind() {
 		case reflect.Bool:
 			return "Boolean"
-		case reflect.Int, reflect.Uint8, reflect.Int16, reflect.Int32:
+		case reflect.Int, reflect.Uint8, reflect.Int16, reflect.Int32, reflect.Uint16:
 			return "Integer"
 		case reflect.String:
 			return "String"
-		case reflect.Int64:
+		case reflect.Int64, reflect.Uint32, reflect.Uint64:
 			return "Long"
 		}
 	}
@@ -464,11 +464,11 @@ func isSimpleJavaType(fieldType reflect.Type) bool {
 	switch fieldType.Kind() {
 	case reflect.Bool:
 		return true
-	case reflect.Int, reflect.Uint8, reflect.Int16, reflect.Int32:
+	case reflect.Int, reflect.Uint8, reflect.Int16, reflect.Int32, reflect.Uint16:
 		return true
 	case reflect.String:
 		return true
-	case reflect.Int64:
+	case reflect.Int64, reflect.Uint32, reflect.Uint64:
 		return true
 	}
 

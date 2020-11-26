@@ -19,6 +19,7 @@ package io.fabric8.kubernetes;
 import io.fabric8.commons.AssumingK8sVersionAtLeast;
 import io.fabric8.commons.ClusterEntity;
 import io.fabric8.kubernetes.api.model.networking.v1beta1.Ingress;
+import io.fabric8.kubernetes.api.model.networking.v1beta1.IngressBuilder;
 import io.fabric8.kubernetes.api.model.networking.v1beta1.IngressList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.arquillian.cube.kubernetes.api.Session;
@@ -79,8 +80,8 @@ public class IngressIT {
 
   @Test
   public void update() {
-    ingress = client.network().v1beta1().ingresses().inNamespace(session.getNamespace()).withName("ingress-update").edit()
-      .editOrNewMetadata().addToAnnotations("foo", "bar").endMetadata().done();
+    ingress = client.network().v1beta1().ingresses().inNamespace(session.getNamespace()).withName("ingress-update").edit(i -> new IngressBuilder(i)
+                    .editOrNewMetadata().addToAnnotations("foo", "bar").endMetadata().build());
 
     assertNotNull(ingress);
     assertEquals("bar", ingress.getMetadata().getAnnotations().get("foo"));

@@ -25,15 +25,6 @@ import io.fabric8.openshift.api.model.ClusterOperator;
 import io.fabric8.openshift.api.model.ClusterOperatorList;
 import io.fabric8.openshift.api.model.ClusterVersion;
 import io.fabric8.openshift.api.model.ClusterVersionList;
-import io.fabric8.openshift.api.model.DoneableAPIServer;
-import io.fabric8.openshift.api.model.DoneableClusterOperator;
-import io.fabric8.openshift.api.model.DoneableClusterVersion;
-import io.fabric8.openshift.api.model.DoneableFeatureGate;
-import io.fabric8.openshift.api.model.DoneableInfrastructure;
-import io.fabric8.openshift.api.model.DoneableOAuth;
-import io.fabric8.openshift.api.model.DoneableOperatorHub;
-import io.fabric8.openshift.api.model.DoneableProxy;
-import io.fabric8.openshift.api.model.DoneableScheduler;
 import io.fabric8.openshift.api.model.FeatureGate;
 import io.fabric8.openshift.api.model.FeatureGateList;
 import io.fabric8.openshift.api.model.Infrastructure;
@@ -68,47 +59,47 @@ public class OpenShiftConfigAPIGroupClient extends BaseClient implements OpenShi
   }
 
   @Override
-  public NonNamespaceOperation<APIServer, APIServerList, DoneableAPIServer, Resource<APIServer, DoneableAPIServer>> apiServers() {
+  public NonNamespaceOperation<APIServer, APIServerList, Resource<APIServer>> apiServers() {
     return new APIServerOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public NonNamespaceOperation<ClusterOperator, ClusterOperatorList, DoneableClusterOperator, Resource<ClusterOperator, DoneableClusterOperator>> clusterOperators() {
+  public NonNamespaceOperation<ClusterOperator, ClusterOperatorList, Resource<ClusterOperator>> clusterOperators() {
     return new ClusterOperatorOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public NonNamespaceOperation<ClusterVersion, ClusterVersionList, DoneableClusterVersion, Resource<ClusterVersion, DoneableClusterVersion>> clusterVersions() {
+  public NonNamespaceOperation<ClusterVersion, ClusterVersionList, Resource<ClusterVersion>> clusterVersions() {
     return new ClusterVersionOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public NonNamespaceOperation<FeatureGate, FeatureGateList, DoneableFeatureGate, Resource<FeatureGate, DoneableFeatureGate>> featureGates() {
+  public NonNamespaceOperation<FeatureGate, FeatureGateList, Resource<FeatureGate>> featureGates() {
     return new FeatureGateOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public NonNamespaceOperation<Infrastructure, InfrastructureList, DoneableInfrastructure, Resource<Infrastructure, DoneableInfrastructure>> infrastructures() {
+  public NonNamespaceOperation<Infrastructure, InfrastructureList, Resource<Infrastructure>> infrastructures() {
     return new InfrastructureOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public NonNamespaceOperation<OAuth, OAuthList, DoneableOAuth, Resource<OAuth, DoneableOAuth>> oAuths() {
+  public NonNamespaceOperation<OAuth, OAuthList, Resource<OAuth>> oAuths() {
     return new OAuthOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public NonNamespaceOperation<OperatorHub, OperatorHubList, DoneableOperatorHub, Resource<OperatorHub, DoneableOperatorHub>> operatorHubs() {
+  public NonNamespaceOperation<OperatorHub, OperatorHubList, Resource<OperatorHub>> operatorHubs() {
     return new OperatorHubOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public NonNamespaceOperation<Proxy, ProxyList, DoneableProxy, Resource<Proxy, DoneableProxy>> proxies() {
+  public NonNamespaceOperation<Proxy, ProxyList, Resource<Proxy>> proxies() {
     return new ProxyOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
-  public NonNamespaceOperation<Scheduler, SchedulerList, DoneableScheduler, Resource<Scheduler, DoneableScheduler>> schedulers() {
+  public NonNamespaceOperation<Scheduler, SchedulerList, Resource<Scheduler>> schedulers() {
     return new SchedulerOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 }

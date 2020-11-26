@@ -36,7 +36,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import io.fabric8.kubernetes.api.model.DeleteOptions;
-import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.policy.Eviction;
@@ -81,7 +80,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
-public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, DoneablePod, PodResource<Pod, DoneablePod>> implements PodResource<Pod, DoneablePod>,CopyOrReadable<Boolean,InputStream, Boolean> {
+public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodResource<Pod>> implements PodResource<Pod>,CopyOrReadable<Boolean,InputStream, Boolean> {
 
     public static final int HTTP_TOO_MANY_REQUESTS = 429;
     private static final Integer DEFAULT_POD_LOG_WAIT_TIMEOUT = 5;
@@ -120,7 +119,6 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
     super(context.withPlural("pods"));
     this.type = Pod.class;
     this.listType = PodList.class;
-    this.doneableType = DoneablePod.class;
 
     this.containerId = context.getContainerId();
     this.in = context.getIn();
@@ -239,7 +237,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
   }
 
   @Override
-  public Loggable<String, LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
+  public Loggable<LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
     return new PodOperationsImpl(getContext().withLogWaitTimeout(logWaitTimeout));
   }
 
@@ -314,7 +312,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
   }
 
   @Override
-    public ContainerResource<String, LogWatch, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, ExecWatch, Boolean, InputStream, Boolean> inContainer(String containerId) {
+    public ContainerResource<LogWatch, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, ExecWatch, Boolean, InputStream, Boolean> inContainer(String containerId) {
         return new PodOperationsImpl(getContext().withContainerId(containerId));
     }
 
@@ -676,28 +674,28 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
     }
 
     @Override
-    public Loggable<String, LogWatch> withPrettyOutput() {
+    public Loggable<LogWatch> withPrettyOutput() {
         return new PodOperationsImpl(getContext().withPrettyOutput(true));
     }
 
 
     @Override
-    public PrettyLoggable<String, LogWatch> tailingLines(int withTailingLines) {
+    public PrettyLoggable<LogWatch> tailingLines(int withTailingLines) {
         return new PodOperationsImpl(getContext().withTailingLines(withTailingLines));
     }
 
     @Override
-    public TailPrettyLoggable<String, LogWatch> sinceTime(String sinceTimestamp) {
+    public TailPrettyLoggable<LogWatch> sinceTime(String sinceTimestamp) {
         return new PodOperationsImpl(getContext().withSinceTimestamp(sinceTimestamp));
     }
 
     @Override
-    public TailPrettyLoggable<String, LogWatch> sinceSeconds(int sinceSeconds) {
+    public TailPrettyLoggable<LogWatch> sinceSeconds(int sinceSeconds) {
         return new PodOperationsImpl(getContext().withSinceSeconds(sinceSeconds));
     }
 
     @Override
-    public TimeTailPrettyLoggable<String, LogWatch> terminated() {
+    public TimeTailPrettyLoggable<LogWatch> terminated() {
         return new PodOperationsImpl(getContext().withTerminatedStatus(true));
     }
 
@@ -707,12 +705,12 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
     }
 
     @Override
-    public BytesLimitTerminateTimeTailPrettyLoggable<String, LogWatch> limitBytes(int limitBytes) {
+    public BytesLimitTerminateTimeTailPrettyLoggable<LogWatch> limitBytes(int limitBytes) {
         return new PodOperationsImpl(getContext().withLimitBytes(limitBytes));
     }
 
   @Override
-  public BytesLimitTerminateTimeTailPrettyLoggable<String, LogWatch> usingTimestamps() {
+  public BytesLimitTerminateTimeTailPrettyLoggable<LogWatch> usingTimestamps() {
     return new PodOperationsImpl(getContext().withTimestamps(true));
   }
 

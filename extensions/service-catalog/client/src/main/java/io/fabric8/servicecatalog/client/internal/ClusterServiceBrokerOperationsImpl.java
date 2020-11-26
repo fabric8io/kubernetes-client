@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.servicecatalog.api.model.*;
-import io.fabric8.servicecatalog.api.model.DoneableClusterServiceBroker;
 import okhttp3.OkHttpClient;
 
 import java.util.HashMap;
@@ -28,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class ClusterServiceBrokerOperationsImpl extends HasMetadataOperation<ClusterServiceBroker, ClusterServiceBrokerList, DoneableClusterServiceBroker, ClusterServiceBrokerResource> implements ClusterServiceBrokerResource {
+public class ClusterServiceBrokerOperationsImpl extends HasMetadataOperation<ClusterServiceBroker, ClusterServiceBrokerList, ClusterServiceBrokerResource> implements ClusterServiceBrokerResource {
 
   public ClusterServiceBrokerOperationsImpl(OkHttpClient client, Config config) {
     this(new OperationContext().withOkhttpClient(client).withConfig(config));
@@ -38,11 +37,10 @@ public class ClusterServiceBrokerOperationsImpl extends HasMetadataOperation<Clu
       super(context.withApiGroupName("servicecatalog.k8s.io").withApiGroupVersion("v1beta1").withPlural("clusterservicebrokers"));
         this.type=ClusterServiceBroker.class;
         this.listType= ClusterServiceBrokerList.class;
-        this.doneableType= DoneableClusterServiceBroker.class;
   }
 
     @Override
-    public BaseOperation<ClusterServiceBroker, ClusterServiceBrokerList, DoneableClusterServiceBroker, ClusterServiceBrokerResource> newInstance(OperationContext context) {
+    public BaseOperation<ClusterServiceBroker, ClusterServiceBrokerList, ClusterServiceBrokerResource> newInstance(OperationContext context) {
         return new ClusterServiceBrokerOperationsImpl(context);
     }
 

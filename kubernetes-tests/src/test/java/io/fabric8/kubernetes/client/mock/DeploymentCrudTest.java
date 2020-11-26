@@ -95,8 +95,10 @@ class DeploymentCrudTest {
 
 
     deployment2 = client.apps().deployments()
-      .inNamespace("ns1").withName("deployment2").edit()
-      .editMetadata().addToLabels("key1", "value1").endMetadata().done();
+      .inNamespace("ns1").withName("deployment2").edit(d -> new DeploymentBuilder(d)
+      .editMetadata().addToLabels("key1", "value1").endMetadata()
+      .build());
+
     assertNotNull(deployment2);
     assertEquals("value1", deployment2.getMetadata().getLabels().get("key1"));
   }

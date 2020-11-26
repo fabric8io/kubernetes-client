@@ -23,24 +23,6 @@ import io.fabric8.kubernetes.api.model.ComponentStatus;
 import io.fabric8.kubernetes.api.model.ComponentStatusList;
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapList;
-import io.fabric8.kubernetes.api.model.Doneable;
-import io.fabric8.kubernetes.api.model.DoneableAPIService;
-import io.fabric8.kubernetes.api.model.DoneableBinding;
-import io.fabric8.kubernetes.api.model.DoneableComponentStatus;
-import io.fabric8.kubernetes.api.model.DoneableConfigMap;
-import io.fabric8.kubernetes.api.model.DoneableEndpoints;
-import io.fabric8.kubernetes.api.model.DoneableEvent;
-import io.fabric8.kubernetes.api.model.DoneableLimitRange;
-import io.fabric8.kubernetes.api.model.DoneableNamespace;
-import io.fabric8.kubernetes.api.model.DoneableNode;
-import io.fabric8.kubernetes.api.model.DoneablePersistentVolume;
-import io.fabric8.kubernetes.api.model.DoneablePersistentVolumeClaim;
-import io.fabric8.kubernetes.api.model.DoneablePod;
-import io.fabric8.kubernetes.api.model.DoneableReplicationController;
-import io.fabric8.kubernetes.api.model.DoneableResourceQuota;
-import io.fabric8.kubernetes.api.model.DoneableSecret;
-import io.fabric8.kubernetes.api.model.DoneableService;
-import io.fabric8.kubernetes.api.model.DoneableServiceAccount;
 import io.fabric8.kubernetes.api.model.Endpoints;
 import io.fabric8.kubernetes.api.model.EndpointsList;
 import io.fabric8.kubernetes.api.model.Event;
@@ -71,16 +53,11 @@ import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionList;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.DoneableCustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequest;
 import io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequestList;
-import io.fabric8.kubernetes.api.model.certificates.DoneableCertificateSigningRequest;
-import io.fabric8.kubernetes.api.model.authentication.DoneableTokenReview;
 import io.fabric8.kubernetes.api.model.authentication.TokenReview;
-import io.fabric8.kubernetes.api.model.coordination.v1.DoneableLease;
 import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseList;
-import io.fabric8.kubernetes.api.model.node.v1beta1.DoneableRuntimeClass;
 import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClass;
 import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClassList;
 import io.fabric8.kubernetes.client.Adapters;
@@ -256,80 +233,80 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
     delegate.close();
   }
 
-  public MixedOperation<ComponentStatus, ComponentStatusList, DoneableComponentStatus, Resource<ComponentStatus, DoneableComponentStatus>> componentstatuses() {
+  public MixedOperation<ComponentStatus, ComponentStatusList, Resource<ComponentStatus>> componentstatuses() {
 	return delegate.componentstatuses();
   }
 
   @Override
-  public ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> load(InputStream is) {
+  public ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> load(InputStream is) {
     return delegate.load(is);
   }
 
   @Override
-  public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(KubernetesResourceList is) {
+  public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(KubernetesResourceList is) {
     return delegate.resourceList(is);
   }
 
   @Override
-  public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(HasMetadata... items) {
+  public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(HasMetadata... items) {
     return delegate.resourceList(items);
   }
 
   @Override
-  public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(Collection<HasMetadata> items) {
+  public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(Collection<HasMetadata> items) {
     return delegate.resourceList(items);
   }
 
   @Override
-  public ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(String s) {
+  public ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(String s) {
     return delegate.resourceList(s);
   }
 
 
   @Override
-  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata, Boolean> resource(HasMetadata is) {
+  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata> resource(HasMetadata is) {
     return delegate.resource(is);
   }
 
   @Override
-  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata, Boolean> resource(String s) {
+  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata> resource(String s) {
     return delegate.resource(s);
   }
 
-  public MixedOperation<Endpoints, EndpointsList, DoneableEndpoints, Resource<Endpoints, DoneableEndpoints>> endpoints() {
+  public MixedOperation<Endpoints, EndpointsList, Resource<Endpoints>> endpoints() {
     return delegate.endpoints();
   }
 
-  public MixedOperation<Binding, KubernetesResourceList<Binding>, DoneableBinding, Resource<Binding, DoneableBinding>> bindings() {
+  public MixedOperation<Binding, KubernetesResourceList<Binding>, Resource<Binding>> bindings() {
     return delegate.bindings();
   }
 
-  public MixedOperation<Pod, PodList, DoneablePod, PodResource<Pod, DoneablePod>> pods() {
+  public MixedOperation<Pod, PodList, PodResource<Pod>> pods() {
     return delegate.pods();
   }
 
-  public MixedOperation<io.fabric8.kubernetes.api.model.Service, ServiceList, DoneableService, ServiceResource<io.fabric8.kubernetes.api.model.Service, DoneableService>> services() {
+  public MixedOperation<io.fabric8.kubernetes.api.model.Service, ServiceList, ServiceResource<io.fabric8.kubernetes.api.model.Service>> services() {
     return delegate.services();
   }
 
-  public NonNamespaceOperation<Namespace, NamespaceList, DoneableNamespace, Resource<Namespace, DoneableNamespace>> namespaces() {
+  public NonNamespaceOperation<Namespace, NamespaceList, Resource<Namespace>> namespaces() {
     return delegate.namespaces();
   }
 
-  public MixedOperation<ServiceAccount, ServiceAccountList, DoneableServiceAccount, Resource<ServiceAccount, DoneableServiceAccount>> serviceAccounts() {
+  public MixedOperation<ServiceAccount, ServiceAccountList, Resource<ServiceAccount>> serviceAccounts() {
     return delegate.serviceAccounts();
   }
 
   @Override
-  public MixedOperation<APIService, APIServiceList, DoneableAPIService, Resource<APIService, DoneableAPIService>> apiServices() {
+  public MixedOperation<APIService, APIServiceList, Resource<APIService>> apiServices() {
     return delegate.apiServices();
   }
 
-  public NonNamespaceOperation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, Resource<PersistentVolume, DoneablePersistentVolume>> persistentVolumes() {
+  public NonNamespaceOperation<PersistentVolume, PersistentVolumeList, Resource<PersistentVolume>> persistentVolumes() {
     return delegate.persistentVolumes();
   }
 
-  public MixedOperation<ResourceQuota, ResourceQuotaList, DoneableResourceQuota, Resource<ResourceQuota, DoneableResourceQuota>> resourceQuotas() {
+  public MixedOperation<ResourceQuota, ResourceQuotaList, Resource<ResourceQuota>> resourceQuotas() {
     return delegate.resourceQuotas();
   }
 
@@ -338,32 +315,32 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
   }
 
   @Override
-  public MixedOperation<ConfigMap, ConfigMapList, DoneableConfigMap, Resource<ConfigMap, DoneableConfigMap>> configMaps() {
+  public MixedOperation<ConfigMap, ConfigMapList, Resource<ConfigMap>> configMaps() {
     return delegate.configMaps();
   }
 
   @Override
-  public MixedOperation<LimitRange, LimitRangeList, DoneableLimitRange, Resource<LimitRange, DoneableLimitRange>> limitRanges() {
+  public MixedOperation<LimitRange, LimitRangeList, Resource<LimitRange>> limitRanges() {
     return delegate.limitRanges();
   }
 
-  public NonNamespaceOperation<Node, NodeList, DoneableNode, Resource<Node, DoneableNode>> nodes() {
+  public NonNamespaceOperation<Node, NodeList, Resource<Node>> nodes() {
     return delegate.nodes();
   }
 
-  public MixedOperation<PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, Resource<PersistentVolumeClaim, DoneablePersistentVolumeClaim>> persistentVolumeClaims() {
+  public MixedOperation<PersistentVolumeClaim, PersistentVolumeClaimList, Resource<PersistentVolumeClaim>> persistentVolumeClaims() {
     return delegate.persistentVolumeClaims();
   }
 
-  public MixedOperation<Event, EventList, DoneableEvent, Resource<Event, DoneableEvent>> events() {
+  public MixedOperation<Event, EventList, Resource<Event>> events() {
     return delegate.events();
   }
 
-  public MixedOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, RollableScalableResource<ReplicationController, DoneableReplicationController>> replicationControllers() {
+  public MixedOperation<ReplicationController, ReplicationControllerList, RollableScalableResource<ReplicationController>> replicationControllers() {
     return delegate.replicationControllers();
   }
 
-  public MixedOperation<Secret, SecretList, DoneableSecret, Resource<Secret, DoneableSecret>> secrets() {
+  public MixedOperation<Secret, SecretList, Resource<Secret>> secrets() {
     return delegate.secrets();
   }
 
@@ -428,7 +405,7 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
   public RbacAPIGroupDSL rbac() { return delegate.rbac(); }
 
   @Override
-  public NonNamespaceOperation<CustomResourceDefinition, CustomResourceDefinitionList, DoneableCustomResourceDefinition, Resource<CustomResourceDefinition, DoneableCustomResourceDefinition>> customResourceDefinitions() {
+  public NonNamespaceOperation<CustomResourceDefinition, CustomResourceDefinitionList, Resource<CustomResourceDefinition>> customResourceDefinitions() {
     return delegate.customResourceDefinitions();
   }
 
@@ -438,7 +415,7 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
   }
 
   @Override
-  public NonNamespaceOperation<CertificateSigningRequest, CertificateSigningRequestList, DoneableCertificateSigningRequest, Resource<CertificateSigningRequest, DoneableCertificateSigningRequest>> certificateSigningRequests() {
+  public NonNamespaceOperation<CertificateSigningRequest, CertificateSigningRequestList, Resource<CertificateSigningRequest>> certificateSigningRequests() {
     return delegate.certificateSigningRequests();
   }
 
@@ -448,23 +425,33 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
   }
 
   @Override
-  public Createable<TokenReview, TokenReview, DoneableTokenReview> tokenReviews() {
+  public Createable<TokenReview> tokenReviews() {
     return delegate.tokenReviews();
   }
 
   @Override
-  public <T extends HasMetadata, L extends KubernetesResourceList<T>, D extends Doneable<T>> MixedOperation<T, L, D, Resource<T, D>> customResources(CustomResourceDefinitionContext crdContext, Class<T> resourceType, Class<L> listClass, Class<D> doneClass) {
-    return delegate.customResources(crdContext, resourceType, listClass, doneClass);
+  public <T extends HasMetadata> MixedOperation<T, KubernetesResourceList<T>, Resource<T>> customResources(Class<T> resourceType) {
+    return delegate.customResources(resourceType);
   }
 
   @Override
-  public <T extends HasMetadata, L extends KubernetesResourceList<T>, D extends Doneable<T>> MixedOperation<T, L, D, Resource<T, D>> customResources(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass, Class<D> doneClass) {
-    return delegate.customResources(crd, resourceType, listClass, doneClass);
+  public <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(Class<T> resourceType, Class<L> listClass) {
+    return delegate.customResources(resourceType, listClass);
   }
 
   @Override
-  public <T extends HasMetadata, L extends KubernetesResourceList<T>, D extends Doneable<T>> MixedOperation<T, L, D, Resource<T, D>> customResource(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass, Class<D> doneClass) {
-    return customResources(crd, resourceType, listClass, doneClass);
+  public <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(CustomResourceDefinitionContext crdContext, Class<T> resourceType, Class<L> listClass) {
+    return delegate.customResources(crdContext, resourceType, listClass);
+  }
+
+  @Override
+  public <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass) {
+    return delegate.customResources(crd, resourceType, listClass);
+  }
+
+  @Override
+  public <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResource(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass) {
+    return customResources(crd, resourceType, listClass);
   }
 
   @Override
@@ -488,7 +475,7 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
   }
 
   @Override
-  public MixedOperation<Lease, LeaseList, DoneableLease, Resource<Lease, DoneableLease>> leases() {
+  public MixedOperation<Lease, LeaseList, Resource<Lease>> leases() {
     return delegate.leases();
   }
 
@@ -569,7 +556,7 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
   }
 
   @Override
-  public NonNamespaceOperation<RuntimeClass, RuntimeClassList, DoneableRuntimeClass, Resource<RuntimeClass, DoneableRuntimeClass>> runtimeClasses() {
+  public NonNamespaceOperation<RuntimeClass, RuntimeClassList, Resource<RuntimeClass>> runtimeClasses() {
     return delegate.runtimeClasses();
   }
 }

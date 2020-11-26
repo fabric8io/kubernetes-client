@@ -15,11 +15,12 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import io.fabric8.kubernetes.api.model.Doneable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.CustomResourceList;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
@@ -30,8 +31,7 @@ import okhttp3.OkHttpClient;
 
 /**
  */
-public class CustomResourceOperationsImpl<T extends HasMetadata, L extends KubernetesResourceList<T>, D extends Doneable<T>> extends HasMetadataOperation<T, L, D,
-    Resource<T, D>> implements MixedOperation<T, L, D, Resource<T, D>> {
+public class CustomResourceOperationsImpl<T extends HasMetadata, L extends KubernetesResourceList<T>> extends HasMetadataOperation<T, L, Resource<T>> implements MixedOperation<T, L, Resource<T>> {
 
   private final boolean resourceNamespaced;
 
@@ -45,8 +45,7 @@ public class CustomResourceOperationsImpl<T extends HasMetadata, L extends Kuber
       .withPlural(context.getCrdContext().getPlural()));
 
     this.type = context.getType();
-    this.listType = context.getListType();
-    this.doneableType = context.getDoneableType();
+    this.listType = context.getListType() != null ? context.getListType() : (Class) inferListType(this.type);
 
     this.resourceNamespaced = resourceNamespaced(context.getCrdContext());
     this.apiVersion = getAPIGroup() + "/" + getAPIVersion();
@@ -73,5 +72,13 @@ public class CustomResourceOperationsImpl<T extends HasMetadata, L extends Kuber
   @Override
   public boolean isResourceNamespaced() {
     return resourceNamespaced;
+  }
+
+  public static <T extends HasMetadata> Class<? extends KubernetesResourceList> inferListType(Class<T> customResource) {
+    try {
+      return (Class<KubernetesResourceList<T>>) Class.forName(customResource.getName() + "List");
+    } catch (ClassNotFoundException e) {
+      return CustomResourceList.class;
+    }
   }
 }

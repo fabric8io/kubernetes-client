@@ -23,12 +23,11 @@ import io.fabric8.kubernetes.client.dsl.Typeable;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildConfigList;
-import io.fabric8.openshift.api.model.DoneableBuildConfig;
 import io.fabric8.openshift.api.model.WebHookTrigger;
 import io.fabric8.openshift.client.dsl.buildconfig.CommitterAuthorMessageAsFileTimeoutInputStreamable;
 
-public interface BuildConfigOperation extends BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Build>,
-  MixedOperation<BuildConfig, BuildConfigList, DoneableBuildConfig,BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Build>>,
+public interface BuildConfigOperation extends BuildConfigResource<BuildConfig, Void, Build>,
+  MixedOperation<BuildConfig, BuildConfigList,BuildConfigResource<BuildConfig, Void, Build>>,
   Typeable<Triggerable<WebHookTrigger, Void>>,
   Triggerable<WebHookTrigger, Void>,
   Secretable<Typeable<Triggerable<WebHookTrigger, Void>>>,

@@ -15,8 +15,8 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface Patchable<I, T> {
+public interface Patchable<T> {
 
-  T patch(I item);
+  T patch(T item);
 
 }

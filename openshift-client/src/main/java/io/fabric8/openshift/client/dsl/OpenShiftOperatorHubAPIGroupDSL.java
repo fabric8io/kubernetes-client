@@ -18,17 +18,12 @@ package io.fabric8.openshift.client.dsl;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.openshift.api.model.operatorhub.v1.DoneableOperatorGroup;
 import io.fabric8.openshift.api.model.operatorhub.v1.OperatorGroup;
 import io.fabric8.openshift.api.model.operatorhub.v1.OperatorGroupList;
 import io.fabric8.openshift.api.model.operatorhub.v1alpha1.CatalogSource;
 import io.fabric8.openshift.api.model.operatorhub.v1alpha1.CatalogSourceList;
 import io.fabric8.openshift.api.model.operatorhub.v1alpha1.ClusterServiceVersion;
 import io.fabric8.openshift.api.model.operatorhub.v1alpha1.ClusterServiceVersionList;
-import io.fabric8.openshift.api.model.operatorhub.v1alpha1.DoneableCatalogSource;
-import io.fabric8.openshift.api.model.operatorhub.v1alpha1.DoneableClusterServiceVersion;
-import io.fabric8.openshift.api.model.operatorhub.v1alpha1.DoneableInstallPlan;
-import io.fabric8.openshift.api.model.operatorhub.v1alpha1.DoneableSubscription;
 import io.fabric8.openshift.api.model.operatorhub.v1alpha1.InstallPlan;
 import io.fabric8.openshift.api.model.operatorhub.v1alpha1.InstallPlanList;
 import io.fabric8.openshift.api.model.operatorhub.v1alpha1.Subscription;
@@ -40,29 +35,29 @@ public interface OpenShiftOperatorHubAPIGroupDSL extends Client {
    *
    * @return MixedOperation object for CatalogSource type
    */
-  MixedOperation<CatalogSource, CatalogSourceList, DoneableCatalogSource, Resource<CatalogSource, DoneableCatalogSource>> catalogSources();
+  MixedOperation<CatalogSource, CatalogSourceList, Resource<CatalogSource>> catalogSources();
   /**
    * API entrypoint for OperatorGroup related operations(operators.coreos.com/v1)
    *
    * @return MixedOperation object for OperatorGroup type
    */
-  MixedOperation<OperatorGroup, OperatorGroupList, DoneableOperatorGroup, Resource<OperatorGroup, DoneableOperatorGroup>> operatorGroups();
+  MixedOperation<OperatorGroup, OperatorGroupList, Resource<OperatorGroup>> operatorGroups();
   /**
    * API entrypoint for Subscription related operations(operators.coreos.com/v1alpha1)
    *
    * @return MixedOperation object for Subscription type
    */
-  MixedOperation<Subscription, SubscriptionList, DoneableSubscription, Resource<Subscription, DoneableSubscription>> subscriptions();
+  MixedOperation<Subscription, SubscriptionList, Resource<Subscription>> subscriptions();
   /**
    * API entrypoint for InstallPlan related operations(operators.coreos.com/v1alpha1)
    *
    * @return MixedOperation object for InstallPlan type
    */
-  MixedOperation<InstallPlan, InstallPlanList, DoneableInstallPlan, Resource<InstallPlan, DoneableInstallPlan>> installPlans();
+  MixedOperation<InstallPlan, InstallPlanList, Resource<InstallPlan>> installPlans();
   /**
    * API entrypoint for CatalogSource related ClusterServiceVersion(operators.coreos.com/v1alpha1)
    *
    * @return MixedOperation object for ClusterServiceVersion type
    */
-  MixedOperation<ClusterServiceVersion, ClusterServiceVersionList, DoneableClusterServiceVersion, Resource<ClusterServiceVersion, DoneableClusterServiceVersion>> clusterServiceVersions();
+  MixedOperation<ClusterServiceVersion, ClusterServiceVersionList, Resource<ClusterServiceVersion>> clusterServiceVersions();
 }

@@ -34,7 +34,6 @@ import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.handlers.KubernetesListHandler;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
-import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 
@@ -45,7 +44,6 @@ import org.slf4j.LoggerFactory;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -62,7 +60,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Predicate;
 
-public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl extends OperationSupport implements ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean>,
+import static io.fabric8.kubernetes.client.utils.CreateOrReplaceHelper.createOrReplaceItem;
+import static io.fabric8.kubernetes.client.utils.DeleteAndCreateHelper.deleteAndCreateItem;
+
+public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl extends OperationSupport implements ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata>,
 Waitable<List<HasMetadata>, HasMetadata>, Readiable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl.class);
@@ -213,7 +214,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
   }
 
   @Override
-  public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> withParameters(Map<String, String> parameters) {
+  public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> withParameters(Map<String, String> parameters) {
     return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, namespace, explicitNamespace, fromServer, deletingExisting, visitors, null, inputStream, parameters, -1, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
 
@@ -285,29 +286,11 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
     List<HasMetadata> result = new ArrayList<>();
     for (HasMetadata meta : acceptVisitors(asHasMetadata(item, true), visitors)) {
       ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
-      String namespaceToUse =  meta.getMetadata().getNamespace();
+      String namespaceToUse = meta.getMetadata().getNamespace();
 
-      String resourceVersion = KubernetesResourceUtil.getResourceVersion(meta);
-      try {
-        // Create
-        KubernetesResourceUtil.setResourceVersion(meta, null);
-        result.add(h.create(client, config, namespaceToUse, meta));
-      } catch (KubernetesClientException exception) {
-        if (exception.getCode() != HttpURLConnection.HTTP_CONFLICT) {
-          throw exception;
-        }
-
-        // Conflict; check deleteExisting flag otherwise replace
-        if (Boolean.TRUE.equals(deletingExisting)) {
-          Boolean deleted = h.delete(client, config, namespaceToUse, propagationPolicy, meta);
-          if (Boolean.FALSE.equals(deleted)) {
-            throw new KubernetesClientException("Failed to delete existing item:" + meta);
-          }
-          result.add(h.create(client, config, namespaceToUse, meta));
-        } else {
-          KubernetesResourceUtil.setResourceVersion(meta, resourceVersion);
-          result.add(h.replace(client, config, namespaceToUse, meta));
-        }
+      HasMetadata createdItem = createOrReplaceOrDeleteExisting(meta, h, namespaceToUse);
+      if (createdItem != null) {
+        result.add(createdItem);
       }
     }
     return result;
@@ -376,7 +359,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
 
 
     @Override
-    public ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> inNamespace(String explicitNamespace) {
+    public ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> inNamespace(String explicitNamespace) {
         return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, deletingExisting, visitors, item, null, null, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
     }
 
@@ -391,18 +374,18 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
     }
 
     @Override
-    public ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> accept(Visitor visitor) {
+    public ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> accept(Visitor visitor) {
         List<Visitor> newVisitors = new ArrayList<>(visitors);
         newVisitors.add(visitor);
         return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, newVisitors, item, null, null, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
     }
 
-  @Override public CascadingDeletable<Boolean> withGracePeriod(long gracePeriodSeconds)
+  @Override public CascadingDeletable withGracePeriod(long gracePeriodSeconds)
   {
     return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, null, null, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
 
-  @Override public CascadingDeletable<Boolean> withPropagationPolicy(DeletionPropagation propagationPolicy)
+  @Override public CascadingDeletable withPropagationPolicy(DeletionPropagation propagationPolicy)
   {
     return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, null, null, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
@@ -414,7 +397,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
   }
 
   @Override
-  public Deletable<Boolean> cascading(boolean cascading) {
+  public Deletable cascading(boolean cascading) {
     return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, null, null, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
 
@@ -455,4 +438,12 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
       throw new IllegalArgumentException("Could not find a registered handler for item: [" + item + "].");
     }
   }
+
+  private HasMetadata createOrReplaceOrDeleteExisting(HasMetadata meta, ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h, String namespaceToUse) {
+      if (Boolean.TRUE.equals(deletingExisting)) {
+        return deleteAndCreateItem(client, config, meta, h, namespaceToUse, propagationPolicy);
+      }
+      return createOrReplaceItem(client, config, meta, h, namespaceToUse);
+  }
+
 }

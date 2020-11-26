@@ -17,23 +17,16 @@ package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.api.model.extensions.DaemonSet;
 import io.fabric8.kubernetes.api.model.extensions.DaemonSetList;
-import io.fabric8.kubernetes.api.model.extensions.DoneableDaemonSet;
 import io.fabric8.kubernetes.api.model.extensions.Deployment;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentList;
-import io.fabric8.kubernetes.api.model.extensions.DoneableDeployment;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSet;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSetList;
-import io.fabric8.kubernetes.api.model.extensions.DoneableReplicaSet;
 import io.fabric8.kubernetes.api.model.batch.Job;
 import io.fabric8.kubernetes.api.model.batch.JobList;
-import io.fabric8.kubernetes.api.model.batch.DoneableJob;
 import io.fabric8.kubernetes.api.model.extensions.Ingress;
 import io.fabric8.kubernetes.api.model.extensions.IngressList;
-import io.fabric8.kubernetes.api.model.extensions.DoneableIngress;
 import io.fabric8.kubernetes.api.model.extensions.NetworkPolicy;
 import io.fabric8.kubernetes.api.model.extensions.NetworkPolicyList;
-import io.fabric8.kubernetes.api.model.extensions.DoneableNetworkPolicy;
-import io.fabric8.kubernetes.api.model.policy.DoneablePodSecurityPolicy;
 import io.fabric8.kubernetes.api.model.policy.PodSecurityPolicy;
 import io.fabric8.kubernetes.api.model.policy.PodSecurityPolicyList;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
@@ -62,36 +55,36 @@ public class ExtensionsAPIGroupClient extends BaseClient implements ExtensionsAP
 
   @Override
   @Deprecated
-  public MixedOperation<DaemonSet, DaemonSetList, DoneableDaemonSet, Resource<DaemonSet, DoneableDaemonSet>> daemonSets() {
+  public MixedOperation<DaemonSet, DaemonSetList, Resource<DaemonSet>> daemonSets() {
     return new DaemonSetOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
   @Deprecated
-  public MixedOperation<Deployment, DeploymentList, DoneableDeployment, RollableScalableResource<Deployment, DoneableDeployment>> deployments() {
+  public MixedOperation<Deployment, DeploymentList, RollableScalableResource<Deployment>> deployments() {
     return new DeploymentOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
   @Deprecated
-  public MixedOperation<Ingress, IngressList, DoneableIngress, Resource<Ingress, DoneableIngress>> ingress() {
+  public MixedOperation<Ingress, IngressList, Resource<Ingress>> ingress() {
     return ingresses();
   }
 
   @Override
-  public MixedOperation<Ingress, IngressList, DoneableIngress, Resource<Ingress, DoneableIngress>> ingresses() {
+  public MixedOperation<Ingress, IngressList, Resource<Ingress>> ingresses() {
     return new IngressOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
   @Deprecated
-  public MixedOperation<Job, JobList, DoneableJob, ScalableResource<Job, DoneableJob>> jobs() {
+  public MixedOperation<Job, JobList, ScalableResource<Job>> jobs() {
     return new JobOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
   @Deprecated
-  public MixedOperation<NetworkPolicy, NetworkPolicyList, DoneableNetworkPolicy, Resource<NetworkPolicy, DoneableNetworkPolicy>> networkPolicies() {
+  public MixedOperation<NetworkPolicy, NetworkPolicyList, Resource<NetworkPolicy>> networkPolicies() {
     return new NetworkPolicyOperationsImpl(httpClient, getConfiguration());
   }
 
@@ -100,13 +93,13 @@ public class ExtensionsAPIGroupClient extends BaseClient implements ExtensionsAP
   /**
    * @deprecated Replaced by {@link PolicyAPIGroupClient#podSecurityPolicies()}
    */
-  public MixedOperation<PodSecurityPolicy, PodSecurityPolicyList, DoneablePodSecurityPolicy, Resource<PodSecurityPolicy, DoneablePodSecurityPolicy>> podSecurityPolicies() {
+  public MixedOperation<PodSecurityPolicy, PodSecurityPolicyList, Resource<PodSecurityPolicy>> podSecurityPolicies() {
     return new PodSecurityPolicyOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
   @Deprecated
-  public MixedOperation<ReplicaSet, ReplicaSetList, DoneableReplicaSet, RollableScalableResource<ReplicaSet, DoneableReplicaSet>> replicaSets() {
+  public MixedOperation<ReplicaSet, ReplicaSetList, RollableScalableResource<ReplicaSet>> replicaSets() {
     return new ReplicaSetOperationsImpl(httpClient, getConfiguration());
   }
 

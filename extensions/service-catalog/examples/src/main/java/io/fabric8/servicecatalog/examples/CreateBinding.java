@@ -14,7 +14,7 @@ package io.fabric8.servicecatalog.examples; /**
  * limitations under the License.
  */
 
-import io.fabric8.servicecatalog.api.model.ServiceBinding;
+import io.fabric8.servicecatalog.api.model.ServiceBindingBuilder;
 import io.fabric8.servicecatalog.client.ServiceCatalogClient;
 
 
@@ -23,14 +23,14 @@ public class CreateBinding {
     public static void main(String[] args) {
         ServiceCatalogClient client = ClientFactory.newClient(args);
         System.out.println("Creating a service binding");
-        ServiceBinding binding = client.serviceBindings().inNamespace("iocanel").createNew()
+        client.serviceBindings().inNamespace("iocanel").create(new ServiceBindingBuilder()
             .withNewMetadata()
             .withName("mybinding")
             .endMetadata()
             .withNewSpec()
             .withNewInstanceRef("myservice")
             .withSecretName("mysercret")
-            .endSpec()
-            .done();
+            .endSpec().build());
+
     }
 }

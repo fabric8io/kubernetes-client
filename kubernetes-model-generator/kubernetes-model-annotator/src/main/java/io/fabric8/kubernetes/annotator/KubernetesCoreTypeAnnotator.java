@@ -30,8 +30,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.sun.codemodel.JAnnotationArrayMember;
-import com.sun.codemodel.JClassAlreadyExistsException;
-import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpressionImpl;
 import com.sun.codemodel.JFieldVar;
@@ -41,7 +39,6 @@ import io.fabric8.kubernetes.model.annotation.ApiGroup;
 import io.fabric8.kubernetes.model.annotation.ApiVersion;
 import io.fabric8.kubernetes.model.annotation.PackageSuffix;
 import io.sundr.builder.annotations.Buildable;
-import io.sundr.builder.annotations.Inline;
 import io.sundr.transform.annotations.VelocityTransformation;
 import io.sundr.transform.annotations.VelocityTransformations;
 import lombok.EqualsAndHashCode;
@@ -157,21 +154,12 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
   }
 
   protected void processBuildable(JDefinedClass clazz) {
-    try {
       clazz.annotate(Buildable.class)
         .param("editableEnabled", false)
         .param("validationEnabled", false)
         .param("generateBuilderPackage", true)
         .param("lazyCollectionInitEnabled", false)
-        .param("builderPackage", "io.fabric8.kubernetes.api.builder")
-        .annotationParam("inline", Inline.class)
-        .param("type", new JCodeModel()._class("io.fabric8.kubernetes.api.model.Doneable"))
-        .param("prefix", "Doneable")
-        .param(ANNOTATION_VALUE, "done");
-
-    } catch (JClassAlreadyExistsException e) {
-      e.printStackTrace();
-    }
+        .param("builderPackage", "io.fabric8.kubernetes.api.builder");
   }
 
   protected void addClassesToPropertyFiles(JDefinedClass clazz) {

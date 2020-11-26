@@ -17,7 +17,6 @@ package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionList;
-import io.fabric8.kubernetes.api.model.apiextensions.v1.DoneableCustomResourceDefinition;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.internal.apiextensions.v1.CustomResourceDefinitionOperationsImpl;
@@ -32,7 +31,7 @@ public class V1ApiextensionsAPIGroupClient extends BaseClient implements V1Apiex
     super(httpClient, config);
   }
 
-  public MixedOperation<CustomResourceDefinition, CustomResourceDefinitionList, DoneableCustomResourceDefinition, Resource<CustomResourceDefinition, DoneableCustomResourceDefinition>> customResourceDefinitions() {
+  public MixedOperation<CustomResourceDefinition, CustomResourceDefinitionList, Resource<CustomResourceDefinition>> customResourceDefinitions() {
     return new CustomResourceDefinitionOperationsImpl(httpClient, getConfiguration());
   }
 }

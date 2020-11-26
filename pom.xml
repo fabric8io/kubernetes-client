@@ -23,7 +23,7 @@
 
   <groupId>io.fabric8</groupId>
   <artifactId>kubernetes-client-project</artifactId>
-  <version>4.12-SNAPSHOT</version>
+  <version>5.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Fabric8 :: Kubernetes :: Project</name>
@@ -91,7 +91,7 @@
     <jsr305.version>3.0.2</jsr305.version>
 
     <!-- Testing versions -->
-    <assertj.core.version>3.18.0</assertj.core.version>
+    <assertj.core.version>3.18.1</assertj.core.version>
     <arquillian.core.version>1.2.0.Final</arquillian.core.version>
     <awaitility.version>4.0.3</awaitility.version>
     <jsonassert.version>1.5.0</jsonassert.version>
@@ -112,7 +112,7 @@
     <arquillian.cube.version>1.18.2</arquillian.cube.version>
     <slf4j.version>1.7.30</slf4j.version>
     <mockito.version>3.6.0</mockito.version>
-    <lombok.version>1.18.14</lombok.version>
+    <lombok.version>1.18.16</lombok.version>
     <snakeyaml.version>1.26</snakeyaml.version>
     <bouncycastle.version>1.66</bouncycastle.version>
     <commons-codec.version>1.15</commons-codec.version>

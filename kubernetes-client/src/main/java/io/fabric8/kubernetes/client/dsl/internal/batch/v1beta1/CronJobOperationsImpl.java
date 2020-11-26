@@ -18,7 +18,6 @@ package io.fabric8.kubernetes.client.dsl.internal.batch.v1beta1;
 
 import io.fabric8.kubernetes.api.model.batch.CronJob;
 import io.fabric8.kubernetes.api.model.batch.CronJobList;
-import io.fabric8.kubernetes.api.model.batch.DoneableCronJob;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Resource;
@@ -28,7 +27,7 @@ import okhttp3.OkHttpClient;
 
 import java.io.InputStream;
 
-public class CronJobOperationsImpl extends HasMetadataOperation<CronJob, CronJobList, DoneableCronJob, Resource<CronJob, DoneableCronJob>> {
+public class CronJobOperationsImpl extends HasMetadataOperation<CronJob, CronJobList, Resource<CronJob>> {
 
   public CronJobOperationsImpl(OkHttpClient client, Config config) {
     this(client, config, null);
@@ -45,7 +44,6 @@ public class CronJobOperationsImpl extends HasMetadataOperation<CronJob, CronJob
       .withPlural("cronjobs"));
     this.type = CronJob.class;
     this.listType = CronJobList.class;
-    this.doneableType = DoneableCronJob.class;
   }
 
 
@@ -55,7 +53,7 @@ public class CronJobOperationsImpl extends HasMetadataOperation<CronJob, CronJob
   }
 
   @Override
-  public Resource<CronJob, DoneableCronJob> load(InputStream is) {
+  public Resource<CronJob> load(InputStream is) {
     try {
       CronJob item = unmarshal(is, CronJob.class);
       return new CronJobOperationsImpl(context.withItem(item));

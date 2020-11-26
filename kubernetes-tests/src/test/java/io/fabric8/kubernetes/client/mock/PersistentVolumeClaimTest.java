@@ -16,7 +16,6 @@
 
 package io.fabric8.kubernetes.client.mock;
 
-import io.fabric8.kubernetes.api.model.DoneablePersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaimBuilder;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -121,8 +120,8 @@ class PersistentVolumeClaimTest {
   void testEditMissing() {
     server.expect().withPath("/api/v1/namespaces/test/persistentvolumeclaims/persistentvolumeclaim").andReturn(404, "error message from kubernetes").always();
     KubernetesClient client = server.getClient();
-    Resource<PersistentVolumeClaim, DoneablePersistentVolumeClaim> pvcResource =  client.persistentVolumeClaims().inNamespace("test").withName("persistentvolumeclaim");
-    Assertions.assertThrows(KubernetesClientException.class, pvcResource::edit);
+    Resource<PersistentVolumeClaim> pvcResource =  client.persistentVolumeClaims().inNamespace("test").withName("persistentvolumeclaim");
+    Assertions.assertThrows(KubernetesClientException.class, () -> pvcResource.edit(r -> r));
   }
 
   @Test

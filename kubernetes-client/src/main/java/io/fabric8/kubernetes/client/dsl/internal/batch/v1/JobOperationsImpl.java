@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal.batch.v1;
 
-import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
@@ -24,7 +23,6 @@ import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.utils.PodOperationUtil;
 import okhttp3.OkHttpClient;
-import io.fabric8.kubernetes.api.model.batch.DoneableJob;
 import io.fabric8.kubernetes.api.model.batch.Job;
 import io.fabric8.kubernetes.api.model.batch.JobList;
 import io.fabric8.kubernetes.client.Config;
@@ -48,8 +46,8 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, DoneableJob, ScalableResource<Job, DoneableJob>>
-  implements ScalableResource<Job, DoneableJob> {
+public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, ScalableResource<Job>>
+  implements ScalableResource<Job> {
 
   static final transient Logger LOG = LoggerFactory.getLogger(JobOperationsImpl.class);
   private Integer podLogWaitTimeout;
@@ -69,7 +67,6 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Doneab
 
     this.type = Job.class;
     this.listType = JobList.class;
-    this.doneableType = DoneableJob.class;
   }
 
   private JobOperationsImpl(OperationContext context, Integer podLogWaitTimeout) {
@@ -83,7 +80,7 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Doneab
   }
 
   @Override
-  public ScalableResource<Job, DoneableJob> load(InputStream is) {
+  public ScalableResource<Job> load(InputStream is) {
     try {
       Job item = unmarshal(is, Job.class);
       return new JobOperationsImpl(context.withItem(item));
@@ -93,7 +90,7 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Doneab
   }
 
   @Override
-  public ScalableResource<Job, DoneableJob> fromServer() {
+  public ScalableResource<Job> fromServer() {
     return new JobOperationsImpl(context.withReloadingFromServer(true));
   }
 
@@ -114,7 +111,7 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Doneab
 
   @Override
   public Job scale(int count, boolean wait) {
-    Job res = cascading(false).edit().editSpec().withParallelism(count).endSpec().done();
+    Job res = accept(b -> b.getSpec().setParallelism(count));
     if (wait) {
       waitUntilJobIsScaled();
       res = getMandatory();
@@ -169,14 +166,14 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Doneab
 
   public String getLog(Boolean isPretty) {
     StringBuilder stringBuilder = new StringBuilder();
-    List<PodResource<Pod, DoneablePod>> podOperationList = doGetLog(false);
-    for (PodResource<Pod, DoneablePod> podOperation : podOperationList) {
+    List<PodResource<Pod>> podOperationList = doGetLog(false);
+    for (PodResource<Pod> podOperation : podOperationList) {
       stringBuilder.append(podOperation.getLog(isPretty));
     }
     return stringBuilder.toString();
   }
 
-  private List<PodResource<Pod, DoneablePod>> doGetLog(boolean isPretty) {
+  private List<PodResource<Pod>> doGetLog(boolean isPretty) {
     Job job = fromServer().get();
 
     return PodOperationUtil.getPodOperationsForController(context, job.getMetadata().getUid(),
@@ -189,7 +186,7 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Doneab
    */
   @Override
   public Reader getLogReader() {
-    List<PodResource<Pod, DoneablePod>> podResources = doGetLog(false);
+    List<PodResource<Pod>> podResources = doGetLog(false);
     if (podResources.size() > 1) {
       throw new KubernetesClientException("Reading logs is not supported for multicontainer jobs");
     } else if (podResources.size() == 1) {
@@ -205,7 +202,7 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Doneab
 
   @Override
   public LogWatch watchLog(OutputStream out) {
-    List<PodResource<Pod, DoneablePod>> podResources = doGetLog(false);
+    List<PodResource<Pod>> podResources = doGetLog(false);
     if (podResources.size() > 1) {
       throw new KubernetesClientException("Watching logs is not supported for multicontainer jobs");
     } else if (podResources.size() == 1) {
@@ -215,7 +212,7 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Doneab
   }
 
   @Override
-  public Loggable<String, LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
+  public Loggable<LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
     return new JobOperationsImpl(context, logWaitTimeout);
   }
 

@@ -16,6 +16,7 @@
 package io.fabric8.volumesnapshot.examples;
 
 import io.fabric8.volumesnapshot.client.VolumeSnapshotClient;
+import io.fabric8.volumesnapshot.api.model.VolumeSnapshotBuilder;
 
 @SuppressWarnings("java:S106")
 public class CreateVolumeSnapshot {
@@ -23,7 +24,7 @@ public class CreateVolumeSnapshot {
   public static void main(String[] args) {
     try (VolumeSnapshotClient client = ClientFactory.newClient(args)) {
       System.out.println("Creating a volume snapshot");
-      client.volumeSnapshots().inNamespace("default").createNew()
+      client.volumeSnapshots().inNamespace("default").create(new VolumeSnapshotBuilder()
         .withNewMetadata()
         .withName("my-snapshot")
         .endMetadata()
@@ -32,7 +33,7 @@ public class CreateVolumeSnapshot {
         .withNewPersistentVolumeClaimName("my-pvc")
         .endSource()
         .endSpec()
-        .done();
+        .build());
     }
   }
 }

@@ -19,9 +19,6 @@ package io.fabric8.volumesnapshot.client;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
-import io.fabric8.volumesnapshot.api.model.DoneableVolumeSnapshot;
-import io.fabric8.volumesnapshot.api.model.DoneableVolumeSnapshotClass;
-import io.fabric8.volumesnapshot.api.model.DoneableVolumeSnapshotContent;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshot;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotClass;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotClassList;
@@ -42,19 +39,19 @@ public interface VolumeSnapshotClient extends Client {
    *
    * @return NonNamespaceOperation for VolumeSnapshotClass class
    */
-  NonNamespaceOperation<VolumeSnapshotClass, VolumeSnapshotClassList, DoneableVolumeSnapshotClass, VolumeSnapshotClassResource> volumeSnapshotClasses();
+  NonNamespaceOperation<VolumeSnapshotClass, VolumeSnapshotClassList, VolumeSnapshotClassResource> volumeSnapshotClasses();
 
   /**
    * API entrypoint for dealing with VolumeSnapshotContent(snapshot.storage.k8s.io/v1beta1)
    *
    * @return NonNamespaceOperation for VolumeSnapshotContent class
    */
-  NonNamespaceOperation<VolumeSnapshotContent, VolumeSnapshotContentList, DoneableVolumeSnapshotContent, VolumeSnapshotContentResource> volumeSnapshotContents();
+  NonNamespaceOperation<VolumeSnapshotContent, VolumeSnapshotContentList, VolumeSnapshotContentResource> volumeSnapshotContents();
 
   /**
    * API entrypoint for dealing with VolumeSnapshot(snapshot.storage.k8s.io/v1beta1)
    *
    * @return MixedOperation for VolumeSnapshot class
    */
-  MixedOperation<VolumeSnapshot, VolumeSnapshotList, DoneableVolumeSnapshot, VolumeSnapshotResource> volumeSnapshots();
+  MixedOperation<VolumeSnapshot, VolumeSnapshotList, VolumeSnapshotResource> volumeSnapshots();
 }

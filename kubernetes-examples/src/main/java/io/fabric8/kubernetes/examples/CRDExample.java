@@ -25,10 +25,10 @@ import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.examples.crds.DoneableDummy;
 import io.fabric8.kubernetes.examples.crds.Dummy;
 import io.fabric8.kubernetes.examples.crds.DummyList;
 import io.fabric8.kubernetes.examples.crds.DummySpec;
@@ -132,9 +132,9 @@ public class CRDExample {
       KubernetesDeserializer.registerCustomKind(DUMMY_CRD_GROUP + "/v1", "Dummy", Dummy.class);
 
       // lets create a client for the CRD
-      NonNamespaceOperation<Dummy, DummyList, DoneableDummy, Resource<Dummy, DoneableDummy>> dummyClient = client.customResources(dummyCRD, Dummy.class, DummyList.class, DoneableDummy.class);
+      NonNamespaceOperation<Dummy, DummyList, Resource<Dummy>> dummyClient = client.customResources(dummyCRD, Dummy.class, DummyList.class);
       if (resourceNamespaced) {
-        dummyClient = ((MixedOperation<Dummy, DummyList, DoneableDummy, Resource<Dummy, DoneableDummy>>) dummyClient).inNamespace(namespace);
+        dummyClient = ((MixedOperation<Dummy, DummyList, Resource<Dummy>>) dummyClient).inNamespace(namespace);
       }
       CustomResourceList<Dummy> dummyList = dummyClient.list();
       List<Dummy> items = dummyList.getItems();
@@ -172,12 +172,12 @@ public class CRDExample {
         }
 
         @Override
-        public void onClose(KubernetesClientException cause) {
+        public void onClose(WatcherException cause) {
         }
       });
 
       System.in.read();
-      
+
     } catch (KubernetesClientException e) {
       logger.error(e.getMessage(), e);
     } catch (Exception e) {

@@ -17,24 +17,16 @@
 package io.fabric8.openshift.client.osgi;
 
 import io.fabric8.kubernetes.api.model.*;
-import io.fabric8.kubernetes.api.model.DoneableAPIService;
 import io.fabric8.kubernetes.api.model.Event;
-import io.fabric8.kubernetes.api.model.DoneableEvent;
 import io.fabric8.kubernetes.api.model.EventList;
-import io.fabric8.kubernetes.api.model.DoneableSecret;
 import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionList;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.DoneableCustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequest;
 import io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequestList;
-import io.fabric8.kubernetes.api.model.certificates.DoneableCertificateSigningRequest;
-import io.fabric8.kubernetes.api.model.authentication.DoneableTokenReview;
 import io.fabric8.kubernetes.api.model.authentication.TokenReview;
-import io.fabric8.kubernetes.api.model.coordination.v1.DoneableLease;
 import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseList;
-import io.fabric8.kubernetes.api.model.node.v1beta1.DoneableRuntimeClass;
 import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClass;
 import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClassList;
 import io.fabric8.kubernetes.client.AdmissionRegistrationAPIGroupDSL;
@@ -50,15 +42,6 @@ import io.fabric8.kubernetes.client.extended.run.RunOperations;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
 import io.fabric8.openshift.api.model.*;
-import io.fabric8.openshift.api.model.DoneableClusterNetwork;
-import io.fabric8.openshift.api.model.DoneableEgressNetworkPolicy;
-import io.fabric8.openshift.api.model.DoneableImage;
-import io.fabric8.openshift.api.model.DoneableImageTag;
-import io.fabric8.openshift.api.model.DoneableNetNamespace;
-import io.fabric8.openshift.api.model.DoneableRangeAllocation;
-import io.fabric8.openshift.api.model.DoneableRole;
-import io.fabric8.openshift.api.model.DoneableRoleBinding;
-import io.fabric8.openshift.api.model.DoneableSubjectAccessReview;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.NamespacedOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
@@ -220,63 +203,63 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
-  public MixedOperation<Build, BuildList, DoneableBuild, BuildResource<Build, DoneableBuild, String, LogWatch>> builds() {
+  public MixedOperation<Build, BuildList, BuildResource<Build, LogWatch>> builds() {
     return delegate.builds();
   }
 
   @Override
-  public MixedOperation<ComponentStatus, ComponentStatusList, DoneableComponentStatus, Resource<ComponentStatus, DoneableComponentStatus>> componentstatuses() {
+  public MixedOperation<ComponentStatus, ComponentStatusList, Resource<ComponentStatus>> componentstatuses() {
     return delegate.componentstatuses();
   }
 
   @Override
-  public MixedOperation<BuildConfig, BuildConfigList, DoneableBuildConfig, BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Build>> buildConfigs() {
+  public MixedOperation<BuildConfig, BuildConfigList, BuildConfigResource<BuildConfig, Void, Build>> buildConfigs() {
     return delegate.buildConfigs();
   }
 
   @Override
-  public MixedOperation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig, DeployableScalableResource<DeploymentConfig, DoneableDeploymentConfig>> deploymentConfigs() {
+  public MixedOperation<DeploymentConfig, DeploymentConfigList, DeployableScalableResource<DeploymentConfig>> deploymentConfigs() {
     return delegate.deploymentConfigs();
   }
 
   @Override
-  public NonNamespaceOperation<Group, GroupList, DoneableGroup, Resource<Group, DoneableGroup>> groups() {
+  public NonNamespaceOperation<Group, GroupList, Resource<Group>> groups() {
     return delegate.groups();
   }
 
   @Override
-  public NonNamespaceOperation<Image, ImageList, DoneableImage, Resource<Image, DoneableImage>> images() {
+  public NonNamespaceOperation<Image, ImageList, Resource<Image>> images() {
     return delegate.images();
   }
 
   @Override
-  public MixedOperation<ImageTag, ImageTagList, DoneableImageTag, Resource<ImageTag, DoneableImageTag>> imageTags() {
+  public MixedOperation<ImageTag, ImageTagList, Resource<ImageTag>> imageTags() {
     return delegate.imageTags();
   }
 
 
   @Override
-  public MixedOperation<ImageStream, ImageStreamList, DoneableImageStream, Resource<ImageStream, DoneableImageStream>> imageStreams() {
+  public MixedOperation<ImageStream, ImageStreamList, Resource<ImageStream>> imageStreams() {
     return delegate.imageStreams();
   }
 
   @Override
-  public MixedOperation<ImageStreamTag, ImageStreamTagList, DoneableImageStreamTag, Resource<ImageStreamTag, DoneableImageStreamTag>> imageStreamTags() {
+  public MixedOperation<ImageStreamTag, ImageStreamTagList, Resource<ImageStreamTag>> imageStreamTags() {
     return delegate.imageStreamTags();
   }
 
   @Override
-  public NonNamespaceOperation<OAuthAccessToken, OAuthAccessTokenList, DoneableOAuthAccessToken, Resource<OAuthAccessToken, DoneableOAuthAccessToken>> oAuthAccessTokens() {
+  public NonNamespaceOperation<OAuthAccessToken, OAuthAccessTokenList, Resource<OAuthAccessToken>> oAuthAccessTokens() {
     return delegate.oAuthAccessTokens();
   }
 
   @Override
-  public NonNamespaceOperation<OAuthAuthorizeToken, OAuthAuthorizeTokenList, DoneableOAuthAuthorizeToken, Resource<OAuthAuthorizeToken, DoneableOAuthAuthorizeToken>> oAuthAuthorizeTokens() {
+  public NonNamespaceOperation<OAuthAuthorizeToken, OAuthAuthorizeTokenList, Resource<OAuthAuthorizeToken>> oAuthAuthorizeTokens() {
     return delegate.oAuthAuthorizeTokens();
   }
 
   @Override
-  public NonNamespaceOperation<OAuthClient, OAuthClientList, DoneableOAuthClient, Resource<OAuthClient, DoneableOAuthClient>> oAuthClients() {
+  public NonNamespaceOperation<OAuthClient, OAuthClientList, Resource<OAuthClient>> oAuthClients() {
     return delegate.oAuthClients();
   }
 
@@ -296,137 +279,137 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
-  public MixedOperation<Role, RoleList, DoneableRole, Resource<Role, DoneableRole>> roles() {
+  public MixedOperation<Role, RoleList, Resource<Role>> roles() {
     return delegate.roles();
   }
 
   @Override
-  public MixedOperation<RoleBinding, RoleBindingList, DoneableRoleBinding, Resource<RoleBinding, DoneableRoleBinding>> roleBindings() {
+  public MixedOperation<RoleBinding, RoleBindingList, Resource<RoleBinding>> roleBindings() {
     return delegate.roleBindings();
   }
 
   @Override
-  public MixedOperation<Route, RouteList, DoneableRoute, Resource<Route, DoneableRoute>> routes() {
+  public MixedOperation<Route, RouteList, Resource<Route>> routes() {
     return delegate.routes();
   }
 
   @Override
-  public ParameterMixedOperation<Template, TemplateList, DoneableTemplate, TemplateResource<Template, KubernetesList, DoneableTemplate>> templates() {
+  public ParameterMixedOperation<Template, TemplateList, TemplateResource<Template, KubernetesList>> templates() {
     return delegate.templates();
   }
 
   @Override
-  public NonNamespaceOperation<User, UserList, DoneableUser, Resource<User, DoneableUser>> users() {
+  public NonNamespaceOperation<User, UserList, Resource<User>> users() {
     return delegate.users();
   }
 
   @Override
-  public MixedOperation<ClusterRoleBinding, ClusterRoleBindingList, DoneableClusterRoleBinding, Resource<ClusterRoleBinding, DoneableClusterRoleBinding>> clusterRoleBindings() {
+  public MixedOperation<ClusterRoleBinding, ClusterRoleBindingList, Resource<ClusterRoleBinding>> clusterRoleBindings() {
     return delegate.clusterRoleBindings();
   }
 
   @Override
-  public ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> load(InputStream is) {
+  public ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> load(InputStream is) {
     return delegate.load(is);
   }
 
   @Override
-  public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(KubernetesResourceList is) {
+  public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(KubernetesResourceList is) {
     return delegate.resourceList(is);
   }
 
   @Override
-  public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(HasMetadata... items) {
+  public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(HasMetadata... items) {
     return delegate.resourceList(items);
   }
 
   @Override
-  public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(Collection<HasMetadata> items) {
+  public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(Collection<HasMetadata> items) {
     return delegate.resourceList(items);
   }
 
   @Override
-  public ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata, Boolean> resourceList(String s) {
+  public ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(String s) {
     return delegate.resourceList(s);
   }
 
   @Override
-  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata, Boolean> resource(HasMetadata item) {
+  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata> resource(HasMetadata item) {
     return delegate.resource(item);
   }
 
   @Override
-  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata, Boolean> resource(String s) {
+  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata> resource(String s) {
     return delegate.resource(s);
   }
 
   @Override
-  public MixedOperation<Endpoints, EndpointsList, DoneableEndpoints, Resource<Endpoints, DoneableEndpoints>> endpoints() {
+  public MixedOperation<Endpoints, EndpointsList, Resource<Endpoints>> endpoints() {
     return delegate.endpoints();
   }
 
   @Override
-  public MixedOperation<Binding, KubernetesResourceList<Binding>, DoneableBinding, Resource<Binding, DoneableBinding>> bindings() {
+  public MixedOperation<Binding, KubernetesResourceList<Binding>, Resource<Binding>> bindings() {
     return delegate.bindings();
   }
 
   @Override
-  public MixedOperation<Event, EventList, DoneableEvent, Resource<Event, DoneableEvent>> events() {
+  public MixedOperation<Event, EventList, Resource<Event>> events() {
     return delegate.events();
   }
 
   @Override
-  public NonNamespaceOperation<Namespace, NamespaceList, DoneableNamespace, Resource<Namespace, DoneableNamespace>> namespaces() {
+  public NonNamespaceOperation<Namespace, NamespaceList, Resource<Namespace>> namespaces() {
     return delegate.namespaces();
   }
 
   @Override
-  public NonNamespaceOperation<Node, NodeList, DoneableNode, Resource<Node, DoneableNode>> nodes() {
+  public NonNamespaceOperation<Node, NodeList, Resource<Node>> nodes() {
     return delegate.nodes();
   }
 
   @Override
-  public NonNamespaceOperation<PersistentVolume, PersistentVolumeList, DoneablePersistentVolume, Resource<PersistentVolume, DoneablePersistentVolume>> persistentVolumes() {
+  public NonNamespaceOperation<PersistentVolume, PersistentVolumeList, Resource<PersistentVolume>> persistentVolumes() {
     return delegate.persistentVolumes();
   }
 
   @Override
-  public MixedOperation<PersistentVolumeClaim, PersistentVolumeClaimList, DoneablePersistentVolumeClaim, Resource<PersistentVolumeClaim, DoneablePersistentVolumeClaim>> persistentVolumeClaims() {
+  public MixedOperation<PersistentVolumeClaim, PersistentVolumeClaimList, Resource<PersistentVolumeClaim>> persistentVolumeClaims() {
     return delegate.persistentVolumeClaims();
   }
 
   @Override
-  public MixedOperation<Pod, PodList, DoneablePod, PodResource<Pod, DoneablePod>> pods() {
+  public MixedOperation<Pod, PodList, PodResource<Pod>> pods() {
     return delegate.pods();
   }
 
   @Override
-  public MixedOperation<ReplicationController, ReplicationControllerList, DoneableReplicationController, RollableScalableResource<ReplicationController, DoneableReplicationController>> replicationControllers() {
+  public MixedOperation<ReplicationController, ReplicationControllerList, RollableScalableResource<ReplicationController>> replicationControllers() {
     return delegate.replicationControllers();
   }
 
   @Override
-  public MixedOperation<ResourceQuota, ResourceQuotaList, DoneableResourceQuota, Resource<ResourceQuota, DoneableResourceQuota>> resourceQuotas() {
+  public MixedOperation<ResourceQuota, ResourceQuotaList, Resource<ResourceQuota>> resourceQuotas() {
     return delegate.resourceQuotas();
   }
 
   @Override
-  public MixedOperation<Secret, SecretList, DoneableSecret, Resource<Secret, DoneableSecret>> secrets() {
+  public MixedOperation<Secret, SecretList, Resource<Secret>> secrets() {
     return delegate.secrets();
   }
 
   @Override
-  public MixedOperation<io.fabric8.kubernetes.api.model.Service, ServiceList, DoneableService, ServiceResource<io.fabric8.kubernetes.api.model.Service, DoneableService>> services() {
+  public MixedOperation<io.fabric8.kubernetes.api.model.Service, ServiceList, ServiceResource<io.fabric8.kubernetes.api.model.Service>> services() {
     return delegate.services();
   }
 
   @Override
-  public MixedOperation<ServiceAccount, ServiceAccountList, DoneableServiceAccount, Resource<ServiceAccount, DoneableServiceAccount>> serviceAccounts() {
+  public MixedOperation<ServiceAccount, ServiceAccountList, Resource<ServiceAccount>> serviceAccounts() {
     return delegate.serviceAccounts();
   }
 
   @Override
-  public MixedOperation<APIService, APIServiceList, DoneableAPIService, Resource<APIService, DoneableAPIService>> apiServices() {
+  public MixedOperation<APIService, APIServiceList, Resource<APIService>> apiServices() {
     return delegate.apiServices();
   }
 
@@ -436,42 +419,52 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
-  public NonNamespaceOperation<RangeAllocation, RangeAllocationList, DoneableRangeAllocation, Resource<RangeAllocation, DoneableRangeAllocation>> rangeAllocations() {
+  public NonNamespaceOperation<RangeAllocation, RangeAllocationList, Resource<RangeAllocation>> rangeAllocations() {
     return delegate.rangeAllocations();
   }
 
   @Override
-  public NonNamespaceOperation<SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, Resource<SecurityContextConstraints, DoneableSecurityContextConstraints>> securityContextConstraints() {
+  public NonNamespaceOperation<SecurityContextConstraints, SecurityContextConstraintsList, Resource<SecurityContextConstraints>> securityContextConstraints() {
     return delegate.securityContextConstraints();
   }
 
   @Override
-  public MixedOperation<ConfigMap, ConfigMapList, DoneableConfigMap, Resource<ConfigMap, DoneableConfigMap>> configMaps() {
+  public MixedOperation<ConfigMap, ConfigMapList, Resource<ConfigMap>> configMaps() {
     return delegate.configMaps();
   }
 
   @Override
-  public MixedOperation<LimitRange, LimitRangeList, DoneableLimitRange, Resource<LimitRange, DoneableLimitRange>> limitRanges() {
+  public MixedOperation<LimitRange, LimitRangeList, Resource<LimitRange>> limitRanges() {
     return delegate.limitRanges();
   }
 
   @Override
-  public <T extends HasMetadata, L extends KubernetesResourceList<T>, D extends Doneable<T>> MixedOperation<T, L, D, Resource<T, D>> customResources(CustomResourceDefinitionContext crdContext, Class<T> resourceType, Class<L> listClass, Class<D> doneClass) {
-    return delegate.customResources(crdContext, resourceType, listClass, doneClass);
+  public <T extends HasMetadata> MixedOperation<T, KubernetesResourceList<T>, Resource<T>> customResources(Class<T> resourceType) {
+    return delegate.customResources(resourceType);
   }
 
   @Override
-  public <T extends HasMetadata, L extends KubernetesResourceList<T>, D extends Doneable<T>> MixedOperation<T, L, D, Resource<T, D>> customResources(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass, Class<D> doneClass) {
-    return delegate.customResources(crd, resourceType, listClass, doneClass);
+  public <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(Class<T> resourceType, Class<L> listClass) {
+    return delegate.customResources(resourceType, listClass);
   }
 
   @Override
-  public <T extends HasMetadata, L extends KubernetesResourceList<T>, D extends Doneable<T>> MixedOperation<T, L, D, Resource<T, D>> customResource(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass, Class<D> doneClass) {
-    return customResources(crd, resourceType, listClass, doneClass);
+  public <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(CustomResourceDefinitionContext crdContext, Class<T> resourceType, Class<L> listClass) {
+    return delegate.customResources(crdContext, resourceType, listClass);
   }
 
   @Override
-  public NonNamespaceOperation<CustomResourceDefinition, CustomResourceDefinitionList, DoneableCustomResourceDefinition, Resource<CustomResourceDefinition, DoneableCustomResourceDefinition>> customResourceDefinitions() {
+  public <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass) {
+    return delegate.customResources(crd, resourceType, listClass);
+  }
+
+  @Override
+  public <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResource(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass) {
+    return customResources(crd, resourceType, listClass);
+  }
+
+  @Override
+  public NonNamespaceOperation<CustomResourceDefinition, CustomResourceDefinitionList, Resource<CustomResourceDefinition>> customResourceDefinitions() {
     return delegate.customResourceDefinitions();
   }
 
@@ -481,7 +474,7 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
-  public NonNamespaceOperation<CertificateSigningRequest, CertificateSigningRequestList, DoneableCertificateSigningRequest, Resource<CertificateSigningRequest, DoneableCertificateSigningRequest>> certificateSigningRequests() {
+  public NonNamespaceOperation<CertificateSigningRequest, CertificateSigningRequestList, Resource<CertificateSigningRequest>> certificateSigningRequests() {
     return delegate.certificateSigningRequests();
   }
 
@@ -491,7 +484,7 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
-  public Createable<TokenReview, TokenReview, DoneableTokenReview> tokenReviews() {
+  public Createable<TokenReview> tokenReviews() {
     return delegate.tokenReviews();
   }
 
@@ -556,7 +549,7 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
-  public NonNamespaceOperation<RuntimeClass, RuntimeClassList, DoneableRuntimeClass, Resource<RuntimeClass, DoneableRuntimeClass>> runtimeClasses() {
+  public NonNamespaceOperation<RuntimeClass, RuntimeClassList, Resource<RuntimeClass>> runtimeClasses() {
     return delegate.runtimeClasses();
   }
 
@@ -581,17 +574,17 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
-  public NonNamespaceOperation<NetNamespace, NetNamespaceList, DoneableNetNamespace, Resource<NetNamespace, DoneableNetNamespace>> netNamespaces() {
+  public NonNamespaceOperation<NetNamespace, NetNamespaceList, Resource<NetNamespace>> netNamespaces() {
     return delegate.netNamespaces();
   }
 
   @Override
-  public NonNamespaceOperation<ClusterNetwork, ClusterNetworkList, DoneableClusterNetwork, Resource<ClusterNetwork, DoneableClusterNetwork>> clusterNetworks() {
+  public NonNamespaceOperation<ClusterNetwork, ClusterNetworkList, Resource<ClusterNetwork>> clusterNetworks() {
     return delegate.clusterNetworks();
   }
 
   @Override
-  public MixedOperation<EgressNetworkPolicy, EgressNetworkPolicyList, DoneableEgressNetworkPolicy, Resource<EgressNetworkPolicy, DoneableEgressNetworkPolicy>> egressNetworkPolicies() {
+  public MixedOperation<EgressNetworkPolicy, EgressNetworkPolicyList, Resource<EgressNetworkPolicy>> egressNetworkPolicies() {
     return delegate.egressNetworkPolicies();
   }
 
@@ -620,7 +613,7 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   public SettingsAPIGroupDSL settings() { return delegate.settings(); }
 
   @Override
-  public Createable<SubjectAccessReview, SubjectAccessReviewResponse, DoneableSubjectAccessReview> subjectAccessReviews() {
+  public InOutCreateable<SubjectAccessReview, SubjectAccessReviewResponse> subjectAccessReviews() {
     return delegate.subjectAccessReviews();
   }
 
@@ -641,7 +634,7 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
-  public MixedOperation<Lease, LeaseList, DoneableLease, Resource<Lease, DoneableLease>> leases() {
+  public MixedOperation<Lease, LeaseList, Resource<Lease>> leases() {
     return delegate.leases();
   }
 

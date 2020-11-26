@@ -16,7 +16,6 @@
 
 package io.fabric8.kubernetes.client.mock;
 
-import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
@@ -28,13 +27,14 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.ResourceNotFoundException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.Applicable;
 import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.PodResource;
-import io.fabric8.kubernetes.client.dsl.base.WaitForConditionWatcher;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import okhttp3.mockwebserver.RecordedRequest;
+import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.jupiter.api.Assertions;
@@ -59,7 +59,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @EnableRuleMigrationSupport
-public class ResourceTest {
+class ResourceTest {
 
   @Rule
   public KubernetesServer server = new KubernetesServer();
@@ -84,7 +84,7 @@ public class ResourceTest {
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
     server.expect().post().withPath("/api/v1/namespaces/test/pods").andReturn(HttpURLConnection.HTTP_BAD_REQUEST, pod1).once();
     KubernetesClient client = server.getClient();
-    NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<Pod, Boolean> podOperation = client.resource(pod1);
+    NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<Pod> podOperation = client.resource(pod1);
 
     // When
     assertThrows(KubernetesClientException.class, podOperation::createOrReplace);
@@ -105,7 +105,6 @@ public class ResourceTest {
     void testCreateOrReplaceWithDeleteExisting() throws Exception {
       Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
 
-      server.expect().post().withPath("/api/v1/namespaces/ns1/pods").andReturn(HttpURLConnection.HTTP_CONFLICT, pod1).once();
       server.expect().delete().withPath("/api/v1/namespaces/ns1/pods/pod1").andReturn(HttpURLConnection.HTTP_OK, pod1).once();
       server.expect().post().withPath("/api/v1/namespaces/ns1/pods").andReturn(HttpURLConnection.HTTP_CREATED, pod1).once();
 
@@ -114,7 +113,7 @@ public class ResourceTest {
       assertEquals(pod1, response);
 
       RecordedRequest request = server.getLastRequest();
-      assertEquals(3, server.getMockServer().getRequestCount());
+      assertEquals(2, server.getMockServer().getRequestCount());
       assertEquals("/api/v1/namespaces/ns1/pods", request.getPath());
       assertEquals("POST", request.getMethod());
     }
@@ -137,7 +136,7 @@ public class ResourceTest {
     void testRequire() {
       server.expect().get().withPath("/api/v1/namespaces/ns1/pods/pod1").andReturn(HttpURLConnection.HTTP_NOT_FOUND, "").once();
       KubernetesClient client = server.getClient();
-      PodResource<Pod, DoneablePod> podOp = client.pods().inNamespace("ns1").withName("pod1");
+      PodResource<Pod> podOp = client.pods().inNamespace("ns1").withName("pod1");
 
       Assertions.assertThrows(ResourceNotFoundException.class, podOp::require);
     }
@@ -188,7 +187,7 @@ public class ResourceTest {
       }
 
       @Override
-      public void onClose(KubernetesClientException cause) {
+      public void onClose(WatcherException cause) {
 
       }
     });
@@ -342,15 +341,16 @@ public class ResourceTest {
       .anyMatch(c -> "True".equals(c.getStatus()));
 
     try (KubernetesClient client = server.getClient()) {
-      final PodResource<Pod, DoneablePod> ops = client.pods().withName("pod1");
+      final PodResource<Pod> ops = client.pods().withName("pod1");
       KubernetesClientException ex = assertThrows(KubernetesClientException.class, () ->
         ops.waitUntilCondition(isReady, 4, SECONDS)
       );
       assertThat(ex)
-        .hasCauseExactlyInstanceOf(WaitForConditionWatcher.WatchException.class);
-      assertThat(ex.getCause())
-        .hasCauseExactlyInstanceOf(KubernetesClientException.class)
-        .hasMessage("Watcher closed");
+        .hasCauseExactlyInstanceOf(WatcherException.class)
+        .extracting(Throwable::getCause)
+        .asInstanceOf(InstanceOfAssertFactories.type(WatcherException.class))
+        .extracting(WatcherException::isHttpGone)
+        .isEqualTo(true);
 
       Pod pod = client.pods()
         .withName("pod1")
@@ -475,7 +475,7 @@ public class ResourceTest {
       client.resource(noReady).waitUntilReady(5, SECONDS);
       fail("should have thrown KubernetesClientException");
     } catch (KubernetesClientException e) {
-      assertTrue(e.getCause() instanceof WaitForConditionWatcher.WatchException);
+      assertTrue(e.getCause() instanceof WatcherException);
     }
   }
 

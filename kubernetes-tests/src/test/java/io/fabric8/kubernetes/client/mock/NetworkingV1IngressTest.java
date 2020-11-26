@@ -16,7 +16,6 @@
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.api.model.networking.v1.DoneableIngress;
 import io.fabric8.kubernetes.api.model.networking.v1.Ingress;
 import io.fabric8.kubernetes.api.model.networking.v1.IngressBuilder;
 import io.fabric8.kubernetes.api.model.networking.v1.IngressList;
@@ -173,7 +172,7 @@ class NetworkingV1IngressTest {
   void testDeleteWithNamespaceMismatch() {
     Ingress ingress1 = new IngressBuilder().withNewMetadata().withName("ingress1").withNamespace("test").and().build();
     KubernetesClient client = server.getClient();
-    NonNamespaceOperation<Ingress, IngressList, DoneableIngress, Resource<Ingress, DoneableIngress>> ingressOp = client
+    NonNamespaceOperation<Ingress, IngressList, Resource<Ingress>> ingressOp = client
       .network()
       .v1()
       .ingresses().inNamespace("test1");
@@ -185,7 +184,7 @@ class NetworkingV1IngressTest {
   void testCreateWithNameMismatch() {
     Ingress ingress1 = new IngressBuilder().withNewMetadata().withName("ingress1").withNamespace("test").and().build();
     KubernetesClient client = server.getClient();
-    Resource<Ingress, DoneableIngress> ingressOp = client.network().v1().ingresses().inNamespace("test1").withName("myingress1");
+    Resource<Ingress> ingressOp = client.network().v1().ingresses().inNamespace("test1").withName("myingress1");
 
     Assertions.assertThrows(KubernetesClientException.class, () -> ingressOp.create(ingress1));
   }

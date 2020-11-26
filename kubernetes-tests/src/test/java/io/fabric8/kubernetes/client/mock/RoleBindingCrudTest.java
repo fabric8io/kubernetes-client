@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.mock;
 import io.fabric8.kubernetes.api.model.rbac.*;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+
 import org.junit.Rule;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
@@ -102,8 +103,8 @@ public class RoleBindingCrudTest {
     assertEquals("rbac.authorization.k8s.io", kubernetesRoleBindingList.getItems().get(0).getRoleRef().getApiGroup());
 
     //test of updation
-    roleBinding = client.rbac().roleBindings().withName("read-jobs").edit()
-      .editSubject(0).withName("jane-new").endSubject().done();
+    roleBinding = client.rbac().roleBindings().withName("read-jobs").edit(r -> new RoleBindingBuilder(r)
+                        .editSubject(0).withName("jane-new").endSubject().build());
 
     assertNotNull(roleBinding);
     assertEquals("RoleBinding", roleBinding.getKind());

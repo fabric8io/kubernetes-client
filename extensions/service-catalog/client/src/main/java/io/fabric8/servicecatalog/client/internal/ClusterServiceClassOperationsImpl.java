@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.servicecatalog.api.model.*;
-import io.fabric8.servicecatalog.api.model.DoneableClusterServiceClass;
 import okhttp3.OkHttpClient;
 
 import java.util.HashMap;
@@ -28,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class ClusterServiceClassOperationsImpl extends HasMetadataOperation<ClusterServiceClass, ClusterServiceClassList, DoneableClusterServiceClass, ClusterServiceClassResource> implements ClusterServiceClassResource {
+public class ClusterServiceClassOperationsImpl extends HasMetadataOperation<ClusterServiceClass, ClusterServiceClassList, ClusterServiceClassResource> implements ClusterServiceClassResource {
 
 
   public ClusterServiceClassOperationsImpl(OkHttpClient client, Config config) {
@@ -39,12 +38,11 @@ public class ClusterServiceClassOperationsImpl extends HasMetadataOperation<Clus
         super(ctx.withApiGroupName("servicecatalog.k8s.io").withApiGroupVersion("v1beta1").withPlural("clusterserviceclasses"));
         this.type=ClusterServiceClass.class;
         this.listType=ClusterServiceClassList.class;
-        this.doneableType= DoneableClusterServiceClass.class;
 
     }
 
     @Override
-    public BaseOperation<ClusterServiceClass, ClusterServiceClassList, DoneableClusterServiceClass, ClusterServiceClassResource> newInstance(OperationContext context) {
+    public BaseOperation<ClusterServiceClass, ClusterServiceClassList, ClusterServiceClassResource> newInstance(OperationContext context) {
         return new ClusterServiceClassOperationsImpl(context);
     }
 
@@ -80,7 +78,7 @@ public class ClusterServiceClassOperationsImpl extends HasMetadataOperation<Clus
     public ServiceInstance instantiate(String instanceName, String plan) {
       ClusterServiceClass item = get();
       return new ServiceInstanceOperationsImpl(context)
-                .createNew()
+          .create(new ServiceInstanceBuilder()
                 .withNewMetadata()
                     .withName(instanceName)
                 .endMetadata()
@@ -88,6 +86,6 @@ public class ClusterServiceClassOperationsImpl extends HasMetadataOperation<Clus
                     .withClusterServiceClassExternalName(item.getMetadata().getName())
                     .withClusterServicePlanExternalName(plan)
                 .endSpec()
-                .done();
+                .build());
     }
 }

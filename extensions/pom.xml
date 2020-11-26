@@ -21,7 +21,7 @@
   <parent>
     <artifactId>kubernetes-client-project</artifactId>
     <groupId>io.fabric8</groupId>
-    <version>4.12-SNAPSHOT</version>
+    <version>5.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>kubernetes-extensions</artifactId>
@@ -33,6 +33,7 @@
     <module>tekton</module>
     <module>service-catalog</module>
     <module>volumesnapshot</module>
+    <module>chaosmesh</module>
   </modules>
 
 </project>

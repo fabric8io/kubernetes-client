@@ -59,7 +59,7 @@ class RouteTest {
     KnativeClient kn = server.getKnativeClient();
 
     // When
-    route = kn.routes().createOrReplaceWithNew()
+    route = kn.routes().createOrReplace(new RouteBuilder()
       .withNewMetadata()
       .withName("helloworld-nodejs-red-blue1")
       .addToAnnotations("foo", "bar")
@@ -71,7 +71,7 @@ class RouteTest {
       .withPercent(100L)
       .endTraffic()
       .endSpec()
-      .done();
+      .build());
 
     // Then
     assertNotNull(route);

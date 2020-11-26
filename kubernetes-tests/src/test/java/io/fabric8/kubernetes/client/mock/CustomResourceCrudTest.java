@@ -38,7 +38,6 @@ import io.fabric8.kubernetes.client.dsl.internal.RawCustomResourceOperationsImpl
 import io.fabric8.kubernetes.client.mock.crd.CronTab;
 import io.fabric8.kubernetes.client.mock.crd.CronTabList;
 import io.fabric8.kubernetes.client.mock.crd.CronTabSpec;
-import io.fabric8.kubernetes.client.mock.crd.DoneableCronTab;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import io.fabric8.kubernetes.internal.KubernetesDeserializer;
 
@@ -68,8 +67,7 @@ class CustomResourceCrudTest {
     CronTab cronTab3 = createCronTab("my-third-cron-object", "* * * * */3", 1, "my-third-cron-image");
     KubernetesClient client = kubernetesServer.getClient();
 
-    MixedOperation<CronTab, CronTabList, DoneableCronTab, Resource<CronTab, DoneableCronTab>> cronTabClient = client
-      .customResources(crdContext, CronTab.class, CronTabList.class, DoneableCronTab.class);
+    MixedOperation<CronTab, CronTabList, Resource<CronTab>> cronTabClient = client.customResources(crdContext, CronTab.class, CronTabList.class);
 
     cronTabClient.inNamespace("test-ns").create(cronTab1);
     cronTabClient.inNamespace("test-ns").create(cronTab2);
@@ -125,8 +123,8 @@ class CustomResourceCrudTest {
     CronTab cronTab3 = createCronTab("my-third-cron-object", "* * * * */3", 1, "my-third-cron-image");
     KubernetesClient client = kubernetesServer.getClient();
 
-    MixedOperation<CronTab, CronTabList, DoneableCronTab, Resource<CronTab, DoneableCronTab>> cronTabClient = client
-      .customResources(cronTabCrd, CronTab.class, CronTabList.class, DoneableCronTab.class);
+    MixedOperation<CronTab, CronTabList, Resource<CronTab>> cronTabClient = client
+      .customResources(cronTabCrd, CronTab.class, CronTabList.class);
 
     cronTabClient.inNamespace("test-ns").create(cronTab1);
     cronTabClient.inNamespace("test-ns").create(cronTab2);

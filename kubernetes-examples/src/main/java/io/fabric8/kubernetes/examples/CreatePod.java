@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.examples;
 
-import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
@@ -73,7 +72,7 @@ public class CreatePod {
       if (resource instanceof Pod){
         Pod pod = (Pod) resource;
         System.out.println("Creating pod in namespace " + namespace);
-        NonNamespaceOperation<Pod, PodList, DoneablePod, PodResource<Pod, DoneablePod>> pods = client.pods().inNamespace(namespace);
+        NonNamespaceOperation<Pod, PodList, PodResource<Pod>> pods = client.pods().inNamespace(namespace);
         Pod result = pods.create(pod);
         System.out.println("Created pod " + result.getMetadata().getName());
       } else {

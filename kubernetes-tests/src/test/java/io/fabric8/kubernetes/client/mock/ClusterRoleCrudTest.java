@@ -121,8 +121,8 @@ class ClusterRoleCrudTest {
 
     //test of updation
 
-    kubernetesClusterRole = client.rbac().clusterRoles().withName("node-reader").edit()
-      .editRule(0).addToApiGroups(1, "extensions").endRule().done();
+    kubernetesClusterRole = client.rbac().clusterRoles().withName("node-reader").edit(c -> new ClusterRoleBuilder(c)
+                                  .editRule(0).addToApiGroups(1, "extensions").endRule().build());
 
     assertNotNull(kubernetesClusterRole);
     assertEquals("ClusterRole", kubernetesClusterRole.getKind());

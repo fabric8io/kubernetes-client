@@ -17,6 +17,7 @@ package io.fabric8.openshift.examples;
  */
 
 import io.fabric8.kubernetes.api.model.KubernetesList;
+import io.fabric8.kubernetes.api.model.NamespaceBuilder;
 import io.fabric8.openshift.api.model.Parameter;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
@@ -37,7 +38,7 @@ public class TemplateExample {
     try (OpenShiftClient client = new DefaultOpenShiftClient()) {
       try {
         logger.info("Creating temporary namespace '{}' for example", NAMESPACE);
-        client.namespaces().createNew().withNewMetadata().withName(NAMESPACE).endMetadata().done();
+        client.namespaces().create(new NamespaceBuilder().withNewMetadata().withName(NAMESPACE).endMetadata().build());
 
         final Template loadedTemplate = client.templates()
           .load(TemplateExample.class.getResourceAsStream(TEST_TEMPLATE_RESOURCE)).get();

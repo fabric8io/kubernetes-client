@@ -17,7 +17,6 @@ package io.fabric8.kubernetes.examples;
 
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
-import io.fabric8.kubernetes.api.model.DoneableConfigMap;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
@@ -48,7 +47,7 @@ public class ConfigMapExample {
 
     String name = "cheese";
     try {
-      Resource<ConfigMap, DoneableConfigMap> configMapResource = client.configMaps().inNamespace(namespace).withName(name);
+      Resource<ConfigMap> configMapResource = client.configMaps().inNamespace(namespace).withName(name);
 
 
       ConfigMap configMap = configMapResource.createOrReplace(new ConfigMapBuilder().

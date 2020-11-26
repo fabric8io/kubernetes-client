@@ -36,7 +36,7 @@ public class CustomResourceList<T extends HasMetadata> implements KubernetesReso
   private String apiVersion;
 
   @JsonProperty("items")
-  private List<T> items = new ArrayList<T>();
+  private List<T> items = new ArrayList<>();
 
   @JsonProperty("kind")
   private String kind;

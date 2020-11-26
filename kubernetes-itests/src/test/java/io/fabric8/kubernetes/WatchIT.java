@@ -71,16 +71,21 @@ public class WatchIT {
       }
 
       @Override
-      public void onClose(KubernetesClientException e) {
+      public void onClose(WatcherException cause) {
+
+      }
+
+      @Override
+      public void onClose() {
         closeLatch.countDown();
         logger.info("watch closed...");
       }
     });
 
-    client.pods().inNamespace(currentNamespace).withName("sample-watch-pod").edit()
+    client.pods().inNamespace(currentNamespace).withName("sample-watch-pod").edit(p -> new PodBuilder(p)
       .editMetadata().addToLabels("foo", "bar")
       .endMetadata()
-      .done();
+      .build());
 
     assertTrue(eventLatch.await(10, TimeUnit.SECONDS));
     watch.close();

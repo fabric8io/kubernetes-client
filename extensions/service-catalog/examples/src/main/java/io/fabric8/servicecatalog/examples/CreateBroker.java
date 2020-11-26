@@ -15,19 +15,20 @@ package io.fabric8.servicecatalog.examples; /**
  */
 
 import io.fabric8.servicecatalog.api.model.ClusterServiceBroker;
+import io.fabric8.servicecatalog.api.model.ClusterServiceBrokerBuilder;
 import io.fabric8.servicecatalog.client.ServiceCatalogClient;
 
 public class CreateBroker {
 
   public static void main(String[] args) {
      ServiceCatalogClient client = ClientFactory.newClient(args);
-     ClusterServiceBroker broker = client.clusterServiceBrokers().createNew()
+     ClusterServiceBroker broker = client.clusterServiceBrokers().create(new ClusterServiceBrokerBuilder()
           .withNewMetadata()
           .withName("mybroker")
           .endMetadata()
           .withNewSpec()
           .withUrl("http://url.to.service.broker")
           .endSpec()
-          .done();
+          .build());
   }
 }

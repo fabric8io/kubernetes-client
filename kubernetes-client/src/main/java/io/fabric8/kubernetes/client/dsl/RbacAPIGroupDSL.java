@@ -15,28 +15,24 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.api.model.rbac.DoneableClusterRole;
-import io.fabric8.kubernetes.api.model.rbac.DoneableClusterRoleBinding;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRole;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBinding;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBindingList;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRoleList;
 import io.fabric8.kubernetes.api.model.rbac.Role;
 import io.fabric8.kubernetes.api.model.rbac.RoleList;
-import io.fabric8.kubernetes.api.model.rbac.DoneableRole;
 import io.fabric8.kubernetes.api.model.rbac.RoleBinding;
 import io.fabric8.kubernetes.api.model.rbac.RoleBindingList;
-import io.fabric8.kubernetes.api.model.rbac.DoneableRoleBinding;
 import io.fabric8.kubernetes.client.Client;
 
 public interface RbacAPIGroupDSL extends Client{
 
-  MixedOperation<Role, RoleList, DoneableRole, Resource<Role, DoneableRole>> roles();
+  MixedOperation<Role, RoleList, Resource<Role>> roles();
 
-  MixedOperation<RoleBinding, RoleBindingList, DoneableRoleBinding, Resource<RoleBinding, DoneableRoleBinding>> roleBindings();
+  MixedOperation<RoleBinding, RoleBindingList, Resource<RoleBinding>> roleBindings();
 
-  MixedOperation<ClusterRole, ClusterRoleList, DoneableClusterRole, Resource<ClusterRole, DoneableClusterRole>> clusterRoles();
+  MixedOperation<ClusterRole, ClusterRoleList, Resource<ClusterRole>> clusterRoles();
 
-  MixedOperation<ClusterRoleBinding, ClusterRoleBindingList, DoneableClusterRoleBinding, Resource<ClusterRoleBinding, DoneableClusterRoleBinding>> clusterRoleBindings();
+  MixedOperation<ClusterRoleBinding, ClusterRoleBindingList, Resource<ClusterRoleBinding>> clusterRoleBindings();
 
 }

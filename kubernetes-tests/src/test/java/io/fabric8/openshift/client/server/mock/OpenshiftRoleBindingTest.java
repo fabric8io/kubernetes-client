@@ -243,13 +243,13 @@ class OpenshiftRoleBindingTest {
 
     NamespacedOpenShiftClient client = server.getOpenshiftClient();
 
-    RoleBinding response = client.roleBindings().createNew()
+    RoleBinding response = client.roleBindings().create(new RoleBindingBuilder()
       .withNewMetadata().endMetadata()
       .addNewSubject().withKind("User").withName("testuser1").endSubject()
       .addNewSubject().withKind("User").withName("testuser2").endSubject()
       .addNewSubject().withKind("ServiceAccount").withName("svcacct").endSubject()
       .addNewSubject().withKind("Group").withName("testgroup").endSubject()
-      .done();
+      .build());
     assertEquals(expectedRoleBinding, response);
 
     RecordedRequest request = server.getLastRequest();

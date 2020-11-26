@@ -43,7 +43,7 @@ import java.io.Serializable;
  */
 @JsonDeserialize(using = Quantity.Deserializer.class)
 @JsonSerialize(using = Quantity.Serializer.class)
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage=true, builderPackage = "io.fabric8.kubernetes.api.builder", inline = @Inline(type = Doneable.class, prefix = "Doneable", value = "done"))
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage=true, builderPackage = "io.fabric8.kubernetes.api.builder")
 public class Quantity  implements Serializable {
 
   private static final String AT_LEAST_ONE_DIGIT_REGEX = ".*\\d+.*";

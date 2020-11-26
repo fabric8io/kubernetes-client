@@ -26,14 +26,6 @@ import io.fabric8.servicecatalog.api.model.ClusterServiceClass;
 import io.fabric8.servicecatalog.api.model.ClusterServiceClassList;
 import io.fabric8.servicecatalog.api.model.ClusterServicePlan;
 import io.fabric8.servicecatalog.api.model.ClusterServicePlanList;
-import io.fabric8.servicecatalog.api.model.DoneableClusterServiceBroker;
-import io.fabric8.servicecatalog.api.model.DoneableClusterServiceClass;
-import io.fabric8.servicecatalog.api.model.DoneableClusterServicePlan;
-import io.fabric8.servicecatalog.api.model.DoneableServiceBinding;
-import io.fabric8.servicecatalog.api.model.DoneableServiceBroker;
-import io.fabric8.servicecatalog.api.model.DoneableServiceClass;
-import io.fabric8.servicecatalog.api.model.DoneableServiceInstance;
-import io.fabric8.servicecatalog.api.model.DoneableServicePlan;
 import io.fabric8.servicecatalog.api.model.ServiceBinding;
 import io.fabric8.servicecatalog.api.model.ServiceBindingList;
 import io.fabric8.servicecatalog.api.model.ServiceBroker;
@@ -60,55 +52,55 @@ public interface ServiceCatalogClient extends Client {
    *
    * @return NonNamespaceOperation for ClusterServiceBroker class
    */
-  NonNamespaceOperation<ClusterServiceBroker, ClusterServiceBrokerList, DoneableClusterServiceBroker, ClusterServiceBrokerResource> clusterServiceBrokers();
+  NonNamespaceOperation<ClusterServiceBroker, ClusterServiceBrokerList, ClusterServiceBrokerResource> clusterServiceBrokers();
 
   /**
    * API entrypoint for ClusterServiceClass(servicecatalog.k8s.io/v1beta1)
    *
    * @return NonNamespaceOperation for ClusterServiceClass class
    */
-  NonNamespaceOperation<ClusterServiceClass, ClusterServiceClassList, DoneableClusterServiceClass, ClusterServiceClassResource> clusterServiceClasses();
+  NonNamespaceOperation<ClusterServiceClass, ClusterServiceClassList, ClusterServiceClassResource> clusterServiceClasses();
 
   /**
    * API entrypoint for ClusterServicePlan(servicecatalog.k8s.io/v1beta1)
    *
    * @return NonNamespaceOperation for ClusterServicePlan class
    */
-  NonNamespaceOperation<ClusterServicePlan, ClusterServicePlanList, DoneableClusterServicePlan, ClusterServicePlanResource> clusterServicePlans();
+  NonNamespaceOperation<ClusterServicePlan, ClusterServicePlanList, ClusterServicePlanResource> clusterServicePlans();
 
   /**
    * API entrypoint for ServiceInstance(servicecatalog.k8s.io/v1beta1)
    *
    * @return MixedOperation for ServiceInstance class
    */
-  MixedOperation<ServiceInstance, ServiceInstanceList, DoneableServiceInstance, ServiceInstanceResource> serviceInstances();
+  MixedOperation<ServiceInstance, ServiceInstanceList, ServiceInstanceResource> serviceInstances();
 
   /**
    * API entrypoint for ServiceBinding(servicecatalog.k8s.io/v1beta1)
    *
    * @return MixedOperation for ServiceBinding class
    */
-  MixedOperation<ServiceBinding, ServiceBindingList, DoneableServiceBinding, ServiceBindingResource> serviceBindings();
+  MixedOperation<ServiceBinding, ServiceBindingList, ServiceBindingResource> serviceBindings();
 
   /**
    * API entrypoint for ServiceBroker(servicecatalog.k8s.io/v1beta1)
    *
    * @return MixedOperation for ServiceBroker class
    */
-  MixedOperation<ServiceBroker, ServiceBrokerList, DoneableServiceBroker, Resource<ServiceBroker, DoneableServiceBroker>> serviceBrokers();
+  MixedOperation<ServiceBroker, ServiceBrokerList, Resource<ServiceBroker>> serviceBrokers();
 
   /**
    * API entrypoint for ServiceClass(servicecatalog.k8s.io/v1beta1)
    *
    * @return MixedOperation for ServiceClass class
    */
-  MixedOperation<ServiceClass, ServiceClassList, DoneableServiceClass, Resource<ServiceClass, DoneableServiceClass>> serviceClasses();
+  MixedOperation<ServiceClass, ServiceClassList, Resource<ServiceClass>> serviceClasses();
 
   /**
    * API entrypoint for ServicePlan(servicecatalog.k8s.io/v1beta1)
    *
    * @return MixedOperation for ServicePlan class
    */
-  MixedOperation<ServicePlan, ServicePlanList, DoneableServicePlan, Resource<ServicePlan, DoneableServicePlan>> servicePlans();
+  MixedOperation<ServicePlan, ServicePlanList, Resource<ServicePlan>> servicePlans();
 
 }

@@ -120,7 +120,7 @@ class SecurityContextConstraintsTest {
    server.expect().withPath("/apis/security.openshift.io/v1/securitycontextconstraints/scc1").andReturn(200, new SecurityContextConstraintsBuilder().withNewMetadata().withName("scc1").and().addToAllowedCapabilities("allowed").build()).once();
 
     OpenShiftClient client = server.getOpenshiftClient();
-    SecurityContextConstraints scc = client.securityContextConstraints().withName("scc1").edit().addToAllowedCapabilities("allowed").done();
+    SecurityContextConstraints scc = client.securityContextConstraints().withName("scc1").edit(s -> new SecurityContextConstraintsBuilder(s).addToAllowedCapabilities("allowed").build());
     assertNotNull(scc);
     assertEquals(1, scc.getAllowedCapabilities().size());
   }

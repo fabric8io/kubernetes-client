@@ -18,14 +18,13 @@ package io.fabric8.openshift.client.dsl.internal;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import okhttp3.OkHttpClient;
-import io.fabric8.openshift.api.model.DoneableUser;
 import io.fabric8.openshift.api.model.User;
 import io.fabric8.openshift.api.model.UserList;
 import io.fabric8.openshift.client.OpenShiftConfig;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.USER;
 
-public class UserOperationsImpl extends OpenShiftOperation<User, UserList, DoneableUser, Resource<User, DoneableUser>> {
+public class UserOperationsImpl extends OpenShiftOperation<User, UserList, Resource<User>> {
 
   public UserOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
     this(new OperationContext().withOkhttpClient(client).withConfig(config));
@@ -36,7 +35,6 @@ public class UserOperationsImpl extends OpenShiftOperation<User, UserList, Donea
       .withPlural("users"));
     this.type = User.class;
     this.listType = UserList.class;
-    this.doneableType = DoneableUser.class;
   }
 
   @Override

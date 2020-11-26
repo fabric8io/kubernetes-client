@@ -19,9 +19,8 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.servicecatalog.api.model.ClusterServiceBroker;
 import io.fabric8.servicecatalog.api.model.ClusterServiceClassList;
 import io.fabric8.servicecatalog.api.model.ClusterServicePlanList;
-import io.fabric8.servicecatalog.api.model.DoneableClusterServiceBroker;
 
-public interface ClusterServiceBrokerResource extends Resource<ClusterServiceBroker, DoneableClusterServiceBroker> {
+public interface ClusterServiceBrokerResource extends Resource<ClusterServiceBroker> {
 
 
     /**

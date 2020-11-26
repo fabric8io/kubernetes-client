@@ -17,7 +17,6 @@ package io.fabric8.openshift.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.openshift.api.model.DoneableRole;
 import io.fabric8.openshift.api.model.Role;
 import io.fabric8.openshift.api.model.RoleList;
 import io.fabric8.openshift.client.OpenShiftConfig;
@@ -25,7 +24,7 @@ import okhttp3.OkHttpClient;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.AUTHORIZATION;
 
-public class RoleOperationsImpl extends OpenShiftOperation<Role, RoleList, DoneableRole, Resource<Role, DoneableRole>> {
+public class RoleOperationsImpl extends OpenShiftOperation<Role, RoleList, Resource<Role>> {
 
   public RoleOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
     this((new OperationContext()).withOkhttpClient(client).withConfig(config));
@@ -35,7 +34,6 @@ public class RoleOperationsImpl extends OpenShiftOperation<Role, RoleList, Donea
     super(context.withApiGroupName(AUTHORIZATION).withApiGroupVersion("v1").withPlural("roles"));
     this.type = Role.class;
     this.listType = RoleList.class;
-    this.doneableType = DoneableRole.class;
   }
 
   @Override

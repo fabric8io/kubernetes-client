@@ -60,22 +60,22 @@ public class DefaultServingV1Beta1Client extends BaseClient implements Namespace
   }
 
   @Override
-  public MixedOperation<Service, ServiceList, DoneableService, Resource<Service, DoneableService>> services() {
+  public MixedOperation<Service, ServiceList, Resource<Service>> services() {
     return new ServiceOperationsImpl(this.getHttpClient(), this.getConfiguration());
   }
 
   @Override
-  public MixedOperation<Route, RouteList, DoneableRoute, Resource<Route, DoneableRoute>> routes() {
+  public MixedOperation<Route, RouteList, Resource<Route>> routes() {
     return new RouteOperationsImpl(this.getHttpClient(), this.getConfiguration());
   }
 
   @Override
-  public MixedOperation<Revision, RevisionList, DoneableRevision, Resource<Revision, DoneableRevision>> revisions() {
+  public MixedOperation<Revision, RevisionList, Resource<Revision>> revisions() {
     return new RevisionOperationsImpl(this.getHttpClient(), this.getConfiguration());
   }
 
   @Override
-  public MixedOperation<Configuration, ConfigurationList, DoneableConfiguration, Resource<Configuration, DoneableConfiguration>> configurations() {
+  public MixedOperation<Configuration, ConfigurationList, Resource<Configuration>> configurations() {
     return new ConfigurationOperationsImpl(this.getHttpClient(), this.getConfiguration());
   }
 

@@ -20,11 +20,6 @@ import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.openshift.api.model.monitoring.v1.Alertmanager;
 import io.fabric8.openshift.api.model.monitoring.v1.AlertmanagerList;
-import io.fabric8.openshift.api.model.monitoring.v1.DoneableAlertmanager;
-import io.fabric8.openshift.api.model.monitoring.v1.DoneablePodMonitor;
-import io.fabric8.openshift.api.model.monitoring.v1.DoneablePrometheus;
-import io.fabric8.openshift.api.model.monitoring.v1.DoneablePrometheusRule;
-import io.fabric8.openshift.api.model.monitoring.v1.DoneableServiceMonitor;
 import io.fabric8.openshift.api.model.monitoring.v1.PodMonitor;
 import io.fabric8.openshift.api.model.monitoring.v1.PodMonitorList;
 import io.fabric8.openshift.api.model.monitoring.v1.Prometheus;
@@ -40,29 +35,29 @@ public interface OpenShiftMonitoringAPIGroupDSL extends Client {
    *
    * @return MixedOperation object for Prometheus type
    */
-  MixedOperation<Prometheus, PrometheusList, DoneablePrometheus, Resource<Prometheus, DoneablePrometheus>> prometheuses();
+  MixedOperation<Prometheus, PrometheusList, Resource<Prometheus>> prometheuses();
   /**
    * API entrypoint for PodMonitor related operations(monitoring.coreos.com/v1)
    *
    * @return MixedOperation object for PodMonitor type
    */
-  MixedOperation<PodMonitor, PodMonitorList, DoneablePodMonitor, Resource<PodMonitor, DoneablePodMonitor>> podMonitors();
+  MixedOperation<PodMonitor, PodMonitorList, Resource<PodMonitor>> podMonitors();
   /**
    * API entrypoint for Alertmanager related operations(monitoring.coreos.com/v1)
    *
    * @return MixedOperation object for Alertmanager type
    */
-  MixedOperation<Alertmanager, AlertmanagerList, DoneableAlertmanager, Resource<Alertmanager, DoneableAlertmanager>> alertmanagers();
+  MixedOperation<Alertmanager, AlertmanagerList, Resource<Alertmanager>> alertmanagers();
   /**
    * API entrypoint for PrometheusRule related operations(monitoring.coreos.com/v1)
    *
    * @return MixedOperation object for PrometheusRule type
    */
-  MixedOperation<PrometheusRule, PrometheusRuleList, DoneablePrometheusRule, Resource<PrometheusRule, DoneablePrometheusRule>> prometheusRules();
+  MixedOperation<PrometheusRule, PrometheusRuleList, Resource<PrometheusRule>> prometheusRules();
   /**
    * API entrypoint for ServiceMonitor related operations(monitoring.coreos.com/v1)
    *
    * @return MixedOperation object for ServiceMonitor type
    */
-  MixedOperation<ServiceMonitor, ServiceMonitorList, DoneableServiceMonitor, Resource<ServiceMonitor, DoneableServiceMonitor>> serviceMonitors();
+  MixedOperation<ServiceMonitor, ServiceMonitorList, Resource<ServiceMonitor>> serviceMonitors();
 }

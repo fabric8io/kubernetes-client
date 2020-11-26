@@ -26,13 +26,13 @@ import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Predicate;
 
+import io.fabric8.kubernetes.client.WatcherException;
 import org.junit.jupiter.api.Test;
 
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watcher.Action;
-import io.fabric8.kubernetes.client.dsl.base.WaitForConditionWatcher.WatchException;
 
 class WaitForConditionWatcherTest {
 
@@ -111,8 +111,8 @@ class WaitForConditionWatcherTest {
       watcher.getFuture().get();
       fail("should have thrown exception");
     } catch (ExecutionException e) {
-      assertEquals(e.getCause().getClass(), WatchException.class);
-      assertEquals(e.getCause().getMessage(), "Action.ERROR received");
+      assertEquals(WatcherException.class, e.getCause().getClass());
+      assertEquals("Action.ERROR received", e.getCause().getMessage());
     }
     assertFalse(condition.isCalled());
   }
@@ -121,15 +121,15 @@ class WaitForConditionWatcherTest {
   void itCompletesExceptionallyWithRetryOnCloseNonGone() throws Exception {
     TrackingPredicate condition = condition(ss -> true);
     WaitForConditionWatcher<ConfigMap> watcher = new WaitForConditionWatcher<>(condition);
-    watcher.onClose(new KubernetesClientException("test", 500, null));
+    watcher.onClose(new WatcherException("Watcher closed", new KubernetesClientException("test", 500, null)));
     assertTrue(watcher.getFuture().isDone());
     try {
       watcher.getFuture().get();
       fail("should have thrown exception");
     } catch (ExecutionException e) {
-      assertEquals(e.getCause().getClass(), WatchException.class);
-      assertEquals(e.getCause().getMessage(), "Watcher closed");
-      assertTrue(((WatchException) e.getCause()).isShouldRetry());
+      assertEquals(WatcherException.class, e.getCause().getClass());
+      assertEquals("Watcher closed", e.getCause().getMessage());
+      assertTrue(((WatcherException) e.getCause()).isShouldRetry());
     }
     assertFalse(condition.isCalled());
   }
@@ -138,19 +138,35 @@ class WaitForConditionWatcherTest {
   void itCompletesExceptionallyWithNoRetryOnCloseGone() throws Exception {
     TrackingPredicate condition = condition(ss -> true);
     WaitForConditionWatcher<ConfigMap> watcher = new WaitForConditionWatcher<>(condition);
-    watcher.onClose(new KubernetesClientException("test", HttpURLConnection.HTTP_GONE, null));
+    watcher.onClose(new WatcherException("Watcher closed", new KubernetesClientException("test", HttpURLConnection.HTTP_GONE, null)));
     assertTrue(watcher.getFuture().isDone());
     try {
       watcher.getFuture().get();
       fail("should have thrown exception");
     } catch (ExecutionException e) {
-      assertEquals(e.getCause().getClass(), WatchException.class);
-      assertEquals(e.getCause().getMessage(), "Watcher closed");
-      assertFalse(((WatchException) e.getCause()).isShouldRetry());
+      assertEquals(WatcherException.class, e.getCause().getClass());
+      assertEquals("Watcher closed", e.getCause().getMessage());
+      assertFalse(((WatcherException) e.getCause()).isShouldRetry());
     }
     assertFalse(condition.isCalled());
   }
 
+  @Test
+  void itCompletesExceptionallyWithRetryOnGracefulClose() throws Exception {
+    TrackingPredicate condition = condition(ss -> true);
+    WaitForConditionWatcher<ConfigMap> watcher = new WaitForConditionWatcher<>(condition);
+    watcher.onClose();
+    assertTrue(watcher.getFuture().isDone());
+    try {
+      watcher.getFuture().get();
+      fail("should have thrown exception");
+    } catch (ExecutionException e) {
+      assertEquals(WatcherException.class, e.getCause().getClass());
+      assertEquals("Watcher closed", e.getCause().getMessage());
+      assertTrue(((WatcherException) e.getCause()).isShouldRetry());
+    }
+    assertFalse(condition.isCalled());
+  }
   private TrackingPredicate condition(Predicate<ConfigMap> condition) {
     return new TrackingPredicate(condition);
   }

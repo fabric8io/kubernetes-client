@@ -16,9 +16,9 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
-public interface NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<T, B> extends
-  VisitFromServerGetWatchDeleteRecreateWaitApplicable<T, B>,
-        Namespaceable<VisitFromServerGetWatchDeleteRecreateWaitApplicable<T, B>>
+public interface NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<T> extends
+  VisitFromServerGetWatchDeleteRecreateWaitApplicable<T>,
+        Namespaceable<VisitFromServerGetWatchDeleteRecreateWaitApplicable<T>>
 {
 
 }

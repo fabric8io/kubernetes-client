@@ -20,14 +20,6 @@ import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.servicecatalog.api.model.DoneableClusterServiceBroker;
-import io.fabric8.servicecatalog.api.model.DoneableClusterServiceClass;
-import io.fabric8.servicecatalog.api.model.DoneableClusterServicePlan;
-import io.fabric8.servicecatalog.api.model.DoneableServiceBinding;
-import io.fabric8.servicecatalog.api.model.DoneableServiceBroker;
-import io.fabric8.servicecatalog.api.model.DoneableServiceClass;
-import io.fabric8.servicecatalog.api.model.DoneableServiceInstance;
-import io.fabric8.servicecatalog.api.model.DoneableServicePlan;
 import io.fabric8.servicecatalog.client.internal.*;
 import io.fabric8.servicecatalog.api.model.*;
 import okhttp3.OkHttpClient;
@@ -46,38 +38,38 @@ public class DefaultServiceCatalogClient extends BaseClient implements Namespace
     super(httpClient, configuration);
   }
 
-  public NonNamespaceOperation<ClusterServiceBroker, ClusterServiceBrokerList, DoneableClusterServiceBroker, ClusterServiceBrokerResource> clusterServiceBrokers() {
+  public NonNamespaceOperation<ClusterServiceBroker, ClusterServiceBrokerList, ClusterServiceBrokerResource> clusterServiceBrokers() {
     return new ClusterServiceBrokerOperationsImpl(this.getHttpClient(), this.getConfiguration());
   }
 
-  public NonNamespaceOperation<ClusterServiceClass, ClusterServiceClassList, DoneableClusterServiceClass, ClusterServiceClassResource> clusterServiceClasses() {
+  public NonNamespaceOperation<ClusterServiceClass, ClusterServiceClassList, ClusterServiceClassResource> clusterServiceClasses() {
     return new ClusterServiceClassOperationsImpl(this.getHttpClient(), this.getConfiguration());
   }
 
-  public NonNamespaceOperation<ClusterServicePlan, ClusterServicePlanList, DoneableClusterServicePlan, ClusterServicePlanResource> clusterServicePlans() {
+  public NonNamespaceOperation<ClusterServicePlan, ClusterServicePlanList, ClusterServicePlanResource> clusterServicePlans() {
     return new ClusterServicePlanOperationsImpl(this.getHttpClient(), this.getConfiguration());
   }
 
-  public MixedOperation<ServiceInstance, ServiceInstanceList, DoneableServiceInstance, ServiceInstanceResource> serviceInstances() {
+  public MixedOperation<ServiceInstance, ServiceInstanceList, ServiceInstanceResource> serviceInstances() {
     return new ServiceInstanceOperationsImpl(this.getHttpClient(), this.getConfiguration());
   }
 
-  public MixedOperation<ServiceBinding, ServiceBindingList, DoneableServiceBinding, ServiceBindingResource> serviceBindings() {
+  public MixedOperation<ServiceBinding, ServiceBindingList, ServiceBindingResource> serviceBindings() {
     return new ServiceBindingOperationsImpl(this.getHttpClient(), this.getConfiguration());
   }
 
   @Override
-  public MixedOperation<ServiceBroker, ServiceBrokerList, DoneableServiceBroker, Resource<ServiceBroker, DoneableServiceBroker>> serviceBrokers() {
+  public MixedOperation<ServiceBroker, ServiceBrokerList, Resource<ServiceBroker>> serviceBrokers() {
     return new ServiceBrokerOperationsImpl(this.getHttpClient(), this.getConfiguration());
   }
 
   @Override
-  public MixedOperation<ServiceClass, ServiceClassList, DoneableServiceClass, Resource<ServiceClass, DoneableServiceClass>> serviceClasses() {
+  public MixedOperation<ServiceClass, ServiceClassList, Resource<ServiceClass>> serviceClasses() {
     return new ServiceClassOperationsImpl(this.getHttpClient(), this.getConfiguration());
   }
 
   @Override
-  public MixedOperation<ServicePlan, ServicePlanList, DoneableServicePlan, Resource<ServicePlan, DoneableServicePlan>> servicePlans() {
+  public MixedOperation<ServicePlan, ServicePlanList, Resource<ServicePlan>> servicePlans() {
     return new ServicePlanOperationsImpl(this.getHttpClient(), this.getConfiguration());
   }
 

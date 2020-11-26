@@ -31,7 +31,6 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
-import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
@@ -44,6 +43,7 @@ import io.fabric8.kubernetes.client.LocalPortForward;
 import io.fabric8.kubernetes.client.PortForward;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
@@ -164,10 +164,10 @@ class PodTest {
     KubernetesClient client = server.getClient();
 
     // When
-    PodResource<Pod, DoneablePod> podOp = client.pods().withName("pod1");
+    PodResource<Pod> podOp = client.pods().withName("pod1");
 
     // Then
-    Assertions.assertThrows(KubernetesClientException.class, podOp::edit);
+    Assertions.assertThrows(KubernetesClientException.class, () -> podOp.edit(p -> p));
   }
 
   @Test
@@ -208,7 +208,7 @@ class PodTest {
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
 
     // When + Then
-    NonNamespaceOperation<Pod, PodList, DoneablePod, PodResource<Pod, DoneablePod>> podOp = client.pods().inNamespace("test1");
+    NonNamespaceOperation<Pod, PodList, PodResource<Pod>> podOp = client.pods().inNamespace("test1");
     Assertions.assertThrows(KubernetesClientException.class, () -> podOp.delete(pod1));
   }
 
@@ -247,7 +247,7 @@ class PodTest {
     assertTrue(deleted);
 
     // unhandled error
-    PodResource<Pod, DoneablePod> resource = client.pods().inNamespace("ns1").withName("pod4");
+    PodResource<Pod> resource = client.pods().inNamespace("ns1").withName("pod4");
     assertThrows(KubernetesClientException.class, resource::evict);
   }
 
@@ -255,7 +255,7 @@ class PodTest {
   void testCreateWithNameMismatch() {
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
 
-    PodResource<Pod, DoneablePod> podOp = client.pods().inNamespace("test1").withName("mypod1");
+    PodResource<Pod> podOp = client.pods().inNamespace("test1").withName("mypod1");
     Assertions.assertThrows(KubernetesClientException.class, () -> podOp.create(pod1));
   }
 
@@ -360,7 +360,7 @@ class PodTest {
       }
 
       @Override
-      public void onClose(KubernetesClientException cause) {
+      public void onClose(WatcherException cause) {
       }
     };
     // When
@@ -375,7 +375,7 @@ class PodTest {
   void testGetLogNotFound() {
     // Given
     KubernetesClient client = server.getClient();
-    PodResource<Pod, DoneablePod> podOp = client.pods().withName("pod5");
+    PodResource<Pod> podOp = client.pods().withName("pod5");
 
     // When + Then
     Assertions.assertThrows(KubernetesClientException.class, () -> podOp.getLog(true));

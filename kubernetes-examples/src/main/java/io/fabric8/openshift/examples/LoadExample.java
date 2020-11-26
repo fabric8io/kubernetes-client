@@ -41,42 +41,43 @@ public class LoadExample {
         }
 
         Config config = new ConfigBuilder().build();
-        KubernetesClient kubernetesClient = new DefaultKubernetesClient(config);
-        OpenShiftClient client = kubernetesClient.adapt(OpenShiftClient.class);
+        try (KubernetesClient kubernetesClient = new DefaultKubernetesClient(config)) {
+            OpenShiftClient client = kubernetesClient.adapt(OpenShiftClient.class);
 
-        List<HasMetadata> list = client.load(TemplateExample.class.getResourceAsStream("/test-template.yml")).get();
-        System.out.println("Found in file:" + list.size() + " items.");
-        for (HasMetadata meta : list) {
-            System.out.println(display(meta));
+            List<HasMetadata> list = client.load(TemplateExample.class.getResourceAsStream("/test-template.yml")).get();
+            System.out.println("Found in file:" + list.size() + " items.");
+            for (HasMetadata meta : list) {
+                System.out.println(display(meta));
+            }
+
+
+            list = client.load(TemplateExample.class.getResourceAsStream("/test-template.yml")).accept((Visitor<ObjectMetaBuilder>) item -> item.addToLabels("visitorkey", "visitorvalue")).get();
+
+            System.out.println("Visited:" + list.size() + " items.");
+            for (HasMetadata meta : list) {
+                System.out.println(display(meta));
+            }
+
+
+
+            list = client.load(TemplateExample.class.getResourceAsStream("/test-template.yml")).fromServer().get();
+            System.out.println("Found on server:" + list.size() + " items.");
+            for (HasMetadata meta : list) {
+                System.out.println(display(meta));
+            }
+
+            list = client.load(TemplateExample.class.getResourceAsStream("/test-template.yml"))
+                    .deletingExisting()
+                    .createOrReplace();
+
+            System.out.println("Applied:" + list.size() + " items.");
+            for (HasMetadata meta : list) {
+                System.out.println(display(meta));
+            }
+
+            Boolean result = client.load(TemplateExample.class.getResourceAsStream("/test-template.yml")).delete();
+            System.out.println("Deleted:" + result);
         }
-
-
-        list = client.load(TemplateExample.class.getResourceAsStream("/test-template.yml")).accept((Visitor<ObjectMetaBuilder>) item -> item.addToLabels("visitorkey", "visitorvalue")).get();
-
-        System.out.println("Visited:" + list.size() + " items.");
-        for (HasMetadata meta : list) {
-            System.out.println(display(meta));
-        }
-
-
-
-        list = client.load(TemplateExample.class.getResourceAsStream("/test-template.yml")).fromServer().get();
-        System.out.println("Found on server:" + list.size() + " items.");
-        for (HasMetadata meta : list) {
-            System.out.println(display(meta));
-        }
-
-        list = client.load(TemplateExample.class.getResourceAsStream("/test-template.yml"))
-                .deletingExisting()
-                .createOrReplace();
-
-        System.out.println("Applied:" + list.size() + " items.");
-        for (HasMetadata meta : list) {
-            System.out.println(display(meta));
-        }
-
-        Boolean result = client.load(TemplateExample.class.getResourceAsStream("/test-template.yml")).delete();
-        System.out.println("Deleted:" + result);
 
     }
 

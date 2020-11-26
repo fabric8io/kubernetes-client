@@ -20,10 +20,9 @@ import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.servicecatalog.api.model.*;
-import io.fabric8.servicecatalog.api.model.DoneableServiceInstance;
 import okhttp3.OkHttpClient;
 
-public class ServiceInstanceOperationsImpl extends HasMetadataOperation<ServiceInstance, ServiceInstanceList, DoneableServiceInstance, ServiceInstanceResource> implements ServiceInstanceResource {
+public class ServiceInstanceOperationsImpl extends HasMetadataOperation<ServiceInstance, ServiceInstanceList, ServiceInstanceResource> implements ServiceInstanceResource {
 
     public ServiceInstanceOperationsImpl(OkHttpClient client, Config config) {
         this(new OperationContext().withOkhttpClient(client).withConfig(config));
@@ -33,11 +32,10 @@ public class ServiceInstanceOperationsImpl extends HasMetadataOperation<ServiceI
         super(ctx.withApiGroupName("servicecatalog.k8s.io").withApiGroupVersion("v1beta1").withPlural("serviceinstances"));
         this.type=ServiceInstance.class;
         this.listType=ServiceInstanceList.class;
-        this.doneableType= DoneableServiceInstance.class;
     }
 
     @Override
-    public BaseOperation<ServiceInstance, ServiceInstanceList, DoneableServiceInstance, ServiceInstanceResource> newInstance(OperationContext context) {
+    public BaseOperation<ServiceInstance, ServiceInstanceList, ServiceInstanceResource> newInstance(OperationContext context) {
         return new ServiceInstanceOperationsImpl(context);
     }
 
@@ -50,7 +48,7 @@ public class ServiceInstanceOperationsImpl extends HasMetadataOperation<ServiceI
     public ServiceBinding bind(String secretName) {
         ServiceInstance item = get();
         return new ServiceBindingOperationsImpl(context.withItem(null))
-                .createNew()
+            .create(new ServiceBindingBuilder()
                 .withNewMetadata()
                     .withName(item.getMetadata().getName())
                 .endMetadata()
@@ -58,6 +56,6 @@ public class ServiceInstanceOperationsImpl extends HasMetadataOperation<ServiceI
                     .withSecretName(secretName)
                     .withNewInstanceRef(item.getMetadata().getName())
                 .endSpec()
-                .done();
+                    .build());
     }
 }

@@ -15,13 +15,12 @@
  */
 package io.fabric8.kubernetes.client.dsl.base;
 
-import java.net.HttpURLConnection;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Predicate;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.WatcherException;
 
 public class WaitForConditionWatcher<T extends HasMetadata> implements Watcher<T> {
 
@@ -52,34 +51,18 @@ public class WaitForConditionWatcher<T extends HasMetadata> implements Watcher<T
         }
         break;
       case ERROR:
-        future.completeExceptionally(new WatchException("Action.ERROR received"));
+        future.completeExceptionally(new WatcherException("Action.ERROR received"));
         break;
     }
   }
 
   @Override
-  public void onClose(KubernetesClientException cause) {
-    future.completeExceptionally(new WatchException("Watcher closed", cause));
+  public void onClose(WatcherException cause) {
+    future.completeExceptionally(cause);
   }
 
-  public static class WatchException extends Exception {
-
-    public WatchException(String message, KubernetesClientException cause) {
-      super(message, cause);
-    }
-
-    public WatchException(String message) {
-      super(message);
-    }
-
-    public boolean isShouldRetry() {
-      return getCause() == null || !isHttpGone();
-    }
-
-    private boolean isHttpGone() {
-      KubernetesClientException cause = ((KubernetesClientException) getCause());
-      return cause.getCode() == HttpURLConnection.HTTP_GONE
-        || (cause.getStatus() != null && cause.getStatus().getCode() == HttpURLConnection.HTTP_GONE);
-    }
+  @Override
+  public void onClose() {
+    future.completeExceptionally(new WatcherException("Watcher closed"));
   }
 }

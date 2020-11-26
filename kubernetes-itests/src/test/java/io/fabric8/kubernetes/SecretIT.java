@@ -85,9 +85,9 @@ public class SecretIT {
   @Test
   public void update() {
     ReadyEntity<Secret> secretReady = new ReadyEntity<>(Secret.class, client, "secret-update", currentNamespace);
-    secret1 = client.secrets().inNamespace(currentNamespace).withName("secret-update").edit()
+    secret1 = client.secrets().inNamespace(currentNamespace).withName("secret-update").edit(s -> new SecretBuilder(s)
       .editOrNewMetadata().addToLabels("foo", "bar").endMetadata()
-      .done();
+      .build());
     await().atMost(30, TimeUnit.SECONDS).until(secretReady);
     assertThat(secret1).isNotNull();
     assertEquals("bar", secret1.getMetadata().getLabels().get("foo"));

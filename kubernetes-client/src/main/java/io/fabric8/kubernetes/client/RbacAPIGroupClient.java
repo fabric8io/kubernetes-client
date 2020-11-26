@@ -23,10 +23,6 @@ import io.fabric8.kubernetes.client.dsl.internal.rbac.v1.ClusterRoleBindingOpera
 import io.fabric8.kubernetes.client.dsl.internal.rbac.v1.ClusterRoleOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.rbac.v1.RoleBindingOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.rbac.v1.RoleOperationsImpl;
-import io.fabric8.kubernetes.api.model.rbac.DoneableRole;
-import io.fabric8.kubernetes.api.model.rbac.DoneableRoleBinding;
-import io.fabric8.kubernetes.api.model.rbac.DoneableClusterRole;
-import io.fabric8.kubernetes.api.model.rbac.DoneableClusterRoleBinding;
 import okhttp3.OkHttpClient;
 
 public class RbacAPIGroupClient extends BaseClient implements RbacAPIGroupDSL {
@@ -40,22 +36,22 @@ public class RbacAPIGroupClient extends BaseClient implements RbacAPIGroupDSL {
   }
 
   @Override
-  public MixedOperation<Role, RoleList, DoneableRole, Resource<Role, DoneableRole>> roles() {
+  public MixedOperation<Role, RoleList, Resource<Role>> roles() {
     return new RoleOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
-  public MixedOperation<RoleBinding, RoleBindingList, DoneableRoleBinding, Resource<RoleBinding, DoneableRoleBinding>> roleBindings() {
+  public MixedOperation<RoleBinding, RoleBindingList, Resource<RoleBinding>> roleBindings() {
     return new RoleBindingOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
-  public MixedOperation<ClusterRole, ClusterRoleList, DoneableClusterRole, Resource<ClusterRole, DoneableClusterRole>> clusterRoles() {
+  public MixedOperation<ClusterRole, ClusterRoleList, Resource<ClusterRole>> clusterRoles() {
     return new ClusterRoleOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
-  public MixedOperation<ClusterRoleBinding, ClusterRoleBindingList, DoneableClusterRoleBinding, Resource<ClusterRoleBinding, DoneableClusterRoleBinding>> clusterRoleBindings() {
+  public MixedOperation<ClusterRoleBinding, ClusterRoleBindingList, Resource<ClusterRoleBinding>> clusterRoleBindings() {
     return new ClusterRoleBindingOperationsImpl(httpClient, getConfiguration());
   }
 }

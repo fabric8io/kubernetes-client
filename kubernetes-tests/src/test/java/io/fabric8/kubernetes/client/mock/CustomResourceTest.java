@@ -19,7 +19,6 @@ package io.fabric8.kubernetes.client.mock;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -37,6 +36,7 @@ import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.api.model.WatchEvent;
+import io.fabric8.kubernetes.client.WatcherException;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.Rule;
 import org.junit.jupiter.api.Assertions;
@@ -294,7 +294,7 @@ class CustomResourceTest {
           @Override
           public void eventReceived(Action action, String resource) { anyEventReceived.countDown(); }
           @Override
-          public void onClose(KubernetesClientException cause) { }
+          public void onClose(WatcherException cause) { }
         });
 
     // Then
@@ -323,7 +323,7 @@ class CustomResourceTest {
           @Override
           public void eventReceived(Action action, String resource) { anyEventReceieved.countDown(); }
           @Override
-          public void onClose(KubernetesClientException cause) { }
+          public void onClose(WatcherException cause) { }
         });
 
     // Then
@@ -352,7 +352,7 @@ class CustomResourceTest {
           @Override
           public void eventReceived(Action action, String resource) { anyEventReceived.countDown(); }
           @Override
-          public void onClose(KubernetesClientException cause) { }
+          public void onClose(WatcherException cause) { }
         });
 
     // Then
@@ -383,7 +383,7 @@ class CustomResourceTest {
           @Override
           public void eventReceived(Action action, String resource) { anyEventReceived.countDown(); }
           @Override
-          public void onClose(KubernetesClientException cause) { }
+          public void onClose(WatcherException cause) { }
         });
 
     // Then
@@ -416,7 +416,7 @@ class CustomResourceTest {
           @Override
           public void eventReceived(Action action, String resource) { anyEventReceived.countDown(); }
           @Override
-          public void onClose(KubernetesClientException cause) { }
+          public void onClose(WatcherException cause) { }
         });
 
     // Then

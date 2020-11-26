@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
-import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.OwnerReference;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
@@ -43,8 +42,8 @@ public class PodOperationUtil {
    * @param controllerUid UID of Controller
    * @return returns list of PodOperations with pods whose owner's UID is of the provided controller
    */
-  public static List<PodResource<Pod, DoneablePod>> getFilteredPodsForLogs(PodOperationsImpl podOperations, PodList controllerPodList, String controllerUid) {
-    List<PodResource<Pod, DoneablePod>> pods = new ArrayList<>();
+  public static List<PodResource<Pod>> getFilteredPodsForLogs(PodOperationsImpl podOperations, PodList controllerPodList, String controllerUid) {
+    List<PodResource<Pod>> pods = new ArrayList<>();
     for (Pod pod : controllerPodList.getItems()) {
       OwnerReference ownerReference = KubernetesResourceUtil.getControllerUid(pod);
       if (ownerReference != null && ownerReference.getUid().equals(controllerUid)) {
@@ -60,22 +59,22 @@ public class PodOperationUtil {
       "v1", context.getCascading(), context.getItem(), context.getLabels(), context.getLabelsNot(),
       context.getLabelsIn(), context.getLabelsNotIn(), context.getFields(), context.getFieldsNot(), context.getResourceVersion(),
       context.getReloadingFromServer(), context.getGracePeriodSeconds(), context.getPropagationPolicy(),
-      context.getWatchRetryInitialBackoffMillis(), context.getWatchRetryBackoffMultiplier(), null, null, null, null, null,
+      context.getWatchRetryInitialBackoffMillis(), context.getWatchRetryBackoffMultiplier(), context.isNamespaceFromGlobalConfig(), null, null, null, null, null,
       null, null, null, null, false, false, false, null, null,
       null, isPretty, null, null, null, null, null, podLogWaitTimeout));
   }
 
-  public static List<PodResource<Pod, DoneablePod>> getPodOperationsForController(OperationContext context, String controllerUid, Map<String, String> selectorLabels, boolean isPretty, Integer podLogWaitTimeout) {
+  public static List<PodResource<Pod>> getPodOperationsForController(OperationContext context, String controllerUid, Map<String, String> selectorLabels, boolean isPretty, Integer podLogWaitTimeout) {
     return getPodOperationsForController(PodOperationUtil.getGenericPodOperations(context, isPretty, podLogWaitTimeout), controllerUid, selectorLabels);
   }
 
-  static List<PodResource<Pod, DoneablePod>> getPodOperationsForController(PodOperationsImpl podOperations, String controllerUid, Map<String, String> selectorLabels) {
+  static List<PodResource<Pod>> getPodOperationsForController(PodOperationsImpl podOperations, String controllerUid, Map<String, String> selectorLabels) {
     PodList controllerPodList = podOperations.withLabels(selectorLabels).list();
 
     return PodOperationUtil.getFilteredPodsForLogs(podOperations, controllerPodList, controllerUid);
   }
 
-  public static void waitUntilReadyBeforeFetchingLogs(PodResource<Pod, DoneablePod> podOperation, Integer logWaitTimeout) {
+  public static void waitUntilReadyBeforeFetchingLogs(PodResource<Pod> podOperation, Integer logWaitTimeout) {
     try {
       // Wait for Pod to become ready
       Pod pod = podOperation.fromServer().get();

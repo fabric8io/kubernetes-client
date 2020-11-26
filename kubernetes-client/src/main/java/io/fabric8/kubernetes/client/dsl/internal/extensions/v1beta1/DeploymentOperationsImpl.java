@@ -21,8 +21,6 @@ import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.extensions.Deployment;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentList;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
-import io.fabric8.kubernetes.api.model.extensions.DoneableDeployment;
-import io.fabric8.kubernetes.api.model.extensions.DoneableReplicaSet;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSet;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSetList;
 import io.fabric8.kubernetes.client.Config;
@@ -51,6 +49,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
@@ -59,9 +58,10 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.UnaryOperator;
 
-public class DeploymentOperationsImpl extends RollableScalableResourceOperation<Deployment, DeploymentList, DoneableDeployment, RollableScalableResource<Deployment, DoneableDeployment>>
-  implements TimeoutImageEditReplacePatchable<Deployment, Deployment, DoneableDeployment> {
+public class DeploymentOperationsImpl extends RollableScalableResourceOperation<Deployment, DeploymentList, RollableScalableResource<Deployment>>
+  implements TimeoutImageEditReplacePatchable<Deployment > {
 
   static final transient Logger LOG = LoggerFactory.getLogger(DeploymentOperationsImpl.class);
   public static final String DEPLOYMENT_KUBERNETES_IO_REVISION = "deployment.kubernetes.io/revision";
@@ -84,7 +84,6 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
       .withPlural("deployments"));
     this.type = Deployment.class;
     this.listType = DeploymentList.class;
-    this.doneableType = DoneableDeployment.class;
   }
 
   private DeploymentOperationsImpl(RollingOperationContext context, Integer podLogWaitTimeout) {
@@ -104,7 +103,7 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
 
   @Override
   public Deployment scale(int count, boolean wait) {
-    Deployment res = cascading(false).edit().editSpec().withReplicas(count).endSpec().done();
+    Deployment res = cascading(false).accept(d -> d.getSpec().setReplicas(count));
     if (wait) {
       waitUntilDeploymentIsScaled(count);
       res = getMandatory();
@@ -113,11 +112,19 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
   }
 
   @Override
-  public DoneableDeployment edit() {
+  public Deployment edit(UnaryOperator<Deployment> function) {
     if (isCascading()) {
-      return cascading(false).edit();
+      return cascading(false).edit(function);
     }
-    return super.edit();
+    return super.edit(function);
+  }
+
+  @Override
+  public Deployment accept(Consumer<Deployment> consumer) {
+    if (isCascading()) {
+      return cascading(false).accept(consumer);
+    }
+    return super.accept(consumer);
   }
 
   @Override
@@ -147,13 +154,13 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
   }
 
   @Override
-  public RollingUpdater<Deployment, DeploymentList, DoneableDeployment> getRollingUpdater(long rollingTimeout, TimeUnit rollingTimeUnit) {
+  public RollingUpdater<Deployment, DeploymentList> getRollingUpdater(long rollingTimeout, TimeUnit rollingTimeUnit) {
     return new DeploymentRollingUpdater(client, config, getNamespace(), rollingTimeUnit.toMillis(rollingTimeout), config.getLoggingInterval());
   }
 
   @Override
   public Deployment withReplicas(int count) {
-    return cascading(false).edit().editSpec().withReplicas(count).endSpec().done();
+    return cascading(false).accept(d -> d.getSpec().setReplicas(count));
   }
 
   @Override
@@ -246,12 +253,12 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
   }
 
   @Override
-  public ImageEditReplacePatchable<Deployment, Deployment, DoneableDeployment> withTimeoutInMillis(long timeoutInMillis) {
+  public ImageEditReplacePatchable<Deployment> withTimeoutInMillis(long timeoutInMillis) {
     return new DeploymentOperationsImpl(((RollingOperationContext) context).withRollingTimeout(timeoutInMillis));
   }
 
   @Override
-  public ImageEditReplacePatchable<Deployment, Deployment, DoneableDeployment> withTimeout(long timeout, TimeUnit unit) {
+  public ImageEditReplacePatchable<Deployment> withTimeout(long timeout, TimeUnit unit) {
     return new DeploymentOperationsImpl(((RollingOperationContext) context).withRollingTimeUnit(unit));
   }
 
@@ -316,15 +323,15 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
 
   public String getLog(Boolean isPretty) {
     StringBuilder stringBuilder = new StringBuilder();
-    List<RollableScalableResource<ReplicaSet, DoneableReplicaSet>> rcList = doGetLog();
-    for (RollableScalableResource<ReplicaSet, DoneableReplicaSet> rcOperation : rcList) {
+    List<RollableScalableResource<ReplicaSet>> rcList = doGetLog();
+    for (RollableScalableResource<ReplicaSet> rcOperation : rcList) {
       stringBuilder.append(rcOperation.getLog(isPretty));
     }
     return stringBuilder.toString();
   }
 
-  private List<RollableScalableResource<ReplicaSet, DoneableReplicaSet>> doGetLog() {
-    List<RollableScalableResource<ReplicaSet, DoneableReplicaSet>> rcs = new ArrayList<>();
+  private List<RollableScalableResource<ReplicaSet>> doGetLog() {
+    List<RollableScalableResource<ReplicaSet>> rcs = new ArrayList<>();
     Deployment deployment = fromServer().get();
     String rcUid = deployment.getMetadata().getUid();
 
@@ -333,8 +340,8 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
         null, context.getApiGroupName(), context.getApiGroupVersion(), context.getCascading(), null, context.getLabels(),
         context.getLabelsNot(), context.getLabelsIn(), context.getLabelsNotIn(), context.getFields(), context.getFieldsNot(),
         context.getResourceVersion(), context.getReloadingFromServer(), context.getGracePeriodSeconds(), context.getPropagationPolicy(),
-        context.getWatchRetryInitialBackoffMillis(), context.getWatchRetryBackoffMultiplier(), false, 0, null
-      ), podLogWaitTimeout);
+        context.getWatchRetryInitialBackoffMillis(), context.getWatchRetryBackoffMultiplier(), false, 0, null,
+      context.isNamespaceFromGlobalConfig()), podLogWaitTimeout);
     ReplicaSetList rcList = rsOperations.withLabels(getDeploymentSelectorLabels(deployment)).list();
 
 
@@ -353,7 +360,7 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
    */
   @Override
   public Reader getLogReader() {
-    List<RollableScalableResource<ReplicaSet, DoneableReplicaSet>> podResources = doGetLog();
+    List<RollableScalableResource<ReplicaSet>> podResources = doGetLog();
     if (podResources.size() > 1) {
       throw new KubernetesClientException("Reading logs is not supported for multicontainer jobs");
     } else if (podResources.size() == 1) {
@@ -369,7 +376,7 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
 
   @Override
   public LogWatch watchLog(OutputStream out) {
-    List<RollableScalableResource<ReplicaSet, DoneableReplicaSet>> podResources = doGetLog();
+    List<RollableScalableResource<ReplicaSet>> podResources = doGetLog();
     if (podResources.size() > 1) {
       throw new KubernetesClientException("Watching logs is not supported for multicontainer jobs");
     } else if (podResources.size() == 1) {
@@ -379,7 +386,7 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
   }
 
   @Override
-  public Loggable<String, LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
+  public Loggable<LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
     return new DeploymentOperationsImpl(((RollingOperationContext) context), logWaitTimeout);
   }
 

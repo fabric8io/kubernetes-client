@@ -22,9 +22,8 @@ package io.fabric8.kubernetes.client.dsl;
  *
  * @param <T> The Kubernetes resource type.
  * @param <L> The list variant of the Kubernetes resource type.
- * @param <D> The doneable variant of the Kubernetes resource type.
  * @param <R> The resource operations.
  */
-public interface ParameterMixedOperation<T, L, D, R extends Resource<T, D>>
-  extends MixedOperation<T, L, D, R>, Parameterizable<MixedOperation<T, L, D, R>> {
+public interface ParameterMixedOperation<T, L, R extends Resource<T>>
+  extends MixedOperation<T, L, R>, Parameterizable<MixedOperation<T, L, R>> {
 }

@@ -27,6 +27,8 @@ import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildRequestBuilder;
+import io.fabric8.openshift.api.model.BuildConfigBuilder;
+import io.fabric8.openshift.api.model.ImageStreamBuilder;
 import io.fabric8.openshift.api.model.WebHookTriggerBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.slf4j.Logger;
@@ -37,10 +39,8 @@ public class BuildConfigExamples {
 
   public static void main(String[] args) throws InterruptedException {
     Config config = new ConfigBuilder().build();
-    KubernetesClient kubernetesClient = new DefaultKubernetesClient(config);
-    OpenShiftClient client = kubernetesClient.adapt(OpenShiftClient.class);
-
-    try {
+    try(KubernetesClient kubernetesClient = new DefaultKubernetesClient(config)){
+      OpenShiftClient client = kubernetesClient.adapt(OpenShiftClient.class);
       // Create a namespace for all our stuff
       Namespace ns = new NamespaceBuilder().withNewMetadata().withName("thisisatest").addToLabels("this", "rocks").endMetadata().build();
       log("Created namespace", client.namespaces().create(ns));
@@ -49,7 +49,7 @@ public class BuildConfigExamples {
 
       client.serviceAccounts().inNamespace("thisisatest").create(fabric8);
 
-      log("Created image stream", client.imageStreams().inNamespace("thisisatest").createNew()
+      log("Created image stream", client.imageStreams().inNamespace("thisisatest").create(new ImageStreamBuilder()
         .withNewMetadata()
         .withName("example-camel-cdi")
         .endMetadata()
@@ -60,9 +60,9 @@ public class BuildConfigExamples {
         .withDockerImageRepository("fabric8/example-camel-cdi")
         .endSpec()
         .withNewStatus().withDockerImageRepository("").endStatus()
-        .done());
+        .build()));
 
-      log("Created image stream", client.imageStreams().inNamespace("thisisatest").createNew()
+      log("Created image stream", client.imageStreams().inNamespace("thisisatest").create(new ImageStreamBuilder()
         .withNewMetadata()
         .withName("java-sti")
         .endMetadata()
@@ -73,9 +73,9 @@ public class BuildConfigExamples {
         .withDockerImageRepository("fabric8/java-sti")
         .endSpec()
         .withNewStatus().withDockerImageRepository("").endStatus()
-        .done());
+        .build()));
 
-      log("Created build config", client.buildConfigs().inNamespace("thisisatest").createNew()
+        log("Created build config", client.buildConfigs().inNamespace("thisisatest").create(new BuildConfigBuilder()
         .withNewMetadata()
         .withName("custom-build-config")
         .endMetadata()
@@ -107,7 +107,7 @@ public class BuildConfigExamples {
         .endGithub()
         .endTrigger()
         .endSpec()
-        .done());
+        .build()));
 
       Build build = client.buildConfigs().inNamespace("thisisatest").withName("custom-build-config").instantiate(new BuildRequestBuilder()
         .withNewMetadata().withName("custom-build-config").endMetadata()
@@ -134,9 +134,6 @@ public class BuildConfigExamples {
 
 
       log("Done.");
-    }finally {
-      client.namespaces().withName("thisisatest").delete();
-      client.close();
     }
   }
 

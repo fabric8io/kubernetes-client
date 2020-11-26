@@ -132,7 +132,7 @@ class CronJobCrudTest {
     assertTrue(bDeleted);
     assertEquals(0, cronJobList.getItems().size());
 
-    cronJob2 = client.batch().cronjobs().inNamespace("ns2").withName("cronJob2").edit().editSpec().withSchedule("*/1 * * * *").and().done();
+    cronJob2 = client.batch().cronjobs().inNamespace("ns2").withName("cronJob2").edit(c -> new CronJobBuilder(c).editSpec().withSchedule("*/1 * * * *").and().build());
     assertNotNull(cronJob2);
     assertEquals("*/1 * * * *", cronJob2.getSpec().getSchedule());
   }

@@ -22,29 +22,6 @@ import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.VersionInfo;
 import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.openshift.api.model.*;
-import io.fabric8.openshift.api.model.DoneableBuild;
-import io.fabric8.openshift.api.model.DoneableBuildConfig;
-import io.fabric8.openshift.api.model.DoneableClusterNetwork;
-import io.fabric8.openshift.api.model.DoneableClusterRoleBinding;
-import io.fabric8.openshift.api.model.DoneableDeploymentConfig;
-import io.fabric8.openshift.api.model.DoneableEgressNetworkPolicy;
-import io.fabric8.openshift.api.model.DoneableGroup;
-import io.fabric8.openshift.api.model.DoneableImage;
-import io.fabric8.openshift.api.model.DoneableImageStream;
-import io.fabric8.openshift.api.model.DoneableImageStreamTag;
-import io.fabric8.openshift.api.model.DoneableImageTag;
-import io.fabric8.openshift.api.model.DoneableNetNamespace;
-import io.fabric8.openshift.api.model.DoneableOAuthAccessToken;
-import io.fabric8.openshift.api.model.DoneableOAuthAuthorizeToken;
-import io.fabric8.openshift.api.model.DoneableOAuthClient;
-import io.fabric8.openshift.api.model.DoneableRangeAllocation;
-import io.fabric8.openshift.api.model.DoneableRole;
-import io.fabric8.openshift.api.model.DoneableRoleBinding;
-import io.fabric8.openshift.api.model.DoneableRoute;
-import io.fabric8.openshift.api.model.DoneableSecurityContextConstraints;
-import io.fabric8.openshift.api.model.DoneableSubjectAccessReview;
-import io.fabric8.openshift.api.model.DoneableTemplate;
-import io.fabric8.openshift.api.model.DoneableUser;
 import io.fabric8.openshift.client.dsl.*;
 
 import java.net.URL;
@@ -118,21 +95,21 @@ public interface OpenShiftClient extends KubernetesClient {
    *
    * @return NonNamespaceOperation instance for NetNamespace object
    */
-  NonNamespaceOperation<NetNamespace, NetNamespaceList, DoneableNetNamespace, Resource<NetNamespace, DoneableNetNamespace>> netNamespaces();
+  NonNamespaceOperation<NetNamespace, NetNamespaceList, Resource<NetNamespace>> netNamespaces();
 
   /**
    * API entrypoint for handling ClusterNetwork(network.openshift.io/v1)
    *
    * @return NonNamespaceOperation instance for ClusterNetwork object
    */
-  NonNamespaceOperation<ClusterNetwork, ClusterNetworkList, DoneableClusterNetwork, Resource<ClusterNetwork, DoneableClusterNetwork>> clusterNetworks();
+  NonNamespaceOperation<ClusterNetwork, ClusterNetworkList, Resource<ClusterNetwork>> clusterNetworks();
 
   /**
    * API entrypoint for handling EgressNetworkPolicy(network.openshift.io/v1)
    *
    * @return MixedOperation instance for EgressNetworkPolicy object
    */
-  MixedOperation<EgressNetworkPolicy, EgressNetworkPolicyList, DoneableEgressNetworkPolicy, Resource<EgressNetworkPolicy, DoneableEgressNetworkPolicy>> egressNetworkPolicies();
+  MixedOperation<EgressNetworkPolicy, EgressNetworkPolicyList, Resource<EgressNetworkPolicy>> egressNetworkPolicies();
 
   /**
    * {@inheritDoc}
@@ -169,77 +146,77 @@ public interface OpenShiftClient extends KubernetesClient {
    *
    * @return MixedOperation instance for Build object
    */
-  MixedOperation<Build, BuildList, DoneableBuild, BuildResource<Build, DoneableBuild, String, LogWatch>> builds();
+  MixedOperation<Build, BuildList, BuildResource<Build, LogWatch>> builds();
 
   /**
    * API entrypoint for handling BuildConfig(build.openshift.io/v1)
    *
    * @return MixedOperation instance for BuildConfig object
    */
-  MixedOperation<BuildConfig, BuildConfigList, DoneableBuildConfig, BuildConfigResource<BuildConfig, DoneableBuildConfig, Void, Build>> buildConfigs();
+  MixedOperation<BuildConfig, BuildConfigList, BuildConfigResource<BuildConfig, Void, Build>> buildConfigs();
 
   /**
    * API entrypoint for handling DeploymentConfig(apps.openshift.io/v1)
    *
    * @return MixedOperation instance for DeploymentConfig object
    */
-  MixedOperation<DeploymentConfig, DeploymentConfigList, DoneableDeploymentConfig, DeployableScalableResource<DeploymentConfig, DoneableDeploymentConfig>> deploymentConfigs();
+  MixedOperation<DeploymentConfig, DeploymentConfigList, DeployableScalableResource<DeploymentConfig>> deploymentConfigs();
 
   /**
    * API entrypoint for handling Group(user.openshift.io/v1)
    *
    * @return NonNamespaceOperation instance for Group object
    */
-  NonNamespaceOperation<Group, GroupList, DoneableGroup, Resource<Group, DoneableGroup>> groups();
+  NonNamespaceOperation<Group, GroupList, Resource<Group>> groups();
 
   /**
    * API entrypoint for accessing Image(image.openshift.io/v1)
    *
    * @return Non Namespace Operation object for Image
    */
-  NonNamespaceOperation<Image, ImageList, DoneableImage, Resource<Image, DoneableImage>> images();
+  NonNamespaceOperation<Image, ImageList, Resource<Image>> images();
 
   /**
    * API entrypoint for accessing ImageTag(image.openshift.io/v1)
    *
    * @return MixedOperation object for ImageTag
    */
-  MixedOperation<ImageTag, ImageTagList, DoneableImageTag, Resource<ImageTag, DoneableImageTag>> imageTags();
+  MixedOperation<ImageTag, ImageTagList, Resource<ImageTag>> imageTags();
 
   /**
    * API entrypoint for accessing ImageStream(image.openshift.io/v1)
    *
    * @return MixedOperation object for ImageStream
    */
-  MixedOperation<ImageStream, ImageStreamList, DoneableImageStream, Resource<ImageStream, DoneableImageStream>> imageStreams();
+  MixedOperation<ImageStream, ImageStreamList, Resource<ImageStream>> imageStreams();
 
   /**
    * API entrypoint for accessing ImageStreamTag(image.openshift.io/v1)
    *
    * @return MixedOperation object for ImageStreamTag
    */
-  MixedOperation<ImageStreamTag, ImageStreamTagList, DoneableImageStreamTag, Resource<ImageStreamTag, DoneableImageStreamTag>> imageStreamTags();
+  MixedOperation<ImageStreamTag, ImageStreamTagList, Resource<ImageStreamTag>> imageStreamTags();
 
   /**
    * API entrypoint for accessing OAuthAccessToken(oauth.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for OAuthAccessToken
    */
-  NonNamespaceOperation<OAuthAccessToken, OAuthAccessTokenList, DoneableOAuthAccessToken, Resource<OAuthAccessToken, DoneableOAuthAccessToken>> oAuthAccessTokens();
+  NonNamespaceOperation<OAuthAccessToken, OAuthAccessTokenList, Resource<OAuthAccessToken>> oAuthAccessTokens();
 
   /**
    * API entrypoint for accessing OAuthAuthorizeToken(oauth.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for OAuthAuthorizeToken
    */
-  NonNamespaceOperation<OAuthAuthorizeToken, OAuthAuthorizeTokenList, DoneableOAuthAuthorizeToken, Resource<OAuthAuthorizeToken, DoneableOAuthAuthorizeToken>> oAuthAuthorizeTokens();
+  NonNamespaceOperation<OAuthAuthorizeToken, OAuthAuthorizeTokenList, Resource<OAuthAuthorizeToken>> oAuthAuthorizeTokens();
 
   /**
    * API entrypoint for accessing OAuthClient(oauth.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for OAuthClient
    */
-  NonNamespaceOperation<OAuthClient, OAuthClientList, DoneableOAuthClient, Resource<OAuthClient, DoneableOAuthClient>> oAuthClients();
+  NonNamespaceOperation<OAuthClient, OAuthClientList, Resource<OAuthClient>> oAuthClients();
 
   /**
    * API entrypoint for accessing Project operations(project.openshift.io/v1)
@@ -267,14 +244,14 @@ public interface OpenShiftClient extends KubernetesClient {
    *
    * @return MixedOperation object for Role
    */
-  MixedOperation<Role, RoleList, DoneableRole, Resource<Role, DoneableRole>> roles();
+  MixedOperation<Role, RoleList, Resource<Role>> roles();
 
   /**
    * API entrypoint for accessing RoleBinding(authorization.openshift.io/v1)
    *
    * @return MixedOperation object for RoleBinding
    */
-  MixedOperation<RoleBinding, RoleBindingList, DoneableRoleBinding, Resource<RoleBinding, DoneableRoleBinding>>
+  MixedOperation<RoleBinding, RoleBindingList, Resource<RoleBinding>>
   roleBindings();
 
   /**
@@ -282,37 +259,37 @@ public interface OpenShiftClient extends KubernetesClient {
    *
    * @return MixedOperation object for Route
    */
-  MixedOperation<Route, RouteList, DoneableRoute, Resource<Route, DoneableRoute>> routes();
+  MixedOperation<Route, RouteList, Resource<Route>> routes();
 
   /**
    * API entrypoint for accessing Template(template.openshift.io/v1)
    *
    * @return {@link ParameterMixedOperation} object for Template operations
    */
-  ParameterMixedOperation<Template, TemplateList, DoneableTemplate, TemplateResource<Template, KubernetesList, DoneableTemplate>> templates();
+  ParameterMixedOperation<Template, TemplateList, TemplateResource<Template, KubernetesList>> templates();
 
   /**
    * API entrypoint for accessing User(user.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for User
    */
-  NonNamespaceOperation<User, UserList, DoneableUser, Resource<User, DoneableUser>> users();
+  NonNamespaceOperation<User, UserList, Resource<User>> users();
 
   /**
    * API entrypoint for accessing RangeAllocation(security.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for RangeAllocation
    */
-  NonNamespaceOperation<RangeAllocation, RangeAllocationList, DoneableRangeAllocation, Resource<RangeAllocation, DoneableRangeAllocation>> rangeAllocations();
+  NonNamespaceOperation<RangeAllocation, RangeAllocationList, Resource<RangeAllocation>> rangeAllocations();
 
   /**
    * API entrypoint for accessing SecurityContextConstraints(security.openshift.io/v1)
    *
    * @return NonNamespaceOperation object for SecurityContextConstraints
    */
-  NonNamespaceOperation<SecurityContextConstraints, SecurityContextConstraintsList, DoneableSecurityContextConstraints, Resource<SecurityContextConstraints, DoneableSecurityContextConstraints>> securityContextConstraints();
+  NonNamespaceOperation<SecurityContextConstraints, SecurityContextConstraintsList, Resource<SecurityContextConstraints>> securityContextConstraints();
 
-  Createable<SubjectAccessReview, SubjectAccessReviewResponse, DoneableSubjectAccessReview> subjectAccessReviews();
+  InOutCreateable<SubjectAccessReview, SubjectAccessReviewResponse> subjectAccessReviews();
 
   OpenShiftLocalSubjectAccessReviewOperationsImpl localSubjectAccessReviews();
 
@@ -321,7 +298,7 @@ public interface OpenShiftClient extends KubernetesClient {
    *
    * @return MixedOperation object for ClusterRoleBinding
    */
-  MixedOperation<ClusterRoleBinding, ClusterRoleBindingList, DoneableClusterRoleBinding, Resource<ClusterRoleBinding, DoneableClusterRoleBinding>> clusterRoleBindings();
+  MixedOperation<ClusterRoleBinding, ClusterRoleBindingList, Resource<ClusterRoleBinding>> clusterRoleBindings();
 
   /**
    * Configure Request Config

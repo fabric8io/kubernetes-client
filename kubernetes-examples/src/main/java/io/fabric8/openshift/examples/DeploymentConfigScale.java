@@ -20,15 +20,13 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigList;
 import io.fabric8.openshift.api.model.DeploymentConfigSpec;
-import io.fabric8.openshift.api.model.DoneableDeploymentConfig;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftAPIGroups;
 import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.dsl.DeployableScalableResource;
 
 import java.util.List;
-
-import static org.junit.Assert.assertNotNull;
+import java.util.Objects;
 
 public class DeploymentConfigScale {
   public static void main(String[] args) {
@@ -53,7 +51,7 @@ public class DeploymentConfigScale {
         System.out.println("WARNING this cluster does not support the API Group " + OpenShiftAPIGroups.APPS);
         return;
       }
-      DeployableScalableResource<DeploymentConfig, DoneableDeploymentConfig> resource = client.deploymentConfigs().withName(name);
+      DeployableScalableResource<DeploymentConfig> resource = client.deploymentConfigs().withName(name);
       DeploymentConfig deploymentConfig = resource.get();
       if (deploymentConfig == null) {
         System.out.println("Could not find a DeploymentConfig for name: " + name);
@@ -72,10 +70,10 @@ public class DeploymentConfigScale {
 
 
       // now lets find the DC via list
-      DeploymentConfigList list = client.deploymentConfigs().list();
-      assertNotNull("No DeploymentConfigList returned", list);
-      List<DeploymentConfig> items = list.getItems();
-      assertNotNull("No DeploymentConfigList.getItems() returned", items);
+      DeploymentConfigList list = Objects.requireNonNull(client.deploymentConfigs().list(),
+        "No DeploymentConfigList returned");
+      List<DeploymentConfig> items = Objects.requireNonNull(list.getItems(),
+        "No DeploymentConfigList.getItems() returned");
 
       DeploymentConfig found = null;
       for (DeploymentConfig item : items) {
@@ -84,7 +82,7 @@ public class DeploymentConfigScale {
           break;
         }
       }
-      assertNotNull("Could not find DeploymentConfig in list.getItems() for name: " + name, found);
+      Objects.requireNonNull(found, "Could not find DeploymentConfig in list.getItems() for name: " + name);
       found.getSpec().setReplicas(oldReplicas);
 
       try {

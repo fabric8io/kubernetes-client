@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectReferenceBuilder;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.openshift.api.model.DoneableRoleBinding;
 import io.fabric8.openshift.api.model.RoleBinding;
 import io.fabric8.openshift.api.model.RoleBindingBuilder;
 import io.fabric8.openshift.api.model.RoleBindingList;
@@ -33,7 +32,7 @@ import java.util.concurrent.ExecutionException;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.AUTHORIZATION;
 
-public class RoleBindingOperationsImpl extends OpenShiftOperation<RoleBinding, RoleBindingList, DoneableRoleBinding, Resource<RoleBinding, DoneableRoleBinding>> {
+public class RoleBindingOperationsImpl extends OpenShiftOperation<RoleBinding, RoleBindingList, Resource<RoleBinding>> {
 
   public static final String SERVICE_ACCOUNT = "ServiceAccount";
   public static final String USER = "User";
@@ -48,7 +47,6 @@ public class RoleBindingOperationsImpl extends OpenShiftOperation<RoleBinding, R
       .withPlural("rolebindings"));
     this.type = RoleBinding.class;
     this.listType = RoleBindingList.class;
-    this.doneableType = DoneableRoleBinding.class;
   }
 
   @Override

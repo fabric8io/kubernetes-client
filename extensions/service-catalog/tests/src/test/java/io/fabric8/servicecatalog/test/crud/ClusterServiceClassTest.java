@@ -82,11 +82,11 @@ class ClusterServiceClassTest {
         assertNotNull(r1);
 
         //Update
-        ClusterServiceClass u1 = client.clusterServiceClasses().withName("class1").edit()
+        ClusterServiceClass u1 = client.clusterServiceClasses().withName("class1").edit(c -> new ClusterServiceClassBuilder(c)
                 .editMetadata()
                 .addToLabels("updated", "true")
                 .endMetadata()
-                .done();
+                .build());
 
         assertNotNull(u1);
         assertEquals("true", u1.getMetadata().getLabels().get("updated"));

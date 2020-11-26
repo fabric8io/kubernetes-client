@@ -23,11 +23,10 @@ import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.SecretOperationsImpl;
 import io.fabric8.servicecatalog.api.model.*;
 
-import io.fabric8.servicecatalog.api.model.DoneableServiceBinding;
 import okhttp3.OkHttpClient;
 
 
-public class ServiceBindingOperationsImpl extends HasMetadataOperation<ServiceBinding, ServiceBindingList, DoneableServiceBinding, ServiceBindingResource> implements ServiceBindingResource {
+public class ServiceBindingOperationsImpl extends HasMetadataOperation<ServiceBinding, ServiceBindingList, ServiceBindingResource> implements ServiceBindingResource {
 
   public ServiceBindingOperationsImpl(OkHttpClient client, Config config) {
       this(new OperationContext().withOkhttpClient(client).withConfig(config));
@@ -37,15 +36,14 @@ public class ServiceBindingOperationsImpl extends HasMetadataOperation<ServiceBi
         super(ctx.withApiGroupName("servicecatalog.k8s.io").withApiGroupVersion("v1beta1").withPlural("servicebindings"));
         this.type=ServiceBinding.class;
         this.listType=ServiceBindingList.class;
-        this.doneableType= DoneableServiceBinding.class;
     }
 
     @Override
-    public BaseOperation<ServiceBinding, ServiceBindingList, DoneableServiceBinding, ServiceBindingResource> newInstance(OperationContext context) {
+    public BaseOperation<ServiceBinding, ServiceBindingList, ServiceBindingResource> newInstance(OperationContext context) {
         return new ServiceBindingOperationsImpl(context);
     }
 
-    @Override
+  @Override
   public boolean isResourceNamespaced() {
     return true;
   }

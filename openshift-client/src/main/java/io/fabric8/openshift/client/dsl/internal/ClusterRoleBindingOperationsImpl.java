@@ -20,12 +20,11 @@ import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import okhttp3.OkHttpClient;
 import io.fabric8.openshift.api.model.ClusterRoleBinding;
 import io.fabric8.openshift.api.model.ClusterRoleBindingList;
-import io.fabric8.openshift.api.model.DoneableClusterRoleBinding;
 import io.fabric8.openshift.client.OpenShiftConfig;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.AUTHORIZATION;
 
-public class ClusterRoleBindingOperationsImpl extends OpenShiftOperation<ClusterRoleBinding, ClusterRoleBindingList, DoneableClusterRoleBinding, Resource<ClusterRoleBinding, DoneableClusterRoleBinding>> {
+public class ClusterRoleBindingOperationsImpl extends OpenShiftOperation<ClusterRoleBinding, ClusterRoleBindingList, Resource<ClusterRoleBinding>> {
 
   public ClusterRoleBindingOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
     this(new OperationContext().withOkhttpClient(client).withConfig(config));
@@ -36,7 +35,6 @@ public class ClusterRoleBindingOperationsImpl extends OpenShiftOperation<Cluster
       .withPlural("clusterrolebindings"));
     this.type = ClusterRoleBinding.class;
     this.listType = ClusterRoleBindingList.class;
-    this.doneableType = DoneableClusterRoleBinding.class;
   }
 
   @Override

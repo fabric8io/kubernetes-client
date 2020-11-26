@@ -20,6 +20,7 @@ import io.fabric8.commons.ClusterEntity;
 import io.fabric8.commons.DeleteEntity;
 import io.fabric8.commons.ReadyEntity;
 import io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicy;
+import io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicyBuilder;
 import io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicyList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.arquillian.cube.kubernetes.api.Session;
@@ -111,9 +112,9 @@ public class NetworkPolicyIT {
   public void update() {
     ReadyEntity<NetworkPolicy> networkPolicyReady = new ReadyEntity<>(NetworkPolicy.class, client, "networkpolicy-update", session.getNamespace());
     NetworkPolicy networkPolicy = client.network().v1().networkPolicies()
-      .withName("networkpolicy-update").edit()
+      .withName("networkpolicy-update").edit(n -> new NetworkPolicyBuilder(n)
       .editMetadata().addToLabels("bar", "foo").endMetadata()
-      .done();
+      .build());
 
     await().atMost(30, TimeUnit.SECONDS).until(networkPolicyReady);
     assertNotNull(networkPolicy);

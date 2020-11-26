@@ -15,12 +15,11 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.api.model.autoscaling.v1.DoneableHorizontalPodAutoscaler;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.HorizontalPodAutoscaler;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.HorizontalPodAutoscalerList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 
 public interface V1AutoscalingAPIGroupDSL extends Client {
-  MixedOperation<HorizontalPodAutoscaler, HorizontalPodAutoscalerList, DoneableHorizontalPodAutoscaler, Resource<HorizontalPodAutoscaler, DoneableHorizontalPodAutoscaler>> horizontalPodAutoscalers();
+  MixedOperation<HorizontalPodAutoscaler, HorizontalPodAutoscalerList, Resource<HorizontalPodAutoscaler>> horizontalPodAutoscalers();
 }

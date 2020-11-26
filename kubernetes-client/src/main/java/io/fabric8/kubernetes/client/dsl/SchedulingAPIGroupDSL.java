@@ -15,11 +15,10 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.api.model.scheduling.DoneablePriorityClass;
 import io.fabric8.kubernetes.api.model.scheduling.PriorityClass;
 import io.fabric8.kubernetes.api.model.scheduling.PriorityClassList;
 import io.fabric8.kubernetes.client.Client;
 
 public interface SchedulingAPIGroupDSL extends Client {
-  MixedOperation<PriorityClass, PriorityClassList, DoneablePriorityClass, Resource<PriorityClass, DoneablePriorityClass>> priorityClass();
+  MixedOperation<PriorityClass, PriorityClassList, Resource<PriorityClass>> priorityClass();
 }

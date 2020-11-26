@@ -19,8 +19,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.HttpUrl;
@@ -36,14 +36,10 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.Executors;
 import java.util.concurrent.RejectedExecutionException;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static java.net.HttpURLConnection.HTTP_OK;
@@ -53,44 +49,25 @@ import static java.net.HttpURLConnection.HTTP_OK;
  * instead of using a solid type for deserializing events, it uses plain strings.
  *
  */
-public class RawWatchConnectionManager implements Watch {
+public class RawWatchConnectionManager extends AbstractWatchManager<String> {
   private static final Logger logger = LoggerFactory.getLogger(RawWatchConnectionManager.class);
   private ObjectMapper objectMapper;
-  private Watcher<String> watcher;
   private HttpUrl.Builder watchUrlBuilder;
 
-  private final AtomicBoolean forceClosed = new AtomicBoolean();
-  private final AtomicReference<String> resourceVersion;
-  private final int reconnectLimit;
-  private final int reconnectInterval;
-  private int maxIntervalExponent;
-  private final AtomicInteger currentReconnectAttempt = new AtomicInteger(0);
   private final AtomicReference<WebSocket> webSocketRef = new AtomicReference<>();
-  // single threaded serial executor
-  private final ScheduledExecutorService executor;
   /** True if an onOpen callback was received on the first connect attempt, ie. the watch was successfully started. */
   private final AtomicBoolean started = new AtomicBoolean(false);
   private final AtomicBoolean reconnectPending = new AtomicBoolean(false);
   /** Blocking queue for startup exceptions. */
   private final ArrayBlockingQueue<Object> queue = new ArrayBlockingQueue<>(1);
 
-  private WebSocket webSocket;
-  private OkHttpClient clonedClient;
-
   public RawWatchConnectionManager(OkHttpClient okHttpClient, HttpUrl.Builder watchUrlBuilder, ListOptions listOptions, ObjectMapper objectMapper, final Watcher<String> watcher, int reconnectLimit, int reconnectInterval, int maxIntervalExponent)  {
-    this.clonedClient = okHttpClient;
+    super(
+      watcher, listOptions, reconnectLimit, reconnectInterval, maxIntervalExponent,
+      okHttpClient.newBuilder().build()
+    );
     this.watchUrlBuilder = watchUrlBuilder;
     this.objectMapper = objectMapper;
-    this.watcher = watcher;
-    this.reconnectLimit = reconnectLimit;
-    this.reconnectInterval = reconnectInterval;
-    this.resourceVersion = new AtomicReference<>(listOptions.getResourceVersion());
-    this.maxIntervalExponent = maxIntervalExponent;
-    executor = Executors.newSingleThreadScheduledExecutor(r -> {
-      Thread ret = new Thread(r, "Executor for Watch " + System.identityHashCode(RawWatchConnectionManager.this));
-      ret.setDaemon(true);
-      return ret;
-    });
 
     runWatch();
   }
@@ -111,7 +88,7 @@ public class RawWatchConnectionManager implements Watch {
       .url(watchUrl)
       .addHeader("Origin", origin)
       .build();
-    webSocket = clonedClient.newWebSocket(request, new WebSocketListener() {
+    clonedClient.newWebSocket(request, new WebSocketListener() {
       @Override
       public void onOpen(WebSocket webSocket, Response response) {
         logger.info("Websocket opened");
@@ -155,8 +132,8 @@ public class RawWatchConnectionManager implements Watch {
           logger.debug("Ignoring onClose for already closed/closing websocket");
           return;
         }
-        if (currentReconnectAttempt.get() >= reconnectLimit && reconnectLimit >= 0) {
-          closeEvent(new KubernetesClientException("Connection unexpectedly closed"));
+        if (cannotReconnect()) {
+          closeEvent(new WatcherException("Connection unexpectedly closed"));
           return;
         }
         scheduleReconnect();
@@ -203,8 +180,8 @@ public class RawWatchConnectionManager implements Watch {
           }
         }
 
-        if (currentReconnectAttempt.get() >= reconnectLimit && reconnectLimit >= 0) {
-          closeEvent(new KubernetesClientException("Connection failure", t));
+        if (cannotReconnect()) {
+          closeEvent(new WatcherException("Connection failure", t));
           return;
         }
 
@@ -214,45 +191,41 @@ public class RawWatchConnectionManager implements Watch {
   }
 
   private void scheduleReconnect() {
-
     logger.debug("Submitting reconnect task to the executor");
-    // Don't submit new tasks after having called shutdown() on executor
-    if(!executor.isShutdown()) {
-      // make sure that whichever thread calls this method, the tasks are
-      // performed serially in the executor
-      executor.submit(new RawWatchConnectionManager.NamedRunnable("scheduleReconnect") {
-        @Override
-        public void execute() {
-          if (!reconnectPending.compareAndSet(false, true)) {
-            logger.debug("Reconnect already scheduled");
-            return;
-          }
-          webSocketRef.set(null);
-          try {
-            // actual reconnect only after the back-off time has passed, without
-            // blocking the thread
-            logger.debug("Scheduling reconnect task");
-            executor.schedule(new RawWatchConnectionManager.NamedRunnable("reconnectAttempt") {
-              @Override
-              public void execute() {
-                try {
-                  runWatch();
-                  reconnectPending.set(false);
-                } catch (Exception e) {
-                  // An unexpected error occurred and we didn't even get an onFailure callback.
-                  logger.error("Exception in reconnect", e);
-                  webSocketRef.set(null);
-                  closeEvent(new KubernetesClientException("Unhandled exception in reconnect attempt", e));
-                  close();
-                }
-              }
-            }, nextReconnectInterval(), TimeUnit.MILLISECONDS);
-          } catch (RejectedExecutionException e) {
-            reconnectPending.set(false);
-          }
+    // make sure that whichever thread calls this method, the tasks are
+    // performed serially in the executor
+    submit(new NamedRunnable("scheduleReconnect") {
+      @Override
+      public void execute() {
+        if (!reconnectPending.compareAndSet(false, true)) {
+          logger.debug("Reconnect already scheduled");
+          return;
         }
-      });
-    }
+        webSocketRef.set(null);
+        try {
+          // actual reconnect only after the back-off time has passed, without
+          // blocking the thread
+          logger.debug("Scheduling reconnect task");
+          schedule(new NamedRunnable("reconnectAttempt") {
+            @Override
+            public void execute() {
+              try {
+                runWatch();
+                reconnectPending.set(false);
+              } catch (Exception e) {
+                // An unexpected error occurred and we didn't even get an onFailure callback.
+                logger.error("Exception in reconnect", e);
+                webSocketRef.set(null);
+                closeEvent(new WatcherException("Unhandled exception in reconnect attempt", e));
+                close();
+              }
+            }
+          }, nextReconnectInterval(), TimeUnit.MILLISECONDS);
+        } catch (RejectedExecutionException e) {
+          reconnectPending.set(false);
+        }
+      }
+    });
   }
 
   public void waitUntilReady() {
@@ -262,75 +235,9 @@ public class RawWatchConnectionManager implements Watch {
   @Override
   public void close() {
     logger.debug("Force closing the watch {}", this);
-    closeEvent(null);
+    closeEvent();
     closeWebSocket(webSocketRef.getAndSet(null));
-    if (!executor.isShutdown()) {
-      try {
-        executor.shutdown();
-        if (!executor.awaitTermination(1, TimeUnit.SECONDS)) {
-          logger.warn("Executor didn't terminate in time after shutdown in close(), killing it in: {}", this);
-          executor.shutdownNow();
-        }
-      } catch (Throwable t) {
-        throw KubernetesClientException.launderThrowable(t);
-      }
-    }
+    closeExecutorService();
   }
 
-  private void closeEvent(KubernetesClientException cause) {
-    if (forceClosed.getAndSet(true)) {
-      logger.debug("Ignoring duplicate firing of onClose event");
-      return;
-    }
-    watcher.onClose(cause);
-  }
-
-  private void closeWebSocket(WebSocket ws) {
-    if (ws != null) {
-      logger.debug("Closing websocket {}", ws);
-      try {
-        if (!ws.close(1000, null)) {
-          logger.warn("Failed to close websocket");
-        }
-      } catch (IllegalStateException e) {
-        logger.error("Called close on already closed websocket: {} {}", e.getClass(), e.getMessage());
-      }
-    }
-  }
-
-  private long nextReconnectInterval() {
-    int exponentOfTwo = currentReconnectAttempt.getAndIncrement();
-    if (exponentOfTwo > maxIntervalExponent)
-      exponentOfTwo = maxIntervalExponent;
-    long ret = reconnectInterval * (1 << exponentOfTwo);
-    logger.debug("Current reconnect backoff is " + ret + " milliseconds (T" + exponentOfTwo + ")");
-    return ret;
-  }
-
-  private static abstract class NamedRunnable implements Runnable {
-    private final String name;
-
-    public NamedRunnable(String name) {
-      this.name = Objects.requireNonNull(name);
-    }
-
-    private void tryToSetName(String value) {
-      try {
-        Thread.currentThread().setName(value);
-      } catch (SecurityException ignored) {
-      }
-    }
-
-    public final void run() {
-      String oldName = Thread.currentThread().getName();
-      tryToSetName(this.name + "|" + oldName);
-      try {
-        execute();
-      } finally {
-        tryToSetName(oldName);
-      }
-    }
-
-    protected abstract void execute();
-  }
 }

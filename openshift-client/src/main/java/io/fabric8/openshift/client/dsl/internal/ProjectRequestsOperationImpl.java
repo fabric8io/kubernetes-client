@@ -22,7 +22,6 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.utils.Utils;
-import io.fabric8.openshift.api.model.DoneableProjectRequest;
 import io.fabric8.openshift.api.model.ProjectRequest;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.dsl.ProjectRequestOperation;
@@ -100,17 +99,6 @@ public class ProjectRequestsOperationImpl extends OperationSupport implements Pr
   @Override
   public ProjectRequest create(ProjectRequest resource) {
     return create(new ProjectRequest[]{resource});
-  }
-
-  @Override
-  public DoneableProjectRequest createNew() {
-    return new DoneableProjectRequest(item -> {
-      try {
-        return create(item);
-      } catch (Exception e) {
-        throw KubernetesClientException.launderThrowable(e);
-      }
-    });
   }
 
   @Override

@@ -17,7 +17,7 @@ package io.fabric8.kubernetes.client.dsl;
 
 import java.util.Map;
 
-public interface ImageEditReplacePatchable<I, T, D> extends EditReplacePatchable<I, T, D> {
+public interface ImageEditReplacePatchable<T> extends EditReplacePatchable<T> {
 
   /**
    * Update existing container image(s) of resources

@@ -22,17 +22,16 @@ import java.io.Reader;
 /**
  * Loggable interface for all resources which produce logs
  *
- * @param <S> logs as plain string
  * @param <W> returns a LogWatch for watching logs
  */
-public interface Loggable<S, W> {
+public interface Loggable<W> {
 
   /**
    * Get logs of a resource
    *
    * @return logs as string
    */
-  S getLog();
+  String getLog();
 
   /**
    * Get logs with pretty enabled
@@ -40,7 +39,7 @@ public interface Loggable<S, W> {
    * @param isPretty whether we need logs with pretty output or not
    * @return logs as string
    */
-  S getLog(Boolean isPretty);
+  String getLog(Boolean isPretty);
 
   /**
    * Get a Reader for reading logs
@@ -71,6 +70,6 @@ public interface Loggable<S, W> {
    * @param logWaitTimeout timeout in milliseconds
    * @return {@link Loggable} for fetching logs
    */
-  Loggable<S, W> withLogWaitTimeout(Integer logWaitTimeout);
+  Loggable<W> withLogWaitTimeout(Integer logWaitTimeout);
 
 }

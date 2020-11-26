@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.api.model.autoscaling.v2beta2.DoneableHorizontalPodAutoscaler;
 import io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HorizontalPodAutoscaler;
 import io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HorizontalPodAutoscalerList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
@@ -33,7 +32,7 @@ public class V2beta2AutoscalingAPIGroupClient extends BaseClient implements V2be
     super(httpClient, config);
   }
 
-  public MixedOperation<HorizontalPodAutoscaler, HorizontalPodAutoscalerList, DoneableHorizontalPodAutoscaler, Resource<HorizontalPodAutoscaler, DoneableHorizontalPodAutoscaler>> horizontalPodAutoscalers() {
+  public MixedOperation<HorizontalPodAutoscaler, HorizontalPodAutoscalerList, Resource<HorizontalPodAutoscaler>> horizontalPodAutoscalers() {
     return new HorizontalPodAutoscalerOperationsImpl(httpClient, getConfiguration());
   }
 }

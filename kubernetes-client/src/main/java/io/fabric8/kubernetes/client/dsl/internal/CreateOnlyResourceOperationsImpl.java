@@ -24,7 +24,7 @@ import okhttp3.OkHttpClient;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
-public class CreateOnlyResourceOperationsImpl<T, D> extends OperationSupport implements io.fabric8.kubernetes.client.dsl.Createable<T, T, D> {
+public class CreateOnlyResourceOperationsImpl<T> extends OperationSupport implements io.fabric8.kubernetes.client.dsl.Createable<T> {
   private final Class<T> subjectAccessRequestClass;
 
   public CreateOnlyResourceOperationsImpl(OkHttpClient client, Config config, String apiGroupName, String apiGroupVersion, String plural, Class<T> subjectAccessRequestClass) {
@@ -71,11 +71,6 @@ public class CreateOnlyResourceOperationsImpl<T, D> extends OperationSupport imp
       Thread.currentThread().interrupt();
       throw KubernetesClientException.launderThrowable(ie);
     }
-  }
-
-  @Override
-  public D createNew() {
-    throw new IllegalStateException("this operation is not supported, please use create() instead");
   }
 
   public T getItem() {

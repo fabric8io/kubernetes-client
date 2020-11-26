@@ -126,7 +126,7 @@ public class PodTemplateTest {
     KubernetesClient client = server.getClient();
 
     // When
-    PodTemplate podTemplate = client.v1().podTemplates().inNamespace("test").withName("pt1").edit().editMetadata().addToLabels("foo", "bar").endMetadata().done();
+    PodTemplate podTemplate = client.v1().podTemplates().inNamespace("test").withName("pt1").edit(p -> new PodTemplateBuilder(p).editMetadata().addToLabels("foo", "bar").endMetadata().build());
 
     // Then
     assertEquals("pt1", podTemplate.getMetadata().getName());

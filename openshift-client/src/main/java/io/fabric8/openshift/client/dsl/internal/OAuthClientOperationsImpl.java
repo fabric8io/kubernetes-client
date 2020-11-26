@@ -18,7 +18,6 @@ package io.fabric8.openshift.client.dsl.internal;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import okhttp3.OkHttpClient;
-import io.fabric8.openshift.api.model.DoneableOAuthClient;
 import io.fabric8.openshift.api.model.OAuthClient;
 import io.fabric8.openshift.api.model.OAuthClientList;
 import io.fabric8.openshift.client.OpenShiftConfig;
@@ -28,8 +27,8 @@ import java.util.TreeMap;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.OAUTH;
 
-public class OAuthClientOperationsImpl extends OpenShiftOperation<OAuthClient, OAuthClientList, DoneableOAuthClient,
-  Resource<OAuthClient, DoneableOAuthClient>> {
+public class OAuthClientOperationsImpl extends OpenShiftOperation<OAuthClient, OAuthClientList,
+  Resource<OAuthClient>> {
 
   public OAuthClientOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
     this(new OperationContext().withOkhttpClient(client).withConfig(config));
@@ -40,7 +39,6 @@ public class OAuthClientOperationsImpl extends OpenShiftOperation<OAuthClient, O
       .withPlural("oauthclients"));
     this.type = OAuthClient.class;
     this.listType = OAuthClientList.class;
-    this.doneableType = DoneableOAuthClient.class;
   }
 
   @Override

@@ -77,7 +77,7 @@ public class SecretCrudTest {
     assertNotNull(aSecretList);
     assertEquals(0, aSecretList.getItems().size());
 
-    secret2 = client.secrets().inNamespace("ns2").withName("secret2").edit().removeFromData("one").done();
+    secret2 = client.secrets().inNamespace("ns2").withName("secret2").edit(s -> new SecretBuilder(s).removeFromData("one").build());
     assertNotNull(secret2);
     assertEquals(null, secret2.getData());
   }

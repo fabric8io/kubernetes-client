@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
@@ -66,6 +67,7 @@ public class SharedInformerFactory extends BaseOperation {
    */
   public SharedInformerFactory(ExecutorService threadPool, OkHttpClient okHttpClient, Config configuration) {
     super(new OperationContext().withOkhttpClient(okHttpClient).withConfig(configuration));
+    initOperationContext(configuration);
     this.informerExecutor = threadPool;
     this.informers = new HashMap<>();
     this.startedInformers = new HashMap<>();
@@ -77,6 +79,8 @@ public class SharedInformerFactory extends BaseOperation {
    * Constructs and returns a shared index informer with resync period specified. And the
    * informer cache will be overwritten.
    *
+   * <b>Note:</b>It watches for events in <b>ALL NAMESPACES</b>.
+   *
    * @param apiTypeClass apiType class
    * @param apiListTypeClass api list type class
    * @param resyncPeriodInMillis resync period in milliseconds
@@ -87,11 +91,14 @@ public class SharedInformerFactory extends BaseOperation {
   public synchronized <T extends HasMetadata, L extends KubernetesResourceList<T>> SharedIndexInformer<T> sharedIndexInformerFor(Class<T> apiTypeClass, Class<L> apiListTypeClass, long resyncPeriodInMillis) {
     return sharedIndexInformerFor(apiTypeClass, apiListTypeClass, context.withApiGroupName(Utils.getAnnotationValue(apiTypeClass, ApiGroup.class))
       .withApiGroupVersion(Utils.getAnnotationValue(apiTypeClass, ApiVersion.class))
-      .withPlural(getPluralFromKind(apiTypeClass.getSimpleName())), resyncPeriodInMillis);
+      .withPlural(getPluralFromKind(apiTypeClass.getSimpleName()))
+      .withIsNamespaceConfiguredFromGlobalConfig(context.isNamespaceFromGlobalConfig()), resyncPeriodInMillis);
   }
 
   /**
    * Constructs and returns a shared index informer with resync period specified for custom resources.
+   *
+   * <b>Note:</b>It watches for events in <b>ALL NAMESPACES</b>.
    *
    * @param customResourceContext basic information about the Custom Resource Definition corresponding to that custom resource
    * @param apiTypeClass apiType class
@@ -104,11 +111,14 @@ public class SharedInformerFactory extends BaseOperation {
   public synchronized <T extends HasMetadata, L extends KubernetesResourceList<T>> SharedIndexInformer<T> sharedIndexInformerForCustomResource(CustomResourceDefinitionContext customResourceContext, Class<T> apiTypeClass, Class<L> apiListTypeClass, long resyncPeriodInMillis) {
     return sharedIndexInformerFor(apiTypeClass, apiListTypeClass, context.withApiGroupVersion(customResourceContext.getVersion())
       .withApiGroupName(customResourceContext.getGroup())
-      .withPlural(customResourceContext.getPlural()), resyncPeriodInMillis);
+      .withPlural(customResourceContext.getPlural())
+      .withIsNamespaceConfiguredFromGlobalConfig(context.isNamespaceFromGlobalConfig()), resyncPeriodInMillis);
   }
 
   /**
-   * Constructs and returns a shared index informer with resync period specified for custom resources.
+   * Constructs and returns a shared index informer with resync period specified for custom resources. You can use this
+   * method to specify namespace in {@link OperationContext} if you want to monitor for events in a dedicated namespace
+   * only or provide other filtering options.
    *
    * @param customResourceContext basic information about the Custom Resource Definition corresponding to that custom resource
    * @param apiTypeClass apiType class
@@ -128,7 +138,8 @@ public class SharedInformerFactory extends BaseOperation {
 
   /**
    * Constructs and returns a shared index informer with resync period specified. And the
-   * informer cache will be overwritten.
+   * informer cache will be overwritten. You can use this method to specify namespace in {@link OperationContext}
+   * if you want to monitor for events in a dedicated namespace only or provide other filtering options.
    *
    * @param apiTypeClass apiType class
    * @param apiListTypeClass api list type class
@@ -153,18 +164,14 @@ public class SharedInformerFactory extends BaseOperation {
     return new ListerWatcher<T, L>() {
       @Override
       public L list(ListOptions params, String namespace, OperationContext context) {
-        BaseOperation<T, L, ?, ?> listBaseOperation = baseOperation.newInstance(context.withNamespace(namespace));
-        listBaseOperation.setType(apiTypeClass);
-        listBaseOperation.setListType(apiListTypeClass);
+        BaseOperation<T, L, ?> listBaseOperation = getConfiguredBaseOperation(namespace, context, apiTypeClass, apiListTypeClass);
 
         return listBaseOperation.list();
       }
 
       @Override
       public Watch watch(ListOptions params, String namespace, OperationContext context, Watcher<T> resourceWatcher) {
-        BaseOperation<T, L, ?, ?> watchBaseOperation = baseOperation.newInstance(context);
-        watchBaseOperation.setType(apiTypeClass);
-        watchBaseOperation.setListType(apiListTypeClass);
+        BaseOperation<T, L, ?> watchBaseOperation = getConfiguredBaseOperation(namespace, context, apiTypeClass, apiListTypeClass);
 
         // Register Custom Kind in case of CustomResource
         if (context.getApiGroupName() != null && context.getApiGroupVersion() != null) {
@@ -233,5 +240,30 @@ public class SharedInformerFactory extends BaseOperation {
 
   public void addSharedInformerEventListener(SharedInformerEventListener event) {
     this.eventListeners.add(event);
+  }
+
+  private <T extends HasMetadata, L extends KubernetesResourceList<T>> BaseOperation<T, L, ?> getConfiguredBaseOperation(String namespace, OperationContext context, Class<T> apiTypeClass, Class<L> apiListTypeClass) {
+    BaseOperation<T, L, ?> baseOperationWithContext;
+    // Avoid adding Namespace if it's picked from Global Configuration
+    if (context.isNamespaceFromGlobalConfig()) {
+      // SharedInformer default behavior is to watch in all namespaces
+      // unless we specify namespace explicitly in OperationContext
+      baseOperationWithContext = baseOperation.newInstance(context
+        .withConfig(new ConfigBuilder(config)
+          .withNamespace(null)
+          .build())
+        .withNamespace(null));
+    } else {
+      baseOperationWithContext = baseOperation.newInstance(context.withNamespace(namespace));
+    }
+    baseOperationWithContext.setType(apiTypeClass);
+    baseOperationWithContext.setListType(apiListTypeClass);
+    return baseOperationWithContext;
+  }
+
+  private void initOperationContext(Config configuration) {
+    if (configuration.getNamespace() != null) {
+      context = context.withIsNamespaceConfiguredFromGlobalConfig(true);
+    }
   }
 }

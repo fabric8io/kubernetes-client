@@ -16,7 +16,6 @@
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.api.model.networking.v1.DoneableIngressClass;
 import io.fabric8.kubernetes.api.model.networking.v1.IngressClass;
 import io.fabric8.kubernetes.api.model.networking.v1.IngressClassBuilder;
 import io.fabric8.kubernetes.api.model.networking.v1.IngressClassList;
@@ -163,7 +162,7 @@ class V1IngressClassTest {
     KubernetesClient client = server.getClient();
 
     // When
-    Resource<IngressClass, DoneableIngressClass> ingressClassOp = client.network().v1().ingressClasses().withName("myingressClass1");
+    Resource<IngressClass> ingressClassOp = client.network().v1().ingressClasses().withName("myingressClass1");
 
     // Then
     Assertions.assertThrows(KubernetesClientException.class, () -> ingressClassOp.create(ingressClass1));

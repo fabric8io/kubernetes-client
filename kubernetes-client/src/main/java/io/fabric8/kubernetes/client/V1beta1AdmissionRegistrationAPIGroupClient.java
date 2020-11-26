@@ -15,8 +15,6 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.DoneableMutatingWebhookConfiguration;
-import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.DoneableValidatingWebhookConfiguration;
 import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingWebhookConfiguration;
 import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingWebhookConfigurationList;
 import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingWebhookConfiguration;
@@ -37,12 +35,12 @@ public class V1beta1AdmissionRegistrationAPIGroupClient extends BaseClient imple
   }
 
   @Override
-  public MixedOperation<ValidatingWebhookConfiguration, ValidatingWebhookConfigurationList, DoneableValidatingWebhookConfiguration, Resource<ValidatingWebhookConfiguration, DoneableValidatingWebhookConfiguration>> validatingWebhookConfigurations() {
+  public MixedOperation<ValidatingWebhookConfiguration, ValidatingWebhookConfigurationList, Resource<ValidatingWebhookConfiguration>> validatingWebhookConfigurations() {
     return new ValidatingWebhookConfigurationOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
-  public MixedOperation<MutatingWebhookConfiguration, MutatingWebhookConfigurationList, DoneableMutatingWebhookConfiguration, Resource<MutatingWebhookConfiguration, DoneableMutatingWebhookConfiguration>> mutatingWebhookConfigurations() {
+  public MixedOperation<MutatingWebhookConfiguration, MutatingWebhookConfigurationList, Resource<MutatingWebhookConfiguration>> mutatingWebhookConfigurations() {
     return new MutatingWebhookConfigurationOperationsImpl(httpClient, getConfiguration());
   }
 }

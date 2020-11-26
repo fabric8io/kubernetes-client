@@ -24,9 +24,8 @@ import io.fabric8.knative.serving.v1beta1.*;
 public interface ServingV1Beta1Client extends Client {
 
   // Serving
-  MixedOperation<Service, ServiceList, DoneableService, Resource<Service, DoneableService>> services();
-  MixedOperation<Route, RouteList, DoneableRoute, Resource<Route, DoneableRoute>> routes();
-  MixedOperation<Revision, RevisionList, DoneableRevision, Resource<Revision, DoneableRevision>> revisions();
-  MixedOperation<Configuration, ConfigurationList, DoneableConfiguration, Resource<Configuration, DoneableConfiguration>> configurations();
-
+  MixedOperation<Service, ServiceList, Resource<Service>> services();
+  MixedOperation<Route, RouteList, Resource<Route>> routes();
+  MixedOperation<Revision, RevisionList, Resource<Revision>> revisions();
+  MixedOperation<Configuration, ConfigurationList, Resource<Configuration>> configurations();
 }

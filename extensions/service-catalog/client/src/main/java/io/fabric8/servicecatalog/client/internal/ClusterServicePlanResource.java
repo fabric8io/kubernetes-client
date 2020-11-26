@@ -17,10 +17,9 @@ package io.fabric8.servicecatalog.client.internal;
 
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.servicecatalog.api.model.*;
-import io.fabric8.servicecatalog.api.model.DoneableClusterServicePlan;
 
 
-public interface ClusterServicePlanResource extends Resource<ClusterServicePlan, DoneableClusterServicePlan> {
+public interface ClusterServicePlanResource extends Resource<ClusterServicePlan> {
 
     /**
      * Instantiate the {@link ClusterServicePlan}.

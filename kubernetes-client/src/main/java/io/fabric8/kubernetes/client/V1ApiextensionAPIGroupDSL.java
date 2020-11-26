@@ -17,10 +17,9 @@ package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionList;
-import io.fabric8.kubernetes.api.model.apiextensions.v1.DoneableCustomResourceDefinition;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 
 public interface V1ApiextensionAPIGroupDSL extends Client {
-  MixedOperation<CustomResourceDefinition, CustomResourceDefinitionList, DoneableCustomResourceDefinition, Resource<CustomResourceDefinition, DoneableCustomResourceDefinition>> customResourceDefinitions();
+  MixedOperation<CustomResourceDefinition, CustomResourceDefinitionList, Resource<CustomResourceDefinition>> customResourceDefinitions();
 }

@@ -17,10 +17,9 @@ package io.fabric8.openshift.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.Createable;
+import io.fabric8.kubernetes.client.dsl.InOutCreateable;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
-import io.fabric8.openshift.api.model.DoneableSubjectAccessReview;
 import io.fabric8.openshift.api.model.SubjectAccessReview;
 import io.fabric8.openshift.api.model.SubjectAccessReviewResponse;
 import okhttp3.OkHttpClient;
@@ -29,7 +28,7 @@ import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 
-public class OpenShiftSubjectAccessReviewOperationsImpl extends OperationSupport implements Createable<SubjectAccessReview, SubjectAccessReviewResponse, DoneableSubjectAccessReview> {
+public class OpenShiftSubjectAccessReviewOperationsImpl extends OperationSupport implements InOutCreateable<SubjectAccessReview, SubjectAccessReviewResponse> {
 
   public OpenShiftSubjectAccessReviewOperationsImpl(OkHttpClient client, Config config, String apiGroupName, String apiGroupVersion, String plural) {
     this(new OperationContext().withOkhttpClient(client).withConfig(config), apiGroupName, apiGroupVersion, plural);
@@ -71,11 +70,6 @@ public class OpenShiftSubjectAccessReviewOperationsImpl extends OperationSupport
       Thread.currentThread().interrupt();
       throw KubernetesClientException.launderThrowable(ie);
     }
-  }
-
-  @Override
-  public DoneableSubjectAccessReview createNew() {
-    throw new IllegalStateException("This operation is not currently supported");
   }
 
   @Override

@@ -27,7 +27,6 @@ import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
-import io.fabric8.openshift.api.model.DoneableTemplate;
 import io.fabric8.openshift.api.model.Parameter;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateBuilder;
@@ -59,7 +58,7 @@ import java.util.concurrent.ExecutionException;
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.TEMPLATE;
 
 public class TemplateOperationsImpl
-  extends OpenShiftOperation<Template, TemplateList, DoneableTemplate, TemplateResource<Template, KubernetesList, DoneableTemplate>>
+  extends OpenShiftOperation<Template, TemplateList, TemplateResource<Template, KubernetesList>>
   implements TemplateOperation {
 
   private static final Logger logger = LoggerFactory.getLogger(TemplateOperationsImpl.class);
@@ -79,7 +78,6 @@ public class TemplateOperationsImpl
     this.parameters = context.getParameters();
     this.type = Template.class;
     this.listType = TemplateList.class;
-    this.doneableType = DoneableTemplate.class;
   }
   @Override
   public TemplateOperationsImpl newInstance(OperationContext context) {
@@ -164,7 +162,7 @@ public class TemplateOperationsImpl
   }
 
   @Override
-  public MixedOperation<Template, TemplateList, DoneableTemplate, TemplateResource<Template, KubernetesList, DoneableTemplate>> withParameters(Map<String, String> parameters) {
+  public MixedOperation<Template, TemplateList, TemplateResource<Template, KubernetesList>> withParameters(Map<String, String> parameters) {
     return new TemplateOperationsImpl(getContext().withParameters(parameters));
   }
 
@@ -233,7 +231,7 @@ public class TemplateOperationsImpl
   }
 
   @Override
-  public TemplateResource<Template, KubernetesList, DoneableTemplate> load(InputStream is) {
+  public TemplateResource<Template, KubernetesList> load(InputStream is) {
     String generatedName = Utils.randomString("template-", 10);
     Template template = null;
     Object item = Serialization.unmarshal(is, parameters);

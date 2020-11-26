@@ -87,7 +87,7 @@ public class CustomResourceDefinitionIT {
     assertThat(crdList.getItems().size()).isGreaterThan(0);
 
     // Update
-    CustomResourceDefinition updatedCrd = client.customResourceDefinitions().withName(crd1.getMetadata().getName()).edit().editSpec().editOrNewNames().addNewShortName("its").endNames().endSpec().done();
+    CustomResourceDefinition updatedCrd = client.customResourceDefinitions().withName(crd1.getMetadata().getName()).edit(c -> new CustomResourceDefinitionBuilder(c).editSpec().editOrNewNames().addNewShortName("its").endNames().endSpec().build());
     assertThat(updatedCrd.getSpec().getNames().getShortNames().size()).isEqualTo(2);
 
     // Delete
