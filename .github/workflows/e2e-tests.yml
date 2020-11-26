@@ -46,7 +46,7 @@ jobs:
 
   minikube:
     name: K8S
-    needs: BuildWithoutTests
+    needs: buildWithoutTests
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -78,7 +78,7 @@ jobs:
           mvn test -Dtest="io.fabric8.kubernetes.**"
   openshift:
     name: OpenShift
-    needs: BuildWithoutTests
+    needs: buildWithoutTests
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
