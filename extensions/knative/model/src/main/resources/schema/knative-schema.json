@@ -1,6 +1,6 @@
 {
   "id": "http://fabric8.io/knative/KnativeSchema#",
-  "$schema": "http://json-schema.org/schema#",
+  "$schema": "http://json-schema.org/draft-05/schema#",
   "definitions": {
     "knative_dev_eventing-contrib_awssqs_pkg_apis_sources_v1alpha1_AwsSqsSource": {
       "type": "object",
