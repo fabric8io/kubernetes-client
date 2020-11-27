@@ -191,9 +191,11 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl ex
   }
 
   @Override
-  public VisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata> accept(Visitor visitor) {
-    List<Visitor> newVisitors = new ArrayList<>(visitors);
-    newVisitors.add(visitor);
+  public VisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata> accept(Visitor... visitors) {
+    List<Visitor> newVisitors = new ArrayList<>(this.visitors);
+    for (Visitor v : visitors) {
+      newVisitors.add(v);
+    }
     return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, newVisitors, item, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
 
