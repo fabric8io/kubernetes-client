@@ -68,14 +68,14 @@ type Schema struct {
 
 func main() {
   packages := []schemagen.PackageDescriptor{
-    {"k8s.io/apimachinery/pkg/util/intstr", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_pkg_util_intstr_"},
-    {"k8s.io/apimachinery/pkg/runtime", "", "io.fabric8.kubernetes.api.model.runtime", "kubernetes_apimachinery_pkg_runtime_"},
-    {"k8s.io/apimachinery/pkg/version", "", "io.fabric8.kubernetes.api.model.version", "kubernetes_apimachinery_pkg_version_"},
-    {"k8s.io/apimachinery/pkg/apis/meta/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_"},
-    {"k8s.io/apimachinery/pkg/api/resource", "", "io.fabric8.kubernetes.api.model", "kubernetes_resource_"},
-    {"k8s.io/api/autoscaling/v2beta2", "autoscaling", "io.fabric8.kubernetes.api.model.autoscaling.v2beta2", "kubernetes_autoscaling_v2beta2_"},
-    {"k8s.io/api/autoscaling/v2beta1", "autoscaling", "io.fabric8.kubernetes.api.model.autoscaling.v2beta1", "kubernetes_autoscaling_v2beta1_"},
-    {"k8s.io/api/autoscaling/v1", "autoscaling", "io.fabric8.kubernetes.api.model.autoscaling.v1", "kubernetes_autoscaling_v1_"},
+    {"k8s.io/apimachinery/pkg/util/intstr", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_pkg_util_intstr_", false},
+    {"k8s.io/apimachinery/pkg/runtime", "", "io.fabric8.kubernetes.api.model.runtime", "kubernetes_apimachinery_pkg_runtime_", false},
+    {"k8s.io/apimachinery/pkg/version", "", "io.fabric8.kubernetes.api.model.version", "kubernetes_apimachinery_pkg_version_", false},
+    {"k8s.io/apimachinery/pkg/apis/meta/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_", false},
+    {"k8s.io/apimachinery/pkg/api/resource", "", "io.fabric8.kubernetes.api.model", "kubernetes_resource_", false},
+    {"k8s.io/api/autoscaling/v2beta2", "autoscaling", "io.fabric8.kubernetes.api.model.autoscaling.v2beta2", "kubernetes_autoscaling_v2beta2_", true},
+    {"k8s.io/api/autoscaling/v2beta1", "autoscaling", "io.fabric8.kubernetes.api.model.autoscaling.v2beta1", "kubernetes_autoscaling_v2beta1_", true},
+    {"k8s.io/api/autoscaling/v1", "autoscaling", "io.fabric8.kubernetes.api.model.autoscaling.v1", "kubernetes_autoscaling_v1_", true},
   }
 
   typeMap := map[reflect.Type]reflect.Type{
