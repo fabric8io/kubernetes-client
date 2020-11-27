@@ -15,9 +15,11 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.openshift.api.model.Role;
+import io.fabric8.openshift.api.model.RoleBuilder;
 import io.fabric8.openshift.api.model.RoleList;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import okhttp3.OkHttpClient;
@@ -39,6 +41,11 @@ public class RoleOperationsImpl extends OpenShiftOperation<Role, RoleList, Resou
   @Override
   public RoleOperationsImpl newInstance(OperationContext context) {
     return new RoleOperationsImpl(context);
+  }
+
+  @Override
+  public Role edit(Visitor... visitors) {
+    return patch(new RoleBuilder(getMandatory()).accept(visitors).build());
   }
 
 }

@@ -15,6 +15,7 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import io.fabric8.kubernetes.api.builder.Visitor;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.mifmif.common.regex.Generex;
 import io.fabric8.kubernetes.api.model.HasMetadata;
@@ -283,4 +284,10 @@ public class TemplateOperationsImpl
   protected <T> T handleResponse(Request.Builder requestBuilder, Class<T> type) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
     return handleResponse(requestBuilder, type, parameters);
   }
+
+  @Override
+  public Template edit(Visitor... visitors) {
+    return patch(new TemplateBuilder(getMandatory()).accept(visitors).build());
+  }
+
 }

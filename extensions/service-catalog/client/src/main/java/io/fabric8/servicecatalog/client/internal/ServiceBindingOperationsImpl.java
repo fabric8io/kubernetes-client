@@ -15,6 +15,7 @@
  */
 package io.fabric8.servicecatalog.client.internal;
 
+import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
@@ -46,6 +47,11 @@ public class ServiceBindingOperationsImpl extends HasMetadataOperation<ServiceBi
   @Override
   public boolean isResourceNamespaced() {
     return true;
+  }
+
+  @Override
+  public ServiceBinding edit(Visitor... visitors) {
+    return patch(new ServiceBindingBuilder(getMandatory()).accept(visitors).build());
   }
 
   @Override

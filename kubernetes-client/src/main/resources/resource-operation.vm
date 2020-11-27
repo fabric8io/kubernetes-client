@@ -38,6 +38,7 @@
 
 package io.fabric8.kubernetes.client.dsl.internal$packageSuffix;
 
+import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
@@ -48,6 +49,7 @@ import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import okhttp3.OkHttpClient;
 
 import ${model.packageName}.${model.name};
+import ${model.packageName}.${model.name}Builder;
 import ${model.packageName}.${model.name}List;
 
 import java.util.Map;
@@ -74,6 +76,11 @@ public class ${model.name}OperationsImpl extends HasMetadataOperation<${model.na
 
   public ${model.name}OperationsImpl newInstance(OperationContext context) {
     return new ${model.name}OperationsImpl(context);
+  }
+
+  @Override
+  public ${model.name} edit(Visitor... visitors) {
+    return patch(new ${model.name}Builder(getMandatory()).accept(visitors).build());
   }
 
   @Override

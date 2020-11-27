@@ -15,6 +15,7 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.BytesLimitTerminateTimeTailPrettyLoggable;
@@ -33,6 +34,7 @@ import io.fabric8.openshift.client.dsl.BuildResource;
 import io.fabric8.openshift.client.internal.patchmixins.BuildMixIn;
 import okhttp3.OkHttpClient;
 import io.fabric8.openshift.api.model.Build;
+import io.fabric8.openshift.api.model.BuildBuilder;
 import io.fabric8.openshift.api.model.BuildList;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import okhttp3.Request;
@@ -243,6 +245,11 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList,
   @Override
   public BytesLimitTerminateTimeTailPrettyLoggable<LogWatch> usingTimestamps() {
     return new BuildOperationsImpl(getContext().withTimestamps(true));
+  }
+
+  @Override
+  public Build edit(Visitor... visitors) {
+    return patch(new BuildBuilder(getMandatory()).accept(visitors).build());
   }
 
   private void waitUntilBuildPodBecomesReady(Build build) {

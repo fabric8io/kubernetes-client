@@ -15,6 +15,7 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Event;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -28,6 +29,7 @@ import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildConfig;
+import io.fabric8.openshift.api.model.BuildConfigBuilder;
 import io.fabric8.openshift.api.model.BuildConfigList;
 import io.fabric8.openshift.api.model.BuildList;
 import io.fabric8.openshift.api.model.BuildRequest;
@@ -302,6 +304,11 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
   @Override
   public Typeable<Triggerable<WebHookTrigger, Void>> withSecret(String secret) {
     return new BuildConfigOperationsImpl(getContext().withSecret(secret));
+  }
+
+  @Override
+  public BuildConfig edit(Visitor... visitors) {
+    return patch(new BuildConfigBuilder(getMandatory()).accept(visitors).build());
   }
 
   protected Build submitToApiServerWithRequestBody(RequestBody requestBody) {

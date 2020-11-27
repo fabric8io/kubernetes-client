@@ -15,6 +15,7 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.rbac.RoleBinding;
@@ -26,6 +27,7 @@ import io.fabric8.openshift.api.model.ProjectBuilder;
 import io.fabric8.openshift.client.dsl.ProjectOperation;
 import okhttp3.OkHttpClient;
 import io.fabric8.openshift.api.model.Project;
+import io.fabric8.openshift.api.model.ProjectBuilder;
 import io.fabric8.openshift.api.model.ProjectList;
 import io.fabric8.openshift.client.OpenShiftConfig;
 
@@ -171,4 +173,10 @@ public class ProjectOperationsImpl extends OpenShiftOperation<Project, ProjectLi
 
     return resources;
   }
+
+  @Override
+  public Project edit(Visitor... visitors) {
+    return patch(new ProjectBuilder(getMandatory()).accept(visitors).build());
+  }
+
 }

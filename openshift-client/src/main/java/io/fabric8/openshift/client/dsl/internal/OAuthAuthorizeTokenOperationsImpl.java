@@ -15,11 +15,14 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import io.fabric8.kubernetes.api.builder.Visitor;
+import io.fabric8.openshift.api.model.OAuthAuthorizeToken;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.openshift.api.model.OAuthAccessToken;
 import okhttp3.OkHttpClient;
 import io.fabric8.openshift.api.model.OAuthAuthorizeToken;
+import io.fabric8.openshift.api.model.OAuthAuthorizeTokenBuilder;
 import io.fabric8.openshift.api.model.OAuthAuthorizeTokenList;
 import io.fabric8.openshift.client.OpenShiftConfig;
 
@@ -46,6 +49,11 @@ public class OAuthAuthorizeTokenOperationsImpl extends OpenShiftOperation<OAuthA
   @Override
   public OAuthAuthorizeTokenOperationsImpl newInstance(OperationContext context) {
     return new OAuthAuthorizeTokenOperationsImpl(context);
+  }
+
+  @Override
+  public OAuthAuthorizeToken edit(Visitor... visitors) {
+    return patch(new OAuthAuthorizeTokenBuilder(getMandatory()).accept(visitors).build());
   }
 
   @Override

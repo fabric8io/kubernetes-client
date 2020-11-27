@@ -15,8 +15,10 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.openshift.api.model.SecurityContextConstraints;
+import io.fabric8.openshift.api.model.SecurityContextConstraintsBuilder;
 import io.fabric8.openshift.api.model.SecurityContextConstraintsList;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.openshift.client.OpenShiftConfig;
@@ -43,6 +45,11 @@ public class SecurityContextConstraintsOperationsImpl  extends OpenShiftOperatio
   @Override
   public SecurityContextConstraintsOperationsImpl newInstance(OperationContext context) {
     return new SecurityContextConstraintsOperationsImpl(context);
+  }
+
+  @Override
+  public SecurityContextConstraints edit(Visitor... visitors) {
+    return patch(new SecurityContextConstraintsBuilder(getMandatory()).accept(visitors).build());
   }
 
   @Override

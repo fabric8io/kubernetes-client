@@ -15,6 +15,7 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.builder.TypedVisitor;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectReferenceBuilder;
@@ -94,6 +95,11 @@ public class RoleBindingOperationsImpl extends OpenShiftOperation<RoleBinding, R
         }
       }
     });
+  }
+
+  @Override
+  public RoleBinding edit(Visitor... visitors) {
+    return patch(new RoleBindingBuilder(getMandatory()).accept(visitors).build());
   }
 
   private void enrichFromUsersAndGroups(RoleBindingBuilder builder, List<String> userNames, List<String> groupNames) {
