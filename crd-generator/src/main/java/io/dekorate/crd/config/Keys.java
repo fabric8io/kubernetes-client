@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.dekorate.crd.confg;
+package io.dekorate.crd.config;
 
 import io.dekorate.kubernetes.config.ConfigKey;
 import io.sundr.codegen.model.TypeDef;

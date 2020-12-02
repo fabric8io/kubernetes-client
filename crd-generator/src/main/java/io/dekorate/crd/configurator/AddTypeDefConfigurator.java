@@ -15,7 +15,7 @@
  */
 package io.dekorate.crd.configurator;
 
-import io.dekorate.crd.confg.Keys;
+import io.dekorate.crd.config.Keys;
 import io.dekorate.crd.config.CustomResourceConfigBuilder;
 import io.dekorate.kubernetes.config.Configurator;
 import io.sundr.codegen.model.TypeDef;

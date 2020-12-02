@@ -17,7 +17,7 @@ package io.dekorate.crd.handler;
 
 import io.dekorate.Handler;
 import io.dekorate.Resources;
-import io.dekorate.crd.confg.Keys;
+import io.dekorate.crd.config.Keys;
 import io.dekorate.crd.config.CustomResourceConfig;
 import io.dekorate.crd.config.EditableCustomResourceConfig;
 import io.dekorate.crd.util.JsonSchema;

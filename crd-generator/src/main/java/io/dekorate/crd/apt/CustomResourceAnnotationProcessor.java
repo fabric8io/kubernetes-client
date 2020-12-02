@@ -25,7 +25,7 @@ import javax.lang.model.element.TypeElement;
 import io.dekorate.config.AnnotationConfiguration;
 import io.dekorate.crd.adapter.CustomResourceConfigAdapter;
 import io.dekorate.crd.annotation.CustomResource;
-import io.dekorate.crd.confg.Keys;
+import io.dekorate.crd.config.Keys;
 import io.dekorate.crd.config.CustomResourceConfig;
 import io.dekorate.crd.config.CustomResourceConfigBuilder;
 import io.dekorate.crd.configurator.AddClassNameConfigurator;
