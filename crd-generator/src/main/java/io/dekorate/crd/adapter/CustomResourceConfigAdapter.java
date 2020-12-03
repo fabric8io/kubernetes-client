@@ -24,10 +24,9 @@ public class CustomResourceConfigAdapter {
             instance.shortName(),
             instance.version(),
             instance.scope(),
-            instance.scalable(),
             new Scale(instance.scale().specReplicasPath(),
             instance.scale().statusReplicasPath(),
-            instance.scale().labelSelectorPath()),
+            instance.scale().labalSelectorPath()),
             toStatusClassName(instance)));
     }
 
@@ -42,12 +41,11 @@ null,
                (String)(map instanceof Map ? ((Map)map).getOrDefault("shortName", "") : ""),
                (String)(map instanceof Map ? ((Map)map).getOrDefault("version", "") : ""),
                Scope.valueOf(String.valueOf(map instanceof Map ? ((Map)map).getOrDefault("scope","Namespaced") : "Namespaced")),
-               Boolean.parseBoolean(String.valueOf(map instanceof Map ? ((Map)map).getOrDefault("scalable","false") : "false")),
                new Scale(
-                   (String)(((Map)(map instanceof Map ? ((Map)map).get("scale") : null)) instanceof Map ? ((Map)((Map)(map instanceof Map ? ((Map)map).get("scale") : null))).getOrDefault("specReplicasPath", ".spec.replicas") : ".spec.replicas"),
-                   (String)(((Map)(map instanceof Map ? ((Map)map).get("scale") : null)) instanceof Map ? ((Map)((Map)(map instanceof Map ? ((Map)map).get("scale") : null))).getOrDefault("statusReplicasPath", ".status.replicas") : ".status.replicas"),
-                   (String)(((Map)(map instanceof Map ? ((Map)map).get("scale") : null)) instanceof Map ? ((Map)((Map)(map instanceof Map ? ((Map)map).get("scale") : null))).getOrDefault("labelSelectorPath", ".status.labelSelector") : ".status.labelSelector")),
-               (String)(map instanceof Map ? toStatusClassName(((Map)map).getOrDefault("status", CustomResourceConfig.VOID)) : CustomResourceConfig.VOID));
+                   (String)(((Map)(map instanceof Map ? ((Map)map).get("scale") : null)) instanceof Map ? ((Map)((Map)(map instanceof Map ? ((Map)map).get("scale") : null))).getOrDefault("specReplicasPath", ".spec.replicas") : null),
+                   (String)(((Map)(map instanceof Map ? ((Map)map).get("scale") : null)) instanceof Map ? ((Map)((Map)(map instanceof Map ? ((Map)map).get("scale") : null))).getOrDefault("statusReplicasPath", ".status.replicas") : null),
+                   (String)(((Map)(map instanceof Map ? ((Map)map).get("scale") : null)) instanceof Map ? ((Map)((Map)(map instanceof Map ? ((Map)map).get("scale") : null))).getOrDefault("labalSelectorPath", ".status.labelSelector") : null)),
+               (String)(map instanceof Map ? toStatusClassName(((Map)map).getOrDefault("status", CustomResourceConfig.AUTODETECT)) : CustomResourceConfig.AUTODETECT));
     }
 
     public static CustomResourceConfigBuilder newBuilder(Map map) {
@@ -61,13 +59,11 @@ null,
                (String)(map instanceof Map ? ((Map)map).getOrDefault("shortName", "") : ""),
                (String)(map instanceof Map ? ((Map)map).getOrDefault("version", "") : ""),
                Scope.valueOf(String.valueOf(map instanceof Map ? ((Map)map).getOrDefault("scope","Namespaced") : "Namespaced")),
-                                               //,
-               Boolean.parseBoolean(String.valueOf(map instanceof Map ? ((Map)map).getOrDefault("scalable","false") : "false")),
                new Scale(
-                   (String)(((Map)(map instanceof Map ? ((Map)map).get("scale") : null)) instanceof Map ? ((Map)((Map)(map instanceof Map ? ((Map)map).get("scale") : null))).getOrDefault("specReplicasPath", ".spec.replicas") : ".spec.replicas"),
-                   (String)(((Map)(map instanceof Map ? ((Map)map).get("scale") : null)) instanceof Map ? ((Map)((Map)(map instanceof Map ? ((Map)map).get("scale") : null))).getOrDefault("statusReplicasPath", ".status.replicas") : ".status.replicas"),
-                   (String)(((Map)(map instanceof Map ? ((Map)map).get("scale") : null)) instanceof Map ? ((Map)((Map)(map instanceof Map ? ((Map)map).get("scale") : null))).getOrDefault("labelSelectorPath", ".status.labelSelector") : ".status.labelSelector")),
-               (String)(map instanceof Map ? toStatusClassName(((Map)map).getOrDefault("status", CustomResourceConfig.VOID)) : CustomResourceConfig.VOID)));
+                   (String)(((Map)(map instanceof Map ? ((Map)map).get("scale") : null)) instanceof Map ? ((Map)((Map)(map instanceof Map ? ((Map)map).get("scale") : null))).getOrDefault("specReplicasPath", ".spec.replicas") : null),
+                   (String)(((Map)(map instanceof Map ? ((Map)map).get("scale") : null)) instanceof Map ? ((Map)((Map)(map instanceof Map ? ((Map)map).get("scale") : null))).getOrDefault("statusReplicasPath", ".status.replicas") : null),
+                   (String)(((Map)(map instanceof Map ? ((Map)map).get("scale") : null)) instanceof Map ? ((Map)((Map)(map instanceof Map ? ((Map)map).get("scale") : null))).getOrDefault("labalSelectorPath", ".status.labelSelector") : null)),
+               (String)(map instanceof Map ? toStatusClassName(((Map)map).getOrDefault("status", CustomResourceConfig.AUTODETECT)) : CustomResourceConfig.AUTODETECT)));
     }
 
     public static String[] toStringArray(Object o) {
@@ -93,7 +89,7 @@ null,
 
   private static String toStatusClassName(Object obj) {
     if (obj instanceof Void || Void.class.getName().equals(obj.toString())) {
-      return CustomResourceConfig.VOID;
+      return CustomResourceConfig.AUTODETECT;
     } else if (obj instanceof String) {
       return (String) obj;
     } else if (obj instanceof TypeMirror) {

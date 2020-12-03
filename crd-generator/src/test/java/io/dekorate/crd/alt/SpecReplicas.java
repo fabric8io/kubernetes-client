@@ -15,11 +15,15 @@
  * 
 **/
 
-package io.dekorate.crd.annotation;
+package io.dekorate.crd.alt;
 
-public @interface Scale {
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-  String specReplicasPath() default "";
-  String statusReplicasPath() default "";
-  String labalSelectorPath() default "";
+@Target({ ElementType.FIELD })
+@Retention(RetentionPolicy.RUNTIME)
+public @interface SpecReplicas {
+  
 }

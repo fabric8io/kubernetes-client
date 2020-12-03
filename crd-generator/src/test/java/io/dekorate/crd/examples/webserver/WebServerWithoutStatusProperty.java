@@ -15,11 +15,18 @@
  * 
 **/
 
-package io.dekorate.crd.annotation;
+package io.dekorate.crd.examples.webserver;
 
-public @interface Scale {
+import io.dekorate.crd.alt.SpecReplicas;
+import io.dekorate.crd.annotation.CustomResource;
 
-  String specReplicasPath() default "";
-  String statusReplicasPath() default "";
-  String labalSelectorPath() default "";
+@CustomResource(status = WebServerStatus.class)
+public class WebServerWithoutStatusProperty {
+
+  private String name;
+  private int port;
+
+  @SpecReplicas
+  private int replicas;
 }
+

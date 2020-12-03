@@ -17,9 +17,6 @@
 
 package io.dekorate.crd.annotation;
 
-public @interface Scale {
-
-  String specReplicasPath() default "";
-  String statusReplicasPath() default "";
-  String labalSelectorPath() default "";
+public @interface Autodetect {
+  
 }

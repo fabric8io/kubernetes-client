@@ -22,6 +22,9 @@ import java.lang.annotation.Target;
 
 import io.dekorate.crd.config.Scope;
 
+/**
+ * This indicates that the annotated classs represents a `CustomResource` from which a `CustomResourceDefinition` needs to be generated.
+ */
 @Target({ ElementType.CONSTRUCTOR, ElementType.TYPE })
 @Retention(RetentionPolicy.SOURCE)
 public @interface CustomResource {
@@ -77,14 +80,6 @@ public @interface CustomResource {
 
 
   /**
-   * Flag to specify wether the resource is scalable.
-   * When explicitly set to true, the scale subresource will be applied.
-   * If scale configuration is provided anyway, this field is ignored.
-   * @return true if resource is scalable.
-   */
-  boolean scalable() default false;
-
-  /**
    * The scale configuration.
    * @return the scale configuration.
    */
@@ -92,8 +87,9 @@ public @interface CustomResource {
 
   /**
    * The class that defines the status.
-   * @return The class or Void.class if no class is specified.
+   * When no status is present, autodetection will be attempted.
+   * @return The class or Autodetect.class if no class is specified.
    */
-  Class status() default Void.class;
+  Class status() default Autodetect.class;
 
 }

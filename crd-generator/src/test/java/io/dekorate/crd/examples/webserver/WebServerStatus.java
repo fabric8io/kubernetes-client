@@ -15,11 +15,13 @@
  * 
 **/
 
-package io.dekorate.crd.annotation;
+package io.dekorate.crd.examples.webserver;
 
-public @interface Scale {
+import io.dekorate.crd.alt.StatusReplicas;
 
-  String specReplicasPath() default "";
-  String statusReplicasPath() default "";
-  String labalSelectorPath() default "";
+public class WebServerStatus {
+
+  @StatusReplicas
+  int replicas;
+  private boolean running;
 }

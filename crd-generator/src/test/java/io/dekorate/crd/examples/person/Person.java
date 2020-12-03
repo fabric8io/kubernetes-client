@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.dekorate.crd.util;
+package io.dekorate.crd.examples.person;
 
 import java.util.List;
 import java.util.Optional;

@@ -22,31 +22,28 @@ import io.dekorate.kubernetes.decorator.NamedResourceDecorator;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceSubresourcesFluent;
 
-public class AddScaleSubresourceDecorator extends NamedResourceDecorator<CustomResourceSubresourcesFluent<?>> {
+public class AddLabelSelectorPathDecorator extends NamedResourceDecorator<CustomResourceSubresourcesFluent<?>> {
 
-  private final String specReplicasPath;
-  private final String statusReplicasPath;
-  private final String labelSelectorPath;
+  private final String path;
  
-	public AddScaleSubresourceDecorator(String specReplicasPath, String statusReplicasPath, String labelSelectorPath) {
-    this(ANY, specReplicasPath, statusReplicasPath, labelSelectorPath);
+	public AddLabelSelectorPathDecorator(String path) {
+    this(ANY, path);
 	}
 
-	public AddScaleSubresourceDecorator(String name, String specReplicasPath, String statusReplicasPath, String labelSelectorPath) {
+	public AddLabelSelectorPathDecorator(String name, String path) {
 		super(name);
-		this.specReplicasPath = specReplicasPath;
-		this.statusReplicasPath = statusReplicasPath;
-		this.labelSelectorPath = labelSelectorPath;
+		this.path = path;
 	}
  
 	@Override
 	public void andThenVisit(CustomResourceSubresourcesFluent<?> subresources, ObjectMeta resourceMeta) {
-    subresources.withNewScale()
-      .withSpecReplicasPath(specReplicasPath)
-      .withStatusReplicasPath(statusReplicasPath)
-      .withLabelSelectorPath(labelSelectorPath)
-      .endScale();
+ if (subresources.hasScale())  {
+      subresources.editScale().withLabelSelectorPath(path).endScale();
+    } else {
+      subresources.withNewScale().withLabelSelectorPath(path).endScale();
+    }
 	}
+
 	@Override
 	public Class<? extends Decorator>[] after() {
 		return new Class[] { AddSubresourcesDecorator.class };
