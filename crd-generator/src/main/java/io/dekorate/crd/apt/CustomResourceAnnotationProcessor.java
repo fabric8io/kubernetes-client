@@ -44,6 +44,7 @@ public class CustomResourceAnnotationProcessor extends AbstractAnnotationProcess
       getSession().close();
       return true;
     }
+
     CodegenContext.create(processingEnv.getElementUtils(), processingEnv.getTypeUtils());
     for (TypeElement typeElement : annotations) {
       for (Element mainClass : roundEnv.getElementsAnnotatedWith(typeElement)) {
@@ -59,7 +60,6 @@ public class CustomResourceAnnotationProcessor extends AbstractAnnotationProcess
     if (element instanceof TypeElement) {
       TypeDef definition = ElementTo.TYPEDEF.apply((TypeElement) element);
       String className = ModelUtils.getClassName(element);
-
       on(customResource != null
           ? new AnnotationConfiguration<CustomResourceConfig>(CustomResourceConfigAdapter.newBuilder(customResource)
               .addToAttributes(Keys.TYPE_DEFINITION, definition).accept(new AddClassNameConfigurator(className)))

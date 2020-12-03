@@ -20,14 +20,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import io.dekorate.kubernetes.config.Configuration;
-import io.sundr.builder.annotations.Adapter;
-import io.sundr.builder.annotations.Buildable;
-import io.sundr.builder.annotations.Pojo;
 import io.dekorate.crd.config.Scope;
 
-@Buildable(builderPackage = "io.fabric8.kubernetes.api.builder")
-@Pojo(name = "CustomResourceConfig", relativePath = "../config", mutable = true, superClass = Configuration.class, withStaticBuilderMethod = false, withStaticAdapterMethod = false, adapter = @Adapter(name = "CustomResourceConfigAdapter", relativePath = "../adapter", withMapAdapterMethod = true))
 @Target({ ElementType.CONSTRUCTOR, ElementType.TYPE })
 @Retention(RetentionPolicy.SOURCE)
 public @interface CustomResource {
@@ -80,5 +74,26 @@ public @interface CustomResource {
    * @return The scope, defaults to Namespaced.
    */
   Scope scope() default Scope.Namespaced;
+
+
+  /**
+   * Flag to specify wether the resource is scalable.
+   * When explicitly set to true, the scale subresource will be applied.
+   * If scale configuration is provided anyway, this field is ignored.
+   * @return true if resource is scalable.
+   */
+  boolean scalable() default false;
+
+  /**
+   * The scale configuration.
+   * @return the scale configuration.
+   */
+  Scale scale() default @Scale();
+
+  /**
+   * The class that defines the status.
+   * @return The class or Void.class if no class is specified.
+   */
+  Class status() default Void.class;
 
 }
