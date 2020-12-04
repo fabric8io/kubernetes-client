@@ -4597,7 +4597,7 @@
       "type": "object",
       "description": "",
       "properties": {
-        "Xdescriptors": {
+        "XDescriptors": {
           "type": "array",
           "description": "",
           "javaOmitEmpty": true,
@@ -5768,7 +5768,7 @@
       "type": "object",
       "description": "",
       "properties": {
-        "Xdescriptors": {
+        "XDescriptors": {
           "type": "array",
           "description": "",
           "javaOmitEmpty": true,
@@ -5804,7 +5804,7 @@
       "type": "object",
       "description": "",
       "properties": {
-        "Xdescriptors": {
+        "XDescriptors": {
           "type": "array",
           "description": "",
           "javaOmitEmpty": true,
