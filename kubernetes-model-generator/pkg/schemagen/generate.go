@@ -19,7 +19,6 @@ import (
 	"fmt"
 	"path/filepath"
 	"reflect"
-	"regexp"
 	"strings"
 )
 
@@ -67,20 +66,13 @@ func newSchemaGenerator(packages []PackageDescriptor, typeMap map[reflect.Type]r
 	return &g
 }
 
-var prefixRegex = regexp.MustCompile("^([a-z])-([a-zA-Z])(.*)$")
 func getFieldName(f reflect.StructField) string {
 	json := f.Tag.Get("json")
-	name := f.Name
 	if len(json) > 0 {
 		parts := strings.Split(json, ",")
-		name = parts[0]
+		return parts[0]
 	}
-	// https://github.com/joelittlejohn/jsonschema2pojo/issues/1028 + Sundr.io expecting the opposite (getXKubernetes... instead of getxKubernetes)
-	if prefixRegex.MatchString(name) {
-		groups := prefixRegex.FindStringSubmatch(name)
-		name = strings.ToUpper(groups[1] + groups[2]) + groups[3]
-	}
-	return name
+	return f.Name
 }
 
 func isOmitEmpty(f reflect.StructField) bool {

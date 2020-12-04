@@ -13,17 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.annotator;
+package io.fabric8.kubernetes.jsonschema2pojo;
 
 import com.sun.codemodel.*;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
+import org.jsonschema2pojo.GenerationConfig;
 
 public class KubernetesTypeAnnotator extends KubernetesCoreTypeAnnotator {
 
     private static final String BUILDABLE_REFERENCE_VALUE = "value";
 
-    @Override
+  public KubernetesTypeAnnotator(GenerationConfig generationConfig) {
+    super(generationConfig);
+  }
+
+  @Override
     public void processBuildable(JDefinedClass clazz) {
       try {
         JAnnotationUse buildable = clazz.annotate(Buildable.class)

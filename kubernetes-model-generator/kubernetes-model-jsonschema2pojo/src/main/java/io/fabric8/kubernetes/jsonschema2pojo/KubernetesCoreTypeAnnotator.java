@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.annotator;
+package io.fabric8.kubernetes.jsonschema2pojo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -34,7 +34,7 @@ import io.sundr.transform.annotations.VelocityTransformation;
 import io.sundr.transform.annotations.VelocityTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.jsonschema2pojo.DefaultGenerationConfig;
+import org.jsonschema2pojo.GenerationConfig;
 import org.jsonschema2pojo.Jackson2Annotator;
 
 import java.lang.annotation.Annotation;
@@ -54,8 +54,8 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
   protected final Map<String, JDefinedClass> pendingLists = new HashMap<>();
   protected String moduleName = null;
 
-  public KubernetesCoreTypeAnnotator() {
-    super(new DefaultGenerationConfig());
+  public KubernetesCoreTypeAnnotator(GenerationConfig generationConfig) {
+    super(generationConfig);
   }
 
   @Override

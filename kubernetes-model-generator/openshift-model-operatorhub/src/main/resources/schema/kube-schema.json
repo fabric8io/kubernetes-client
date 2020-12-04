@@ -4597,15 +4597,6 @@
       "type": "object",
       "description": "",
       "properties": {
-        "XDescriptors": {
-          "type": "array",
-          "description": "",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "string",
-            "description": ""
-          }
-        },
         "description": {
           "type": "string",
           "description": ""
@@ -4621,6 +4612,15 @@
         "value": {
           "type": "string",
           "description": ""
+        },
+        "x-descriptors": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
         }
       },
       "additionalProperties": true,
@@ -5768,15 +5768,6 @@
       "type": "object",
       "description": "",
       "properties": {
-        "XDescriptors": {
-          "type": "array",
-          "description": "",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "string",
-            "description": ""
-          }
-        },
         "description": {
           "type": "string",
           "description": ""
@@ -5792,6 +5783,15 @@
         "value": {
           "type": "string",
           "description": ""
+        },
+        "x-descriptors": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
         }
       },
       "additionalProperties": true,
@@ -5804,15 +5804,6 @@
       "type": "object",
       "description": "",
       "properties": {
-        "XDescriptors": {
-          "type": "array",
-          "description": "",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "string",
-            "description": ""
-          }
-        },
         "description": {
           "type": "string",
           "description": ""
@@ -5828,6 +5819,15 @@
         "value": {
           "type": "string",
           "description": ""
+        },
+        "x-descriptors": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
         }
       },
       "additionalProperties": true,

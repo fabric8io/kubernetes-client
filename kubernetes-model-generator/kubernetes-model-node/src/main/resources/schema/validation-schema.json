@@ -1189,15 +1189,15 @@
         "apiVersion": {
           "type": "string",
           "description": "",
-          "default": "node.k8s.io/v1beta1",
+          "default": "node.k8s.io/v1alpha1",
           "required": true
         },
         "items": {
           "type": "array",
           "description": "",
           "items": {
-            "$ref": "#/definitions/kubernetes_node_v1beta1_RuntimeClass",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClass"
+            "$ref": "#/definitions/kubernetes_node_v1alpha_RuntimeClass",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.node.v1alpha1.RuntimeClass"
           }
         },
         "kind": {

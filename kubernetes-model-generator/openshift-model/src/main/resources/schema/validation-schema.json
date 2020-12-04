@@ -21299,7 +21299,15 @@
     },
     "objectreference": {
       "properties": {
-        "group": {
+        "apiVersion": {
+          "type": "string",
+          "description": ""
+        },
+        "fieldPath": {
+          "type": "string",
+          "description": ""
+        },
+        "kind": {
           "type": "string",
           "description": ""
         },
@@ -21311,7 +21319,11 @@
           "type": "string",
           "description": ""
         },
-        "resource": {
+        "resourceVersion": {
+          "type": "string",
+          "description": ""
+        },
+        "uid": {
           "type": "string",
           "description": ""
         }

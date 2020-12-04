@@ -449,35 +449,6 @@
           "type": "string",
           "description": ""
         },
-        "XKubernetes-embedded-resource": {
-          "type": "boolean",
-          "description": ""
-        },
-        "XKubernetes-int-or-string": {
-          "type": "boolean",
-          "description": ""
-        },
-        "XKubernetes-list-map-keys": {
-          "type": "array",
-          "description": "",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "string",
-            "description": ""
-          }
-        },
-        "XKubernetes-list-type": {
-          "type": "string",
-          "description": ""
-        },
-        "XKubernetes-map-type": {
-          "type": "string",
-          "description": ""
-        },
-        "XKubernetes-preserve-unknown-fields": {
-          "type": "boolean",
-          "description": ""
-        },
         "additionalItems": {
           "$ref": "#/definitions/kubernetes_apiextensions_v1_JSONSchemaPropsOrBool",
           "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrBool"
@@ -666,6 +637,35 @@
           "description": ""
         },
         "uniqueItems": {
+          "type": "boolean",
+          "description": ""
+        },
+        "x-kubernetes-embedded-resource": {
+          "type": "boolean",
+          "description": ""
+        },
+        "x-kubernetes-int-or-string": {
+          "type": "boolean",
+          "description": ""
+        },
+        "x-kubernetes-list-map-keys": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "x-kubernetes-list-type": {
+          "type": "string",
+          "description": ""
+        },
+        "x-kubernetes-map-type": {
+          "type": "string",
+          "description": ""
+        },
+        "x-kubernetes-preserve-unknown-fields": {
           "type": "boolean",
           "description": ""
         }
@@ -1282,35 +1282,6 @@
           "type": "string",
           "description": ""
         },
-        "XKubernetes-embedded-resource": {
-          "type": "boolean",
-          "description": ""
-        },
-        "XKubernetes-int-or-string": {
-          "type": "boolean",
-          "description": ""
-        },
-        "XKubernetes-list-map-keys": {
-          "type": "array",
-          "description": "",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "string",
-            "description": ""
-          }
-        },
-        "XKubernetes-list-type": {
-          "type": "string",
-          "description": ""
-        },
-        "XKubernetes-map-type": {
-          "type": "string",
-          "description": ""
-        },
-        "XKubernetes-preserve-unknown-fields": {
-          "type": "boolean",
-          "description": ""
-        },
         "additionalItems": {
           "$ref": "#/definitions/kubernetes_apiextensions_v1beta1_JSONSchemaPropsOrBool",
           "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrBool"
@@ -1499,6 +1470,35 @@
           "description": ""
         },
         "uniqueItems": {
+          "type": "boolean",
+          "description": ""
+        },
+        "x-kubernetes-embedded-resource": {
+          "type": "boolean",
+          "description": ""
+        },
+        "x-kubernetes-int-or-string": {
+          "type": "boolean",
+          "description": ""
+        },
+        "x-kubernetes-list-map-keys": {
+          "type": "array",
+          "description": "",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string",
+            "description": ""
+          }
+        },
+        "x-kubernetes-list-type": {
+          "type": "string",
+          "description": ""
+        },
+        "x-kubernetes-map-type": {
+          "type": "string",
+          "description": ""
+        },
+        "x-kubernetes-preserve-unknown-fields": {
           "type": "boolean",
           "description": ""
         }

@@ -150,7 +150,8 @@
               <includeToString>false</includeToString>
               <includeHashcodeAndEquals>false</includeHashcodeAndEquals>
               <outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
-              <customAnnotator>io.fabric8.kubernetes.annotator.KubernetesTypeAnnotator</customAnnotator>
+              <customAnnotator>io.fabric8.kubernetes.jsonschema2pojo.KubernetesTypeAnnotator</customAnnotator>
+              <customRuleFactory>io.fabric8.kubernetes.jsonschema2pojo.Fabric8RuleFactory</customRuleFactory>
               <annotationStyle>none</annotationStyle>
             </configuration>
             <executions>
