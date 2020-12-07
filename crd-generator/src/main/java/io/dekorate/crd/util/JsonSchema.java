@@ -50,7 +50,7 @@ public class JsonSchema {
   private static final TypeRef DOUBLE_REF = DOUBLE.toReference();
   private static final TypeRef DATE_REF = DATE.toReference();
 
-  private static final TypeRef P_INT_REF = new PrimitiveRefBuilder().withName("int").build();
+  private static final TypeRef P_INT_REF = new PrimitiveRefBuilder().withName("integer").build();
   private static final TypeRef P_LONG_REF = new PrimitiveRefBuilder().withName("long").build();
   private static final TypeRef P_DOUBLE_REF = new PrimitiveRefBuilder().withName("double").build();
   private static final TypeRef P_BOOLEAN_REF = new PrimitiveRefBuilder().withName("boolean").build();
