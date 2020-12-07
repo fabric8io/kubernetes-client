@@ -1,6 +1,6 @@
 {
   "id": "http://fabric8.io/fabric8/v2/Schema#",
-  "$schema": "http://json-schema.org/schema#",
+  "$schema": "http://json-schema.org/draft-05/schema#",
   "$module": "networking",
   "definitions": {
     "k8s_io_apimachinery_pkg_api_resource_Quantity": {
@@ -2301,8 +2301,8 @@
     "httpingresspath": {
       "properties": {
         "backend": {
-          "$ref": "#/definitions/kubernetes_networking_v1beta1_IngressBackend",
-          "javaType": "io.fabric8.kubernetes.api.model.networking.v1beta1.IngressBackend"
+          "$ref": "#/definitions/kubernetes_networking_v1_IngressBackend",
+          "javaType": "io.fabric8.kubernetes.api.model.networking.v1.IngressBackend"
         },
         "path": {
           "type": "string",
@@ -2321,8 +2321,8 @@
           "type": "array",
           "description": "",
           "items": {
-            "$ref": "#/definitions/kubernetes_networking_v1_HTTPIngressPath",
-            "javaType": "io.fabric8.kubernetes.api.model.networking.v1.HTTPIngressPath"
+            "$ref": "#/definitions/kubernetes_networking_v1beta1_HTTPIngressPath",
+            "javaType": "io.fabric8.kubernetes.api.model.networking.v1beta1.HTTPIngressPath"
           }
         }
       },
@@ -2377,7 +2377,7 @@
         "apiVersion": {
           "type": "string",
           "description": "",
-          "default": "networking.k8s.io/v1beta1",
+          "default": "networking.k8s.io/v1",
           "required": true
         },
         "kind": {
@@ -2391,12 +2391,12 @@
           "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/kubernetes_networking_v1beta1_IngressSpec",
-          "javaType": "io.fabric8.kubernetes.api.model.networking.v1beta1.IngressSpec"
+          "$ref": "#/definitions/kubernetes_networking_v1_IngressSpec",
+          "javaType": "io.fabric8.kubernetes.api.model.networking.v1.IngressSpec"
         },
         "status": {
-          "$ref": "#/definitions/kubernetes_networking_v1beta1_IngressStatus",
-          "javaType": "io.fabric8.kubernetes.api.model.networking.v1beta1.IngressStatus"
+          "$ref": "#/definitions/kubernetes_networking_v1_IngressStatus",
+          "javaType": "io.fabric8.kubernetes.api.model.networking.v1.IngressStatus"
         }
       },
       "additionalProperties": true
@@ -2419,7 +2419,7 @@
         "apiVersion": {
           "type": "string",
           "description": "",
-          "default": "networking.k8s.io/v1beta1",
+          "default": "networking.k8s.io/v1",
           "required": true
         },
         "kind": {
@@ -2433,8 +2433,8 @@
           "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/kubernetes_networking_v1beta1_IngressClassSpec",
-          "javaType": "io.fabric8.kubernetes.api.model.networking.v1beta1.IngressClassSpec"
+          "$ref": "#/definitions/kubernetes_networking_v1_IngressClassSpec",
+          "javaType": "io.fabric8.kubernetes.api.model.networking.v1.IngressClassSpec"
         }
       },
       "additionalProperties": true
@@ -2517,8 +2517,8 @@
           "description": ""
         },
         "http": {
-          "$ref": "#/definitions/kubernetes_networking_v1_HTTPIngressRuleValue",
-          "javaType": "io.fabric8.kubernetes.api.model.networking.v1.HTTPIngressRuleValue"
+          "$ref": "#/definitions/kubernetes_networking_v1beta1_HTTPIngressRuleValue",
+          "javaType": "io.fabric8.kubernetes.api.model.networking.v1beta1.HTTPIngressRuleValue"
         }
       },
       "additionalProperties": true
@@ -2526,8 +2526,8 @@
     "ingressrulevalue": {
       "properties": {
         "http": {
-          "$ref": "#/definitions/kubernetes_networking_v1beta1_HTTPIngressRuleValue",
-          "javaType": "io.fabric8.kubernetes.api.model.networking.v1beta1.HTTPIngressRuleValue"
+          "$ref": "#/definitions/kubernetes_networking_v1_HTTPIngressRuleValue",
+          "javaType": "io.fabric8.kubernetes.api.model.networking.v1.HTTPIngressRuleValue"
         }
       },
       "additionalProperties": true

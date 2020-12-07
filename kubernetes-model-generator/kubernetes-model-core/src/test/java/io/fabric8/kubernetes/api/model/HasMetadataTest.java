@@ -51,12 +51,17 @@ class HasMetadataTest {
   void invalidFinalizersShouldFail() {
     HasMetadata hasMetadata = new Default();
     assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer(null));
+    assertFalse(hasMetadata.isFinalizerValid(null));
     assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer(""));
+    assertFalse(hasMetadata.isFinalizerValid(""));
     assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer("/"));
+    assertFalse(hasMetadata.isFinalizerValid("/"));
+    assertTrue(hasMetadata.isFinalizerValid("fabric8.io/finalizer"));
     assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer("-fabric8.io/finalizer"));
     assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer("fabric8.i/finalizer"));
     assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer("fabric8./finalizer"));
-    assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer("fabric8.label12345678901234567890123456789012345678901234567890qwertyuiopasdfghjkl/finalizer"));
+    assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer("this-label-is-too-long-12345678901234567890123456789012345678901234567890qwertyuiopasdfghjkl.io/finalizer"));
+    assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer("this.dns.name.is.way.way.too.long.more.than.255.characters.12345678901234567890.qwertyuiop.asdfghjkl.zxcvbnm.qwertyuiop.adfghjkl.zxcvbnm.mnbvcxz.lkjhgfdsa.poiuytrewq12345678901234567890.qwertyuiop.asdfghjkl.zxcvbnm.qwertyuiop.adfghjkl.zxcvbnm.mnbvcxz.lkjhgfdsa.poiuytrewq.io/finalizer"));
     assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer(".io/finalizer"));
     assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer("fabric8.io/-finalizer"));
     assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer("fabric8.io/finalizer-"));

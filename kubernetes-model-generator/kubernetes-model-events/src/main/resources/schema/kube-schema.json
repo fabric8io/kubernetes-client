@@ -1,6 +1,6 @@
 {
   "id": "http://fabric8.io/fabric8/v2/Schema#",
-  "$schema": "http://json-schema.org/schema#",
+  "$schema": "http://json-schema.org/draft-05/schema#",
   "$module": "events",
   "definitions": {
     "k8s_io_apimachinery_pkg_api_resource_Quantity": {
@@ -339,6 +339,10 @@
           "javaType": "Long"
         },
         "resourceVersion": {
+          "type": "string",
+          "description": ""
+        },
+        "resourceVersionMatch": {
           "type": "string",
           "description": ""
         },
@@ -1087,10 +1091,6 @@
         "lastObservedTime": {
           "$ref": "#/definitions/kubernetes_apimachinery_MicroTime",
           "javaType": "io.fabric8.kubernetes.api.model.MicroTime"
-        },
-        "state": {
-          "type": "string",
-          "description": ""
         }
       },
       "additionalProperties": true,
@@ -1133,10 +1133,6 @@
     "EventSeries": {
       "$ref": "#/definitions/kubernetes_events_EventSeries",
       "javaType": "io.fabric8.kubernetes.api.model.events.EventSeries"
-    },
-    "EventSeriesState": {
-      "type": "string",
-      "description": ""
     },
     "GetOptions": {
       "$ref": "#/definitions/kubernetes_apimachinery_GetOptions",

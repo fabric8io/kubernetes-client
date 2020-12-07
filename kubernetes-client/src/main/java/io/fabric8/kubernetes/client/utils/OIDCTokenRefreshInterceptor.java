@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.utils;
 
 import io.fabric8.kubernetes.api.model.AuthInfo;
+import io.fabric8.kubernetes.api.model.Context;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.internal.KubeConfigUtils;
 import okhttp3.Interceptor;
@@ -41,9 +42,13 @@ public class OIDCTokenRefreshInterceptor implements Interceptor {
     Response response = chain.proceed(request);
     if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
       io.fabric8.kubernetes.api.model.Config kubeConfig = KubeConfigUtils.parseConfig(new File(Config.getKubeconfigFilename()));
-      AuthInfo currentAuthInfo = KubeConfigUtils.getUserAuthInfo(kubeConfig, config.getCurrentContext().getContext());
+      Context currentContext = null;
+      if (config.getCurrentContext() != null) {
+        currentContext = config.getCurrentContext().getContext();
+      }
+      AuthInfo currentAuthInfo = KubeConfigUtils.getUserAuthInfo(kubeConfig, currentContext);
       // Check if AuthProvider is set or not
-      if (currentAuthInfo.getAuthProvider() != null) {
+      if (currentAuthInfo != null && currentAuthInfo.getAuthProvider() != null) {
         String newAccessToken = OpenIDConnectionUtils.resolveOIDCTokenFromAuthConfig(currentAuthInfo.getAuthProvider().getConfig());
         // Delete old Authorization header and append new one
         Request authReqWithUpdatedToken = chain.request().newBuilder()

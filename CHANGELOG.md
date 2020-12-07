@@ -4,12 +4,19 @@
 
 #### Bugs
 * Fix #2592: ConcurrentModificationException in CRUD KubernetesMockServer
+* Fix #2519: Generated schemas contains a valid meta-schema URI reference (`http://json-schema.org/draft-05/schema#`)
+* Fix #2631: Handle null values when getting current context on OIDC interceptors
 
 #### Improvements
 
 #### Dependency Upgrade
 
 #### New Features
+
+### 5.0.0-alpha-3 (2020-11-24)
+
+#### Improvements
+* Fix #2628: Add `isFinalizerValid` method on `HasMetadata` to encapsulate validation logic
 
 ### 5.0.0-alpha-2 (2020-11-24)
 

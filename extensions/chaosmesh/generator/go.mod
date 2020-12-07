@@ -3,11 +3,13 @@ module github.com/fabric8io/kubernetes-client/extensions/chaosmesh/generator
 require (
 	github.com/chaos-mesh/chaos-mesh v1.0.1
 	github.com/fabric8io/kubernetes-client/generator v0.0.0
+	github.com/ugorji/go v1.2.0 // indirect
 	k8s.io/apimachinery v0.17.0
 )
 
 replace (
 	github.com/fabric8io/kubernetes-client/generator v0.0.0 => ./../../../generator
+	github.com/ugorji/go v1.1.5-pre => github.com/ugorji/go v1.1.7 // indirect https://github.com/swaggo/gin-swagger/issues/128
 	k8s.io/api => k8s.io/api v0.17.0
 	k8s.io/apiextensions-apiserver => k8s.io/apiextensions-apiserver v0.17.0
 	k8s.io/apimachinery => k8s.io/apimachinery v0.17.0
