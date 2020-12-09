@@ -24,14 +24,17 @@ on:
 
 jobs:
   build:
-    name: Build
+    name: Java ${{ matrix.java }} Maven
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [8, 11]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Setup Java 8
+      - name: Setup Java
         uses: actions/setup-java@v1
         with:
-          java-version: '8'
+          java-version: ${{ matrix.java }}
       - name: Build Project
         run: mvn clean install
