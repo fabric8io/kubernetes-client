@@ -92,21 +92,21 @@ type Schema struct {
 
 func main() {
   packages := []schemagen.PackageDescriptor{
-    {"k8s.io/api/core/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_core_"},
-    {"k8s.io/apimachinery/pkg/api/resource", "", "io.fabric8.kubernetes.api.model", "kubernetes_resource_"},
-    {"k8s.io/apimachinery/pkg/util/intstr", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_pkg_util_intstr_"},
-    {"k8s.io/apimachinery/pkg/runtime", "", "io.fabric8.openshift.api.model.runtime", "kubernetes_apimachinery_pkg_runtime_"},
-    {"k8s.io/apimachinery/pkg/version", "", "io.fabric8.kubernetes.api.model.version", "kubernetes_apimachinery_pkg_version_"},
-    {"k8s.io/kubernetes/pkg/util", "", "io.fabric8.kubernetes.api.model", "kubernetes_util_"},
-    {"k8s.io/kubernetes/pkg/api/errors", "", "io.fabric8.kubernetes.api.model", "kubernetes_errors_"},
-    {"k8s.io/kubernetes/pkg/api/unversioned", "", "io.fabric8.kubernetes.api.model", "api_"},
-    {"k8s.io/apimachinery/pkg/apis/meta/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_"},
-    {"github.com/openshift/api/config/v1", "", "io.fabric8.openshift.api.model", "os_config_"},
-    {"github.com/openshift/api/operator/v1", "", "io.fabric8.openshift.api.model.operator.v1", "os_operator_v1_"},
-    {"github.com/openshift/api/operator/v1alpha1", "", "io.fabric8.openshift.api.model.operator.v1alpha1", "os_operator_v1alpha1_"},
-    {"github.com/openshift/api/imageregistry/v1", "imageregistry.operator", "io.fabric8.openshift.api.model.operator.v1", "os_imageregistry_v1_"},
-    {"github.com/openshift/api/operatoringress/v1", "ingress.operator", "io.fabric8.openshift.api.model.operator.v1", "os_operator_v1_"},
-  }
+    {"k8s.io/api/core/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_core_", false},
+    {"k8s.io/apimachinery/pkg/api/resource", "", "io.fabric8.kubernetes.api.model", "kubernetes_resource_", false},
+    {"k8s.io/apimachinery/pkg/util/intstr", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_pkg_util_intstr_", false},
+    {"k8s.io/apimachinery/pkg/runtime", "", "io.fabric8.openshift.api.model.runtime", "kubernetes_apimachinery_pkg_runtime_", false},
+    {"k8s.io/apimachinery/pkg/version", "", "io.fabric8.kubernetes.api.model.version", "kubernetes_apimachinery_pkg_version_", false},
+    {"k8s.io/kubernetes/pkg/util", "", "io.fabric8.kubernetes.api.model", "kubernetes_util_", false},
+    {"k8s.io/kubernetes/pkg/api/errors", "", "io.fabric8.kubernetes.api.model", "kubernetes_errors_", false},
+    {"k8s.io/kubernetes/pkg/api/unversioned", "", "io.fabric8.kubernetes.api.model", "api_", false},
+    {"k8s.io/apimachinery/pkg/apis/meta/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_", false},
+    {"github.com/openshift/api/config/v1", "", "io.fabric8.openshift.api.model", "os_config_", true},
+    {"github.com/openshift/api/operator/v1", "", "io.fabric8.openshift.api.model.operator.v1", "os_operator_v1_", true},
+    {"github.com/openshift/api/operator/v1alpha1", "", "io.fabric8.openshift.api.model.operator.v1alpha1", "os_operator_v1alpha1_", true},
+    {"github.com/openshift/api/imageregistry/v1", "imageregistry.operator", "io.fabric8.openshift.api.model.operator.v1", "os_imageregistry_v1_", true},
+    {"github.com/openshift/api/operatoringress/v1", "ingress.operator", "io.fabric8.openshift.api.model.operator.v1", "os_operator_v1_", true},
+	}
 
   typeMap := map[reflect.Type]reflect.Type{
     reflect.TypeOf(time.Time{}): reflect.TypeOf(""),

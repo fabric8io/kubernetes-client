@@ -225,7 +225,7 @@
               <artifactSet>
                 <includes>
                   <include>io.fabric8:kubernetes-model-common</include>
-                  <include>io.fabric8:kubernetes-model-annotator</include>
+                  <include>io.fabric8:kubernetes-model-jsonschema2pojo</include>
                   <include>io.fabric8:kubernetes-model</include>
                   <include>io.fabric8:kubernetes-model-core</include>
                   <include>io.fabric8:kubernetes-model-rbac</include>
@@ -274,7 +274,7 @@
               <artifactSet>
                 <includes>
                   <include>io.fabric8:kubernetes-model-common</include>
-                  <include>io.fabric8:kubernetes-model-annotator</include>
+                  <include>io.fabric8:kubernetes-model-jsonschema2pojo</include>
                   <include>io.fabric8:kubernetes-model</include>
                   <include>io.fabric8:kubernetes-model-core</include>
                   <include>io.fabric8:kubernetes-model-rbac</include>

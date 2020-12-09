@@ -113,7 +113,9 @@ If everything works well, you would have model upgraded to specified Kubernetes/
    an entry for any additional Go structs.
  - `pkg/schemagen` package contains the source files with the logic to generate the schema.
  
- ### Kubernetes-Model-Annotator
+ ### Kubernetes-Model-jsonschema2pojo
+ 
+ Module that declares classes and tools to customize jsonschema2pojo generated output.
  
  Defines a `KubernetesTypeAnnotator` with the sundr.io configuration.
  

@@ -55,6 +55,7 @@ type CrdScope int32
 const (
 	Namespaced CrdScope = 0
 	Cluster    CrdScope = 1
+	BasePackage string = "io.fabric8.kubernetes.api.model"
 )
 
 func GenerateSchema(schemaId string, crdLists map[reflect.Type]CrdScope, providedPackages map[string]string, manualTypeMap map[reflect.Type]string, packageMapping map[string]PackageInformation, mappingSchema map[string]string, providedTypes []ProvidedType, constraints map[reflect.Type]map[string]*Constraint) string {
@@ -156,15 +157,15 @@ func (g *schemaGenerator) jsonDescriptor(t reflect.Type) *JSONDescriptor {
 	panic("Nothing for " + t.Name())
 }
 
-func (g *schemaGenerator) javaTypeDescriptor(t reflect.Type) *JavaTypeDescriptor {
+func (g *schemaGenerator) existingJavaTypeDescriptor(t reflect.Type) *ExistingJavaTypeDescriptor {
 
 	// no type information required for simple java types
 	// if provided, this breaks default value for fields ?! wtf?
 	if isSimpleJavaType(t) && !hasDifferentSimpleJavaTypeMapping(t) {
 		return nil
 	}
-	return &JavaTypeDescriptor{
-		JavaType: g.javaType(t),
+	return &ExistingJavaTypeDescriptor{
+		ExistingJavaType: g.javaType(t),
 	}
 }
 
@@ -227,23 +228,32 @@ func (g *schemaGenerator) javaInterfaces(t reflect.Type) []string {
 		scope := g.crdScope(t)
 
 		if scope == Namespaced {
-			return []string{"io.fabric8.kubernetes.api.model.HasMetadata", "io.fabric8.kubernetes.api.model.Namespaced"}
+			return []string{BasePackage + ".HasMetadata", "io.fabric8.kubernetes.api.model.Namespaced"}
 		}
 
-		return []string{"io.fabric8.kubernetes.api.model.HasMetadata"}
+		return []string{BasePackage + ".HasMetadata"}
 	}
 
 	if g.isCRDList(t) {
-		return []string{"io.fabric8.kubernetes.api.model.KubernetesResource", g.resourceListInterface(t)}
+		return []string{BasePackage + ".KubernetesResource", g.resourceListInterface(t)}
 	}
 
-	return []string{"io.fabric8.kubernetes.api.model.KubernetesResource"}
+	return []string{BasePackage + ".KubernetesResource"}
+}
+
+func (g *schemaGenerator) generateJavaType(t reflect.Type) bool {
+	_, ok := g.providedPackages[t.PkgPath()]
+	if !ok {
+		return false
+	}
+	// In case some types shouldn't be generated, Improve package Metadata (PackageInformation) to include a generate(true/false) flag
+	return true
 }
 
 func (g *schemaGenerator) resourceListInterface(listType reflect.Type) string {
 	itemsField, _ := listType.FieldByName("Items")
 	itemType := itemsField.Type.Elem()
-	return "io.fabric8.kubernetes.api.model.KubernetesResourceList<" + g.javaType(itemType) + ">"
+	return BasePackage + ".KubernetesResourceList<" + g.javaType(itemType) + ">"
 }
 
 func (g *schemaGenerator) generate(schemaId string, crdLists map[reflect.Type]CrdScope) (*JSONSchema, error) {
@@ -273,12 +283,19 @@ func (g *schemaGenerator) generate(schemaId string, crdLists map[reflect.Type]Cr
 				Type: "object",
 			},
 			JSONObjectDescriptor: v,
-			JavaTypeDescriptor: &JavaTypeDescriptor{
-				JavaType: g.javaType(k),
-			},
 			JavaInterfacesDescriptor: &JavaInterfacesDescriptor{
 				JavaInterfaces: g.javaInterfaces(k),
 			},
+		}
+		javaType := g.javaType(k)
+		if strings.HasPrefix(javaType, "io.fabric8.") {
+			value.JavaTypeDescriptor = &JavaTypeDescriptor {
+				JavaType: javaType,
+			}
+		} else {
+			value.ExistingJavaTypeDescriptor = &ExistingJavaTypeDescriptor {
+				ExistingJavaType: javaType,
+			}
 		}
 		s.Definitions[name] = value
 
@@ -286,8 +303,8 @@ func (g *schemaGenerator) generate(schemaId string, crdLists map[reflect.Type]Cr
 			JSONReferenceDescriptor: &JSONReferenceDescriptor{
 				Reference: g.generateReference(k),
 			},
-			JavaTypeDescriptor: &JavaTypeDescriptor{
-				JavaType: g.javaType(k),
+			ExistingJavaTypeDescriptor: &ExistingJavaTypeDescriptor{
+				ExistingJavaType: g.javaType(k),
 			},
 		}
 
@@ -362,8 +379,8 @@ func (g *schemaGenerator) propertyDescriptor(field reflect.StructField, parentTy
 	// type might have manual overwrite
 	if g.isManualType(field.Type) {
 		return JSONPropertyDescriptor{
-			JSONReferenceDescriptor: g.referenceDescriptor(field.Type),
-			JavaTypeDescriptor:      g.javaTypeDescriptor(field.Type),
+			JSONReferenceDescriptor:    g.referenceDescriptor(field.Type),
+			ExistingJavaTypeDescriptor: g.existingJavaTypeDescriptor(field.Type),
 		}
 	}
 
@@ -613,8 +630,8 @@ func (g *schemaGenerator) propertyDescriptorForSimpleField(field reflect.StructF
 
 func (g *schemaGenerator) propertyDescriptorForSimple(t reflect.Type) JSONPropertyDescriptor {
 	return JSONPropertyDescriptor{
-		JSONDescriptor:     g.jsonDescriptor(t),
-		JavaTypeDescriptor: g.javaTypeDescriptor(t),
+		JSONDescriptor:             g.jsonDescriptor(t),
+		ExistingJavaTypeDescriptor: g.existingJavaTypeDescriptor(t),
 	}
 }
 
@@ -631,11 +648,11 @@ func (g *schemaGenerator) propertyDescriptorForMap(f reflect.StructField) JSONPr
 		},
 		JSONMapDescriptor: &JSONMapDescriptor{
 			MapValueType: JSONPropertyDescriptor{
-				JSONReferenceDescriptor: g.referenceDescriptor(mapValueType),
-				JavaTypeDescriptor:      g.javaTypeDescriptor(fieldType),
+				JSONReferenceDescriptor:    g.referenceDescriptor(mapValueType),
+				ExistingJavaTypeDescriptor: g.existingJavaTypeDescriptor(fieldType),
 			},
 		},
-		JavaTypeDescriptor: g.javaTypeDescriptor(fieldType),
+		ExistingJavaTypeDescriptor: g.existingJavaTypeDescriptor(fieldType),
 	}
 }
 
@@ -646,8 +663,8 @@ func (g *schemaGenerator) propertyDescriptorForObject(field reflect.StructField)
 	g.handleType(fieldType)
 
 	return JSONPropertyDescriptor{
-		JSONReferenceDescriptor: g.referenceDescriptor(fieldType),
-		JavaTypeDescriptor:      g.javaTypeDescriptor(fieldType),
+		JSONReferenceDescriptor:         g.referenceDescriptor(fieldType),
+		ExistingJavaTypeDescriptor:      g.existingJavaTypeDescriptor(fieldType),
 	}
 }
 
@@ -663,8 +680,8 @@ func (g *schemaGenerator) propertyDescriptorForList(field reflect.StructField) J
 			},
 			JSONArrayDescriptor: &JSONArrayDescriptor{
 				Items: JSONPropertyDescriptor{
-					JSONReferenceDescriptor: g.referenceDescriptor(listValueType),
-					JavaTypeDescriptor:      g.javaTypeDescriptor(listValueType),
+					JSONReferenceDescriptor:    g.referenceDescriptor(listValueType),
+					ExistingJavaTypeDescriptor: g.existingJavaTypeDescriptor(listValueType),
 				},
 			},
 		}
@@ -694,8 +711,8 @@ func (g *schemaGenerator) propertyDescriptorForList(field reflect.StructField) J
 			},
 			JSONArrayDescriptor: &JSONArrayDescriptor{
 				Items: JSONPropertyDescriptor{
-					JSONReferenceDescriptor: g.referenceDescriptor(listValueType),
-					JavaTypeDescriptor:      g.javaTypeDescriptor(listValueType),
+					JSONReferenceDescriptor:    g.referenceDescriptor(listValueType),
+					ExistingJavaTypeDescriptor: g.existingJavaTypeDescriptor(listValueType),
 				},
 			},
 		}

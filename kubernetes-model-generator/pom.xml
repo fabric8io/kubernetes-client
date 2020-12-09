@@ -33,7 +33,7 @@
   <modules>
     <module>kubernetes-model</module>
     <module>kubernetes-model-common</module>
-    <module>kubernetes-model-annotator</module>
+    <module>kubernetes-model-jsonschema2pojo</module>
     <module>kubernetes-model-core</module>
     <module>kubernetes-model-rbac</module>
     <module>kubernetes-model-admissionregistration</module>
@@ -121,7 +121,8 @@
           <artifactId>jsonschema2pojo-maven-plugin</artifactId>
           <version>${jsonschema2pojo.version}</version>
           <configuration>
-            <customAnnotator>io.fabric8.kubernetes.annotator.KubernetesTypeAnnotator</customAnnotator>
+            <customAnnotator>io.fabric8.kubernetes.jsonschema2pojo.KubernetesTypeAnnotator</customAnnotator>
+            <customRuleFactory>io.fabric8.kubernetes.jsonschema2pojo.Fabric8RuleFactory</customRuleFactory>
             <sourcePaths>
               <sourcePath>${project.basedir}/src/main/resources/schema/kube-schema.json</sourcePath>
             </sourcePaths>
@@ -143,7 +144,7 @@
           <dependencies>
             <dependency>
               <groupId>io.fabric8</groupId>
-              <artifactId>kubernetes-model-annotator</artifactId>
+              <artifactId>kubernetes-model-jsonschema2pojo</artifactId>
               <version>${project.version}</version>
             </dependency>
           </dependencies>

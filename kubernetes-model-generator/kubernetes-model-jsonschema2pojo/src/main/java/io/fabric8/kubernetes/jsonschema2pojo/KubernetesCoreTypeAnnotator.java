@@ -13,15 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.annotator;
-
-import java.lang.annotation.Annotation;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.regex.Pattern;
-
-import org.jsonschema2pojo.Jackson2Annotator;
+package io.fabric8.kubernetes.jsonschema2pojo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -34,7 +26,6 @@ import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpressionImpl;
 import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JFormatter;
-
 import io.fabric8.kubernetes.model.annotation.ApiGroup;
 import io.fabric8.kubernetes.model.annotation.ApiVersion;
 import io.fabric8.kubernetes.model.annotation.PackageSuffix;
@@ -43,6 +34,14 @@ import io.sundr.transform.annotations.VelocityTransformation;
 import io.sundr.transform.annotations.VelocityTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.jsonschema2pojo.GenerationConfig;
+import org.jsonschema2pojo.Jackson2Annotator;
+
+import java.lang.annotation.Annotation;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
   protected static final String ANNOTATION_VALUE = "value";
@@ -54,6 +53,10 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
   protected final Map<String, JDefinedClass> pendingResources = new HashMap<>();
   protected final Map<String, JDefinedClass> pendingLists = new HashMap<>();
   protected String moduleName = null;
+
+  public KubernetesCoreTypeAnnotator(GenerationConfig generationConfig) {
+    super(generationConfig);
+  }
 
   @Override
   public void propertyOrder(JDefinedClass clazz, JsonNode propertiesNode) {

@@ -23,10 +23,11 @@ import (
 )
 
 type PackageDescriptor struct {
-	GoPackage   string
-	ApiGroup    string
-	JavaPackage string
-	Prefix      string
+	GoPackage       string
+	ApiGroup        string
+	JavaPackage     string
+	Prefix          string
+	Generate        bool
 }
 
 type schemaGenerator struct {
@@ -42,6 +43,7 @@ type CrdScope int32
 const (
 	Namespaced CrdScope = iota
 	Cluster    CrdScope = iota
+	BasePackage string = "io.fabric8.kubernetes.api.model"
 )
 
 func GenerateSchema(t reflect.Type, packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, manualTypeMapping map[reflect.Type]string, moduleName string) (*JSONSchema, error) {
@@ -93,6 +95,14 @@ func getFieldDescription(f reflect.StructField) string {
 		return parts[0]
 	}
 	return ""
+}
+
+func (g *schemaGenerator) generateJavaType(t reflect.Type) bool {
+	pkgDesc, ok := g.packages[pkgPath(t)]
+	if !ok {
+		return false
+	}
+	return pkgDesc.Generate
 }
 
 func (g *schemaGenerator) qualifiedName(t reflect.Type) string {
@@ -168,7 +178,7 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 		case "Time":
 			return "String"
 		case "RawExtension":
-			return "io.fabric8.kubernetes.api.model.HasMetadata"
+			return BasePackage + ".HasMetadata"
 		case "List":
 			return pkgDesc.JavaPackage + ".BaseKubernetesList"
 		default:
@@ -210,7 +220,7 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 }
 
 func (g *schemaGenerator) resourceListWithGeneric(t reflect.Type) string {
-	return "io.fabric8.kubernetes.api.model.KubernetesResourceList<" + g.javaType(t.Elem()) + ">"
+	return BasePackage + ".KubernetesResourceList<" + g.javaType(t.Elem()) + ">"
 }
 
 func (g *schemaGenerator) javaInterfaces(t reflect.Type) []string {
@@ -218,17 +228,17 @@ func (g *schemaGenerator) javaInterfaces(t reflect.Type) []string {
 		scope := g.crdScope(t)
 
 		if scope == Namespaced {
-			return []string{"io.fabric8.kubernetes.api.model.HasMetadata", "io.fabric8.kubernetes.api.model.Namespaced"}
+			return []string{BasePackage + ".HasMetadata", BasePackage + ".Namespaced"}
 		}
-		return []string{"io.fabric8.kubernetes.api.model.HasMetadata"}
+		return []string{BasePackage + ".HasMetadata"}
 	}
 
 	itemsField, hasItems := t.FieldByName("Items")
 	_, hasListMeta := t.FieldByName("ListMeta")
 	if hasItems && hasListMeta {
-		return []string{"io.fabric8.kubernetes.api.model.KubernetesResource", g.resourceListWithGeneric(itemsField.Type)}
+		return []string{BasePackage + ".KubernetesResource", g.resourceListWithGeneric(itemsField.Type)}
 	}
-	return []string{"io.fabric8.kubernetes.api.model.KubernetesResource"}
+	return []string{BasePackage + ".KubernetesResource"}
 }
 
 func (g *schemaGenerator) initializeTypeNames(t reflect.Type) {
@@ -265,12 +275,19 @@ func (g *schemaGenerator) generate(t reflect.Type, moduleName string) (*JSONSche
 					Type: "object",
 				},
 				JSONObjectDescriptor: v,
-				JavaTypeDescriptor: &JavaTypeDescriptor{
-					JavaType: g.javaType(k),
-				},
 				JavaInterfacesDescriptor: &JavaInterfacesDescriptor{
 					JavaInterfaces: g.javaInterfaces(k),
 				},
+			}
+			javaType := g.javaType(k)
+			if g.generateJavaType(k) && strings.HasPrefix(javaType, "io.fabric8.") {
+				value.JavaTypeDescriptor = &JavaTypeDescriptor {
+					JavaType: javaType,
+				}
+			} else {
+				value.ExistingJavaTypeDescriptor = &ExistingJavaTypeDescriptor {
+					ExistingJavaType: javaType,
+				}
 			}
 			/* Added a specific class for DockerImageMetadata because its kind of RawExtension
 			and is set to HasMetadata Java Type. Because of this thing its not getting marshalled
@@ -350,8 +367,8 @@ func (g *schemaGenerator) getPropertyDescriptor(t reflect.Type, desc string, omi
 				Type:        "integer",
 				Description: desc,
 			},
-			JavaTypeDescriptor: &JavaTypeDescriptor{
-				JavaType: "Long",
+			ExistingJavaTypeDescriptor: &ExistingJavaTypeDescriptor{
+				ExistingJavaType: "Long",
 			},
 		}
 	case reflect.Float32, reflect.Float64, reflect.Complex64,
@@ -398,8 +415,8 @@ func (g *schemaGenerator) getPropertyDescriptor(t reflect.Type, desc string, omi
 			JSONMapDescriptor: &JSONMapDescriptor{
 				MapValueType: g.getPropertyDescriptor(t.Elem(), desc, false),
 			},
-			JavaTypeDescriptor: &JavaTypeDescriptor{
-				JavaType: "java.util.Map<String," + g.javaTypeWrapPrimitive(t.Elem()) + ">",
+			ExistingJavaTypeDescriptor: &ExistingJavaTypeDescriptor{
+				ExistingJavaType: "java.util.Map<String, " + g.javaTypeWrapPrimitive(t.Elem()) + ">",
 			},
 		}
 	case reflect.Struct:
@@ -413,8 +430,8 @@ func (g *schemaGenerator) getPropertyDescriptor(t reflect.Type, desc string, omi
 			JSONReferenceDescriptor: &JSONReferenceDescriptor{
 				Reference: g.generateReference(t),
 			},
-			JavaTypeDescriptor: &JavaTypeDescriptor{
-				JavaType: g.javaType(t),
+			ExistingJavaTypeDescriptor: &ExistingJavaTypeDescriptor{
+				ExistingJavaType: g.javaType(t),
 			},
 		}
 	}
@@ -444,7 +461,7 @@ func (g *schemaGenerator) getStructProperties(t reflect.Type) map[string]JSONPro
 					Reference: "#/definitions/kubernetes_apimachinery_pkg_runtime_ImageRawExtension",
 				},
 				JavaTypeDescriptor: &JavaTypeDescriptor{
-					JavaType: "io.fabric8.kubernetes.api.model.runtime.RawExtension",
+					JavaType: BasePackage + ".runtime.RawExtension",
 				},
 			}
 			props[name] = prop
