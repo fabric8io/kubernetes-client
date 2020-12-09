@@ -590,7 +590,7 @@
       "type": "object",
       "description": "",
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.HasMetadata",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
