@@ -15,6 +15,7 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.client.Config;
@@ -54,6 +55,7 @@ import java.util.function.UnaryOperator;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.api.model.DeploymentConfig;
+import io.fabric8.openshift.api.model.DeploymentConfigBuilder;
 import io.fabric8.openshift.api.model.DeploymentConfigList;
 import io.fabric8.openshift.client.dsl.DeployableScalableResource;
 import okhttp3.OkHttpClient;
@@ -288,6 +290,12 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
   public Loggable<LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
     return new DeploymentConfigOperationsImpl((RollingOperationContext)context, podLogWaitTimeout);
   }
+
+  @Override
+  public DeploymentConfig edit(Visitor... visitors) {
+    return patch(new DeploymentConfigBuilder(getMandatory()).accept(visitors).build());
+  }
+
 
   private void waitUntilDeploymentConfigPodBecomesReady(DeploymentConfig deploymentConfig) {
     List<PodResource<Pod>> podOps = PodOperationUtil.getPodOperationsForController(context, deploymentConfig.getMetadata().getUid(),

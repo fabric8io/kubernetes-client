@@ -374,9 +374,11 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
     }
 
     @Override
-    public ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> accept(Visitor visitor) {
-        List<Visitor> newVisitors = new ArrayList<>(visitors);
-        newVisitors.add(visitor);
+    public ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> accept(Visitor... visitors) {
+        List<Visitor> newVisitors = new ArrayList<>(this.visitors);
+        for (Visitor v : visitors) {
+          newVisitors.add(v);
+        }
         return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, newVisitors, item, null, null, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
     }
 

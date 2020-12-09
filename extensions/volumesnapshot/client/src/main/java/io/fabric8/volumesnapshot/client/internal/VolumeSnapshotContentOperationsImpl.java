@@ -15,11 +15,13 @@
  */
 package io.fabric8.volumesnapshot.client.internal;
 
+import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotContent;
+import io.fabric8.volumesnapshot.api.model.VolumeSnapshotContentBuilder;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotContentList;
 import okhttp3.OkHttpClient;
 
@@ -39,6 +41,11 @@ public class VolumeSnapshotContentOperationsImpl extends HasMetadataOperation<Vo
   @Override
   public BaseOperation<VolumeSnapshotContent, VolumeSnapshotContentList, VolumeSnapshotContentResource> newInstance(OperationContext context) {
     return new VolumeSnapshotContentOperationsImpl(context);
+  }
+
+  @Override
+  public VolumeSnapshotContent edit(Visitor... visitors) {
+    return patch(new VolumeSnapshotContentBuilder(getMandatory()).accept(visitors).build());
   }
 
   @Override

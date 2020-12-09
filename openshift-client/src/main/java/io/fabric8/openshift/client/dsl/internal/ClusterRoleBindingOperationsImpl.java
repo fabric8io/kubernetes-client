@@ -15,10 +15,12 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import okhttp3.OkHttpClient;
 import io.fabric8.openshift.api.model.ClusterRoleBinding;
+import io.fabric8.openshift.api.model.ClusterRoleBindingBuilder;
 import io.fabric8.openshift.api.model.ClusterRoleBindingList;
 import io.fabric8.openshift.client.OpenShiftConfig;
 
@@ -35,6 +37,11 @@ public class ClusterRoleBindingOperationsImpl extends OpenShiftOperation<Cluster
       .withPlural("clusterrolebindings"));
     this.type = ClusterRoleBinding.class;
     this.listType = ClusterRoleBindingList.class;
+  }
+
+  @Override
+  public ClusterRoleBinding edit(Visitor... visitors) {
+    return patch(new ClusterRoleBindingBuilder(getMandatory()).accept(visitors).build());
   }
 
   @Override

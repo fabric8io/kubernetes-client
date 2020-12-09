@@ -9,6 +9,7 @@
 #### Improvements
 
 #### Dependency Upgrade
+* edit methods, now accept visitors as vararg or lambda.
 
 #### New Features
 
