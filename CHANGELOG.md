@@ -6,11 +6,13 @@
 * Fix #2519: Generated schemas contains a valid meta-schema URI reference (`http://json-schema.org/draft-05/schema#`)
 * Fix #2628: add `isFinalizerValid` to encapsulate validation logic
 * Fix #2631: Handle null values when getting current context on OIDC interceptors
+* Fix #2610: Remove deprecated module kubernetes-model-generator/model-generator-app
 
 #### Improvements
+* Fix #2640: Edit method accepts Visitors
 
 #### Dependency Upgrade
-* edit methods, now accept visitors as vararg or lambda.
+* Fix #2636: Upgrade sundrio.version to 0.23.0
 
 #### New Features
 
