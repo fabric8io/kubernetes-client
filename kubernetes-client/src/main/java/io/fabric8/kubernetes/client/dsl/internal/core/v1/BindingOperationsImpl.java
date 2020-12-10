@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.dsl.internal.core.v1;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Binding;
 import io.fabric8.kubernetes.api.model.BindingBuilder;
@@ -40,7 +41,7 @@ public class BindingOperationsImpl extends HasMetadataOperation<Binding, Kuberne
       .withApiGroupVersion("v1")
       .withPlural("bindings"));
     this.type = Binding.class;
-    this.listType = (Class<KubernetesResourceList<Binding>>)new TypeReference<KubernetesResourceList<Binding>>(){}.getType();
+    this.listType = (Class<KubernetesResourceList<Binding>>) TypeFactory.rawClass(new TypeReference<KubernetesResourceList<Binding>>(){}.getType());
   }
 
   @Override
