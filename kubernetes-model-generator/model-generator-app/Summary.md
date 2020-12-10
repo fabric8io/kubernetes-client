@@ -1,1 +1,0 @@
-fabric8 schema generator app triggered on upstream changes, generates updated Kubernetes and Origin Java model, tests and releases to Maven Central. 
