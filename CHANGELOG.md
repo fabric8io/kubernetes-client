@@ -1,5 +1,15 @@
 ## CHANGELOG
 
+### 5.0-SNAPSHOT
+
+#### Bugs
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
 ### 5.0.0-alpha-3 (2020-12-10)
 
 #### Bugs
@@ -14,8 +24,6 @@
 
 #### Dependency Upgrade
 * Fix #2636: Upgrade sundrio.version to 0.23.0
-
-#### New Features
 
 ### 5.0.0-alpha-2 (2020-11-24)
 
