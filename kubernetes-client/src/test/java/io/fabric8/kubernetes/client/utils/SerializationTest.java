@@ -17,17 +17,19 @@ package io.fabric8.kubernetes.client.utils;
 
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Map;
@@ -138,5 +140,29 @@ public class SerializationTest {
     final boolean result = Serialization.containsMultipleDocuments(multiDocument);
     // Then
     assertFalse(result);
+  }
+
+  @Test
+  void testSerializeYamlWithAlias() {
+    // Given
+    InputStream fileInputStream = getClass().getResourceAsStream("/test-pod-manifest-with-aliases.yml");
+
+    // When
+    Pod pod = Serialization.unmarshal(fileInputStream);
+
+    // Then
+    assertNotNull(pod);
+    assertEquals("test-pod-with-alias", pod.getMetadata().getName());
+    assertEquals("build", pod.getSpec().getNodeSelector().get("workload"));
+    assertEquals(1, pod.getSpec().getTolerations().size());
+    assertEquals(1000, pod.getSpec().getSecurityContext().getRunAsGroup().intValue());
+    assertEquals(1000, pod.getSpec().getSecurityContext().getRunAsUser().intValue());
+    assertEquals(2, pod.getSpec().getContainers().size());
+    assertEquals("ubuntu", pod.getSpec().getContainers().get(0).getName());
+    assertEquals("ubuntu:bionic", pod.getSpec().getContainers().get(0).getImage());
+    assertEquals(new Quantity("100m"), pod.getSpec().getContainers().get(0).getResources().getRequests().get("cpu"));
+    assertEquals("python3", pod.getSpec().getContainers().get(1).getName());
+    assertEquals("python:3.7", pod.getSpec().getContainers().get(1).getImage());
+    assertEquals(new Quantity("100m"), pod.getSpec().getContainers().get(1).getResources().getRequests().get("cpu"));
   }
 }

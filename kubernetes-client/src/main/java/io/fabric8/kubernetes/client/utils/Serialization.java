@@ -22,6 +22,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -132,7 +133,7 @@ public class Serialization {
       bis.reset();
 
       if (intch != '{') {
-        mapper = YAML_MAPPER;
+        return unmarshalYaml(bis, null);
       }
       return mapper.readerFor(KubernetesResource.class).readValue(bis);
     } catch (IOException e) {
@@ -237,14 +238,13 @@ public class Serialization {
 
       ObjectMapper mapper = JSON_MAPPER;
       if (intch != '{') {
-        mapper = YAML_MAPPER;
+        return unmarshalYaml(bis, type);
       }
       return mapper.readValue(bis, type);
     } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
   }
-
 
   private static List<KubernetesResource> getKubernetesResourceList(Map<String, String> parameters, String specFile) {
     return splitSpecFile(specFile).stream().filter(Serialization::validate)
@@ -293,5 +293,19 @@ public class Serialization {
     } catch (IOException e) {
       throw new RuntimeException("Unable to read InputStream." + e);
     }
+  }
+
+  private static <T> T unmarshalYaml(InputStream is, TypeReference<T> type) throws JsonProcessingException {
+    final Yaml yaml = new Yaml();
+    Map<String, Object> obj = yaml.load(is);
+    String objAsJsonStr = JSON_MAPPER.writeValueAsString(obj);
+    return unmarshalJsonStr(objAsJsonStr, type);
+  }
+
+  private static <T> T unmarshalJsonStr(String jsonString, TypeReference<T> type) throws JsonProcessingException {
+    if (type != null) {
+      return JSON_MAPPER.readValue(jsonString, type);
+    }
+    return JSON_MAPPER.readerFor(KubernetesResource.class).readValue(jsonString);
   }
 }

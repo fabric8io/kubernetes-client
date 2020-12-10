@@ -16,6 +16,8 @@
 
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.ResourceQuota;
 import io.fabric8.kubernetes.api.model.ResourceQuotaBuilder;
@@ -27,6 +29,8 @@ import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import org.junit.Rule;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -113,8 +117,25 @@ public class ResourceQuotaTest {
   @Test
   public void testLoadFromFile() {
     KubernetesClient client = server.getClient();
-    ResourceQuota resourceQuota = client.resourceQuotas().load(getClass().getResourceAsStream("/test-resourcequota.yml")).get();
-    assertEquals("compute-quota", resourceQuota.getMetadata().getName());
+    List<HasMetadata> list = client.load(getClass().getResourceAsStream("/test-resourcequota.yml")).get();
+    assertEquals(3, list.size());
+    assertTrue(list.get(0) instanceof ResourceQuota);
+    assertEquals("compute-quota", list.get(0).getMetadata().getName());
+    assertEquals("myspace", list.get(0).getMetadata().getNamespace());
+    assertEquals(new Quantity("1"), ((ResourceQuota) list.get(0)).getSpec().getHard().get("requests.cpu"));
+    assertEquals(new Quantity("1Gi"), ((ResourceQuota) list.get(0)).getSpec().getHard().get("requests.memory"));
+    assertEquals(new Quantity("2"), ((ResourceQuota) list.get(0)).getSpec().getHard().get("limits.cpu"));
+    assertEquals(new Quantity("2Gi"), ((ResourceQuota) list.get(0)).getSpec().getHard().get("limits.memory"));
+    assertTrue(list.get(1) instanceof ResourceQuota);
+    assertEquals("object-quota", list.get(1).getMetadata().getName());
+    assertEquals(new Quantity("10"), ((ResourceQuota) list.get(1)).getSpec().getHard().get("configmaps"));
+    assertEquals(new Quantity("4"), ((ResourceQuota) list.get(1)).getSpec().getHard().get("persistentvolumeclaims"));
+    assertEquals(new Quantity("20"), ((ResourceQuota) list.get(1)).getSpec().getHard().get("replicationcontrollers"));
+    assertEquals(new Quantity("10"), ((ResourceQuota) list.get(1)).getSpec().getHard().get("secrets"));
+    assertEquals(new Quantity("10"), ((ResourceQuota) list.get(1)).getSpec().getHard().get("services"));
+    assertEquals(new Quantity("2"), ((ResourceQuota) list.get(1)).getSpec().getHard().get("services.loadbalancers"));
+    assertTrue(list.get(2) instanceof Namespace);
+    assertEquals("myspace", list.get(2).getMetadata().getName());
   }
 
   @Test
