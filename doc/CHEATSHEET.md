@@ -123,23 +123,11 @@ Pod createdPod = client.pods().inNamespace("default").create(aPod);
 ```
 client.pods().inNamespace("default").createOrReplace(aPod);
 ```
-- Create or Replace some `Pod` on the fly with `Builder`:
-```
-client.pods().inNamespace("default").createOrReplaceWithNew()
-    .withNewMetadata().withName("demo-pod1").endMetadata()
-    .withNewSpec()
-    .addNewContainer()
-    .withName("nginx")
-    .withImage("nginx:1.7.9")
-    .addNewPort().withContainerPort(80).endPort()
-    .endContainer()
-    .endSpec()
-    .done();
-```
 - Edit a `Pod` object:
-```
-client.pods().inNamespace("default").withName("nginx").edit()
-    .editOrNewMetadata().addToLabels("new","label").endMetadata().done()
+```java
+client.pods().inNamespace("default").withName("nginx").edit(
+  p -> new PodBuilder(p).editOrNewMetadata().addToLabels("new","label").endMetadata().build()
+);
 ```
 - Get logs for `Pod` object:
 ```
@@ -225,22 +213,6 @@ Service createdSvc = client.services().inNamespace("default").create(svc);
 ```
 Service createdSvc = client.services().inNamespace("default").createOrReplace(svc);
 ```
-- Create Or Replace existing `Service` using Builders:
-```
-Service createdSvc = client.services().inNamespace("default").createOrReplaceWithNew()
-    .withNewMetadata().withName("svc2").endMetadata()
-    .withNewSpec().withType("ExternalName").withExternalName("my.database.example.com")
-    .addNewPort().withName("80").withProtocol("TCP").withPort(80).endPort()
-    .endSpec()
-    .withNewStatus()
-    .withNewLoadBalancer()
-    .addNewIngress()
-    .withIp("146.148.47.155")
-    .endIngress()
-    .endLoadBalancer()
-    .endStatus()
-    .done();
-```
 - List all `Service` objects in some specific namespace:
 ```
 ServiceList svcList = client.services().inNamespace("default").list();
@@ -315,33 +287,6 @@ client.apps().deployments().inNamespace("default").create(deployment1);
 ```
 Deployment createdDeployment = client.apps().deployments().inNamespace("default").createOrReplace(deployObj);
 ```
-- Create or Replace an existing `Deployment` using builders:
-```
-client.apps().deployments().inNamespace("default").createOrReplaceWithNew()
-   .withNewMetadata()
-      .withName("deployment1")
-      .addToLabels("test", "deployment")
-   .endMetadata()
-   .withNewSpec()
-      .withReplicas(1)
-      .withNewTemplate()
-        .withNewMetadata()
-        .addToLabels("app", "httpd")
-        .endMetadata()
-        .withNewSpec()
-          .addNewContainer()
-             .withName("busybox")
-             .withImage("busybox")
-             .withCommand("sleep","36000")
-          .endContainer()
-        .endSpec()
-      .endTemplate()
-      .withNewSelector()
-        .addToMatchLabels("app","httpd")
-      .endSelector()
-   .endSpec()
- .done();
-```
 - List `Deployment` objects in some specific namespace:
 ```
 DeploymentList aDeploymentList = client.apps().deployments().inNamespace("default").list();
@@ -358,13 +303,14 @@ DeploymentList aDeployList = client.apps().deployments().inNamespace("default").
 ```
 // Scales Deployment to 2 replicas
 Deployment updatedDeploy = client.apps().deployments().inNamespace("default")
-      .withName("deployment1").edit()
-      .editSpec().withReplicas(2).endSpec().done();
+  .withName("deployment1").edit(
+    d -> new DeploymentBuilder(d).editSpec().withReplicas(2).endSpec().build()
+  );
 ```
 - Update single container image inside `Deployment`:
 ```
 Deployment updatedDeployment = client.apps().deployments().inNamespace("default").withName("ngix-controller")
-			.rolling().updateImage("docker.io/nginx:latest");
+  .rolling().updateImage("docker.io/nginx:latest");
 ```
 - Update multiple container images inside `Deployment`:
 ```
@@ -488,39 +434,6 @@ client.apps().replicaSets().inNamespace("default").create(replicaset1);
 ```
 ReplicaSet rs = client.apps().replicaSets().inNamespace("default").createOrReplace(replicaSet);
 ```
-- Create or Replace `ReplicaSet` with new builders:
-```
-ReplicaSet rs = client.apps().replicaSets().inNamespace("default").createOrReplaceWithNew()
-        .withNewMetadata()
-        .withName("replicaset1")
-        .addToLabels("app", "guestbook")
-        .addToLabels("tier", "frontend")
-        .endMetadata()
-        .withNewSpec()
-        .withReplicas(1)
-        .withNewSelector()
-        .withMatchLabels(Collections.singletonMap("tier", "frontend"))
-        .endSelector()
-        .withNewTemplate()
-        .withNewMetadata()
-        .addToLabels("app", "guestbook")
-        .addToLabels("tier", "frontend")
-        .endMetadata()
-        .withNewSpec()
-        .addNewContainer()
-        .withName("busybox")
-        .withImage("busybox")
-        .withCommand("sleep","36000")
-        .withNewResources()
-        .withRequests(requests)
-        .endResources()
-        .withEnv(envVarList)
-        .endContainer()
-        .endSpec()
-        .endTemplate()
-        .endSpec()
-        .done();
-```
 - List `ReplicaSet` objects in some namespace:
 ```
 ReplicaSetList rsList = client.apps().replicaSets().inNamespace("default").list();
@@ -609,21 +522,6 @@ ReplicationController rc = client.replicationControllers().inNamespace("default"
 ```
 ReplicationController rc = client.replicationControllers().inNamespace("default").createOrReplace(rc1);
 ``` 
-- Create or Replace with builder:
-```
-ReplicationController rc = client.replicationControllers().inNamespace("default").createOrReplaceWithNew()
-  .withNewMetadata().withName("nginx-controller").addToLabels("server", "nginx").endMetadata()
-  .withNewSpec().withReplicas(3)
-  .withNewTemplate()
-  .withNewMetadata().addToLabels("server", "nginx").endMetadata()
-  .withNewSpec()
-  .addNewContainer().withName("nginx").withImage("nginx")
-  .addNewPort().withContainerPort(80).endPort()
-  .endContainer()
-  .endSpec()
-  .endTemplate()
-  .endSpec().done();
-```
 - List `ReplicationController` object in some namespace:
 ```
 ReplicationControllerList rcList = client.replicationControllers().inNamespace("default").list();
@@ -702,15 +600,6 @@ ConfigMap configMap = client.configMaps().inNamespace("default").create(configMa
 ```
 ConfigMap configMap = client.configMaps().inNamespace("default").createOrReplace(configMap1);
 ```
-- Create or Replace some `ConfigMap` with builders:
-```
-ConfigMap configMap = client.configMaps().inNamespace("default").createOrReplaceWithNew()
-      .withNewMetadata().withName("configmap1").endMetadata()
-      .addToData("1", "one")
-      .addToData("2", "two")
-      .addToData("3", "three")
-      .done();
-```
 - List `ConfigMap` objects in some namespace:
 ```
 ConfigMapList configMapList = client.configMaps().inNamespace("default").list();
@@ -742,9 +631,10 @@ client.configMaps().inNamespace("default").watch(new Watcher<ConfigMap>() {
 });
 ```
 - Update `ConfigMap`:
-```
-ConfigMap configMap1 = client.configMaps().inNamespace(currentNamespace).withName("configmap1").edit()
-      .addToData("4", "four").done();
+```java
+ConfigMap configMap1 = client.configMaps().inNamespace(currentNamespace).withName("configmap1").edit(
+  c -> new ConfigMapBuilder(c).addToData("4", "four").build()
+);
 ```
 
 ### Secret
@@ -771,14 +661,6 @@ Secret secretCreated = client.secrets().inNamespace("default").create(secret1);
 ```
 Secret createdSecret = client.secrets().inNamespace("default").createOrReplace(secret1);
 ```
-- Create or Replace `Secret` with builder:
-```
-Secret createdSecret = client.secrets().inNamespace("default").createOrReplaceWithNew()
-      .withNewMetadata().withName("secret1").endMetadata()
-      .addToData("username", "guccifer")
-      .addToData("password", "shadowgovernment")
-      .done();
-```
 - List `Secret` resources in some namespace:
 ```
 SecretList secretList = client.secrets().inNamespace("default").list();
@@ -792,10 +674,10 @@ SecretList secretList = client.secrets().inAnyNamespace().list();
 SecretList secretList = client.secrets().inNamespace("default").withLabel("foo", "bar").list();
 ```
 - Edit `Secret`:
-```
-Secret secret1 = client.secrets().inNamespace(currentNamespace).withName("secret1").edit()
-      .withType("Opaque")
-      .done();
+```java
+Secret secret1 = client.secrets().inNamespace(currentNamespace).withName("secret1").edit(
+  s -> new SecretBuilder(s).withType("Opaque").build()
+);
 ```
 - Delete `Secret`:
 ```
@@ -854,29 +736,6 @@ client.batch().jobs().inNamespace("default").create(job);
 - Create or Replace an existing `Job`:
 ```
 Job job = client.batch().jobs().inNamespace("default").createOrReplace(job);
-```
-- Create or Replace an existing `Job` with builder:
-```
-Job job = client.batch().jobs().inNamespace("default").createOrReplaceWithNew()
-    .withApiVersion("batch/v1")
-    .withNewMetadata()
-    .withName("pi")
-    .withLabels(Collections.singletonMap("label1", "maximum-length-of-63-characters"))
-    .withAnnotations(Collections.singletonMap("annotation1", "some-very-long-annotation"))
-    .endMetadata()
-    .withNewSpec()
-    .withNewTemplate()
-    .withNewSpec()
-    .addNewContainer()
-    .withName("pi")
-    .withImage("perl")
-    .withArgs("perl", "-Mbignum=bpi", "-wle", "print bpi(2000)")
-    .endContainer()
-    .withRestartPolicy("Never")
-    .endSpec()
-    .endTemplate()
-    .endSpec()
-    .done();
 ```
 - List `Job` in some namespace:
 ```
@@ -952,33 +811,6 @@ cronJob1 = client.batch().cronjobs().inNamespace("default").create(cronJob1);
 ```
 CronJob cronJob = client.batch().cronjobs().inNamespace("default").createOrReplace(cronJob1);
 ```
-- Create or Replace `CronJob` with builders:
-```
-CronJob cronJob = client.batch().cronjobs().inNamespace("default").createOrReplaceWithNew()
-    .withApiVersion("batch/v1beta1")
-    .withNewMetadata()
-    .withName("hello")
-    .withLabels(Collections.singletonMap("foo", "bar"))
-    .endMetadata()
-    .withNewSpec()
-    .withSchedule("*/1 * * * *")
-    .withNewJobTemplate()
-    .withNewSpec()
-    .withNewTemplate()
-    .withNewSpec()
-    .addNewContainer()
-    .withName("hello")
-    .withImage("busybox")
-    .withArgs("/bin/sh", "-c", "date; echo Hello from Kubernetes")
-    .endContainer()
-    .withRestartPolicy("OnFailure")
-    .endSpec()
-    .endTemplate()
-    .endSpec()
-    .endJobTemplate()
-    .endSpec()
-    .done();
-```
 - List some `CronJob` objects in some namespace:
 ```
 CronJobList cronJobList = client.batch().cronjobs().inNamespace("default").list()
@@ -992,13 +824,10 @@ CronJobList cronJobList = client.batch().cronjobs().inAnyNamespace().list();
 CronJobList cronJobList = client.batch().cronjobs().inNamespace("default").withLabel("foo", "bar").list();
 ```
 - Edit/Update `CronJob`:
-```
-CronJob cronJob1 = client.batch().cronjobs().inNamespace("default").withName(cronJob1.getMetadata().getName())
-      .edit()
-      .editSpec()
-      .withSchedule("*/1 * * * *")
-      .endSpec()
-      .done();
+```java
+CronJob cronJob1 = client.batch().cronjobs().inNamespace("default").withName(cronJob1.getMetadata().getName()).edit(
+  cj -> new CronJobBuilder(cj).editSpec().withSchedule("*/1 * * * *").endSpec().build()
+);
 ```
 - Delete `CronJob`:
 ```
@@ -1052,13 +881,6 @@ client.serviceAccounts().inNamespace("default").create(serviceAccount1);
 ```
 ServiceAccount serviceAccount = client.serviceAccounts().inNamespace("default").createOrReplace(serviceAccount1);
 ```
-- Create or Replace `ServiceAccount` with builders:
-```
-ServiceAccount serviceAccount = client.serviceAccounts().inNamespace("default").createOrReplaceWithNew()
-  .withNewMetadata().withName("serviceaccount1").endMetadata()
-  .withAutomountServiceAccountToken(false)
-  .done();
-```
 - List `ServiceAccount` in some specific namespace:
 ```
 ServiceAccountList svcAccountList = client.serviceAccounts().inNamespace("default").list();
@@ -1068,11 +890,12 @@ ServiceAccountList svcAccountList = client.serviceAccounts().inNamespace("defaul
 ServiceAccountList saList = client.serviceAccounts().inNamespace("default").withLabel("foo", "bar").list();
 ```
 - Update/Edit `ServiceAccount`:
-```
-ServiceAccount serviceAccount1 = client.serviceAccounts().inNamespace("default").withName("serviceaccount1").edit()
-  .addNewSecret().withName("default-token-uudp").endSecret()
+```java
+ServiceAccount serviceAccount1 = client.serviceAccounts().inNamespace("default").withName("serviceaccount1").edit(
+  sa -> new ServiceAccountBuilder(sa).addNewSecret().withName("default-token-uudp").endSecret()
   .addNewImagePullSecret().withName("myregistrykey").endImagePullSecret()
-  .done();
+  .build();
+);
 ```
 - Delete `ServiceAccount`:
 ```
@@ -1108,21 +931,6 @@ client.network().ingress().inNamespace("default").create(ingress);
 - Create or Replace `Ingress`:
 ```
 Ingress igx = client.network().ingress().inNamespace("default").createOrReplace(ingress);
-```
-- Create or Replace `Ingress` with Builders:
-```
-Ingress igx = client.network().ingress().inNamespace("default").createOrReplaceWithNew()
-  .withNewMetadata().withName("test-ingress").addToAnnotations("nginx.ingress.kubernetes.io/rewrite-target", "/").endMetadata()
-  .withNewSpec()
-  .addNewRule()
-  .withNewHttp()
-  .addNewPath()
-  .withPath("/testPath").withNewBackend().withServiceName("test").withServicePort(new IntOrString(80)).endBackend()
-  .endPath()
-  .endHttp()
-  .endRule()
-  .endSpec()
-  .done();
 ```
 - List `Ingress` in some namespace:
 ```
@@ -1387,19 +1195,6 @@ client.persistentVolumeClaims().inNamespace("default").create(persistentVolumeCl
 - Create or Replace an existing `PersistentVolumeClaim`:
 ```
 PersistentVolumeClaim pvc = client.persistentVolumeClaims().inNamespace("default").createOrReplace(pvcToCreate);
-```
-- Create or Replace an existing `PersistentVolumeClaim` with builders:
-```
-PersistentVolumeClaim pvc = client.persistentVolumeClaims().inNamespace("default").createOrReplaceWithNew()
-  .withNewMetadata().withName("test-pv-claim").endMetadata()
-  .withNewSpec()
-  .withStorageClassName("my-local-storage")
-  .withAccessModes("ReadWriteOnce")
-  .withNewResources()
-  .addToRequests("storage", new Quantity("500Gi"))
-  .endResources()
-  .endSpec()
-  .done();
 ```
 - List `PersistentVolumeClaim` objects in a particular namespace:
 ```
@@ -2432,9 +2227,10 @@ DeploymentConfigList dcList = client.deploymentConfigs().inAnyNamespace().list()
 DeploymentConfigList dcList = client.deploymentConfigs().inNamespace("default").withLabel("foo", "bar").list();
 ```
 - Update `DeploymentConfig`:
-```
-DeploymentConfig deploymentConfig1 = client.deploymentConfigs().inNamespace(currentNamespace).withName("deploymentconfig1").edit()
-  .editSpec().withReplicas(3).endSpec().done();
+```java
+DeploymentConfig deploymentConfig1 = client.deploymentConfigs().inNamespace(currentNamespace).withName("deploymentconfig1").edit(
+  dc -> new DeploymentConfigBuilder(dc).editSpec().withReplicas(3).endSpec().build()
+);
 ```
 - Delete `DeploymentConfig`:
 ```
@@ -2598,8 +2394,11 @@ OpenShift `Project` resource can be found in OpenShift Client API via `client.pr
 Project myProject = client.projects().withName("default").get();
 ```
 - Create `Project`
-```
-ProjectRequest request = client.projectrequests().createNew().withNewMetadata().withName("thisisatest").endMetadata().withDescription("Fabric8").withDisplayName("Fabric8).done();
+```java
+ProjectRequest request = client.projectrequests().create(
+  new ProjectRequestBuilder().withNewMetadata().withName("thisisatest").endMetadata()
+  .withDescription("Fabric8").withDisplayName("Fabric8).build()
+);
 ```
 - List `Project`
 ```

@@ -15,9 +15,7 @@
 #### Bugs
 * Fix #2671: Reliability improvements to watchers
 * Fix #2592: ConcurrentModificationException in CRUD KubernetesMockServer
-* Fix #2519: Generated schemas contains a valid meta-schema URI reference (`http://json-schema.org/draft-05/schema#`)
-* Fix #2631: Handle null values when getting current context on OIDC interceptors
-* Fix #2510 : Yaml containing aliases rejected due to FasterXML bug
+* Fix #2510: Yaml containing aliases rejected due to FasterXML bug
 * Fix #2651: SharedInformers should ignore resync on zero resyncPeriod
 * Fix #2656: Binding operations can be instantiated
 
@@ -33,7 +31,7 @@
 * Fix #2611: Support for Custom Resource and Custom Resource Definitions has been improved
   - New annotations have been introduced for users to specify group, version, singular and plural
     properties for `CustomResource` instances
-  - `CustomResource` instances must now be annotated with `@ApiVersion` and `@ApiGroup` so that the 
+  - `CustomResource` instances must now be annotated with `@Version` and `@Group` so that the 
     associated information can be automatically computed
   - `HasMetadata` provides default implementations for `getApiVersion` and `getKind` based on the 
     presence (or not) of annotations on the target class
@@ -54,7 +52,6 @@
 
 #### Bugs
 * Fix #2519: Generated schemas contains a valid meta-schema URI reference (`http://json-schema.org/draft-05/schema#`)
-* Fix #2628: add `isFinalizerValid` to encapsulate validation logic
 * Fix #2631: Handle null values when getting current context on OIDC interceptors
 * Fix #2610: Remove deprecated module kubernetes-model-generator/model-generator-app
 
