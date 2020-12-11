@@ -48,32 +48,32 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
   /**
    * resync fifo internals in millis
    */
-  private long fullResyncPeriod;
+  private final long fullResyncPeriod;
 
   /**
    * Queue stores deltas produced by reflector.
    */
-  private DeltaFIFO<T> queue;
+  private final DeltaFIFO<T> queue;
 
-  private ListerWatcher<T, L> listerWatcher;
+  private final ListerWatcher<T, L> listerWatcher;
 
   private Reflector<T, L> reflector;
 
-  private Supplier<Boolean> resyncFunc;
+  private final Supplier<Boolean> resyncFunc;
 
-  private Consumer<Deque<AbstractMap.SimpleEntry<DeltaFIFO.DeltaType, Object>>> processFunc;
+  private final Consumer<Deque<AbstractMap.SimpleEntry<DeltaFIFO.DeltaType, Object>>> processFunc;
 
-  private ScheduledExecutorService reflectExecutor;
+  private final ScheduledExecutorService reflectExecutor;
 
-  private ScheduledExecutorService resyncExecutor;
+  private final ScheduledExecutorService resyncExecutor;
 
   private ScheduledFuture resyncFuture;
 
-  private OperationContext operationContext;
+  private final OperationContext operationContext;
 
-  private ConcurrentLinkedQueue<SharedInformerEventListener> eventListeners;
+  private final ConcurrentLinkedQueue<SharedInformerEventListener> eventListeners;
 
-  private Class<T> apiTypeClass;
+  private final Class<T> apiTypeClass;
 
   public Controller(Class<T> apiTypeClass, DeltaFIFO<T> queue, ListerWatcher<T, L> listerWatcher, Consumer<Deque<AbstractMap.SimpleEntry<DeltaFIFO.DeltaType, Object>>> processFunc, Supplier<Boolean> resyncFunc, long fullResyncPeriod, OperationContext context, ConcurrentLinkedQueue<SharedInformerEventListener> eventListeners) {
     this.queue = queue;
@@ -90,6 +90,7 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
 
     // Starts one daemon thread for resync
     this.resyncExecutor = Executors.newSingleThreadScheduledExecutor();
+    initReflector();
   }
 
   public void run() {
@@ -104,12 +105,7 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
     }
 
     try {
-        if (fullResyncPeriod > 0) {
-          reflector = new Reflector<>(apiTypeClass, listerWatcher, queue, operationContext, fullResyncPeriod);
-        } else {
-          reflector = new Reflector<>(apiTypeClass, listerWatcher, queue, operationContext, DEFAULT_PERIOD);
-        }
-        reflector.listAndWatch();
+      reflector.listAndWatch();
 
       // Start the process loop
       this.processLoop();
@@ -148,15 +144,20 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
     return reflector.getLastSyncResourceVersion();
   }
 
+  Reflector<T, L> getReflector() {
+    return reflector;
+  }
+
   /**
    * drains the work queue.
    */
   private void processLoop() throws Exception {
-    while (true) {
+    while (!Thread.currentThread().isInterrupted()) {
       try {
         this.queue.pop(this.processFunc);
       } catch (InterruptedException t) {
         log.error("DefaultController#processLoop got interrupted {}", t.getMessage(), t);
+        Thread.currentThread().interrupt();
         return;
       } catch (Exception e) {
         log.error("DefaultController#processLoop recovered from crashing {} ", e.getMessage(), e);
@@ -165,4 +166,11 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
     }
   }
 
+  private void initReflector() {
+    if (fullResyncPeriod >= 0) {
+      reflector = new Reflector<>(apiTypeClass, listerWatcher, queue, operationContext, fullResyncPeriod, Executors.newSingleThreadScheduledExecutor());
+    } else {
+      reflector = new Reflector<>(apiTypeClass, listerWatcher, queue, operationContext, DEFAULT_PERIOD, Executors.newSingleThreadScheduledExecutor());
+    }
+  }
 }
