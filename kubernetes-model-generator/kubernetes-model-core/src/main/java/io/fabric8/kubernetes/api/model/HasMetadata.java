@@ -19,6 +19,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.fabric8.kubernetes.model.annotation.ApiGroup;
+import io.fabric8.kubernetes.model.annotation.ApiVersion;
+import io.fabric8.kubernetes.model.annotation.Kind;
 
 /**
  * Represents any {@link KubernetesResource} which possesses a {@link ObjectMeta} and is associated with a kind and API version.
@@ -36,9 +39,21 @@ public interface HasMetadata extends KubernetesResource {
   
   void setMetadata(ObjectMeta metadata);
   
-  String getKind();
+  default String getKind() {
+    final Class<? extends HasMetadata> clazz = getClass();
+    final Kind kind = clazz.getAnnotation(Kind.class);
+    return kind != null ? kind.value() : clazz.getSimpleName();
+  }
   
-  String getApiVersion();
+  default String getApiVersion() {
+    final Class<? extends HasMetadata> clazz = getClass();
+    final ApiGroup group = clazz.getAnnotation(ApiGroup.class);
+    if (group != null) {
+      final ApiVersion version = clazz.getAnnotation(ApiVersion.class);
+      return group.value() + "/" + version.value();
+    }
+    return null;
+  }
   
   void setApiVersion(String version);
   

@@ -56,10 +56,12 @@ public class ApiVersionUtil {
    * @param apiVersion  The apiGroupVersion or apiGroupName/apiGroupVersion combo.
    * @return            Just the apiGroupVersion part without the apiGroupName.
    */
-  private static String trimVersion(String apiVersion) {
-    if (apiVersion != null && apiVersion.contains("/")) {
-      String[] versionParts = apiVersion.split("/");
-      return versionParts[versionParts.length - 1];
+  public static String trimVersion(String apiVersion) {
+    if (apiVersion != null) {
+      final int slash = apiVersion.indexOf('/');
+      if(slash > 0) {
+        return apiVersion.substring(slash + 1);
+      }
     }
     return apiVersion;
   }
@@ -69,10 +71,12 @@ public class ApiVersionUtil {
    * @param apiVersion  The apiGroupVersion or apiGroupName/apiGroupVersion combo.
    * @return            Just the apiGroupName part without the apiGroupName, or apiVersion if no separator is found.
    */
-  private static String trimGroup(String apiVersion) {
-    if (apiVersion != null && apiVersion.contains("/")) {
-      String[] versionParts = apiVersion.split("/");
-      return versionParts[0];
+  public static String trimGroup(String apiVersion) {
+    if (apiVersion != null) {
+      final int slash = apiVersion.indexOf('/');
+      if (slash > 0) {
+        return apiVersion.substring(0, slash);
+      }
     }
     return apiVersion;
   }
@@ -84,10 +88,9 @@ public class ApiVersionUtil {
    * @param apiVersion  The apiGroupVersion or apiGroupName/apiGroupVersion combo.
    * @return            Just the apiGroupName part without the apiGroupName, or null if no separator is found.
    */
-  private static String trimGroupOrNull(String apiVersion) {
+  public static String trimGroupOrNull(String apiVersion) {
     if (apiVersion != null && apiVersion.contains("/")) {
-      String[] versionParts = apiVersion.split("/");
-      return versionParts[0];
+      return trimGroup(apiVersion);
     }
     return null;
   }

@@ -28,6 +28,8 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.internal.KubernetesDeserializer;
 
+import io.fabric8.kubernetes.model.annotation.ApiGroup;
+import io.fabric8.kubernetes.model.annotation.ApiVersion;
 import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.core.JsonFactory;
@@ -48,6 +50,8 @@ public class CustomResourceOperationsImplTest {
   public static class MyCustomResourceList extends CustomResourceList<MyCustomResource> {
   }
   
+  @ApiGroup("sample.fabric8.io")
+  @ApiVersion("v1")
   public static class Bar extends CustomResource {}
 
   private final CustomResourceDefinition crd = new CustomResourceDefinitionBuilder()

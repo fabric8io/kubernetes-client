@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersion;
+import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.Pluralize;
@@ -26,6 +27,8 @@ import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionSpec;
 import io.fabric8.kubernetes.client.utils.KubernetesVersionPriority;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.Locale;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -61,26 +64,24 @@ public class CustomResourceDefinitionContext {
   }
 
   public static CustomResourceDefinitionContext fromCustomResourceType(Class<? extends HasMetadata> customResource) {
-    HasMetadata instance;
     try {
-      instance = customResource.newInstance();
+      final CustomResource instance = (CustomResource) customResource.getDeclaredConstructor().newInstance();
 
-      String kind = Utils.isNullOrEmpty(instance.getKind()) ? customResource.getSimpleName() : instance.getKind();
-      String name = kind.toLowerCase();
-      String plural = Pluralize.toPlural(name);
+      String kind = instance.getKind();
+      String plural = instance.getPlural();
       String group = ApiVersionUtil.apiGroup(instance, null);
-      String version = ApiVersionUtil.apiVersion(instance, "v1");
-      String scope = instance instanceof Namespaced ? "Namespaced" : "Cluster";
+      String version = ApiVersionUtil.apiVersion(instance, null);
+      String scope = instance.getScope();
 
-      return new CustomResourceDefinitionContext.Builder()
+      return new Builder()
         .withGroup(group)
         .withVersion(version)
         .withScope(scope)
-        .withName(name)
+        .withName(kind.toLowerCase(Locale.ROOT))
         .withPlural(plural)
         .withKind(kind)
         .build();
-    } catch (InstantiationException | IllegalAccessException e) {
+    } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
   }
