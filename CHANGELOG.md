@@ -3,6 +3,7 @@
 ### 5.0-SNAPSHOT
 
 #### Bugs
+Fix #2510 : Yaml containing aliases rejected due to FasterXML bug
 
 #### Improvements
 
