@@ -7,6 +7,8 @@
 * Fix #2519: Generated schemas contains a valid meta-schema URI reference (`http://json-schema.org/draft-05/schema#`)
 * Fix #2631: Handle null values when getting current context on OIDC interceptors
 * Fix #2510 : Yaml containing aliases rejected due to FasterXML bug
+* Fix #2510 : Yaml containing aliases rejected due to FasterXML bug
+* Fix #2656: Binding operations can be instantiated
 
 #### Improvements
 
