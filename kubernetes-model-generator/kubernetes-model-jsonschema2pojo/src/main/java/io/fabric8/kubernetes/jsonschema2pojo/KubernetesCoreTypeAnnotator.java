@@ -41,7 +41,6 @@ import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
   protected static final String ANNOTATION_VALUE = "value";
@@ -75,25 +74,26 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
     clazz.annotate(ToString.class);
     clazz.annotate(EqualsAndHashCode.class);
     processBuildable(clazz);
-
-    if (clazz.fields().containsKey(KIND) && clazz.fields().containsKey(METADATA)) {
-      String resourceName;
-
-      if (clazz.name().endsWith("List")) {
-        resourceName = clazz.name().substring(0, clazz.name().length() - 4);
+  
+    final Map<String, JFieldVar> fields = clazz.fields();
+    if (fields.containsKey(KIND) && fields.containsKey(METADATA)) {
+      String resourceName = clazz.name();
+      final int listIndex = resourceName.lastIndexOf("List");
+      if (listIndex > 0 ) {
+        resourceName = resourceName.substring(0, listIndex);
         pendingLists.put(resourceName, clazz);
       } else {
-        resourceName = clazz.name();
-        pendingResources.put(clazz.name(), clazz);
+        pendingResources.put(resourceName, clazz);
       }
-      if (pendingResources.containsKey(resourceName) && pendingLists.containsKey(resourceName)) {
-        JDefinedClass resourceClass = pendingResources.get(resourceName);
-        JDefinedClass resourceListClass = pendingLists.get(resourceName);
-
-        String apiVersion = propertiesNode.get(API_VERSION).get("default").toString().replaceAll(Pattern.quote("\""), "");
+      
+      final JDefinedClass resourceClass = pendingResources.get(resourceName);
+      final JDefinedClass resourceListClass = pendingLists.get(resourceName);
+      if (resourceClass != null && resourceListClass != null) {
+        String apiVersion = propertiesNode.get(API_VERSION).get("default").toString().replace('"', ' ').trim();
         String apiGroup = "";
-        if (apiVersion.contains("/")) {
-          apiGroup = apiVersion.substring(0, apiVersion.lastIndexOf('/'));
+        final int lastSlash = apiVersion.lastIndexOf('/');
+        if (lastSlash > 0) {
+          apiGroup = apiVersion.substring(0, lastSlash);
           apiVersion = apiVersion.substring(apiGroup.length() + 1);
         }
         String packageSuffix = getPackageSuffix(apiVersion);
@@ -110,7 +110,7 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
       }
     }
   }
-
+  
   @Override
   public void propertyInclusion(JDefinedClass clazz, JsonNode schema) {
     if (moduleName == null) {
