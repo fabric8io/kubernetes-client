@@ -13,7 +13,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "Quantity",
+      "existingJavaType": "Quantity",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -40,7 +40,7 @@
         },
         "preferredVersion": {
           "$ref": "#/definitions/kubernetes_apimachinery_GroupVersionForDiscovery",
-          "javaType": "io.fabric8.kubernetes.api.model.GroupVersionForDiscovery"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.GroupVersionForDiscovery"
         },
         "serverAddressByClientCIDRs": {
           "type": "array",
@@ -48,7 +48,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_ServerAddressByClientCIDR",
-            "javaType": "io.fabric8.kubernetes.api.model.ServerAddressByClientCIDR"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.ServerAddressByClientCIDR"
           }
         },
         "versions": {
@@ -56,12 +56,12 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_GroupVersionForDiscovery",
-            "javaType": "io.fabric8.kubernetes.api.model.GroupVersionForDiscovery"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.GroupVersionForDiscovery"
           }
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.APIGroup",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.APIGroup",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -81,7 +81,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_APIGroup",
-            "javaType": "io.fabric8.kubernetes.api.model.APIGroup"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.APIGroup"
           }
         },
         "kind": {
@@ -92,7 +92,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.APIGroupList",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.APIGroupList",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -128,7 +128,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.CreateOptions",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.CreateOptions",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -155,7 +155,7 @@
         "gracePeriodSeconds": {
           "type": "integer",
           "description": "",
-          "javaType": "Long"
+          "existingJavaType": "Long"
         },
         "kind": {
           "type": "string",
@@ -169,7 +169,7 @@
         },
         "preconditions": {
           "$ref": "#/definitions/kubernetes_apimachinery_Preconditions",
-          "javaType": "io.fabric8.kubernetes.api.model.Preconditions"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.Preconditions"
         },
         "propagationPolicy": {
           "type": "string",
@@ -177,7 +177,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.DeleteOptions",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.DeleteOptions",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -186,7 +186,7 @@
       "type": "object",
       "description": "",
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.FieldsV1",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.FieldsV1",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -213,7 +213,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.GetOptions",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.GetOptions",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -232,7 +232,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.GroupVersionForDiscovery",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.GroupVersionForDiscovery",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -252,7 +252,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-            "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
           }
         },
         "kind": {
@@ -263,11 +263,11 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.BaseKubernetesList",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.BaseKubernetesList",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource",
         "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.HasMetadata\u003e"
@@ -284,7 +284,7 @@
         "remainingItemCount": {
           "type": "integer",
           "description": "",
-          "javaType": "Long"
+          "existingJavaType": "Long"
         },
         "resourceVersion": {
           "type": "string",
@@ -296,7 +296,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.ListMeta",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -336,7 +336,7 @@
         "limit": {
           "type": "integer",
           "description": "",
-          "javaType": "Long"
+          "existingJavaType": "Long"
         },
         "resourceVersion": {
           "type": "string",
@@ -349,7 +349,7 @@
         "timeoutSeconds": {
           "type": "integer",
           "description": "",
-          "javaType": "Long"
+          "existingJavaType": "Long"
         },
         "watch": {
           "type": "boolean",
@@ -357,7 +357,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.ListOptions",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.ListOptions",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -376,7 +376,7 @@
         },
         "fieldsV1": {
           "$ref": "#/definitions/kubernetes_apimachinery_FieldsV1",
-          "javaType": "io.fabric8.kubernetes.api.model.FieldsV1"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.FieldsV1"
         },
         "manager": {
           "type": "string",
@@ -388,11 +388,11 @@
         },
         "time": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "javaType": "String"
+          "existingJavaType": "String"
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.ManagedFieldsEntry",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.ManagedFieldsEntry",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -408,7 +408,7 @@
             "type": "string",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,String\u003e"
+          "existingJavaType": "java.util.Map\u003cString, String\u003e"
         },
         "clusterName": {
           "type": "string",
@@ -416,16 +416,16 @@
         },
         "creationTimestamp": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "javaType": "String"
+          "existingJavaType": "String"
         },
         "deletionGracePeriodSeconds": {
           "type": "integer",
           "description": "",
-          "javaType": "Long"
+          "existingJavaType": "Long"
         },
         "deletionTimestamp": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "javaType": "String"
+          "existingJavaType": "String"
         },
         "finalizers": {
           "type": "array",
@@ -443,7 +443,7 @@
         "generation": {
           "type": "integer",
           "description": "",
-          "javaType": "Long"
+          "existingJavaType": "Long"
         },
         "labels": {
           "type": "object",
@@ -452,7 +452,7 @@
             "type": "string",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,String\u003e"
+          "existingJavaType": "java.util.Map\u003cString, String\u003e"
         },
         "managedFields": {
           "type": "array",
@@ -460,7 +460,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_ManagedFieldsEntry",
-            "javaType": "io.fabric8.kubernetes.api.model.ManagedFieldsEntry"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.ManagedFieldsEntry"
           }
         },
         "name": {
@@ -479,7 +479,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_OwnerReference",
-            "javaType": "io.fabric8.kubernetes.api.model.OwnerReference"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.OwnerReference"
           }
         },
         "resourceVersion": {
@@ -496,7 +496,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -531,7 +531,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.OwnerReference",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.OwnerReference",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -540,7 +540,7 @@
       "type": "object",
       "description": "",
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.Patch",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.Patch",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -580,7 +580,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.PatchOptions",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.PatchOptions",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -599,7 +599,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.Preconditions",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.Preconditions",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -618,7 +618,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.RootPaths",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.RootPaths",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -637,7 +637,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.ServerAddressByClientCIDR",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.ServerAddressByClientCIDR",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -658,7 +658,7 @@
         },
         "details": {
           "$ref": "#/definitions/kubernetes_apimachinery_StatusDetails",
-          "javaType": "io.fabric8.kubernetes.api.model.StatusDetails"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.StatusDetails"
         },
         "kind": {
           "type": "string",
@@ -672,7 +672,7 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
         },
         "reason": {
           "type": "string",
@@ -684,7 +684,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.Status",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.Status",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -707,7 +707,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.StatusCause",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.StatusCause",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -722,7 +722,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_StatusCause",
-            "javaType": "io.fabric8.kubernetes.api.model.StatusCause"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.StatusCause"
           }
         },
         "group": {
@@ -747,7 +747,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.StatusDetails",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.StatusDetails",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -762,7 +762,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "String",
+      "existingJavaType": "String",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -781,7 +781,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.TypeMeta",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.TypeMeta",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -817,7 +817,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.UpdateOptions",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.UpdateOptions",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -835,7 +835,7 @@
       "type": "object",
       "description": "",
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.HasMetadata",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -882,7 +882,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.version.Info",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.version.Info",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -909,7 +909,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.AWSElasticBlockStoreVolumeSource",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.AWSElasticBlockStoreVolumeSource",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -944,7 +944,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.AzureDiskVolumeSource",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.AzureDiskVolumeSource",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -971,7 +971,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.AzureFilePersistentVolumeSource",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.AzureFilePersistentVolumeSource",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -982,11 +982,11 @@
       "properties": {
         "controllerExpandSecretRef": {
           "$ref": "#/definitions/kubernetes_core_SecretReference",
-          "javaType": "io.fabric8.kubernetes.api.model.SecretReference"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.SecretReference"
         },
         "controllerPublishSecretRef": {
           "$ref": "#/definitions/kubernetes_core_SecretReference",
-          "javaType": "io.fabric8.kubernetes.api.model.SecretReference"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.SecretReference"
         },
         "driver": {
           "type": "string",
@@ -998,11 +998,11 @@
         },
         "nodePublishSecretRef": {
           "$ref": "#/definitions/kubernetes_core_SecretReference",
-          "javaType": "io.fabric8.kubernetes.api.model.SecretReference"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.SecretReference"
         },
         "nodeStageSecretRef": {
           "$ref": "#/definitions/kubernetes_core_SecretReference",
-          "javaType": "io.fabric8.kubernetes.api.model.SecretReference"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.SecretReference"
         },
         "readOnly": {
           "type": "boolean",
@@ -1015,7 +1015,7 @@
             "type": "string",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,String\u003e"
+          "existingJavaType": "java.util.Map\u003cString, String\u003e"
         },
         "volumeHandle": {
           "type": "string",
@@ -1023,7 +1023,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.CSIPersistentVolumeSource",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.CSIPersistentVolumeSource",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1054,7 +1054,7 @@
         },
         "secretRef": {
           "$ref": "#/definitions/kubernetes_core_SecretReference",
-          "javaType": "io.fabric8.kubernetes.api.model.SecretReference"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.SecretReference"
         },
         "user": {
           "type": "string",
@@ -1062,7 +1062,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.CephFSPersistentVolumeSource",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.CephFSPersistentVolumeSource",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1081,7 +1081,7 @@
         },
         "secretRef": {
           "$ref": "#/definitions/kubernetes_core_SecretReference",
-          "javaType": "io.fabric8.kubernetes.api.model.SecretReference"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.SecretReference"
         },
         "volumeID": {
           "type": "string",
@@ -1089,7 +1089,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.CinderPersistentVolumeSource",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.CinderPersistentVolumeSource",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1130,7 +1130,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.FCVolumeSource",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.FCVolumeSource",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1154,7 +1154,7 @@
             "type": "string",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,String\u003e"
+          "existingJavaType": "java.util.Map\u003cString, String\u003e"
         },
         "readOnly": {
           "type": "boolean",
@@ -1162,11 +1162,11 @@
         },
         "secretRef": {
           "$ref": "#/definitions/kubernetes_core_SecretReference",
-          "javaType": "io.fabric8.kubernetes.api.model.SecretReference"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.SecretReference"
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.FlexPersistentVolumeSource",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.FlexPersistentVolumeSource",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1185,7 +1185,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.FlockerVolumeSource",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.FlockerVolumeSource",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1212,7 +1212,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.GCEPersistentDiskVolumeSource",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.GCEPersistentDiskVolumeSource",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1239,7 +1239,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.GlusterfsPersistentVolumeSource",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.GlusterfsPersistentVolumeSource",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1258,7 +1258,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.HostPathVolumeSource",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.HostPathVolumeSource",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1310,7 +1310,7 @@
         },
         "secretRef": {
           "$ref": "#/definitions/kubernetes_core_SecretReference",
-          "javaType": "io.fabric8.kubernetes.api.model.SecretReference"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.SecretReference"
         },
         "targetPortal": {
           "type": "string",
@@ -1318,7 +1318,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.ISCSIPersistentVolumeSource",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.ISCSIPersistentVolumeSource",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1337,7 +1337,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.LocalVolumeSource",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.LocalVolumeSource",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1360,7 +1360,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.NFSVolumeSource",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.NFSVolumeSource",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1374,12 +1374,12 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_core_NodeSelectorTerm",
-            "javaType": "io.fabric8.kubernetes.api.model.NodeSelectorTerm"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.NodeSelectorTerm"
           }
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.NodeSelector",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.NodeSelector",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1407,7 +1407,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.NodeSelectorRequirement",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.NodeSelectorRequirement",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1422,7 +1422,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_core_NodeSelectorRequirement",
-            "javaType": "io.fabric8.kubernetes.api.model.NodeSelectorRequirement"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.NodeSelectorRequirement"
           }
         },
         "matchFields": {
@@ -1431,12 +1431,12 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_core_NodeSelectorRequirement",
-            "javaType": "io.fabric8.kubernetes.api.model.NodeSelectorRequirement"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.NodeSelectorRequirement"
           }
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.NodeSelectorTerm",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.NodeSelectorTerm",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1475,7 +1475,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.ObjectReference",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1486,95 +1486,95 @@
       "properties": {
         "awsElasticBlockStore": {
           "$ref": "#/definitions/kubernetes_core_AWSElasticBlockStoreVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.AWSElasticBlockStoreVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.AWSElasticBlockStoreVolumeSource"
         },
         "azureDisk": {
           "$ref": "#/definitions/kubernetes_core_AzureDiskVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.AzureDiskVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.AzureDiskVolumeSource"
         },
         "azureFile": {
           "$ref": "#/definitions/kubernetes_core_AzureFilePersistentVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.AzureFilePersistentVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.AzureFilePersistentVolumeSource"
         },
         "cephfs": {
           "$ref": "#/definitions/kubernetes_core_CephFSPersistentVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.CephFSPersistentVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.CephFSPersistentVolumeSource"
         },
         "cinder": {
           "$ref": "#/definitions/kubernetes_core_CinderPersistentVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.CinderPersistentVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.CinderPersistentVolumeSource"
         },
         "csi": {
           "$ref": "#/definitions/kubernetes_core_CSIPersistentVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.CSIPersistentVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.CSIPersistentVolumeSource"
         },
         "fc": {
           "$ref": "#/definitions/kubernetes_core_FCVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.FCVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.FCVolumeSource"
         },
         "flexVolume": {
           "$ref": "#/definitions/kubernetes_core_FlexPersistentVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.FlexPersistentVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.FlexPersistentVolumeSource"
         },
         "flocker": {
           "$ref": "#/definitions/kubernetes_core_FlockerVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.FlockerVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.FlockerVolumeSource"
         },
         "gcePersistentDisk": {
           "$ref": "#/definitions/kubernetes_core_GCEPersistentDiskVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.GCEPersistentDiskVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.GCEPersistentDiskVolumeSource"
         },
         "glusterfs": {
           "$ref": "#/definitions/kubernetes_core_GlusterfsPersistentVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.GlusterfsPersistentVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.GlusterfsPersistentVolumeSource"
         },
         "hostPath": {
           "$ref": "#/definitions/kubernetes_core_HostPathVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.HostPathVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.HostPathVolumeSource"
         },
         "iscsi": {
           "$ref": "#/definitions/kubernetes_core_ISCSIPersistentVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.ISCSIPersistentVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ISCSIPersistentVolumeSource"
         },
         "local": {
           "$ref": "#/definitions/kubernetes_core_LocalVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.LocalVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.LocalVolumeSource"
         },
         "nfs": {
           "$ref": "#/definitions/kubernetes_core_NFSVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.NFSVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.NFSVolumeSource"
         },
         "photonPersistentDisk": {
           "$ref": "#/definitions/kubernetes_core_PhotonPersistentDiskVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.PhotonPersistentDiskVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.PhotonPersistentDiskVolumeSource"
         },
         "portworxVolume": {
           "$ref": "#/definitions/kubernetes_core_PortworxVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.PortworxVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.PortworxVolumeSource"
         },
         "quobyte": {
           "$ref": "#/definitions/kubernetes_core_QuobyteVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.QuobyteVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.QuobyteVolumeSource"
         },
         "rbd": {
           "$ref": "#/definitions/kubernetes_core_RBDPersistentVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.RBDPersistentVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.RBDPersistentVolumeSource"
         },
         "scaleIO": {
           "$ref": "#/definitions/kubernetes_core_ScaleIOPersistentVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.ScaleIOPersistentVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ScaleIOPersistentVolumeSource"
         },
         "storageos": {
           "$ref": "#/definitions/kubernetes_core_StorageOSPersistentVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.StorageOSPersistentVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.StorageOSPersistentVolumeSource"
         },
         "vsphereVolume": {
           "$ref": "#/definitions/kubernetes_core_VsphereVirtualDiskVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.VsphereVirtualDiskVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.VsphereVirtualDiskVolumeSource"
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.PersistentVolumeSource",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.PersistentVolumeSource",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1594,72 +1594,72 @@
         },
         "awsElasticBlockStore": {
           "$ref": "#/definitions/kubernetes_core_AWSElasticBlockStoreVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.AWSElasticBlockStoreVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.AWSElasticBlockStoreVolumeSource"
         },
         "azureDisk": {
           "$ref": "#/definitions/kubernetes_core_AzureDiskVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.AzureDiskVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.AzureDiskVolumeSource"
         },
         "azureFile": {
           "$ref": "#/definitions/kubernetes_core_AzureFilePersistentVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.AzureFilePersistentVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.AzureFilePersistentVolumeSource"
         },
         "capacity": {
           "type": "object",
           "description": "",
           "additionalProperties": {
             "$ref": "#/definitions/k8s_io_apimachinery_pkg_api_resource_Quantity",
-            "javaType": "Quantity"
+            "existingJavaType": "Quantity"
           },
-          "javaType": "java.util.Map\u003cString,Quantity\u003e"
+          "existingJavaType": "java.util.Map\u003cString, Quantity\u003e"
         },
         "cephfs": {
           "$ref": "#/definitions/kubernetes_core_CephFSPersistentVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.CephFSPersistentVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.CephFSPersistentVolumeSource"
         },
         "cinder": {
           "$ref": "#/definitions/kubernetes_core_CinderPersistentVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.CinderPersistentVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.CinderPersistentVolumeSource"
         },
         "claimRef": {
           "$ref": "#/definitions/kubernetes_core_ObjectReference",
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
         },
         "csi": {
           "$ref": "#/definitions/kubernetes_core_CSIPersistentVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.CSIPersistentVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.CSIPersistentVolumeSource"
         },
         "fc": {
           "$ref": "#/definitions/kubernetes_core_FCVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.FCVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.FCVolumeSource"
         },
         "flexVolume": {
           "$ref": "#/definitions/kubernetes_core_FlexPersistentVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.FlexPersistentVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.FlexPersistentVolumeSource"
         },
         "flocker": {
           "$ref": "#/definitions/kubernetes_core_FlockerVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.FlockerVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.FlockerVolumeSource"
         },
         "gcePersistentDisk": {
           "$ref": "#/definitions/kubernetes_core_GCEPersistentDiskVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.GCEPersistentDiskVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.GCEPersistentDiskVolumeSource"
         },
         "glusterfs": {
           "$ref": "#/definitions/kubernetes_core_GlusterfsPersistentVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.GlusterfsPersistentVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.GlusterfsPersistentVolumeSource"
         },
         "hostPath": {
           "$ref": "#/definitions/kubernetes_core_HostPathVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.HostPathVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.HostPathVolumeSource"
         },
         "iscsi": {
           "$ref": "#/definitions/kubernetes_core_ISCSIPersistentVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.ISCSIPersistentVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ISCSIPersistentVolumeSource"
         },
         "local": {
           "$ref": "#/definitions/kubernetes_core_LocalVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.LocalVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.LocalVolumeSource"
         },
         "mountOptions": {
           "type": "array",
@@ -1672,11 +1672,11 @@
         },
         "nfs": {
           "$ref": "#/definitions/kubernetes_core_NFSVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.NFSVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.NFSVolumeSource"
         },
         "nodeAffinity": {
           "$ref": "#/definitions/kubernetes_core_VolumeNodeAffinity",
-          "javaType": "io.fabric8.kubernetes.api.model.VolumeNodeAffinity"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.VolumeNodeAffinity"
         },
         "persistentVolumeReclaimPolicy": {
           "type": "string",
@@ -1684,23 +1684,23 @@
         },
         "photonPersistentDisk": {
           "$ref": "#/definitions/kubernetes_core_PhotonPersistentDiskVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.PhotonPersistentDiskVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.PhotonPersistentDiskVolumeSource"
         },
         "portworxVolume": {
           "$ref": "#/definitions/kubernetes_core_PortworxVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.PortworxVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.PortworxVolumeSource"
         },
         "quobyte": {
           "$ref": "#/definitions/kubernetes_core_QuobyteVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.QuobyteVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.QuobyteVolumeSource"
         },
         "rbd": {
           "$ref": "#/definitions/kubernetes_core_RBDPersistentVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.RBDPersistentVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.RBDPersistentVolumeSource"
         },
         "scaleIO": {
           "$ref": "#/definitions/kubernetes_core_ScaleIOPersistentVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.ScaleIOPersistentVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ScaleIOPersistentVolumeSource"
         },
         "storageClassName": {
           "type": "string",
@@ -1708,7 +1708,7 @@
         },
         "storageos": {
           "$ref": "#/definitions/kubernetes_core_StorageOSPersistentVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.StorageOSPersistentVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.StorageOSPersistentVolumeSource"
         },
         "volumeMode": {
           "type": "string",
@@ -1716,11 +1716,11 @@
         },
         "vsphereVolume": {
           "$ref": "#/definitions/kubernetes_core_VsphereVirtualDiskVolumeSource",
-          "javaType": "io.fabric8.kubernetes.api.model.VsphereVirtualDiskVolumeSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.VsphereVirtualDiskVolumeSource"
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.PersistentVolumeSpec",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.PersistentVolumeSpec",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1739,7 +1739,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.PhotonPersistentDiskVolumeSource",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.PhotonPersistentDiskVolumeSource",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1762,7 +1762,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.PortworxVolumeSource",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.PortworxVolumeSource",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1797,7 +1797,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.QuobyteVolumeSource",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.QuobyteVolumeSource",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1836,7 +1836,7 @@
         },
         "secretRef": {
           "$ref": "#/definitions/kubernetes_core_SecretReference",
-          "javaType": "io.fabric8.kubernetes.api.model.SecretReference"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.SecretReference"
         },
         "user": {
           "type": "string",
@@ -1844,7 +1844,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.RBDPersistentVolumeSource",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.RBDPersistentVolumeSource",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1871,7 +1871,7 @@
         },
         "secretRef": {
           "$ref": "#/definitions/kubernetes_core_SecretReference",
-          "javaType": "io.fabric8.kubernetes.api.model.SecretReference"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.SecretReference"
         },
         "sslEnabled": {
           "type": "boolean",
@@ -1895,7 +1895,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.ScaleIOPersistentVolumeSource",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.ScaleIOPersistentVolumeSource",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1914,7 +1914,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.SecretReference",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.SecretReference",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1933,7 +1933,7 @@
         },
         "secretRef": {
           "$ref": "#/definitions/kubernetes_core_ObjectReference",
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
         },
         "volumeName": {
           "type": "string",
@@ -1945,7 +1945,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.StorageOSPersistentVolumeSource",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.StorageOSPersistentVolumeSource",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1968,7 +1968,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.TopologySelectorLabelRequirement",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.TopologySelectorLabelRequirement",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1983,12 +1983,12 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_core_TopologySelectorLabelRequirement",
-            "javaType": "io.fabric8.kubernetes.api.model.TopologySelectorLabelRequirement"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.TopologySelectorLabelRequirement"
           }
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.TopologySelectorTerm",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.TopologySelectorTerm",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1999,11 +1999,11 @@
       "properties": {
         "required": {
           "$ref": "#/definitions/kubernetes_core_NodeSelector",
-          "javaType": "io.fabric8.kubernetes.api.model.NodeSelector"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.NodeSelector"
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.VolumeNodeAffinity",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.VolumeNodeAffinity",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -2030,7 +2030,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.VsphereVirtualDiskVolumeSource",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.VsphereVirtualDiskVolumeSource",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -2049,7 +2049,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_core_TopologySelectorTerm",
-            "javaType": "io.fabric8.kubernetes.api.model.TopologySelectorTerm"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.TopologySelectorTerm"
           }
         },
         "apiVersion": {
@@ -2066,7 +2066,7 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "mountOptions": {
           "type": "array",
@@ -2084,7 +2084,7 @@
             "type": "string",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,String\u003e"
+          "existingJavaType": "java.util.Map\u003cString, String\u003e"
         },
         "provisioner": {
           "type": "string",
@@ -2120,7 +2120,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_storageclass_StorageClass",
-            "javaType": "io.fabric8.kubernetes.api.model.storage.StorageClass"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.storage.StorageClass"
           }
         },
         "kind": {
@@ -2131,7 +2131,7 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
         }
       },
       "additionalProperties": true,
@@ -2159,15 +2159,15 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
           "$ref": "#/definitions/kubernetes_storageclass_VolumeAttachmentSpec",
-          "javaType": "io.fabric8.kubernetes.api.model.storage.VolumeAttachmentSpec"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.storage.VolumeAttachmentSpec"
         },
         "status": {
           "$ref": "#/definitions/kubernetes_storageclass_VolumeAttachmentStatus",
-          "javaType": "io.fabric8.kubernetes.api.model.storage.VolumeAttachmentStatus"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.storage.VolumeAttachmentStatus"
         }
       },
       "additionalProperties": true,
@@ -2192,7 +2192,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_storageclass_VolumeAttachment",
-            "javaType": "io.fabric8.kubernetes.api.model.storage.VolumeAttachment"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.storage.VolumeAttachment"
           }
         },
         "kind": {
@@ -2203,7 +2203,7 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
         }
       },
       "additionalProperties": true,
@@ -2219,7 +2219,7 @@
       "properties": {
         "inlineVolumeSpec": {
           "$ref": "#/definitions/kubernetes_core_PersistentVolumeSpec",
-          "javaType": "io.fabric8.kubernetes.api.model.PersistentVolumeSpec"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.PersistentVolumeSpec"
         },
         "persistentVolumeName": {
           "type": "string",
@@ -2246,7 +2246,7 @@
         },
         "source": {
           "$ref": "#/definitions/kubernetes_storageclass_VolumeAttachmentSource",
-          "javaType": "io.fabric8.kubernetes.api.model.storage.VolumeAttachmentSource"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.storage.VolumeAttachmentSource"
         }
       },
       "additionalProperties": true,
@@ -2261,7 +2261,7 @@
       "properties": {
         "attachError": {
           "$ref": "#/definitions/kubernetes_storageclass_VolumeError",
-          "javaType": "io.fabric8.kubernetes.api.model.storage.VolumeError"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.storage.VolumeError"
         },
         "attached": {
           "type": "boolean",
@@ -2274,11 +2274,11 @@
             "type": "string",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,String\u003e"
+          "existingJavaType": "java.util.Map\u003cString, String\u003e"
         },
         "detachError": {
           "$ref": "#/definitions/kubernetes_storageclass_VolumeError",
-          "javaType": "io.fabric8.kubernetes.api.model.storage.VolumeError"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.storage.VolumeError"
         }
       },
       "additionalProperties": true,
@@ -2297,7 +2297,7 @@
         },
         "time": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "javaType": "String"
+          "existingJavaType": "String"
         }
       },
       "additionalProperties": true,
@@ -2324,11 +2324,11 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
           "$ref": "#/definitions/kubernetes_storageclass_v1beta1_CSIDriverSpec",
-          "javaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriverSpec"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriverSpec"
         }
       },
       "additionalProperties": true,
@@ -2352,7 +2352,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_storageclass_v1beta1_CSIDriver",
-            "javaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriver"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriver"
           }
         },
         "kind": {
@@ -2363,7 +2363,7 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
         }
       },
       "additionalProperties": true,
@@ -2427,11 +2427,11 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
           "$ref": "#/definitions/kubernetes_storageclass_v1beta1_CSINodeSpec",
-          "javaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSINodeSpec"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSINodeSpec"
         }
       },
       "additionalProperties": true,
@@ -2446,7 +2446,7 @@
       "properties": {
         "allocatable": {
           "$ref": "#/definitions/kubernetes_storageclass_v1beta1_VolumeNodeResources",
-          "javaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.VolumeNodeResources"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.VolumeNodeResources"
         },
         "name": {
           "type": "string",
@@ -2486,7 +2486,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_storageclass_v1beta1_CSINode",
-            "javaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSINode"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSINode"
           }
         },
         "kind": {
@@ -2497,7 +2497,7 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
         }
       },
       "additionalProperties": true,
@@ -2516,7 +2516,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_storageclass_v1beta1_CSINodeDriver",
-            "javaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSINodeDriver"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSINodeDriver"
           }
         }
       },
@@ -2546,107 +2546,107 @@
   "properties": {
     "APIGroup": {
       "$ref": "#/definitions/kubernetes_apimachinery_APIGroup",
-      "javaType": "io.fabric8.kubernetes.api.model.APIGroup"
+      "existingJavaType": "io.fabric8.kubernetes.api.model.APIGroup"
     },
     "APIGroupList": {
       "$ref": "#/definitions/kubernetes_apimachinery_APIGroupList",
-      "javaType": "io.fabric8.kubernetes.api.model.APIGroupList"
+      "existingJavaType": "io.fabric8.kubernetes.api.model.APIGroupList"
     },
     "BaseKubernetesList": {
       "$ref": "#/definitions/kubernetes_apimachinery_List",
-      "javaType": "io.fabric8.kubernetes.api.model.BaseKubernetesList"
+      "existingJavaType": "io.fabric8.kubernetes.api.model.BaseKubernetesList"
     },
     "CSIDriver": {
       "$ref": "#/definitions/kubernetes_storageclass_v1beta1_CSIDriver",
-      "javaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriver"
+      "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriver"
     },
     "CSIDriverList": {
       "$ref": "#/definitions/kubernetes_storageclass_v1beta1_CSIDriverList",
-      "javaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriverList"
+      "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriverList"
     },
     "CSINode": {
       "$ref": "#/definitions/kubernetes_storageclass_v1beta1_CSINode",
-      "javaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSINode"
+      "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSINode"
     },
     "CSINodeList": {
       "$ref": "#/definitions/kubernetes_storageclass_v1beta1_CSINodeList",
-      "javaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSINodeList"
+      "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSINodeList"
     },
     "CreateOptions": {
       "$ref": "#/definitions/kubernetes_apimachinery_CreateOptions",
-      "javaType": "io.fabric8.kubernetes.api.model.CreateOptions"
+      "existingJavaType": "io.fabric8.kubernetes.api.model.CreateOptions"
     },
     "DeleteOptions": {
       "$ref": "#/definitions/kubernetes_apimachinery_DeleteOptions",
-      "javaType": "io.fabric8.kubernetes.api.model.DeleteOptions"
+      "existingJavaType": "io.fabric8.kubernetes.api.model.DeleteOptions"
     },
     "GetOptions": {
       "$ref": "#/definitions/kubernetes_apimachinery_GetOptions",
-      "javaType": "io.fabric8.kubernetes.api.model.GetOptions"
+      "existingJavaType": "io.fabric8.kubernetes.api.model.GetOptions"
     },
     "Info": {
       "$ref": "#/definitions/kubernetes_apimachinery_pkg_version_Info",
-      "javaType": "io.fabric8.kubernetes.api.model.version.Info"
+      "existingJavaType": "io.fabric8.kubernetes.api.model.version.Info"
     },
     "ListOptions": {
       "$ref": "#/definitions/kubernetes_apimachinery_ListOptions",
-      "javaType": "io.fabric8.kubernetes.api.model.ListOptions"
+      "existingJavaType": "io.fabric8.kubernetes.api.model.ListOptions"
     },
     "ObjectMeta": {
       "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
-      "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+      "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
     },
     "ObjectReference": {
       "$ref": "#/definitions/kubernetes_core_ObjectReference",
-      "javaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+      "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
     },
     "Patch": {
       "$ref": "#/definitions/kubernetes_apimachinery_Patch",
-      "javaType": "io.fabric8.kubernetes.api.model.Patch"
+      "existingJavaType": "io.fabric8.kubernetes.api.model.Patch"
     },
     "PatchOptions": {
       "$ref": "#/definitions/kubernetes_apimachinery_PatchOptions",
-      "javaType": "io.fabric8.kubernetes.api.model.PatchOptions"
+      "existingJavaType": "io.fabric8.kubernetes.api.model.PatchOptions"
     },
     "Quantity": {
       "$ref": "#/definitions/k8s_io_apimachinery_pkg_api_resource_Quantity",
-      "javaType": "Quantity"
+      "existingJavaType": "Quantity"
     },
     "RootPaths": {
       "$ref": "#/definitions/kubernetes_apimachinery_RootPaths",
-      "javaType": "io.fabric8.kubernetes.api.model.RootPaths"
+      "existingJavaType": "io.fabric8.kubernetes.api.model.RootPaths"
     },
     "Status": {
       "$ref": "#/definitions/kubernetes_apimachinery_Status",
-      "javaType": "io.fabric8.kubernetes.api.model.Status"
+      "existingJavaType": "io.fabric8.kubernetes.api.model.Status"
     },
     "StorageClass": {
       "$ref": "#/definitions/kubernetes_storageclass_StorageClass",
-      "javaType": "io.fabric8.kubernetes.api.model.storage.StorageClass"
+      "existingJavaType": "io.fabric8.kubernetes.api.model.storage.StorageClass"
     },
     "StorageClassList": {
       "$ref": "#/definitions/kubernetes_storageclass_StorageClassList",
-      "javaType": "io.fabric8.kubernetes.api.model.storage.StorageClassList"
+      "existingJavaType": "io.fabric8.kubernetes.api.model.storage.StorageClassList"
     },
     "Time": {
       "$ref": "#/definitions/kubernetes_apimachinery_Time",
-      "javaType": "String"
+      "existingJavaType": "String"
     },
     "TypeMeta": {
       "$ref": "#/definitions/kubernetes_apimachinery_TypeMeta",
-      "javaType": "io.fabric8.kubernetes.api.model.TypeMeta"
+      "existingJavaType": "io.fabric8.kubernetes.api.model.TypeMeta"
     },
     "UpdateOptions": {
       "$ref": "#/definitions/kubernetes_apimachinery_UpdateOptions",
-      "javaType": "io.fabric8.kubernetes.api.model.UpdateOptions"
+      "existingJavaType": "io.fabric8.kubernetes.api.model.UpdateOptions"
     },
     "VolumeAttachment": {
       "$ref": "#/definitions/kubernetes_storageclass_VolumeAttachment",
-      "javaType": "io.fabric8.kubernetes.api.model.storage.VolumeAttachment"
+      "existingJavaType": "io.fabric8.kubernetes.api.model.storage.VolumeAttachment"
     },
     "VolumeAttachmentList": {
       "$ref": "#/definitions/kubernetes_storageclass_VolumeAttachmentList",
-      "javaType": "io.fabric8.kubernetes.api.model.storage.VolumeAttachmentList"
+      "existingJavaType": "io.fabric8.kubernetes.api.model.storage.VolumeAttachmentList"
     }
   },
   "additionalProperties": true

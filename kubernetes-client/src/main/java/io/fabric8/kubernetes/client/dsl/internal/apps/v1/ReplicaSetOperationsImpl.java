@@ -15,10 +15,12 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal.apps.v1;
 
+import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
+import io.fabric8.kubernetes.api.model.apps.ReplicaSetBuilder;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetList;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.client.Config;
@@ -229,6 +231,11 @@ public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<
   @Override
   public Loggable<LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
     return new ReplicaSetOperationsImpl(((RollingOperationContext)context), logWaitTimeout);
+  }
+
+  @Override
+  public ReplicaSet edit(Visitor... visitors) {
+    return patch(new ReplicaSetBuilder(getMandatory()).accept(visitors).build());
   }
 
   static Map<String, String> getReplicaSetSelectorLabels(ReplicaSet replicaSet) {

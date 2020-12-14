@@ -15,10 +15,12 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
+import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import okhttp3.OkHttpClient;
 import io.fabric8.openshift.api.model.User;
+import io.fabric8.openshift.api.model.UserBuilder;
 import io.fabric8.openshift.api.model.UserList;
 import io.fabric8.openshift.client.OpenShiftConfig;
 
@@ -40,6 +42,11 @@ public class UserOperationsImpl extends OpenShiftOperation<User, UserList, Resou
   @Override
   public UserOperationsImpl newInstance(OperationContext context) {
     return new UserOperationsImpl(context);
+  }
+
+  @Override
+  public User edit(Visitor... visitors) {
+    return patch(new UserBuilder(getMandatory()).accept(visitors).build());
   }
 
   @Override

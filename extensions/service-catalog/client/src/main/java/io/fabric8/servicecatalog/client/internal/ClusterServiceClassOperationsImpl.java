@@ -15,6 +15,7 @@
  */
 package io.fabric8.servicecatalog.client.internal;
 
+import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
@@ -88,4 +89,9 @@ public class ClusterServiceClassOperationsImpl extends HasMetadataOperation<Clus
                 .endSpec()
                 .build());
     }
+  @Override
+  public ClusterServiceClass edit(Visitor... visitors) {
+    return patch(new ClusterServiceClassBuilder(getMandatory()).accept(visitors).build());
+  }
+  
 }

@@ -17,7 +17,7 @@
         },
         "secretRef": {
           "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_SecretRef",
-          "javaType": "io.fabric8.tekton.triggers.v1alpha1.SecretRef"
+          "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.SecretRef"
         }
       },
       "javaType": "io.fabric8.tekton.triggers.v1alpha1.BitbucketInterceptor",
@@ -39,7 +39,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_CELOverlay",
-            "javaType": "io.fabric8.tekton.triggers.v1alpha1.CELOverlay"
+            "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.CELOverlay"
           }
         }
       },
@@ -83,15 +83,15 @@
           "required": true
         },
         "metadata": {
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
           "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_TriggerBindingSpec",
-          "javaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerBindingSpec"
+          "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerBindingSpec"
         },
         "status": {
           "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_TriggerBindingStatus",
-          "javaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerBindingStatus"
+          "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerBindingStatus"
         }
       },
       "javaType": "io.fabric8.tekton.triggers.v1alpha1.ClusterTriggerBinding",
@@ -114,7 +114,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_ClusterTriggerBinding",
-            "javaType": "io.fabric8.tekton.triggers.v1alpha1.ClusterTriggerBinding"
+            "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.ClusterTriggerBinding"
           }
         },
         "kind": {
@@ -124,7 +124,7 @@
           "required": true
         },
         "metadata": {
-          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
         }
       },
       "javaType": "io.fabric8.tekton.triggers.v1alpha1.ClusterTriggerBindingList",
@@ -150,15 +150,15 @@
           "required": true
         },
         "metadata": {
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
           "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_EventListenerSpec",
-          "javaType": "io.fabric8.tekton.triggers.v1alpha1.EventListenerSpec"
+          "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.EventListenerSpec"
         },
         "status": {
           "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_EventListenerStatus",
-          "javaType": "io.fabric8.tekton.triggers.v1alpha1.EventListenerStatus"
+          "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.EventListenerStatus"
         }
       },
       "javaType": "io.fabric8.tekton.triggers.v1alpha1.EventListener",
@@ -196,7 +196,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_EventListener",
-            "javaType": "io.fabric8.tekton.triggers.v1alpha1.EventListener"
+            "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.EventListener"
           }
         },
         "kind": {
@@ -206,7 +206,7 @@
           "required": true
         },
         "metadata": {
-          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
         }
       },
       "javaType": "io.fabric8.tekton.triggers.v1alpha1.EventListenerList",
@@ -221,12 +221,12 @@
       "properties": {
         "podTemplate": {
           "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_PodTemplate",
-          "javaType": "io.fabric8.tekton.triggers.v1alpha1.PodTemplate"
+          "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.PodTemplate"
         },
         "replicas": {
           "type": "integer",
           "description": "",
-          "javaType": "Integer"
+          "existingJavaType": "Integer"
         },
         "serviceAccountName": {
           "type": "string",
@@ -241,7 +241,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_EventListenerTrigger",
-            "javaType": "io.fabric8.tekton.triggers.v1alpha1.EventListenerTrigger"
+            "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.EventListenerTrigger"
           }
         }
       },
@@ -256,7 +256,7 @@
       "properties": {
         "address": {
           "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1alpha1_Addressable",
-          "javaType": "io.fabric8.tekton.triggers.internal.knative.pkg.apis.duck.v1alpha1.Addressable"
+          "existingJavaType": "io.fabric8.tekton.triggers.internal.knative.pkg.apis.duck.v1alpha1.Addressable"
         },
         "conditions": {
           "type": "array",
@@ -264,17 +264,17 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
-            "javaType": "io.fabric8.tekton.triggers.internal.knative.pkg.apis.Condition"
+            "existingJavaType": "io.fabric8.tekton.triggers.internal.knative.pkg.apis.Condition"
           }
         },
         "configuration": {
           "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_EventListenerConfig",
-          "javaType": "io.fabric8.tekton.triggers.v1alpha1.EventListenerConfig"
+          "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.EventListenerConfig"
         },
         "observedGeneration": {
           "type": "integer",
           "description": "",
-          "javaType": "Long"
+          "existingJavaType": "Long"
         }
       },
       "javaType": "io.fabric8.tekton.triggers.v1alpha1.EventListenerStatus",
@@ -292,7 +292,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_TriggerSpecBinding",
-            "javaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerSpecBinding"
+            "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerSpecBinding"
           }
         },
         "interceptors": {
@@ -301,7 +301,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_TriggerInterceptor",
-            "javaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerInterceptor"
+            "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerInterceptor"
           }
         },
         "name": {
@@ -314,7 +314,7 @@
         },
         "template": {
           "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_TriggerSpecTemplate",
-          "javaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerSpecTemplate"
+          "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerSpecTemplate"
         },
         "triggerRef": {
           "type": "string",
@@ -341,7 +341,7 @@
         },
         "secretRef": {
           "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_SecretRef",
-          "javaType": "io.fabric8.tekton.triggers.v1alpha1.SecretRef"
+          "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.SecretRef"
         }
       },
       "javaType": "io.fabric8.tekton.triggers.v1alpha1.GitHubInterceptor",
@@ -364,7 +364,7 @@
         },
         "secretRef": {
           "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_SecretRef",
-          "javaType": "io.fabric8.tekton.triggers.v1alpha1.SecretRef"
+          "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.SecretRef"
         }
       },
       "javaType": "io.fabric8.tekton.triggers.v1alpha1.GitLabInterceptor",
@@ -397,7 +397,7 @@
         "default": {
           "type": "string",
           "description": "",
-          "javaType": "String"
+          "existingJavaType": "String"
         },
         "description": {
           "type": "string",
@@ -420,14 +420,14 @@
         "nodeSelector": {
           "type": "object",
           "description": "",
-          "javaType": "java.util.Map\u003cString,String\u003e"
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
         "tolerations": {
           "type": "array",
           "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "javaType": "io.fabric8.kubernetes.api.model.Toleration"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.Toleration"
           }
         }
       },
@@ -475,15 +475,15 @@
           "required": true
         },
         "metadata": {
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
           "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_TriggerBindingSpec",
-          "javaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerBindingSpec"
+          "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerBindingSpec"
         },
         "status": {
           "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_TriggerBindingStatus",
-          "javaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerBindingStatus"
+          "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerBindingStatus"
         }
       },
       "javaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerBinding",
@@ -507,7 +507,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_TriggerBinding",
-            "javaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerBinding"
+            "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerBinding"
           }
         },
         "kind": {
@@ -517,7 +517,7 @@
           "required": true
         },
         "metadata": {
-          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
         }
       },
       "javaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerBindingList",
@@ -536,7 +536,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_Param",
-            "javaType": "io.fabric8.tekton.triggers.v1alpha1.Param"
+            "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.Param"
           }
         }
       },
@@ -559,23 +559,23 @@
       "properties": {
         "bitbucket": {
           "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_BitbucketInterceptor",
-          "javaType": "io.fabric8.tekton.triggers.v1alpha1.BitbucketInterceptor"
+          "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.BitbucketInterceptor"
         },
         "cel": {
           "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_CELInterceptor",
-          "javaType": "io.fabric8.tekton.triggers.v1alpha1.CELInterceptor"
+          "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.CELInterceptor"
         },
         "github": {
           "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_GitHubInterceptor",
-          "javaType": "io.fabric8.tekton.triggers.v1alpha1.GitHubInterceptor"
+          "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.GitHubInterceptor"
         },
         "gitlab": {
           "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_GitLabInterceptor",
-          "javaType": "io.fabric8.tekton.triggers.v1alpha1.GitLabInterceptor"
+          "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.GitLabInterceptor"
         },
         "webhook": {
           "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_WebhookInterceptor",
-          "javaType": "io.fabric8.tekton.triggers.v1alpha1.WebhookInterceptor"
+          "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.WebhookInterceptor"
         }
       },
       "javaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerInterceptor",
@@ -605,7 +605,7 @@
         },
         "spec": {
           "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_TriggerBindingSpec",
-          "javaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerBindingSpec"
+          "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerBindingSpec"
         }
       },
       "javaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerSpecBinding",
@@ -648,15 +648,15 @@
           "required": true
         },
         "metadata": {
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
           "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_TriggerTemplateSpec",
-          "javaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerTemplateSpec"
+          "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerTemplateSpec"
         },
         "status": {
           "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_TriggerTemplateStatus",
-          "javaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerTemplateStatus"
+          "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerTemplateStatus"
         }
       },
       "javaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerTemplate",
@@ -680,7 +680,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_TriggerTemplate",
-            "javaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerTemplate"
+            "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerTemplate"
           }
         },
         "kind": {
@@ -690,7 +690,7 @@
           "required": true
         },
         "metadata": {
-          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
         }
       },
       "javaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerTemplateList",
@@ -709,7 +709,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_ParamSpec",
-            "javaType": "io.fabric8.tekton.triggers.v1alpha1.ParamSpec"
+            "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.ParamSpec"
           }
         },
         "resourcetemplates": {
@@ -717,7 +717,7 @@
           "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
           }
         }
       },
@@ -743,11 +743,11 @@
           "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "javaType": "io.fabric8.tekton.pipeline.v1beta1.Param"
+            "existingJavaType": "io.fabric8.tekton.pipeline.v1beta1.Param"
           }
         },
         "objectRef": {
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
         }
       },
       "javaType": "io.fabric8.tekton.triggers.v1alpha1.WebhookInterceptor",
@@ -761,7 +761,7 @@
       "properties": {
         "lastTransitionTime": {
           "$ref": "#/definitions/knative_dev_pkg_apis_VolatileTime",
-          "javaType": "io.fabric8.tekton.triggers.internal.knative.pkg.apis.VolatileTime"
+          "existingJavaType": "io.fabric8.tekton.triggers.internal.knative.pkg.apis.VolatileTime"
         },
         "message": {
           "type": "string",
@@ -794,7 +794,7 @@
       "description": "",
       "properties": {
         "Inner": {
-          "javaType": "java.lang.String"
+          "existingJavaType": "java.lang.String"
         }
       },
       "javaType": "io.fabric8.tekton.triggers.internal.knative.pkg.apis.VolatileTime",
@@ -811,7 +811,7 @@
           "description": ""
         },
         "url": {
-          "javaType": "java.lang.String"
+          "existingJavaType": "java.lang.String"
         }
       },
       "javaType": "io.fabric8.tekton.triggers.internal.knative.pkg.apis.duck.v1alpha1.Addressable",
@@ -824,131 +824,131 @@
   "properties": {
     "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_BitbucketInterceptor": {
       "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_BitbucketInterceptor",
-      "javaType": "io.fabric8.tekton.triggers.v1alpha1.BitbucketInterceptor"
+      "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.BitbucketInterceptor"
     },
     "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_CELInterceptor": {
       "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_CELInterceptor",
-      "javaType": "io.fabric8.tekton.triggers.v1alpha1.CELInterceptor"
+      "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.CELInterceptor"
     },
     "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_CELOverlay": {
       "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_CELOverlay",
-      "javaType": "io.fabric8.tekton.triggers.v1alpha1.CELOverlay"
+      "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.CELOverlay"
     },
     "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_ClusterTriggerBinding": {
       "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_ClusterTriggerBinding",
-      "javaType": "io.fabric8.tekton.triggers.v1alpha1.ClusterTriggerBinding"
+      "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.ClusterTriggerBinding"
     },
     "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_ClusterTriggerBindingList": {
       "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_ClusterTriggerBindingList",
-      "javaType": "io.fabric8.tekton.triggers.v1alpha1.ClusterTriggerBindingList"
+      "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.ClusterTriggerBindingList"
     },
     "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_EventListener": {
       "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_EventListener",
-      "javaType": "io.fabric8.tekton.triggers.v1alpha1.EventListener"
+      "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.EventListener"
     },
     "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_EventListenerConfig": {
       "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_EventListenerConfig",
-      "javaType": "io.fabric8.tekton.triggers.v1alpha1.EventListenerConfig"
+      "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.EventListenerConfig"
     },
     "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_EventListenerList": {
       "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_EventListenerList",
-      "javaType": "io.fabric8.tekton.triggers.v1alpha1.EventListenerList"
+      "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.EventListenerList"
     },
     "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_EventListenerSpec": {
       "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_EventListenerSpec",
-      "javaType": "io.fabric8.tekton.triggers.v1alpha1.EventListenerSpec"
+      "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.EventListenerSpec"
     },
     "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_EventListenerStatus": {
       "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_EventListenerStatus",
-      "javaType": "io.fabric8.tekton.triggers.v1alpha1.EventListenerStatus"
+      "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.EventListenerStatus"
     },
     "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_EventListenerTrigger": {
       "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_EventListenerTrigger",
-      "javaType": "io.fabric8.tekton.triggers.v1alpha1.EventListenerTrigger"
+      "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.EventListenerTrigger"
     },
     "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_GitHubInterceptor": {
       "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_GitHubInterceptor",
-      "javaType": "io.fabric8.tekton.triggers.v1alpha1.GitHubInterceptor"
+      "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.GitHubInterceptor"
     },
     "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_GitLabInterceptor": {
       "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_GitLabInterceptor",
-      "javaType": "io.fabric8.tekton.triggers.v1alpha1.GitLabInterceptor"
+      "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.GitLabInterceptor"
     },
     "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_Param": {
       "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_Param",
-      "javaType": "io.fabric8.tekton.triggers.v1alpha1.Param"
+      "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.Param"
     },
     "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_ParamSpec": {
       "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_ParamSpec",
-      "javaType": "io.fabric8.tekton.triggers.v1alpha1.ParamSpec"
+      "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.ParamSpec"
     },
     "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_PodTemplate": {
       "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_PodTemplate",
-      "javaType": "io.fabric8.tekton.triggers.v1alpha1.PodTemplate"
+      "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.PodTemplate"
     },
     "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_SecretRef": {
       "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_SecretRef",
-      "javaType": "io.fabric8.tekton.triggers.v1alpha1.SecretRef"
+      "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.SecretRef"
     },
     "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_TriggerBinding": {
       "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_TriggerBinding",
-      "javaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerBinding"
+      "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerBinding"
     },
     "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_TriggerBindingList": {
       "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_TriggerBindingList",
-      "javaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerBindingList"
+      "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerBindingList"
     },
     "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_TriggerBindingSpec": {
       "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_TriggerBindingSpec",
-      "javaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerBindingSpec"
+      "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerBindingSpec"
     },
     "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_TriggerBindingStatus": {
       "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_TriggerBindingStatus",
-      "javaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerBindingStatus"
+      "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerBindingStatus"
     },
     "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_TriggerInterceptor": {
       "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_TriggerInterceptor",
-      "javaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerInterceptor"
+      "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerInterceptor"
     },
     "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_TriggerSpecBinding": {
       "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_TriggerSpecBinding",
-      "javaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerSpecBinding"
+      "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerSpecBinding"
     },
     "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_TriggerSpecTemplate": {
       "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_TriggerSpecTemplate",
-      "javaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerSpecTemplate"
+      "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerSpecTemplate"
     },
     "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_TriggerTemplate": {
       "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_TriggerTemplate",
-      "javaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerTemplate"
+      "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerTemplate"
     },
     "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_TriggerTemplateList": {
       "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_TriggerTemplateList",
-      "javaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerTemplateList"
+      "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerTemplateList"
     },
     "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_TriggerTemplateSpec": {
       "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_TriggerTemplateSpec",
-      "javaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerTemplateSpec"
+      "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerTemplateSpec"
     },
     "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_TriggerTemplateStatus": {
       "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_TriggerTemplateStatus",
-      "javaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerTemplateStatus"
+      "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerTemplateStatus"
     },
     "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_WebhookInterceptor": {
       "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_WebhookInterceptor",
-      "javaType": "io.fabric8.tekton.triggers.v1alpha1.WebhookInterceptor"
+      "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.WebhookInterceptor"
     },
     "knative_dev_pkg_apis_Condition": {
       "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
-      "javaType": "io.fabric8.tekton.triggers.internal.knative.pkg.apis.Condition"
+      "existingJavaType": "io.fabric8.tekton.triggers.internal.knative.pkg.apis.Condition"
     },
     "knative_dev_pkg_apis_VolatileTime": {
       "$ref": "#/definitions/knative_dev_pkg_apis_VolatileTime",
-      "javaType": "io.fabric8.tekton.triggers.internal.knative.pkg.apis.VolatileTime"
+      "existingJavaType": "io.fabric8.tekton.triggers.internal.knative.pkg.apis.VolatileTime"
     },
     "knative_dev_pkg_apis_duck_v1alpha1_Addressable": {
       "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1alpha1_Addressable",
-      "javaType": "io.fabric8.tekton.triggers.internal.knative.pkg.apis.duck.v1alpha1.Addressable"
+      "existingJavaType": "io.fabric8.tekton.triggers.internal.knative.pkg.apis.duck.v1alpha1.Addressable"
     }
   },
   "additionalProperties": false

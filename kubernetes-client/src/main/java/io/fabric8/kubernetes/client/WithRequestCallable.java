@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.api.builder.Function;
+import java.util.function.Function;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 
 public class WithRequestCallable<C extends Client> implements FunctionCallable<C> {

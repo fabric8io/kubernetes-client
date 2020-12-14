@@ -6,6 +6,7 @@
 * Fix #2592: ConcurrentModificationException in CRUD KubernetesMockServer
 * Fix #2519: Generated schemas contains a valid meta-schema URI reference (`http://json-schema.org/draft-05/schema#`)
 * Fix #2631: Handle null values when getting current context on OIDC interceptors
+* Fix #2510 : Yaml containing aliases rejected due to FasterXML bug
 
 #### Improvements
 
@@ -13,16 +14,25 @@
 
 #### New Features
 
-### 5.0.0-alpha-3 (2020-11-24)
+### 5.0.0-alpha-3 (2020-12-10)
+
+#### Bugs
+* Fix #2519: Generated schemas contains a valid meta-schema URI reference (`http://json-schema.org/draft-05/schema#`)
+* Fix #2628: add `isFinalizerValid` to encapsulate validation logic
+* Fix #2631: Handle null values when getting current context on OIDC interceptors
+* Fix #2610: Remove deprecated module kubernetes-model-generator/model-generator-app
 
 #### Improvements
 * Fix #2628: Add `isFinalizerValid` method on `HasMetadata` to encapsulate validation logic
+* Fix #2640: Edit method accepts Visitors
+
+#### Dependency Upgrade
+* Fix #2636: Upgrade sundrio.version to 0.23.0
 
 ### 5.0.0-alpha-2 (2020-11-24)
 
 #### Improvements
 * Fix #2614: Watcher.onClose has dedicated WatcherException as parameter.
-
 
 ### 5.0.0-alpha-1 (2020-11-18)
 

@@ -25,7 +25,7 @@
         },
         "preferredVersion": {
           "$ref": "#/definitions/kubernetes_apimachinery_GroupVersionForDiscovery",
-          "javaType": "io.fabric8.kubernetes.api.model.GroupVersionForDiscovery"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.GroupVersionForDiscovery"
         },
         "serverAddressByClientCIDRs": {
           "type": "array",
@@ -33,7 +33,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_ServerAddressByClientCIDR",
-            "javaType": "io.fabric8.kubernetes.api.model.ServerAddressByClientCIDR"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.ServerAddressByClientCIDR"
           }
         },
         "versions": {
@@ -41,12 +41,12 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_GroupVersionForDiscovery",
-            "javaType": "io.fabric8.kubernetes.api.model.GroupVersionForDiscovery"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.GroupVersionForDiscovery"
           }
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.APIGroup",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.APIGroup",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -66,7 +66,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_APIGroup",
-            "javaType": "io.fabric8.kubernetes.api.model.APIGroup"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.APIGroup"
           }
         },
         "kind": {
@@ -77,7 +77,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.APIGroupList",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.APIGroupList",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -89,11 +89,11 @@
         "Duration": {
           "type": "integer",
           "description": "",
-          "javaType": "Long"
+          "existingJavaType": "Long"
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.Duration",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.Duration",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -102,7 +102,7 @@
       "type": "object",
       "description": "",
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.FieldsV1",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.FieldsV1",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -121,7 +121,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.GroupVersionForDiscovery",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.GroupVersionForDiscovery",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -136,7 +136,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_LabelSelectorRequirement",
-            "javaType": "io.fabric8.kubernetes.api.model.LabelSelectorRequirement"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelectorRequirement"
           }
         },
         "matchLabels": {
@@ -146,11 +146,11 @@
             "type": "string",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,String\u003e"
+          "existingJavaType": "java.util.Map\u003cString, String\u003e"
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.LabelSelector",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -178,7 +178,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.LabelSelectorRequirement",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelectorRequirement",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -198,7 +198,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-            "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
           }
         },
         "kind": {
@@ -209,11 +209,11 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.BaseKubernetesList",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.BaseKubernetesList",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource",
         "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.HasMetadata\u003e"
@@ -230,7 +230,7 @@
         "remainingItemCount": {
           "type": "integer",
           "description": "",
-          "javaType": "Long"
+          "existingJavaType": "Long"
         },
         "resourceVersion": {
           "type": "string",
@@ -242,7 +242,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.ListMeta",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -261,7 +261,7 @@
         },
         "fieldsV1": {
           "$ref": "#/definitions/kubernetes_apimachinery_FieldsV1",
-          "javaType": "io.fabric8.kubernetes.api.model.FieldsV1"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.FieldsV1"
         },
         "manager": {
           "type": "string",
@@ -273,11 +273,11 @@
         },
         "time": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "javaType": "String"
+          "existingJavaType": "String"
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.ManagedFieldsEntry",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.ManagedFieldsEntry",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -293,7 +293,7 @@
             "type": "string",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,String\u003e"
+          "existingJavaType": "java.util.Map\u003cString, String\u003e"
         },
         "clusterName": {
           "type": "string",
@@ -301,16 +301,16 @@
         },
         "creationTimestamp": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "javaType": "String"
+          "existingJavaType": "String"
         },
         "deletionGracePeriodSeconds": {
           "type": "integer",
           "description": "",
-          "javaType": "Long"
+          "existingJavaType": "Long"
         },
         "deletionTimestamp": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "javaType": "String"
+          "existingJavaType": "String"
         },
         "finalizers": {
           "type": "array",
@@ -328,7 +328,7 @@
         "generation": {
           "type": "integer",
           "description": "",
-          "javaType": "Long"
+          "existingJavaType": "Long"
         },
         "labels": {
           "type": "object",
@@ -337,7 +337,7 @@
             "type": "string",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,String\u003e"
+          "existingJavaType": "java.util.Map\u003cString, String\u003e"
         },
         "managedFields": {
           "type": "array",
@@ -345,7 +345,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_ManagedFieldsEntry",
-            "javaType": "io.fabric8.kubernetes.api.model.ManagedFieldsEntry"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.ManagedFieldsEntry"
           }
         },
         "name": {
@@ -364,7 +364,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_OwnerReference",
-            "javaType": "io.fabric8.kubernetes.api.model.OwnerReference"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.OwnerReference"
           }
         },
         "resourceVersion": {
@@ -381,7 +381,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -416,7 +416,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.OwnerReference",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.OwnerReference",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -425,7 +425,7 @@
       "type": "object",
       "description": "",
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.Patch",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.Patch",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -444,7 +444,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.ServerAddressByClientCIDR",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.ServerAddressByClientCIDR",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -465,7 +465,7 @@
         },
         "details": {
           "$ref": "#/definitions/kubernetes_apimachinery_StatusDetails",
-          "javaType": "io.fabric8.kubernetes.api.model.StatusDetails"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.StatusDetails"
         },
         "kind": {
           "type": "string",
@@ -479,7 +479,7 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
         },
         "reason": {
           "type": "string",
@@ -491,7 +491,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.Status",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.Status",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -514,7 +514,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.StatusCause",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.StatusCause",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -529,7 +529,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_StatusCause",
-            "javaType": "io.fabric8.kubernetes.api.model.StatusCause"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.StatusCause"
           }
         },
         "group": {
@@ -554,7 +554,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.StatusDetails",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.StatusDetails",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -569,7 +569,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "String",
+      "existingJavaType": "String",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -588,7 +588,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.TypeMeta",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.TypeMeta",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -606,7 +606,7 @@
       "type": "object",
       "description": "",
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.HasMetadata",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -653,7 +653,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.version.Info",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.version.Info",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -664,19 +664,19 @@
       "properties": {
         "nodeAffinity": {
           "$ref": "#/definitions/kubernetes_core_NodeAffinity",
-          "javaType": "io.fabric8.kubernetes.api.model.NodeAffinity"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.NodeAffinity"
         },
         "podAffinity": {
           "$ref": "#/definitions/kubernetes_core_PodAffinity",
-          "javaType": "io.fabric8.kubernetes.api.model.PodAffinity"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.PodAffinity"
         },
         "podAntiAffinity": {
           "$ref": "#/definitions/kubernetes_core_PodAntiAffinity",
-          "javaType": "io.fabric8.kubernetes.api.model.PodAntiAffinity"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.PodAntiAffinity"
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.Affinity",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.Affinity",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -691,7 +691,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.LocalObjectReference",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.LocalObjectReference",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -706,16 +706,16 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_core_PreferredSchedulingTerm",
-            "javaType": "io.fabric8.kubernetes.api.model.PreferredSchedulingTerm"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.PreferredSchedulingTerm"
           }
         },
         "requiredDuringSchedulingIgnoredDuringExecution": {
           "$ref": "#/definitions/kubernetes_core_NodeSelector",
-          "javaType": "io.fabric8.kubernetes.api.model.NodeSelector"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.NodeSelector"
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.NodeAffinity",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.NodeAffinity",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -729,12 +729,12 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_core_NodeSelectorTerm",
-            "javaType": "io.fabric8.kubernetes.api.model.NodeSelectorTerm"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.NodeSelectorTerm"
           }
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.NodeSelector",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.NodeSelector",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -762,7 +762,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.NodeSelectorRequirement",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.NodeSelectorRequirement",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -777,7 +777,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_core_NodeSelectorRequirement",
-            "javaType": "io.fabric8.kubernetes.api.model.NodeSelectorRequirement"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.NodeSelectorRequirement"
           }
         },
         "matchFields": {
@@ -786,12 +786,12 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_core_NodeSelectorRequirement",
-            "javaType": "io.fabric8.kubernetes.api.model.NodeSelectorRequirement"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.NodeSelectorRequirement"
           }
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.NodeSelectorTerm",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.NodeSelectorTerm",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -806,7 +806,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_core_WeightedPodAffinityTerm",
-            "javaType": "io.fabric8.kubernetes.api.model.WeightedPodAffinityTerm"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.WeightedPodAffinityTerm"
           }
         },
         "requiredDuringSchedulingIgnoredDuringExecution": {
@@ -815,12 +815,12 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_core_PodAffinityTerm",
-            "javaType": "io.fabric8.kubernetes.api.model.PodAffinityTerm"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.PodAffinityTerm"
           }
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.PodAffinity",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.PodAffinity",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -831,7 +831,7 @@
       "properties": {
         "labelSelector": {
           "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
-          "javaType": "io.fabric8.kubernetes.api.model.LabelSelector"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
         },
         "namespaces": {
           "type": "array",
@@ -848,7 +848,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.PodAffinityTerm",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.PodAffinityTerm",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -863,7 +863,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_core_WeightedPodAffinityTerm",
-            "javaType": "io.fabric8.kubernetes.api.model.WeightedPodAffinityTerm"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.WeightedPodAffinityTerm"
           }
         },
         "requiredDuringSchedulingIgnoredDuringExecution": {
@@ -872,12 +872,12 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_core_PodAffinityTerm",
-            "javaType": "io.fabric8.kubernetes.api.model.PodAffinityTerm"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.PodAffinityTerm"
           }
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.PodAntiAffinity",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.PodAntiAffinity",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -888,7 +888,7 @@
       "properties": {
         "preference": {
           "$ref": "#/definitions/kubernetes_core_NodeSelectorTerm",
-          "javaType": "io.fabric8.kubernetes.api.model.NodeSelectorTerm"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.NodeSelectorTerm"
         },
         "weight": {
           "type": "integer",
@@ -896,7 +896,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.PreferredSchedulingTerm",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.PreferredSchedulingTerm",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -910,22 +910,22 @@
           "description": "",
           "additionalProperties": {
             "$ref": "#/definitions/kubernetes_resource_Quantity",
-            "javaType": "io.fabric8.kubernetes.api.model.Quantity"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.Quantity"
           },
-          "javaType": "java.util.Map\u003cString,io.fabric8.kubernetes.api.model.Quantity\u003e"
+          "existingJavaType": "java.util.Map\u003cString, io.fabric8.kubernetes.api.model.Quantity\u003e"
         },
         "requests": {
           "type": "object",
           "description": "",
           "additionalProperties": {
             "$ref": "#/definitions/kubernetes_resource_Quantity",
-            "javaType": "io.fabric8.kubernetes.api.model.Quantity"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.Quantity"
           },
-          "javaType": "java.util.Map\u003cString,io.fabric8.kubernetes.api.model.Quantity\u003e"
+          "existingJavaType": "java.util.Map\u003cString, io.fabric8.kubernetes.api.model.Quantity\u003e"
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.ResourceRequirements",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceRequirements",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -949,7 +949,7 @@
         "tolerationSeconds": {
           "type": "integer",
           "description": "",
-          "javaType": "Long"
+          "existingJavaType": "Long"
         },
         "value": {
           "type": "string",
@@ -957,7 +957,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.Toleration",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.Toleration",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -968,7 +968,7 @@
       "properties": {
         "podAffinityTerm": {
           "$ref": "#/definitions/kubernetes_core_PodAffinityTerm",
-          "javaType": "io.fabric8.kubernetes.api.model.PodAffinityTerm"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.PodAffinityTerm"
         },
         "weight": {
           "type": "integer",
@@ -976,7 +976,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.WeightedPodAffinityTerm",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.WeightedPodAffinityTerm",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -991,7 +991,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.Quantity",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.Quantity",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1053,7 +1053,7 @@
             "type": "string",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,String\u003e"
+          "existingJavaType": "java.util.Map\u003cString, String\u003e"
         }
       },
       "additionalProperties": true,
@@ -1133,19 +1133,19 @@
       "properties": {
         "custom": {
           "$ref": "#/definitions/os_config_CustomTLSProfile",
-          "javaType": "io.fabric8.openshift.api.model.CustomTLSProfile"
+          "existingJavaType": "io.fabric8.openshift.api.model.CustomTLSProfile"
         },
         "intermediate": {
           "$ref": "#/definitions/os_config_IntermediateTLSProfile",
-          "javaType": "io.fabric8.openshift.api.model.IntermediateTLSProfile"
+          "existingJavaType": "io.fabric8.openshift.api.model.IntermediateTLSProfile"
         },
         "modern": {
           "$ref": "#/definitions/os_config_ModernTLSProfile",
-          "javaType": "io.fabric8.openshift.api.model.ModernTLSProfile"
+          "existingJavaType": "io.fabric8.openshift.api.model.ModernTLSProfile"
         },
         "old": {
           "$ref": "#/definitions/os_config_OldTLSProfile",
-          "javaType": "io.fabric8.openshift.api.model.OldTLSProfile"
+          "existingJavaType": "io.fabric8.openshift.api.model.OldTLSProfile"
         },
         "type": {
           "type": "string",
@@ -1176,15 +1176,15 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
           "$ref": "#/definitions/os_imageregistry_v1_ImagePrunerSpec",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.ImagePrunerSpec"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.ImagePrunerSpec"
         },
         "status": {
           "$ref": "#/definitions/os_imageregistry_v1_ImagePrunerStatus",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.ImagePrunerStatus"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.ImagePrunerStatus"
         }
       },
       "additionalProperties": true,
@@ -1208,7 +1208,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/os_imageregistry_v1_ImagePruner",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.ImagePruner"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.ImagePruner"
           }
         },
         "kind": {
@@ -1219,7 +1219,7 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
         }
       },
       "additionalProperties": true,
@@ -1235,7 +1235,7 @@
       "properties": {
         "affinity": {
           "$ref": "#/definitions/kubernetes_core_Affinity",
-          "javaType": "io.fabric8.kubernetes.api.model.Affinity"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.Affinity"
         },
         "failedJobsHistoryLimit": {
           "type": "integer",
@@ -1252,11 +1252,11 @@
         "keepYoungerThan": {
           "type": "integer",
           "description": "",
-          "javaType": "Long"
+          "existingJavaType": "Long"
         },
         "keepYoungerThanDuration": {
           "$ref": "#/definitions/kubernetes_apimachinery_Duration",
-          "javaType": "io.fabric8.kubernetes.api.model.Duration"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.Duration"
         },
         "nodeSelector": {
           "type": "object",
@@ -1265,11 +1265,11 @@
             "type": "string",
             "description": ""
           },
-          "javaType": "java.util.Map\u003cString,String\u003e"
+          "existingJavaType": "java.util.Map\u003cString, String\u003e"
         },
         "resources": {
           "$ref": "#/definitions/kubernetes_core_ResourceRequirements",
-          "javaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
         },
         "schedule": {
           "type": "string",
@@ -1289,7 +1289,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_core_Toleration",
-            "javaType": "io.fabric8.kubernetes.api.model.Toleration"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.Toleration"
           }
         }
       },
@@ -1309,13 +1309,13 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_OperatorCondition",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.OperatorCondition"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.OperatorCondition"
           }
         },
         "observedGeneration": {
           "type": "integer",
           "description": "",
-          "javaType": "Long"
+          "existingJavaType": "Long"
         }
       },
       "additionalProperties": true,
@@ -1339,11 +1339,11 @@
       "properties": {
         "classicLoadBalancer": {
           "$ref": "#/definitions/os_operator_v1_AWSClassicLoadBalancerParameters",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.AWSClassicLoadBalancerParameters"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.AWSClassicLoadBalancerParameters"
         },
         "networkLoadBalancer": {
           "$ref": "#/definitions/os_operator_v1_AWSNetworkLoadBalancerParameters",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.AWSNetworkLoadBalancerParameters"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.AWSNetworkLoadBalancerParameters"
         },
         "type": {
           "type": "string",
@@ -1371,7 +1371,7 @@
       "properties": {
         "destination": {
           "$ref": "#/definitions/os_operator_v1_LoggingDestination",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.LoggingDestination"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.LoggingDestination"
         },
         "httpCaptureCookies": {
           "type": "array",
@@ -1379,12 +1379,12 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_IngressControllerCaptureHTTPCookie",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.IngressControllerCaptureHTTPCookie"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.IngressControllerCaptureHTTPCookie"
           }
         },
         "httpCaptureHeaders": {
           "$ref": "#/definitions/os_operator_v1_IngressControllerCaptureHTTPHeaders",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.IngressControllerCaptureHTTPHeaders"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.IngressControllerCaptureHTTPHeaders"
         },
         "httpLogFormat": {
           "type": "string",
@@ -1415,7 +1415,7 @@
         },
         "simpleMacvlanConfig": {
           "$ref": "#/definitions/os_operator_v1_SimpleMacvlanConfig",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.SimpleMacvlanConfig"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.SimpleMacvlanConfig"
         },
         "type": {
           "type": "string",
@@ -1446,15 +1446,15 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
           "$ref": "#/definitions/os_operator_v1_AuthenticationSpec",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.AuthenticationSpec"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.AuthenticationSpec"
         },
         "status": {
           "$ref": "#/definitions/os_operator_v1_AuthenticationStatus",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.AuthenticationStatus"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.AuthenticationStatus"
         }
       },
       "additionalProperties": true,
@@ -1478,7 +1478,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/os_operator_v1_Authentication",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.Authentication"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.Authentication"
           }
         },
         "kind": {
@@ -1489,7 +1489,7 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
         }
       },
       "additionalProperties": true,
@@ -1513,7 +1513,7 @@
         },
         "observedConfig": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
         },
         "operatorLogLevel": {
           "type": "string",
@@ -1521,7 +1521,7 @@
         },
         "unsupportedConfigOverrides": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
         }
       },
       "additionalProperties": true,
@@ -1540,7 +1540,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_OperatorCondition",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.OperatorCondition"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.OperatorCondition"
           }
         },
         "generations": {
@@ -1549,7 +1549,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_GenerationStatus",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.GenerationStatus"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.GenerationStatus"
           }
         },
         "managingOAuthAPIServer": {
@@ -1558,12 +1558,12 @@
         },
         "oauthAPIServer": {
           "$ref": "#/definitions/os_operator_v1_OAuthAPIServerStatus",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.OAuthAPIServerStatus"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.OAuthAPIServerStatus"
         },
         "observedGeneration": {
           "type": "integer",
           "description": "",
-          "javaType": "Long"
+          "existingJavaType": "Long"
         },
         "readyReplicas": {
           "type": "integer",
@@ -1598,15 +1598,15 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
           "$ref": "#/definitions/os_operator_v1_CSISnapshotControllerSpec",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.CSISnapshotControllerSpec"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.CSISnapshotControllerSpec"
         },
         "status": {
           "$ref": "#/definitions/os_operator_v1_CSISnapshotControllerStatus",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.CSISnapshotControllerStatus"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.CSISnapshotControllerStatus"
         }
       },
       "additionalProperties": true,
@@ -1630,7 +1630,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/os_operator_v1_CSISnapshotController",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.CSISnapshotController"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.CSISnapshotController"
           }
         },
         "kind": {
@@ -1641,7 +1641,7 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
         }
       },
       "additionalProperties": true,
@@ -1665,7 +1665,7 @@
         },
         "observedConfig": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
         },
         "operatorLogLevel": {
           "type": "string",
@@ -1673,7 +1673,7 @@
         },
         "unsupportedConfigOverrides": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
         }
       },
       "additionalProperties": true,
@@ -1692,7 +1692,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_OperatorCondition",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.OperatorCondition"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.OperatorCondition"
           }
         },
         "generations": {
@@ -1701,13 +1701,13 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_GenerationStatus",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.GenerationStatus"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.GenerationStatus"
           }
         },
         "observedGeneration": {
           "type": "integer",
           "description": "",
-          "javaType": "Long"
+          "existingJavaType": "Long"
         },
         "readyReplicas": {
           "type": "integer",
@@ -1761,15 +1761,15 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
           "$ref": "#/definitions/os_operator_v1_ConsoleSpec",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.ConsoleSpec"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.ConsoleSpec"
         },
         "status": {
           "$ref": "#/definitions/os_operator_v1_ConsoleStatus",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.ConsoleStatus"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.ConsoleStatus"
         }
       },
       "additionalProperties": true,
@@ -1788,7 +1788,7 @@
         },
         "secret": {
           "$ref": "#/definitions/os_config_SecretNameReference",
-          "javaType": "io.fabric8.openshift.api.model.SecretNameReference"
+          "existingJavaType": "io.fabric8.openshift.api.model.SecretNameReference"
         }
       },
       "additionalProperties": true,
@@ -1807,7 +1807,7 @@
         },
         "customLogoFile": {
           "$ref": "#/definitions/os_config_ConfigMapFileReference",
-          "javaType": "io.fabric8.openshift.api.model.ConfigMapFileReference"
+          "existingJavaType": "io.fabric8.openshift.api.model.ConfigMapFileReference"
         },
         "customProductName": {
           "type": "string",
@@ -1839,7 +1839,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/os_operator_v1_Console",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.Console"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.Console"
           }
         },
         "kind": {
@@ -1850,7 +1850,7 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
         }
       },
       "additionalProperties": true,
@@ -1866,7 +1866,7 @@
       "properties": {
         "statuspage": {
           "$ref": "#/definitions/os_operator_v1_StatuspageProvider",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.StatuspageProvider"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.StatuspageProvider"
         }
       },
       "additionalProperties": true,
@@ -1881,7 +1881,7 @@
       "properties": {
         "customization": {
           "$ref": "#/definitions/os_operator_v1_ConsoleCustomization",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.ConsoleCustomization"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.ConsoleCustomization"
         },
         "logLevel": {
           "type": "string",
@@ -1893,7 +1893,7 @@
         },
         "observedConfig": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
         },
         "operatorLogLevel": {
           "type": "string",
@@ -1901,15 +1901,15 @@
         },
         "providers": {
           "$ref": "#/definitions/os_operator_v1_ConsoleProviders",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.ConsoleProviders"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.ConsoleProviders"
         },
         "route": {
           "$ref": "#/definitions/os_operator_v1_ConsoleConfigRoute",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.ConsoleConfigRoute"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.ConsoleConfigRoute"
         },
         "unsupportedConfigOverrides": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
         }
       },
       "additionalProperties": true,
@@ -1928,7 +1928,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_OperatorCondition",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.OperatorCondition"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.OperatorCondition"
           }
         },
         "generations": {
@@ -1937,13 +1937,13 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_GenerationStatus",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.GenerationStatus"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.GenerationStatus"
           }
         },
         "observedGeneration": {
           "type": "integer",
           "description": "",
-          "javaType": "Long"
+          "existingJavaType": "Long"
         },
         "readyReplicas": {
           "type": "integer",
@@ -1987,15 +1987,15 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
           "$ref": "#/definitions/os_operator_v1_DNSSpec",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.DNSSpec"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.DNSSpec"
         },
         "status": {
           "$ref": "#/definitions/os_operator_v1_DNSStatus",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.DNSStatus"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.DNSStatus"
         }
       },
       "additionalProperties": true,
@@ -2019,7 +2019,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/os_operator_v1_DNS",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.DNS"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.DNS"
           }
         },
         "kind": {
@@ -2030,7 +2030,7 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
         }
       },
       "additionalProperties": true,
@@ -2058,15 +2058,15 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
           "$ref": "#/definitions/os_operator_v1_DNSRecordSpec",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.DNSRecordSpec"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.DNSRecordSpec"
         },
         "status": {
           "$ref": "#/definitions/os_operator_v1_DNSRecordStatus",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.DNSRecordStatus"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.DNSRecordStatus"
         }
       },
       "additionalProperties": true,
@@ -2091,7 +2091,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/os_operator_v1_DNSRecord",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.DNSRecord"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.DNSRecord"
           }
         },
         "kind": {
@@ -2102,7 +2102,7 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
         }
       },
       "additionalProperties": true,
@@ -2123,7 +2123,7 @@
         "recordTTL": {
           "type": "integer",
           "description": "",
-          "javaType": "Long"
+          "existingJavaType": "Long"
         },
         "recordType": {
           "type": "string",
@@ -2151,7 +2151,7 @@
         "observedGeneration": {
           "type": "integer",
           "description": "",
-          "javaType": "Long"
+          "existingJavaType": "Long"
         },
         "zones": {
           "type": "array",
@@ -2159,7 +2159,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_DNSZoneStatus",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.DNSZoneStatus"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.DNSZoneStatus"
           }
         }
       },
@@ -2179,7 +2179,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_Server",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.Server"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.Server"
           }
         }
       },
@@ -2207,7 +2207,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_OperatorCondition",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.OperatorCondition"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.OperatorCondition"
           }
         }
       },
@@ -2223,7 +2223,7 @@
       "properties": {
         "lastTransitionTime": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "javaType": "String"
+          "existingJavaType": "String"
         },
         "message": {
           "type": "string",
@@ -2258,12 +2258,12 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_DNSZoneCondition",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.DNSZoneCondition"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.DNSZoneCondition"
           }
         },
         "dnsZone": {
           "$ref": "#/definitions/os_config_DNSZone",
-          "javaType": "io.fabric8.openshift.api.model.DNSZone"
+          "existingJavaType": "io.fabric8.openshift.api.model.DNSZone"
         }
       },
       "additionalProperties": true,
@@ -2278,15 +2278,15 @@
       "properties": {
         "kuryrConfig": {
           "$ref": "#/definitions/os_operator_v1_KuryrConfig",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.KuryrConfig"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.KuryrConfig"
         },
         "openshiftSDNConfig": {
           "$ref": "#/definitions/os_operator_v1_OpenShiftSDNConfig",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.OpenShiftSDNConfig"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.OpenShiftSDNConfig"
         },
         "ovnKubernetesConfig": {
           "$ref": "#/definitions/os_operator_v1_OVNKubernetesConfig",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.OVNKubernetesConfig"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.OVNKubernetesConfig"
         },
         "type": {
           "type": "string",
@@ -2305,19 +2305,19 @@
       "properties": {
         "hostNetwork": {
           "$ref": "#/definitions/os_operator_v1_HostNetworkStrategy",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.HostNetworkStrategy"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.HostNetworkStrategy"
         },
         "loadBalancer": {
           "$ref": "#/definitions/os_operator_v1_LoadBalancerStrategy",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.LoadBalancerStrategy"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.LoadBalancerStrategy"
         },
         "nodePort": {
           "$ref": "#/definitions/os_operator_v1_NodePortStrategy",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.NodePortStrategy"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.NodePortStrategy"
         },
         "private": {
           "$ref": "#/definitions/os_operator_v1_PrivateStrategy",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.PrivateStrategy"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.PrivateStrategy"
         },
         "type": {
           "type": "string",
@@ -2348,15 +2348,15 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
           "$ref": "#/definitions/os_operator_v1_EtcdSpec",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.EtcdSpec"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.EtcdSpec"
         },
         "status": {
           "$ref": "#/definitions/os_operator_v1_EtcdStatus",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.EtcdStatus"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.EtcdStatus"
         }
       },
       "additionalProperties": true,
@@ -2380,7 +2380,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/os_operator_v1_Etcd",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.Etcd"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.Etcd"
           }
         },
         "kind": {
@@ -2391,7 +2391,7 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
         }
       },
       "additionalProperties": true,
@@ -2423,7 +2423,7 @@
         },
         "observedConfig": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
         },
         "operatorLogLevel": {
           "type": "string",
@@ -2435,7 +2435,7 @@
         },
         "unsupportedConfigOverrides": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
         }
       },
       "additionalProperties": true,
@@ -2454,7 +2454,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_OperatorCondition",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.OperatorCondition"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.OperatorCondition"
           }
         },
         "generations": {
@@ -2463,7 +2463,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_GenerationStatus",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.GenerationStatus"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.GenerationStatus"
           }
         },
         "latestAvailableRevision": {
@@ -2480,13 +2480,13 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_NodeStatus",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.NodeStatus"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.NodeStatus"
           }
         },
         "observedGeneration": {
           "type": "integer",
           "description": "",
-          "javaType": "Long"
+          "existingJavaType": "Long"
         },
         "readyReplicas": {
           "type": "integer",
@@ -2537,7 +2537,7 @@
         "lastGeneration": {
           "type": "integer",
           "description": "",
-          "javaType": "Long"
+          "existingJavaType": "Long"
         },
         "name": {
           "type": "string",
@@ -2576,7 +2576,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/os_operator_v1_ClusterNetworkEntry",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.ClusterNetworkEntry"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.ClusterNetworkEntry"
           }
         },
         "hybridOverlayVXLANPort": {
@@ -2596,7 +2596,7 @@
       "properties": {
         "staticIPAMConfig": {
           "$ref": "#/definitions/os_operator_v1_StaticIPAMConfig",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.StaticIPAMConfig"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.StaticIPAMConfig"
         },
         "type": {
           "type": "string",
@@ -2627,15 +2627,15 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
           "$ref": "#/definitions/os_operator_v1_IngressControllerSpec",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.IngressControllerSpec"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.IngressControllerSpec"
         },
         "status": {
           "$ref": "#/definitions/os_operator_v1_IngressControllerStatus",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.IngressControllerStatus"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.IngressControllerStatus"
         }
       },
       "additionalProperties": true,
@@ -2701,7 +2701,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_IngressControllerCaptureHTTPHeader",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.IngressControllerCaptureHTTPHeader"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.IngressControllerCaptureHTTPHeader"
           }
         },
         "response": {
@@ -2710,7 +2710,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_IngressControllerCaptureHTTPHeader",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.IngressControllerCaptureHTTPHeader"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.IngressControllerCaptureHTTPHeader"
           }
         }
       },
@@ -2730,7 +2730,7 @@
         },
         "uniqueId": {
           "$ref": "#/definitions/os_operator_v1_IngressControllerHTTPUniqueIdHeaderPolicy",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.IngressControllerHTTPUniqueIdHeaderPolicy"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.IngressControllerHTTPUniqueIdHeaderPolicy"
         }
       },
       "additionalProperties": true,
@@ -2773,7 +2773,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/os_operator_v1_IngressController",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.IngressController"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.IngressController"
           }
         },
         "kind": {
@@ -2784,7 +2784,7 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
         }
       },
       "additionalProperties": true,
@@ -2800,7 +2800,7 @@
       "properties": {
         "access": {
           "$ref": "#/definitions/os_operator_v1_AccessLogging",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.AccessLogging"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.AccessLogging"
         }
       },
       "additionalProperties": true,
@@ -2815,7 +2815,7 @@
       "properties": {
         "defaultCertificate": {
           "$ref": "#/definitions/kubernetes_core_LocalObjectReference",
-          "javaType": "io.fabric8.kubernetes.api.model.LocalObjectReference"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.LocalObjectReference"
         },
         "domain": {
           "type": "string",
@@ -2823,23 +2823,23 @@
         },
         "endpointPublishingStrategy": {
           "$ref": "#/definitions/os_operator_v1_EndpointPublishingStrategy",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.EndpointPublishingStrategy"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.EndpointPublishingStrategy"
         },
         "httpHeaders": {
           "$ref": "#/definitions/os_operator_v1_IngressControllerHTTPHeaders",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.IngressControllerHTTPHeaders"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.IngressControllerHTTPHeaders"
         },
         "logging": {
           "$ref": "#/definitions/os_operator_v1_IngressControllerLogging",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.IngressControllerLogging"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.IngressControllerLogging"
         },
         "namespaceSelector": {
           "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
-          "javaType": "io.fabric8.kubernetes.api.model.LabelSelector"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
         },
         "nodePlacement": {
           "$ref": "#/definitions/os_operator_v1_NodePlacement",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.NodePlacement"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.NodePlacement"
         },
         "replicas": {
           "type": "integer",
@@ -2847,15 +2847,15 @@
         },
         "routeAdmission": {
           "$ref": "#/definitions/os_operator_v1_RouteAdmissionPolicy",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.RouteAdmissionPolicy"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.RouteAdmissionPolicy"
         },
         "routeSelector": {
           "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
-          "javaType": "io.fabric8.kubernetes.api.model.LabelSelector"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
         },
         "tlsSecurityProfile": {
           "$ref": "#/definitions/os_config_TLSSecurityProfile",
-          "javaType": "io.fabric8.openshift.api.model.TLSSecurityProfile"
+          "existingJavaType": "io.fabric8.openshift.api.model.TLSSecurityProfile"
         }
       },
       "additionalProperties": true,
@@ -2878,7 +2878,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_OperatorCondition",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.OperatorCondition"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.OperatorCondition"
           }
         },
         "domain": {
@@ -2887,12 +2887,12 @@
         },
         "endpointPublishingStrategy": {
           "$ref": "#/definitions/os_operator_v1_EndpointPublishingStrategy",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.EndpointPublishingStrategy"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.EndpointPublishingStrategy"
         },
         "observedGeneration": {
           "type": "integer",
           "description": "",
-          "javaType": "Long"
+          "existingJavaType": "Long"
         },
         "selector": {
           "type": "string",
@@ -2900,7 +2900,7 @@
         },
         "tlsProfile": {
           "$ref": "#/definitions/os_config_TLSProfileSpec",
-          "javaType": "io.fabric8.openshift.api.model.TLSProfileSpec"
+          "existingJavaType": "io.fabric8.openshift.api.model.TLSProfileSpec"
         }
       },
       "additionalProperties": true,
@@ -2927,15 +2927,15 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
           "$ref": "#/definitions/os_operator_v1_KubeAPIServerSpec",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.KubeAPIServerSpec"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.KubeAPIServerSpec"
         },
         "status": {
           "$ref": "#/definitions/os_operator_v1_KubeAPIServerStatus",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.KubeAPIServerStatus"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.KubeAPIServerStatus"
         }
       },
       "additionalProperties": true,
@@ -2959,7 +2959,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/os_operator_v1_KubeAPIServer",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.KubeAPIServer"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.KubeAPIServer"
           }
         },
         "kind": {
@@ -2970,7 +2970,7 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
         }
       },
       "additionalProperties": true,
@@ -3002,7 +3002,7 @@
         },
         "observedConfig": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
         },
         "operatorLogLevel": {
           "type": "string",
@@ -3014,7 +3014,7 @@
         },
         "unsupportedConfigOverrides": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
         }
       },
       "additionalProperties": true,
@@ -3033,7 +3033,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_OperatorCondition",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.OperatorCondition"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.OperatorCondition"
           }
         },
         "generations": {
@@ -3042,7 +3042,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_GenerationStatus",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.GenerationStatus"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.GenerationStatus"
           }
         },
         "latestAvailableRevision": {
@@ -3059,13 +3059,13 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_NodeStatus",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.NodeStatus"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.NodeStatus"
           }
         },
         "observedGeneration": {
           "type": "integer",
           "description": "",
-          "javaType": "Long"
+          "existingJavaType": "Long"
         },
         "readyReplicas": {
           "type": "integer",
@@ -3100,15 +3100,15 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
           "$ref": "#/definitions/os_operator_v1_KubeControllerManagerSpec",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.KubeControllerManagerSpec"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.KubeControllerManagerSpec"
         },
         "status": {
           "$ref": "#/definitions/os_operator_v1_KubeControllerManagerStatus",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.KubeControllerManagerStatus"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.KubeControllerManagerStatus"
         }
       },
       "additionalProperties": true,
@@ -3132,7 +3132,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/os_operator_v1_KubeControllerManager",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.KubeControllerManager"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.KubeControllerManager"
           }
         },
         "kind": {
@@ -3143,7 +3143,7 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
         }
       },
       "additionalProperties": true,
@@ -3175,7 +3175,7 @@
         },
         "observedConfig": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
         },
         "operatorLogLevel": {
           "type": "string",
@@ -3187,7 +3187,7 @@
         },
         "unsupportedConfigOverrides": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
         }
       },
       "additionalProperties": true,
@@ -3206,7 +3206,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_OperatorCondition",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.OperatorCondition"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.OperatorCondition"
           }
         },
         "generations": {
@@ -3215,7 +3215,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_GenerationStatus",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.GenerationStatus"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.GenerationStatus"
           }
         },
         "latestAvailableRevision": {
@@ -3232,13 +3232,13 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_NodeStatus",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.NodeStatus"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.NodeStatus"
           }
         },
         "observedGeneration": {
           "type": "integer",
           "description": "",
-          "javaType": "Long"
+          "existingJavaType": "Long"
         },
         "readyReplicas": {
           "type": "integer",
@@ -3273,15 +3273,15 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
           "$ref": "#/definitions/os_operator_v1_KubeSchedulerSpec",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.KubeSchedulerSpec"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.KubeSchedulerSpec"
         },
         "status": {
           "$ref": "#/definitions/os_operator_v1_KubeSchedulerStatus",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.KubeSchedulerStatus"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.KubeSchedulerStatus"
         }
       },
       "additionalProperties": true,
@@ -3305,7 +3305,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/os_operator_v1_KubeScheduler",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.KubeScheduler"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.KubeScheduler"
           }
         },
         "kind": {
@@ -3316,7 +3316,7 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
         }
       },
       "additionalProperties": true,
@@ -3348,7 +3348,7 @@
         },
         "observedConfig": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
         },
         "operatorLogLevel": {
           "type": "string",
@@ -3360,7 +3360,7 @@
         },
         "unsupportedConfigOverrides": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
         }
       },
       "additionalProperties": true,
@@ -3379,7 +3379,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_OperatorCondition",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.OperatorCondition"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.OperatorCondition"
           }
         },
         "generations": {
@@ -3388,7 +3388,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_GenerationStatus",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.GenerationStatus"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.GenerationStatus"
           }
         },
         "latestAvailableRevision": {
@@ -3405,13 +3405,13 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_NodeStatus",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.NodeStatus"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.NodeStatus"
           }
         },
         "observedGeneration": {
           "type": "integer",
           "description": "",
-          "javaType": "Long"
+          "existingJavaType": "Long"
         },
         "readyReplicas": {
           "type": "integer",
@@ -3446,15 +3446,15 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
           "$ref": "#/definitions/os_operator_v1_KubeStorageVersionMigratorSpec",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.KubeStorageVersionMigratorSpec"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.KubeStorageVersionMigratorSpec"
         },
         "status": {
           "$ref": "#/definitions/os_operator_v1_KubeStorageVersionMigratorStatus",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.KubeStorageVersionMigratorStatus"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.KubeStorageVersionMigratorStatus"
         }
       },
       "additionalProperties": true,
@@ -3478,7 +3478,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/os_operator_v1_KubeStorageVersionMigrator",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.KubeStorageVersionMigrator"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.KubeStorageVersionMigrator"
           }
         },
         "kind": {
@@ -3489,7 +3489,7 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
         }
       },
       "additionalProperties": true,
@@ -3513,7 +3513,7 @@
         },
         "observedConfig": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
         },
         "operatorLogLevel": {
           "type": "string",
@@ -3521,7 +3521,7 @@
         },
         "unsupportedConfigOverrides": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
         }
       },
       "additionalProperties": true,
@@ -3540,7 +3540,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_OperatorCondition",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.OperatorCondition"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.OperatorCondition"
           }
         },
         "generations": {
@@ -3549,13 +3549,13 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_GenerationStatus",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.GenerationStatus"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.GenerationStatus"
           }
         },
         "observedGeneration": {
           "type": "integer",
           "description": "",
-          "javaType": "Long"
+          "existingJavaType": "Long"
         },
         "readyReplicas": {
           "type": "integer",
@@ -3617,7 +3617,7 @@
       "properties": {
         "providerParameters": {
           "$ref": "#/definitions/os_operator_v1_ProviderLoadBalancerParameters",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.ProviderLoadBalancerParameters"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.ProviderLoadBalancerParameters"
         },
         "scope": {
           "type": "string",
@@ -3636,11 +3636,11 @@
       "properties": {
         "container": {
           "$ref": "#/definitions/os_operator_v1_ContainerLoggingDestinationParameters",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.ContainerLoggingDestinationParameters"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.ContainerLoggingDestinationParameters"
         },
         "syslog": {
           "$ref": "#/definitions/os_operator_v1_SyslogLoggingDestinationParameters",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.SyslogLoggingDestinationParameters"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.SyslogLoggingDestinationParameters"
         },
         "type": {
           "type": "string",
@@ -3671,15 +3671,15 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
           "$ref": "#/definitions/os_operator_v1_NetworkSpec",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.NetworkSpec"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.NetworkSpec"
         },
         "status": {
           "$ref": "#/definitions/os_operator_v1_NetworkStatus",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.NetworkStatus"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.NetworkStatus"
         }
       },
       "additionalProperties": true,
@@ -3703,7 +3703,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/os_operator_v1_Network",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.Network"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.Network"
           }
         },
         "kind": {
@@ -3714,7 +3714,7 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
         }
       },
       "additionalProperties": true,
@@ -3734,7 +3734,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_AdditionalNetworkDefinition",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.AdditionalNetworkDefinition"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.AdditionalNetworkDefinition"
           }
         },
         "clusterNetwork": {
@@ -3742,12 +3742,12 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/os_operator_v1_ClusterNetworkEntry",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.ClusterNetworkEntry"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.ClusterNetworkEntry"
           }
         },
         "defaultNetwork": {
           "$ref": "#/definitions/os_operator_v1_DefaultNetworkDefinition",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.DefaultNetworkDefinition"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.DefaultNetworkDefinition"
         },
         "deployKubeProxy": {
           "type": "boolean",
@@ -3759,7 +3759,7 @@
         },
         "kubeProxyConfig": {
           "$ref": "#/definitions/os_operator_v1_ProxyConfig",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.ProxyConfig"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.ProxyConfig"
         },
         "logLevel": {
           "type": "string",
@@ -3795,7 +3795,7 @@
       "properties": {
         "nodeSelector": {
           "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
-          "javaType": "io.fabric8.kubernetes.api.model.LabelSelector"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
         },
         "tolerations": {
           "type": "array",
@@ -3803,7 +3803,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_core_Toleration",
-            "javaType": "io.fabric8.kubernetes.api.model.Toleration"
+            "existingJavaType": "io.fabric8.kubernetes.api.model.Toleration"
           }
         }
       },
@@ -3883,7 +3883,7 @@
         },
         "hybridOverlayConfig": {
           "$ref": "#/definitions/os_operator_v1_HybridOverlayConfig",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.HybridOverlayConfig"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.HybridOverlayConfig"
         },
         "mtu": {
           "type": "integer",
@@ -3914,15 +3914,15 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
           "$ref": "#/definitions/os_operator_v1_OpenShiftAPIServerSpec",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.OpenShiftAPIServerSpec"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.OpenShiftAPIServerSpec"
         },
         "status": {
           "$ref": "#/definitions/os_operator_v1_OpenShiftAPIServerStatus",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.OpenShiftAPIServerStatus"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.OpenShiftAPIServerStatus"
         }
       },
       "additionalProperties": true,
@@ -3946,7 +3946,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/os_operator_v1_OpenShiftAPIServer",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.OpenShiftAPIServer"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.OpenShiftAPIServer"
           }
         },
         "kind": {
@@ -3957,7 +3957,7 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
         }
       },
       "additionalProperties": true,
@@ -3981,7 +3981,7 @@
         },
         "observedConfig": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
         },
         "operatorLogLevel": {
           "type": "string",
@@ -3989,7 +3989,7 @@
         },
         "unsupportedConfigOverrides": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
         }
       },
       "additionalProperties": true,
@@ -4008,7 +4008,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_OperatorCondition",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.OperatorCondition"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.OperatorCondition"
           }
         },
         "generations": {
@@ -4017,7 +4017,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_GenerationStatus",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.GenerationStatus"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.GenerationStatus"
           }
         },
         "latestAvailableRevision": {
@@ -4027,7 +4027,7 @@
         "observedGeneration": {
           "type": "integer",
           "description": "",
-          "javaType": "Long"
+          "existingJavaType": "Long"
         },
         "readyReplicas": {
           "type": "integer",
@@ -4062,15 +4062,15 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
           "$ref": "#/definitions/os_operator_v1_OpenShiftControllerManagerSpec",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.OpenShiftControllerManagerSpec"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.OpenShiftControllerManagerSpec"
         },
         "status": {
           "$ref": "#/definitions/os_operator_v1_OpenShiftControllerManagerStatus",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.OpenShiftControllerManagerStatus"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.OpenShiftControllerManagerStatus"
         }
       },
       "additionalProperties": true,
@@ -4094,7 +4094,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/os_operator_v1_OpenShiftControllerManager",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.OpenShiftControllerManager"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.OpenShiftControllerManager"
           }
         },
         "kind": {
@@ -4105,7 +4105,7 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
         }
       },
       "additionalProperties": true,
@@ -4129,7 +4129,7 @@
         },
         "observedConfig": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
         },
         "operatorLogLevel": {
           "type": "string",
@@ -4137,7 +4137,7 @@
         },
         "unsupportedConfigOverrides": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
         }
       },
       "additionalProperties": true,
@@ -4156,7 +4156,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_OperatorCondition",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.OperatorCondition"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.OperatorCondition"
           }
         },
         "generations": {
@@ -4165,13 +4165,13 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_GenerationStatus",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.GenerationStatus"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.GenerationStatus"
           }
         },
         "observedGeneration": {
           "type": "integer",
           "description": "",
-          "javaType": "Long"
+          "existingJavaType": "Long"
         },
         "readyReplicas": {
           "type": "integer",
@@ -4225,7 +4225,7 @@
       "properties": {
         "lastTransitionTime": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
-          "javaType": "String"
+          "existingJavaType": "String"
         },
         "message": {
           "type": "string",
@@ -4264,7 +4264,7 @@
         },
         "observedConfig": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
         },
         "operatorLogLevel": {
           "type": "string",
@@ -4272,7 +4272,7 @@
         },
         "unsupportedConfigOverrides": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
         }
       },
       "additionalProperties": true,
@@ -4291,7 +4291,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_OperatorCondition",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.OperatorCondition"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.OperatorCondition"
           }
         },
         "generations": {
@@ -4300,13 +4300,13 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_GenerationStatus",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.GenerationStatus"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.GenerationStatus"
           }
         },
         "observedGeneration": {
           "type": "integer",
           "description": "",
-          "javaType": "Long"
+          "existingJavaType": "Long"
         },
         "readyReplicas": {
           "type": "integer",
@@ -4338,7 +4338,7 @@
       "properties": {
         "aws": {
           "$ref": "#/definitions/os_operator_v1_AWSLoadBalancerParameters",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.AWSLoadBalancerParameters"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.AWSLoadBalancerParameters"
         },
         "type": {
           "type": "string",
@@ -4374,7 +4374,7 @@
               "description": ""
             }
           },
-          "javaType": "java.util.Map\u003cString,java.util.ArrayList\u003cString\u003e\u003e"
+          "existingJavaType": "java.util.Map\u003cString, java.util.ArrayList\u003cString\u003e\u003e"
         }
       },
       "additionalProperties": true,
@@ -4408,7 +4408,7 @@
       "properties": {
         "forwardPlugin": {
           "$ref": "#/definitions/os_operator_v1_ForwardPlugin",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.ForwardPlugin"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.ForwardPlugin"
         },
         "name": {
           "type": "string",
@@ -4447,15 +4447,15 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
           "$ref": "#/definitions/os_operator_v1_ServiceCASpec",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.ServiceCASpec"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.ServiceCASpec"
         },
         "status": {
           "$ref": "#/definitions/os_operator_v1_ServiceCAStatus",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.ServiceCAStatus"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.ServiceCAStatus"
         }
       },
       "additionalProperties": true,
@@ -4479,7 +4479,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/os_operator_v1_ServiceCA",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.ServiceCA"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.ServiceCA"
           }
         },
         "kind": {
@@ -4490,7 +4490,7 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
         }
       },
       "additionalProperties": true,
@@ -4514,7 +4514,7 @@
         },
         "observedConfig": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
         },
         "operatorLogLevel": {
           "type": "string",
@@ -4522,7 +4522,7 @@
         },
         "unsupportedConfigOverrides": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
         }
       },
       "additionalProperties": true,
@@ -4541,7 +4541,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_OperatorCondition",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.OperatorCondition"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.OperatorCondition"
           }
         },
         "generations": {
@@ -4550,13 +4550,13 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_GenerationStatus",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.GenerationStatus"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.GenerationStatus"
           }
         },
         "observedGeneration": {
           "type": "integer",
           "description": "",
-          "javaType": "Long"
+          "existingJavaType": "Long"
         },
         "readyReplicas": {
           "type": "integer",
@@ -4591,15 +4591,15 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
           "$ref": "#/definitions/os_operator_v1_ServiceCatalogAPIServerSpec",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.ServiceCatalogAPIServerSpec"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.ServiceCatalogAPIServerSpec"
         },
         "status": {
           "$ref": "#/definitions/os_operator_v1_ServiceCatalogAPIServerStatus",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.ServiceCatalogAPIServerStatus"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.ServiceCatalogAPIServerStatus"
         }
       },
       "additionalProperties": true,
@@ -4623,7 +4623,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/os_operator_v1_ServiceCatalogAPIServer",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.ServiceCatalogAPIServer"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.ServiceCatalogAPIServer"
           }
         },
         "kind": {
@@ -4634,7 +4634,7 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
         }
       },
       "additionalProperties": true,
@@ -4658,7 +4658,7 @@
         },
         "observedConfig": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
         },
         "operatorLogLevel": {
           "type": "string",
@@ -4666,7 +4666,7 @@
         },
         "unsupportedConfigOverrides": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
         }
       },
       "additionalProperties": true,
@@ -4685,7 +4685,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_OperatorCondition",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.OperatorCondition"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.OperatorCondition"
           }
         },
         "generations": {
@@ -4694,13 +4694,13 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_GenerationStatus",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.GenerationStatus"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.GenerationStatus"
           }
         },
         "observedGeneration": {
           "type": "integer",
           "description": "",
-          "javaType": "Long"
+          "existingJavaType": "Long"
         },
         "readyReplicas": {
           "type": "integer",
@@ -4735,15 +4735,15 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
           "$ref": "#/definitions/os_operator_v1_ServiceCatalogControllerManagerSpec",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.ServiceCatalogControllerManagerSpec"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.ServiceCatalogControllerManagerSpec"
         },
         "status": {
           "$ref": "#/definitions/os_operator_v1_ServiceCatalogControllerManagerStatus",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.ServiceCatalogControllerManagerStatus"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.ServiceCatalogControllerManagerStatus"
         }
       },
       "additionalProperties": true,
@@ -4767,7 +4767,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/os_operator_v1_ServiceCatalogControllerManager",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.ServiceCatalogControllerManager"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.ServiceCatalogControllerManager"
           }
         },
         "kind": {
@@ -4778,7 +4778,7 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
         }
       },
       "additionalProperties": true,
@@ -4802,7 +4802,7 @@
         },
         "observedConfig": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
         },
         "operatorLogLevel": {
           "type": "string",
@@ -4810,7 +4810,7 @@
         },
         "unsupportedConfigOverrides": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
         }
       },
       "additionalProperties": true,
@@ -4829,7 +4829,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_OperatorCondition",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.OperatorCondition"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.OperatorCondition"
           }
         },
         "generations": {
@@ -4838,13 +4838,13 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_GenerationStatus",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.GenerationStatus"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.GenerationStatus"
           }
         },
         "observedGeneration": {
           "type": "integer",
           "description": "",
-          "javaType": "Long"
+          "existingJavaType": "Long"
         },
         "readyReplicas": {
           "type": "integer",
@@ -4867,7 +4867,7 @@
       "properties": {
         "ipamConfig": {
           "$ref": "#/definitions/os_operator_v1_IPAMConfig",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.IPAMConfig"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.IPAMConfig"
         },
         "master": {
           "type": "string",
@@ -4917,12 +4917,12 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_StaticIPAMAddresses",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.StaticIPAMAddresses"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.StaticIPAMAddresses"
           }
         },
         "dns": {
           "$ref": "#/definitions/os_operator_v1_StaticIPAMDNS",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1.StaticIPAMDNS"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.StaticIPAMDNS"
         },
         "routes": {
           "type": "array",
@@ -4930,7 +4930,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_StaticIPAMRoutes",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.StaticIPAMRoutes"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.StaticIPAMRoutes"
           }
         }
       },
@@ -5014,7 +5014,7 @@
         },
         "observedConfig": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
         },
         "operatorLogLevel": {
           "type": "string",
@@ -5026,7 +5026,7 @@
         },
         "unsupportedConfigOverrides": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "javaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
         }
       },
       "additionalProperties": true,
@@ -5045,7 +5045,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_OperatorCondition",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.OperatorCondition"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.OperatorCondition"
           }
         },
         "generations": {
@@ -5054,7 +5054,7 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_GenerationStatus",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.GenerationStatus"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.GenerationStatus"
           }
         },
         "latestAvailableRevision": {
@@ -5071,13 +5071,13 @@
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_operator_v1_NodeStatus",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1.NodeStatus"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.NodeStatus"
           }
         },
         "observedGeneration": {
           "type": "integer",
           "description": "",
-          "javaType": "Long"
+          "existingJavaType": "Long"
         },
         "readyReplicas": {
           "type": "integer",
@@ -5150,11 +5150,11 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
           "$ref": "#/definitions/os_operator_v1alpha1_ImageContentSourcePolicySpec",
-          "javaType": "io.fabric8.openshift.api.model.operator.v1alpha1.ImageContentSourcePolicySpec"
+          "existingJavaType": "io.fabric8.openshift.api.model.operator.v1alpha1.ImageContentSourcePolicySpec"
         }
       },
       "additionalProperties": true,
@@ -5178,7 +5178,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/os_operator_v1alpha1_ImageContentSourcePolicy",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1alpha1.ImageContentSourcePolicy"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1alpha1.ImageContentSourcePolicy"
           }
         },
         "kind": {
@@ -5189,7 +5189,7 @@
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
-          "javaType": "io.fabric8.kubernetes.api.model.ListMeta"
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
         }
       },
       "additionalProperties": true,
@@ -5208,7 +5208,7 @@
           "description": "",
           "items": {
             "$ref": "#/definitions/os_operator_v1alpha1_RepositoryDigestMirrors",
-            "javaType": "io.fabric8.openshift.api.model.operator.v1alpha1.RepositoryDigestMirrors"
+            "existingJavaType": "io.fabric8.openshift.api.model.operator.v1alpha1.RepositoryDigestMirrors"
           }
         }
       },
@@ -5246,203 +5246,203 @@
   "properties": {
     "APIGroup": {
       "$ref": "#/definitions/kubernetes_apimachinery_APIGroup",
-      "javaType": "io.fabric8.kubernetes.api.model.APIGroup"
+      "existingJavaType": "io.fabric8.kubernetes.api.model.APIGroup"
     },
     "APIGroupList": {
       "$ref": "#/definitions/kubernetes_apimachinery_APIGroupList",
-      "javaType": "io.fabric8.kubernetes.api.model.APIGroupList"
+      "existingJavaType": "io.fabric8.kubernetes.api.model.APIGroupList"
     },
     "Authentication": {
       "$ref": "#/definitions/os_operator_v1_Authentication",
-      "javaType": "io.fabric8.openshift.api.model.operator.v1.Authentication"
+      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.Authentication"
     },
     "AuthenticationList": {
       "$ref": "#/definitions/os_operator_v1_AuthenticationList",
-      "javaType": "io.fabric8.openshift.api.model.operator.v1.AuthenticationList"
+      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.AuthenticationList"
     },
     "BaseKubernetesList": {
       "$ref": "#/definitions/kubernetes_apimachinery_List",
-      "javaType": "io.fabric8.kubernetes.api.model.BaseKubernetesList"
+      "existingJavaType": "io.fabric8.kubernetes.api.model.BaseKubernetesList"
     },
     "CSISnapshotController": {
       "$ref": "#/definitions/os_operator_v1_CSISnapshotController",
-      "javaType": "io.fabric8.openshift.api.model.operator.v1.CSISnapshotController"
+      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.CSISnapshotController"
     },
     "CSISnapshotControllerList": {
       "$ref": "#/definitions/os_operator_v1_CSISnapshotControllerList",
-      "javaType": "io.fabric8.openshift.api.model.operator.v1.CSISnapshotControllerList"
+      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.CSISnapshotControllerList"
     },
     "ConfigMapFileReference": {
       "$ref": "#/definitions/os_config_ConfigMapFileReference",
-      "javaType": "io.fabric8.openshift.api.model.ConfigMapFileReference"
+      "existingJavaType": "io.fabric8.openshift.api.model.ConfigMapFileReference"
     },
     "Console": {
       "$ref": "#/definitions/os_operator_v1_Console",
-      "javaType": "io.fabric8.openshift.api.model.operator.v1.Console"
+      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.Console"
     },
     "ConsoleList": {
       "$ref": "#/definitions/os_operator_v1_ConsoleList",
-      "javaType": "io.fabric8.openshift.api.model.operator.v1.ConsoleList"
+      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.ConsoleList"
     },
     "DNS": {
       "$ref": "#/definitions/os_operator_v1_DNS",
-      "javaType": "io.fabric8.openshift.api.model.operator.v1.DNS"
+      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.DNS"
     },
     "DNSList": {
       "$ref": "#/definitions/os_operator_v1_DNSList",
-      "javaType": "io.fabric8.openshift.api.model.operator.v1.DNSList"
+      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.DNSList"
     },
     "DNSRecord": {
       "$ref": "#/definitions/os_operator_v1_DNSRecord",
-      "javaType": "io.fabric8.openshift.api.model.operator.v1.DNSRecord"
+      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.DNSRecord"
     },
     "DNSRecordList": {
       "$ref": "#/definitions/os_operator_v1_DNSRecordList",
-      "javaType": "io.fabric8.openshift.api.model.operator.v1.DNSRecordList"
+      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.DNSRecordList"
     },
     "Etcd": {
       "$ref": "#/definitions/os_operator_v1_Etcd",
-      "javaType": "io.fabric8.openshift.api.model.operator.v1.Etcd"
+      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.Etcd"
     },
     "EtcdList": {
       "$ref": "#/definitions/os_operator_v1_EtcdList",
-      "javaType": "io.fabric8.openshift.api.model.operator.v1.EtcdList"
+      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.EtcdList"
     },
     "ImageContentSourcePolicy": {
       "$ref": "#/definitions/os_operator_v1alpha1_ImageContentSourcePolicy",
-      "javaType": "io.fabric8.openshift.api.model.operator.v1alpha1.ImageContentSourcePolicy"
+      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1alpha1.ImageContentSourcePolicy"
     },
     "ImageContentSourcePolicyList": {
       "$ref": "#/definitions/os_operator_v1alpha1_ImageContentSourcePolicyList",
-      "javaType": "io.fabric8.openshift.api.model.operator.v1alpha1.ImageContentSourcePolicyList"
+      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1alpha1.ImageContentSourcePolicyList"
     },
     "ImagePruner": {
       "$ref": "#/definitions/os_imageregistry_v1_ImagePruner",
-      "javaType": "io.fabric8.openshift.api.model.operator.v1.ImagePruner"
+      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.ImagePruner"
     },
     "ImagePrunerList": {
       "$ref": "#/definitions/os_imageregistry_v1_ImagePrunerList",
-      "javaType": "io.fabric8.openshift.api.model.operator.v1.ImagePrunerList"
+      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.ImagePrunerList"
     },
     "Info": {
       "$ref": "#/definitions/kubernetes_apimachinery_pkg_version_Info",
-      "javaType": "io.fabric8.kubernetes.api.model.version.Info"
+      "existingJavaType": "io.fabric8.kubernetes.api.model.version.Info"
     },
     "IngressController": {
       "$ref": "#/definitions/os_operator_v1_IngressController",
-      "javaType": "io.fabric8.openshift.api.model.operator.v1.IngressController"
+      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.IngressController"
     },
     "IngressControllerList": {
       "$ref": "#/definitions/os_operator_v1_IngressControllerList",
-      "javaType": "io.fabric8.openshift.api.model.operator.v1.IngressControllerList"
+      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.IngressControllerList"
     },
     "KubeAPIServer": {
       "$ref": "#/definitions/os_operator_v1_KubeAPIServer",
-      "javaType": "io.fabric8.openshift.api.model.operator.v1.KubeAPIServer"
+      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.KubeAPIServer"
     },
     "KubeAPIServerList": {
       "$ref": "#/definitions/os_operator_v1_KubeAPIServerList",
-      "javaType": "io.fabric8.openshift.api.model.operator.v1.KubeAPIServerList"
+      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.KubeAPIServerList"
     },
     "KubeControllerManager": {
       "$ref": "#/definitions/os_operator_v1_KubeControllerManager",
-      "javaType": "io.fabric8.openshift.api.model.operator.v1.KubeControllerManager"
+      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.KubeControllerManager"
     },
     "KubeControllerManagerList": {
       "$ref": "#/definitions/os_operator_v1_KubeControllerManagerList",
-      "javaType": "io.fabric8.openshift.api.model.operator.v1.KubeControllerManagerList"
+      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.KubeControllerManagerList"
     },
     "KubeScheduler": {
       "$ref": "#/definitions/os_operator_v1_KubeScheduler",
-      "javaType": "io.fabric8.openshift.api.model.operator.v1.KubeScheduler"
+      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.KubeScheduler"
     },
     "KubeSchedulerList": {
       "$ref": "#/definitions/os_operator_v1_KubeSchedulerList",
-      "javaType": "io.fabric8.openshift.api.model.operator.v1.KubeSchedulerList"
+      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.KubeSchedulerList"
     },
     "KubeStorageVersionMigrator": {
       "$ref": "#/definitions/os_operator_v1_KubeStorageVersionMigrator",
-      "javaType": "io.fabric8.openshift.api.model.operator.v1.KubeStorageVersionMigrator"
+      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.KubeStorageVersionMigrator"
     },
     "KubeStorageVersionMigratorList": {
       "$ref": "#/definitions/os_operator_v1_KubeStorageVersionMigratorList",
-      "javaType": "io.fabric8.openshift.api.model.operator.v1.KubeStorageVersionMigratorList"
+      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.KubeStorageVersionMigratorList"
     },
     "Network": {
       "$ref": "#/definitions/os_operator_v1_Network",
-      "javaType": "io.fabric8.openshift.api.model.operator.v1.Network"
+      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.Network"
     },
     "NetworkList": {
       "$ref": "#/definitions/os_operator_v1_NetworkList",
-      "javaType": "io.fabric8.openshift.api.model.operator.v1.NetworkList"
+      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.NetworkList"
     },
     "ObjectMeta": {
       "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
-      "javaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+      "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
     },
     "OpenShiftAPIServer": {
       "$ref": "#/definitions/os_operator_v1_OpenShiftAPIServer",
-      "javaType": "io.fabric8.openshift.api.model.operator.v1.OpenShiftAPIServer"
+      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.OpenShiftAPIServer"
     },
     "OpenShiftAPIServerList": {
       "$ref": "#/definitions/os_operator_v1_OpenShiftAPIServerList",
-      "javaType": "io.fabric8.openshift.api.model.operator.v1.OpenShiftAPIServerList"
+      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.OpenShiftAPIServerList"
     },
     "OpenShiftContollerManager": {
       "$ref": "#/definitions/os_operator_v1_OpenShiftControllerManager",
-      "javaType": "io.fabric8.openshift.api.model.operator.v1.OpenShiftControllerManager"
+      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.OpenShiftControllerManager"
     },
     "OpenShiftControllerManagerList": {
       "$ref": "#/definitions/os_operator_v1_OpenShiftControllerManagerList",
-      "javaType": "io.fabric8.openshift.api.model.operator.v1.OpenShiftControllerManagerList"
+      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.OpenShiftControllerManagerList"
     },
     "Patch": {
       "$ref": "#/definitions/kubernetes_apimachinery_Patch",
-      "javaType": "io.fabric8.kubernetes.api.model.Patch"
+      "existingJavaType": "io.fabric8.kubernetes.api.model.Patch"
     },
     "Quantity": {
       "$ref": "#/definitions/kubernetes_resource_Quantity",
-      "javaType": "io.fabric8.kubernetes.api.model.Quantity"
+      "existingJavaType": "io.fabric8.kubernetes.api.model.Quantity"
     },
     "SecretNameReference": {
       "$ref": "#/definitions/os_config_SecretNameReference",
-      "javaType": "io.fabric8.openshift.api.model.SecretNameReference"
+      "existingJavaType": "io.fabric8.openshift.api.model.SecretNameReference"
     },
     "ServiceCA": {
       "$ref": "#/definitions/os_operator_v1_ServiceCA",
-      "javaType": "io.fabric8.openshift.api.model.operator.v1.ServiceCA"
+      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.ServiceCA"
     },
     "ServiceCAList": {
       "$ref": "#/definitions/os_operator_v1_ServiceCAList",
-      "javaType": "io.fabric8.openshift.api.model.operator.v1.ServiceCAList"
+      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.ServiceCAList"
     },
     "ServiceCatalogAPIServer": {
       "$ref": "#/definitions/os_operator_v1_ServiceCatalogAPIServer",
-      "javaType": "io.fabric8.openshift.api.model.operator.v1.ServiceCatalogAPIServer"
+      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.ServiceCatalogAPIServer"
     },
     "ServiceCatalogAPIServerList": {
       "$ref": "#/definitions/os_operator_v1_ServiceCatalogAPIServerList",
-      "javaType": "io.fabric8.openshift.api.model.operator.v1.ServiceCatalogAPIServerList"
+      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.ServiceCatalogAPIServerList"
     },
     "ServiceCatalogControllerManager": {
       "$ref": "#/definitions/os_operator_v1_ServiceCatalogControllerManager",
-      "javaType": "io.fabric8.openshift.api.model.operator.v1.ServiceCatalogControllerManager"
+      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.ServiceCatalogControllerManager"
     },
     "ServiceCatalogControllerManagerList": {
       "$ref": "#/definitions/os_operator_v1_ServiceCatalogControllerManagerList",
-      "javaType": "io.fabric8.openshift.api.model.operator.v1.ServiceCatalogControllerManagerList"
+      "existingJavaType": "io.fabric8.openshift.api.model.operator.v1.ServiceCatalogControllerManagerList"
     },
     "Status": {
       "$ref": "#/definitions/kubernetes_apimachinery_Status",
-      "javaType": "io.fabric8.kubernetes.api.model.Status"
+      "existingJavaType": "io.fabric8.kubernetes.api.model.Status"
     },
     "Time": {
       "$ref": "#/definitions/kubernetes_apimachinery_Time",
-      "javaType": "String"
+      "existingJavaType": "String"
     },
     "TypeMeta": {
       "$ref": "#/definitions/kubernetes_apimachinery_TypeMeta",
-      "javaType": "io.fabric8.kubernetes.api.model.TypeMeta"
+      "existingJavaType": "io.fabric8.kubernetes.api.model.TypeMeta"
     }
   },
   "additionalProperties": true

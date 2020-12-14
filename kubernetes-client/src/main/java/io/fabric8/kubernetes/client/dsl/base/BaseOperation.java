@@ -21,6 +21,8 @@ import io.fabric8.kubernetes.client.utils.CreateOrReplaceHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.fabric8.kubernetes.api.builder.TypedVisitor;
+import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
@@ -246,6 +248,26 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   public T edit(UnaryOperator<T> function) {
     throw new KubernetesClientException("Cannot edit read-only resources");
   }
+
+  @Override
+  public T edit(Visitor... visitors) {
+    throw new KubernetesClientException("Cannot edit read-only resources");
+  }
+
+  @Override 
+  public <V> T edit(final Class<V> visitorType, final Visitor<V> visitor) {
+    return edit(new TypedVisitor<V>() {
+        @Override
+        public Class<V> getType() {
+          return visitorType;
+        }
+        @Override
+        public void visit(V item) {
+          visitor.visit(item);
+        }
+    });
+  }
+
 
   @Override
   public T accept(Consumer<T> consumer) {

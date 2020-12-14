@@ -15,10 +15,12 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal.extensions.v1beta1;
 
+import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.OwnerReference;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.extensions.Deployment;
+import io.fabric8.kubernetes.api.model.extensions.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentList;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSet;
@@ -388,6 +390,11 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
   @Override
   public Loggable<LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
     return new DeploymentOperationsImpl(((RollingOperationContext) context), logWaitTimeout);
+  }
+
+  @Override
+  public Deployment edit(Visitor... visitors) {
+    return patch(new DeploymentBuilder(getMandatory()).accept(visitors).build());
   }
 
   private Deployment sendPatchedDeployment(Map<String, Object> patchedUpdate) {

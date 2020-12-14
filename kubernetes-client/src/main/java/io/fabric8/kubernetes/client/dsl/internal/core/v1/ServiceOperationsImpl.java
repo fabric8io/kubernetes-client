@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal.core.v1;
 
+import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.api.model.ServiceList;
@@ -145,6 +146,11 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
   public LocalPortForward portForward(int port) {
     Pod m = matchingPod();
     return  new PodOperationsImpl(client, config).inNamespace(m.getMetadata().getNamespace()).withName(m.getMetadata().getName()).portForward(port);
+  }
+
+  @Override
+  public Service edit(Visitor... visitors) {
+    return patch(new ServiceBuilder(getMandatory()).accept(visitors).build());
   }
 
   public class ServiceToUrlSortComparator implements Comparator<ServiceToURLProvider> {
