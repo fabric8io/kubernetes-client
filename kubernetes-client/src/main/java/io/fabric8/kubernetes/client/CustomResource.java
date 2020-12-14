@@ -30,7 +30,6 @@ import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.Pluralize;
 import io.fabric8.kubernetes.model.annotation.Plural;
 import io.sundr.builder.annotations.Buildable;
-import lombok.ToString;
 
 import static io.fabric8.kubernetes.client.utils.Utils.isNullOrEmpty;
 
@@ -70,11 +69,11 @@ public abstract class CustomResource<Spec extends KubernetesResource, Status ext
   private final String scope;
   
   public CustomResource() {
-    final String apiVersion = HasMetadata.super.getApiVersion();
-    if (isNullOrEmpty(apiVersion)) {
+    final String version = HasMetadata.super.getApiVersion();
+    if (isNullOrEmpty(version)) {
       throw new IllegalArgumentException(getClass().getName() + " CustomResource must provide an API version using @ApiGroup and @ApiVersion annotations");
     }
-    this.apiVersion = apiVersion;
+    this.apiVersion = version;
     this.kind = HasMetadata.super.getKind();
     scope = this instanceof Namespaced ? NAMESPACE_SCOPE : CLUSTER_SCOPE;
   }
@@ -122,8 +121,8 @@ public abstract class CustomResource<Spec extends KubernetesResource, Status ext
   @JsonIgnore
   public String getPlural() {
     if(plural == null) {
-      final Plural plural = getClass().getAnnotation(Plural.class);
-      this.plural = (plural != null ? plural.value().toLowerCase(Locale.ROOT) : Pluralize.toPlural(getKind())).toLowerCase(Locale.ROOT);
+      final Plural fromAnnotation = getClass().getAnnotation(Plural.class);
+      this.plural = (fromAnnotation != null ? fromAnnotation.value().toLowerCase(Locale.ROOT) : Pluralize.toPlural(getKind())).toLowerCase(Locale.ROOT);
     }
     return plural;
   }
