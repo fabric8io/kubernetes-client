@@ -18,14 +18,15 @@ package io.fabric8.kubernetes.client;
 import java.util.Locale;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.Pluralize;
-import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.model.annotation.Plural;
 import io.sundr.builder.annotations.Buildable;
 import lombok.ToString;
@@ -38,12 +39,17 @@ import static io.fabric8.kubernetes.client.utils.Utils.isNullOrEmpty;
 @JsonDeserialize(
   using = JsonDeserializer.None.class
 )
-@ToString
 @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false)
-public abstract class CustomResource implements HasMetadata {
+public abstract class CustomResource<Spec extends KubernetesResource, Status extends KubernetesResource> implements HasMetadata {
   public static final String NAMESPACE_SCOPE = "Namespaced";
   public static final String CLUSTER_SCOPE = "Cluster";
   private ObjectMeta metadata = new ObjectMeta();
+
+  @JsonProperty("spec")
+  private Spec spec;
+  
+  @JsonProperty("status")
+  private Status status;
   
   @JsonIgnore
   private String plural;
@@ -71,6 +77,8 @@ public abstract class CustomResource implements HasMetadata {
       "kind='" + getKind() + '\'' +
       ", apiVersion='" + getApiVersion() + '\'' +
       ", metadata=" + metadata +
+      ", spec=" + spec +
+      ", status=" + status +
       '}';
   }
   
@@ -128,5 +136,21 @@ public abstract class CustomResource implements HasMetadata {
   
   public String getVersion() {
     return ApiVersionUtil.trimVersion(getApiVersion());
+  }
+  
+  public Spec getSpec() {
+    return spec;
+  }
+  
+  public void setSpec(Spec spec) {
+    this.spec = spec;
+  }
+  
+  public Status getStatus() {
+    return status;
+  }
+  
+  public void setStatus(Status status) {
+    this.status = status;
   }
 }

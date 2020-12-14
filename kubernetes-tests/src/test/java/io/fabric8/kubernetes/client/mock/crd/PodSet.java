@@ -23,38 +23,5 @@ import io.fabric8.kubernetes.model.annotation.ApiVersion;
 
 @ApiGroup("mock.sample.com")
 @ApiVersion("v1alpha1")
-public class PodSet extends CustomResource implements Namespaced {
-    public PodSetSpec getSpec() {
-        return spec;
-    }
-
-    public void setSpec(PodSetSpec spec) {
-        this.spec = spec;
-    }
-
-    public PodSetStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(PodSetStatus status) {
-        this.status = status;
-    }
-
-    @Override
-    public String toString() {
-        return "PodSet{"+
-                "apiVersion='" + getApiVersion() + "'" +
-                ", metadata=" + getMetadata() +
-                ", spec=" + spec +
-                ", status=" + status +
-                "}";
-    }
-
-    private PodSetSpec spec;
-    private PodSetStatus status;
-
-    @Override
-    public ObjectMeta getMetadata() {
-        return super.getMetadata();
-    }
+public class PodSet extends CustomResource<PodSetSpec, PodSetStatus> implements Namespaced {   
 }

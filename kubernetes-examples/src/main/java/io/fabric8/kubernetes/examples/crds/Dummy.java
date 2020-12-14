@@ -15,35 +15,16 @@
  */
 package io.fabric8.kubernetes.examples.crds;
 
+import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.model.annotation.ApiGroup;
 import io.fabric8.kubernetes.model.annotation.ApiVersion;
+import io.fabric8.kubernetes.model.annotation.Plural;
 
 @ApiVersion("v1")
-@ApiGroup("dummy.example.com")
-public class Dummy extends CustomResource implements Namespaced {
-  private DummySpec spec;
-
-
-  @Override
-  public String toString() {
-    return "Dummy{" +
-        "apiVersion='" + getApiVersion() + '\'' +
-        ", metadata=" + getMetadata() +
-        ", spec=" + spec +
-        '}';
-  }
-
-  public DummySpec getSpec() {
-    return spec;
-  }
-
-  public void setSpec(DummySpec spec) {
-    this.spec = spec;
-  }
-
-  @Override
-  public ObjectMeta getMetadata() { return super.getMetadata(); }
+@ApiGroup("demo.fabric8.io")
+@Plural("dummies")
+public class Dummy extends CustomResource<DummySpec, KubernetesResource> implements Namespaced {
 }

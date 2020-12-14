@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.mock.crd;
 
+import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.CustomResource;
@@ -23,28 +24,5 @@ import io.fabric8.kubernetes.model.annotation.ApiVersion;
 
 @ApiVersion("v1alpha1")
 @ApiGroup("demo.fabric8.io")
-public class EntandoBundleRelease extends CustomResource implements Namespaced {
-  private EntandoBundleReleaseSpec spec;
-  
-  @Override
-  public ObjectMeta getMetadata() {
-    return super.getMetadata();
-  }
-
-  public EntandoBundleReleaseSpec getSpec() {
-    return spec;
-  }
-
-  public void setSpec(EntandoBundleReleaseSpec spec) {
-    this.spec = spec;
-  }
-
-  @Override
-  public String toString() {
-    return "EntandoBundleRelease{"+
-      "apiVersion='" + getApiVersion() + "'" +
-      ", metadata=" + getMetadata() +
-      ", spec=" + spec +
-      "}";
-  }
+public class EntandoBundleRelease extends CustomResource<EntandoBundleReleaseSpec, KubernetesResource> implements Namespaced {
 }
