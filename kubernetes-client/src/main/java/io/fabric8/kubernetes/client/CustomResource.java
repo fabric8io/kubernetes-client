@@ -56,6 +56,8 @@ public abstract class CustomResource implements HasMetadata {
   private final String scope;
   
   public CustomResource() {
+    this.apiVersion = HasMetadata.super.getApiVersion();
+    this.kind = HasMetadata.super.getKind();
     scope = this instanceof Namespaced ? NAMESPACE_SCOPE : CLUSTER_SCOPE;
   }
   
@@ -70,13 +72,6 @@ public abstract class CustomResource implements HasMetadata {
   
   @Override
   public String getApiVersion() {
-    if (apiVersion == null) {
-      final String apiVersion = HasMetadata.super.getApiVersion();
-      if (isNullOrEmpty(apiVersion)) {
-        throw new IllegalArgumentException(getClass().getName() + " CustomResource must provide an API version using @ApiGroup and @ApiVersion annotations");
-      }
-      this.apiVersion = apiVersion;
-    }
     return apiVersion;
   }
   
@@ -90,9 +85,6 @@ public abstract class CustomResource implements HasMetadata {
   
   @Override
   public String getKind() {
-    if(kind == null) {
-      this.kind = HasMetadata.super.getKind();
-    }
     return this.kind;
   }
   
