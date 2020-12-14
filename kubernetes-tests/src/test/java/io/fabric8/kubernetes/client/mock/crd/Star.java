@@ -17,7 +17,11 @@ package io.fabric8.kubernetes.client.mock.crd;
 
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.CustomResource;
+import io.fabric8.kubernetes.model.annotation.ApiGroup;
+import io.fabric8.kubernetes.model.annotation.ApiVersion;
 
+@ApiVersion("valpha1")
+@ApiGroup("example.crd.com")
 public class Star extends CustomResource {
   private StarSpec spec;
   private StarStatus status;
@@ -41,11 +45,6 @@ public class Star extends CustomResource {
 
   public void setStatus(StarStatus status) {
     this.status = status;
-  }
-
-  @Override
-  public String getApiVersion() {
-    return "example.crd.com/v1alpha1";
   }
 
   @Override

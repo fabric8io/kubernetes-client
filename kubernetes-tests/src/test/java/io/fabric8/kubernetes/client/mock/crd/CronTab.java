@@ -18,7 +18,11 @@ package io.fabric8.kubernetes.client.mock.crd;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.CustomResource;
+import io.fabric8.kubernetes.model.annotation.ApiGroup;
+import io.fabric8.kubernetes.model.annotation.ApiVersion;
 
+@ApiVersion("v1")
+@ApiGroup("stable.example.com")
 public class CronTab extends CustomResource implements Namespaced {
     private CronTabSpec spec;
     private CronTabStatus status;
@@ -42,11 +46,6 @@ public class CronTab extends CustomResource implements Namespaced {
 
     public void setStatus(CronTabStatus status) {
         this.status = status;
-    }
-
-    @Override
-    public String getApiVersion() {
-        return "stable.example.com/v1";
     }
 
     @Override
