@@ -141,7 +141,7 @@ class TypedClusterScopeCustomResourceApiTest {
     }
 
     @Test
-    void testStatusUpdation() throws InterruptedException {
+    void testStatusUpdate() throws InterruptedException {
       Star updatedStar = getStar();
       StarStatus starStatus = new StarStatus();
       starStatus.setLocation("M");
@@ -153,7 +153,7 @@ class TypedClusterScopeCustomResourceApiTest {
       starClient.inNamespace("test").updateStatus(updatedStar);
       RecordedRequest recordedRequest = server.getLastRequest();
       assertEquals("PUT", recordedRequest.getMethod());
-      assertEquals("{\"kind\":\"Star\",\"apiVersion\":\"example.crd.com/v1alpha1\",\"metadata\":{\"name\":\"sun\"},\"spec\":{\"type\":\"G\",\"location\":\"Galaxy\"},\"status\":{\"location\":\"M\"}}", recordedRequest.getBody().readUtf8());
+      assertEquals("{\"apiVersion\":\"example.crd.com/v1alpha1\",\"kind\":\"Star\",\"metadata\":{\"name\":\"sun\"},\"spec\":{\"type\":\"G\",\"location\":\"Galaxy\"},\"status\":{\"location\":\"M\"}}", recordedRequest.getBody().readUtf8());
       System.out.println(recordedRequest.getBody().readUtf8());
     }
 
