@@ -51,12 +51,16 @@ public abstract class CustomResource implements HasMetadata {
   @JsonIgnore
   private String crdName;
   
-  private String kind;
-  private String apiVersion;
+  private final String kind;
+  private final String apiVersion;
   private final String scope;
   
   public CustomResource() {
-    this.apiVersion = HasMetadata.super.getApiVersion();
+    final String apiVersion = HasMetadata.super.getApiVersion();
+    if (isNullOrEmpty(apiVersion)) {
+      throw new IllegalArgumentException(getClass().getName() + " CustomResource must provide an API version using @ApiGroup and @ApiVersion annotations");
+    }
+    this.apiVersion = apiVersion;
     this.kind = HasMetadata.super.getKind();
     scope = this instanceof Namespaced ? NAMESPACE_SCOPE : CLUSTER_SCOPE;
   }
@@ -77,10 +81,7 @@ public abstract class CustomResource implements HasMetadata {
   
   @Override
   public void setApiVersion(String version) {
-    if(Utils.isNotNullOrEmpty(this.apiVersion)) {
-      throw new IllegalStateException("API version has already been set");
-    }
-    this.apiVersion = version;
+    // already set in constructor
   }
   
   @Override
@@ -89,10 +90,7 @@ public abstract class CustomResource implements HasMetadata {
   }
   
   public void setKind(String kind) {
-    if (Utils.isNotNullOrEmpty(this.kind)) {
-      throw new IllegalStateException("Kind has already been set");
-    }
-    this.kind = kind;
+    // already set in constructor
   }
   
   @Override

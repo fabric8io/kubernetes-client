@@ -44,7 +44,11 @@ import static org.junit.Assert.assertThat;
 
 public class CustomResourceOperationsImplTest {
 
+  @ApiGroup(MyCustomResource.GROUP)
+  @ApiVersion(MyCustomResource.VERSION)
   public static class MyCustomResource extends CustomResource {
+    public static final String GROUP = "custom.group";
+    public static final String VERSION = "v1alpha1";
   }
 
   public static class MyCustomResourceList extends CustomResourceList<MyCustomResource> {
@@ -59,8 +63,8 @@ public class CustomResourceOperationsImplTest {
       .withName("custom.name")
     .endMetadata()
     .withNewSpec()
-      .withGroup("custom.group")
-      .withVersion("v1alpha1")
+      .withGroup(MyCustomResource.GROUP)
+      .withVersion(MyCustomResource.VERSION)
       .withNewNames()
         .withKind("MyCustomResource")
         .withListKind("MyCustomResourceList")
