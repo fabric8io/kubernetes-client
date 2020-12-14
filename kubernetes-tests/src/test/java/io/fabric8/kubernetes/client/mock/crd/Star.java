@@ -19,7 +19,7 @@ import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.model.annotation.ApiGroup;
 import io.fabric8.kubernetes.model.annotation.ApiVersion;
 
-@ApiVersion("valpha1")
+@ApiVersion("v1alpha1")
 @ApiGroup("example.crd.com")
 public class Star extends CustomResource<StarSpec, StarStatus> {
 }
