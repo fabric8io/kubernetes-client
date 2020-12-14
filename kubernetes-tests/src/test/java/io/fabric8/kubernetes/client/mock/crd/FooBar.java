@@ -16,6 +16,10 @@
 package io.fabric8.kubernetes.client.mock.crd;
 
 import io.fabric8.kubernetes.client.CustomResource;
+import io.fabric8.kubernetes.model.annotation.ApiGroup;
+import io.fabric8.kubernetes.model.annotation.ApiVersion;
 
+@ApiGroup("baz.example.com")
+@ApiVersion("v1alpha1")
 public class FooBar  extends CustomResource {
 }
