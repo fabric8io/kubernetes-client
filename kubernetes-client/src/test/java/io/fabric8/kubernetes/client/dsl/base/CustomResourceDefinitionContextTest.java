@@ -52,7 +52,7 @@ class CustomResourceDefinitionContextTest {
 
 
   @Test
-  @DisplayName("formCrd, with v1beta1 CRD with versions, should infer correct properties")
+  @DisplayName("fromCrd, with v1beta1 CRD with versions, should infer correct properties")
   void fromCrdV1beta1() {
     // Given
     final io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition crd =
@@ -80,7 +80,7 @@ class CustomResourceDefinitionContextTest {
   }
 
   @Test
-  @DisplayName("formCrd, with v1beta1 CRD with spec.version, should infer correct properties")
+  @DisplayName("fromCrd, with v1beta1 CRD with spec.version, should infer correct properties")
   void fromCrdV1beta1OldVersionStyle() {
     // Given
     final io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition crd =
