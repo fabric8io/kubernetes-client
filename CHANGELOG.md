@@ -11,6 +11,7 @@
 
 #### Improvements
 * Fix: CustomResourceDefinitionContext.fromCrd support for v1 CustomResourceDefinition
+* Fix #2642: Update kubernetes-examples to use apps/v1 Deployment rather than extensions/v1beta1
 
 #### Dependency Upgrade
 
