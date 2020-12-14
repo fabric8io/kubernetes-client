@@ -19,6 +19,7 @@ import java.util.Locale;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.HasMetadata;
@@ -39,6 +40,13 @@ import static io.fabric8.kubernetes.client.utils.Utils.isNullOrEmpty;
 @JsonDeserialize(
   using = JsonDeserializer.None.class
 )
+@JsonPropertyOrder({
+  "apiVersion",
+  "kind",
+  "metadata",
+  "spec",
+  "status"
+})
 @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false)
 public abstract class CustomResource<Spec extends KubernetesResource, Status extends KubernetesResource> implements HasMetadata {
   public static final String NAMESPACE_SCOPE = "Namespaced";
