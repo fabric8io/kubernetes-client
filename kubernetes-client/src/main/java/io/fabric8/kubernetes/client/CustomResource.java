@@ -111,6 +111,7 @@ public abstract class CustomResource<Spec extends KubernetesResource, Status ext
     this.metadata = metadata;
   }
   
+  @JsonIgnore
   public String getPlural() {
     if(plural == null) {
       final Plural plural = getClass().getAnnotation(Plural.class);
@@ -119,6 +120,7 @@ public abstract class CustomResource<Spec extends KubernetesResource, Status ext
     return plural;
   }
   
+  @JsonIgnore
   public String getCRDName() {
     if(crdName == null) {
       this.crdName = getPlural() + "." + ApiVersionUtil.apiGroup(this, null);
@@ -126,14 +128,17 @@ public abstract class CustomResource<Spec extends KubernetesResource, Status ext
     return crdName;
   }
   
+  @JsonIgnore
   public String getScope() {
     return scope;
   }
   
+  @JsonIgnore
   public String getGroup() {
     return ApiVersionUtil.trimGroup(getApiVersion());
   }
   
+  @JsonIgnore
   public String getVersion() {
     return ApiVersionUtil.trimVersion(getApiVersion());
   }
