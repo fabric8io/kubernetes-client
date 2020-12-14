@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *         http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -48,9 +48,12 @@ public interface HasMetadata extends KubernetesResource {
   default String getApiVersion() {
     final Class<? extends HasMetadata> clazz = getClass();
     final ApiGroup group = clazz.getAnnotation(ApiGroup.class);
-    if (group != null) {
-      final ApiVersion version = clazz.getAnnotation(ApiVersion.class);
+    final ApiVersion version = clazz.getAnnotation(ApiVersion.class);
+    if (group != null && version != null) {
       return group.value() + "/" + version.value();
+    }
+    if (group != null || version != null) {
+      throw new IllegalArgumentException("You need to specify both @" + ApiGroup.class.getSimpleName() + " and @" + ApiVersion.class.getSimpleName() + " annotations if you specify either");
     }
     return null;
   }
@@ -102,7 +105,7 @@ public interface HasMetadata extends KubernetesResource {
   /**
    * Determines whether the specified finalizer is valid according to the
    * <a href='https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizer'>finalizer specification</a>.
-   * 
+   *
    * @param finalizer the identifier of the finalizer which validity we want to check
    * @return {@code true} if the identifier is valid, {@code false} otherwise
    */
