@@ -43,8 +43,6 @@ import java.util.function.Supplier;
 public class Controller<T extends HasMetadata, L extends KubernetesResourceList<T>> {
   private static final Logger log = LoggerFactory.getLogger(Controller.class);
 
-  private static final long DEFAULT_PERIOD = 5000L;
-
   /**
    * resync fifo internals in millis
    */
@@ -81,6 +79,9 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
     this.apiTypeClass = apiTypeClass;
     this.processFunc = processFunc;
     this.resyncFunc = resyncFunc;
+    if (fullResyncPeriod < 0) {
+      throw new IllegalArgumentException("Invalid resync period provided, It should be a non-negative value");
+    }
     this.fullResyncPeriod = fullResyncPeriod;
     this.operationContext = context;
     this.eventListeners = eventListeners;
@@ -167,10 +168,6 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
   }
 
   private void initReflector() {
-    if (fullResyncPeriod >= 0) {
-      reflector = new Reflector<>(apiTypeClass, listerWatcher, queue, operationContext, fullResyncPeriod, Executors.newSingleThreadScheduledExecutor());
-    } else {
-      reflector = new Reflector<>(apiTypeClass, listerWatcher, queue, operationContext, DEFAULT_PERIOD, Executors.newSingleThreadScheduledExecutor());
-    }
+      reflector = new Reflector<>(apiTypeClass, listerWatcher, queue, operationContext, fullResyncPeriod);
   }
 }

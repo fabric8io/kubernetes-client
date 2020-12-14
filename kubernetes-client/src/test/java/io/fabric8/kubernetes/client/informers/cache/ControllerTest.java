@@ -27,6 +27,7 @@ import org.mockito.Mockito;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ControllerTest {
   private DeltaFIFO<Pod> deltaFIFO = Mockito.mock(DeltaFIFO.class, Mockito.RETURNS_DEEP_STUBS);
@@ -48,16 +49,12 @@ class ControllerTest {
   }
 
   @Test
-  @DisplayName("Controller initialized with resync period less than zero should use default resync period")
+  @DisplayName("Controller initialized with resync period less than zero should throw exception")
   void testControllerCreationWithResyncPeriodLessThanZero() {
-    // Given + When
-    Controller<Pod, PodList> controller = new Controller<>(Pod.class, deltaFIFO, listerWatcher,
+    assertThrows(IllegalArgumentException.class, () -> new Controller<>(Pod.class, deltaFIFO, listerWatcher,
       simpleEntries -> { },
       () -> true,
-      -1000L, operationContext, eventListeners);
-
-    // Then
-    assertEquals(5000L, controller.getReflector().getResyncPeriodMillis());
+      -1000L, operationContext, eventListeners));
   }
 
   @Test
