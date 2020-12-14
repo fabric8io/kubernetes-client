@@ -3,7 +3,8 @@
 ### 5.0-SNAPSHOT
 
 #### Bugs
-Fix #2510 : Yaml containing aliases rejected due to FasterXML bug
+* Fix #2510 : Yaml containing aliases rejected due to FasterXML bug
+* Fix #2656: Binding operations can be instantiated
 
 #### Improvements
 
