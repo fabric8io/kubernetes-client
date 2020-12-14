@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class CustomResourceDefinitionContextTest {
 
   @Test
-  @DisplayName("formCrd, with v1 CRD, should infer correct properties")
+  @DisplayName("fromCrd, with v1 CRD, should infer correct properties")
   void fromCrdV1() {
     // Given
     final io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition crd =
