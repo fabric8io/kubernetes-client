@@ -56,21 +56,6 @@ public class CustomResourceOperationsImplTest {
   @ApiVersion("v1")
   public static class Bar extends CustomResource {}
 
-  /*private final CustomResourceDefinition crd = new CustomResourceDefinitionBuilder()
-    .withNewMetadata()
-      .withName("custom.name")
-    .endMetadata()
-    .withNewSpec()
-      .withGroup(MyCustomResource.GROUP)
-      .withVersion(MyCustomResource.VERSION)
-      .withNewNames()
-        .withKind("MyCustomResource")
-        .withListKind("MyCustomResourceList")
-        .withPlural("mycustomresources")
-        .withSingular("mycustomresource")
-      .endNames()
-    .endSpec()
-  .build();*/
   private final CustomResourceDefinition crd = CustomResourceDefinitionContext.crdFromCustomResourceType(MyCustomResource.class).build();
 
   @Test
