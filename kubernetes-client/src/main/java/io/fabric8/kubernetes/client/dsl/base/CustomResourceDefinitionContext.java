@@ -17,15 +17,14 @@ package io.fabric8.kubernetes.client.dsl.base;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionBuilder;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersion;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionSpec;
 import io.fabric8.kubernetes.client.utils.KubernetesVersionPriority;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Locale;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -59,24 +58,43 @@ public class CustomResourceDefinitionContext {
   public String getKind() {
     return kind;
   }
-
+  
+  public static CustomResourceDefinitionBuilder crdFromCustomResourceType(Class<? extends CustomResource> customResource) {
+    try {
+      final CustomResource instance = customResource.getDeclaredConstructor().newInstance();
+    
+      String kind = instance.getKind();
+    
+      return new CustomResourceDefinitionBuilder()
+        .withKind(kind)
+        .withNewMetadata()
+        .withName(instance.getCRDName())
+        .endMetadata()
+        .withNewSpec()
+        .withGroup(instance.getGroup())
+        .addNewVersion().withName(instance.getVersion()).endVersion()
+        .withScope(instance.getScope())
+        .withNewNames()
+        .withKind(kind)
+        .withPlural(instance.getPlural())
+        .withSingular(instance.getSingular())
+        .endNames()
+        .endSpec();
+    } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
+  }
+  
   public static CustomResourceDefinitionContext fromCustomResourceType(Class<? extends HasMetadata> customResource) {
     try {
       final CustomResource instance = (CustomResource) customResource.getDeclaredConstructor().newInstance();
-
-      String kind = instance.getKind();
-      String plural = instance.getPlural();
-      String group = ApiVersionUtil.apiGroup(instance, null);
-      String version = ApiVersionUtil.apiVersion(instance, null);
-      String scope = instance.getScope();
-
       return new Builder()
-        .withGroup(group)
-        .withVersion(version)
-        .withScope(scope)
-        .withName(kind.toLowerCase(Locale.ROOT))
-        .withPlural(plural)
-        .withKind(kind)
+        .withGroup(instance.getGroup())
+        .withVersion(instance.getVersion())
+        .withScope(instance.getScope())
+        .withName(instance.getCRDName())
+        .withPlural(instance.getPlural())
+        .withKind(instance.getKind())
         .build();
     } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
       throw KubernetesClientException.launderThrowable(e);
@@ -84,13 +102,14 @@ public class CustomResourceDefinitionContext {
   }
 
   public static CustomResourceDefinitionContext fromCrd(CustomResourceDefinition crd) {
+    final CustomResourceDefinitionSpec spec = crd.getSpec();
     return new CustomResourceDefinitionContext.Builder()
-      .withGroup(crd.getSpec().getGroup())
-      .withVersion(getVersion(crd.getSpec()))
-      .withScope(crd.getSpec().getScope())
+      .withGroup(spec.getGroup())
+      .withVersion(getVersion(spec))
+      .withScope(spec.getScope())
       .withName(crd.getMetadata().getName())
-      .withPlural(crd.getSpec().getNames().getPlural())
-      .withKind(crd.getSpec().getNames().getKind())
+      .withPlural(spec.getNames().getPlural())
+      .withKind(spec.getNames().getKind())
       .build();
   }
 
