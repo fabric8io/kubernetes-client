@@ -17,6 +17,22 @@
 #### Dependency Upgrade
 
 #### New Features
+* Fix #2611: Support for Custom Resource and Custom Resource Definitions has been improved
+  - New annotations have been introduced for users to specify group, version, singular and plural
+    properties for `CustomResource` instances
+  - `CustomResource` instances must now be annotated with `@ApiVersion` and `@ApiGroup` so that the 
+    associated information can be automatically computed
+  - `HasMetadata` provides default implementations for `getApiVersion` and `getKind` based on the 
+    presence (or not) of annotations on the target class
+  - Static methods have been introduced on `HasMetadata` and `CustomResource` to encapsulate the 
+    logic used to resolve `Kind`, `ApiVersion`, `Group`, `Version`, `Plural`, `Singular` and `CRD Name`
+    properties
+  - A new `crdFromCustomResourceType` method has been introduced on `CustomResourceDefinitionContext`
+    to initialize a `CustomResourceDefinitionBuilder` with the information provided by a specific
+    `CustomResource` implementation, making it much easier to create CRDs if you already have 
+    defined your custom resource type
+  - `CustomResource` is now parameterized by the spec and status types that it uses which further 
+    removes boiler plate
 
 ### 5.0.0-alpha-3 (2020-12-10)
 
