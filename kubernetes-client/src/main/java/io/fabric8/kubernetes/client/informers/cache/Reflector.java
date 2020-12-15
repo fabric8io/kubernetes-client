@@ -49,17 +49,21 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   private final AtomicReference<Watch> watch;
 
   public Reflector(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, Store store, OperationContext operationContext, long resyncPeriodMillis) {
+    this(apiTypeClass, listerWatcher, store, operationContext, resyncPeriodMillis, Executors.newSingleThreadScheduledExecutor());
+  }
+
+  public Reflector(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, Store store, OperationContext operationContext, long resyncPeriodMillis, ScheduledExecutorService resyncExecutor) {
     this.apiTypeClass = apiTypeClass;
     this.listerWatcher = listerWatcher;
     this.store = store;
     this.operationContext = operationContext;
     this.resyncPeriodMillis = resyncPeriodMillis;
-    lastSyncResourceVersion = new AtomicReference<>();
-    resyncExecutor = Executors.newSingleThreadScheduledExecutor();
-    watcher = new ReflectorWatcher<>(store, lastSyncResourceVersion, this::startWatcher, this::reListAndSync);
-    isActive = new AtomicBoolean(true);
-    isWatcherStarted = new AtomicBoolean(false);
-    watch = new AtomicReference<>(null);
+    this.lastSyncResourceVersion = new AtomicReference<>();
+    this.resyncExecutor = resyncExecutor;
+    this.watcher = new ReflectorWatcher<>(store, lastSyncResourceVersion, this::startWatcher, this::reListAndSync);
+    this.isActive = new AtomicBoolean(true);
+    this.isWatcherStarted = new AtomicBoolean(false);
+    this.watch = new AtomicReference<>(null);
   }
 
   private L getList() {
@@ -78,7 +82,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
     try {
       log.info("Started ReflectorRunnable watch for {}", apiTypeClass);
       reListAndSync();
-      resyncExecutor.scheduleWithFixedDelay(this::reListAndSync, 0L, resyncPeriodMillis, TimeUnit.MILLISECONDS);
+      scheduleResyncExecution();
       startWatcher();
     } catch (Exception exception) {
       store.isPopulated(false);
@@ -88,6 +92,10 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
 
   public void stop() {
     isActive.set(false);
+  }
+
+  public long getResyncPeriodMillis() {
+    return resyncPeriodMillis;
   }
 
   private void reListAndSync() {
@@ -129,5 +137,11 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
 
   public String getLastSyncResourceVersion() {
     return lastSyncResourceVersion.get();
+  }
+
+  void scheduleResyncExecution() {
+    if (resyncPeriodMillis > 0) {
+      resyncExecutor.scheduleWithFixedDelay(this::reListAndSync, 0L, resyncPeriodMillis, TimeUnit.MILLISECONDS);
+    }
   }
 }
