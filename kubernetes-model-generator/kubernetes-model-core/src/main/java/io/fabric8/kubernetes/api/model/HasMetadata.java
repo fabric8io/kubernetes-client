@@ -39,14 +39,16 @@ public interface HasMetadata extends KubernetesResource {
   
   void setMetadata(ObjectMeta metadata);
   
-  default String getKind() {
-    final Class<? extends HasMetadata> clazz = getClass();
+  static String getKind(Class<? extends HasMetadata> clazz) {
     final Kind kind = clazz.getAnnotation(Kind.class);
     return kind != null ? kind.value() : clazz.getSimpleName();
   }
   
-  default String getApiVersion() {
-    final Class<? extends HasMetadata> clazz = getClass();
+  default String getKind() {
+    return getKind(getClass());
+  }
+  
+  static String getApiVersion(Class<? extends HasMetadata> clazz) {
     final ApiGroup group = clazz.getAnnotation(ApiGroup.class);
     final ApiVersion version = clazz.getAnnotation(ApiVersion.class);
     if (group != null && version != null) {
@@ -56,6 +58,10 @@ public interface HasMetadata extends KubernetesResource {
       throw new IllegalArgumentException("You need to specify both @" + ApiGroup.class.getSimpleName() + " and @" + ApiVersion.class.getSimpleName() + " annotations if you specify either");
     }
     return null;
+  }
+  
+  default String getApiVersion() {
+    return getApiVersion(getClass());
   }
   
   void setApiVersion(String version);

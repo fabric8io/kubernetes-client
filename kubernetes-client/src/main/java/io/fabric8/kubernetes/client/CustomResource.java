@@ -29,6 +29,7 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.Pluralize;
 import io.fabric8.kubernetes.model.annotation.Plural;
+import io.fabric8.kubernetes.model.annotation.Singular;
 import io.sundr.builder.annotations.Buildable;
 
 import static io.fabric8.kubernetes.client.utils.Utils.isNullOrEmpty;
@@ -60,6 +61,9 @@ public abstract class CustomResource<Spec extends KubernetesResource, Status ext
   
   @JsonIgnore
   private String plural;
+  
+  @JsonIgnore
+  private String singular;
   
   @JsonIgnore
   private String crdName;
@@ -118,19 +122,44 @@ public abstract class CustomResource<Spec extends KubernetesResource, Status ext
     this.metadata = metadata;
   }
   
+  
+  public static String getPlural(Class<? extends CustomResource> clazz) {
+    final Plural fromAnnotation = clazz.getAnnotation(Plural.class);
+    return (fromAnnotation != null ? fromAnnotation.value().toLowerCase(Locale.ROOT) : Pluralize.toPlural(getSingular(clazz)));
+  }
+  
   @JsonIgnore
   public String getPlural() {
     if(plural == null) {
       final Plural fromAnnotation = getClass().getAnnotation(Plural.class);
-      this.plural = (fromAnnotation != null ? fromAnnotation.value().toLowerCase(Locale.ROOT) : Pluralize.toPlural(getKind())).toLowerCase(Locale.ROOT);
+      this.plural = (fromAnnotation != null ? fromAnnotation.value().toLowerCase(Locale.ROOT) : Pluralize.toPlural(getSingular()));
     }
     return plural;
+  }
+  
+  public static String getSingular(Class<? extends CustomResource> clazz) {
+    final Singular fromAnnotation = clazz.getAnnotation(Singular.class);
+    return (fromAnnotation != null ? fromAnnotation.value().toLowerCase(Locale.ROOT) : HasMetadata.getKind(clazz)).toLowerCase(Locale.ROOT);
+  }
+  
+  @JsonIgnore
+  public String getSingular() {
+    if(singular == null) {
+      final Singular fromAnnotation = getClass().getAnnotation(Singular.class);
+      this.singular = (fromAnnotation != null ? fromAnnotation.value().toLowerCase(Locale.ROOT) : getKind()).toLowerCase(Locale.ROOT);
+    }
+    return singular;
+  }
+  
+  
+  public static String getCRDName(Class<? extends CustomResource> clazz) {
+    return getPlural(clazz) + "." + getGroup(clazz);
   }
   
   @JsonIgnore
   public String getCRDName() {
     if(crdName == null) {
-      this.crdName = getPlural() + "." + ApiVersionUtil.apiGroup(this, null);
+      this.crdName = getCRDName(getClass());
     }
     return crdName;
   }
@@ -140,14 +169,22 @@ public abstract class CustomResource<Spec extends KubernetesResource, Status ext
     return scope;
   }
   
+  public static String getGroup(Class<? extends CustomResource> clazz) {
+    return ApiVersionUtil.trimGroup(HasMetadata.getApiVersion(clazz));
+  }
+  
   @JsonIgnore
   public String getGroup() {
-    return ApiVersionUtil.trimGroup(getApiVersion());
+    return getGroup(getClass());
+  }
+  
+  public static String getVersion(Class<? extends CustomResource> clazz) {
+    return ApiVersionUtil.trimVersion(HasMetadata.getApiVersion(clazz));
   }
   
   @JsonIgnore
   public String getVersion() {
-    return ApiVersionUtil.trimVersion(getApiVersion());
+    return getVersion(getClass());
   }
   
   public Spec getSpec() {
