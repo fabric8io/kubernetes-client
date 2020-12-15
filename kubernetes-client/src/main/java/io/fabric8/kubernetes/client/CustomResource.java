@@ -48,16 +48,16 @@ import static io.fabric8.kubernetes.client.utils.Utils.isNullOrEmpty;
   "status"
 })
 @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false)
-public abstract class CustomResource<Spec extends KubernetesResource, Status extends KubernetesResource> implements HasMetadata {
+public abstract class CustomResource<S extends KubernetesResource, T extends KubernetesResource> implements HasMetadata {
   public static final String NAMESPACE_SCOPE = "Namespaced";
   public static final String CLUSTER_SCOPE = "Cluster";
   private ObjectMeta metadata = new ObjectMeta();
 
   @JsonProperty("spec")
-  private Spec spec;
+  private S spec;
   
   @JsonProperty("status")
-  private Status status;
+  private T status;
   
   @JsonIgnore
   private String plural;
@@ -187,19 +187,19 @@ public abstract class CustomResource<Spec extends KubernetesResource, Status ext
     return getVersion(getClass());
   }
   
-  public Spec getSpec() {
+  public S getSpec() {
     return spec;
   }
   
-  public void setSpec(Spec spec) {
+  public void setSpec(S spec) {
     this.spec = spec;
   }
   
-  public Status getStatus() {
+  public T getStatus() {
     return status;
   }
   
-  public void setStatus(Status status) {
+  public void setStatus(T status) {
     this.status = status;
   }
 }
