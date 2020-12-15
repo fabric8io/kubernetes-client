@@ -26,6 +26,8 @@ import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionSpec;
 import io.fabric8.kubernetes.client.utils.KubernetesVersionPriority;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class CustomResourceDefinitionContext {
@@ -94,15 +96,41 @@ public class CustomResourceDefinitionContext {
       .build();
   }
 
+  public static CustomResourceDefinitionContext fromCrd(
+    io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition crd) {
+    return new CustomResourceDefinitionContext.Builder()
+      .withGroup(crd.getSpec().getGroup())
+      .withVersion(getVersion(crd.getSpec()))
+      .withScope(crd.getSpec().getScope())
+      .withName(crd.getMetadata().getName())
+      .withPlural(crd.getSpec().getNames().getPlural())
+      .withKind(crd.getSpec().getNames().getKind())
+      .build();
+  }
+
+  private static String getVersion(List<String> versions, String defaultVersion) {
+    return Optional.ofNullable(versions)
+      .map(KubernetesVersionPriority::highestPriority)
+      .orElse(defaultVersion);
+  }
+
   private static String getVersion(CustomResourceDefinitionSpec spec) {
-    String version = KubernetesVersionPriority.highestPriority(
-            spec.getVersions().stream()
-                    .map(CustomResourceDefinitionVersion::getName)
-                    .collect(Collectors.toList()));
-    if (version == null) {
-      version = spec.getVersion();
-    }
-    return version;
+    return getVersion(
+      spec.getVersions().stream()
+        .map(CustomResourceDefinitionVersion::getName)
+        .collect(Collectors.toList()),
+      spec.getVersion()
+    );
+  }
+
+  private static String getVersion(
+    io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionSpec spec) {
+    return getVersion(
+      spec.getVersions().stream()
+        .map(io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionVersion::getName)
+        .collect(Collectors.toList()),
+      null
+    );
   }
 
   public static class Builder {

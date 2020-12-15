@@ -7,10 +7,10 @@
 * Fix #2519: Generated schemas contains a valid meta-schema URI reference (`http://json-schema.org/draft-05/schema#`)
 * Fix #2631: Handle null values when getting current context on OIDC interceptors
 * Fix #2510 : Yaml containing aliases rejected due to FasterXML bug
-* Fix #2510 : Yaml containing aliases rejected due to FasterXML bug
 * Fix #2656: Binding operations can be instantiated
 
 #### Improvements
+* Fix: CustomResourceDefinitionContext.fromCrd support for v1 CustomResourceDefinition
 
 #### Dependency Upgrade
 
@@ -56,7 +56,6 @@
 * Fix #2537: Checking for Readiness of DeploymentConfig
 * Fix #2300: Remove job extensions/v1beta1 from backward compatibiliy interceptor
 * Fix #2514: SharedIndexInformer watches only pods of its own namespace when run in the cluster
-
 
 #### Improvements
 * Fix #2507: Add a test for creating a Job with generateName
