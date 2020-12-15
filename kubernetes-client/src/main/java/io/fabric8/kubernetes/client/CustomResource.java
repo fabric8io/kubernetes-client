@@ -145,7 +145,7 @@ public abstract class CustomResource<S extends KubernetesResource, T extends Kub
   
   public static String getSingular(Class<? extends CustomResource> clazz) {
     final Singular fromAnnotation = clazz.getAnnotation(Singular.class);
-    return (fromAnnotation != null ? fromAnnotation.value().toLowerCase(Locale.ROOT) : HasMetadata.getKind(clazz)).toLowerCase(Locale.ROOT);
+    return (fromAnnotation != null ? fromAnnotation.value() : HasMetadata.getKind(clazz)).toLowerCase(Locale.ROOT);
   }
   
   @JsonIgnore
