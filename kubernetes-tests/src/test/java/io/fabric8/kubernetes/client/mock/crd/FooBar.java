@@ -15,11 +15,17 @@
  */
 package io.fabric8.kubernetes.client.mock.crd;
 
+import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.model.annotation.ApiGroup;
 import io.fabric8.kubernetes.model.annotation.ApiVersion;
+import io.fabric8.kubernetes.model.annotation.Singular;
 
-@ApiGroup("baz.example.com")
-@ApiVersion("v1alpha1")
-public class FooBar  extends CustomResource {
+@ApiGroup(FooBar.GROUP)
+@ApiVersion(FooBar.VERSION)
+@Singular(FooBar.SINGULAR)
+public class FooBar  extends CustomResource implements Namespaced {
+  public static final String GROUP = "baz.example.com";
+  public static final String VERSION = "v1alpha1";
+  public static final String SINGULAR = "foo-bar";
 }

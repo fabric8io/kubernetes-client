@@ -16,7 +16,7 @@
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionBuilder;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionNames;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
@@ -24,13 +24,11 @@ import io.fabric8.kubernetes.client.mock.crd.FooBar;
 import io.fabric8.kubernetes.client.mock.crd.FooBarList;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import org.junit.Rule;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 @EnableRuleMigrationSupport
 class CustomResourceCrud1109Test {
@@ -64,17 +62,25 @@ class CustomResourceCrud1109Test {
   @Test
   @DisplayName("Fix for issue 1109, verifies resources with dashes can be retrieved")
   void test1109() {
+    
+    final CustomResourceDefinitionNames names = customResourceDefinition.getSpec().getNames();
+    Assertions.assertEquals(FooBar.SINGULAR + "s", names.getPlural());
+    Assertions.assertEquals(FooBar.SINGULAR, names.getSingular());
+    Assertions.assertEquals("FooBar", names.getKind());
+    Assertions.assertEquals("foo-bar.baz.example.com", customResourceDefinition.getMetadata().getName());
+    Assertions.assertEquals(FooBar.VERSION, customResourceDefinition.getSpec().getVersion());
+    
     // Given
     final MixedOperation<FooBar, FooBarList, Resource<FooBar>> fooBarClient = server.getClient().customResources(FooBar.class, FooBarList.class);
     final FooBar fb1 = new FooBar();
     fb1.getMetadata().setName("example");
     fooBarClient.inNamespace("default").create(fb1);
     final FooBarList list = fooBarClient.inNamespace("default").list();
-    assertEquals(1, list.getItems().size());
-    assertEquals("FooBar", list.getItems().iterator().next().getKind());
+    Assertions.assertEquals(1, list.getItems().size());
+    Assertions.assertEquals("FooBar", list.getItems().iterator().next().getKind());
     // When
     final FooBar fooBar = fooBarClient.inNamespace("default").withName("example").get();
     // Then
-    assertNotNull(fooBar);
+    Assertions.assertNotNull(fooBar);
   }
 }
