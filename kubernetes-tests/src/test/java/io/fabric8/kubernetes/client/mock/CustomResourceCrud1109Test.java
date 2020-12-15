@@ -39,22 +39,6 @@ class CustomResourceCrud1109Test {
 
   @BeforeEach
   void setUp() {
-    /*customResourceDefinition = server.getClient().apiextensions().v1beta1().customResourceDefinitions()
-      .create(new CustomResourceDefinitionBuilder()
-      .withNewMetadata()
-      .withName("foo-bar.baz.example.com")
-      .endMetadata()
-      .withNewSpec()
-      .withGroup("baz.example.com")
-      .addNewVersion().withName("v1alpha1").endVersion()
-      .withScope("Namespaced")
-      .withNewNames()
-      .withKind("FooBar")
-      .withPlural("foo-bars")
-      .withSingular("foo-bar")
-      .endNames()
-      .endSpec()
-      .build());*/
     customResourceDefinition = server.getClient().apiextensions().v1beta1().customResourceDefinitions()
       .create(CustomResourceDefinitionContext.crdFromCustomResourceType(FooBar.class).build());
   }
@@ -64,10 +48,11 @@ class CustomResourceCrud1109Test {
   void test1109() {
     
     final CustomResourceDefinitionNames names = customResourceDefinition.getSpec().getNames();
-    Assertions.assertEquals(FooBar.SINGULAR + "s", names.getPlural());
+    final String plural = FooBar.SINGULAR + "s";
+    Assertions.assertEquals(plural, names.getPlural());
     Assertions.assertEquals(FooBar.SINGULAR, names.getSingular());
     Assertions.assertEquals("FooBar", names.getKind());
-    Assertions.assertEquals("foo-bar.baz.example.com", customResourceDefinition.getMetadata().getName());
+    Assertions.assertEquals(plural + "." + FooBar.GROUP, customResourceDefinition.getMetadata().getName());
     Assertions.assertEquals(FooBar.VERSION, customResourceDefinition.getSpec().getVersion());
     
     // Given
