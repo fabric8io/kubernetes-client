@@ -18,12 +18,16 @@ package io.fabric8.kubernetes.client.internal;
 
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
+import io.fabric8.kubernetes.api.model.ConfigMapList;
 import io.fabric8.kubernetes.api.model.Event;
 import io.fabric8.kubernetes.api.model.EventBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
+import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
+import io.fabric8.kubernetes.api.model.batch.CronJob;
+import io.fabric8.kubernetes.api.model.batch.CronJobList;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -200,5 +204,12 @@ class KubernetesResourceUtilTest {
 
     // Then
     assertFalse(duration.isNegative());
+  }
+
+  @Test
+  void testInferListType() {
+    assertEquals(PodList.class, KubernetesResourceUtil.inferListType(Pod.class));
+    assertEquals(ConfigMapList.class, KubernetesResourceUtil.inferListType(ConfigMap.class));
+    assertEquals(CronJobList.class, KubernetesResourceUtil.inferListType(CronJob.class));
   }
 }

@@ -21,8 +21,10 @@ import io.fabric8.kubernetes.api.model.EnvVarBuilder;
 import io.fabric8.kubernetes.api.model.Event;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.OwnerReference;
+import io.fabric8.kubernetes.client.CustomResourceList;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 
 import java.time.Duration;
@@ -366,5 +368,13 @@ public class KubernetesResourceUtil {
   public static Duration getAge(HasMetadata kubernetesResource) {
     Instant instant = Instant.parse(kubernetesResource.getMetadata().getCreationTimestamp());
     return Duration.between(instant, Instant.now()).abs();
+  }
+
+  public static <T extends HasMetadata> Class<? extends KubernetesResourceList> inferListType(Class<T> type) {
+    try {
+      return (Class<KubernetesResourceList<T>>) Class.forName(type.getName() + "List");
+    } catch (ClassNotFoundException e) {
+      throw new IllegalStateException("No List type found for " + type.getName() + ". Is it a Custom Resource?");
+    }
   }
 }
