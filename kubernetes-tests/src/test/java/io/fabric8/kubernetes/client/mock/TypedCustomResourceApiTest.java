@@ -51,16 +51,6 @@ class TypedCustomResourceApiTest {
 
   @BeforeEach
   void setupCrd() {
-    /*podSetCrd = new CustomResourceDefinitionBuilder()
-      .withNewMetadata().withName("podsets.demo.k8s.io").endMetadata()
-      .withNewSpec()
-      .withGroup("demo.k8s.io")
-      .withVersion("v1alpha1")
-      .withNewNames().withKind("PodSet").withPlural("podsets").endNames()
-      .withScope("Namespaced")
-      .endSpec()
-      .build();*/
-
     crdContext = CustomResourceDefinitionContext.fromCustomResourceType(PodSet.class);
   }
 

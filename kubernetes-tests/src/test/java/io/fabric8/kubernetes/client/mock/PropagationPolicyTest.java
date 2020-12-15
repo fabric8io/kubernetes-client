@@ -405,15 +405,6 @@ class PropagationPolicyTest {
   void testDeleteCustomResource() throws InterruptedException {
     // Given
     server.expect().delete().withPath("/apis/demo.k8s.io/v1alpha1/namespaces/test/podsets/example-podset").andReturn(HttpURLConnection.HTTP_OK, new PodSet()).once();
-    /*MixedOperation<PodSet, PodSetList, Resource<PodSet>> podSetClient = server.getClient().customResources(new CustomResourceDefinitionBuilder()
-      .withNewMetadata().withName("podsets.demo.k8s.io").endMetadata()
-      .withNewSpec()
-      .withGroup("demo.k8s.io")
-      .withVersion("v1alpha1")
-      .withNewNames().withKind("PodSet").withPlural("podsets").endNames()
-      .withScope("Namespaced")
-      .endSpec()
-      .build(), PodSet.class, PodSetList.class);*/
     MixedOperation<PodSet, PodSetList, Resource<PodSet>> podSetClient = server.getClient()
       .customResources(CustomResourceDefinitionContext.crdFromCustomResourceType(PodSet.class).build(), PodSet.class, PodSetList.class);
 

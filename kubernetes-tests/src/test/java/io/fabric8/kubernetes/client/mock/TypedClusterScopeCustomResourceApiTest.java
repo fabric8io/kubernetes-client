@@ -50,16 +50,6 @@ class TypedClusterScopeCustomResourceApiTest {
 
     @BeforeEach
     void setupCrd() {
-    /*  starCrd = new CustomResourceDefinitionBuilder()
-        .withNewMetadata().withName("stars.example.crd.com").endMetadata()
-        .withNewSpec()
-        .withGroup("example.crd.com")
-        .withVersion("v1alpha1")
-        .withNewNames().withKind("Star").withPlural("stars").endNames()
-        .withScope("Cluster")
-        .endSpec()
-        .build();*/
-
       crdContext = CustomResourceDefinitionContext.fromCustomResourceType(Star.class);
     }
 

@@ -46,14 +46,7 @@ public class CRDExample {
   private static final Logger logger = LoggerFactory.getLogger(CRDExample.class);
 
   private static boolean logRootPaths = false;
-
-  private static String resourceScope(boolean resourceNamespaced) {
-    if (resourceNamespaced) {
-      return "Namespaced";
-    }
-    return "Cluster";
-  }
-
+  
   /**
    * Example of Cluster and Namespaced scoped K8S Custom Resources.
    * To test Cluster scoped resource use "--cluster" as first argument.
@@ -119,12 +112,6 @@ public class CRDExample {
         System.out.println("Found CRD: " + dummyCRD.getMetadata().getSelfLink());
       } else {
         dummyCRD = CustomResourceDefinitionContext.crdFromCustomResourceType(Dummy.class).build();
-            /*withApiVersion("apiextensions.k8s.io/v1beta1").
-            withNewMetadata().withName(DUMMY_CRD_NAME).endMetadata().
-            withNewSpec().withGroup(DUMMY_CRD_GROUP).withVersion("v1").withScope(resourceScope(resourceNamespaced)).
-              withNewNames().withKind("Dummy").withShortNames("dummy").withPlural("dummies").endNames().endSpec().
-            build();*/
-
         client.customResourceDefinitions().create(dummyCRD);
         System.out.println("Created CRD " + dummyCRD.getMetadata().getName());
       }
