@@ -26,11 +26,14 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.client.internal.VersionUsageUtils;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.Pluralize;
 import io.fabric8.kubernetes.model.annotation.Plural;
 import io.fabric8.kubernetes.model.annotation.Singular;
 import io.sundr.builder.annotations.Buildable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static io.fabric8.kubernetes.client.utils.Utils.isNullOrEmpty;
 
@@ -49,6 +52,8 @@ import static io.fabric8.kubernetes.client.utils.Utils.isNullOrEmpty;
 })
 @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false)
 public abstract class CustomResource<S extends KubernetesResource, T extends KubernetesResource> implements HasMetadata {
+  private static final Logger LOG = LoggerFactory.getLogger(CustomResource.class);
+  
   public static final String NAMESPACE_SCOPE = "Namespaced";
   public static final String CLUSTER_SCOPE = "Cluster";
   private ObjectMeta metadata = new ObjectMeta();
@@ -101,6 +106,7 @@ public abstract class CustomResource<S extends KubernetesResource, T extends Kub
   @Override
   public void setApiVersion(String version) {
     // already set in constructor
+    LOG.warn("Calling CustomResource#setApiVersion doesn't do anything because the API version is computed and shouldn't be changed");
   }
   
   @Override
@@ -110,6 +116,7 @@ public abstract class CustomResource<S extends KubernetesResource, T extends Kub
   
   public void setKind(String kind) {
     // already set in constructor
+    LOG.warn("Calling CustomResource#setKind doesn't do anything because the Kind is computed and shouldn't be changed");
   }
   
   @Override
