@@ -19,7 +19,6 @@ import java.io.IOException;
 
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionBuilder;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.CustomResourceList;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
@@ -57,7 +56,7 @@ public class CustomResourceOperationsImplTest {
   @ApiVersion("v1")
   public static class Bar extends CustomResource {}
 
-  private final CustomResourceDefinition crd = new CustomResourceDefinitionBuilder()
+  /*private final CustomResourceDefinition crd = new CustomResourceDefinitionBuilder()
     .withNewMetadata()
       .withName("custom.name")
     .endMetadata()
@@ -71,7 +70,8 @@ public class CustomResourceOperationsImplTest {
         .withSingular("mycustomresource")
       .endNames()
     .endSpec()
-  .build();
+  .build();*/
+  private final CustomResourceDefinition crd = CustomResourceDefinitionContext.crdFromCustomResourceType(MyCustomResource.class).build();
 
   @Test
   void shouldBeAbleToReturnOperationsWithoutSpecificList() {

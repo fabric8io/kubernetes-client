@@ -23,8 +23,9 @@ import io.fabric8.kubernetes.model.annotation.ApiGroup;
 import io.fabric8.kubernetes.model.annotation.ApiVersion;
 import io.fabric8.kubernetes.model.annotation.Plural;
 
-@ApiVersion("v1")
-@ApiGroup("demo.fabric8.io")
-@Plural("dummies")
+@ApiVersion(Dummy.VERSION)
+@ApiGroup(Dummy.GROUP)
 public class Dummy extends CustomResource<DummySpec, KubernetesResource> implements Namespaced {
+  public static final String GROUP = "demo.fabric8.io";
+  public static final String VERSION = "v1";
 }

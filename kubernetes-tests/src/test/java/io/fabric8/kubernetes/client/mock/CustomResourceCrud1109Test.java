@@ -41,7 +41,7 @@ class CustomResourceCrud1109Test {
 
   @BeforeEach
   void setUp() {
-    customResourceDefinition = server.getClient().apiextensions().v1beta1().customResourceDefinitions()
+    /*customResourceDefinition = server.getClient().apiextensions().v1beta1().customResourceDefinitions()
       .create(new CustomResourceDefinitionBuilder()
       .withNewMetadata()
       .withName("foo-bar.baz.example.com")
@@ -56,15 +56,16 @@ class CustomResourceCrud1109Test {
       .withSingular("foo-bar")
       .endNames()
       .endSpec()
-      .build());
+      .build());*/
+    customResourceDefinition = server.getClient().apiextensions().v1beta1().customResourceDefinitions()
+      .create(CustomResourceDefinitionContext.crdFromCustomResourceType(FooBar.class).build());
   }
 
   @Test
   @DisplayName("Fix for issue 1109, verifies resources with dashes can be retrieved")
   void test1109() {
     // Given
-    final MixedOperation<FooBar, FooBarList, Resource<FooBar>> fooBarClient =
-      server.getClient().customResources(CustomResourceDefinitionContext.fromCrd(customResourceDefinition), FooBar.class, FooBarList.class);
+    final MixedOperation<FooBar, FooBarList, Resource<FooBar>> fooBarClient = server.getClient().customResources(FooBar.class, FooBarList.class);
     final FooBar fb1 = new FooBar();
     fb1.getMetadata().setName("example");
     fooBarClient.inNamespace("default").create(fb1);

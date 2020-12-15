@@ -18,7 +18,6 @@ package io.fabric8.kubernetes.client.mock;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionBuilder;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
@@ -46,13 +45,12 @@ class TypedClusterScopeCustomResourceApiTest {
     public KubernetesServer server = new KubernetesServer();
 
     private MixedOperation<Star, StarList, Resource<Star>> starClient;
-
-    private CustomResourceDefinition starCrd;
+    
     private CustomResourceDefinitionContext crdContext;
 
     @BeforeEach
     void setupCrd() {
-      starCrd = new CustomResourceDefinitionBuilder()
+    /*  starCrd = new CustomResourceDefinitionBuilder()
         .withNewMetadata().withName("stars.example.crd.com").endMetadata()
         .withNewSpec()
         .withGroup("example.crd.com")
@@ -60,9 +58,9 @@ class TypedClusterScopeCustomResourceApiTest {
         .withNewNames().withKind("Star").withPlural("stars").endNames()
         .withScope("Cluster")
         .endSpec()
-        .build();
+        .build();*/
 
-      crdContext = CustomResourceDefinitionContext.fromCrd(starCrd);
+      crdContext = CustomResourceDefinitionContext.fromCustomResourceType(Star.class);
     }
 
     @Test

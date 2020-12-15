@@ -23,7 +23,6 @@ import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
 import io.fabric8.kubernetes.api.model.SecretBuilder;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionBuilder;
 import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetBuilder;
 import io.fabric8.kubernetes.api.model.batch.JobBuilder;
@@ -406,7 +405,7 @@ class PropagationPolicyTest {
   void testDeleteCustomResource() throws InterruptedException {
     // Given
     server.expect().delete().withPath("/apis/demo.k8s.io/v1alpha1/namespaces/test/podsets/example-podset").andReturn(HttpURLConnection.HTTP_OK, new PodSet()).once();
-    MixedOperation<PodSet, PodSetList, Resource<PodSet>> podSetClient = server.getClient().customResources(new CustomResourceDefinitionBuilder()
+    /*MixedOperation<PodSet, PodSetList, Resource<PodSet>> podSetClient = server.getClient().customResources(new CustomResourceDefinitionBuilder()
       .withNewMetadata().withName("podsets.demo.k8s.io").endMetadata()
       .withNewSpec()
       .withGroup("demo.k8s.io")
@@ -414,7 +413,9 @@ class PropagationPolicyTest {
       .withNewNames().withKind("PodSet").withPlural("podsets").endNames()
       .withScope("Namespaced")
       .endSpec()
-      .build(), PodSet.class, PodSetList.class);
+      .build(), PodSet.class, PodSetList.class);*/
+    MixedOperation<PodSet, PodSetList, Resource<PodSet>> podSetClient = server.getClient()
+      .customResources(CustomResourceDefinitionContext.crdFromCustomResourceType(PodSet.class).build(), PodSet.class, PodSetList.class);
 
     // When
     boolean isDeleted = podSetClient.inNamespace("test").withName("example-podset").delete();

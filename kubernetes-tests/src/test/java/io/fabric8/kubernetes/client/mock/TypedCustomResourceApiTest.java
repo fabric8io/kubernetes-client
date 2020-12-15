@@ -18,7 +18,6 @@ package io.fabric8.kubernetes.client.mock;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionBuilder;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
@@ -48,12 +47,11 @@ class TypedCustomResourceApiTest {
 
   private MixedOperation<PodSet, PodSetList, Resource<PodSet>> podSetClient;
 
-  private CustomResourceDefinition podSetCrd;
   private CustomResourceDefinitionContext crdContext;
 
   @BeforeEach
   void setupCrd() {
-    podSetCrd = new CustomResourceDefinitionBuilder()
+    /*podSetCrd = new CustomResourceDefinitionBuilder()
       .withNewMetadata().withName("podsets.demo.k8s.io").endMetadata()
       .withNewSpec()
       .withGroup("demo.k8s.io")
@@ -61,9 +59,9 @@ class TypedCustomResourceApiTest {
       .withNewNames().withKind("PodSet").withPlural("podsets").endNames()
       .withScope("Namespaced")
       .endSpec()
-      .build();
+      .build();*/
 
-    crdContext = CustomResourceDefinitionContext.fromCrd(podSetCrd);
+    crdContext = CustomResourceDefinitionContext.fromCustomResourceType(PodSet.class);
   }
 
   @Test
