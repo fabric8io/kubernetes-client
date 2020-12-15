@@ -137,8 +137,7 @@ public abstract class CustomResource<S extends KubernetesResource, T extends Kub
   @JsonIgnore
   public String getPlural() {
     if(plural == null) {
-      final Plural fromAnnotation = getClass().getAnnotation(Plural.class);
-      this.plural = (fromAnnotation != null ? fromAnnotation.value().toLowerCase(Locale.ROOT) : Pluralize.toPlural(getSingular()));
+      this.plural = getPlural(getClass());
     }
     return plural;
   }
@@ -151,8 +150,7 @@ public abstract class CustomResource<S extends KubernetesResource, T extends Kub
   @JsonIgnore
   public String getSingular() {
     if(singular == null) {
-      final Singular fromAnnotation = getClass().getAnnotation(Singular.class);
-      this.singular = (fromAnnotation != null ? fromAnnotation.value().toLowerCase(Locale.ROOT) : getKind()).toLowerCase(Locale.ROOT);
+      this.singular = getSingular(getClass());
     }
     return singular;
   }
