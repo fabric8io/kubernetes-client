@@ -23,24 +23,27 @@ import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.utils.Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
 
 public class LoadMultipleDocumentsFromFileExample {
+  private static final Logger logger = LoggerFactory.getLogger(LoadMultipleDocumentsFromFileExample.class);
 
-  public static void main(String[] args) throws InterruptedException {
+  public static void main(String[] args) {
     String master = "https://localhost:8443/";
     if (args.length == 1) {
       master = args[0];
     }
 
     Config config = new ConfigBuilder().withMasterUrl(master).build();
-    try (KubernetesClient client = new DefaultKubernetesClient(config)) {
+    try (final KubernetesClient client = new DefaultKubernetesClient(config)) {
       List<HasMetadata> list = client.load(LoadMultipleDocumentsFromFileExample.class.getResourceAsStream("/multiple-document-template.yml")).get();
-      System.out.println("Found in file:" + list.size() + " items.");
+      logger.info("Found in file: {} items.", list.size());
       for (HasMetadata meta : list) {
-        System.out.println(display(meta));
+        logger.info(display(meta));
       }
 
       list = client.load(LoadMultipleDocumentsFromFileExample.class.getResourceAsStream("/multiple-document-template.yml"))
@@ -51,9 +54,9 @@ public class LoadMultipleDocumentsFromFileExample {
           }
         }).get();
 
-      System.out.println("Visited:" + list.size() + " items.");
+      logger.info("Visited: {} items.", list.size());
       for (HasMetadata meta : list) {
-        System.out.println(display(meta));
+        logger.info(display(meta));
       }
     }
   }
