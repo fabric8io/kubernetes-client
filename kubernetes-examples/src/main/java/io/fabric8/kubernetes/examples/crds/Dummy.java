@@ -17,11 +17,9 @@ package io.fabric8.kubernetes.examples.crds;
 
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.Namespaced;
-import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.model.annotation.ApiGroup;
 import io.fabric8.kubernetes.model.annotation.ApiVersion;
-import io.fabric8.kubernetes.model.annotation.Plural;
 
 @ApiVersion(Dummy.VERSION)
 @ApiGroup(Dummy.GROUP)
