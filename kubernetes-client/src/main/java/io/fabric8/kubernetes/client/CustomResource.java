@@ -157,7 +157,7 @@ public abstract class CustomResource<S extends KubernetesResource, T extends Kub
   
   
   public static String getCRDName(Class<? extends CustomResource> clazz) {
-    return getPlural(clazz) + "." + getGroup(clazz);
+    return getPlural(clazz) + "." + HasMetadata.getGroup(clazz);
   }
   
   @JsonIgnore
@@ -173,22 +173,14 @@ public abstract class CustomResource<S extends KubernetesResource, T extends Kub
     return scope;
   }
   
-  public static String getGroup(Class<? extends CustomResource> clazz) {
-    return ApiVersionUtil.trimGroup(HasMetadata.getApiVersion(clazz));
-  }
-  
   @JsonIgnore
   public String getGroup() {
-    return getGroup(getClass());
-  }
-  
-  public static String getVersion(Class<? extends CustomResource> clazz) {
-    return ApiVersionUtil.trimVersion(HasMetadata.getApiVersion(clazz));
+    return HasMetadata.getGroup(getClass());
   }
   
   @JsonIgnore
   public String getVersion() {
-    return getVersion(getClass());
+    return HasMetadata.getVersion(getClass());
   }
   
   public S getSpec() {

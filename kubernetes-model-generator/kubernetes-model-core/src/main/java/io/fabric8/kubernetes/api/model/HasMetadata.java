@@ -49,15 +49,30 @@ public interface HasMetadata extends KubernetesResource {
   }
   
   static String getApiVersion(Class<? extends HasMetadata> clazz) {
-    final Group group = clazz.getAnnotation(Group.class);
-    final Version version = clazz.getAnnotation(Version.class);
+    final String group = getGroup(clazz);
+    final String version = getVersion(clazz);
     if (group != null && version != null) {
-      return group.value() + "/" + version.value();
+      return group + "/" + version;
     }
     if (group != null || version != null) {
       throw new IllegalArgumentException("You need to specify both @" + Group.class.getSimpleName() + " and @" + Version.class.getSimpleName() + " annotations if you specify either");
     }
     return null;
+  }
+  
+  /**
+   *
+   * @param clazz
+   * @return
+   */
+  static String getGroup(Class<? extends HasMetadata> clazz) {
+    final Group group = clazz.getAnnotation(Group.class);
+    return group != null ? group.value() : null;
+  }
+  
+  static String getVersion(Class<? extends HasMetadata> clazz) {
+    final Version version = clazz.getAnnotation(Version.class);
+    return version != null ? version.value() : null;
   }
   
   default String getApiVersion() {
