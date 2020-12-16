@@ -17,7 +17,7 @@
 #set ($group = "")
 #set ($annotations = $model.annotations)
 #foreach ($annotation in $annotations)
-#if ($annotation.getClassRef().getName().equals("Version"))
+#if ($annotation.getClassRef().getName().endsWith("Version"))
     #set ($apiGroupVersion = $annotation.getParameters().get("value"))
   #end
   #if ($annotation.getClassRef().getName().equals("Group"))
