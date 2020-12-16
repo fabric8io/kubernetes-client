@@ -15,12 +15,46 @@
  */
 package io.fabric8.kubernetes.client.dsl.base;
 
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionNames;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionSpec;
+import io.fabric8.kubernetes.client.Custom;
+import io.fabric8.kubernetes.client.Good;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class CustomResourceDefinitionContextTest {
+  
+  @Test
+  @DisplayName("v1beta1CRDFromCustomResourceType correctly generates CRD builder for v1beta1 version")
+  void v1beta1CRDFromCustomResourceType() {
+    final CustomResourceDefinition crd = CustomResourceDefinitionContext.v1beta1CRDFromCustomResourceType(Good.class).build();
+    final CustomResourceDefinitionSpec spec = crd.getSpec();
+    final CustomResourceDefinitionNames names = spec.getNames();
+    final String plural =  "goods";
+    Assertions.assertEquals(plural, names.getPlural());
+    Assertions.assertEquals("good", names.getSingular());
+    Assertions.assertEquals("Good", names.getKind());
+    Assertions.assertEquals(plural + "." + Good.GROUP, crd.getMetadata().getName());
+    Assertions.assertEquals(Good.VERSION, spec.getVersion());
+    Assertions.assertEquals(Good.VERSION, spec.getVersions().get(0).getName());
+  }
+  
+  @Test
+  @DisplayName("v1CRDFromCustomResourceType correctly generates CRD builder for v1 version")
+  void v1CRDFromCustomResourceType() {
+    final io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition crd = CustomResourceDefinitionContext.v1CRDFromCustomResourceType(Custom.class).build();
+    final io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionSpec spec = crd.getSpec();
+    final io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionNames names = spec.getNames();
+    Assertions.assertEquals(Custom.PLURAL, names.getPlural());
+    Assertions.assertEquals(Custom.SINGULAR, names.getSingular());
+    Assertions.assertEquals(Custom.KIND, names.getKind());
+    Assertions.assertEquals(Custom.PLURAL + "." + Good.GROUP, crd.getMetadata().getName());
+    Assertions.assertEquals(Good.VERSION, spec.getVersions().get(0).getName());
+  }
 
   @Test
   @DisplayName("fromCrd, with v1 CRD, should infer correct properties")

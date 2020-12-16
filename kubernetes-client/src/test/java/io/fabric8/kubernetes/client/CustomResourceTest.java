@@ -15,9 +15,8 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.model.annotation.ApiGroup;
-import io.fabric8.kubernetes.model.annotation.ApiVersion;
 import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -26,16 +25,9 @@ public class CustomResourceTest {
   private static class MissingApiVersion extends CustomResource {
   }
   
-  @ApiVersion(Good.VERSION)
-  @ApiGroup(Good.GROUP)
-  private static class Good extends CustomResource {
-    public static final String VERSION = "v1beta1";
-    public static final String GROUP = "sample.fabric8.io";
-  }
-  
   @Test
   public void missingGroupAndVersionShouldFail() {
-    assertThrows(IllegalArgumentException.class, () -> new MissingApiVersion().getApiVersion());
+    assertThrows(IllegalArgumentException.class, MissingApiVersion::new);
   }
   
   @Test
@@ -43,9 +35,23 @@ public class CustomResourceTest {
     final Good good = new Good();
     assertEquals("Good", good.getKind());
     assertEquals("goods", good.getPlural());
+    assertEquals("good", good.getSingular());
     assertEquals(Good.GROUP + "/" + Good.VERSION, good.getApiVersion());
     assertEquals(good.getPlural() + "." + Good.GROUP, good.getCRDName());
     assertEquals(Good.VERSION, good.getVersion());
     assertEquals(Good.GROUP, good.getGroup());
+  }
+  
+  @Test
+  @DisplayName("fully annotated custom resource should use annotation values instead of defaults")
+  public void customCRShouldWork() {
+    final Custom custom = new Custom();
+    assertEquals(Custom.KIND, custom.getKind());
+    assertEquals(Custom.SINGULAR, custom.getSingular());
+    assertEquals(Custom.PLURAL, custom.getPlural());
+    assertEquals(Custom.GROUP + "/" + Custom.VERSION, custom.getApiVersion());
+    assertEquals(custom.getPlural() + "." + Custom.GROUP, custom.getCRDName());
+    assertEquals(Custom.VERSION, custom.getVersion());
+    assertEquals(Custom.GROUP, custom.getGroup());
   }
 }

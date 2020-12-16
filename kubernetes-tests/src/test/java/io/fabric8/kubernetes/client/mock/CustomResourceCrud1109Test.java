@@ -46,15 +46,6 @@ class CustomResourceCrud1109Test {
   @Test
   @DisplayName("Fix for issue 1109, verifies resources with dashes can be retrieved")
   void test1109() {
-    
-    final CustomResourceDefinitionNames names = customResourceDefinition.getSpec().getNames();
-    final String plural = FooBar.SINGULAR + "s";
-    Assertions.assertEquals(plural, names.getPlural());
-    Assertions.assertEquals(FooBar.SINGULAR, names.getSingular());
-    Assertions.assertEquals("FooBar", names.getKind());
-    Assertions.assertEquals(plural + "." + FooBar.GROUP, customResourceDefinition.getMetadata().getName());
-    Assertions.assertEquals(FooBar.VERSION, customResourceDefinition.getSpec().getVersion());
-    
     // Given
     final MixedOperation<FooBar, FooBarList, Resource<FooBar>> fooBarClient = server.getClient().customResources(FooBar.class, FooBarList.class);
     final FooBar fb1 = new FooBar();
