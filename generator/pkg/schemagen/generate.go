@@ -53,9 +53,9 @@ type Constraint struct {
 type CrdScope int32
 
 const (
-	Namespaced CrdScope = 0
-	Cluster    CrdScope = 1
-	BasePackage string = "io.fabric8.kubernetes.api.model"
+	Namespaced  CrdScope = 0
+	Cluster     CrdScope = 1
+	BasePackage string   = "io.fabric8.kubernetes.api.model"
 )
 
 func GenerateSchema(schemaId string, crdLists map[reflect.Type]CrdScope, providedPackages map[string]string, manualTypeMap map[reflect.Type]string, packageMapping map[string]PackageInformation, mappingSchema map[string]string, providedTypes []ProvidedType, constraints map[reflect.Type]map[string]*Constraint) string {
@@ -289,11 +289,11 @@ func (g *schemaGenerator) generate(schemaId string, crdLists map[reflect.Type]Cr
 		}
 		javaType := g.javaType(k)
 		if strings.HasPrefix(javaType, "io.fabric8.") {
-			value.JavaTypeDescriptor = &JavaTypeDescriptor {
+			value.JavaTypeDescriptor = &JavaTypeDescriptor{
 				JavaType: javaType,
 			}
 		} else {
-			value.ExistingJavaTypeDescriptor = &ExistingJavaTypeDescriptor {
+			value.ExistingJavaTypeDescriptor = &ExistingJavaTypeDescriptor{
 				ExistingJavaType: javaType,
 			}
 		}
@@ -623,7 +623,10 @@ func (g *schemaGenerator) propertyDescriptorForSimpleField(field reflect.StructF
 	}
 
 	// add description
-	propertyDescriptor.Description = g.fieldDescription(field)
+	description := g.fieldDescription(field)
+	if len(description) > 0 {
+		propertyDescriptor.Description = description
+	}
 
 	return propertyDescriptor
 }
@@ -663,8 +666,8 @@ func (g *schemaGenerator) propertyDescriptorForObject(field reflect.StructField)
 	g.handleType(fieldType)
 
 	return JSONPropertyDescriptor{
-		JSONReferenceDescriptor:         g.referenceDescriptor(fieldType),
-		ExistingJavaTypeDescriptor:      g.existingJavaTypeDescriptor(fieldType),
+		JSONReferenceDescriptor:    g.referenceDescriptor(fieldType),
+		ExistingJavaTypeDescriptor: g.existingJavaTypeDescriptor(fieldType),
 	}
 }
 
