@@ -27,8 +27,10 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.utils.Pluralize;
+import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Plural;
 import io.fabric8.kubernetes.model.annotation.Singular;
+import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +38,20 @@ import org.slf4j.LoggerFactory;
 import static io.fabric8.kubernetes.client.utils.Utils.isNullOrEmpty;
 
 /**
- * A base class for implementing a custom resource kind
+ * A base class for implementing a custom resource kind. Implementations must be annotated with
+ * {@link io.fabric8.kubernetes.model.annotation.Group} and {@link io.fabric8.kubernetes.model.annotation.Version}.
+ *
+ * Properties are set up automatically as follows:
+ * <ul>
+ *   <li>group is set using {@link HasMetadata#getGroup(Class)}</li>
+ *   <li>version is set using {@link HasMetadata#getVersion(Class)}</li>
+ *   <li>singular is set using {@link CustomResource#getSingular(Class)}</li>
+ *   <li>plural is set using {@link CustomResource#getPlural(Class)}</li>
+ *   <li>computed CRD name using {@link CustomResource#getCRDName(Class)}</li>
+ * </ul>
+ *
+ * In addition, {@link #setApiVersion(String)} and {@link #setKind(String)} are overridden to not do anything since these values
+ * are set.
  *
  * @param <S> the class providing the {@code Spec} part of this CustomResource
  * @param <T> the class providing the {@code Status} part of this CustomResource
@@ -64,19 +79,13 @@ public abstract class CustomResource<S extends KubernetesResource, T extends Kub
   
   @JsonProperty("status")
   private T status;
-  
-  @JsonIgnore
-  private String plural;
-  
-  @JsonIgnore
-  private String singular;
-  
-  @JsonIgnore
-  private String crdName;
-  
+ 
+  private final String singular;
+  private final String crdName;
   private final String kind;
   private final String apiVersion;
   private final String scope;
+  private final String plural;
   
   public CustomResource() {
     final String version = HasMetadata.super.getApiVersion();
@@ -88,6 +97,9 @@ public abstract class CustomResource<S extends KubernetesResource, T extends Kub
     this.apiVersion = version;
     this.kind = HasMetadata.super.getKind();
     scope = this instanceof Namespaced ? NAMESPACE_SCOPE : CLUSTER_SCOPE;
+    this.singular = getSingular(clazz);
+    this.plural = getPlural(clazz);
+    this.crdName = getCRDName(clazz);
   }
   
   @Override
@@ -146,9 +158,6 @@ public abstract class CustomResource<S extends KubernetesResource, T extends Kub
   
   @JsonIgnore
   public String getPlural() {
-    if (plural == null) {
-      this.plural = getPlural(getClass());
-    }
     return plural;
   }
   
@@ -165,16 +174,8 @@ public abstract class CustomResource<S extends KubernetesResource, T extends Kub
     return (fromAnnotation != null ? fromAnnotation.value() : HasMetadata.getKind(clazz)).toLowerCase(Locale.ROOT);
   }
   
-  /**
-   * Calls {@link CustomResource#getSingular(Class)} passing this instance's class as parameter
-   *
-   * @return the singular form associated with this CustomResource
-   */
   @JsonIgnore
   public String getSingular() {
-    if (singular == null) {
-      this.singular = getSingular(getClass());
-    }
     return singular;
   }
   
@@ -189,16 +190,8 @@ public abstract class CustomResource<S extends KubernetesResource, T extends Kub
     return getPlural(clazz) + "." + HasMetadata.getGroup(clazz);
   }
   
-  /**
-   * Calls {@link CustomResource#getCRDName(Class)} passing this instance's class as parameter
-   *
-   * @return the CRD name associated with this CustomResource
-   */
   @JsonIgnore
   public String getCRDName() {
-    if (crdName == null) {
-      this.crdName = getCRDName(getClass());
-    }
     return crdName;
   }
   
@@ -212,21 +205,11 @@ public abstract class CustomResource<S extends KubernetesResource, T extends Kub
     return scope;
   }
   
-  /**
-   * Calls {@link HasMetadata#getGroup(Class)} passing this instance's class as parameter
-   *
-   * @return the group associated with this CustomResource
-   */
   @JsonIgnore
   public String getGroup() {
     return HasMetadata.getGroup(getClass());
   }
   
-  /**
-   * Calls {@link HasMetadata#getVersion(Class)} passing this instance's class as parameter
-   *
-   * @return the version associated with this CustomResource
-   */
   @JsonIgnore
   public String getVersion() {
     return HasMetadata.getVersion(getClass());
