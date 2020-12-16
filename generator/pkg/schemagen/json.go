@@ -26,7 +26,7 @@ type JSONSchema struct {
 
 type JSONDescriptor struct {
 	Type          string        `json:"type"`
-	Description   string        `json:"description"`
+	Description   string        `json:"description,omitempty"`
 	Default       string        `json:"default,omitempty"`
 	Required      bool          `json:"required,omitempty"`
 	Minimum       float32       `json:"minimum,omitempty"`
