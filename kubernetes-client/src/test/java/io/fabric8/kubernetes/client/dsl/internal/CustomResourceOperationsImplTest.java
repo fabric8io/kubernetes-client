@@ -56,7 +56,7 @@ public class CustomResourceOperationsImplTest {
   @ApiVersion("v1")
   public static class Bar extends CustomResource {}
 
-  private final CustomResourceDefinition crd = CustomResourceDefinitionContext.crdFromCustomResourceType(MyCustomResource.class).build();
+  private final CustomResourceDefinition crd = CustomResourceDefinitionContext.v1beta1CRDFromCustomResourceType(MyCustomResource.class).build();
 
   @Test
   void shouldBeAbleToReturnOperationsWithoutSpecificList() {

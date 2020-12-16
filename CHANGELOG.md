@@ -27,10 +27,10 @@
   - Static methods have been introduced on `HasMetadata` and `CustomResource` to encapsulate the 
     logic used to resolve `Kind`, `ApiVersion`, `Group`, `Version`, `Plural`, `Singular` and `CRD Name`
     properties
-  - A new `crdFromCustomResourceType` method has been introduced on `CustomResourceDefinitionContext`
-    to initialize a `CustomResourceDefinitionBuilder` with the information provided by a specific
-    `CustomResource` implementation, making it much easier to create CRDs if you already have 
-    defined your custom resource type
+  - New `v1CRDFromCustomResourceType` and `v1beta1CRDFromCustomResourceType` methods have been 
+    introduced on `CustomResourceDefinitionContext` to initialize a `CustomResourceDefinitionBuilder`
+    with the information provided by a specific `CustomResource` implementation, making it much 
+    easier to create CRDs if you already have defined your custom resource type
   - `CustomResource` is now parameterized by the spec and status types that it uses which further 
     removes boiler plate
 

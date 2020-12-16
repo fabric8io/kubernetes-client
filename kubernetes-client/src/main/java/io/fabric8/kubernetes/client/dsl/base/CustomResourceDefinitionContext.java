@@ -59,13 +59,39 @@ public class CustomResourceDefinitionContext {
     return kind;
   }
   
-  public static CustomResourceDefinitionBuilder crdFromCustomResourceType(Class<? extends CustomResource> customResource) {
+  public static CustomResourceDefinitionBuilder v1beta1CRDFromCustomResourceType(Class<? extends CustomResource> customResource) {
     try {
       final CustomResource instance = customResource.getDeclaredConstructor().newInstance();
     
       String kind = instance.getKind();
     
       return new CustomResourceDefinitionBuilder()
+        .withKind(kind)
+        .withNewMetadata()
+        .withName(instance.getCRDName())
+        .endMetadata()
+        .withNewSpec()
+        .withGroup(instance.getGroup())
+        .addNewVersion().withName(instance.getVersion()).endVersion()
+        .withScope(instance.getScope())
+        .withNewNames()
+        .withKind(kind)
+        .withPlural(instance.getPlural())
+        .withSingular(instance.getSingular())
+        .endNames()
+        .endSpec();
+    } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
+  }
+  
+  public static io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionBuilder v1CRDFromCustomResourceType(Class<? extends CustomResource> customResource) {
+    try {
+      final CustomResource instance = customResource.getDeclaredConstructor().newInstance();
+    
+      String kind = instance.getKind();
+  
+      return new io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionBuilder()
         .withKind(kind)
         .withNewMetadata()
         .withName(instance.getCRDName())

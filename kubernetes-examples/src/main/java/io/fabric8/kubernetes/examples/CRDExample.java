@@ -111,7 +111,7 @@ public class CRDExample {
       if (dummyCRD != null) {
         System.out.println("Found CRD: " + dummyCRD.getMetadata().getSelfLink());
       } else {
-        dummyCRD = CustomResourceDefinitionContext.crdFromCustomResourceType(Dummy.class).build();
+        dummyCRD = CustomResourceDefinitionContext.v1beta1CRDFromCustomResourceType(Dummy.class).build();
         client.customResourceDefinitions().create(dummyCRD);
         System.out.println("Created CRD " + dummyCRD.getMetadata().getName());
       }

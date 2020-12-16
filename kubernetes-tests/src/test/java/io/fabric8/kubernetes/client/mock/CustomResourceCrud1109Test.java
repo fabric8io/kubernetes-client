@@ -40,7 +40,7 @@ class CustomResourceCrud1109Test {
   @BeforeEach
   void setUp() {
     customResourceDefinition = server.getClient().apiextensions().v1beta1().customResourceDefinitions()
-      .create(CustomResourceDefinitionContext.crdFromCustomResourceType(FooBar.class).build());
+      .create(CustomResourceDefinitionContext.v1beta1CRDFromCustomResourceType(FooBar.class).build());
   }
 
   @Test
