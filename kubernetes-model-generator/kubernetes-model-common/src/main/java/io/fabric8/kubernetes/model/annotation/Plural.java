@@ -13,14 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.mock.crd;
+package io.fabric8.kubernetes.model.annotation;
 
-import io.fabric8.kubernetes.api.model.Namespaced;
-import io.fabric8.kubernetes.client.CustomResource;
-import io.fabric8.kubernetes.model.annotation.Group;
-import io.fabric8.kubernetes.model.annotation.Version;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 
-@Version("v1")
-@Group("stable.example.com")
-public class CronTab extends CustomResource<CronTabSpec, CronTabStatus> implements Namespaced {
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+/**
+ * Allows to specify the plural form associated with a Custom Resource. If not provided, it will default to a computed value.
+ * See CustomResource#getPlural for more details.
+ */
+@Target({TYPE})
+@Retention(RUNTIME)
+public @interface Plural {
+  String value();
 }

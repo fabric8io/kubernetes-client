@@ -13,14 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.fabric8.kubernetes.model.annotation;
 
 import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-@Retention(RetentionPolicy.RUNTIME)
-public @interface ApiVersion {
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+@Target({TYPE})
+@Retention(RUNTIME)
+public @interface Singular {
   String value();
 }

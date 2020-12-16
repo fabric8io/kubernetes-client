@@ -18,7 +18,6 @@ package io.fabric8.kubernetes.client.mock;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionBuilder;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
@@ -48,22 +47,11 @@ class TypedCustomResourceApiTest {
 
   private MixedOperation<PodSet, PodSetList, Resource<PodSet>> podSetClient;
 
-  private CustomResourceDefinition podSetCrd;
   private CustomResourceDefinitionContext crdContext;
 
   @BeforeEach
   void setupCrd() {
-    podSetCrd = new CustomResourceDefinitionBuilder()
-      .withNewMetadata().withName("podsets.demo.k8s.io").endMetadata()
-      .withNewSpec()
-      .withGroup("demo.k8s.io")
-      .withVersion("v1alpha1")
-      .withNewNames().withKind("PodSet").withPlural("podsets").endNames()
-      .withScope("Namespaced")
-      .endSpec()
-      .build();
-
-    crdContext = CustomResourceDefinitionContext.fromCrd(podSetCrd);
+    crdContext = CustomResourceDefinitionContext.fromCustomResourceType(PodSet.class);
   }
 
   @Test
@@ -142,7 +130,7 @@ class TypedCustomResourceApiTest {
   }
 
   @Test
-  void testStatusUpdation() throws InterruptedException {
+  void testStatusUpdate() throws InterruptedException {
     PodSet updatedPodSet = getPodSet();
     PodSetStatus podSetStatus = new PodSetStatus();
     podSetStatus.setAvailableReplicas(4);
@@ -154,7 +142,7 @@ class TypedCustomResourceApiTest {
     podSetClient.inNamespace("test").updateStatus(updatedPodSet);
     RecordedRequest recordedRequest = server.getLastRequest();
     assertEquals("PUT", recordedRequest.getMethod());
-    assertEquals("{\"kind\":\"PodSet\",\"apiVersion\":\"demo.k8s.io/v1alpha1\",\"metadata\":{\"name\":\"example-podset\"},\"spec\":{\"replicas\":5},\"status\":{\"availableReplicas\":4}}", recordedRequest.getBody().readUtf8());
+    assertEquals("{\"apiVersion\":\"demo.k8s.io/v1alpha1\",\"kind\":\"PodSet\",\"metadata\":{\"name\":\"example-podset\"},\"spec\":{\"replicas\":5},\"status\":{\"availableReplicas\":4}}", recordedRequest.getBody().readUtf8());
     System.out.println(recordedRequest.getBody().readUtf8());
   }
 

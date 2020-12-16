@@ -16,6 +16,10 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.CustomResource;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 
+@Group("test.sample.com")
+@Version("v1alpha1")
 public class Foo extends CustomResource {
 }

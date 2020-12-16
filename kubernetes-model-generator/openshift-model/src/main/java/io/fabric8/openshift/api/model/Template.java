@@ -27,10 +27,9 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.HasMetadataComparator;
-import io.fabric8.kubernetes.model.annotation.ApiGroup;
-import io.fabric8.kubernetes.model.annotation.ApiVersion;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
-import io.sundr.builder.annotations.Inline;
 import io.sundr.transform.annotations.VelocityTransformation;
 import io.sundr.transform.annotations.VelocityTransformations;
 import lombok.EqualsAndHashCode;
@@ -62,8 +61,8 @@ import java.util.Map;
 @EqualsAndHashCode
 @ToString
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage=false, builderPackage = "io.fabric8.kubernetes.api.builder")
-@ApiVersion("v1")
-@ApiGroup("")
+@Version("v1")
+@Group("")
 @VelocityTransformations({
     @VelocityTransformation(value = "/manifest.vm", outputPath = "openshift.properties", gather = true)
 })

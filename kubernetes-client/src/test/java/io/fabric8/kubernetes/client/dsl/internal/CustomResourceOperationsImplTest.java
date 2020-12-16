@@ -19,7 +19,6 @@ import java.io.IOException;
 
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionBuilder;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.CustomResourceList;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
@@ -28,6 +27,8 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.internal.KubernetesDeserializer;
 
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.core.JsonFactory;
@@ -35,36 +36,27 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.MappingJsonFactory;
 
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 public class CustomResourceOperationsImplTest {
 
+  @Group(MyCustomResource.GROUP)
+  @Version(MyCustomResource.VERSION)
   public static class MyCustomResource extends CustomResource {
+    public static final String GROUP = "custom.group";
+    public static final String VERSION = "v1alpha1";
   }
 
   public static class MyCustomResourceList extends CustomResourceList<MyCustomResource> {
   }
   
+  @Group("sample.fabric8.io")
+  @Version("v1")
   public static class Bar extends CustomResource {}
 
-  private final CustomResourceDefinition crd = new CustomResourceDefinitionBuilder()
-    .withNewMetadata()
-      .withName("custom.name")
-    .endMetadata()
-    .withNewSpec()
-      .withGroup("custom.group")
-      .withVersion("v1alpha1")
-      .withNewNames()
-        .withKind("MyCustomResource")
-        .withListKind("MyCustomResourceList")
-        .withPlural("mycustomresources")
-        .withSingular("mycustomresource")
-      .endNames()
-    .endSpec()
-  .build();
+  private final CustomResourceDefinition crd = CustomResourceDefinitionContext.v1beta1CRDFromCustomResourceType(MyCustomResource.class).build();
 
   @Test
   void shouldBeAbleToReturnOperationsWithoutSpecificList() {

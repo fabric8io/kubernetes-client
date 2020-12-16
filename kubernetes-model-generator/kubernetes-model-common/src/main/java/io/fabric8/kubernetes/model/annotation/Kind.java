@@ -13,14 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.fabric8.kubernetes.model.annotation;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
+import static java.lang.annotation.ElementType.TYPE;
+
+/**
+ * Allows to specify which {@code Kind} value should be used to refer to instance of the annotated class. If not provided,
+ * a default value is computed based on the annotated class name. See HasMetadata#getKind for more details.
+ */
+@Target({TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ApiGroup {
-
+public @interface Kind {
   String value();
 }
