@@ -5,7 +5,6 @@
   "definitions": {
     "kubernetes_apimachinery_FieldsV1": {
       "type": "object",
-      "description": "",
       "additionalProperties": true,
       "existingJavaType": "io.fabric8.kubernetes.api.model.FieldsV1",
       "javaInterfaces": [
@@ -14,11 +13,9 @@
     },
     "kubernetes_apimachinery_LabelSelector": {
       "type": "object",
-      "description": "",
       "properties": {
         "matchExpressions": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_LabelSelectorRequirement",
@@ -27,10 +24,8 @@
         },
         "matchLabels": {
           "type": "object",
-          "description": "",
           "additionalProperties": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           },
           "existingJavaType": "java.util.Map\u003cString, String\u003e"
         }
@@ -43,23 +38,18 @@
     },
     "kubernetes_apimachinery_LabelSelectorRequirement": {
       "type": "object",
-      "description": "",
       "properties": {
         "key": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "operator": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "values": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         }
       },
@@ -71,24 +61,19 @@
     },
     "kubernetes_apimachinery_ListMeta": {
       "type": "object",
-      "description": "",
       "properties": {
         "continue": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "remainingItemCount": {
           "type": "integer",
-          "description": "",
           "existingJavaType": "Long"
         },
         "resourceVersion": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "selfLink": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -99,27 +84,22 @@
     },
     "kubernetes_apimachinery_ManagedFieldsEntry": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "fieldsType": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "fieldsV1": {
           "$ref": "#/definitions/kubernetes_apimachinery_FieldsV1",
           "existingJavaType": "io.fabric8.kubernetes.api.model.FieldsV1"
         },
         "manager": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "operation": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "time": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
@@ -134,20 +114,16 @@
     },
     "kubernetes_apimachinery_ObjectMeta": {
       "type": "object",
-      "description": "",
       "properties": {
         "annotations": {
           "type": "object",
-          "description": "",
           "additionalProperties": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           },
           "existingJavaType": "java.util.Map\u003cString, String\u003e"
         },
         "clusterName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "creationTimestamp": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
@@ -155,7 +131,6 @@
         },
         "deletionGracePeriodSeconds": {
           "type": "integer",
-          "description": "",
           "existingJavaType": "Long"
         },
         "deletionTimestamp": {
@@ -164,34 +139,27 @@
         },
         "finalizers": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "generateName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "generation": {
           "type": "integer",
-          "description": "",
           "existingJavaType": "Long"
         },
         "labels": {
           "type": "object",
-          "description": "",
           "additionalProperties": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           },
           "existingJavaType": "java.util.Map\u003cString, String\u003e"
         },
         "managedFields": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_ManagedFieldsEntry",
@@ -199,18 +167,15 @@
           }
         },
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "namespace": {
           "type": "string",
-          "description": "",
           "maxLength": 253,
           "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
         },
         "ownerReferences": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_OwnerReference",
@@ -218,16 +183,13 @@
           }
         },
         "resourceVersion": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "selfLink": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "uid": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -238,31 +200,24 @@
     },
     "kubernetes_apimachinery_OwnerReference": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "blockOwnerDeletion": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "controller": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "kind": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "uid": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -273,11 +228,9 @@
     },
     "kubernetes_apimachinery_Time": {
       "type": "object",
-      "description": "",
       "properties": {
         "Time": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -288,15 +241,12 @@
     },
     "kubernetes_apimachinery_TypeMeta": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "kind": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -307,11 +257,9 @@
     },
     "kubernetes_rbac_v1_AggregationRule": {
       "type": "object",
-      "description": "",
       "properties": {
         "clusterRoleSelectors": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
@@ -327,7 +275,6 @@
     },
     "kubernetes_rbac_v1_ClusterRole": {
       "type": "object",
-      "description": "",
       "properties": {
         "aggregationRule": {
           "$ref": "#/definitions/kubernetes_rbac_v1_AggregationRule",
@@ -335,13 +282,11 @@
         },
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "rbac.authorization.k8s.io/v1",
           "required": true
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "ClusterRole",
           "required": true
         },
@@ -351,7 +296,6 @@
         },
         "rules": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_rbac_v1_PolicyRule",
             "existingJavaType": "io.fabric8.kubernetes.api.model.rbac.PolicyRule"
@@ -366,17 +310,14 @@
     },
     "kubernetes_rbac_v1_ClusterRoleBinding": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "rbac.authorization.k8s.io/v1",
           "required": true
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "ClusterRoleBinding",
           "required": true
         },
@@ -390,7 +331,6 @@
         },
         "subjects": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_rbac_v1_Subject",
@@ -406,17 +346,14 @@
     },
     "kubernetes_rbac_v1_ClusterRoleBindingList": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "rbac.authorization.k8s.io/v1",
           "required": true
         },
         "items": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_rbac_v1_ClusterRoleBinding",
             "existingJavaType": "io.fabric8.kubernetes.api.model.rbac.ClusterRoleBinding"
@@ -424,7 +361,6 @@
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "ClusterRoleBindingList",
           "required": true
         },
@@ -442,17 +378,14 @@
     },
     "kubernetes_rbac_v1_ClusterRoleList": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "rbac.authorization.k8s.io/v1",
           "required": true
         },
         "items": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_rbac_v1_ClusterRole",
             "existingJavaType": "io.fabric8.kubernetes.api.model.rbac.ClusterRole"
@@ -460,7 +393,6 @@
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "ClusterRoleList",
           "required": true
         },
@@ -478,50 +410,39 @@
     },
     "kubernetes_rbac_v1_PolicyRule": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiGroups": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "nonResourceURLs": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "resourceNames": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "resources": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "verbs": {
           "type": "array",
-          "description": "",
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         }
       },
@@ -533,17 +454,14 @@
     },
     "kubernetes_rbac_v1_Role": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "rbac.authorization.k8s.io/v1",
           "required": true
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "Role",
           "required": true
         },
@@ -553,7 +471,6 @@
         },
         "rules": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_rbac_v1_PolicyRule",
             "existingJavaType": "io.fabric8.kubernetes.api.model.rbac.PolicyRule"
@@ -569,17 +486,14 @@
     },
     "kubernetes_rbac_v1_RoleBinding": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "rbac.authorization.k8s.io/v1",
           "required": true
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "RoleBinding",
           "required": true
         },
@@ -593,7 +507,6 @@
         },
         "subjects": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_rbac_v1_Subject",
@@ -610,17 +523,14 @@
     },
     "kubernetes_rbac_v1_RoleBindingList": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "rbac.authorization.k8s.io/v1",
           "required": true
         },
         "items": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_rbac_v1_RoleBinding",
             "existingJavaType": "io.fabric8.kubernetes.api.model.rbac.RoleBinding"
@@ -628,7 +538,6 @@
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "RoleBindingList",
           "required": true
         },
@@ -646,17 +555,14 @@
     },
     "kubernetes_rbac_v1_RoleList": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "rbac.authorization.k8s.io/v1",
           "required": true
         },
         "items": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_rbac_v1_Role",
             "existingJavaType": "io.fabric8.kubernetes.api.model.rbac.Role"
@@ -664,7 +570,6 @@
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "RoleList",
           "required": true
         },
@@ -682,19 +587,15 @@
     },
     "kubernetes_rbac_v1_RoleRef": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiGroup": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "kind": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -705,23 +606,18 @@
     },
     "kubernetes_rbac_v1_Subject": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiGroup": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "kind": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "namespace": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -776,7 +672,6 @@
       "properties": {
         "clusterRoleSelectors": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
@@ -794,13 +689,11 @@
         },
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "rbac.authorization.k8s.io/v1",
           "required": true
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "ClusterRole",
           "required": true
         },
@@ -810,7 +703,6 @@
         },
         "rules": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_rbac_v1_PolicyRule",
             "existingJavaType": "io.fabric8.kubernetes.api.model.rbac.PolicyRule"
@@ -823,13 +715,11 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "rbac.authorization.k8s.io/v1",
           "required": true
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "ClusterRoleBinding",
           "required": true
         },
@@ -843,7 +733,6 @@
         },
         "subjects": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_rbac_v1_Subject",
@@ -857,13 +746,11 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "rbac.authorization.k8s.io/v1",
           "required": true
         },
         "items": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_rbac_v1_ClusterRoleBinding",
             "existingJavaType": "io.fabric8.kubernetes.api.model.rbac.ClusterRoleBinding"
@@ -871,7 +758,6 @@
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "ClusterRoleBindingList",
           "required": true
         },
@@ -886,13 +772,11 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "rbac.authorization.k8s.io/v1",
           "required": true
         },
         "items": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_rbac_v1_ClusterRole",
             "existingJavaType": "io.fabric8.kubernetes.api.model.rbac.ClusterRole"
@@ -900,7 +784,6 @@
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "ClusterRoleList",
           "required": true
         },
@@ -918,7 +801,6 @@
       "properties": {
         "matchExpressions": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_LabelSelectorRequirement",
@@ -927,10 +809,8 @@
         },
         "matchLabels": {
           "type": "object",
-          "description": "",
           "additionalProperties": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           },
           "existingJavaType": "java.util.Map\u003cString, String\u003e"
         }
@@ -940,20 +820,16 @@
     "labelselectorrequirement": {
       "properties": {
         "key": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "operator": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "values": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         }
       },
@@ -962,21 +838,17 @@
     "listmeta": {
       "properties": {
         "continue": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "remainingItemCount": {
           "type": "integer",
-          "description": "",
           "existingJavaType": "Long"
         },
         "resourceVersion": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "selfLink": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -984,24 +856,20 @@
     "managedfieldsentry": {
       "properties": {
         "apiVersion": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "fieldsType": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "fieldsV1": {
           "$ref": "#/definitions/kubernetes_apimachinery_FieldsV1",
           "existingJavaType": "io.fabric8.kubernetes.api.model.FieldsV1"
         },
         "manager": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "operation": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "time": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
@@ -1014,16 +882,13 @@
       "properties": {
         "annotations": {
           "type": "object",
-          "description": "",
           "additionalProperties": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           },
           "existingJavaType": "java.util.Map\u003cString, String\u003e"
         },
         "clusterName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "creationTimestamp": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
@@ -1031,7 +896,6 @@
         },
         "deletionGracePeriodSeconds": {
           "type": "integer",
-          "description": "",
           "existingJavaType": "Long"
         },
         "deletionTimestamp": {
@@ -1040,34 +904,27 @@
         },
         "finalizers": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "generateName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "generation": {
           "type": "integer",
-          "description": "",
           "existingJavaType": "Long"
         },
         "labels": {
           "type": "object",
-          "description": "",
           "additionalProperties": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           },
           "existingJavaType": "java.util.Map\u003cString, String\u003e"
         },
         "managedFields": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_ManagedFieldsEntry",
@@ -1075,18 +932,15 @@
           }
         },
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "namespace": {
           "type": "string",
-          "description": "",
           "maxLength": 253,
           "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
         },
         "ownerReferences": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_OwnerReference",
@@ -1094,16 +948,13 @@
           }
         },
         "resourceVersion": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "selfLink": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "uid": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -1111,28 +962,22 @@
     "ownerreference": {
       "properties": {
         "apiVersion": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "blockOwnerDeletion": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "controller": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "kind": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "uid": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -1141,46 +986,36 @@
       "properties": {
         "apiGroups": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "nonResourceURLs": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "resourceNames": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "resources": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "verbs": {
           "type": "array",
-          "description": "",
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         }
       },
@@ -1190,13 +1025,11 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "rbac.authorization.k8s.io/v1",
           "required": true
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "Role",
           "required": true
         },
@@ -1206,7 +1039,6 @@
         },
         "rules": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_rbac_v1_PolicyRule",
             "existingJavaType": "io.fabric8.kubernetes.api.model.rbac.PolicyRule"
@@ -1219,13 +1051,11 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "rbac.authorization.k8s.io/v1",
           "required": true
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "RoleBinding",
           "required": true
         },
@@ -1239,7 +1069,6 @@
         },
         "subjects": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_rbac_v1_Subject",
@@ -1253,13 +1082,11 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "rbac.authorization.k8s.io/v1",
           "required": true
         },
         "items": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_rbac_v1_RoleBinding",
             "existingJavaType": "io.fabric8.kubernetes.api.model.rbac.RoleBinding"
@@ -1267,7 +1094,6 @@
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "RoleBindingList",
           "required": true
         },
@@ -1282,13 +1108,11 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "rbac.authorization.k8s.io/v1",
           "required": true
         },
         "items": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_rbac_v1_Role",
             "existingJavaType": "io.fabric8.kubernetes.api.model.rbac.Role"
@@ -1296,7 +1120,6 @@
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "RoleList",
           "required": true
         },
@@ -1310,16 +1133,13 @@
     "roleref": {
       "properties": {
         "apiGroup": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "kind": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -1327,20 +1147,16 @@
     "subject": {
       "properties": {
         "apiGroup": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "kind": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "namespace": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -1348,8 +1164,7 @@
     "time": {
       "properties": {
         "Time": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -1357,12 +1172,10 @@
     "typemeta": {
       "properties": {
         "apiVersion": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "kind": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true

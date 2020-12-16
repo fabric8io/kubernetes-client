@@ -5,11 +5,9 @@
   "definitions": {
     "k8s_io_apimachinery_pkg_api_resource_Quantity": {
       "type": "object",
-      "description": "",
       "properties": {
         "Format": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -20,23 +18,19 @@
     },
     "kubernetes_apimachinery_APIGroup": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "v1",
           "required": true
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "APIGroup",
           "required": true
         },
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "preferredVersion": {
           "$ref": "#/definitions/kubernetes_apimachinery_GroupVersionForDiscovery",
@@ -44,7 +38,6 @@
         },
         "serverAddressByClientCIDRs": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_ServerAddressByClientCIDR",
@@ -53,7 +46,6 @@
         },
         "versions": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_GroupVersionForDiscovery",
             "existingJavaType": "io.fabric8.kubernetes.api.model.GroupVersionForDiscovery"
@@ -68,17 +60,14 @@
     },
     "kubernetes_apimachinery_APIGroupList": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "v1",
           "required": true
         },
         "groups": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_APIGroup",
             "existingJavaType": "io.fabric8.kubernetes.api.model.APIGroup"
@@ -86,7 +75,6 @@
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "APIGroupList",
           "required": true
         }
@@ -99,30 +87,24 @@
     },
     "kubernetes_apimachinery_CreateOptions": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "v1",
           "required": true
         },
         "dryRun": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "fieldManager": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "CreateOptions",
           "required": true
         }
@@ -135,45 +117,37 @@
     },
     "kubernetes_apimachinery_DeleteOptions": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "v1",
           "required": true
         },
         "dryRun": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "gracePeriodSeconds": {
           "type": "integer",
-          "description": "",
           "existingJavaType": "Long"
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "DeleteOptions",
           "required": true
         },
         "orphanDependents": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "preconditions": {
           "$ref": "#/definitions/kubernetes_apimachinery_Preconditions",
           "existingJavaType": "io.fabric8.kubernetes.api.model.Preconditions"
         },
         "propagationPolicy": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -184,7 +158,6 @@
     },
     "kubernetes_apimachinery_FieldsV1": {
       "type": "object",
-      "description": "",
       "additionalProperties": true,
       "existingJavaType": "io.fabric8.kubernetes.api.model.FieldsV1",
       "javaInterfaces": [
@@ -193,23 +166,19 @@
     },
     "kubernetes_apimachinery_GetOptions": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "v1",
           "required": true
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "GetOptions",
           "required": true
         },
         "resourceVersion": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -220,15 +189,12 @@
     },
     "kubernetes_apimachinery_GroupVersionForDiscovery": {
       "type": "object",
-      "description": "",
       "properties": {
         "groupVersion": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "version": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -239,17 +205,14 @@
     },
     "kubernetes_apimachinery_List": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "v1",
           "required": true
         },
         "items": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
             "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
@@ -257,7 +220,6 @@
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "List",
           "required": true
         },
@@ -275,24 +237,19 @@
     },
     "kubernetes_apimachinery_ListMeta": {
       "type": "object",
-      "description": "",
       "properties": {
         "continue": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "remainingItemCount": {
           "type": "integer",
-          "description": "",
           "existingJavaType": "Long"
         },
         "resourceVersion": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "selfLink": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -303,57 +260,45 @@
     },
     "kubernetes_apimachinery_ListOptions": {
       "type": "object",
-      "description": "",
       "properties": {
         "allowWatchBookmarks": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "v1",
           "required": true
         },
         "continue": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "fieldSelector": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "ListOptions",
           "required": true
         },
         "labelSelector": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "limit": {
           "type": "integer",
-          "description": "",
           "existingJavaType": "Long"
         },
         "resourceVersion": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "resourceVersionMatch": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "timeoutSeconds": {
           "type": "integer",
-          "description": "",
           "existingJavaType": "Long"
         },
         "watch": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         }
       },
       "additionalProperties": true,
@@ -364,27 +309,22 @@
     },
     "kubernetes_apimachinery_ManagedFieldsEntry": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "fieldsType": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "fieldsV1": {
           "$ref": "#/definitions/kubernetes_apimachinery_FieldsV1",
           "existingJavaType": "io.fabric8.kubernetes.api.model.FieldsV1"
         },
         "manager": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "operation": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "time": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
@@ -399,20 +339,16 @@
     },
     "kubernetes_apimachinery_ObjectMeta": {
       "type": "object",
-      "description": "",
       "properties": {
         "annotations": {
           "type": "object",
-          "description": "",
           "additionalProperties": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           },
           "existingJavaType": "java.util.Map\u003cString, String\u003e"
         },
         "clusterName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "creationTimestamp": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
@@ -420,7 +356,6 @@
         },
         "deletionGracePeriodSeconds": {
           "type": "integer",
-          "description": "",
           "existingJavaType": "Long"
         },
         "deletionTimestamp": {
@@ -429,34 +364,27 @@
         },
         "finalizers": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "generateName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "generation": {
           "type": "integer",
-          "description": "",
           "existingJavaType": "Long"
         },
         "labels": {
           "type": "object",
-          "description": "",
           "additionalProperties": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           },
           "existingJavaType": "java.util.Map\u003cString, String\u003e"
         },
         "managedFields": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_ManagedFieldsEntry",
@@ -464,18 +392,15 @@
           }
         },
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "namespace": {
           "type": "string",
-          "description": "",
           "maxLength": 253,
           "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
         },
         "ownerReferences": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_OwnerReference",
@@ -483,16 +408,13 @@
           }
         },
         "resourceVersion": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "selfLink": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "uid": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -503,31 +425,24 @@
     },
     "kubernetes_apimachinery_OwnerReference": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "blockOwnerDeletion": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "controller": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "kind": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "uid": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -538,7 +453,6 @@
     },
     "kubernetes_apimachinery_Patch": {
       "type": "object",
-      "description": "",
       "additionalProperties": true,
       "existingJavaType": "io.fabric8.kubernetes.api.model.Patch",
       "javaInterfaces": [
@@ -547,34 +461,27 @@
     },
     "kubernetes_apimachinery_PatchOptions": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "v1",
           "required": true
         },
         "dryRun": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "fieldManager": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "force": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "PatchOptions",
           "required": true
         }
@@ -587,15 +494,12 @@
     },
     "kubernetes_apimachinery_Preconditions": {
       "type": "object",
-      "description": "",
       "properties": {
         "resourceVersion": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "uid": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -606,14 +510,11 @@
     },
     "kubernetes_apimachinery_RootPaths": {
       "type": "object",
-      "description": "",
       "properties": {
         "paths": {
           "type": "array",
-          "description": "",
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         }
       },
@@ -625,15 +526,12 @@
     },
     "kubernetes_apimachinery_ServerAddressByClientCIDR": {
       "type": "object",
-      "description": "",
       "properties": {
         "clientCIDR": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "serverAddress": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -644,17 +542,14 @@
     },
     "kubernetes_apimachinery_Status": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "v1",
           "required": true
         },
         "code": {
-          "type": "integer",
-          "description": ""
+          "type": "integer"
         },
         "details": {
           "$ref": "#/definitions/kubernetes_apimachinery_StatusDetails",
@@ -662,25 +557,21 @@
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "Status",
           "required": true
         },
         "message": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
         },
         "reason": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "status": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -691,19 +582,15 @@
     },
     "kubernetes_apimachinery_StatusCause": {
       "type": "object",
-      "description": "",
       "properties": {
         "field": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "message": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "reason": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -714,11 +601,9 @@
     },
     "kubernetes_apimachinery_StatusDetails": {
       "type": "object",
-      "description": "",
       "properties": {
         "causes": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_StatusCause",
@@ -726,24 +611,19 @@
           }
         },
         "group": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "kind": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "retryAfterSeconds": {
-          "type": "integer",
-          "description": ""
+          "type": "integer"
         },
         "uid": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -754,11 +634,9 @@
     },
     "kubernetes_apimachinery_Time": {
       "type": "object",
-      "description": "",
       "properties": {
         "Time": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -769,15 +647,12 @@
     },
     "kubernetes_apimachinery_TypeMeta": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "kind": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -788,30 +663,24 @@
     },
     "kubernetes_apimachinery_UpdateOptions": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "v1",
           "required": true
         },
         "dryRun": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "fieldManager": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "UpdateOptions",
           "required": true
         }
@@ -824,7 +693,6 @@
     },
     "kubernetes_apimachinery_pkg_runtime_ImageRawExtension": {
       "type": "object",
-      "description": "",
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.runtime.RawExtension",
       "javaInterfaces": [
@@ -833,7 +701,6 @@
     },
     "kubernetes_apimachinery_pkg_runtime_RawExtension": {
       "type": "object",
-      "description": "",
       "additionalProperties": true,
       "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata",
       "javaInterfaces": [
@@ -842,43 +709,33 @@
     },
     "kubernetes_apimachinery_pkg_version_Info": {
       "type": "object",
-      "description": "",
       "properties": {
         "buildDate": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "compiler": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "gitCommit": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "gitTreeState": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "gitVersion": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "goVersion": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "major": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "minor": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "platform": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -889,23 +746,18 @@
     },
     "kubernetes_core_AWSElasticBlockStoreVolumeSource": {
       "type": "object",
-      "description": "",
       "properties": {
         "fsType": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "partition": {
-          "type": "integer",
-          "description": ""
+          "type": "integer"
         },
         "readOnly": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "volumeID": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -916,31 +768,24 @@
     },
     "kubernetes_core_AzureDiskVolumeSource": {
       "type": "object",
-      "description": "",
       "properties": {
         "cachingMode": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "diskName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "diskURI": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "fsType": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "kind": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "readOnly": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         }
       },
       "additionalProperties": true,
@@ -951,23 +796,18 @@
     },
     "kubernetes_core_AzureFilePersistentVolumeSource": {
       "type": "object",
-      "description": "",
       "properties": {
         "readOnly": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "secretName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "secretNamespace": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "shareName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -978,7 +818,6 @@
     },
     "kubernetes_core_CSIPersistentVolumeSource": {
       "type": "object",
-      "description": "",
       "properties": {
         "controllerExpandSecretRef": {
           "$ref": "#/definitions/kubernetes_core_SecretReference",
@@ -989,12 +828,10 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.SecretReference"
         },
         "driver": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "fsType": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "nodePublishSecretRef": {
           "$ref": "#/definitions/kubernetes_core_SecretReference",
@@ -1005,21 +842,17 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.SecretReference"
         },
         "readOnly": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "volumeAttributes": {
           "type": "object",
-          "description": "",
           "additionalProperties": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           },
           "existingJavaType": "java.util.Map\u003cString, String\u003e"
         },
         "volumeHandle": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -1030,35 +863,28 @@
     },
     "kubernetes_core_CephFSPersistentVolumeSource": {
       "type": "object",
-      "description": "",
       "properties": {
         "monitors": {
           "type": "array",
-          "description": "",
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "path": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "readOnly": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "secretFile": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "secretRef": {
           "$ref": "#/definitions/kubernetes_core_SecretReference",
           "existingJavaType": "io.fabric8.kubernetes.api.model.SecretReference"
         },
         "user": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -1069,23 +895,19 @@
     },
     "kubernetes_core_CinderPersistentVolumeSource": {
       "type": "object",
-      "description": "",
       "properties": {
         "fsType": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "readOnly": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "secretRef": {
           "$ref": "#/definitions/kubernetes_core_SecretReference",
           "existingJavaType": "io.fabric8.kubernetes.api.model.SecretReference"
         },
         "volumeID": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -1096,36 +918,28 @@
     },
     "kubernetes_core_FCVolumeSource": {
       "type": "object",
-      "description": "",
       "properties": {
         "fsType": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "lun": {
-          "type": "integer",
-          "description": ""
+          "type": "integer"
         },
         "readOnly": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "targetWWNs": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "wwids": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         }
       },
@@ -1137,28 +951,22 @@
     },
     "kubernetes_core_FlexPersistentVolumeSource": {
       "type": "object",
-      "description": "",
       "properties": {
         "driver": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "fsType": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "options": {
           "type": "object",
-          "description": "",
           "additionalProperties": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           },
           "existingJavaType": "java.util.Map\u003cString, String\u003e"
         },
         "readOnly": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "secretRef": {
           "$ref": "#/definitions/kubernetes_core_SecretReference",
@@ -1173,15 +981,12 @@
     },
     "kubernetes_core_FlockerVolumeSource": {
       "type": "object",
-      "description": "",
       "properties": {
         "datasetName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "datasetUUID": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -1192,23 +997,18 @@
     },
     "kubernetes_core_GCEPersistentDiskVolumeSource": {
       "type": "object",
-      "description": "",
       "properties": {
         "fsType": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "partition": {
-          "type": "integer",
-          "description": ""
+          "type": "integer"
         },
         "pdName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "readOnly": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         }
       },
       "additionalProperties": true,
@@ -1219,23 +1019,18 @@
     },
     "kubernetes_core_GlusterfsPersistentVolumeSource": {
       "type": "object",
-      "description": "",
       "properties": {
         "endpoints": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "endpointsNamespace": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "path": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "readOnly": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         }
       },
       "additionalProperties": true,
@@ -1246,15 +1041,12 @@
     },
     "kubernetes_core_HostPathVolumeSource": {
       "type": "object",
-      "description": "",
       "properties": {
         "path": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "type": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -1265,56 +1057,44 @@
     },
     "kubernetes_core_ISCSIPersistentVolumeSource": {
       "type": "object",
-      "description": "",
       "properties": {
         "chapAuthDiscovery": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "chapAuthSession": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "fsType": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "initiatorName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "iqn": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "iscsiInterface": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "lun": {
-          "type": "integer",
-          "description": ""
+          "type": "integer"
         },
         "portals": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "readOnly": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "secretRef": {
           "$ref": "#/definitions/kubernetes_core_SecretReference",
           "existingJavaType": "io.fabric8.kubernetes.api.model.SecretReference"
         },
         "targetPortal": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -1325,15 +1105,12 @@
     },
     "kubernetes_core_LocalVolumeSource": {
       "type": "object",
-      "description": "",
       "properties": {
         "fsType": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "path": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -1344,19 +1121,15 @@
     },
     "kubernetes_core_NFSVolumeSource": {
       "type": "object",
-      "description": "",
       "properties": {
         "path": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "readOnly": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "server": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -1367,11 +1140,9 @@
     },
     "kubernetes_core_NodeSelector": {
       "type": "object",
-      "description": "",
       "properties": {
         "nodeSelectorTerms": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_core_NodeSelectorTerm",
             "existingJavaType": "io.fabric8.kubernetes.api.model.NodeSelectorTerm"
@@ -1386,23 +1157,18 @@
     },
     "kubernetes_core_NodeSelectorRequirement": {
       "type": "object",
-      "description": "",
       "properties": {
         "key": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "operator": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "values": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         }
       },
@@ -1414,11 +1180,9 @@
     },
     "kubernetes_core_NodeSelectorTerm": {
       "type": "object",
-      "description": "",
       "properties": {
         "matchExpressions": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_core_NodeSelectorRequirement",
@@ -1427,7 +1191,6 @@
         },
         "matchFields": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_core_NodeSelectorRequirement",
@@ -1443,35 +1206,27 @@
     },
     "kubernetes_core_ObjectReference": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "fieldPath": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "kind": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "namespace": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "resourceVersion": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "uid": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -1482,7 +1237,6 @@
     },
     "kubernetes_core_PersistentVolumeSource": {
       "type": "object",
-      "description": "",
       "properties": {
         "awsElasticBlockStore": {
           "$ref": "#/definitions/kubernetes_core_AWSElasticBlockStoreVolumeSource",
@@ -1581,15 +1335,12 @@
     },
     "kubernetes_core_PersistentVolumeSpec": {
       "type": "object",
-      "description": "",
       "properties": {
         "accessModes": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "awsElasticBlockStore": {
@@ -1606,7 +1357,6 @@
         },
         "capacity": {
           "type": "object",
-          "description": "",
           "additionalProperties": {
             "$ref": "#/definitions/k8s_io_apimachinery_pkg_api_resource_Quantity",
             "existingJavaType": "Quantity"
@@ -1663,11 +1413,9 @@
         },
         "mountOptions": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "nfs": {
@@ -1679,8 +1427,7 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.VolumeNodeAffinity"
         },
         "persistentVolumeReclaimPolicy": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "photonPersistentDisk": {
           "$ref": "#/definitions/kubernetes_core_PhotonPersistentDiskVolumeSource",
@@ -1703,16 +1450,14 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ScaleIOPersistentVolumeSource"
         },
         "storageClassName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "storageos": {
           "$ref": "#/definitions/kubernetes_core_StorageOSPersistentVolumeSource",
           "existingJavaType": "io.fabric8.kubernetes.api.model.StorageOSPersistentVolumeSource"
         },
         "volumeMode": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "vsphereVolume": {
           "$ref": "#/definitions/kubernetes_core_VsphereVirtualDiskVolumeSource",
@@ -1727,15 +1472,12 @@
     },
     "kubernetes_core_PhotonPersistentDiskVolumeSource": {
       "type": "object",
-      "description": "",
       "properties": {
         "fsType": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "pdID": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -1746,19 +1488,15 @@
     },
     "kubernetes_core_PortworxVolumeSource": {
       "type": "object",
-      "description": "",
       "properties": {
         "fsType": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "readOnly": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "volumeID": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -1769,31 +1507,24 @@
     },
     "kubernetes_core_QuobyteVolumeSource": {
       "type": "object",
-      "description": "",
       "properties": {
         "group": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "readOnly": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "registry": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "tenant": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "user": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "volume": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -1804,43 +1535,34 @@
     },
     "kubernetes_core_RBDPersistentVolumeSource": {
       "type": "object",
-      "description": "",
       "properties": {
         "fsType": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "image": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "keyring": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "monitors": {
           "type": "array",
-          "description": "",
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "pool": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "readOnly": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "secretRef": {
           "$ref": "#/definitions/kubernetes_core_SecretReference",
           "existingJavaType": "io.fabric8.kubernetes.api.model.SecretReference"
         },
         "user": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -1851,47 +1573,37 @@
     },
     "kubernetes_core_ScaleIOPersistentVolumeSource": {
       "type": "object",
-      "description": "",
       "properties": {
         "fsType": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "gateway": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "protectionDomain": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "readOnly": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "secretRef": {
           "$ref": "#/definitions/kubernetes_core_SecretReference",
           "existingJavaType": "io.fabric8.kubernetes.api.model.SecretReference"
         },
         "sslEnabled": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "storageMode": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "storagePool": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "system": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "volumeName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -1902,15 +1614,12 @@
     },
     "kubernetes_core_SecretReference": {
       "type": "object",
-      "description": "",
       "properties": {
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "namespace": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -1921,27 +1630,22 @@
     },
     "kubernetes_core_StorageOSPersistentVolumeSource": {
       "type": "object",
-      "description": "",
       "properties": {
         "fsType": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "readOnly": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "secretRef": {
           "$ref": "#/definitions/kubernetes_core_ObjectReference",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
         },
         "volumeName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "volumeNamespace": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -1952,18 +1656,14 @@
     },
     "kubernetes_core_TopologySelectorLabelRequirement": {
       "type": "object",
-      "description": "",
       "properties": {
         "key": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "values": {
           "type": "array",
-          "description": "",
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         }
       },
@@ -1975,11 +1675,9 @@
     },
     "kubernetes_core_TopologySelectorTerm": {
       "type": "object",
-      "description": "",
       "properties": {
         "matchLabelExpressions": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_core_TopologySelectorLabelRequirement",
@@ -1995,7 +1693,6 @@
     },
     "kubernetes_core_VolumeNodeAffinity": {
       "type": "object",
-      "description": "",
       "properties": {
         "required": {
           "$ref": "#/definitions/kubernetes_core_NodeSelector",
@@ -2010,23 +1707,18 @@
     },
     "kubernetes_core_VsphereVirtualDiskVolumeSource": {
       "type": "object",
-      "description": "",
       "properties": {
         "fsType": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "storagePolicyID": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "storagePolicyName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "volumePath": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -2037,15 +1729,12 @@
     },
     "kubernetes_storageclass_StorageClass": {
       "type": "object",
-      "description": "",
       "properties": {
         "allowVolumeExpansion": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "allowedTopologies": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_core_TopologySelectorTerm",
@@ -2054,13 +1743,11 @@
         },
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "storage.k8s.io/v1",
           "required": true
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "StorageClass",
           "required": true
         },
@@ -2070,33 +1757,26 @@
         },
         "mountOptions": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "parameters": {
           "type": "object",
-          "description": "",
           "additionalProperties": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           },
           "existingJavaType": "java.util.Map\u003cString, String\u003e"
         },
         "provisioner": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "reclaimPolicy": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "volumeBindingMode": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -2107,17 +1787,14 @@
     },
     "kubernetes_storageclass_StorageClassList": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "storage.k8s.io/v1",
           "required": true
         },
         "items": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_storageclass_StorageClass",
             "existingJavaType": "io.fabric8.kubernetes.api.model.storage.StorageClass"
@@ -2125,7 +1802,6 @@
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "StorageClassList",
           "required": true
         },
@@ -2143,17 +1819,14 @@
     },
     "kubernetes_storageclass_VolumeAttachment": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "storage.k8s.io/v1",
           "required": true
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "VolumeAttachment",
           "required": true
         },
@@ -2179,17 +1852,14 @@
     },
     "kubernetes_storageclass_VolumeAttachmentList": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "storage.k8s.io/v1",
           "required": true
         },
         "items": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_storageclass_VolumeAttachment",
             "existingJavaType": "io.fabric8.kubernetes.api.model.storage.VolumeAttachment"
@@ -2197,7 +1867,6 @@
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "VolumeAttachmentList",
           "required": true
         },
@@ -2215,15 +1884,13 @@
     },
     "kubernetes_storageclass_VolumeAttachmentSource": {
       "type": "object",
-      "description": "",
       "properties": {
         "inlineVolumeSpec": {
           "$ref": "#/definitions/kubernetes_core_PersistentVolumeSpec",
           "existingJavaType": "io.fabric8.kubernetes.api.model.PersistentVolumeSpec"
         },
         "persistentVolumeName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -2234,15 +1901,12 @@
     },
     "kubernetes_storageclass_VolumeAttachmentSpec": {
       "type": "object",
-      "description": "",
       "properties": {
         "attacher": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "nodeName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "source": {
           "$ref": "#/definitions/kubernetes_storageclass_VolumeAttachmentSource",
@@ -2257,22 +1921,18 @@
     },
     "kubernetes_storageclass_VolumeAttachmentStatus": {
       "type": "object",
-      "description": "",
       "properties": {
         "attachError": {
           "$ref": "#/definitions/kubernetes_storageclass_VolumeError",
           "existingJavaType": "io.fabric8.kubernetes.api.model.storage.VolumeError"
         },
         "attached": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "attachmentMetadata": {
           "type": "object",
-          "description": "",
           "additionalProperties": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           },
           "existingJavaType": "java.util.Map\u003cString, String\u003e"
         },
@@ -2289,11 +1949,9 @@
     },
     "kubernetes_storageclass_VolumeError": {
       "type": "object",
-      "description": "",
       "properties": {
         "message": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "time": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
@@ -2308,17 +1966,14 @@
     },
     "kubernetes_storageclass_v1beta1_CSIDriver": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "storage.k8s.io/v1beta1",
           "required": true
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "CSIDriver",
           "required": true
         },
@@ -2339,17 +1994,14 @@
     },
     "kubernetes_storageclass_v1beta1_CSIDriverList": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "storage.k8s.io/v1beta1",
           "required": true
         },
         "items": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_storageclass_v1beta1_CSIDriver",
             "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriver"
@@ -2357,7 +2009,6 @@
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "CSIDriverList",
           "required": true
         },
@@ -2375,31 +2026,24 @@
     },
     "kubernetes_storageclass_v1beta1_CSIDriverSpec": {
       "type": "object",
-      "description": "",
       "properties": {
         "attachRequired": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "fsGroupPolicy": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "podInfoOnMount": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "storageCapacity": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "volumeLifecycleModes": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         }
       },
@@ -2411,17 +2055,14 @@
     },
     "kubernetes_storageclass_v1beta1_CSINode": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "storage.k8s.io/v1beta1",
           "required": true
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "CSINode",
           "required": true
         },
@@ -2442,26 +2083,21 @@
     },
     "kubernetes_storageclass_v1beta1_CSINodeDriver": {
       "type": "object",
-      "description": "",
       "properties": {
         "allocatable": {
           "$ref": "#/definitions/kubernetes_storageclass_v1beta1_VolumeNodeResources",
           "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.VolumeNodeResources"
         },
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "nodeID": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "topologyKeys": {
           "type": "array",
-          "description": "",
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         }
       },
@@ -2473,17 +2109,14 @@
     },
     "kubernetes_storageclass_v1beta1_CSINodeList": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "storage.k8s.io/v1beta1",
           "required": true
         },
         "items": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_storageclass_v1beta1_CSINode",
             "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSINode"
@@ -2491,7 +2124,6 @@
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "CSINodeList",
           "required": true
         },
@@ -2509,11 +2141,9 @@
     },
     "kubernetes_storageclass_v1beta1_CSINodeSpec": {
       "type": "object",
-      "description": "",
       "properties": {
         "drivers": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_storageclass_v1beta1_CSINodeDriver",
             "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSINodeDriver"
@@ -2528,11 +2158,9 @@
     },
     "kubernetes_storageclass_v1beta1_VolumeNodeResources": {
       "type": "object",
-      "description": "",
       "properties": {
         "count": {
-          "type": "integer",
-          "description": ""
+          "type": "integer"
         }
       },
       "additionalProperties": true,
@@ -2655,19 +2283,16 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "v1",
           "required": true
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "APIGroup",
           "required": true
         },
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "preferredVersion": {
           "$ref": "#/definitions/kubernetes_apimachinery_GroupVersionForDiscovery",
@@ -2675,7 +2300,6 @@
         },
         "serverAddressByClientCIDRs": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_ServerAddressByClientCIDR",
@@ -2684,7 +2308,6 @@
         },
         "versions": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_GroupVersionForDiscovery",
             "existingJavaType": "io.fabric8.kubernetes.api.model.GroupVersionForDiscovery"
@@ -2697,13 +2320,11 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "v1",
           "required": true
         },
         "groups": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_APIGroup",
             "existingJavaType": "io.fabric8.kubernetes.api.model.APIGroup"
@@ -2711,7 +2332,6 @@
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "APIGroupList",
           "required": true
         }
@@ -2721,20 +2341,16 @@
     "awselasticblockstorevolumesource": {
       "properties": {
         "fsType": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "partition": {
-          "type": "integer",
-          "description": ""
+          "type": "integer"
         },
         "readOnly": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "volumeID": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -2742,28 +2358,22 @@
     "azurediskvolumesource": {
       "properties": {
         "cachingMode": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "diskName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "diskURI": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "fsType": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "kind": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "readOnly": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         }
       },
       "additionalProperties": true
@@ -2771,20 +2381,16 @@
     "azurefilepersistentvolumesource": {
       "properties": {
         "readOnly": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "secretName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "secretNamespace": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "shareName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -2793,31 +2399,25 @@
       "properties": {
         "monitors": {
           "type": "array",
-          "description": "",
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "path": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "readOnly": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "secretFile": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "secretRef": {
           "$ref": "#/definitions/kubernetes_core_SecretReference",
           "existingJavaType": "io.fabric8.kubernetes.api.model.SecretReference"
         },
         "user": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -2825,20 +2425,17 @@
     "cinderpersistentvolumesource": {
       "properties": {
         "fsType": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "readOnly": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "secretRef": {
           "$ref": "#/definitions/kubernetes_core_SecretReference",
           "existingJavaType": "io.fabric8.kubernetes.api.model.SecretReference"
         },
         "volumeID": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -2847,26 +2444,21 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "v1",
           "required": true
         },
         "dryRun": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "fieldManager": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "CreateOptions",
           "required": true
         }
@@ -2877,13 +2469,11 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "storage.k8s.io/v1beta1",
           "required": true
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "CSIDriver",
           "required": true
         },
@@ -2902,13 +2492,11 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "storage.k8s.io/v1beta1",
           "required": true
         },
         "items": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_storageclass_v1beta1_CSIDriver",
             "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriver"
@@ -2916,7 +2504,6 @@
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "CSIDriverList",
           "required": true
         },
@@ -2930,28 +2517,22 @@
     "csidriverspec": {
       "properties": {
         "attachRequired": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "fsGroupPolicy": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "podInfoOnMount": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "storageCapacity": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "volumeLifecycleModes": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         }
       },
@@ -2961,13 +2542,11 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "storage.k8s.io/v1beta1",
           "required": true
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "CSINode",
           "required": true
         },
@@ -2989,19 +2568,15 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.VolumeNodeResources"
         },
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "nodeID": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "topologyKeys": {
           "type": "array",
-          "description": "",
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         }
       },
@@ -3011,13 +2586,11 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "storage.k8s.io/v1beta1",
           "required": true
         },
         "items": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_storageclass_v1beta1_CSINode",
             "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSINode"
@@ -3025,7 +2598,6 @@
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "CSINodeList",
           "required": true
         },
@@ -3040,7 +2612,6 @@
       "properties": {
         "drivers": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_storageclass_v1beta1_CSINodeDriver",
             "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSINodeDriver"
@@ -3060,12 +2631,10 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.SecretReference"
         },
         "driver": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "fsType": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "nodePublishSecretRef": {
           "$ref": "#/definitions/kubernetes_core_SecretReference",
@@ -3076,21 +2645,17 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.SecretReference"
         },
         "readOnly": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "volumeAttributes": {
           "type": "object",
-          "description": "",
           "additionalProperties": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           },
           "existingJavaType": "java.util.Map\u003cString, String\u003e"
         },
         "volumeHandle": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -3099,41 +2664,34 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "v1",
           "required": true
         },
         "dryRun": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "gracePeriodSeconds": {
           "type": "integer",
-          "description": "",
           "existingJavaType": "Long"
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "DeleteOptions",
           "required": true
         },
         "orphanDependents": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "preconditions": {
           "$ref": "#/definitions/kubernetes_apimachinery_Preconditions",
           "existingJavaType": "io.fabric8.kubernetes.api.model.Preconditions"
         },
         "propagationPolicy": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -3141,33 +2699,26 @@
     "fcvolumesource": {
       "properties": {
         "fsType": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "lun": {
-          "type": "integer",
-          "description": ""
+          "type": "integer"
         },
         "readOnly": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "targetWWNs": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "wwids": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         }
       },
@@ -3179,25 +2730,20 @@
     "flexpersistentvolumesource": {
       "properties": {
         "driver": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "fsType": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "options": {
           "type": "object",
-          "description": "",
           "additionalProperties": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           },
           "existingJavaType": "java.util.Map\u003cString, String\u003e"
         },
         "readOnly": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "secretRef": {
           "$ref": "#/definitions/kubernetes_core_SecretReference",
@@ -3209,12 +2755,10 @@
     "flockervolumesource": {
       "properties": {
         "datasetName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "datasetUUID": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -3222,20 +2766,16 @@
     "gcepersistentdiskvolumesource": {
       "properties": {
         "fsType": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "partition": {
-          "type": "integer",
-          "description": ""
+          "type": "integer"
         },
         "pdName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "readOnly": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         }
       },
       "additionalProperties": true
@@ -3244,19 +2784,16 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "v1",
           "required": true
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "GetOptions",
           "required": true
         },
         "resourceVersion": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -3264,20 +2801,16 @@
     "glusterfspersistentvolumesource": {
       "properties": {
         "endpoints": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "endpointsNamespace": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "path": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "readOnly": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         }
       },
       "additionalProperties": true
@@ -3285,12 +2818,10 @@
     "groupversionfordiscovery": {
       "properties": {
         "groupVersion": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "version": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -3298,12 +2829,10 @@
     "hostpathvolumesource": {
       "properties": {
         "path": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "type": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -3314,40 +2843,31 @@
     "info": {
       "properties": {
         "buildDate": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "compiler": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "gitCommit": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "gitTreeState": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "gitVersion": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "goVersion": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "major": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "minor": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "platform": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -3355,53 +2875,42 @@
     "iscsipersistentvolumesource": {
       "properties": {
         "chapAuthDiscovery": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "chapAuthSession": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "fsType": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "initiatorName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "iqn": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "iscsiInterface": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "lun": {
-          "type": "integer",
-          "description": ""
+          "type": "integer"
         },
         "portals": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "readOnly": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "secretRef": {
           "$ref": "#/definitions/kubernetes_core_SecretReference",
           "existingJavaType": "io.fabric8.kubernetes.api.model.SecretReference"
         },
         "targetPortal": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -3410,13 +2919,11 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "v1",
           "required": true
         },
         "items": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
             "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
@@ -3424,7 +2931,6 @@
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "List",
           "required": true
         },
@@ -3438,21 +2944,17 @@
     "listmeta": {
       "properties": {
         "continue": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "remainingItemCount": {
           "type": "integer",
-          "description": "",
           "existingJavaType": "Long"
         },
         "resourceVersion": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "selfLink": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -3460,54 +2962,43 @@
     "listoptions": {
       "properties": {
         "allowWatchBookmarks": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "v1",
           "required": true
         },
         "continue": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "fieldSelector": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "ListOptions",
           "required": true
         },
         "labelSelector": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "limit": {
           "type": "integer",
-          "description": "",
           "existingJavaType": "Long"
         },
         "resourceVersion": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "resourceVersionMatch": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "timeoutSeconds": {
           "type": "integer",
-          "description": "",
           "existingJavaType": "Long"
         },
         "watch": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         }
       },
       "additionalProperties": true
@@ -3515,12 +3006,10 @@
     "localvolumesource": {
       "properties": {
         "fsType": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "path": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -3528,24 +3017,20 @@
     "managedfieldsentry": {
       "properties": {
         "apiVersion": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "fieldsType": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "fieldsV1": {
           "$ref": "#/definitions/kubernetes_apimachinery_FieldsV1",
           "existingJavaType": "io.fabric8.kubernetes.api.model.FieldsV1"
         },
         "manager": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "operation": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "time": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
@@ -3557,16 +3042,13 @@
     "nfsvolumesource": {
       "properties": {
         "path": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "readOnly": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "server": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -3575,7 +3057,6 @@
       "properties": {
         "nodeSelectorTerms": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_core_NodeSelectorTerm",
             "existingJavaType": "io.fabric8.kubernetes.api.model.NodeSelectorTerm"
@@ -3587,20 +3068,16 @@
     "nodeselectorrequirement": {
       "properties": {
         "key": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "operator": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "values": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         }
       },
@@ -3610,7 +3087,6 @@
       "properties": {
         "matchExpressions": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_core_NodeSelectorRequirement",
@@ -3619,7 +3095,6 @@
         },
         "matchFields": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_core_NodeSelectorRequirement",
@@ -3633,16 +3108,13 @@
       "properties": {
         "annotations": {
           "type": "object",
-          "description": "",
           "additionalProperties": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           },
           "existingJavaType": "java.util.Map\u003cString, String\u003e"
         },
         "clusterName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "creationTimestamp": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
@@ -3650,7 +3122,6 @@
         },
         "deletionGracePeriodSeconds": {
           "type": "integer",
-          "description": "",
           "existingJavaType": "Long"
         },
         "deletionTimestamp": {
@@ -3659,34 +3130,27 @@
         },
         "finalizers": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "generateName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "generation": {
           "type": "integer",
-          "description": "",
           "existingJavaType": "Long"
         },
         "labels": {
           "type": "object",
-          "description": "",
           "additionalProperties": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           },
           "existingJavaType": "java.util.Map\u003cString, String\u003e"
         },
         "managedFields": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_ManagedFieldsEntry",
@@ -3694,18 +3158,15 @@
           }
         },
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "namespace": {
           "type": "string",
-          "description": "",
           "maxLength": 253,
           "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
         },
         "ownerReferences": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_OwnerReference",
@@ -3713,16 +3174,13 @@
           }
         },
         "resourceVersion": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "selfLink": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "uid": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -3730,32 +3188,25 @@
     "objectreference": {
       "properties": {
         "apiVersion": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "fieldPath": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "kind": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "namespace": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "resourceVersion": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "uid": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -3763,28 +3214,22 @@
     "ownerreference": {
       "properties": {
         "apiVersion": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "blockOwnerDeletion": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "controller": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "kind": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "uid": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -3796,30 +3241,24 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "v1",
           "required": true
         },
         "dryRun": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "fieldManager": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "force": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "PatchOptions",
           "required": true
         }
@@ -3923,11 +3362,9 @@
       "properties": {
         "accessModes": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "awsElasticBlockStore": {
@@ -3944,7 +3381,6 @@
         },
         "capacity": {
           "type": "object",
-          "description": "",
           "additionalProperties": {
             "$ref": "#/definitions/k8s_io_apimachinery_pkg_api_resource_Quantity",
             "existingJavaType": "Quantity"
@@ -4001,11 +3437,9 @@
         },
         "mountOptions": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "nfs": {
@@ -4017,8 +3451,7 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.VolumeNodeAffinity"
         },
         "persistentVolumeReclaimPolicy": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "photonPersistentDisk": {
           "$ref": "#/definitions/kubernetes_core_PhotonPersistentDiskVolumeSource",
@@ -4041,16 +3474,14 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ScaleIOPersistentVolumeSource"
         },
         "storageClassName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "storageos": {
           "$ref": "#/definitions/kubernetes_core_StorageOSPersistentVolumeSource",
           "existingJavaType": "io.fabric8.kubernetes.api.model.StorageOSPersistentVolumeSource"
         },
         "volumeMode": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "vsphereVolume": {
           "$ref": "#/definitions/kubernetes_core_VsphereVirtualDiskVolumeSource",
@@ -4062,12 +3493,10 @@
     "photonpersistentdiskvolumesource": {
       "properties": {
         "fsType": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "pdID": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -4075,16 +3504,13 @@
     "portworxvolumesource": {
       "properties": {
         "fsType": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "readOnly": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "volumeID": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -4092,12 +3518,10 @@
     "preconditions": {
       "properties": {
         "resourceVersion": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "uid": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -4105,8 +3529,7 @@
     "quantity": {
       "properties": {
         "Format": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -4114,28 +3537,22 @@
     "quobytevolumesource": {
       "properties": {
         "group": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "readOnly": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "registry": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "tenant": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "user": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "volume": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -4146,40 +3563,32 @@
     "rbdpersistentvolumesource": {
       "properties": {
         "fsType": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "image": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "keyring": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "monitors": {
           "type": "array",
-          "description": "",
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "pool": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "readOnly": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "secretRef": {
           "$ref": "#/definitions/kubernetes_core_SecretReference",
           "existingJavaType": "io.fabric8.kubernetes.api.model.SecretReference"
         },
         "user": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -4188,10 +3597,8 @@
       "properties": {
         "paths": {
           "type": "array",
-          "description": "",
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         }
       },
@@ -4200,44 +3607,35 @@
     "scaleiopersistentvolumesource": {
       "properties": {
         "fsType": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "gateway": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "protectionDomain": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "readOnly": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "secretRef": {
           "$ref": "#/definitions/kubernetes_core_SecretReference",
           "existingJavaType": "io.fabric8.kubernetes.api.model.SecretReference"
         },
         "sslEnabled": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "storageMode": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "storagePool": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "system": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "volumeName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -4245,12 +3643,10 @@
     "secretreference": {
       "properties": {
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "namespace": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -4258,12 +3654,10 @@
     "serveraddressbyclientcidr": {
       "properties": {
         "clientCIDR": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "serverAddress": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -4272,13 +3666,11 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "v1",
           "required": true
         },
         "code": {
-          "type": "integer",
-          "description": ""
+          "type": "integer"
         },
         "details": {
           "$ref": "#/definitions/kubernetes_apimachinery_StatusDetails",
@@ -4286,25 +3678,21 @@
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "Status",
           "required": true
         },
         "message": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
         },
         "reason": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "status": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -4312,16 +3700,13 @@
     "statuscause": {
       "properties": {
         "field": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "message": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "reason": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -4330,7 +3715,6 @@
       "properties": {
         "causes": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_apimachinery_StatusCause",
@@ -4338,24 +3722,19 @@
           }
         },
         "group": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "kind": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "retryAfterSeconds": {
-          "type": "integer",
-          "description": ""
+          "type": "integer"
         },
         "uid": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -4363,12 +3742,10 @@
     "storageclass": {
       "properties": {
         "allowVolumeExpansion": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "allowedTopologies": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_core_TopologySelectorTerm",
@@ -4377,13 +3754,11 @@
         },
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "storage.k8s.io/v1",
           "required": true
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "StorageClass",
           "required": true
         },
@@ -4393,33 +3768,26 @@
         },
         "mountOptions": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "parameters": {
           "type": "object",
-          "description": "",
           "additionalProperties": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           },
           "existingJavaType": "java.util.Map\u003cString, String\u003e"
         },
         "provisioner": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "reclaimPolicy": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "volumeBindingMode": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -4428,13 +3796,11 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "storage.k8s.io/v1",
           "required": true
         },
         "items": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_storageclass_StorageClass",
             "existingJavaType": "io.fabric8.kubernetes.api.model.storage.StorageClass"
@@ -4442,7 +3808,6 @@
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "StorageClassList",
           "required": true
         },
@@ -4456,24 +3821,20 @@
     "storageospersistentvolumesource": {
       "properties": {
         "fsType": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "readOnly": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "secretRef": {
           "$ref": "#/definitions/kubernetes_core_ObjectReference",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
         },
         "volumeName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "volumeNamespace": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -4481,8 +3842,7 @@
     "time": {
       "properties": {
         "Time": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -4490,15 +3850,12 @@
     "topologyselectorlabelrequirement": {
       "properties": {
         "key": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "values": {
           "type": "array",
-          "description": "",
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         }
       },
@@ -4508,7 +3865,6 @@
       "properties": {
         "matchLabelExpressions": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/kubernetes_core_TopologySelectorLabelRequirement",
@@ -4521,12 +3877,10 @@
     "typemeta": {
       "properties": {
         "apiVersion": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "kind": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -4535,26 +3889,21 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "v1",
           "required": true
         },
         "dryRun": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "fieldManager": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "UpdateOptions",
           "required": true
         }
@@ -4565,13 +3914,11 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "storage.k8s.io/v1",
           "required": true
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "VolumeAttachment",
           "required": true
         },
@@ -4594,13 +3941,11 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "storage.k8s.io/v1",
           "required": true
         },
         "items": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/kubernetes_storageclass_VolumeAttachment",
             "existingJavaType": "io.fabric8.kubernetes.api.model.storage.VolumeAttachment"
@@ -4608,7 +3953,6 @@
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "VolumeAttachmentList",
           "required": true
         },
@@ -4626,8 +3970,7 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.PersistentVolumeSpec"
         },
         "persistentVolumeName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -4635,12 +3978,10 @@
     "volumeattachmentspec": {
       "properties": {
         "attacher": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "nodeName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "source": {
           "$ref": "#/definitions/kubernetes_storageclass_VolumeAttachmentSource",
@@ -4656,15 +3997,12 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.storage.VolumeError"
         },
         "attached": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "attachmentMetadata": {
           "type": "object",
-          "description": "",
           "additionalProperties": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           },
           "existingJavaType": "java.util.Map\u003cString, String\u003e"
         },
@@ -4678,8 +4016,7 @@
     "volumeerror": {
       "properties": {
         "message": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "time": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
@@ -4700,8 +4037,7 @@
     "volumenoderesources": {
       "properties": {
         "count": {
-          "type": "integer",
-          "description": ""
+          "type": "integer"
         }
       },
       "additionalProperties": true
@@ -4709,20 +4045,16 @@
     "vspherevirtualdiskvolumesource": {
       "properties": {
         "fsType": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "storagePolicyID": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "storagePolicyName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "volumePath": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "additionalProperties": true
