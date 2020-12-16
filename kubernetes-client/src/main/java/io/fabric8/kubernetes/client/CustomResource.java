@@ -80,8 +80,10 @@ public abstract class CustomResource<S extends KubernetesResource, T extends Kub
   
   public CustomResource() {
     final String version = HasMetadata.super.getApiVersion();
+    final Class<? extends CustomResource> clazz = getClass();
     if (isNullOrEmpty(version)) {
-      throw new IllegalArgumentException(getClass().getName() + " CustomResource must provide an API version using @ApiGroup and @ApiVersion annotations");
+      throw new IllegalArgumentException(clazz.getName() + " CustomResource must provide an API version using @"
+        + Group.class.getName() + " and @" + Version.class.getName() + " annotations");
     }
     this.apiVersion = version;
     this.kind = HasMetadata.super.getKind();
