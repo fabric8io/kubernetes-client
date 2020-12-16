@@ -21,6 +21,10 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+/**
+ * Allows to specify the plural form associated with a Custom Resource. If not provided, it will default to a computed value.
+ * See CustomResource#getPlural for more details.
+ */
 @Target({TYPE})
 @Retention(RUNTIME)
 public @interface Plural {

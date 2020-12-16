@@ -20,8 +20,8 @@ import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.fabric8.kubernetes.model.annotation.Group;
-import io.fabric8.kubernetes.model.annotation.Version;
 import io.fabric8.kubernetes.model.annotation.Kind;
+import io.fabric8.kubernetes.model.annotation.Version;
 
 /**
  * Represents any {@link KubernetesResource} which possesses a {@link ObjectMeta} and is associated with a kind and API version.
@@ -39,6 +39,13 @@ public interface HasMetadata extends KubernetesResource {
   
   void setMetadata(ObjectMeta metadata);
   
+  /**
+   * Retrieves the kind associated with the specified HasMetadata implementation. If the implementation is annotated with
+   * {@link Kind}, the annotation value will be used, otherwise the value will be derived from the class name.
+   *
+   * @param clazz the HasMetadata implementation whose Kind we want to retrieve
+   * @return the kind associated with the specified HasMetadata
+   */
   static String getKind(Class<? extends HasMetadata> clazz) {
     final Kind kind = clazz.getAnnotation(Kind.class);
     return kind != null ? kind.value() : clazz.getSimpleName();
@@ -48,6 +55,14 @@ public interface HasMetadata extends KubernetesResource {
     return getKind(getClass());
   }
   
+  /**
+   * Computes the {@code apiVersion} associated with this HasMetadata implementation. The value is derived from the
+   * {@link Group} and {@link Version} annotations.
+   *
+   * @param clazz the HasMetadata whose {@code apiVersion} we want to compute
+   * @return the computed {@code apiVersion} or {@code null} if neither {@link Group} or {@link Version} annotations are present
+   * @throws IllegalArgumentException if only one of {@link Group} or {@link Version} is provided
+   */
   static String getApiVersion(Class<? extends HasMetadata> clazz) {
     final String group = getGroup(clazz);
     final String version = getVersion(clazz);
@@ -61,15 +76,22 @@ public interface HasMetadata extends KubernetesResource {
   }
   
   /**
+   * Retrieves the group associated with the specified HasMetadata as defined by the {@link Group} annotation.
    *
-   * @param clazz
-   * @return
+   * @param clazz the HasMetadata whose group we want to retrieve
+   * @return the associated group or {@code null} if the HasMetadata is not annotated with {@link Group}
    */
   static String getGroup(Class<? extends HasMetadata> clazz) {
     final Group group = clazz.getAnnotation(Group.class);
     return group != null ? group.value() : null;
   }
   
+  /**
+   * Retrieves the version associated with the specified HasMetadata as defined by the {@link Version} annotation.
+   *
+   * @param clazz the HasMetadata whose version we want to retrieve
+   * @return the associated version or {@code null} if the HasMetadata is not annotated with {@link Version}
+   */
   static String getVersion(Class<? extends HasMetadata> clazz) {
     final Version version = clazz.getAnnotation(Version.class);
     return version != null ? version.value() : null;

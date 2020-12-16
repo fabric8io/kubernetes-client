@@ -22,6 +22,11 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+/**
+ * Allows to specify which API group the annotated class is defined under. Together with {@link Version}, this allows to
+ * determine the `apiVersion` field associated with the annotated resource.
+ * See https://kubernetes.io/docs/reference/using-api/#api-groups for more details.
+ */
 @Target({TYPE})
 @Retention(RUNTIME)
 public @interface Group {

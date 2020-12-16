@@ -26,7 +26,6 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.Pluralize;
 import io.fabric8.kubernetes.model.annotation.Plural;
 import io.fabric8.kubernetes.model.annotation.Singular;
@@ -38,6 +37,9 @@ import static io.fabric8.kubernetes.client.utils.Utils.isNullOrEmpty;
 
 /**
  * A base class for implementing a custom resource kind
+ *
+ * @param <S> the class providing the {@code Spec} part of this CustomResource
+ * @param <T> the class providing the {@code Status} part of this CustomResource
  */
 @JsonDeserialize(
   using = JsonDeserializer.None.class
@@ -56,7 +58,7 @@ public abstract class CustomResource<S extends KubernetesResource, T extends Kub
   public static final String NAMESPACE_SCOPE = "Namespaced";
   public static final String CLUSTER_SCOPE = "Cluster";
   private ObjectMeta metadata = new ObjectMeta();
-
+  
   @JsonProperty("spec")
   private S spec;
   
@@ -128,7 +130,13 @@ public abstract class CustomResource<S extends KubernetesResource, T extends Kub
     this.metadata = metadata;
   }
   
-  
+  /**
+   * Retrieves the plural form associated with the specified CustomResource if annotated with {@link Plural} or computes a default value
+   * using the value returned by {@link #getSingular(Class)} as input to {@link Pluralize#toPlural(String)}.
+   *
+   * @param clazz the CustomResource whose plural form we want to retrieve
+   * @return the plural form defined by the {@link Plural} annotation or a computed default value
+   */
   public static String getPlural(Class<? extends CustomResource> clazz) {
     final Plural fromAnnotation = clazz.getAnnotation(Plural.class);
     return (fromAnnotation != null ? fromAnnotation.value().toLowerCase(Locale.ROOT) : Pluralize.toPlural(getSingular(clazz)));
@@ -136,48 +144,87 @@ public abstract class CustomResource<S extends KubernetesResource, T extends Kub
   
   @JsonIgnore
   public String getPlural() {
-    if(plural == null) {
+    if (plural == null) {
       this.plural = getPlural(getClass());
     }
     return plural;
   }
   
+  /**
+   * Retrieves the singular form associated with the specified CustomResource as defined by the {@link Singular} annotation or
+   * computes a default value (lower-cased version of the value returned by {@link HasMetadata#getKind(Class)}) if the annotation
+   * is not present.
+   *
+   * @param clazz the CustomeResource whose singular form we want to retrieve
+   * @return the singular form defined by the {@link Singular} annotation or a computed default value
+   */
   public static String getSingular(Class<? extends CustomResource> clazz) {
     final Singular fromAnnotation = clazz.getAnnotation(Singular.class);
     return (fromAnnotation != null ? fromAnnotation.value() : HasMetadata.getKind(clazz)).toLowerCase(Locale.ROOT);
   }
   
+  /**
+   * Calls {@link CustomResource#getSingular(Class)} passing this instance's class as parameter
+   *
+   * @return the singular form associated with this CustomResource
+   */
   @JsonIgnore
   public String getSingular() {
-    if(singular == null) {
+    if (singular == null) {
       this.singular = getSingular(getClass());
     }
     return singular;
   }
   
-  
+  /**
+   * Computes the name of the Custom Resource Definition (CRD) associated with the specified CustomResource.
+   * See https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/ for more details.
+   *
+   * @param clazz the CustomResource whose CRD name we want to compute
+   * @return the CRD name associated with the CustomResource
+   */
   public static String getCRDName(Class<? extends CustomResource> clazz) {
     return getPlural(clazz) + "." + HasMetadata.getGroup(clazz);
   }
   
+  /**
+   * Calls {@link CustomResource#getCRDName(Class)} passing this instance's class as parameter
+   *
+   * @return the CRD name associated with this CustomResource
+   */
   @JsonIgnore
   public String getCRDName() {
-    if(crdName == null) {
+    if (crdName == null) {
       this.crdName = getCRDName(getClass());
     }
     return crdName;
   }
   
+  /**
+   * Retrieves the scope that this CustomResource targets
+   *
+   * @return the scope that this CustomResource targets. Possible values are {@link #CLUSTER_SCOPE} or {@link #NAMESPACE_SCOPE}.
+   */
   @JsonIgnore
   public String getScope() {
     return scope;
   }
   
+  /**
+   * Calls {@link HasMetadata#getGroup(Class)} passing this instance's class as parameter
+   *
+   * @return the group associated with this CustomResource
+   */
   @JsonIgnore
   public String getGroup() {
     return HasMetadata.getGroup(getClass());
   }
   
+  /**
+   * Calls {@link HasMetadata#getVersion(Class)} passing this instance's class as parameter
+   *
+   * @return the version associated with this CustomResource
+   */
   @JsonIgnore
   public String getVersion() {
     return HasMetadata.getVersion(getClass());

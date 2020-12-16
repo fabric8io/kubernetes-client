@@ -22,6 +22,12 @@ import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.TYPE;
 
+/**
+ * Allows to specify which version of the API the annotated class is defined under. Together with {@link Group}, this allows to
+ * determine the `apiVersion` field associated with the annotated resource.
+ * See https://kubernetes.io/docs/reference/using-api/#api-versioning for more details.
+ */
+
 @Target({TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Version {
