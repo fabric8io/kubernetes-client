@@ -51,7 +51,7 @@ class WaitForConditionWatcherTest {
     watcher.eventReceived(Action.ADDED, configMap);
     assertTrue(watcher.getFuture().isDone());
     assertEquals(watcher.getFuture().get(), configMap);
-    condition.isCalledWith(configMap);
+    assertTrue(condition.isCalledWith(configMap));
   }
 
   @Test
@@ -61,7 +61,7 @@ class WaitForConditionWatcherTest {
     watcher.eventReceived(Action.MODIFIED, configMap);
     assertTrue(watcher.getFuture().isDone());
     assertEquals(watcher.getFuture().get(), configMap);
-    condition.isCalledWith(configMap);
+    assertTrue(condition.isCalledWith(configMap));
   }
 
   @Test
@@ -71,7 +71,7 @@ class WaitForConditionWatcherTest {
     watcher.eventReceived(Action.DELETED, configMap);
     assertTrue(watcher.getFuture().isDone());
     assertNull(watcher.getFuture().get());
-    condition.isCalledWith(null);
+    assertTrue(condition.isCalledWith(null));
   }
 
   @Test
@@ -80,7 +80,7 @@ class WaitForConditionWatcherTest {
     WaitForConditionWatcher<ConfigMap> watcher = new WaitForConditionWatcher<>(condition);
     watcher.eventReceived(Action.ADDED, configMap);
     assertFalse(watcher.getFuture().isDone());
-    condition.isCalledWith(configMap);
+    assertTrue(condition.isCalledWith(configMap));
   }
 
   @Test
@@ -89,16 +89,23 @@ class WaitForConditionWatcherTest {
     WaitForConditionWatcher<ConfigMap> watcher = new WaitForConditionWatcher<>(condition);
     watcher.eventReceived(Action.MODIFIED, configMap);
     assertFalse(watcher.getFuture().isDone());
-    condition.isCalledWith(configMap);
+    assertTrue(condition.isCalledWith(configMap));
   }
 
   @Test
-  void itDoesNotCompleteOnNoMatchDeleted() {
+  void itCompletesExceptionallyOnUnexpectedDeletion() throws Exception {
     TrackingPredicate condition = condition(Objects::nonNull);
     WaitForConditionWatcher<ConfigMap> watcher = new WaitForConditionWatcher<>(condition);
     watcher.eventReceived(Action.DELETED, configMap);
-    assertFalse(watcher.getFuture().isDone());
-    condition.isCalledWith(null);
+    assertTrue(watcher.getFuture().isDone());
+    try {
+      watcher.getFuture().get();
+      fail("should have thrown exception");
+    } catch (ExecutionException e) {
+      assertEquals(WatcherException.class, e.getCause().getClass());
+      assertEquals("Unexpected deletion of watched resource, will never satisfy condition", e.getCause().getMessage());
+    }
+    assertTrue(condition.isCalledWith(null));
   }
 
   @Test
