@@ -63,8 +63,9 @@ public class CustomResourceDefinitionContext {
     try {
       final CustomResource instance = customResource.getDeclaredConstructor().newInstance();
     
-      String kind = instance.getKind();
-    
+      final String kind = instance.getKind();
+      final String version = instance.getVersion();
+  
       return new CustomResourceDefinitionBuilder()
         .withKind(kind)
         .withNewMetadata()
@@ -72,7 +73,8 @@ public class CustomResourceDefinitionContext {
         .endMetadata()
         .withNewSpec()
         .withGroup(instance.getGroup())
-        .addNewVersion().withName(instance.getVersion()).endVersion()
+        .withVersion(version) // also set version to the first (and only) versions item
+        .addNewVersion().withName(version).endVersion()
         .withScope(instance.getScope())
         .withNewNames()
         .withKind(kind)
