@@ -15,8 +15,8 @@
  */
 package io.fabric8.kubernetes.client;
 
-import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -26,12 +26,12 @@ public class CustomResourceTest {
   }
   
   @Test
-  public void missingGroupAndVersionShouldFail() {
+  void missingGroupAndVersionShouldFail() {
     assertThrows(IllegalArgumentException.class, MissingApiVersion::new);
   }
   
   @Test
-  public void valuesShouldProperlyBeComputedFromDefaultsAndAnnotations() {
+  void valuesShouldProperlyBeComputedFromDefaultsAndAnnotations() {
     final Good good = new Good();
     assertEquals("Good", good.getKind());
     assertEquals("goods", good.getPlural());
@@ -44,7 +44,7 @@ public class CustomResourceTest {
   
   @Test
   @DisplayName("fully annotated custom resource should use annotation values instead of defaults")
-  public void customCRShouldWork() {
+  void customCRShouldWork() {
     final Custom custom = new Custom();
     assertEquals(Custom.KIND, custom.getKind());
     assertEquals(Custom.SINGULAR, custom.getSingular());
