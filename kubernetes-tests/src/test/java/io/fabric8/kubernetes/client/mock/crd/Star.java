@@ -16,10 +16,10 @@
 package io.fabric8.kubernetes.client.mock.crd;
 
 import io.fabric8.kubernetes.client.CustomResource;
-import io.fabric8.kubernetes.model.annotation.ApiGroup;
-import io.fabric8.kubernetes.model.annotation.ApiVersion;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 
-@ApiVersion("v1alpha1")
-@ApiGroup("example.crd.com")
+@Version("v1alpha1")
+@Group("example.crd.com")
 public class Star extends CustomResource<StarSpec, StarStatus> {
 }

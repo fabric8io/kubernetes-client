@@ -19,8 +19,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.fabric8.kubernetes.model.annotation.ApiGroup;
-import io.fabric8.kubernetes.model.annotation.ApiVersion;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 import io.fabric8.kubernetes.model.annotation.Kind;
 
 /**
@@ -49,13 +49,13 @@ public interface HasMetadata extends KubernetesResource {
   }
   
   static String getApiVersion(Class<? extends HasMetadata> clazz) {
-    final ApiGroup group = clazz.getAnnotation(ApiGroup.class);
-    final ApiVersion version = clazz.getAnnotation(ApiVersion.class);
+    final Group group = clazz.getAnnotation(Group.class);
+    final Version version = clazz.getAnnotation(Version.class);
     if (group != null && version != null) {
       return group.value() + "/" + version.value();
     }
     if (group != null || version != null) {
-      throw new IllegalArgumentException("You need to specify both @" + ApiGroup.class.getSimpleName() + " and @" + ApiVersion.class.getSimpleName() + " annotations if you specify either");
+      throw new IllegalArgumentException("You need to specify both @" + Group.class.getSimpleName() + " and @" + Version.class.getSimpleName() + " annotations if you specify either");
     }
     return null;
   }

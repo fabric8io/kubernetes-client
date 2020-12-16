@@ -26,8 +26,8 @@ import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpressionImpl;
 import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JFormatter;
-import io.fabric8.kubernetes.model.annotation.ApiGroup;
-import io.fabric8.kubernetes.model.annotation.ApiVersion;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 import io.fabric8.kubernetes.model.annotation.PackageSuffix;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.transform.annotations.VelocityTransformation;
@@ -98,11 +98,11 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
         }
         String packageSuffix = getPackageSuffix(apiVersion);
 
-        resourceClass.annotate(ApiVersion.class).param(ANNOTATION_VALUE, apiVersion);
-        resourceClass.annotate(ApiGroup.class).param(ANNOTATION_VALUE, apiGroup);
+        resourceClass.annotate(Version.class).param(ANNOTATION_VALUE, apiVersion);
+        resourceClass.annotate(Group.class).param(ANNOTATION_VALUE, apiGroup);
         resourceClass.annotate(PackageSuffix.class).param(ANNOTATION_VALUE, packageSuffix);
-        resourceListClass.annotate(ApiVersion.class).param(ANNOTATION_VALUE, apiVersion);
-        resourceListClass.annotate(ApiGroup.class).param(ANNOTATION_VALUE, apiGroup);
+        resourceListClass.annotate(Version.class).param(ANNOTATION_VALUE, apiVersion);
+        resourceListClass.annotate(Group.class).param(ANNOTATION_VALUE, apiGroup);
         resourceListClass.annotate(PackageSuffix.class).param(ANNOTATION_VALUE, packageSuffix);
         pendingLists.remove(resourceName);
         pendingResources.remove(resourceName);

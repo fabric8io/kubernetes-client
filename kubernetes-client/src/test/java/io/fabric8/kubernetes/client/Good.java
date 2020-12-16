@@ -15,11 +15,11 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.model.annotation.ApiGroup;
-import io.fabric8.kubernetes.model.annotation.ApiVersion;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 
-@ApiVersion(Good.VERSION)
-@ApiGroup(Good.GROUP)
+@Version(Good.VERSION)
+@Group(Good.GROUP)
 public
 class Good extends CustomResource {
   public static final String VERSION = "v1beta1";

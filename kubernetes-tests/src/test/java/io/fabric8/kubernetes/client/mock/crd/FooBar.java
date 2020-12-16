@@ -17,12 +17,12 @@ package io.fabric8.kubernetes.client.mock.crd;
 
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.client.CustomResource;
-import io.fabric8.kubernetes.model.annotation.ApiGroup;
-import io.fabric8.kubernetes.model.annotation.ApiVersion;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 import io.fabric8.kubernetes.model.annotation.Singular;
 
-@ApiGroup(FooBar.GROUP)
-@ApiVersion(FooBar.VERSION)
+@Group(FooBar.GROUP)
+@Version(FooBar.VERSION)
 @Singular(FooBar.SINGULAR)
 public class FooBar  extends CustomResource implements Namespaced {
   public static final String GROUP = "baz.example.com";

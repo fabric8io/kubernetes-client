@@ -15,7 +15,7 @@
  *#
 #foreach ($m in ${model.values()})
 #foreach ($annotation in $m.annotations)
-#if ($annotation.getClassRef().getName().equals("ApiVersion"))
+#if ($annotation.getClassRef().getName().equals("Version"))
 #set ($apiVersion = $annotation.getParameters().get("value"))
 #end
 #end

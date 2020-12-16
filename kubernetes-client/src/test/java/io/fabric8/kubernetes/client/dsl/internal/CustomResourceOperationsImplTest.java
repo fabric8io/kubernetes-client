@@ -27,8 +27,8 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.internal.KubernetesDeserializer;
 
-import io.fabric8.kubernetes.model.annotation.ApiGroup;
-import io.fabric8.kubernetes.model.annotation.ApiVersion;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.core.JsonFactory;
@@ -42,8 +42,8 @@ import static org.junit.Assert.assertThat;
 
 public class CustomResourceOperationsImplTest {
 
-  @ApiGroup(MyCustomResource.GROUP)
-  @ApiVersion(MyCustomResource.VERSION)
+  @Group(MyCustomResource.GROUP)
+  @Version(MyCustomResource.VERSION)
   public static class MyCustomResource extends CustomResource {
     public static final String GROUP = "custom.group";
     public static final String VERSION = "v1alpha1";
@@ -52,8 +52,8 @@ public class CustomResourceOperationsImplTest {
   public static class MyCustomResourceList extends CustomResourceList<MyCustomResource> {
   }
   
-  @ApiGroup("sample.fabric8.io")
-  @ApiVersion("v1")
+  @Group("sample.fabric8.io")
+  @Version("v1")
   public static class Bar extends CustomResource {}
 
   private final CustomResourceDefinition crd = CustomResourceDefinitionContext.v1beta1CRDFromCustomResourceType(MyCustomResource.class).build();

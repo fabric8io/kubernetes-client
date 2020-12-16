@@ -20,8 +20,8 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.sun.codemodel.*;
-import io.fabric8.kubernetes.model.annotation.ApiGroup;
-import io.fabric8.kubernetes.model.annotation.ApiVersion;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import io.sundr.transform.annotations.VelocityTransformation;
@@ -70,8 +70,8 @@ public class ModelAnnotator extends AbstractAnnotator {
 
       if (isCRD(clazz, propertiesNode) || isCRDList(clazz, propertiesNode)) { // add CRD-specific annotations
         String apiVersion = getApiVersion(propertiesNode);
-        clazz.annotate(ApiVersion.class).param("value", extractVersion(apiVersion));
-        clazz.annotate(ApiGroup.class).param("value", extractGroup(apiVersion));
+        clazz.annotate(Version.class).param("value", extractVersion(apiVersion));
+        clazz.annotate(Group.class).param("value", extractGroup(apiVersion));
       }
 
       if (isCRD(clazz, propertiesNode)) { // include in model.properties (only CRDs not Lists!)

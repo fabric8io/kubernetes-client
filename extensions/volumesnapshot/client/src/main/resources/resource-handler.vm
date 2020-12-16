@@ -17,10 +17,10 @@
 #set ($version = "unknown")
 #set ($annotations = $model.annotations)
 #foreach ($annotation in $annotations)
-  #if ($annotation.getClassRef().getName().equals("ApiVersion"))
+  #if ($annotation.getClassRef().getName().equals("Version"))
     #set ($apiVersion = $annotation.getParameters().get("value"))
   #end
-  #if ($annotation.getClassRef().getName().equals("ApiGroup"))
+  #if ($annotation.getClassRef().getName().equals("Group"))
     #set ($apiGroup = $annotation.getParameters().get("value"))
   #end
 #end

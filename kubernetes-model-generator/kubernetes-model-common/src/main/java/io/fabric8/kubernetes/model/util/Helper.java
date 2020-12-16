@@ -15,8 +15,8 @@
  */
 package io.fabric8.kubernetes.model.util;
 
-import io.fabric8.kubernetes.model.annotation.ApiGroup;
-import io.fabric8.kubernetes.model.annotation.ApiVersion;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,10 +38,10 @@ public class Helper {
 
   public static String getAnnotationValue(Class kubernetesResourceType, Class annotationClass) {
     Annotation annotation = getAnnotation(kubernetesResourceType, annotationClass);
-    if (annotation instanceof ApiGroup) {
-      return ((ApiGroup) annotation).value();
-    } else if (annotation instanceof ApiVersion) {
-      return ((ApiVersion) annotation).value();
+    if (annotation instanceof Group) {
+      return ((Group) annotation).value();
+    } else if (annotation instanceof Version) {
+      return ((Version) annotation).value();
     }
     return null;
   }

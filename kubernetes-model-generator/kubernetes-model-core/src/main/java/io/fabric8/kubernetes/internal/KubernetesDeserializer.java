@@ -39,8 +39,8 @@ import io.fabric8.kubernetes.api.KubernetesResourceMappingProvider;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
-import io.fabric8.kubernetes.model.annotation.ApiGroup;
-import io.fabric8.kubernetes.model.annotation.ApiVersion;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 import io.fabric8.kubernetes.model.util.Helper;
 
 public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource> {
@@ -282,8 +282,8 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
         }
 
         private String getKeyFromClass(Class<? extends KubernetesResource> clazz) {
-          String apiGroup = Helper.getAnnotationValue(clazz, ApiGroup.class);
-          String apiVersion = Helper.getAnnotationValue(clazz, ApiVersion.class);
+          String apiGroup = Helper.getAnnotationValue(clazz, Group.class);
+          String apiVersion = Helper.getAnnotationValue(clazz, Version.class);
           if (apiGroup != null && !apiGroup.isEmpty() && apiVersion != null && !apiVersion.isEmpty()) {
             return createKey(apiGroup + "/" + apiVersion, clazz.getSimpleName());
           } else if (apiVersion != null && !apiVersion.isEmpty()) {

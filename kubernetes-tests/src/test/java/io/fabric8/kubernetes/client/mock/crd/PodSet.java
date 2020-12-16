@@ -17,10 +17,10 @@ package io.fabric8.kubernetes.client.mock.crd;
 
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.client.CustomResource;
-import io.fabric8.kubernetes.model.annotation.ApiGroup;
-import io.fabric8.kubernetes.model.annotation.ApiVersion;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 
-@ApiGroup("demo.k8s.io")
-@ApiVersion("v1alpha1")
+@Group("demo.k8s.io")
+@Version("v1alpha1")
 public class PodSet extends CustomResource<PodSetSpec, PodSetStatus> implements Namespaced {   
 }

@@ -15,14 +15,14 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.model.annotation.ApiGroup;
-import io.fabric8.kubernetes.model.annotation.ApiVersion;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 import io.fabric8.kubernetes.model.annotation.Kind;
 import io.fabric8.kubernetes.model.annotation.Plural;
 import io.fabric8.kubernetes.model.annotation.Singular;
 
-@ApiVersion(Custom.VERSION)
-@ApiGroup(Custom.GROUP)
+@Version(Custom.VERSION)
+@Group(Custom.GROUP)
 @Singular(Custom.SINGULAR)
 @Plural(Custom.PLURAL)
 @Kind(Custom.KIND)

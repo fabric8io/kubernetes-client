@@ -33,6 +33,9 @@
     easier to create CRDs if you already have defined your custom resource type
   - `CustomResource` is now parameterized by the spec and status types that it uses which further 
     removes boiler plate
+* Rename `@ApiVersion` and `@ApiGroup` to simply `@Version` and `@Group`, respectively. This was done
+  to unify annotations and also remove potential confusion between values provided to `@ApiVersion` 
+  and what is returned by `HasMetadata#getApiVersion`
 
 ### 5.0.0-alpha-3 (2020-12-10)
 

@@ -17,8 +17,8 @@
 package io.fabric8.kubernetes.client.utils;
 
 import io.fabric8.kubernetes.api.model.Namespaced;
-import io.fabric8.kubernetes.model.annotation.ApiGroup;
-import io.fabric8.kubernetes.model.annotation.ApiVersion;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -384,10 +384,10 @@ public class Utils {
 
   public static String getAnnotationValue(Class kubernetesResourceType, Class annotationClass) {
     Annotation annotation = getAnnotation(kubernetesResourceType, annotationClass);
-    if (annotation instanceof ApiGroup) {
-      return ((ApiGroup) annotation).value();
-    } else if (annotation instanceof ApiVersion) {
-      return ((ApiVersion) annotation).value();
+    if (annotation instanceof Group) {
+      return ((Group) annotation).value();
+    } else if (annotation instanceof Version) {
+      return ((Version) annotation).value();
     }
     return null;
   }
