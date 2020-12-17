@@ -60,6 +60,8 @@ import io.fabric8.kubernetes.client.mock.crd.StarList;
 import io.fabric8.kubernetes.client.mock.crd.StarSpec;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import org.junit.Rule;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
@@ -103,10 +105,24 @@ class DefaultSharedIndexInformerTest {
   static final Long OUTDATED_WATCH_EVENT_EMIT_TIME = 1L;
   static final long RESYNC_PERIOD = 5L;
   static final int LATCH_AWAIT_PERIOD_IN_SECONDS = 10;
+  private KubernetesClient client;
+  private SharedInformerFactory factory;
+
+  @BeforeEach
+  void setup() {
+    client = server.getClient();
+    factory = client.informers();
+  }
+
+  @AfterEach
+  void tearDown() {
+    factory.stopAllRegisteredInformers();
+  }
 
   @Test
   @DisplayName("Pod Informer should watch in test(as specified in OperationContext)")
   void testNamespacedPodInformer() throws InterruptedException {
+    // Given
     String startResourceVersion = "1000", endResourceVersion = "1001";
 
     server.expect().withPath("/api/v1/namespaces/test/pods")
@@ -119,10 +135,8 @@ class DefaultSharedIndexInformerTest {
       .waitFor(OUTDATED_WATCH_EVENT_EMIT_TIME)
       .andEmit(outdatedEvent).done().always();
 
-    KubernetesClient client = server.getClient();
-    SharedInformerFactory factory = client.informers();
+    // When
     SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, PodList.class, new OperationContext().withNamespace("test"), RESYNC_PERIOD);
-
     CountDownLatch foundExistingPod = new CountDownLatch(1);
     podInformer.addEventHandler(
       new ResourceEventHandler<Pod>() {
@@ -140,19 +154,19 @@ class DefaultSharedIndexInformerTest {
         public void onDelete(Pod oldObj, boolean deletedFinalStateUnknown) { }
       });
     factory.startAllRegisteredInformers();
-
     foundExistingPod.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
+
+    // Then
     assertEquals(0L, foundExistingPod.getCount());
     await().atMost(1, TimeUnit.SECONDS)
       .until(() -> podInformer.lastSyncResourceVersion().equals(endResourceVersion));
     assertEquals(endResourceVersion, podInformer.lastSyncResourceVersion());
-
-    factory.stopAllRegisteredInformers();
   }
 
   @Test
   @DisplayName("Pod Informer should watch in all namespaces")
   void testAllNamespacedInformer() throws InterruptedException {
+    // When
     String startResourceVersion = "1000", endResourceVersion = "1001";
 
     server.expect().withPath("/api/v1/pods")
@@ -165,10 +179,8 @@ class DefaultSharedIndexInformerTest {
       .waitFor(OUTDATED_WATCH_EVENT_EMIT_TIME)
       .andEmit(outdatedEvent).done().always();
 
-    KubernetesClient client = server.getClient();
-    SharedInformerFactory factory = client.informers();
+    // When
     SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, PodList.class, RESYNC_PERIOD);
-
     CountDownLatch foundExistingPod = new CountDownLatch(1);
     podInformer.addEventHandler(
       new ResourceEventHandler<Pod>() {
@@ -186,17 +198,17 @@ class DefaultSharedIndexInformerTest {
         public void onDelete(Pod oldObj, boolean deletedFinalStateUnknown) { }
       });
     factory.startAllRegisteredInformers();
-
     foundExistingPod.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
+
+    // Then
     assertEquals(0, foundExistingPod.getCount());
     assertEquals(endResourceVersion, podInformer.lastSyncResourceVersion());
-
-    factory.stopAllRegisteredInformers();
   }
 
   @Test
   @DisplayName("Pod Informer should reconnect on 410")
   void shouldReconnectInCaseOf410() throws InterruptedException {
+    // Given
     String startResourceVersion = "1000", midResourceVersion = "1001", mid2ResourceVersion = "1002", endResourceVersion = "1003";
 
     server.expect().withPath("/api/v1/pods")
@@ -219,10 +231,8 @@ class DefaultSharedIndexInformerTest {
       .done()
       .always();
 
-    KubernetesClient client = server.getClient();
-    SharedInformerFactory factory = client.informers();
+    // When
     SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, PodList.class, 10000L);
-
     CountDownLatch relistSuccessful = new CountDownLatch(1);
     podInformer.addEventHandler(
       new ResourceEventHandler<Pod>() {
@@ -241,16 +251,16 @@ class DefaultSharedIndexInformerTest {
         public void onDelete(Pod oldObj, boolean deletedFinalStateUnknown) { }
       });
     factory.startAllRegisteredInformers();
-
     relistSuccessful.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
-    assertEquals(0, relistSuccessful.getCount());
 
-    factory.stopAllRegisteredInformers();
+    // Then
+    assertEquals(0, relistSuccessful.getCount());
   }
 
   @Test
   @DisplayName("PodInformer's hasSynced() method should return false when it's not able to resync")
   void testHasSynced() {
+    // Given
     String startResourceVersion = "1000", endResourceVersion = "1001";
     server.expect().withPath("/api/v1/namespaces/test/pods")
       .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(startResourceVersion).endMetadata().withItems(Collections.emptyList()).build()).once();
@@ -262,10 +272,8 @@ class DefaultSharedIndexInformerTest {
       .waitFor(OUTDATED_WATCH_EVENT_EMIT_TIME)
       .andEmit(outdatedEvent).done().once();
 
-    KubernetesClient client = server.getClient();
-    SharedInformerFactory factory = client.informers();
+    // When
     SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, PodList.class, 2000L);
-
     podInformer.addEventHandler(
       new ResourceEventHandler<Pod>() {
         @Override
@@ -278,20 +286,17 @@ class DefaultSharedIndexInformerTest {
         public void onDelete(Pod oldObj, boolean deletedFinalStateUnknown) { }
       });
     factory.startAllRegisteredInformers();
-
     await().atMost(1, TimeUnit.SECONDS).until(() -> !podInformer.hasSynced());
-    assertFalse(podInformer.hasSynced());
 
-    factory.stopAllRegisteredInformers();
+    // Then
+    assertFalse(podInformer.hasSynced());
   }
 
   @Test
   void testEventListeners() throws InterruptedException {
-    KubernetesClient client = server.getClient();
-    SharedInformerFactory factory = client.informers();
+    // Given
     SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, PodList.class, 1000L);
     CountDownLatch failureCallbackReceived = new CountDownLatch(1);
-
     podInformer.addEventHandler(
       new ResourceEventHandler<Pod>() {
         @Override
@@ -304,20 +309,20 @@ class DefaultSharedIndexInformerTest {
         public void onDelete(Pod oldObj, boolean deletedFinalStateUnknown) { }
       });
 
+    // When
     factory.addSharedInformerEventListener(exception -> failureCallbackReceived.countDown());
     factory.startAllRegisteredInformers();
-
     failureCallbackReceived.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
-    assertEquals(0, failureCallbackReceived.getCount());
 
-    factory.stopAllRegisteredInformers();
+    // Then
+    assertEquals(0, failureCallbackReceived.getCount());
   }
 
   @Test
   @DisplayName("Should create Informer for Namespace resource")
   void testWithNamespaceInformer() throws InterruptedException {
+    // Given
     String startResourceVersion = "1000", endResourceVersion = "1001";
-
     server.expect().withPath("/api/v1/namespaces")
       .andReturn(200, new NamespaceListBuilder().withNewMetadata().withResourceVersion(startResourceVersion).endMetadata().withItems(Collections.emptyList()).build()).once();
     server.expect().withPath("/api/v1/namespaces?resourceVersion=" + startResourceVersion + "&watch=true")
@@ -328,41 +333,24 @@ class DefaultSharedIndexInformerTest {
       .waitFor(OUTDATED_WATCH_EVENT_EMIT_TIME)
       .andEmit(outdatedEvent).done().always();
 
-    KubernetesClient client = server.getClient();
-    SharedInformerFactory factory = client.informers();
+    // When
     SharedIndexInformer<Namespace> namespaceSharedIndexInformer = factory.sharedIndexInformerFor(
       Namespace.class, NamespaceList.class,
       RESYNC_PERIOD);
-
     CountDownLatch foundExistingNamespace = new CountDownLatch(1);
-    namespaceSharedIndexInformer.addEventHandler(
-      new ResourceEventHandler<Namespace>() {
-        @Override
-        public void onAdd(Namespace obj) {
-          if (obj.getMetadata().getName().equalsIgnoreCase("ns1")) {
-            foundExistingNamespace.countDown();
-          }
-        }
-
-        @Override
-        public void onUpdate(Namespace oldObj, Namespace newObj) { }
-
-        @Override
-        public void onDelete(Namespace oldObj, boolean deletedFinalStateUnknown) { }
-      });
+    namespaceSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingNamespace, "ns1"));
     factory.startAllRegisteredInformers();
-
     foundExistingNamespace.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
-    assertEquals(0, foundExistingNamespace.getCount());
 
-    factory.stopAllRegisteredInformers();
+    // Then
+    assertEquals(0, foundExistingNamespace.getCount());
   }
 
   @Test
   @DisplayName("Should create informer for ClusterRoleBinding resource")
   void testWithClusterBindingInformer() throws InterruptedException {
+    // Given
     String startResourceVersion = "1000", endResourceVersion = "1001";
-
     server.expect().withPath("/apis/rbac.authorization.k8s.io/v1beta1/clusterrolebindings")
       .andReturn(200, new ClusterRoleBindingListBuilder().withMetadata(new ListMetaBuilder().withResourceVersion(startResourceVersion).build()).withItems(Collections.emptyList()).build()).once();
     server.expect().withPath("/apis/rbac.authorization.k8s.io/v1beta1/clusterrolebindings?resourceVersion=" + startResourceVersion + "&watch=true")
@@ -373,39 +361,22 @@ class DefaultSharedIndexInformerTest {
       .waitFor(OUTDATED_WATCH_EVENT_EMIT_TIME)
       .andEmit(outdatedEvent).done().always();
 
-    KubernetesClient client = server.getClient();
-    SharedInformerFactory factory = client.informers();
+    // Given
     SharedIndexInformer<ClusterRoleBinding> clusterRoleBindingSharedIndexInformer = factory.sharedIndexInformerFor(
-      ClusterRoleBinding.class, ClusterRoleBindingList.class,
-      RESYNC_PERIOD);
-
+      ClusterRoleBinding.class, ClusterRoleBindingList.class, RESYNC_PERIOD);
     CountDownLatch foundExistingClusterRoleBinding = new CountDownLatch(1);
-    clusterRoleBindingSharedIndexInformer.addEventHandler(
-      new ResourceEventHandler<ClusterRoleBinding>() {
-        @Override
-        public void onAdd(ClusterRoleBinding obj) {
-          if (obj.getMetadata().getName().equalsIgnoreCase("crb1")) {
-            foundExistingClusterRoleBinding.countDown();
-          }
-        }
-
-        @Override
-        public void onUpdate(ClusterRoleBinding oldObj, ClusterRoleBinding newObj) { }
-
-        @Override
-        public void onDelete(ClusterRoleBinding oldObj, boolean deletedFinalStateUnknown) { }
-      });
+    clusterRoleBindingSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingClusterRoleBinding, "crb1"));
     factory.startAllRegisteredInformers();
-
     foundExistingClusterRoleBinding.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
-    assertEquals(0, foundExistingClusterRoleBinding.getCount());
 
-    factory.stopAllRegisteredInformers();
+    // Then
+    assertEquals(0, foundExistingClusterRoleBinding.getCount());
   }
 
   @Test
   @DisplayName("Should create informer for Deployment resource")
   void testWithDeploymentInformer() throws InterruptedException {
+    // Given
     String startResourceVersion = "1000", endResourceVersion = "1001";
 
     server.expect().withPath("/apis/apps/v1/namespaces/ns1/deployments")
@@ -418,40 +389,22 @@ class DefaultSharedIndexInformerTest {
       .waitFor(OUTDATED_WATCH_EVENT_EMIT_TIME)
       .andEmit(outdatedEvent).done().always();
 
-    KubernetesClient client = server.getClient();
-    SharedInformerFactory factory = client.informers();
+    // When
     SharedIndexInformer<Deployment> deploymentSharedIndexInformer = factory.sharedIndexInformerFor(
-      Deployment.class, DeploymentList.class,
-      new OperationContext().withNamespace("ns1"),
-      RESYNC_PERIOD);
-
+      Deployment.class, DeploymentList.class, new OperationContext().withNamespace("ns1"), RESYNC_PERIOD);
     CountDownLatch foundExistingDeployment = new CountDownLatch(1);
-    deploymentSharedIndexInformer.addEventHandler(
-      new ResourceEventHandler<Deployment>() {
-        @Override
-        public void onAdd(Deployment obj) {
-          if (obj.getMetadata().getName().equalsIgnoreCase("deployment1")) {
-            foundExistingDeployment.countDown();
-          }
-        }
-
-        @Override
-        public void onUpdate(Deployment oldObj, Deployment newObj) { }
-
-        @Override
-        public void onDelete(Deployment oldObj, boolean deletedFinalStateUnknown) { }
-      });
+    deploymentSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingDeployment, "deployment1"));
     factory.startAllRegisteredInformers();
-
     foundExistingDeployment.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
-    assertEquals(0, foundExistingDeployment.getCount());
 
-    factory.stopAllRegisteredInformers();
+    // Then
+    assertEquals(0, foundExistingDeployment.getCount());
   }
 
   @Test
   @DisplayName("Pod Informer should watch in ns1")
   void testWithOperationContextArgument() throws InterruptedException {
+    // Given
     String startResourceVersion = "1000", endResourceVersion = "1001";
 
     server.expect().withPath("/api/v1/namespaces/ns1/pods")
@@ -464,144 +417,62 @@ class DefaultSharedIndexInformerTest {
       .waitFor(OUTDATED_WATCH_EVENT_EMIT_TIME)
       .andEmit(outdatedEvent).done().always();
 
-    KubernetesClient client = server.getClient();
-    SharedInformerFactory factory = client.informers();
+    // When
     SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(
       Pod.class, PodList.class,
       new OperationContext().withNamespace("ns1"),
       100L);
-
     CountDownLatch foundExistingPod = new CountDownLatch(1);
-    podInformer.addEventHandler(
-      new ResourceEventHandler<Pod>() {
-        @Override
-        public void onAdd(Pod obj) {
-          if (obj.getMetadata().getName().equalsIgnoreCase("pod1")) {
-            foundExistingPod.countDown();
-          }
-        }
-
-        @Override
-        public void onUpdate(Pod oldObj, Pod newObj) { }
-
-        @Override
-        public void onDelete(Pod oldObj, boolean deletedFinalStateUnknown) { }
-      });
+    podInformer.addEventHandler(new TestResourceHandler<>(foundExistingPod, "pod1"));
     factory.startAllRegisteredInformers();
-
     foundExistingPod.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
-    assertEquals(0, foundExistingPod.getCount());
 
-    factory.stopAllRegisteredInformers();
+    // Then
+    assertEquals(0, foundExistingPod.getCount());
   }
 
   @Test
   @DisplayName("PodSet Informer should watch in all namespaces")
   void testPodSetCustomResourceInformerShouldWatchInAllNamespaces() throws InterruptedException {
-    String startResourceVersion = "1000", endResourceVersion = "1001";
+    // Given
+    setupMockServerExpectationsForCronTab("demo.k8s.io", "v1alpha1", null, "podsets",
+      this::getPodSetList, r -> new WatchEvent(getPodSet("podset1", r), "ADDED"));
 
-    server.expect().withPath("/apis/demo.k8s.io/v1alpha1/podsets")
-      .andReturn(HttpURLConnection.HTTP_OK, getPodSetList(startResourceVersion)).once();
-
-    server.expect().withPath("/apis/demo.k8s.io/v1alpha1/podsets?resourceVersion=" + startResourceVersion + "&watch=true")
-      .andUpgradeToWebSocket()
-      .open()
-      .waitFor(WATCH_EVENT_EMIT_TIME)
-      .andEmit(new WatchEvent(getPodSet("podset1", endResourceVersion), "ADDED"))
-      .waitFor(OUTDATED_WATCH_EVENT_EMIT_TIME)
-      .andEmit(outdatedEvent).done().always();
-    KubernetesClient client = server.getClient();
-
-
-    SharedInformerFactory sharedInformerFactory = client.informers();
-    SharedIndexInformer<PodSet> podSetSharedIndexInformer = sharedInformerFactory.sharedIndexInformerForCustomResource(podSetCustomResourceContext, PodSet.class, PodSetList.class, 60 * WATCH_EVENT_EMIT_TIME);
+    // When
+    SharedIndexInformer<PodSet> podSetSharedIndexInformer = factory.sharedIndexInformerForCustomResource(podSetCustomResourceContext, PodSet.class, PodSetList.class, 60 * WATCH_EVENT_EMIT_TIME);
     CountDownLatch foundExistingPodSet = new CountDownLatch(1);
-    podSetSharedIndexInformer.addEventHandler(
-      new ResourceEventHandler<PodSet>() {
-        @Override
-        public void onAdd(PodSet podSet) {
-          if (podSet.getMetadata().getName().equalsIgnoreCase("podset1")) {
-            foundExistingPodSet.countDown();
-          }
-        }
-
-        @Override
-        public void onUpdate(PodSet oldPodSet, PodSet newPodSet) { }
-
-        @Override
-        public void onDelete(PodSet podSet, boolean deletedFinalStateUnknown) { }
-      });
-    sharedInformerFactory.startAllRegisteredInformers();
+    podSetSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingPodSet, "podset1"));
+    factory.startAllRegisteredInformers();
+    foundExistingPodSet.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
 
     // Namespace set in Client's Configuration from MockWebServer
     assertEquals("test", client.getConfiguration().getNamespace());
-    foundExistingPodSet.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
     assertEquals(0, foundExistingPodSet.getCount());
-
-    sharedInformerFactory.stopAllRegisteredInformers();
   }
 
   @Test
   @DisplayName("PodSet Informer should watch in ns1(as specified in OperationContext)")
   void testWithPodSetCustomResourceInformerShouldWatchInSpecifiedNamespace() throws InterruptedException {
-    String startResourceVersion = "1000", endResourceVersion = "1001";
+    // Given
+    setupMockServerExpectationsForCronTab("demo.k8s.io", "v1alpha1", "ns1", "podsets",
+      this::getPodSetList, r -> new WatchEvent(getPodSet("podset1", r), "ADDED"));
 
-    server.expect().withPath("/apis/demo.k8s.io/v1alpha1/namespaces/ns1/podsets")
-      .andReturn(HttpURLConnection.HTTP_OK, getPodSetList(startResourceVersion)).once();
-
-    server.expect().withPath("/apis/demo.k8s.io/v1alpha1/namespaces/ns1/podsets?resourceVersion=" + startResourceVersion + "&watch=true")
-      .andUpgradeToWebSocket()
-      .open()
-      .waitFor(WATCH_EVENT_EMIT_TIME)
-      .andEmit(new WatchEvent(getPodSet("podset1", endResourceVersion), "ADDED"))
-      .waitFor(OUTDATED_WATCH_EVENT_EMIT_TIME)
-      .andEmit(outdatedEvent).done().always();
-    KubernetesClient client = server.getClient();
-
-    SharedInformerFactory sharedInformerFactory = client.informers();
-    SharedIndexInformer<PodSet> podSetSharedIndexInformer = sharedInformerFactory.sharedIndexInformerForCustomResource(podSetCustomResourceContext, PodSet.class, PodSetList.class, new OperationContext().withNamespace("ns1"), 60 * WATCH_EVENT_EMIT_TIME);
+    // When
+    SharedIndexInformer<PodSet> podSetSharedIndexInformer = factory.sharedIndexInformerForCustomResource(podSetCustomResourceContext, PodSet.class, PodSetList.class, new OperationContext().withNamespace("ns1"), 60 * WATCH_EVENT_EMIT_TIME);
     CountDownLatch foundExistingPodSet = new CountDownLatch(1);
-    podSetSharedIndexInformer.addEventHandler(
-      new ResourceEventHandler<PodSet>() {
-        @Override
-        public void onAdd(PodSet podSet) {
-          if (podSet.getMetadata().getName().equalsIgnoreCase("podset1")) {
-            foundExistingPodSet.countDown();
-          }
-        }
-
-        @Override
-        public void onUpdate(PodSet oldPodSet, PodSet newPodSet) { }
-
-        @Override
-        public void onDelete(PodSet podSet, boolean deletedFinalStateUnknown) { }
-      });
-    sharedInformerFactory.startAllRegisteredInformers();
-
+    podSetSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingPodSet, "podset1"));
+    factory.startAllRegisteredInformers();
     foundExistingPodSet.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
-    assertEquals(0, foundExistingPodSet.getCount());
 
-    sharedInformerFactory.stopAllRegisteredInformers();
+    // Then
+    assertEquals(0, foundExistingPodSet.getCount());
   }
 
   @Test
   void testWithOperationContextArgumentForClusterScopedCustomResource() throws InterruptedException {
-    String startResourceVersion = "1000", endResourceVersion = "1001";
-    StarList starList = new StarList();
-    starList.setMetadata(new ListMetaBuilder().withResourceVersion(startResourceVersion).build());
-
-    server.expect().withPath("/apis/example.crd.com/v1alpha1/stars")
-      .andReturn(200, starList).once();
-
-    server.expect().withPath("/apis/example.crd.com/v1alpha1/stars?resourceVersion=" + startResourceVersion + "&watch=true")
-      .andUpgradeToWebSocket()
-      .open()
-      .waitFor(WATCH_EVENT_EMIT_TIME)
-      .andEmit(new WatchEvent(getStar("star1", endResourceVersion), "ADDED"))
-      .waitFor(OUTDATED_WATCH_EVENT_EMIT_TIME)
-      .andEmit(outdatedEvent).done().always();
-    KubernetesClient client = server.getClient();
-
+    // Given
+    setupMockServerExpectationsForCronTab("example.crd.com", "v1alpha1", null, "stars",
+      this::getStarList, r -> new WatchEvent(getStar("star1", r), "ADDED"));
     CustomResourceDefinitionContext crdContext = new CustomResourceDefinitionContext.Builder()
       .withVersion("v1alpha1")
       .withScope("Cluster")
@@ -609,30 +480,15 @@ class DefaultSharedIndexInformerTest {
       .withPlural("stars")
       .build();
 
-    SharedInformerFactory sharedInformerFactory = client.informers();
-    SharedIndexInformer<Star> starSharedIndexInformer = sharedInformerFactory.sharedIndexInformerForCustomResource(crdContext, Star.class, StarList.class,  RESYNC_PERIOD);
+    // When
+    SharedIndexInformer<Star> starSharedIndexInformer = factory.sharedIndexInformerForCustomResource(crdContext, Star.class, StarList.class,  RESYNC_PERIOD);
     CountDownLatch foundExistingStar = new CountDownLatch(1);
-    starSharedIndexInformer.addEventHandler(
-      new ResourceEventHandler<Star>() {
-        @Override
-        public void onAdd(Star star) {
-          if (star.getMetadata().getName().equalsIgnoreCase("star1")) {
-            foundExistingStar.countDown();
-          }
-        }
-
-        @Override
-        public void onUpdate(Star oldStar, Star newStar) { }
-
-        @Override
-        public void onDelete(Star star, boolean deletedFinalStateUnknown) { }
-      });
-    sharedInformerFactory.startAllRegisteredInformers();
-
+    starSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingStar, "star1"));
+    factory.startAllRegisteredInformers();
     foundExistingStar.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
-    assertEquals(0, foundExistingStar.getCount());
 
-    sharedInformerFactory.stopAllRegisteredInformers();
+    // Then
+    assertEquals(0, foundExistingStar.getCount());
   }
 
   @Test
@@ -649,10 +505,8 @@ class DefaultSharedIndexInformerTest {
       .andEmit(new WatchEvent(new PodBuilder().withNewMetadata().withNamespace("test").withName("pod1").withResourceVersion(endResourceVersion).endMetadata().build(), "ADDED"))
       .waitFor(OUTDATED_WATCH_EVENT_EMIT_TIME)
       .andEmit(outdatedEvent).done().always();
-    KubernetesClient client = server.getClient();
 
     // When
-    SharedInformerFactory factory = client.informers();
     SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, RESYNC_PERIOD);
     CountDownLatch foundExistingPod = new CountDownLatch(1);
     podInformer.addEventHandler(new TestResourceHandler<>(foundExistingPod, "pod1"));
@@ -661,7 +515,6 @@ class DefaultSharedIndexInformerTest {
 
     // Then
     assertEquals(0, foundExistingPod.getCount());
-    factory.stopAllRegisteredInformers();
   }
 
   @Test
@@ -678,11 +531,9 @@ class DefaultSharedIndexInformerTest {
       .andEmit(new WatchEvent(new PodBuilder().withNewMetadata().withNamespace("ns1").withName("pod1").withResourceVersion(endResourceVersion).endMetadata().build(), "ADDED"))
       .waitFor(OUTDATED_WATCH_EVENT_EMIT_TIME)
       .andEmit(outdatedEvent).done().always();
-    KubernetesClient client = server.getClient();
     OperationContext operationContext = new OperationContext().withNamespace("ns1");
 
     // When
-    SharedInformerFactory factory = client.informers();
     SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, operationContext, RESYNC_PERIOD);
     CountDownLatch foundExistingPod = new CountDownLatch(1);
     podInformer.addEventHandler(new TestResourceHandler<>(foundExistingPod, "pod1"));
@@ -691,7 +542,6 @@ class DefaultSharedIndexInformerTest {
 
     // Then
     assertEquals(0, foundExistingPod.getCount());
-    factory.stopAllRegisteredInformers();
   }
 
   @Test
@@ -700,20 +550,17 @@ class DefaultSharedIndexInformerTest {
     // Given
     setupMockServerExpectationsForCronTab("stable.example.com", "v1", null, "crontabs",
       this::getCronTabList, r -> new WatchEvent(getCronTab("crontab1", r), "ADDED"));
-    KubernetesClient client = server.getClient();
 
     // When
-    SharedInformerFactory sharedInformerFactory = client.informers();
-    SharedIndexInformer<CronTab> cronTabSharedIndexInformer = sharedInformerFactory.sharedIndexInformerForCustomResource(CronTab.class, CronTabList.class, 60 * WATCH_EVENT_EMIT_TIME);
+    SharedIndexInformer<CronTab> cronTabSharedIndexInformer = factory.sharedIndexInformerForCustomResource(CronTab.class, CronTabList.class, 60 * WATCH_EVENT_EMIT_TIME);
     CountDownLatch foundExistingCronTab = new CountDownLatch(1);
     cronTabSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingCronTab, "crontab1"));
-    sharedInformerFactory.startAllRegisteredInformers();
+    factory.startAllRegisteredInformers();
     foundExistingCronTab.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
 
     // Then
     assertEquals("test", client.getConfiguration().getNamespace());
     assertEquals(0, foundExistingCronTab.getCount());
-    sharedInformerFactory.stopAllRegisteredInformers();
   }
 
   @Test
@@ -722,19 +569,16 @@ class DefaultSharedIndexInformerTest {
     // Given
     setupMockServerExpectationsForCronTab("stable.example.com", "v1", "ns1", "crontabs",
       this::getCronTabList, r -> new WatchEvent(getCronTab("crontab1", r), "ADDED"));
-    KubernetesClient client = server.getClient();
 
     // When
-    SharedInformerFactory sharedInformerFactory = client.informers();
-    SharedIndexInformer<CronTab> cronTabSharedIndexInformer = sharedInformerFactory.sharedIndexInformerForCustomResource(CronTab.class, CronTabList.class, new OperationContext().withNamespace("ns1"), 60 * WATCH_EVENT_EMIT_TIME);
+    SharedIndexInformer<CronTab> cronTabSharedIndexInformer = factory.sharedIndexInformerForCustomResource(CronTab.class, CronTabList.class, new OperationContext().withNamespace("ns1"), 60 * WATCH_EVENT_EMIT_TIME);
     CountDownLatch foundExistingCronTab = new CountDownLatch(1);
     cronTabSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingCronTab, "crontab1"));
-    sharedInformerFactory.startAllRegisteredInformers();
+    factory.startAllRegisteredInformers();
     foundExistingCronTab.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
 
     // Then
     assertEquals(0, foundExistingCronTab.getCount());
-    sharedInformerFactory.stopAllRegisteredInformers();
   }
 
   @Test
@@ -743,20 +587,17 @@ class DefaultSharedIndexInformerTest {
     // Given
     setupMockServerExpectationsForCronTab("stable.example.com", "v1", null, "crontabs",
       this::getCronTabList, r -> new WatchEvent(getCronTab("crontab1", r), "ADDED"));
-    KubernetesClient client = server.getClient();
 
     // When
-    SharedInformerFactory sharedInformerFactory = client.informers();
-    SharedIndexInformer<CronTab> cronTabSharedIndexInformer = sharedInformerFactory.sharedIndexInformerForCustomResource(CronTab.class, 60 * WATCH_EVENT_EMIT_TIME);
+    SharedIndexInformer<CronTab> cronTabSharedIndexInformer = factory.sharedIndexInformerForCustomResource(CronTab.class, 60 * WATCH_EVENT_EMIT_TIME);
     CountDownLatch foundExistingCronTab = new CountDownLatch(1);
     cronTabSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingCronTab, "crontab1"));
-    sharedInformerFactory.startAllRegisteredInformers();
+    factory.startAllRegisteredInformers();
     foundExistingCronTab.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
 
     // Then
     assertEquals("test", client.getConfiguration().getNamespace());
     assertEquals(0, foundExistingCronTab.getCount());
-    sharedInformerFactory.stopAllRegisteredInformers();
   }
 
   @Test
@@ -765,19 +606,16 @@ class DefaultSharedIndexInformerTest {
     // Given
     setupMockServerExpectationsForCronTab("stable.example.com", "v1", "ns1", "crontabs",
       this::getCronTabList, r -> new WatchEvent(getCronTab("crontab1", r), "ADDED"));
-    KubernetesClient client = server.getClient();
 
     // When
-    SharedInformerFactory sharedInformerFactory = client.informers();
-    SharedIndexInformer<CronTab> cronTabSharedIndexInformer = sharedInformerFactory.sharedIndexInformerForCustomResource(CronTab.class, new OperationContext().withNamespace("ns1"), 60 * WATCH_EVENT_EMIT_TIME);
+    SharedIndexInformer<CronTab> cronTabSharedIndexInformer = factory.sharedIndexInformerForCustomResource(CronTab.class, new OperationContext().withNamespace("ns1"), 60 * WATCH_EVENT_EMIT_TIME);
     final CountDownLatch foundExistingCronTab = new CountDownLatch(1);
     cronTabSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingCronTab, "crontab1"));
-    sharedInformerFactory.startAllRegisteredInformers();
+    factory.startAllRegisteredInformers();
+    foundExistingCronTab.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
 
     // Then
-    foundExistingCronTab.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
     assertEquals(0, foundExistingCronTab.getCount());
-    sharedInformerFactory.stopAllRegisteredInformers();
   }
 
   @Test
@@ -786,20 +624,17 @@ class DefaultSharedIndexInformerTest {
     // Given
     setupMockServerExpectationsForCronTab("stable.example.com", "v1", null, "crontabs",
       this::getCronTabList, r -> new WatchEvent(getCronTab("crontab1", r), "ADDED"));
-    KubernetesClient client = server.getClient();
 
     // When
-    SharedInformerFactory sharedInformerFactory = client.informers();
-    SharedIndexInformer<CronTab> cronTabSharedIndexInformer = sharedInformerFactory.sharedIndexInformerForCustomResource(cronTabCRDContext, CronTab.class, 60 * WATCH_EVENT_EMIT_TIME);
+    SharedIndexInformer<CronTab> cronTabSharedIndexInformer = factory.sharedIndexInformerForCustomResource(cronTabCRDContext, CronTab.class, 60 * WATCH_EVENT_EMIT_TIME);
     CountDownLatch foundExistingCronTab = new CountDownLatch(1);
     cronTabSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingCronTab, "crontab1"));
-    sharedInformerFactory.startAllRegisteredInformers();
+    factory.startAllRegisteredInformers();
     foundExistingCronTab.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
 
     // Then
     assertEquals("test", client.getConfiguration().getNamespace());
     assertEquals(0, foundExistingCronTab.getCount());
-    sharedInformerFactory.stopAllRegisteredInformers();
   }
 
   @Test
@@ -808,20 +643,17 @@ class DefaultSharedIndexInformerTest {
     // Given
     setupMockServerExpectationsForCronTab("stable.example.com", "v1", "ns1", "crontabs",
       this::getCronTabList, r -> new WatchEvent(getCronTab("crontab1", r), "ADDED"));
-    KubernetesClient client = server.getClient();
 
     // When
-    SharedInformerFactory sharedInformerFactory = client.informers();
-    SharedIndexInformer<CronTab> cronTabSharedIndexInformer = sharedInformerFactory.sharedIndexInformerForCustomResource(cronTabCRDContext, CronTab.class, new OperationContext().withNamespace("ns1"), 60 * WATCH_EVENT_EMIT_TIME);
+    SharedIndexInformer<CronTab> cronTabSharedIndexInformer = factory.sharedIndexInformerForCustomResource(cronTabCRDContext, CronTab.class, new OperationContext().withNamespace("ns1"), 60 * WATCH_EVENT_EMIT_TIME);
     CountDownLatch foundExistingCronTab = new CountDownLatch(1);
     cronTabSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingCronTab, "crontab1"));
-    sharedInformerFactory.startAllRegisteredInformers();
+    factory.startAllRegisteredInformers();
     foundExistingCronTab.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
 
     // Then
     assertEquals("test", client.getConfiguration().getNamespace());
     assertEquals(0, foundExistingCronTab.getCount());
-    sharedInformerFactory.stopAllRegisteredInformers();
   }
 
   @Test
@@ -829,20 +661,17 @@ class DefaultSharedIndexInformerTest {
     // Given
     setupMockServerExpectationsForCronTab("jungle.example.com", "v1", null, "animals",
       this::getAnimalList, r -> new WatchEvent(getAnimal("red-panda", "Carnivora", r), "ADDED"));
-    KubernetesClient client = server.getClient();
 
     // When
-    SharedInformerFactory sharedInformerFactory = client.informers();
-    SharedIndexInformer<Animal> animalSharedIndexInformer = sharedInformerFactory.sharedIndexInformerForCustomResource(Animal.class, 60 * WATCH_EVENT_EMIT_TIME);
+    SharedIndexInformer<Animal> animalSharedIndexInformer = factory.sharedIndexInformerForCustomResource(Animal.class, 60 * WATCH_EVENT_EMIT_TIME);
     CountDownLatch foundExistingCronTab = new CountDownLatch(1);
     animalSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingCronTab, "red-panda"));
-    sharedInformerFactory.startAllRegisteredInformers();
+    factory.startAllRegisteredInformers();
     foundExistingCronTab.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
 
     // Then
     assertEquals("test", client.getConfiguration().getNamespace());
     assertEquals(0, foundExistingCronTab.getCount());
-    sharedInformerFactory.stopAllRegisteredInformers();
   }
 
   private KubernetesResource getAnimal(String name, String order, String resourceVersion) {
@@ -853,6 +682,12 @@ class DefaultSharedIndexInformerTest {
     animal.setMetadata(new ObjectMetaBuilder().withName(name).withResourceVersion(resourceVersion).build());
     animal.setSpec(animalSpec);
     return animal;
+  }
+
+  private StarList getStarList(String startResourceVersion) {
+    StarList starList = new StarList();
+    starList.setMetadata(new ListMetaBuilder().withResourceVersion(startResourceVersion).build());
+    return starList;
   }
 
   private CronTabList getCronTabList(String startResourceVersion) {
