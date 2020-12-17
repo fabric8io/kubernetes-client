@@ -16,7 +16,6 @@
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionNames;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
@@ -24,11 +23,12 @@ import io.fabric8.kubernetes.client.mock.crd.FooBar;
 import io.fabric8.kubernetes.client.mock.crd.FooBarList;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import org.junit.Rule;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @EnableRuleMigrationSupport
 class CustomResourceCrud1109Test {
@@ -36,27 +36,66 @@ class CustomResourceCrud1109Test {
   public KubernetesServer server = new KubernetesServer(true,true);
 
   private CustomResourceDefinition customResourceDefinition;
+  private MixedOperation<FooBar, FooBarList, Resource<FooBar>> fooBarClient;
 
   @BeforeEach
   void setUp() {
     customResourceDefinition = server.getClient().apiextensions().v1beta1().customResourceDefinitions()
       .create(CustomResourceDefinitionContext.v1beta1CRDFromCustomResourceType(FooBar.class).build());
+    fooBarClient = server.getClient().customResources(FooBar.class, FooBarList.class);
   }
 
   @Test
-  @DisplayName("Fix for issue 1109, verifies resources with dashes can be retrieved")
-  void test1109() {
+  @DisplayName("Generated customResourceDefinition has dashes in singular and plural but not in kind")
+  void testGeneratedCRDHasDashesInNamesButNotInKind() {
+    assertThat(customResourceDefinition)
+      .hasFieldOrPropertyWithValue("kind", "FooBar")
+      .hasFieldOrPropertyWithValue("spec.names.kind", "FooBar")
+      .hasFieldOrPropertyWithValue("spec.names.singular", "foo-bar")
+      .hasFieldOrPropertyWithValue("spec.names.plural", "foo-bars");
+  }
+
+  @Test
+  @DisplayName("KubernetesCrudDispatcher, HTTP requests are performed to dashed plural (not to lower-cased kind)")
+  void testRequestsArePerformedToDashedPath() throws Exception {
+    // When
+    fooBarClient.inNamespace("my-namespace").list();
+    // Then
+    assertThat(server.getLastRequest())
+      .hasFieldOrPropertyWithValue("path", "/apis/baz.example.com/v1alpha1/namespaces/my-namespace/foo-bars");
+  }
+
+  @Test
+  @DisplayName("Get single CR resource, with CR created through KubernetesCrudDispatcher, should perform GET to crd list with dashed plural")
+  void test1109GetSingleResource() {
     // Given
-    final MixedOperation<FooBar, FooBarList, Resource<FooBar>> fooBarClient = server.getClient().customResources(FooBar.class, FooBarList.class);
     final FooBar fb1 = new FooBar();
     fb1.getMetadata().setName("example");
     fooBarClient.inNamespace("default").create(fb1);
-    final FooBarList list = fooBarClient.inNamespace("default").list();
-    Assertions.assertEquals(1, list.getItems().size());
-    Assertions.assertEquals("FooBar", list.getItems().iterator().next().getKind());
     // When
     final FooBar fooBar = fooBarClient.inNamespace("default").withName("example").get();
     // Then
-    Assertions.assertNotNull(fooBar);
+    assertThat(fooBar)
+      .isNotNull()
+      .hasFieldOrPropertyWithValue("metadata.name", "example")
+      .hasFieldOrPropertyWithValue("kind", "FooBar")
+      .isNotSameAs(fb1);
+  }
+
+  @Test
+  @DisplayName("Get CR list, with CR created through KubernetesCrudDispatcher, should perform GET to crd list with dashed plural")
+  void test1109GetList() {
+    // Given
+    final FooBar fb1 = new FooBar();
+    fb1.getMetadata().setName("example");
+    fooBarClient.inNamespace("default").create(fb1);
+    // When
+    final FooBarList fooBarList = fooBarClient.inNamespace("default").list();
+    // Then
+    assertThat(fooBarList)
+      .isNotNull()
+      .extracting(FooBarList::getItems)
+      .asList()
+      .hasSize(1);
   }
 }

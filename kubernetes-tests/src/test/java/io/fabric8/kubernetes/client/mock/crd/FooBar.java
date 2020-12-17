@@ -24,7 +24,7 @@ import io.fabric8.kubernetes.model.annotation.Singular;
 @Group(FooBar.GROUP)
 @Version(FooBar.VERSION)
 @Singular(FooBar.SINGULAR)
-public class FooBar  extends CustomResource implements Namespaced {
+public class FooBar extends CustomResource implements Namespaced {
   public static final String GROUP = "baz.example.com";
   public static final String VERSION = "v1alpha1";
   public static final String SINGULAR = "foo-bar";
