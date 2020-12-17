@@ -3,6 +3,7 @@
 ### 5.0-SNAPSHOT
 
 #### Bugs
+* Fix: Reliability improvements to watchers
 * Fix #2592: ConcurrentModificationException in CRUD KubernetesMockServer
 * Fix #2519: Generated schemas contains a valid meta-schema URI reference (`http://json-schema.org/draft-05/schema#`)
 * Fix #2631: Handle null values when getting current context on OIDC interceptors
