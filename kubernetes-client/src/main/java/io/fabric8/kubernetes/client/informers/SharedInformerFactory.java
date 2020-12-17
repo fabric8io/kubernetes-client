@@ -109,8 +109,8 @@ public class SharedInformerFactory extends BaseOperation {
    * @return the shared index informer
    */
   public synchronized <T extends HasMetadata> SharedIndexInformer<T> sharedIndexInformerFor(Class<T> apiTypeClass, long resyncPeriodInMillis) {
-    return sharedIndexInformerFor(apiTypeClass, KubernetesResourceUtil.inferListType(apiTypeClass), context.withApiGroupName(Utils.getAnnotationValue(apiTypeClass, ApiGroup.class))
-      .withApiGroupVersion(Utils.getAnnotationValue(apiTypeClass, ApiVersion.class))
+    return sharedIndexInformerFor(apiTypeClass, KubernetesResourceUtil.inferListType(apiTypeClass), context.withApiGroupName(Utils.getAnnotationValue(apiTypeClass, Group.class))
+      .withApiGroupVersion(Utils.getAnnotationValue(apiTypeClass, Version.class))
       .withPlural(getPluralFromKind(apiTypeClass.getSimpleName()))
       .withIsNamespaceConfiguredFromGlobalConfig(context.isNamespaceFromGlobalConfig()), resyncPeriodInMillis);
   }

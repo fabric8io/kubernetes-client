@@ -372,9 +372,13 @@ public class KubernetesResourceUtil {
 
   public static <T extends HasMetadata> Class<? extends KubernetesResourceList> inferListType(Class<T> type) {
     try {
-      return (Class<KubernetesResourceList<T>>) Class.forName(type.getName() + "List");
+      Class<?> listTypeClass = Class.forName(type.getName() + "List");
+      if (KubernetesResourceList.class.isAssignableFrom(listTypeClass)) {
+        return (Class<KubernetesResourceList<T>>) listTypeClass;
+      }
     } catch (ClassNotFoundException e) {
       throw new IllegalStateException("No List type found for " + type.getName() + ". Is it a Custom Resource?");
     }
+    return null;
   }
 }

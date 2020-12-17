@@ -15,46 +15,12 @@
  */
 package io.fabric8.kubernetes.client.mock.crd;
 
-import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.client.CustomResource;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 
-public class Animal extends CustomResource {
-  private AnimalSpec spec;
-  private AnimalStatus status;
-
-  @Override
-  public ObjectMeta getMetadata() {
-    return super.getMetadata();
-  }
-
-  public AnimalSpec getSpec() {
-    return spec;
-  }
-
-  public void setSpec(AnimalSpec spec) {
-    this.spec = spec;
-  }
-
-  public AnimalStatus getStatus() {
-    return status;
-  }
-
-  public void setStatus(AnimalStatus status) {
-    this.status = status;
-  }
-
-  @Override
-  public String getApiVersion() {
-    return "jungle.example.com/v1";
-  }
-
-  @Override
-  public String toString() {
-    return "Animal{" +
-      "apiVersion='" + getApiVersion() + "'" +
-      ", metadata=" + getMetadata() +
-      ", spec=" + spec +
-      ", status=" + status +
-      "}";
-  }
+@Version("v1")
+@Group("jungle.example.com")
+public class Animal extends CustomResource<AnimalSpec, AnimalStatus> implements Namespaced {
 }
