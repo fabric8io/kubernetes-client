@@ -3,6 +3,7 @@
 ### 5.0-SNAPSHOT
 
 #### Bugs
+* Fix: Reliability improvements to watchers
 * Fix #2592: ConcurrentModificationException in CRUD KubernetesMockServer
 * Fix #2519: Generated schemas contains a valid meta-schema URI reference (`http://json-schema.org/draft-05/schema#`)
 * Fix #2631: Handle null values when getting current context on OIDC interceptors
@@ -12,12 +13,32 @@
 
 #### Improvements
 * Fix: Allow specifying PropagationPolicy when using deleteExisting
+* Fix: Adds a convenience method for referring to Cache keys by namespace and name rather than item
 * Fix: CustomResourceDefinitionContext.fromCrd support for v1 CustomResourceDefinition
 * Fix #2642: Update kubernetes-examples to use apps/v1 Deployment rather than extensions/v1beta1
 
 #### Dependency Upgrade
 
 #### New Features
+* Fix #2611: Support for Custom Resource and Custom Resource Definitions has been improved
+  - New annotations have been introduced for users to specify group, version, singular and plural
+    properties for `CustomResource` instances
+  - `CustomResource` instances must now be annotated with `@ApiVersion` and `@ApiGroup` so that the 
+    associated information can be automatically computed
+  - `HasMetadata` provides default implementations for `getApiVersion` and `getKind` based on the 
+    presence (or not) of annotations on the target class
+  - Static methods have been introduced on `HasMetadata` and `CustomResource` to encapsulate the 
+    logic used to resolve `Kind`, `ApiVersion`, `Group`, `Version`, `Plural`, `Singular` and `CRD Name`
+    properties
+  - New `v1CRDFromCustomResourceType` and `v1beta1CRDFromCustomResourceType` methods have been 
+    introduced on `CustomResourceDefinitionContext` to initialize a `CustomResourceDefinitionBuilder`
+    with the information provided by a specific `CustomResource` implementation, making it much 
+    easier to create CRDs if you already have defined your custom resource type
+  - `CustomResource` is now parameterized by the spec and status types that it uses which further 
+    removes boiler plate
+* Rename `@ApiVersion` and `@ApiGroup` to simply `@Version` and `@Group`, respectively. This was done
+  to unify annotations and also remove potential confusion between values provided to `@ApiVersion` 
+  and what is returned by `HasMetadata#getApiVersion`
 
 ### 5.0.0-alpha-3 (2020-12-10)
 

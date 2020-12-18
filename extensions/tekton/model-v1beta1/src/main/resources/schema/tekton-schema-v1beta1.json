@@ -4,14 +4,12 @@
   "definitions": {
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_pod_Template": {
       "type": "object",
-      "description": "",
       "properties": {
         "affinity": {
           "existingJavaType": "io.fabric8.kubernetes.api.model.Affinity"
         },
         "automountServiceAccountToken": {
           "type": "boolean",
-          "description": "",
           "existingJavaType": "Boolean"
         },
         "dnsConfig": {
@@ -19,21 +17,17 @@
         },
         "dnsPolicy": {
           "type": "string",
-          "description": "",
           "existingJavaType": "String"
         },
         "enableServiceLinks": {
           "type": "boolean",
-          "description": "",
           "existingJavaType": "Boolean"
         },
         "hostNetwork": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "imagePullSecrets": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "existingJavaType": "io.fabric8.kubernetes.api.model.LocalObjectReference"
@@ -41,29 +35,24 @@
         },
         "nodeSelector": {
           "type": "object",
-          "description": "",
           "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
         "priorityClassName": {
           "type": "string",
-          "description": "",
           "existingJavaType": "String"
         },
         "runtimeClassName": {
           "type": "string",
-          "description": "",
           "existingJavaType": "String"
         },
         "schedulerName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "securityContext": {
           "existingJavaType": "io.fabric8.kubernetes.api.model.PodSecurityContext"
         },
         "tolerations": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "existingJavaType": "io.fabric8.kubernetes.api.model.Toleration"
@@ -71,7 +60,6 @@
         },
         "volumes": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "existingJavaType": "io.fabric8.kubernetes.api.model.Volume"
@@ -85,15 +73,13 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_CloudEventDelivery": {
       "type": "object",
-      "description": "",
       "properties": {
         "status": {
           "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_CloudEventDeliveryState",
           "existingJavaType": "io.fabric8.tekton.pipeline.v1beta1.CloudEventDeliveryState"
         },
         "target": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "javaType": "io.fabric8.tekton.pipeline.v1beta1.CloudEventDelivery",
@@ -103,19 +89,15 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_CloudEventDeliveryState": {
       "type": "object",
-      "description": "",
       "properties": {
         "condition": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "message": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "retryCount": {
-          "type": "integer",
-          "description": ""
+          "type": "integer"
         },
         "sentAt": {
           "existingJavaType": "java.lang.String"
@@ -128,17 +110,14 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_ClusterTask": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "tekton.dev/v1beta1",
           "required": true
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "ClusterTask",
           "required": true
         },
@@ -157,17 +136,14 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_ClusterTaskList": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "tekton.dev/v1beta1",
           "required": true
         },
         "items": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_ClusterTask",
             "existingJavaType": "io.fabric8.tekton.pipeline.v1beta1.ClusterTask"
@@ -175,7 +151,6 @@
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "ClusterTaskList",
           "required": true
         },
@@ -191,11 +166,9 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_ConditionCheckStatus": {
       "type": "object",
-      "description": "",
       "properties": {
         "annotations": {
           "type": "object",
-          "description": "",
           "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
         "check": {
@@ -206,7 +179,6 @@
         },
         "conditions": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "existingJavaType": "io.fabric8.knative.internal.pkg.apis.Condition"
@@ -214,12 +186,10 @@
         },
         "observedGeneration": {
           "type": "integer",
-          "description": "",
           "existingJavaType": "Long"
         },
         "podName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "startTime": {
           "existingJavaType": "java.lang.String"
@@ -232,11 +202,9 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_EmbeddedTask": {
       "type": "object",
-      "description": "",
       "properties": {
         "description": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "metadata": {
           "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineTaskMetadata",
@@ -244,7 +212,6 @@
         },
         "params": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_ParamSpec",
@@ -257,7 +224,6 @@
         },
         "results": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskResult",
@@ -266,7 +232,6 @@
         },
         "sidecars": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_Sidecar",
@@ -278,7 +243,6 @@
         },
         "steps": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_Step",
@@ -287,7 +251,6 @@
         },
         "volumes": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "existingJavaType": "io.fabric8.kubernetes.api.model.Volume"
@@ -295,7 +258,6 @@
         },
         "workspaces": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_WorkspaceDeclaration",
@@ -310,11 +272,9 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_Param": {
       "type": "object",
-      "description": "",
       "properties": {
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "value": {
           "existingJavaType": "io.fabric8.tekton.pipeline.v1beta1.ArrayOrString"
@@ -327,22 +287,18 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_ParamSpec": {
       "type": "object",
-      "description": "",
       "properties": {
         "default": {
           "existingJavaType": "io.fabric8.tekton.pipeline.v1beta1.ArrayOrString"
         },
         "description": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "type": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "javaType": "io.fabric8.tekton.pipeline.v1beta1.ParamSpec",
@@ -352,17 +308,14 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_Pipeline": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "tekton.dev/v1beta1",
           "required": true
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "Pipeline",
           "required": true
         },
@@ -382,19 +335,15 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineDeclaredResource": {
       "type": "object",
-      "description": "",
       "properties": {
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "optional": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "type": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineDeclaredResource",
@@ -404,17 +353,14 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineList": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "tekton.dev/v1beta1",
           "required": true
         },
         "items": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_Pipeline",
             "existingJavaType": "io.fabric8.tekton.pipeline.v1beta1.Pipeline"
@@ -422,7 +368,6 @@
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "PipelineList",
           "required": true
         },
@@ -438,15 +383,12 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRef": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineRef",
@@ -456,11 +398,9 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineResourceBinding": {
       "type": "object",
-      "description": "",
       "properties": {
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "resourceRef": {
           "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineResourceRef",
@@ -478,15 +418,12 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineResourceRef": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineResourceRef",
@@ -496,27 +433,22 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineResourceResult": {
       "type": "object",
-      "description": "",
       "properties": {
         "key": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "resourceName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "resourceRef": {
           "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineResourceRef",
           "existingJavaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineResourceRef"
         },
         "type": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "value": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineResourceResult",
@@ -526,19 +458,15 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineResult": {
       "type": "object",
-      "description": "",
       "properties": {
         "description": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "value": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineResult",
@@ -548,17 +476,14 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRun": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "tekton.dev/v1beta1",
           "required": true
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "PipelineRun",
           "required": true
         },
@@ -582,11 +507,9 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRunConditionCheckStatus": {
       "type": "object",
-      "description": "",
       "properties": {
         "conditionName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "status": {
           "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_ConditionCheckStatus",
@@ -600,17 +523,14 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRunList": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "tekton.dev/v1beta1",
           "required": true
         },
         "items": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRun",
@@ -619,7 +539,6 @@
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "PipelineRunList",
           "required": true
         },
@@ -635,15 +554,12 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRunResult": {
       "type": "object",
-      "description": "",
       "properties": {
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "value": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineRunResult",
@@ -653,11 +569,9 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRunSpec": {
       "type": "object",
-      "description": "",
       "properties": {
         "params": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_Param",
@@ -678,7 +592,6 @@
         },
         "resources": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineResourceBinding",
@@ -686,12 +599,10 @@
           }
         },
         "serviceAccountName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "serviceAccountNames": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRunSpecServiceAccountName",
@@ -699,12 +610,10 @@
           }
         },
         "status": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "taskRunSpecs": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineTaskRunSpec",
@@ -716,7 +625,6 @@
         },
         "workspaces": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_WorkspaceBinding",
@@ -731,15 +639,12 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRunSpecServiceAccountName": {
       "type": "object",
-      "description": "",
       "properties": {
         "serviceAccountName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "taskName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineRunSpecServiceAccountName",
@@ -749,11 +654,9 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRunStatus": {
       "type": "object",
-      "description": "",
       "properties": {
         "annotations": {
           "type": "object",
-          "description": "",
           "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
         "completionTime": {
@@ -761,7 +664,6 @@
         },
         "conditions": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "existingJavaType": "io.fabric8.knative.internal.pkg.apis.Condition"
@@ -769,12 +671,10 @@
         },
         "observedGeneration": {
           "type": "integer",
-          "description": "",
           "existingJavaType": "Long"
         },
         "pipelineResults": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRunResult",
@@ -787,7 +687,6 @@
         },
         "skippedTasks": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_SkippedTask",
@@ -799,7 +698,6 @@
         },
         "taskRuns": {
           "type": "object",
-          "description": "",
           "existingJavaType": "java.util.Map\u003cString,io.fabric8.tekton.pipeline.v1beta1.PipelineRunTaskRunStatus\u003e"
         }
       },
@@ -810,16 +708,13 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineRunTaskRunStatus": {
       "type": "object",
-      "description": "",
       "properties": {
         "conditionChecks": {
           "type": "object",
-          "description": "",
           "existingJavaType": "java.util.Map\u003cString,io.fabric8.tekton.pipeline.v1beta1.PipelineRunConditionCheckStatus\u003e"
         },
         "pipelineTaskName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "status": {
           "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRunStatus",
@@ -833,15 +728,12 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineSpec": {
       "type": "object",
-      "description": "",
       "properties": {
         "description": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "finally": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineTask",
@@ -850,7 +742,6 @@
         },
         "params": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_ParamSpec",
@@ -859,7 +750,6 @@
         },
         "resources": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineDeclaredResource",
@@ -868,7 +758,6 @@
         },
         "results": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineResult",
@@ -877,7 +766,6 @@
         },
         "tasks": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineTask",
@@ -886,7 +774,6 @@
         },
         "workspaces": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineWorkspaceDeclaration",
@@ -901,11 +788,9 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineTask": {
       "type": "object",
-      "description": "",
       "properties": {
         "conditions": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineTaskCondition",
@@ -913,12 +798,10 @@
           }
         },
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "params": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_Param",
@@ -930,16 +813,13 @@
           "existingJavaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineTaskResources"
         },
         "retries": {
-          "type": "integer",
-          "description": ""
+          "type": "integer"
         },
         "runAfter": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "taskRef": {
@@ -955,7 +835,6 @@
         },
         "when": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_WhenExpression",
@@ -964,7 +843,6 @@
         },
         "workspaces": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_WorkspacePipelineTaskBinding",
@@ -979,15 +857,12 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineTaskCondition": {
       "type": "object",
-      "description": "",
       "properties": {
         "conditionRef": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "params": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_Param",
@@ -996,7 +871,6 @@
         },
         "resources": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineTaskInputResource",
@@ -1011,24 +885,19 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineTaskInputResource": {
       "type": "object",
-      "description": "",
       "properties": {
         "from": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "resource": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineTaskInputResource",
@@ -1038,16 +907,13 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineTaskMetadata": {
       "type": "object",
-      "description": "",
       "properties": {
         "annotations": {
           "type": "object",
-          "description": "",
           "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
         "labels": {
           "type": "object",
-          "description": "",
           "existingJavaType": "java.util.Map\u003cString,String\u003e"
         }
       },
@@ -1058,15 +924,12 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineTaskOutputResource": {
       "type": "object",
-      "description": "",
       "properties": {
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "resource": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineTaskOutputResource",
@@ -1076,11 +939,9 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineTaskResources": {
       "type": "object",
-      "description": "",
       "properties": {
         "inputs": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineTaskInputResource",
@@ -1089,7 +950,6 @@
         },
         "outputs": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineTaskOutputResource",
@@ -1104,19 +964,16 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineTaskRunSpec": {
       "type": "object",
-      "description": "",
       "properties": {
         "pipelineTaskName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "taskPodTemplate": {
           "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_pod_Template",
           "existingJavaType": "io.fabric8.tekton.v1beta1.internal.pipeline.pkg.apis.pipeline.pod.Template"
         },
         "taskServiceAccountName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineTaskRunSpec",
@@ -1126,19 +983,15 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineWorkspaceDeclaration": {
       "type": "object",
-      "description": "",
       "properties": {
         "description": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "optional": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         }
       },
       "javaType": "io.fabric8.tekton.pipeline.v1beta1.PipelineWorkspaceDeclaration",
@@ -1148,29 +1001,23 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_Sidecar": {
       "type": "object",
-      "description": "",
       "properties": {
         "args": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "command": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "env": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "existingJavaType": "io.fabric8.kubernetes.api.model.EnvVar"
@@ -1178,19 +1025,16 @@
         },
         "envFrom": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "existingJavaType": "io.fabric8.kubernetes.api.model.EnvFromSource"
           }
         },
         "image": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "imagePullPolicy": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "lifecycle": {
           "existingJavaType": "io.fabric8.kubernetes.api.model.Lifecycle"
@@ -1199,12 +1043,10 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.Probe"
         },
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "ports": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "existingJavaType": "io.fabric8.kubernetes.api.model.ContainerPort"
@@ -1217,8 +1059,7 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
         },
         "script": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "securityContext": {
           "existingJavaType": "io.fabric8.kubernetes.api.model.SecurityContext"
@@ -1227,28 +1068,22 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.Probe"
         },
         "stdin": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "stdinOnce": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "terminationMessagePath": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "terminationMessagePolicy": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "tty": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "volumeDevices": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "existingJavaType": "io.fabric8.kubernetes.api.model.VolumeDevice"
@@ -1256,15 +1091,13 @@
         },
         "volumeMounts": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "existingJavaType": "io.fabric8.kubernetes.api.model.VolumeMount"
           }
         },
         "workingDir": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "javaType": "io.fabric8.tekton.pipeline.v1beta1.Sidecar",
@@ -1274,19 +1107,15 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_SidecarState": {
       "type": "object",
-      "description": "",
       "properties": {
         "container": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "imageID": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "running": {
           "existingJavaType": "io.fabric8.kubernetes.api.model.ContainerStateRunning"
@@ -1305,11 +1134,9 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_SkippedTask": {
       "type": "object",
-      "description": "",
       "properties": {
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "javaType": "io.fabric8.tekton.pipeline.v1beta1.SkippedTask",
@@ -1319,29 +1146,23 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_Step": {
       "type": "object",
-      "description": "",
       "properties": {
         "args": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "command": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "env": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "existingJavaType": "io.fabric8.kubernetes.api.model.EnvVar"
@@ -1349,19 +1170,16 @@
         },
         "envFrom": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "existingJavaType": "io.fabric8.kubernetes.api.model.EnvFromSource"
           }
         },
         "image": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "imagePullPolicy": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "lifecycle": {
           "existingJavaType": "io.fabric8.kubernetes.api.model.Lifecycle"
@@ -1371,13 +1189,11 @@
         },
         "name": {
           "type": "string",
-          "description": "",
           "maxLength": 63,
           "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
         },
         "ports": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "existingJavaType": "io.fabric8.kubernetes.api.model.ContainerPort"
@@ -1390,8 +1206,7 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
         },
         "script": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "securityContext": {
           "existingJavaType": "io.fabric8.kubernetes.api.model.SecurityContext"
@@ -1400,28 +1215,22 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.Probe"
         },
         "stdin": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "stdinOnce": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "terminationMessagePath": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "terminationMessagePolicy": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "tty": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "volumeDevices": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "existingJavaType": "io.fabric8.kubernetes.api.model.VolumeDevice"
@@ -1429,15 +1238,13 @@
         },
         "volumeMounts": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "existingJavaType": "io.fabric8.kubernetes.api.model.VolumeMount"
           }
         },
         "workingDir": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "javaType": "io.fabric8.tekton.pipeline.v1beta1.Step",
@@ -1447,19 +1254,15 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_StepState": {
       "type": "object",
-      "description": "",
       "properties": {
         "container": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "imageID": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "running": {
           "existingJavaType": "io.fabric8.kubernetes.api.model.ContainerStateRunning"
@@ -1478,17 +1281,14 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_Task": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "tekton.dev/v1beta1",
           "required": true
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "Task",
           "required": true
         },
@@ -1508,17 +1308,14 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskList": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "tekton.dev/v1beta1",
           "required": true
         },
         "items": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_Task",
             "existingJavaType": "io.fabric8.tekton.pipeline.v1beta1.Task"
@@ -1526,7 +1323,6 @@
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "TaskList",
           "required": true
         },
@@ -1542,19 +1338,15 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRef": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "kind": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskRef",
@@ -1564,27 +1356,21 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskResource": {
       "type": "object",
-      "description": "",
       "properties": {
         "description": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "optional": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "targetPath": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "type": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskResource",
@@ -1594,19 +1380,15 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskResourceBinding": {
       "type": "object",
-      "description": "",
       "properties": {
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "paths": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "resourceRef": {
@@ -1625,11 +1407,9 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskResources": {
       "type": "object",
-      "description": "",
       "properties": {
         "inputs": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskResource",
@@ -1638,7 +1418,6 @@
         },
         "outputs": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskResource",
@@ -1653,15 +1432,12 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskResult": {
       "type": "object",
-      "description": "",
       "properties": {
         "description": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskResult",
@@ -1671,17 +1447,14 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRun": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "tekton.dev/v1beta1",
           "required": true
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "TaskRun",
           "required": true
         },
@@ -1705,17 +1478,14 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRunList": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "tekton.dev/v1beta1",
           "required": true
         },
         "items": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRun",
             "existingJavaType": "io.fabric8.tekton.pipeline.v1beta1.TaskRun"
@@ -1723,7 +1493,6 @@
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "TaskRunList",
           "required": true
         },
@@ -1739,11 +1508,9 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRunResources": {
       "type": "object",
-      "description": "",
       "properties": {
         "inputs": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskResourceBinding",
@@ -1752,7 +1519,6 @@
         },
         "outputs": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskResourceBinding",
@@ -1767,15 +1533,12 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRunResult": {
       "type": "object",
-      "description": "",
       "properties": {
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "value": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "javaType": "io.fabric8.tekton.pipeline.v1beta1.TaskRunResult",
@@ -1785,11 +1548,9 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRunSpec": {
       "type": "object",
-      "description": "",
       "properties": {
         "params": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_Param",
@@ -1805,12 +1566,10 @@
           "existingJavaType": "io.fabric8.tekton.pipeline.v1beta1.TaskRunResources"
         },
         "serviceAccountName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "status": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "taskRef": {
           "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRef",
@@ -1825,7 +1584,6 @@
         },
         "workspaces": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_WorkspaceBinding",
@@ -1840,16 +1598,13 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRunStatus": {
       "type": "object",
-      "description": "",
       "properties": {
         "annotations": {
           "type": "object",
-          "description": "",
           "existingJavaType": "java.util.Map\u003cString,String\u003e"
         },
         "cloudEvents": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_CloudEventDelivery",
@@ -1861,7 +1616,6 @@
         },
         "conditions": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "existingJavaType": "io.fabric8.knative.internal.pkg.apis.Condition"
@@ -1869,16 +1623,13 @@
         },
         "observedGeneration": {
           "type": "integer",
-          "description": "",
           "existingJavaType": "Long"
         },
         "podName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "resourcesResult": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_PipelineResourceResult",
@@ -1887,7 +1638,6 @@
         },
         "retriesStatus": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRunStatus",
@@ -1896,7 +1646,6 @@
         },
         "sidecars": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_SidecarState",
@@ -1908,7 +1657,6 @@
         },
         "steps": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_StepState",
@@ -1917,7 +1665,6 @@
         },
         "taskResults": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskRunResult",
@@ -1936,15 +1683,12 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskSpec": {
       "type": "object",
-      "description": "",
       "properties": {
         "description": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "params": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_ParamSpec",
@@ -1957,7 +1701,6 @@
         },
         "results": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskResult",
@@ -1966,7 +1709,6 @@
         },
         "sidecars": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_Sidecar",
@@ -1978,7 +1720,6 @@
         },
         "steps": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_Step",
@@ -1987,7 +1728,6 @@
         },
         "volumes": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "existingJavaType": "io.fabric8.kubernetes.api.model.Volume"
@@ -1995,7 +1735,6 @@
         },
         "workspaces": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_WorkspaceDeclaration",
@@ -2010,22 +1749,17 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_WhenExpression": {
       "type": "object",
-      "description": "",
       "properties": {
         "input": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "operator": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "values": {
           "type": "array",
-          "description": "",
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         }
       },
@@ -2036,7 +1770,6 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_WorkspaceBinding": {
       "type": "object",
-      "description": "",
       "properties": {
         "configMap": {
           "existingJavaType": "io.fabric8.kubernetes.api.model.ConfigMapVolumeSource"
@@ -2045,8 +1778,7 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.EmptyDirVolumeSource"
         },
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "persistentVolumeClaim": {
           "existingJavaType": "io.fabric8.kubernetes.api.model.PersistentVolumeClaimVolumeSource"
@@ -2055,8 +1787,7 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.SecretVolumeSource"
         },
         "subPath": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "volumeClaimTemplate": {
           "existingJavaType": "io.fabric8.kubernetes.api.model.PersistentVolumeClaim"
@@ -2069,27 +1800,21 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_WorkspaceDeclaration": {
       "type": "object",
-      "description": "",
       "properties": {
         "description": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "mountPath": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "optional": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "readOnly": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         }
       },
       "javaType": "io.fabric8.tekton.pipeline.v1beta1.WorkspaceDeclaration",
@@ -2099,19 +1824,15 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_WorkspacePipelineTaskBinding": {
       "type": "object",
-      "description": "",
       "properties": {
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "subPath": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "workspace": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "javaType": "io.fabric8.tekton.pipeline.v1beta1.WorkspacePipelineTaskBinding",
@@ -2121,15 +1842,12 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_resource_v1alpha1_PipelineResourceSpec": {
       "type": "object",
-      "description": "",
       "properties": {
         "description": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "params": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_resource_v1alpha1_ResourceParam",
             "existingJavaType": "io.fabric8.tekton.v1beta1.internal.pipeline.pkg.apis.resource.v1alpha1.ResourceParam"
@@ -2137,7 +1855,6 @@
         },
         "secrets": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_resource_v1alpha1_SecretParam",
@@ -2145,8 +1862,7 @@
           }
         },
         "type": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "javaType": "io.fabric8.tekton.v1beta1.internal.pipeline.pkg.apis.resource.v1alpha1.PipelineResourceSpec",
@@ -2156,15 +1872,12 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_resource_v1alpha1_ResourceParam": {
       "type": "object",
-      "description": "",
       "properties": {
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "value": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "javaType": "io.fabric8.tekton.v1beta1.internal.pipeline.pkg.apis.resource.v1alpha1.ResourceParam",
@@ -2174,19 +1887,15 @@
     },
     "github_com_tektoncd_pipeline_pkg_apis_resource_v1alpha1_SecretParam": {
       "type": "object",
-      "description": "",
       "properties": {
         "fieldName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "secretKey": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "secretName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "javaType": "io.fabric8.tekton.v1beta1.internal.pipeline.pkg.apis.resource.v1alpha1.SecretParam",

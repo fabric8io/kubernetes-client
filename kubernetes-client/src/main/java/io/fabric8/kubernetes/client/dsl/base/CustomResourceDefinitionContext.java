@@ -16,16 +16,15 @@
 package io.fabric8.kubernetes.client.dsl.base;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionBuilder;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersion;
+import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
-import io.fabric8.kubernetes.client.utils.Pluralize;
-import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionSpec;
 import io.fabric8.kubernetes.client.utils.KubernetesVersionPriority;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -59,40 +58,86 @@ public class CustomResourceDefinitionContext {
   public String getKind() {
     return kind;
   }
-
-  public static CustomResourceDefinitionContext fromCustomResourceType(Class<? extends HasMetadata> customResource) {
-    HasMetadata instance;
+  
+  public static CustomResourceDefinitionBuilder v1beta1CRDFromCustomResourceType(Class<? extends CustomResource> customResource) {
     try {
-      instance = customResource.newInstance();
-
-      String kind = Utils.isNullOrEmpty(instance.getKind()) ? customResource.getSimpleName() : instance.getKind();
-      String name = kind.toLowerCase();
-      String plural = Pluralize.toPlural(name);
-      String group = ApiVersionUtil.apiGroup(instance, null);
-      String version = ApiVersionUtil.apiVersion(instance, "v1");
-      String scope = instance instanceof Namespaced ? "Namespaced" : "Cluster";
-
-      return new CustomResourceDefinitionContext.Builder()
-        .withGroup(group)
-        .withVersion(version)
-        .withScope(scope)
-        .withName(name)
-        .withPlural(plural)
+      final CustomResource instance = customResource.getDeclaredConstructor().newInstance();
+    
+      final String kind = instance.getKind();
+      final String version = instance.getVersion();
+  
+      return new CustomResourceDefinitionBuilder()
         .withKind(kind)
+        .withNewMetadata()
+        .withName(instance.getCRDName())
+        .endMetadata()
+        .withNewSpec()
+        .withGroup(instance.getGroup())
+        .withVersion(version) // also set version to the first (and only) versions item
+        .addNewVersion().withName(version).endVersion()
+        .withScope(instance.getScope())
+        .withNewNames()
+        .withKind(kind)
+        .withPlural(instance.getPlural())
+        .withSingular(instance.getSingular())
+        .endNames()
+        .endSpec();
+    } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
+  }
+  
+  public static io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionBuilder v1CRDFromCustomResourceType(Class<? extends CustomResource> customResource) {
+    try {
+      final CustomResource instance = customResource.getDeclaredConstructor().newInstance();
+    
+      String kind = instance.getKind();
+  
+      return new io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionBuilder()
+        .withKind(kind)
+        .withNewMetadata()
+        .withName(instance.getCRDName())
+        .endMetadata()
+        .withNewSpec()
+        .withGroup(instance.getGroup())
+        .addNewVersion().withName(instance.getVersion()).endVersion()
+        .withScope(instance.getScope())
+        .withNewNames()
+        .withKind(kind)
+        .withPlural(instance.getPlural())
+        .withSingular(instance.getSingular())
+        .endNames()
+        .endSpec();
+    } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
+  }
+  
+  public static CustomResourceDefinitionContext fromCustomResourceType(Class<? extends HasMetadata> customResource) {
+    try {
+      final CustomResource instance = (CustomResource) customResource.getDeclaredConstructor().newInstance();
+      return new Builder()
+        .withGroup(instance.getGroup())
+        .withVersion(instance.getVersion())
+        .withScope(instance.getScope())
+        .withName(instance.getCRDName())
+        .withPlural(instance.getPlural())
+        .withKind(instance.getKind())
         .build();
-    } catch (InstantiationException | IllegalAccessException e) {
+    } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
   }
 
   public static CustomResourceDefinitionContext fromCrd(CustomResourceDefinition crd) {
+    final CustomResourceDefinitionSpec spec = crd.getSpec();
     return new CustomResourceDefinitionContext.Builder()
-      .withGroup(crd.getSpec().getGroup())
-      .withVersion(getVersion(crd.getSpec()))
-      .withScope(crd.getSpec().getScope())
+      .withGroup(spec.getGroup())
+      .withVersion(getVersion(spec))
+      .withScope(spec.getScope())
       .withName(crd.getMetadata().getName())
-      .withPlural(crd.getSpec().getNames().getPlural())
-      .withKind(crd.getSpec().getNames().getKind())
+      .withPlural(spec.getNames().getPlural())
+      .withKind(spec.getNames().getKind())
       .build();
   }
 

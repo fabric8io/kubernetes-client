@@ -18,7 +18,6 @@ package io.fabric8.kubernetes.client.mock;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionBuilder;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
@@ -46,23 +45,12 @@ class TypedClusterScopeCustomResourceApiTest {
     public KubernetesServer server = new KubernetesServer();
 
     private MixedOperation<Star, StarList, Resource<Star>> starClient;
-
-    private CustomResourceDefinition starCrd;
+    
     private CustomResourceDefinitionContext crdContext;
 
     @BeforeEach
     void setupCrd() {
-      starCrd = new CustomResourceDefinitionBuilder()
-        .withNewMetadata().withName("stars.example.crd.com").endMetadata()
-        .withNewSpec()
-        .withGroup("example.crd.com")
-        .withVersion("v1alpha1")
-        .withNewNames().withKind("Star").withPlural("stars").endNames()
-        .withScope("Cluster")
-        .endSpec()
-        .build();
-
-      crdContext = CustomResourceDefinitionContext.fromCrd(starCrd);
+      crdContext = CustomResourceDefinitionContext.fromCustomResourceType(Star.class);
     }
 
     @Test
@@ -141,7 +129,7 @@ class TypedClusterScopeCustomResourceApiTest {
     }
 
     @Test
-    void testStatusUpdation() throws InterruptedException {
+    void testStatusUpdate() throws InterruptedException {
       Star updatedStar = getStar();
       StarStatus starStatus = new StarStatus();
       starStatus.setLocation("M");
@@ -153,7 +141,7 @@ class TypedClusterScopeCustomResourceApiTest {
       starClient.inNamespace("test").updateStatus(updatedStar);
       RecordedRequest recordedRequest = server.getLastRequest();
       assertEquals("PUT", recordedRequest.getMethod());
-      assertEquals("{\"kind\":\"Star\",\"apiVersion\":\"example.crd.com/v1alpha1\",\"metadata\":{\"name\":\"sun\"},\"spec\":{\"type\":\"G\",\"location\":\"Galaxy\"},\"status\":{\"location\":\"M\"}}", recordedRequest.getBody().readUtf8());
+      assertEquals("{\"apiVersion\":\"example.crd.com/v1alpha1\",\"kind\":\"Star\",\"metadata\":{\"name\":\"sun\"},\"spec\":{\"type\":\"G\",\"location\":\"Galaxy\"},\"status\":{\"location\":\"M\"}}", recordedRequest.getBody().readUtf8());
       System.out.println(recordedRequest.getBody().readUtf8());
     }
 

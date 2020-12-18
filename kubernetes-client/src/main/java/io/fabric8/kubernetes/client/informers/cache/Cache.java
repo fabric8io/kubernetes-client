@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.informers.cache;
 
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.utils.ReflectUtils;
+import io.fabric8.kubernetes.client.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -400,13 +401,23 @@ public class Cache<T> implements Indexer<T> {
           throw new RuntimeException("Object is bad :" + obj);
         }
       }
-      if ((metadata.getNamespace() != null) && !metadata.getNamespace().isEmpty()) {
-        return metadata.getNamespace() + "/" + metadata.getName();
-      }
-      return metadata.getName();
+
+      return namespaceKeyFunc(metadata.getNamespace(), metadata.getName());
     } catch (ReflectiveOperationException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  /**
+   * Default index function that indexes based on an object's namespace and name.
+   *
+   * @see #metaNamespaceKeyFunc
+   */
+  public static String namespaceKeyFunc(String objectNamespace, String objectName) {
+    if (Utils.isNullOrEmpty(objectNamespace)) {
+      return objectName;
+    }
+    return objectNamespace + "/" + objectName;
   }
 
   /**

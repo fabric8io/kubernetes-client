@@ -88,6 +88,13 @@ class CacheTest {
 
     cache.add(testPodObj);
     assertEquals("default/test-pod4", Cache.metaNamespaceKeyFunc(testPodObj));
+    assertEquals("default/test-pod4", Cache.namespaceKeyFunc("default", "test-pod4"));
+  }
+
+  @Test
+  void testEmptyNamespaceKey() {
+    assertEquals("test-pod4", Cache.namespaceKeyFunc("", "test-pod4"));
+    assertEquals("test-pod4", Cache.namespaceKeyFunc(null, "test-pod4"));
   }
 
   @Test

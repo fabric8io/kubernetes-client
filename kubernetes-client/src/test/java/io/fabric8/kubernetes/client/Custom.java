@@ -13,14 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.mock.crd;
+package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.api.model.Namespaced;
-import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
+import io.fabric8.kubernetes.model.annotation.Kind;
+import io.fabric8.kubernetes.model.annotation.Plural;
+import io.fabric8.kubernetes.model.annotation.Singular;
 
-@Version("v1")
-@Group("stable.example.com")
-public class CronTab extends CustomResource<CronTabSpec, CronTabStatus> implements Namespaced {
+@Version(Custom.VERSION)
+@Group(Custom.GROUP)
+@Singular(Custom.SINGULAR)
+@Plural(Custom.PLURAL)
+@Kind(Custom.KIND)
+public
+class Custom extends CustomResource {
+  public static final String VERSION = "v1beta1";
+  public static final String GROUP = "sample.fabric8.io";
+  public static final String SINGULAR = "foo";
+  public static final String PLURAL = "fooes";
+  public static final String KIND = "CustomCR";
 }

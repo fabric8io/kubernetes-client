@@ -15,11 +15,12 @@
  */
 package io.fabric8.kubernetes.examples;
 
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionBuilder;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionList;
+import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.CustomResourceList;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -29,6 +30,7 @@ import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.examples.crds.Dummy;
 import io.fabric8.kubernetes.examples.crds.DummyList;
 import io.fabric8.kubernetes.examples.crds.DummySpec;
@@ -43,18 +45,8 @@ public class CRDExample {
 
   private static final Logger logger = LoggerFactory.getLogger(CRDExample.class);
 
-  public static String DUMMY_CRD_GROUP = "demo.fabric8.io";
-  public static String DUMMY_CRD_NAME = "dummies." +  DUMMY_CRD_GROUP;
-
   private static boolean logRootPaths = false;
-
-  private static String resourceScope(boolean resourceNamespaced) {
-    if (resourceNamespaced) {
-      return "Namespaced";
-    }
-    return "Cluster";
-  }
-
+  
   /**
    * Example of Cluster and Namespaced scoped K8S Custom Resources.
    * To test Cluster scoped resource use "--cluster" as first argument.
@@ -105,12 +97,13 @@ public class CRDExample {
       List<CustomResourceDefinition> crdsItems = crds.getItems();
       System.out.println("Found " + crdsItems.size() + " CRD(s)");
       CustomResourceDefinition dummyCRD = null;
+      final String dummyCRDName = CustomResource.getCRDName(Dummy.class);
       for (CustomResourceDefinition crd : crdsItems) {
         ObjectMeta metadata = crd.getMetadata();
         if (metadata != null) {
           String name = metadata.getName();
           System.out.println("    " + name + " => " + metadata.getSelfLink());
-          if (DUMMY_CRD_NAME.equals(name)) {
+          if (dummyCRDName.equals(name)) {
             dummyCRD = crd;
           }
         }
@@ -118,18 +111,12 @@ public class CRDExample {
       if (dummyCRD != null) {
         System.out.println("Found CRD: " + dummyCRD.getMetadata().getSelfLink());
       } else {
-        dummyCRD = new CustomResourceDefinitionBuilder().
-            withApiVersion("apiextensions.k8s.io/v1beta1").
-            withNewMetadata().withName(DUMMY_CRD_NAME).endMetadata().
-            withNewSpec().withGroup(DUMMY_CRD_GROUP).withVersion("v1").withScope(resourceScope(resourceNamespaced)).
-              withNewNames().withKind("Dummy").withShortNames("dummy").withPlural("dummies").endNames().endSpec().
-            build();
-
+        dummyCRD = CustomResourceDefinitionContext.v1beta1CRDFromCustomResourceType(Dummy.class).build();
         client.customResourceDefinitions().create(dummyCRD);
         System.out.println("Created CRD " + dummyCRD.getMetadata().getName());
       }
 
-      KubernetesDeserializer.registerCustomKind(DUMMY_CRD_GROUP + "/v1", "Dummy", Dummy.class);
+      KubernetesDeserializer.registerCustomKind(HasMetadata.getApiVersion(Dummy.class), dummyCRD.getKind(), Dummy.class);
 
       // lets create a client for the CRD
       NonNamespaceOperation<Dummy, DummyList, Resource<Dummy>> dummyClient = client.customResources(dummyCRD, Dummy.class, DummyList.class);

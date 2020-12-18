@@ -15,46 +15,11 @@
  */
 package io.fabric8.kubernetes.client.mock.crd;
 
-import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.CustomResource;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 
-public class Star extends CustomResource {
-  private StarSpec spec;
-  private StarStatus status;
-
-  @Override
-  public ObjectMeta getMetadata() {
-    return super.getMetadata();
-  }
-
-  public StarSpec getSpec() {
-    return spec;
-  }
-
-  public void setSpec(StarSpec spec) {
-    this.spec = spec;
-  }
-
-  public StarStatus getStatus() {
-    return status;
-  }
-
-  public void setStatus(StarStatus status) {
-    this.status = status;
-  }
-
-  @Override
-  public String getApiVersion() {
-    return "example.crd.com/v1alpha1";
-  }
-
-  @Override
-  public String toString() {
-    return "Star{" +
-      "apiVersion='" + getApiVersion() + "'" +
-      ", metadata=" + getMetadata() +
-      ", spec=" + spec +
-      ", status=" + status +
-      "}";
-  }
+@Version("v1alpha1")
+@Group("example.crd.com")
+public class Star extends CustomResource<StarSpec, StarStatus> {
 }

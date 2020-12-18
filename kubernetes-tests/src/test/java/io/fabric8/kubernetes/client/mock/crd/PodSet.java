@@ -16,41 +16,11 @@
 package io.fabric8.kubernetes.client.mock.crd;
 
 import io.fabric8.kubernetes.api.model.Namespaced;
-import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.CustomResource;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 
-public class PodSet extends CustomResource implements Namespaced {
-    public PodSetSpec getSpec() {
-        return spec;
-    }
-
-    public void setSpec(PodSetSpec spec) {
-        this.spec = spec;
-    }
-
-    public PodSetStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(PodSetStatus status) {
-        this.status = status;
-    }
-
-    @Override
-    public String toString() {
-        return "PodSet{"+
-                "apiVersion='" + getApiVersion() + "'" +
-                ", metadata=" + getMetadata() +
-                ", spec=" + spec +
-                ", status=" + status +
-                "}";
-    }
-
-    private PodSetSpec spec;
-    private PodSetStatus status;
-
-    @Override
-    public ObjectMeta getMetadata() {
-        return super.getMetadata();
-    }
+@Group("demo.k8s.io")
+@Version("v1alpha1")
+public class PodSet extends CustomResource<PodSetSpec, PodSetStatus> implements Namespaced {   
 }
