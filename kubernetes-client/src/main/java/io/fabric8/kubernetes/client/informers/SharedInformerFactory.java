@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
+import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
@@ -28,10 +29,7 @@ import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.CustomResourceOperationsImpl;
 import io.fabric8.kubernetes.client.informers.impl.DefaultSharedIndexInformer;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
-import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.internal.KubernetesDeserializer;
-import io.fabric8.kubernetes.model.annotation.Group;
-import io.fabric8.kubernetes.model.annotation.Version;
 import okhttp3.OkHttpClient;
 
 import java.lang.reflect.Type;
@@ -50,15 +48,15 @@ import static io.fabric8.kubernetes.client.utils.Utils.getPluralFromKind;
  * which is ported from offical go client https://github.com/kubernetes/client-go/blob/master/informers/factory.go
  */
 public class SharedInformerFactory extends BaseOperation {
-  private Map<Type, SharedIndexInformer> informers;
+  private final Map<Type, SharedIndexInformer> informers = new HashMap<>();
 
-  private Map<Type, Future> startedInformers;
+  private final Map<Type, Future> startedInformers = new HashMap<>();
 
-  private ExecutorService informerExecutor;
+  private final ExecutorService informerExecutor;
 
-  private BaseOperation baseOperation;
+  private final BaseOperation baseOperation;
 
-  private ConcurrentLinkedQueue<SharedInformerEventListener> eventListeners;
+  private final ConcurrentLinkedQueue<SharedInformerEventListener> eventListeners = new ConcurrentLinkedQueue<>();
 
   /**
    * Constructor with thread pool specified.
@@ -71,10 +69,7 @@ public class SharedInformerFactory extends BaseOperation {
     super(new OperationContext().withOkhttpClient(okHttpClient).withConfig(configuration));
     initOperationContext(configuration);
     this.informerExecutor = threadPool;
-    this.informers = new HashMap<>();
-    this.startedInformers = new HashMap<>();
     this.baseOperation = this.newInstance(context);
-    this.eventListeners = new ConcurrentLinkedQueue<>();
   }
 
   /**
@@ -91,10 +86,7 @@ public class SharedInformerFactory extends BaseOperation {
    * @return the shared index informer
    */
   public synchronized <T extends HasMetadata, L extends KubernetesResourceList<T>> SharedIndexInformer<T> sharedIndexInformerFor(Class<T> apiTypeClass, Class<L> apiListTypeClass, long resyncPeriodInMillis) {
-    return sharedIndexInformerFor(apiTypeClass, apiListTypeClass, context.withApiGroupName(Utils.getAnnotationValue(apiTypeClass, Group.class))
-      .withApiGroupVersion(Utils.getAnnotationValue(apiTypeClass, Version.class))
-      .withPlural(getPluralFromKind(apiTypeClass.getSimpleName()))
-      .withIsNamespaceConfiguredFromGlobalConfig(context.isNamespaceFromGlobalConfig()), resyncPeriodInMillis);
+    return sharedIndexInformerFor(apiTypeClass, apiListTypeClass, null, resyncPeriodInMillis);
   }
 
   /**
@@ -109,10 +101,7 @@ public class SharedInformerFactory extends BaseOperation {
    * @return the shared index informer
    */
   public synchronized <T extends HasMetadata> SharedIndexInformer<T> sharedIndexInformerFor(Class<T> apiTypeClass, long resyncPeriodInMillis) {
-    return sharedIndexInformerFor(apiTypeClass, KubernetesResourceUtil.inferListType(apiTypeClass), context.withApiGroupName(Utils.getAnnotationValue(apiTypeClass, Group.class))
-      .withApiGroupVersion(Utils.getAnnotationValue(apiTypeClass, Version.class))
-      .withPlural(getPluralFromKind(apiTypeClass.getSimpleName()))
-      .withIsNamespaceConfiguredFromGlobalConfig(context.isNamespaceFromGlobalConfig()), resyncPeriodInMillis);
+    return sharedIndexInformerFor(apiTypeClass, KubernetesResourceUtil.inferListType(apiTypeClass), resyncPeriodInMillis);
   }
 
   /**
@@ -139,7 +128,7 @@ public class SharedInformerFactory extends BaseOperation {
    * @param apiTypeClass apiType class
    * @param operationContext operation context
    * @param resyncPeriodInMillis resync period in milliseconds
-   * @param <T> the type parameter (should extend {@link io.fabric8.kubernetes.api.model.HasMetadata} and implement {@link io.fabric8.kubernetes.api.model.Namespaced})
+   * @param <T> the type parameter (should extend {@link CustomResource} and implement {@link io.fabric8.kubernetes.api.model.Namespaced})
    * @return the shared index informer
    */
   public synchronized <T extends HasMetadata> SharedIndexInformer<T> sharedIndexInformerForCustomResource(Class<T> apiTypeClass, OperationContext operationContext, long resyncPeriodInMillis) {
@@ -283,10 +272,14 @@ public class SharedInformerFactory extends BaseOperation {
    */
   public synchronized <T extends HasMetadata, L extends KubernetesResourceList<T>> SharedIndexInformer<T> sharedIndexInformerFor(Class<T> apiTypeClass, Class<L> apiListTypeClass, OperationContext operationContext, long resyncPeriodInMillis) {
     ListerWatcher<T, L> listerWatcher = listerWatcherFor(apiTypeClass, apiListTypeClass);
-    SharedIndexInformer<T> informer = new DefaultSharedIndexInformer<>(apiTypeClass, listerWatcher, resyncPeriodInMillis, this.context.withApiGroupName(Utils.getAnnotationValue(apiTypeClass, Group.class))
-      .withApiGroupVersion(Utils.getAnnotationValue(apiTypeClass, Version.class))
-      .withPlural(getPluralFromKind(apiTypeClass.getSimpleName()))
-      .withOperationContext(operationContext), eventListeners);
+    final OperationContext context = this.context.withApiGroupName(HasMetadata.getGroup(apiTypeClass))
+      .withApiGroupVersion(HasMetadata.getVersion(apiTypeClass))
+      .withPlural(getPluralFromKind(HasMetadata.getKind(apiTypeClass))) // todo: we should unify how plurals are calculated
+      .withIsNamespaceConfiguredFromGlobalConfig(this.context.isNamespaceFromGlobalConfig());
+    if (operationContext != null) {
+      context.withOperationContext(operationContext);
+    }
+    SharedIndexInformer<T> informer = new DefaultSharedIndexInformer<>(apiTypeClass, listerWatcher, resyncPeriodInMillis, context, eventListeners);
     this.informers.put(apiTypeClass, informer);
     return informer;
   }

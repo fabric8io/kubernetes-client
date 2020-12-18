@@ -37,13 +37,8 @@ public class CustomResourceInformerExample {
 
   public static void main(String[] args) {
     try (KubernetesClient client = new DefaultKubernetesClient()) {
-      final CustomResourceDefinition crd = CustomResourceDefinitionContext
-        .v1beta1CRDFromCustomResourceType(Dummy.class).build();
-      client.apiextensions().v1beta1().customResourceDefinitions().createOrReplace(crd);
-      final CustomResourceDefinitionContext crdContext = CustomResourceDefinitionContext.fromCustomResourceType(Dummy.class);
       SharedInformerFactory sharedInformerFactory = client.informers();
-      SharedIndexInformer<Dummy> podInformer = sharedInformerFactory
-        .sharedIndexInformerForCustomResource(crdContext, Dummy.class, DummyList.class,  60 * 1000L);
+      SharedIndexInformer<Dummy> podInformer = sharedInformerFactory.sharedIndexInformerForCustomResource(Dummy.class, 1 * 60 * 1000);
       logger.info("Informer factory initialized.");
 
       podInformer.addEventHandler(
@@ -95,7 +90,7 @@ public class CustomResourceInformerExample {
           .map(HasMetadata::getMetadata).map(ObjectMeta::getNamespace).orElse("default"));
       }
 
-      client.customResources(Dummy.class, DummyList.class).createOrReplace(toCreate);
+      client.customResources(Dummy.class).createOrReplace(toCreate);
       // Wait for some time now
       TimeUnit.MINUTES.sleep(5);
     } catch (InterruptedException interruptedException) {
