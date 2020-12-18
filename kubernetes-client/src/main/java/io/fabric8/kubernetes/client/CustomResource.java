@@ -68,24 +68,24 @@ import static io.fabric8.kubernetes.client.utils.Utils.isNullOrEmpty;
 @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false)
 public abstract class CustomResource<S, T> implements HasMetadata {
   private static final Logger LOG = LoggerFactory.getLogger(CustomResource.class);
-  
+
   public static final String NAMESPACE_SCOPE = "Namespaced";
   public static final String CLUSTER_SCOPE = "Cluster";
   private ObjectMeta metadata = new ObjectMeta();
-  
+
   @JsonProperty("spec")
   private S spec;
-  
+
   @JsonProperty("status")
   private T status;
- 
+
   private final String singular;
   private final String crdName;
   private final String kind;
   private final String apiVersion;
   private final String scope;
   private final String plural;
-  
+
   public CustomResource() {
     final String version = HasMetadata.super.getApiVersion();
     final Class<? extends CustomResource> clazz = getClass();
@@ -100,7 +100,7 @@ public abstract class CustomResource<S, T> implements HasMetadata {
     this.plural = getPlural(clazz);
     this.crdName = getCRDName(clazz);
   }
-  
+
   @Override
   public String toString() {
     return "CustomResource{" +
@@ -111,38 +111,38 @@ public abstract class CustomResource<S, T> implements HasMetadata {
       ", status=" + status +
       '}';
   }
-  
+
   @Override
   public String getApiVersion() {
     return apiVersion;
   }
-  
+
   @Override
   public void setApiVersion(String version) {
     // already set in constructor
-    LOG.warn("Calling CustomResource#setApiVersion doesn't do anything because the API version is computed and shouldn't be changed");
+    LOG.debug("Calling CustomResource#setApiVersion doesn't do anything because the API version is computed and shouldn't be changed");
   }
-  
+
   @Override
   public String getKind() {
     return this.kind;
   }
-  
+
   public void setKind(String kind) {
     // already set in constructor
-    LOG.warn("Calling CustomResource#setKind doesn't do anything because the Kind is computed and shouldn't be changed");
+    LOG.debug("Calling CustomResource#setKind doesn't do anything because the Kind is computed and shouldn't be changed");
   }
-  
+
   @Override
   public ObjectMeta getMetadata() {
     return metadata;
   }
-  
+
   @Override
   public void setMetadata(ObjectMeta metadata) {
     this.metadata = metadata;
   }
-  
+
   /**
    * Retrieves the plural form associated with the specified CustomResource if annotated with {@link Plural} or computes a default value
    * using the value returned by {@link #getSingular(Class)} as input to {@link Pluralize#toPlural(String)}.
@@ -154,12 +154,12 @@ public abstract class CustomResource<S, T> implements HasMetadata {
     final Plural fromAnnotation = clazz.getAnnotation(Plural.class);
     return (fromAnnotation != null ? fromAnnotation.value().toLowerCase(Locale.ROOT) : Pluralize.toPlural(getSingular(clazz)));
   }
-  
+
   @JsonIgnore
   public String getPlural() {
     return plural;
   }
-  
+
   /**
    * Retrieves the singular form associated with the specified CustomResource as defined by the {@link Singular} annotation or
    * computes a default value (lower-cased version of the value returned by {@link HasMetadata#getKind(Class)}) if the annotation
@@ -172,12 +172,12 @@ public abstract class CustomResource<S, T> implements HasMetadata {
     final Singular fromAnnotation = clazz.getAnnotation(Singular.class);
     return (fromAnnotation != null ? fromAnnotation.value() : HasMetadata.getKind(clazz)).toLowerCase(Locale.ROOT);
   }
-  
+
   @JsonIgnore
   public String getSingular() {
     return singular;
   }
-  
+
   /**
    * Computes the name of the Custom Resource Definition (CRD) associated with the specified CustomResource.
    * See https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/ for more details.
@@ -188,12 +188,12 @@ public abstract class CustomResource<S, T> implements HasMetadata {
   public static String getCRDName(Class<? extends CustomResource> clazz) {
     return getPlural(clazz) + "." + HasMetadata.getGroup(clazz);
   }
-  
+
   @JsonIgnore
   public String getCRDName() {
     return crdName;
   }
-  
+
   /**
    * Retrieves the scope that this CustomResource targets
    *
@@ -203,29 +203,29 @@ public abstract class CustomResource<S, T> implements HasMetadata {
   public String getScope() {
     return scope;
   }
-  
+
   @JsonIgnore
   public String getGroup() {
     return HasMetadata.getGroup(getClass());
   }
-  
+
   @JsonIgnore
   public String getVersion() {
     return HasMetadata.getVersion(getClass());
   }
-  
+
   public S getSpec() {
     return spec;
   }
-  
+
   public void setSpec(S spec) {
     this.spec = spec;
   }
-  
+
   public T getStatus() {
     return status;
   }
-  
+
   public void setStatus(T status) {
     this.status = status;
   }

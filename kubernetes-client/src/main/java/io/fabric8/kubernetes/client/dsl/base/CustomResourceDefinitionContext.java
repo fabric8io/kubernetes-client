@@ -72,7 +72,7 @@ public class CustomResourceDefinitionContext {
         .withNewSpec()
         .withGroup(instance.getGroup())
         .withVersion(version) // also set version to the first (and only) versions item
-        .addNewVersion().withName(version).endVersion()
+        .addNewVersion().withName(version).withServed(true).withStorage(true).endVersion()
         .withScope(instance.getScope())
         .withNewNames()
         .withKind(instance.getKind())
@@ -94,7 +94,7 @@ public class CustomResourceDefinitionContext {
         .endMetadata()
         .withNewSpec()
         .withGroup(instance.getGroup())
-        .addNewVersion().withName(instance.getVersion()).endVersion()
+        .addNewVersion().withName(instance.getVersion()).withServed(true).withStorage(true).endVersion()
         .withScope(instance.getScope())
         .withNewNames()
         .withKind(instance.getKind())
