@@ -140,7 +140,7 @@ class ResourceTest {
     DeleteOptions deleteOptions = Serialization.unmarshal(deleteRequest.getBody().readUtf8(), DeleteOptions.class);
     assertEquals("Foreground", deleteOptions.getPropagationPolicy());
 
-    RecordedRequest postRequest = server.getLastRequest();
+    RecordedRequest postRequest = server.getMockServer().takeRequest();
     assertEquals("/api/v1/namespaces/ns1/pods", postRequest.getPath());
     assertEquals("POST", postRequest.getMethod());
   }

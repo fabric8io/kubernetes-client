@@ -47,20 +47,28 @@ public class DeleteAndCreateHelper<T extends HasMetadata> {
 
   public T deleteAndCreate(T item) {
     Boolean deleted = deleteTask.apply(item);
-    if (Boolean.FALSE.equals(deleted)) {
-      throw new KubernetesClientException("Failed to delete existing item:" + item.getMetadata().getName());
+    if (!deleted) {
+      LOG.debug("did not delete because item did not exist, continuing to create {}", item.getMetadata().getName());
     }
+
     try {
       return createTask.apply(item);
     } catch (KubernetesClientException e) {
       // depending on the grace period, the object might not actually be deleted by the time we try to create
       // if that's the case, give it some time.
       if (e.getCode() == HttpURLConnection.HTTP_CONFLICT) {
+        if (!deleted) {
+          LOG.error("there was no item to delete, but received HTTP_CONFLICT response upon creation of item {}", item.getMetadata().getName(), e);
+          throw e;
+        }
+
         if (Boolean.FALSE.equals(awaitDeleteTask.apply(item))) {
           throw new KubernetesClientException("Timed out waiting for item to be deleted before recreating: " + item.getMetadata().getName(), e);
         }
+
         return createTask.apply(item);
       }
+
       throw e;
     }
   }
