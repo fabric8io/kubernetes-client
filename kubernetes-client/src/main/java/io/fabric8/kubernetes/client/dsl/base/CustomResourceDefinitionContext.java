@@ -58,16 +58,14 @@ public class CustomResourceDefinitionContext {
   public String getKind() {
     return kind;
   }
-  
+
   public static CustomResourceDefinitionBuilder v1beta1CRDFromCustomResourceType(Class<? extends CustomResource> customResource) {
     try {
       final CustomResource instance = customResource.getDeclaredConstructor().newInstance();
-    
-      final String kind = instance.getKind();
+
       final String version = instance.getVersion();
-  
+
       return new CustomResourceDefinitionBuilder()
-        .withKind(kind)
         .withNewMetadata()
         .withName(instance.getCRDName())
         .endMetadata()
@@ -77,7 +75,7 @@ public class CustomResourceDefinitionContext {
         .addNewVersion().withName(version).endVersion()
         .withScope(instance.getScope())
         .withNewNames()
-        .withKind(kind)
+        .withKind(instance.getKind())
         .withPlural(instance.getPlural())
         .withSingular(instance.getSingular())
         .endNames()
@@ -86,15 +84,11 @@ public class CustomResourceDefinitionContext {
       throw KubernetesClientException.launderThrowable(e);
     }
   }
-  
+
   public static io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionBuilder v1CRDFromCustomResourceType(Class<? extends CustomResource> customResource) {
     try {
       final CustomResource instance = customResource.getDeclaredConstructor().newInstance();
-    
-      String kind = instance.getKind();
-  
       return new io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionBuilder()
-        .withKind(kind)
         .withNewMetadata()
         .withName(instance.getCRDName())
         .endMetadata()
@@ -103,7 +97,7 @@ public class CustomResourceDefinitionContext {
         .addNewVersion().withName(instance.getVersion()).endVersion()
         .withScope(instance.getScope())
         .withNewNames()
-        .withKind(kind)
+        .withKind(instance.getKind())
         .withPlural(instance.getPlural())
         .withSingular(instance.getSingular())
         .endNames()
@@ -112,7 +106,7 @@ public class CustomResourceDefinitionContext {
       throw KubernetesClientException.launderThrowable(e);
     }
   }
-  
+
   public static CustomResourceDefinitionContext fromCustomResourceType(Class<? extends HasMetadata> customResource) {
     try {
       final CustomResource instance = (CustomResource) customResource.getDeclaredConstructor().newInstance();
