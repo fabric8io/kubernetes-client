@@ -169,14 +169,14 @@ public class SharedInformerFactory extends BaseOperation {
       @Override
       public L list(ListOptions params, String namespace, OperationContext context) {
         BaseOperation<T, L, ?> listBaseOperation = getConfiguredBaseOperation(namespace, context, apiTypeClass, apiListTypeClass);
-        registerKindToKubernetesDeserializer(context, apiTypeClass);
+        registerKindToKubernetesDeserializer(apiTypeClass);
         return listBaseOperation.list();
       }
 
       @Override
       public Watch watch(ListOptions params, String namespace, OperationContext context, Watcher<T> resourceWatcher) {
         BaseOperation<T, L, ?> watchBaseOperation = getConfiguredBaseOperation(namespace, context, apiTypeClass, apiListTypeClass);
-        registerKindToKubernetesDeserializer(context, apiTypeClass);
+        registerKindToKubernetesDeserializer(apiTypeClass);
         return watchBaseOperation.watch(params.getResourceVersion(), resourceWatcher);
       }
     };
@@ -198,7 +198,7 @@ public class SharedInformerFactory extends BaseOperation {
    * Starts all registered informers.
    */
   public synchronized void startAllRegisteredInformers() {
-    if (informers == null || informers.isEmpty()) {
+    if (informers.isEmpty()) {
       return;
     }
 
@@ -222,7 +222,7 @@ public class SharedInformerFactory extends BaseOperation {
    * @param shutDownThreadPool Whether to shut down thread pool or not.
    */
   public synchronized void stopAllRegisteredInformers(boolean shutDownThreadPool) {
-    if (informers == null || informers.isEmpty()) {
+    if (informers.isEmpty()) {
       return;
     }
     informers.forEach(
@@ -265,11 +265,9 @@ public class SharedInformerFactory extends BaseOperation {
     }
   }
 
-  private <T extends HasMetadata> void  registerKindToKubernetesDeserializer(OperationContext context, Class<T> apiTypeClass) {
-    if (context.getApiGroupName() != null && context.getApiGroupVersion() != null) {
-      String apiGroupNameAndVersion = context.getApiGroupName() +
-        (context.getApiGroupName().endsWith("/") ? context.getApiGroupVersion() : ("/" + context.getApiGroupVersion()));
-      KubernetesDeserializer.registerCustomKind(apiGroupNameAndVersion, apiTypeClass.getSimpleName(), apiTypeClass);
+  private <T extends HasMetadata> void registerKindToKubernetesDeserializer(Class<T> apiTypeClass) {
+    if (CustomResource.class.isAssignableFrom(apiTypeClass)) {
+      KubernetesDeserializer.registerCustomKind(HasMetadata.getApiVersion(apiTypeClass), apiTypeClass.getSimpleName(), apiTypeClass);
     }
   }
 

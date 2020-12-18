@@ -36,7 +36,7 @@ public class CustomResourceInformerExample {
   public static void main(String[] args) {
     try (KubernetesClient client = new DefaultKubernetesClient()) {
       SharedInformerFactory sharedInformerFactory = client.informers();
-      SharedIndexInformer<Dummy> podInformer = sharedInformerFactory.sharedIndexInformerForCustomResource(Dummy.class, 1 * 60 * 1000);
+      SharedIndexInformer<Dummy> podInformer = sharedInformerFactory.sharedIndexInformerForCustomResource(Dummy.class, 60 * 1000L);
       logger.info("Informer factory initialized.");
 
       podInformer.addEventHandler(
