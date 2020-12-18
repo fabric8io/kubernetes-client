@@ -4,20 +4,16 @@
   "definitions": {
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_AddKeyTransform": {
       "type": "object",
-      "description": "",
       "properties": {
         "jsonPathExpression": {
           "type": "string",
-          "description": "",
           "existingJavaType": "String"
         },
         "key": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "stringValue": {
           "type": "string",
-          "description": "",
           "existingJavaType": "String"
         },
         "value": {
@@ -31,7 +27,6 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_AddKeysFromTransform": {
       "type": "object",
-      "description": "",
       "properties": {
         "secretRef": {
           "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ObjectReference",
@@ -45,7 +40,6 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_BasicAuthConfig": {
       "type": "object",
-      "description": "",
       "properties": {
         "secretRef": {
           "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_LocalObjectReference",
@@ -59,7 +53,6 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_BearerTokenAuthConfig": {
       "type": "object",
-      "description": "",
       "properties": {
         "secretRef": {
           "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_LocalObjectReference",
@@ -73,24 +66,19 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_CatalogRestrictions": {
       "type": "object",
-      "description": "",
       "properties": {
         "serviceClass": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "servicePlan": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         }
       },
@@ -101,7 +89,6 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterBasicAuthConfig": {
       "type": "object",
-      "description": "",
       "properties": {
         "secretRef": {
           "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ObjectReference",
@@ -115,7 +102,6 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterBearerTokenAuthConfig": {
       "type": "object",
-      "description": "",
       "properties": {
         "secretRef": {
           "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ObjectReference",
@@ -129,11 +115,9 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterObjectReference": {
       "type": "object",
-      "description": "",
       "properties": {
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "javaType": "io.fabric8.servicecatalog.api.model.ClusterObjectReference",
@@ -143,17 +127,14 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceBroker": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "servicecatalog.k8s.io/v1beta1",
           "required": true
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "ClusterServiceBroker",
           "required": true
         },
@@ -176,7 +157,6 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceBrokerAuthInfo": {
       "type": "object",
-      "description": "",
       "properties": {
         "basic": {
           "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterBasicAuthConfig",
@@ -194,17 +174,14 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceBrokerList": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "servicecatalog.k8s.io/v1beta1",
           "required": true
         },
         "items": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceBroker",
             "existingJavaType": "io.fabric8.servicecatalog.api.model.ClusterServiceBroker"
@@ -212,7 +189,6 @@
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "ClusterServiceBrokerList",
           "required": true
         },
@@ -228,7 +204,6 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceBrokerSpec": {
       "type": "object",
-      "description": "",
       "properties": {
         "authInfo": {
           "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceBrokerAuthInfo",
@@ -242,24 +217,20 @@
           "existingJavaType": "io.fabric8.servicecatalog.api.model.CatalogRestrictions"
         },
         "insecureSkipTLSVerify": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "relistBehavior": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "relistDuration": {
           "existingJavaType": "io.fabric8.kubernetes.api.model.Duration"
         },
         "relistRequests": {
           "type": "integer",
-          "description": "",
           "existingJavaType": "Long"
         },
         "url": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "javaType": "io.fabric8.servicecatalog.api.model.ClusterServiceBrokerSpec",
@@ -269,11 +240,9 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceBrokerStatus": {
       "type": "object",
-      "description": "",
       "properties": {
         "conditions": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBrokerCondition",
             "existingJavaType": "io.fabric8.servicecatalog.api.model.ServiceBrokerCondition"
@@ -287,7 +256,6 @@
         },
         "reconciledGeneration": {
           "type": "integer",
-          "description": "",
           "existingJavaType": "Long"
         }
       },
@@ -298,17 +266,14 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceClass": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "servicecatalog.k8s.io/v1beta1",
           "required": true
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "ClusterServiceClass",
           "required": true
         },
@@ -331,17 +296,14 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceClassList": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "servicecatalog.k8s.io/v1beta1",
           "required": true
         },
         "items": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceClass",
             "existingJavaType": "io.fabric8.servicecatalog.api.model.ClusterServiceClass"
@@ -349,7 +311,6 @@
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "ClusterServiceClassList",
           "required": true
         },
@@ -365,58 +326,46 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceClassSpec": {
       "type": "object",
-      "description": "",
       "properties": {
         "bindable": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "bindingRetrievable": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "clusterServiceBrokerName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "defaultProvisionParameters": {
           "existingJavaType": "java.util.Map\u003cString, Object\u003e"
         },
         "description": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "externalID": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "externalMetadata": {
           "existingJavaType": "java.util.Map\u003cString, Object\u003e"
         },
         "externalName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "planUpdatable": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "requires": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "tags": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         }
       },
@@ -427,11 +376,9 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServiceClassStatus": {
       "type": "object",
-      "description": "",
       "properties": {
         "removedFromBrokerCatalog": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         }
       },
       "javaType": "io.fabric8.servicecatalog.api.model.ClusterServiceClassStatus",
@@ -441,17 +388,14 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServicePlan": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "servicecatalog.k8s.io/v1beta1",
           "required": true
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "ClusterServicePlan",
           "required": true
         },
@@ -474,17 +418,14 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServicePlanList": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "servicecatalog.k8s.io/v1beta1",
           "required": true
         },
         "items": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServicePlan",
             "existingJavaType": "io.fabric8.servicecatalog.api.model.ClusterServicePlan"
@@ -492,7 +433,6 @@
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "ClusterServicePlanList",
           "required": true
         },
@@ -508,16 +448,13 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServicePlanSpec": {
       "type": "object",
-      "description": "",
       "properties": {
         "bindable": {
           "type": "boolean",
-          "description": "",
           "existingJavaType": "Boolean"
         },
         "clusterServiceBrokerName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "clusterServiceClassRef": {
           "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterObjectReference",
@@ -527,23 +464,19 @@
           "existingJavaType": "java.util.Map\u003cString, Object\u003e"
         },
         "description": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "externalID": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "externalMetadata": {
           "existingJavaType": "java.util.Map\u003cString, Object\u003e"
         },
         "externalName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "free": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "instanceCreateParameterSchema": {
           "existingJavaType": "java.util.Map\u003cString, Object\u003e"
@@ -565,11 +498,9 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterServicePlanStatus": {
       "type": "object",
-      "description": "",
       "properties": {
         "removedFromBrokerCatalog": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         }
       },
       "javaType": "io.fabric8.servicecatalog.api.model.ClusterServicePlanStatus",
@@ -579,11 +510,9 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_LocalObjectReference": {
       "type": "object",
-      "description": "",
       "properties": {
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "javaType": "io.fabric8.servicecatalog.api.model.LocalObjectReference",
@@ -593,15 +522,12 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ObjectReference": {
       "type": "object",
-      "description": "",
       "properties": {
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "namespace": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "javaType": "io.fabric8.servicecatalog.api.model.ObjectReference",
@@ -611,7 +537,6 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ParametersFromSource": {
       "type": "object",
-      "description": "",
       "properties": {
         "secretKeyRef": {
           "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_SecretKeyReference",
@@ -625,11 +550,9 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_RemoveKeyTransform": {
       "type": "object",
-      "description": "",
       "properties": {
         "key": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "javaType": "io.fabric8.servicecatalog.api.model.RemoveKeyTransform",
@@ -639,15 +562,12 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_RenameKeyTransform": {
       "type": "object",
-      "description": "",
       "properties": {
         "from": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "to": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "javaType": "io.fabric8.servicecatalog.api.model.RenameKeyTransform",
@@ -657,15 +577,12 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_SecretKeyReference": {
       "type": "object",
-      "description": "",
       "properties": {
         "key": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "name": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "javaType": "io.fabric8.servicecatalog.api.model.SecretKeyReference",
@@ -675,7 +592,6 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_SecretTransform": {
       "type": "object",
-      "description": "",
       "properties": {
         "addKey": {
           "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_AddKeyTransform",
@@ -701,17 +617,14 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBinding": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "servicecatalog.k8s.io/v1beta1",
           "required": true
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "ServiceBinding",
           "required": true
         },
@@ -735,26 +648,21 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBindingCondition": {
       "type": "object",
-      "description": "",
       "properties": {
         "lastTransitionTime": {
           "existingJavaType": "java.lang.String"
         },
         "message": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "reason": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "status": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "type": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "javaType": "io.fabric8.servicecatalog.api.model.ServiceBindingCondition",
@@ -764,17 +672,14 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBindingList": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "servicecatalog.k8s.io/v1beta1",
           "required": true
         },
         "items": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBinding",
             "existingJavaType": "io.fabric8.servicecatalog.api.model.ServiceBinding"
@@ -782,7 +687,6 @@
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "ServiceBindingList",
           "required": true
         },
@@ -798,11 +702,9 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBindingPropertiesState": {
       "type": "object",
-      "description": "",
       "properties": {
         "parameterChecksum": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "parameters": {
           "existingJavaType": "java.util.Map\u003cString, Object\u003e"
@@ -819,11 +721,9 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBindingSpec": {
       "type": "object",
-      "description": "",
       "properties": {
         "externalID": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "instanceRef": {
           "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_LocalObjectReference",
@@ -834,7 +734,6 @@
         },
         "parametersFrom": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ParametersFromSource",
@@ -842,12 +741,10 @@
           }
         },
         "secretName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "secretTransforms": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_SecretTransform",
@@ -866,23 +763,19 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBindingStatus": {
       "type": "object",
-      "description": "",
       "properties": {
         "asyncOpInProgress": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "conditions": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBindingCondition",
             "existingJavaType": "io.fabric8.servicecatalog.api.model.ServiceBindingCondition"
           }
         },
         "currentOperation": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "externalProperties": {
           "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBindingPropertiesState",
@@ -894,24 +787,20 @@
         },
         "lastOperation": {
           "type": "string",
-          "description": "",
           "existingJavaType": "String"
         },
         "operationStartTime": {
           "existingJavaType": "java.lang.String"
         },
         "orphanMitigationInProgress": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "reconciledGeneration": {
           "type": "integer",
-          "description": "",
           "existingJavaType": "Long"
         },
         "unbindStatus": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "javaType": "io.fabric8.servicecatalog.api.model.ServiceBindingStatus",
@@ -921,17 +810,14 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBroker": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "servicecatalog.k8s.io/v1beta1",
           "required": true
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "ServiceBroker",
           "required": true
         },
@@ -955,7 +841,6 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBrokerAuthInfo": {
       "type": "object",
-      "description": "",
       "properties": {
         "basic": {
           "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_BasicAuthConfig",
@@ -973,26 +858,21 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBrokerCondition": {
       "type": "object",
-      "description": "",
       "properties": {
         "lastTransitionTime": {
           "existingJavaType": "java.lang.String"
         },
         "message": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "reason": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "status": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "type": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "javaType": "io.fabric8.servicecatalog.api.model.ServiceBrokerCondition",
@@ -1002,17 +882,14 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBrokerList": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "servicecatalog.k8s.io/v1beta1",
           "required": true
         },
         "items": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBroker",
             "existingJavaType": "io.fabric8.servicecatalog.api.model.ServiceBroker"
@@ -1020,7 +897,6 @@
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "ServiceBrokerList",
           "required": true
         },
@@ -1036,7 +912,6 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBrokerSpec": {
       "type": "object",
-      "description": "",
       "properties": {
         "authInfo": {
           "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBrokerAuthInfo",
@@ -1050,24 +925,20 @@
           "existingJavaType": "io.fabric8.servicecatalog.api.model.CatalogRestrictions"
         },
         "insecureSkipTLSVerify": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "relistBehavior": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "relistDuration": {
           "existingJavaType": "io.fabric8.kubernetes.api.model.Duration"
         },
         "relistRequests": {
           "type": "integer",
-          "description": "",
           "existingJavaType": "Long"
         },
         "url": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "javaType": "io.fabric8.servicecatalog.api.model.ServiceBrokerSpec",
@@ -1077,11 +948,9 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBrokerStatus": {
       "type": "object",
-      "description": "",
       "properties": {
         "conditions": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceBrokerCondition",
             "existingJavaType": "io.fabric8.servicecatalog.api.model.ServiceBrokerCondition"
@@ -1095,7 +964,6 @@
         },
         "reconciledGeneration": {
           "type": "integer",
-          "description": "",
           "existingJavaType": "Long"
         }
       },
@@ -1106,17 +974,14 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceClass": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "servicecatalog.k8s.io/v1beta1",
           "required": true
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "ServiceClass",
           "required": true
         },
@@ -1140,17 +1005,14 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceClassList": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "servicecatalog.k8s.io/v1beta1",
           "required": true
         },
         "items": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceClass",
             "existingJavaType": "io.fabric8.servicecatalog.api.model.ServiceClass"
@@ -1158,7 +1020,6 @@
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "ServiceClassList",
           "required": true
         },
@@ -1174,58 +1035,46 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceClassSpec": {
       "type": "object",
-      "description": "",
       "properties": {
         "bindable": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "bindingRetrievable": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "defaultProvisionParameters": {
           "existingJavaType": "java.util.Map\u003cString, Object\u003e"
         },
         "description": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "externalID": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "externalMetadata": {
           "existingJavaType": "java.util.Map\u003cString, Object\u003e"
         },
         "externalName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "planUpdatable": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "requires": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "serviceBrokerName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "tags": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         }
       },
@@ -1236,11 +1085,9 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceClassStatus": {
       "type": "object",
-      "description": "",
       "properties": {
         "removedFromBrokerCatalog": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         }
       },
       "javaType": "io.fabric8.servicecatalog.api.model.ServiceClassStatus",
@@ -1250,17 +1097,14 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceInstance": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "servicecatalog.k8s.io/v1beta1",
           "required": true
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "ServiceInstance",
           "required": true
         },
@@ -1284,26 +1128,21 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceInstanceCondition": {
       "type": "object",
-      "description": "",
       "properties": {
         "lastTransitionTime": {
           "existingJavaType": "java.lang.String"
         },
         "message": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "reason": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "status": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "type": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "javaType": "io.fabric8.servicecatalog.api.model.ServiceInstanceCondition",
@@ -1313,17 +1152,14 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceInstanceList": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "servicecatalog.k8s.io/v1beta1",
           "required": true
         },
         "items": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceInstance",
             "existingJavaType": "io.fabric8.servicecatalog.api.model.ServiceInstance"
@@ -1331,7 +1167,6 @@
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "ServiceInstanceList",
           "required": true
         },
@@ -1347,30 +1182,24 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceInstancePropertiesState": {
       "type": "object",
-      "description": "",
       "properties": {
         "clusterServicePlanExternalID": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "clusterServicePlanExternalName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "parameterChecksum": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "parameters": {
           "existingJavaType": "java.util.Map\u003cString, Object\u003e"
         },
         "servicePlanExternalID": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "servicePlanExternalName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "userInfo": {
           "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_UserInfo",
@@ -1384,50 +1213,41 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceInstanceSpec": {
       "type": "object",
-      "description": "",
       "properties": {
         "clusterServiceClassExternalID": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "clusterServiceClassExternalName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "clusterServiceClassName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "clusterServiceClassRef": {
           "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterObjectReference",
           "existingJavaType": "io.fabric8.servicecatalog.api.model.ClusterObjectReference"
         },
         "clusterServicePlanExternalID": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "clusterServicePlanExternalName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "clusterServicePlanName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "clusterServicePlanRef": {
           "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ClusterObjectReference",
           "existingJavaType": "io.fabric8.servicecatalog.api.model.ClusterObjectReference"
         },
         "externalID": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "parameters": {
           "existingJavaType": "java.util.Map\u003cString, Object\u003e"
         },
         "parametersFrom": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ParametersFromSource",
@@ -1435,32 +1255,26 @@
           }
         },
         "serviceClassExternalID": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "serviceClassExternalName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "serviceClassName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "serviceClassRef": {
           "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_LocalObjectReference",
           "existingJavaType": "io.fabric8.servicecatalog.api.model.LocalObjectReference"
         },
         "servicePlanExternalID": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "servicePlanExternalName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "servicePlanName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "servicePlanRef": {
           "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_LocalObjectReference",
@@ -1468,7 +1282,6 @@
         },
         "updateRequests": {
           "type": "integer",
-          "description": "",
           "existingJavaType": "Long"
         },
         "userInfo": {
@@ -1483,35 +1296,29 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceInstanceStatus": {
       "type": "object",
-      "description": "",
       "properties": {
         "asyncOpInProgress": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "conditions": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceInstanceCondition",
             "existingJavaType": "io.fabric8.servicecatalog.api.model.ServiceInstanceCondition"
           }
         },
         "currentOperation": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "dashboardURL": {
           "type": "string",
-          "description": "",
           "existingJavaType": "String"
         },
         "defaultProvisionParameters": {
           "existingJavaType": "java.util.Map\u003cString, Object\u003e"
         },
         "deprovisionStatus": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "externalProperties": {
           "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServiceInstancePropertiesState",
@@ -1523,28 +1330,23 @@
         },
         "lastOperation": {
           "type": "string",
-          "description": "",
           "existingJavaType": "String"
         },
         "observedGeneration": {
           "type": "integer",
-          "description": "",
           "existingJavaType": "Long"
         },
         "operationStartTime": {
           "existingJavaType": "java.lang.String"
         },
         "orphanMitigationInProgress": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "provisionStatus": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "reconciledGeneration": {
           "type": "integer",
-          "description": "",
           "existingJavaType": "Long"
         }
       },
@@ -1555,17 +1357,14 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServicePlan": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "servicecatalog.k8s.io/v1beta1",
           "required": true
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "ServicePlan",
           "required": true
         },
@@ -1589,17 +1388,14 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServicePlanList": {
       "type": "object",
-      "description": "",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "description": "",
           "default": "servicecatalog.k8s.io/v1beta1",
           "required": true
         },
         "items": {
           "type": "array",
-          "description": "",
           "items": {
             "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServicePlan",
             "existingJavaType": "io.fabric8.servicecatalog.api.model.ServicePlan"
@@ -1607,7 +1403,6 @@
         },
         "kind": {
           "type": "string",
-          "description": "",
           "default": "ServicePlanList",
           "required": true
         },
@@ -1623,34 +1418,28 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServicePlanSpec": {
       "type": "object",
-      "description": "",
       "properties": {
         "bindable": {
           "type": "boolean",
-          "description": "",
           "existingJavaType": "Boolean"
         },
         "defaultProvisionParameters": {
           "existingJavaType": "java.util.Map\u003cString, Object\u003e"
         },
         "description": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "externalID": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "externalMetadata": {
           "existingJavaType": "java.util.Map\u003cString, Object\u003e"
         },
         "externalName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "free": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         },
         "instanceCreateParameterSchema": {
           "existingJavaType": "java.util.Map\u003cString, Object\u003e"
@@ -1665,8 +1454,7 @@
           "existingJavaType": "java.util.Map\u003cString, Object\u003e"
         },
         "serviceBrokerName": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "serviceClassRef": {
           "$ref": "#/definitions/github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_LocalObjectReference",
@@ -1680,11 +1468,9 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_ServicePlanStatus": {
       "type": "object",
-      "description": "",
       "properties": {
         "removedFromBrokerCatalog": {
-          "type": "boolean",
-          "description": ""
+          "type": "boolean"
         }
       },
       "javaType": "io.fabric8.servicecatalog.api.model.ServicePlanStatus",
@@ -1694,29 +1480,23 @@
     },
     "github_com_kubernetes-sigs_service-catalog_pkg_apis_servicecatalog_v1beta1_UserInfo": {
       "type": "object",
-      "description": "",
       "properties": {
         "extra": {
           "type": "object",
-          "description": "",
           "existingJavaType": "java.util.Map\u003cString,java.util.List\u003cString\u003e\u003e"
         },
         "groups": {
           "type": "array",
-          "description": "",
           "javaOmitEmpty": true,
           "items": {
-            "type": "string",
-            "description": ""
+            "type": "string"
           }
         },
         "uid": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         },
         "username": {
-          "type": "string",
-          "description": ""
+          "type": "string"
         }
       },
       "javaType": "io.fabric8.servicecatalog.api.model.UserInfo",
