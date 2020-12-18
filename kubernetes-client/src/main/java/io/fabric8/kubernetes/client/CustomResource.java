@@ -23,7 +23,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.utils.Pluralize;
@@ -67,7 +66,7 @@ import static io.fabric8.kubernetes.client.utils.Utils.isNullOrEmpty;
   "status"
 })
 @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false)
-public abstract class CustomResource<S extends KubernetesResource, T extends KubernetesResource> implements HasMetadata {
+public abstract class CustomResource<S, T> implements HasMetadata {
   private static final Logger LOG = LoggerFactory.getLogger(CustomResource.class);
   
   public static final String NAMESPACE_SCOPE = "Namespaced";
