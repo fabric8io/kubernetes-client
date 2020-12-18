@@ -49,7 +49,6 @@ class CustomResourceCrud1109Test {
   @DisplayName("Generated customResourceDefinition has dashes in singular and plural but not in kind")
   void testGeneratedCRDHasDashesInNamesButNotInKind() {
     assertThat(customResourceDefinition)
-      .hasFieldOrPropertyWithValue("kind", "FooBar")
       .hasFieldOrPropertyWithValue("spec.names.kind", "FooBar")
       .hasFieldOrPropertyWithValue("spec.names.singular", "foo-bar")
       .hasFieldOrPropertyWithValue("spec.names.plural", "foo-bars");
