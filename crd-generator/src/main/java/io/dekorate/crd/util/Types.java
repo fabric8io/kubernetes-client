@@ -17,10 +17,8 @@
 
 package io.dekorate.crd.util;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.lang.model.element.TypeElement;
 
@@ -44,7 +42,6 @@ public class Types {
    */
   public static Optional<TypeRef> findStatusType(CustomResourceConfig config, TypeDef typeDef) {
     if (!CustomResourceConfig.AUTODETECT.equals(config.getStatusClassName())) {
-      System.out.println("Status explicitly specified: " + config.getStatusClassName());
       try {
         TypeElement statusElement = CodegenContext.getContext().getElements().getTypeElement(config.getStatusClassName());
         return Optional.of(ElementTo.TYPEDEF.apply(statusElement).toReference());
@@ -59,7 +56,6 @@ public class Types {
       }
     }
 
-    System.out.println("Searching for status");
     return findStatusProperty(config, typeDef).map(Property::getTypeRef);
   }
 

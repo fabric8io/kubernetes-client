@@ -38,10 +38,8 @@ public class AddStatusReplicasPathDecorator extends NamedResourceDecorator<Custo
 	@Override
 	public void andThenVisit(CustomResourceSubresourcesFluent<?> subresources, ObjectMeta resourceMeta) {
     if (subresources.hasScale())  {
-      System.out.println("Status replicas has scale!");
       subresources.editScale().withStatusReplicasPath(path).endScale();
     } else {
-      System.out.println("Status replicas does not have scale!");
       subresources.withNewScale().withStatusReplicasPath(path).endScale();
     }
 	}
