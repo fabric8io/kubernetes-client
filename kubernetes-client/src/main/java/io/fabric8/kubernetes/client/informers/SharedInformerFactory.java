@@ -79,29 +79,12 @@ public class SharedInformerFactory extends BaseOperation {
    * <b>Note:</b>It watches for events in <b>ALL NAMESPACES</b>.
    *
    * @param apiTypeClass apiType class
-   * @param apiListTypeClass api list type class
-   * @param resyncPeriodInMillis resync period in milliseconds
-   * @param <T> the type parameter (should extend {@link io.fabric8.kubernetes.api.model.HasMetadata} and implement {@link io.fabric8.kubernetes.api.model.Namespaced})
-   * @param <L> the type's list parameter (should extend {@link io.fabric8.kubernetes.api.model.KubernetesResourceList}
-   * @return the shared index informer
-   */
-  public synchronized <T extends HasMetadata, L extends KubernetesResourceList<T>> SharedIndexInformer<T> sharedIndexInformerFor(Class<T> apiTypeClass, Class<L> apiListTypeClass, long resyncPeriodInMillis) {
-    return sharedIndexInformerFor(apiTypeClass, apiListTypeClass, null, resyncPeriodInMillis);
-  }
-
-  /**
-   * Constructs and returns a shared index informer with resync period specified. And the
-   * informer cache will be overwritten.
-   *
-   * <b>Note:</b>It watches for events in <b>ALL NAMESPACES</b>.
-   *
-   * @param apiTypeClass apiType class
    * @param resyncPeriodInMillis resync period in milliseconds
    * @param <T> the type parameter (should extend {@link io.fabric8.kubernetes.api.model.HasMetadata} and implement {@link io.fabric8.kubernetes.api.model.Namespaced}) if Namespace scoped resource
    * @return the shared index informer
    */
   public synchronized <T extends HasMetadata> SharedIndexInformer<T> sharedIndexInformerFor(Class<T> apiTypeClass, long resyncPeriodInMillis) {
-    return sharedIndexInformerFor(apiTypeClass, KubernetesResourceUtil.inferListType(apiTypeClass), resyncPeriodInMillis);
+    return sharedIndexInformerFor(apiTypeClass, KubernetesResourceUtil.inferListType(apiTypeClass), null, resyncPeriodInMillis);
   }
 
   /**
@@ -132,7 +115,7 @@ public class SharedInformerFactory extends BaseOperation {
    * @return the shared index informer
    */
   public synchronized <T extends HasMetadata> SharedIndexInformer<T> sharedIndexInformerForCustomResource(Class<T> apiTypeClass, OperationContext operationContext, long resyncPeriodInMillis) {
-    return sharedIndexInformerForCustomResource(CustomResourceDefinitionContext.fromCustomResourceType(apiTypeClass), apiTypeClass, CustomResourceOperationsImpl.inferListType(apiTypeClass), operationContext, resyncPeriodInMillis);
+    return sharedIndexInformerFor(apiTypeClass, CustomResourceOperationsImpl.inferListType(apiTypeClass), operationContext.withPlural(CustomResourceDefinitionContext.fromCustomResourceType(apiTypeClass).getPlural()), resyncPeriodInMillis);
   }
 
   /**
@@ -146,115 +129,7 @@ public class SharedInformerFactory extends BaseOperation {
    * @return the shared index informer
    */
   public synchronized <T extends HasMetadata> SharedIndexInformer<T> sharedIndexInformerForCustomResource(Class<T> apiTypeClass, long resyncPeriodInMillis) {
-    return sharedIndexInformerForCustomResource(CustomResourceDefinitionContext.fromCustomResourceType(apiTypeClass), apiTypeClass, CustomResourceOperationsImpl.inferListType(apiTypeClass), resyncPeriodInMillis);
-  }
-
-  /**
-   * Constructs and returns a shared index informer with resync period specified for custom resources. Note that
-   * {@link CustomResourceDefinitionContext} would be build using opinionated defaults by inspecting the ApiType
-   * POJO
-   *
-   * <b>Note:</b>It watches for events in <b>ALL NAMESPACES</b>.
-   *
-   * @param apiTypeClass apiType class
-   * @param apiListTypeClass api list type class
-   * @param resyncPeriodInMillis resync period in milliseconds
-   * @param <T> the type parameter (should extend {@link io.fabric8.kubernetes.api.model.HasMetadata} and implement {@link io.fabric8.kubernetes.api.model.Namespaced})
-   * @param <L> the type's list parameter (should extend {@link io.fabric8.kubernetes.api.model.KubernetesResourceList}
-   * @return the shared index informer
-   */
-  public synchronized <T extends HasMetadata, L extends KubernetesResourceList<T>> SharedIndexInformer<T> sharedIndexInformerForCustomResource(Class<T> apiTypeClass, Class<L> apiListTypeClass, long resyncPeriodInMillis) {
-    return sharedIndexInformerForCustomResource(CustomResourceDefinitionContext.fromCustomResourceType(apiTypeClass), apiTypeClass, apiListTypeClass, resyncPeriodInMillis);
-  }
-
-  /**
-   * Constructs and returns a shared index informer with resync period specified for custom resources. You can use this
-   * method to specify namespace in {@link OperationContext} if you want to monitor for events in a dedicated namespace
-   * only or provide other filtering options. Note that {@link CustomResourceDefinitionContext} would be build using
-   * opinionated defaults by inspecting the ApiType POJO
-   *
-   * @param apiTypeClass apiType class
-   * @param apiListTypeClass api list type class
-   * @param operationContext operation context
-   * @param resyncPeriodInMillis resync period in milliseconds
-   * @param <T> the type parameter (should extend {@link io.fabric8.kubernetes.api.model.HasMetadata} and implement {@link io.fabric8.kubernetes.api.model.Namespaced})
-   * @param <L> the type's list parameter (should extend {@link io.fabric8.kubernetes.api.model.KubernetesResourceList}
-   * @return the shared index informer
-   */
-  public synchronized <T extends HasMetadata, L extends KubernetesResourceList<T>> SharedIndexInformer<T> sharedIndexInformerForCustomResource(Class<T> apiTypeClass, Class<L> apiListTypeClass, OperationContext operationContext, long resyncPeriodInMillis) {
-    return sharedIndexInformerForCustomResource(CustomResourceDefinitionContext.fromCustomResourceType(apiTypeClass), apiTypeClass, apiListTypeClass, operationContext, resyncPeriodInMillis);
-  }
-
-  /**
-   * Constructs and returns a shared index informer with resync period specified for custom resources. You can use this
-   * method to specify namespace in {@link OperationContext} if you want to monitor for events in a dedicated namespace
-   * only or provide other filtering options.
-   *
-   * @param crdContext {@link CustomResourceDefinitionContext} Context for CustomResourceDefinition
-   * @param apiTypeClass apiType class
-   * @param resyncPeriodInMillis resync period in milliseconds
-   * @param <T> the type parameter (should extend {@link io.fabric8.kubernetes.api.model.HasMetadata} and implement {@link io.fabric8.kubernetes.api.model.Namespaced})
-   * @return the shared index informer
-   */
-  public synchronized <T extends HasMetadata> SharedIndexInformer<T> sharedIndexInformerForCustomResource(CustomResourceDefinitionContext crdContext, Class<T> apiTypeClass, long resyncPeriodInMillis) {
-    return sharedIndexInformerForCustomResource(crdContext, apiTypeClass, CustomResourceOperationsImpl.inferListType(apiTypeClass), resyncPeriodInMillis);
-  }
-
-  /**
-   * Constructs and returns a shared index informer with resync period specified for custom resources. You can use this
-   * method to specify namespace in {@link OperationContext} if you want to monitor for events in a dedicated namespace
-   * only or provide other filtering options.
-   *
-   * @param crdContext {@link CustomResourceDefinitionContext} Context for CustomResourceDefinition
-   * @param apiTypeClass apiType class
-   * @param operationContext operation context
-   * @param resyncPeriodInMillis resync period in milliseconds
-   * @param <T> the type parameter (should extend {@link io.fabric8.kubernetes.api.model.HasMetadata} and implement {@link io.fabric8.kubernetes.api.model.Namespaced})
-   * @return the shared index informer
-   */
-  public synchronized <T extends HasMetadata> SharedIndexInformer<T> sharedIndexInformerForCustomResource(CustomResourceDefinitionContext crdContext, Class<T> apiTypeClass, OperationContext operationContext, long resyncPeriodInMillis) {
-    return sharedIndexInformerForCustomResource(crdContext, apiTypeClass, CustomResourceOperationsImpl.inferListType(apiTypeClass), operationContext, resyncPeriodInMillis);
-  }
-
-  /**
-   * Constructs and returns a shared index informer with resync period specified for custom resources.
-   *
-   * <b>Note:</b>It watches for events in <b>ALL NAMESPACES</b>.
-   *
-   * @param customResourceContext basic information about the Custom Resource Definition corresponding to that custom resource
-   * @param apiTypeClass apiType class
-   * @param apiListTypeClass api list type class
-   * @param resyncPeriodInMillis resync period in milliseconds
-   * @param <T> the type parameter (should extend {@link io.fabric8.kubernetes.api.model.HasMetadata} and implement {@link io.fabric8.kubernetes.api.model.Namespaced})
-   * @param <L> the type's list parameter (should extend {@link io.fabric8.kubernetes.api.model.KubernetesResourceList}
-   * @return the shared index informer
-   */
-  public synchronized <T extends HasMetadata, L extends KubernetesResourceList<T>> SharedIndexInformer<T> sharedIndexInformerForCustomResource(CustomResourceDefinitionContext customResourceContext, Class<T> apiTypeClass, Class<L> apiListTypeClass, long resyncPeriodInMillis) {
-    return sharedIndexInformerFor(apiTypeClass, apiListTypeClass, context.withApiGroupVersion(customResourceContext.getVersion())
-      .withApiGroupName(customResourceContext.getGroup())
-      .withPlural(customResourceContext.getPlural())
-      .withIsNamespaceConfiguredFromGlobalConfig(context.isNamespaceFromGlobalConfig()), resyncPeriodInMillis);
-  }
-
-  /**
-   * Constructs and returns a shared index informer with resync period specified for custom resources. You can use this
-   * method to specify namespace in {@link OperationContext} if you want to monitor for events in a dedicated namespace
-   * only or provide other filtering options.
-   *
-   * @param customResourceContext basic information about the Custom Resource Definition corresponding to that custom resource
-   * @param apiTypeClass apiType class
-   * @param apiListTypeClass api list type class
-   * @param operationContext operation context
-   * @param resyncPeriodInMillis resync period in milliseconds
-   * @param <T> the type parameter (should extend {@link io.fabric8.kubernetes.api.model.HasMetadata} and implement {@link io.fabric8.kubernetes.api.model.Namespaced})
-   * @param <L> the type's list parameter (should extend {@link io.fabric8.kubernetes.api.model.KubernetesResourceList}
-   * @return the shared index informer
-   */
-  public synchronized <T extends HasMetadata, L extends KubernetesResourceList<T>> SharedIndexInformer<T> sharedIndexInformerForCustomResource(CustomResourceDefinitionContext customResourceContext, Class<T> apiTypeClass, Class<L> apiListTypeClass, OperationContext operationContext, long resyncPeriodInMillis) {
-    return sharedIndexInformerFor(apiTypeClass, apiListTypeClass, this.context.withApiGroupVersion(customResourceContext.getVersion())
-      .withApiGroupName(customResourceContext.getGroup())
-      .withPlural(customResourceContext.getPlural())
-      .withOperationContext(operationContext), resyncPeriodInMillis);
+    return sharedIndexInformerFor(apiTypeClass, CustomResourceOperationsImpl.inferListType(apiTypeClass), null, resyncPeriodInMillis);
   }
 
   /**
@@ -270,14 +145,18 @@ public class SharedInformerFactory extends BaseOperation {
    * @param <L> the type's list parameter (should extend {@link io.fabric8.kubernetes.api.model.KubernetesResourceList}
    * @return the shared index informer
    */
-  public synchronized <T extends HasMetadata, L extends KubernetesResourceList<T>> SharedIndexInformer<T> sharedIndexInformerFor(Class<T> apiTypeClass, Class<L> apiListTypeClass, OperationContext operationContext, long resyncPeriodInMillis) {
+  private synchronized <T extends HasMetadata, L extends KubernetesResourceList<T>> SharedIndexInformer<T> sharedIndexInformerFor(Class<T> apiTypeClass, Class<L> apiListTypeClass, OperationContext operationContext, long resyncPeriodInMillis) {
     ListerWatcher<T, L> listerWatcher = listerWatcherFor(apiTypeClass, apiListTypeClass);
-    final OperationContext context = this.context.withApiGroupName(HasMetadata.getGroup(apiTypeClass))
+    OperationContext context = this.context.withApiGroupName(HasMetadata.getGroup(apiTypeClass))
       .withApiGroupVersion(HasMetadata.getVersion(apiTypeClass))
-      .withPlural(getPluralFromKind(HasMetadata.getKind(apiTypeClass))) // todo: we should unify how plurals are calculated
+      .withPlural(resolvePlural(apiTypeClass)) // todo: we should unify how plurals are calculated
       .withIsNamespaceConfiguredFromGlobalConfig(this.context.isNamespaceFromGlobalConfig());
     if (operationContext != null) {
-      context.withOperationContext(operationContext);
+      context = context.withOperationContext(operationContext);
+      // If OperationContext contains namespace, ignore global watch
+      if (operationContext.getNamespace() != null) {
+        context = context.withIsNamespaceConfiguredFromGlobalConfig(false);
+      }
     }
     SharedIndexInformer<T> informer = new DefaultSharedIndexInformer<>(apiTypeClass, listerWatcher, resyncPeriodInMillis, context, eventListeners);
     this.informers.put(apiTypeClass, informer);
@@ -392,5 +271,12 @@ public class SharedInformerFactory extends BaseOperation {
         (context.getApiGroupName().endsWith("/") ? context.getApiGroupVersion() : ("/" + context.getApiGroupVersion()));
       KubernetesDeserializer.registerCustomKind(apiGroupNameAndVersion, apiTypeClass.getSimpleName(), apiTypeClass);
     }
+  }
+
+  private <T extends HasMetadata> String resolvePlural(Class<T> apiTypeClass) {
+    if (CustomResource.class.isAssignableFrom(apiTypeClass)) {
+      return CustomResourceDefinitionContext.fromCustomResourceType(apiTypeClass).getPlural();
+    }
+    return getPluralFromKind(HasMetadata.getKind(apiTypeClass));
   }
 }

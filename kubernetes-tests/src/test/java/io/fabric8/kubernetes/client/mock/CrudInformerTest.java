@@ -45,7 +45,7 @@ class CrudInformerTest {
     Pod podToCreate = new PodBuilder().withNewMetadata().withName("pod1").endMetadata().build();
     KubernetesClient client = server.getClient();
     SharedInformerFactory factory = client.informers();
-    SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, PodList.class, 4000);
+    SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, 4000);
     BlockingQueue<Pod> events = new LinkedBlockingQueue<>();
     podInformer.addEventHandler(
       new ResourceEventHandler<Pod>() {

@@ -1882,12 +1882,12 @@ try (KubernetesClient client = new DefaultKubernetesClient()) {
 ### SharedInformers
 Kubernetes Client also provides `SharedInformer` support in order to stay updated to events happening to your resource inside Kubernetes. It's implementation is just list and watch operations after a certain interval of time. Here are some of the common usages:
 - Get `SharedInformerFactory`:
-```
+```java
 SharedInformerFactory sharedInformerFactory = client.informers();
 ```
 - Create `SharedIndexInformer` for some Kubernetes Resource(requires resource's class, resource's list class, and resync period(when to check with server again while watching something).  By default it watches in all namespaces.:
-```
-SharedIndexInformer<Pod> podInformer = sharedInformerFactory.sharedIndexInformerFor(Pod.class, PodList.class, 30 * 1000L);
+```java
+SharedIndexInformer<Pod> podInformer = sharedInformerFactory.sharedIndexInformerFor(Pod.class, 30 * 1000L);
 podInformer.addEventHandler(new ResourceEventHandler<Pod>() {
   @Override
   public void onAdd(Pod pod) {
@@ -1906,14 +1906,8 @@ podInformer.addEventHandler(new ResourceEventHandler<Pod>() {
 });
 ```
 - Create `SharedIndexInformer` for some Custom Resource(in our case, `Dummy` resource provided in our [examples](https://github.com/fabric8io/kubernetes-client/tree/master/kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/crds) . By default it watches in all namespaces.
-```
-CustomResourceDefinitionContext crdContext = new CustomResourceDefinitionContext.Builder()
-    .withVersion("v1")
-    .withScope("Namespaced")
-    .withGroup("demo.fabric8.io")
-    .withPlural("dummies")
-    .build();
-SharedIndexInformer<Dummy> dummyInformer = sharedInformerFactory.sharedIndexInformerForCustomResource(crdContext, Dummy.class, DummyList.class, 1 * 60 * 1000);
+```java
+SharedIndexInformer<Dummy> dummyInformer = sharedInformerFactory.sharedIndexInformerForCustomResource(Dummy.class, 1 * 60 * 1000);
 dummyInformer.addEventHandler(new ResourceEventHandler<Dummy>() {
   @Override
   public void onAdd(Dummy dummy) {
@@ -1932,11 +1926,10 @@ dummyInformer.addEventHandler(new ResourceEventHandler<Dummy>() {
 });
 ```
 - Create namespaced `SharedIndexInformer` (informers specific to a particular `Namespace`):
-```
+```java
 SharedInformerFactory sharedInformerFactory = client.informers();
 SharedIndexInformer<Pod> podInformer = sharedInformerFactory.sharedIndexInformerFor(
         Pod.class,
-        PodList.class,
         new OperationContext().withNamespace("default"),
         30 * 1000L);
 logger.info("Informer factory initialized.");
@@ -1957,18 +1950,27 @@ podInformer.addEventHandler(new ResourceEventHandler<Pod>() {
         logger.info("Pod " + pod.getMetadata().getName() + " got deleted");
     }
 });
+}
 ```
 - Create Namespaced Informer for a Custom Resource(**Note:** Your CustomResource POJO must implement `Namespaced` interface like the one used in this example: [Dummy.java](https://github.com/fabric8io/kubernetes-client/blob/master/kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/crds/Dummy.java))
+You should have your CustomResource type POJO annotated with group, version and plural fields with respect to your CRD:
+```java
+import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.Namespaced;
+import io.fabric8.kubernetes.client.CustomResource;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
+import io.fabric8.kubernetes.model.annotation.Plural;
+
+@Version("demo.fabric8.io")
+@Group("v1")
+@Plural("dummies")
+public class Dummy extends CustomResource<DummySpec, KubernetesResource> implements Namespaced { }
 ```
-CustomResourceDefinitionContext crdContext = new CustomResourceDefinitionContext.Builder()
-    .withVersion("v1")
-    .withScope("Namespaced")
-    .withGroup("demo.fabric8.io")
-    .withPlural("dummies")
-    .build();
+Then you should be able to use it like this:
+```java
 SharedIndexInformer<Dummy> dummyInformer = sharedInformerFactory.sharedIndexInformerForCustomResource(crdContext,
     Dummy.class,
-    DummyList.class,
     new OperationContext().withNamespace("default"), // Namespace to watch
     1 * 60 * 1000);
 dummyInformer.addEventHandler(new ResourceEventHandler<Dummy>() {
@@ -1990,11 +1992,11 @@ dummyInformer.addEventHandler(new ResourceEventHandler<Dummy>() {
 ```
 
 - Start all registered informers:
-```
+```java
 sharedInformerFactory.startAllRegisteredInformers();
 ```
 - Stop all registered informers:
-```
+```java
 sharedInformerFactory.stopAllRegisteredInformers();
 ```
 

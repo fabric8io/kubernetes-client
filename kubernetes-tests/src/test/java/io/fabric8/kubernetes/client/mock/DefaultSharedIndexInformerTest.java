@@ -22,12 +22,10 @@ import io.fabric8.kubernetes.api.model.ListMeta;
 import io.fabric8.kubernetes.api.model.ListMetaBuilder;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.NamespaceBuilder;
-import io.fabric8.kubernetes.api.model.NamespaceList;
 import io.fabric8.kubernetes.api.model.NamespaceListBuilder;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
-import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
@@ -35,14 +33,11 @@ import io.fabric8.kubernetes.api.model.WatchEvent;
 import io.fabric8.kubernetes.api.model.WatchEventBuilder;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
-import io.fabric8.kubernetes.api.model.apps.DeploymentList;
 import io.fabric8.kubernetes.api.model.apps.DeploymentListBuilder;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBinding;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBindingBuilder;
-import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBindingList;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBindingListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
@@ -81,20 +76,6 @@ import static org.awaitility.Awaitility.await;
 class DefaultSharedIndexInformerTest {
   @Rule
   public KubernetesServer server = new KubernetesServer(false);
-
-  private final CustomResourceDefinitionContext podSetCustomResourceContext = new CustomResourceDefinitionContext.Builder()
-    .withVersion("v1alpha1")
-    .withScope("Namespaced")
-    .withGroup("demo.k8s.io")
-    .withPlural("podsets")
-    .build();
-
-  private final CustomResourceDefinitionContext cronTabCRDContext = new CustomResourceDefinitionContext.Builder()
-    .withVersion("v1")
-    .withScope("Namespaced")
-    .withGroup("stable.example.com")
-    .withPlural("crontabs")
-    .build();
 
   static final Status outdatedStatus = new StatusBuilder().withCode(HttpURLConnection.HTTP_GONE)
     .withMessage(
@@ -136,7 +117,7 @@ class DefaultSharedIndexInformerTest {
       .andEmit(outdatedEvent).done().always();
 
     // When
-    SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, PodList.class, new OperationContext().withNamespace("test"), RESYNC_PERIOD);
+    SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, new OperationContext().withNamespace("test"), RESYNC_PERIOD);
     CountDownLatch foundExistingPod = new CountDownLatch(1);
     podInformer.addEventHandler(
       new ResourceEventHandler<Pod>() {
@@ -180,7 +161,7 @@ class DefaultSharedIndexInformerTest {
       .andEmit(outdatedEvent).done().always();
 
     // When
-    SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, PodList.class, RESYNC_PERIOD);
+    SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, RESYNC_PERIOD);
     CountDownLatch foundExistingPod = new CountDownLatch(1);
     podInformer.addEventHandler(
       new ResourceEventHandler<Pod>() {
@@ -232,7 +213,7 @@ class DefaultSharedIndexInformerTest {
       .always();
 
     // When
-    SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, PodList.class, 10000L);
+    SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, 10000L);
     CountDownLatch relistSuccessful = new CountDownLatch(1);
     podInformer.addEventHandler(
       new ResourceEventHandler<Pod>() {
@@ -273,7 +254,7 @@ class DefaultSharedIndexInformerTest {
       .andEmit(outdatedEvent).done().once();
 
     // When
-    SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, PodList.class, 2000L);
+    SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, 2000L);
     podInformer.addEventHandler(
       new ResourceEventHandler<Pod>() {
         @Override
@@ -295,7 +276,7 @@ class DefaultSharedIndexInformerTest {
   @Test
   void testEventListeners() throws InterruptedException {
     // Given
-    SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, PodList.class, 1000L);
+    SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, 1000L);
     CountDownLatch failureCallbackReceived = new CountDownLatch(1);
     podInformer.addEventHandler(
       new ResourceEventHandler<Pod>() {
@@ -335,8 +316,7 @@ class DefaultSharedIndexInformerTest {
 
     // When
     SharedIndexInformer<Namespace> namespaceSharedIndexInformer = factory.sharedIndexInformerFor(
-      Namespace.class, NamespaceList.class,
-      RESYNC_PERIOD);
+      Namespace.class, RESYNC_PERIOD);
     CountDownLatch foundExistingNamespace = new CountDownLatch(1);
     namespaceSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingNamespace, "ns1"));
     factory.startAllRegisteredInformers();
@@ -363,7 +343,7 @@ class DefaultSharedIndexInformerTest {
 
     // Given
     SharedIndexInformer<ClusterRoleBinding> clusterRoleBindingSharedIndexInformer = factory.sharedIndexInformerFor(
-      ClusterRoleBinding.class, ClusterRoleBindingList.class, RESYNC_PERIOD);
+      ClusterRoleBinding.class, RESYNC_PERIOD);
     CountDownLatch foundExistingClusterRoleBinding = new CountDownLatch(1);
     clusterRoleBindingSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingClusterRoleBinding, "crb1"));
     factory.startAllRegisteredInformers();
@@ -391,7 +371,7 @@ class DefaultSharedIndexInformerTest {
 
     // When
     SharedIndexInformer<Deployment> deploymentSharedIndexInformer = factory.sharedIndexInformerFor(
-      Deployment.class, DeploymentList.class, new OperationContext().withNamespace("ns1"), RESYNC_PERIOD);
+      Deployment.class, new OperationContext().withNamespace("ns1"), RESYNC_PERIOD);
     CountDownLatch foundExistingDeployment = new CountDownLatch(1);
     deploymentSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingDeployment, "deployment1"));
     factory.startAllRegisteredInformers();
@@ -419,7 +399,7 @@ class DefaultSharedIndexInformerTest {
 
     // When
     SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(
-      Pod.class, PodList.class,
+      Pod.class,
       new OperationContext().withNamespace("ns1"),
       100L);
     CountDownLatch foundExistingPod = new CountDownLatch(1);
@@ -439,7 +419,7 @@ class DefaultSharedIndexInformerTest {
       this::getPodSetList, r -> new WatchEvent(getPodSet("podset1", r), "ADDED"));
 
     // When
-    SharedIndexInformer<PodSet> podSetSharedIndexInformer = factory.sharedIndexInformerForCustomResource(podSetCustomResourceContext, PodSet.class, PodSetList.class, 60 * WATCH_EVENT_EMIT_TIME);
+    SharedIndexInformer<PodSet> podSetSharedIndexInformer = factory.sharedIndexInformerForCustomResource(PodSet.class, 60 * WATCH_EVENT_EMIT_TIME);
     CountDownLatch foundExistingPodSet = new CountDownLatch(1);
     podSetSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingPodSet, "podset1"));
     factory.startAllRegisteredInformers();
@@ -458,7 +438,7 @@ class DefaultSharedIndexInformerTest {
       this::getPodSetList, r -> new WatchEvent(getPodSet("podset1", r), "ADDED"));
 
     // When
-    SharedIndexInformer<PodSet> podSetSharedIndexInformer = factory.sharedIndexInformerForCustomResource(podSetCustomResourceContext, PodSet.class, PodSetList.class, new OperationContext().withNamespace("ns1"), 60 * WATCH_EVENT_EMIT_TIME);
+    SharedIndexInformer<PodSet> podSetSharedIndexInformer = factory.sharedIndexInformerForCustomResource(PodSet.class, new OperationContext().withNamespace("ns1"), 60 * WATCH_EVENT_EMIT_TIME);
     CountDownLatch foundExistingPodSet = new CountDownLatch(1);
     podSetSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingPodSet, "podset1"));
     factory.startAllRegisteredInformers();
@@ -473,15 +453,9 @@ class DefaultSharedIndexInformerTest {
     // Given
     setupMockServerExpectationsForCronTab("example.crd.com", "v1alpha1", null, "stars",
       this::getStarList, r -> new WatchEvent(getStar("star1", r), "ADDED"));
-    CustomResourceDefinitionContext crdContext = new CustomResourceDefinitionContext.Builder()
-      .withVersion("v1alpha1")
-      .withScope("Cluster")
-      .withGroup("example.crd.com")
-      .withPlural("stars")
-      .build();
 
     // When
-    SharedIndexInformer<Star> starSharedIndexInformer = factory.sharedIndexInformerForCustomResource(crdContext, Star.class, StarList.class,  RESYNC_PERIOD);
+    SharedIndexInformer<Star> starSharedIndexInformer = factory.sharedIndexInformerForCustomResource(Star.class, RESYNC_PERIOD);
     CountDownLatch foundExistingStar = new CountDownLatch(1);
     starSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingStar, "star1"));
     factory.startAllRegisteredInformers();
@@ -492,7 +466,7 @@ class DefaultSharedIndexInformerTest {
   }
 
   @Test
-  @DisplayName("Pod Informer should without list type should watch in all namespaces")
+  @DisplayName("Pod Informer should should watch in all namespaces")
   void testPodInformerWithNoOperationContextAndNoListType() throws InterruptedException {
     // Given
     String startResourceVersion = "1000", endResourceVersion = "1001";
@@ -545,33 +519,14 @@ class DefaultSharedIndexInformerTest {
   }
 
   @Test
-  @DisplayName("CronTab Informer without any CRDContext, OperationContext should watch in all namespaces")
-  void testCronTabCustomResourceInformerWithNoCRDContextShouldWatchInAllNamespaces() throws InterruptedException {
-    // Given
-    setupMockServerExpectationsForCronTab("stable.example.com", "v1", null, "crontabs",
-      this::getCronTabList, r -> new WatchEvent(getCronTab("crontab1", r), "ADDED"));
-
-    // When
-    SharedIndexInformer<CronTab> cronTabSharedIndexInformer = factory.sharedIndexInformerForCustomResource(CronTab.class, CronTabList.class, 60 * WATCH_EVENT_EMIT_TIME);
-    CountDownLatch foundExistingCronTab = new CountDownLatch(1);
-    cronTabSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingCronTab, "crontab1"));
-    factory.startAllRegisteredInformers();
-    foundExistingCronTab.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
-
-    // Then
-    assertEquals("test", client.getConfiguration().getNamespace());
-    assertEquals(0, foundExistingCronTab.getCount());
-  }
-
-  @Test
-  @DisplayName("CronTab Informer without any CRDContext should watch in namespace provided in OperationContext")
+  @DisplayName("CronTab Informer should watch in namespace provided in OperationContext")
   void testCronTabCustomResourceInformerWithNoCRDContextShouldWatchInNamespaces() throws InterruptedException {
     // Given
     setupMockServerExpectationsForCronTab("stable.example.com", "v1", "ns1", "crontabs",
       this::getCronTabList, r -> new WatchEvent(getCronTab("crontab1", r), "ADDED"));
 
     // When
-    SharedIndexInformer<CronTab> cronTabSharedIndexInformer = factory.sharedIndexInformerForCustomResource(CronTab.class, CronTabList.class, new OperationContext().withNamespace("ns1"), 60 * WATCH_EVENT_EMIT_TIME);
+    SharedIndexInformer<CronTab> cronTabSharedIndexInformer = factory.sharedIndexInformerForCustomResource(CronTab.class, new OperationContext().withNamespace("ns1"), 60 * WATCH_EVENT_EMIT_TIME);
     CountDownLatch foundExistingCronTab = new CountDownLatch(1);
     cronTabSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingCronTab, "crontab1"));
     factory.startAllRegisteredInformers();
@@ -582,7 +537,7 @@ class DefaultSharedIndexInformerTest {
   }
 
   @Test
-  @DisplayName("CronTab Informer with no CRDContext, OperationContext and List type should watch in all namespaces")
+  @DisplayName("CronTab Informer with no OperationContext should watch in all namespaces")
   void testCronTabCustomResourceInformerWithNoCRDContextAndListShouldWatchInAllNamespaces() throws InterruptedException {
     // Given
     setupMockServerExpectationsForCronTab("stable.example.com", "v1", null, "crontabs",
@@ -601,32 +556,33 @@ class DefaultSharedIndexInformerTest {
   }
 
   @Test
-  @DisplayName("CronTab Informer without any CRDContext & List type should watch in namespace provided in OperationContext")
-  void testCronTabCustomResourceInformerWithNoCRDContextAndListShouldWatchInNamespaces() throws InterruptedException {
+  @DisplayName("CronTab Informer should watch in all namespaces")
+  void testCronTabCustomResourceInformerShouldWatchAllNamespaces() throws InterruptedException {
+    // Given
+    setupMockServerExpectationsForCronTab("stable.example.com", "v1", null, "crontabs",
+      this::getCronTabList, r -> new WatchEvent(getCronTab("crontab1", r), "ADDED"));
+
+    // When
+    SharedIndexInformer<CronTab> cronTabSharedIndexInformer = factory.sharedIndexInformerForCustomResource(CronTab.class, 60 * WATCH_EVENT_EMIT_TIME);
+    CountDownLatch foundExistingCronTab = new CountDownLatch(1);
+    cronTabSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingCronTab, "crontab1"));
+    factory.startAllRegisteredInformers();
+    foundExistingCronTab.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
+
+    // Then
+    assertEquals("test", client.getConfiguration().getNamespace());
+    assertEquals(0, foundExistingCronTab.getCount());
+  }
+
+  @Test
+  @DisplayName("CronTab Informer with should watch in namespaces in OperationContext")
+  void testCronTabCustomResourceInformerWithShouldWatchNamespaceProvidedInOperationContext() throws InterruptedException {
     // Given
     setupMockServerExpectationsForCronTab("stable.example.com", "v1", "ns1", "crontabs",
       this::getCronTabList, r -> new WatchEvent(getCronTab("crontab1", r), "ADDED"));
 
     // When
     SharedIndexInformer<CronTab> cronTabSharedIndexInformer = factory.sharedIndexInformerForCustomResource(CronTab.class, new OperationContext().withNamespace("ns1"), 60 * WATCH_EVENT_EMIT_TIME);
-    final CountDownLatch foundExistingCronTab = new CountDownLatch(1);
-    cronTabSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingCronTab, "crontab1"));
-    factory.startAllRegisteredInformers();
-    foundExistingCronTab.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
-
-    // Then
-    assertEquals(0, foundExistingCronTab.getCount());
-  }
-
-  @Test
-  @DisplayName("CronTab Informer with CRDContext no List type should watch in all namespaces")
-  void testCronTabCustomResourceInformerWithCRDContextShouldWatchAllNamespaces() throws InterruptedException {
-    // Given
-    setupMockServerExpectationsForCronTab("stable.example.com", "v1", null, "crontabs",
-      this::getCronTabList, r -> new WatchEvent(getCronTab("crontab1", r), "ADDED"));
-
-    // When
-    SharedIndexInformer<CronTab> cronTabSharedIndexInformer = factory.sharedIndexInformerForCustomResource(cronTabCRDContext, CronTab.class, 60 * WATCH_EVENT_EMIT_TIME);
     CountDownLatch foundExistingCronTab = new CountDownLatch(1);
     cronTabSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingCronTab, "crontab1"));
     factory.startAllRegisteredInformers();
@@ -638,26 +594,7 @@ class DefaultSharedIndexInformerTest {
   }
 
   @Test
-  @DisplayName("CronTab Informer with CRDContext no List type should watch in namespaces in OperationContext")
-  void testCronTabCustomResourceInformerWithCRDContextShouldWatchNamespaceProvidedInOperationContext() throws InterruptedException {
-    // Given
-    setupMockServerExpectationsForCronTab("stable.example.com", "v1", "ns1", "crontabs",
-      this::getCronTabList, r -> new WatchEvent(getCronTab("crontab1", r), "ADDED"));
-
-    // When
-    SharedIndexInformer<CronTab> cronTabSharedIndexInformer = factory.sharedIndexInformerForCustomResource(cronTabCRDContext, CronTab.class, new OperationContext().withNamespace("ns1"), 60 * WATCH_EVENT_EMIT_TIME);
-    CountDownLatch foundExistingCronTab = new CountDownLatch(1);
-    cronTabSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingCronTab, "crontab1"));
-    factory.startAllRegisteredInformers();
-    foundExistingCronTab.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
-
-    // Then
-    assertEquals("test", client.getConfiguration().getNamespace());
-    assertEquals(0, foundExistingCronTab.getCount());
-  }
-
-  @Test
-  void testCustomResourceInformerWithNoCRDContextAndNoListTypeInClassPath() throws InterruptedException {
+  void testCustomResourceInformerWithNoListTypeInClassPath() throws InterruptedException {
     // Given
     setupMockServerExpectationsForCronTab("jungle.example.com", "v1", null, "animals",
       this::getAnimalList, r -> new WatchEvent(getAnimal("red-panda", "Carnivora", r), "ADDED"));
