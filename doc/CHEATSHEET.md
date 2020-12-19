@@ -1907,7 +1907,7 @@ podInformer.addEventHandler(new ResourceEventHandler<Pod>() {
 ```
 - Create `SharedIndexInformer` for some Custom Resource(in our case, `Dummy` resource provided in our [examples](https://github.com/fabric8io/kubernetes-client/tree/master/kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/crds). By default it watches in all namespaces.
 ```java
-SharedIndexInformer<Dummy> dummyInformer = sharedInformerFactory.sharedIndexInformerForCustomResource(Dummy.class, 1 * 60 * 1000);
+SharedIndexInformer<Dummy> dummyInformer = sharedInformerFactory.sharedIndexInformerForCustomResource(Dummy.class, 60 * 1000L);
 dummyInformer.addEventHandler(new ResourceEventHandler<Dummy>() {
   @Override
   public void onAdd(Dummy dummy) {
@@ -1928,9 +1928,8 @@ dummyInformer.addEventHandler(new ResourceEventHandler<Dummy>() {
 - Create namespaced `SharedIndexInformer` (informers specific to a particular `Namespace`):
 ```java
 SharedInformerFactory sharedInformerFactory = client.informers();
-SharedIndexInformer<Pod> podInformer = sharedInformerFactory.sharedIndexInformerFor(
+SharedIndexInformer<Pod> podInformer = sharedInformerFactory.inNamespace("default").sharedIndexInformerFor(
         Pod.class,
-        new OperationContext().withNamespace("default"),
         30 * 1000L);
 logger.info("Informer factory initialized.");
 
@@ -1964,15 +1963,11 @@ import io.fabric8.kubernetes.model.annotation.Plural;
 
 @Version("demo.fabric8.io")
 @Group("v1")
-@Plural("dummies")
 public class Dummy extends CustomResource<DummySpec, KubernetesResource> implements Namespaced { }
 ```
 Then you should be able to use it like this:
 ```java
-SharedIndexInformer<Dummy> dummyInformer = sharedInformerFactory.sharedIndexInformerForCustomResource(crdContext,
-    Dummy.class,
-    new OperationContext().withNamespace("default"), // Namespace to watch
-    1 * 60 * 1000);
+SharedIndexInformer<Dummy> dummyInformer = sharedInformerFactory.inNamespace("default").sharedIndexInformerForCustomResource(Dummy.class, 60 * 1000L);
 dummyInformer.addEventHandler(new ResourceEventHandler<Dummy>() {
   @Override
   public void onAdd(Dummy dummy) {

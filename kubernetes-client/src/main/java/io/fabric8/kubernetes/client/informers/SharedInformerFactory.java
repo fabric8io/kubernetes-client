@@ -34,6 +34,7 @@ import io.fabric8.kubernetes.internal.KubernetesDeserializer;
 import okhttp3.OkHttpClient;
 
 import java.lang.reflect.Type;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -69,6 +70,32 @@ public class SharedInformerFactory extends BaseOperation {
     initOperationContext(configuration);
     this.informerExecutor = threadPool;
     this.baseOperation = this.newInstance(context);
+    this.namespace = null;
+    this.name = null;
+  }
+
+  /**
+   * Configure Namespace for {@link SharedInformerFactory}
+   *
+   * @param namespace namespace to configure
+   * @return {@link SharedInformerFactory} with namespace configured
+   */
+  @Override
+  public SharedInformerFactory inNamespace(String namespace) {
+    this.namespace = namespace;
+    return this;
+  }
+
+  /**
+   * Configure Name for {@link SharedInformerFactory}
+   *
+   * @param name name to be configured
+   * @return {@link SharedInformerFactory} with name configured
+   */
+  @Override
+  public SharedInformerFactory withName(String name) {
+    this.name = name;
+    return this;
   }
 
   /**
@@ -144,6 +171,12 @@ public class SharedInformerFactory extends BaseOperation {
       .withApiGroupVersion(HasMetadata.getVersion(apiTypeClass))
       .withPlural(resolvePlural(apiTypeClass))
       .withIsNamespaceConfiguredFromGlobalConfig(this.context.isNamespaceFromGlobalConfig());
+    if (this.namespace != null) {
+      context = context.withNamespace(this.namespace).withIsNamespaceConfiguredFromGlobalConfig(false);
+    }
+    if (this.name != null) {
+      context = context.withFields(Collections.singletonMap("metadata.name", this.name));
+    }
     if (operationContext != null) {
       context = context.withOperationContext(operationContext);
       // If OperationContext contains namespace, ignore global watch
