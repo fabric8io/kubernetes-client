@@ -29,6 +29,7 @@ import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.CustomResourceOperationsImpl;
 import io.fabric8.kubernetes.client.informers.impl.DefaultSharedIndexInformer;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
+import io.fabric8.kubernetes.client.utils.Pluralize;
 import io.fabric8.kubernetes.internal.KubernetesDeserializer;
 import okhttp3.OkHttpClient;
 
@@ -38,8 +39,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
-
-import static io.fabric8.kubernetes.client.utils.Utils.getPluralFromKind;
 
 /**
  * SharedInformerFactory class constructs and caches informers for api types.
@@ -88,8 +87,7 @@ public class SharedInformerFactory extends BaseOperation {
   }
 
   /**
-   * Constructs and returns a shared index informer with resync period specified. And the
-   * informer cache will be overwritten.
+   * Constructs and returns a shared index informer with resync period specified.
    *
    * <b>Note:</b>It watches for events in <b>ALL NAMESPACES</b>.
    *
@@ -104,9 +102,7 @@ public class SharedInformerFactory extends BaseOperation {
   }
 
   /**
-   * Constructs and returns a shared index informer with resync period specified for custom resources. Note that
-   * {@link CustomResourceDefinitionContext} would be build using opinionated defaults by inspecting the ApiType
-   * POJO
+   * Constructs and returns a shared index informer with resync period specified for custom resources.
    *
    * @param apiTypeClass apiType class
    * @param operationContext operation context
@@ -115,13 +111,11 @@ public class SharedInformerFactory extends BaseOperation {
    * @return the shared index informer
    */
   public synchronized <T extends HasMetadata> SharedIndexInformer<T> sharedIndexInformerForCustomResource(Class<T> apiTypeClass, OperationContext operationContext, long resyncPeriodInMillis) {
-    return sharedIndexInformerFor(apiTypeClass, CustomResourceOperationsImpl.inferListType(apiTypeClass), operationContext.withPlural(CustomResourceDefinitionContext.fromCustomResourceType(apiTypeClass).getPlural()), resyncPeriodInMillis);
+    return sharedIndexInformerFor(apiTypeClass, CustomResourceOperationsImpl.inferListType(apiTypeClass), operationContext, resyncPeriodInMillis);
   }
 
   /**
-   * Constructs and returns a shared index informer with resync period specified for custom resources. Note that
-   * {@link CustomResourceDefinitionContext} would be build using opinionated defaults by inspecting the ApiType
-   * POJO
+   * Constructs and returns a shared index informer with resync period specified for custom resources.
    *
    * @param apiTypeClass apiType class
    * @param resyncPeriodInMillis  resync period in milliseconds
@@ -133,8 +127,7 @@ public class SharedInformerFactory extends BaseOperation {
   }
 
   /**
-   * Constructs and returns a shared index informer with resync period specified. And the
-   * informer cache will be overwritten. You can use this method to specify namespace in {@link OperationContext}
+   * Constructs and returns a shared index informer with resync period specified. You can use this method to specify namespace in {@link OperationContext}
    * if you want to monitor for events in a dedicated namespace only or provide other filtering options.
    *
    * @param apiTypeClass apiType class
@@ -149,7 +142,7 @@ public class SharedInformerFactory extends BaseOperation {
     ListerWatcher<T, L> listerWatcher = listerWatcherFor(apiTypeClass, apiListTypeClass);
     OperationContext context = this.context.withApiGroupName(HasMetadata.getGroup(apiTypeClass))
       .withApiGroupVersion(HasMetadata.getVersion(apiTypeClass))
-      .withPlural(resolvePlural(apiTypeClass)) // todo: we should unify how plurals are calculated
+      .withPlural(resolvePlural(apiTypeClass))
       .withIsNamespaceConfiguredFromGlobalConfig(this.context.isNamespaceFromGlobalConfig());
     if (operationContext != null) {
       context = context.withOperationContext(operationContext);
@@ -275,6 +268,6 @@ public class SharedInformerFactory extends BaseOperation {
     if (CustomResource.class.isAssignableFrom(apiTypeClass)) {
       return CustomResourceDefinitionContext.fromCustomResourceType(apiTypeClass).getPlural();
     }
-    return getPluralFromKind(HasMetadata.getKind(apiTypeClass));
+    return Pluralize.toPlural(HasMetadata.getKind(apiTypeClass)).toLowerCase();
   }
 }
