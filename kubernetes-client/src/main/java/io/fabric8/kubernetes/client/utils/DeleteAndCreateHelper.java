@@ -23,32 +23,76 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import okhttp3.OkHttpClient;
 
+import java.net.HttpURLConnection;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class DeleteAndCreateHelper<T extends HasMetadata> {
+  private static final Logger LOG = LoggerFactory.getLogger(DeleteAndCreateHelper.class);
+  private static final int MAX_WAIT_SECONDS = 30;
+  
   private final UnaryOperator<T> createTask;
+  private final Function<T, Boolean> awaitDeleteTask;
   private final Function<T, Boolean> deleteTask;
 
-  public DeleteAndCreateHelper(UnaryOperator<T> createTask, Function<T, Boolean> deleteTask) {
+  public DeleteAndCreateHelper(UnaryOperator<T> createTask, Function<T, Boolean> deleteTask, Function<T, Boolean> awaitDeleteTask) {
     this.createTask = createTask;
+    this.awaitDeleteTask = awaitDeleteTask;
     this.deleteTask = deleteTask;
   }
 
   public T deleteAndCreate(T item) {
     Boolean deleted = deleteTask.apply(item);
-    if (Boolean.FALSE.equals(deleted)) {
-      throw new KubernetesClientException("Failed to delete existing item:" + item.getMetadata().getName());
+    if (!deleted) {
+      LOG.debug("did not delete because item did not exist, continuing to create {}", item.getMetadata().getName());
     }
-    return createTask.apply(item);
+
+    try {
+      return createTask.apply(item);
+    } catch (KubernetesClientException e) {
+      // depending on the grace period, the object might not actually be deleted by the time we try to create
+      // if that's the case, give it some time.
+      if (e.getCode() == HttpURLConnection.HTTP_CONFLICT) {
+        if (!deleted) {
+          LOG.error("there was no item to delete, but received HTTP_CONFLICT response upon creation of item {}", item.getMetadata().getName(), e);
+          throw e;
+        }
+
+        if (Boolean.FALSE.equals(awaitDeleteTask.apply(item))) {
+          throw new KubernetesClientException("Timed out waiting for item to be deleted before recreating: " + item.getMetadata().getName(), e);
+        }
+
+        return createTask.apply(item);
+      }
+
+      throw e;
+    }
   }
 
   public static HasMetadata deleteAndCreateItem(OkHttpClient client, Config config, HasMetadata meta, ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h, String namespaceToUse, DeletionPropagation propagationPolicy) {
     DeleteAndCreateHelper<HasMetadata> deleteAndCreateHelper = new DeleteAndCreateHelper<>(
       m -> h.create(client, config, namespaceToUse, m),
-      m -> h.delete(client, config, namespaceToUse, propagationPolicy, m)
+      m -> h.delete(client, config, namespaceToUse, propagationPolicy, m),
+      waitUntilDeletedOrInterrupted(client, config, h, namespaceToUse)
     );
 
     return deleteAndCreateHelper.deleteAndCreate(meta);
+  }
+
+  private static <T extends HasMetadata> Function<T, Boolean> waitUntilDeletedOrInterrupted(OkHttpClient client, Config config, ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h, String namespaceToUse) {
+    return m -> {
+      try {
+        return h.waitUntilCondition(client, config, namespaceToUse, m, Objects::isNull, MAX_WAIT_SECONDS , TimeUnit.SECONDS) == null;
+      } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
+        LOG.warn("interrupted waiting for item to be deleted, assuming not deleted");
+        return false;
+      }
+    };
   }
 }

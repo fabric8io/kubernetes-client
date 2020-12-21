@@ -26,8 +26,8 @@ import io.fabric8.kubernetes.client.PropagationPolicyConfigurable;
 public interface ListVisitFromServerGetDeleteRecreateWaitApplicable<T> extends Visitable<ListVisitFromServerGetDeleteRecreateWaitApplicable<T>>,
   FromServerGettable<List<T>>,
   RecreateApplicable<List<T>, T>,
-  CascadingDeletable,
+  CascadingDeletable<List<T>>,
   Waitable<List<T>, T>,
-  GracePeriodConfigurable<CascadingDeletable>,
-  PropagationPolicyConfigurable<CascadingDeletable> {
+  GracePeriodConfigurable<CascadingDeletable<List<T>>>,
+  PropagationPolicyConfigurable<CascadingDeletable<List<T>>> {
 }

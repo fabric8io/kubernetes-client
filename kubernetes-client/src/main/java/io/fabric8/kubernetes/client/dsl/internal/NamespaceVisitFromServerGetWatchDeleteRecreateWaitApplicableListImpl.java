@@ -382,12 +382,12 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
         return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, newVisitors, item, null, null, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
     }
 
-  @Override public CascadingDeletable withGracePeriod(long gracePeriodSeconds)
+  @Override public CascadingDeletable<List<HasMetadata>> withGracePeriod(long gracePeriodSeconds)
   {
     return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, null, null, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
 
-  @Override public CascadingDeletable withPropagationPolicy(DeletionPropagation propagationPolicy)
+  @Override public CascadingDeletable<List<HasMetadata>> withPropagationPolicy(DeletionPropagation propagationPolicy)
   {
     return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, null, null, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }

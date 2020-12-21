@@ -27,11 +27,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class DeleteAndCreateHelperTest {
   @Test
@@ -47,6 +48,7 @@ class DeleteAndCreateHelperTest {
       .thenReturn(getPod());
     DeleteAndCreateHelper<Pod> podDeleteAndCreateHelper = new DeleteAndCreateHelper<>(
       createPodTask,
+      deletePodTask,
       p -> true
     );
 
@@ -55,11 +57,65 @@ class DeleteAndCreateHelperTest {
 
     // Then
     assertNotNull(podCreated);
-    assertTrue(deletePodTask.apply(podCreated));
+    assertTrue(wasPodDeleted.get());
   }
 
   @Test
   void testDeleteAndCreateWhenDeletionFailed() {
+    // Given
+    AtomicBoolean wasPodDeleted = new AtomicBoolean(false);
+    Function<Pod, Boolean> deletePodTask = p -> {
+      wasPodDeleted.set(true);
+      return false;
+    };
+    UnaryOperator<Pod> createPodTask = Mockito.mock(UnaryOperator.class, Mockito.RETURNS_DEEP_STUBS);
+    when(createPodTask.apply(any())).thenAnswer(invocation -> invocation.getArgument(0));
+
+    DeleteAndCreateHelper<Pod> podDeleteAndCreateHelper = new DeleteAndCreateHelper<>(
+      createPodTask,
+      deletePodTask,
+      p -> {
+        throw new RuntimeException("should not be called because creation will succeed first");
+      }
+    );
+
+    // When
+    Pod podToDeleteAndCreate = getPod();
+    Pod result = podDeleteAndCreateHelper.deleteAndCreate(podToDeleteAndCreate);
+
+    // Then
+    assertEquals(podToDeleteAndCreate, result);
+    verify(createPodTask).apply(podToDeleteAndCreate);
+  }
+
+  @Test
+  void testThrowExceptionOnConflictAfterNoDelete() {
+    // Given
+    AtomicBoolean wasPodDeleted = new AtomicBoolean(false);
+    Function<Pod, Boolean> deletePodTask = p -> {
+      wasPodDeleted.set(true);
+      return false;
+    };
+
+    UnaryOperator<Pod> createPodTask = Mockito.mock(UnaryOperator.class, Mockito.RETURNS_DEEP_STUBS);
+    when(createPodTask.apply(any())).thenThrow(new KubernetesClientException("The POST operation could not be completed at " +
+      "this time, please try again",
+      HttpURLConnection.HTTP_CONFLICT, new StatusBuilder().withCode(HttpURLConnection.HTTP_CONFLICT).build()));
+    DeleteAndCreateHelper<Pod> podDeleteAndCreateHelper = new DeleteAndCreateHelper<>(
+      createPodTask,
+      deletePodTask,
+      p -> {
+        throw new RuntimeException("should not be called because creation will succeed first");
+      }
+    );
+
+    // When
+    Pod podToDeleteAndCreate = getPod();
+    assertThrows(KubernetesClientException.class,() -> podDeleteAndCreateHelper.deleteAndCreate(podToDeleteAndCreate));
+  }
+
+  @Test
+  void testDeleteAndCreateWhenDeletionSucceedsButNotFinishedInTime() {
     // Given
     UnaryOperator<Pod> createPodTask = Mockito.mock(UnaryOperator.class, Mockito.RETURNS_DEEP_STUBS);
     when(createPodTask.apply(any())).thenThrow(new KubernetesClientException("The POST operation could not be completed at " +
@@ -67,12 +123,50 @@ class DeleteAndCreateHelperTest {
       HttpURLConnection.HTTP_CONFLICT, new StatusBuilder().withCode(HttpURLConnection.HTTP_CONFLICT).build()));
     DeleteAndCreateHelper<Pod> podDeleteAndCreateHelper = new DeleteAndCreateHelper<>(
       createPodTask,
-      p -> false
+      p -> true, // deletion succeeds
+      p -> false // but doesn't finish in time
     );
 
     // When
     Pod podToDeleteAndCreate = getPod();
     assertThrows(KubernetesClientException.class,() -> podDeleteAndCreateHelper.deleteAndCreate(podToDeleteAndCreate));
+  }
+
+  @Test
+  void testDeleteAndCreateAfterWaitingForItemToBeDeleted() {
+    // Given
+    AtomicBoolean wasPodDeleted = new AtomicBoolean(false);
+    Function<Pod, Boolean> deletePodTask = p -> {
+      wasPodDeleted.set(true);
+      return true;
+    };
+
+    AtomicBoolean awaitedDeletion = new AtomicBoolean(false);
+    Function<Pod, Boolean> awaitDeletionTask = p -> {
+      awaitedDeletion.set(true);
+      return true;
+    };
+
+    UnaryOperator<Pod> createPodTask = Mockito.mock(UnaryOperator.class, Mockito.RETURNS_DEEP_STUBS);
+    when(createPodTask.apply(any()))
+      .thenThrow(new KubernetesClientException("The POST operation could not be completed at " +
+        "this time, please try again",
+        HttpURLConnection.HTTP_CONFLICT, new StatusBuilder().withCode(HttpURLConnection.HTTP_CONFLICT).build()))
+      .thenReturn(getPod());
+
+    DeleteAndCreateHelper<Pod> podDeleteAndCreateHelper = new DeleteAndCreateHelper<>(
+      createPodTask,
+      deletePodTask,
+      awaitDeletionTask
+    );
+
+    // When
+    Pod podCreated = podDeleteAndCreateHelper.deleteAndCreate(getPod());
+
+    // Then
+    assertNotNull(podCreated);
+    assertTrue(wasPodDeleted.get());
+    assertTrue(awaitedDeletion.get());
   }
 
   private Pod getPod() {

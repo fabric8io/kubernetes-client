@@ -200,12 +200,12 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl ex
   }
 
   @Override
-  public CascadingDeletable withGracePeriod(long gracePeriodSeconds) {
+  public CascadingDeletable<HasMetadata> withGracePeriod(long gracePeriodSeconds) {
     return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
 
   @Override
-  public CascadingDeletable withPropagationPolicy(DeletionPropagation propagationPolicy) {
+  public CascadingDeletable<HasMetadata> withPropagationPolicy(DeletionPropagation propagationPolicy) {
     return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
 
