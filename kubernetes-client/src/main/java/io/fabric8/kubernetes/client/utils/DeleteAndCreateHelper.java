@@ -34,7 +34,8 @@ import org.slf4j.LoggerFactory;
 
 public class DeleteAndCreateHelper<T extends HasMetadata> {
   private static final Logger LOG = LoggerFactory.getLogger(DeleteAndCreateHelper.class);
-
+  private static final int MAX_WAIT_SECONDS = 30;
+  
   private final UnaryOperator<T> createTask;
   private final Function<T, Boolean> awaitDeleteTask;
   private final Function<T, Boolean> deleteTask;
@@ -86,7 +87,7 @@ public class DeleteAndCreateHelper<T extends HasMetadata> {
   private static <T extends HasMetadata> Function<T, Boolean> waitUntilDeletedOrInterrupted(OkHttpClient client, Config config, ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h, String namespaceToUse) {
     return m -> {
       try {
-        return h.waitUntilCondition(client, config, namespaceToUse, m, Objects::isNull, 30 , TimeUnit.SECONDS) == null;
+        return h.waitUntilCondition(client, config, namespaceToUse, m, Objects::isNull, MAX_WAIT_SECONDS , TimeUnit.SECONDS) == null;
       } catch (InterruptedException e) {
         Thread.currentThread().interrupt();
         LOG.warn("interrupted waiting for item to be deleted, assuming not deleted");
