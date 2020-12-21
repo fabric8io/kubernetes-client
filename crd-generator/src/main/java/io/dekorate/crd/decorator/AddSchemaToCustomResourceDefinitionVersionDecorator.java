@@ -19,22 +19,25 @@ package io.dekorate.crd.decorator;
 
 import io.dekorate.kubernetes.decorator.Decorator;
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionVersionFluent;
+import io.fabric8.kubernetes.api.model.apiextensions.JSONSchemaProps;
 
-public class AddSubresourcesDecorator extends CustomResourceDefinitionVersionDecorator<CustomResourceDefinitionVersionFluent<?>> {
+public class AddSchemaToCustomResourceDefinitionVersionDecorator
+    extends CustomResourceDefinitionVersionDecorator<CustomResourceDefinitionVersionFluent<?>> {
 
-	public AddSubresourcesDecorator(String name, String version) {
-		super(name, version);
-	}
+  private JSONSchemaProps schema;
 
-	@Override
-	public void andThenVisit(CustomResourceDefinitionVersionFluent<?> spec) {
-    if (!spec.hasSubresources()) {
-      spec.withNewSubresources().endSubresources();
-    }
-	}
+  public AddSchemaToCustomResourceDefinitionVersionDecorator(String name, String version, JSONSchemaProps schema) {
+    super(name, version);
+    this.schema = schema;
+  }
 
-	@Override
-	public Class<? extends Decorator>[] after() {
+  @Override
+  public void andThenVisit(CustomResourceDefinitionVersionFluent<?> version) {
+    version.withNewSchema().withOpenAPIV3Schema(schema).endSchema();
+  }
+
+  @Override
+  public Class<? extends Decorator>[] after() {
     return new Class[] { AddCustomResourceDefintionVersionDecorator.class };
-	}
+  }
 }

@@ -18,26 +18,20 @@
 package io.dekorate.crd.decorator;
 
 import io.dekorate.kubernetes.decorator.Decorator;
-import io.dekorate.kubernetes.decorator.NamedResourceDecorator;
-import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceSubresourcesFluent;
 
-public class AddSpecReplicasPathDecorator extends NamedResourceDecorator<CustomResourceSubresourcesFluent<?>> {
+public class AddSpecReplicasPathDecorator extends CustomResourceDefinitionVersionDecorator<CustomResourceSubresourcesFluent<?>> {
 
   private final String path;
  
-	public AddSpecReplicasPathDecorator(String path) {
-    this(ANY, path);
-	}
-
-	public AddSpecReplicasPathDecorator(String name, String path) {
-		super(name);
+	public AddSpecReplicasPathDecorator(String name, String version, String path) {
+		super(name, version);
 		this.path = path;
 	}
  
 	@Override
-	public void andThenVisit(CustomResourceSubresourcesFluent<?> subresources, ObjectMeta resourceMeta) {
- if (subresources.hasScale())  {
+	public void andThenVisit(CustomResourceSubresourcesFluent<?> subresources) {
+    if (subresources.hasScale())  {
       subresources.editScale().withSpecReplicasPath(path).endScale();
     } else {
       subresources.withNewScale().withSpecReplicasPath(path).endScale();
@@ -45,6 +39,6 @@ public class AddSpecReplicasPathDecorator extends NamedResourceDecorator<CustomR
 	}
 	@Override
 	public Class<? extends Decorator>[] after() {
-		return new Class[] { AddSubresourcesDecorator.class };
+		return new Class[] { AddCustomResourceDefintionVersionDecorator.class, AddSubresourcesDecorator.class };
 	}
 }

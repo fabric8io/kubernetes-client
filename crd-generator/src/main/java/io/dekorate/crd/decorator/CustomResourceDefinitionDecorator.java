@@ -17,24 +17,16 @@
 
 package io.dekorate.crd.decorator;
 
-import io.dekorate.kubernetes.decorator.Decorator;
-import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionVersionFluent;
+import io.dekorate.kubernetes.decorator.NamedResourceDecorator;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
 
-public class AddSubresourcesDecorator extends CustomResourceDefinitionVersionDecorator<CustomResourceDefinitionVersionFluent<?>> {
+public class CustomResourceDefinitionDecorator<T> extends NamedResourceDecorator<T> {
 
-	public AddSubresourcesDecorator(String name, String version) {
-		super(name, version);
+	public CustomResourceDefinitionDecorator(String name) {
+		super("CustomResourceDefinition", name);
 	}
 
 	@Override
-	public void andThenVisit(CustomResourceDefinitionVersionFluent<?> spec) {
-    if (!spec.hasSubresources()) {
-      spec.withNewSubresources().endSubresources();
-    }
-	}
-
-	@Override
-	public Class<? extends Decorator>[] after() {
-    return new Class[] { AddCustomResourceDefintionVersionDecorator.class };
+	public void andThenVisit(T item, ObjectMeta resourceMeta) {
 	}
 }

@@ -22,7 +22,7 @@ import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 
-import io.dekorate.config.AnnotationConfiguration;
+import io.dekorate.config.MultiConfiguration;
 import io.dekorate.crd.adapter.CustomResourceConfigAdapter;
 import io.dekorate.crd.annotation.CustomResource;
 import io.dekorate.crd.config.Keys;
@@ -61,11 +61,8 @@ public class CustomResourceAnnotationProcessor extends AbstractAnnotationProcess
       TypeDef definition = ElementTo.TYPEDEF.apply((TypeElement) element);
       String className = ModelUtils.getClassName(element);
       on(customResource != null
-          ? new AnnotationConfiguration<CustomResourceConfig>(CustomResourceConfigAdapter.newBuilder(customResource)
-              .addToAttributes(Keys.TYPE_DEFINITION, definition).accept(new AddClassNameConfigurator(className)))
-          : new AnnotationConfiguration<CustomResourceConfig>(
-              new CustomResourceConfigBuilder().addToAttributes(Keys.TYPE_DEFINITION, definition)
-                  .accept(new AddClassNameConfigurator(className))));
+          ? new MultiConfiguration<CustomResourceConfig>(CustomResourceConfigAdapter.newBuilder(customResource).addToAttributes(Keys.TYPE_DEFINITION, definition).accept(new AddClassNameConfigurator(className)))
+          : new MultiConfiguration<CustomResourceConfig>(new CustomResourceConfigBuilder().addToAttributes(Keys.TYPE_DEFINITION, definition).accept(new AddClassNameConfigurator(className))));
     }
   }
 }

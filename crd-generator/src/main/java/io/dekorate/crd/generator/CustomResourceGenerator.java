@@ -19,10 +19,7 @@ import java.util.Map;
 
 import io.dekorate.Generator;
 import io.dekorate.Session;
-import io.dekorate.config.AnnotationConfiguration;
 import io.dekorate.config.ConfigurationSupplier;
-import io.dekorate.config.PropertyConfiguration;
-import io.dekorate.crd.adapter.CustomResourceConfigAdapter;
 import io.dekorate.crd.config.CustomResourceConfig;
 import io.dekorate.crd.handler.CustomResourceHandler;
 
@@ -30,13 +27,10 @@ public interface CustomResourceGenerator extends Generator {
 
   @Override
   default void addAnnotationConfiguration(Map map) {
-    on(new AnnotationConfiguration<>(
-        CustomResourceConfigAdapter.newBuilder(propertiesMap(map, CustomResourceConfig.class))));
   }
 
   @Override
   default void addPropertyConfiguration(Map map) {
-    on(new PropertyConfiguration<>(CustomResourceConfigAdapter.newBuilder(propertiesMap(map, CustomResourceConfig.class))));
   }
 
   default void on(ConfigurationSupplier<CustomResourceConfig> config) {

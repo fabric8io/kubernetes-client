@@ -18,23 +18,21 @@
 package io.dekorate.crd.decorator;
 
 import io.dekorate.kubernetes.decorator.Decorator;
-import io.dekorate.kubernetes.decorator.NamedResourceDecorator;
-import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceSubresourcesFluent;
 
-public class AddStatusSubresourceDecorator extends NamedResourceDecorator<CustomResourceSubresourcesFluent<?>> {
+public class AddStatusSubresourceDecorator extends CustomResourceDefinitionVersionDecorator<CustomResourceSubresourcesFluent<?>> {
 
-	public AddStatusSubresourceDecorator(String name) {
-		super(name);
+	public AddStatusSubresourceDecorator(String name, String version) {
+		super(name, version);
 	}
 
 	@Override
-	public void andThenVisit(CustomResourceSubresourcesFluent<?> subresources, ObjectMeta resourceMeta) {
+	public void andThenVisit(CustomResourceSubresourcesFluent<?> subresources) {
     subresources.withNewStatus().endStatus();
 	}
 
 	@Override
 	public Class<? extends Decorator>[] after() {
-		return new Class[] { AddSubresourcesDecorator.class };
+		return new Class[] { AddCustomResourceDefintionVersionDecorator.class, AddSubresourcesDecorator.class };
 	}
 }

@@ -18,25 +18,19 @@
 package io.dekorate.crd.decorator;
 
 import io.dekorate.kubernetes.decorator.Decorator;
-import io.dekorate.kubernetes.decorator.NamedResourceDecorator;
-import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceSubresourcesFluent;
 
-public class AddStatusReplicasPathDecorator extends NamedResourceDecorator<CustomResourceSubresourcesFluent<?>> {
+public class AddStatusReplicasPathDecorator extends CustomResourceDefinitionVersionDecorator<CustomResourceSubresourcesFluent<?>> {
 
   private final String path;
  
-	public AddStatusReplicasPathDecorator(String path) {
-    this(ANY, path);
-	}
-
-	public AddStatusReplicasPathDecorator(String name, String path) {
-		super(name);
+	public AddStatusReplicasPathDecorator(String name, String version, String path) {
+		super(name, version);
 		this.path = path;
 	}
  
 	@Override
-	public void andThenVisit(CustomResourceSubresourcesFluent<?> subresources, ObjectMeta resourceMeta) {
+	public void andThenVisit(CustomResourceSubresourcesFluent<?> subresources) {
     if (subresources.hasScale())  {
       subresources.editScale().withStatusReplicasPath(path).endScale();
     } else {

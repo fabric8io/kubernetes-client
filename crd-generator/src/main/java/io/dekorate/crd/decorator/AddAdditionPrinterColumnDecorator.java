@@ -17,14 +17,12 @@
 
 package io.dekorate.crd.decorator;
 
-import io.dekorate.kubernetes.decorator.NamedResourceDecorator;
 import io.dekorate.utils.Strings;
 import io.fabric8.kubernetes.api.builder.Predicate;
-import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceColumnDefinitionBuilder;
-import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionSpecFluent;
+import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionVersionFluent;
 
-public class AddAdditionPrinterColumnDecorator extends NamedResourceDecorator<CustomResourceDefinitionSpecFluent<?>> {
+public class AddAdditionPrinterColumnDecorator extends CustomResourceDefinitionVersionDecorator<CustomResourceDefinitionVersionFluent<?>> {
 
   private final String type;
   private final String name;
@@ -32,8 +30,8 @@ public class AddAdditionPrinterColumnDecorator extends NamedResourceDecorator<Cu
   private final String format;
   private final String description;
   
-  public AddAdditionPrinterColumnDecorator(String resourceName, String type, String name, String path, String format, String description) {
-		super(resourceName);
+  public AddAdditionPrinterColumnDecorator(String resourceName, String resourceVersion, String type, String name, String path, String format, String description) {
+		super(resourceName, resourceVersion);
 		this.type = type;
 		this.name = name;
 		this.path = path;
@@ -42,7 +40,7 @@ public class AddAdditionPrinterColumnDecorator extends NamedResourceDecorator<Cu
 	}
 
 	@Override
-	public void andThenVisit(CustomResourceDefinitionSpecFluent<?> spec, ObjectMeta resourceMeta) {
+	public void andThenVisit(CustomResourceDefinitionVersionFluent<?> spec) {
       Predicate<CustomResourceColumnDefinitionBuilder> matchingColumn = new Predicate<CustomResourceColumnDefinitionBuilder>(){
           @Override
           public Boolean apply(CustomResourceColumnDefinitionBuilder col) {
