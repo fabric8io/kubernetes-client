@@ -1,5 +1,15 @@
 ## CHANGELOG
 
+### 5.0-SNAPSHOT
+
+#### Bugs
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
 ### 5.0.0-beta-1 (2020-12-21)
 
 #### Bugs
