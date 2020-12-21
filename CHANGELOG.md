@@ -1,9 +1,9 @@
 ## CHANGELOG
 
-### 5.0-SNAPSHOT
+### 5.0.0-beta-1 (2020-12-21)
 
 #### Bugs
-* Fix: Reliability improvements to watchers
+* Fix #2671: Reliability improvements to watchers
 * Fix #2592: ConcurrentModificationException in CRUD KubernetesMockServer
 * Fix #2519: Generated schemas contains a valid meta-schema URI reference (`http://json-schema.org/draft-05/schema#`)
 * Fix #2631: Handle null values when getting current context on OIDC interceptors
@@ -12,9 +12,9 @@
 * Fix #2656: Binding operations can be instantiated
 
 #### Improvements
-* Fix: Allow specifying PropagationPolicy when using deleteExisting
-* Fix: Adds a convenience method for referring to Cache keys by namespace and name rather than item
-* Fix: CustomResourceDefinitionContext.fromCrd support for v1 CustomResourceDefinition
+* Fix #2676: Allow specifying PropagationPolicy when using deleteExisting
+* Fix #2678: Adds a convenience method for referring to Cache keys by namespace and name rather than item
+* Fix #2665: CustomResourceDefinitionContext.fromCrd support for v1 CustomResourceDefinition
 * Fix #2642: Update kubernetes-examples to use apps/v1 Deployment rather than extensions/v1beta1
 
 #### Dependency Upgrade
