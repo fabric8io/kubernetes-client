@@ -23,7 +23,6 @@ import io.fabric8.crd.PetStatus;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
-import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionBuilder;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.Watch;
@@ -31,6 +30,7 @@ import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
@@ -62,14 +62,8 @@ public class TypedCustomResourceIT {
 
   private String currentNamespace;
 
-  private static final CustomResourceDefinition petCrd = new CustomResourceDefinitionBuilder()
-    .withNewMetadata().withName("pets.testing.fabric8.io").endMetadata()
-    .withNewSpec()
-    .withGroup("testing.fabric8.io")
-    .addNewVersion()
-    .withName("v1alpha1")
-    .withServed(true)
-    .withStorage(true)
+  private static final CustomResourceDefinition petCrd = CustomResourceDefinitionContext.v1CRDFromCustomResourceType(Pet.class)
+    .editSpec().editVersion(0)
     .withNewSubresources()
     .withNewStatus().endStatus()
     .endSubresources()
@@ -91,13 +85,6 @@ public class TypedCustomResourceIT {
     .endOpenAPIV3Schema()
     .endSchema()
     .endVersion()
-    .withScope("Namespaced")
-    .withNewNames()
-    .withPlural("pets")
-    .withSingular("pet")
-    .withKind("Pet")
-    .withShortNames("pt")
-    .endNames()
     .endSpec()
     .build();
 
