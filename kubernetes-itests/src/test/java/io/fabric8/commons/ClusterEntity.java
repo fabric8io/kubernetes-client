@@ -46,10 +46,25 @@ public class ClusterEntity {
     }
   }
 
+  public static void apply(HasMetadata kubernetesResource) {
+    try (KubernetesClient client = new DefaultKubernetesClient()) {
+      String namespace = getArquillianNamespace();
+      if (namespace != null) {
+        client.resource(kubernetesResource).inNamespace(namespace).createOrReplace();
+      }
+    }
+  }
+
   public static void remove(InputStream inputStream) {
     try (KubernetesClient client = new DefaultKubernetesClient()) {
       List<HasMetadata> items = client.load(inputStream).get();
       client.resourceList(items).inNamespace(getArquillianNamespace()).withPropagationPolicy(DeletionPropagation.BACKGROUND).delete();
+    }
+  }
+
+  public static void remove(HasMetadata kubernetesResource) {
+    try (KubernetesClient client = new DefaultKubernetesClient()) {
+      client.resource(kubernetesResource).inNamespace(getArquillianNamespace()).withPropagationPolicy(DeletionPropagation.BACKGROUND).delete();
     }
   }
 

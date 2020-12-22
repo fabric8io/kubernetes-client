@@ -22,6 +22,9 @@ import io.fabric8.crd.PetSpec;
 import io.fabric8.crd.PetStatus;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionBuilder;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
@@ -59,6 +62,45 @@ public class TypedCustomResourceIT {
 
   private String currentNamespace;
 
+  private static final CustomResourceDefinition petCrd = new CustomResourceDefinitionBuilder()
+    .withNewMetadata().withName("pets.testing.fabric8.io").endMetadata()
+    .withNewSpec()
+    .withGroup("testing.fabric8.io")
+    .addNewVersion()
+    .withName("v1alpha1")
+    .withServed(true)
+    .withStorage(true)
+    .withNewSubresources()
+    .withNewStatus().endStatus()
+    .endSubresources()
+    .withNewSchema()
+    .withNewOpenAPIV3Schema()
+    .withType("object")
+    .addToProperties(Collections.singletonMap("spec", new JSONSchemaPropsBuilder()
+      .withType("object")
+      .withProperties(Collections.singletonMap("type", new JSONSchemaPropsBuilder()
+        .withType("string")
+        .build()))
+      .build()))
+    .addToProperties(Collections.singletonMap("status", new JSONSchemaPropsBuilder()
+      .withType("object")
+      .withProperties(Collections.singletonMap("currentStatus", new JSONSchemaPropsBuilder()
+        .withType("string")
+        .build()))
+      .build()))
+    .endOpenAPIV3Schema()
+    .endSchema()
+    .endVersion()
+    .withScope("Namespaced")
+    .withNewNames()
+    .withPlural("pets")
+    .withSingular("pet")
+    .withKind("Pet")
+    .withShortNames("pt")
+    .endNames()
+    .endSpec()
+    .build();
+
   private MixedOperation<Pet, KubernetesResourceList<Pet>, Resource<Pet>> petClient;
 
   @ClassRule
@@ -66,7 +108,7 @@ public class TypedCustomResourceIT {
 
   @BeforeClass
   public static void init() {
-    ClusterEntity.apply(TypedCustomResourceIT.class.getResourceAsStream("/pet-crd.yml"));
+    ClusterEntity.apply(petCrd);
   }
 
   @Before
@@ -218,7 +260,7 @@ public class TypedCustomResourceIT {
 
   @AfterClass
   public static void cleanup() {
-    ClusterEntity.remove(TypedCustomResourceIT.class.getResourceAsStream("/pet-crd.yml"));
+    ClusterEntity.remove(petCrd);
   }
 
   private Pet createNewPet(String name, String type, String currentStatus) {
