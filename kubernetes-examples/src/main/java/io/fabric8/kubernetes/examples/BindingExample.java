@@ -15,35 +15,56 @@
  */
 package io.fabric8.kubernetes.examples;
 
-import io.fabric8.kubernetes.api.model.Binding;
 import io.fabric8.kubernetes.api.model.BindingBuilder;
-import io.fabric8.kubernetes.api.model.KubernetesResourceList;
+import io.fabric8.kubernetes.api.model.Node;
+import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
+import io.fabric8.kubernetes.api.model.PodBuilder;
+import io.fabric8.kubernetes.api.model.PodSpecBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
+import java.util.UUID;
 
 public class BindingExample {
-  private static Logger logger = LoggerFactory.getLogger(WaitUntilReadyExample.class);
 
-  public static void main(String args[]) throws IOException, InterruptedException {
+  @SuppressWarnings("java:S106")
+  public static void main(String[] args) {
+    final String podName = "binding-example-" + UUID.randomUUID().toString();
     try (final KubernetesClient client = new DefaultKubernetesClient()) {
-      Binding binding = new BindingBuilder()
-        .withNewMetadata().withName("testpod").endMetadata()
-        .withNewTarget().withKind("Node").withApiVersion("v1").withName("minikube").endTarget()
-        .build();
+      final String namespace;
+      if (client.getConfiguration().getNamespace() != null) {
+        namespace = client.getConfiguration().getNamespace();
+      } else if (client.getNamespace() != null) {
+        namespace = client.getNamespace();
+      } else {
+        namespace = client.namespaces().list().getItems().stream().findFirst()
+          .orElseThrow(() -> new IllegalStateException("No namespace available")).getMetadata().getName();
+      }
 
-      client.bindings().inNamespace("default").create(binding);
+      client.pods().inNamespace(namespace).create(new PodBuilder()
+        .withMetadata(new ObjectMetaBuilder()
+          .withName(podName)
+          .build())
+        .withSpec(new PodSpecBuilder()
+          .withSchedulerName("random-scheduler-name-which-does-not-exist")
+          .addNewContainer()
+          .withName(podName)
+          .withImage("nginx:latest")
+          .endContainer()
+          .build())
+        .build()
+      );
+      final Node firstNode = client.nodes().list().getItems().stream().findFirst()
+        .orElseThrow(() -> new IllegalStateException("No nodes available"));
+      client.bindings().inNamespace(namespace).create(new BindingBuilder()
+        .withNewMetadata().withName(podName).endMetadata()
+        .withNewTarget()
+        .withKind(firstNode.getKind())
+        .withApiVersion(firstNode.getApiVersion())
+        .withName(firstNode.getMetadata().getName()).endTarget()
+        .build());
+      System.out.printf("Successfully bound Pod %s to Node %s%n",
+        podName, firstNode.getMetadata().getName());
     }
-  }
-
-  private static void log(String action, Object obj) {
-    logger.info("{}: {}", action, obj);
-  }
-
-  private static void log(String action) {
-    logger.info(action);
   }
 }

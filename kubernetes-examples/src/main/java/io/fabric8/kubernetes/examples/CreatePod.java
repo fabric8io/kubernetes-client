@@ -22,7 +22,6 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import org.slf4j.Logger;
@@ -38,7 +37,7 @@ public class CreatePod {
 
   public static void main(String[] args) {
     if (args.length == 0) {
-      System.out.println("Usage: podJsonFileName <token> <namespace>");
+      logger.warn("Usage: podJsonFileName <token> <namespace>");
       return;
     }
     String fileName = args[0];
@@ -49,7 +48,7 @@ public class CreatePod {
 
     File file = new File(fileName);
     if (!file.exists() || !file.isFile()) {
-      System.err.println("File does not exist: " + fileName);
+      logger.warn("File does not exist: {}", fileName);
       return;
     }
 
@@ -65,21 +64,19 @@ public class CreatePod {
 
       List<HasMetadata> resources = client.load(new FileInputStream(fileName)).get();
       if (resources.isEmpty()) {
-        System.err.println("No resources loaded from file: " +fileName);
+        logger.error("No resources loaded from file: {}", fileName);
         return;
       }
       HasMetadata resource = resources.get(0);
       if (resource instanceof Pod){
         Pod pod = (Pod) resource;
-        System.out.println("Creating pod in namespace " + namespace);
+        logger.info("Creating pod in namespace {}", namespace);
         NonNamespaceOperation<Pod, PodList, PodResource<Pod>> pods = client.pods().inNamespace(namespace);
         Pod result = pods.create(pod);
-        System.out.println("Created pod " + result.getMetadata().getName());
+        logger.info("Created pod {}", result.getMetadata().getName());
       } else {
-        System.err.println("Loaded resource is not a Pod! " + resource);
+        logger.error("Loaded resource is not a Pod! {}", resource);
       }
-    } catch (KubernetesClientException e) {
-      logger.error(e.getMessage(), e);
     } catch (Exception e) {
       logger.error(e.getMessage(), e);
     }

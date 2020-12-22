@@ -18,7 +18,6 @@ package io.fabric8.kubernetes.examples;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
-import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -32,20 +31,20 @@ import java.util.Map;
 public class LoadMultipleDocumentsFromFileExample {
   private static final Logger logger = LoggerFactory.getLogger(LoadMultipleDocumentsFromFileExample.class);
 
+  @SuppressWarnings("java:S1604")
   public static void main(String[] args) {
-    String master = "https://localhost:8443/";
-    if (args.length == 1) {
-      master = args[0];
+    final ConfigBuilder configBuilder = new ConfigBuilder();
+    if (args.length > 0) {
+      configBuilder.withMasterUrl(args[0]);
     }
-
-    Config config = new ConfigBuilder().withMasterUrl(master).build();
-    try (final KubernetesClient client = new DefaultKubernetesClient(config)) {
+    try (KubernetesClient client = new DefaultKubernetesClient(configBuilder.build())) {
       List<HasMetadata> list = client.load(LoadMultipleDocumentsFromFileExample.class.getResourceAsStream("/multiple-document-template.yml")).get();
       logger.info("Found in file: {} items.", list.size());
       for (HasMetadata meta : list) {
         logger.info(display(meta));
       }
 
+      //noinspection Convert2Lambda
       list = client.load(LoadMultipleDocumentsFromFileExample.class.getResourceAsStream("/multiple-document-template.yml"))
         .accept(new Visitor<ObjectMetaBuilder>() {
           @Override

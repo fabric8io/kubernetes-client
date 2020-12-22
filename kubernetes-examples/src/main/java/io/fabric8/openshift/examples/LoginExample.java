@@ -17,6 +17,7 @@ package io.fabric8.openshift.examples;
 
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
+import io.fabric8.openshift.api.model.ProjectList;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +34,8 @@ public class LoginExample {
       .build())) {
 
       final OpenShiftClient openShiftClient = kubernetesClient.adapt(OpenShiftClient.class);
-      logger.info(openShiftClient.projects().list().toString());
+      final ProjectList pl = openShiftClient.projects().list();
+      logger.info("{}", pl);
     }
   }
 }

@@ -16,8 +16,6 @@
 package io.fabric8.kubernetes.examples;
 
 import io.fabric8.kubernetes.api.model.NamespaceBuilder;
-import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -28,33 +26,22 @@ public class DeleteExamples {
 
   private static final Logger logger = LoggerFactory.getLogger(DeleteExamples.class);
 
+  private static final String NAMESPACE = "this-is-a-test";
+
   public static void main(String[] args) {
-    String master = "https://localhost:8443/";
-    if (args.length == 1) {
-      master = args[0];
+    try(KubernetesClient client = new DefaultKubernetesClient()) {
+      try {
+        logger.info("Create namespace: {}", client.namespaces().create(
+          new NamespaceBuilder().withNewMetadata().withName(NAMESPACE).endMetadata().build()));
+        logger.info("Deleted namespace: {}", client.namespaces().withName(NAMESPACE).delete());
+        logger.info("Deleted testPod: {}", client.pods().inNamespace(NAMESPACE).withName("test-pod").delete());
+        logger.info("Deleted pod by label: {}", client.pods().withLabel("this", "works").delete());
+      } catch (KubernetesClientException e) {
+        logger.error(e.getMessage(), e);
+      } finally {
+        client.namespaces().withName(NAMESPACE).delete();
+      }
     }
-
-    Config config = new ConfigBuilder().withMasterUrl(master).build();
-    KubernetesClient client = new DefaultKubernetesClient(config);
-    try {
-      log("Create namespace:", client.namespaces().create(new NamespaceBuilder().withNewMetadata().withName("thisisatest").endMetadata().build()));
-      log("Deleted namespace:", client.namespaces().withName("test").delete());
-      log("Deleted testPod:", client.pods().inNamespace("thisisatest").withName("testpod").delete());
-      log("Deleted pod by label:", client.pods().withLabel("this", "works").delete());
-    } catch (KubernetesClientException e) {
-      logger.error(e.getMessage(), e);
-    } finally {
-      client.namespaces().withName("thisisatest").delete();
-      client.close();
-    }
-  }
-
-  private static void log(String action, Object obj) {
-    logger.info("{}: {}", action, obj);
-  }
-
-  private static void log(String action) {
-    logger.info(action);
   }
 
 }

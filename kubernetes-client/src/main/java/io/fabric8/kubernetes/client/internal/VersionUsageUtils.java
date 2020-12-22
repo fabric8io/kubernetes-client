@@ -22,13 +22,13 @@ import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Utility class to monitor alhpa/beta version usage and log.
+ * Utility class to monitor alpha/beta version usage and log.
  */
 public final class VersionUsageUtils {
 
   private static final Logger LOG = LoggerFactory.getLogger(VersionUsageUtils.class);
 
-  private static ConcurrentHashMap<String, Boolean> UNSTABLE_TYPES = new ConcurrentHashMap<>();
+  private static final ConcurrentHashMap<String, Boolean> UNSTABLE_TYPES = new ConcurrentHashMap<>();
 
   private static final boolean LOG_EACH_USAGE = false;
 

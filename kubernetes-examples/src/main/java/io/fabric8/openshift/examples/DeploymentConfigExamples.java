@@ -16,66 +16,65 @@
 
 package io.fabric8.openshift.examples;
 
-import io.fabric8.kubernetes.api.model.Namespace;
-import io.fabric8.kubernetes.api.model.NamespaceBuilder;
-import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountBuilder;
-import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.openshift.api.model.Build;
-import io.fabric8.openshift.api.model.BuildRequestBuilder;
 import io.fabric8.openshift.api.model.DeploymentConfigBuilder;
-import io.fabric8.openshift.api.model.DeploymentTriggerPolicy;
-import io.fabric8.openshift.api.model.ProjectRequest;
 import io.fabric8.openshift.api.model.ProjectRequestBuilder;
-import io.fabric8.openshift.api.model.WebHookTriggerBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class DeploymentConfigExamples {
+
   private static final Logger logger = LoggerFactory.getLogger(DeploymentConfigExamples.class);
 
-  public static void main(String[] args) throws InterruptedException {
-    Config config = new ConfigBuilder().build();
-    try (KubernetesClient kubernetesClient = new DefaultKubernetesClient(config)) {
-      OpenShiftClient client = kubernetesClient.adapt(OpenShiftClient.class);
+  private static final String NAMESPACE = "this-is-a-test";
+  private static final String IMAGE = "busybox";
 
-      ProjectRequest  projectRequest = new ProjectRequestBuilder()
-          .withNewMetadata()
-            .withName("thisisatest")
-            .addToLabels("project", "thisisatest")
-          .endMetadata()
-          .build();
+  public static void main(String[] args)  {
+    try (KubernetesClient kubernetesClient = new DefaultKubernetesClient()) {
+      final OpenShiftClient client = kubernetesClient.adapt(OpenShiftClient.class);
 
-
-      log("Created project", client.projectrequests().create(projectRequest));
+      final String project;
+      if (client.getNamespace() != null) {
+        project = client.getNamespace();
+        logger.info("Using configured project: {}", project);
+      } else {
+        client.projectrequests().create(
+          new ProjectRequestBuilder()
+            .withNewMetadata()
+            .withName(NAMESPACE)
+            .endMetadata()
+            .build()
+        );
+        project = NAMESPACE;
+        logger.info("Created project: {}", project);
+      }
 
       ServiceAccount fabric8 = new ServiceAccountBuilder().withNewMetadata().withName("fabric8").endMetadata().build();
 
-      client.serviceAccounts().inNamespace("thisisatest").createOrReplace(fabric8);
+      client.serviceAccounts().inNamespace(project).createOrReplace(fabric8);
 
-      log("Created deployment", client.deploymentConfigs().inNamespace("thisisatest").createOrReplace(new DeploymentConfigBuilder()
+      log("Created deployment", client.deploymentConfigs().inNamespace(project).createOrReplace(new DeploymentConfigBuilder()
         .withNewMetadata()
-          .withName("nginx")
+          .withName(IMAGE)
         .endMetadata()
         .withNewSpec()
           .withReplicas(1)
           .addNewTrigger()
             .withType("ConfigChange")
           .endTrigger()
-          .addToSelector("app", "nginx")
+          .addToSelector("app", IMAGE)
           .withNewTemplate()
             .withNewMetadata()
-              .addToLabels("app", "nginx")
+              .addToLabels("app", IMAGE)
             .endMetadata()
             .withNewSpec()
               .addNewContainer()
-                .withName("nginx")
-                .withImage("nginx")
+                .withName(IMAGE)
+                .withImage(IMAGE)
                 .addNewPort()
                   .withContainerPort(80)
                 .endPort()
@@ -86,11 +85,11 @@ public class DeploymentConfigExamples {
         .build()));
 
 
-      client.deploymentConfigs().inNamespace("thisisatest").withName("nginx").scale(2, true);
-      log("Created pods:", client.pods().inNamespace("thisisatest").list().getItems());
-      client.deploymentConfigs().inNamespace("thisisatest").withName("nginx").delete();
-      log("Pods:", client.pods().inNamespace("thisisatest").list().getItems());
-      log("Replication Controllers:", client.replicationControllers().inNamespace("thisisatest").list().getItems());
+      client.deploymentConfigs().inNamespace(project).withName(IMAGE).scale(2, true);
+      log("Created pods:", client.pods().inNamespace(project).list().getItems());
+      client.deploymentConfigs().inNamespace(project).withName(IMAGE).delete();
+      log("Pods:", client.pods().inNamespace(project).list().getItems());
+      log("Replication Controllers:", client.replicationControllers().inNamespace(project).list().getItems());
 
       log("Done.");
     }

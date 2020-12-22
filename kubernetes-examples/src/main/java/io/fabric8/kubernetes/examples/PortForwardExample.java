@@ -17,7 +17,6 @@
 package io.fabric8.kubernetes.examples;
 
 import io.fabric8.kubernetes.api.model.Pod;
-import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -25,47 +24,47 @@ import io.fabric8.kubernetes.client.LocalPortForward;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.ResponseBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 
 public class PortForwardExample {
+
   private static final Logger logger = LoggerFactory.getLogger(PortForwardExample.class);
 
-  public static void main(String args[]) {
-    String master = "https://localhost:8443";
-
-    Config config = new ConfigBuilder().withMasterUrl(master).build();
-    try (final KubernetesClient client = new DefaultKubernetesClient(config)) {
+  public static void main(String[] args) {
+    final ConfigBuilder configBuilder = new ConfigBuilder();
+    if (args.length > 0) {
+      configBuilder.withMasterUrl(args[0]);
+      logger.info("Using master with URL: {}", args[0]);
+    }
+    try (KubernetesClient client = new DefaultKubernetesClient(configBuilder.build())) {
       String namespace = "default";
-      log("namespace", namespace);
-      Pod pod = client.pods().inNamespace(namespace).load(PortForwardExample.class.getResourceAsStream("/portforward-example-pod.yml")).get();
+      logger.info("Using namespace: {}", namespace);
+      Pod pod = client.pods().inNamespace(namespace)
+        .load(PortForwardExample.class.getResourceAsStream("/portforward-example-pod.yml")).get();
+      final String podName = pod.getMetadata().getName();
       client.pods().inNamespace(namespace).create(pod);
-      log("Pod created");
+      logger.info("Pod {} created", podName);
 
       int containerPort =  pod.getSpec().getContainers().get(0).getPorts().get(0).getContainerPort();
-      client.pods().inNamespace(namespace).withName("testpod").waitUntilReady(10, TimeUnit.SECONDS);
+      client.pods().inNamespace(namespace).withName(podName).waitUntilReady(10, TimeUnit.SECONDS);
 
       LocalPortForward portForward = client.pods().inNamespace("default").withName("testpod").portForward(containerPort, 8080);
-      log("Port forwarded for 60 seconds at http://127.0.0.1:" + portForward.getLocalPort());
+      logger.info("Port forwarded for 60 seconds at http://127.0.0.1:{}", portForward.getLocalPort());
 
-      log("Checking forwarded port:-");
-      Response response =  new OkHttpClient().newCall(new Request.Builder().get().url("http://127.0.0.1:" + portForward.getLocalPort()).build()).execute();
-      log(response.body().string());
-      Thread.sleep(60 * 1000);
+      logger.info("Checking forwarded port:-");
+      final ResponseBody responseBody =  new OkHttpClient()
+        .newCall(new Request.Builder().get().url("http://127.0.0.1:" + portForward.getLocalPort()).build()).execute()
+        .body();
+      logger.info("Response: \n{}", responseBody != null ? responseBody.string() : "[Empty Body]");
+      Thread.sleep(60 * 1000L);
+      logger.info("Closing forwarded port");
+      portForward.close();
     } catch (Exception e) {
-      log("Exception occurred: ", e.getMessage());
-      e.printStackTrace();
+      logger.error("Exception occurred: {}", e.getMessage(), e);
     }
-  }
-
-  private static void log(String action, Object obj) {
-    logger.info("{}: {}", action, obj);
-  }
-
-  private static void log(String action) {
-    logger.info(action);
   }
 }

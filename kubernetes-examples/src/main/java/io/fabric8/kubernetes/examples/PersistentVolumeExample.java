@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.api.model.NodeSelectorRequirementBuilder;
 import io.fabric8.kubernetes.api.model.PersistentVolume;
 import io.fabric8.kubernetes.api.model.PersistentVolumeBuilder;
 import io.fabric8.kubernetes.api.model.Quantity;
-import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -28,22 +27,19 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 public class PersistentVolumeExample {
-  private static final Logger logger = LoggerFactory.getLogger(PodDisruptionBudgetExample.class);
+  private static final Logger logger = LoggerFactory.getLogger(PersistentVolumeExample.class);
 
-  public static void main(String args[]) throws InterruptedException {
-    String master = "https://192.168.99.100:8443/";
-    if (args.length == 1) {
-      master = args[0];
+  public static void main(String[] args) {
+    final ConfigBuilder configBuilder = new ConfigBuilder();
+    if (args.length > 0) {
+      configBuilder.withMasterUrl(args[0]);
+      logger.info("Using master with URL: {}", args[0]);
     }
-
-    log("Using master with url ", master);
-    Config config = new ConfigBuilder().withMasterUrl(master).build();
-    try (final KubernetesClient client = new DefaultKubernetesClient(config)) {
-      log("Creating persistent volume object");
+    try (KubernetesClient client = new DefaultKubernetesClient(configBuilder.build())) {
+      logger.info("Creating persistent volume object");
       PersistentVolume pv = new PersistentVolumeBuilder()
         .withNewMetadata().withName("example-local-pv").endMetadata()
         .withNewSpec()
@@ -57,7 +53,7 @@ public class PersistentVolumeExample {
         .withNewNodeAffinity()
         .withNewRequired()
         .addNewNodeSelectorTerm()
-        .withMatchExpressions(Arrays.asList(new NodeSelectorRequirementBuilder()
+        .withMatchExpressions(Collections.singletonList(new NodeSelectorRequirementBuilder()
           .withKey("kubernetes.io/hostname")
           .withOperator("In")
           .withValues("my-node")
@@ -70,17 +66,10 @@ public class PersistentVolumeExample {
         .build();
 
       client.persistentVolumes().create(pv);
-      log("Successfully created Persistent Volume object");
+      logger.info("Successfully created Persistent Volume object");
     } catch (KubernetesClientException e) {
-      log("Could not create resource", e.getMessage());
+      logger.error("Could not create resource: {}", e.getMessage(), e);
     }
   }
 
-  private static void log(String action, Object obj) {
-    logger.info("{}: {}", action, obj);
-  }
-
-  private static void log(String action) {
-    logger.info(action);
-  }
 }

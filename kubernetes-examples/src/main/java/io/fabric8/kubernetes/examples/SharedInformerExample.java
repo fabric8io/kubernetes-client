@@ -30,8 +30,10 @@ import org.slf4j.LoggerFactory;
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
-public class InformerExample {
-  private static final Logger logger = LoggerFactory.getLogger(InformerExample.class);
+public class SharedInformerExample {
+  private static final Logger logger = LoggerFactory.getLogger(SharedInformerExample.class);
+
+  private static final String POD_NAME = "myapp-pod";
 
   public static void main(String[] args) throws InterruptedException {
     try (final KubernetesClient client = new DefaultKubernetesClient()) {
@@ -61,7 +63,7 @@ public class InformerExample {
       logger.info("Starting all registered informers");
       sharedInformerFactory.startAllRegisteredInformers();
       Pod testPod = new PodBuilder()
-        .withNewMetadata().withName("myapp-pod").withLabels(Collections.singletonMap("app", "myapp-pod")).endMetadata()
+        .withNewMetadata().withName(POD_NAME).withLabels(Collections.singletonMap("app", POD_NAME)).endMetadata()
         .withNewSpec()
         .addNewContainer()
         .withName("myapp-container")
@@ -81,7 +83,7 @@ public class InformerExample {
       Thread.sleep(3000L);
 
       Lister<Pod> podLister = new Lister<> (podInformer.getIndexer(), "default");
-      Pod myPod = podLister.get("myapp-pod");
+      Pod myPod = podLister.get(POD_NAME);
       logger.info("PodLister has {}", podLister.list().size());
 
       if (myPod != null) {

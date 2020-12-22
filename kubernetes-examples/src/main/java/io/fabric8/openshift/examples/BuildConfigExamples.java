@@ -19,15 +19,14 @@ package io.fabric8.openshift.examples;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.NamespaceBuilder;
 import io.fabric8.kubernetes.api.model.Quantity;
-import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountBuilder;
-import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.openshift.api.model.Build;
-import io.fabric8.openshift.api.model.BuildRequestBuilder;
+import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildConfigBuilder;
+import io.fabric8.openshift.api.model.BuildRequestBuilder;
+import io.fabric8.openshift.api.model.ImageStream;
 import io.fabric8.openshift.api.model.ImageStreamBuilder;
 import io.fabric8.openshift.api.model.WebHookTriggerBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
@@ -35,21 +34,32 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class BuildConfigExamples {
+
   private static final Logger logger = LoggerFactory.getLogger(BuildConfigExamples.class);
 
+  private static final String NAMESPACE = "this-is-a-test";
+
+  @SuppressWarnings("java:S106")
   public static void main(String[] args) throws InterruptedException {
-    Config config = new ConfigBuilder().build();
-    try(KubernetesClient kubernetesClient = new DefaultKubernetesClient(config)){
-      OpenShiftClient client = kubernetesClient.adapt(OpenShiftClient.class);
-      // Create a namespace for all our stuff
-      Namespace ns = new NamespaceBuilder().withNewMetadata().withName("thisisatest").addToLabels("this", "rocks").endMetadata().build();
-      log("Created namespace", client.namespaces().create(ns));
+    try(KubernetesClient kubernetesClient = new DefaultKubernetesClient()){
+      final OpenShiftClient client = kubernetesClient.adapt(OpenShiftClient.class);
+      final String namespace;
+      if (client.getNamespace() != null) {
+        namespace = client.getNamespace();
+        logger.info("Using configured namespace: {}", namespace);
+      } else {
+        final Namespace ns = client.namespaces().create(
+          new NamespaceBuilder().withNewMetadata().withName(NAMESPACE).addToLabels("this", "rocks").endMetadata().build()
+        );
+        namespace = ns.getMetadata().getName();
+        logger.info("Created namespace: {}", namespace);
+      }
 
-      ServiceAccount fabric8 = new ServiceAccountBuilder().withNewMetadata().withName("fabric8").endMetadata().build();
+      client.serviceAccounts().inNamespace(namespace).create(
+        new ServiceAccountBuilder().withNewMetadata().withName("fabric8").endMetadata().build()
+      );
 
-      client.serviceAccounts().inNamespace("thisisatest").create(fabric8);
-
-      log("Created image stream", client.imageStreams().inNamespace("thisisatest").create(new ImageStreamBuilder()
+      final ImageStream is = client.imageStreams().inNamespace(namespace).create(new ImageStreamBuilder()
         .withNewMetadata()
         .withName("example-camel-cdi")
         .endMetadata()
@@ -60,24 +70,14 @@ public class BuildConfigExamples {
         .withDockerImageRepository("fabric8/example-camel-cdi")
         .endSpec()
         .withNewStatus().withDockerImageRepository("").endStatus()
-        .build()));
+        .build()
+      );
+      logger.info("Created image stream: {}", is.getMetadata().getName());
 
-      log("Created image stream", client.imageStreams().inNamespace("thisisatest").create(new ImageStreamBuilder()
+      final String buildConfigName = "custom-build-config";
+      final BuildConfig buildConfig = client.buildConfigs().inNamespace(namespace).create(new BuildConfigBuilder()
         .withNewMetadata()
-        .withName("java-sti")
-        .endMetadata()
-        .withNewSpec()
-        .addNewTag()
-        .withName("latest")
-        .endTag()
-        .withDockerImageRepository("fabric8/java-sti")
-        .endSpec()
-        .withNewStatus().withDockerImageRepository("").endStatus()
-        .build()));
-
-        log("Created build config", client.buildConfigs().inNamespace("thisisatest").create(new BuildConfigBuilder()
-        .withNewMetadata()
-        .withName("custom-build-config")
+        .withName(buildConfigName)
         .endMetadata()
         .withNewSpec()
         .withServiceAccount("fabric8")
@@ -88,8 +88,8 @@ public class BuildConfigExamples {
         .endGit()
         .endSource()
         .withNewResources()
-          .addToLimits("mykey", new Quantity("10"))
-          .addToRequests("mykey", new Quantity("10"))
+        .addToLimits("mykey", new Quantity("10"))
+        .addToRequests("mykey", new Quantity("10"))
         .endResources()
         .withNewStrategy()
         .withType("Source")
@@ -107,42 +107,35 @@ public class BuildConfigExamples {
         .endGithub()
         .endTrigger()
         .endSpec()
-        .build()));
+        .build()
+      );
+      logger.info("Created Build Config: {}", buildConfig.getMetadata().getName());
 
-      Build build = client.buildConfigs().inNamespace("thisisatest").withName("custom-build-config").instantiate(new BuildRequestBuilder()
-        .withNewMetadata().withName("custom-build-config").endMetadata()
+      final Build build = client.buildConfigs().inNamespace(namespace).withName("custom-build-config").instantiate(new BuildRequestBuilder()
+        .withNewMetadata().withName(buildConfigName).endMetadata()
         .build());
-      log("Build:", build.getMetadata().getName());
+      logger.info("Instantiated Build: {}", build.getMetadata().getName());
 
-      client.buildConfigs().inNamespace("thisisatest").withName("custom-build-config")
+      client.buildConfigs().inNamespace(namespace).withName(buildConfigName)
         .withSecret("secret101")
         .withType("github")
         .trigger(new WebHookTriggerBuilder()
           .withSecret("secret101")
           .build());
+      logger.info("Triggered Build Config: {}", buildConfigName);
 
 
       Thread.sleep(6000);
 
-      log("Builds:");
-      for (Build b: client.builds().inNamespace("thisisatest").list().getItems()) {
-        log("\t\t\t"+b.getMetadata().getName());
+      logger.info("Builds:");
+      for (Build b: client.builds().inNamespace(namespace).list().getItems()) {
+        logger.info("\t\t\t{}", b.getMetadata().getName());
 
-        log("\t\t\t\t\t Log:");client.builds().inNamespace("thisisatest").withName(b.getMetadata().getName()).watchLog(System.out);
+        logger.info("\t\t\t\t\t Log:");
+        client.builds().inNamespace(namespace).withName(b.getMetadata().getName()).watchLog(System.out);
       }
 
-
-
-      log("Done.");
+      logger.info("Done");
     }
-  }
-
-
-  private static void log(String action, Object obj) {
-    logger.info("{}: {}", action, obj);
-  }
-
-  private static void log(String action) {
-    logger.info(action);
   }
 }

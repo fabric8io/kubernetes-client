@@ -24,13 +24,12 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import io.fabric8.kubernetes.client.utils.InputStreamPumper;
 
-import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ExecPipesExample {
 
-    public static void main(String[] args) throws InterruptedException, IOException {
+    public static void main(String[] args) {
         String master = "https://localhost:8443/";
         String podName = null;
 
@@ -57,7 +56,7 @@ public class ExecPipesExample {
 
             executorService.submit(pump);
             watch.getInput().write("ls -al\n".getBytes());
-            Thread.sleep(5 * 1000);
+            Thread.sleep(5 * 1000L);
         } catch (Exception e) {
             throw KubernetesClientException.launderThrowable(e);
         } finally {

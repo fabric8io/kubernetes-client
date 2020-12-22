@@ -32,6 +32,7 @@ import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
+@SuppressWarnings("java:S106")
 public class ExecuteCommandOnPodExample implements AutoCloseable {
 
   private final OkHttpClient okHttpClient;
@@ -53,7 +54,8 @@ public class ExecuteCommandOnPodExample implements AutoCloseable {
   @SneakyThrows
   public String execCommandOnPod(String podName, String namespace, String... cmd) {
     Pod pod = client.pods().inNamespace(namespace).withName(podName).get();
-    System.out.printf("Running command: [%s] on pod [%s] in namespace [%s]%n", Arrays.toString(cmd), pod.getMetadata().getName());
+    System.out.printf("Running command: [%s] on pod [%s] in namespace [%s]%n",
+      Arrays.toString(cmd), pod.getMetadata().getName(), namespace);
 
     CompletableFuture<String> data = new CompletableFuture<>();
     try (ExecWatch execWatch = execCmd(pod, data, cmd)) {

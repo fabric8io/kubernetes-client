@@ -16,9 +16,8 @@
 
 package io.fabric8.kubernetes.examples;
 
-import io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HorizontalPodAutoscaler;
-import io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HorizontalPodAutoscalerBuilder;
-import io.fabric8.kubernetes.api.model.autoscaling.v2beta2.MetricSpecBuilder;
+import io.fabric8.kubernetes.api.model.autoscaling.v1.HorizontalPodAutoscaler;
+import io.fabric8.kubernetes.api.model.autoscaling.v1.HorizontalPodAutoscalerBuilder;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -26,15 +25,15 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class HorizontalPodAutoscalerExample {
-  private static final Logger logger = LoggerFactory.getLogger(HorizontalPodAutoscalerExample.class);
+public class HorizontalPodAutoscalerV1Example {
+  private static final Logger logger = LoggerFactory.getLogger(HorizontalPodAutoscalerV1Example.class);
 
   public static void main(String[] args) {
     final ConfigBuilder configBuilder = new ConfigBuilder();
     if (args.length > 0) {
       configBuilder.withMasterUrl(args[0]);
     }
-    try (final KubernetesClient client = new DefaultKubernetesClient(configBuilder.build())) {
+    try (KubernetesClient client = new DefaultKubernetesClient(configBuilder.build())) {
       HorizontalPodAutoscaler horizontalPodAutoscaler = new HorizontalPodAutoscalerBuilder()
         .withNewMetadata().withName("the-hpa").withNamespace("default").endMetadata()
         .withNewSpec()
@@ -45,34 +44,11 @@ public class HorizontalPodAutoscalerExample {
         .endScaleTargetRef()
         .withMinReplicas(1)
         .withMaxReplicas(10)
-        .addToMetrics(new MetricSpecBuilder()
-          .withType("Resource")
-          .withNewResource()
-          .withName("cpu")
-          .withNewTarget()
-          .withType("Utilization")
-          .withAverageUtilization(50)
-          .endTarget()
-          .endResource()
-          .build())
-        .withNewBehavior()
-        .withNewScaleDown()
-        .addNewPolicy()
-        .withType("Pods")
-        .withValue(4)
-        .withPeriodSeconds(60)
-        .endPolicy()
-        .addNewPolicy()
-        .withType("Percent")
-        .withValue(10)
-        .withPeriodSeconds(60)
-        .endPolicy()
-        .endScaleDown()
-        .endBehavior()
+        .withTargetCPUUtilizationPercentage(50)
         .endSpec()
         .build();
 
-      client.autoscaling().v2beta2().horizontalPodAutoscalers().inNamespace("default").create(horizontalPodAutoscaler);
+      client.autoscaling().v1().horizontalPodAutoscalers().inNamespace("default").createOrReplace(horizontalPodAutoscaler);
     } catch (KubernetesClientException e) {
       logger.error(e.getMessage(), e);
     }

@@ -22,40 +22,43 @@ import io.fabric8.openshift.api.model.DeploymentConfigList;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftAPIGroups;
 import io.fabric8.openshift.client.OpenShiftClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-import static org.junit.Assert.assertNotNull;
-
 public class ListDeploymentConfigs {
+
+  private static final Logger logger = LoggerFactory.getLogger(ListDeploymentConfigs.class);
+
   public static void main(String[] args) {
-    try {
-      OpenShiftClient client = new DefaultOpenShiftClient();
+    try(OpenShiftClient client = new DefaultOpenShiftClient()) {
       if (!client.supportsOpenShiftAPIGroup(OpenShiftAPIGroups.APPS)) {
-        System.out.println("WARNING this cluster does not support the API Group " + OpenShiftAPIGroups.APPS);
+        logger.warn("This cluster does not support the API Group {}", OpenShiftAPIGroups.APPS);
         return;
       }
       DeploymentConfigList list = client.deploymentConfigs().list();
       if (list == null) {
-        System.out.println("ERROR no list returned!");
+        logger.error("No list returned!");
         return;
       }
       List<DeploymentConfig> items = list.getItems();
       for (DeploymentConfig item : items) {
-        System.out.println("DeploymentConfig " + item.getMetadata().getName() + " has version: " + item.getApiVersion());
+        logger.info("DeploymentConfig {} has version: {}", item.getMetadata().getName(), item.getApiVersion());
       }
 
-      if (items.size() > 0) {
-        // lets check .get() too
+      if (!items.isEmpty()) {
         DeploymentConfig deploymentConfig = items.get(0);
         String name = deploymentConfig.getMetadata().getName();
         deploymentConfig = client.deploymentConfigs().withName(name).get();
-        assertNotNull("No DeploymentConfig found for name " + name, deploymentConfig);
-        System.out.println("get() DeploymentConfig " + name + " has version: " + deploymentConfig.getApiVersion());
+        if (deploymentConfig == null) {
+          logger.error("No DeploymentConfig found for name {}", name);
+          return;
+        }
+        logger.info("get() DeploymentConfig {} has version: {}", name, deploymentConfig.getApiVersion());
       }
     } catch (KubernetesClientException e) {
-      System.out.println("Failed: " + e);
-      e.printStackTrace();
+      logger.error("Failed: {}", e.getMessage(), e);
     }
   }
 

@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -415,7 +414,7 @@ public class Config {
     if (configuredMaxConcurrentRequests != null) {
       config.setMaxConcurrentRequests(Integer.parseInt(configuredMaxConcurrentRequests));
     }
-    
+
     String configuredMaxConcurrentReqeustsPerHost = Utils.getSystemPropertyOrEnvVar(KUBERNETES_MAX_CONCURRENT_REQUESTS_PER_HOST, String.valueOf(config.getMaxConcurrentRequestsPerHost()));
     if (configuredMaxConcurrentReqeustsPerHost != null) {
       config.setMaxConcurrentRequestsPerHost(Integer.parseInt(configuredMaxConcurrentReqeustsPerHost));
@@ -1244,9 +1243,9 @@ public class Config {
 
   /**
    * Returns all the {@link NamedContext}s that exist in the kube config
-   * 
+   *
    * @return all the contexts
-   * 
+   *
    * @see NamedContext
    */
   public List<NamedContext> getContexts() {
@@ -1259,9 +1258,9 @@ public class Config {
 
   /**
    * Returns the current context that's defined in the kube config. Returns {@code null} if there's none
-   * 
+   *
    * @return the current context
-   * 
+   *
    * @see NamedContext
    */
   public NamedContext getCurrentContext() {

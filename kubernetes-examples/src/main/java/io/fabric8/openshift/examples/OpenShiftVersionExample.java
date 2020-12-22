@@ -16,7 +16,6 @@
 
 package io.fabric8.openshift.examples;
 
-import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.VersionInfo;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
@@ -25,37 +24,26 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class OpenShiftVersionExample {
-  private static Logger logger = LoggerFactory.getLogger(OpenShiftVersionExample.class);
+  private static final Logger logger = LoggerFactory.getLogger(OpenShiftVersionExample.class);
 
-  public static void main(String args[]) {
-    String master = "https://localhost:8443/";
-    if (args.length == 1) {
-      master = args[0];
+  public static void main(String[] args) {
+    final ConfigBuilder configBuilder = new ConfigBuilder();
+    if (args.length > 0) {
+      configBuilder.withMasterUrl(args[0]);
     }
+    try(OpenShiftClient client = new DefaultOpenShiftClient(configBuilder.build())) {
+      VersionInfo openShiftVersionInfo = client.getVersion();
 
-    Config config = new ConfigBuilder().withMasterUrl(master).build();
-
-    try(final OpenShiftClient client = new DefaultOpenShiftClient(config)) {
-      VersionInfo versionInfo = client.getVersion();
-
-      log("Version details of this OpenShift cluster :-");
-      log("Major        : ", versionInfo.getMajor());
-      log("Minor        : ", versionInfo.getMinor());
-      log("GitVersion   : ", versionInfo.getGitVersion());
-      log("BuildDate    : ", versionInfo.getBuildDate());
-      log("GitTreeState : ", versionInfo.getGitTreeState());
-      log("Platform     : ", versionInfo.getPlatform());
-      log("GitVersion   : ", versionInfo.getGitVersion());
-      log("GoVersion    : ", versionInfo.getGoVersion());
-      log("GitCommit    : ", versionInfo.getGitCommit());
+      logger.info("Version details of this OpenShift cluster :-");
+      logger.info("Major        : {}", openShiftVersionInfo.getMajor());
+      logger.info("Minor        : {}", openShiftVersionInfo.getMinor());
+      logger.info("GitVersion   : {}", openShiftVersionInfo.getGitVersion());
+      logger.info("BuildDate    : {}", openShiftVersionInfo.getBuildDate());
+      logger.info("GitTreeState : {}", openShiftVersionInfo.getGitTreeState());
+      logger.info("Platform     : {}", openShiftVersionInfo.getPlatform());
+      logger.info("GitVersion   : {}", openShiftVersionInfo.getGitVersion());
+      logger.info("GoVersion    : {}", openShiftVersionInfo.getGoVersion());
+      logger.info("GitCommit    : {}", openShiftVersionInfo.getGitCommit());
     }
-  }
-
-  private static void log(String action, Object obj) {
-    logger.info("{}: {}", action, obj);
-  }
-
-  private static void log(String action) {
-    logger.info(action);
   }
 }

@@ -30,7 +30,7 @@ import java.util.Date;
 public class ConfigMapExample {
   private static final Logger logger = LoggerFactory.getLogger(ConfigMapExample.class);
 
-  public static void main(String[] args) throws InterruptedException {
+  public static void main(String[] args) {
     Config config = new ConfigBuilder().build();
     KubernetesClient client = new DefaultKubernetesClient(config);
 
@@ -56,19 +56,10 @@ public class ConfigMapExample {
           addToData("bar", "beer").
           build());
 
-      log("Upserted ConfigMap at " + configMap.getMetadata().getSelfLink() + " data " + configMap.getData());
+      logger.info("Upserted ConfigMap at {} data {}", configMap.getMetadata().getSelfLink(), configMap.getData());
 
     } finally {
       client.close();
     }
-  }
-
-
-  private static void log(String action, Object obj) {
-    logger.info("{}: {}", action, obj);
-  }
-
-  private static void log(String action) {
-    logger.info(action);
   }
 }

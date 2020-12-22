@@ -22,29 +22,32 @@ import io.fabric8.openshift.api.model.BuildConfigList;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftAPIGroups;
 import io.fabric8.openshift.client.OpenShiftClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public class ListBuildConfigs {
+
+  private static final Logger logger = LoggerFactory.getLogger(ListBuildConfigs.class);
+
   public static void main(String[] args) {
-    try {
-      OpenShiftClient client = new DefaultOpenShiftClient();
+    try(OpenShiftClient client = new DefaultOpenShiftClient()) {
       if (!client.supportsOpenShiftAPIGroup(OpenShiftAPIGroups.BUILD)) {
-        System.out.println("WARNING this cluster does not support the API Group " + OpenShiftAPIGroups.BUILD);
+        logger.warn("This cluster does not support the API Group {}", OpenShiftAPIGroups.BUILD);
         return;
       }
       BuildConfigList list = client.buildConfigs().list();
       if (list == null) {
-        System.out.println("ERROR no list returned!");
+        logger.error("No list returned!");
         return;
       }
       List<BuildConfig> items = list.getItems();
       for (BuildConfig item : items) {
-        System.out.println("BuildConfig " + item.getMetadata().getName() + " has version: " + item.getApiVersion());
+        logger.info("BuildConfig {} has version: {}", item.getMetadata().getName(), item.getApiVersion());
       }
     } catch (KubernetesClientException e) {
-      System.out.println("Failed: " + e);
-      e.printStackTrace();
+      logger.error("Failed: {}", e.getMessage(), e);
     }
   }
 

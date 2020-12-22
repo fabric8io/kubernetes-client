@@ -31,11 +31,13 @@ public class SecurityContextConstraintExample {
     //command for that is
     //oc login -u system:admin
 
-    public static void main(String[] args) throws InterruptedException {
-
+    public static void main(String[] args) {
         try (OpenShiftClient client = new DefaultOpenShiftClient()) {
-
-          SecurityContextConstraints scc = new SecurityContextConstraintsBuilder()
+          logger.info("Cluster SecurityContextConstraints:");
+          client.securityContextConstraints().list().getItems().forEach(scc ->
+            logger.info(" - {}", scc.getMetadata().getName()));
+          final SecurityContextConstraints scc = client.securityContextConstraints().create(
+            new SecurityContextConstraintsBuilder()
             .withNewMetadata().withName("scc").endMetadata()
             .withAllowPrivilegedContainer(true)
             .withNewRunAsUser()
@@ -52,22 +54,12 @@ public class SecurityContextConstraintExample {
             .endSupplementalGroups()
             .addToUsers("admin")
             .addToGroups("admin-group")
-            .build();
-
-          log("Created SecurityContextConstraints", client.securityContextConstraints().create(scc));
-
-          client.close();
-
+            .build()
+          );
+          logger.info("Created SecurityContextConstraints {}", scc);
         } catch (KubernetesClientException e) {
           logger.error(e.getMessage(), e);
         }
     }
 
-    private static void log(String action, Object obj) {
-    logger.info("{}: {}", action, obj);
-  }
-
-    private static void log(String action) {
-    logger.info(action);
-  }
 }

@@ -13,81 +13,73 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-  package io.fabric8.kubernetes.examples;
+package io.fabric8.kubernetes.examples;
 
-  import io.fabric8.kubernetes.client.Callback;
-  import io.fabric8.kubernetes.client.Config;
-  import io.fabric8.kubernetes.client.ConfigBuilder;
-  import io.fabric8.kubernetes.client.dsl.ExecListener;
-  import io.fabric8.kubernetes.client.dsl.ExecWatch;
-  import io.fabric8.kubernetes.client.utils.InputStreamPumper;
-  import io.fabric8.openshift.client.DefaultOpenShiftClient;
-  import io.fabric8.openshift.client.OpenShiftClient;
-  import okhttp3.Response;
+import io.fabric8.kubernetes.client.Callback;
+import io.fabric8.kubernetes.client.DefaultKubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.dsl.ExecListener;
+import io.fabric8.kubernetes.client.dsl.ExecWatch;
+import io.fabric8.kubernetes.client.utils.InputStreamPumper;
+import okhttp3.Response;
 
-  import java.io.IOException;
-  import java.util.concurrent.CountDownLatch;
-  import java.util.concurrent.Executors;
-  import java.util.concurrent.Future;
-  import java.util.concurrent.ScheduledExecutorService;
-  import java.util.concurrent.TimeUnit;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Angel Misevski (https://github.com/amisevsk).
  */
+@SuppressWarnings("java:S106")
 public class ExecLoopExample {
 
-  public static void main(String[] args) throws InterruptedException, IOException {
-    String master = "https://localhost:8443/";
-    String podName = null;
-
-    if (args.length >= 2) {
-      master = args[0];
-      podName = args[1];
-    }
-    if (args.length == 1) {
-      podName = args[0];
+  public static void main(String[] args) throws InterruptedException {
+    if (args.length == 0) {
+      System.out.println("Usage: podName [namespace]");
+      return;
     }
 
-      Config config = new ConfigBuilder()
-        .withMasterUrl(master)
-        .build();
+    final String podName = args[0];
+    String namespace = "default";
 
-      ScheduledExecutorService executorService = Executors.newScheduledThreadPool(20);
-      try (OpenShiftClient client = new DefaultOpenShiftClient(config)) {
-        for (int i = 0; i < 10; System.out.println("i=" + i), i++) {
-          ExecWatch watch = null;
-          InputStreamPumper pump = null;
-          final CountDownLatch latch = new CountDownLatch(1);
-          watch = client.pods().withName(podName).redirectingOutput().usingListener(new ExecListener() {
-            @Override
-            public void onOpen(Response response) {
-            }
+    if (args.length > 1) {
+      namespace = args[1];
+    }
 
-            @Override
-            public void onFailure(Throwable t, Response response) {
-              latch.countDown();
-            }
+    ScheduledExecutorService executorService = Executors.newScheduledThreadPool(20);
+    try (KubernetesClient client = new DefaultKubernetesClient()) {
+      for (int i = 0; i < 10; System.out.println("i=" + i), i++) {
+        ExecWatch watch = null;
+        InputStreamPumper pump = null;
+        final CountDownLatch latch = new CountDownLatch(1);
+        watch = client.pods().inNamespace(namespace).withName(podName).redirectingOutput().usingListener(new ExecListener() {
+          @Override
+          public void onOpen(Response response) {
+          }
 
-            @Override
-            public void onClose(int code, String reason) {
-              latch.countDown();
-            }
-          }).exec("date");
-          pump = new InputStreamPumper(watch.getOutput(), new SystemOutCallback());
-          executorService.submit(pump);
-          Future<String> outPumpFuture = executorService.submit(pump, "Done");
-          executorService.scheduleAtFixedRate(new FutureChecker("Pump " + (i + 1), outPumpFuture), 0, 2, TimeUnit.SECONDS);
+          @Override
+          public void onFailure(Throwable t, Response response) {
+            latch.countDown();
+          }
 
-          latch.await(5, TimeUnit.SECONDS);
-          //We need to wait or the pumper (ws -> System.out) will not be able to print the message.
-          //Thread.sleep(1000);
-          watch.close();
-          pump.close();
+          @Override
+          public void onClose(int code, String reason) {
+            latch.countDown();
+          }
+        }).exec("date");
+        pump = new InputStreamPumper(watch.getOutput(), new SystemOutCallback());
+        executorService.submit(pump);
+        Future<String> outPumpFuture = executorService.submit(pump, "Done");
+        executorService.scheduleAtFixedRate(new FutureChecker("Pump " + (i + 1), outPumpFuture), 0, 2, TimeUnit.SECONDS);
 
-        }
+        latch.await(5, TimeUnit.SECONDS);
+        watch.close();
+        pump.close();
+
       }
-
+    }
     executorService.shutdown();
     System.out.println("Done.");
   }

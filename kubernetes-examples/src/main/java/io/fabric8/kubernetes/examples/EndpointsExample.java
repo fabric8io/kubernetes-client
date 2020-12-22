@@ -18,63 +18,52 @@ package io.fabric8.kubernetes.examples;
 
 import io.fabric8.kubernetes.api.model.Endpoints;
 import io.fabric8.kubernetes.api.model.EndpointsBuilder;
+import io.fabric8.kubernetes.api.model.Namespace;
+import io.fabric8.kubernetes.api.model.NamespaceBuilder;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
-import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class EndpointsExample {
+
   private static final Logger logger = LoggerFactory.getLogger(EndpointsExample.class);
 
+  private static final String NAMESPACE = "endpoints-example";
+
   public static void main(String[] args) {
-    String master = "https://localhost:8443";
-
-    Config config = new ConfigBuilder().withMasterUrl(master).build();
-    try (final KubernetesClient client = new DefaultKubernetesClient(config)) {
+    try (KubernetesClient client = new DefaultKubernetesClient()) {
+      Namespace ns = new NamespaceBuilder().withNewMetadata().withName(NAMESPACE).addToLabels("this", "rocks").endMetadata().build();
+      logger.info("Created namespace: {}", client.namespaces().createOrReplace(ns));
       try {
-        String namespace = "default";
-        log("namespace", namespace);
-        Deployment deployment = client.apps().deployments().inNamespace(namespace).load(EndpointsExample.class.getResourceAsStream("/endpoints-deployment.yml")).get();
-        log("Deployment created");
-        client.apps().deployments().inNamespace(namespace).create(deployment);
+        logger.info("Namespace: {}", ns);
+        Deployment deployment = client.apps().deployments().inNamespace(NAMESPACE).load(EndpointsExample.class.getResourceAsStream("/endpoints-deployment.yml")).get();
+        logger.info("Deployment created");
+        client.apps().deployments().inNamespace(NAMESPACE).create(deployment);
 
-        Service service = client.services().inNamespace(namespace).load(EndpointsExample.class.getResourceAsStream("/endpoints-service.yml")).get();
-        log("Service created");
-        client.services().inNamespace(namespace).create(service);
+        Service service = client.services().inNamespace(NAMESPACE).load(EndpointsExample.class.getResourceAsStream("/endpoints-service.yml")).get();
+        logger.info("Service created");
+        client.services().inNamespace(NAMESPACE).create(service);
 
         Endpoints endpoints = new EndpointsBuilder()
-          .withNewMetadata().withName("external-web").withNamespace(namespace).endMetadata()
+          .withNewMetadata().withName("external-web").withNamespace(NAMESPACE).endMetadata()
           .withSubsets().addNewSubset().addNewAddress().withIp("10.10.50.53").endAddress()
           .addNewPort().withPort(80).withName("apache").endPort()
           .endSubset()
           .build();
-        log("Endpoint created");
-        client.endpoints().inNamespace(namespace).create(endpoints);
-        log("Endpoint url");
-        endpoints = client.endpoints().inNamespace(namespace).withName("external-web").get();
-        log("Endpoint Port", endpoints.getSubsets().get(0).getPorts().get(0).getName());
+        logger.info("Endpoint created");
+        client.endpoints().inNamespace(NAMESPACE).create(endpoints);
+        logger.info("Endpoint url");
+        endpoints = client.endpoints().inNamespace(NAMESPACE).withName("external-web").get();
+        logger.info("Endpoint Port {}", endpoints.getSubsets().get(0).getPorts().get(0).getName());
+      } catch (Exception e) {
+        logger.error("Exception occurred: {}", e.getMessage(), e);
       } finally {
-        // clear resources
-        client.apps().deployments().inNamespace("default").withName("endpoints-deployment").delete();
-        client.services().inNamespace("default").withName("endpoints-nginx").delete();
-        client.endpoints().inNamespace("default").withName("external-web").delete();
+        client.namespaces().withName(NAMESPACE).delete();
       }
-    } catch (Exception e) {
-      log("Exception occurred: ", e.getMessage());
-      e.printStackTrace();
     }
-  }
-
-  private static void log(String action, Object obj) {
-    logger.info("{}: {}", action, obj);
-  }
-
-  private static void log(String action) {
-    logger.info(action);
   }
 
 }

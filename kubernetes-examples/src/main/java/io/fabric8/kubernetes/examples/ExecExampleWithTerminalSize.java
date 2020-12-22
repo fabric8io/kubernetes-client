@@ -15,54 +15,53 @@
  */
 package io.fabric8.kubernetes.examples;
 
-import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import okhttp3.Response;
 
+@SuppressWarnings("java:S106")
 public class ExecExampleWithTerminalSize {
 
     public static void main(String[] args) throws InterruptedException {
         if (args.length < 1) {
-            System.out.println("Usage: podName [master] [namespace] [columns] [lines]\n" +
+            System.out.println("Usage: podName [namespace] [columns] [lines]\n" +
               "Use env variable COLUMNS & LINES to initialize terminal size.");
             return;
           }
 
         String podName = args[0];
         String namespace = "default";
-        String master = "https://localhost:8443/";
         String columns = "80";
         String lines = "24";
 
         if (args.length > 1) {
-            master = args[1];
-          }
-          if (args.length > 2) {
-            namespace = args[2];
-            if (args.length > 3) {
-              columns = args[3];
-              if (args.length > 4) {
-                lines = args[4];
-              }
-            }
-          }
-
-        Config config = new ConfigBuilder().withMasterUrl(master).build();
-        try (final KubernetesClient client = new DefaultKubernetesClient(config);
-             ExecWatch watch = client.pods().inNamespace(namespace).withName(podName)
-                .readingInput(System.in)
-                .writingOutput(System.out)
-                .writingError(System.err)
-                .withTTY()
-                .usingListener(new SimpleListener())
-                .exec("env", "TERM=xterm", "COLUMNS=" + columns, "LINES=" + lines, "bash")){
-
-            Thread.sleep(10 * 1000);
+          namespace = args[1];
         }
+        if (args.length > 2) {
+          columns = args[2];
+        }
+        if (args.length > 3) {
+          lines = args[3];
+        }
+
+        try (
+          KubernetesClient client = new DefaultKubernetesClient();
+          ExecWatch watch = newExecWatch(client, namespace, podName, columns, lines);
+        ) {
+            Thread.sleep(10 * 1000L);
+        }
+    }
+
+    private static ExecWatch newExecWatch(KubernetesClient client, String namespace, String podName, String columns, String lines) {
+        return client.pods().inNamespace(namespace).withName(podName)
+          .readingInput(System.in)
+          .writingOutput(System.out)
+          .writingError(System.err)
+          .withTTY()
+          .usingListener(new SimpleListener())
+          .exec("env", "TERM=xterm", "COLUMNS=" + columns, "LINES=" + lines, "sh", "-c", "ls -la");
     }
 
     private static class SimpleListener implements ExecListener {

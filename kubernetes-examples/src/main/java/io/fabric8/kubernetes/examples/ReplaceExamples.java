@@ -15,14 +15,15 @@
  */
 package io.fabric8.kubernetes.examples;
 
+import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.NamespaceBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
-import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,20 +31,24 @@ public class ReplaceExamples {
 
   private static final Logger logger = LoggerFactory.getLogger(ReplaceExamples.class);
 
+  private static final String NAMESPACE = "this-is-a-test";
+
   public static void main(String[] args) {
-    String master = "https://localhost:8443/";
-    if (args.length == 1) {
-      master = args[0];
+    final ConfigBuilder configBuilder = new ConfigBuilder();
+    if (args.length > 0) {
+      configBuilder.withMasterUrl(args[0]);
+      logger.info("Using master with URL: {}", args[0]);
     }
-
-    Config config = new ConfigBuilder().withMasterUrl(master).build();
-    try (KubernetesClient client = new DefaultKubernetesClient(config)) {
+    try (KubernetesClient client = new DefaultKubernetesClient(configBuilder.build())) {
       try {
-        log("Create namespace:", client.namespaces().create(new NamespaceBuilder().withNewMetadata().withName("thisisatest").endMetadata().build()));
+        final Namespace namespace = client.namespaces().create(
+          new NamespaceBuilder().withNewMetadata().withName(NAMESPACE).endMetadata().build()
+        );
+        logger.info("Create namespace: {}", NAMESPACE);
 
-        Pod createdPod = client.pods().inNamespace("thisisatest").create(new PodBuilder()
+        Pod createdPod = client.pods().inNamespace(namespace.getMetadata().getName()).create(new PodBuilder()
           .withNewMetadata()
-          .withName("testpod")
+          .withName("test-pod")
           .addToLabels("server", "nginx")
           .endMetadata()
           .withNewSpec()
@@ -52,28 +57,23 @@ public class ReplaceExamples {
           .endContainer()
           .endSpec()
           .build());
-        log("Created testPod:", createdPod);
+        logger.info("Created Pod: {}", createdPod.getMetadata().getName());
+        logger.info(Serialization.asYaml(createdPod));
 
-        Pod updatedPod = client.pods().inNamespace("thisisatest").withName("testpod").edit(p -> new PodBuilder(p)
+        Pod updatedPod = client.pods().inNamespace(NAMESPACE).withName("test-pod").edit(p -> new PodBuilder(p)
           .editMetadata()
           .addToLabels("server2", "nginx2")
-          .and().build());
-        log("Replaced testPod:", updatedPod);
+          .and().build()
+        );
+        logger.info("Replaced Pod: {}", updatedPod.getMetadata().getName());
+        logger.info(Serialization.asYaml(updatedPod));
 
       } catch (KubernetesClientException e) {
         logger.error(e.getMessage(), e);
       } finally {
-        client.namespaces().withName("thisisatest").delete();
+        client.namespaces().withName(NAMESPACE).delete();
       }
     }
-  }
-
-  private static void log(String action, Object obj) {
-    logger.info("{}: {}", action, obj);
-  }
-
-  private static void log(String action) {
-    logger.info(action);
   }
 
 }

@@ -23,32 +23,35 @@ import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Optional;
 
 public class WatchBuildConfigs {
+
+  private static final Logger logger = LoggerFactory.getLogger(WatchBuildConfigs.class);
+
   public static void main(String[] args) {
-    try {
-      OpenShiftClient client = new DefaultOpenShiftClient();
-      String namespace = client.getNamespace();
-      System.out.println("Watching BuildConfigs in namespace " + namespace);
+    try (OpenShiftClient client = new DefaultOpenShiftClient()) {
+      final String namespace = Optional.ofNullable(client.getNamespace()).orElse("myproject");
+      logger.info("Watching BuildConfigs in namespace {}", namespace);
       try (Watch watchable = client.buildConfigs().inNamespace(namespace).watch(new Watcher<BuildConfig>() {
         @Override
         public void eventReceived(Action action, BuildConfig resource) {
-          System.out.println(">> Action: " + action + " on BuildConfig " + resource.getMetadata().getName() + " with version: " + resource.getApiVersion());
+          logger.info(">> Action: {} on BuildConfig {} with version: {}",
+            action.name(), resource.getMetadata().getName(), resource.getApiVersion());
         }
 
         @Override
         public void onClose(WatcherException cause) {
-          System.out.println("Watch Closed: " + cause);
-          if (cause != null) {
-            cause.printStackTrace();
-          }
+          logger.error("Error on Watcher (Closed): {}", cause.getMessage(), cause);
         }
       })) {
-        System.out.println("Created watchable " + watchable);
+        logger.info("Created watchable {}", watchable);
       }
     } catch (KubernetesClientException e) {
-      System.out.println("Failed: " + e);
-      e.printStackTrace();
+      logger.error("Failed: {}", e.getMessage(), e);
     }
   }
 

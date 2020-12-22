@@ -18,7 +18,6 @@ package io.fabric8.openshift.examples;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
-import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -32,74 +31,68 @@ import java.util.Map;
 
 public class LoadExample {
 
-    private static final Logger logger = LoggerFactory.getLogger(LoadExample.class);
+  private static final Logger logger = LoggerFactory.getLogger(LoadExample.class);
 
-    public static void main(String[] args) throws InterruptedException {
-        String master = "https://localhost:8443/";
-        if (args.length == 1) {
-            master = args[0];
-        }
+  private static final String LOADED_RESOURCE = "/test-template.yml";
 
-        Config config = new ConfigBuilder().build();
-        try (KubernetesClient kubernetesClient = new DefaultKubernetesClient(config)) {
-            OpenShiftClient client = kubernetesClient.adapt(OpenShiftClient.class);
+  @SuppressWarnings("java:S1604")
+  public static void main(String[] args) {
+    final ConfigBuilder configBuilder = new ConfigBuilder();
+    if (args.length > 0) {
+      configBuilder.withMasterUrl(args[0]);
+    }
+    try (KubernetesClient kubernetesClient = new DefaultKubernetesClient(configBuilder.build())) {
+      final OpenShiftClient client = kubernetesClient.adapt(OpenShiftClient.class);
 
-            List<HasMetadata> list = client.load(TemplateExample.class.getResourceAsStream("/test-template.yml")).get();
-            System.out.println("Found in file:" + list.size() + " items.");
-            for (HasMetadata meta : list) {
-                System.out.println(display(meta));
-            }
+      final List<HasMetadata> list = client.load(TemplateExample.class.getResourceAsStream(LOADED_RESOURCE)).get();
+      logger.info("Found in file: {} items.", list.size());
+      list.stream().map(LoadExample::display).forEach(logger::info);
+
+      //noinspection Convert2Lambda
+      final List<HasMetadata> visitedList = client.load(TemplateExample.class.getResourceAsStream(LOADED_RESOURCE))
+        .accept(new Visitor<ObjectMetaBuilder>(){
+          @Override
+          public void visit(ObjectMetaBuilder item) {
+            item.addToLabels("visitorkey", "visitorvalue");
+          }
+        }).get();
+      logger.info("Visited: {} items.", visitedList.size());
+      visitedList.stream().map(LoadExample::display).forEach(logger::info);
 
 
-            list = client.load(TemplateExample.class.getResourceAsStream("/test-template.yml")).accept((Visitor<ObjectMetaBuilder>) item -> item.addToLabels("visitorkey", "visitorvalue")).get();
+      final List<HasMetadata> fromServerList = client.load(TemplateExample.class.getResourceAsStream(LOADED_RESOURCE)).fromServer().get();
+      logger.info("Found on server: {} items.", fromServerList.size());
+      fromServerList.stream().map(LoadExample::display).forEach(logger::info);
 
-            System.out.println("Visited:" + list.size() + " items.");
-            for (HasMetadata meta : list) {
-                System.out.println(display(meta));
-            }
+      final List<HasMetadata> appliedList = client.load(TemplateExample.class.getResourceAsStream(LOADED_RESOURCE))
+        .deletingExisting()
+        .createOrReplace();
+      logger.info("Applied: {} items.", appliedList.size());
+      appliedList.stream().map(LoadExample::display).forEach(logger::info);
 
+      final boolean result = client.load(TemplateExample.class.getResourceAsStream(LOADED_RESOURCE)).delete();
+      logger.info("Deleted: {}", result);
+    }
+  }
 
-
-            list = client.load(TemplateExample.class.getResourceAsStream("/test-template.yml")).fromServer().get();
-            System.out.println("Found on server:" + list.size() + " items.");
-            for (HasMetadata meta : list) {
-                System.out.println(display(meta));
-            }
-
-            list = client.load(TemplateExample.class.getResourceAsStream("/test-template.yml"))
-                    .deletingExisting()
-                    .createOrReplace();
-
-            System.out.println("Applied:" + list.size() + " items.");
-            for (HasMetadata meta : list) {
-                System.out.println(display(meta));
-            }
-
-            Boolean result = client.load(TemplateExample.class.getResourceAsStream("/test-template.yml")).delete();
-            System.out.println("Deleted:" + result);
-        }
-
+  private static String display(HasMetadata item) {
+    StringBuilder sb = new StringBuilder();
+    sb.append("[ ");
+    if (Utils.isNotNullOrEmpty(item.getKind())) {
+      sb.append("Kind:").append(item.getKind());
+    }
+    if (Utils.isNotNullOrEmpty(item.getMetadata().getName())) {
+      sb.append("Name:").append(item.getMetadata().getName());
     }
 
-    private static String display(HasMetadata item) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("[ ");
-        if (Utils.isNotNullOrEmpty(item.getKind())) {
-            sb.append("Kind:").append(item.getKind());
-        }
-        if (Utils.isNotNullOrEmpty(item.getMetadata().getName())) {
-            sb.append("Name:").append(item.getMetadata().getName());
-        }
-
-        if (item.getMetadata().getLabels()!=null && !item.getMetadata().getLabels().isEmpty()) {
-            sb.append("Labels: [ ");
-            for (Map.Entry<String,String> entry : item.getMetadata().getLabels().entrySet()) {
-                sb.append(entry.getKey()).append(":").append(entry.getValue()).append(" ");
-            }
-            sb.append("]");
-        }
-        sb.append(" ]");
-        return sb.toString();
-
+    if (item.getMetadata().getLabels() != null && !item.getMetadata().getLabels().isEmpty()) {
+      sb.append("Labels: [ ");
+      for (Map.Entry<String, String> entry : item.getMetadata().getLabels().entrySet()) {
+        sb.append(entry.getKey()).append(":").append(entry.getValue()).append(" ");
+      }
+      sb.append("]");
     }
+    sb.append(" ]");
+    return sb.toString();
+  }
 }

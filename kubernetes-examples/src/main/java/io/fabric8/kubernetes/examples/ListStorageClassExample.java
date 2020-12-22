@@ -15,33 +15,27 @@
  */
 package io.fabric8.kubernetes.examples;
 
-import io.fabric8.kubernetes.api.model.storage.StorageClassList;
-import io.fabric8.kubernetes.client.*;
-import org.slf4j.*;
+import io.fabric8.kubernetes.client.ConfigBuilder;
+import io.fabric8.kubernetes.client.DefaultKubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ListStorageClassExample {
 
   private static final Logger logger = LoggerFactory.getLogger(ListStorageClassExample.class);
 
   public static void main(String[] args) {
-
-    String master = "http://localhost:8080/";
-
-    if (args.length == 1) {
-      master = args[0];
+    final ConfigBuilder configBuilder = new ConfigBuilder();
+    if (args.length > 0) {
+      configBuilder.withMasterUrl(args[0]);
     }
-
-    io.fabric8.kubernetes.client.Config config = new io.fabric8.kubernetes.client.ConfigBuilder().withMasterUrl(master).build();
-
-    try (final KubernetesClient client = new DefaultKubernetesClient(config)) {
-
-      StorageClassList storageClassList = client.storage().storageClasses().list();
-
-      logger.info(storageClassList.toString());
-
+    try (KubernetesClient client = new DefaultKubernetesClient(configBuilder.build())) {
+      client.storage().storageClasses().list().getItems()
+        .forEach(sc -> logger.info("Storage class: {}", sc.getMetadata().getName()));
     } catch (KubernetesClientException e) {
       logger.error(e.getMessage(), e);
     }
-
   }
 }
