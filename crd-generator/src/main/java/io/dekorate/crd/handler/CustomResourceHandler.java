@@ -157,7 +157,8 @@ public class CustomResourceHandler implements Handler<CustomResourceConfig> {
     }
 
     resources.decorate(new AddCustomResourceDefintionVersionDecorator(name, version));
-    resources.decorate(new AddSchemaToCustomResourceDefinitionVersionDecorator(name, version, JsonSchema.from(def)));
+    // Let's ignore the parts that are mandatory in the examples
+    resources.decorate(new AddSchemaToCustomResourceDefinitionVersionDecorator(name, version, JsonSchema.from(def, "kind", "apiVersion", "metadata")));
 
     String specReplicasPath = Strings.isNotNullOrEmpty(config.getScale().getSpecReplicasPath()) ? config.getScale().getSpecReplicasPath() : specReplicasPathDetector.getPath().orElse(null);
     String statusReplicasPath = Strings.isNotNullOrEmpty(config.getScale().getStatusReplicasPath()) ? config.getScale().getStatusReplicasPath() : statusReplicasPathDetector.getPath().orElse(externalStatusReplicasPathDetector.getPath().orElse(null));
