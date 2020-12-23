@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.api.model.APIService;
 import io.fabric8.kubernetes.api.model.APIServiceBuilder;
 import io.fabric8.kubernetes.api.model.APIServiceList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -40,8 +39,6 @@ public class APIServiceIT {
   @ArquillianResource
   KubernetesClient client;
 
-  private APIService apiService;
-
   @BeforeClass
   public static void init() {
     ClusterEntity.apply(APIServiceIT.class.getResourceAsStream("/apiservice-it.yml"));
@@ -49,7 +46,7 @@ public class APIServiceIT {
 
   @Test
   public void get() {
-    apiService = client.apiServices().withName("v1beta1.get.fabric8.io").get();
+    APIService apiService = client.apiServices().withName("v1beta1.get.fabric8.io").get();
     assertThat(apiService).isNotNull();
   }
 
@@ -62,7 +59,7 @@ public class APIServiceIT {
 
   @Test
   public void update() {
-    apiService = client.apiServices().withName("v1beta1.update.fabric8.io").edit(c -> new APIServiceBuilder(c)
+    APIService apiService = client.apiServices().withName("v1beta1.update.fabric8.io").edit(c -> new APIServiceBuilder(c)
       .editOrNewMetadata().addToAnnotations("foo", "bar").endMetadata()
       .build());
 

@@ -20,12 +20,12 @@ import io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequest;
 import io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequestBuilder;
 import io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequestList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -35,12 +35,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(ArquillianConditionalRunner.class)
+@Ignore
 @RequiresKubernetes
 public class CertificateSigningRequestIT {
   @ArquillianResource
   KubernetesClient client;
-
-  private CertificateSigningRequest certificateSigningRequest;
 
   @BeforeClass
   public static void init() {
@@ -49,7 +48,7 @@ public class CertificateSigningRequestIT {
 
   @Test
   public void get() {
-    certificateSigningRequest = client.certificateSigningRequests().withName("csr-get").get();
+    CertificateSigningRequest certificateSigningRequest = client.certificateSigningRequests().withName("csr-get").get();
     assertThat(certificateSigningRequest).isNotNull();
   }
 
@@ -62,7 +61,7 @@ public class CertificateSigningRequestIT {
 
   @Test
   public void update() {
-    certificateSigningRequest = client.certificateSigningRequests().withName("csr-update").edit(c -> new CertificateSigningRequestBuilder(c)
+    CertificateSigningRequest certificateSigningRequest = client.certificateSigningRequests().withName("csr-update").edit(c -> new CertificateSigningRequestBuilder(c)
       .editOrNewMetadata().addToAnnotations("foo", "bar").endMetadata().build());
 
     assertNotNull(certificateSigningRequest);

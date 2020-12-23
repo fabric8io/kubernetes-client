@@ -26,6 +26,7 @@ import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -35,6 +36,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(ArquillianConditionalRunner.class)
+@Ignore
 @RequiresKubernetes
 public class HorizontalPodAutoscalerIT {
   @ArquillianResource
@@ -43,8 +45,6 @@ public class HorizontalPodAutoscalerIT {
   @ArquillianResource
   Session session;
 
-  private HorizontalPodAutoscaler horizontalPodAutoscaler;
-
   @BeforeClass
   public static void init() {
     ClusterEntity.apply(HorizontalPodAutoscalerIT.class.getResourceAsStream("/horizontalpodautoscaler-it.yml"));
@@ -52,7 +52,7 @@ public class HorizontalPodAutoscalerIT {
 
   @Test
   public void get() {
-    horizontalPodAutoscaler = client.autoscaling().v1().horizontalPodAutoscalers().inNamespace(session.getNamespace()).withName("horizontalpodautoscaler-get").get();
+    HorizontalPodAutoscaler horizontalPodAutoscaler = client.autoscaling().v1().horizontalPodAutoscalers().inNamespace(session.getNamespace()).withName("horizontalpodautoscaler-get").get();
     assertThat(horizontalPodAutoscaler).isNotNull();
   }
 
@@ -65,7 +65,7 @@ public class HorizontalPodAutoscalerIT {
 
   @Test
   public void update() {
-    horizontalPodAutoscaler = client.autoscaling().v1().horizontalPodAutoscalers().inNamespace(session.getNamespace()).withName("horizontalpodautoscaler-update").edit(c -> new HorizontalPodAutoscalerBuilder(c)
+    HorizontalPodAutoscaler horizontalPodAutoscaler = client.autoscaling().v1().horizontalPodAutoscalers().inNamespace(session.getNamespace()).withName("horizontalpodautoscaler-update").edit(c -> new HorizontalPodAutoscalerBuilder(c)
       .editOrNewMetadata().addToAnnotations("foo", "bar").endMetadata().build());
 
     assertNotNull(horizontalPodAutoscaler);

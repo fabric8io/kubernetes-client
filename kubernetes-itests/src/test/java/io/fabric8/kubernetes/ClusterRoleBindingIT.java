@@ -22,7 +22,6 @@ import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBindingBuilder;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBindingList;
 
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -45,11 +44,6 @@ public class ClusterRoleBindingIT {
   @ArquillianResource
   KubernetesClient client;
 
-  @ArquillianResource
-  Session session;
-
-  private ClusterRoleBinding clusterRoleBinding;
-
   @BeforeClass
   public static void init() {
     ClusterEntity.apply(ClusterRoleBindingIT.class.getResourceAsStream("/clusterrolebinding-it.yml"));
@@ -58,7 +52,7 @@ public class ClusterRoleBindingIT {
   @Test
   public void get() {
 
-    clusterRoleBinding = client.rbac().clusterRoleBindings().withName("read-nodes-get").get();
+    ClusterRoleBinding clusterRoleBinding = client.rbac().clusterRoleBindings().withName("read-nodes-get").get();
 
     assertNotNull(clusterRoleBinding);
     assertEquals("ClusterRoleBinding", clusterRoleBinding.getKind());
@@ -131,7 +125,7 @@ public class ClusterRoleBindingIT {
   @Test
   public void update() {
 
-    clusterRoleBinding = client.rbac().clusterRoleBindings().withName("read-nodes-update").edit(c -> new ClusterRoleBindingBuilder(c)
+    ClusterRoleBinding clusterRoleBinding = client.rbac().clusterRoleBindings().withName("read-nodes-update").edit(c -> new ClusterRoleBindingBuilder(c)
                                .editSubject(0).withName("jane-new").endSubject().build());
 
     assertNotNull(clusterRoleBinding);

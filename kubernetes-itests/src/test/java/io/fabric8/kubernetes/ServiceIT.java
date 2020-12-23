@@ -50,8 +50,6 @@ public class ServiceIT {
   @ArquillianResource
   Session session;
 
-  private Service svc1;
-
   @BeforeClass
   public static void init() {
     ClusterEntity.apply(ServiceIT.class.getResourceAsStream("/service-it.yml"));
@@ -66,7 +64,7 @@ public class ServiceIT {
 
   @Test
   public void get() {
-    svc1 = client.services().inNamespace(session.getNamespace()).withName("service-get").get();
+    Service svc1 = client.services().inNamespace(session.getNamespace()).withName("service-get").get();
     assertNotNull(svc1);
   }
 
@@ -80,7 +78,7 @@ public class ServiceIT {
   @Test
   public void update() {
     ReadyEntity<Service> serviceReady = new ReadyEntity<>(Service.class, client, "service-update", session.getNamespace());
-    svc1 = client.services().inNamespace(session.getNamespace()).withName("service-update").edit(s -> new ServiceBuilder (s)
+    Service svc1 = client.services().inNamespace(session.getNamespace()).withName("service-update").edit(s -> new ServiceBuilder (s)
       .editSpec().addNewPort().withName("https").withProtocol("TCP").withPort(443).withTargetPort(new IntOrString(9377)).endPort().endSpec()
       .build());
     await().atMost(30, TimeUnit.SECONDS).until(serviceReady);

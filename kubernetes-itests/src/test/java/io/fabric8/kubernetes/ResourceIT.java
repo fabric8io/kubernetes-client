@@ -62,7 +62,7 @@ public class ResourceIT {
   @ArquillianResource
   Session session;
 
-  private Deployment deployment = new DeploymentBuilder()
+  private final Deployment deployment = new DeploymentBuilder()
     .withNewMetadata().withName("deploy1").endMetadata()
     .withNewSpec()
     .withReplicas(1)

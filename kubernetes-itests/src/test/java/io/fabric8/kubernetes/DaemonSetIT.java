@@ -26,6 +26,7 @@ import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -35,6 +36,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(ArquillianConditionalRunner.class)
+@Ignore
 @RequiresKubernetes
 public class DaemonSetIT {
   @ArquillianResource
@@ -43,8 +45,6 @@ public class DaemonSetIT {
   @ArquillianResource
   Session session;
 
-  private DaemonSet daemonSet;
-
   @BeforeClass
   public static void init() {
     ClusterEntity.apply(DaemonSetIT.class.getResourceAsStream("/daemonset-it.yml"));
@@ -52,7 +52,7 @@ public class DaemonSetIT {
 
   @Test
   public void get() {
-    daemonSet = client.apps().daemonSets().inNamespace(session.getNamespace()).withName("daemonset-get").get();
+    DaemonSet daemonSet = client.apps().daemonSets().inNamespace(session.getNamespace()).withName("daemonset-get").get();
     assertThat(daemonSet).isNotNull();
   }
 
@@ -65,7 +65,7 @@ public class DaemonSetIT {
 
   @Test
   public void update() {
-    daemonSet = client.apps().daemonSets().inNamespace(session.getNamespace()).withName("daemonset-update").edit(c -> new DaemonSetBuilder(c)
+    DaemonSet daemonSet = client.apps().daemonSets().inNamespace(session.getNamespace()).withName("daemonset-update").edit(c -> new DaemonSetBuilder(c)
       .editSpec().editTemplate().editSpec().editContainer(0)
       .withImage("quay.io/fluentd_elasticsearch/fluentd:v3.0.0")
       .endContainer().endSpec().endTemplate().endSpec()

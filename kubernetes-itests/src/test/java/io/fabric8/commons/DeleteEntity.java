@@ -66,7 +66,11 @@ public class DeleteEntity<T> implements Callable<Boolean> {
       case "ReplicationController":
         return isDeleted(this.client.replicationControllers().inNamespace(this.namespace).list().getItems());
       case "ReplicaSet":
-        return isDeleted(this.client.apps().replicaSets().inNamespace(this.namespace).list().getItems());
+        if (this.name == null) {
+          return isDeleted(this.client.apps().replicaSets().inNamespace(this.namespace).list().getItems());
+        } else {
+          return isDeleted(this.client.apps().replicaSets().inNamespace(this.namespace).withName(this.name).get());
+        }
       case "NetworkPolicy":
         return isDeleted(this.client.network().networkPolicies().inNamespace(this.namespace).withName(name).get());
       case "SecurityContextConstraints":

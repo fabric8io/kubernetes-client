@@ -45,8 +45,6 @@ public class ServiceAccountIT {
   @ArquillianResource
   Session session;
 
-  private ServiceAccount serviceAccount1;
-
   @BeforeClass
   public static void init() {
     ClusterEntity.apply(ServiceAccountIT.class.getResourceAsStream("/serviceaccount-it.yml"));
@@ -62,7 +60,7 @@ public class ServiceAccountIT {
 
   @Test
   public void get() {
-    serviceAccount1 = client.serviceAccounts().inNamespace(session.getNamespace()).withName("sa-get").get();
+    ServiceAccount serviceAccount1 = client.serviceAccounts().inNamespace(session.getNamespace()).withName("sa-get").get();
     assertNotNull(serviceAccount1);
   }
 
@@ -77,7 +75,7 @@ public class ServiceAccountIT {
   @Test
   public void update() {
     ReadyEntity<ServiceAccount> serviceAccountReady = new ReadyEntity<>(ServiceAccount.class, client, "sa-update", session.getNamespace());
-    serviceAccount1 = client.serviceAccounts().inNamespace(session.getNamespace()).withName("sa-update").edit(s -> new ServiceAccountBuilder(s)
+    ServiceAccount serviceAccount1 = client.serviceAccounts().inNamespace(session.getNamespace()).withName("sa-update").edit(s -> new ServiceAccountBuilder(s)
       .addNewSecret().withName("default-token-uudp").endSecret()
       .addNewImagePullSecret().withName("myregistrykey").endImagePullSecret()
       .build());

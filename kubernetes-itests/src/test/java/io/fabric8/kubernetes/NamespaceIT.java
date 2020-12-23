@@ -15,17 +15,12 @@
  */
 package io.fabric8.kubernetes;
 
-import io.fabric8.commons.ClusterEntity;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.NamespaceBuilder;
-import io.fabric8.kubernetes.api.model.NamespaceList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -40,54 +35,30 @@ public class NamespaceIT {
   @ArquillianResource
   KubernetesClient client;
 
-  @ArquillianResource
-  Session session;
-
-  private Namespace namespace;
-
-  @BeforeClass
-  public static void init() {
-    ClusterEntity.apply(NamespaceIT.class.getResourceAsStream("/namespace-it.yml"));
-  }
-
   @Test
-  public void load() {
-    Namespace aNamespace = client.namespaces().load(getClass().getResourceAsStream("/test-namespace.yml")).get();
-
-    assertThat(aNamespace).isNotNull();
-    assertEquals("fabric8-test", aNamespace.getMetadata().getName());
-  }
-
-  @Test
-  public void get() {
-    namespace = client.namespaces().withName("namespace-get").get();
+  public void testCrud() {
+    // Load
+    Namespace namespace = client.namespaces().load(getClass().getResourceAsStream("/test-namespace.yml")).get();
     assertThat(namespace).isNotNull();
-  }
+    assertEquals("fabric8-test", namespace.getMetadata().getName());
 
-  @Test
-  public void list() {
-    NamespaceList aNamespaceList = client.namespaces().list();
-    assertNotNull(aNamespaceList);
-    assertTrue(aNamespaceList.getItems().size() >= 1);
-  }
+    // Create
+    namespace = client.namespaces().create(namespace);
+    assertNotNull(namespace);
 
-  @Test
-  public void update() {
-    namespace = client.namespaces().withName("namespace-update").edit(c -> new NamespaceBuilder(c)
+    // Read
+    namespace = client.namespaces().withName("fabric8-test").get();
+    assertNotNull(namespace);
+    assertEquals("fabric8-test", namespace.getMetadata().getName());
+
+    // Update
+    namespace = client.namespaces().withName("fabric8-test").edit(c -> new NamespaceBuilder(c)
       .editOrNewMetadata().addToAnnotations("foo", "bar").endMetadata()
       .build());
-
     assertNotNull(namespace);
     assertEquals("bar", namespace.getMetadata().getAnnotations().get("foo"));
-  }
 
-  @Test
-  public void delete() {
-    assertTrue(client.namespaces().withName("namespace-delete").delete());
-  }
-
-  @AfterClass
-  public static void cleanup() {
-    ClusterEntity.remove(NamespaceIT.class.getResourceAsStream("/namespace-it.yml"));
+    // Delete
+    assertTrue(client.namespaces().withName("fabric8-test").delete());
   }
 }

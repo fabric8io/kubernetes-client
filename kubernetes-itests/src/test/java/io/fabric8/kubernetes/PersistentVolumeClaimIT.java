@@ -19,7 +19,6 @@ import io.fabric8.commons.ClusterEntity;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaimBuilder;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaimList;
-import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
@@ -29,8 +28,6 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.util.Collections;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -46,8 +43,6 @@ public class PersistentVolumeClaimIT {
   @ArquillianResource
   Session session;
 
-  private PersistentVolumeClaim persistentVolumeClaim;
-
   @BeforeClass
   public static void init() {
     ClusterEntity.apply(PersistentVolumeClaimIT.class.getResourceAsStream("/persistentvolumeclaims-it.yml"));
@@ -55,7 +50,7 @@ public class PersistentVolumeClaimIT {
 
   @Test
   public void get() {
-    persistentVolumeClaim = client.persistentVolumeClaims().inNamespace(session.getNamespace()).withName("persistentvolumeclaims-get").get();
+    PersistentVolumeClaim persistentVolumeClaim = client.persistentVolumeClaims().inNamespace(session.getNamespace()).withName("persistentvolumeclaims-get").get();
     assertThat(persistentVolumeClaim).isNotNull();
   }
 
@@ -68,7 +63,7 @@ public class PersistentVolumeClaimIT {
 
   @Test
   public void update() {
-    persistentVolumeClaim = client.persistentVolumeClaims().inNamespace(session.getNamespace()).withName("persistentvolumeclaims-update").edit(c -> new PersistentVolumeClaimBuilder(c)
+    PersistentVolumeClaim persistentVolumeClaim = client.persistentVolumeClaims().inNamespace(session.getNamespace()).withName("persistentvolumeclaims-update").edit(c -> new PersistentVolumeClaimBuilder(c)
       .editMetadata().addToLabels("foo", "bar").endMetadata().build());
 
     assertNotNull(persistentVolumeClaim);

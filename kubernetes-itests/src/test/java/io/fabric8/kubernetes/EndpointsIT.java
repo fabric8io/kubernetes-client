@@ -27,6 +27,7 @@ import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -36,6 +37,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(ArquillianConditionalRunner.class)
+@Ignore
 @RequiresKubernetes
 public class EndpointsIT {
   @ArquillianResource
@@ -44,8 +46,6 @@ public class EndpointsIT {
   @ArquillianResource
   Session session;
 
-  private Endpoints endpoints;
-
   @BeforeClass
   public static void init() {
     ClusterEntity.apply(EndpointsIT.class.getResourceAsStream("/endpoints-it.yml"));
@@ -53,7 +53,7 @@ public class EndpointsIT {
 
   @Test
   public void get() {
-    endpoints = client.endpoints().inNamespace(session.getNamespace()).withName("endpoints-get").get();
+    Endpoints endpoints = client.endpoints().inNamespace(session.getNamespace()).withName("endpoints-get").get();
     assertThat(endpoints).isNotNull();
   }
 
@@ -66,7 +66,7 @@ public class EndpointsIT {
 
   @Test
   public void update() {
-    endpoints = client.endpoints().inNamespace(session.getNamespace()).withName("endpoints-update").edit(c -> new EndpointsBuilder(c)
+    Endpoints endpoints = client.endpoints().inNamespace(session.getNamespace()).withName("endpoints-update").edit(c -> new EndpointsBuilder(c)
       .editOrNewMetadata().addToAnnotations("foo", "bar").endMetadata().build());
 
     assertNotNull(endpoints);

@@ -43,8 +43,6 @@ public class ReplicationControllerIT {
   @ArquillianResource
   Session session;
 
-  private ReplicationController rc1;
-
   @BeforeClass
   public static void init() {
     ClusterEntity.apply(ReplicationControllerIT.class.getResourceAsStream("/replicationcontroller-it.yml"));
@@ -62,7 +60,7 @@ public class ReplicationControllerIT {
 
   @Test
   public void get() {
-    rc1 = client.replicationControllers().inNamespace(session.getNamespace()).withName("rc-get").get();
+    ReplicationController rc1 = client.replicationControllers().inNamespace(session.getNamespace()).withName("rc-get").get();
     assertNotNull(rc1);
   }
 
@@ -75,7 +73,7 @@ public class ReplicationControllerIT {
 
   @Test
   public void update() {
-    rc1 = client.replicationControllers().inNamespace(session.getNamespace()).withName("rc-update").scale(5);
+    ReplicationController rc1 = client.replicationControllers().inNamespace(session.getNamespace()).withName("rc-update").scale(5);
     assertEquals(5, rc1.getSpec().getReplicas().intValue());
   }
 

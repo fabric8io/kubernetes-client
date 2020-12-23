@@ -21,7 +21,6 @@ import io.fabric8.kubernetes.api.model.storage.StorageClassBuilder;
 import io.fabric8.kubernetes.api.model.storage.StorageClassList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import static junit.framework.TestCase.assertNotNull;
-import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -39,12 +38,6 @@ public class StorageClassIT {
   @ArquillianResource
   KubernetesClient client;
 
-  @ArquillianResource
-  Session session;
-
-  private StorageClass storageClass;
-
-
   @BeforeClass
   public static void init() {
     ClusterEntity.apply(StorageClassIT.class.getResourceAsStream("/storageclass-it.yml"));
@@ -59,7 +52,7 @@ public class StorageClassIT {
 
   @Test
   public void get() {
-    storageClass = client.storage().storageClasses().withName("storageclass-get").get();
+    StorageClass storageClass = client.storage().storageClasses().withName("storageclass-get").get();
     assertNotNull(storageClass);
   }
 
@@ -72,7 +65,7 @@ public class StorageClassIT {
 
   @Test
   public void update() {
-    storageClass = client.storage().storageClasses().withName("storageclass-update").edit(s -> new StorageClassBuilder(s).editMetadata().addToLabels("testLabel", "testLabelValue").endMetadata().build());
+    StorageClass storageClass = client.storage().storageClasses().withName("storageclass-update").edit(s -> new StorageClassBuilder(s).editMetadata().addToLabels("testLabel", "testLabelValue").endMetadata().build());
     assertNotNull(storageClass);
     assertEquals("testLabelValue", storageClass.getMetadata().getLabels().get("testLabel"));
   }

@@ -17,7 +17,9 @@
 package io.fabric8.kubernetes;
 
 import io.fabric8.commons.ClusterEntity;
-import io.fabric8.kubernetes.api.model.*;
+import io.fabric8.kubernetes.api.model.ConfigMap;
+import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
+import io.fabric8.kubernetes.api.model.ConfigMapList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
@@ -42,8 +44,6 @@ public class ConfigMapIT {
   @ArquillianResource
   Session session;
 
-  private ConfigMap configMap;
-
   @BeforeClass
   public static void init() {
     ClusterEntity.apply(ConfigMapIT.class.getResourceAsStream("/configmap-it.yml"));
@@ -58,7 +58,7 @@ public class ConfigMapIT {
 
   @Test
   public void get() {
-    configMap = client.configMaps().inNamespace(session.getNamespace()).withName("configmap-get").get();
+    ConfigMap configMap = client.configMaps().inNamespace(session.getNamespace()).withName("configmap-get").get();
     assertThat(configMap).isNotNull();
   }
 
@@ -71,7 +71,7 @@ public class ConfigMapIT {
 
   @Test
   public void update() {
-    configMap = client.configMaps().inNamespace(session.getNamespace()).withName("configmap-update").edit(c -> new ConfigMapBuilder(c)
+    ConfigMap configMap = client.configMaps().inNamespace(session.getNamespace()).withName("configmap-update").edit(c -> new ConfigMapBuilder(c)
                       .addToData("MSSQL", "Microsoft Database").build());
 
     assertNotNull(configMap);

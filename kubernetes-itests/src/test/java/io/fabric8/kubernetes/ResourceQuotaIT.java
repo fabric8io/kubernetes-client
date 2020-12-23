@@ -43,8 +43,6 @@ public class ResourceQuotaIT {
   @ArquillianResource
   Session session;
 
-  private ResourceQuota resourceQuota;
-
   @BeforeClass
   public static void init() {
     ClusterEntity.apply(ResourceQuotaIT.class.getResourceAsStream("/resourcequota-it.yml"));
@@ -52,7 +50,7 @@ public class ResourceQuotaIT {
 
   @Test
   public void get() {
-    resourceQuota = client.resourceQuotas().inNamespace(session.getNamespace()).withName("resourcequota-get").get();
+    ResourceQuota resourceQuota = client.resourceQuotas().inNamespace(session.getNamespace()).withName("resourcequota-get").get();
     assertThat(resourceQuota).isNotNull();
   }
 
@@ -65,7 +63,7 @@ public class ResourceQuotaIT {
 
   @Test
   public void update() {
-    resourceQuota = client.resourceQuotas().inNamespace(session.getNamespace()).withName("resourcequota-update").edit(c -> new ResourceQuotaBuilder(c)
+    ResourceQuota resourceQuota = client.resourceQuotas().inNamespace(session.getNamespace()).withName("resourcequota-update").edit(c -> new ResourceQuotaBuilder(c)
       .editOrNewMetadata().addToAnnotations("foo", "bar").endMetadata().build());
 
     assertNotNull(resourceQuota);
