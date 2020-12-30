@@ -1,15 +1,19 @@
 ## CHANGELOG
 
-### 5.0.0 (2020-12-30)
+### 5.1-SNAPSHOT
 
 #### Bugs
-* Fix #2695: fromCustomResourceType should be of type `CustomResource`
 
 #### Improvements
 
 #### Dependency Upgrade
 
 #### New Features
+
+### 5.0.0 (2020-12-30)
+
+#### Bugs
+* Fix #2695: fromCustomResourceType should be of type `CustomResource`
 
 ### 5.0.0-beta-1 (2020-12-21)
 
