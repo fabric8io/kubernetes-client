@@ -3,6 +3,7 @@
 ### 5.0-SNAPSHOT
 
 #### Bugs
+* Fix #2695: fromCustomResourceType should be of type `CustomResource`
 
 #### Improvements
 

@@ -118,7 +118,7 @@ public interface KubernetesClient extends Client {
    *           {@link io.fabric8.kubernetes.api.model.Namespaced}
    * @return returns a MixedOperation object with which you can do basic CustomResource operations
    */
-  <T extends HasMetadata> MixedOperation<T, KubernetesResourceList<T>, Resource<T>> customResources(Class<T> resourceType);
+  <T extends CustomResource> MixedOperation<T, KubernetesResourceList<T>, Resource<T>> customResources(Class<T> resourceType);
 
 
   /**
@@ -138,7 +138,7 @@ public interface KubernetesClient extends Client {
    * @param <L> L type represents CustomResourceList type
    * @return returns a MixedOperation object with which you can do basic CustomResource operations
    */
-  <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(Class<T> resourceType, Class<L> listClass);
+  <T extends CustomResource, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(Class<T> resourceType, Class<L> listClass);
 
 
   /**
