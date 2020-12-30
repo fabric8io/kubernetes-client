@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 5.0-SNAPSHOT
+### 5.0.0 (2020-12-30)
 
 #### Bugs
 * Fix #2695: fromCustomResourceType should be of type `CustomResource`
@@ -25,8 +25,6 @@
 * Fix #2678: Adds a convenience method for referring to Cache keys by namespace and name rather than item
 * Fix #2665: CustomResourceDefinitionContext.fromCrd support for v1 CustomResourceDefinition
 * Fix #2642: Update kubernetes-examples to use apps/v1 Deployment rather than extensions/v1beta1
-
-#### Dependency Upgrade
 
 #### New Features
 * Fix #2611: Support for Custom Resource and Custom Resource Definitions has been improved
