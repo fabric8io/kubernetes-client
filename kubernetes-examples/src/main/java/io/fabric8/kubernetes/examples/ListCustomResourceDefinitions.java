@@ -23,8 +23,7 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 
 import java.util.List;
 
-/**
- */
+@SuppressWarnings("java:S106")
 public class ListCustomResourceDefinitions {
   public static void main(String[] args) {
     try(KubernetesClient client = new DefaultKubernetesClient()){
@@ -32,7 +31,7 @@ public class ListCustomResourceDefinitions {
         System.out.println("WARNING this cluster does not support the API Group apiextensions.k8s.io");
         return;
       }
-      CustomResourceDefinitionList list = client.customResourceDefinitions().list();
+      CustomResourceDefinitionList list = client.apiextensions().v1beta1().customResourceDefinitions().list();
       if (list == null) {
         System.out.println("ERROR no list returned!");
         return;

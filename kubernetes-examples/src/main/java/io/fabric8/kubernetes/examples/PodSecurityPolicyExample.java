@@ -35,7 +35,7 @@ public class PodSecurityPolicyExample {
 
   private static final Logger logger = LoggerFactory.getLogger(PodSecurityPolicyExample.class);
 
-  public static void main(String args[]) {
+  public static void main(String[] args) {
     try (final KubernetesClient client = new DefaultKubernetesClient()) {
       final String localYamlToCreate = "/PodSecurityPolicy.yml";
       logger.info("Creating PodSecurityPolicy from Yaml file: {}", localYamlToCreate);

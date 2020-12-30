@@ -32,13 +32,11 @@ public class JobExample {
     private static final Logger logger = LoggerFactory.getLogger(JobExample.class);
 
     public static void main(String[] args) {
-        String master = "https://localhost:8443/";
-        if (args.length == 1) {
-            master = args[0];
+        final ConfigBuilder configBuilder = new ConfigBuilder();
+        if (args.length > 0) {
+          configBuilder.withMasterUrl(args[0]);
         }
-
-        final Config config = new ConfigBuilder().withMasterUrl(master).build();
-        try (final KubernetesClient client = new DefaultKubernetesClient(config)) {
+        try (KubernetesClient client = new DefaultKubernetesClient(configBuilder.build())) {
           final String namespace = "default";
           final Job job = new JobBuilder()
             .withApiVersion("batch/v1")
@@ -62,7 +60,7 @@ public class JobExample {
             .build();
 
           logger.info("Creating job pi.");
-          client.batch().jobs().inNamespace(namespace).create(job);
+          client.batch().jobs().inNamespace(namespace).createOrReplace(job);
 
           // Get All pods created by the job
           PodList podList = client.pods().inNamespace(namespace).withLabel("job-name", job.getMetadata().getName()).list();
@@ -74,7 +72,7 @@ public class JobExample {
           String joblog = client.batch().jobs().inNamespace(namespace).withName("pi").getLog();
           logger.info(joblog);
 
-        } catch (final KubernetesClientException e) {
+        } catch (KubernetesClientException e) {
             logger.error("Unable to create job", e);
         } catch (InterruptedException interruptedException) {
           logger.warn("Thread interrupted!");

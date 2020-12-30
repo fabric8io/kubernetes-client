@@ -22,34 +22,26 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-
 public class CRDLoadExample {
-  private static Logger logger = LoggerFactory.getLogger(CRDLoadExample.class);
 
-  public static void main(String args[]) throws IOException {
+  private static final Logger logger = LoggerFactory.getLogger(CRDLoadExample.class);
+
+  public static void main(String[] args) {
     try (final KubernetesClient client = new DefaultKubernetesClient()) {
       // List all Custom resources.
-      log("Listing all current Custom Resource Definitions :");
-      CustomResourceDefinitionList crdList = client.customResourceDefinitions().list();
-      crdList.getItems().forEach(crd -> log(crd.getMetadata().getName()));
+      logger.info("Listing all current Custom Resource Definitions :");
+      CustomResourceDefinitionList crdList = client.apiextensions().v1beta1().customResourceDefinitions().list();
+      crdList.getItems().forEach(crd -> logger.info(crd.getMetadata().getName()));
 
       // Creating a custom resource from yaml
-      CustomResourceDefinition aCustomResourceDefinition = client.customResourceDefinitions().load(CRDLoadExample.class.getResourceAsStream("/crd.yml")).get();
-      log("Creating CRD...");
-      client.customResourceDefinitions().create(aCustomResourceDefinition);
+      CustomResourceDefinition aCustomResourceDefinition = client.apiextensions().v1beta1().customResourceDefinitions()
+        .load(CRDLoadExample.class.getResourceAsStream("/crd.yml")).get();
+      logger.info("Creating CRD...");
+      client.apiextensions().v1beta1().customResourceDefinitions().create(aCustomResourceDefinition);
 
-      log("Updated Custom Resource Definitions: ");
-      client.customResourceDefinitions().list().getItems().forEach(crd -> log(crd.getMetadata().getName()));
+      logger.info("Updated Custom Resource Definitions: ");
+      client.apiextensions().v1beta1().customResourceDefinitions().list().getItems().forEach(crd -> logger.info(crd.getMetadata().getName()));
 
     }
-  }
-
-  private static void log(String action, Object obj) {
-    logger.info("{}: {}", action, obj);
-  }
-
-  private static void log(String action) {
-    logger.info(action);
   }
 }

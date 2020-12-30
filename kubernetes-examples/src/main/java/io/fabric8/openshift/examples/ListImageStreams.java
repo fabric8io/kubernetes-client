@@ -22,30 +22,33 @@ import io.fabric8.openshift.api.model.ImageStreamList;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftAPIGroups;
 import io.fabric8.openshift.client.OpenShiftClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public class ListImageStreams {
+
+  private static final Logger logger = LoggerFactory.getLogger(ListImageStreams.class);
+
   public static void main(String[] args) {
-    try {
-      OpenShiftClient client = new DefaultOpenShiftClient();
+    try(OpenShiftClient client = new DefaultOpenShiftClient()) {
       if (!client.supportsOpenShiftAPIGroup(OpenShiftAPIGroups.IMAGE)) {
-        System.out.println("WARNING this cluster does not support the API Group " + OpenShiftAPIGroups.IMAGE);
+        logger.warn("This cluster does not support the API Group {}", OpenShiftAPIGroups.IMAGE);
         return;
       }
       ImageStreamList list = client.imageStreams().list();
       if (list == null) {
-        System.out.println("ERROR no list returned!");
+        logger.error("No list returned!");
         return;
       }
       List<ImageStream> items = list.getItems();
       for (ImageStream item : items) {
-        System.out.println("ImageStream " + item.getMetadata().getName() + " has version: " + item.getApiVersion());
+        logger.info("ImageStream {} has version: {}", item.getMetadata().getName(), item.getApiVersion());
       }
-      System.out.println("Found " + items.size() + " ImageStream(s)");
+      logger.info("Found {}  ImageStream(s)", items.size());
     } catch (KubernetesClientException e) {
-      System.out.println("Failed: " + e);
-      e.printStackTrace();
+      logger.error("Failed: {}", e.getMessage(), e);
     }
   }
 

@@ -16,37 +16,33 @@
 
 package io.fabric8.kubernetes.examples;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.NamespaceBuilder;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountBuilder;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
-import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DeploymentExamples {
+
   private static final Logger logger = LoggerFactory.getLogger(DeploymentExamples.class);
 
-  public static void main(String[] args) throws InterruptedException {
-    Config config = new ConfigBuilder().build();
-    KubernetesClient client = new DefaultKubernetesClient(config);
+  private static final String NAMESPACE = "this-is-a-test";
 
-    try {
+  public static void main(String[] args) {
+    try (KubernetesClient client = new DefaultKubernetesClient()) {
       // Create a namespace for all our stuff
-      Namespace ns = new NamespaceBuilder().withNewMetadata().withName("thisisatest").addToLabels("this", "rocks").endMetadata().build();
-      log("Created namespace", client.namespaces().createOrReplace(ns));
+      Namespace ns = new NamespaceBuilder().withNewMetadata().withName(NAMESPACE).addToLabels("this", "rocks").endMetadata().build();
+      logger.info("Created namespace: {}", client.namespaces().createOrReplace(ns));
 
       ServiceAccount fabric8 = new ServiceAccountBuilder().withNewMetadata().withName("fabric8").endMetadata().build();
 
-      client.serviceAccounts().inNamespace("thisisatest").createOrReplace(fabric8);
-      for (int i = 0; i < 2; i++) {
-        System.err.println("Iteration:" + (i+1));
+      client.serviceAccounts().inNamespace(NAMESPACE).createOrReplace(fabric8);
+      try {
         Deployment deployment = new DeploymentBuilder()
           .withNewMetadata()
           .withName("nginx")
@@ -73,30 +69,18 @@ public class DeploymentExamples {
           .endSpec()
           .build();
 
+        deployment = client.apps().deployments().inNamespace(NAMESPACE).create(deployment);
+        logger.info("Created deployment: {}", deployment);
 
-        deployment = client.apps().deployments().inNamespace("thisisatest").create(deployment);
-        log("Created deployment", deployment);
-
-        System.err.println("Scaling up:" + deployment.getMetadata().getName());
-        client.apps().deployments().inNamespace("thisisatest").withName("nginx").scale(2, true);
-        log("Created replica sets:", client.apps().replicaSets().inNamespace("thisisatest").list().getItems());
-        System.err.println("Deleting:" + deployment.getMetadata().getName());
+        logger.info("Scaling up: {}", deployment.getMetadata().getName());
+        client.apps().deployments().inNamespace(NAMESPACE).withName("nginx").scale(2, true);
+        logger.info("Created replica sets: {}", client.apps().replicaSets().inNamespace(NAMESPACE).list().getItems());
+        logger.info("Deleting: {}", deployment.getMetadata().getName());
         client.resource(deployment).delete();
+      } finally {
+        client.namespaces().withName(NAMESPACE).delete();
       }
-      log("Done.");
-
-    }finally {
-      client.namespaces().withName("thisisatest").delete();
-      client.close();
+      logger.info("Done.");
     }
-  }
-
-
-  private static void log(String action, Object obj) {
-    logger.info("{}: {}", action, obj);
-  }
-
-  private static void log(String action) {
-    logger.info(action);
   }
 }

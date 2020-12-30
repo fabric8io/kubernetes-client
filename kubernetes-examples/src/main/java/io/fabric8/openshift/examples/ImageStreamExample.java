@@ -13,12 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.fabric8.openshift.examples;
 
 import io.fabric8.kubernetes.api.model.ObjectReferenceBuilder;
-import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.openshift.api.model.ImageStream;
 import io.fabric8.openshift.api.model.ImageStreamBuilder;
 import io.fabric8.openshift.api.model.TagReferenceBuilder;
@@ -27,30 +24,22 @@ import io.fabric8.openshift.client.OpenShiftClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
+import java.util.Optional;
 
 public class ImageStreamExample {
 
   private static final Logger logger = LoggerFactory.getLogger(ImageStreamExample.class);
 
-  public static void main(String[] args) throws InterruptedException {
-
-    String namespace = "myproject";
-    String master = "CLUSTER_URL";
-    Config config = new ConfigBuilder().withMasterUrl(master).build();
-    OpenShiftClient client = new DefaultOpenShiftClient(config);
-
-    HashMap annotations = new HashMap();
-    annotations.put("role", "jenkins-slave");
-    annotations.put("slave-label", "jenkins-slave");
-
-    try {
-
-      ImageStream imageStream = new ImageStreamBuilder()
-        .withNewMetadata()
-          .withName("slave-jenkins")
-        .endMetadata()
-        .withNewSpec()
+  public static void main(String[] args) {
+    try (OpenShiftClient client = new DefaultOpenShiftClient()) {
+      final String project = Optional.ofNullable(client.getNamespace()).orElse("myproject");
+      final String imageStreamName = "slave-jenkins";
+      final ImageStream imageStream = client.imageStreams().inNamespace(project).create(
+        new ImageStreamBuilder()
+          .withNewMetadata()
+          .withName(imageStreamName)
+          .endMetadata()
+          .withNewSpec()
           .addToTags(0, new TagReferenceBuilder()
             .withName("base")
             .withFrom(new ObjectReferenceBuilder()
@@ -61,7 +50,8 @@ public class ImageStreamExample {
             .build()
           )
           .addToTags(1, new TagReferenceBuilder()
-            .withAnnotations(annotations)
+            .addToAnnotations("role", "jenkins-slave")
+            .addToAnnotations("slave-label", "jenkins-slave")
             .withName("latest")
             .withFrom(new ObjectReferenceBuilder()
               .withKind("ImageStreamTag")
@@ -70,29 +60,18 @@ public class ImageStreamExample {
             )
             .build()
           )
-        .endSpec()
-        .build();
+          .endSpec()
+          .build()
+      );
+      logger.info("Created ImageStream: {}/{}", project, imageStream.getMetadata().getName());
+      final ImageStream isFromServer = client.imageStreams().inNamespace(project).withName(imageStreamName).fromServer().get();
+      logger.info("Tags in ImageStream are:");
+      logger.info(" -  {}", isFromServer.getSpec().getTags().get(0).getName());
+      logger.info(" -  {}", isFromServer.getSpec().getTags().get(1).getName());
 
-      log("Created ImageStream", client.imageStreams().inNamespace(namespace).create(imageStream));
-
-    }finally {
-
-      log("Tags in ImageStream are");
-      log("First Tag is " + client.imageStreams().inNamespace(namespace).withName("slave-jenkins").get().getSpec().getTags().get(0).getName());
-      log("Second Tag is " + client.imageStreams().inNamespace(namespace).withName("slave-jenkins").get().getSpec().getTags().get(1).getName());
-
-      client.imageStreams().inNamespace(namespace).withName("slave-jenkins").delete();
-      client.close();
+      logger.info("Deleting ImageStream");
+      client.imageStreams().inNamespace(project).withName(imageStreamName).delete();
     }
-  }
-
-
-  private static void log(String action, Object obj) {
-    logger.info("{}: {}", action, obj);
-  }
-
-  private static void log(String action) {
-    logger.info(action);
   }
 }
 

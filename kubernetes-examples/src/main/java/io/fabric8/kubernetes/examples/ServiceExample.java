@@ -19,20 +19,24 @@ package io.fabric8.kubernetes.examples;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
-import io.fabric8.kubernetes.api.model.extensions.Ingress;
-import io.fabric8.kubernetes.api.model.extensions.IngressBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
+import java.util.Optional;
 
 public class ServiceExample {
+
   private static final Logger logger = LoggerFactory.getLogger(ServiceExample.class);
 
-  public static void main(String args[]) {
-    try (final KubernetesClient client = new DefaultKubernetesClient()) {
+  public static void main(String[] args) {
+    try (KubernetesClient client = new DefaultKubernetesClient()) {
+      String namespace = Optional.ofNullable(client.getNamespace()).orElse("default");
+      if (args.length > 0) {
+        namespace = args[0];
+      }
       Service service = new ServiceBuilder()
         .withNewMetadata()
         .withName("my-service")
@@ -47,29 +51,13 @@ public class ServiceExample {
         .endPort()
         .withType("LoadBalancer")
         .endSpec()
-        .withNewStatus()
-        .withNewLoadBalancer()
-        .addNewIngress()
-        .withIp("146.148.47.155")
-        .endIngress()
-        .endLoadBalancer()
-        .endStatus()
         .build();
 
-      service = client.services().inNamespace(client.getNamespace()).create(service);
-      log("Created service with name ", service.getMetadata().getName());
+      service = client.services().inNamespace(namespace).create(service);
+      logger.info("Created service with name {}", service.getMetadata().getName());
 
-      String serviceURL = client.services().inNamespace(client.getNamespace()).withName(service.getMetadata().getName()).getURL("test-port");
-      log("Service URL", serviceURL);
-
+      String serviceURL = client.services().inNamespace(namespace).withName(service.getMetadata().getName()).getURL("test-port");
+      logger.info("Service URL {}", serviceURL);
     }
-  }
-
-  private static void log(String action, Object obj) {
-    logger.info("{}: {}", action, obj);
-  }
-
-  private static void log(String action) {
-    logger.info(action);
   }
 }

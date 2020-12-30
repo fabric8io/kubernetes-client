@@ -18,7 +18,6 @@ package io.fabric8.kubernetes.examples;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.policy.PodDisruptionBudget;
 import io.fabric8.kubernetes.api.model.policy.PodDisruptionBudgetBuilder;
-import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -28,21 +27,17 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 
-
 public class PodDisruptionBudgetExample {
   private static final Logger logger = LoggerFactory.getLogger(PodDisruptionBudgetExample.class);
 
-  public static void main(String args[]) throws InterruptedException {
-    String master = "https://192.168.99.100:8443/";
-    if (args.length == 1) {
-      master = args[0];
+  public static void main(String[] args) {
+    final ConfigBuilder configBuilder = new ConfigBuilder();
+    if (args.length > 0) {
+      configBuilder.withMasterUrl(args[0]);
+      logger.info("Using master with URL: {}", args[0]);
     }
-
-    log("Using master with url ", master);
-    Config config = new ConfigBuilder().withMasterUrl(master).build();
-    try (final KubernetesClient client = new DefaultKubernetesClient(config)) {
+    try (KubernetesClient client = new DefaultKubernetesClient(configBuilder.build())) {
       final String namespace = "default";
-
       PodDisruptionBudget podDisruptionBudget = new PodDisruptionBudgetBuilder()
         .withNewMetadata().withName("zk-pkb").endMetadata()
         .withNewSpec()
@@ -53,19 +48,11 @@ public class PodDisruptionBudgetExample {
         .endSpec()
         .build();
 
-      log("Current namespace is", namespace);
-      client.policy().podDisruptionBudget().inNamespace(namespace).create(podDisruptionBudget);
+      logger.info("Current namespace is {}", namespace);
+      client.policy().podDisruptionBudget().inNamespace(namespace).createOrReplace(podDisruptionBudget);
 
     } catch (KubernetesClientException e) {
-      log("Could not create resource", e.getMessage());
+      logger.error("Could not create resource: {}", e.getMessage(), e);
     }
-  }
-
-  private static void log(String action, Object obj) {
-    logger.info("{}: {}", action, obj);
-  }
-
-  private static void log(String action) {
-    logger.info(action);
   }
 }

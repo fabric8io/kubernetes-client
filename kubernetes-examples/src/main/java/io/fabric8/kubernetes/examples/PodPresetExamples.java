@@ -22,7 +22,6 @@ import io.fabric8.kubernetes.api.model.VolumeBuilder;
 import io.fabric8.kubernetes.api.model.VolumeMountBuilder;
 import io.fabric8.kubernetes.api.model.settings.PodPreset;
 import io.fabric8.kubernetes.api.model.settings.PodPresetBuilder;
-import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -32,21 +31,22 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 
+// Tips for running with Minikube: https://github.com/fabric8io/kubernetes-client/pull/1286#issuecomment-447353662
 public class PodPresetExamples {
+
   private static final Logger logger = LoggerFactory.getLogger(PodPresetExamples.class);
 
-  public static void main(String args[]) {
-    String master = "https://192.168.42.193:8443/";
-    if (args.length == 1) {
-      master = args[0];
+  public static void main(String[] args) {
+    final ConfigBuilder configBuilder = new ConfigBuilder();
+    if (args.length > 0) {
+      configBuilder.withMasterUrl(args[0]);
+      logger.info("Using master with URL: {}", args[0]);
     }
-
-    Config config = new ConfigBuilder().withMasterUrl(master).build();
-    try (final KubernetesClient client = new DefaultKubernetesClient(config)) {
+    try (KubernetesClient client = new DefaultKubernetesClient(configBuilder.build())) {
       String namespace = "default";
-      log("namespace", namespace);
+      logger.info("Namespace: {}", namespace);
       Pod pod = client.pods().inNamespace(namespace).load(PodPresetExamples.class.getResourceAsStream("/pod-preset-example.yml")).get();
-      log("Pod created");
+      logger.info("Pod created");
       client.pods().inNamespace(namespace).create(pod);
 
       PodPreset podPreset = new PodPresetBuilder()
@@ -59,23 +59,14 @@ public class PodPresetExamples {
         .endSpec()
         .build();
 
-      log("Creating Pod Preset : " + podPreset.getMetadata().getName());
+      logger.info("Creating Pod Preset : {}", podPreset.getMetadata().getName());
       client.settings().podPresets().inNamespace(namespace).create(podPreset);
 
       pod = client.pods().inNamespace(namespace).withName(pod.getMetadata().getName()).get();
-      log("Updated pod: ");
-      log(SerializationUtils.dumpAsYaml(pod));
+      logger.info("Updated pod: ");
+      logger.info(SerializationUtils.dumpAsYaml(pod));
     } catch (Exception e) {
-      log("Exception occurred: ", e.getMessage());
-      e.printStackTrace();
+      logger.error("Exception occurred: {}", e.getMessage(), e);
     }
-  }
-
-  private static void log(String action, Object obj) {
-    logger.info("{}: {}", action, obj);
-  }
-
-  private static void log(String action) {
-    logger.info(action);
   }
 }

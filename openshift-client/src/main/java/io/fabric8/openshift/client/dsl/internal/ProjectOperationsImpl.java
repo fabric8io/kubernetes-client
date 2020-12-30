@@ -27,7 +27,6 @@ import io.fabric8.openshift.api.model.ProjectBuilder;
 import io.fabric8.openshift.client.dsl.ProjectOperation;
 import okhttp3.OkHttpClient;
 import io.fabric8.openshift.api.model.Project;
-import io.fabric8.openshift.api.model.ProjectBuilder;
 import io.fabric8.openshift.api.model.ProjectList;
 import io.fabric8.openshift.client.OpenShiftConfig;
 

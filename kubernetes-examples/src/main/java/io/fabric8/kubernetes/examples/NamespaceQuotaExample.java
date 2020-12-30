@@ -21,7 +21,6 @@ import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.ResourceQuota;
 import io.fabric8.kubernetes.api.model.ResourceQuotaBuilder;
 import io.fabric8.kubernetes.client.APIGroupNotAvailableException;
-import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -30,47 +29,53 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class NamespaceQuotaExample {
+
   private static final Logger logger = LoggerFactory.getLogger(NamespaceQuotaExample.class);
 
-  public static void main(String[] args) throws InterruptedException {
-    String master = "https://localhost:8443";
+  private static final String NAMESPACE = "namepsace-test";
 
-    if (args.length == 1) {
-      master = args[0];
+  public static void main(String[] args) {
+    final ConfigBuilder configBuilder = new ConfigBuilder();
+    if (args.length > 0) {
+      configBuilder.withMasterUrl(args[0]);
     }
-
-    Config config = new ConfigBuilder().withMasterUrl(master).build();
-    try (final KubernetesClient client = new DefaultKubernetesClient(config)) {
-      String namespace = "namespacetest";
+    try (KubernetesClient client = new DefaultKubernetesClient(configBuilder.build())) {
+      String namespace = NAMESPACE;
       if (args.length > 2) {
         namespace = args[2];
       }
       try  {
         // Creating namespace
         Namespace ns = new NamespaceBuilder().withNewMetadata().withName(namespace).addToLabels("hello", "world").endMetadata().build();
-        log("Created namespace", client.namespaces().create(ns));
+        logger.info("Created namespace: {}", client.namespaces().create(ns).getMetadata().getName());
 
         // Get namespace by name
-        log("Get namespace by name", client.namespaces().withName(namespace).get());
+        logger.info("Get namespace by name: {}", client.namespaces().withName(namespace).get());
         // Get namespace by label
-        log("Get namespace by label", client.namespaces().withLabel("hello", "world").list());
+        logger.info("Get namespace by label:");
+        client.namespaces().withLabel("hello", "world").list().getItems().forEach(n -> logger.info(" - {}", n.getMetadata().getName()));
 
-        ResourceQuota quota = new ResourceQuotaBuilder().withNewMetadata().withName("quota-example").endMetadata().withNewSpec().addToHard("pods", new Quantity("5")).endSpec().build();
-        log("Create resource quota", client.resourceQuotas().inNamespace(namespace).create(quota));
+        final ResourceQuota quota = client.resourceQuotas().inNamespace(namespace).createOrReplace(
+          new ResourceQuotaBuilder()
+            .withNewMetadata().withName("quota-example").endMetadata()
+            .withNewSpec().addToHard("pods", new Quantity("5")).endSpec()
+            .build());
+        logger.info("Create resource quota: {}", quota.getMetadata().getName());
 
         try {
-          log("Get jobs in namespace", client.batch().jobs().inNamespace(namespace).list());
+          logger.info("Listing jobs in namespace");
+          client.batch().jobs().inNamespace(namespace).list().getItems()
+            .forEach(j -> logger.info(" - {}", j.getMetadata().getName()));
         } catch (APIGroupNotAvailableException e) {
-          log("Skipping jobs example - extensions API group not available");
+          logger.warn("Skipping jobs example - extensions API group not available");
         }
       } finally {
         // Delete namespace
-        log("Deleted namespace", client.namespaces().withName(namespace).delete());
+        client.namespaces().withName(namespace).delete();
+        logger.info("Deleted namespace: {}", namespace);
       }
     } catch (Exception e) {
-      e.printStackTrace();
       logger.error(e.getMessage(), e);
-
       Throwable[] suppressed = e.getSuppressed();
       if (suppressed != null) {
         for (Throwable t : suppressed) {
@@ -78,13 +83,5 @@ public class NamespaceQuotaExample {
         }
       }
     }
-  }
-
-  private static void log(String action, Object obj) {
-    logger.info("{}: {}", action, obj);
-  }
-
-  private static void log(String action) {
-    logger.info(action);
   }
 }

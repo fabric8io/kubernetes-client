@@ -23,47 +23,45 @@ import io.fabric8.kubernetes.client.dsl.LogWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.Collections;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 public class WaitUntilReadyExample {
-  private static Logger logger = LoggerFactory.getLogger(WaitUntilReadyExample.class);
 
-  public static void main(String args[]) throws IOException, InterruptedException {
-    try (final KubernetesClient client = new DefaultKubernetesClient()) {
-      Pod pod = new PodBuilder()
-        .withNewMetadata().withName("myapp-pod").withLabels(Collections.singletonMap("app", "myapp-pod")).endMetadata()
-        .withNewSpec()
-        .addNewContainer()
-        .withName("myapp-container")
-        .withImage("busybox:1.28")
-        .withCommand("sh", "-c", "echo 'The app is running!'; sleep 10")
-        .endContainer()
-        .addNewInitContainer()
-        .withName("init-myservice")
-        .withImage("busybox:1.28")
-        .withCommand("sh", "-c", "echo 'inititalizing...'; sleep 5")
-        .endInitContainer()
-        .endSpec()
-        .build();
+  private static final Logger logger = LoggerFactory.getLogger(WaitUntilReadyExample.class);
 
-      String namespace = "default";
-      pod = client.pods().inNamespace(namespace).create(pod);
-      log("Pod created, waiting for it to get ready");
+  @SuppressWarnings("java:S106")
+  public static void main(String[] args) throws InterruptedException {
+    try (KubernetesClient client = new DefaultKubernetesClient()) {
+      final String namespace = Optional.ofNullable(client.getNamespace()).orElse("default");
+      final Pod pod = client.pods().inNamespace(namespace).create(
+        new PodBuilder()
+          .withNewMetadata().withName("myapp-pod").withLabels(Collections.singletonMap("app", "myapp-pod")).endMetadata()
+          .withNewSpec()
+          .addNewContainer()
+          .withName("myapp-container")
+          .withImage("busybox:1.28")
+          .withCommand("sh", "-c", "echo 'The app is running!'; sleep 10")
+          .endContainer()
+          .addNewInitContainer()
+          .withName("init-myservice")
+          .withImage("busybox:1.28")
+          .withCommand("sh", "-c", "echo 'inititalizing...'; sleep 5")
+          .endInitContainer()
+          .endSpec()
+          .build()
+      );
+      logger.info("Pod created, waiting for it to get ready...");
       client.resource(pod).inNamespace(namespace).waitUntilReady(10, TimeUnit.SECONDS);
-      log("Pod is ready now.");
-      client.pods().inNamespace(namespace).withName(pod.getMetadata().getName()).watchLog(System.out);
+      logger.info("Pod is ready now");
+      final LogWatch lw = client.pods().inNamespace(namespace).withName(pod.getMetadata().getName()).watchLog(System.out);
+      logger.info("Watching Pod logs for 10 seconds...");
+      TimeUnit.SECONDS.sleep(10L);
+      logger.info("Deleting Pod...");
       client.resource(pod).inNamespace(namespace).delete();
+      logger.info("Closing Pod log watch");
+      lw.close();
     }
-    System.exit(0);
-  }
-
-  private static void log(String action, Object obj) {
-    logger.info("{}: {}", action, obj);
-  }
-
-  private static void log(String action) {
-    logger.info(action);
   }
 }

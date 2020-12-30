@@ -15,60 +15,69 @@
  */
 package io.fabric8.kubernetes.examples;
 
-import io.fabric8.kubernetes.api.model.ReplicationController;
-import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.ConfigBuilder;
+import io.fabric8.kubernetes.api.builder.Visitor;
+import io.fabric8.kubernetes.api.model.ConfigMap;
+import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
+import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
+import java.util.Optional;
+import java.util.UUID;
 
 public class WatchExample {
 
   private static final Logger logger = LoggerFactory.getLogger(WatchExample.class);
 
-  public static void main(String[] args) throws InterruptedException {
-    final CountDownLatch closeLatch = new CountDownLatch(1);
-    Config config = new ConfigBuilder().build();
-    try (final KubernetesClient client = new DefaultKubernetesClient(config)) {
-      try (Watch watch = client.replicationControllers().inNamespace("default").withName("test").watch(new Watcher<ReplicationController>() {
+  @SuppressWarnings("java:S1604")
+  public static void main(String[] args) {
+    try (
+      KubernetesClient client = new DefaultKubernetesClient();
+      Watch ignored = newConfigMapWatch(client)
+    ) {
+      final String namespace = Optional.ofNullable(client.getNamespace()).orElse("default");
+      final String name = "watch-config-map-test-" + UUID.randomUUID().toString();
+      final ConfigMap cm = client.configMaps().inNamespace(namespace).createOrReplace(new ConfigMapBuilder()
+        .withNewMetadata().withName(name).endMetadata()
+        .build()
+      );
+      client.configMaps().inNamespace(namespace).withName(name)
+        .patch(new ConfigMapBuilder().withNewMetadata().withName(name).endMetadata().addToData("key", "value").build());
+      //noinspection Convert2Lambda
+      client.configMaps().inNamespace(namespace).withName(name).edit(new Visitor<ObjectMetaBuilder>() {
         @Override
-        public void eventReceived(Action action, ReplicationController resource) {
-          logger.info("{}: {}", action, resource.getMetadata().getResourceVersion());
+        public void visit(ObjectMetaBuilder omb) {
+          omb.addToAnnotations("annotation", "value");
         }
-
-        @Override
-        public void onClose(WatcherException e) {
-          logger.debug("Watcher onClose");
-          if (e != null) {
-            logger.error(e.getMessage(), e);
-            closeLatch.countDown();
-          }
-        }
-      })) {
-        closeLatch.await(10, TimeUnit.SECONDS);
-      } catch (KubernetesClientException | InterruptedException e) {
-        logger.error("Could not watch resources", e);
-      }
+      });
+      client.configMaps().delete(cm);
     } catch (Exception e) {
-      e.printStackTrace();
-      logger.error(e.getMessage(), e);
-
-      Throwable[] suppressed = e.getSuppressed();
-      if (suppressed != null) {
-        for (Throwable t : suppressed) {
-          logger.error(t.getMessage(), t);
-        }
-      }
+      logger.error("Global Error: {}", e.getMessage(), e);
     }
-    Thread.sleep(60000l);
+  }
+
+  private static Watch newConfigMapWatch(KubernetesClient client) {
+    return client.configMaps().watch(new Watcher<ConfigMap>() {
+      @Override
+      public void eventReceived(Action action, ConfigMap resource) {
+        logger.info("Watch event received {}: {}", action.name(), resource.getMetadata().getName());
+      }
+
+      @Override
+      public void onClose(WatcherException e) {
+        logger.error("Watch error received: {}", e.getMessage(), e);
+      }
+
+      @Override
+      public void onClose() {
+        logger.info("Watch gracefully closed");
+      }
+    });
   }
 
 }

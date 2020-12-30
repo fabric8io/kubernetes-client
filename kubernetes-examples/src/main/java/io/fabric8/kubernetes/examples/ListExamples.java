@@ -15,11 +15,8 @@
  */
 package io.fabric8.kubernetes.examples;
 
-import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
-import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
-import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -27,18 +24,20 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Optional;
+
+@SuppressWarnings("java:S106")
 public class ListExamples {
 
   private static final Logger logger = LoggerFactory.getLogger(ListExamples.class);
 
   public static void main(String[] args) {
-    String master = "https://192.168.42.20:8443/";
-    if (args.length == 1) {
-      master = args[0];
+    final ConfigBuilder configBuilder = new ConfigBuilder();
+    if (args.length > 0) {
+      configBuilder.withMasterUrl(args[0]);
     }
-
-    Config config = new ConfigBuilder().withMasterUrl(master).build();
-    try (final KubernetesClient client = new DefaultKubernetesClient(config)) {
+    try (KubernetesClient client = new DefaultKubernetesClient(configBuilder.build())) {
+      final String namespace = Optional.ofNullable(client.getNamespace()).orElse("default");
 
       System.out.println(
         client.namespaces().list()
@@ -66,15 +65,17 @@ public class ListExamples {
        * 	a previous query result with identical query parameters (except for the value of
        * 	continue) and the server may reject a continue value it does not recognize.
        */
-      PodList podList = client.pods().inNamespace("myproject").list(5, null);
-      podList.getItems().forEach((obj) -> { System.out.println(obj.getMetadata().getName()); });
+      PodList podList = client.pods().inNamespace(namespace).list(new ListOptionsBuilder().withLimit(5L).build());
+      podList.getItems().forEach(obj -> System.out.println(obj.getMetadata().getName()));
 
-      podList = client.pods().inNamespace("myproject").list(5, podList.getMetadata().getContinue());
-      podList.getItems().forEach((obj) -> { System.out.println(obj.getMetadata().getName()); });
+      podList = client.pods().inNamespace(namespace)
+        .list(new ListOptionsBuilder().withLimit(5L).withContinue(podList.getMetadata().getContinue()).build());
+      podList.getItems().forEach(obj -> System.out.println(obj.getMetadata().getName()));
 
-      Integer services = client.services().inNamespace("myproject").list(1, null).getItems().size();
+      Integer services = client.services().inNamespace(namespace)
+        .list(new ListOptionsBuilder().withLimit(1L).build()).getItems().size();
 
-      client.services().inNamespace("myproject").list(new ListOptionsBuilder().withLimit(1L).withContinue(null).build());
+      client.services().inNamespace(namespace).list(new ListOptionsBuilder().withLimit(1L).withContinue(null).build());
       System.out.println(services);
     } catch (KubernetesClientException e) {
       logger.error(e.getMessage(), e);

@@ -17,8 +17,8 @@ package io.fabric8.openshift.examples;
  */
 
 import io.fabric8.kubernetes.api.model.KubernetesList;
-import io.fabric8.kubernetes.api.model.NamespaceBuilder;
 import io.fabric8.openshift.api.model.Parameter;
+import io.fabric8.openshift.api.model.ProjectRequestBuilder;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
@@ -37,8 +37,15 @@ public class TemplateExample {
   public static void main(String[] args) {
     try (OpenShiftClient client = new DefaultOpenShiftClient()) {
       try {
-        logger.info("Creating temporary namespace '{}' for example", NAMESPACE);
-        client.namespaces().create(new NamespaceBuilder().withNewMetadata().withName(NAMESPACE).endMetadata().build());
+        logger.info("Creating temporary project '{}' for example", NAMESPACE);
+        client.projectrequests().create(
+          new ProjectRequestBuilder()
+            .withNewMetadata()
+            .withName(NAMESPACE)
+            .endMetadata()
+            .build()
+        );
+        logger.info("Created project: {}", NAMESPACE);
 
         final Template loadedTemplate = client.templates()
           .load(TemplateExample.class.getResourceAsStream(TEST_TEMPLATE_RESOURCE)).get();
@@ -78,8 +85,8 @@ public class TemplateExample {
         client.lists().inNamespace(NAMESPACE).load(TemplateExample.class.getResourceAsStream("/test-list.yml")).create();
       } finally {
         // And finally clean up the namespace
-        client.namespaces().withName(NAMESPACE).delete();
-        logger.info("Deleted namespace {}", NAMESPACE);
+        client.projects().withName(NAMESPACE).delete();
+        logger.info("Deleted project {}", NAMESPACE);
       }
     }
   }

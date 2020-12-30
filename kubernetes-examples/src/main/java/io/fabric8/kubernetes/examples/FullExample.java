@@ -39,7 +39,7 @@ public class FullExample {
 
     private static final Logger logger = LoggerFactory.getLogger(FullExample.class);
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         String master = "https://localhost:8443/";
         if (args.length == 1) {
             master = args[0];
@@ -214,10 +214,7 @@ public class FullExample {
                 log("Deleted namespace");
             }
         } catch (Exception e) {
-            e.printStackTrace();
             logger.error(e.getMessage(), e);
-
-
             Throwable[] suppressed = e.getSuppressed();
             if (suppressed != null) {
                 for (Throwable t : suppressed) {

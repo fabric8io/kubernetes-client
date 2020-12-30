@@ -15,6 +15,9 @@
  */
 package io.fabric8.kubernetes.examples;
 
+import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
@@ -34,37 +37,36 @@ public class CustomResourceInformerExample {
 
   public static void main(String[] args) {
     try (KubernetesClient client = new DefaultKubernetesClient()) {
-      CustomResourceDefinitionContext crdContext = new CustomResourceDefinitionContext.Builder()
-        .withVersion("v1")
-        .withScope("Namespaced")
-        .withGroup("demo.fabric8.io")
-        .withPlural("dummies")
-        .build();
-
+      final CustomResourceDefinition crd = CustomResourceDefinitionContext
+        .v1beta1CRDFromCustomResourceType(Dummy.class).build();
+      client.apiextensions().v1beta1().customResourceDefinitions().createOrReplace(crd);
+      final CustomResourceDefinitionContext crdContext = CustomResourceDefinitionContext.fromCustomResourceType(Dummy.class);
       SharedInformerFactory sharedInformerFactory = client.informers();
-      SharedIndexInformer<Dummy> podInformer = sharedInformerFactory.sharedIndexInformerForCustomResource(crdContext, Dummy.class, DummyList.class, 1 * 60 * 1000);
+      SharedIndexInformer<Dummy> podInformer = sharedInformerFactory
+        .sharedIndexInformerForCustomResource(crdContext, Dummy.class, DummyList.class,  60 * 1000L);
       logger.info("Informer factory initialized.");
 
       podInformer.addEventHandler(
         new ResourceEventHandler<Dummy>() {
           @Override
           public void onAdd(Dummy pod) {
-            System.out.printf("%s dummy added\n", pod.getMetadata().getName());
+            logger.info("{} dummy added", pod.getMetadata().getName());
           }
 
           @Override
           public void onUpdate(Dummy oldPod, Dummy newPod) {
-            System.out.printf("%s dummy updated\n", oldPod.getMetadata().getName());
+            logger.info("{} dummy updated", oldPod.getMetadata().getName());
           }
 
           @Override
           public void onDelete(Dummy pod, boolean deletedFinalStateUnknown) {
-            System.out.printf("%s dummy deleted \n", pod.getMetadata().getName());
+            logger.info("{} dummy deleted", pod.getMetadata().getName());
           }
         }
       );
 
-      sharedInformerFactory.addSharedInformerEventListener(exception -> logger.error("Exception occurred, but caught"));
+      sharedInformerFactory.addSharedInformerEventListener(ex ->
+        logger.error("Exception occurred, but caught: {}", ex.getMessage()));
 
       logger.info("Starting all registered informers");
       sharedInformerFactory.startAllRegisteredInformers();
@@ -82,8 +84,20 @@ public class CustomResourceInformerExample {
         }
       });
 
+      final Dummy toCreate = new Dummy();
+      toCreate.getMetadata().setName("dummy");
+      if (client.getConfiguration().getNamespace() != null) {
+        toCreate.getMetadata().setNamespace(client.getConfiguration().getNamespace());
+      } else if (client.getNamespace() != null) {
+        toCreate.getMetadata().setNamespace(client.getNamespace());
+      } else {
+        toCreate.getMetadata().setNamespace(client.namespaces().list().getItems().stream().findFirst()
+          .map(HasMetadata::getMetadata).map(ObjectMeta::getNamespace).orElse("default"));
+      }
+
+      client.customResources(crdContext, Dummy.class, DummyList.class).createOrReplace(toCreate);
       // Wait for some time now
-      TimeUnit.MINUTES.sleep(60);
+      TimeUnit.MINUTES.sleep(5);
     } catch (InterruptedException interruptedException) {
       Thread.currentThread().interrupt();
       logger.info("interrupted: {}", interruptedException.getMessage());

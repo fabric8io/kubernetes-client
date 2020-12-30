@@ -31,8 +31,10 @@ public class NetworkPolicyExample {
   private static final Logger logger = LoggerFactory.getLogger(NetworkPolicyExample.class);
 
   public static void main(String[] args) {
-    String namespace = "myproject";
-
+    String namespace = "default";
+    if (args.length > 0) {
+      namespace = args[0];
+    }
     try (KubernetesClient client = new DefaultKubernetesClient()) {
       NetworkPolicy networkPolicy = new NetworkPolicyBuilder()
         .withNewMetadata()
@@ -50,8 +52,9 @@ public class NetworkPolicyExample {
       networkPolicy = client.network()
         .v1()
         .networkPolicies()
-        .create(networkPolicy);
-      logger.info("NetworkPolicy {} created via builders", networkPolicy.getMetadata().getName());
+        .inNamespace(namespace)
+        .createOrReplace(networkPolicy);
+      logger.info("NetworkPolicy {}/{} created via builders", namespace, networkPolicy.getMetadata().getName());
 
       // crate policy using YAML resource
       networkPolicy = client.network()
@@ -60,7 +63,7 @@ public class NetworkPolicyExample {
         .inNamespace(namespace)
         .load(NetworkPolicyExample.class.getResourceAsStream("/network-policy.yml"))
         .createOrReplace();
-      logger.info("NetworkPolicy {} created via YAML manifest", networkPolicy.getMetadata().getName());
+      logger.info("NetworkPolicy {}/{} created via YAML manifest", namespace, networkPolicy.getMetadata().getName());
 
     }
   }

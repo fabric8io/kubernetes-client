@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.examples;
 
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
+import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -31,41 +32,42 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 public class RawCustomResourceExample {
+
   private static final Logger logger = LoggerFactory.getLogger(RawCustomResourceExample.class);
 
-  public static void main(String args[]) throws Exception {
+  public static void main(String[] args) throws Exception {
 
-    final CountDownLatch closeLatch = new CountDownLatch(1);
-    try (final KubernetesClient client = new DefaultKubernetesClient()) {
+    final ConfigBuilder configBuilder = new ConfigBuilder();
+    configBuilder.withWatchReconnectInterval(500);
+    configBuilder.withWatchReconnectLimit(5);
+    try (KubernetesClient client = new DefaultKubernetesClient(configBuilder.build())) {
 
       String namespace = "default";
-      CustomResourceDefinition prometheousRuleCrd = client.customResourceDefinitions().load(RawCustomResourceExample.class.getResourceAsStream("/prometheous-rule-crd.yml")).get();
-      client.customResourceDefinitions().create(prometheousRuleCrd);
-      log("Successfully created prometheous custom resource definition");
+      CustomResourceDefinition prometheousRuleCrd = client.apiextensions().v1beta1().customResourceDefinitions()
+        .load(RawCustomResourceExample.class.getResourceAsStream("/prometheous-rule-crd.yml")).get();
+      client.apiextensions().v1beta1().customResourceDefinitions().createOrReplace(prometheousRuleCrd);
+      logger.info("Successfully created Prometheous custom resource definition");
 
       // Creating Custom Resources Now:
-      CustomResourceDefinitionContext crdContext = new CustomResourceDefinitionContext.Builder()
-        .withGroup("monitoring.coreos.com")
-        .withPlural("prometheusrules")
-        .withScope("Namespaced")
-        .withVersion("v1")
-        .build();
+      CustomResourceDefinitionContext crdContext = CustomResourceDefinitionContext.fromCrd(prometheousRuleCrd);
 
-      client.customResource(crdContext).create(namespace, RawCustomResourceExample.class.getResourceAsStream("/prometheous-rule-cr.yml"));
-      log("Created Custom Resource successfully too");
+      client.customResource(crdContext)
+        .createOrReplace(namespace, RawCustomResourceExample.class.getResourceAsStream("/prometheous-rule-cr.yml"));
+      logger.info("Created Custom Resource successfully too");
 
       // Listing all custom resources in given namespace:
       Map<String, Object> list = client.customResource(crdContext).list(namespace);
       List<Map<String, Object>> items = (List<Map<String, Object>>) list.get("items");
-      log("Custom Resources :- ");
+      logger.info("Custom Resources :- ");
       for(Map<String, Object> customResource : items) {
         Map<String, Object> metadata = (Map<String, Object>) customResource.get("metadata");
-        log(metadata.get("name").toString());
+        final String name = metadata.get("name").toString();
+        logger.info(name);
       }
 
-
       // Watching custom resources now
-      log("Watching custom resources now");
+      logger.info("Watching custom resources now");
+      final CountDownLatch closeLatch = new CountDownLatch(1);
       client.customResource(crdContext).watch(namespace, new Watcher<String>() {
         @Override
         public void eventReceived(Action action, String resource) {
@@ -84,20 +86,12 @@ public class RawCustomResourceExample {
       closeLatch.await(10, TimeUnit.MINUTES);
 
       // Cleanup
-      log("Deleting custom resources...");
-      Map<String, Object> deleted  = client.customResource(crdContext).delete(namespace, "prometheus-example-rules");
-      client.customResourceDefinitions().withName("prometheusrules.monitoring.coreos.com").delete();
+      logger.info("Deleting custom resources...");
+      client.customResource(crdContext).delete(namespace, "prometheus-example-rules");
+      client.apiextensions().v1beta1().customResourceDefinitions()
+        .withName(prometheousRuleCrd.getMetadata().getName()).delete();
     } catch (KubernetesClientException e) {
-      e.printStackTrace();
-      log("Could not create resource", e.getMessage());
+      logger.error("Could not create resource: {}", e.getMessage(), e);
     }
-  }
-
-  private static void log(String action, Object obj) {
-    logger.info("{}: {}", action, obj);
-  }
-
-  private static void log(String action) {
-    logger.info(action);
   }
 }
