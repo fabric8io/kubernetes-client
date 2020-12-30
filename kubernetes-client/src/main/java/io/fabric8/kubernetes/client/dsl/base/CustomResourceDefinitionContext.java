@@ -15,13 +15,12 @@
  */
 package io.fabric8.kubernetes.client.dsl.base;
 
-import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionBuilder;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionSpec;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersion;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionSpec;
 import io.fabric8.kubernetes.client.utils.KubernetesVersionPriority;
 
 import java.lang.reflect.InvocationTargetException;
@@ -59,6 +58,7 @@ public class CustomResourceDefinitionContext {
     return kind;
   }
 
+  @SuppressWarnings("rawtypes")
   public static CustomResourceDefinitionBuilder v1beta1CRDFromCustomResourceType(Class<? extends CustomResource> customResource) {
     try {
       final CustomResource instance = customResource.getDeclaredConstructor().newInstance();
@@ -85,7 +85,10 @@ public class CustomResourceDefinitionContext {
     }
   }
 
-  public static io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionBuilder v1CRDFromCustomResourceType(Class<? extends CustomResource> customResource) {
+  @SuppressWarnings("rawtypes")
+  public static io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionBuilder v1CRDFromCustomResourceType(
+    Class<? extends CustomResource> customResource
+  ) {
     try {
       final CustomResource instance = customResource.getDeclaredConstructor().newInstance();
       return new io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionBuilder()
@@ -107,9 +110,10 @@ public class CustomResourceDefinitionContext {
     }
   }
 
-  public static CustomResourceDefinitionContext fromCustomResourceType(Class<? extends HasMetadata> customResource) {
+  @SuppressWarnings("rawtypes")
+  public static CustomResourceDefinitionContext fromCustomResourceType(Class<? extends CustomResource> customResource) {
     try {
-      final CustomResource instance = (CustomResource) customResource.getDeclaredConstructor().newInstance();
+      final CustomResource instance = customResource.getDeclaredConstructor().newInstance();
       return new Builder()
         .withGroup(instance.getGroup())
         .withVersion(instance.getVersion())
@@ -136,7 +140,8 @@ public class CustomResourceDefinitionContext {
   }
 
   public static CustomResourceDefinitionContext fromCrd(
-    io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition crd) {
+    io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition crd
+  ) {
     return new CustomResourceDefinitionContext.Builder()
       .withGroup(crd.getSpec().getGroup())
       .withVersion(getVersion(crd.getSpec()))
@@ -163,7 +168,8 @@ public class CustomResourceDefinitionContext {
   }
 
   private static String getVersion(
-    io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionSpec spec) {
+    io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionSpec spec
+  ) {
     return getVersion(
       spec.getVersions().stream()
         .map(io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionVersion::getName)
