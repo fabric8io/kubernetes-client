@@ -1,7 +1,7 @@
 ## CHANGELOG
 
 ### 5.1-SNAPSHOT
-
+* update Tekton Triggers model to v0.10.2
 #### Bugs
 
 #### Improvements

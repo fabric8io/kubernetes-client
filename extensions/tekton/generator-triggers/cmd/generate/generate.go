@@ -66,6 +66,7 @@ func main() {
 	// overwriting some times
 	manualTypeMap := map[reflect.Type]string{
 		reflect.TypeOf(machinery.Time{}):                   "java.lang.String",
+		reflect.TypeOf(apis.VolatileTime{}):                "java.lang.String",
 		reflect.TypeOf(apis.URL{}):                         "java.lang.String",
 		reflect.TypeOf(triggers.TriggerResourceTemplate{}): "io.fabric8.kubernetes.api.model.HasMetadata",
 	}
