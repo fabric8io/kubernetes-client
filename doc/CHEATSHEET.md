@@ -1619,36 +1619,12 @@ package io.fabric8.kubernetes.client.mock.crd;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.CustomResource;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 
-public class CronTab extends CustomResource implements Namespaced {
-    private CronTabSpec spec;
-    private CronTabStatus status;
-
-    @Override
-    public ObjectMeta getMetadata() {
-        return super.getMetadata();
-    }
-
-    public CronTabSpec getSpec() {
-        return spec;
-    }
-
-    public void setSpec(CronTabSpec spec) {
-        this.spec = spec;
-    }
-
-    public CronTabStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(CronTabStatus status) {
-        this.status = status;
-    }
-
-    @Override
-    public String getApiVersion() {
-        return "stable.example.com/v1";
-    }
+@Group("stable.example.com")
+@Version("v1")
+public class CronTab extends CustomResource<CronTabSpec, CronTabStatus> implements Namespaced {
 
     @Override
     public String toString() {
@@ -1679,7 +1655,7 @@ MixedOperation<CronTab, CronTabList, Resource<CronTab>> cronTabClient = client
 ```
 - Register your `CustomResource` to `KubernetesDeserializer`:
 ```
-KubernetesDeserializer.registerCustomKind("stable.example.com/v1", "CronTab", CronTab.class);
+KubernetesDeserializer.registerCustomKind(CronTab.class);
 ```
 - Get `CustomResource` from Kubernetes APIServer:
 ```

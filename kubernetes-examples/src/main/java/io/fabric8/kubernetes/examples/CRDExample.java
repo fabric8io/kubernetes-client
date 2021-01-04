@@ -116,7 +116,7 @@ public class CRDExample {
         System.out.println("Created CRD " + dummyCRD.getMetadata().getName());
       }
 
-      KubernetesDeserializer.registerCustomKind(HasMetadata.getApiVersion(Dummy.class), dummyCRD.getKind(), Dummy.class);
+      KubernetesDeserializer.registerCustomKind(Dummy.class);
 
       // lets create a client for the CRD
       NonNamespaceOperation<Dummy, DummyList, Resource<Dummy>> dummyClient = client.customResources(dummyCRD, Dummy.class, DummyList.class);
