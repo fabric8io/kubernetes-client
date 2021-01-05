@@ -9,6 +9,7 @@
 #### Dependency Upgrade
 
 #### New Features
+* Fix #2708: Update CSI Volume Snapshot API to v1
 
 ### 5.0.0 (2020-12-30)
 
