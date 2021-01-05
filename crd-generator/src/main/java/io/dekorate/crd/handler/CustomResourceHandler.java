@@ -15,6 +15,9 @@
  */
 package io.dekorate.crd.handler;
 
+import static io.dekorate.crd.util.Types.findStatusProperty;
+import static io.dekorate.crd.util.Types.findStatusType;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,22 +33,23 @@ import io.dekorate.crd.config.CustomResourceConfig;
 import io.dekorate.crd.config.EditableCustomResourceConfig;
 import io.dekorate.crd.config.Keys;
 import io.dekorate.crd.config.Scale;
-import io.dekorate.crd.decorator.AddSpecReplicasPathDecorator;
 import io.dekorate.crd.decorator.AddAdditionPrinterColumnDecorator;
 import io.dekorate.crd.decorator.AddCustomResourceDefinitionResourceDecorator;
 import io.dekorate.crd.decorator.AddCustomResourceDefintionVersionDecorator;
 import io.dekorate.crd.decorator.AddLabelSelectorPathDecorator;
 import io.dekorate.crd.decorator.AddSchemaToCustomResourceDefinitionVersionDecorator;
+import io.dekorate.crd.decorator.AddSpecReplicasPathDecorator;
 import io.dekorate.crd.decorator.AddStatusReplicasPathDecorator;
 import io.dekorate.crd.decorator.AddStatusSubresourceDecorator;
 import io.dekorate.crd.decorator.AddSubresourcesDecorator;
 import io.dekorate.crd.decorator.EnsureSingleStorageVersionDecorator;
+import io.dekorate.crd.decorator.PromoteSingleVersionAttributesDecorator;
 import io.dekorate.crd.decorator.SetServedVersionDecorator;
 import io.dekorate.crd.decorator.SetStorageVersionDecorator;
 import io.dekorate.crd.util.JsonSchema;
-import io.dekorate.crd.visitor.SpecReplicasPathDetector;
 import io.dekorate.crd.visitor.AdditionalPrineterColumnDetector;
 import io.dekorate.crd.visitor.LabelSelectorPathDetector;
+import io.dekorate.crd.visitor.SpecReplicasPathDetector;
 import io.dekorate.crd.visitor.StatusReplicasPathDetector;
 import io.dekorate.kubernetes.config.Configuration;
 import io.dekorate.utils.Strings;
@@ -57,8 +61,6 @@ import io.sundr.codegen.model.Property;
 import io.sundr.codegen.model.TypeDef;
 import io.sundr.codegen.model.TypeDefBuilder;
 import io.sundr.codegen.model.TypeRef;
-
-import static io.dekorate.crd.util.Types.*;
 
 public class CustomResourceHandler implements Handler<CustomResourceConfig> {
 
@@ -191,6 +193,8 @@ public class CustomResourceHandler implements Handler<CustomResourceConfig> {
     resources.decorate(new SetServedVersionDecorator(name, version, config.isServed()));
     resources.decorate(new SetStorageVersionDecorator(name, version, config.isStorage()));
     resources.decorate(new EnsureSingleStorageVersionDecorator(name));
+
+    resources.decorate(new PromoteSingleVersionAttributesDecorator(name));
 
     additionalPrinterColumns.forEach((path, property) -> {
         Map<String, Object> parameters = property.getAnnotations().stream().filter(a -> a.getClassRef().getName().equals("PrinterColumn")).map(a -> a.getParameters()).findFirst().orElse(Collections.emptyMap());
