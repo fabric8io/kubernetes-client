@@ -854,7 +854,7 @@
         },
         "apiVersion": {
           "type": "string",
-          "default": "discovery/v1beta1",
+          "default": "discovery.k8s.io/v1beta1",
           "required": true
         },
         "endpoints": {
@@ -893,7 +893,7 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "discovery/v1beta1",
+          "default": "discovery.k8s.io/v1beta1",
           "required": true
         },
         "items": {
@@ -1193,7 +1193,7 @@
         },
         "apiVersion": {
           "type": "string",
-          "default": "discovery/v1beta1",
+          "default": "discovery.k8s.io/v1beta1",
           "required": true
         },
         "endpoints": {
@@ -1226,7 +1226,7 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "discovery/v1beta1",
+          "default": "discovery.k8s.io/v1beta1",
           "required": true
         },
         "items": {
