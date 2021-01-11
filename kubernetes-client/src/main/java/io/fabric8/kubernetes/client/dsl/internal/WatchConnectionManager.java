@@ -303,13 +303,9 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
   public void waitUntilReady() {
     Utils.waitUntilReady(queue, 10, TimeUnit.SECONDS);
   }
-
+  
   @Override
-  public void close() {
-    logger.debug("Force closing the watch {}", this);
-    closeEvent();
+  protected void internalClose() {
     closeWebSocket(webSocketRef.getAndSet(null));
-    closeExecutorService();
   }
-
 }

@@ -137,4 +137,16 @@ public abstract class AbstractWatchManager<T> implements Watch {
       }
     }
   }
+  
+  @Override
+  public void close() {
+    logger.debug("Force closing the watch {}", this);
+    closeEvent();
+    internalClose();
+    closeExecutorService();
+  }
+  
+  protected void internalClose() {
+    // default implementation does nothing
+  }
 }

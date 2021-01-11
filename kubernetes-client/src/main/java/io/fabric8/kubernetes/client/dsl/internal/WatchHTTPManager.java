@@ -300,11 +300,4 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
     }
     return event;
   }
-
-  @Override
-  public void close() {
-    logger.debug("Force closing the watch {}", this);
-    closeEvent();
-    closeExecutorService();
-  }
 }
