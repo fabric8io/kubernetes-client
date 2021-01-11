@@ -48,7 +48,8 @@ public abstract class AbstractWatchManager<T> implements Watch {
   final AtomicInteger currentReconnectAttempt;
   private final ScheduledExecutorService executorService;
   
-  protected final RequestBuilder requestBuilder;
+  private final RequestBuilder requestBuilder;
+  protected ClientRunner runner;
 
 
   AbstractWatchManager(
@@ -70,6 +71,13 @@ public abstract class AbstractWatchManager<T> implements Watch {
     });
     
     this.requestBuilder = requestBuilder;
+  }
+  
+  protected void initRunner(ClientRunner runner) {
+    if (this.runner != null) {
+      throw new IllegalStateException("ClientRunner has already been initialized");
+    }
+    this.runner = runner;
   }
 
   final void closeEvent(WatcherException cause) {
@@ -127,6 +135,37 @@ public abstract class AbstractWatchManager<T> implements Watch {
     logger.debug("Current reconnect backoff is {} milliseconds (T{})", ret, exponentOfTwo);
     return ret;
   }
+  
+  void resetReconnectAttempts() {
+    currentReconnectAttempt.set(0);
+  }
+  
+  boolean isForceClosed() {
+    return forceClosed.get();
+  }
+  
+  void eventReceived(Watcher.Action action, T resource) {
+    watcher.eventReceived(action, resource);
+  }
+  
+  void onClose(WatcherException cause) {
+    watcher.onClose(cause);
+  }
+  
+  void updateResourceVersion(final String newResourceVersion) {
+    resourceVersion.set(newResourceVersion);
+  }
+  
+  protected void runWatch() {
+    final Request request = requestBuilder.build(resourceVersion.get());
+    logger.debug("Watching {}...", request.url());
+  
+    runner.run(request);
+  }
+  
+  public void waitUntilReady() {
+    runner.waitUntilReady();
+  }
 
   static void closeWebSocket(WebSocket webSocket) {
     if (webSocket != null) {
@@ -145,16 +184,28 @@ public abstract class AbstractWatchManager<T> implements Watch {
   public void close() {
     logger.debug("Force closing the watch {}", this);
     closeEvent();
-    internalClose();
+    runner.close();
     closeExecutorService();
-  }
-  
-  protected void internalClose() {
-    // default implementation does nothing
   }
   
   @FunctionalInterface
   interface RequestBuilder {
     Request build(final String resourceVersion);
+  }
+  
+  static abstract class ClientRunner {
+    private final OkHttpClient client;
+  
+    public ClientRunner(OkHttpClient client) {
+      this.client = cloneAndCustomize(client);
+    }
+  
+    abstract void run(Request request);
+    void close() {}
+    abstract void waitUntilReady();
+    abstract OkHttpClient cloneAndCustomize(OkHttpClient client);
+    OkHttpClient client() {
+      return client;
+    }
   }
 }
