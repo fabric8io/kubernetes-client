@@ -29,7 +29,7 @@ abstract class WebSocketClientRunner<T> extends AbstractWatchManager.ClientRunne
   private final AtomicReference<WebSocket> webSocketRef = new AtomicReference<>();
   private final BlockingQueue<Object> queue = new ArrayBlockingQueue<>(1);
   
-  public WebSocketClientRunner(OkHttpClient client) {
+  protected WebSocketClientRunner(OkHttpClient client) {
     super(client);
   }
   

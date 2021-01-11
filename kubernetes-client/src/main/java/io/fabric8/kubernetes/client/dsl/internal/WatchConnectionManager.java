@@ -33,8 +33,6 @@ import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import okhttp3.OkHttpClient;
 import okhttp3.WebSocket;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static io.fabric8.kubernetes.client.dsl.internal.WatchHTTPManager.readWatchEvent;
 import static java.net.HttpURLConnection.HTTP_GONE;

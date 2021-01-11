@@ -190,10 +190,10 @@ public abstract class AbstractWatchManager<T> implements Watch {
     Request build(final String resourceVersion);
   }
   
-  static abstract class ClientRunner {
+  abstract static class ClientRunner {
     private final OkHttpClient client;
   
-    public ClientRunner(OkHttpClient client) {
+    protected ClientRunner(OkHttpClient client) {
       this.client = cloneAndCustomize(client);
     }
   

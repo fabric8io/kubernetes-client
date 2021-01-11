@@ -35,7 +35,7 @@ import org.slf4j.LoggerFactory;
 import static java.net.HttpURLConnection.HTTP_OK;
 
 abstract class WatcherWebSocketListener<T> extends WebSocketListener {
-  protected static final Logger logger = LoggerFactory.getLogger(WatchConnectionManager.class);
+  protected static final Logger logger = LoggerFactory.getLogger(WatcherWebSocketListener.class);
   
   protected final AtomicReference<WebSocket> webSocketRef;
   /**
@@ -49,7 +49,7 @@ abstract class WatcherWebSocketListener<T> extends WebSocketListener {
   private final BlockingQueue<Object> queue;
   protected final AbstractWatchManager<T> manager;
   
-  public WatcherWebSocketListener(AbstractWatchManager<T> manager, BlockingQueue<Object> queue, AtomicReference<WebSocket> webSocketRef) {
+  protected WatcherWebSocketListener(AbstractWatchManager<T> manager, BlockingQueue<Object> queue, AtomicReference<WebSocket> webSocketRef) {
     this.manager = manager;
     this.queue = queue;
     this.webSocketRef = webSocketRef;
@@ -125,7 +125,7 @@ abstract class WatcherWebSocketListener<T> extends WebSocketListener {
   
   @Override
   public void onClosing(WebSocket webSocket, int code, String reason) {
-    logger.debug("Socket closing: " + reason);
+    logger.debug("Socket closing: {}", reason);
     webSocket.close(code, reason);
   }
   
