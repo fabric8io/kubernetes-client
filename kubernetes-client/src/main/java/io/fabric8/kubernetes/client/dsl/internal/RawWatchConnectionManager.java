@@ -39,10 +39,7 @@ public class RawWatchConnectionManager extends AbstractWatchManager<String> {
   private static final Logger logger = LoggerFactory.getLogger(RawWatchConnectionManager.class);
 
   public RawWatchConnectionManager(OkHttpClient okHttpClient, HttpUrl.Builder watchUrlBuilder, ListOptions listOptions, ObjectMapper objectMapper, final Watcher<String> watcher, int reconnectLimit, int reconnectInterval, int maxIntervalExponent)  {
-    super(
-      watcher, listOptions, reconnectLimit, reconnectInterval, maxIntervalExponent,
-      okHttpClient.newBuilder().build(),
-      new RawRequestBuilder(watchUrlBuilder));
+    super(watcher, listOptions, reconnectLimit, reconnectInterval, maxIntervalExponent, new RawRequestBuilder(watchUrlBuilder));
     
     initRunner(new WebSocketClientRunner<String>(okHttpClient) {
       @Override

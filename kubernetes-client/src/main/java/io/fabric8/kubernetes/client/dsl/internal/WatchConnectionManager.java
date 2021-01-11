@@ -43,10 +43,7 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
   
   public WatchConnectionManager(final OkHttpClient client, final BaseOperation<T, L, ?> baseOperation, final ListOptions listOptions, final Watcher<T> watcher, final int reconnectInterval, final int reconnectLimit, long websocketTimeout, int maxIntervalExponent) throws MalformedURLException {
     super(
-      watcher, listOptions, reconnectLimit, reconnectInterval, maxIntervalExponent,
-      client.newBuilder()
-        .readTimeout(websocketTimeout, TimeUnit.MILLISECONDS)
-        .build(), new BaseOperationRequestBuilder(baseOperation, listOptions)
+      watcher, listOptions, reconnectLimit, reconnectInterval, maxIntervalExponent, new BaseOperationRequestBuilder(baseOperation, listOptions)
     );
     
     initRunner(new WebSocketClientRunner<T>(client) {

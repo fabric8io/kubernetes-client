@@ -39,7 +39,6 @@ public abstract class AbstractWatchManager<T> implements Watch {
 
   final Watcher<T> watcher;
   final AtomicReference<String> resourceVersion;
-  final OkHttpClient clonedClient;
 
   final AtomicBoolean forceClosed;
   private final int reconnectLimit;
@@ -53,14 +52,12 @@ public abstract class AbstractWatchManager<T> implements Watch {
 
 
   AbstractWatchManager(
-    Watcher<T> watcher, ListOptions listOptions, int reconnectLimit, int reconnectInterval, int maxIntervalExponent,
-    OkHttpClient clonedClient, RequestBuilder requestBuilder
+    Watcher<T> watcher, ListOptions listOptions, int reconnectLimit, int reconnectInterval, int maxIntervalExponent, RequestBuilder requestBuilder
   ) {
     this.watcher = watcher;
     this.reconnectLimit = reconnectLimit;
     this.reconnectInterval = reconnectInterval;
     this.maxIntervalExponent = maxIntervalExponent;
-    this.clonedClient = clonedClient;
     this.resourceVersion = new AtomicReference<>(listOptions.getResourceVersion());
     this.currentReconnectAttempt = new AtomicInteger(0);
     this.forceClosed = new AtomicBoolean();
