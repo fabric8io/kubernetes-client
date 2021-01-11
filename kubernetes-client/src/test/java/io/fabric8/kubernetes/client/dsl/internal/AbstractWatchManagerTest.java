@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.WebSocket;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -212,7 +213,7 @@ class AbstractWatchManagerTest {
   private static final class WatchManager<T> extends AbstractWatchManager<T> {
 
     public WatchManager(Watcher<T> watcher, ListOptions listOptions, int reconnectLimit, int reconnectInterval, int maxIntervalExponent, OkHttpClient clonedClient) {
-      super(watcher, listOptions, reconnectLimit, reconnectInterval, maxIntervalExponent, clonedClient);
+      super(watcher, listOptions, reconnectLimit, reconnectInterval, maxIntervalExponent, clonedClient, resourceVersion -> null);
     }
     @Override
     public void close() {

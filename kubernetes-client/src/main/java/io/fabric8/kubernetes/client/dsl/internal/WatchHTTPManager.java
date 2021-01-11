@@ -57,11 +57,8 @@ import okio.BufferedSource;
 public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourceList<T>> extends AbstractWatchManager<T> {
   private static final Logger logger = LoggerFactory.getLogger(WatchHTTPManager.class);
 
-  private final BaseOperation<T, L, ?> baseOperation;
-
   private final AtomicBoolean reconnectPending = new AtomicBoolean(false);
-  private final URL requestUrl;
-
+  
   public WatchHTTPManager(final OkHttpClient client,
                           final BaseOperation<T, L, ?> baseOperation,
                           final ListOptions listOptions, final Watcher<T> watcher, final int reconnectInterval,
@@ -83,11 +80,9 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
         .connectTimeout(connectTimeout, TimeUnit.MILLISECONDS)
         .readTimeout(0, TimeUnit.MILLISECONDS)
         .cache(null)
-        .build()
+        .build(), new WatchConnectionManager.BaseOperationRequestBuilder(baseOperation, listOptions)
     );
-    this.baseOperation = baseOperation;
-
-
+    
     // If we set the HttpLoggingInterceptor's logging level to Body (as it is by default), it does
     // not let us stream responses from the server.
     for (Interceptor i : clonedClient.networkInterceptors()) {
@@ -97,47 +92,12 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
       }
     }
 
-    requestUrl = baseOperation.getNamespacedUrl();
     runWatch();
   }
 
   private void runWatch() {
-    HttpUrl.Builder httpUrlBuilder = HttpUrl.get(requestUrl).newBuilder();
-    String labelQueryParam = baseOperation.getLabelQueryParam();
-    if (Utils.isNotNullOrEmpty(labelQueryParam)) {
-      httpUrlBuilder.addQueryParameter("labelSelector", labelQueryParam);
-    }
-
-    String fieldQueryString = baseOperation.getFieldQueryParam();
-    String name = baseOperation.getName();
-
-    if (name != null && name.length() > 0) {
-      if (fieldQueryString.length() > 0) {
-        fieldQueryString += ",";
-      }
-      fieldQueryString += "metadata.name=" + name;
-    }
-
-    if (Utils.isNotNullOrEmpty(fieldQueryString)) {
-      httpUrlBuilder.addQueryParameter("fieldSelector", fieldQueryString);
-    }
-
-    listOptions.setResourceVersion(resourceVersion.get());
-    HttpClientUtils.appendListOptionParams(httpUrlBuilder, listOptions);
-    String origin = requestUrl.getProtocol() + "://" + requestUrl.getHost();
-    if (requestUrl.getPort() != -1) {
-      origin += ":" + requestUrl.getPort();
-    }
-
-    HttpUrl url = httpUrlBuilder.build();
-
-    logger.debug("Watching via HTTP GET {}", url);
-
-    final Request request = new Request.Builder()
-      .get()
-      .url(url)
-      .addHeader("Origin", origin)
-      .build();
+    final Request request = requestBuilder.build(resourceVersion.get());
+    logger.debug("Watching {}...", request.url());
 
     clonedClient.newCall(request).enqueue(new Callback() {
       @Override

@@ -52,7 +52,6 @@ import static java.net.HttpURLConnection.HTTP_OK;
 public class RawWatchConnectionManager extends AbstractWatchManager<String> {
   private static final Logger logger = LoggerFactory.getLogger(RawWatchConnectionManager.class);
   private ObjectMapper objectMapper;
-  private HttpUrl.Builder watchUrlBuilder;
 
   private final AtomicReference<WebSocket> webSocketRef = new AtomicReference<>();
   /** True if an onOpen callback was received on the first connect attempt, ie. the watch was successfully started. */
@@ -64,30 +63,42 @@ public class RawWatchConnectionManager extends AbstractWatchManager<String> {
   public RawWatchConnectionManager(OkHttpClient okHttpClient, HttpUrl.Builder watchUrlBuilder, ListOptions listOptions, ObjectMapper objectMapper, final Watcher<String> watcher, int reconnectLimit, int reconnectInterval, int maxIntervalExponent)  {
     super(
       watcher, listOptions, reconnectLimit, reconnectInterval, maxIntervalExponent,
-      okHttpClient.newBuilder().build()
+      okHttpClient.newBuilder().build(), new RawRequestBuilder(watchUrlBuilder)
     );
-    this.watchUrlBuilder = watchUrlBuilder;
     this.objectMapper = objectMapper;
 
     runWatch();
   }
+  
+  static class RawRequestBuilder implements RequestBuilder {
+    private final HttpUrl.Builder watchUrlBuilder;
+  
+    public RawRequestBuilder(HttpUrl.Builder watchUrlBuilder) {
+      this.watchUrlBuilder = watchUrlBuilder;
+    }
+  
+    @Override
+    public Request build(String resourceVersion) {
+      if (resourceVersion != null) {
+        watchUrlBuilder.removeAllQueryParameters("resourceVersion");
+        watchUrlBuilder.addQueryParameter("resourceVersion", resourceVersion);
+      }
+      HttpUrl watchUrl = watchUrlBuilder.build();
+      String origin = watchUrl.url().getProtocol() + "://" + watchUrl.url().getHost();
+      if (watchUrl.url().getPort() != -1) {
+        origin += ":" + watchUrl.url().getPort();
+      }
+  
+      return new Request.Builder()
+        .get()
+        .url(watchUrl)
+        .addHeader("Origin", origin)
+        .build();
+    }
+  }
 
   private void runWatch() {
-    if (resourceVersion.get() != null) {
-      watchUrlBuilder.removeAllQueryParameters("resourceVersion");
-      watchUrlBuilder.addQueryParameter("resourceVersion", resourceVersion.get());
-    }
-    HttpUrl watchUrl = watchUrlBuilder.build();
-    String origin = watchUrl.url().getProtocol() + "://" + watchUrl.url().getHost();
-    if (watchUrl.url().getPort() != -1) {
-      origin += ":" + watchUrl.url().getPort();
-    }
-
-    Request request = new Request.Builder()
-      .get()
-      .url(watchUrl)
-      .addHeader("Origin", origin)
-      .build();
+    Request request = requestBuilder.build(resourceVersion.get());
     clonedClient.newWebSocket(request, new WebSocketListener() {
       @Override
       public void onOpen(WebSocket webSocket, Response response) {

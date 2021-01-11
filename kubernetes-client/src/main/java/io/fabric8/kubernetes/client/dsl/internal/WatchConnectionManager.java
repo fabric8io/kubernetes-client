@@ -54,29 +54,21 @@ import static java.net.HttpURLConnection.HTTP_OK;
 public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesResourceList<T>> extends AbstractWatchManager<T> {
 
   private static final Logger logger = LoggerFactory.getLogger(WatchConnectionManager.class);
-
-  private final BaseOperation<T, L, ?> baseOperation;
+  
   private final AtomicReference<WebSocket> webSocketRef = new AtomicReference<>();
   /** True if an onOpen callback was received on the first connect attempt, ie. the watch was successfully started. */
   private final AtomicBoolean started = new AtomicBoolean(false);
   private final AtomicBoolean reconnectPending = new AtomicBoolean(false);
   /** Blocking queue for startup exceptions. */
   private final ArrayBlockingQueue<Object> queue = new ArrayBlockingQueue<>(1);
-  private final URL requestUrl;
 
   public WatchConnectionManager(final OkHttpClient client, final BaseOperation<T, L, ?> baseOperation, final ListOptions listOptions, final Watcher<T> watcher, final int reconnectInterval, final int reconnectLimit, long websocketTimeout, int maxIntervalExponent) throws MalformedURLException {
     super(
       watcher, listOptions, reconnectLimit, reconnectInterval, maxIntervalExponent,
       client.newBuilder()
         .readTimeout(websocketTimeout, TimeUnit.MILLISECONDS)
-        .build()
+        .build(), new BaseOperationRequestBuilder(baseOperation, listOptions)
     );
-    this.baseOperation = baseOperation;
-
-    // The URL is created, validated and saved once, so that reconnect attempts don't have to deal with
-    // MalformedURLExceptions that would never occur
-
-    requestUrl = baseOperation.getNamespacedUrl();
     runWatch();
   }
 
@@ -86,42 +78,9 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
   }
 
   private void runWatch() {
-    logger.debug("Connecting websocket to {}...", requestUrl);
-
-    HttpUrl.Builder httpUrlBuilder = HttpUrl.get(requestUrl).newBuilder();
-
-    String labelQueryParam = baseOperation.getLabelQueryParam();
-    if (Utils.isNotNullOrEmpty(labelQueryParam)) {
-      httpUrlBuilder.addQueryParameter("labelSelector", labelQueryParam);
-    }
-
-    String fieldQueryString = baseOperation.getFieldQueryParam();
-    String name = baseOperation.getName();
-
-    if (name != null && name.length() > 0) {
-      if (fieldQueryString.length() > 0) {
-        fieldQueryString += ",";
-      }
-      fieldQueryString += "metadata.name=" + name;
-    }
-    if (Utils.isNotNullOrEmpty(fieldQueryString)) {
-      httpUrlBuilder.addQueryParameter("fieldSelector", fieldQueryString);
-    }
-
-    listOptions.setResourceVersion(resourceVersion.get());
-    HttpClientUtils.appendListOptionParams(httpUrlBuilder, listOptions);
-
-    String origin = requestUrl.getProtocol() + "://" + requestUrl.getHost();
-    if (requestUrl.getPort() != -1) {
-        origin += ":" + requestUrl.getPort();
-    }
-
-    Request request = new Request.Builder()
-      .get()
-      .url(httpUrlBuilder.build())
-      .addHeader("Origin", origin)
-      .build();
-
+    final Request request = requestBuilder.build(resourceVersion.get());
+    logger.debug("Watching {}...", request.url());
+  
     clonedClient.newWebSocket(request, new WebSocketListener() {
       @Override
       public void onOpen(final WebSocket webSocket, Response response) {
@@ -307,5 +266,54 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
   @Override
   protected void internalClose() {
     closeWebSocket(webSocketRef.getAndSet(null));
+  }
+  
+  static class BaseOperationRequestBuilder implements RequestBuilder {
+    private final URL requestUrl;
+    private final BaseOperation baseOperation;
+    private final ListOptions listOptions;
+  
+    public BaseOperationRequestBuilder(BaseOperation baseOperation, ListOptions listOptions) throws MalformedURLException {
+      this.baseOperation = baseOperation;
+      this.requestUrl = baseOperation.getNamespacedUrl();
+      this.listOptions = listOptions;
+    }
+  
+    @Override
+    public Request build(final String resourceVersion) {
+      HttpUrl.Builder httpUrlBuilder = HttpUrl.get(requestUrl).newBuilder();
+  
+      String labelQueryParam = baseOperation.getLabelQueryParam();
+      if (Utils.isNotNullOrEmpty(labelQueryParam)) {
+        httpUrlBuilder.addQueryParameter("labelSelector", labelQueryParam);
+      }
+  
+      String fieldQueryString = baseOperation.getFieldQueryParam();
+      String name = baseOperation.getName();
+  
+      if (name != null && name.length() > 0) {
+        if (fieldQueryString.length() > 0) {
+          fieldQueryString += ",";
+        }
+        fieldQueryString += "metadata.name=" + name;
+      }
+      if (Utils.isNotNullOrEmpty(fieldQueryString)) {
+        httpUrlBuilder.addQueryParameter("fieldSelector", fieldQueryString);
+      }
+  
+      listOptions.setResourceVersion(resourceVersion);
+      HttpClientUtils.appendListOptionParams(httpUrlBuilder, listOptions);
+  
+      String origin = requestUrl.getProtocol() + "://" + requestUrl.getHost();
+      if (requestUrl.getPort() != -1) {
+        origin += ":" + requestUrl.getPort();
+      }
+  
+      return new Request.Builder()
+        .get()
+        .url(httpUrlBuilder.build())
+        .addHeader("Origin", origin)
+        .build();
+    }
   }
 }

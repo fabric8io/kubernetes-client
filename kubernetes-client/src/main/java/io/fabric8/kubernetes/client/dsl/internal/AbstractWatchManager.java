@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.WebSocket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +38,6 @@ public abstract class AbstractWatchManager<T> implements Watch {
   private static final Logger logger = LoggerFactory.getLogger(AbstractWatchManager.class);
 
   final Watcher<T> watcher;
-  final ListOptions listOptions;
   final AtomicReference<String> resourceVersion;
   final OkHttpClient clonedClient;
 
@@ -47,14 +47,15 @@ public abstract class AbstractWatchManager<T> implements Watch {
   private final int maxIntervalExponent;
   final AtomicInteger currentReconnectAttempt;
   private final ScheduledExecutorService executorService;
+  
+  protected final RequestBuilder requestBuilder;
 
 
   AbstractWatchManager(
     Watcher<T> watcher, ListOptions listOptions, int reconnectLimit, int reconnectInterval, int maxIntervalExponent,
-    OkHttpClient clonedClient
+    OkHttpClient clonedClient, RequestBuilder requestBuilder
   ) {
     this.watcher = watcher;
-    this.listOptions = listOptions;
     this.reconnectLimit = reconnectLimit;
     this.reconnectInterval = reconnectInterval;
     this.maxIntervalExponent = maxIntervalExponent;
@@ -67,6 +68,8 @@ public abstract class AbstractWatchManager<T> implements Watch {
       ret.setDaemon(true);
       return ret;
     });
+    
+    this.requestBuilder = requestBuilder;
   }
 
   final void closeEvent(WatcherException cause) {
@@ -148,5 +151,10 @@ public abstract class AbstractWatchManager<T> implements Watch {
   
   protected void internalClose() {
     // default implementation does nothing
+  }
+  
+  @FunctionalInterface
+  interface RequestBuilder {
+    Request build(final String resourceVersion);
   }
 }
