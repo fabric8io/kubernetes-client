@@ -144,10 +144,6 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
       });
     }
     
-    
-    @Override
-    void waitUntilReady() {}
-    
     private void scheduleReconnect(boolean shouldBackoff) {
       if (manager.isForceClosed()) {
         logger.warn("Ignoring error for already closed/closing connection");
@@ -197,7 +193,7 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
         }
       });
     }
-  
+    
     public void onMessage(String messageSource) {
       try {
         WatchEvent event = readWatchEvent(messageSource);
@@ -231,7 +227,7 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
         logger.error("Invalid event type", e);
       }
     }
-  
+    
     private void onStatus(Status status) {
       // The resource version no longer exists - this has to be handled by the caller.
       if (status.getCode() == HTTP_GONE) {
@@ -241,7 +237,7 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
         manager.onClose(new WatcherException(status.getMessage(), new KubernetesClientException(status)));
         return;
       }
-    
+      
       manager.eventReceived(Action.ERROR, null);
       logger.error("Error received: {}", status.toString());
     }

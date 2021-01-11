@@ -199,7 +199,7 @@ public abstract class AbstractWatchManager<T> implements Watch {
   
     abstract void run(Request request);
     void close() {}
-    abstract void waitUntilReady();
+    void waitUntilReady() {}
     abstract OkHttpClient cloneAndCustomize(OkHttpClient client);
     OkHttpClient client() {
       return client;

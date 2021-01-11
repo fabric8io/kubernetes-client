@@ -196,9 +196,8 @@ class AbstractWatchManagerTest {
     private final AtomicInteger closeCount = new AtomicInteger(0);
 
     @Override
-    public void eventReceived(Action action, T resource) {
-
-    }
+    public void eventReceived(Action action, T resource) {}
+    
     @Override
     public void onClose(WatcherException cause) {
       closeCount.addAndGet(1);
@@ -213,7 +212,16 @@ class AbstractWatchManagerTest {
   private static final class WatchManager<T> extends AbstractWatchManager<T> {
 
     public WatchManager(Watcher<T> watcher, ListOptions listOptions, int reconnectLimit, int reconnectInterval, int maxIntervalExponent, OkHttpClient clonedClient) {
-      super(watcher, listOptions, reconnectLimit, reconnectInterval, maxIntervalExponent, clonedClient, resourceVersion -> null);
+      super(watcher, listOptions, reconnectLimit, reconnectInterval, maxIntervalExponent, resourceVersion -> null);
+      initRunner(new ClientRunner(clonedClient) {
+        @Override
+        void run(Request request) {}
+  
+        @Override
+        OkHttpClient cloneAndCustomize(OkHttpClient client) {
+          return clonedClient;
+        }
+      });
     }
     @Override
     public void close() {
