@@ -15,6 +15,8 @@
  */
 package io.fabric8.kubernetes.client;
 
+import io.fabric8.kubernetes.client.utils.Utils;
+
 public interface OperationInfo {
 
   String getKind();
@@ -26,4 +28,20 @@ public interface OperationInfo {
   String getOperationType();
 
   OperationInfo forOperationType(String type);
+  
+  default String describe() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("Operation");
+    final String type = getOperationType();
+    if (Utils.isNotNullOrEmpty(type)) {
+      sb.append(": [").append(type).append("]");
+    }
+    sb.append(" for kind: [").append(getKind()).append("]");
+    final String name = getName();
+    if (Utils.isNotNullOrEmpty(name)) {
+      sb.append(" with name: [").append(name).append("]");
+    }
+    sb.append(" in namespace: [").append(getNamespace()).append("]");
+    return sb.toString();
+  }
 }
