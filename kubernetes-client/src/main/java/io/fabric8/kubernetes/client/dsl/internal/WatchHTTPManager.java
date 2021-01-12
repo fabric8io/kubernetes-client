@@ -68,7 +68,7 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
     throws MalformedURLException {
     
     super(
-      watcher, listOptions, reconnectLimit, reconnectInterval, maxIntervalExponent, new BaseOperationRequestBuilder(baseOperation, listOptions)
+      watcher, listOptions, reconnectLimit, reconnectInterval, maxIntervalExponent, new BaseOperationRequestBuilder<>(baseOperation, listOptions)
     );
     
     initRunner(new HTTPClientRunner<T>(client, this) {
