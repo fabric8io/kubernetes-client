@@ -38,18 +38,18 @@ public class AnnotatedMultiPropertyPathDetector extends TypedVisitor<TypeDefBuil
 
   private final String prefix;
   private final String annotationName;
-  private final List<String> parents;
+  private final List<Property> parents;
   private final Map<String, Property> properties;
 
   public AnnotatedMultiPropertyPathDetector(String prefix, String annotationName) {
     this(prefix, annotationName, new ArrayList<>());
   }
 
-  public AnnotatedMultiPropertyPathDetector(String prefix, String annotationName, List<String> parents) {
+  public AnnotatedMultiPropertyPathDetector(String prefix, String annotationName, List<Property> parents) {
     this(prefix, annotationName, parents, new HashMap<>());
   }
 
-  public AnnotatedMultiPropertyPathDetector(String prefix, String annotationName, List<String> parents, Map<String, Property> properties) {
+  public AnnotatedMultiPropertyPathDetector(String prefix, String annotationName, List<Property> parents, Map<String, Property> properties) {
     this.prefix = prefix;
     this.annotationName = annotationName;
     this.parents = parents;
@@ -60,22 +60,28 @@ public class AnnotatedMultiPropertyPathDetector extends TypedVisitor<TypeDefBuil
   public void visit(TypeDefBuilder builder) {
     TypeDef type = builder.build();
     for (Property p : TypeUtils.allProperties(type)) {
-        List<String> newParents = new ArrayList<>(parents);
+        if (parents.contains(p)) {
+          continue;
+        }
+
+        List<Property> newParents = new ArrayList<>(parents);
         boolean match = p.getAnnotations().stream().anyMatch(a -> a.getClassRef().getName().equals(annotationName));
         if (match) {
-          newParents.add(p.getName());
-          properties.put(newParents.stream().collect(Collectors.joining(DOT, prefix, "")), p);
+          newParents.add(p);
+          properties.put(newParents.stream().map(Property::getName).collect(Collectors.joining(DOT, prefix, "")), p);
         }
     }
 
     TypeUtils.allProperties(type).stream().filter(p -> p.getTypeRef() instanceof ClassRef).forEach(p -> {
-        ClassRef classRef = (ClassRef) p.getTypeRef();
-        TypeDef propertyType = classRef.getDefinition();
-        List<String> newParents = new ArrayList<>(parents);
-        newParents.add(p.getName());
-        new TypeDefBuilder(propertyType)
-          .accept(new AnnotatedMultiPropertyPathDetector(prefix, annotationName, newParents, properties))
-          .build();
+        if (!parents.contains(p)) {
+          ClassRef classRef = (ClassRef) p.getTypeRef();
+          TypeDef propertyType = classRef.getDefinition();
+          List<Property> newParents = new ArrayList<>(parents);
+          newParents.add(p);
+          new TypeDefBuilder(propertyType)
+            .accept(new AnnotatedMultiPropertyPathDetector(prefix, annotationName, newParents, properties))
+            .build();
+        }
       });
   }
 
