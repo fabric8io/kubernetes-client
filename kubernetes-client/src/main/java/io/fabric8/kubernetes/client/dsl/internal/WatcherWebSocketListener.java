@@ -81,19 +81,18 @@ abstract class WatcherWebSocketListener<T> extends WebSocketListener {
     }
   
     if (response != null) {
-      if (response.body() != null) {
-        response.body().close();
-      }
       final int code = response.code();
       // We do not expect a 200 in response to the websocket connection. If it occurs, we throw
       // an exception and try the watch via a persistent HTTP Get.
       // Newer Kubernetes might also return 503 Service Unavailable in case WebSockets are not supported
       if (HTTP_OK == code || HTTP_UNAVAILABLE == code) {
         pushException(new KubernetesClientException("Received " + code + " on websocket", code, null));
+        closeBody(response);
         return;
       } else {
         // We only need to queue startup failures.
         Status status = OperationSupport.createStatus(response);
+        closeBody(response);
         logger.warn("Exec Failure: HTTP {}, Status: {} - {}", code, status.getCode(), status.getMessage(), t);
         if (!started.get()) {
           pushException(new KubernetesClientException(status));
@@ -118,6 +117,12 @@ abstract class WatcherWebSocketListener<T> extends WebSocketListener {
     queue.clear();
     if (!queue.offer(exception)) {
       logger.debug("Couldn't add exception " + exception + " to queue");
+    }
+  }
+  
+  private void closeBody(Response response) {
+    if (response.body() != null) {
+      response.body().close();
     }
   }
   
