@@ -33,6 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static java.net.HttpURLConnection.HTTP_OK;
+import static java.net.HttpURLConnection.HTTP_UNAVAILABLE;
 
 abstract class WatcherWebSocketListener<T> extends WebSocketListener {
   protected static final Logger logger = LoggerFactory.getLogger(WatcherWebSocketListener.class);
@@ -78,35 +79,30 @@ abstract class WatcherWebSocketListener<T> extends WebSocketListener {
       }
       return;
     }
-    
-    // We do not expect a 200 in response to the websocket connection. If it occurs, we throw
-    // an exception and try the watch via a persistent HTTP Get.
-    // Newer Kubernetes might also return 503 Service Unavailable in case WebSockets are not supported
-    if (response != null && (response.code() == HTTP_OK || response.code() == 503)) {
-      queue.clear();
-      queue.offer(new KubernetesClientException("Received " + response.code() + " on websocket",
-        response.code(), null));
-      response.body().close();
-      return;
-    }
-    
+  
     if (response != null) {
-      // We only need to queue startup failures.
-      Status status = OperationSupport.createStatus(response);
       if (response.body() != null) {
         response.body().close();
       }
-      logger.warn("Exec Failure: HTTP {}, Status: {} - {}", response.code(), status.getCode(), status.getMessage(),
-        t);
-      if (!started.get()) {
-        queue.clear();
-        queue.offer(new KubernetesClientException(status));
+      final int code = response.code();
+      // We do not expect a 200 in response to the websocket connection. If it occurs, we throw
+      // an exception and try the watch via a persistent HTTP Get.
+      // Newer Kubernetes might also return 503 Service Unavailable in case WebSockets are not supported
+      if (HTTP_OK == code || HTTP_UNAVAILABLE == code) {
+        pushException(new KubernetesClientException("Received " + code + " on websocket", code, null));
+        return;
+      } else {
+        // We only need to queue startup failures.
+        Status status = OperationSupport.createStatus(response);
+        logger.warn("Exec Failure: HTTP {}, Status: {} - {}", code, status.getCode(), status.getMessage(), t);
+        if (!started.get()) {
+          pushException(new KubernetesClientException(status));
+        }
       }
     } else {
       logger.warn("Exec Failure", t);
       if (!started.get()) {
-        queue.clear();
-        queue.offer(new KubernetesClientException("Failed to start websocket", t));
+        pushException(new KubernetesClientException("Failed to start websocket", t));
       }
     }
     
@@ -116,6 +112,13 @@ abstract class WatcherWebSocketListener<T> extends WebSocketListener {
     }
     
     scheduleReconnect();
+  }
+  
+  private void pushException(KubernetesClientException exception) {
+    queue.clear();
+    if (!queue.offer(exception)) {
+      logger.debug("Couldn't add exception " + exception + " to queue");
+    }
   }
   
   @Override
