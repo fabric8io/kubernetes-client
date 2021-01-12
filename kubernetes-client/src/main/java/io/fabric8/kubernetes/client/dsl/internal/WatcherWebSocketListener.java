@@ -116,7 +116,7 @@ abstract class WatcherWebSocketListener<T> extends WebSocketListener {
   private void pushException(KubernetesClientException exception) {
     queue.clear();
     if (!queue.offer(exception)) {
-      logger.debug("Couldn't add exception " + exception + " to queue");
+      logger.debug("Couldn't add exception {} to queue", exception.getLocalizedMessage());
     }
   }
   
