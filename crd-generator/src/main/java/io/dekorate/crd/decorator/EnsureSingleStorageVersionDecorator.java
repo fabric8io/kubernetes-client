@@ -44,7 +44,6 @@ public class EnsureSingleStorageVersionDecorator extends CustomResourceDefinitio
     };
 
     if (spec.hasVersions() && !spec.hasMatchingVersion(hasStorageVersion)) {
-      System.out.println("Only one version found... Setting to storage!");
       spec.editFirstVersion().withStorage(true).endVersion();
     }
                                                                              
