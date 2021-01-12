@@ -21,9 +21,9 @@ import java.util.List;
 
 import io.dekorate.kubernetes.decorator.Decorator;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionSpecFluent;
-import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionVersion;
-import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionVersionBuilder;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionSpecFluent;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersion;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersionBuilder;
 
 public class PromoteSingleVersionAttributesDecorator extends CustomResourceDefinitionDecorator<CustomResourceDefinitionSpecFluent<?>> {
 

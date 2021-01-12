@@ -18,8 +18,8 @@
 package io.dekorate.crd.decorator;
 
 import io.dekorate.kubernetes.decorator.Decorator;
-import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionVersionFluent;
-import io.fabric8.kubernetes.api.model.apiextensions.JSONSchemaProps;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersionFluent;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps;
 
 public class AddSchemaToCustomResourceDefinitionVersionDecorator
     extends CustomResourceDefinitionVersionDecorator<CustomResourceDefinitionVersionFluent<?>> {

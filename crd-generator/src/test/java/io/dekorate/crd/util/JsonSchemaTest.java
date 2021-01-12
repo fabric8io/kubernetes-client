@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 
 import io.dekorate.crd.examples.person.Person;
 import io.dekorate.utils.Serialization;
-import io.fabric8.kubernetes.api.model.apiextensions.JSONSchemaProps;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps;
 import io.sundr.codegen.functions.ClassTo;
 import io.sundr.codegen.model.TypeDef;
 

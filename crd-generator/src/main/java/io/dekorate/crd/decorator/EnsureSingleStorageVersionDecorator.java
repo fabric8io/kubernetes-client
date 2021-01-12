@@ -20,11 +20,11 @@ package io.dekorate.crd.decorator;
 import java.util.concurrent.atomic.AtomicReference;
 
 import io.dekorate.kubernetes.decorator.Decorator;
-import io.fabric8.kubernetes.api.builder.Predicate;
+import java.util.function.Predicate;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionSpecFluent;
-import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionVersion;
-import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionVersionBuilder;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionSpecFluent;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersion;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersionBuilder;
 
 public class EnsureSingleStorageVersionDecorator extends CustomResourceDefinitionDecorator<CustomResourceDefinitionSpecFluent<?>> {
 
@@ -38,7 +38,7 @@ public class EnsureSingleStorageVersionDecorator extends CustomResourceDefinitio
 	public void andThenVisit(CustomResourceDefinitionSpecFluent<?> spec, ObjectMeta resourceMeta) {
     Predicate<CustomResourceDefinitionVersionBuilder> hasStorageVersion = new Predicate<CustomResourceDefinitionVersionBuilder>()  {
         @Override
-        public Boolean apply(CustomResourceDefinitionVersionBuilder version) {
+        public boolean test(CustomResourceDefinitionVersionBuilder version) {
           return version.isStorage();
         }
     };

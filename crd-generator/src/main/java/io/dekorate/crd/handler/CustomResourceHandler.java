@@ -53,7 +53,7 @@ import io.dekorate.crd.visitor.SpecReplicasPathDetector;
 import io.dekorate.crd.visitor.StatusReplicasPathDetector;
 import io.dekorate.kubernetes.config.Configuration;
 import io.dekorate.utils.Strings;
-import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionBuilder;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionBuilder;
 import io.sundr.codegen.CodegenContext;
 import io.sundr.codegen.functions.ElementTo;
 import io.sundr.codegen.model.ClassRef;

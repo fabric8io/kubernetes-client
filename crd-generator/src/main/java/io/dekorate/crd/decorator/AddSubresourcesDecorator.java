@@ -18,7 +18,7 @@
 package io.dekorate.crd.decorator;
 
 import io.dekorate.kubernetes.decorator.Decorator;
-import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionVersionFluent;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersionFluent;
 
 public class AddSubresourcesDecorator extends CustomResourceDefinitionVersionDecorator<CustomResourceDefinitionVersionFluent<?>> {
 

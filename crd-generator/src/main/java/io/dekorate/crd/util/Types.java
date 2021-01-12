@@ -24,7 +24,7 @@ import javax.lang.model.element.TypeElement;
 
 import io.dekorate.crd.annotation.Status;
 import io.dekorate.crd.config.CustomResourceConfig;
-import io.sundr.builder.Predicate;
+import java.util.function.Predicate;
 import io.sundr.codegen.CodegenContext;
 import io.sundr.codegen.functions.ClassTo;
 import io.sundr.codegen.functions.ElementTo;
@@ -82,7 +82,7 @@ public class Types {
 
   private static final Predicate<AnnotationRefBuilder> predicate = new Predicate<AnnotationRefBuilder>() {
         @Override
-        public boolean apply(AnnotationRefBuilder ref) {
+        public boolean test(AnnotationRefBuilder ref) {
          return ref.getClassRef().getName().equals("SpecReplicas");
         }
     };

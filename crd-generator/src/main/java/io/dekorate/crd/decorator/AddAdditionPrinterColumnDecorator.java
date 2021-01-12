@@ -18,9 +18,9 @@
 package io.dekorate.crd.decorator;
 
 import io.dekorate.utils.Strings;
-import io.fabric8.kubernetes.api.builder.Predicate;
-import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceColumnDefinitionBuilder;
-import io.fabric8.kubernetes.api.model.apiextensions.CustomResourceDefinitionVersionFluent;
+import java.util.function.Predicate;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceColumnDefinitionBuilder;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersionFluent;
 
 public class AddAdditionPrinterColumnDecorator extends CustomResourceDefinitionVersionDecorator<CustomResourceDefinitionVersionFluent<?>> {
 
@@ -43,7 +43,7 @@ public class AddAdditionPrinterColumnDecorator extends CustomResourceDefinitionV
 	public void andThenVisit(CustomResourceDefinitionVersionFluent<?> spec) {
       Predicate<CustomResourceColumnDefinitionBuilder> matchingColumn = new Predicate<CustomResourceColumnDefinitionBuilder>(){
           @Override
-          public Boolean apply(CustomResourceColumnDefinitionBuilder col) {
+          public boolean test(CustomResourceColumnDefinitionBuilder col) {
             return col.getName() != null && col.getName().equals(name);
           }
       };
