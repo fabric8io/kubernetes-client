@@ -32,9 +32,6 @@ import okio.ByteString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static java.net.HttpURLConnection.HTTP_OK;
-import static java.net.HttpURLConnection.HTTP_UNAVAILABLE;
-
 abstract class WatcherWebSocketListener<T> extends WebSocketListener {
   protected static final Logger logger = LoggerFactory.getLogger(WatcherWebSocketListener.class);
   
@@ -93,7 +90,7 @@ abstract class WatcherWebSocketListener<T> extends WebSocketListener {
         closeBody(response);
         logger.warn("Exec Failure: HTTP {}, Status: {} - {}", code, status.getCode(), status.getMessage(), t);
         if (!started.get()) {
-          pushException(new KubernetesClientException(status));
+          pushException(exceptionFor(status));
         }
       }
     } else {
@@ -109,6 +106,10 @@ abstract class WatcherWebSocketListener<T> extends WebSocketListener {
     }
     
     scheduleReconnect();
+  }
+  
+  protected KubernetesClientException exceptionFor(Status status) {
+    return new KubernetesClientException(status);
   }
   
   private void pushException(KubernetesClientException exception) {

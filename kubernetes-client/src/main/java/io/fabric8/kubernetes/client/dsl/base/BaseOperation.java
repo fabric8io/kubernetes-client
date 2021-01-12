@@ -138,6 +138,12 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     this.watchRetryInitialBackoffMillis = ctx.getWatchRetryInitialBackoffMillis();
     this.watchRetryBackoffMultiplier = ctx.getWatchRetryBackoffMultiplier();
   }
+  
+  public String describe() {
+      StringBuilder sb = new StringBuilder(OperationInfo.super.describe());
+      sb.append(" with API version: [").append(getAPIGroup()).append('/').append(getAPIVersion()).append("]");
+    return sb.toString();
+  }
 
   public BaseOperation<T, L, R> newInstance(OperationContext context) {
     return new BaseOperation<>(context);
