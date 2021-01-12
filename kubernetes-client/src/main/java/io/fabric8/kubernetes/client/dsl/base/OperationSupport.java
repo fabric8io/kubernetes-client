@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.dsl.base;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -534,27 +535,34 @@ public class OperationSupport {
   }
 
   public static Status createStatus(Response response) {
-    String statusMessage = "";
-    ResponseBody body = response != null ? response.body() : null;
-    int statusCode = response != null ? response.code() : 0;
-    try {
-      if (response == null) {
-        statusMessage = "No response";
-      } else if (body != null) {
-        statusMessage = body.string();
-      } else if (response.message() != null) {
-        statusMessage = response.message();
-      }
-      Status status = JSON_MAPPER.readValue(statusMessage, Status.class);
-      if (status.getCode() == null) {
-        status = new StatusBuilder(status).withCode(statusCode).build();
-      }
-      return status;
-    } catch (JsonParseException e) {
-      return createStatus(statusCode, statusMessage);
-    } catch (IOException e) {
-      return createStatus(statusCode, statusMessage);
+    if (response == null) {
+      return createStatus(0, "No response");
     }
+    
+    final int statusCode = response.code();
+    String statusMessage = response.message() + " at " + response.request().url().url();
+  
+    // if we have a body attempt to parse it as a JSON Status object
+    final ResponseBody body = response.body();
+    if (body != null) {
+      final String bodyAsString;
+      try {
+        bodyAsString = body.string();
+        try {
+          Status status = JSON_MAPPER.readValue(bodyAsString, Status.class);
+          if (status.getCode() == null) {
+            status = new StatusBuilder(status).withCode(statusCode).build();
+          }
+          return status;
+        } catch (JsonProcessingException e) {
+          // ignore and use body directly as message prefixed by response message
+          statusMessage += ":\n" + bodyAsString;
+        }
+      } catch (IOException e) {
+        // ignore and use default status message
+      }
+    }
+    return createStatus(statusCode, statusMessage);
   }
 
   public static Status createStatus(int statusCode, String message) {
