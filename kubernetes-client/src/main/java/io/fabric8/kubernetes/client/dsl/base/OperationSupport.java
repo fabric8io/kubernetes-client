@@ -42,6 +42,7 @@ import okhttp3.ResponseBody;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
@@ -519,7 +520,18 @@ public class OperationSupport {
     }
     return customMessage;
   }
-
+  
+  /**
+   * Checks whether the provided HTTP code corresponds to a WebSocket unsupported error.
+   *
+   * @param httpCode the HTTP code to check
+   * @return {@code true} if the code corresponds to a server not supporting 
+   */
+  public static boolean isWebSocketUnsupportedError(int httpCode) {
+    // We do not expect a 200 in response to the websocket connection. 
+    // Newer Kubernetes might also return 503 Service Unavailable in case WebSockets are not supported
+    return HttpURLConnection.HTTP_UNAVAILABLE == httpCode || HttpURLConnection.HTTP_OK == httpCode;
+  }
 
   public static Status createStatus(Response response) {
     String statusMessage = "";

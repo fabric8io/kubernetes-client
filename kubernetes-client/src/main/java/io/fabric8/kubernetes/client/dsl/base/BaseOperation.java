@@ -812,8 +812,8 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     } catch (MalformedURLException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("watch"), e);
     } catch (KubernetesClientException ke) {
-      List<Integer> furtherProcessedCodes = Arrays.asList(200, 503);
-      if (! furtherProcessedCodes.contains(ke.getCode())) {
+      // if the error doesn't correspond to websockets being unsupported, close the watch and throw
+      if (!OperationSupport.isWebSocketUnsupportedError(ke.getCode())) {
         if (watch != null) {
           //release the watch
           watch.close();
