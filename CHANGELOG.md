@@ -3,6 +3,7 @@
 ### 5.1-SNAPSHOT
 
 #### Bugs
+* Fix #2687: RawCustomResourceOperationsImpl ignores config
 
 #### Improvements
 
