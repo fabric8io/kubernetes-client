@@ -15,17 +15,14 @@
  * 
 **/
 
-package io.dekorate.crd.examples.webserver;
+package io.dekorate.crd.example.webserver;
 
-import io.dekorate.crd.annotation.Status;
+import io.dekorate.crd.alt.SpecReplicas;
 
-public class WebServerWithSpec {
+public class WebServerSpec {
 
-  private String name;
+  private int port;
 
-  private WebServerSpec spec;
-
-  @Status
-  private WebServerStatus status;
+  @SpecReplicas
+  private int replicas;
 }
-

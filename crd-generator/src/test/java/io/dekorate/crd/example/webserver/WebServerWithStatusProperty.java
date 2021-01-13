@@ -15,18 +15,20 @@
  * 
 **/
 
-package io.dekorate.crd.examples.webserver;
+package io.dekorate.crd.example.webserver;
 
 import io.dekorate.crd.alt.SpecReplicas;
-import io.dekorate.crd.annotation.CustomResource;
+import io.dekorate.crd.annotation.Status;
 
-@CustomResource(status = WebServerStatus.class)
-public class WebServerWithoutStatusProperty {
+public class WebServerWithStatusProperty {
 
   private String name;
   private int port;
 
-  @SpecReplicas
-  private int replicas;
+ @SpecReplicas
+ private int replicas;
+
+  @Status
+  private WebServerStatus status;
 }
 

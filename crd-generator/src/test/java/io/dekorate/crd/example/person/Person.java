@@ -13,11 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.dekorate.crd.examples.person;
+package io.dekorate.crd.example.person;
 
-public class Address {
-  private String street;
-  private int number;
-  private String zip;
-  private String country;
+import java.util.List;
+import java.util.Optional;
+
+public class Person {
+
+  private String firstName;
+  private Optional<String> middleName;
+  private String lastName;
+  private int birthYear;
+  private List<String> hobbies;
+  private List<Address> addresses;
+
 }

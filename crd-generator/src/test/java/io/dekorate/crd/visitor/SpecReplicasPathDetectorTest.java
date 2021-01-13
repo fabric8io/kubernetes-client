@@ -23,8 +23,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-import io.dekorate.crd.examples.webserver.WebServerWithSpec;
-import io.dekorate.crd.examples.webserver.WebServerWithStatusProperty;
+import io.dekorate.crd.example.webserver.WebServerWithSpec;
+import io.dekorate.crd.example.webserver.WebServerWithStatusProperty;
 import io.sundr.codegen.functions.ClassTo;
 import io.sundr.codegen.model.TypeDef;
 import io.sundr.codegen.model.TypeDefBuilder;

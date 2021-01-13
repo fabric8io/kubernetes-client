@@ -27,9 +27,9 @@ import org.junit.jupiter.api.Test;
 
 import io.dekorate.crd.config.CustomResourceConfig;
 import io.dekorate.crd.config.CustomResourceConfigBuilder;
-import io.dekorate.crd.examples.webserver.WebServerStatus;
-import io.dekorate.crd.examples.webserver.WebServerWithStatusProperty;
-import io.dekorate.crd.examples.webserver.WebServerWithoutStatusProperty;
+import io.dekorate.crd.example.webserver.WebServerStatus;
+import io.dekorate.crd.example.webserver.WebServerWithStatusProperty;
+import io.dekorate.crd.example.webserver.WebServerWithoutStatusProperty;
 import io.sundr.codegen.functions.ClassTo;
 import io.sundr.codegen.model.Property;
 import io.sundr.codegen.model.TypeDef;
