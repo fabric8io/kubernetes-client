@@ -45,6 +45,8 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class RawCustomResourceOperationsImplTest {
   private OkHttpClient mockClient;
   private Config config;
@@ -146,7 +148,7 @@ public class RawCustomResourceOperationsImplTest {
   }
 
   @Test
-  public void testFetchWatchUrlWithNamespace() throws MalformedURLException {
+  void testFetchWatchUrlWithNamespace() throws MalformedURLException {
     // Given
     RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, customResourceDefinitionContext);
 
@@ -158,7 +160,7 @@ public class RawCustomResourceOperationsImplTest {
   }
 
   @Test
-  public void testFetchWatchUrlWithNamespaceAndName() throws MalformedURLException {
+  void testFetchWatchUrlWithNamespaceAndName() throws MalformedURLException {
     // Given
     RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, customResourceDefinitionContext);
 
@@ -170,7 +172,7 @@ public class RawCustomResourceOperationsImplTest {
   }
 
   @Test
-  public void testFetchWatchUrlWithNamespaceAndNameAndResourceVersion() throws MalformedURLException {
+  void testFetchWatchUrlWithNamespaceAndNameAndResourceVersion() throws MalformedURLException {
     // Given
     RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, customResourceDefinitionContext);
 
@@ -182,7 +184,7 @@ public class RawCustomResourceOperationsImplTest {
   }
 
   @Test
-  public void testFetchWatchUrlWithoutAnything() throws MalformedURLException {
+  void testFetchWatchUrlWithoutAnything() throws MalformedURLException {
     // Given
     RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, customResourceDefinitionContext);
 
@@ -194,7 +196,7 @@ public class RawCustomResourceOperationsImplTest {
   }
 
   @Test
-  public void testFetchWatchUrlWithLabels() throws MalformedURLException {
+  void testFetchWatchUrlWithLabels() throws MalformedURLException {
     // Given
     RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, customResourceDefinitionContext);
 
@@ -210,7 +212,7 @@ public class RawCustomResourceOperationsImplTest {
   }
 
   @Test
-  public void testFetchWatchUrlWithLabelsWithNamespace() throws MalformedURLException {
+  void testFetchWatchUrlWithLabelsWithNamespace() throws MalformedURLException {
     // Given
     RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, customResourceDefinitionContext);
 
@@ -223,5 +225,31 @@ public class RawCustomResourceOperationsImplTest {
 
     // Then
     assertEquals("https://localhost:8443/apis/test.fabric8.io/v1alpha1/namespaces/test/hellos?labelSelector=" + Utils.toUrlEncoded("foo=bar") + "," + Utils.toUrlEncoded("foo1=bar1") + "&watch=true", url.url().toString());
+  }
+
+  @Test
+  void testGetConfigShouldNotReturnNull() {
+    // Given
+    Config config = new ConfigBuilder()
+      .withRequestTimeout(5)
+      .withWebsocketTimeout(10L)
+      .withWebsocketPingInterval(10L)
+      .withConnectionTimeout(10)
+      .withWatchReconnectLimit(1)
+      .withWatchReconnectInterval(10)
+      .build();
+    RawCustomResourceOperationsImpl rawOp = new RawCustomResourceOperationsImpl(mockClient, config, customResourceDefinitionContext);
+
+    // When
+    Config configFromRawOp = rawOp.getConfig();
+
+    // Then
+    assertThat(configFromRawOp).isNotNull();
+    assertThat(configFromRawOp.getRequestTimeout()).isEqualTo(5);
+    assertThat(configFromRawOp.getWebsocketTimeout()).isEqualTo(10L);
+    assertThat(configFromRawOp.getWebsocketPingInterval()).isEqualTo(10L);
+    assertThat(configFromRawOp.getConnectionTimeout()).isEqualTo(10L);
+    assertThat(configFromRawOp.getWatchReconnectInterval()).isEqualTo(10);
+    assertThat(configFromRawOp.getWatchReconnectLimit()).isEqualTo(1);
   }
 }

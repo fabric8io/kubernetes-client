@@ -60,16 +60,13 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
   
   private static final String METADATA = "metadata";
   private static final String RESOURCE_VERSION = "resourceVersion";
-  private OkHttpClient client;
-  private Config config;
-  private CustomResourceDefinitionContext customResourceDefinition;
-  private ObjectMapper objectMapper;
+  private final CustomResourceDefinitionContext customResourceDefinition;
+  private final ObjectMapper objectMapper;
 
-  private enum HttpCallMethod { GET, POST, PUT, DELETE };
+  private enum HttpCallMethod { GET, POST, PUT, DELETE }
 
   public RawCustomResourceOperationsImpl(OkHttpClient client, Config config, CustomResourceDefinitionContext customResourceDefinition) {
-    this.client = client;
-    this.config = config;
+    super(client, config);
     this.customResourceDefinition = customResourceDefinition;
     this.objectMapper = Serialization.jsonMapper();
   }
