@@ -47,8 +47,6 @@ public class StatefulSetIT {
   @ArquillianResource
   Session session;
 
-  private StatefulSet ss1;
-
   @BeforeClass
   public static void init() {
     ClusterEntity.apply(StatefulSetIT.class.getResourceAsStream("/statefulset-it.yml"));
@@ -64,7 +62,7 @@ public class StatefulSetIT {
 
   @Test
   public void get() {
-    ss1 = client.apps().statefulSets().inNamespace(session.getNamespace()).withName("ss-get").get();
+    StatefulSet ss1 = client.apps().statefulSets().inNamespace(session.getNamespace()).withName("ss-get").get();
     assertNotNull(ss1);
   }
 
@@ -78,7 +76,7 @@ public class StatefulSetIT {
   @Test
   public void update() {
     ReadyEntity<StatefulSet> statefulSetReady = new ReadyEntity<>(StatefulSet.class, client, "ss-update", session.getNamespace());
-    ss1 = client.apps().statefulSets().inNamespace(session.getNamespace()).withName("ss-update").scale(5);
+    StatefulSet ss1 = client.apps().statefulSets().inNamespace(session.getNamespace()).withName("ss-update").scale(5);
     await().atMost(30, TimeUnit.SECONDS).until(statefulSetReady);
     assertEquals(5, ss1.getSpec().getReplicas().intValue());
   }

@@ -44,8 +44,6 @@ public class CronJobIT {
   @ArquillianResource
   Session session;
 
-  private CronJob cronJob1;
-
   private String currentNamespace;
 
   @BeforeClass
@@ -63,7 +61,7 @@ public class CronJobIT {
   @Test
   public void get() {
     currentNamespace = session.getNamespace();
-    cronJob1 = client.batch().cronjobs().inNamespace(currentNamespace).withName("hello-get").get();
+    CronJob cronJob1 = client.batch().cronjobs().inNamespace(currentNamespace).withName("hello-get").get();
     assertThat(cronJob1).isNotNull();
   }
 
@@ -78,7 +76,7 @@ public class CronJobIT {
   @Test
   public void update() {
     currentNamespace = session.getNamespace();
-    cronJob1 = client.batch().cronjobs().inNamespace(currentNamespace).withName("hello-update")
+    CronJob cronJob1 = client.batch().cronjobs().inNamespace(currentNamespace).withName("hello-update")
       .edit(c -> new CronJobBuilder(c)
       .editSpec()
       .withSchedule("*/1 * * * *")

@@ -48,8 +48,6 @@ public class RoleBindingIT {
   @ArquillianResource
   Session session;
 
-  private RoleBinding roleBinding;
-
   @BeforeClass
   public static void init() {
     ClusterEntity.apply(RoleBindingIT.class.getResourceAsStream("/rolebinding-it.yml"));
@@ -58,7 +56,7 @@ public class RoleBindingIT {
   @Test
   public void get() {
 
-    roleBinding = client.rbac().roleBindings().inNamespace(session.getNamespace()).withName("rb-get").get();
+    RoleBinding roleBinding = client.rbac().roleBindings().inNamespace(session.getNamespace()).withName("rb-get").get();
 
     assertNotNull(roleBinding);
     assertEquals("RoleBinding", roleBinding.getKind());
@@ -124,7 +122,7 @@ public class RoleBindingIT {
   @Test
   public void update() {
 
-    roleBinding = client.rbac().roleBindings().inNamespace(session.getNamespace()).withName("rb-update").edit(r -> new RoleBindingBuilder(r)
+    RoleBinding roleBinding = client.rbac().roleBindings().inNamespace(session.getNamespace()).withName("rb-update").edit(r -> new RoleBindingBuilder(r)
                         .editSubject(0).withName("jane-new").endSubject().build());
 
     assertNotNull(roleBinding);

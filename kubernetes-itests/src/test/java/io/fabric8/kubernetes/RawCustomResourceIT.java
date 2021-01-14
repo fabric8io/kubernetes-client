@@ -56,8 +56,8 @@ public class RawCustomResourceIT {
     currentNamespace = session.getNamespace();
 
     // Create a Custom Resource Definition Animals:
-    CustomResourceDefinition animalCrd = client.customResourceDefinitions().load(getClass().getResourceAsStream("/test-rawcustomresource-definition.yml")).get();
-    client.customResourceDefinitions().create(animalCrd);
+    CustomResourceDefinition animalCrd = client.apiextensions().v1beta1().customResourceDefinitions().load(getClass().getResourceAsStream("/test-rawcustomresource-definition.yml")).get();
+    client.apiextensions().v1beta1().customResourceDefinitions().create(animalCrd);
 
     customResourceDefinitionContext = new CustomResourceDefinitionContext.Builder()
       .withName("animals.jungle.example.com")
@@ -114,6 +114,6 @@ public class RawCustomResourceIT {
   @After
   public void cleanup() {
     // Delete Custom Resource Definition Animals:
-    client.customResourceDefinitions().withName(customResourceDefinitionContext.getName()).delete();
+    client.apiextensions().v1beta1().customResourceDefinitions().withName(customResourceDefinitionContext.getName()).delete();
   }
 }

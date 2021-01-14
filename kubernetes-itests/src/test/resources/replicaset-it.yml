@@ -23,7 +23,7 @@ metadata:
     app: guestbook
     tier: frontend
 spec:
-  replicas: 3
+  replicas: 0
   selector:
     matchLabels:
       tier: frontend
@@ -57,7 +57,7 @@ metadata:
     app: guestbook
     tier: frontend
 spec:
-  replicas: 3
+  replicas: 0
   selector:
     matchLabels:
       tier: frontend
@@ -91,7 +91,7 @@ metadata:
     app: guestbook
     tier: frontend
 spec:
-  replicas: 3
+  replicas: 0
   selector:
     matchLabels:
       tier: frontend
@@ -125,7 +125,7 @@ metadata:
     app: guestbook
     tier: frontend
 spec:
-  replicas: 3
+  replicas: 0
   selector:
     matchLabels:
       tier: frontend

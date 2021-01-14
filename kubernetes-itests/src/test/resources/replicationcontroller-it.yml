@@ -19,7 +19,7 @@ kind: ReplicationController
 metadata:
   name: rc-get
 spec:
-  replicas: 3
+  replicas: 0
   selector:
     app: nginx
   template:
@@ -38,7 +38,7 @@ kind: ReplicationController
 metadata:
   name: rc-list
 spec:
-  replicas: 3
+  replicas: 0
   selector:
     app: nginx
   template:
@@ -57,7 +57,7 @@ kind: ReplicationController
 metadata:
   name: rc-update
 spec:
-  replicas: 3
+  replicas: 0
   selector:
     app: nginx
   template:
@@ -76,7 +76,7 @@ kind: ReplicationController
 metadata:
   name: rc-delete
 spec:
-  replicas: 3
+  replicas: 0
   selector:
     app: nginx
   template:

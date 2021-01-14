@@ -23,7 +23,7 @@ metadata:
     app: httpd
     test: deployment
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: httpd
@@ -38,7 +38,6 @@ spec:
           command: ["sleep", "36000"]
           ports:
             - containerPort: 80
----
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -72,7 +71,7 @@ metadata:
     app: httpd
     test: deployment
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: httpd

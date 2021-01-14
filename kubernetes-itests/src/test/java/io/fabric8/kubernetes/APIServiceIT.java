@@ -13,15 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.fabric8.kubernetes;
 
 import io.fabric8.commons.ClusterEntity;
-import io.fabric8.kubernetes.api.model.ConfigMap;
-import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
-import io.fabric8.kubernetes.api.model.ConfigMapList;
+import io.fabric8.kubernetes.api.model.APIService;
+import io.fabric8.kubernetes.api.model.APIServiceBuilder;
+import io.fabric8.kubernetes.api.model.APIServiceList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -37,54 +35,45 @@ import static org.junit.Assert.assertNotNull;
 
 @RunWith(ArquillianConditionalRunner.class)
 @RequiresKubernetes
-public class ConfigMapIT {
+public class APIServiceIT {
   @ArquillianResource
   KubernetesClient client;
 
-  @ArquillianResource
-  Session session;
-
   @BeforeClass
   public static void init() {
-    ClusterEntity.apply(ConfigMapIT.class.getResourceAsStream("/configmap-it.yml"));
-  }
-
-  @Test
-  public void load() {
-    ConfigMap aConfigMap = client.configMaps().inNamespace(session.getNamespace()).load(getClass().getResourceAsStream("/test-configmap.yml")).get();
-    assertThat(aConfigMap).isNotNull();
-    assertEquals("game-config", aConfigMap.getMetadata().getName());
+    ClusterEntity.apply(APIServiceIT.class.getResourceAsStream("/apiservice-it.yml"));
   }
 
   @Test
   public void get() {
-    ConfigMap configMap = client.configMaps().inNamespace(session.getNamespace()).withName("configmap-get").get();
-    assertThat(configMap).isNotNull();
+    APIService apiService = client.apiServices().withName("v1beta1.get.fabric8.io").get();
+    assertThat(apiService).isNotNull();
   }
 
   @Test
   public void list() {
-    ConfigMapList aConfigMapList = client.configMaps().inNamespace(session.getNamespace()).list();
-    assertNotNull(aConfigMapList);
-    assertTrue(aConfigMapList.getItems().size() >= 1);
+    APIServiceList aAPIServiceList = client.apiServices().list();
+    assertNotNull(aAPIServiceList);
+    assertTrue(aAPIServiceList.getItems().size() >= 1);
   }
 
   @Test
   public void update() {
-    ConfigMap configMap = client.configMaps().inNamespace(session.getNamespace()).withName("configmap-update").edit(c -> new ConfigMapBuilder(c)
-                      .addToData("MSSQL", "Microsoft Database").build());
+    APIService apiService = client.apiServices().withName("v1beta1.update.fabric8.io").edit(c -> new APIServiceBuilder(c)
+      .editOrNewMetadata().addToAnnotations("foo", "bar").endMetadata()
+      .build());
 
-    assertNotNull(configMap);
-    assertEquals("Microsoft Database", configMap.getData().get("MSSQL"));
+    assertNotNull(apiService);
+    assertEquals("bar", apiService.getMetadata().getAnnotations().get("foo"));
   }
 
   @Test
   public void delete() {
-    assertTrue(client.configMaps().inNamespace(session.getNamespace()).withName("configmap-delete").delete());
+    assertTrue(client.apiServices().withName("v1beta1.delete.fabric8.io").delete());
   }
 
   @AfterClass
   public static void cleanup() {
-    ClusterEntity.remove(ConfigMapIT.class.getResourceAsStream("/configmap-it.yml"));
+    ClusterEntity.remove(APIServiceIT.class.getResourceAsStream("/apiservice-it.yml"));
   }
 }

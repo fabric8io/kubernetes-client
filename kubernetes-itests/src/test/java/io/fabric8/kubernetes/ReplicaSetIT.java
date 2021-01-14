@@ -48,8 +48,6 @@ public class ReplicaSetIT {
   @ArquillianResource
   Session session;
 
-  private ReplicaSet replicaset1;
-
   @BeforeClass
   public static void init() {
     ClusterEntity.apply(ReplicaSetIT.class.getResourceAsStream("/replicaset-it.yml"));
@@ -65,7 +63,7 @@ public class ReplicaSetIT {
 
   @Test
   public void get() {
-    replicaset1 = client.apps().replicaSets().inNamespace(session.getNamespace()).withName("replicaset-get").get();
+    ReplicaSet replicaset1 = client.apps().replicaSets().inNamespace(session.getNamespace()).withName("replicaset-get").get();
     assertNotNull(replicaset1);
   }
 
@@ -81,7 +79,7 @@ public class ReplicaSetIT {
     ReadyEntity<ReplicaSet> replicaSetReady = new ReadyEntity<>(ReplicaSet.class, client, "replicaset-update", session.getNamespace());
     await().atMost(30, TimeUnit.SECONDS).until(replicaSetReady);
 
-    replicaset1 = client.apps().replicaSets().inNamespace(session.getNamespace()).withName("replicaset-update").edit(r -> new ReplicaSetBuilder(r)
+    ReplicaSet replicaset1 = client.apps().replicaSets().inNamespace(session.getNamespace()).withName("replicaset-update").edit(r -> new ReplicaSetBuilder(r)
                         .editSpec().withReplicas(2).endSpec().build());
     assertThat(replicaset1).isNotNull();
     assertEquals(2, replicaset1.getSpec().getReplicas().intValue());

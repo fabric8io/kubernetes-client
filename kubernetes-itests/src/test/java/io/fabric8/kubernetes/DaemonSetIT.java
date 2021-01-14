@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.fabric8.kubernetes;
 
 import io.fabric8.commons.ClusterEntity;
-import io.fabric8.kubernetes.api.model.ConfigMap;
-import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
-import io.fabric8.kubernetes.api.model.ConfigMapList;
+import io.fabric8.kubernetes.api.model.apps.DaemonSet;
+import io.fabric8.kubernetes.api.model.apps.DaemonSetBuilder;
+import io.fabric8.kubernetes.api.model.apps.DaemonSetList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
@@ -27,6 +26,7 @@ import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -36,8 +36,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(ArquillianConditionalRunner.class)
+@Ignore
 @RequiresKubernetes
-public class ConfigMapIT {
+public class DaemonSetIT {
   @ArquillianResource
   KubernetesClient client;
 
@@ -46,45 +47,41 @@ public class ConfigMapIT {
 
   @BeforeClass
   public static void init() {
-    ClusterEntity.apply(ConfigMapIT.class.getResourceAsStream("/configmap-it.yml"));
-  }
-
-  @Test
-  public void load() {
-    ConfigMap aConfigMap = client.configMaps().inNamespace(session.getNamespace()).load(getClass().getResourceAsStream("/test-configmap.yml")).get();
-    assertThat(aConfigMap).isNotNull();
-    assertEquals("game-config", aConfigMap.getMetadata().getName());
+    ClusterEntity.apply(DaemonSetIT.class.getResourceAsStream("/daemonset-it.yml"));
   }
 
   @Test
   public void get() {
-    ConfigMap configMap = client.configMaps().inNamespace(session.getNamespace()).withName("configmap-get").get();
-    assertThat(configMap).isNotNull();
+    DaemonSet daemonSet = client.apps().daemonSets().inNamespace(session.getNamespace()).withName("daemonset-get").get();
+    assertThat(daemonSet).isNotNull();
   }
 
   @Test
   public void list() {
-    ConfigMapList aConfigMapList = client.configMaps().inNamespace(session.getNamespace()).list();
-    assertNotNull(aConfigMapList);
-    assertTrue(aConfigMapList.getItems().size() >= 1);
+    DaemonSetList aDaemonSetList = client.apps().daemonSets().inNamespace(session.getNamespace()).list();
+    assertNotNull(aDaemonSetList);
+    assertTrue(aDaemonSetList.getItems().size() >= 1);
   }
 
   @Test
   public void update() {
-    ConfigMap configMap = client.configMaps().inNamespace(session.getNamespace()).withName("configmap-update").edit(c -> new ConfigMapBuilder(c)
-                      .addToData("MSSQL", "Microsoft Database").build());
+    DaemonSet daemonSet = client.apps().daemonSets().inNamespace(session.getNamespace()).withName("daemonset-update").edit(c -> new DaemonSetBuilder(c)
+      .editSpec().editTemplate().editSpec().editContainer(0)
+      .withImage("quay.io/fluentd_elasticsearch/fluentd:v3.0.0")
+      .endContainer().endSpec().endTemplate().endSpec()
+      .build());
 
-    assertNotNull(configMap);
-    assertEquals("Microsoft Database", configMap.getData().get("MSSQL"));
+    assertNotNull(daemonSet);
+    assertEquals("quay.io/fluentd_elasticsearch/fluentd:v3.0.0", daemonSet.getSpec().getTemplate().getSpec().getContainers().get(0).getImage());
   }
 
   @Test
   public void delete() {
-    assertTrue(client.configMaps().inNamespace(session.getNamespace()).withName("configmap-delete").delete());
+    assertTrue(client.apps().daemonSets().inNamespace(session.getNamespace()).withName("daemonset-delete").delete());
   }
 
   @AfterClass
   public static void cleanup() {
-    ClusterEntity.remove(ConfigMapIT.class.getResourceAsStream("/configmap-it.yml"));
+    ClusterEntity.remove(DaemonSetIT.class.getResourceAsStream("/daemonset-it.yml"));
   }
 }

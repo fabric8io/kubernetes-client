@@ -51,8 +51,6 @@ public class IngressIT {
   @ArquillianResource
   Session session;
 
-  private Ingress ingress;
-
   @BeforeClass
   public static void init() {
     ClusterEntity.apply(IngressIT.class.getResourceAsStream("/ingress-it.yml"));
@@ -67,7 +65,7 @@ public class IngressIT {
 
   @Test
   public void get() {
-    ingress = client.network().v1beta1().ingresses().inNamespace(session.getNamespace()).withName("ingress-get").get();
+    Ingress ingress = client.network().v1beta1().ingresses().inNamespace(session.getNamespace()).withName("ingress-get").get();
     assertThat(ingress).isNotNull();
   }
 
@@ -80,7 +78,7 @@ public class IngressIT {
 
   @Test
   public void update() {
-    ingress = client.network().v1beta1().ingresses().inNamespace(session.getNamespace()).withName("ingress-update").edit(i -> new IngressBuilder(i)
+    Ingress ingress = client.network().v1beta1().ingresses().inNamespace(session.getNamespace()).withName("ingress-update").edit(i -> new IngressBuilder(i)
                     .editOrNewMetadata().addToAnnotations("foo", "bar").endMetadata().build());
 
     assertNotNull(ingress);

@@ -17,9 +17,9 @@
 package io.fabric8.kubernetes;
 
 import io.fabric8.commons.ClusterEntity;
-import io.fabric8.kubernetes.api.model.ConfigMap;
-import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
-import io.fabric8.kubernetes.api.model.ConfigMapList;
+import io.fabric8.kubernetes.api.model.Endpoints;
+import io.fabric8.kubernetes.api.model.EndpointsBuilder;
+import io.fabric8.kubernetes.api.model.EndpointsList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
@@ -27,6 +27,7 @@ import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -36,8 +37,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(ArquillianConditionalRunner.class)
+@Ignore
 @RequiresKubernetes
-public class ConfigMapIT {
+public class EndpointsIT {
   @ArquillianResource
   KubernetesClient client;
 
@@ -46,45 +48,38 @@ public class ConfigMapIT {
 
   @BeforeClass
   public static void init() {
-    ClusterEntity.apply(ConfigMapIT.class.getResourceAsStream("/configmap-it.yml"));
-  }
-
-  @Test
-  public void load() {
-    ConfigMap aConfigMap = client.configMaps().inNamespace(session.getNamespace()).load(getClass().getResourceAsStream("/test-configmap.yml")).get();
-    assertThat(aConfigMap).isNotNull();
-    assertEquals("game-config", aConfigMap.getMetadata().getName());
+    ClusterEntity.apply(EndpointsIT.class.getResourceAsStream("/endpoints-it.yml"));
   }
 
   @Test
   public void get() {
-    ConfigMap configMap = client.configMaps().inNamespace(session.getNamespace()).withName("configmap-get").get();
-    assertThat(configMap).isNotNull();
+    Endpoints endpoints = client.endpoints().inNamespace(session.getNamespace()).withName("endpoints-get").get();
+    assertThat(endpoints).isNotNull();
   }
 
   @Test
   public void list() {
-    ConfigMapList aConfigMapList = client.configMaps().inNamespace(session.getNamespace()).list();
-    assertNotNull(aConfigMapList);
-    assertTrue(aConfigMapList.getItems().size() >= 1);
+    EndpointsList aEndpointList = client.endpoints().inNamespace(session.getNamespace()).list();
+    assertNotNull(aEndpointList);
+    assertTrue(aEndpointList.getItems().size() >= 1);
   }
 
   @Test
   public void update() {
-    ConfigMap configMap = client.configMaps().inNamespace(session.getNamespace()).withName("configmap-update").edit(c -> new ConfigMapBuilder(c)
-                      .addToData("MSSQL", "Microsoft Database").build());
+    Endpoints endpoints = client.endpoints().inNamespace(session.getNamespace()).withName("endpoints-update").edit(c -> new EndpointsBuilder(c)
+      .editOrNewMetadata().addToAnnotations("foo", "bar").endMetadata().build());
 
-    assertNotNull(configMap);
-    assertEquals("Microsoft Database", configMap.getData().get("MSSQL"));
+    assertNotNull(endpoints);
+    assertEquals("bar", endpoints.getMetadata().getAnnotations().get("foo"));
   }
 
   @Test
   public void delete() {
-    assertTrue(client.configMaps().inNamespace(session.getNamespace()).withName("configmap-delete").delete());
+    assertTrue(client.endpoints().inNamespace(session.getNamespace()).withName("endpoints-delete").delete());
   }
 
   @AfterClass
   public static void cleanup() {
-    ClusterEntity.remove(ConfigMapIT.class.getResourceAsStream("/configmap-it.yml"));
+    ClusterEntity.remove(EndpointsIT.class.getResourceAsStream("/endpoints-it.yml"));
   }
 }
