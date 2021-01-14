@@ -35,7 +35,8 @@ import io.sundr.transform.annotations.VelocityTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-import javax.annotation.Generated;
+import io.fabric8.kubernetes.model.annotation.Generated;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;

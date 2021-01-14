@@ -16,7 +16,7 @@
 package io.fabric8.openshift.api.model.operatorhub.v1alpha1;
 
 import java.util.List;
-import javax.annotation.Generated;
+import io.fabric8.kubernetes.model.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
