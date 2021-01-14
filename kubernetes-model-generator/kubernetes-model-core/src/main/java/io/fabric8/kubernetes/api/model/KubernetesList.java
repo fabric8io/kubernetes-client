@@ -22,7 +22,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.Inline;
 
-import javax.annotation.Generated;
+import io.fabric8.kubernetes.model.annotation.Generated;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

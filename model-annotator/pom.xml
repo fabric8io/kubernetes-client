@@ -36,10 +36,6 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.fasterxml.jackson.module</groupId>
-      <artifactId>jackson-module-jaxb-annotations</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.jsonschema2pojo</groupId>
       <artifactId>jsonschema2pojo-core</artifactId>
       <version>${jsonschema2pojo.version}</version>

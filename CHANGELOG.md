@@ -6,7 +6,14 @@
 
 #### Improvements
 
+* Dependency cleanup
+ - Remove javax.annotation-api 
+ - Remove jaxb-api
+ - Remove jacson-module-jaxb-annotations
+
 #### Dependency Upgrade
+
+* Upgrade sundrio.version to 0.24.1
 
 #### New Features
 
