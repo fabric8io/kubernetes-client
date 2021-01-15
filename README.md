@@ -148,13 +148,13 @@ Service myservice = client.services().inNamespace("default").withName("myservice
 Editing resources uses the inline builders from the Kubernetes Model:
 
 ```java
-Namespace myns = client.namespaces().withName("myns").edit(n -> new NamespaceBuilder(n))
+Namespace myns = client.namespaces().withName("myns").edit(n -> new NamespaceBuilder(n)
                    .editMetadata()
                      .addToLabels("a", "label")
                    .endMetadata()
                    .build());
 
-Service myservice = client.services().inNamespace("default").withName("myservice").edit(s -> new ServiceBuilder(s))
+Service myservice = client.services().inNamespace("default").withName("myservice").edit(s -> new ServiceBuilder(s)
                      .editMetadata()
                        .addToLabels("another", "label")
                      .endMetadata()
