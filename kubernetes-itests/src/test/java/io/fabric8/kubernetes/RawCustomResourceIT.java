@@ -16,25 +16,42 @@
 package io.fabric8.kubernetes;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
+import io.fabric8.commons.ClusterEntity;
+import io.fabric8.kubernetes.api.model.Status;
+import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.WatcherException;
+import io.fabric8.kubernetes.client.utils.Serialization;
+import org.apache.commons.io.FileUtils;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 
@@ -51,13 +68,15 @@ public class RawCustomResourceIT {
 
   private CustomResourceDefinitionContext customResourceDefinitionContext;
 
-  @Before
-  public void initCustomResourceDefinition() {
-    currentNamespace = session.getNamespace();
-
+  @BeforeClass
+  public static void initCrd() {
     // Create a Custom Resource Definition Animals:
-    CustomResourceDefinition animalCrd = client.apiextensions().v1beta1().customResourceDefinitions().load(getClass().getResourceAsStream("/test-rawcustomresource-definition.yml")).get();
-    client.apiextensions().v1beta1().customResourceDefinitions().create(animalCrd);
+    ClusterEntity.apply(RawCustomResourceIT.class.getResourceAsStream("/test-rawcustomresource-definition.yml"));
+  }
+
+  @Before
+  public void initCustomResourceDefinitionContextAndNamespace() {
+    currentNamespace = session.getNamespace();
 
     customResourceDefinitionContext = new CustomResourceDefinitionContext.Builder()
       .withName("animals.jungle.example.com")
@@ -79,14 +98,12 @@ public class RawCustomResourceIT {
       "\"kind\":\"Animal\",\"metadata\": {\"name\": \"walrus\"}," +
       "\"spec\": {\"image\": \"my-awesome-walrus-image\"}}";
     object = client.customResource(customResourceDefinitionContext).createOrReplace(currentNamespace, rawJsonCustomResourceObj);
-    assertThat(((HashMap<String, String>)object.get("metadata")).get("name")).isEqualTo("walrus");
-    assertThat(((HashMap<String, String>)object.get("spec")).get("image")).isEqualTo("my-awesome-walrus-image");
+    assertAnimal(object, "walrus", "my-awesome-walrus-image");
 
     // Test replace with object
     ((HashMap<String, String>)object.get("spec")).put("image", "new-walrus-image");
     object = client.customResource(customResourceDefinitionContext).createOrReplace(currentNamespace, object);
-    assertThat(((HashMap<String, String>)object.get("metadata")).get("name")).isEqualTo("walrus");
-    assertThat(((HashMap<String, String>)object.get("spec")).get("image")).isEqualTo("new-walrus-image");
+    assertAnimal(object, "walrus", "new-walrus-image");
 
     // Test Get:
     object = client.customResource(customResourceDefinitionContext).get(currentNamespace, "otter");
@@ -94,26 +111,172 @@ public class RawCustomResourceIT {
 
     // Test List:
     Map<String, Object> list = client.customResource(customResourceDefinitionContext).list(currentNamespace);
-    assertThat(((ArrayList<Object>)list.get("items")).size()).isEqualTo(2);
+    assertThat(((ArrayList<Object>)list.get("items")).size()).isGreaterThanOrEqualTo(2);
 
     // List with labels:
     list = client.customResource(customResourceDefinitionContext).list(currentNamespace, Collections.singletonMap("foo", "bar"));
-    assertThat(((ArrayList<Object>)list.get("items")).size()).isEqualTo(1);
+    assertThat(((ArrayList<Object>)list.get("items")).size()).isGreaterThanOrEqualTo(1);
 
     // Test Update
     object = client.customResource(customResourceDefinitionContext).get(currentNamespace, "walrus");
     ((HashMap<String, Object>)object.get("spec")).put("image", "my-updated-awesome-walrus-image");
     object = client.customResource(customResourceDefinitionContext).edit(currentNamespace, "walrus", new ObjectMapper().writeValueAsString(object));
-    assertThat(((HashMap<String, Object>)object.get("spec")).get("image")).isEqualTo("my-updated-awesome-walrus-image");
+    assertAnimal(object, "walrus", "my-updated-awesome-walrus-image");
 
     // Test Delete:
     client.customResource(customResourceDefinitionContext).delete(currentNamespace, "otter");
     client.customResource(customResourceDefinitionContext).delete(currentNamespace);
   }
 
-  @After
-  public void cleanup() {
-    // Delete Custom Resource Definition Animals:
-    client.apiextensions().v1beta1().customResourceDefinitions().withName(customResourceDefinitionContext.getName()).delete();
+  @Test
+  public void testCrudUsingMap() throws IOException {
+    // Create
+    String name = "bison";
+    Map<String, Object> bison = createNewAnimal(name, "wisent");
+    bison = client.customResource(customResourceDefinitionContext).create(currentNamespace, bison);
+    assertAnimal(bison, "bison", "wisent");
+
+    // Read
+    bison = client.customResource(customResourceDefinitionContext).get(currentNamespace, name);
+    assertAnimal(bison, "bison", "wisent");
+
+    // Update
+    ((Map<String, Object>)bison.get("spec")).put("image", "bison-bonasus");
+    bison = client.customResource(customResourceDefinitionContext).edit(currentNamespace, name, bison);
+    assertAnimal(bison, "bison", "bison-bonasus");
+
+    // Delete
+    Map<String, Object> deletionStatusMap = client.customResource(customResourceDefinitionContext).delete(currentNamespace, name);
+    assertDeletionStatus(deletionStatusMap, "Success");
+  }
+
+  @Test
+  public void testCrudUsingInputStream() throws IOException {
+    // Create
+    String name = "hippo";
+    InputStream hippoInputStream = getClass().getResourceAsStream("/rawcustomresourceit-crud-inputstream.yml");
+    Map<String, Object> hippoCr = client.customResource(customResourceDefinitionContext).create(currentNamespace, hippoInputStream);
+    assertAnimal(hippoCr, name, "Hippopotamidae");
+
+    // Read
+    hippoCr = client.customResource(customResourceDefinitionContext).get(currentNamespace, name);
+    assertAnimal(hippoCr, name, "Hippopotamidae");
+
+    // Update
+    ((Map<String, Object>)hippoCr.get("spec")).put("image", "river-hippo");
+    File updatedHippoManifest = Files.createTempFile("hippo", "yml").toFile();
+    FileUtils.writeStringToFile(updatedHippoManifest, Serialization.jsonMapper().writeValueAsString(hippoCr));
+    hippoCr = client.customResource(customResourceDefinitionContext).edit(currentNamespace, name, new FileInputStream(updatedHippoManifest));
+    assertAnimal(hippoCr, name, "river-hippo");
+
+    // Delete
+    Map<String, Object> deletionStatusMap = client.customResource(customResourceDefinitionContext).delete(currentNamespace, name);
+    assertDeletionStatus(deletionStatusMap, "Success");
+  }
+
+  @Test
+  public void testCrudUsingString() throws IOException {
+    // Create
+    String name = "rhino";
+    String rhino = "{\"apiVersion\": \"jungle.example.com/v1\"," +
+      "    \"kind\": \"Animal\"," +
+      "    \"metadata\": {\"name\": \"rhino\"}," +
+      "    \"spec\": {\"image\": \"Rhinocerotidae\"}}";
+    Map<String, Object> rhinoCr = client.customResource(customResourceDefinitionContext).create(currentNamespace, rhino);
+    assertAnimal(rhinoCr, name, "Rhinocerotidae");
+
+    // Read
+    rhinoCr = client.customResource(customResourceDefinitionContext).get(currentNamespace, name);
+    assertAnimal(rhinoCr, name, "Rhinocerotidae");
+
+    // Update
+    ((Map<String, Object>)rhinoCr.get("spec")).put("image", "rhinoceros");
+    String rhinoCrAsStr = Serialization.jsonMapper().writeValueAsString(rhinoCr);
+    rhinoCr = client.customResource(customResourceDefinitionContext).edit(currentNamespace, name, rhinoCrAsStr);
+    assertAnimal(rhinoCr, name, "rhinoceros");
+
+    // Delete
+    Map<String, Object> deletionStatusMap = client.customResource(customResourceDefinitionContext).delete(currentNamespace, name);
+    assertDeletionStatus(deletionStatusMap, "Success");
+  }
+
+  @Test
+  public void testWatch() throws IOException, InterruptedException {
+    // Given
+    String name = "chital";
+    Map<String, Object> deer = createNewAnimal(name, "spotted-deer");
+    CountDownLatch creationEventReceived = new CountDownLatch(1);
+
+    // When
+    client.customResource(customResourceDefinitionContext).watch(currentNamespace, new Watcher<String>() {
+      @Override
+      public void eventReceived(Action action, String resource) {
+        if (resource.contains(name)) {
+          creationEventReceived.countDown();
+        }
+      }
+
+      @Override
+      public void onClose(WatcherException cause) { }
+    });
+    client.customResource(customResourceDefinitionContext).create(currentNamespace, deer);
+
+    // Then
+    assertTrue(creationEventReceived.await(1, TimeUnit.SECONDS));
+  }
+
+  @Test
+  public void testUpdateStatus() throws IOException {
+    // Given
+    String name = "black-buck";
+    Map<String, Object> deer = createNewAnimal(name, "indian-antelope");
+    Map<String, Object> status = new HashMap<>();
+    status.put("conservationStatus", "endangered");
+
+    // When
+    deer = client.customResource(customResourceDefinitionContext).create(currentNamespace, deer);
+    await().atMost(5, TimeUnit.SECONDS)
+      .until(() -> client.customResource(customResourceDefinitionContext).get(currentNamespace, name) != null);
+    deer.put("status", status);
+    Map<String, Object> updatedDeer = client.customResource(customResourceDefinitionContext).updateStatus(currentNamespace, name, deer);
+
+    // Then
+    assertNotNull(updatedDeer);
+    assertEquals("endangered", ((Map<String, Object>)deer.get("status")).get("conservationStatus").toString());
+  }
+
+  @AfterClass
+  public static void cleanup() {
+    ClusterEntity.remove(RawCustomResourceIT.class.getResourceAsStream("/test-rawcustomresource-definition.yml"));
+  }
+
+  private void assertAnimal(Map<String, Object> animal, String name, String image) {
+    assertNotNull(animal);
+    assertFalse(animal.isEmpty());
+    assertThat(((HashMap<String, String>)animal.get("metadata")).get("name")).isEqualTo(name);
+    assertThat(((HashMap<String, String>)animal.get("spec")).get("image")).isEqualTo(image);
+  }
+
+  private void assertDeletionStatus(Map<String, Object> deletionStatusAsMap, String status) {
+    Status deletionStatus = Serialization.jsonMapper().convertValue(deletionStatusAsMap, Status.class);
+    assertNotNull(deletionStatus);
+    assertEquals(status, deletionStatus.getStatus());
+  }
+
+  private Map<String, Object> createNewAnimal(String name, String image) {
+      Map<String, Object> crAsMap = new HashMap<>();
+      crAsMap.put("apiVersion", "jungle.example.com/v1");
+      crAsMap.put("kind", "Animal");
+
+      Map<String, Object> crMetadata = new HashMap<>();
+      crMetadata.put("name", name);
+      crMetadata.put("labels", Collections.singletonMap("foo", "bar"));
+      Map<String, Object> crSpec = new HashMap<>();
+      crSpec.put("image", image);
+
+      crAsMap.put("metadata", crMetadata);
+      crAsMap.put("spec", crSpec);
+
+      return crAsMap;
   }
 }
