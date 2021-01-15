@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.WebSocket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,9 +38,7 @@ public abstract class AbstractWatchManager<T> implements Watch {
   private static final Logger logger = LoggerFactory.getLogger(AbstractWatchManager.class);
 
   final Watcher<T> watcher;
-  final ListOptions listOptions;
   final AtomicReference<String> resourceVersion;
-  final OkHttpClient clonedClient;
 
   final AtomicBoolean forceClosed;
   private final int reconnectLimit;
@@ -47,18 +46,18 @@ public abstract class AbstractWatchManager<T> implements Watch {
   private final int maxIntervalExponent;
   final AtomicInteger currentReconnectAttempt;
   private final ScheduledExecutorService executorService;
+  
+  private final RequestBuilder requestBuilder;
+  protected ClientRunner runner;
 
 
   AbstractWatchManager(
-    Watcher<T> watcher, ListOptions listOptions, int reconnectLimit, int reconnectInterval, int maxIntervalExponent,
-    OkHttpClient clonedClient
+    Watcher<T> watcher, ListOptions listOptions, int reconnectLimit, int reconnectInterval, int maxIntervalExponent, RequestBuilder requestBuilder
   ) {
     this.watcher = watcher;
-    this.listOptions = listOptions;
     this.reconnectLimit = reconnectLimit;
     this.reconnectInterval = reconnectInterval;
     this.maxIntervalExponent = maxIntervalExponent;
-    this.clonedClient = clonedClient;
     this.resourceVersion = new AtomicReference<>(listOptions.getResourceVersion());
     this.currentReconnectAttempt = new AtomicInteger(0);
     this.forceClosed = new AtomicBoolean();
@@ -67,6 +66,15 @@ public abstract class AbstractWatchManager<T> implements Watch {
       ret.setDaemon(true);
       return ret;
     });
+    
+    this.requestBuilder = requestBuilder;
+  }
+  
+  protected void initRunner(ClientRunner runner) {
+    if (this.runner != null) {
+      throw new IllegalStateException("ClientRunner has already been initialized");
+    }
+    this.runner = runner;
   }
 
   final void closeEvent(WatcherException cause) {
@@ -124,6 +132,37 @@ public abstract class AbstractWatchManager<T> implements Watch {
     logger.debug("Current reconnect backoff is {} milliseconds (T{})", ret, exponentOfTwo);
     return ret;
   }
+  
+  void resetReconnectAttempts() {
+    currentReconnectAttempt.set(0);
+  }
+  
+  boolean isForceClosed() {
+    return forceClosed.get();
+  }
+  
+  void eventReceived(Watcher.Action action, T resource) {
+    watcher.eventReceived(action, resource);
+  }
+  
+  void onClose(WatcherException cause) {
+    watcher.onClose(cause);
+  }
+  
+  void updateResourceVersion(final String newResourceVersion) {
+    resourceVersion.set(newResourceVersion);
+  }
+  
+  protected void runWatch() {
+    final Request request = requestBuilder.build(resourceVersion.get());
+    logger.debug("Watching {}...", request.url());
+  
+    runner.run(request);
+  }
+  
+  public void waitUntilReady() {
+    runner.waitUntilReady();
+  }
 
   static void closeWebSocket(WebSocket webSocket) {
     if (webSocket != null) {
@@ -135,6 +174,35 @@ public abstract class AbstractWatchManager<T> implements Watch {
       } catch (IllegalStateException e) {
         logger.error("Called close on already closed websocket: {} {}", e.getClass(), e.getMessage());
       }
+    }
+  }
+  
+  @Override
+  public void close() {
+    logger.debug("Force closing the watch {}", this);
+    closeEvent();
+    runner.close();
+    closeExecutorService();
+  }
+  
+  @FunctionalInterface
+  interface RequestBuilder {
+    Request build(final String resourceVersion);
+  }
+  
+  abstract static class ClientRunner {
+    private final OkHttpClient client;
+  
+    protected ClientRunner(OkHttpClient client) {
+      this.client = cloneAndCustomize(client);
+    }
+  
+    abstract void run(Request request);
+    void close() {}
+    void waitUntilReady() {}
+    abstract OkHttpClient cloneAndCustomize(OkHttpClient client);
+    OkHttpClient client() {
+      return client;
     }
   }
 }
