@@ -30,9 +30,9 @@ import java.net.HttpURLConnection;
 /**
  * Interceptor for handling expired OIDC tokens.
  */
-public class OIDCTokenRefreshInterceptor implements Interceptor {
+public class TokenRefreshInterceptor implements Interceptor {
   private Config config;
-  public OIDCTokenRefreshInterceptor(Config config) {
+  public TokenRefreshInterceptor(Config config) {
     this.config = config;
   }
 
@@ -43,13 +43,22 @@ public class OIDCTokenRefreshInterceptor implements Interceptor {
     if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
       io.fabric8.kubernetes.api.model.Config kubeConfig = KubeConfigUtils.parseConfig(new File(Config.getKubeconfigFilename()));
       Context currentContext = null;
+      String currentContextName = null;
       if (config.getCurrentContext() != null) {
         currentContext = config.getCurrentContext().getContext();
+        currentContextName = config.getCurrentContext().getName();
       }
       AuthInfo currentAuthInfo = KubeConfigUtils.getUserAuthInfo(kubeConfig, currentContext);
       // Check if AuthProvider is set or not
       if (currentAuthInfo != null && currentAuthInfo.getAuthProvider() != null) {
-        String newAccessToken = OpenIDConnectionUtils.resolveOIDCTokenFromAuthConfig(currentAuthInfo.getAuthProvider().getConfig());
+        response.close();
+        String newAccessToken;
+        if (currentAuthInfo.getAuthProvider().toLowerCase().equals("oidc")) {
+          newAccessToken = OpenIDConnectionUtils.resolveOIDCTokenFromAuthConfig(currentAuthInfo.getAuthProvider().getConfig());
+        } else {
+          Config newestConfig = Config.autoConfigure(currentContextName);
+          newAccessToken = newestConfig.getOauthToken();
+        }
         // Delete old Authorization header and append new one
         Request authReqWithUpdatedToken = chain.request().newBuilder()
           .header("Authorization", "Bearer " + newAccessToken).build();
