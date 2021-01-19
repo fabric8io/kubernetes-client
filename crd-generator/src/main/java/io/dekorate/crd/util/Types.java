@@ -17,24 +17,61 @@
 
 package io.dekorate.crd.util;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.lang.model.element.TypeElement;
 
 import io.dekorate.crd.annotation.Status;
 import io.dekorate.crd.config.CustomResourceConfig;
+import io.fabric8.kubernetes.api.model.Namespaced;
+
 import java.util.function.Predicate;
 import io.sundr.codegen.CodegenContext;
 import io.sundr.codegen.functions.ClassTo;
 import io.sundr.codegen.functions.ElementTo;
 import io.sundr.codegen.model.AnnotationRefBuilder;
+import io.sundr.codegen.model.ClassRef;
 import io.sundr.codegen.model.Property;
 import io.sundr.codegen.model.TypeDef;
 import io.sundr.codegen.model.TypeRef;
 import io.sundr.codegen.utils.TypeUtils;
 
 public class Types {
+
+  private static final TypeDef NAMESPACED = ClassTo.TYPEDEF.apply(Namespaced.class);
+
+  public static boolean isNamespaced(TypeDef definition) {
+    return isNamespaced(definition, new HashSet<TypeDef>());
+  }
+
+  public static boolean isNamespaced(TypeDef definition, Set<TypeDef> visited) {
+    if (definition.getFullyQualifiedName().equals(NAMESPACED.getFullyQualifiedName())) {
+      return true;
+    }
+
+    if (visited.contains(definition) || definition.getPackageName().startsWith("java.")) {
+      return false;
+    }
+
+    Set<TypeDef> newVisited = new HashSet<>(visited);
+    newVisited.add(definition);
+       
+    for (ClassRef i : definition.getImplementsList()) {
+      if (isNamespaced(i.getDefinition(), newVisited)) {
+        return true;
+      }
+    }
+
+    for (ClassRef e : definition.getExtendsList()) {
+      if (isNamespaced(e.getDefinition(), newVisited)) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   /**
    * Finds the status type.

@@ -93,7 +93,7 @@ public class CustomResourceHandler implements Handler<CustomResourceConfig> {
     LabelSelectorPathDetector  labalSelectorPathDetector = new LabelSelectorPathDetector();
     AdditionalPrineterColumnDetector additionalPrineterColumnDetector = new AdditionalPrineterColumnDetector();
 
-    //This is going to be used in order to scan the status provided as `@CustomResource(status = MyStatus.class)`.
+    //This is going to be used in order to scan the status provided as `@Crd(status = MyStatus.class)`.
     StatusReplicasPathDetector externalStatusReplicasPathDetector = new StatusReplicasPathDetector(".spec.");
     LabelSelectorPathDetector  externalLabalSelectorPathDetector = new LabelSelectorPathDetector(".spec.");
     AdditionalPrineterColumnDetector externalAdditionalPrineterColumnDetector = new AdditionalPrineterColumnDetector(".spec.");
