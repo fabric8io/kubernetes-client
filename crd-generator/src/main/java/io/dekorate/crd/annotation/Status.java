@@ -23,7 +23,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Qualifies annotated parameters as the {@link CustomResource} status.
+ * Qualifies annotated parameters as the {@link Crd} status.
  */
 @Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.SOURCE)

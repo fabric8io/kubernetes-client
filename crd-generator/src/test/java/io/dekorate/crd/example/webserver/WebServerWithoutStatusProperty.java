@@ -18,9 +18,9 @@
 package io.dekorate.crd.example.webserver;
 
 import io.dekorate.crd.alt.SpecReplicas;
-import io.dekorate.crd.annotation.CustomResource;
+import io.dekorate.crd.annotation.Crd;
 
-@CustomResource(status = WebServerStatus.class)
+@Crd(status = WebServerStatus.class)
 public class WebServerWithoutStatusProperty {
 
   private String name;

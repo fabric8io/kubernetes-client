@@ -27,7 +27,7 @@ import io.dekorate.crd.config.Scope;
  */
 @Target({ ElementType.CONSTRUCTOR, ElementType.TYPE })
 @Retention(RetentionPolicy.SOURCE)
-public @interface CustomResource {
+public @interface Crd {
 
   /**
    * The custom resource group.

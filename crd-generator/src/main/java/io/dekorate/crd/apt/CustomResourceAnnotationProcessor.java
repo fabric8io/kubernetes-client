@@ -24,7 +24,7 @@ import javax.lang.model.element.TypeElement;
 
 import io.dekorate.config.MultiConfiguration;
 import io.dekorate.crd.adapter.CustomResourceConfigAdapter;
-import io.dekorate.crd.annotation.CustomResource;
+import io.dekorate.crd.annotation.Crd;
 import io.dekorate.crd.config.Keys;
 import io.dekorate.crd.config.CustomResourceConfig;
 import io.dekorate.crd.config.CustomResourceConfigBuilder;
@@ -36,7 +36,7 @@ import io.sundr.codegen.functions.ElementTo;
 import io.sundr.codegen.model.TypeDef;
 import io.sundr.codegen.utils.ModelUtils;
 
-@SupportedAnnotationTypes({ "io.dekorate.crd.annotation.CustomResource" })
+@SupportedAnnotationTypes({ "io.dekorate.crd.annotation.Crd" })
 public class CustomResourceAnnotationProcessor extends AbstractAnnotationProcessor implements CustomResourceGenerator {
 
   public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
@@ -56,12 +56,12 @@ public class CustomResourceAnnotationProcessor extends AbstractAnnotationProcess
 
   @Override
   public void add(Element element) {
-    CustomResource customResource = element.getAnnotation(CustomResource.class);
+    Crd crd = element.getAnnotation(Crd.class);
     if (element instanceof TypeElement) {
       TypeDef definition = ElementTo.TYPEDEF.apply((TypeElement) element);
       String className = ModelUtils.getClassName(element);
-      on(customResource != null
-          ? new MultiConfiguration<CustomResourceConfig>(CustomResourceConfigAdapter.newBuilder(customResource).addToAttributes(Keys.TYPE_DEFINITION, definition).accept(new AddClassNameConfigurator(className)))
+      on(crd != null
+          ? new MultiConfiguration<CustomResourceConfig>(CustomResourceConfigAdapter.newBuilder(crd).addToAttributes(Keys.TYPE_DEFINITION, definition).accept(new AddClassNameConfigurator(className)))
           : new MultiConfiguration<CustomResourceConfig>(new CustomResourceConfigBuilder().addToAttributes(Keys.TYPE_DEFINITION, definition).accept(new AddClassNameConfigurator(className))));
     }
   }

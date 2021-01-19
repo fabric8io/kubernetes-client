@@ -6,7 +6,7 @@ import java.util.Map;
 import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeMirror;
 
-import io.dekorate.crd.annotation.CustomResource;
+import io.dekorate.crd.annotation.Crd;
 import io.dekorate.crd.config.CustomResourceConfig;
 import io.dekorate.crd.config.CustomResourceConfigBuilder;
 import io.dekorate.crd.config.Scale;
@@ -14,7 +14,7 @@ import io.dekorate.crd.config.Scope;
 
 public class CustomResourceConfigAdapter {
 
-    public static CustomResourceConfigBuilder newBuilder(CustomResource instance) {
+    public static CustomResourceConfigBuilder newBuilder(Crd instance) {
         return new CustomResourceConfigBuilder(new io.dekorate.crd.config.CustomResourceConfig(null,
             null,
             instance.group(),
@@ -100,9 +100,9 @@ null,
       return (String) obj;
     } else if (obj instanceof TypeMirror) {
       return ((TypeMirror)obj).toString();
-    } else if (obj instanceof CustomResource) {
+    } else if (obj instanceof Crd) {
       try {
-        return ((CustomResource)obj).status().getCanonicalName();
+        return ((Crd)obj).status().getCanonicalName();
       } catch (MirroredTypeException e) {
         return e.getTypeMirror().toString();
       }
