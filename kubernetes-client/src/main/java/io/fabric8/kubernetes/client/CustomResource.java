@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.Locale;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -74,10 +75,10 @@ public abstract class CustomResource<S, T> implements HasMetadata {
   private ObjectMeta metadata = new ObjectMeta();
 
   @JsonProperty("spec")
-  private S spec;
+  protected S spec;
 
   @JsonProperty("status")
-  private T status;
+  protected T status;
 
   private final String singular;
   private final String crdName;
