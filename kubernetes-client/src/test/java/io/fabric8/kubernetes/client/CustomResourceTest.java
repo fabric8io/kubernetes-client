@@ -25,6 +25,26 @@ class CustomResourceTest {
   private static class MissingApiVersion extends CustomResource {
   }
   
+  private static class CRSpec {
+    public CRSpec() {
+    }
+  
+    @Override
+    public boolean equals(Object obj) {
+      return obj instanceof CRSpec;
+    }
+  }
+  private static class CRStatus {
+    public CRStatus() {
+    }
+  
+    @Override
+    public boolean equals(Object obj) {
+      return obj instanceof CRStatus;
+    }
+  }
+  private static class CR extends CustomResource<CRSpec,CRStatus>{}
+  
   @Test
   void missingGroupAndVersionShouldFail() {
     assertThrows(IllegalArgumentException.class, MissingApiVersion::new);
@@ -53,5 +73,12 @@ class CustomResourceTest {
     assertEquals(custom.getPlural() + "." + Custom.GROUP, custom.getCRDName());
     assertEquals(Custom.VERSION, custom.getVersion());
     assertEquals(Custom.GROUP, custom.getGroup());
+  }
+  
+  @Test
+  void defaultInitSpecShouldWork() {
+    CR cr = new CR();
+    assertEquals(new CRSpec(), cr.getSpec());
+    assertEquals(new CRStatus(), cr.getStatus());
   }
 }
