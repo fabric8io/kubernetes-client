@@ -100,6 +100,27 @@ public abstract class CustomResource<S, T> implements HasMetadata {
     this.singular = getSingular(clazz);
     this.plural = getPlural(clazz);
     this.crdName = getCRDName(clazz);
+    this.spec = initSpec();
+    this.status = initStatus();
+  }
+  
+  protected S initSpec() {
+    return (S)genericInit(0, "spec");
+  }
+  
+  private Object genericInit(int genericTypeIndex, String fieldName) {
+    try {
+      // this should work because CustomResource is an abstract class
+      String className = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[genericTypeIndex].getTypeName();
+      Class<?> clazz = Class.forName(className);
+      return clazz.getConstructor().newInstance();
+    } catch (Exception e) {
+      throw new IllegalArgumentException("Cannot instantiate " + fieldName, e);
+    }
+  }
+  
+  protected T initStatus() {
+    return (T)genericInit(1, "status");
   }
 
   @Override
