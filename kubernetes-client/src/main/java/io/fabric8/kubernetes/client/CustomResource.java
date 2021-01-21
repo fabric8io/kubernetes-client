@@ -245,7 +245,6 @@ public abstract class CustomResource<S, T> implements HasMetadata {
   }
   
   private final static String TYPE_NAME = CustomResource.class.getTypeName();
-  private final static String OBJECT_TYPE_NAME = Object.class.getTypeName();
   private final static String VOID_TYPE_NAME = Void.class.getTypeName();
   private Instantiator[] instantiators = new Instantiator[2];
   
@@ -261,18 +260,16 @@ public abstract class CustomResource<S, T> implements HasMetadata {
     final Instantiator instantiator = instantiators[genericTypeIndex];
     if (instantiator == null) {
       instantiators[genericTypeIndex] = Instantiator.NULL;
-      // this should work because CustomResource is an abstract class
+      
+      // walk the type hierarchy until we reach CustomResource or a ParameterizedType
       Type genericSuperclass = getClass().getGenericSuperclass();
       String typeName = genericSuperclass.getTypeName();
-      do {
-        if (genericSuperclass instanceof ParameterizedType) {
-          break;
-        }
+      while (!TYPE_NAME.equals(typeName) && !(genericSuperclass instanceof ParameterizedType)) {
         genericSuperclass = ((Class) genericSuperclass).getGenericSuperclass();
         typeName = genericSuperclass.getTypeName();
-      } while (!TYPE_NAME.equals(typeName)
-        && !OBJECT_TYPE_NAME.equals(typeName));
-      
+      }
+  
+      // this works because CustomResource is an abstract class
       if (genericSuperclass instanceof ParameterizedType) {
         final Type[] types = ((ParameterizedType) genericSuperclass).getActualTypeArguments();
         if (types.length != 2) {
