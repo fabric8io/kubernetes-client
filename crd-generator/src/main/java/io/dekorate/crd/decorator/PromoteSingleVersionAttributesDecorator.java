@@ -17,13 +17,19 @@
 
 package io.dekorate.crd.decorator;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import io.dekorate.kubernetes.decorator.Decorator;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceColumnDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionSpecFluent;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersion;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersionBuilder;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceSubresources;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceValidation;
 
 public class PromoteSingleVersionAttributesDecorator extends CustomResourceDefinitionDecorator<CustomResourceDefinitionSpecFluent<?>> {
 
@@ -49,6 +55,39 @@ public class PromoteSingleVersionAttributesDecorator extends CustomResourceDefin
 
       spec.removeAllFromVersions(versions);
       spec.withVersions(newVersion);
+    } else {
+      Set<CustomResourceSubresources> subresources = versions.stream().map(CustomResourceDefinitionVersion::getSubresources).collect(Collectors.toSet());
+      Set<List<CustomResourceColumnDefinition>> additionalPrinterColumns = versions.stream().map(CustomResourceDefinitionVersion::getAdditionalPrinterColumns).collect(Collectors.toSet());
+      Set<CustomResourceValidation> schemas = versions.stream().map(CustomResourceDefinitionVersion::getSchema).collect(Collectors.toSet());
+      
+      boolean hasIdenticalSubresources = subresources.size() == 1;
+      boolean hasIdenticalAdditionalPrinterColumns = additionalPrinterColumns.size() == 1;
+      boolean hasIdenticalSchemas = schemas.size() == 1;
+
+      System.out.printf("Found %s soubresources, %s column list sets, %s schemas ", subresources.size(), additionalPrinterColumns.size(), schemas.size());
+      
+      spec
+        .withValidation(hasIdenticalSchemas ? schemas.iterator().next() : null)
+        .withSubresources(hasIdenticalSubresources ? subresources.iterator().next() : null)
+        .withAdditionalPrinterColumns(hasIdenticalAdditionalPrinterColumns ? additionalPrinterColumns.iterator().next() : null);
+
+      spec.removeAllFromVersions(versions);
+      List<CustomResourceDefinitionVersion> newVersions = new ArrayList<>();
+      for (CustomResourceDefinitionVersion version : versions) {
+        CustomResourceDefinitionVersion newVersion = new CustomResourceDefinitionVersionBuilder(version).build();
+        if (hasIdenticalSchemas) {
+          newVersion.setSchema(null);
+        }
+        if (hasIdenticalSubresources) {
+          newVersion.setSubresources(null);
+        }
+        if (hasIdenticalAdditionalPrinterColumns) {
+          newVersion.setAdditionalPrinterColumns(null);
+        }
+        newVersions.add(newVersion);
+      }
+
+      spec.withVersions(newVersions);
     }
 	}
 
