@@ -25,6 +25,7 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.MirroredTypeException;
 
 import io.dekorate.config.MultiConfiguration;
 import io.dekorate.crd.adapter.CustomResourceConfigAdapter;
@@ -96,6 +97,14 @@ public class CustomResourceAnnotationProcessor extends AbstractAnnotationProcess
     Optional<Plural> plural = Optional.ofNullable(element.getAnnotation(Plural.class));
     Optional<Singular> singular = Optional.ofNullable(element.getAnnotation(Singular.class));
 
+    String statusClassName = null;
+      try {
+        statusClassName = crd.map(Crd::status).map(Class::getCanonicalName).get();
+      } catch (MirroredTypeException e) {
+        statusClassName = e.getTypeMirror().toString();
+      }
+ 
+
     if (element instanceof TypeElement) {
       TypeDef definition = ElementTo.TYPEDEF.apply((TypeElement) element);
       String className = ModelUtils.getClassName(element);
@@ -107,7 +116,11 @@ public class CustomResourceAnnotationProcessor extends AbstractAnnotationProcess
         .withPlural(firstOf(plural.map(Plural::value), crd.map(Crd::plural)))
         .withName(firstOf(singular.map(Singular::value), crd.map(Crd::name)))
         .withScope(firstOf(crd.map(Crd::scope), Optional.of(Types.isNamespaced(definition) ? Scope.Namespaced : Scope.Cluster)))
-        .withNewScale().endScale()
+        .withServed(firstOf(crd.map(Crd::served), Optional.of(true)))
+        .withStorage(firstOf(crd.map(Crd::storage), Optional.of(false)))
+        .withStatusClassName(statusClassName)
+        .withNewScale()
+        .endScale()
         .accept(new AddClassNameConfigurator(className))
         .addToAttributes(Keys.TYPE_DEFINITION, definition);
 
