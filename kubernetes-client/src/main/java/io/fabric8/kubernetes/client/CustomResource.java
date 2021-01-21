@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Locale;
@@ -280,7 +281,11 @@ public abstract class CustomResource<S, T> implements HasMetadata {
         String className = types[genericTypeIndex].getTypeName();
         if (!VOID_TYPE_NAME.equals(className)) {
           Class<?> clazz = Class.forName(className);
-          instantiators[genericTypeIndex] = () -> clazz.getDeclaredConstructor().newInstance();
+          instantiators[genericTypeIndex] = () -> {
+            final Constructor<?> constructor = clazz.getDeclaredConstructor();
+            constructor.setAccessible(true);
+            return constructor.newInstance();
+          };
         }
       }
     }
