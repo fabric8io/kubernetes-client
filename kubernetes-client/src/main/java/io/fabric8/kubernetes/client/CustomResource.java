@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Locale;
@@ -281,9 +282,20 @@ public abstract class CustomResource<S, T> implements HasMetadata {
         String className = types[genericTypeIndex].getTypeName();
         if (!VOID_TYPE_NAME.equals(className)) {
           Class<?> clazz = Class.forName(className);
+          if (clazz.isInterface() || Modifier.isAbstract(clazz.getModifiers())) {
+            throw new IllegalArgumentException(
+              "Cannot instantiate interface/abstract type " + className);
+          }
+          
           instantiators[genericTypeIndex] = () -> {
-            final Constructor<?> constructor = clazz.getDeclaredConstructor();
-            constructor.setAccessible(true);
+            final Constructor<?> constructor;
+            try {
+              constructor = clazz.getDeclaredConstructor();
+              constructor.setAccessible(true);
+            } catch (NoSuchMethodException | SecurityException e) {
+              throw new IllegalArgumentException(
+                "Cannot find a no-arg constructor for " + className);
+            }
             return constructor.newInstance();
           };
         }
@@ -298,7 +310,8 @@ public abstract class CustomResource<S, T> implements HasMetadata {
     } catch (Exception e) {
       final String fieldName = genericTypeIndex == 0 ? "Spec" : "Status";
       throw new IllegalArgumentException(
-        "Cannot instantiate " + fieldName + ", consider overriding init" + fieldName, e);
+        "Cannot instantiate " + fieldName + ", consider overriding init" + fieldName + ": "
+          + e.getMessage(), e);
     }
   }
 }
