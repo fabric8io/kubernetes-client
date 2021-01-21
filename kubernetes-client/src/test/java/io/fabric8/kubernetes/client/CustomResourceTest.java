@@ -59,15 +59,8 @@ class CustomResourceTest {
   }
   
   @Test
-  void directInitShouldWork() {
-    final CustomResource<String, Foo> cr = new CustomResource<String, Foo>(){};
-    assertEquals("", cr.getSpec());
-    assertEquals(new Foo(), cr.getStatus());
-  }
-  
-  @Test
   void untypedCustomResourceInitShouldWork() {
-    final CustomResource cr = new CustomResource() {};
+    final CustomResource cr = new Untyped();
     assertNull(cr.getSpec());
     assertNull(cr.getStatus());
   }
@@ -109,6 +102,10 @@ class CustomResourceTest {
       return obj instanceof Foo;
     }
   }
+  
+  @Group("example.com")
+  @Version("v1")
+  private static class Untyped extends CustomResource{}
   
   @Group("example.com")
   @Version("v1")
