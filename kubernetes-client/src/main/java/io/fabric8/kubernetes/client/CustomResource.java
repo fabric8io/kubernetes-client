@@ -280,7 +280,7 @@ public abstract class CustomResource<S, T> implements HasMetadata {
         String className = types[genericTypeIndex].getTypeName();
         if (!VOID_TYPE_NAME.equals(className)) {
           Class<?> clazz = Class.forName(className);
-          instantiators[genericTypeIndex] = () -> clazz.getConstructor().newInstance();
+          instantiators[genericTypeIndex] = () -> clazz.getDeclaredConstructor().newInstance();
         }
       }
     }
