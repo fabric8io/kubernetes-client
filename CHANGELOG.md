@@ -10,6 +10,12 @@
 #### Dependency Upgrade
 
 #### New Features
+                        
+### 5.0.1
+
+#### Improvements
+* Fix #2744: Automatically instantiates spec and status fields on `CustomResource` when possible. 
+  `initSpec` and `initStatus` methods are also provided to allow for overriding of the default implementation.
 
 ### 5.0.0 (2020-12-30)
 
