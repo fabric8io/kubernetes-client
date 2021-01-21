@@ -15,6 +15,8 @@
  */
 package io.fabric8.kubernetes.client;
 
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -108,9 +110,13 @@ class CustomResourceTest {
     }
   }
   
+  @Group("example.com")
+  @Version("v1")
   private static class CRV extends CustomResource<String, Void> {
   }
   
+  @Group("example.com")
+  @Version("v1")
   private static class CRI extends CustomResource<String, Integer> {
     
     @Override
@@ -119,12 +125,18 @@ class CustomResourceTest {
     }
   }
   
+  @Group("example.com")
+  @Version("v1")
   private static class CRC extends CustomResource<String, Foo> {
   }
   
+  @Group("example.com")
+  @Version("v1")
   private static class CRG extends CRC {
   }
   
+  @Group("example.com")
+  @Version("v1")
   private static class CRGG extends CRG {
   }
 }
