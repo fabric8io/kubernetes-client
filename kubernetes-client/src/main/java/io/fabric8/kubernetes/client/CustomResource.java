@@ -107,10 +107,18 @@ public abstract class CustomResource<S, T> implements HasMetadata {
     this.status = initStatus();
   }
   
+  /**
+   * Override to provide your own Spec instance
+   * @return a new Spec instance
+   */
   protected S initSpec() {
     return (S)genericInit(0);
   }
   
+  /**
+   * Override to provide your own Status instance
+   * @return a new Status instance
+   */
   protected T initStatus() {
     return (T)genericInit(1);
   }
@@ -248,14 +256,30 @@ public abstract class CustomResource<S, T> implements HasMetadata {
   private final static String VOID_TYPE_NAME = Void.class.getTypeName();
   private Instantiator[] instantiators = new Instantiator[2];
   
+  /**
+   * Encapsulates an instantiation means. Needed to provide no-op when needed.
+   */
   @FunctionalInterface
   private interface Instantiator {
     
     Object instantiate() throws Exception;
     
+    /**
+     * No-op instantiator.
+     */
     Instantiator NULL = () -> null;
   }
   
+  /**
+   * Returns the {@link Instantiator} instance associated with the type parameter associated with the specified index in the
+   * generic type definition. Records the result so that it's only done once per CustomResource implementation.
+   *
+   * @param genericTypeIndex the index of the parameter type we want to instantiate in the CustomResource definition, i.e. with
+   *                         the CustomResource<S,T> definition, {@code 0} corresponds to the {@code S} type (i.e. the Spec type)
+   *                         while {@code 1} corresponds to the {@code T} (i.e. Status) type.
+   * @return the {@link Instantiator} for the desired type
+   * @throws Exception if the generic type cannot be identified or instantiated
+   */
   private Instantiator getInstantiator(int genericTypeIndex) throws Exception {
     final Instantiator instantiator = instantiators[genericTypeIndex];
     if (instantiator == null) {
@@ -276,6 +300,7 @@ public abstract class CustomResource<S, T> implements HasMetadata {
           throw new IllegalArgumentException(
             "Automatic instantiation of Spec and Status only works for CustomResource implementations parameterized with both types, consider overriding initSpec and/or initStatus");
         }
+        // get the associated class from the type name, if not Void
         String className = types[genericTypeIndex].getTypeName();
         if (!VOID_TYPE_NAME.equals(className)) {
           Class<?> clazz = Class.forName(className);
@@ -284,11 +309,13 @@ public abstract class CustomResource<S, T> implements HasMetadata {
               "Cannot instantiate interface/abstract type " + className);
           }
           
+          // record the instantiator associated with the identified type
           instantiators[genericTypeIndex] = () -> {
             final Constructor<?> constructor;
             try {
+              // get the no-arg (declared needed if implicit) constructor
               constructor = clazz.getDeclaredConstructor();
-              constructor.setAccessible(true);
+              constructor.setAccessible(true); // and make it accessible
             } catch (NoSuchMethodException | SecurityException e) {
               throw new IllegalArgumentException(
                 "Cannot find a no-arg constructor for " + className);
