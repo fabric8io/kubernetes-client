@@ -1717,7 +1717,7 @@ cronTabClient.inNamespace("default").watch(new Watcher<CronTab>() {
 ```
 
 ### CustomResource Typeless API
-Although, you should be using Typed API since it's type-safe. But it can get a bit compilcated to maintain your `CustomResource` POJOs and sometimes people don't even have them. Kubernetes Client also provides a typeless/raw API to handle your `CustomResource` objects in form of HashMaps. In order to use it, you need to provide it with a `CustomResourceDefinitionContext`, which carries necessary information about `CustomResource`. Here is an example on how to create one:
+Although, you should be using Typed API since it's type-safe. But it can get a bit complicated to maintain your `CustomResource` POJOs and sometimes people don't even have them. Kubernetes Client also provides a typeless/raw API to handle your `CustomResource` objects in form of HashMaps. In order to use it, you need to provide it with a `CustomResourceDefinitionContext`, which carries necessary information about `CustomResource`. Here is an example on how to create one:
 - Create `CustomResourceDefinitionContext`:
 ```
 CustomResourceDefinitionContext customResourceDefinitionContext = new CustomResourceDefinitionContext.Builder()
