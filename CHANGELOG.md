@@ -11,6 +11,11 @@
 
 #### New Features
 
+### 4.13.1 (2021-01-20)
+
+#### Bugs
+* Fix #2734: (Backport #2596) Add buildable ref for container, port and volume
+
 ### 5.0.0 (2020-12-30)
 
 #### Bugs
