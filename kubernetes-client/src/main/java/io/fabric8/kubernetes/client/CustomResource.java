@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client;
 
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Locale;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -105,22 +106,11 @@ public abstract class CustomResource<S, T> implements HasMetadata {
   }
   
   protected S initSpec() {
-    return (S)genericInit(0, "spec");
-  }
-  
-  private Object genericInit(int genericTypeIndex, String fieldName) {
-    try {
-      // this should work because CustomResource is an abstract class
-      String className = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[genericTypeIndex].getTypeName();
-      Class<?> clazz = Class.forName(className);
-      return clazz.getConstructor().newInstance();
-    } catch (Exception e) {
-      throw new IllegalArgumentException("Cannot instantiate " + fieldName, e);
-    }
+    return (S)genericInit(0);
   }
   
   protected T initStatus() {
-    return (T)genericInit(1, "status");
+    return (T)genericInit(1);
   }
 
   @Override
@@ -250,5 +240,60 @@ public abstract class CustomResource<S, T> implements HasMetadata {
 
   public void setStatus(T status) {
     this.status = status;
+  }
+  
+  private final static String TYPE_NAME = CustomResource.class.getTypeName();
+  private final static String OBJECT_TYPE_NAME = Object.class.getTypeName();
+  private final static String VOID_TYPE_NAME = Void.class.getTypeName();
+  private Instantiator[] instantiators = new Instantiator[2];
+  
+  @FunctionalInterface
+  private interface Instantiator {
+    
+    Object instantiate() throws Exception;
+    
+    Instantiator NULL = () -> null;
+  }
+  
+  private Instantiator getInstantiator(int genericTypeIndex) throws Exception {
+    final Instantiator instantiator = instantiators[genericTypeIndex];
+    if (instantiator == null) {
+      instantiators[genericTypeIndex] = Instantiator.NULL;
+      // this should work because CustomResource is an abstract class
+      Type genericSuperclass = getClass().getGenericSuperclass();
+      String typeName = genericSuperclass.getTypeName();
+      do {
+        if (genericSuperclass instanceof ParameterizedType) {
+          break;
+        }
+        genericSuperclass = ((Class) genericSuperclass).getGenericSuperclass();
+        typeName = genericSuperclass.getTypeName();
+      } while (!TYPE_NAME.equals(typeName)
+        && !OBJECT_TYPE_NAME.equals(typeName));
+      
+      if (genericSuperclass instanceof ParameterizedType) {
+        final Type[] types = ((ParameterizedType) genericSuperclass).getActualTypeArguments();
+        if (types.length != 2) {
+          throw new IllegalArgumentException(
+            "Automatic instantiation of Spec and Status only works for CustomResource implementations parameterized with both types, consider overriding initSpec and/or initStatus");
+        }
+        String className = types[genericTypeIndex].getTypeName();
+        if (!VOID_TYPE_NAME.equals(className)) {
+          Class<?> clazz = Class.forName(className);
+          instantiators[genericTypeIndex] = () -> clazz.getConstructor().newInstance();
+        }
+      }
+    }
+    return instantiators[genericTypeIndex];
+  }
+  
+  private Object genericInit(int genericTypeIndex) {
+    try {
+      return getInstantiator(genericTypeIndex).instantiate();
+    } catch (Exception e) {
+      final String fieldName = genericTypeIndex == 0 ? "Spec" : "Status";
+      throw new IllegalArgumentException(
+        "Cannot instantiate " + fieldName + ", consider overriding init" + fieldName, e);
+    }
   }
 }
