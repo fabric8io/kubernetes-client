@@ -23,5 +23,5 @@ import io.fabric8.kubernetes.model.annotation.Version;
 
 @Version("v1alpha1")
 @Group("demo.fabric8.io")
-public class EntandoBundleRelease extends CustomResource<EntandoBundleReleaseSpec, KubernetesResource> implements Namespaced {
+public class EntandoBundleRelease extends CustomResource<EntandoBundleReleaseSpec, Void> implements Namespaced {
 }
