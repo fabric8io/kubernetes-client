@@ -582,10 +582,6 @@
         "ref": {
           "type": "string"
         },
-        "spec": {
-          "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_TriggerBindingSpec",
-          "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.TriggerBindingSpec"
-        },
         "value": {
           "type": "string",
           "existingJavaType": "String"
