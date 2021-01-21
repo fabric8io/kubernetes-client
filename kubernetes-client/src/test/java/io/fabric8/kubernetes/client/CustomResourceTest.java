@@ -19,31 +19,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class CustomResourceTest {
   private static class MissingApiVersion extends CustomResource {
   }
-  
-  private static class CRSpec {
-    public CRSpec() {
-    }
-  
-    @Override
-    public boolean equals(Object obj) {
-      return obj instanceof CRSpec;
-    }
-  }
-  private static class CRStatus {
-    public CRStatus() {
-    }
-  
-    @Override
-    public boolean equals(Object obj) {
-      return obj instanceof CRStatus;
-    }
-  }
-  private static class CR extends CustomResource<CRSpec,CRStatus>{}
   
   @Test
   void missingGroupAndVersionShouldFail() {
@@ -76,9 +57,74 @@ class CustomResourceTest {
   }
   
   @Test
-  void defaultInitSpecShouldWork() {
-    CR cr = new CR();
-    assertEquals(new CRSpec(), cr.getSpec());
-    assertEquals(new CRStatus(), cr.getStatus());
+  void directInitShouldWork() {
+    final CustomResource<String, Foo> cr = new CustomResource<String, Foo>(){};
+    assertEquals("", cr.getSpec());
+    assertEquals(new Foo(), cr.getStatus());
+  }
+  
+  @Test
+  void untypedCustomResourceInitShouldWork() {
+    final CustomResource cr = new CustomResource() {};
+    assertNull(cr.getSpec());
+    assertNull(cr.getStatus());
+  }
+  
+  @Test
+  void subclassInitShouldWork() {
+    final CRC cr = new CRC();
+    assertEquals("", cr.getSpec());
+    assertEquals(new Foo(), cr.getStatus());
+  }
+  
+  @Test
+  void subclassWithOverriddenInitShouldWork() {
+    final CRI cri = new CRI();
+    assertEquals("", cri.getSpec());
+    assertEquals(7, cri.getStatus());
+  }
+  
+  @Test
+  void subclassWithVoidStatusShouldWork() {
+    final CRV crv = new CRV();
+    assertEquals("", crv.getSpec());
+    assertNull(crv.getStatus());
+  }
+  
+  @Test
+  void deeperSubclassShouldWork() {
+    final CRGG cr = new CRGG();
+    assertEquals("", cr.getSpec());
+    assertEquals(new Foo(), cr.getStatus());
+  }
+  
+  private static class Foo {
+    public Foo() {
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+      return obj instanceof Foo;
+    }
+  }
+  
+  private static class CRV extends CustomResource<String, Void> {
+  }
+  
+  private static class CRI extends CustomResource<String, Integer> {
+    
+    @Override
+    protected Integer initStatus() {
+      return 7;
+    }
+  }
+  
+  private static class CRC extends CustomResource<String, Foo> {
+  }
+  
+  private static class CRG extends CRC {
+  }
+  
+  private static class CRGG extends CRG {
   }
 }
