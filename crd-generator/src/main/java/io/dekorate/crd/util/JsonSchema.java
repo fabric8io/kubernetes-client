@@ -54,7 +54,7 @@ public class JsonSchema {
   private static final TypeRef DOUBLE_REF = DOUBLE.toReference();
   private static final TypeRef DATE_REF = DATE.toReference();
 
-  private static final TypeRef P_INT_REF = new PrimitiveRefBuilder().withName("integer").build();
+  private static final TypeRef P_INT_REF = new PrimitiveRefBuilder().withName("int").build();
   private static final TypeRef P_LONG_REF = new PrimitiveRefBuilder().withName("long").build();
   private static final TypeRef P_DOUBLE_REF = new PrimitiveRefBuilder().withName("double").build();
   private static final TypeRef P_BOOLEAN_REF = new PrimitiveRefBuilder().withName("boolean").build();
@@ -65,8 +65,8 @@ public class JsonSchema {
 
       put(STRING_REF, "string");
       put(DATE_REF, "string");
-      put(INT_REF, "int");
-      put(P_INT_REF, "int");
+      put(INT_REF, "integer");
+      put(P_INT_REF, "integer");
       put(LONG_REF, "number");
       put(P_LONG_REF, "number");
       put(DOUBLE_REF, "number");
@@ -89,6 +89,9 @@ public class JsonSchema {
     List<String> required = new ArrayList<>();
 
     for (Property property : TypeUtils.allProperties(definition)) {
+      if (property.isStatic()) {
+        continue;
+      }
       if (ignores.contains(property.getName())) {
         continue;
       }
