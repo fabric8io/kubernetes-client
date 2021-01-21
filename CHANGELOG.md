@@ -17,6 +17,12 @@
 * Upgrade sundrio.version to 0.24.1
 
 #### New Features
+                        
+### 5.0.1
+
+#### Improvements
+* Fix #2744: Automatically instantiates spec and status fields on `CustomResource` when possible. 
+  `initSpec` and `initStatus` methods are also provided to allow for overriding of the default implementation.
 
 ### 4.13.1 (2021-01-20)
 
