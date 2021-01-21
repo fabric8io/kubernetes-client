@@ -93,6 +93,13 @@ class CustomResourceTest {
     assertEquals(new Foo(), cr.getStatus());
   }
   
+  @Test
+  void implicitConstructorShouldWork() {
+    final CRImplicit cr = new CRImplicit();
+    assertEquals(new Bar(), cr.getSpec());
+    assertEquals("", cr.getStatus());
+  }
+  
   private static class Foo {
     public Foo() {
     }
@@ -100,6 +107,13 @@ class CustomResourceTest {
     @Override
     public boolean equals(Object obj) {
       return obj instanceof Foo;
+    }
+  }
+  
+  private static class Bar {
+    @Override
+    public boolean equals(Object obj) {
+      return obj instanceof Bar;
     }
   }
   
@@ -136,4 +150,8 @@ class CustomResourceTest {
   @Version("v1")
   private static class CRGG extends CRG {
   }
+  
+  @Group("example.com")
+  @Version("v1")
+  private static class CRImplicit extends CustomResource<Bar, String> {}
 }
