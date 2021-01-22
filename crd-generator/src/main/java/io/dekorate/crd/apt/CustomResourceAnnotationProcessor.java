@@ -15,41 +15,35 @@
  */
 package io.dekorate.crd.apt;
 
+import io.dekorate.config.MultiConfiguration;
+import io.dekorate.crd.annotation.Autodetect;
+import io.dekorate.crd.annotation.Crd;
+import io.dekorate.crd.config.CustomResourceConfig;
+import io.dekorate.crd.config.CustomResourceConfigBuilder;
+import io.dekorate.crd.config.Keys;
+import io.dekorate.crd.config.Scope;
+import io.dekorate.crd.configurator.AddClassNameConfigurator;
+import io.dekorate.crd.generator.CustomResourceGenerator;
+import io.dekorate.crd.util.Types;
+import io.dekorate.processor.AbstractAnnotationProcessor;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Kind;
+import io.fabric8.kubernetes.model.annotation.Plural;
+import io.fabric8.kubernetes.model.annotation.Singular;
+import io.fabric8.kubernetes.model.annotation.Version;
+import io.sundr.codegen.CodegenContext;
+import io.sundr.codegen.functions.ElementTo;
+import io.sundr.codegen.model.TypeDef;
+import io.sundr.codegen.utils.ModelUtils;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Stream;
-
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.MirroredTypeException;
-
-import io.dekorate.config.MultiConfiguration;
-import io.dekorate.crd.adapter.CustomResourceConfigAdapter;
-import io.dekorate.crd.annotation.Crd;
-import io.dekorate.crd.config.Keys;
-import io.dekorate.crd.config.Scope;
-import io.dekorate.crd.config.CustomResourceConfig;
-import io.dekorate.crd.config.CustomResourceConfigBuilder;
-import io.dekorate.crd.configurator.AddClassNameConfigurator;
-import io.dekorate.crd.generator.CustomResourceGenerator;
-import io.dekorate.crd.util.Types;
-import io.dekorate.processor.AbstractAnnotationProcessor;
-import io.fabric8.kubernetes.client.CustomResource;
-import io.fabric8.kubernetes.model.annotation.Group;
-import io.fabric8.kubernetes.model.annotation.Version;
-import io.fabric8.kubernetes.model.annotation.Kind;
-import io.fabric8.kubernetes.model.annotation.Plural;
-import io.fabric8.kubernetes.model.annotation.Singular;
-import io.sundr.codegen.CodegenContext;
-import io.sundr.codegen.functions.ElementTo;
-import io.sundr.codegen.model.TypeDef;
-import io.sundr.codegen.utils.ModelUtils;
-import io.sundr.codegen.utils.TypeUtils;
 
 @SupportedAnnotationTypes({
     "io.fabric8.kubernetes.model.annotation.Group",
@@ -98,15 +92,13 @@ public class CustomResourceAnnotationProcessor extends AbstractAnnotationProcess
     Optional<Plural> plural = Optional.ofNullable(element.getAnnotation(Plural.class));
     Optional<Singular> singular = Optional.ofNullable(element.getAnnotation(Singular.class));
 
-    String statusClassName = null;
-      try {
-        statusClassName = crd.map(Crd::status).map(Class::getCanonicalName).get();
-      } catch (MirroredTypeException e) {
-        statusClassName = e.getTypeMirror().toString();
-      } catch (Exception e) {
-        // ignore
-      }
- 
+    String statusClassName;
+    try {
+      statusClassName = crd.map(Crd::status).map(Class::getCanonicalName)
+        .orElse(Autodetect.class.getCanonicalName());
+    } catch (MirroredTypeException e) {
+      statusClassName = e.getTypeMirror().toString();
+    }
 
     if (element instanceof TypeElement) {
       TypeDef definition = ElementTo.TYPEDEF.apply((TypeElement) element);
