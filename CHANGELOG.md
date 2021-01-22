@@ -3,6 +3,7 @@
 ### 5.2-SNAPSHOT
 
 #### Bugs
+* Apiextensions DSL should use NonNamespaceOperation for CustomResourceDefinitions
 
 #### Improvements
 
