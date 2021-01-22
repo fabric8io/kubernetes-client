@@ -17,6 +17,7 @@ package io.dekorate.crd.apt;
 
 import java.util.Arrays;
 import java.util.LinkedHashSet;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -102,6 +103,8 @@ public class CustomResourceAnnotationProcessor extends AbstractAnnotationProcess
         statusClassName = crd.map(Crd::status).map(Class::getCanonicalName).get();
       } catch (MirroredTypeException e) {
         statusClassName = e.getTypeMirror().toString();
+      } catch (Exception e) {
+        // ignore
       }
  
 
