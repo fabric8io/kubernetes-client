@@ -17,10 +17,12 @@ package io.fabric8.kubernetes.client.dsl.internal;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Map;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ListOptions;
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -31,25 +33,25 @@ class BaseOperationRequestBuilder<T extends HasMetadata, L extends KubernetesRes
   private final URL requestUrl;
   private final BaseOperation<T, L, ?> baseOperation;
   private final ListOptions listOptions;
-  
+
   public BaseOperationRequestBuilder(BaseOperation<T, L, ?> baseOperation, ListOptions listOptions) throws MalformedURLException {
     this.baseOperation = baseOperation;
     this.requestUrl = baseOperation.getNamespacedUrl();
     this.listOptions = listOptions;
   }
-  
+
   @Override
   public Request build(final String resourceVersion) {
     HttpUrl.Builder httpUrlBuilder = HttpUrl.get(requestUrl).newBuilder();
-    
+
     String labelQueryParam = baseOperation.getLabelQueryParam();
     if (Utils.isNotNullOrEmpty(labelQueryParam)) {
       httpUrlBuilder.addQueryParameter("labelSelector", labelQueryParam);
     }
-    
+
     String fieldQueryString = baseOperation.getFieldQueryParam();
     String name = baseOperation.getName();
-    
+
     if (name != null && name.length() > 0) {
       if (fieldQueryString.length() > 0) {
         fieldQueryString += ",";
@@ -59,19 +61,28 @@ class BaseOperationRequestBuilder<T extends HasMetadata, L extends KubernetesRes
     if (Utils.isNotNullOrEmpty(fieldQueryString)) {
       httpUrlBuilder.addQueryParameter("fieldSelector", fieldQueryString);
     }
-    
+
     listOptions.setResourceVersion(resourceVersion);
     HttpClientUtils.appendListOptionParams(httpUrlBuilder, listOptions);
-    
+
     String origin = requestUrl.getProtocol() + "://" + requestUrl.getHost();
     if (requestUrl.getPort() != -1) {
       origin += ":" + requestUrl.getPort();
     }
-    
-    return new Request.Builder()
+
+    Request.Builder requestBuilder = new Request.Builder()
       .get()
       .url(httpUrlBuilder.build())
-      .addHeader("Origin", origin)
-      .build();
+      .addHeader("Origin", origin);
+
+    Config config = baseOperation.getConfig();
+    Map<String, String> customHeaders = config.getCustomHeaders();
+    if (null != customHeaders && !customHeaders.isEmpty()) {
+      for (String key : customHeaders.keySet()) {
+        requestBuilder.addHeader(key, customHeaders.get(key));
+      }
+    }
+
+    return requestBuilder.build();
   }
 }
