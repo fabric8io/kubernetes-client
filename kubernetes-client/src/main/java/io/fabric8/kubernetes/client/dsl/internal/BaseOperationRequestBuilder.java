@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
+import java.util.Objects;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
@@ -76,10 +77,12 @@ class BaseOperationRequestBuilder<T extends HasMetadata, L extends KubernetesRes
       .addHeader("Origin", origin);
 
     Config config = baseOperation.getConfig();
-    Map<String, String> customHeaders = config.getCustomHeaders();
-    if (null != customHeaders && !customHeaders.isEmpty()) {
-      for (String key : customHeaders.keySet()) {
-        requestBuilder.addHeader(key, customHeaders.get(key));
+    if (Objects.nonNull(config)) {
+      Map<String, String> customHeaders = config.getCustomHeaders();
+      if (Objects.nonNull(customHeaders) && !customHeaders.isEmpty()) {
+        for (String key : customHeaders.keySet()) {
+          requestBuilder.addHeader(key, customHeaders.get(key));
+        }
       }
     }
 
