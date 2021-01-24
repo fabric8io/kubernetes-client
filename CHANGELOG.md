@@ -1,7 +1,9 @@
 ## CHANGELOG
 
 ### 5.1-SNAPSHOT
+
 #### Bugs
+* Fix #2748: Pass custom headers in kubernetes-client to watch api by modify WatchConnectionManager
 
 #### Improvements
 
