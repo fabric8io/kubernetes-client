@@ -28,6 +28,7 @@ import java.util.Set;
 
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsBuilder;
+import io.fabric8.kubernetes.client.CustomResource;
 import io.sundr.builder.internal.functions.TypeAs;
 import io.sundr.codegen.functions.ClassTo;
 import io.sundr.codegen.model.ClassRef;
@@ -39,6 +40,7 @@ import io.sundr.codegen.utils.TypeUtils;
 
 public class JsonSchema {
 
+  private static final TypeDef CUSTOM_RESOURCE = ClassTo.TYPEDEF.apply(CustomResource.class);
   private static final TypeDef BOOLEAN = ClassTo.TYPEDEF.apply(Boolean.class);
   private static final TypeDef STRING = ClassTo.TYPEDEF.apply(String.class);
   private static final TypeDef INT = ClassTo.TYPEDEF.apply(Integer.class);
@@ -88,10 +90,12 @@ public class JsonSchema {
     Set<String> ignores  = ignore.length > 0 ? new LinkedHashSet<>(Arrays.asList(ignore)) : Collections.emptySet();
     List<String> required = new ArrayList<>();
 
-    for (Property property : TypeUtils.allProperties(definition)) {
+
+    for (Property property : Types.allProperties(definition)) {
       if (property.isStatic()) {
         continue;
       }
+
       if (ignores.contains(property.getName())) {
         continue;
       }

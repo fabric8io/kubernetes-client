@@ -27,8 +27,11 @@ import javax.lang.model.element.TypeElement;
 import io.dekorate.crd.annotation.Status;
 import io.dekorate.crd.config.CustomResourceConfig;
 import io.fabric8.kubernetes.api.model.Namespaced;
+import io.fabric8.kubernetes.client.CustomResource;
 
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
 import io.sundr.codegen.CodegenContext;
 import io.sundr.codegen.functions.ClassTo;
 import io.sundr.codegen.functions.ElementTo;
@@ -37,11 +40,47 @@ import io.sundr.codegen.model.ClassRef;
 import io.sundr.codegen.model.Property;
 import io.sundr.codegen.model.TypeDef;
 import io.sundr.codegen.model.TypeRef;
-import io.sundr.codegen.utils.TypeUtils;
 
 public class Types {
 
   private static final TypeDef NAMESPACED = ClassTo.TYPEDEF.apply(Namespaced.class);
+  private static final TypeDef CUSTOM_RESOURCE = ClassTo.TYPEDEF.apply(CustomResource.class);
+
+
+    /**
+     * All properties (including inherited).
+     * @param typeDef   The type.
+     * @return          A list with all properties.
+     */
+    public static List<Property> allProperties(TypeDef typeDef) {
+        return unrollHierarchy(typeDef)
+                .stream()
+                .flatMap(h -> h.getProperties().stream())
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Unrolls the hierararchy of a specified type.
+     * @param typeDef       The specified type.
+     * @return              A set that contains all the hierarching (including the specified type).
+     */
+    public static Set<TypeDef> unrollHierarchy(TypeDef typeDef) {
+      if (typeDef.getPackageName() != null && (typeDef.getPackageName().startsWith("java.") ||
+                                               typeDef.getPackageName().startsWith("javax.") ||
+                                               typeDef.getPackageName().startsWith("com.sun.") ||
+                                               typeDef.getPackageName().startsWith("com.ibm."))) {
+            return new HashSet<>();
+        }
+        if (CUSTOM_RESOURCE.equals(typeDef)) {
+            return new HashSet<>();
+        }
+        Set<TypeDef> hierarchy = new HashSet<>();
+        hierarchy.add(typeDef);
+        hierarchy.addAll(typeDef.getExtendsList().stream().flatMap(s -> unrollHierarchy(s.getDefinition()).stream()).collect(Collectors.toSet()));
+        return hierarchy;
+    }
+
+
 
   public static boolean isNamespaced(TypeDef definition) {
     return isNamespaced(definition, new HashSet<TypeDef>());
@@ -102,7 +141,7 @@ public class Types {
    * @return the an optional property.
    */
   public static Optional<Property> findStatusProperty(CustomResourceConfig config, TypeDef typeDef) {
-    return TypeUtils.allProperties(typeDef).stream()
+    return allProperties(typeDef).stream()
       .filter(Types::isStatusProperty)
       .findFirst();
   }

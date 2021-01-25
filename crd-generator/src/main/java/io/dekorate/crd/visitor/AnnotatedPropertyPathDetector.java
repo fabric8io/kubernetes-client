@@ -23,12 +23,12 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+import io.dekorate.crd.util.Types;
 import io.sundr.builder.TypedVisitor;
 import io.sundr.codegen.model.Property;
 import io.sundr.codegen.model.ClassRef;
 import io.sundr.codegen.model.TypeDef;
 import io.sundr.codegen.model.TypeDefBuilder;
-import io.sundr.codegen.utils.TypeUtils;
 
 public class AnnotatedPropertyPathDetector extends TypedVisitor<TypeDefBuilder> {
 
@@ -58,7 +58,7 @@ public class AnnotatedPropertyPathDetector extends TypedVisitor<TypeDefBuilder> 
   @Override
   public void visit(TypeDefBuilder builder) {
     TypeDef type = builder.build();
-    for (Property p : TypeUtils.allProperties(type)) {
+    for (Property p : Types.allProperties(type)) {
       if (parents.contains(p)) {
           continue;
         }
@@ -72,7 +72,7 @@ public class AnnotatedPropertyPathDetector extends TypedVisitor<TypeDefBuilder> 
         }
     }
 
-    TypeUtils.allProperties(type).stream().filter(p -> p.getTypeRef() instanceof ClassRef).forEach(p -> {
+    Types.allProperties(type).stream().filter(p -> p.getTypeRef() instanceof ClassRef).forEach(p -> {
         if (!parents.contains(p)) {
           ClassRef classRef = (ClassRef) p.getTypeRef();
           TypeDef propertyType = classRef.getDefinition();
