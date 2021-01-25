@@ -20,6 +20,8 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -254,7 +256,7 @@ public abstract class CustomResource<S, T> implements HasMetadata {
   
   private final static String TYPE_NAME = CustomResource.class.getTypeName();
   private final static String VOID_TYPE_NAME = Void.class.getTypeName();
-  private Instantiator[] instantiators = new Instantiator[2];
+  private final static Map<String, Instantiator> instantiators = new ConcurrentHashMap<>();
   
   /**
    * Encapsulates an instantiation means. Needed to provide no-op when needed.
@@ -281,9 +283,10 @@ public abstract class CustomResource<S, T> implements HasMetadata {
    * @throws Exception if the generic type cannot be identified or instantiated
    */
   private Instantiator getInstantiator(int genericTypeIndex) throws Exception {
-    final Instantiator instantiator = instantiators[genericTypeIndex];
+    final String key = getKey(getClass(), genericTypeIndex);
+    Instantiator instantiator = instantiators.get(key);
     if (instantiator == null) {
-      instantiators[genericTypeIndex] = Instantiator.NULL;
+      instantiator = Instantiator.NULL;
       
       // walk the type hierarchy until we reach CustomResource or a ParameterizedType
       Type genericSuperclass = getClass().getGenericSuperclass();
@@ -310,7 +313,7 @@ public abstract class CustomResource<S, T> implements HasMetadata {
           }
           
           // record the instantiator associated with the identified type
-          instantiators[genericTypeIndex] = () -> {
+          instantiator = () -> {
             final Constructor<?> constructor;
             try {
               // get the no-arg (declared needed if implicit) constructor
@@ -324,8 +327,9 @@ public abstract class CustomResource<S, T> implements HasMetadata {
           };
         }
       }
+      instantiators.put(key, instantiator);
     }
-    return instantiators[genericTypeIndex];
+    return instantiator;
   }
   
   private Object genericInit(int genericTypeIndex) {
@@ -337,5 +341,9 @@ public abstract class CustomResource<S, T> implements HasMetadata {
         "Cannot instantiate " + fieldName + ", consider overriding init" + fieldName + ": "
           + e.getMessage(), e);
     }
+  }
+  
+  private final static String getKey(Class<? extends CustomResource> clazz, int genericTypeIndex) {
+    return clazz.getCanonicalName() + "_" + genericTypeIndex;
   }
 }
