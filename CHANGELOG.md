@@ -1,5 +1,15 @@
 ## CHANGELOG
 
+### 5.1-SNAPSHOT
+
+#### Bugs
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
 ### 5.0.1 (2021-01-27)
 
 #### Bugs
@@ -18,8 +28,6 @@
 #### Dependency Upgrade
 
 * Fix #2723: Upgrade sundrio.version to 0.24.1
-
-#### New Features
 
 ### 4.13.1 (2021-01-20)
 
