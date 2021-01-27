@@ -56,7 +56,7 @@ public class ProcessorListener<T> implements Runnable {
       try {
         queue.take().handle(handler);
       } catch(InterruptedException ex) {
-        log.error("Processor thread interrupted: {}", ex.getMessage());
+        log.warn("Processor thread interrupted: {}", ex.getMessage());
         Thread.currentThread().interrupt();
         return;
       } catch (Exception ex) {
