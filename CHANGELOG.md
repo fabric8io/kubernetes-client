@@ -1,28 +1,25 @@
 ## CHANGELOG
 
-### 5.1-SNAPSHOT
+### 5.0.1 (2021-01-27)
 
 #### Bugs
 * Fix #2687: RawCustomResourceOperationsImpl ignores config
+* Fix #2612: add support for checking latest kubeconfig in Interceptor
 
 #### Improvements
 
-* Dependency cleanup
+* Fix #2723: Dependency cleanup
  - Remove javax.annotation-api 
  - Remove jaxb-api
  - Remove jacson-module-jaxb-annotations
+* Fix #2744: Automatically instantiates spec and status fields on `CustomResource` when possible.
+  `initSpec` and `initStatus` methods are also provided to allow for overriding of the default implementation.
 
 #### Dependency Upgrade
 
-* Upgrade sundrio.version to 0.24.1
+* Fix #2723: Upgrade sundrio.version to 0.24.1
 
 #### New Features
-                        
-### 5.0.1
-
-#### Improvements
-* Fix #2744: Automatically instantiates spec and status fields on `CustomResource` when possible. 
-  `initSpec` and `initStatus` methods are also provided to allow for overriding of the default implementation.
 
 ### 4.13.1 (2021-01-20)
 
