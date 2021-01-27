@@ -157,7 +157,7 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
       try {
         this.queue.pop(this.processFunc);
       } catch (InterruptedException t) {
-        log.error("DefaultController#processLoop got interrupted {}", t.getMessage(), t);
+        log.warn("DefaultController#processLoop got interrupted {}", t.getMessage(), t);
         Thread.currentThread().interrupt();
         return;
       } catch (Exception e) {
