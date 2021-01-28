@@ -6,6 +6,7 @@
 * Fix #2748: Pass custom headers in kubernetes-client to watch api by modify WatchConnectionManager
 
 #### Improvements
+* Fix #2757: add `storage` and `served` to `Version` annotation
 
 #### Dependency Upgrade
 * update Tekton Triggers model to v0.11.1
