@@ -7,6 +7,7 @@
 
 #### Improvements
 * Fix #2717: Remove edit() methods from RawCustomResourceOperationsImpl taking InputStream arguments
+* Fix #2757: add `storage` and `served` to `Version` annotation
 
 #### Dependency Upgrade
 * update Tekton Triggers model to v0.11.1
@@ -30,11 +31,6 @@ _**Note**_: Breaking changes in the API
 
 #### Bugs
 * Fix #2715: CVE-2021-20218 vulnerable to a path traversal leading to integrity and availability compromise
-
-### 5.0.2
-
-#### Improvements
-* Fix #2757: add `storage` and `served` to `Version` annotation
 
 ### 5.0.1 (2021-01-27)
 
