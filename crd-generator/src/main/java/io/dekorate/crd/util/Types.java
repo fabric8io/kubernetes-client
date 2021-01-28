@@ -17,10 +17,15 @@
 
 package io.dekorate.crd.util;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.lang.model.element.TypeElement;
 
@@ -28,17 +33,17 @@ import io.dekorate.crd.annotation.Status;
 import io.dekorate.crd.config.CustomResourceConfig;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.client.CustomResource;
-
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
+import io.sundr.builder.TypedVisitor;
 import io.sundr.codegen.CodegenContext;
 import io.sundr.codegen.functions.ClassTo;
 import io.sundr.codegen.functions.ElementTo;
 import io.sundr.codegen.model.AnnotationRefBuilder;
 import io.sundr.codegen.model.ClassRef;
 import io.sundr.codegen.model.Property;
+import io.sundr.codegen.model.PropertyBuilder;
 import io.sundr.codegen.model.TypeDef;
+import io.sundr.codegen.model.TypeDefBuilder;
+import io.sundr.codegen.model.TypeParamRef;
 import io.sundr.codegen.model.TypeRef;
 
 public class Types {
@@ -71,15 +76,46 @@ public class Types {
                                                typeDef.getPackageName().startsWith("com.ibm."))) {
             return new HashSet<>();
         }
-        if (CUSTOM_RESOURCE.equals(typeDef)) {
-            return new HashSet<>();
+        if (typeDef.getFullyQualifiedName().equals(CUSTOM_RESOURCE.getFullyQualifiedName())) {
+          //We need a version of custom resource stripped from uneeded properites.
+          return Stream.of(new TypeDefBuilder(CUSTOM_RESOURCE)
+            .withProperties(typeDef.getProperties()
+                    .stream()
+                    .filter(p -> p.getName().equals("spec") || p.getName().equals("status"))
+                            .collect(Collectors.toList())).build()).collect(Collectors.toSet());
         }
         Set<TypeDef> hierarchy = new HashSet<>();
         hierarchy.add(typeDef);
-        hierarchy.addAll(typeDef.getExtendsList().stream().flatMap(s -> unrollHierarchy(s.getDefinition()).stream()).collect(Collectors.toSet()));
+        hierarchy.addAll(typeDef.getExtendsList().stream().flatMap(s -> unrollHierarchy(applyTypeArguments(s)).stream()).collect(Collectors.toSet()));
         return hierarchy;
     }
 
+  /**
+   * Apply type arguments on all generic properties of a {@link ClassRef}.
+   */
+  public static TypeDef applyTypeArguments(ClassRef ref) {
+    Map<String, TypeRef> bounds = new HashMap<>();
+    for (int i=0; i < ref.getArguments().size(); i++) {
+      bounds.put(ref.getDefinition().getParameters().get(i).getName(), ref.getArguments().get(i));
+    }
+
+    return new TypeDefBuilder(ref.getDefinition()).accept(new TypedVisitor<PropertyBuilder>(){
+          @Override
+          public void visit(PropertyBuilder property) {
+            TypeRef typeRef = property.buildTypeRef();
+            if (typeRef instanceof TypeParamRef) {
+              TypeParamRef typeParamRef = (TypeParamRef) typeRef;
+              String key = typeParamRef.getName();
+              if (bounds.containsKey(key)) {
+                TypeRef paramRef = bounds.get(key);
+                if (paramRef != null) {
+                  property.withTypeRef(paramRef);
+                }
+              }
+            }
+          }
+        }).build();
+  }
 
 
   public static boolean isNamespaced(TypeDef definition) {
