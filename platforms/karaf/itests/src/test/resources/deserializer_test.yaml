@@ -115,11 +115,6 @@ apiVersion: scheduling.k8s.io/v1beta1
 metadata:
   name: test-priorityclass-v1beta1
 ---
-kind: PodPreset
-apiVersion: settings.k8s.io/v1alpha1
-metadata:
-  name: test-podpreset-v1alpha1
----
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:

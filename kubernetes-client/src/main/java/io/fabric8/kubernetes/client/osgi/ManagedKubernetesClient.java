@@ -53,8 +53,8 @@ import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionList;
-import io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequest;
-import io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequestList;
+import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequest;
+import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestList;
 import io.fabric8.kubernetes.api.model.authentication.TokenReview;
 import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseList;
@@ -98,7 +98,6 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.SchedulingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.ServiceResource;
-import io.fabric8.kubernetes.client.dsl.SettingsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.StorageAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1APIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
@@ -389,9 +388,6 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
 
   @Override
   public StorageAPIGroupDSL storage() { return delegate.storage(); }
-
-  @Override
-  public SettingsAPIGroupDSL settings() { return delegate.settings(); }
 
   @Override
   public BatchAPIGroupDSL batch() { return delegate.batch(); }

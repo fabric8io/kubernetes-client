@@ -51,8 +51,8 @@ import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
-import io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequest;
-import io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequestList;
+import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequest;
+import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestList;
 import io.fabric8.kubernetes.api.model.authentication.TokenReview;
 import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseList;
@@ -270,13 +270,6 @@ public interface KubernetesClient extends Client {
    * @return StorageAPIGroupDSL which offers entrypoints to specific resources in this APIGroup
    */
   StorageAPIGroupDSL storage();
-
-  /**
-   * API entrypoint for kubernetes resources with APIGroup settings/v1alpha1
-   *
-   * @return SettingsAPIGroupDSL which offers entrypoint to specific resources in this APIGroup
-   */
-  SettingsAPIGroupDSL settings();
 
   /**
    * API entrypoint for kubernetes resources with APIGroup batch/v1beta1

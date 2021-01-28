@@ -25,7 +25,8 @@ import (
   apimachineryversion "k8s.io/apimachinery/pkg/version"
   authenticationapi "k8s.io/api/authentication/v1"
 
-  admission "k8s.io/api/admission/v1beta1"
+  v1beta1admission "k8s.io/api/admission/v1beta1"
+  v1admission "k8s.io/api/admission/v1"
   admissionregistrationv1 "k8s.io/api/admissionregistration/v1"
   admissionregistration "k8s.io/api/admissionregistration/v1beta1"
   k8sauthapi "k8s.io/api/authorization/v1"
@@ -62,11 +63,16 @@ type Schema struct {
 
   TokenReview                              authenticationapi.TokenReview
 
-  AdmissionReview                          admission.AdmissionReview
-  AdmissionRequest                         admission.AdmissionRequest
-  AdmissionResponse                        admission.AdmissionResponse
-  PatchType                                admission.PatchType
-  Operation                                admission.Operation
+  V1Beta1AdmissionReview                   v1beta1admission.AdmissionReview
+  V1Beta1AdmissionRequest                  v1beta1admission.AdmissionRequest
+  V1Beta1AdmissionResponse                 v1beta1admission.AdmissionResponse
+  V1Beta1PatchType                         v1beta1admission.PatchType
+  V1Beta1Operation                         v1beta1admission.Operation
+  V1AdmissionReview                        v1admission.AdmissionReview
+  V1AdmissionRequest                       v1admission.AdmissionRequest
+  V1AdmissionResponse                      v1admission.AdmissionResponse
+  V1PatchType                              v1admission.PatchType
+  V1Operation                              v1admission.Operation
   Rule                                     admissionregistration.Rule
   ValidatingWebhookConfiguration           admissionregistration.ValidatingWebhookConfiguration
   ValidatingWebhookConfigurationList       admissionregistration.ValidatingWebhookConfigurationList
@@ -93,7 +99,8 @@ type Schema struct {
 
 func main() {
   packages := []schemagen.PackageDescriptor{
-    {"k8s.io/api/admission/v1beta1", "admission.k8s.io", "io.fabric8.kubernetes.api.model.admission", "kubernetes_admission_", true},
+    {"k8s.io/api/admission/v1beta1", "admission.k8s.io", "io.fabric8.kubernetes.api.model.admission.v1beta1", "kubernetes_admission_v1beta1_", true},
+    {"k8s.io/api/admission/v1", "admission.k8s.io", "io.fabric8.kubernetes.api.model.admission.v1", "kubernetes_admission_v1_", true},
     {"k8s.io/api/admissionregistration/v1beta1", "admissionregistration.k8s.io", "io.fabric8.kubernetes.api.model.admissionregistration.v1beta1", "kubernetes_admissionregistration_v1beta1_", true},
     {"k8s.io/api/admissionregistration/v1", "admissionregistration.k8s.io", "io.fabric8.kubernetes.api.model.admissionregistration.v1", "kubernetes_admissionregistration_v1_", true},
     {"k8s.io/api/authentication/v1", "authentication.k8s.io", "io.fabric8.kubernetes.api.model.authentication", "kubernetes_authentication_", true},

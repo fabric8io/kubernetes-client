@@ -7,8 +7,16 @@
 
 #### Dependency Upgrade
 * update Tekton Triggers model to v0.11.1
+* Fix #2684: Upgrade Kubernetes Model to v1.20.2
 
 #### New Features
+
+_**Note**_: Breaking changes in the API
+- `client.settings()` DSL has been removed since PodPreset v1alpha1 API is no longer present in Kubernetes 1.20.x
+- Classes in `io.fabric8.kubernetes.api.model.scheduling` have been moved to `io.fabric8.kubernetes.api.model.scheduling.v1` and `io.fabric8.kubernetes.api.model.scheduling.v1beta1`
+- Classes in `io.fabric8.kubernetes.api.model.admission` have been moved to `io.fabric8.kubernetes.api.model.admission.v1` and `io.fabric8.kubernetes.api.model.admission.v1beta1`
+- Classes in `io.fabric8.kubernetes.api.model.certificates` have been moved to `io.fabric8.kubernetes.api.model.certificates.v1` and `io.fabric8.kubernetes.api.model.certificates.v1beta1`
+- Classes in `io.fabric8.kubernetes.api.model.events` have been moved to `io.fabric8.kubernetes.api.model.events.v1` and `io.fabric8.kubernetes.api.model.events.v1beta1`
 
 ### 5.0.1 (2021-01-27)
 

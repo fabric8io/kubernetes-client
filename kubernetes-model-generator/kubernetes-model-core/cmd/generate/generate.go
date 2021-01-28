@@ -25,7 +25,6 @@ import (
 	apimachineryversion "k8s.io/apimachinery/pkg/version"
 	configapi "k8s.io/client-go/tools/clientcmd/api/v1"
 	aggregator "k8s.io/kube-aggregator/pkg/apis/apiregistration/v1"
-	watch "k8s.io/kubernetes/pkg/watch/json"
 	"log"
 	"reflect"
 	"strings"
@@ -58,6 +57,7 @@ type Schema struct {
 	GroupVersionResource metav1.GroupVersionResource
 	Quantity             resource.Quantity
 	Condition            metav1.Condition
+	WatchEvent           metav1.WatchEvent
 
 	PodList                   kapi.PodList
 	PodTemplateList           kapi.PodTemplateList
@@ -95,7 +95,6 @@ type Schema struct {
 	ConfigMapList             kapi.ConfigMapList
 	Toleration                kapi.Toleration
 	TopologySelectorTerm      kapi.TopologySelectorTerm
-	WatchEvent                watch.WatchEvent
 	Config                    configapi.Config
 	APIService                aggregator.APIService
 	APIServiceList            aggregator.APIServiceList
@@ -109,7 +108,6 @@ func main() {
 		{"k8s.io/apimachinery/pkg/version", "", "io.fabric8.kubernetes.api.model.version", "kubernetes_apimachinery_pkg_version_", true},
 		{"k8s.io/apimachinery/pkg/apis/meta/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_pkg_apis_", true},
 		{"k8s.io/api/core/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_core_", true},
-		{"k8s.io/kubernetes/pkg/watch/json", "", "io.fabric8.kubernetes.api.model", "kubernetes_watch_", true},
 		{"k8s.io/kubernetes/pkg/util", "", "io.fabric8.kubernetes.api.model", "kubernetes_util_", true},
 		{"k8s.io/kubernetes/pkg/api/errors", "", "io.fabric8.kubernetes.api.model", "kubernetes_errors_", true},
 		{"k8s.io/client-go/tools/clientcmd/api/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_config_", true},

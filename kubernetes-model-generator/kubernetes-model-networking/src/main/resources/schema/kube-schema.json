@@ -820,6 +820,14 @@
         },
         "ip": {
           "type": "string"
+        },
+        "ports": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_core_PortStatus",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.PortStatus"
+          }
         }
       },
       "additionalProperties": true,
@@ -873,6 +881,25 @@
       },
       "additionalProperties": true,
       "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_core_PortStatus": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer"
+        },
+        "protocol": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.kubernetes.api.model.PortStatus",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]

@@ -60,7 +60,6 @@ class AdaptTest {
     assertNotNull(client.pods());
     assertNotNull(client.rbac());
     assertNotNull(client.roleBindings());
-    assertNotNull(client.settings());
     assertNotNull(client.storage());
     assertNotNull(client.templates());
     assertNotNull(client.users());

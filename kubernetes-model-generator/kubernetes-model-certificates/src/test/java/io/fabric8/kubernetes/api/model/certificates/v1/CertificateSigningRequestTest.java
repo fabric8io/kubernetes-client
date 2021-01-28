@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.api.model.certificates;
+package io.fabric8.kubernetes.api.model.certificates.v1;
 
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class CertificateSigningRequestTest {
+class CertificateSigningRequestTest {
   @Test
-  public void testBuilder() {
-    CertificateSigningRequest csr = new io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequestBuilder()
+  void testBuilder() {
+    CertificateSigningRequest csr = new io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestBuilder()
       .withNewMetadata().withName("my-svc.my-namespace").endMetadata()
       .withNewSpec()
       .withRequest("$(cat server.csr | base64 | tr -d '\\n')")

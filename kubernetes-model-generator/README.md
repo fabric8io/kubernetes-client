@@ -32,8 +32,6 @@
 [![javadoc](https://javadoc.io/badge2/io.fabric8/kubernetes-model-rbac/javadoc.svg)](https://javadoc.io/doc/io.fabric8/kubernetes-model-rbac)
 * kubernetes-model-scheduling: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/kubernetes-model-scheduling.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Akubernetes-model-scheduling)
 [![javadoc](https://javadoc.io/badge2/io.fabric8/kubernetes-model-scheduling/javadoc.svg)](https://javadoc.io/doc/io.fabric8/kubernetes-model-scheduling)
-* kubernetes-model-settings: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/kubernetes-model-settings.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Akubernetes-model-settings)
-[![javadoc](https://javadoc.io/badge2/io.fabric8/kubernetes-model-settings/javadoc.svg)](https://javadoc.io/doc/io.fabric8/kubernetes-model-settings)
 * kubernetes-model-storageclass: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/kubernetes-model-storageclass.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Akubernetes-model-storageclass)
 [![javadoc](https://javadoc.io/badge2/io.fabric8/kubernetes-model-storageclass/javadoc.svg)](https://javadoc.io/doc/io.fabric8/kubernetes-model-storageclass)
 * kubernetes-model-node: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/kubernetes-model-node.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Akubernetes-model-node)

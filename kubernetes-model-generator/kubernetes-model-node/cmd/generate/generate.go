@@ -24,6 +24,7 @@ import (
   apimachineryversion "k8s.io/apimachinery/pkg/version"
   kapi "k8s.io/api/core/v1"
 
+  v1node "k8s.io/api/node/v1"
   v1beta1node "k8s.io/api/node/v1beta1"
   v1alpha1node "k8s.io/api/node/v1alpha1"
 
@@ -46,6 +47,8 @@ type Schema struct {
   Quantity                                 resource.Quantity
   ObjectReference                          kapi.ObjectReference
 
+  V1RuntimeClass                           v1node.RuntimeClass
+  V1RuntimeClassList                       v1node.RuntimeClassList
   V1beta1RuntimeClass                      v1beta1node.RuntimeClass
   V1beta1RuntimeClassList                  v1beta1node.RuntimeClassList
   V1alpha1RuntimeClass                     v1alpha1node.RuntimeClass
@@ -58,6 +61,7 @@ func main() {
     {"k8s.io/apimachinery/pkg/version", "", "io.fabric8.kubernetes.api.model.version", "kubernetes_apimachinery_pkg_version_", false},
     {"k8s.io/apimachinery/pkg/apis/meta/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_", false},
     {"k8s.io/api/core/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_core_", false},
+    {"k8s.io/api/node/v1", "node.k8s.io", "io.fabric8.kubernetes.api.model.node.v1", "kubernetes_node_v1_", true},
     {"k8s.io/api/node/v1beta1", "node.k8s.io", "io.fabric8.kubernetes.api.model.node.v1beta1", "kubernetes_node_v1beta1_", true},
     {"k8s.io/api/node/v1alpha1", "node.k8s.io", "io.fabric8.kubernetes.api.model.node.v1alpha1", "kubernetes_node_v1alpha_", true},
   }

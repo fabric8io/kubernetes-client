@@ -25,7 +25,8 @@ import (
   apimachineryversion "k8s.io/apimachinery/pkg/version"
   kapi "k8s.io/api/core/v1"
 
-  events "k8s.io/api/events/v1beta1"
+  v1events "k8s.io/api/events/v1"
+  v1beta1events "k8s.io/api/events/v1beta1"
 
   "log"
   "reflect"
@@ -57,9 +58,12 @@ type Schema struct {
   Quantity                                 resource.Quantity
   ObjectReference                          kapi.ObjectReference
 
-  Event                                    events.Event
-  EventList                                events.EventList
-  EventSeries                              events.EventSeries
+  V1Beta1Event                             v1beta1events.Event
+  V1Beta1EventList                         v1beta1events.EventList
+  V1Beta1EventSeries                       v1beta1events.EventSeries
+  V1Event                                  v1events.Event
+  V1EventList                              v1events.EventList
+  V1EventSeries                            v1events.EventSeries
 }
 
 func main() {
@@ -69,7 +73,8 @@ func main() {
     {"k8s.io/apimachinery/pkg/version", "", "io.fabric8.kubernetes.api.model.version", "kubernetes_apimachinery_pkg_version_", false},
     {"k8s.io/apimachinery/pkg/apis/meta/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_", false},
     {"k8s.io/api/core/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_core_", false},
-    {"k8s.io/api/events/v1beta1", "events.k8s.io", "io.fabric8.kubernetes.api.model.events", "kubernetes_events_", true},
+    {"k8s.io/api/events/v1beta1", "events.k8s.io", "io.fabric8.kubernetes.api.model.events.v1beta1", "kubernetes_events_v1beta1_", true},
+    {"k8s.io/api/events/v1", "events.k8s.io", "io.fabric8.kubernetes.api.model.events.v1", "kubernetes_events_v1_", true},
   }
 
   typeMap := map[reflect.Type]reflect.Type{

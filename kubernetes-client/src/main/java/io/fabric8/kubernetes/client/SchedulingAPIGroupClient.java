@@ -15,8 +15,8 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.api.model.scheduling.PriorityClass;
-import io.fabric8.kubernetes.api.model.scheduling.PriorityClassList;
+import io.fabric8.kubernetes.api.model.scheduling.v1beta1.PriorityClass;
+import io.fabric8.kubernetes.api.model.scheduling.v1beta1.PriorityClassList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.SchedulingAPIGroupDSL;
