@@ -44,11 +44,7 @@ import javax.lang.model.type.MirroredTypeException;
 
 @SupportedAnnotationTypes({
   "io.fabric8.kubernetes.model.annotation.Group",
-  "io.fabric8.kubernetes.model.annotation.Version",
-  "io.fabric8.kubernetes.model.annotation.Kind",
-  "io.fabric8.kubernetes.model.annotation.Plural",
-  "io.fabric8.kubernetes.model.annotation.Singular",
-  "io.dekorate.crd.annotation.Crd"})
+  "io.fabric8.kubernetes.model.annotation.Version"})
 public class CustomResourceAnnotationProcessor extends AbstractProcessor {
 
   private final Resources resources = new Resources();
