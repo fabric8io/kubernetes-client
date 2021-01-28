@@ -81,6 +81,7 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
   }
 
   public void add(Element element) {
+    System.out.println("Generating " + element.getSimpleName());
     Optional<Crd> crd = Optional.ofNullable(element.getAnnotation(Crd.class));
     Optional<Group> group = Optional.ofNullable(element.getAnnotation(Group.class));
     Optional<Version> version = Optional.ofNullable(element.getAnnotation(Version.class));
