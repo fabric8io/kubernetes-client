@@ -42,6 +42,7 @@ import io.dekorate.crd.visitor.LabelSelectorPathDetector;
 import io.dekorate.crd.visitor.SpecReplicasPathDetector;
 import io.dekorate.crd.visitor.StatusReplicasPathDetector;
 import io.dekorate.utils.Strings;
+import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionBuilder;
 import io.sundr.codegen.CodegenContext;
 import io.sundr.codegen.functions.ElementTo;
@@ -65,7 +66,7 @@ public class CustomResourceHandler {
     this.resources = resources;
   }
 
-  public void handle(CustomResourceConfig config) {
+  public Map<String, KubernetesList> handle(CustomResourceConfig config) {
     TypeDef def = config.getAttribute(Keys.TYPE_DEFINITION);
     String name = config.getPlural() + "." + config.getGroup();
     String version = config.getVersion();
@@ -74,7 +75,7 @@ public class CustomResourceHandler {
 
     SpecReplicasPathDetector specReplicasPathDetector = new SpecReplicasPathDetector();
     StatusReplicasPathDetector statusReplicasPathDetector = new StatusReplicasPathDetector();
-    LabelSelectorPathDetector  labalSelectorPathDetector = new LabelSelectorPathDetector();
+    LabelSelectorPathDetector labalSelectorPathDetector = new LabelSelectorPathDetector();
     AdditionalPrineterColumnDetector additionalPrineterColumnDetector = new AdditionalPrineterColumnDetector();
 
     //This is going to be used in order to scan the status provided as `@Crd(status = MyStatus.class)`.
@@ -193,6 +194,7 @@ public class CustomResourceHandler {
         resources.decorate(new AddAdditionPrinterColumnDecorator(name, version, type, column, path, format, description));
     });
 
+    return resources.generate();
   }
 
   protected static boolean hasNonDefaultScaleConfig(Scale scale) {

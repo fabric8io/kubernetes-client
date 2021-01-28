@@ -22,6 +22,7 @@ import io.dekorate.crd.config.Keys;
 import io.dekorate.crd.config.Scope;
 import io.dekorate.crd.handler.CustomResourceHandler;
 import io.dekorate.crd.util.Types;
+import io.dekorate.utils.Serialization;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Kind;
 import io.fabric8.kubernetes.model.annotation.Plural;
@@ -117,7 +118,8 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
 //        .accept(new AddClassNameConfigurator(className))
         .addToAttributes(Keys.TYPE_DEFINITION, definition).build();
 
-      new CustomResourceHandler(resources).handle(config);
+      final var resources = new CustomResourceHandler(this.resources).handle(config);
+      System.out.println(Serialization.asYaml(resources.get("kubernetes")));
     }
   }
 

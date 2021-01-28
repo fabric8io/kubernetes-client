@@ -146,7 +146,7 @@ public class Resources {
    *
    * @return A map of {@link KubernetesList} by group name.
    */
-  protected Map<String, KubernetesList> generate() {
+  public Map<String, KubernetesList> generate() {
     if (!this.global.getItems().isEmpty()) {
       if (this.groups.isEmpty()) {
         KubernetesListBuilder builder = new KubernetesListBuilder();
