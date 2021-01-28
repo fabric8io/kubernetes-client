@@ -16,8 +16,8 @@
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequest;
-import io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequestBuilder;
+import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequest;
+import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import org.junit.Rule;

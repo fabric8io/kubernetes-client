@@ -85,6 +85,36 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_apimachinery_Condition": {
+      "type": "object",
+      "properties": {
+        "lastTransitionTime": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "existingJavaType": "String"
+        },
+        "message": {
+          "type": "string"
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.kubernetes.api.model.Condition",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_apimachinery_CreateOptions": {
       "type": "object",
       "properties": {
@@ -3718,6 +3748,14 @@
         },
         "ip": {
           "type": "string"
+        },
+        "ports": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_core_PortStatus",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.PortStatus"
+          }
         }
       },
       "additionalProperties": true,
@@ -5544,6 +5582,25 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_core_PortStatus": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer"
+        },
+        "protocol": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.kubernetes.api.model.PortStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_core_PortworxVolumeSource": {
       "type": "object",
       "properties": {
@@ -6643,8 +6700,18 @@
     "kubernetes_core_ServiceSpec": {
       "type": "object",
       "properties": {
+        "allocateLoadBalancerNodePorts": {
+          "type": "boolean"
+        },
         "clusterIP": {
           "type": "string"
+        },
+        "clusterIPs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
         },
         "externalIPs": {
           "type": "array",
@@ -6662,7 +6729,14 @@
         "healthCheckNodePort": {
           "type": "integer"
         },
-        "ipFamily": {
+        "ipFamilies": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "ipFamilyPolicy": {
           "type": "string"
         },
         "loadBalancerIP": {
@@ -6720,6 +6794,14 @@
     "kubernetes_core_ServiceStatus": {
       "type": "object",
       "properties": {
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_apimachinery_Condition",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.Condition"
+          }
+        },
         "loadBalancer": {
           "$ref": "#/definitions/kubernetes_core_LoadBalancerStatus",
           "existingJavaType": "io.fabric8.kubernetes.api.model.LoadBalancerStatus"

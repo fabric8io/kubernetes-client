@@ -57,8 +57,8 @@ import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionList;
 import io.fabric8.kubernetes.api.model.authentication.TokenReview;
-import io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequest;
-import io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequestList;
+import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequest;
+import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestList;
 import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseList;
 import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClass;
@@ -81,7 +81,6 @@ import io.fabric8.kubernetes.client.PolicyAPIGroupClient;
 import io.fabric8.kubernetes.client.RbacAPIGroupClient;
 import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.SchedulingAPIGroupClient;
-import io.fabric8.kubernetes.client.SettingsAPIGroupClient;
 import io.fabric8.kubernetes.client.StorageAPIGroupClient;
 import io.fabric8.kubernetes.client.V1APIGroupClient;
 import io.fabric8.kubernetes.client.VersionInfo;
@@ -111,7 +110,6 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.SchedulingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.ServiceResource;
-import io.fabric8.kubernetes.client.dsl.SettingsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.StorageAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1APIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
@@ -711,9 +709,6 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
 
   @Override
   public StorageAPIGroupDSL storage() { return adapt(StorageAPIGroupClient.class); }
-
-  @Override
-  public SettingsAPIGroupDSL settings() { return adapt(SettingsAPIGroupClient.class); }
 
   @Override
   public InOutCreateable<SubjectAccessReview, SubjectAccessReviewResponse> subjectAccessReviews() {

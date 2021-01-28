@@ -1154,6 +1154,9 @@
         },
         "installHint": {
           "type": "string"
+        },
+        "provideClusterInfo": {
+          "type": "boolean"
         }
       },
       "additionalProperties": true,
@@ -15823,6 +15826,9 @@
         },
         "installHint": {
           "type": "string"
+        },
+        "provideClusterInfo": {
+          "type": "boolean"
         }
       },
       "additionalProperties": true

@@ -433,6 +433,116 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_node_v1_Overhead": {
+      "type": "object",
+      "properties": {
+        "podFixed": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/kubernetes_resource_Quantity",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.Quantity"
+          },
+          "existingJavaType": "java.util.Map\u003cString, io.fabric8.kubernetes.api.model.Quantity\u003e"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.node.v1.Overhead",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_node_v1_RuntimeClass": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "node.k8s.io/v1",
+          "required": true
+        },
+        "handler": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string",
+          "default": "RuntimeClass",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "overhead": {
+          "$ref": "#/definitions/kubernetes_node_v1_Overhead",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.node.v1.Overhead"
+        },
+        "scheduling": {
+          "$ref": "#/definitions/kubernetes_node_v1_Scheduling",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.node.v1.Scheduling"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.node.v1.RuntimeClass",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "kubernetes_node_v1_RuntimeClassList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "node.k8s.io/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/kubernetes_node_v1_RuntimeClass",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.node.v1.RuntimeClass"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "RuntimeClassList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.node.v1.RuntimeClassList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.node.v1.RuntimeClass\u003e"
+      ]
+    },
+    "kubernetes_node_v1_Scheduling": {
+      "type": "object",
+      "properties": {
+        "nodeSelector": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+        },
+        "tolerations": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_core_Toleration",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.Toleration"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.node.v1.Scheduling",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_node_v1alpha_Overhead": {
       "type": "object",
       "properties": {
@@ -710,6 +820,14 @@
     "TypeMeta": {
       "$ref": "#/definitions/kubernetes_apimachinery_TypeMeta",
       "existingJavaType": "io.fabric8.kubernetes.api.model.TypeMeta"
+    },
+    "V1RuntimeClass": {
+      "$ref": "#/definitions/kubernetes_node_v1_RuntimeClass",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.node.v1.RuntimeClass"
+    },
+    "V1RuntimeClassList": {
+      "$ref": "#/definitions/kubernetes_node_v1_RuntimeClassList",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.node.v1.RuntimeClassList"
     },
     "V1alpha1RuntimeClass": {
       "$ref": "#/definitions/kubernetes_node_v1alpha_RuntimeClass",

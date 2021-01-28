@@ -966,6 +966,23 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_apimachinery_pkg_apis_WatchEvent": {
+      "type": "object",
+      "properties": {
+        "object": {
+          "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.WatchEvent",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_apimachinery_pkg_runtime_ImageRawExtension": {
       "type": "object",
       "additionalProperties": true,
@@ -1268,6 +1285,9 @@
         },
         "installHint": {
           "type": "string"
+        },
+        "provideClusterInfo": {
+          "type": "boolean"
         }
       },
       "additionalProperties": true,
@@ -3603,6 +3623,14 @@
         },
         "ip": {
           "type": "string"
+        },
+        "ports": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_core_PortStatus",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.PortStatus"
+          }
         }
       },
       "additionalProperties": true,
@@ -5470,6 +5498,25 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_core_PortStatus": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer"
+        },
+        "protocol": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.PortStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_core_PortworxVolumeSource": {
       "type": "object",
       "properties": {
@@ -6569,8 +6616,18 @@
     "kubernetes_core_ServiceSpec": {
       "type": "object",
       "properties": {
+        "allocateLoadBalancerNodePorts": {
+          "type": "boolean"
+        },
         "clusterIP": {
           "type": "string"
+        },
+        "clusterIPs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
         },
         "externalIPs": {
           "type": "array",
@@ -6588,7 +6645,14 @@
         "healthCheckNodePort": {
           "type": "integer"
         },
-        "ipFamily": {
+        "ipFamilies": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "ipFamilyPolicy": {
           "type": "string"
         },
         "loadBalancerIP": {
@@ -6646,6 +6710,14 @@
     "kubernetes_core_ServiceStatus": {
       "type": "object",
       "properties": {
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_Condition",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.Condition"
+          }
+        },
         "loadBalancer": {
           "$ref": "#/definitions/kubernetes_core_LoadBalancerStatus",
           "existingJavaType": "io.fabric8.kubernetes.api.model.LoadBalancerStatus"
@@ -7295,24 +7367,6 @@
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
-    },
-    "kubernetes_watch_WatchEvent": {
-      "type": "object",
-      "properties": {
-        "object": {
-          "$ref": "#/definitions/kubernetes_apimachinery_pkg_runtime_RawExtension",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
-        },
-        "type": {
-          "type": "string",
-          "description": "the type of watch event; may be ADDED"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.WatchEvent",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
     }
   },
   "type": "object",
@@ -7558,7 +7612,7 @@
       "existingJavaType": "io.fabric8.kubernetes.api.model.UpdateOptions"
     },
     "WatchEvent": {
-      "$ref": "#/definitions/kubernetes_watch_WatchEvent",
+      "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_WatchEvent",
       "existingJavaType": "io.fabric8.kubernetes.api.model.WatchEvent"
     }
   },

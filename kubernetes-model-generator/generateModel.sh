@@ -35,7 +35,6 @@ declare -a modules=(
     "kubernetes-model-node"
     "kubernetes-model-policy"
     "kubernetes-model-scheduling"
-    "kubernetes-model-settings"
     "kubernetes-model-storageclass"
     "openshift-model"
     "openshift-model-operator"

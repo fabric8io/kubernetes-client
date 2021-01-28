@@ -744,12 +744,12 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_certificates_CertificateSigningRequest": {
+    "kubernetes_certificates_v1_CertificateSigningRequest": {
       "type": "object",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "certificates.k8s.io/v1beta1",
+          "default": "certificates.k8s.io/v1",
           "required": true
         },
         "kind": {
@@ -762,21 +762,21 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/kubernetes_certificates_CertificateSigningRequestSpec",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequestSpec"
+          "$ref": "#/definitions/kubernetes_certificates_v1_CertificateSigningRequestSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestSpec"
         },
         "status": {
-          "$ref": "#/definitions/kubernetes_certificates_CertificateSigningRequestStatus",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequestStatus"
+          "$ref": "#/definitions/kubernetes_certificates_v1_CertificateSigningRequestStatus",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestStatus"
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequest",
+      "javaType": "io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequest",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.HasMetadata"
       ]
     },
-    "kubernetes_certificates_CertificateSigningRequestCondition": {
+    "kubernetes_certificates_v1_CertificateSigningRequestCondition": {
       "type": "object",
       "properties": {
         "lastTransitionTime": {
@@ -801,24 +801,24 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequestCondition",
+      "javaType": "io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestCondition",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_certificates_CertificateSigningRequestList": {
+    "kubernetes_certificates_v1_CertificateSigningRequestList": {
       "type": "object",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "certificates.k8s.io/v1beta1",
+          "default": "certificates.k8s.io/v1",
           "required": true
         },
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_certificates_CertificateSigningRequest",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequest"
+            "$ref": "#/definitions/kubernetes_certificates_v1_CertificateSigningRequest",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequest"
           }
         },
         "kind": {
@@ -832,13 +832,13 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequestList",
+      "javaType": "io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestList",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource",
-        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.certificates.CertificateSigningRequest\u003e"
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequest\u003e"
       ]
     },
-    "kubernetes_certificates_CertificateSigningRequestSpec": {
+    "kubernetes_certificates_v1_CertificateSigningRequestSpec": {
       "type": "object",
       "properties": {
         "extra": {
@@ -879,12 +879,12 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequestSpec",
+      "javaType": "io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestSpec",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_certificates_CertificateSigningRequestStatus": {
+    "kubernetes_certificates_v1_CertificateSigningRequestStatus": {
       "type": "object",
       "properties": {
         "certificate": {
@@ -894,13 +894,174 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_certificates_CertificateSigningRequestCondition",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequestCondition"
+            "$ref": "#/definitions/kubernetes_certificates_v1_CertificateSigningRequestCondition",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestCondition"
           }
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequestStatus",
+      "javaType": "io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_certificates_v1beta1_CertificateSigningRequest": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "certificates.k8s.io/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "CertificateSigningRequest",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/kubernetes_certificates_v1beta1_CertificateSigningRequestSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/kubernetes_certificates_v1beta1_CertificateSigningRequestStatus",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestStatus"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequest",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "kubernetes_certificates_v1beta1_CertificateSigningRequestCondition": {
+      "type": "object",
+      "properties": {
+        "lastTransitionTime": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "existingJavaType": "String"
+        },
+        "lastUpdateTime": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "existingJavaType": "String"
+        },
+        "message": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestCondition",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_certificates_v1beta1_CertificateSigningRequestList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "certificates.k8s.io/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/kubernetes_certificates_v1beta1_CertificateSigningRequest",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequest"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "CertificateSigningRequestList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequest\u003e"
+      ]
+    },
+    "kubernetes_certificates_v1beta1_CertificateSigningRequestSpec": {
+      "type": "object",
+      "properties": {
+        "extra": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "existingJavaType": "java.util.Map\u003cString, java.util.ArrayList\u003cString\u003e\u003e"
+        },
+        "groups": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "request": {
+          "type": "string"
+        },
+        "signerName": {
+          "type": "string"
+        },
+        "uid": {
+          "type": "string"
+        },
+        "usages": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "username": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_certificates_v1beta1_CertificateSigningRequestStatus": {
+      "type": "object",
+      "properties": {
+        "certificate": {
+          "type": "string"
+        },
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_certificates_v1beta1_CertificateSigningRequestCondition",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestCondition"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestStatus",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -921,24 +1082,24 @@
       "existingJavaType": "io.fabric8.kubernetes.api.model.BaseKubernetesList"
     },
     "CertificateSigningRequest": {
-      "$ref": "#/definitions/kubernetes_certificates_CertificateSigningRequest",
-      "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequest"
+      "$ref": "#/definitions/kubernetes_certificates_v1_CertificateSigningRequest",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequest"
     },
     "CertificateSigningRequestCondition": {
-      "$ref": "#/definitions/kubernetes_certificates_CertificateSigningRequestCondition",
-      "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequestCondition"
+      "$ref": "#/definitions/kubernetes_certificates_v1_CertificateSigningRequestCondition",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestCondition"
     },
     "CertificateSigningRequestList": {
-      "$ref": "#/definitions/kubernetes_certificates_CertificateSigningRequestList",
-      "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequestList"
+      "$ref": "#/definitions/kubernetes_certificates_v1_CertificateSigningRequestList",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestList"
     },
     "CertificateSigningRequestSpec": {
-      "$ref": "#/definitions/kubernetes_certificates_CertificateSigningRequestSpec",
-      "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequestSpec"
+      "$ref": "#/definitions/kubernetes_certificates_v1_CertificateSigningRequestSpec",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestSpec"
     },
     "CertificateSigningRequestStatus": {
-      "$ref": "#/definitions/kubernetes_certificates_CertificateSigningRequestStatus",
-      "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequestStatus"
+      "$ref": "#/definitions/kubernetes_certificates_v1_CertificateSigningRequestStatus",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestStatus"
     },
     "CreateOptions": {
       "$ref": "#/definitions/kubernetes_apimachinery_CreateOptions",
@@ -995,6 +1156,26 @@
     "UpdateOptions": {
       "$ref": "#/definitions/kubernetes_apimachinery_UpdateOptions",
       "existingJavaType": "io.fabric8.kubernetes.api.model.UpdateOptions"
+    },
+    "V1Beta1CertificateSigningRequest": {
+      "$ref": "#/definitions/kubernetes_certificates_v1beta1_CertificateSigningRequest",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequest"
+    },
+    "V1Beta1CertificateSigningRequestCondition": {
+      "$ref": "#/definitions/kubernetes_certificates_v1beta1_CertificateSigningRequestCondition",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestCondition"
+    },
+    "V1Beta1CertificateSigningRequestList": {
+      "$ref": "#/definitions/kubernetes_certificates_v1beta1_CertificateSigningRequestList",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestList"
+    },
+    "V1Beta1CertificateSigningRequestSpec": {
+      "$ref": "#/definitions/kubernetes_certificates_v1beta1_CertificateSigningRequestSpec",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestSpec"
+    },
+    "V1Beta1CertificateSigningRequestStatus": {
+      "$ref": "#/definitions/kubernetes_certificates_v1beta1_CertificateSigningRequestStatus",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestStatus"
     }
   },
   "additionalProperties": true

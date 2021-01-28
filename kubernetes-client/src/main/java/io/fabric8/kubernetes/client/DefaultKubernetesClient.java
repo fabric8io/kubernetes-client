@@ -54,8 +54,8 @@ import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
-import io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequest;
-import io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequestList;
+import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequest;
+import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestList;
 import io.fabric8.kubernetes.api.model.authentication.TokenReview;
 import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseList;
@@ -556,12 +556,6 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
    */
   @Override
   public RbacAPIGroupDSL rbac() { return adapt(RbacAPIGroupClient.class); }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public SettingsAPIGroupDSL settings() { return adapt(SettingsAPIGroupClient.class); }
 
   /**
    * {@inheritDoc}

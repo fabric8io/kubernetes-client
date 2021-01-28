@@ -17,8 +17,8 @@ package io.fabric8.kubernetes.examples;
 
 import io.fabric8.kubernetes.api.model.ContainerBuilder;
 import io.fabric8.kubernetes.api.model.PodBuilder;
-import io.fabric8.kubernetes.api.model.scheduling.PriorityClass;
-import io.fabric8.kubernetes.api.model.scheduling.PriorityClassBuilder;
+import io.fabric8.kubernetes.api.model.scheduling.v1beta1.PriorityClass;
+import io.fabric8.kubernetes.api.model.scheduling.v1beta1.PriorityClassBuilder;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;

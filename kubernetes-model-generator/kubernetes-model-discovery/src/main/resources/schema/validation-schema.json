@@ -791,6 +791,9 @@
         "hostname": {
           "type": "string"
         },
+        "nodeName": {
+          "type": "string"
+        },
         "targetRef": {
           "$ref": "#/definitions/kubernetes_core_ObjectReference",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
@@ -813,6 +816,12 @@
       "type": "object",
       "properties": {
         "ready": {
+          "type": "boolean"
+        },
+        "serving": {
+          "type": "boolean"
+        },
+        "terminating": {
           "type": "boolean"
         }
       },
@@ -1145,6 +1154,9 @@
         "hostname": {
           "type": "string"
         },
+        "nodeName": {
+          "type": "string"
+        },
         "targetRef": {
           "$ref": "#/definitions/kubernetes_core_ObjectReference",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
@@ -1162,6 +1174,12 @@
     "endpointconditions": {
       "properties": {
         "ready": {
+          "type": "boolean"
+        },
+        "serving": {
+          "type": "boolean"
+        },
+        "terminating": {
           "type": "boolean"
         }
       },

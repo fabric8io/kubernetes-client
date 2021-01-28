@@ -775,7 +775,75 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_scheduling_PriorityClass": {
+    "kubernetes_scheduling_v1_PriorityClass": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "scheduling.k8s.io/v1",
+          "required": true
+        },
+        "description": {
+          "type": "string"
+        },
+        "globalDefault": {
+          "type": "boolean"
+        },
+        "kind": {
+          "type": "string",
+          "default": "PriorityClass",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "preemptionPolicy": {
+          "type": "string"
+        },
+        "value": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.scheduling.v1.PriorityClass",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "kubernetes_scheduling_v1_PriorityClassList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "scheduling.k8s.io/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/kubernetes_scheduling_v1_PriorityClass",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.scheduling.v1.PriorityClass"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "PriorityClassList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.scheduling.v1.PriorityClassList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.scheduling.v1.PriorityClass\u003e"
+      ]
+    },
+    "kubernetes_scheduling_v1beta1_PriorityClass": {
       "type": "object",
       "properties": {
         "apiVersion": {
@@ -806,12 +874,12 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.scheduling.PriorityClass",
+      "javaType": "io.fabric8.kubernetes.api.model.scheduling.v1beta1.PriorityClass",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.HasMetadata"
       ]
     },
-    "kubernetes_scheduling_PriorityClassList": {
+    "kubernetes_scheduling_v1beta1_PriorityClassList": {
       "type": "object",
       "properties": {
         "apiVersion": {
@@ -822,8 +890,8 @@
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_scheduling_PriorityClass",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.scheduling.PriorityClass"
+            "$ref": "#/definitions/kubernetes_scheduling_v1beta1_PriorityClass",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.scheduling.v1beta1.PriorityClass"
           }
         },
         "kind": {
@@ -837,10 +905,10 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.scheduling.PriorityClassList",
+      "javaType": "io.fabric8.kubernetes.api.model.scheduling.v1beta1.PriorityClassList",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource",
-        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.scheduling.PriorityClass\u003e"
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.scheduling.v1beta1.PriorityClass\u003e"
       ]
     }
   },
@@ -894,14 +962,6 @@
       "$ref": "#/definitions/kubernetes_apimachinery_PatchOptions",
       "existingJavaType": "io.fabric8.kubernetes.api.model.PatchOptions"
     },
-    "PriorityClass": {
-      "$ref": "#/definitions/kubernetes_scheduling_PriorityClass",
-      "existingJavaType": "io.fabric8.kubernetes.api.model.scheduling.PriorityClass"
-    },
-    "PriorityClassList": {
-      "$ref": "#/definitions/kubernetes_scheduling_PriorityClassList",
-      "existingJavaType": "io.fabric8.kubernetes.api.model.scheduling.PriorityClassList"
-    },
     "Quantity": {
       "$ref": "#/definitions/k8s_io_apimachinery_pkg_api_resource_Quantity",
       "existingJavaType": "Quantity"
@@ -925,6 +985,22 @@
     "UpdateOptions": {
       "$ref": "#/definitions/kubernetes_apimachinery_UpdateOptions",
       "existingJavaType": "io.fabric8.kubernetes.api.model.UpdateOptions"
+    },
+    "V1Beta1PriorityClass": {
+      "$ref": "#/definitions/kubernetes_scheduling_v1beta1_PriorityClass",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.scheduling.v1beta1.PriorityClass"
+    },
+    "V1Beta1PriorityClassList": {
+      "$ref": "#/definitions/kubernetes_scheduling_v1beta1_PriorityClassList",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.scheduling.v1beta1.PriorityClassList"
+    },
+    "V1PriorityClass": {
+      "$ref": "#/definitions/kubernetes_scheduling_v1_PriorityClass",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.scheduling.v1.PriorityClass"
+    },
+    "V1PriorityClassList": {
+      "$ref": "#/definitions/kubernetes_scheduling_v1_PriorityClassList",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.scheduling.v1.PriorityClassList"
     }
   },
   "additionalProperties": true,
@@ -1442,8 +1518,8 @@
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_scheduling_PriorityClass",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.scheduling.PriorityClass"
+            "$ref": "#/definitions/kubernetes_scheduling_v1beta1_PriorityClass",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.scheduling.v1beta1.PriorityClass"
           }
         },
         "kind": {

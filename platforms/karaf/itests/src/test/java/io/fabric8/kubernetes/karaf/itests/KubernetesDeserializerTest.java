@@ -49,7 +49,7 @@ public class KubernetesDeserializerTest extends TestBase {
       KubernetesDeserializerTest.class.getResourceAsStream("/deserializer_test.yaml")
     ).get();
     // Then
-    assertEquals(23, result.size());
+    assertEquals(22, result.size());
   }
 
   @Test

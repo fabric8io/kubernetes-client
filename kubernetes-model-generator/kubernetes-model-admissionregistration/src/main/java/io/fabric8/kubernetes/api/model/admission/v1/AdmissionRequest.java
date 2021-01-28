@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.fabric8.kubernetes.api.model.admission;
+package io.fabric8.kubernetes.api.model.admission.v1;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
