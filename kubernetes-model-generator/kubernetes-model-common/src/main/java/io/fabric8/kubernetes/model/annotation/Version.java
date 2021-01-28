@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *         http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,6 +31,26 @@ import static java.lang.annotation.ElementType.TYPE;
 @Target({TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Version {
-
+  
+  /**
+   * The name of this version.
+   *
+   * @return the name of this version
+   */
   String value();
+  
+  /**
+   * Whether or not this version corresponds to the persisted version for the associated CRD. Note that only one version can set
+   * {@code storage} to {@code true} for a given CRD.
+   *
+   * @return {@code true} if this version corresponds to the persisted version for the associated CRD, {@code false} otherwise
+   */
+  boolean storage() default false;
+  
+  /**
+   * Whether this version is served (i.e. enabled for consumption from the REST API) or not.
+   *
+   * @return {@code true} if this version is served by the REST API, {@code false} otherwise
+   */
+  boolean served() default true;
 }
