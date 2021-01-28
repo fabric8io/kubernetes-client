@@ -1,22 +1,19 @@
 package io.dekorate.crd.adapter;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.lang.model.type.MirroredTypeException;
-import javax.lang.model.type.TypeMirror;
-
 import io.dekorate.crd.annotation.Crd;
 import io.dekorate.crd.config.CustomResourceConfig;
 import io.dekorate.crd.config.CustomResourceConfigBuilder;
 import io.dekorate.crd.config.Scale;
 import io.dekorate.crd.config.Scope;
+import java.util.List;
+import java.util.Map;
+import javax.lang.model.type.MirroredTypeException;
+import javax.lang.model.type.TypeMirror;
 
 public class CustomResourceConfigAdapter {
 
     public static CustomResourceConfigBuilder newBuilder(Crd instance) {
         return new CustomResourceConfigBuilder(new io.dekorate.crd.config.CustomResourceConfig(null,
-            null,
             instance.group(),
             instance.kind(),
             instance.name(),
@@ -33,19 +30,18 @@ public class CustomResourceConfigAdapter {
     }
 
     public static CustomResourceConfig adapt(Map map) {
-        return new io.dekorate.crd.config.CustomResourceConfig(
-null,
-null,
-               (String)(map instanceof Map ? ((Map)map).getOrDefault("group", "") : ""),
-               (String)(map instanceof Map ? ((Map)map).getOrDefault("kind", "") : ""),
-               (String)(map instanceof Map ? ((Map)map).getOrDefault("name", "") : ""),
-               (String)(map instanceof Map ? ((Map)map).getOrDefault("plural", "") : ""),
-               (String)(map instanceof Map ? ((Map)map).getOrDefault("shortName", "") : ""),
-               (String)(map instanceof Map ? ((Map)map).getOrDefault("version", "") : ""),
-               (boolean)(map instanceof Map ? ((Map)map).getOrDefault("served", true) : true),
-               (boolean)(map instanceof Map ? ((Map)map).getOrDefault("storage", false) : false),
-               Scope.valueOf(String.valueOf(map instanceof Map ? ((Map)map).getOrDefault("scope","Namespaced") : "Namespaced")),
-               new Scale(
+      return new io.dekorate.crd.config.CustomResourceConfig(null,
+        (String) (map instanceof Map ? ((Map) map).getOrDefault("group", "") : ""),
+        (String) (map instanceof Map ? ((Map) map).getOrDefault("kind", "") : ""),
+        (String) (map instanceof Map ? ((Map) map).getOrDefault("name", "") : ""),
+        (String) (map instanceof Map ? ((Map) map).getOrDefault("plural", "") : ""),
+        (String) (map instanceof Map ? ((Map) map).getOrDefault("shortName", "") : ""),
+        (String) (map instanceof Map ? ((Map) map).getOrDefault("version", "") : ""),
+        (boolean) (map instanceof Map ? ((Map) map).getOrDefault("served", true) : true),
+        (boolean) (map instanceof Map ? ((Map) map).getOrDefault("storage", false) : false),
+        Scope.valueOf(String.valueOf(
+          map instanceof Map ? ((Map) map).getOrDefault("scope", "Namespaced") : "Namespaced")),
+        new Scale(
                    (String)(((Map)(map instanceof Map ? ((Map)map).get("scale") : null)) instanceof Map ? ((Map)((Map)(map instanceof Map ? ((Map)map).get("scale") : null))).getOrDefault("specReplicasPath", ".spec.replicas") : null),
                    (String)(((Map)(map instanceof Map ? ((Map)map).get("scale") : null)) instanceof Map ? ((Map)((Map)(map instanceof Map ? ((Map)map).get("scale") : null))).getOrDefault("statusReplicasPath", ".status.replicas") : null),
                    (String)(((Map)(map instanceof Map ? ((Map)map).get("scale") : null)) instanceof Map ? ((Map)((Map)(map instanceof Map ? ((Map)map).get("scale") : null))).getOrDefault("labalSelectorPath", ".status.labelSelector") : null)),
@@ -54,7 +50,6 @@ null,
 
     public static CustomResourceConfigBuilder newBuilder(Map map) {
         return new CustomResourceConfigBuilder(new io.dekorate.crd.config.CustomResourceConfig(
-null,
 null,
                (String)(map instanceof Map ? ((Map)map).getOrDefault("group", "") : ""),
                (String)(map instanceof Map ? ((Map)map).getOrDefault("kind", "") : ""),

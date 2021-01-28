@@ -18,19 +18,9 @@ package io.dekorate.crd.handler;
 import static io.dekorate.crd.util.Types.findStatusProperty;
 import static io.dekorate.crd.util.Types.findStatusType;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import javax.lang.model.element.TypeElement;
-
-import io.dekorate.Handler;
 import io.dekorate.Resources;
 import io.dekorate.crd.annotation.Autodetect;
 import io.dekorate.crd.config.CustomResourceConfig;
-import io.dekorate.crd.config.EditableCustomResourceConfig;
 import io.dekorate.crd.config.Keys;
 import io.dekorate.crd.config.Scale;
 import io.dekorate.crd.decorator.AddAdditionPrinterColumnDecorator;
@@ -51,7 +41,6 @@ import io.dekorate.crd.visitor.AdditionalPrineterColumnDetector;
 import io.dekorate.crd.visitor.LabelSelectorPathDetector;
 import io.dekorate.crd.visitor.SpecReplicasPathDetector;
 import io.dekorate.crd.visitor.StatusReplicasPathDetector;
-import io.dekorate.kubernetes.config.Configuration;
 import io.dekorate.utils.Strings;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionBuilder;
 import io.sundr.codegen.CodegenContext;
@@ -61,8 +50,14 @@ import io.sundr.codegen.model.Property;
 import io.sundr.codegen.model.TypeDef;
 import io.sundr.codegen.model.TypeDefBuilder;
 import io.sundr.codegen.model.TypeRef;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import javax.lang.model.element.TypeElement;
 
-public class CustomResourceHandler implements Handler<CustomResourceConfig> {
+public class CustomResourceHandler {
 
   private final Resources resources;
 
@@ -70,17 +65,6 @@ public class CustomResourceHandler implements Handler<CustomResourceConfig> {
     this.resources = resources;
   }
 
-  @Override
-  public int order() {
-    return 400;
-  }
-
-  @Override
-  public String getKey() {
-    return "crd";
-  }
-
-  @Override
   public void handle(CustomResourceConfig config) {
     TypeDef def = config.getAttribute(Keys.TYPE_DEFINITION);
     String name = config.getPlural() + "." + config.getGroup();
@@ -209,11 +193,6 @@ public class CustomResourceHandler implements Handler<CustomResourceConfig> {
         resources.decorate(new AddAdditionPrinterColumnDecorator(name, version, type, column, path, format, description));
     });
 
-  }
-
-  @Override
-  public boolean canHandle(Class<? extends Configuration> config) {
-    return CustomResourceConfig.class.equals(config) || EditableCustomResourceConfig.class.equals(config);
   }
 
   protected static boolean hasNonDefaultScaleConfig(Scale scale) {
