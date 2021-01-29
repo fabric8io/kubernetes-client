@@ -32,6 +32,9 @@ import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.codegen.CodegenContext;
 import io.sundr.codegen.functions.ElementTo;
 import io.sundr.codegen.model.TypeDef;
+
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -46,6 +49,8 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
+import javax.tools.FileObject;
+import javax.tools.StandardLocation;
 
 @SupportedAnnotationTypes({
   "io.fabric8.kubernetes.model.annotation.Group",
@@ -58,6 +63,17 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
   public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
     if (roundEnv.processingOver()) {
       // write files
+      resources.generate().forEach( (k, v) -> {
+          try {
+            FileObject yml = processingEnv.getFiler().createResource(StandardLocation.CLASS_OUTPUT, "", "META-INF/dekorate/" + k + ".yml");
+            try (Writer writer = yml.openWriter()) {
+              final String yamlValue = Serialization.asYaml(v);
+              writer.write(yamlValue);
+            } 
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+      });
       return true;
     }
 
