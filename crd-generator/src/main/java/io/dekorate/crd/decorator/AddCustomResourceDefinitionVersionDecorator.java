@@ -18,26 +18,27 @@
 package io.dekorate.crd.decorator;
 
 import io.dekorate.kubernetes.decorator.Decorator;
-import java.util.function.Predicate;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionSpecFluent;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersionBuilder;
+import java.util.function.Predicate;
 
-public class AddCustomResourceDefintionVersionDecorator extends CustomResourceDefinitionDecorator<CustomResourceDefinitionSpecFluent<?>> {
+public class AddCustomResourceDefinitionVersionDecorator extends
+  CustomResourceDefinitionDecorator<CustomResourceDefinitionSpecFluent<?>> {
 
   private String version;
 
-	public AddCustomResourceDefintionVersionDecorator(String name, String version) {
-		super(name);
+  public AddCustomResourceDefinitionVersionDecorator(String name, String version) {
+    super(name);
     this.version = version;
-	}
+  }
 
- @Override
-	public void andThenVisit(CustomResourceDefinitionSpecFluent<?> spec, ObjectMeta resourceMeta) {
-   Predicate<CustomResourceDefinitionVersionBuilder> predicate = new Predicate<CustomResourceDefinitionVersionBuilder>(){
-       @Override
-       public boolean test(CustomResourceDefinitionVersionBuilder candidate) {
-         return candidate.getName().equals(version);
+  @Override
+  public void andThenVisit(CustomResourceDefinitionSpecFluent<?> spec, ObjectMeta resourceMeta) {
+    Predicate<CustomResourceDefinitionVersionBuilder> predicate = new Predicate<CustomResourceDefinitionVersionBuilder>() {
+      @Override
+      public boolean test(CustomResourceDefinitionVersionBuilder candidate) {
+        return candidate.getName().equals(version);
        }
      };
 

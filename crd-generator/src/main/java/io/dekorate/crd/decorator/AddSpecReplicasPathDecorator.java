@@ -39,6 +39,7 @@ public class AddSpecReplicasPathDecorator extends CustomResourceDefinitionVersio
 	}
 	@Override
 	public Class<? extends Decorator>[] after() {
-		return new Class[] { AddCustomResourceDefintionVersionDecorator.class, AddSubresourcesDecorator.class };
-	}
+    return new Class[]{AddCustomResourceDefinitionVersionDecorator.class,
+      AddSubresourcesDecorator.class};
+  }
 }

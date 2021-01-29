@@ -38,6 +38,6 @@ public class AddSchemaToCustomResourceDefinitionVersionDecorator
 
   @Override
   public Class<? extends Decorator>[] after() {
-    return new Class[] { AddCustomResourceDefintionVersionDecorator.class };
+    return new Class[]{AddCustomResourceDefinitionVersionDecorator.class};
   }
 }

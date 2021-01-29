@@ -17,14 +17,13 @@
 
 package io.dekorate.crd.decorator;
 
-import java.util.concurrent.atomic.AtomicReference;
-
 import io.dekorate.kubernetes.decorator.Decorator;
-import java.util.function.Predicate;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionSpecFluent;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersion;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersionBuilder;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Predicate;
 
 public class EnsureSingleStorageVersionDecorator extends CustomResourceDefinitionDecorator<CustomResourceDefinitionSpecFluent<?>> {
 
@@ -61,6 +60,7 @@ public class EnsureSingleStorageVersionDecorator extends CustomResourceDefinitio
 
 	@Override
 	public Class<? extends Decorator>[] after() {
-    return new Class[] { AddCustomResourceDefinitionResourceDecorator.class, AddCustomResourceDefintionVersionDecorator.class, SetStorageVersionDecorator.class };
+    return new Class[]{AddCustomResourceDefinitionResourceDecorator.class,
+      AddCustomResourceDefinitionVersionDecorator.class, SetStorageVersionDecorator.class};
 	}
 }

@@ -17,11 +17,6 @@
 
 package io.dekorate.crd.decorator;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import io.dekorate.kubernetes.decorator.Decorator;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceColumnDefinition;
@@ -30,6 +25,10 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefin
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersionBuilder;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceSubresources;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceValidation;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class PromoteSingleVersionAttributesDecorator extends CustomResourceDefinitionDecorator<CustomResourceDefinitionSpecFluent<?>> {
 
@@ -93,11 +92,13 @@ public class PromoteSingleVersionAttributesDecorator extends CustomResourceDefin
 
 	@Override
 	public Class<? extends Decorator>[] after() {
-    return new Class[] {
+    return new Class[]{
       AddCustomResourceDefinitionResourceDecorator.class,
-      AddCustomResourceDefintionVersionDecorator.class,
+      AddCustomResourceDefinitionVersionDecorator.class,
       CustomResourceDefinitionVersionDecorator.class,
       AddSchemaToCustomResourceDefinitionVersionDecorator.class,
-      AddSubresourcesDecorator.class, AddStatusSubresourceDecorator.class, AddStatusReplicasPathDecorator.class, AddSpecReplicasPathDecorator.class, AddLabelSelectorPathDecorator.class };
+      AddSubresourcesDecorator.class, AddStatusSubresourceDecorator.class,
+      AddStatusReplicasPathDecorator.class, AddSpecReplicasPathDecorator.class,
+      AddLabelSelectorPathDecorator.class};
 	}
 }

@@ -18,7 +18,6 @@
 package io.dekorate.crd.example.webserver;
 
 import io.dekorate.crd.alt.SpecReplicas;
-import io.dekorate.crd.annotation.Status;
 
 public class WebServerWithStatusProperty {
 
@@ -28,7 +27,6 @@ public class WebServerWithStatusProperty {
  @SpecReplicas
  private int replicas;
 
-  @Status
   private WebServerStatus status;
 }
 

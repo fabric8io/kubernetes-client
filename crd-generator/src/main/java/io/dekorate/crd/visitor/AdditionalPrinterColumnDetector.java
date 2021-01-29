@@ -15,18 +15,19 @@
  * 
 **/
 
-package io.dekorate.crd.annotation;
+package io.dekorate.crd.visitor;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import io.dekorate.crd.annotation.PrinterColumn;
+import java.util.ArrayList;
 
-/**
- * Qualifies annotated parameters as the {@link Crd} status.
- */
-@Target({ ElementType.FIELD })
-@Retention(RetentionPolicy.SOURCE)
-public @interface Status {
-  
+public class AdditionalPrinterColumnDetector extends AnnotatedMultiPropertyPathDetector {
+
+  public AdditionalPrinterColumnDetector() {
+    this(DOT);
+  }
+
+  public AdditionalPrinterColumnDetector(String prefix) {
+    super(prefix, PrinterColumn.class.getSimpleName(), new ArrayList<>());
+  }
 }
+

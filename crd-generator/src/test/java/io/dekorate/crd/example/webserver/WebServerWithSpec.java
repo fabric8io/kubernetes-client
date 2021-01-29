@@ -17,15 +17,12 @@
 
 package io.dekorate.crd.example.webserver;
 
-import io.dekorate.crd.annotation.Status;
-
 public class WebServerWithSpec {
 
   private String name;
 
   private WebServerSpec spec;
 
-  @Status
   private WebServerStatus status;
 }
 

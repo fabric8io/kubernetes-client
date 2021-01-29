@@ -70,7 +70,8 @@ public class AddCustomResourceDefinitionResourceDecorator extends ResourceProvid
 
 	@Override
 	public Class<? extends Decorator>[] before() {
-		return new Class[] { AddCustomResourceDefintionVersionDecorator.class, CustomResourceDefinitionDecorator.class };
-	}
+    return new Class[]{AddCustomResourceDefinitionVersionDecorator.class,
+      CustomResourceDefinitionDecorator.class};
+  }
 
 }

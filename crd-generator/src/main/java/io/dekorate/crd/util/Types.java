@@ -17,7 +17,6 @@
 
 package io.dekorate.crd.util;
 
-import io.dekorate.crd.annotation.Status;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.sundr.builder.TypedVisitor;
@@ -160,7 +159,7 @@ public class Types {
    * @return true if named status or annotated with @Status, false otherwise
    */
   public static boolean isStatusProperty(Property property)  {
-    return "status".equals(property.getName()) || property.getAnnotations().stream().anyMatch(a -> Status.class.getName().equals(a.getClassRef().getFullyQualifiedName()));
+    return "status".equals(property.getName());
   }
 
   private static final Predicate<AnnotationRefBuilder> predicate = new Predicate<AnnotationRefBuilder>() {

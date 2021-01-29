@@ -83,7 +83,9 @@ public abstract class CustomResourceDefinitionVersionDecorator<T> extends Decora
 
   @Override
   public Class<? extends Decorator>[] after() {
-    return new Class[] { ResourceProvidingDecorator.class, AddCustomResourceDefinitionResourceDecorator.class, AddCustomResourceDefintionVersionDecorator.class };
+    return new Class[]{ResourceProvidingDecorator.class,
+      AddCustomResourceDefinitionResourceDecorator.class,
+      AddCustomResourceDefinitionVersionDecorator.class};
   }
 
   @Override
