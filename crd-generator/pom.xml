@@ -14,7 +14,7 @@
     <java.target>11</java.target>
     <version.sundr>0.24.0</version.sundr>
     <version.jackson>2.10.3</version.jackson>
-    <version.kubernetes-client>5.0.0</version.kubernetes-client>
+    <version.kubernetes-client>5.1-SNAPSHOT</version.kubernetes-client>
 
     <!-- Testing Dependencies -->
     <version.junit-jupiter>5.5.0</version.junit-jupiter>
@@ -56,7 +56,7 @@
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-client</artifactId>
-      <version>5.0.0</version>
+      <version>${version.kubernetes-client}</version>
     </dependency>
 
     <!-- Testing -->
