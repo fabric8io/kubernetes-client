@@ -19,42 +19,20 @@ package io.dekorate.crd.util;
 
 import static org.junit.Assert.assertTrue;
 
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-import org.junit.jupiter.api.Test;
-
-import io.dekorate.crd.config.CustomResourceConfig;
-import io.dekorate.crd.config.CustomResourceConfigBuilder;
-import io.dekorate.crd.example.webserver.WebServerStatus;
 import io.dekorate.crd.example.webserver.WebServerWithStatusProperty;
-import io.dekorate.crd.example.webserver.WebServerWithoutStatusProperty;
 import io.sundr.codegen.functions.ClassTo;
 import io.sundr.codegen.model.Property;
 import io.sundr.codegen.model.TypeDef;
-import io.sundr.codegen.model.TypeRef;
+import java.util.Optional;
+import org.junit.jupiter.api.Test;
 
 public class TypesTest {
 
   @Test
-  public void shouldFindStatusPropety() {
+  public void shouldFindStatusProperty() {
     TypeDef def = ClassTo.TYPEDEF.apply(WebServerWithStatusProperty.class);
-    CustomResourceConfig config = new CustomResourceConfig();
-    Optional<Property> p = Types.findStatusProperty(config, def);
+    Optional<Property> p = Types.findStatusProperty(def);
     assertTrue(p.isPresent());
-  }
-  
-
-  @Test
-  public void shouldFindStatusFromConfig() {
-    TypeDef def = ClassTo.TYPEDEF.apply(WebServerWithoutStatusProperty.class);
-    CustomResourceConfig config = new CustomResourceConfigBuilder()
-      .withStatusClassName(WebServerStatus.class.getName())
-      .build();
-
-    Optional<TypeRef> type = Types.findStatusType(config, def);
-    assertTrue(type.isPresent());
   }
 
 }

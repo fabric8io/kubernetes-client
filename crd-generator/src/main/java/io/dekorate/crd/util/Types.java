@@ -17,6 +17,19 @@
 
 package io.dekorate.crd.util;
 
+import io.dekorate.crd.annotation.Status;
+import io.fabric8.kubernetes.api.model.Namespaced;
+import io.fabric8.kubernetes.client.CustomResource;
+import io.sundr.builder.TypedVisitor;
+import io.sundr.codegen.functions.ClassTo;
+import io.sundr.codegen.model.AnnotationRefBuilder;
+import io.sundr.codegen.model.ClassRef;
+import io.sundr.codegen.model.Property;
+import io.sundr.codegen.model.PropertyBuilder;
+import io.sundr.codegen.model.TypeDef;
+import io.sundr.codegen.model.TypeDefBuilder;
+import io.sundr.codegen.model.TypeParamRef;
+import io.sundr.codegen.model.TypeRef;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -26,25 +39,6 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import javax.lang.model.element.TypeElement;
-
-import io.dekorate.crd.annotation.Status;
-import io.dekorate.crd.config.CustomResourceConfig;
-import io.fabric8.kubernetes.api.model.Namespaced;
-import io.fabric8.kubernetes.client.CustomResource;
-import io.sundr.builder.TypedVisitor;
-import io.sundr.codegen.CodegenContext;
-import io.sundr.codegen.functions.ClassTo;
-import io.sundr.codegen.functions.ElementTo;
-import io.sundr.codegen.model.AnnotationRefBuilder;
-import io.sundr.codegen.model.ClassRef;
-import io.sundr.codegen.model.Property;
-import io.sundr.codegen.model.PropertyBuilder;
-import io.sundr.codegen.model.TypeDef;
-import io.sundr.codegen.model.TypeDefBuilder;
-import io.sundr.codegen.model.TypeParamRef;
-import io.sundr.codegen.model.TypeRef;
 
 public class Types {
 
@@ -149,34 +143,11 @@ public class Types {
   }
 
   /**
-   * Finds the status type.
-   * The method will use the `statusClassName` if present and then fallback to annotations.
-   */
-  public static Optional<TypeRef> findStatusType(CustomResourceConfig config, TypeDef typeDef) {
-    if (!CustomResourceConfig.AUTODETECT.equals(config.getStatusClassName())) {
-      try {
-        TypeElement statusElement = CodegenContext.getContext().getElements().getTypeElement(config.getStatusClassName());
-        return Optional.of(ElementTo.TYPEDEF.apply(statusElement).toReference());
-      } catch (Exception e) {
-        //ignore
-      }
-
-      try {
-        return Optional.of(ClassTo.TYPEDEF.apply(Class.forName(config.getStatusClassName())).toReference());
-      } catch (ClassNotFoundException e) {
-        throw new IllegalStateException("Class " + config.getStatusClassName() + " could not be found neither in the compilation unit, nor in the classpath!", e);
-      }
-    }
-
-    return findStatusProperty(config, typeDef).map(Property::getTypeRef);
-  }
-
-  /**
-   * Finds the status property.
-   * The method look up for a status property.
+   * Finds the status property. The method look up for a status property.
+   *
    * @return the an optional property.
    */
-  public static Optional<Property> findStatusProperty(CustomResourceConfig config, TypeDef typeDef) {
+  public static Optional<Property> findStatusProperty(TypeDef typeDef) {
     return allProperties(typeDef).stream()
       .filter(Types::isStatusProperty)
       .findFirst();

@@ -14,13 +14,11 @@
 package io.dekorate.crd.apt;
 
 import io.dekorate.Resources;
-import io.dekorate.crd.config.CustomResourceConfig;
-import io.dekorate.crd.config.CustomResourceConfigBuilder;
-import io.dekorate.crd.config.Keys;
 import io.dekorate.crd.config.Scope;
 import io.dekorate.crd.handler.CustomResourceHandler;
 import io.dekorate.utils.Serialization;
 import io.fabric8.kubernetes.api.model.Namespaced;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.utils.Pluralize;
 import io.fabric8.kubernetes.model.annotation.Group;
@@ -36,9 +34,11 @@ import io.sundr.codegen.model.TypeDef;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import javax.annotation.processing.AbstractProcessor;
@@ -58,9 +58,36 @@ import javax.tools.StandardLocation;
 public class CustomResourceAnnotationProcessor extends AbstractProcessor {
 
   private static final String CUSTOM_RESOURCE_NAME = CustomResource.class.getCanonicalName();
+  private static final Map<String, CustomResourceDefinition> crds = new HashMap<>();
   private final Resources resources = new Resources();
 
   public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+    /*CodegenContext.create(processingEnv.getElementUtils(), processingEnv.getTypeUtils());
+
+    try {
+      for (TypeElement annotation : annotations) {
+        Set<? extends Element> annotatedElements = roundEnv.getElementsAnnotatedWith(annotation);
+        crds.putAll(
+          annotatedElements.stream()
+            .map(e -> (TypeElement) e)
+            .map(this::crInfo)
+            .filter(Objects::nonNull)
+            .collect(
+              Collectors.groupingBy(
+                CRInfo::key,
+                Collector.of(
+                  CustomResourceDefinitionBuilder::new,
+                  this::enrich,
+                  this::combine,
+                  CustomResourceDefinitionBuilder::build))));
+      }
+    } finally {
+      if (roundEnv.processingOver()) {
+        crds.forEach(this::writeCRD);
+      }
+    }
+    return true;*/
+
     if (roundEnv.processingOver()) {
       // write files
       resources.generate().forEach( (k, v) -> {
@@ -129,7 +156,7 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
           + ")");
 
       TypeDef definition = ElementTo.TYPEDEF.apply(element);
-      CustomResourceConfig config = new CustomResourceConfigBuilder()
+      /*CustomResourceConfig config = new CustomResourceConfigBuilder()
         .withKind(info.kind())
         .withGroup(info.group)
         .withVersion(info.version)
@@ -142,8 +169,8 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
         .withNewScale()
         .endScale()
         .addToAttributes(Keys.TYPE_DEFINITION, definition).build();
-
-      final var resources = new CustomResourceHandler(this.resources).handle(config);
+*/
+      final var resources = new CustomResourceHandler(this.resources).handle(info, definition);
       System.out.println(Serialization.asYaml(resources.get("kubernetes")));
       return info;
     } else {
@@ -153,7 +180,7 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
     }
   }
 
-  private static class CRInfo {
+  public static class CRInfo {
 
     private final TypeElement customResource;
     private final TypeElement spec;
@@ -176,55 +203,67 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
     }
 
 
-    private boolean storage() {
+    public boolean storage() {
       return customResource.getAnnotation(Version.class).storage();
     }
 
-    private boolean served() {
+    public boolean served() {
       return customResource.getAnnotation(Version.class).served();
     }
 
-    private String key() {
+    public String key() {
       return crdName();
     }
 
-    private Scope scope() {
+    public Scope scope() {
       return customResource.getInterfaces().stream()
         .filter(t -> t.toString().equals(Namespaced.class.getTypeName()))
         .map(t -> Scope.Namespaced).findFirst().orElse(Scope.Cluster);
     }
 
-    private String crdName() {
+    public String crdName() {
       return plural() + "." + group;
     }
 
-    private String[] shortNames() {
+    public String[] shortNames() {
       return Optional.ofNullable(customResource.getAnnotation(ShortNames.class))
         .map(ShortNames::value)
         .orElse(new String[]{});
     }
 
-    private String singular() {
+    public String singular() {
       return Optional.ofNullable(customResource.getAnnotation(Singular.class))
         .map(Singular::value)
         .orElse(kind().toLowerCase(Locale.ROOT));
     }
 
-    private String plural() {
+    public String plural() {
       return Optional.ofNullable(customResource.getAnnotation(Plural.class))
         .map(Plural::value)
         .map(s -> s.toLowerCase(Locale.ROOT))
         .orElse(Pluralize.toPlural(singular()));
     }
 
-    private String kind() {
+    public String kind() {
       return Optional.ofNullable(customResource.getAnnotation(Kind.class))
         .map(Kind::value)
         .orElse(customResource.getSimpleName().toString());
     }
 
-    private boolean deprecated() {
+    public boolean deprecated() {
       return env.getElementUtils().isDeprecated(customResource);
+    }
+
+    public String version() {
+      return version;
+    }
+
+    public String group() {
+      return group;
+    }
+
+    public TypeElement status() {
+      return status;
     }
   }
 }

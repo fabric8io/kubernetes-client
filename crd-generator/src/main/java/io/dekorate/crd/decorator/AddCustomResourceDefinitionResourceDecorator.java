@@ -29,36 +29,37 @@ public class AddCustomResourceDefinitionResourceDecorator extends ResourceProvid
   private String kind;
 
   private String scope;
-  private String shortName;
+  private String[] shortNames;
   private String plural;
   private String singular;
 
-	public AddCustomResourceDefinitionResourceDecorator(String name, String apiGroup, String kind, String scope, String shortName, String plural, String singular) {
-		this.name = name;
-		this.apiGroup = apiGroup;
-		this.kind = kind;
-		this.scope = scope;
-		this.shortName = shortName;
-		this.plural = plural;
-		this.singular = singular;
-	}
-  
-	@Override
+  public AddCustomResourceDefinitionResourceDecorator(String name, String apiGroup, String kind,
+    String scope, String[] shortNames, String plural, String singular) {
+    this.name = name;
+    this.apiGroup = apiGroup;
+    this.kind = kind;
+    this.scope = scope;
+    this.shortNames = shortNames;
+    this.plural = plural;
+    this.singular = singular;
+  }
+
+  @Override
 	public void visit(KubernetesListBuilder list) {
     boolean exists = list.getItems().stream().anyMatch(i -> i.getKind().equals("CustomResourceDefinition") && i.getMetadata().getName().equals(name));
 
      if (!exists) {
        list.addToItems(new CustomResourceDefinitionBuilder()
-        .withApiVersion("apiextensions.k8s.io/v1beta1")
-        .withNewMetadata()
-        .withName(name)
-        .endMetadata()
-        .withNewSpec()
-             .withScope(scope)
-             .withGroup(apiGroup)
-             .withNewNames()
-               .withKind(kind)
-               .withShortNames(shortName)
+         .withApiVersion("apiextensions.k8s.io/v1beta1")
+         .withNewMetadata()
+         .withName(name)
+         .endMetadata()
+         .withNewSpec()
+         .withScope(scope)
+         .withGroup(apiGroup)
+         .withNewNames()
+         .withKind(kind)
+         .withShortNames(shortNames)
                .withPlural(plural)
                .withSingular(singular)
           .endNames()

@@ -16,12 +16,10 @@
 package io.dekorate.crd.handler;
 
 import static io.dekorate.crd.util.Types.findStatusProperty;
-import static io.dekorate.crd.util.Types.findStatusType;
 
 import io.dekorate.Resources;
 import io.dekorate.crd.annotation.Autodetect;
-import io.dekorate.crd.config.CustomResourceConfig;
-import io.dekorate.crd.config.Keys;
+import io.dekorate.crd.apt.CustomResourceAnnotationProcessor.CRInfo;
 import io.dekorate.crd.config.Scale;
 import io.dekorate.crd.decorator.AddAdditionPrinterColumnDecorator;
 import io.dekorate.crd.decorator.AddCustomResourceDefinitionResourceDecorator;
@@ -41,10 +39,10 @@ import io.dekorate.crd.visitor.AdditionalPrineterColumnDetector;
 import io.dekorate.crd.visitor.LabelSelectorPathDetector;
 import io.dekorate.crd.visitor.SpecReplicasPathDetector;
 import io.dekorate.crd.visitor.StatusReplicasPathDetector;
+import io.dekorate.kubernetes.decorator.Decorator;
 import io.dekorate.utils.Strings;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionBuilder;
-import io.sundr.codegen.CodegenContext;
 import io.sundr.codegen.functions.ElementTo;
 import io.sundr.codegen.model.ClassRef;
 import io.sundr.codegen.model.Property;
@@ -52,13 +50,20 @@ import io.sundr.codegen.model.TypeDef;
 import io.sundr.codegen.model.TypeDefBuilder;
 import io.sundr.codegen.model.TypeRef;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
-import javax.lang.model.element.TypeElement;
 
 public class CustomResourceHandler {
+
+  private final Set<Decorator> decorators = new TreeSet<>(DECORATOR_COMPARATOR);
+  private static final Comparator<Decorator> DECORATOR_COMPARATOR = (a, b) -> a.compareTo(b) == 0
+    ? b.compareTo(a)
+    : a.equals(b) ? 0 : 1;
 
   private final Resources resources;
 
@@ -66,29 +71,37 @@ public class CustomResourceHandler {
     this.resources = resources;
   }
 
-  public Map<String, KubernetesList> handle(CustomResourceConfig config) {
-    TypeDef def = config.getAttribute(Keys.TYPE_DEFINITION);
-    String name = config.getPlural() + "." + config.getGroup();
-    String version = config.getVersion();
+  public Map<String, KubernetesList> handle(CRInfo config, TypeDef def) {
+    final var name = config.crdName();
+    final var version = config.version();
 
-    Optional<TypeRef> statusType = findStatusType(config, def);
+    Optional<TypeRef> statusType;
+    final var status = config.status();
+    if (!status.getQualifiedName().contentEquals(Void.TYPE.getCanonicalName())) {
+      statusType = Optional.of(ElementTo.TYPEDEF.apply(status).toReference());
+    } else {
+      statusType = Optional.empty();
+    }
 
     SpecReplicasPathDetector specReplicasPathDetector = new SpecReplicasPathDetector();
     StatusReplicasPathDetector statusReplicasPathDetector = new StatusReplicasPathDetector();
-    LabelSelectorPathDetector labalSelectorPathDetector = new LabelSelectorPathDetector();
+    LabelSelectorPathDetector labelSelectorPathDetector = new LabelSelectorPathDetector();
     AdditionalPrineterColumnDetector additionalPrineterColumnDetector = new AdditionalPrineterColumnDetector();
 
     //This is going to be used in order to scan the status provided as `@Crd(status = MyStatus.class)`.
-    StatusReplicasPathDetector externalStatusReplicasPathDetector = new StatusReplicasPathDetector(".spec.");
-    LabelSelectorPathDetector  externalLabalSelectorPathDetector = new LabelSelectorPathDetector(".spec.");
-    AdditionalPrineterColumnDetector externalAdditionalPrineterColumnDetector = new AdditionalPrineterColumnDetector(".spec.");
+    StatusReplicasPathDetector externalStatusReplicasPathDetector = new StatusReplicasPathDetector(
+      ".spec.");
+    LabelSelectorPathDetector externalLabelSelectorPathDetector = new LabelSelectorPathDetector(
+      ".spec.");
+    AdditionalPrineterColumnDetector externalAdditionalPrineterColumnDetector = new AdditionalPrineterColumnDetector(
+      ".spec.");
 
     if (statusType.isPresent()) {
       TypeDefBuilder builder = new TypeDefBuilder(def);
-      Optional<Property> statusProperty = findStatusProperty(config, def);
+      Optional<Property> statusProperty = findStatusProperty(def);
 
       statusProperty.ifPresent(p -> {
-          builder.removeFromProperties(p);
+        builder.removeFromProperties(p);
       });
 
       def = builder
@@ -98,19 +111,18 @@ public class CustomResourceHandler {
         .endProperty()
         .build();
 
-      if (Strings.isNotNullOrEmpty(config.getStatusClassName())) {
-          TypeElement externalStatusElement = CodegenContext.getContext().getElements().getTypeElement(config.getStatusClassName());
-          TypeRef externalStatusRef = ElementTo.TYPEDEF.apply(externalStatusElement).toReference();
-          if (externalStatusRef instanceof ClassRef) {
-            TypeDef externalStatusDef = ((ClassRef) externalStatusRef).getDefinition();
+      if (!status.getQualifiedName().contentEquals(Void.TYPE.getCanonicalName())) {
+        TypeRef externalStatusRef = ElementTo.TYPEDEF.apply(config.status()).toReference();
+        if (externalStatusRef instanceof ClassRef) {
+          TypeDef externalStatusDef = ((ClassRef) externalStatusRef).getDefinition();
 
-            if (externalStatusDef.getName().equals(Autodetect.class.getSimpleName())) {
-              new TypeDefBuilder(externalStatusDef)
-                .accept(externalStatusReplicasPathDetector)
-                .accept(externalLabalSelectorPathDetector)
-                .accept(externalAdditionalPrineterColumnDetector)
-                .build();
-            }
+          if (externalStatusDef.getName().equals(Autodetect.class.getSimpleName())) {
+            new TypeDefBuilder(externalStatusDef)
+              .accept(externalStatusReplicasPathDetector)
+              .accept(externalLabelSelectorPathDetector)
+              .accept(externalAdditionalPrineterColumnDetector)
+              .build();
+          }
           }
       }
     }
@@ -118,75 +130,78 @@ public class CustomResourceHandler {
     def = new TypeDefBuilder(def)
       .accept(specReplicasPathDetector)
       .accept(statusReplicasPathDetector)
-      .accept(labalSelectorPathDetector)
+      .accept(labelSelectorPathDetector)
       .accept(additionalPrineterColumnDetector)
       .build();
 
     if (resources.groups().isEmpty() && resources.global().getItems().isEmpty()) {
       resources.add(new CustomResourceDefinitionBuilder()
-        .withApiVersion("apiextensions.k8s.io/v1beta1")
         .withNewMetadata()
         .withName(name)
         .endMetadata()
         .withNewSpec()
-        .withScope(config.getScope().name())
-        .withGroup(config.getGroup())
+        .withScope(config.scope().name())
+        .withGroup(config.group())
         .withNewNames()
-        .withKind(config.getKind())
-        .withShortNames(config.getShortName())
-        .withPlural(config.getPlural())
-        .withSingular(config.getKind().toLowerCase())
+        .withKind(config.kind())
+        .withShortNames(config.shortNames())
+        .withPlural(config.plural())
+        .withSingular(config.singular())
         .endNames()
         .endSpec()
         .build());
     } else {
-      resources.decorate(new AddCustomResourceDefinitionResourceDecorator(name, config.getGroup(), config.getKind(), config.getScope().name(), config.getShortName(), config.getPlural(), config.getKind().toLowerCase()));
+      resources.decorate(
+        new AddCustomResourceDefinitionResourceDecorator(name, config.group(), config.kind(),
+          config.scope().name(), config.shortNames(), config.plural(), config.singular()));
     }
 
     resources.decorate(new AddCustomResourceDefintionVersionDecorator(name, version));
     // Let's ignore the parts that are mandatory in the examples
     resources.decorate(new AddSchemaToCustomResourceDefinitionVersionDecorator(name, version, JsonSchema.from(def, "kind", "apiVersion", "metadata")));
 
-    String specReplicasPath = Strings.isNotNullOrEmpty(config.getScale().getSpecReplicasPath()) ? config.getScale().getSpecReplicasPath() : specReplicasPathDetector.getPath().orElse(null);
-    String statusReplicasPath = Strings.isNotNullOrEmpty(config.getScale().getStatusReplicasPath()) ? config.getScale().getStatusReplicasPath() : statusReplicasPathDetector.getPath().orElse(externalStatusReplicasPathDetector.getPath().orElse(null));
-    String labalSelectorPath = Strings.isNotNullOrEmpty(config.getScale().getLabelSelectorPath()) ? config.getScale().getLabelSelectorPath() : labalSelectorPathDetector.getPath().orElse(externalLabalSelectorPathDetector.getPath().orElse(null));
-
     Map<String, Property> additionalPrinterColumns = new HashMap<>();
     additionalPrinterColumns.putAll(additionalPrineterColumnDetector.getProperties());
     additionalPrinterColumns.putAll(externalAdditionalPrineterColumnDetector.getProperties());
 
-    if (Strings.isNotNullOrEmpty(specReplicasPath)) {
+    specReplicasPathDetector.getPath().ifPresent(specReplicasPath -> {
       resources.decorate(new AddSubresourcesDecorator(name, version));
       resources.decorate(new AddSpecReplicasPathDecorator(name, version, specReplicasPath));
-    }
+    });
 
-    if (Strings.isNotNullOrEmpty(statusReplicasPath)) {
+    // todo: deal with external status?
+    // statusReplicasPathDetector.getPath().orElse(externalStatusReplicasPathDetector.getPath().orElse(null))
+    statusReplicasPathDetector.getPath().ifPresent(statusReplicasPath -> {
       resources.decorate(new AddSubresourcesDecorator(name, version));
       resources.decorate(new AddStatusReplicasPathDecorator(name, version, statusReplicasPath));
-    }
+    });
 
-    if (Strings.isNotNullOrEmpty(labalSelectorPath)) {
+    // todo: deal with external label?
+    // labelSelectorPathDetector.getPath().orElse(externalLabelSelectorPathDetector.getPath().orElse(null))
+    labelSelectorPathDetector.getPath().ifPresent(labelSelectorPath -> {
       resources.decorate(new AddSubresourcesDecorator(name, version));
-       resources.decorate(new AddLabelSelectorPathDecorator(name, version, labalSelectorPath));
-    }
+      resources.decorate(new AddLabelSelectorPathDecorator(name, version, labelSelectorPath));
+    });
 
     if (statusType.isPresent()) {
       resources.decorate(new AddSubresourcesDecorator(name, version));
       resources.decorate(new AddStatusSubresourceDecorator(name, version));
     }
 
-    resources.decorate(new SetServedVersionDecorator(name, version, config.isServed()));
-    resources.decorate(new SetStorageVersionDecorator(name, version, config.isStorage()));
+    resources.decorate(new SetServedVersionDecorator(name, version, config.served()));
+    resources.decorate(new SetStorageVersionDecorator(name, version, config.storage()));
     resources.decorate(new EnsureSingleStorageVersionDecorator(name));
 
     resources.decorate(new PromoteSingleVersionAttributesDecorator(name));
 
     additionalPrinterColumns.forEach((path, property) -> {
-        Map<String, Object> parameters = property.getAnnotations().stream().filter(a -> a.getClassRef().getName().equals("PrinterColumn")).map(a -> a.getParameters()).findFirst().orElse(Collections.emptyMap());
-        String type =  JsonSchema.TYPE_MAP.getOrDefault(property.getTypeRef(), "object");
-        String column = (String) parameters.get("name");
-        if (Strings.isNullOrEmpty(column)) {
-          column = property.getName().toUpperCase();
+      Map<String, Object> parameters = property.getAnnotations().stream()
+        .filter(a -> a.getClassRef().getName().equals("PrinterColumn")).map(a -> a.getParameters())
+        .findFirst().orElse(Collections.emptyMap());
+      String type = JsonSchema.TYPE_MAP.getOrDefault(property.getTypeRef(), "object");
+      String column = (String) parameters.get("name");
+      if (Strings.isNullOrEmpty(column)) {
+        column = property.getName().toUpperCase();
         }
         String description = property.getComments().stream().filter(l -> !l.trim().startsWith("@")).collect(Collectors.joining(" ")).trim();
         String format = (String) parameters.get("format");
