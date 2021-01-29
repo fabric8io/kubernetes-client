@@ -14,40 +14,45 @@
 package io.dekorate.crd.apt;
 
 import io.dekorate.Resources;
-import io.dekorate.crd.annotation.Autodetect;
-import io.dekorate.crd.annotation.Crd;
 import io.dekorate.crd.config.CustomResourceConfig;
 import io.dekorate.crd.config.CustomResourceConfigBuilder;
 import io.dekorate.crd.config.Keys;
 import io.dekorate.crd.config.Scope;
 import io.dekorate.crd.handler.CustomResourceHandler;
-import io.dekorate.crd.util.Types;
 import io.dekorate.utils.Serialization;
+import io.fabric8.kubernetes.api.model.Namespaced;
+import io.fabric8.kubernetes.client.CustomResource;
+import io.fabric8.kubernetes.client.utils.Pluralize;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Kind;
 import io.fabric8.kubernetes.model.annotation.Plural;
+import io.fabric8.kubernetes.model.annotation.ShortNames;
 import io.fabric8.kubernetes.model.annotation.Singular;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.codegen.CodegenContext;
 import io.sundr.codegen.functions.ElementTo;
 import io.sundr.codegen.model.TypeDef;
-import io.sundr.codegen.utils.ModelUtils;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 import javax.annotation.processing.AbstractProcessor;
+import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.MirroredTypeException;
+import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeMirror;
 
 @SupportedAnnotationTypes({
   "io.fabric8.kubernetes.model.annotation.Group",
   "io.fabric8.kubernetes.model.annotation.Version"})
 public class CustomResourceAnnotationProcessor extends AbstractProcessor {
 
+  private static final String CUSTOM_RESOURCE_NAME = CustomResource.class.getCanonicalName();
   private final Resources resources = new Resources();
 
   public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
@@ -81,47 +86,129 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
       .orElse(null);
   }
 
-  public void add(Element element) {
-    System.out.println("Generating " + element.getSimpleName());
-    Optional<Crd> crd = Optional.ofNullable(element.getAnnotation(Crd.class));
-    Optional<Group> group = Optional.ofNullable(element.getAnnotation(Group.class));
-    Optional<Version> version = Optional.ofNullable(element.getAnnotation(Version.class));
-    Optional<Kind> kind = Optional.ofNullable(element.getAnnotation(Kind.class));
-    Optional<Plural> plural = Optional.ofNullable(element.getAnnotation(Plural.class));
-    Optional<Singular> singular = Optional.ofNullable(element.getAnnotation(Singular.class));
+  private CRInfo add(TypeElement element) {
 
-    String statusClassName;
-    try {
-      statusClassName = crd.map(Crd::status).map(Class::getCanonicalName)
-        .orElse(Autodetect.class.getCanonicalName());
-    } catch (MirroredTypeException e) {
-      statusClassName = e.getTypeMirror().toString();
-    }
+    final var superclass = (DeclaredType) element.getSuperclass();
+    final var crClassName = element.getQualifiedName();
+    if (superclass.asElement().toString().equals(CUSTOM_RESOURCE_NAME)) {
+      final List<? extends TypeMirror> typeArguments = superclass.getTypeArguments();
+      if (typeArguments.size() != 2) {
+        System.out.println("Ignoring " + crClassName + " because it isn't parameterized");
+        return null;
+      }
+      var spec = ((TypeElement) ((DeclaredType) typeArguments.get(0)).asElement());
+      var status = ((TypeElement) ((DeclaredType) typeArguments.get(1)).asElement());
+      final var info = new CRInfo(element, spec, status, processingEnv);
+      System.out.println(
+        "Generating '"
+          + info.crdName()
+          + "' version '"
+          + info.version
+          + "' with "
+          + crClassName
+          + " (spec: "
+          + spec.getQualifiedName()
+          + " / status: "
+          + status.getQualifiedName()
+          + ")");
 
-    if (element instanceof TypeElement) {
-      TypeDef definition = ElementTo.TYPEDEF.apply((TypeElement) element);
-      String className = ModelUtils.getClassName(element);
-
+      TypeDef definition = ElementTo.TYPEDEF.apply(element);
       CustomResourceConfig config = new CustomResourceConfigBuilder()
-        .withKind(firstOf(kind.map(Kind::value), crd.map(Crd::kind)))
-        .withGroup(firstOf(group.map(Group::value), crd.map(Crd::group)))
-        .withVersion(firstOf(version.map(Version::value), crd.map(Crd::version)))
-        .withPlural(firstOf(plural.map(Plural::value), crd.map(Crd::plural)))
-        .withName(firstOf(singular.map(Singular::value), crd.map(Crd::name)))
-        .withScope(firstOf(crd.map(Crd::scope),
-          Optional.of(Types.isNamespaced(definition) ? Scope.Namespaced : Scope.Cluster)))
-        .withServed(firstOf(crd.map(Crd::served), Optional.of(true)))
-        .withStorage(firstOf(crd.map(Crd::storage), Optional.of(false)))
-        .withStatusClassName(statusClassName)
+        .withKind(info.kind())
+        .withGroup(info.group)
+        .withVersion(info.version)
+        .withPlural(info.plural())
+        .withName(info.crdName())
+        .withScope(info.scope())
+        .withServed(info.served())
+        .withStorage(info.storage())
+        .withStatusClassName(info.status.getQualifiedName().toString())
         .withNewScale()
         .endScale()
-//        .accept(new AddClassNameConfigurator(className))
         .addToAttributes(Keys.TYPE_DEFINITION, definition).build();
 
       final var resources = new CustomResourceHandler(this.resources).handle(config);
       System.out.println(Serialization.asYaml(resources.get("kubernetes")));
+      return info;
+    } else {
+      System.out.println(
+        "Ignoring " + crClassName + " because it doesn't extend " + CUSTOM_RESOURCE_NAME);
+      return null;
     }
   }
 
+  private static class CRInfo {
 
+    private final TypeElement customResource;
+    private final TypeElement spec;
+    private final TypeElement status;
+    private final String group;
+    private final String version;
+    private final ProcessingEnvironment env;
+
+    public CRInfo(
+      TypeElement customResource,
+      TypeElement spec,
+      TypeElement status,
+      ProcessingEnvironment env) {
+      this.customResource = customResource;
+      this.spec = spec;
+      this.status = status;
+      this.group = customResource.getAnnotation(Group.class).value();
+      this.version = customResource.getAnnotation(Version.class).value();
+      this.env = env;
+    }
+
+
+    private boolean storage() {
+      return customResource.getAnnotation(Version.class).storage();
+    }
+
+    private boolean served() {
+      return customResource.getAnnotation(Version.class).served();
+    }
+
+    private String key() {
+      return crdName();
+    }
+
+    private Scope scope() {
+      return customResource.getInterfaces().stream()
+        .filter(t -> t.toString().equals(Namespaced.class.getTypeName()))
+        .map(t -> Scope.Namespaced).findFirst().orElse(Scope.Cluster);
+    }
+
+    private String crdName() {
+      return plural() + "." + group;
+    }
+
+    private String[] shortNames() {
+      return Optional.ofNullable(customResource.getAnnotation(ShortNames.class))
+        .map(ShortNames::value)
+        .orElse(new String[]{});
+    }
+
+    private String singular() {
+      return Optional.ofNullable(customResource.getAnnotation(Singular.class))
+        .map(Singular::value)
+        .orElse(kind().toLowerCase(Locale.ROOT));
+    }
+
+    private String plural() {
+      return Optional.ofNullable(customResource.getAnnotation(Plural.class))
+        .map(Plural::value)
+        .map(s -> s.toLowerCase(Locale.ROOT))
+        .orElse(Pluralize.toPlural(singular()));
+    }
+
+    private String kind() {
+      return Optional.ofNullable(customResource.getAnnotation(Kind.class))
+        .map(Kind::value)
+        .orElse(customResource.getSimpleName().toString());
+    }
+
+    private boolean deprecated() {
+      return env.getElementUtils().isDeprecated(customResource);
+    }
+  }
 }
