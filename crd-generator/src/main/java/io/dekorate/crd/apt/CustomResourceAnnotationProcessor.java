@@ -18,7 +18,6 @@ import io.dekorate.crd.config.Scope;
 import io.dekorate.crd.handler.CustomResourceHandler;
 import io.dekorate.utils.Serialization;
 import io.fabric8.kubernetes.api.model.Namespaced;
-import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.utils.Pluralize;
 import io.fabric8.kubernetes.model.annotation.Group;
@@ -30,15 +29,12 @@ import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.codegen.CodegenContext;
 import io.sundr.codegen.functions.ElementTo;
 import io.sundr.codegen.model.TypeDef;
-
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import javax.annotation.processing.AbstractProcessor;
@@ -52,53 +48,30 @@ import javax.lang.model.type.TypeMirror;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 
-@SupportedAnnotationTypes({
-  "io.fabric8.kubernetes.model.annotation.Group",
-  "io.fabric8.kubernetes.model.annotation.Version"})
+@SupportedAnnotationTypes({"io.fabric8.kubernetes.model.annotation.Version"})
 public class CustomResourceAnnotationProcessor extends AbstractProcessor {
 
   private static final String CUSTOM_RESOURCE_NAME = CustomResource.class.getCanonicalName();
-  private static final Map<String, CustomResourceDefinition> crds = new HashMap<>();
   private final Resources resources = new Resources();
+  private final CustomResourceHandler handler = new CustomResourceHandler(resources);
 
   public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-    /*CodegenContext.create(processingEnv.getElementUtils(), processingEnv.getTypeUtils());
-
-    try {
-      for (TypeElement annotation : annotations) {
-        Set<? extends Element> annotatedElements = roundEnv.getElementsAnnotatedWith(annotation);
-        crds.putAll(
-          annotatedElements.stream()
-            .map(e -> (TypeElement) e)
-            .map(this::crInfo)
-            .filter(Objects::nonNull)
-            .collect(
-              Collectors.groupingBy(
-                CRInfo::key,
-                Collector.of(
-                  CustomResourceDefinitionBuilder::new,
-                  this::enrich,
-                  this::combine,
-                  CustomResourceDefinitionBuilder::build))));
-      }
-    } finally {
-      if (roundEnv.processingOver()) {
-        crds.forEach(this::writeCRD);
-      }
-    }
-    return true;*/
-
     if (roundEnv.processingOver()) {
       // write files
-      resources.generate().forEach( (k, v) -> {
-          try {
-            FileObject yml = processingEnv.getFiler().createResource(StandardLocation.CLASS_OUTPUT, "", "META-INF/dekorate/" + k + ".yml");
-            try (Writer writer = yml.openWriter()) {
-              final String yamlValue = Serialization.asYaml(v);
-              writer.write(yamlValue);
-            } 
-          } catch (IOException e) {
-            e.printStackTrace();
+      final var list = resources.generate();
+      list.getItems().forEach(crd -> {
+        try {
+          FileObject yml = processingEnv.getFiler()
+            .createResource(StandardLocation.CLASS_OUTPUT, "",
+              "META-INF/dekorate/" + crd.getMetadata().getName() + ".yml");
+          try (Writer writer = yml.openWriter()) {
+            final String yamlValue = Serialization.asYaml(crd);
+            writer.write(yamlValue);
+            writer.flush();
+            System.out.println("Created " + yml.toUri());
+          }
+        } catch (IOException e) {
+          e.printStackTrace();
           }
       });
       return true;
@@ -156,22 +129,7 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
           + ")");
 
       TypeDef definition = ElementTo.TYPEDEF.apply(element);
-      /*CustomResourceConfig config = new CustomResourceConfigBuilder()
-        .withKind(info.kind())
-        .withGroup(info.group)
-        .withVersion(info.version)
-        .withPlural(info.plural())
-        .withName(info.crdName())
-        .withScope(info.scope())
-        .withServed(info.served())
-        .withStorage(info.storage())
-        .withStatusClassName(info.status.getQualifiedName().toString())
-        .withNewScale()
-        .endScale()
-        .addToAttributes(Keys.TYPE_DEFINITION, definition).build();
-*/
-      final var resources = new CustomResourceHandler(this.resources).handle(info, definition);
-      System.out.println(Serialization.asYaml(resources.get("kubernetes")));
+      handler.handle(info, definition);
       return info;
     } else {
       System.out.println(

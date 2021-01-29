@@ -41,8 +41,7 @@ import io.dekorate.crd.visitor.SpecReplicasPathDetector;
 import io.dekorate.crd.visitor.StatusReplicasPathDetector;
 import io.dekorate.kubernetes.decorator.Decorator;
 import io.dekorate.utils.Strings;
-import io.fabric8.kubernetes.api.model.KubernetesList;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionBuilder;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionBuilder;
 import io.sundr.codegen.functions.ElementTo;
 import io.sundr.codegen.model.ClassRef;
 import io.sundr.codegen.model.Property;
@@ -71,7 +70,7 @@ public class CustomResourceHandler {
     this.resources = resources;
   }
 
-  public Map<String, KubernetesList> handle(CRInfo config, TypeDef def) {
+  public void handle(CRInfo config, TypeDef def) {
     final var name = config.crdName();
     final var version = config.version();
 
@@ -134,7 +133,7 @@ public class CustomResourceHandler {
       .accept(additionalPrineterColumnDetector)
       .build();
 
-    if (resources.groups().isEmpty() && resources.global().getItems().isEmpty()) {
+    if (resources.global().getItems().isEmpty()) {
       resources.add(new CustomResourceDefinitionBuilder()
         .withNewMetadata()
         .withName(name)
@@ -208,8 +207,6 @@ public class CustomResourceHandler {
 
         resources.decorate(new AddAdditionPrinterColumnDecorator(name, version, type, column, path, format, description));
     });
-
-    return resources.generate();
   }
 
   protected static boolean hasNonDefaultScaleConfig(Scale scale) {
