@@ -13,9 +13,14 @@
  */
 package io.dekorate.crd.apt;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
+import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator.Feature;
+import io.dekorate.DekorateException;
 import io.dekorate.Resources;
 import io.dekorate.crd.v1.CustomResourceHandler;
-import io.dekorate.utils.Serialization;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.sundr.codegen.CodegenContext;
@@ -39,6 +44,19 @@ import javax.tools.StandardLocation;
 @SupportedAnnotationTypes({"io.fabric8.kubernetes.model.annotation.Version"})
 public class CustomResourceAnnotationProcessor extends AbstractProcessor {
 
+  private static final ObjectMapper YAML_MAPPER = new ObjectMapper(
+    new YAMLFactory()
+      .enable(Feature.MINIMIZE_QUOTES)
+      .enable(Feature.ALWAYS_QUOTE_NUMBERS_AS_STRINGS)
+      .disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER)
+  ) {
+    {
+      configure(SerializationFeature.INDENT_OUTPUT, true);
+      configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false);
+      configure(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, false);
+    }
+  };
+
   private static final String CUSTOM_RESOURCE_NAME = CustomResource.class.getCanonicalName();
   private final Resources resources = new Resources();
   private final CustomResourceHandler v1Handler = new CustomResourceHandler(resources);
@@ -56,13 +74,13 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
             .createResource(StandardLocation.CLASS_OUTPUT, "",
               "META-INF/dekorate/" + crd.getMetadata().getName() + "-" + version + ".yml");
           try (Writer writer = yml.openWriter()) {
-            final String yamlValue = Serialization.asYaml(crd);
+            final String yamlValue = YAML_MAPPER.writeValueAsString(crd);
             writer.write(yamlValue);
             writer.flush();
             System.out.println("Created " + yml.toUri());
           }
         } catch (IOException e) {
-          e.printStackTrace();
+          DekorateException.launderThrowable(e);
           }
       });
       return true;

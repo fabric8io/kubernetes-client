@@ -18,7 +18,6 @@ package io.dekorate.crd.v1;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import io.dekorate.crd.example.person.Person;
-import io.dekorate.utils.Serialization;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 import io.sundr.codegen.functions.ClassTo;
 import io.sundr.codegen.model.TypeDef;
@@ -30,7 +29,6 @@ class JsonSchemaTest {
   void shouldCreateJsonSchemaFromClass() {
     TypeDef person = ClassTo.TYPEDEF.apply(Person.class);
     JSONSchemaProps schema = JsonSchema.from(person);
-    System.out.println(Serialization.asJson(schema));
     assertNotNull(schema);
   }
 
