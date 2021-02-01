@@ -151,7 +151,7 @@ public class RawCustomResourceIT {
   }
 
   @Test
-  public void testCrudUsingInputStream() throws IOException {
+  public void testCreateReadDeleteUsingInputStream() throws IOException {
     // Create
     String name = "hippo";
     InputStream hippoInputStream = getClass().getResourceAsStream("/rawcustomresourceit-crud-inputstream.yml");
@@ -161,13 +161,6 @@ public class RawCustomResourceIT {
     // Read
     hippoCr = client.customResource(customResourceDefinitionContext).get(currentNamespace, name);
     assertAnimal(hippoCr, name, "Hippopotamidae");
-
-    // Update
-    ((Map<String, Object>)hippoCr.get("spec")).put("image", "river-hippo");
-    File updatedHippoManifest = Files.createTempFile("hippo", "yml").toFile();
-    FileUtils.writeStringToFile(updatedHippoManifest, Serialization.jsonMapper().writeValueAsString(hippoCr));
-    hippoCr = client.customResource(customResourceDefinitionContext).edit(currentNamespace, name, new FileInputStream(updatedHippoManifest));
-    assertAnimal(hippoCr, name, "river-hippo");
 
     // Delete
     Map<String, Object> deletionStatusMap = client.customResource(customResourceDefinitionContext).delete(currentNamespace, name);
