@@ -1,1 +1,1 @@
-io.dekorate.crd.apt.CustomResourceAnnotationProcessor
+io.fabric8.crd.apt.CustomResourceAnnotationProcessor
