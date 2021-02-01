@@ -69,7 +69,7 @@ func main() {
     {"k8s.io/apimachinery/pkg/version", "", "io.fabric8.kubernetes.api.model.version", "kubernetes_apimachinery_pkg_version_", false},
     {"k8s.io/apimachinery/pkg/apis/meta/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_", false},
     {"k8s.io/api/core/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_core_", false},
-    {"k8s.io/api/discovery/v1beta1", "discovery.k8s.io", "io.fabric8.kubernetes.api.model.discovery", "kubernetes_discovery_", true},
+    {"k8s.io/api/discovery/v1beta1", "discovery.k8s.io", "io.fabric8.kubernetes.api.model.discovery.v1beta1", "kubernetes_discovery_v1beta1_", true},
   }
 
   typeMap := map[reflect.Type]reflect.Type{

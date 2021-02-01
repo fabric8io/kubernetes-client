@@ -775,7 +775,7 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_discovery_Endpoint": {
+    "kubernetes_discovery_v1beta1_Endpoint": {
       "type": "object",
       "properties": {
         "addresses": {
@@ -785,8 +785,8 @@
           }
         },
         "conditions": {
-          "$ref": "#/definitions/kubernetes_discovery_EndpointConditions",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.EndpointConditions"
+          "$ref": "#/definitions/kubernetes_discovery_v1beta1_EndpointConditions",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointConditions"
         },
         "hostname": {
           "type": "string"
@@ -807,12 +807,12 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.discovery.Endpoint",
+      "javaType": "io.fabric8.kubernetes.api.model.discovery.v1beta1.Endpoint",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_discovery_EndpointConditions": {
+    "kubernetes_discovery_v1beta1_EndpointConditions": {
       "type": "object",
       "properties": {
         "ready": {
@@ -826,12 +826,12 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.discovery.EndpointConditions",
+      "javaType": "io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointConditions",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_discovery_EndpointPort": {
+    "kubernetes_discovery_v1beta1_EndpointPort": {
       "type": "object",
       "properties": {
         "appProtocol": {
@@ -850,12 +850,12 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.discovery.EndpointPort",
+      "javaType": "io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointPort",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_discovery_EndpointSlice": {
+    "kubernetes_discovery_v1beta1_EndpointSlice": {
       "type": "object",
       "properties": {
         "addressType": {
@@ -869,8 +869,8 @@
         "endpoints": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_discovery_Endpoint",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.Endpoint"
+            "$ref": "#/definitions/kubernetes_discovery_v1beta1_Endpoint",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1beta1.Endpoint"
           }
         },
         "kind": {
@@ -885,19 +885,19 @@
         "ports": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_discovery_EndpointPort",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.EndpointPort"
+            "$ref": "#/definitions/kubernetes_discovery_v1beta1_EndpointPort",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointPort"
           }
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.discovery.EndpointSlice",
+      "javaType": "io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointSlice",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.HasMetadata",
         "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
-    "kubernetes_discovery_EndpointSliceList": {
+    "kubernetes_discovery_v1beta1_EndpointSliceList": {
       "type": "object",
       "properties": {
         "apiVersion": {
@@ -908,8 +908,8 @@
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_discovery_EndpointSlice",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.EndpointSlice"
+            "$ref": "#/definitions/kubernetes_discovery_v1beta1_EndpointSlice",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointSlice"
           }
         },
         "kind": {
@@ -923,10 +923,10 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.discovery.EndpointSliceList",
+      "javaType": "io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointSliceList",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource",
-        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.discovery.EndpointSlice\u003e"
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointSlice\u003e"
       ]
     }
   },
@@ -953,16 +953,16 @@
       "existingJavaType": "io.fabric8.kubernetes.api.model.DeleteOptions"
     },
     "DiscoveryEndpointPort": {
-      "$ref": "#/definitions/kubernetes_discovery_EndpointPort",
-      "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.EndpointPort"
+      "$ref": "#/definitions/kubernetes_discovery_v1beta1_EndpointPort",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointPort"
     },
     "EndpointSlice": {
-      "$ref": "#/definitions/kubernetes_discovery_EndpointSlice",
-      "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.EndpointSlice"
+      "$ref": "#/definitions/kubernetes_discovery_v1beta1_EndpointSlice",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointSlice"
     },
     "EndpointSliceList": {
-      "$ref": "#/definitions/kubernetes_discovery_EndpointSliceList",
-      "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.EndpointSliceList"
+      "$ref": "#/definitions/kubernetes_discovery_v1beta1_EndpointSliceList",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointSliceList"
     },
     "GetOptions": {
       "$ref": "#/definitions/kubernetes_apimachinery_GetOptions",
@@ -1148,8 +1148,8 @@
           }
         },
         "conditions": {
-          "$ref": "#/definitions/kubernetes_discovery_EndpointConditions",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.EndpointConditions"
+          "$ref": "#/definitions/kubernetes_discovery_v1beta1_EndpointConditions",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointConditions"
         },
         "hostname": {
           "type": "string"
@@ -1217,8 +1217,8 @@
         "endpoints": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_discovery_Endpoint",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.Endpoint"
+            "$ref": "#/definitions/kubernetes_discovery_v1beta1_Endpoint",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1beta1.Endpoint"
           }
         },
         "kind": {
@@ -1233,8 +1233,8 @@
         "ports": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_discovery_EndpointPort",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.EndpointPort"
+            "$ref": "#/definitions/kubernetes_discovery_v1beta1_EndpointPort",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointPort"
           }
         }
       },
@@ -1250,8 +1250,8 @@
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_discovery_EndpointSlice",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.EndpointSlice"
+            "$ref": "#/definitions/kubernetes_discovery_v1beta1_EndpointSlice",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointSlice"
           }
         },
         "kind": {
