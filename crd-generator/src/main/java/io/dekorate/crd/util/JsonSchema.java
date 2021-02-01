@@ -15,6 +15,17 @@
  */
 package io.dekorate.crd.util;
 
+import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsBuilder;
+import io.fabric8.kubernetes.client.CustomResource;
+import io.sundr.builder.internal.functions.TypeAs;
+import io.sundr.codegen.functions.ClassTo;
+import io.sundr.codegen.model.ClassRef;
+import io.sundr.codegen.model.PrimitiveRefBuilder;
+import io.sundr.codegen.model.Property;
+import io.sundr.codegen.model.TypeDef;
+import io.sundr.codegen.model.TypeRef;
+import io.sundr.codegen.utils.TypeUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -25,18 +36,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsBuilder;
-import io.fabric8.kubernetes.client.CustomResource;
-import io.sundr.builder.internal.functions.TypeAs;
-import io.sundr.codegen.functions.ClassTo;
-import io.sundr.codegen.model.ClassRef;
-import io.sundr.codegen.model.PrimitiveRefBuilder;
-import io.sundr.codegen.model.Property;
-import io.sundr.codegen.model.TypeDef;
-import io.sundr.codegen.model.TypeRef;
-import io.sundr.codegen.utils.TypeUtils;
 
 public class JsonSchema {
 

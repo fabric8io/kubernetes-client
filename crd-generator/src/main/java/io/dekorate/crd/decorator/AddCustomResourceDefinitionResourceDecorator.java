@@ -20,7 +20,7 @@ package io.dekorate.crd.decorator;
 import io.dekorate.kubernetes.decorator.Decorator;
 import io.dekorate.kubernetes.decorator.ResourceProvidingDecorator;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionBuilder;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionBuilder;
 
 public class AddCustomResourceDefinitionResourceDecorator extends ResourceProvidingDecorator<KubernetesListBuilder> {
 
@@ -50,7 +50,6 @@ public class AddCustomResourceDefinitionResourceDecorator extends ResourceProvid
 
      if (!exists) {
        list.addToItems(new CustomResourceDefinitionBuilder()
-         .withApiVersion("apiextensions.k8s.io/v1beta1")
          .withNewMetadata()
          .withName(name)
          .endMetadata()

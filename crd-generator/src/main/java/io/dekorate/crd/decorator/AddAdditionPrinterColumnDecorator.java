@@ -18,9 +18,9 @@
 package io.dekorate.crd.decorator;
 
 import io.dekorate.utils.Strings;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceColumnDefinitionBuilder;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionVersionFluent;
 import java.util.function.Predicate;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceColumnDefinitionBuilder;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersionFluent;
 
 public class AddAdditionPrinterColumnDecorator extends CustomResourceDefinitionVersionDecorator<CustomResourceDefinitionVersionFluent<?>> {
 
@@ -49,10 +49,10 @@ public class AddAdditionPrinterColumnDecorator extends CustomResourceDefinitionV
       };
       spec.removeMatchingFromAdditionalPrinterColumns(matchingColumn);
 
-      spec.addNewAdditionalPrinterColumn()
-        .withType(type)
-        .withName(name)
-        .withJSONPath(path)
+    spec.addNewAdditionalPrinterColumn()
+      .withType(type)
+      .withName(name)
+      .withJsonPath(path)
         .withFormat(Strings.isNotNullOrEmpty(format) ? format : null)
         .withDescription(Strings.isNotNullOrEmpty(description) ? description : null)
         .endAdditionalPrinterColumn();

@@ -27,7 +27,6 @@ import io.dekorate.crd.decorator.AddStatusReplicasPathDecorator;
 import io.dekorate.crd.decorator.AddStatusSubresourceDecorator;
 import io.dekorate.crd.decorator.AddSubresourcesDecorator;
 import io.dekorate.crd.decorator.EnsureSingleStorageVersionDecorator;
-import io.dekorate.crd.decorator.PromoteSingleVersionAttributesDecorator;
 import io.dekorate.crd.decorator.SetServedVersionDecorator;
 import io.dekorate.crd.decorator.SetStorageVersionDecorator;
 import io.dekorate.crd.util.JsonSchema;
@@ -37,7 +36,6 @@ import io.dekorate.crd.visitor.SpecReplicasPathDetector;
 import io.dekorate.crd.visitor.StatusReplicasPathDetector;
 import io.dekorate.utils.Strings;
 import io.sundr.codegen.functions.ElementTo;
-import io.sundr.codegen.model.ClassRef;
 import io.sundr.codegen.model.Property;
 import io.sundr.codegen.model.TypeDef;
 import io.sundr.codegen.model.TypeDefBuilder;
@@ -132,7 +130,7 @@ public class CustomResourceHandler {
     resources.decorate(new SetStorageVersionDecorator(name, version, config.storage()));
     resources.decorate(new EnsureSingleStorageVersionDecorator(name));
 
-    resources.decorate(new PromoteSingleVersionAttributesDecorator(name));
+//    resources.decorate(new PromoteSingleVersionAttributesDecorator(name));
 
     additionalPrinterColumns.forEach((path, property) -> {
       Map<String, Object> parameters = property.getAnnotations().stream()

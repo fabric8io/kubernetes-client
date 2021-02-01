@@ -19,8 +19,8 @@ package io.dekorate.crd.decorator;
 
 import io.dekorate.kubernetes.decorator.Decorator;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionSpecFluent;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersionBuilder;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionSpecFluent;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionVersionBuilder;
 import java.util.function.Predicate;
 
 public class AddCustomResourceDefinitionVersionDecorator extends
@@ -35,12 +35,8 @@ public class AddCustomResourceDefinitionVersionDecorator extends
 
   @Override
   public void andThenVisit(CustomResourceDefinitionSpecFluent<?> spec, ObjectMeta resourceMeta) {
-    Predicate<CustomResourceDefinitionVersionBuilder> predicate = new Predicate<CustomResourceDefinitionVersionBuilder>() {
-      @Override
-      public boolean test(CustomResourceDefinitionVersionBuilder candidate) {
-        return candidate.getName().equals(version);
-       }
-     };
+    Predicate<CustomResourceDefinitionVersionBuilder> predicate = candidate -> candidate.getName()
+      .equals(version);
 
    spec.removeMatchingFromVersions(predicate);
    spec.addNewVersion()
