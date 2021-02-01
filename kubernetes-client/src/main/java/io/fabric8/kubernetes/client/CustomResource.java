@@ -189,7 +189,7 @@ public abstract class CustomResource<S, T> implements HasMetadata {
    * computes a default value (lower-cased version of the value returned by {@link HasMetadata#getKind(Class)}) if the annotation
    * is not present.
    *
-   * @param clazz the CustomeResource whose singular form we want to retrieve
+   * @param clazz the CustomResource whose singular form we want to retrieve
    * @return the singular form defined by the {@link Singular} annotation or a computed default value
    */
   public static String getSingular(Class<? extends CustomResource> clazz) {
