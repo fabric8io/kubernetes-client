@@ -4,6 +4,7 @@
 #### Bugs
 
 #### Improvements
+* Fix #2717: Remove edit() methods from RawCustomResourceOperationsImpl taking InputStream arguments
 
 #### Dependency Upgrade
 * update Tekton Triggers model to v0.11.1

@@ -287,31 +287,6 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
   }
 
   /**
-   * Edit a custom resource object which is a non-namespaced object.
-   *
-   * @param name name of the custom resource
-   * @param objectAsStream new object as a file input stream
-   * @return Object as HashMap
-   * @throws IOException in case of network/serialization failures or failures from Kubernetes API
-   */
-  public Map<String, Object> edit(String name, InputStream objectAsStream) throws IOException {
-    return validateAndSubmitRequest(null, name, IOHelpers.readFully(objectAsStream), HttpCallMethod.PUT);
-  }
-
-  /**
-   * Edit a custom resource object which is a namespaced object.
-   *
-   * @param namespace desired namespace
-   * @param name name of the custom resource
-   * @param objectAsStream new object as a file input stream
-   * @return Object as HashMap
-   * @throws IOException in case of network/serialization failures or failures from Kubernetes API
-   */
-  public Map<String, Object> edit(String namespace, String name, InputStream objectAsStream) throws IOException {
-    return validateAndSubmitRequest(namespace, name, IOHelpers.readFully(objectAsStream), HttpCallMethod.PUT);
-  }
-
-  /**
    * Update status related to a CustomResource, this method does a PUT request on /status endpoint related
    * to the CustomResource
    *
