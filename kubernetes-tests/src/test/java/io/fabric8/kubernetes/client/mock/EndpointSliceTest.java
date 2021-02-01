@@ -15,8 +15,8 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
-import io.fabric8.kubernetes.api.model.discovery.EndpointSlice;
-import io.fabric8.kubernetes.api.model.discovery.EndpointSliceBuilder;
+import io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointSlice;
+import io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointSliceBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import org.junit.Rule;

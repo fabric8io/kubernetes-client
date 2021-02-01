@@ -17,8 +17,8 @@ package io.fabric8.kubernetes.api.model.discovery.v1beta1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import io.fabric8.kubernetes.api.model.discovery.EndpointSlice;
-import io.fabric8.kubernetes.api.model.discovery.EndpointSliceBuilder;
+import io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointSlice;
+import io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointSliceBuilder;
 import io.fabric8.kubernetes.model.util.Helper;
 import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
 import static net.javacrumbs.jsonunit.core.Option.IGNORING_EXTRA_FIELDS;
