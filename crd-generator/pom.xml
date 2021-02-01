@@ -57,6 +57,7 @@
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-client</artifactId>
       <version>${version.kubernetes-client}</version>
+      <scope>compile</scope>
     </dependency>
 
     <!-- Testing -->
