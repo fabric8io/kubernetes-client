@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.dekorate.crd.util;
+package io.dekorate.crd.v1;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 

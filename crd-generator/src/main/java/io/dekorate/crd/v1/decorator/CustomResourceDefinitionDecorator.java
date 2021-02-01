@@ -15,21 +15,18 @@
  * 
 **/
 
-package io.dekorate.crd.decorator;
+package io.dekorate.crd.v1.decorator;
 
-import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionVersionFluent;
+import io.dekorate.kubernetes.decorator.NamedResourceDecorator;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
 
-public class SetServedVersionDecorator extends CustomResourceDefinitionVersionDecorator<CustomResourceDefinitionVersionFluent<?>> {
+public class CustomResourceDefinitionDecorator<T> extends NamedResourceDecorator<T> {
 
-  private final boolean served;
-
-	public SetServedVersionDecorator(String name, String version, boolean served) {
-		super(name, version);
-		this.served = served;
+	public CustomResourceDefinitionDecorator(String name) {
+		super("CustomResourceDefinition", name);
 	}
 
 	@Override
-	public void andThenVisit(CustomResourceDefinitionVersionFluent<?> version) {
-    version.withServed(served);
+	public void andThenVisit(T item, ObjectMeta resourceMeta) {
 	}
 }

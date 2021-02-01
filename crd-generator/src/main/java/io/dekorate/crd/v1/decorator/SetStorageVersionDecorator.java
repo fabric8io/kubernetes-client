@@ -15,7 +15,7 @@
  * 
 **/
 
-package io.dekorate.crd.decorator;
+package io.dekorate.crd.v1.decorator;
 
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionVersionFluent;
 

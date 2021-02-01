@@ -15,7 +15,7 @@
  *
  **/
 
-package io.dekorate.crd.decorator;
+package io.dekorate.crd.v1.decorator;
 
 import static io.dekorate.utils.Metadata.getMetadata;
 
