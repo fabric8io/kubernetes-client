@@ -15,7 +15,7 @@
  * 
 **/
 
-package io.dekorate.crd.v1.decorator;
+package io.dekorate.crd.v1beta1.decorator;
 
 import io.dekorate.kubernetes.decorator.Decorator;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
@@ -63,7 +63,9 @@ public class PromoteSingleVersionAttributesDecorator extends CustomResourceDefin
       boolean hasIdenticalAdditionalPrinterColumns = additionalPrinterColumns.size() == 1;
       boolean hasIdenticalSchemas = schemas.size() == 1;
 
-      System.out.printf("Found %s soubresources, %s column list sets, %s schemas ", subresources.size(), additionalPrinterColumns.size(), schemas.size());
+      System.out
+        .printf("Found %s subresources, %s column list sets, %s schemas ", subresources.size(),
+          additionalPrinterColumns.size(), schemas.size());
       
       spec
         .withValidation(hasIdenticalSchemas ? schemas.iterator().next() : null)

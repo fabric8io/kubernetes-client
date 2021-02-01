@@ -11,24 +11,25 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package io.dekorate.crd.v1;
+package io.dekorate.crd.v1beta1;
 
 import static io.dekorate.crd.util.Types.findStatusProperty;
 
 import io.dekorate.Resources;
 import io.dekorate.crd.apt.CustomResourceInfo;
-import io.dekorate.crd.v1.decorator.AddAdditionPrinterColumnDecorator;
-import io.dekorate.crd.v1.decorator.AddCustomResourceDefinitionResourceDecorator;
-import io.dekorate.crd.v1.decorator.AddCustomResourceDefinitionVersionDecorator;
-import io.dekorate.crd.v1.decorator.AddLabelSelectorPathDecorator;
-import io.dekorate.crd.v1.decorator.AddSchemaToCustomResourceDefinitionVersionDecorator;
-import io.dekorate.crd.v1.decorator.AddSpecReplicasPathDecorator;
-import io.dekorate.crd.v1.decorator.AddStatusReplicasPathDecorator;
-import io.dekorate.crd.v1.decorator.AddStatusSubresourceDecorator;
-import io.dekorate.crd.v1.decorator.AddSubresourcesDecorator;
-import io.dekorate.crd.v1.decorator.EnsureSingleStorageVersionDecorator;
-import io.dekorate.crd.v1.decorator.SetServedVersionDecorator;
-import io.dekorate.crd.v1.decorator.SetStorageVersionDecorator;
+import io.dekorate.crd.v1beta1.decorator.AddAdditionPrinterColumnDecorator;
+import io.dekorate.crd.v1beta1.decorator.AddCustomResourceDefinitionResourceDecorator;
+import io.dekorate.crd.v1beta1.decorator.AddCustomResourceDefinitionVersionDecorator;
+import io.dekorate.crd.v1beta1.decorator.AddLabelSelectorPathDecorator;
+import io.dekorate.crd.v1beta1.decorator.AddSchemaToCustomResourceDefinitionVersionDecorator;
+import io.dekorate.crd.v1beta1.decorator.AddSpecReplicasPathDecorator;
+import io.dekorate.crd.v1beta1.decorator.AddStatusReplicasPathDecorator;
+import io.dekorate.crd.v1beta1.decorator.AddStatusSubresourceDecorator;
+import io.dekorate.crd.v1beta1.decorator.AddSubresourcesDecorator;
+import io.dekorate.crd.v1beta1.decorator.EnsureSingleStorageVersionDecorator;
+import io.dekorate.crd.v1beta1.decorator.PromoteSingleVersionAttributesDecorator;
+import io.dekorate.crd.v1beta1.decorator.SetServedVersionDecorator;
+import io.dekorate.crd.v1beta1.decorator.SetStorageVersionDecorator;
 import io.dekorate.crd.visitor.AdditionalPrinterColumnDetector;
 import io.dekorate.crd.visitor.LabelSelectorPathDetector;
 import io.dekorate.crd.visitor.SpecReplicasPathDetector;
@@ -128,6 +129,8 @@ public class CustomResourceHandler {
     resources.decorate(new SetServedVersionDecorator(name, version, config.served()));
     resources.decorate(new SetStorageVersionDecorator(name, version, config.storage()));
     resources.decorate(new EnsureSingleStorageVersionDecorator(name));
+
+    resources.decorate(new PromoteSingleVersionAttributesDecorator(name));
 
     additionalPrinterColumns.forEach((path, property) -> {
       Map<String, Object> parameters = property.getAnnotations().stream()

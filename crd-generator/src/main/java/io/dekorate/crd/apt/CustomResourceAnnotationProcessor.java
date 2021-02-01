@@ -17,6 +17,7 @@ import io.dekorate.Resources;
 import io.dekorate.crd.v1.CustomResourceHandler;
 import io.dekorate.utils.Serialization;
 import io.fabric8.kubernetes.client.CustomResource;
+import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.sundr.codegen.CodegenContext;
 import io.sundr.codegen.functions.ElementTo;
 import io.sundr.codegen.model.TypeDef;
@@ -40,17 +41,20 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
 
   private static final String CUSTOM_RESOURCE_NAME = CustomResource.class.getCanonicalName();
   private final Resources resources = new Resources();
-  private final CustomResourceHandler handler = new CustomResourceHandler(resources);
+  private final CustomResourceHandler v1Handler = new CustomResourceHandler(resources);
+  private final io.dekorate.crd.v1beta1.CustomResourceHandler v1beta1Handler = new io.dekorate.crd.v1beta1.CustomResourceHandler(
+    resources);
 
   public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
     if (roundEnv.processingOver()) {
       // write files
       final var list = resources.generate();
       list.getItems().forEach(crd -> {
+        final var version = ApiVersionUtil.trimVersion(crd.getApiVersion());
         try {
           FileObject yml = processingEnv.getFiler()
             .createResource(StandardLocation.CLASS_OUTPUT, "",
-              "META-INF/dekorate/" + crd.getMetadata().getName() + ".yml");
+              "META-INF/dekorate/" + crd.getMetadata().getName() + "-" + version + ".yml");
           try (Writer writer = yml.openWriter()) {
             final String yamlValue = Serialization.asYaml(crd);
             writer.write(yamlValue);
@@ -110,7 +114,8 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
           + ")");
 
       TypeDef definition = ElementTo.TYPEDEF.apply(element);
-      handler.handle(info, definition);
+      v1Handler.handle(info, definition);
+      v1beta1Handler.handle(info, definition);
       return info;
     } else {
       System.out.println(
