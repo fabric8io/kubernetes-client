@@ -1,6 +1,5 @@
 package io.dekorate.crd.apt;
 
-import io.dekorate.crd.config.Scope;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.client.utils.Pluralize;
 import io.fabric8.kubernetes.model.annotation.Group;

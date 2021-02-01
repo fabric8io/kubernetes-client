@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.dekorate.crd.config;
+package io.dekorate.crd.apt;
 
 public enum Scope {
   Namespaced, Cluster,
