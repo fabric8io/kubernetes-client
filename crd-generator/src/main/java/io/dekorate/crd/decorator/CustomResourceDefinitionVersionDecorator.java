@@ -20,7 +20,6 @@ package io.dekorate.crd.decorator;
 import static io.dekorate.utils.Metadata.getMetadata;
 
 import io.dekorate.kubernetes.decorator.Decorator;
-import io.dekorate.kubernetes.decorator.ResourceProvidingDecorator;
 import io.dekorate.utils.Generics;
 import io.dekorate.utils.Strings;
 import io.fabric8.kubernetes.api.builder.TypedVisitor;
@@ -83,7 +82,7 @@ public abstract class CustomResourceDefinitionVersionDecorator<T> extends Decora
 
   @Override
   public Class<? extends Decorator>[] after() {
-    return new Class[]{ResourceProvidingDecorator.class,
+    return new Class[]{
       AddCustomResourceDefinitionResourceDecorator.class,
       AddCustomResourceDefinitionVersionDecorator.class};
   }

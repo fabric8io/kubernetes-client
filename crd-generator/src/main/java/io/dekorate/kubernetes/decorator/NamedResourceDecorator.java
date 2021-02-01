@@ -122,6 +122,6 @@ public abstract class NamedResourceDecorator<T> extends Decorator<VisitableBuild
 
   @Override
   public Class<? extends Decorator>[] after() {
-    return new Class[]{ResourceProvidingDecorator.class};
+    return new Class[]{};
   }
 }
