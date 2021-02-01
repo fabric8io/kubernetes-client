@@ -16,7 +16,7 @@ package io.dekorate.crd.handler;
 import static io.dekorate.crd.util.Types.findStatusProperty;
 
 import io.dekorate.Resources;
-import io.dekorate.crd.apt.CRInfo;
+import io.dekorate.crd.apt.CustomResourceInfo;
 import io.dekorate.crd.decorator.AddAdditionPrinterColumnDecorator;
 import io.dekorate.crd.decorator.AddCustomResourceDefinitionResourceDecorator;
 import io.dekorate.crd.decorator.AddCustomResourceDefinitionVersionDecorator;
@@ -54,7 +54,7 @@ public class CustomResourceHandler {
     this.resources = resources;
   }
 
-  public void handle(CRInfo config, TypeDef def) {
+  public void handle(CustomResourceInfo config, TypeDef def) {
     final var name = config.crdName();
     final var version = config.version();
 
