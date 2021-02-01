@@ -17,6 +17,8 @@ package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointSlice;
 import io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointSliceBuilder;
+import io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointSliceList;
+import io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointSliceListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import org.junit.Rule;
@@ -26,8 +28,7 @@ import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @EnableRuleMigrationSupport
 class EndpointSliceTest {
@@ -42,34 +43,109 @@ class EndpointSliceTest {
   }
 
   @Test
-  void resourceCreate() {
+  void load() {
+    // Given + When
+    EndpointSlice es = client.discovery().v1beta1().endpointSlices().load(getClass().getResourceAsStream("/endpointslice.yml")).get();
+
+    // Than
+    assertThat(es).isNotNull();
+    assertThat(es.getMetadata().getName()).isEqualTo("example-abc");
+    assertThat(es.getAddressType()).isEqualTo("IPv4");
+    assertThat(es.getPorts()).hasSize(1);
+    assertThat(es.getEndpoints()).hasSize(1);
+  }
+
+  @Test
+  void get() {
     // Given
-    EndpointSlice endpointSlice = getEndpointSlice();
+    server.expect().get().withPath("/apis/discovery.k8s.io/v1beta1/namespaces/default/endpointslices/test-es")
+      .andReturn(HttpURLConnection.HTTP_OK, getEndpointSlice("test-es"))
+      .once();
+
+    // When
+    EndpointSlice es = client.discovery().v1beta1().endpointSlices().inNamespace("default").withName("test-es").get();
+
+    // Then
+    assertThat(es).isNotNull();
+    assertThat(es.getMetadata().getName()).isEqualTo("test-es");
+  }
+
+  @Test
+  void listInSingleNamespace() {
+    // Given
+    server.expect().get().withPath("/apis/discovery.k8s.io/v1beta1/namespaces/default/endpointslices")
+      .andReturn(HttpURLConnection.HTTP_OK, new EndpointSliceListBuilder()
+        .addToItems(getEndpointSlice("test-es"))
+        .build())
+      .once();
+
+    // When
+    EndpointSliceList esList = client.discovery().v1beta1().endpointSlices().inNamespace("default").list();
+
+    // Then
+    assertThat(esList).isNotNull();
+    assertThat(esList.getItems()).hasSize(1);
+  }
+
+  @Test
+  void listAllNamespaces() {
+    // Given
+    server.expect().get().withPath("/apis/discovery.k8s.io/v1beta1/endpointslices")
+      .andReturn(HttpURLConnection.HTTP_OK, new EndpointSliceListBuilder()
+        .addToItems(getEndpointSlice("test-es"))
+        .build())
+      .once();
+
+    // When
+    EndpointSliceList esList = client.discovery().v1beta1().endpointSlices().inAnyNamespace().list();
+
+    // Then
+    assertThat(esList).isNotNull();
+    assertThat(esList.getItems()).hasSize(1);
+  }
+
+  @Test
+  void delete() {
+    // Given
+    server.expect().delete().withPath("/apis/discovery.k8s.io/v1beta1/namespaces/default/endpointslices/test-es")
+      .andReturn(HttpURLConnection.HTTP_OK, getEndpointSlice("test-es"))
+      .once();
+
+    // When
+    Boolean isDeleted = client.discovery().v1beta1().endpointSlices().inNamespace("default").withName("test-es").delete();
+
+    // Then
+    assertThat(isDeleted).isTrue();
+  }
+
+  @Test
+  void create() {
+    // Given
+    EndpointSlice endpointSlice = getEndpointSlice("example-abc");
     server.expect().post().withPath("/apis/discovery.k8s.io/v1beta1/namespaces/ns1/endpointslices")
       .andReturn(HttpURLConnection.HTTP_OK, endpointSlice)
       .once();
 
     // When
-    EndpointSlice endpointSliceCreated = client.resource(endpointSlice).inNamespace("ns1").createOrReplace();
+    EndpointSlice endpointSliceCreated = client.discovery().v1beta1().endpointSlices().inNamespace("ns1").createOrReplace(endpointSlice);
 
     // Then
-    assertNotNull(endpointSliceCreated);
-    assertEquals("example-abc", endpointSliceCreated.getMetadata().getName());
-    assertEquals("discovery.k8s.io/v1beta1", endpointSliceCreated.getApiVersion());
-    assertEquals("example-abc", endpointSliceCreated.getMetadata().getName());
-    assertEquals("example", endpointSliceCreated.getMetadata().getLabels().get("kubernetes.io/service-name"));
-    assertEquals("IPv4", endpointSliceCreated.getAddressType());
-    assertEquals(1, endpointSliceCreated.getPorts().size());
-    assertEquals(1, endpointSliceCreated.getEndpoints().size());
-    assertEquals("pod-1", endpointSliceCreated.getEndpoints().get(0).getHostname());
-    assertEquals("node-1", endpointSliceCreated.getEndpoints().get(0).getTopology().get("kubernetes.io/hostname"));
-    assertEquals("us-west2-a", endpointSliceCreated.getEndpoints().get(0).getTopology().get("topology.kubernetes.io/zone"));
+    assertThat(endpointSliceCreated).isNotNull();
+    assertThat(endpointSliceCreated.getMetadata().getName()).isEqualTo("example-abc");
+    assertThat(endpointSliceCreated.getApiVersion()).isEqualTo("discovery.k8s.io/v1beta1");
+    assertThat(endpointSliceCreated.getMetadata().getLabels()).containsEntry("kubernetes.io/service-name", "example");
+    assertThat(endpointSliceCreated.getAddressType()).isEqualTo("IPv4");
+    assertThat(endpointSliceCreated.getPorts()).hasSize(1);
+    assertThat(endpointSliceCreated.getEndpoints()).hasSize(1);
+    assertThat(endpointSliceCreated.getEndpoints().get(0).getHostname()).isEqualTo("pod-1");
+    assertThat(endpointSliceCreated.getEndpoints().get(0).getTopology()).containsEntry("kubernetes.io/hostname", "node-1");
+    assertThat(endpointSliceCreated.getEndpoints().get(0).getTopology()).containsEntry("topology.kubernetes.io/zone", "us-west2-a");
   }
 
-  private EndpointSlice getEndpointSlice() {
+  private EndpointSlice getEndpointSlice(String name) {
     return new EndpointSliceBuilder()
       .withNewMetadata()
-      .withName("example-abc")
+      .withName(name)
       .addToLabels("kubernetes.io/service-name", "example")
       .endMetadata()
       .withAddressType("IPv4")

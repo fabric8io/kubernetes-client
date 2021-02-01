@@ -39,3 +39,5 @@ io.fabric8.kubernetes.client.V1AuthorizationAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.V1beta1AuthorizationAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.V1NetworkAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.V1beta1NetworkAPIGroupExtensionAdapter
+io.fabric8.kubernetes.client.DiscoveryAPIGroupExtensionAdapter
+io.fabric8.kubernetes.client.V1beta1DiscoveryAPIGroupExtensionAdapter

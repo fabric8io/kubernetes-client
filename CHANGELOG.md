@@ -13,6 +13,7 @@
 * Fix #2684: Upgrade Kubernetes Model to v1.20.2
 
 #### New Features
+* Fix #2702 : Add support for discovery.k8s.io/v1beta1 EndpointSlice in KubernetesClient DSL
 
 _**Note**_: Breaking changes in the API
 - `client.settings()` DSL has been removed since PodPreset v1alpha1 API is no longer present in Kubernetes 1.20.x

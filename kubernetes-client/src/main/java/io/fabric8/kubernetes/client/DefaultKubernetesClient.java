@@ -446,6 +446,11 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
     return customResources(crd, resourceType, listClass);
   }
 
+  @Override
+  public DiscoveryAPIGroupDSL discovery() {
+    return adapt(DiscoveryAPIGroupClient.class);
+  }
+
   /**
    * {@inheritDoc}
    */
