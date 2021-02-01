@@ -213,6 +213,13 @@ public interface KubernetesClient extends Client {
   <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResource(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass);
 
   /**
+   * Discovery API entrypoint for APIGroup discovery.k8s.io
+   *
+   * @return {@link DiscoveryAPIGroupDSL} with which you can access Discovery API resource objects
+   */
+  DiscoveryAPIGroupDSL discovery();
+
+  /**
    * Extensions API entrypoint for APIGroup extensions/v1beta1
    *
    * @return ExtensionsAPIGroupDSL with which you can access entrypoints for extension objects

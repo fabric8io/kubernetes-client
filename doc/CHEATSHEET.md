@@ -20,6 +20,7 @@ This document contains common usages of different resources using Fabric8 Kubern
   * [Ingress](#ingress)
   * [StatefulSet](#statefulset)
   * [DaemonSet](#daemonset)
+  * [EndpointSlice](#endpointslice)
   * [PersistentVolumeClaim](#persistentvolumeclaim)
   * [PersistentVolume](#persistentvolume)
   * [NetworkPolicy](#networkpolicy)
@@ -1162,6 +1163,73 @@ client.apps().daemonSets().inNamespace("default").watch(new Watcher<DaemonSet>()
 
   @Override
   public void onClose(KubernetesClientException cause) {
+
+  }
+});
+```
+
+#### EndpointSlice
+`EndpointSlice` resource is available in Kubernetes Client API via `client.discovery().v1beta1().endpointSlices()`. Here are some examples of its common usage:
+- Load `EndpointSlice` from yaml:
+```java
+EndpointSlice es = client.discovery().v1beta1().endpointSlices().load(getClass().getResourceAsStream("/endpointslice.yml")).get();
+```
+- Get `EndpointSlice` from Kubernetes API server:
+```java
+EndpointSlice es = client.apps().daemonSets().inNamespace("default").withName("es1").get();
+```
+- Create `EndpointSlice`:
+```java
+EndpointSlice es = new EndpointSliceBuilder()
+         .withNewMetadata()
+         .withName(name)
+         .addToLabels("kubernetes.io/service-name", "example")
+         .endMetadata()
+         .withAddressType("IPv4")
+         .addNewPort()
+         .withName("http")
+         .withPort(80)
+         .endPort()
+         .addNewEndpoint()
+         .withAddresses("10.1.2.3")
+         .withNewConditions().withReady(true).endConditions()
+         .withHostname("pod-1")
+         .addToTopology("kubernetes.io/hostname", "node-1")
+         .addToTopology("topology.kubernetes.io/zone", "us-west2-a")
+         .endEndpoint()
+         .build();
+es = client.discovery().v1beta1().endpointSlices().inNamespace("ns1").create(es);
+```
+- Create or Replace existing `EndpointSlice`:
+```java
+EndpointSlice es = client.discovery().v1beta1().endpointSlices().inNamespace("ns1").createOrReplace(endpointSlice);
+```
+- List `EndpointSlice` in some namespace:
+```java
+EndpointSliceList esList = client.discovery().v1beta1().endpointSlices().inNamespace("default").list();
+```
+- List `EndpointSlice` in any namespace:
+```java
+EndpointSliceList esList = client.discovery().v1beta1().endpointSlices().inAnyNamespace().list();
+```
+- List `EndpointSlice` with some label:
+```java
+EndpointSliceList esList = client.discovery().v1beta1().endpointSlices().inNamespace("default").withLabel("foo", "bar").list();
+```
+- Delete `EndpointSlice`:
+```java
+Boolean isDeleted = client.discovery().v1beta1().endpointSlices().inNamespace("default").withName("test-es").delete();
+```
+- Watch `EndpointSlice`:
+```java
+client.discovery().v1beta1().endpointSlices().inNamespace("default").watch(new Watcher<EndpointSlice>() {
+  @Override
+  public void eventReceived(Action action, EndpointSlice resource) {
+    
+  }
+
+  @Override
+  public void onClose(WatcherException cause) {
 
   }
 });
