@@ -13,29 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crd.v1;
+package io.fabric8.crd.generator.v1;
 
-import static io.fabric8.crd.util.Types.findStatusProperty;
+import static io.fabric8.crd.generator.utils.Types.findStatusProperty;
 
-import io.fabric8.Resources;
-import io.fabric8.crd.apt.CustomResourceInfo;
-import io.fabric8.crd.v1.decorator.AddAdditionPrinterColumnDecorator;
-import io.fabric8.crd.v1.decorator.AddCustomResourceDefinitionResourceDecorator;
-import io.fabric8.crd.v1.decorator.AddCustomResourceDefinitionVersionDecorator;
-import io.fabric8.crd.v1.decorator.AddLabelSelectorPathDecorator;
-import io.fabric8.crd.v1.decorator.AddSchemaToCustomResourceDefinitionVersionDecorator;
-import io.fabric8.crd.v1.decorator.AddSpecReplicasPathDecorator;
-import io.fabric8.crd.v1.decorator.AddStatusReplicasPathDecorator;
-import io.fabric8.crd.v1.decorator.AddStatusSubresourceDecorator;
-import io.fabric8.crd.v1.decorator.AddSubresourcesDecorator;
-import io.fabric8.crd.v1.decorator.EnsureSingleStorageVersionDecorator;
-import io.fabric8.crd.v1.decorator.SetServedVersionDecorator;
-import io.fabric8.crd.v1.decorator.SetStorageVersionDecorator;
-import io.fabric8.crd.visitor.AdditionalPrinterColumnDetector;
-import io.fabric8.crd.visitor.LabelSelectorPathDetector;
-import io.fabric8.crd.visitor.SpecReplicasPathDetector;
-import io.fabric8.crd.visitor.StatusReplicasPathDetector;
-import io.fabric8.utils.Strings;
+import io.fabric8.crd.generator.apt.CustomResourceInfo;
+import io.fabric8.crd.generator.apt.Resources;
+import io.fabric8.crd.generator.utils.Strings;
+import io.fabric8.crd.generator.v1.decorator.AddAdditionPrinterColumnDecorator;
+import io.fabric8.crd.generator.v1.decorator.AddCustomResourceDefinitionResourceDecorator;
+import io.fabric8.crd.generator.v1.decorator.AddCustomResourceDefinitionVersionDecorator;
+import io.fabric8.crd.generator.v1.decorator.AddLabelSelectorPathDecorator;
+import io.fabric8.crd.generator.v1.decorator.AddSchemaToCustomResourceDefinitionVersionDecorator;
+import io.fabric8.crd.generator.v1.decorator.AddSpecReplicasPathDecorator;
+import io.fabric8.crd.generator.v1.decorator.AddStatusReplicasPathDecorator;
+import io.fabric8.crd.generator.v1.decorator.AddStatusSubresourceDecorator;
+import io.fabric8.crd.generator.v1.decorator.AddSubresourcesDecorator;
+import io.fabric8.crd.generator.v1.decorator.EnsureSingleStorageVersionDecorator;
+import io.fabric8.crd.generator.v1.decorator.SetServedVersionDecorator;
+import io.fabric8.crd.generator.v1.decorator.SetStorageVersionDecorator;
+import io.fabric8.crd.generator.visitor.AdditionalPrinterColumnDetector;
+import io.fabric8.crd.generator.visitor.LabelSelectorPathDetector;
+import io.fabric8.crd.generator.visitor.SpecReplicasPathDetector;
+import io.fabric8.crd.generator.visitor.StatusReplicasPathDetector;
 import io.sundr.codegen.functions.ElementTo;
 import io.sundr.codegen.model.Property;
 import io.sundr.codegen.model.TypeDef;
@@ -87,7 +87,7 @@ public class CustomResourceHandler {
         .withTypeRef(statusType.get())
         .endProperty()
         .build();
-    }
+    } 
 
     def = new TypeDefBuilder(def)
       .accept(specReplicasPathDetector)

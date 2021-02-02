@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.decorator;
+package io.fabric8.crd.generator.decorator;
 
 import io.fabric8.kubernetes.api.builder.TypedVisitor;
 

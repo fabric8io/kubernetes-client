@@ -13,15 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crd.apt;
+package io.fabric8.crd.generator.apt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator.Feature;
-import io.fabric8.Resources;
-import io.fabric8.crd.v1.CustomResourceHandler;
+import io.fabric8.crd.generator.v1.CustomResourceHandler;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
@@ -63,7 +62,7 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
   private static final String CUSTOM_RESOURCE_NAME = CustomResource.class.getCanonicalName();
   private final Resources resources = new Resources();
   private final CustomResourceHandler v1Handler = new CustomResourceHandler(resources);
-  private final io.fabric8.crd.v1beta1.CustomResourceHandler v1beta1Handler = new io.fabric8.crd.v1beta1.CustomResourceHandler(
+  private final io.fabric8.crd.generator.v1beta1.CustomResourceHandler v1beta1Handler = new io.fabric8.crd.generator.v1beta1.CustomResourceHandler(
     resources);
 
   public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {

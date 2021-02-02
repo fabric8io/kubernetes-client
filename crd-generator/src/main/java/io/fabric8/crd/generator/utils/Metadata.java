@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.utils;
+package io.fabric8.crd.generator.utils;
 
 import io.fabric8.kubernetes.api.builder.Builder;
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;

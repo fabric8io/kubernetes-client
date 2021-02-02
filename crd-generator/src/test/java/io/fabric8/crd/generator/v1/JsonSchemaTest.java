@@ -13,8 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crd.apt;
+package io.fabric8.crd.generator.v1;
 
-public enum Scope {
-  Namespaced, Cluster,
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import io.fabric8.crd.example.person.Person;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
+import io.sundr.codegen.functions.ClassTo;
+import io.sundr.codegen.model.TypeDef;
+import org.junit.jupiter.api.Test;
+
+class JsonSchemaTest {
+
+  @Test
+  void shouldCreateJsonSchemaFromClass() {
+    TypeDef person = ClassTo.TYPEDEF.apply(Person.class);
+    JSONSchemaProps schema = JsonSchema.from(person);
+    assertNotNull(schema);
+  }
+
 }

@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.decorator;
+package io.fabric8.crd.generator.decorator;
 
-import static io.fabric8.utils.Metadata.getKind;
-import static io.fabric8.utils.Metadata.getMetadata;
+import static io.fabric8.crd.generator.utils.Metadata.getKind;
+import static io.fabric8.crd.generator.utils.Metadata.getMetadata;
 
+import io.fabric8.crd.generator.utils.Generics;
+import io.fabric8.crd.generator.utils.Strings;
 import io.fabric8.kubernetes.api.builder.TypedVisitor;
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.utils.Generics;
-import io.fabric8.utils.Strings;
 import java.util.Optional;
 
 public abstract class NamedResourceDecorator<T> extends Decorator<VisitableBuilder> {

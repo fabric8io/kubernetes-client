@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8;
+package io.fabric8.crd.generator.apt;
 
+import io.fabric8.crd.generator.decorator.Decorator;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
-import io.fabric8.kubernetes.decorator.Decorator;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
