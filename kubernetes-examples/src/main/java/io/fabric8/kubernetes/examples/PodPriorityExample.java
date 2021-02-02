@@ -45,7 +45,7 @@ public class PodPriorityExample {
         .withGlobalDefault(false)
         .withDescription("This priority class should be used for XYZ service pods only.")
         .build();
-      client.scheduling().priorityClass().create(priorityClass);
+      client.scheduling().v1beta1().priorityClasses().create(priorityClass);
 
       client.pods().inNamespace("default").create(new PodBuilder()
         .withNewMetadata().withName("nginx").withLabels(Collections.singletonMap("env", "test")).endMetadata()

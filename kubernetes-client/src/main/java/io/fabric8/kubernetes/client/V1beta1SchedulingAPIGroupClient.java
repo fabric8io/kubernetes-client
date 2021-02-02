@@ -17,31 +17,23 @@ package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.api.model.scheduling.v1beta1.PriorityClass;
 import io.fabric8.kubernetes.api.model.scheduling.v1beta1.PriorityClassList;
-import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.SchedulingAPIGroupDSL;
-import io.fabric8.kubernetes.client.dsl.V1SchedulingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1beta1SchedulingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.internal.scheduling.v1beta1.PriorityClassOperationsImpl;
 import okhttp3.OkHttpClient;
 
-public class SchedulingAPIGroupClient extends BaseClient implements SchedulingAPIGroupDSL {
-  public SchedulingAPIGroupClient(OkHttpClient httpClient, final Config config) {
+public class V1beta1SchedulingAPIGroupClient extends BaseClient implements V1beta1SchedulingAPIGroupDSL {
+
+  public V1beta1SchedulingAPIGroupClient() {
+    super();
+  }
+
+  public V1beta1SchedulingAPIGroupClient(OkHttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 
-  @Override
-  public MixedOperation<PriorityClass, PriorityClassList, Resource<PriorityClass>> priorityClass() {
+  public NonNamespaceOperation<PriorityClass, PriorityClassList, Resource<PriorityClass>> priorityClasses() {
     return new PriorityClassOperationsImpl(httpClient, getConfiguration());
-  }
-
-  @Override
-  public V1SchedulingAPIGroupDSL v1() {
-    return adapt(V1SchedulingAPIGroupClient.class);
-  }
-
-  @Override
-  public V1beta1SchedulingAPIGroupDSL v1beta1() {
-    return adapt(V1beta1SchedulingAPIGroupClient.class);
   }
 }

@@ -19,9 +19,6 @@ import io.fabric8.kubernetes.api.model.scheduling.v1beta1.PriorityClass;
 import io.fabric8.kubernetes.api.model.scheduling.v1beta1.PriorityClassList;
 import io.fabric8.kubernetes.client.Client;
 
-public interface SchedulingAPIGroupDSL extends Client {
-  @Deprecated
-  MixedOperation<PriorityClass, PriorityClassList, Resource<PriorityClass>> priorityClass();
-  V1SchedulingAPIGroupDSL v1();
-  V1beta1SchedulingAPIGroupDSL v1beta1();
+public interface V1beta1SchedulingAPIGroupDSL extends Client {
+  NonNamespaceOperation<PriorityClass, PriorityClassList, Resource<PriorityClass>> priorityClasses();
 }

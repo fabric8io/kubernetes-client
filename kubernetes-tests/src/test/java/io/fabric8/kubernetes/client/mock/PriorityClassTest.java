@@ -39,7 +39,7 @@ public class PriorityClassTest {
   public KubernetesServer server = new KubernetesServer();
 
   @Test
-  public void testList() {
+  void testList() {
     server.expect().withPath("/apis/scheduling.k8s.io/v1beta1/priorityclasses").andReturn(200, new PriorityClassListBuilder()
       .addNewItem().and()
       .addNewItem().and()
@@ -48,13 +48,13 @@ public class PriorityClassTest {
 
     KubernetesClient client = server.getClient();
 
-    PriorityClassList priorityClassList = client.scheduling().priorityClass().list();
+    PriorityClassList priorityClassList = client.scheduling().v1beta1().priorityClasses().list();
     assertNotNull(priorityClassList);
     assertEquals(3, priorityClassList.getItems().size());
   }
 
   @Test
-  public void testListWithLables() {
+  void testListWithLables() {
     server.expect().withPath("/apis/scheduling.k8s.io/v1beta1/priorityclasses?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new PriorityClassListBuilder().build()).always();
     server.expect().withPath("/apis/scheduling.k8s.io/v1beta1/priorityclasses?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new PriorityClassListBuilder()
       .addNewItem().and()
@@ -64,13 +64,13 @@ public class PriorityClassTest {
 
     KubernetesClient client = server.getClient();
 
-    PriorityClassList priorityClassList = client.scheduling().priorityClass()
+    PriorityClassList priorityClassList = client.scheduling().v1beta1().priorityClasses()
       .withLabel("key1", "value1")
       .withLabel("key2", "value2")
       .list();
     assertEquals(3, priorityClassList.getItems().size());
 
-    priorityClassList = client.scheduling().priorityClass()
+    priorityClassList = client.scheduling().v1beta1().priorityClasses()
       .withLabel("key1", "value1")
       .withLabel("key2","value2")
       .withLabel("key3","value3")
@@ -79,22 +79,22 @@ public class PriorityClassTest {
   }
 
   @Test
-  public void testGet() {
+  void testGet() {
     server.expect().withPath("/apis/scheduling.k8s.io/v1beta1/priorityclasses/priorityclass1").andReturn(200, new PriorityClassBuilder().build()).once();
     server.expect().withPath("/apis/scheduling.k8s.io/v1beta1/priorityclasses/priorityclass2").andReturn(200, new PriorityClassBuilder().build()).once();
 
     KubernetesClient client = server.getClient();
 
-    PriorityClass priorityClass1 = client.scheduling().priorityClass().withName("priorityclass1").get();
+    PriorityClass priorityClass1 = client.scheduling().v1beta1().priorityClasses().withName("priorityclass1").get();
     assertNotNull(priorityClass1);
 
-    priorityClass1 = client.scheduling().priorityClass().withName("priorityclass2").get();
+    priorityClass1 = client.scheduling().v1beta1().priorityClasses().withName("priorityclass2").get();
     assertNotNull(priorityClass1);
 
   }
 
   @Test
-  public void testDelete() {
+  void testDelete() {
     server.expect().withPath("/apis/scheduling.k8s.io/v1beta1/priorityclasses/priorityclass1").andReturn(200, new PriorityClassBuilder()
       .withNewMetadata().withName("high-priority").endMetadata()
       .withValue(new Integer(100000))
@@ -104,13 +104,13 @@ public class PriorityClassTest {
 
     KubernetesClient client = server.getClient();
 
-    Boolean deleted = client.scheduling().priorityClass().withName("priorityclass1").delete();
+    Boolean deleted = client.scheduling().v1beta1().priorityClasses().withName("priorityclass1").delete();
     assertNotNull(deleted);
     assertTrue(deleted);
   }
 
   @Test
-  public void testDeleteMulti() {
+  void testDeleteMulti() {
     PriorityClass priorityClass1 = new PriorityClassBuilder()
       .withNewMetadata().withName("high-priority").endMetadata()
       .withValue(new Integer(100000))
@@ -133,23 +133,23 @@ public class PriorityClassTest {
 
     KubernetesClient client = server.getClient();
 
-    Boolean deleted = client.scheduling().priorityClass().delete(priorityClass1, priorityClass2);
+    Boolean deleted = client.scheduling().v1beta1().priorityClasses().delete(priorityClass1, priorityClass2);
     assertNotNull(deleted);
   }
 
   @Test
-  public void testCreateWithNameMismatch() {
+  void testCreateWithNameMismatch() {
     Assertions.assertThrows(KubernetesClientException.class, () -> {
       PriorityClass priorityClass1 = new PriorityClassBuilder().withNewMetadata().withName("priorityclass1").and().build();
       KubernetesClient client = server.getClient();
 
-      client.scheduling().priorityClass().withName("mypriorityclass1").create(priorityClass1);
+      client.scheduling().v1beta1().priorityClasses().withName("mypriorityclass1").create(priorityClass1);
     });
   }
 
   @Test
-  public void testLoadFromFile() {
+  void testLoadFromFile() {
     KubernetesClient client = server.getClient();
-    assertNotNull(client.scheduling().priorityClass().load(getClass().getResourceAsStream("/test-priorityclass.yml")).get());
+    assertNotNull(client.scheduling().v1beta1().priorityClasses().load(getClass().getResourceAsStream("/test-priorityclass.yml")).get());
   }
 }

@@ -13,15 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.dsl;
+package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.api.model.scheduling.v1beta1.PriorityClass;
-import io.fabric8.kubernetes.api.model.scheduling.v1beta1.PriorityClassList;
-import io.fabric8.kubernetes.client.Client;
+import okhttp3.OkHttpClient;
 
-public interface SchedulingAPIGroupDSL extends Client {
-  @Deprecated
-  MixedOperation<PriorityClass, PriorityClassList, Resource<PriorityClass>> priorityClass();
-  V1SchedulingAPIGroupDSL v1();
-  V1beta1SchedulingAPIGroupDSL v1beta1();
+public class V1SchedulingAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<V1SchedulingAPIGroupClient> {
+  @Override
+  protected String getAPIGroupName() {
+    return "scheduling/v1";
+  }
+
+  @Override
+  public Class<V1SchedulingAPIGroupClient> getExtensionType() {
+    return V1SchedulingAPIGroupClient.class;
+  }
+
+  @Override
+  protected V1SchedulingAPIGroupClient newInstance(Client client) {
+    return new V1SchedulingAPIGroupClient(client.adapt(OkHttpClient.class), client.getConfiguration());
+  }
 }
