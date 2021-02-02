@@ -371,6 +371,11 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
     return new CertificateSigningRequestOperationsImpl(httpClient, getConfiguration());
   }
 
+  @Override
+  public CertificatesAPIGroupDSL certificates() {
+    return adapt(CertificatesAPIGroupClient.class);
+  }
+
   /**
    * {@inheritDoc}
    */

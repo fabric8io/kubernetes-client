@@ -1862,7 +1862,7 @@ Map<String, Object> result = client.customResource(customResourceDefinitionConte
 ```
 
 ### CertificateSigningRequest
-Kubernetes Client provides using `CertificateSigningRequest` via the `client.certificateSigningRequests()` DSL interface. Here is an example of creating `CertificateSigningRequest` using Fabric8 Kubernetes Client:
+Kubernetes Client provides using `CertificateSigningRequest` via the `client.certificates().v1().certificateSigningRequests()` DSL interface. Here is an example of creating `CertificateSigningRequest` using Fabric8 Kubernetes Client:
 ```
 try (KubernetesClient client = new DefaultKubernetesClient()) {
     CertificateSigningRequest csr = new CertificateSigningRequestBuilder()
@@ -1874,7 +1874,7 @@ try (KubernetesClient client = new DefaultKubernetesClient()) {
             .endSpec()
             .build();
 
-    client.certificateSigningRequests().create(csr);
+    client.certificates().v1().certificateSigningRequests().create(csr);
 }
 ```
 
