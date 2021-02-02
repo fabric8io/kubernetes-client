@@ -30,7 +30,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 
 import java.io.Serializable;
-import java.util.Map;
 
 public class CustomResourceV1Example {
 
@@ -71,7 +70,7 @@ public class CustomResourceV1Example {
 
   @Group("example.com")
   @Version("v1")
-  public static final class Show extends CustomResource<ShowSpec, Map<String, Object>> implements Namespaced {
+  public static final class Show extends CustomResource<ShowSpec, Void> implements Namespaced {
 
     @SuppressWarnings("unused")
     public Show() {
