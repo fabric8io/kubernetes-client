@@ -57,7 +57,7 @@ class TypedClusterScopeCustomResourceApiTest {
     void create() {
       server.expect().post().withPath("/apis/example.crd.com/v1alpha1/stars").andReturn(200, getStar()).once();
 
-      starClient = server.getClient().customResources(crdContext, Star.class, StarList.class);
+      starClient = server.getClient().customResources(Star.class, StarList.class);
 
       Star returnedStar = starClient.inNamespace("test").create(getStar());
       assertNotNull(returnedStar);
@@ -69,7 +69,7 @@ class TypedClusterScopeCustomResourceApiTest {
       StarList starList = new StarList();
       starList.setItems(Collections.singletonList(getStar()));
       server.expect().get().withPath("/apis/example.crd.com/v1alpha1/stars").andReturn(200, starList).once();
-      starClient = server.getClient().customResources(crdContext, Star.class, StarList.class);
+      starClient = server.getClient().customResources(Star.class, StarList.class);
 
       starList = starClient.inNamespace("test").list();
       assertNotNull(starList);
@@ -83,7 +83,7 @@ class TypedClusterScopeCustomResourceApiTest {
       server.expect().post().withPath("/apis/example.crd.com/v1alpha1/stars").andReturn(HttpURLConnection.HTTP_CONFLICT, getStar()).times(2);
       server.expect().put().withPath("/apis/example.crd.com/v1alpha1/stars/sun").andReturn(HttpURLConnection.HTTP_OK, getStar()).once();
 
-      starClient = server.getClient().customResources(crdContext, Star.class, StarList.class);
+      starClient = server.getClient().customResources(Star.class, StarList.class);
       Star returnedStar = starClient.inNamespace("test").createOrReplace(getStar());
 
       assertNotNull(returnedStar);
@@ -94,7 +94,7 @@ class TypedClusterScopeCustomResourceApiTest {
     void delete() {
       server.expect().delete().withPath("/apis/example.crd.com/v1alpha1/stars/sun").andReturn(200, getStar()).once();
 
-      starClient = server.getClient().customResources(crdContext, Star.class, StarList.class);
+      starClient = server.getClient().customResources(Star.class, StarList.class);
 
       boolean isDeleted = starClient.inNamespace("test").withName("sun").delete();
       assertTrue(isDeleted);
@@ -104,7 +104,7 @@ class TypedClusterScopeCustomResourceApiTest {
     void testCascadingDeletion() throws InterruptedException {
       server.expect().delete().withPath("/apis/example.crd.com/v1alpha1/stars/sun").andReturn(200, getStar()).once();
 
-      starClient = server.getClient().customResources(crdContext, Star.class, StarList.class);
+      starClient = server.getClient().customResources(Star.class, StarList.class);
 
       boolean isDeleted = starClient.inNamespace("test").withName("sun").cascading(true).delete();
       assertTrue(isDeleted);
@@ -118,7 +118,7 @@ class TypedClusterScopeCustomResourceApiTest {
     void testPropagationPolicyDeletion() throws InterruptedException {
       server.expect().delete().withPath("/apis/example.crd.com/v1alpha1/stars/sun").andReturn(200, getStar()).once();
 
-      starClient = server.getClient().customResources(crdContext, Star.class, StarList.class);
+      starClient = server.getClient().customResources(Star.class, StarList.class);
 
       boolean isDeleted = starClient.inNamespace("test").withName("sun").withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
       assertTrue(isDeleted);
@@ -136,7 +136,7 @@ class TypedClusterScopeCustomResourceApiTest {
       updatedStar.setStatus(starStatus);
 
       server.expect().put().withPath("/apis/example.crd.com/v1alpha1/stars/sun/status").andReturn(200, updatedStar).once();
-      starClient = server.getClient().customResources(crdContext, Star.class, StarList.class);
+      starClient = server.getClient().customResources(Star.class, StarList.class);
 
       starClient.inNamespace("test").updateStatus(updatedStar);
       RecordedRequest recordedRequest = server.getLastRequest();

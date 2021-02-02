@@ -50,7 +50,7 @@ public class ReadyEntity<T> implements Callable<Boolean> {
       case "ConfigMap":
         return this.client.configMaps().inNamespace(this.namespace).withName(this.name).get()!= null;
       case "CustomResourceDefinition":
-        return this.client.customResourceDefinitions().withName(this.namespace).get() != null;
+        return this.client.apiextensions().v1beta1().customResourceDefinitions().withName(this.namespace).get() != null;
       case "StatefulSet":
         return this.client.apps().statefulSets().inNamespace(this.namespace).withName(this.name).get()!= null;
       case "Deployment":

@@ -95,7 +95,7 @@ public class CustomResourceInformerExample {
           .map(HasMetadata::getMetadata).map(ObjectMeta::getNamespace).orElse("default"));
       }
 
-      client.customResources(crdContext, Dummy.class, DummyList.class).createOrReplace(toCreate);
+      client.customResources(Dummy.class, DummyList.class).createOrReplace(toCreate);
       // Wait for some time now
       TimeUnit.MINUTES.sleep(5);
     } catch (InterruptedException interruptedException) {

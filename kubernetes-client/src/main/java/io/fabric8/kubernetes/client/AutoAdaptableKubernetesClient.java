@@ -21,8 +21,6 @@ import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapList;
 import io.fabric8.kubernetes.api.model.Endpoints;
 import io.fabric8.kubernetes.api.model.EndpointsList;
-import io.fabric8.kubernetes.api.model.Event;
-import io.fabric8.kubernetes.api.model.EventList;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LimitRange;
@@ -180,11 +178,6 @@ public class AutoAdaptableKubernetesClient extends DefaultKubernetesClient {
   @Override
   public MixedOperation<Endpoints, EndpointsList, Resource<Endpoints>> endpoints() {
     return delegate.endpoints();
-  }
-
-  @Override
-  public MixedOperation<Event, EventList, Resource<Event>> events() {
-    return delegate.events();
   }
 
   @Override

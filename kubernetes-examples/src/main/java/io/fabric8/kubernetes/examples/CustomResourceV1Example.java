@@ -54,7 +54,7 @@ public class CustomResourceV1Example {
       kc.apiextensions().v1().customResourceDefinitions().createOrReplace(crd);
       System.out.println("Created custom shows.example.com Kubernetes API");
       final NonNamespaceOperation<Show, ShowList, Resource<Show>> shows =
-        kc.customResources(CustomResourceDefinitionContext.fromCrd(crd), Show.class, ShowList.class)
+        kc.customResources(Show.class, ShowList.class)
         .inNamespace("default");
       shows.list();
       shows.createOrReplace(new Show("breaking-bad", new ShowSpec("Breaking Bad", 10)));

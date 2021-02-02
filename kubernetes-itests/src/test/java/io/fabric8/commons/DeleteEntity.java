@@ -80,7 +80,7 @@ public class DeleteEntity<T> implements Callable<Boolean> {
       case "ClusterRole":
         return isDeleted(this.client.rbac().clusterRoles().withName(this.name).get());
       case "CustomResourceDefinition":
-        return isDeleted(this.client.customResourceDefinitions().withName(this.name).get());
+        return isDeleted(this.client.apiextensions().v1beta1().customResourceDefinitions().withName(this.name).get());
       case "RoleBinding":
         return isDeleted(this.client.rbac().roleBindings().inNamespace(this.namespace).withName(this.name).get());
       case "Role":

@@ -49,17 +49,10 @@ class CustomResourceCrudWithCRDContextTest {
   @Test
   void testCreateAndGet() {
     // Given
-    CustomResourceDefinitionContext crdContext = new CustomResourceDefinitionContext.Builder()
-      .withScope("Namespaced")
-      .withPlural("entandobundlereleases")
-      .withVersion("v1alpha1")
-      .withGroup("demo.fabric8.io")
-      .withKind("EntandoBundleRelease")
-      .build();
     KubernetesClient client = kubernetesServer.getClient();
     KubernetesDeserializer.registerCustomKind("demo.fabric8.io/v1alpha1", "EntandoBundleRelease", EntandoBundleRelease.class);
     MixedOperation<EntandoBundleRelease, EntandoBundleReleaseList, Resource<EntandoBundleRelease>> ebrClient = client
-      .customResources(crdContext, EntandoBundleRelease.class, EntandoBundleReleaseList.class);
+      .customResources(EntandoBundleRelease.class, EntandoBundleReleaseList.class);
 
     // When
     ebrClient.inNamespace("ns1").create(getMockedEntandoBundleRelease());
