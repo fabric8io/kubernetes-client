@@ -159,7 +159,7 @@ class CustomResourceTest {
         .toUrlEncoded("key1=value1,key2=value2,key3!=value3,key3!=value4")).andReturn(HttpURLConnection.HTTP_CREATED, customResourceDefinitionList).once();
     KubernetesClient client = server.getClient();
 
-    CustomResourceDefinitionList list = client.customResourceDefinitions()
+    CustomResourceDefinitionList list = client.apiextensions().v1beta1().customResourceDefinitions()
       .withField("key1", "value1")
       .withField("key2","value2")
       .withoutField("key3","value3")

@@ -22,16 +22,12 @@ import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionList;
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapList;
 import io.fabric8.kubernetes.api.model.ComponentStatus;
 import io.fabric8.kubernetes.api.model.ComponentStatusList;
 import io.fabric8.kubernetes.api.model.Endpoints;
 import io.fabric8.kubernetes.api.model.EndpointsList;
-import io.fabric8.kubernetes.api.model.Event;
-import io.fabric8.kubernetes.api.model.EventList;
 import io.fabric8.kubernetes.api.model.LimitRange;
 import io.fabric8.kubernetes.api.model.LimitRangeList;
 import io.fabric8.kubernetes.api.model.Namespace;
@@ -65,7 +61,6 @@ import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.ClusterOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.CreateOnlyResourceOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.apiextensions.v1beta1.CustomResourceDefinitionOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.CustomResourceOperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.CustomResourceOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.KubernetesListOperationsImpl;
@@ -90,7 +85,6 @@ import io.fabric8.kubernetes.client.dsl.internal.core.v1.PersistentVolumeClaimOp
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.ResourceQuotaOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.SecretOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.ServiceAccountOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.core.v1.EventOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.node.v1beta1.RuntimeClassOperationsImpl;
 import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectorBuilder;
 import io.fabric8.kubernetes.client.extended.run.RunConfigBuilder;
@@ -226,14 +220,6 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
    * {@inheritDoc}
    */
   @Override
-  public MixedOperation<Event, EventList, Resource<Event>> events() {
-    return new EventOperationsImpl(httpClient, getConfiguration());
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
   public NonNamespaceOperation<Namespace, NamespaceList, Resource<Namespace>> namespaces() {
     return new NamespaceOperationsImpl(httpClient, getConfiguration());
   }
@@ -351,14 +337,6 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
    * {@inheritDoc}
    */
   @Override
-  public NonNamespaceOperation<CustomResourceDefinition, CustomResourceDefinitionList, Resource<CustomResourceDefinition>> customResourceDefinitions() {
-    return new CustomResourceDefinitionOperationsImpl(httpClient, getConfiguration());
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
   public ApiextensionsAPIGroupDSL apiextensions() {
     return adapt(ApiextensionsAPIGroupClient.class);
   }
@@ -397,7 +375,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
    */
   @Override
   public <T extends CustomResource> MixedOperation<T, KubernetesResourceList<T>, Resource<T>> customResources(Class<T> resourceType) {
-    return customResources(CustomResourceDefinitionContext.fromCustomResourceType(resourceType), resourceType, null);
+    return customResources(resourceType, null);
   }
 
 
@@ -406,9 +384,12 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
    */
   @Override
   public <T extends CustomResource, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(Class<T> resourceType, Class<L> listClass) {
-    return customResources(CustomResourceDefinitionContext.fromCustomResourceType(resourceType), resourceType, listClass);
+    return new CustomResourceOperationsImpl<>(new CustomResourceOperationContext().withOkhttpClient(httpClient).withConfig(getConfiguration())
+      .withCrdContext(CustomResourceDefinitionContext.fromCustomResourceType(resourceType))
+      .withType(resourceType)
+      .withListType(listClass)
+      .withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
-
 
   /**
    * {@inheritDoc}
@@ -426,29 +407,8 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
    * {@inheritDoc}
    */
   @Override
-  public <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass) {
-    return new CustomResourceOperationsImpl<>(new CustomResourceOperationContext().withOkhttpClient(httpClient).withConfig(getConfiguration())
-      .withCrd(crd)
-      .withType(resourceType)
-      .withListType(listClass)
-      .withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
   public RawCustomResourceOperationsImpl customResource(CustomResourceDefinitionContext customResourceDefinition) {
     return new RawCustomResourceOperationsImpl(httpClient, getConfiguration(), customResourceDefinition);
-  }
-
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResource(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass) {
-    return customResources(crd, resourceType, listClass);
   }
 
   @Override

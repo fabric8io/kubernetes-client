@@ -19,7 +19,6 @@ import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.examples.crds.Dummy;
 import io.fabric8.kubernetes.examples.crds.DummyList;
 
@@ -34,18 +33,9 @@ public class CustomResourceCreateDemo {
         try (final KubernetesClient k8s = new DefaultKubernetesClient()) {
             // Dummy Client
             MixedOperation<Dummy, DummyList, Resource<Dummy>> dummyClient = null;
-            CustomResourceDefinitionContext context = new CustomResourceDefinitionContext
-                    .Builder()
-                    .withGroup("demo.fabric8.io")
-                    .withKind("Dummy")
-                    .withName("dummies.demo.fabric8.io")
-                    .withPlural("dummies")
-                    .withScope("Namespaced")
-                    .withVersion("v1")
-                    .build();
 
             // Initializing Dummy Client
-            dummyClient = k8s.customResources(context, Dummy.class, DummyList.class);
+            dummyClient = k8s.customResources(Dummy.class, DummyList.class);
 
             // Get Dummy CustomResource
             Dummy dummy = dummyClient.load(CustomResourceCreateDemo.class.getResourceAsStream("/test-customresource.yaml")).get();

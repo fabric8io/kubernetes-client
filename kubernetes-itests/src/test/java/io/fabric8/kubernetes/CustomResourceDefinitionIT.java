@@ -65,7 +65,7 @@ public class CustomResourceDefinitionIT {
   @Test
   public void testCrdOperations() {
     // Load
-    CustomResourceDefinition crd1 = client.customResourceDefinitions().load(getClass().getResourceAsStream("/test-crd.yml")).get();
+    CustomResourceDefinition crd1 = client.apiextensions().v1beta1().customResourceDefinitions().load(getClass().getResourceAsStream("/test-crd.yml")).get();
     assertThat(crd1).isNotNull();
 
     // Create

@@ -93,7 +93,7 @@ public class CRDExample {
         }
       }
 
-      CustomResourceDefinitionList crds = client.customResourceDefinitions().list();
+      CustomResourceDefinitionList crds = client.apiextensions().v1beta1().customResourceDefinitions().list();
       List<CustomResourceDefinition> crdsItems = crds.getItems();
       System.out.println("Found " + crdsItems.size() + " CRD(s)");
       CustomResourceDefinition dummyCRD = null;
@@ -119,7 +119,7 @@ public class CRDExample {
       KubernetesDeserializer.registerCustomKind(HasMetadata.getApiVersion(Dummy.class), dummyCRD.getKind(), Dummy.class);
 
       // lets create a client for the CRD
-      NonNamespaceOperation<Dummy, DummyList, Resource<Dummy>> dummyClient = client.customResources(dummyCRD, Dummy.class, DummyList.class);
+      NonNamespaceOperation<Dummy, DummyList, Resource<Dummy>> dummyClient = client.customResources(Dummy.class, DummyList.class);
       if (resourceNamespaced) {
         dummyClient = ((MixedOperation<Dummy, DummyList, Resource<Dummy>>) dummyClient).inNamespace(namespace);
       }

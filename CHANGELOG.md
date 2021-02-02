@@ -9,6 +9,7 @@
 * Fix #2717: Remove edit() methods from RawCustomResourceOperationsImpl taking InputStream arguments
 * Fix #2757: add `storage` and `served` to `Version` annotation
 * Fix #2759: add `ShortNames` annotation to specify short names for CRD generation
+* Fix #2694: Remove deprecated methods from KubernetesClient DSL
 
 #### Dependency Upgrade
 * update Tekton Triggers model to v0.11.1
@@ -33,7 +34,13 @@
   - The CRD files are generated in the `target/META-INF/fabric8` directory of your project
 
 _**Note**_: Breaking changes in the API
+##### DSL Changes:
 - `client.settings()` DSL has been removed since PodPreset v1alpha1 API is no longer present in Kubernetes 1.20.x
+- `client.customResourceDefinitions()` has been removed. Use `client.apiextensions().v1beta1().customResourceDefinitions()` instead
+- `client.events()` has been removed. Use `client.v1().events()` instead
+- `client.customResource(...)` method is removed. Use `client.customResources(...)` with CustomResource configuration in annotations inside POJOs
+
+##### Model Changes:
 - Classes in `io.fabric8.kubernetes.api.model.scheduling` have been moved to `io.fabric8.kubernetes.api.model.scheduling.v1` and `io.fabric8.kubernetes.api.model.scheduling.v1beta1`
 - Classes in `io.fabric8.kubernetes.api.model.admission` have been moved to `io.fabric8.kubernetes.api.model.admission.v1` and `io.fabric8.kubernetes.api.model.admission.v1beta1`
 - Classes in `io.fabric8.kubernetes.api.model.certificates` have been moved to `io.fabric8.kubernetes.api.model.certificates.v1` and `io.fabric8.kubernetes.api.model.certificates.v1beta1`

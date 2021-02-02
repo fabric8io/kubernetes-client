@@ -47,27 +47,26 @@ class CustomResourceCrudTest {
   public KubernetesServer kubernetesServer = new KubernetesServer(true,true);
   
   private CustomResourceDefinition cronTabCrd;
-  private CustomResourceDefinitionContext crdContext;
 
   @BeforeEach
   void setUp() {
     KubernetesDeserializer.registerCustomKind("stable.example.com/v1", "CronTab", CronTab.class);
     cronTabCrd = kubernetesServer.getClient()
+      .apiextensions().v1beta1()
       .customResourceDefinitions()
       .load(getClass().getResourceAsStream("/crontab-crd.yml"))
       .get();
-    kubernetesServer.getClient().customResourceDefinitions().create(cronTabCrd);
-    crdContext = CustomResourceDefinitionContext.fromCrd(cronTabCrd);
+    kubernetesServer.getClient().apiextensions().v1beta1().customResourceDefinitions().create(cronTabCrd);
   }
 
   @Test
-  void testCrud() throws IOException {
+  void testCrud() {
     CronTab cronTab1 = createCronTab("my-new-cron-object", "* * * * */5", 3, "my-awesome-cron-image");
     CronTab cronTab2 = createCronTab("my-second-cron-object", "* * * * */4", 2, "my-second-cron-image");
     CronTab cronTab3 = createCronTab("my-third-cron-object", "* * * * */3", 1, "my-third-cron-image");
     KubernetesClient client = kubernetesServer.getClient();
 
-    MixedOperation<CronTab, CronTabList, Resource<CronTab>> cronTabClient = client.customResources(crdContext, CronTab.class, CronTabList.class);
+    MixedOperation<CronTab, CronTabList, Resource<CronTab>> cronTabClient = client.customResources(CronTab.class, CronTabList.class);
 
     cronTabClient.inNamespace("test-ns").create(cronTab1);
     cronTabClient.inNamespace("test-ns").create(cronTab2);
@@ -117,14 +116,14 @@ class CustomResourceCrudTest {
   }
 
   @Test
-  void testCrudWithDashSymbolInCRDName() throws IOException {
+  void testCrudWithDashSymbolInCRDName() {
     CronTab cronTab1 = createCronTab("my-new-cron-object", "* * * * */5", 3, "my-awesome-cron-image");
     CronTab cronTab2 = createCronTab("my-second-cron-object", "* * * * */4", 2, "my-second-cron-image");
     CronTab cronTab3 = createCronTab("my-third-cron-object", "* * * * */3", 1, "my-third-cron-image");
     KubernetesClient client = kubernetesServer.getClient();
 
     MixedOperation<CronTab, CronTabList, Resource<CronTab>> cronTabClient = client
-      .customResources(cronTabCrd, CronTab.class, CronTabList.class);
+      .customResources(CronTab.class, CronTabList.class);
 
     cronTabClient.inNamespace("test-ns").create(cronTab1);
     cronTabClient.inNamespace("test-ns").create(cronTab2);

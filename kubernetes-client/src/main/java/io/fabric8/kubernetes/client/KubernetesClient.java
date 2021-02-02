@@ -27,8 +27,6 @@ import io.fabric8.kubernetes.api.model.ComponentStatus;
 import io.fabric8.kubernetes.api.model.ComponentStatusList;
 import io.fabric8.kubernetes.api.model.Endpoints;
 import io.fabric8.kubernetes.api.model.EndpointsList;
-import io.fabric8.kubernetes.api.model.Event;
-import io.fabric8.kubernetes.api.model.EventList;
 import io.fabric8.kubernetes.api.model.LimitRange;
 import io.fabric8.kubernetes.api.model.LimitRangeList;
 import io.fabric8.kubernetes.api.model.Namespace;
@@ -59,8 +57,6 @@ import io.fabric8.kubernetes.api.model.coordination.v1.LeaseList;
 import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClass;
 import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClassList;
 import io.fabric8.kubernetes.client.dsl.*;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionList;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.RawCustomResourceOperationsImpl;
 import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectorBuilder;
@@ -75,18 +71,6 @@ import java.util.concurrent.ExecutorService;
  * Main interface for Kubernetes client library.
  */
 public interface KubernetesClient extends Client {
-
-  /**
-   * API entrypoint for CustomResourcedefinition(CRDs). This offers basic operations like
-   * load, get, create, update, delete and watch for APIGroup apiextensions/v1beta1
-   *
-   * @deprecated Use {@link #apiextensions()}: {@link ApiextensionsAPIGroupDSL#v1beta1()}
-   * or {@link ApiextensionsAPIGroupDSL#v1()} to access Custom Resource Definition DSL for specific API versions.
-   *
-   * @return NonNamespaceOperation object for CustomResourceDefinition
-   */
-  @Deprecated
-  NonNamespaceOperation<CustomResourceDefinition, CustomResourceDefinitionList, Resource<CustomResourceDefinition>> customResourceDefinitions();
 
   /**
    * API entrypoint for apiextensions resources. Currently support both
@@ -129,7 +113,6 @@ public interface KubernetesClient extends Client {
    */
   <T extends CustomResource> MixedOperation<T, KubernetesResourceList<T>, Resource<T>> customResources(Class<T> resourceType);
 
-
   /**
    * Typed API for managing CustomResources. You would need to provide POJOs for
    * CustomResource into this and with it you would be able to instantiate a client
@@ -162,6 +145,8 @@ public interface KubernetesClient extends Client {
    *   </a> if it is a Namespaced scoped resource.
    * </p>
    *
+   * @deprecated Since 5.x versions of client {@link CustomResourceDefinitionContext} is now configured via annotations
+   *             inside POJOs, no need to provide it explicitly here.
    * @param crdContext CustomResourceDefinitionContext describes the core fields used to search for CustomResources
    * @param resourceType Class for CustomResource
    * @param listClass Class for list object for CustomResource
@@ -170,56 +155,8 @@ public interface KubernetesClient extends Client {
    * @param <L> L type represents CustomResourceList type
    * @return returns a MixedOperation object with which you can do basic CustomResource operations
    */
-  <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(CustomResourceDefinitionContext crdContext, Class<T> resourceType, Class<L> listClass);
-
-  /**
-   * Typed API for managing CustomResources. You would need to provide POJOs for
-   * CustomResource into this and with it you would be able to instantiate a client
-   * specific to CustomResource.
-   *
-   * <p>
-   *   Note: your CustomResource POJO (T in this context) must implement
-   *   <a href="https://github.com/fabric8io/kubernetes-client/blob/master/kubernetes-model-generator/kubernetes-model-core/src/main/java/io/fabric8/kubernetes/api/model/Namespaced.java">
-   *     io.fabric8.kubernetes.api.model.Namespaced
-   *   </a> if it is a Namespaced scoped resource.
-   * </p>
-   *
-   * @deprecated use {@link #customResources(CustomResourceDefinitionContext, Class, Class)}, which takes a {@link CustomResourceDefinitionContext}
-   * instead of a full {@link CustomResourceDefinition}.
-   *
-   * @param crd CustomResourceDefinition object on basic of which this CustomResource was created
-   * @param resourceType Class for CustomResource
-   * @param listClass Class for list object for CustomResource
-   * @param <T> T type represents CustomResource type. If it's Namespaced resource, it must implement
-   *            io.fabric8.kubernetes.api.model.Namespaced
-   * @param <L> L type represents CustomResourceList type
-   * @return returns a MixedOperation object with which you can do basic CustomResource operations
-   */
   @Deprecated
-  <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass);
-
-  /**
-   * Old API for dealing with CustomResources.
-   *
-   * @deprecated use {@link #customResources(CustomResourceDefinitionContext, Class, Class)}, which takes a {@link CustomResourceDefinitionContext}
-   * instead of a full {@link CustomResourceDefinition}.
-   *
-   * <p>
-   *   Note: your CustomResource POJO (T in this context) must implement
-   *   <a href="https://github.com/fabric8io/kubernetes-client/blob/master/kubernetes-model-generator/kubernetes-model-core/src/main/java/io/fabric8/kubernetes/api/model/Namespaced.java">
-   *     io.fabric8.kubernetes.api.model.Namespaced
-   *   </a> if it is a Namespaced scoped resource.
-   * </p>
-   *
-   * @param crd Custom Resource Definition
-   * @param resourceType resource type Pojo
-   * @param listClass list class Pojo
-   * @param <T> template argument for resource. If it's Namespaced resource, it must implement
-   *            io.fabric8.kubernetes.api.model.Namespaced
-   * @param <L> template argument for list
-   * @return Kubernetes client object for manipulating custom resource.
-   */
-  <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResource(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass);
+  <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(CustomResourceDefinitionContext crdContext, Class<T> resourceType, Class<L> listClass);
 
   /**
    * Discovery API entrypoint for APIGroup discovery.k8s.io
@@ -401,14 +338,6 @@ public interface KubernetesClient extends Client {
    * @return MixedOperation object for doing operations for Endpoints
    */
   MixedOperation<Endpoints, EndpointsList, Resource<Endpoints>> endpoints();
-
-  /**
-   * API entrypoint for getting events in Kubernetes. Events (core/v1)
-   *
-   * @deprecated Use KubernetesClient#v1#events instead.
-   * @return MixedOperation object for doing operations for Events
-   */
-  MixedOperation<Event, EventList, Resource<Event>> events();
 
   /**
    * API entrypoint for namespace related operations in Kubernetes. Namespace (core/v1)

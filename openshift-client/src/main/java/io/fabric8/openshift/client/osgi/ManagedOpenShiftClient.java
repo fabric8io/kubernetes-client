@@ -25,8 +25,6 @@ import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapList;
 import io.fabric8.kubernetes.api.model.Endpoints;
 import io.fabric8.kubernetes.api.model.EndpointsList;
-import io.fabric8.kubernetes.api.model.Event;
-import io.fabric8.kubernetes.api.model.EventList;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
@@ -52,8 +50,6 @@ import io.fabric8.kubernetes.api.model.SecretList;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.api.model.ServiceList;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionList;
 import io.fabric8.kubernetes.api.model.authentication.TokenReview;
 import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequest;
 import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestList;
@@ -477,11 +473,6 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
-  public MixedOperation<Event, EventList, Resource<Event>> events() {
-    return delegate.events();
-  }
-
-  @Override
   public NonNamespaceOperation<Namespace, NamespaceList, Resource<Namespace>> namespaces() {
     return delegate.namespaces();
   }
@@ -577,23 +568,8 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
-  public <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass) {
-    return delegate.customResources(crd, resourceType, listClass);
-  }
-
-  @Override
-  public <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResource(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass) {
-    return customResources(crd, resourceType, listClass);
-  }
-
-  @Override
   public DiscoveryAPIGroupDSL discovery() {
     return delegate.discovery();
-  }
-
-  @Override
-  public NonNamespaceOperation<CustomResourceDefinition, CustomResourceDefinitionList, Resource<CustomResourceDefinition>> customResourceDefinitions() {
-    return delegate.customResourceDefinitions();
   }
 
   @Override
