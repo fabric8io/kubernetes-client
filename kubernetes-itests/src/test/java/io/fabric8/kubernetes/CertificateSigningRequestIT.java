@@ -48,20 +48,20 @@ public class CertificateSigningRequestIT {
 
   @Test
   public void get() {
-    CertificateSigningRequest certificateSigningRequest = client.certificateSigningRequests().withName("csr-get").get();
+    CertificateSigningRequest certificateSigningRequest = client.certificates().v1beta1().certificateSigningRequests().withName("csr-get").get();
     assertThat(certificateSigningRequest).isNotNull();
   }
 
   @Test
   public void list() {
-    CertificateSigningRequestList certificateSigningRequestList = client.certificateSigningRequests().list();
+    CertificateSigningRequestList certificateSigningRequestList = client.certificates().v1beta1().certificateSigningRequests().list();
     assertNotNull(certificateSigningRequestList);
     assertTrue(certificateSigningRequestList.getItems().size() >= 1);
   }
 
   @Test
   public void update() {
-    CertificateSigningRequest certificateSigningRequest = client.certificateSigningRequests().withName("csr-update").edit(c -> new CertificateSigningRequestBuilder(c)
+    CertificateSigningRequest certificateSigningRequest = client.certificates().v1beta1().certificateSigningRequests().withName("csr-update").edit(c -> new CertificateSigningRequestBuilder(c)
       .editOrNewMetadata().addToAnnotations("foo", "bar").endMetadata().build());
 
     assertNotNull(certificateSigningRequest);
@@ -70,7 +70,7 @@ public class CertificateSigningRequestIT {
 
   @Test
   public void delete() {
-    assertTrue(client.certificateSigningRequests().withName("csr-delete").delete());
+    assertTrue(client.certificates().v1beta1().certificateSigningRequests().withName("csr-delete").delete());
   }
 
   @AfterClass

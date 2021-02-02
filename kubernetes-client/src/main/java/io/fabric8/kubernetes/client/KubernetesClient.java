@@ -99,9 +99,18 @@ public interface KubernetesClient extends Client {
   /**
    * API entrypoint for using CertificateSigningRequest(certificates.k8s.io/v1beta1)
    *
+   * @deprecated Use `client.certificates().v1beta1().certificateSigningRequest` instead
    * @return {@link NonNamespaceOperation} for CertificateSigningRequest class
    */
+  @Deprecated
   NonNamespaceOperation<CertificateSigningRequest, CertificateSigningRequestList, Resource<CertificateSigningRequest>> certificateSigningRequests();
+
+  /**
+   * API entrypoint for certificates.k8s.io APIGroup
+   *
+   * @return {@link CertificatesAPIGroupDSL} for Certificate API resources
+   */
+  CertificatesAPIGroupDSL certificates();
 
   /**
    * Typed API for managing CustomResources. You would need to provide POJOs for
