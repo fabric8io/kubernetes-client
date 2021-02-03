@@ -15,11 +15,10 @@
  */
 package io.fabric8.crd.generator.v1beta1;
 
-import static io.fabric8.crd.generator.utils.Types.findStatusProperty;
-
+import io.fabric8.crd.generator.AbstractCustomResourceHandler;
 import io.fabric8.crd.generator.apt.CustomResourceInfo;
 import io.fabric8.crd.generator.apt.Resources;
-import io.fabric8.crd.generator.utils.Strings;
+import io.fabric8.crd.generator.decorator.Decorator;
 import io.fabric8.crd.generator.v1beta1.decorator.AddAdditionPrinterColumnDecorator;
 import io.fabric8.crd.generator.v1beta1.decorator.AddCustomResourceDefinitionResourceDecorator;
 import io.fabric8.crd.generator.v1beta1.decorator.AddCustomResourceDefinitionVersionDecorator;
@@ -30,101 +29,56 @@ import io.fabric8.crd.generator.v1beta1.decorator.AddStatusReplicasPathDecorator
 import io.fabric8.crd.generator.v1beta1.decorator.AddStatusSubresourceDecorator;
 import io.fabric8.crd.generator.v1beta1.decorator.AddSubresourcesDecorator;
 import io.fabric8.crd.generator.v1beta1.decorator.EnsureSingleStorageVersionDecorator;
-import io.fabric8.crd.generator.v1beta1.decorator.PromoteSingleVersionAttributesDecorator;
 import io.fabric8.crd.generator.v1beta1.decorator.SetServedVersionDecorator;
 import io.fabric8.crd.generator.v1beta1.decorator.SetStorageVersionDecorator;
-import io.fabric8.crd.generator.visitor.AdditionalPrinterColumnDetector;
-import io.fabric8.crd.generator.visitor.LabelSelectorPathDetector;
-import io.fabric8.crd.generator.visitor.SpecReplicasPathDetector;
-import io.fabric8.crd.generator.visitor.StatusReplicasPathDetector;
-import io.sundr.codegen.functions.ElementTo;
-import io.sundr.codegen.model.Property;
 import io.sundr.codegen.model.TypeDef;
-import io.sundr.codegen.model.TypeDefBuilder;
-import io.sundr.codegen.model.TypeRef;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import javax.lang.model.element.TypeElement;
 
-public class CustomResourceHandler {
-
-  private final Resources resources;
+public class CustomResourceHandler extends AbstractCustomResourceHandler {
 
   public CustomResourceHandler(Resources resources) {
-    this.resources = resources;
+    super(resources);
   }
 
-  public void handle(CustomResourceInfo config, TypeDef def) {
+  @Override
+  protected Decorator getPrinterColumnDecorator(
+    String name, String version, String path, String type, String column,
+    String description, String format) {
+    return new AddAdditionPrinterColumnDecorator(name, version, type, column, path, format,
+      description);
+  }
+
+  @Override
+  protected void addDecorators(CustomResourceInfo config, TypeDef def,
+    Optional<String> specReplicasPath, Optional<String> statusReplicasPath,
+    Optional<String> labelSelectorPath, boolean statusExists) {
     final String name = config.crdName();
     final String version = config.version();
-
-    Optional<TypeRef> statusType;
-    final TypeElement status = config.status();
-    if (!status.getQualifiedName().contentEquals(Void.class.getCanonicalName())) {
-      statusType = Optional.of(ElementTo.TYPEDEF.apply(status).toReference());
-    } else {
-      statusType = Optional.empty();
-    }
-
-    SpecReplicasPathDetector specReplicasPathDetector = new SpecReplicasPathDetector();
-    StatusReplicasPathDetector statusReplicasPathDetector = new StatusReplicasPathDetector();
-    LabelSelectorPathDetector labelSelectorPathDetector = new LabelSelectorPathDetector();
-    AdditionalPrinterColumnDetector additionalPrinterColumnDetector = new AdditionalPrinterColumnDetector();
-
-    if (statusType.isPresent()) {
-      TypeDefBuilder builder = new TypeDefBuilder(def);
-      Optional<Property> statusProperty = findStatusProperty(def);
-
-      statusProperty.ifPresent(p -> {
-        builder.removeFromProperties(p);
-      });
-
-      def = builder
-        .addNewProperty()
-        .withName("status")
-        .withTypeRef(statusType.get())
-        .endProperty()
-        .build();
-    }
-
-    def = new TypeDefBuilder(def)
-      .accept(specReplicasPathDetector)
-      .accept(statusReplicasPathDetector)
-      .accept(labelSelectorPathDetector)
-      .accept(additionalPrinterColumnDetector)
-      .build();
-
     resources.decorate(
       new AddCustomResourceDefinitionResourceDecorator(name, config.group(), config.kind(),
         config.scope().name(), config.shortNames(), config.plural(), config.singular()));
 
     resources.decorate(new AddCustomResourceDefinitionVersionDecorator(name, version));
-    // Let's ignore the parts that are mandatory in the examples
+
     resources.decorate(new AddSchemaToCustomResourceDefinitionVersionDecorator(name, version,
       JsonSchema.from(def, "kind", "apiVersion", "metadata")));
 
-    Map<String, Property> additionalPrinterColumns = new HashMap<>();
-    additionalPrinterColumns.putAll(additionalPrinterColumnDetector.getProperties());
-
-    specReplicasPathDetector.getPath().ifPresent(specReplicasPath -> {
+    specReplicasPath.ifPresent(path -> {
       resources.decorate(new AddSubresourcesDecorator(name, version));
-      resources.decorate(new AddSpecReplicasPathDecorator(name, version, specReplicasPath));
+      resources.decorate(new AddSpecReplicasPathDecorator(name, version, path));
     });
 
-    statusReplicasPathDetector.getPath().ifPresent(statusReplicasPath -> {
+    statusReplicasPath.ifPresent(path -> {
       resources.decorate(new AddSubresourcesDecorator(name, version));
-      resources.decorate(new AddStatusReplicasPathDecorator(name, version, statusReplicasPath));
+      resources.decorate(new AddStatusReplicasPathDecorator(name, version, path));
     });
 
-    labelSelectorPathDetector.getPath().ifPresent(labelSelectorPath -> {
+    labelSelectorPath.ifPresent(path -> {
       resources.decorate(new AddSubresourcesDecorator(name, version));
-      resources.decorate(new AddLabelSelectorPathDecorator(name, version, labelSelectorPath));
+      resources.decorate(new AddLabelSelectorPathDecorator(name, version, path));
     });
 
-    if (statusType.isPresent()) {
+    if (statusExists) {
       resources.decorate(new AddSubresourcesDecorator(name, version));
       resources.decorate(new AddStatusSubresourceDecorator(name, version));
     }
@@ -132,25 +86,5 @@ public class CustomResourceHandler {
     resources.decorate(new SetServedVersionDecorator(name, version, config.served()));
     resources.decorate(new SetStorageVersionDecorator(name, version, config.storage()));
     resources.decorate(new EnsureSingleStorageVersionDecorator(name));
-
-    resources.decorate(new PromoteSingleVersionAttributesDecorator(name));
-
-    additionalPrinterColumns.forEach((path, property) -> {
-      Map<String, Object> parameters = property.getAnnotations().stream()
-        .filter(a -> a.getClassRef().getName().equals("PrinterColumn")).map(a -> a.getParameters())
-        .findFirst().orElse(Collections.emptyMap());
-      String type = JsonSchema.TYPE_MAP.getOrDefault(property.getTypeRef(), "object");
-      String column = (String) parameters.get("name");
-      if (Strings.isNullOrEmpty(column)) {
-        column = property.getName().toUpperCase();
-      }
-      String description = property.getComments().stream().filter(l -> !l.trim().startsWith("@"))
-        .collect(Collectors.joining(" ")).trim();
-      String format = (String) parameters.get("format");
-
-      resources.decorate(
-        new AddAdditionPrinterColumnDecorator(name, version, type, column, path, format,
-          description));
-    });
   }
 }
