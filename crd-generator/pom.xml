@@ -133,14 +133,8 @@
                 <filter>
                   <artifact>*:*</artifact>
                   <includes>
-                    <include>io/dekorate/crd/adapter/**</include>
-                    <include>io/dekorate/crd/annotation/**</include>
-                    <include>io/dekorate/crd/apt/**</include>
-                    <include>io/dekorate/crd/config/**</include>
-                    <include>io/dekorate/crd/configurator/**</include>
-                    <include>io/dekorate/crd/generator/**</include>
-                    <include>io/dekorate/crd/handler/**</include>
-                    <include>io/dekorate/crd/util/**</include>
+                    <include>io/fabric8/crd/annotation/**</include>
+                    <include>io/fabric8/crd/generator/**</include>
                     <include>META-INF/services/javax.annotation.processing.Processor</include>
                     <include>META-INF/MANIFEST.MF</include>
                   </includes>
