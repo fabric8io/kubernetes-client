@@ -60,10 +60,6 @@ public class PromoteSingleVersionAttributesDecorator extends CustomResourceDefin
       boolean hasIdenticalSubresources = subresources.size() == 1;
       boolean hasIdenticalAdditionalPrinterColumns = additionalPrinterColumns.size() == 1;
       boolean hasIdenticalSchemas = schemas.size() == 1;
-
-      System.out
-        .printf("Found %s subresources, %s column list sets, %s schemas ", subresources.size(),
-          additionalPrinterColumns.size(), schemas.size());
       
       spec
         .withValidation(hasIdenticalSchemas ? schemas.iterator().next() : null)
