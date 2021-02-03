@@ -1,5 +1,10 @@
 ## CHANGELOG
 
+### 4.13.2
+
+#### Bugs
+* Fix #2715: CVE-2021-20218 vulnerable to a path traversal leading to integrity and availability compromise
+
 ### 4.13.1 (2021-01-20)
 
 #### Bugs
