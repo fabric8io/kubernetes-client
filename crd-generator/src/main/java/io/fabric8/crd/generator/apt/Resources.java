@@ -50,7 +50,7 @@ public class Resources {
   /**
    * Add a resource to all groups.
    *
-   * @param metadata
+   * @param metadata the resource to add to this Resources
    */
   public void add(HasMetadata metadata) {
     global.addToItems(metadata);
@@ -86,8 +86,9 @@ public class Resources {
 
   /**
    * Bubble sort for decorators.
+   * @param decorators the {@link Decorator} array to be sorted
    */
-  public void bubbleSort(Decorator[] decorators) {
+  private void bubbleSort(Decorator[] decorators) {
     int n = decorators.length;
     Decorator temp = null;
     for (int i = 0; i < n; i++) {

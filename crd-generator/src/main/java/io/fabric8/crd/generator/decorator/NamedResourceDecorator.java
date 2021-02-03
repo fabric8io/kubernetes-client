@@ -77,7 +77,7 @@ public abstract class NamedResourceDecorator<T> extends Decorator<VisitableBuild
    * Visit a part of a Resource.
    *
    * @param item the visited item
-   * @param the {@link ObjectMeta} of the current resource.
+   * @param resourceMeta the {@link ObjectMeta} of the current resource.
    */
   public abstract void andThenVisit(T item, ObjectMeta resourceMeta);
 
@@ -85,8 +85,8 @@ public abstract class NamedResourceDecorator<T> extends Decorator<VisitableBuild
    * Visit a part of a Resource.
    *
    * @param item the visited item
-   * @param item toplevel resource kind
-   * @param the {@link ObjectMeta} of the current resource.
+   * @param kind the resource kind
+   * @param resourceMeta the {@link ObjectMeta} of the current resource.
    */
   public void andThenVisit(T item, String kind, ObjectMeta resourceMeta) {
     andThenVisit(item, resourceMeta);

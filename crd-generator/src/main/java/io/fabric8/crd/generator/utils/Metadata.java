@@ -90,7 +90,7 @@ public class Metadata {
   /**
    * Create a {@link Predicate} that checks that a resource builder doesn't match the name and kind.
    *
-   * @param HasMetadata The specified resource.
+   * @param candidate The specified resource.
    * @return The predicate.
    */
   public static Predicate<VisitableBuilder<? extends HasMetadata, ?>> matching(
@@ -102,21 +102,19 @@ public class Metadata {
   /**
    * Create a {@link Predicate} that checks that a resource builder doesn't match the name and kind.
    *
+   * @param apiVersion the API version the resources must match
    * @param kind The specified kind.
    * @param name The specified name.
    * @return The predicate.
    */
   public static Predicate<VisitableBuilder<? extends HasMetadata, ?>> matching(String apiVersion,
     String kind, String name) {
-    return new Predicate<VisitableBuilder<? extends HasMetadata, ?>>() {
-      @Override
-      public boolean test(VisitableBuilder<? extends HasMetadata, ?> builder) {
-        HasMetadata item = builder.build();
-        ObjectMeta metadata = item.getMetadata();
-        return apiVersion.equals(item.getApiVersion()) &&
-          kind != null && kind.equals(item.getKind()) &&
-          name != null && name.equals(metadata.getName());
-      }
+    return builder -> {
+      HasMetadata item = builder.build();
+      ObjectMeta metadata = item.getMetadata();
+      return apiVersion.equals(item.getApiVersion()) &&
+        kind != null && kind.equals(item.getKind()) &&
+        name != null && name.equals(metadata.getName());
     };
   }
 }

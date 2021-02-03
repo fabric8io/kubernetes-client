@@ -78,9 +78,10 @@ public class JsonSchema {
   }
 
   /**
-   * Creates the JSON schema for the particular {@TypeDef}.
+   * Creates the JSON schema for the particular {@link TypeDef}.
    *
    * @param definition The definition.
+   * @param ignore     an optional list of property names to ignore
    * @return The schema.
    */
   public static JSONSchemaProps from(TypeDef definition, String... ignore) {
