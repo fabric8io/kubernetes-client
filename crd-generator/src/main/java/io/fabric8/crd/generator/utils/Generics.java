@@ -66,25 +66,25 @@ public class Generics {
     Map<Type, Type> resolvedTypes = new LinkedHashMap<Type, Type>();
     Type type = childClass;
     // start walking up the inheritance hierarchy until we hit baseClass
-    final Class<?> clazz = getClass(type);
-    if (clazz != null) {
-      while (!clazz.equals(baseClass)) {
-        if (type instanceof Class) {
-          // there is no useful information for us in raw types, so just keep going.
-          type = ((Class) type).getGenericSuperclass();
-        } else {
-          ParameterizedType parameterizedType = (ParameterizedType) type;
-          Class<?> rawType = (Class) parameterizedType.getRawType();
+    while (true) {
+      final Class<?> clazz = getClass(type);
+      if (clazz == null || clazz.equals(baseClass))
+        break;
+      if (type instanceof Class) {
+        // there is no useful information for us in raw types, so just keep going.
+        type = ((Class) type).getGenericSuperclass();
+      } else {
+        ParameterizedType parameterizedType = (ParameterizedType) type;
+        Class<?> rawType = (Class) parameterizedType.getRawType();
 
-          Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
-          TypeVariable<?>[] typeParameters = rawType.getTypeParameters();
-          for (int i = 0; i < actualTypeArguments.length; i++) {
-            resolvedTypes.put(typeParameters[i], actualTypeArguments[i]);
-          }
+        Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
+        TypeVariable<?>[] typeParameters = rawType.getTypeParameters();
+        for (int i = 0; i < actualTypeArguments.length; i++) {
+          resolvedTypes.put(typeParameters[i], actualTypeArguments[i]);
+        }
 
-          if (!rawType.equals(baseClass)) {
-            type = rawType.getGenericSuperclass();
-          }
+        if (!rawType.equals(baseClass)) {
+          type = rawType.getGenericSuperclass();
         }
       }
     }
