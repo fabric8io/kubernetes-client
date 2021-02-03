@@ -22,7 +22,6 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefin
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.utils.KubernetesVersionPriority;
-
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Optional;
@@ -72,7 +71,7 @@ public class CustomResourceDefinitionContext {
         .withNewSpec()
         .withGroup(instance.getGroup())
         .withVersion(version) // also set version to the first (and only) versions item
-        .addNewVersion().withName(version).withServed(true).withStorage(true).endVersion()
+        .addNewVersion().withName(version).withServed(instance.isServed()).withStorage(instance.isStorage()).endVersion()
         .withScope(instance.getScope())
         .withNewNames()
         .withKind(instance.getKind())

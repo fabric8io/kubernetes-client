@@ -15,16 +15,17 @@
  */
 package io.fabric8.kubernetes.client;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CustomResourceTest {
   private static class MissingApiVersion extends CustomResource {
@@ -45,6 +46,8 @@ class CustomResourceTest {
     assertEquals(good.getPlural() + "." + Good.GROUP, good.getCRDName());
     assertEquals(Good.VERSION, good.getVersion());
     assertEquals(Good.GROUP, good.getGroup());
+    assertTrue(good.isServed());
+    assertTrue(good.isStorage());
   }
   
   @Test
@@ -58,6 +61,8 @@ class CustomResourceTest {
     assertEquals(custom.getPlural() + "." + Custom.GROUP, custom.getCRDName());
     assertEquals(Custom.VERSION, custom.getVersion());
     assertEquals(Custom.GROUP, custom.getGroup());
+    assertFalse(custom.isServed());
+    assertFalse(custom.isStorage());
   }
   
   @Test

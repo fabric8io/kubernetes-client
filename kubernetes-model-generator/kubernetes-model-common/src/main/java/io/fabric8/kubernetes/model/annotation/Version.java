@@ -15,11 +15,11 @@
  */
 package io.fabric8.kubernetes.model.annotation;
 
+import static java.lang.annotation.ElementType.TYPE;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import static java.lang.annotation.ElementType.TYPE;
 
 /**
  * Allows to specify which version of the API the annotated class is defined under. Together with {@link Group}, this allows to
@@ -43,7 +43,7 @@ public @interface Version {
    *
    * @return {@code true} if this version corresponds to the persisted version for the associated CRD, {@code false} otherwise
    */
-  boolean storage() default false;
+  boolean storage() default true;
   
   /**
    * Whether this version is served (i.e. enabled for consumption from the REST API) or not.

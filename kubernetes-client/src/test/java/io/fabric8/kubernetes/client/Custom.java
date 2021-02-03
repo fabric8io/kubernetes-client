@@ -16,12 +16,12 @@
 package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.model.annotation.Group;
-import io.fabric8.kubernetes.model.annotation.Version;
 import io.fabric8.kubernetes.model.annotation.Kind;
 import io.fabric8.kubernetes.model.annotation.Plural;
 import io.fabric8.kubernetes.model.annotation.Singular;
+import io.fabric8.kubernetes.model.annotation.Version;
 
-@Version(Custom.VERSION)
+@Version(value = Custom.VERSION, storage = false, served = false)
 @Group(Custom.GROUP)
 @Singular(Custom.SINGULAR)
 @Plural(Custom.PLURAL)
