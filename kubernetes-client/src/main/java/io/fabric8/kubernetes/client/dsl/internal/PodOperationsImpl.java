@@ -66,6 +66,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import io.fabric8.kubernetes.client.lib.FilenameUtils;
 
 import static io.fabric8.kubernetes.client.utils.OptionalDependencyWrapper.wrapRunWithOptionalDependency;
 
@@ -508,7 +509,11 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, Doneab
         {
           for (org.apache.commons.compress.archivers.ArchiveEntry entry = tis.getNextTarEntry(); entry != null; entry = tis.getNextEntry()) {
             if (tis.canReadEntryData(entry)) {
-              File f = new File(destination, entry.getName());
+              final String normalizedEntryName = FilenameUtils.normalize(entry.getName());
+              if (normalizedEntryName == null){
+                throw new IOException("Tar entry '" + entry.getName() + "' has an invalid name");
+              }
+              File f = new File(destination, normalizedEntryName);
               if (entry.isDirectory()) {
                 if (!f.isDirectory() && !f.mkdirs()) {
                   throw new IOException("Failed to create directory: " + f);
