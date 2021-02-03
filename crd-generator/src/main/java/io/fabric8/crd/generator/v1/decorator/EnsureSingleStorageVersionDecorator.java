@@ -44,7 +44,9 @@ public class EnsureSingleStorageVersionDecorator extends CustomResourceDefinitio
       if (version.getStorage()) {
         String existing = storageVersion.get();
         if (existing != null && !existing.equals(version.getName())) {
-          throw new IllegalStateException(String.format("Version %s is marked as storage and so is %s. Only one version should be marked as storage per custom resource.", version.getName(), existing));
+          throw new IllegalStateException(String.format(
+            "'%s' custom resource has versions %s and %s marked as storage. Only one version can be marked as storage per custom resource.",
+            resourceMeta.getName(), version.getName(), existing));
         } else {
           storageVersion.set(version.getName());
         }
