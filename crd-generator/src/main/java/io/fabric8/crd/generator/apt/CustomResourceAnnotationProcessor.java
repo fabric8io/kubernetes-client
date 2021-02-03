@@ -51,13 +51,12 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
       .enable(Feature.MINIMIZE_QUOTES)
       .enable(Feature.ALWAYS_QUOTE_NUMBERS_AS_STRINGS)
       .disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER)
-  ) {
-    {
-      configure(SerializationFeature.INDENT_OUTPUT, true);
-      configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false);
-      configure(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, false);
-    }
-  };
+  );
+  static {
+    YAML_MAPPER.configure(SerializationFeature.INDENT_OUTPUT, true);
+    YAML_MAPPER.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false);
+    YAML_MAPPER.configure(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, false);
+  }
 
   private static final String CUSTOM_RESOURCE_NAME = CustomResource.class.getCanonicalName();
   private final Resources resources = new Resources();

@@ -62,21 +62,19 @@ public class JsonSchema {
   private static final TypeRef P_BOOLEAN_REF = new PrimitiveRefBuilder().withName("boolean").build();
   private static final TypeRef OPTIONAL_REF = OPTIONAL.toReference();
 
-  public static final Map<TypeRef, String> TYPE_MAP = new HashMap<TypeRef, String>() {
-    {
-
-      put(STRING_REF, "string");
-      put(DATE_REF, "string");
-      put(INT_REF, "integer");
-      put(P_INT_REF, "integer");
-      put(LONG_REF, "number");
-      put(P_LONG_REF, "number");
-      put(DOUBLE_REF, "number");
-      put(P_DOUBLE_REF, "number");
-      put(BOOLEAN_REF, "boolean");
-      put(P_BOOLEAN_REF, "boolean");
-    }
-  };
+  public static final Map<TypeRef, String> TYPE_MAP = new HashMap<>();
+  static {
+    TYPE_MAP.put(STRING_REF, "string");
+    TYPE_MAP.put(DATE_REF, "string");
+    TYPE_MAP.put(INT_REF, "integer");
+    TYPE_MAP.put(P_INT_REF, "integer");
+    TYPE_MAP.put(LONG_REF, "number");
+    TYPE_MAP.put(P_LONG_REF, "number");
+    TYPE_MAP.put(DOUBLE_REF, "number");
+    TYPE_MAP.put(P_DOUBLE_REF, "number");
+    TYPE_MAP.put(BOOLEAN_REF, "boolean");
+    TYPE_MAP.put(P_BOOLEAN_REF, "boolean");
+  }
 
   /**
    * Creates the JSON schema for the particular {@TypeDef}.
