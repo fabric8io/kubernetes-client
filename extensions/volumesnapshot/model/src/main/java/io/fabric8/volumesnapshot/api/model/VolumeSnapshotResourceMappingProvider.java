@@ -26,9 +26,9 @@ public class VolumeSnapshotResourceMappingProvider implements KubernetesResource
   public final Map<String, Class<? extends KubernetesResource>> mappings = new HashMap<>();
 
   public VolumeSnapshotResourceMappingProvider() {
-    mappings.put("snapshot.storage.k8s.io/v1beta1#VolumeSnapshot", VolumeSnapshot.class);
-    mappings.put("snapshot.storage.k8s.io/v1beta1#VolumeSnapshotClass", VolumeSnapshotClass.class);
-    mappings.put("snapshot.storage.k8s.io/v1beta1#VolumeSnapshotContent", VolumeSnapshotContent.class);
+    mappings.put("snapshot.storage.k8s.io/v1#VolumeSnapshot", VolumeSnapshot.class);
+    mappings.put("snapshot.storage.k8s.io/v1#VolumeSnapshotClass", VolumeSnapshotClass.class);
+    mappings.put("snapshot.storage.k8s.io/v1#VolumeSnapshotContent", VolumeSnapshotContent.class);
   }
 
   public Map<String, Class<? extends KubernetesResource>> getMappings() {

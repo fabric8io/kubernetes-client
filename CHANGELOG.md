@@ -13,6 +13,7 @@
 * Fix #2684: Upgrade Kubernetes Model to v1.20.2
 
 #### New Features
+* Fix #2708: Update CSI Volume Snapshot API to v1
 * Fix #2702 : Add support for discovery.k8s.io/v1beta1 EndpointSlice in KubernetesClient DSL
 
 _**Note**_: Breaking changes in the API

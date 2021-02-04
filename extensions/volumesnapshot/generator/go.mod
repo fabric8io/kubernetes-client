@@ -2,10 +2,10 @@ module github.com/fabric8io/kubernetes-client/extensions/volumesnapshot/generato
 
   require (
   github.com/fabric8io/kubernetes-client/generator v0.0.0
-  github.com/kubernetes-csi/external-snapshotter/v2 v2.1.1
-  k8s.io/apimachinery v0.18.2
+  github.com/kubernetes-csi/external-snapshotter/client/v4 v4.0.0
+  k8s.io/apimachinery v0.20.0
   )
 
   replace github.com/fabric8io/kubernetes-client/generator v0.0.0 => ./../../../generator
 
-  go 1.13
+  go 1.15
