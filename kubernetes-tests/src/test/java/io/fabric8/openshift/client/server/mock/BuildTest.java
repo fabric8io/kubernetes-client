@@ -16,21 +16,18 @@
 package io.fabric8.openshift.client.server.mock;
 
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@EnableRuleMigrationSupport
+@EnableOpenShiftMockClient
 class BuildTest {
-  @Rule
-  public OpenShiftServer server = new OpenShiftServer();
+  OpenShiftMockServer server;
+  OpenShiftClient openShiftClient;
 
   @Test
   void testLogWithoutTimestamps() {
     server.expect().withPath("/apis/build.openshift.io/v1/namespaces/ns1/builds/test-build/log?pretty=false").andReturn(200, "test build output").times(2);
-    OpenShiftClient openShiftClient = server.getOpenshiftClient();
 
     String log = openShiftClient.builds().inNamespace("ns1").withName("test-build").getLog();
     assertEquals("test build output", log);
@@ -39,7 +36,6 @@ class BuildTest {
   @Test
   void testLogWithTimestamps() {
     server.expect().withPath("/apis/build.openshift.io/v1/namespaces/ns1/builds/test-build/log?pretty=false&timestamps=true").andReturn(200, "test build output").times(2);
-    OpenShiftClient openShiftClient = server.getOpenshiftClient();
 
     String log = openShiftClient.builds().inNamespace("ns1").withName("test-build").usingTimestamps().getLog();
     assertEquals("test build output", log);
