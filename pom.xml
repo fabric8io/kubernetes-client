@@ -79,7 +79,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <!-- Core versions -->
-    <sundrio.version>0.23.1</sundrio.version>
+    <sundrio.version>0.24.2</sundrio.version>
     <okhttp.version>3.12.12</okhttp.version>
     <okhttp.bundle.version>3.12.1_1</okhttp.bundle.version>
     <okio.version>1.15.0</okio.version>
@@ -91,7 +91,7 @@
     <jsr305.version>3.0.2</jsr305.version>
 
     <!-- Testing versions -->
-    <assertj.core.version>3.18.1</assertj.core.version>
+    <assertj.core.version>3.19.0</assertj.core.version>
     <arquillian.core.version>1.2.0.Final</arquillian.core.version>
     <awaitility.version>4.0.3</awaitility.version>
     <jsonassert.version>1.5.0</jsonassert.version>
@@ -111,10 +111,10 @@
     <zjsonpatch.version>0.3.0</zjsonpatch.version>
     <arquillian.cube.version>1.18.2</arquillian.cube.version>
     <slf4j.version>1.7.30</slf4j.version>
-    <mockito.version>3.6.28</mockito.version>
+    <mockito.version>3.7.7</mockito.version>
     <lombok.version>1.18.16</lombok.version>
     <snakeyaml.version>1.26</snakeyaml.version>
-    <bouncycastle.version>1.66</bouncycastle.version>
+    <bouncycastle.version>1.68</bouncycastle.version>
     <commons-codec.version>1.15</commons-codec.version>
     <commons-compress.version>1.20</commons-compress.version>
     <scr.annotations.version>1.12.0</scr.annotations.version>
@@ -130,7 +130,7 @@
     <maven.surefire.plugin.version>3.0.0-M5</maven.surefire.plugin.version>
     <maven.scr.plugin.version>1.26.4</maven.scr.plugin.version>
     <maven.resources.plugin.version>3.2.0</maven.resources.plugin.version>
-    <maven.release.plugin.version>2.5.3</maven.release.plugin.version>
+    <maven.release.plugin.version>3.0.0-M1</maven.release.plugin.version>
     <maven.javadoc.plugin.version>3.2.0</maven.javadoc.plugin.version>
     <maven.source.plugin.version>3.2.1</maven.source.plugin.version>
     <maven.enforcer.plugin.version>3.0.0-M3</maven.enforcer.plugin.version>
@@ -141,9 +141,9 @@
     <maven.shade.plugin.version>3.2.4</maven.shade.plugin.version>
     <maven.install.plugin.version>3.0.0-M1</maven.install.plugin.version>
     <jandex.plugin.version>1.0.8</jandex.plugin.version>
-    <jandex.version>2.2.2.Final</jandex.version>
+    <jandex.version>2.2.3.Final</jandex.version>
     <jacoco-maven-plugin.version>0.8.6</jacoco-maven-plugin.version>
-    <sonar-maven-plugin.version>3.7.0.1746</sonar-maven-plugin.version>
+    <sonar-maven-plugin.version>3.8.0.2131</sonar-maven-plugin.version>
 
     <!-- Other options -->
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -167,6 +167,7 @@
     <osgi.export.service />
     <osgi.include.resources>{maven-resources}</osgi.include.resources>
     <karaf.itest.skip>false</karaf.itest.skip>
+    <project.build.outputTimestamp>2020-11-14T12:24:00Z</project.build.outputTimestamp>
   </properties>
 
   <modules>
@@ -269,11 +270,6 @@
       <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>kubernetes-model-scheduling</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.fabric8</groupId>
-        <artifactId>kubernetes-model-settings</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -667,6 +663,8 @@
             <Bundle-Activator>${osgi.activator}</Bundle-Activator>
             <Export-Service>${osgi.export.service}</Export-Service>
             <Include-Resource>${osgi.include.resources}</Include-Resource>
+            <_removeheaders>Bnd-LastModified</_removeheaders>
+            <_reproducible>true</_reproducible>
           </instructions>
         </configuration>
       </plugin>
@@ -721,7 +719,6 @@
                   <include>io.fabric8:kubernetes-model-metrics*</include>
                   <include>io.fabric8:kubernetes-model-policy*</include>
                   <include>io.fabric8:kubernetes-model-scheduling*</include>
-                  <include>io.fabric8:kubernetes-model-settings*</include>
                   <include>io.fabric8:kubernetes-model-storageclass*</include>
                   <include>io.fabric8:openshift-model*</include>
                 </includes>

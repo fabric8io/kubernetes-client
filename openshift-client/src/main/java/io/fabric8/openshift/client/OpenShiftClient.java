@@ -137,11 +137,6 @@ public interface OpenShiftClient extends KubernetesClient {
   SchedulingAPIGroupDSL scheduling();
 
   /**
-   * {@inheritDoc}
-   */
-  SettingsAPIGroupDSL settings();
-
-  /**
    * API entrypoint for handling Build(build.openshift.io/v1)
    *
    * @return MixedOperation instance for Build object

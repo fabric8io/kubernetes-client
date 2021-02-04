@@ -2036,8 +2036,19 @@
         "podInfoOnMount": {
           "type": "boolean"
         },
+        "requiresRepublish": {
+          "type": "boolean"
+        },
         "storageCapacity": {
           "type": "boolean"
+        },
+        "tokenRequests": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_storageclass_v1beta1_TokenRequest",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.TokenRequest"
+          }
         },
         "volumeLifecycleModes": {
           "type": "array",
@@ -2152,6 +2163,23 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSINodeSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_storageclass_v1beta1_TokenRequest": {
+      "type": "object",
+      "properties": {
+        "audience": {
+          "type": "string"
+        },
+        "expirationSeconds": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.TokenRequest",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -2525,8 +2553,19 @@
         "podInfoOnMount": {
           "type": "boolean"
         },
+        "requiresRepublish": {
+          "type": "boolean"
+        },
         "storageCapacity": {
           "type": "boolean"
+        },
+        "tokenRequests": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_storageclass_v1beta1_TokenRequest",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.TokenRequest"
+          }
         },
         "volumeLifecycleModes": {
           "type": "array",
@@ -3843,6 +3882,18 @@
       "properties": {
         "Time": {
           "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "tokenrequest": {
+      "properties": {
+        "audience": {
+          "type": "string"
+        },
+        "expirationSeconds": {
+          "type": "integer",
+          "existingJavaType": "Long"
         }
       },
       "additionalProperties": true

@@ -26,6 +26,7 @@ import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.Test;
@@ -48,8 +49,6 @@ public class RoleIT {
   @ArquillianResource
   Session session;
 
-  private Role role;
-
   private String currentNamespace;
 
   @BeforeClass
@@ -57,10 +56,15 @@ public class RoleIT {
     ClusterEntity.apply(RoleIT.class.getResourceAsStream("/role-it.yml"));
   }
 
+  @Before
+  public void initNamespace() {
+    this.currentNamespace = session.getNamespace();
+  }
+
   @Test
   public void get() {
 
-    role = client.rbac().roles().inNamespace(currentNamespace).withName("role-get").get();
+    Role role = client.rbac().roles().inNamespace(currentNamespace).withName("role-get").get();
 
     assertNotNull(role);
     assertEquals("Role", role.getKind());
@@ -151,7 +155,7 @@ public class RoleIT {
   @Test
   public void update() {
 
-    role = client.rbac().roles().inNamespace(currentNamespace).withName("role-update").edit(r -> new RoleBuilder(r)
+    Role role = client.rbac().roles().inNamespace(currentNamespace).withName("role-update").edit(r -> new RoleBuilder(r)
                  .editRule(0).addToApiGroups(1, "extensions").endRule().build());
 
     assertNotNull(role);

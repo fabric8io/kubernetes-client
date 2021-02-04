@@ -25,7 +25,8 @@ import (
   apimachineryversion "k8s.io/apimachinery/pkg/version"
   kapi "k8s.io/api/core/v1"
 
-  scheduling "k8s.io/api/scheduling/v1beta1"
+  v1beta1scheduling "k8s.io/api/scheduling/v1beta1"
+  v1scheduling "k8s.io/api/scheduling/v1"
 
   "log"
   "reflect"
@@ -57,8 +58,10 @@ type Schema struct {
   Quantity                                 resource.Quantity
   ObjectReference                          kapi.ObjectReference
 
-  PriorityClass                            scheduling.PriorityClass
-  PriorityClassList                        scheduling.PriorityClassList
+  V1Beta1PriorityClass                            v1beta1scheduling.PriorityClass
+  V1Beta1PriorityClassList                        v1beta1scheduling.PriorityClassList
+  V1PriorityClass                            v1scheduling.PriorityClass
+  V1PriorityClassList                        v1scheduling.PriorityClassList
 }
 
 func main() {
@@ -68,7 +71,8 @@ func main() {
     {"k8s.io/apimachinery/pkg/version", "", "io.fabric8.kubernetes.api.model.version", "kubernetes_apimachinery_pkg_version_", false},
     {"k8s.io/apimachinery/pkg/apis/meta/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_", false},
     {"k8s.io/api/core/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_core_", false},
-    {"k8s.io/api/scheduling/v1beta1", "scheduling.k8s.io", "io.fabric8.kubernetes.api.model.scheduling", "kubernetes_scheduling_", true},
+    {"k8s.io/api/scheduling/v1beta1", "scheduling.k8s.io", "io.fabric8.kubernetes.api.model.scheduling.v1beta1", "kubernetes_scheduling_v1beta1_", true},
+    {"k8s.io/api/scheduling/v1", "scheduling.k8s.io", "io.fabric8.kubernetes.api.model.scheduling.v1", "kubernetes_scheduling_v1_", true},
   }
 
   typeMap := map[reflect.Type]reflect.Type{

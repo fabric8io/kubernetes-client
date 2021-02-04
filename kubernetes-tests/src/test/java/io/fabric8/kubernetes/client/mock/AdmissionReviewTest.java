@@ -16,7 +16,7 @@
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.PodExecOptions;
-import io.fabric8.kubernetes.api.model.admission.AdmissionReview;
+import io.fabric8.kubernetes.api.model.admission.v1beta1.AdmissionReview;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -128,6 +128,11 @@ public class AutoAdaptableKubernetesClient extends DefaultKubernetesClient {
   }
 
   @Override
+  public DiscoveryAPIGroupDSL discovery() {
+    return delegate.discovery();
+  }
+
+  @Override
   public NetworkAPIGroupDSL network() { return delegate.network(); }
 
   @Override

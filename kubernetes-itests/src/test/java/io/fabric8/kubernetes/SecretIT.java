@@ -32,6 +32,7 @@ import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -53,13 +54,16 @@ public class SecretIT {
   @ArquillianResource
   Session session;
 
-  private Secret secret1;
-
   private String currentNamespace;
 
   @BeforeClass
   public static void init() {
     ClusterEntity.apply(SecretIT.class.getResourceAsStream("/secret-it.yml"));
+  }
+
+  @Before
+  public void initNamespace() {
+    this.currentNamespace = session.getNamespace();
   }
 
   @Test
@@ -71,7 +75,7 @@ public class SecretIT {
 
   @Test
   public void get() {
-    secret1 = client.secrets().inNamespace(currentNamespace).withName("secret-get").get();
+    Secret secret1 = client.secrets().inNamespace(currentNamespace).withName("secret-get").get();
     assertNotNull(secret1);
   }
 
@@ -85,7 +89,7 @@ public class SecretIT {
   @Test
   public void update() {
     ReadyEntity<Secret> secretReady = new ReadyEntity<>(Secret.class, client, "secret-update", currentNamespace);
-    secret1 = client.secrets().inNamespace(currentNamespace).withName("secret-update").edit(s -> new SecretBuilder(s)
+    Secret secret1 = client.secrets().inNamespace(currentNamespace).withName("secret-update").edit(s -> new SecretBuilder(s)
       .editOrNewMetadata().addToLabels("foo", "bar").endMetadata()
       .build());
     await().atMost(30, TimeUnit.SECONDS).until(secretReady);

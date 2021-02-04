@@ -24,7 +24,8 @@ import (
   "k8s.io/apimachinery/pkg/api/resource"
   apimachineryversion "k8s.io/apimachinery/pkg/version"
 
-  certificates "k8s.io/api/certificates/v1beta1"
+  certificates "k8s.io/api/certificates/v1"
+  v1beta1certificates "k8s.io/api/certificates/v1beta1"
 
   "log"
   "reflect"
@@ -55,11 +56,16 @@ type Schema struct {
   RootPaths                                metav1.RootPaths
   Quantity                                 resource.Quantity
 
-  CertificateSigningRequest                certificates.CertificateSigningRequest
-  CertificateSigningRequestSpec            certificates.CertificateSigningRequestSpec
-  CertificateSigningRequestStatus          certificates.CertificateSigningRequestStatus
-  CertificateSigningRequestCondition       certificates.CertificateSigningRequestCondition
-  CertificateSigningRequestList            certificates.CertificateSigningRequestList
+  CertificateSigningRequest                   certificates.CertificateSigningRequest
+  CertificateSigningRequestSpec               certificates.CertificateSigningRequestSpec
+  CertificateSigningRequestStatus             certificates.CertificateSigningRequestStatus
+  CertificateSigningRequestCondition          certificates.CertificateSigningRequestCondition
+  CertificateSigningRequestList               certificates.CertificateSigningRequestList
+  V1Beta1CertificateSigningRequest            v1beta1certificates.CertificateSigningRequest
+  V1Beta1CertificateSigningRequestSpec        v1beta1certificates.CertificateSigningRequestSpec
+  V1Beta1CertificateSigningRequestStatus      v1beta1certificates.CertificateSigningRequestStatus
+  V1Beta1CertificateSigningRequestCondition   v1beta1certificates.CertificateSigningRequestCondition
+  V1Beta1CertificateSigningRequestList        v1beta1certificates.CertificateSigningRequestList
 }
 
 func main() {
@@ -68,7 +74,8 @@ func main() {
     {"k8s.io/apimachinery/pkg/runtime", "", "io.fabric8.kubernetes.api.model.runtime", "kubernetes_apimachinery_pkg_runtime_", false},
     {"k8s.io/apimachinery/pkg/version", "", "io.fabric8.kubernetes.api.model.version", "kubernetes_apimachinery_pkg_version_", false},
     {"k8s.io/apimachinery/pkg/apis/meta/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_", false},
-    {"k8s.io/api/certificates/v1beta1", "certificates.k8s.io", "io.fabric8.kubernetes.api.model.certificates", "kubernetes_certificates_", true},
+    {"k8s.io/api/certificates/v1beta1", "certificates.k8s.io", "io.fabric8.kubernetes.api.model.certificates.v1beta1", "kubernetes_certificates_v1beta1_", true},
+    {"k8s.io/api/certificates/v1", "certificates.k8s.io", "io.fabric8.kubernetes.api.model.certificates.v1", "kubernetes_certificates_v1_", true},
   }
 
   typeMap := map[reflect.Type]reflect.Type{

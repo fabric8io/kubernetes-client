@@ -51,8 +51,8 @@ import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
-import io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequest;
-import io.fabric8.kubernetes.api.model.certificates.CertificateSigningRequestList;
+import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequest;
+import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestList;
 import io.fabric8.kubernetes.api.model.authentication.TokenReview;
 import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseList;
@@ -213,6 +213,13 @@ public interface KubernetesClient extends Client {
   <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResource(CustomResourceDefinition crd, Class<T> resourceType, Class<L> listClass);
 
   /**
+   * Discovery API entrypoint for APIGroup discovery.k8s.io
+   *
+   * @return {@link DiscoveryAPIGroupDSL} with which you can access Discovery API resource objects
+   */
+  DiscoveryAPIGroupDSL discovery();
+
+  /**
    * Extensions API entrypoint for APIGroup extensions/v1beta1
    *
    * @return ExtensionsAPIGroupDSL with which you can access entrypoints for extension objects
@@ -270,13 +277,6 @@ public interface KubernetesClient extends Client {
    * @return StorageAPIGroupDSL which offers entrypoints to specific resources in this APIGroup
    */
   StorageAPIGroupDSL storage();
-
-  /**
-   * API entrypoint for kubernetes resources with APIGroup settings/v1alpha1
-   *
-   * @return SettingsAPIGroupDSL which offers entrypoint to specific resources in this APIGroup
-   */
-  SettingsAPIGroupDSL settings();
 
   /**
    * API entrypoint for kubernetes resources with APIGroup batch/v1beta1

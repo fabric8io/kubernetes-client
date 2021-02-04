@@ -3,13 +3,49 @@
 ### 5.1-SNAPSHOT
 
 #### Bugs
+* Fix #2748: Pass custom headers in kubernetes-client to watch api by modify WatchConnectionManager
 
 #### Improvements
+* Fix #2717: Remove edit() methods from RawCustomResourceOperationsImpl taking InputStream arguments
 
 #### Dependency Upgrade
+* update Tekton Triggers model to v0.11.1
+* Fix #2684: Upgrade Kubernetes Model to v1.20.2
 
 #### New Features
 * Fix #2708: Update CSI Volume Snapshot API to v1
+* Fix #2702 : Add support for discovery.k8s.io/v1beta1 EndpointSlice in KubernetesClient DSL
+
+_**Note**_: Breaking changes in the API
+- `client.settings()` DSL has been removed since PodPreset v1alpha1 API is no longer present in Kubernetes 1.20.x
+- Classes in `io.fabric8.kubernetes.api.model.scheduling` have been moved to `io.fabric8.kubernetes.api.model.scheduling.v1` and `io.fabric8.kubernetes.api.model.scheduling.v1beta1`
+- Classes in `io.fabric8.kubernetes.api.model.admission` have been moved to `io.fabric8.kubernetes.api.model.admission.v1` and `io.fabric8.kubernetes.api.model.admission.v1beta1`
+- Classes in `io.fabric8.kubernetes.api.model.certificates` have been moved to `io.fabric8.kubernetes.api.model.certificates.v1` and `io.fabric8.kubernetes.api.model.certificates.v1beta1`
+- Classes in `io.fabric8.kubernetes.api.model.events` have been moved to `io.fabric8.kubernetes.api.model.events.v1` and `io.fabric8.kubernetes.api.model.events.v1beta1`
+
+### 5.0.1 (2021-01-27)
+
+#### Bugs
+* Fix #2687: RawCustomResourceOperationsImpl ignores config
+* Fix #2612: add support for checking latest kubeconfig in Interceptor
+
+#### Improvements
+
+* Fix #2723: Dependency cleanup
+ - Remove javax.annotation-api 
+ - Remove jaxb-api
+ - Remove jacson-module-jaxb-annotations
+* Fix #2744: Automatically instantiates spec and status fields on `CustomResource` when possible.
+  `initSpec` and `initStatus` methods are also provided to allow for overriding of the default implementation.
+
+#### Dependency Upgrade
+
+* Fix #2723: Upgrade sundrio.version to 0.24.1
+
+### 4.13.1 (2021-01-20)
+
+#### Bugs
+* Fix #2734: (Backport #2596) Add buildable ref for container, port and volume
 
 ### 5.0.0 (2020-12-30)
 

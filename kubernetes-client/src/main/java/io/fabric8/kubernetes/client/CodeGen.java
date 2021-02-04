@@ -43,7 +43,6 @@ import io.sundr.transform.annotations.VelocityTransformations;
     @ResourceSelector("metrics.properties"),
     @ResourceSelector("policy.properties"),
     @ResourceSelector("scheduling.properties"),
-    @ResourceSelector("settings.properties"),
     @ResourceSelector("storage.properties"),
   }
 

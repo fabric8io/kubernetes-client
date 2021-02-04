@@ -15,7 +15,13 @@
  */
 package io.fabric8.kubernetes.client;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -74,10 +80,10 @@ public abstract class CustomResource<S, T> implements HasMetadata {
   private ObjectMeta metadata = new ObjectMeta();
 
   @JsonProperty("spec")
-  private S spec;
+  protected S spec;
 
   @JsonProperty("status")
-  private T status;
+  protected T status;
 
   private final String singular;
   private final String crdName;
@@ -99,6 +105,24 @@ public abstract class CustomResource<S, T> implements HasMetadata {
     this.singular = getSingular(clazz);
     this.plural = getPlural(clazz);
     this.crdName = getCRDName(clazz);
+    this.spec = initSpec();
+    this.status = initStatus();
+  }
+  
+  /**
+   * Override to provide your own Spec instance
+   * @return a new Spec instance
+   */
+  protected S initSpec() {
+    return (S)genericInit(0);
+  }
+  
+  /**
+   * Override to provide your own Status instance
+   * @return a new Status instance
+   */
+  protected T initStatus() {
+    return (T)genericInit(1);
   }
 
   @Override
@@ -228,5 +252,98 @@ public abstract class CustomResource<S, T> implements HasMetadata {
 
   public void setStatus(T status) {
     this.status = status;
+  }
+  
+  private final static String TYPE_NAME = CustomResource.class.getTypeName();
+  private final static String VOID_TYPE_NAME = Void.class.getTypeName();
+  private final static Map<String, Instantiator> instantiators = new ConcurrentHashMap<>();
+  
+  /**
+   * Encapsulates an instantiation means. Needed to provide no-op when needed.
+   */
+  @FunctionalInterface
+  private interface Instantiator {
+    
+    Object instantiate() throws Exception;
+    
+    /**
+     * No-op instantiator.
+     */
+    Instantiator NULL = () -> null;
+  }
+  
+  /**
+   * Returns the {@link Instantiator} instance associated with the type parameter associated with the specified index in the
+   * generic type definition. Records the result so that it's only done once per CustomResource implementation.
+   *
+   * @param genericTypeIndex the index of the parameter type we want to instantiate in the CustomResource definition, i.e. with
+   *                         the CustomResource<S,T> definition, {@code 0} corresponds to the {@code S} type (i.e. the Spec type)
+   *                         while {@code 1} corresponds to the {@code T} (i.e. Status) type.
+   * @return the {@link Instantiator} for the desired type
+   * @throws Exception if the generic type cannot be identified or instantiated
+   */
+  private Instantiator getInstantiator(int genericTypeIndex) throws Exception {
+    final String key = getKey(getClass(), genericTypeIndex);
+    Instantiator instantiator = instantiators.get(key);
+    if (instantiator == null) {
+      instantiator = Instantiator.NULL;
+      
+      // walk the type hierarchy until we reach CustomResource or a ParameterizedType
+      Type genericSuperclass = getClass().getGenericSuperclass();
+      String typeName = genericSuperclass.getTypeName();
+      while (!TYPE_NAME.equals(typeName) && !(genericSuperclass instanceof ParameterizedType)) {
+        genericSuperclass = ((Class) genericSuperclass).getGenericSuperclass();
+        typeName = genericSuperclass.getTypeName();
+      }
+  
+      // this works because CustomResource is an abstract class
+      if (genericSuperclass instanceof ParameterizedType) {
+        final Type[] types = ((ParameterizedType) genericSuperclass).getActualTypeArguments();
+        if (types.length != 2) {
+          throw new IllegalArgumentException(
+            "Automatic instantiation of Spec and Status only works for CustomResource implementations parameterized with both types, consider overriding initSpec and/or initStatus");
+        }
+        // get the associated class from the type name, if not Void
+        String className = types[genericTypeIndex].getTypeName();
+        if (!VOID_TYPE_NAME.equals(className)) {
+          Class<?> clazz = Class.forName(className);
+          if (clazz.isInterface() || Modifier.isAbstract(clazz.getModifiers())) {
+            throw new IllegalArgumentException(
+              "Cannot instantiate interface/abstract type " + className);
+          }
+          
+          // record the instantiator associated with the identified type
+          instantiator = () -> {
+            final Constructor<?> constructor;
+            try {
+              // get the no-arg (declared needed if implicit) constructor
+              constructor = clazz.getDeclaredConstructor();
+              constructor.setAccessible(true); // and make it accessible
+            } catch (NoSuchMethodException | SecurityException e) {
+              throw new IllegalArgumentException(
+                "Cannot find a no-arg constructor for " + className);
+            }
+            return constructor.newInstance();
+          };
+        }
+      }
+      instantiators.put(key, instantiator);
+    }
+    return instantiator;
+  }
+  
+  private Object genericInit(int genericTypeIndex) {
+    try {
+      return getInstantiator(genericTypeIndex).instantiate();
+    } catch (Exception e) {
+      final String fieldName = genericTypeIndex == 0 ? "Spec" : "Status";
+      throw new IllegalArgumentException(
+        "Cannot instantiate " + fieldName + ", consider overriding init" + fieldName + ": "
+          + e.getMessage(), e);
+    }
+  }
+  
+  private final static String getKey(Class<? extends CustomResource> clazz, int genericTypeIndex) {
+    return clazz.getCanonicalName() + "_" + genericTypeIndex;
   }
 }

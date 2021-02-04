@@ -15,11 +15,16 @@
  */
 package io.fabric8.kubernetes.client;
 
+import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CustomResourceTest {
   private static class MissingApiVersion extends CustomResource {
@@ -54,4 +59,110 @@ class CustomResourceTest {
     assertEquals(Custom.VERSION, custom.getVersion());
     assertEquals(Custom.GROUP, custom.getGroup());
   }
+  
+  @Test
+  void untypedCustomResourceInitShouldWork() {
+    final CustomResource cr = new Untyped();
+    assertNull(cr.getSpec());
+    assertNull(cr.getStatus());
+  }
+  
+  @Test
+  void subclassInitShouldWork() {
+    final CRC cr = new CRC();
+    assertEquals("", cr.getSpec());
+    assertEquals(new Foo(), cr.getStatus());
+  }
+  
+  @Test
+  void subclassWithOverriddenInitShouldWork() {
+    final CRI cri = new CRI();
+    assertEquals("", cri.getSpec());
+    assertEquals(7, cri.getStatus());
+  }
+  
+  @Test
+  void subclassWithVoidStatusShouldWork() {
+    final CRV crv = new CRV();
+    assertEquals("", crv.getSpec());
+    assertNull(crv.getStatus());
+  }
+  
+  @Test
+  void deeperSubclassShouldWork() {
+    final CRGG cr = new CRGG();
+    assertEquals("", cr.getSpec());
+    assertEquals(new Foo(), cr.getStatus());
+  }
+  
+  @Test
+  void implicitConstructorShouldWork() {
+    final CRImplicit cr = new CRImplicit();
+    assertEquals(new Bar(), cr.getSpec());
+    assertEquals("", cr.getStatus());
+  }
+  
+  @Test
+  void interfaceTypeShouldFail() {
+    final IllegalArgumentException exception = assertThrows(
+      IllegalArgumentException.class, CRInterface::new);
+    assertTrue(exception.getMessage().contains(KubernetesResource.class.getName()));
+  }
+  
+  private static class Foo {
+    public Foo() {
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+      return obj instanceof Foo;
+    }
+  }
+  
+  private static class Bar {
+    @Override
+    public boolean equals(Object obj) {
+      return obj instanceof Bar;
+    }
+  }
+  
+  @Group("example.com")
+  @Version("v1")
+  private static class Untyped extends CustomResource{}
+  
+  @Group("example.com")
+  @Version("v1")
+  private static class CRV extends CustomResource<String, Void> {
+  }
+  
+  @Group("example.com")
+  @Version("v1")
+  private static class CRI extends CustomResource<String, Integer> {
+    
+    @Override
+    protected Integer initStatus() {
+      return 7;
+    }
+  }
+  
+  @Group("example.com")
+  @Version("v1")
+  private static class CRC extends CustomResource<String, Foo> {
+  }
+  
+  @Group("example.com")
+  @Version("v1")
+  private static class CRG extends CRC {}
+  
+  @Group("example.com")
+  @Version("v1")
+  private static class CRGG extends CRG {}
+  
+  @Group("example.com")
+  @Version("v1")
+  private static class CRImplicit extends CustomResource<Bar, String> {}
+  
+  @Group("example.com")
+  @Version("v1")
+  private static class CRInterface extends CustomResource<String, KubernetesResource> {}
 }

@@ -25,13 +25,13 @@ import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
 
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
+
+import static org.junit.Assert.assertTrue;
 
 @RunWith(ArquillianConditionalRunner.class)
 @RequiresKubernetes
@@ -42,7 +42,7 @@ public class WaitUntilReadyIT {
   @ArquillianResource
   Session session;
 
-  Pod pod = new PodBuilder()
+  private final Pod pod = new PodBuilder()
     .withNewMetadata().withName("p2").withLabels(Collections.singletonMap("app", "p2")).endMetadata()
     .withNewSpec()
     .addNewContainer()
@@ -58,7 +58,7 @@ public class WaitUntilReadyIT {
     .endSpec()
     .build();
 
-  Pod secondPod = new PodBuilder()
+  private final Pod secondPod = new PodBuilder()
     .withNewMetadata().withName("p1").endMetadata()
     .withNewSpec()
     .addNewContainer()
@@ -74,7 +74,7 @@ public class WaitUntilReadyIT {
     .endSpec()
     .build();
 
-  Secret mySecret = new SecretBuilder()
+  private final Secret mySecret = new SecretBuilder()
     .withNewMetadata().withName("mysecret").endMetadata()
     .withType("Opaque")
     .addToData("username", "YWRtaW4=")
@@ -85,16 +85,16 @@ public class WaitUntilReadyIT {
   public void testBatchWaitUntilReady() throws InterruptedException {
 
     String namespace = session.getNamespace();
-    pod = client.pods().inNamespace(namespace).create(pod);
-    secondPod = client.pods().inNamespace(namespace).create(secondPod);
-    mySecret = client.secrets().inNamespace(namespace).create(mySecret);
+    Pod podCreated = client.pods().inNamespace(namespace).create(pod);
+    Pod secondPodCreated = client.pods().inNamespace(namespace).create(secondPod);
+    Secret mySecretCreated = client.secrets().inNamespace(namespace).create(mySecret);
 
     // For waiting for single resource use this.
-    client.resourceList(new KubernetesListBuilder().withItems(pod, secondPod, mySecret).build()).inNamespace(namespace).waitUntilReady(60, TimeUnit.SECONDS);
+    client.resourceList(new KubernetesListBuilder().withItems(podCreated, secondPodCreated, mySecretCreated).build()).inNamespace(namespace).waitUntilReady(60, TimeUnit.SECONDS);
 
     // Cleanup
-    client.pods().inNamespace(namespace).withName("p2").delete();
-    client.pods().inNamespace(namespace).withName("p1").delete();
-    client.secrets().inNamespace(namespace).withName("mysecret").delete();
+    assertTrue(client.pods().inNamespace(namespace).withName("p2").delete());
+    assertTrue(client.pods().inNamespace(namespace).withName("p1").delete());
+    assertTrue(client.secrets().inNamespace(namespace).withName("mysecret").delete());
   }
 }

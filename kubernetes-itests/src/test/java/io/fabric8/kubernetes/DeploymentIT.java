@@ -49,8 +49,6 @@ public class DeploymentIT {
   @ArquillianResource
   Session session;
 
-  private Deployment deployment1;
-
   @BeforeClass
   public static void init() {
     ClusterEntity.apply(DeploymentIT.class.getResourceAsStream("/deployment-it.yml"));
@@ -65,7 +63,7 @@ public class DeploymentIT {
 
   @Test
   public void get() {
-    deployment1 = client.apps().deployments().inNamespace(session.getNamespace())
+    Deployment deployment1 = client.apps().deployments().inNamespace(session.getNamespace())
       .withName("deployment-standard").get();
     assertNotNull(deployment1);
   }
@@ -79,7 +77,7 @@ public class DeploymentIT {
 
   @Test
   public void update() {
-    deployment1 = client.apps().deployments().inNamespace(session.getNamespace()).withName("deployment-standard")
+    Deployment deployment1 = client.apps().deployments().inNamespace(session.getNamespace()).withName("deployment-standard")
       .edit(d -> new DeploymentBuilder(d).editMetadata().addToAnnotations("updated", "true").endMetadata().build());
     assertThat(deployment1).isNotNull();
     assertEquals("true", deployment1.getMetadata().getAnnotations().get("updated"));
@@ -97,7 +95,7 @@ public class DeploymentIT {
 
   @Test
   public void listFromServer() {
-    deployment1 = client.apps().deployments().inNamespace(session.getNamespace()).withName("deployment-standard").get();
+    Deployment deployment1 = client.apps().deployments().inNamespace(session.getNamespace()).withName("deployment-standard").get();
     List<HasMetadata> resources = client.resourceList(deployment1).inNamespace(session.getNamespace()).fromServer().get();
 
     assertNotNull(resources);

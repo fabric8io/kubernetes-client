@@ -23,7 +23,6 @@ import io.fabric8.kubernetes.api.model.rbac.ClusterRole;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBuilder;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRoleList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -44,11 +43,6 @@ public class ClusterRoleIT {
   @ArquillianResource
   KubernetesClient client;
 
-  @ArquillianResource
-  Session session;
-
-  private ClusterRole clusterRole;
-
   @BeforeClass
   public static void init() {
     ClusterEntity.apply(ClusterRoleIT.class.getResourceAsStream("/clusterrole-it.yml"));
@@ -57,7 +51,7 @@ public class ClusterRoleIT {
   @Test
   public void get() {
 
-    clusterRole = client.rbac().clusterRoles().withName("node-reader-get").get();
+    ClusterRole clusterRole = client.rbac().clusterRoles().withName("node-reader-get").get();
 
     assertNotNull(clusterRole);
     assertEquals("ClusterRole", clusterRole.getKind());
@@ -143,7 +137,7 @@ public class ClusterRoleIT {
   @Test
   public void update() {
 
-    clusterRole = client.rbac().clusterRoles().withName("node-reader-update").edit(c -> new ClusterRoleBuilder(c)
+    ClusterRole clusterRole = client.rbac().clusterRoles().withName("node-reader-update").edit(c -> new ClusterRoleBuilder(c)
                         .editRule(0).addToApiGroups(1, "extensions").endRule().build());
 
     assertNotNull(clusterRole);

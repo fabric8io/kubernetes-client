@@ -73,7 +73,6 @@ class UberJarTest {
     assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/api/model/coordination").exists());
     assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/api/model/extensions").exists());
     assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/api/model/policy").exists());
-    assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/api/model/settings").exists());
     assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/api/model/admissionregistration").exists());
     assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/api/model/authentication").exists());
     assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/api/model/batch").exists());
@@ -115,7 +114,6 @@ class UberJarTest {
     assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/api/model/v" + majorVersion + "_" + minorVersion + "/coordination").exists());
     assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/api/model/v" + majorVersion + "_" + minorVersion + "/extensions").exists());
     assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/api/model/v" + majorVersion + "_" + minorVersion + "/policy").exists());
-    assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/api/model/v" + majorVersion + "_" + minorVersion + "/settings").exists());
     assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/api/model/v" + majorVersion + "_" + minorVersion + "/admissionregistration").exists());
     assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/api/model/v" + majorVersion + "_" + minorVersion + "/authentication").exists());
     assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/api/model/v" + majorVersion + "_" + minorVersion + "/batch").exists());

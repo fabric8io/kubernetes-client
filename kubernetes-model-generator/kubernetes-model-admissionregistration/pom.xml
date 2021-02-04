@@ -60,8 +60,9 @@
               <target>
                 <echo>removing the duplicate generated class</echo>
                 <delete
-                  file="${project.build.directory}/generated-sources/io/fabric8/kubernetes/api/model/admission/AdmissionRequest.java"
-                  verbose="true" />
+                  file="${project.build.directory}/generated-sources/io/fabric8/kubernetes/api/model/admission/v1/AdmissionRequest.java" verbose="true" />
+                <delete
+                  file="${project.build.directory}/generated-sources/io/fabric8/kubernetes/api/model/admission/v1beta1/AdmissionRequest.java" verbose="true" />
                 <delete verbose="true">
                   <fileset dir="${project.build.directory}/generated-sources">
                     <include name="*.java" />

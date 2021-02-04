@@ -26,6 +26,8 @@ spec:
       served: true
       storage: true
   scope: Namespaced
+  subresources:
+    status: {}
   names:
     plural: animals
     singular: animals

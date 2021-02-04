@@ -60,16 +60,13 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
   
   private static final String METADATA = "metadata";
   private static final String RESOURCE_VERSION = "resourceVersion";
-  private OkHttpClient client;
-  private Config config;
-  private CustomResourceDefinitionContext customResourceDefinition;
-  private ObjectMapper objectMapper;
+  private final CustomResourceDefinitionContext customResourceDefinition;
+  private final ObjectMapper objectMapper;
 
-  private enum HttpCallMethod { GET, POST, PUT, DELETE };
+  private enum HttpCallMethod { GET, POST, PUT, DELETE }
 
   public RawCustomResourceOperationsImpl(OkHttpClient client, Config config, CustomResourceDefinitionContext customResourceDefinition) {
-    this.client = client;
-    this.config = config;
+    super(client, config);
     this.customResourceDefinition = customResourceDefinition;
     this.objectMapper = Serialization.jsonMapper();
   }
@@ -287,31 +284,6 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
     // avoid : https://github.com/fabric8io/kubernetes-client/issues/1724
     objectAsString = appendResourceVersionInObject(namespace, name, objectAsString);
     return validateAndSubmitRequest(namespace, name, objectAsString, HttpCallMethod.PUT);
-  }
-
-  /**
-   * Edit a custom resource object which is a non-namespaced object.
-   *
-   * @param name name of the custom resource
-   * @param objectAsStream new object as a file input stream
-   * @return Object as HashMap
-   * @throws IOException in case of network/serialization failures or failures from Kubernetes API
-   */
-  public Map<String, Object> edit(String name, InputStream objectAsStream) throws IOException {
-    return validateAndSubmitRequest(null, name, IOHelpers.readFully(objectAsStream), HttpCallMethod.PUT);
-  }
-
-  /**
-   * Edit a custom resource object which is a namespaced object.
-   *
-   * @param namespace desired namespace
-   * @param name name of the custom resource
-   * @param objectAsStream new object as a file input stream
-   * @return Object as HashMap
-   * @throws IOException in case of network/serialization failures or failures from Kubernetes API
-   */
-  public Map<String, Object> edit(String namespace, String name, InputStream objectAsStream) throws IOException {
-    return validateAndSubmitRequest(namespace, name, IOHelpers.readFully(objectAsStream), HttpCallMethod.PUT);
   }
 
   /**

@@ -56,7 +56,7 @@ public class LeaderElectorBuilder<C extends Namespaceable<C> & KubernetesClient>
       (long)Math.ceil(leaderElectionConfig.getRetryPeriod().toMillis()*JITTER_FACTOR)
     );
     if (leaderElectionConfig.getRenewDeadline().compareTo(maxRetryPeriod) <= 0) {
-      throw new IllegalArgumentException("renewDeadline must be greater than retryPeriod*JITTER_FACTOR");
+      throw new IllegalArgumentException("renewDeadline must be greater than retryPeriod + retryPeriod*JITTER_FACTOR");
     }
     if (leaderElectionConfig.getLeaseDuration().toMillis() < 1L) {
       throw new IllegalArgumentException("leaseDuration must be greater than zero");

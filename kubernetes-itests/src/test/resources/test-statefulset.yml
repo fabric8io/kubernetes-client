@@ -22,7 +22,7 @@ spec:
   selector:
     matchLabels:
       app: nginx
-  replicas: 3
+  replicas: 0
   template:
     metadata:
       labels:
