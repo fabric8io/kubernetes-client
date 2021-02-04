@@ -74,22 +74,30 @@ public class KubernetesMockServerExtension implements AfterEachCallback, AfterAl
       Class<?> testClass = optClass.get();
       Field[] fields = testClass.getDeclaredFields();
       for (Field f : fields) {
-        if (f.getType() == KubernetesClient.class && Modifier.isStatic(f.getModifiers()) == isStatic) {
-          createKubernetesClient(testClass);
-          f.setAccessible(true);
-          if (isStatic) {
-            f.set(null, client);
-          } else {
-            Optional<Object> optTestInstance = context.getTestInstance();
-            if (optTestInstance.isPresent())
-              f.set(optTestInstance.get(), client);
-          }
+        if (f.getType().equals(getClientType()) && Modifier.isStatic(f.getModifiers()) == isStatic) {
+          setKubernetesClientField(context, isStatic, testClass, f);
         }
       }
     }
   }
 
-  private void createKubernetesClient(Class<?> testClass) {
+  private void setKubernetesClientField(ExtensionContext context, boolean isStatic, Class<?> testClass, Field f) throws IllegalAccessException {
+    createKubernetesClient(testClass);
+    f.setAccessible(true);
+    if (isStatic) {
+      setKubernetesClientField(null, f);
+    } else {
+      Optional<Object> optTestInstance = context.getTestInstance();
+      if (optTestInstance.isPresent())
+        setKubernetesClientField(optTestInstance.get(), f);
+    }
+  }
+
+  protected void setKubernetesClientField(Object instance, Field f) throws IllegalAccessException {
+    f.set(instance, client);
+  }
+
+  protected void createKubernetesClient(Class<?> testClass) {
     EnableKubernetesMockClient a = testClass.getAnnotation(EnableKubernetesMockClient.class);
     mock = a.crud()
       ? new KubernetesMockServer(new Context(), new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(Collections.emptyList()), a.https())
@@ -98,15 +106,19 @@ public class KubernetesMockServerExtension implements AfterEachCallback, AfterAl
     client = mock.createClient();
   }
 
-  private void destroy() {
+  protected void destroy() {
     mock.destroy();
     client.close();
   }
 
-  private Field findField(Class<?> testClass, boolean isStatic) {
+  protected Class<?> getClientType() {
+    return KubernetesClient.class;
+  }
+
+  protected Field findField(Class<?> testClass, boolean isStatic) {
     Field[] fields = testClass.getDeclaredFields();
     for (Field f : fields) {
-      if (f.getType() == KubernetesClient.class && Modifier.isStatic(f.getModifiers()) == isStatic) {
+      if (f.getType().equals(getClientType()) && Modifier.isStatic(f.getModifiers()) == isStatic) {
         return f;
       }
     }
