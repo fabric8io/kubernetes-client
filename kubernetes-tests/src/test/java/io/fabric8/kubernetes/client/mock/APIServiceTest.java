@@ -20,11 +20,10 @@ import io.fabric8.kubernetes.api.model.APIServiceBuilder;
 import io.fabric8.kubernetes.api.model.APIServiceList;
 import io.fabric8.kubernetes.api.model.APIServiceListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import org.junit.Rule;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 
@@ -32,10 +31,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 class APIServiceTest {
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
+  private KubernetesMockServer server;
+  private KubernetesClient client;
 
   @Test
   @DisplayName("Should load a yaml resource")
@@ -45,7 +44,6 @@ class APIServiceTest {
       .andReturn(HttpURLConnection.HTTP_OK, new APIServiceBuilder()
         .withNewMetadata().withName("as1").endMetadata().build())
       .once();
-    KubernetesClient client = server.getClient();
 
     // When
     APIService apiService = client.apiServices().withName("test-apiservice").get();
@@ -59,7 +57,6 @@ class APIServiceTest {
   @DisplayName("Should get a resource from APIServer")
   void load() {
     // Given
-    KubernetesClient client = server.getClient();
 
     // When
     APIService apiService = client.apiServices().load(getClass().getResourceAsStream("/test-apiservice.yml")).get();
@@ -80,7 +77,6 @@ class APIServiceTest {
         .addNewItem()
         .withNewMetadata().withName("as1").endMetadata().endItem().build())
       .once();
-    KubernetesClient client = server.getClient();
 
     // When
     APIServiceList apiServiceList = client.apiServices().list();
@@ -99,7 +95,6 @@ class APIServiceTest {
       .andReturn(HttpURLConnection.HTTP_OK, new APIServiceBuilder()
         .withNewMetadata().withName("v1alpha1.demo.fabric8.io").endMetadata().build())
       .once();
-    KubernetesClient client = server.getClient();
 
     // When
     Boolean isDeleted = client.apiServices().withName("v1alpha1.demo.fabric8.io").delete();

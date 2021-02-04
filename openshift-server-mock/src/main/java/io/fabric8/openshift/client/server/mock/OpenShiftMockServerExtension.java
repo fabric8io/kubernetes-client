@@ -21,6 +21,7 @@ import io.fabric8.mockwebserver.Context;
 import io.fabric8.openshift.client.NamespacedOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 import okhttp3.mockwebserver.MockWebServer;
+import org.junit.jupiter.api.extension.ExtensionContext;
 
 import java.lang.reflect.Field;
 import java.util.Collections;
@@ -47,7 +48,12 @@ public class OpenShiftMockServerExtension extends KubernetesMockServerExtension 
   }
 
   @Override
-  protected void createKubernetesClient(Class<?> testClass) {
+  protected Class<?> getKubernetesMockServerType() {
+    return OpenShiftMockServer.class;
+  }
+
+  @Override
+  protected void initializeKubernetesClientAndMockServer(Class<?> testClass) {
     EnableOpenShiftMockClient a = testClass.getAnnotation(EnableOpenShiftMockClient.class);
     openShiftMockServer = a.crud()
       ? new OpenShiftMockServer(new Context(), new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(Collections.emptyList()), a.https())
@@ -57,7 +63,8 @@ public class OpenShiftMockServerExtension extends KubernetesMockServerExtension 
   }
 
   @Override
-  protected void setKubernetesClientField(Object instance, Field f) throws IllegalAccessException {
-    f.set(instance, openShiftClient);
+  protected void setFieldIfKubernetesClientOrMockServer(ExtensionContext context, boolean isStatic, Field field) throws IllegalAccessException {
+    setFieldIfEqualsToProvidedType(context, isStatic, field, getClientType(), (i, f) -> f.set(i, openShiftClient));
+    setFieldIfEqualsToProvidedType(context, isStatic, field, getKubernetesMockServerType(), (i, f) -> f.set(i, openShiftMockServer));
   }
 }

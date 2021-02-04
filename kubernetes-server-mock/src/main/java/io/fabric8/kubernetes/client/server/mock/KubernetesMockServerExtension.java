@@ -35,15 +35,19 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 /**
  * The class that implements JUnit5 extension mechanism. You can use it directly in your JUnit test
  * by annotating it with `@ExtendWith(KubernetesMockServerExtension.class)` or through
- * \@EnableKubernetesMockClient annotation
+ * `@EnableKubernetesMockClient` annotation
  */
 public class KubernetesMockServerExtension implements AfterEachCallback, AfterAllCallback, BeforeEachCallback, BeforeAllCallback {
 
   private KubernetesMockServer mock;
   private NamespacedKubernetesClient client;
 
+  public interface SetTestClassField {
+    void apply(Object instance, Field f) throws IllegalAccessException;
+  }
+
   @Override
-  public void afterEach(ExtensionContext context) throws Exception {
+  public void afterEach(ExtensionContext context) {
     Optional<Class<?>> optClass = context.getTestClass();
     if (optClass.isPresent()) {
       Class<?> testClass = optClass.get();
@@ -54,50 +58,32 @@ public class KubernetesMockServerExtension implements AfterEachCallback, AfterAl
   }
 
   @Override
-  public void afterAll(ExtensionContext context) throws Exception {
+  public void afterAll(ExtensionContext context) {
     destroy();
   }
 
   @Override
   public void beforeEach(ExtensionContext context) throws Exception {
-    setKubernetesClientField(context, false);
+    setKubernetesClientAndMockServerFields(context, false);
   }
 
   @Override
   public void beforeAll(ExtensionContext context) throws Exception {
-    setKubernetesClientField(context, true);
+    setKubernetesClientAndMockServerFields(context, true);
   }
 
-  private void setKubernetesClientField(ExtensionContext context, boolean isStatic) throws IllegalAccessException {
-    Optional<Class<?>> optClass = context.getTestClass();
-    if (optClass.isPresent()) {
-      Class<?> testClass = optClass.get();
-      Field[] fields = testClass.getDeclaredFields();
-      for (Field f : fields) {
-        if (f.getType().equals(getClientType()) && Modifier.isStatic(f.getModifiers()) == isStatic) {
-          setKubernetesClientField(context, isStatic, testClass, f);
-        }
-      }
+  protected void setFieldIfKubernetesClientOrMockServer(ExtensionContext context, boolean isStatic, Field field) throws IllegalAccessException {
+    setFieldIfEqualsToProvidedType(context, isStatic, field, getClientType(), (i, f) -> f.set(i, client));
+    setFieldIfEqualsToProvidedType(context, isStatic, field, getKubernetesMockServerType(), (i, f) -> f.set(i, mock));
+  }
+
+  protected void setFieldIfEqualsToProvidedType(ExtensionContext context, boolean isStatic, Field field, Class<?> fieldType, SetTestClassField setTestClassField) throws IllegalAccessException {
+    if (field.getType().equals(fieldType) && Modifier.isStatic(field.getModifiers()) == isStatic) {
+      setKubernetesClientStaticOrMemberField(context, isStatic, field, setTestClassField);
     }
   }
 
-  private void setKubernetesClientField(ExtensionContext context, boolean isStatic, Class<?> testClass, Field f) throws IllegalAccessException {
-    createKubernetesClient(testClass);
-    f.setAccessible(true);
-    if (isStatic) {
-      setKubernetesClientField(null, f);
-    } else {
-      Optional<Object> optTestInstance = context.getTestInstance();
-      if (optTestInstance.isPresent())
-        setKubernetesClientField(optTestInstance.get(), f);
-    }
-  }
-
-  protected void setKubernetesClientField(Object instance, Field f) throws IllegalAccessException {
-    f.set(instance, client);
-  }
-
-  protected void createKubernetesClient(Class<?> testClass) {
+  protected void initializeKubernetesClientAndMockServer(Class<?> testClass) {
     EnableKubernetesMockClient a = testClass.getAnnotation(EnableKubernetesMockClient.class);
     mock = a.crud()
       ? new KubernetesMockServer(new Context(), new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(Collections.emptyList()), a.https())
@@ -115,14 +101,45 @@ public class KubernetesMockServerExtension implements AfterEachCallback, AfterAl
     return KubernetesClient.class;
   }
 
-  protected Field findField(Class<?> testClass, boolean isStatic) {
+  protected Class<?> getKubernetesMockServerType() {
+    return KubernetesMockServer.class;
+  }
+
+  private Field findField(Class<?> testClass, boolean isStatic) {
     Field[] fields = testClass.getDeclaredFields();
     for (Field f : fields) {
-      if (f.getType().equals(getClientType()) && Modifier.isStatic(f.getModifiers()) == isStatic) {
+      if (Modifier.isStatic(f.getModifiers()) == isStatic &&
+        (f.getType().equals(getClientType()) || f.getType().equals(getKubernetesMockServerType()))) {
         return f;
       }
     }
     return null;
   }
 
+  private void setKubernetesClientAndMockServerFields(ExtensionContext context, boolean isStatic) throws IllegalAccessException {
+    Optional<Class<?>> optClass = context.getTestClass();
+    if (optClass.isPresent()) {
+      Class<?> testClass = optClass.get();
+      initializeKubernetesClientAndMockServer(testClass);
+      processTestClassDeclaredFields(context, isStatic, testClass);
+    }
+  }
+
+  private void processTestClassDeclaredFields(ExtensionContext context, boolean isStatic, Class<?> testClass) throws IllegalAccessException {
+    Field[] fields = testClass.getDeclaredFields();
+    for (Field field : fields) {
+      setFieldIfKubernetesClientOrMockServer(context, isStatic, field);
+    }
+  }
+
+  private void setKubernetesClientStaticOrMemberField(ExtensionContext context, boolean isStatic, Field f, SetTestClassField setTestClassField) throws IllegalAccessException {
+    f.setAccessible(true);
+    if (isStatic) {
+      setTestClassField.apply(null, f);
+    } else {
+      Optional<Object> optTestInstance = context.getTestInstance();
+      if (optTestInstance.isPresent())
+        setTestClassField.apply(optTestInstance.get(), f);
+    }
+  }
 }
