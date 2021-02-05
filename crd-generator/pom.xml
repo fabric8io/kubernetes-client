@@ -29,30 +29,7 @@
   <artifactId>crd-generator</artifactId>
   <packaging>jar</packaging>
   <name>Fabric8 :: CRD generator</name>
-
-  <properties>
-    <version.sundr>0.24.0</version.sundr>
-    <version.jackson>2.10.3</version.jackson>
-
-    <!-- Testing Dependencies -->
-    <version.junit-jupiter>5.5.0</version.junit-jupiter>
-    <version.junit-platform>1.4.0</version.junit-platform>
-    <version.assertj>3.11.1</version.assertj>
-
-    <!-- Plugins -->
-    <version.maven-compiler-plugin>3.8.0</version.maven-compiler-plugin>
-    <version.maven-invoker-plugin>3.1.0</version.maven-invoker-plugin>
-    <version.maven-failsafe-plugin>3.0.0-M3</version.maven-failsafe-plugin>
-    <version.maven-surefire-plugin>3.0.0-M3</version.maven-surefire-plugin>
-    <version.maven-shade-plugin>3.0.0</version.maven-shade-plugin>
-
-    <!-- Formatting Plugins -->
-    <version.formatter-maven-plugin>2.12.2</version.formatter-maven-plugin>
-    <version.impsort-maven-plugin>1.4.1</version.impsort-maven-plugin>
-
-  </properties>
-
-
+  
   <dependencies>
     <!-- This is the only case in dekorate where we are not using sundrio just for generating own code!
          This module does call sundrio functions directly, so we can make sundrio dependencies optional here.
@@ -60,14 +37,13 @@
     <dependency>
       <groupId>io.sundr</groupId>
       <artifactId>builder-annotations</artifactId>
-      <version>${version.sundr}</version>
       <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>io.sundr</groupId>
       <artifactId>sundr-codegen</artifactId>
-      <version>${version.sundr}</version>
+      <version>${sundrio.version}</version>
       <scope>compile</scope>
     </dependency>
 
@@ -81,25 +57,21 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>${version.junit-jupiter}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>${version.junit-jupiter}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.platform</groupId>
       <artifactId>junit-platform-launcher</artifactId>
-      <version>${version.junit-platform}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.platform</groupId>
       <artifactId>junit-platform-runner</artifactId>
-      <version>${version.junit-platform}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -108,7 +80,6 @@
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>${version.maven-compiler-plugin}</version>
         <configuration>
           <annotationProcessors>
             <processor>io.sundr.builder.internal.processor.BuildableProcessor</processor>
@@ -118,7 +89,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>${version.maven-shade-plugin}</version>
+        <version>${maven.shade.plugin.version}</version>
         <executions>
           <execution>
             <id>processor</id>
