@@ -71,6 +71,20 @@ class CustomResourceTest {
     assertNull(cr.getSpec());
     assertNull(cr.getStatus());
   }
+
+  @Test
+  void voidVoidCustomResourceInitShouldWork() {
+    final CustomResource cr = new VoidVoid();
+    assertNull(cr.getSpec());
+    assertNull(cr.getStatus());
+  }
+
+  @Test
+  void noSpecCustomResourceInitShouldWork() {
+    final CustomResource cr = new NoSpec();
+    assertNull(cr.getSpec());
+    assertEquals("", cr.getStatus());
+  }
   
   @Test
   void subclassInitShouldWork() {
@@ -170,4 +184,12 @@ class CustomResourceTest {
   @Group("example.com")
   @Version("v1")
   private static class CRInterface extends CustomResource<String, KubernetesResource> {}
+
+  @Group("example.com")
+  @Version("v1")
+  private static class NoSpec extends CustomResource<Void, String> {}
+
+  @Group("example.com")
+  @Version("v1")
+  private static class VoidVoid extends CustomResource<Void, Void> {}
 }
