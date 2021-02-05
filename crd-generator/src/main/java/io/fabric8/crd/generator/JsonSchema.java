@@ -69,6 +69,7 @@ public abstract class JsonSchema<T, B> {
     .build();
 
   public static final Map<TypeRef, String> JAVA_TYPE_TO_SCHEMA_TYPE = new HashMap<>();
+  private static final String INT_OR_STRING_MARKER = "int_or_string";
 
   static {
     JAVA_TYPE_TO_SCHEMA_TYPE.put(STRING_REF, "string");
@@ -81,6 +82,9 @@ public abstract class JsonSchema<T, B> {
     JAVA_TYPE_TO_SCHEMA_TYPE.put(P_DOUBLE_REF, "number");
     JAVA_TYPE_TO_SCHEMA_TYPE.put(BOOLEAN_REF, "boolean");
     JAVA_TYPE_TO_SCHEMA_TYPE.put(P_BOOLEAN_REF, "boolean");
+    JAVA_TYPE_TO_SCHEMA_TYPE.put(QUANTITY_REF, INT_OR_STRING_MARKER);
+    JAVA_TYPE_TO_SCHEMA_TYPE.put(INT_OR_STRING_REF, INT_OR_STRING_MARKER);
+    JAVA_TYPE_TO_SCHEMA_TYPE.put(DURATION_REF, "string");
   }
 
   /**
@@ -126,23 +130,26 @@ public abstract class JsonSchema<T, B> {
   public abstract T build(B builder, List<String> required);
 
   public T internalFrom(TypeRef typeRef) {
-    //1. Handle Collections and Arrays
-    if (typeRef.getDimensions() > 0 || TypeUtils.isCollection(typeRef)) {
+    if (typeRef.getDimensions() > 0 || TypeUtils.isCollection(typeRef)) { // Handle Collections and Arrays
       return collectionProperty(
         internalFrom(TypeAs.combine(TypeAs.UNWRAP_ARRAY_OF, TypeAs.UNWRAP_COLLECTION_OF).apply(typeRef)));
-      //2. Handle Standard Types
-    } else if (JAVA_TYPE_TO_SCHEMA_TYPE.containsKey(typeRef)) {
-      return mappedProperty(typeRef);
-      //3. Handle Optionals
-    } else if (TypeUtils.isOptional(typeRef)) {
+
+    } else if (TypeUtils.isOptional(typeRef)) { // Handle Optionals
       return internalFrom(TypeAs.UNWRAP_OPTIONAL_OF.apply(typeRef));
-      //4. Handle complex types
-    } else if (typeRef instanceof ClassRef) {
+    } else if (typeRef instanceof ClassRef) { // Handle complex types
       ClassRef classRef = (ClassRef) typeRef;
       TypeDef def = classRef.getDefinition();
       return internalFrom(def);
+    } else {
+      final String typeName = JAVA_TYPE_TO_SCHEMA_TYPE.get(typeRef);
+      if(INT_OR_STRING_MARKER.equals(typeName)) {
+        // Handle int or string mapped types
+        return mappedProperty(typeRef);
+      } else {
+        // Handle Standard Types
+        return singleProperty(typeName);
+      }
     }
-    return null;
   }
 
   protected abstract T mappedProperty(TypeRef ref);
