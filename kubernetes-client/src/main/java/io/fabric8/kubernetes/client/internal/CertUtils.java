@@ -90,7 +90,7 @@ public class CertUtils {
   }
 
   public static KeyStore createTrustStore(InputStream pemInputStream, String trustStoreFile, char[] trustStorePassphrase) throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException {
-    KeyStore trustStore = KeyStore.getInstance("JKS");
+    KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
 
     if (Utils.isNotNullOrEmpty(trustStoreFile)) {
       trustStore.load(new FileInputStream(trustStoreFile), trustStorePassphrase);
@@ -112,7 +112,7 @@ public class CertUtils {
       Collection<? extends Certificate> certificates = certFactory.generateCertificates(certInputStream);
       PrivateKey privateKey = loadKey(keyInputStream, clientKeyAlgo);
 
-      KeyStore keyStore = KeyStore.getInstance("JKS");
+      KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
       if (Utils.isNotNullOrEmpty(keyStoreFile)){
         keyStore.load(new FileInputStream(keyStoreFile), keyStorePassphrase);
       } else {
@@ -145,7 +145,7 @@ public class CertUtils {
         @Override
         public PrivateKey call() {
           try {
-            if (Security.getProvider("BC") == null) {
+            if (Security.getProvider("BC") == null && Security.getProvider("BCFIPS") == null) {
               Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
             }
             PEMKeyPair keys = (PEMKeyPair) new PEMParser(new InputStreamReader(keyInputStream)).readObject();
