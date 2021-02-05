@@ -30,6 +30,7 @@
 * Fix #2672: WaitUntilReady for Service resource throws IllegalArgumentException
 
 #### Improvements
+* Fix #2662: Allow option to containerize Go Model Schema generation builds 
 * Fix #2717: Remove edit() methods from RawCustomResourceOperationsImpl taking InputStream arguments
 * Fix #2757: add `storage` and `served` to `Version` annotation
 * Fix #2759: add `ShortNames` annotation to specify short names for CRD generation

@@ -66,13 +66,30 @@ API resources in Kubernetes and OpenShift.
 
 - Navigate into the cloned repo:
 
-  ```
+  ```bash
   cd $GOPATH/src/github.com/fabric8io/kubernetes-client/kubernetes-model-generator
   ```
 
 - Run:
-  ```
+  If you have already have [GoLang installed](https://golang.org/doc/install). You can use this script to generate model for all the modules:
+  ```bash
   sh generateModel.sh
+  ```
+  If you want to generate model for a single module, let's say `kubernetes-model-apps/`. You would need to go to that module and issue a `make`:
+  ```bash
+  cd kubernetes-model-apps/
+  make
+  ```
+
+  If you don't have GoLang setup on your system. You can run this whole Go Build process in a docker container using this script:
+
+  Building a Single Module(e.g. `kubernetes-model-apps`
+  ```bash
+  sh generateModelDocker.sh kubernetes-model-apps
+  ```
+  Building all modules
+  ```bash
+  sh generateModelDocker.sh all
   ```
 
   You should now be able to view the generated schema in `kube-schema.json`
@@ -91,7 +108,7 @@ tags/references from these repos:
 - [Kubernetes Client Go](https://github.com/kubernetes/client-go)
 
 After modifying just run:
-```
+```bash
 sh generateModel.sh
 ```
 
