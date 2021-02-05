@@ -112,7 +112,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
       }
     }
 
-    ProcessorListener<T> listener = new ProcessorListener(handler, determineResyncPeriod(resyncCheckPeriodMillis, this.resyncCheckPeriodMillis));
+    ProcessorListener<T> listener = new ProcessorListener(handler, determineResyncPeriod(resyncPeriodMillis, this.resyncCheckPeriodMillis));
     if (!started) {
       this.processor.addListener(listener);
       return;
