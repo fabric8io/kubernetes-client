@@ -19,12 +19,40 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsBuilder;
 import io.sundr.codegen.model.Property;
 import io.sundr.codegen.model.TypeDef;
+import io.sundr.codegen.model.TypeRef;
+
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 public class JsonSchema extends io.fabric8.crd.generator.JsonSchema<JSONSchemaProps, JSONSchemaPropsBuilder> {
 
   private static final JsonSchema instance = new JsonSchema();
 
+  public static final JSONSchemaProps JSON_SCHEMA_STRING = new JSONSchemaPropsBuilder().withType("string").build();
+  public static final JSONSchemaProps JSON_SCHEMA_INTEGER = new JSONSchemaPropsBuilder().withType("integer").build();
+  public static final JSONSchemaProps JSON_SCHEMA_NUMBER = new JSONSchemaPropsBuilder().withType("number").build();
+  public static final JSONSchemaProps JSON_SCHEMA_BOOLEAN = new JSONSchemaPropsBuilder().withType("boolean").build();
+  public static final JSONSchemaProps JSON_SCHEMA_OBJECT = new JSONSchemaPropsBuilder().withType("object").build();
+  public static final JSONSchemaProps JSON_SCHEMA_INT_OR_STRING = new JSONSchemaPropsBuilder().withAnyOf(JSON_SCHEMA_INTEGER, JSON_SCHEMA_STRING).build();
+
+  public static final Map<TypeRef, JSONSchemaProps> TYPEREF_TO_SCHEMAPROPS = new HashMap<TypeRef, JSONSchemaProps>() {{
+      put(STRING_REF, JSON_SCHEMA_STRING);
+      put(DATE_REF, JSON_SCHEMA_STRING);
+      put(INT_REF, JSON_SCHEMA_INTEGER);
+      put(P_INT_REF, JSON_SCHEMA_INTEGER);
+      put(LONG_REF, JSON_SCHEMA_NUMBER);
+      put(P_LONG_REF, JSON_SCHEMA_NUMBER);
+      put(DOUBLE_REF, JSON_SCHEMA_NUMBER);
+      put(P_DOUBLE_REF, JSON_SCHEMA_NUMBER);
+      put(BOOLEAN_REF, JSON_SCHEMA_BOOLEAN);
+      put(P_BOOLEAN_REF, JSON_SCHEMA_BOOLEAN);
+
+      put(QUANTITY_REF, JSON_SCHEMA_INT_OR_STRING);
+      put(INT_OR_STRING_REF, JSON_SCHEMA_INT_OR_STRING);
+      put(DURATION_REF, JSON_SCHEMA_STRING);
+    }};
+ 
   /**
    * Creates the JSON schema for the particular {@link TypeDef}.
    *
@@ -72,5 +100,10 @@ public class JsonSchema extends io.fabric8.crd.generator.JsonSchema<JSONSchemaPr
     return new JSONSchemaPropsBuilder()
       .withType(typeName)
       .build();
+  }
+
+  @Override
+  protected JSONSchemaProps mappedProperty(TypeRef ref) {
+    return TYPEREF_TO_SCHEMAPROPS.get(ref);
   }
 }

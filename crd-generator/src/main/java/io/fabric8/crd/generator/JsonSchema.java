@@ -16,6 +16,9 @@
 package io.fabric8.crd.generator;
 
 import io.fabric8.crd.generator.utils.Types;
+import io.fabric8.kubernetes.api.model.Duration;
+import io.fabric8.kubernetes.api.model.IntOrString;
+import io.fabric8.kubernetes.api.model.Quantity;
 import io.sundr.builder.internal.functions.TypeAs;
 import io.sundr.codegen.functions.ClassTo;
 import io.sundr.codegen.model.ClassRef;
@@ -36,39 +39,48 @@ import java.util.Set;
 
 public abstract class JsonSchema<T, B> {
 
-  private static final TypeDef BOOLEAN = ClassTo.TYPEDEF.apply(Boolean.class);
-  private static final TypeDef STRING = ClassTo.TYPEDEF.apply(String.class);
-  private static final TypeDef INT = ClassTo.TYPEDEF.apply(Integer.class);
-  private static final TypeDef LONG = ClassTo.TYPEDEF.apply(Long.class);
-  private static final TypeDef DOUBLE = ClassTo.TYPEDEF.apply(Double.class);
-  private static final TypeDef DATE = ClassTo.TYPEDEF.apply(Date.class);
+  protected static final TypeDef QUANTITY = ClassTo.TYPEDEF.apply(Quantity.class);
+  protected static final TypeDef DURATION = ClassTo.TYPEDEF.apply(Duration.class);
+  protected static final TypeDef INT_OR_STRING = ClassTo.TYPEDEF.apply(IntOrString.class);
 
-  private static final TypeRef BOOLEAN_REF = BOOLEAN.toReference();
-  private static final TypeRef STRING_REF = STRING.toReference();
-  private static final TypeRef INT_REF = INT.toReference();
-  private static final TypeRef LONG_REF = LONG.toReference();
-  private static final TypeRef DOUBLE_REF = DOUBLE.toReference();
-  private static final TypeRef DATE_REF = DATE.toReference();
 
-  private static final TypeRef P_INT_REF = new PrimitiveRefBuilder().withName("int").build();
-  private static final TypeRef P_LONG_REF = new PrimitiveRefBuilder().withName("long").build();
-  private static final TypeRef P_DOUBLE_REF = new PrimitiveRefBuilder().withName("double").build();
-  private static final TypeRef P_BOOLEAN_REF = new PrimitiveRefBuilder().withName("boolean")
+  protected static final TypeDef BOOLEAN = ClassTo.TYPEDEF.apply(Boolean.class);
+  protected static final TypeDef STRING = ClassTo.TYPEDEF.apply(String.class);
+  protected static final TypeDef INT = ClassTo.TYPEDEF.apply(Integer.class);
+  protected static final TypeDef LONG = ClassTo.TYPEDEF.apply(Long.class);
+  protected static final TypeDef DOUBLE = ClassTo.TYPEDEF.apply(Double.class);
+  protected static final TypeDef DATE = ClassTo.TYPEDEF.apply(Date.class);
+  protected static final TypeRef QUANTITY_REF = QUANTITY.toReference();
+  protected static final TypeRef DURATION_REF = DURATION.toReference();
+  protected static final TypeRef INT_OR_STRING_REF = INT_OR_STRING.toReference();
+
+
+  protected static final TypeRef BOOLEAN_REF = BOOLEAN.toReference();
+  protected static final TypeRef STRING_REF = STRING.toReference();
+  protected static final TypeRef INT_REF = INT.toReference();
+  protected static final TypeRef LONG_REF = LONG.toReference();
+  protected static final TypeRef DOUBLE_REF = DOUBLE.toReference();
+  protected static final TypeRef DATE_REF = DATE.toReference();
+
+  protected static final TypeRef P_INT_REF = new PrimitiveRefBuilder().withName("int").build();
+  protected static final TypeRef P_LONG_REF = new PrimitiveRefBuilder().withName("long").build();
+  protected static final TypeRef P_DOUBLE_REF = new PrimitiveRefBuilder().withName("double").build();
+  protected static final TypeRef P_BOOLEAN_REF = new PrimitiveRefBuilder().withName("boolean")
     .build();
 
-  public static final Map<TypeRef, String> TYPE_MAP = new HashMap<>();
+  public static final Map<TypeRef, String> JAVA_TYPE_TO_SCHEMA_TYPE = new HashMap<>();
 
   static {
-    TYPE_MAP.put(STRING_REF, "string");
-    TYPE_MAP.put(DATE_REF, "string");
-    TYPE_MAP.put(INT_REF, "integer");
-    TYPE_MAP.put(P_INT_REF, "integer");
-    TYPE_MAP.put(LONG_REF, "number");
-    TYPE_MAP.put(P_LONG_REF, "number");
-    TYPE_MAP.put(DOUBLE_REF, "number");
-    TYPE_MAP.put(P_DOUBLE_REF, "number");
-    TYPE_MAP.put(BOOLEAN_REF, "boolean");
-    TYPE_MAP.put(P_BOOLEAN_REF, "boolean");
+    JAVA_TYPE_TO_SCHEMA_TYPE.put(STRING_REF, "string");
+    JAVA_TYPE_TO_SCHEMA_TYPE.put(DATE_REF, "string");
+    JAVA_TYPE_TO_SCHEMA_TYPE.put(INT_REF, "integer");
+    JAVA_TYPE_TO_SCHEMA_TYPE.put(P_INT_REF, "integer");
+    JAVA_TYPE_TO_SCHEMA_TYPE.put(LONG_REF, "number");
+    JAVA_TYPE_TO_SCHEMA_TYPE.put(P_LONG_REF, "number");
+    JAVA_TYPE_TO_SCHEMA_TYPE.put(DOUBLE_REF, "number");
+    JAVA_TYPE_TO_SCHEMA_TYPE.put(P_DOUBLE_REF, "number");
+    JAVA_TYPE_TO_SCHEMA_TYPE.put(BOOLEAN_REF, "boolean");
+    JAVA_TYPE_TO_SCHEMA_TYPE.put(P_BOOLEAN_REF, "boolean");
   }
 
   /**
@@ -119,8 +131,8 @@ public abstract class JsonSchema<T, B> {
       return collectionProperty(
         internalFrom(TypeAs.combine(TypeAs.UNWRAP_ARRAY_OF, TypeAs.UNWRAP_COLLECTION_OF).apply(typeRef)));
       //2. Handle Standard Types
-    } else if (TYPE_MAP.containsKey(typeRef)) {
-      return singleProperty(TYPE_MAP.get(typeRef));
+    } else if (JAVA_TYPE_TO_SCHEMA_TYPE.containsKey(typeRef)) {
+      return mappedProperty(typeRef);
       //3. Handle Optionals
     } else if (TypeUtils.isOptional(typeRef)) {
       return internalFrom(TypeAs.UNWRAP_OPTIONAL_OF.apply(typeRef));
@@ -133,7 +145,10 @@ public abstract class JsonSchema<T, B> {
     return null;
   }
 
+  protected abstract T mappedProperty(TypeRef ref);
+
   protected abstract T collectionProperty(T schema);
 
   protected abstract T singleProperty(String typeName);
+
 }
