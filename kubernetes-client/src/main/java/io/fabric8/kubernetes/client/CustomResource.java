@@ -15,13 +15,7 @@
  */
 package io.fabric8.kubernetes.client;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.Locale;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import static io.fabric8.kubernetes.client.utils.Utils.isNullOrEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -37,10 +31,15 @@ import io.fabric8.kubernetes.model.annotation.Plural;
 import io.fabric8.kubernetes.model.annotation.Singular;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import static io.fabric8.kubernetes.client.utils.Utils.isNullOrEmpty;
 
 /**
  * A base class for implementing a custom resource kind. Implementations must be annotated with
@@ -306,7 +305,7 @@ public abstract class CustomResource<S, T> implements HasMetadata {
         // get the associated class from the type name, if not Void
         String className = types[genericTypeIndex].getTypeName();
         if (!VOID_TYPE_NAME.equals(className)) {
-          Class<?> clazz = Class.forName(className);
+          final Class<?> clazz = Thread.currentThread().getContextClassLoader().loadClass(className);
           if (clazz.isInterface() || Modifier.isAbstract(clazz.getModifiers())) {
             throw new IllegalArgumentException(
               "Cannot instantiate interface/abstract type " + className);
