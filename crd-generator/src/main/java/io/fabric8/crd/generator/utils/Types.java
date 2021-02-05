@@ -66,7 +66,7 @@ public class Types {
       return new HashSet<>();
     }
     if (typeDef.getFullyQualifiedName().equals(CUSTOM_RESOURCE.getFullyQualifiedName())) {
-      //We need a version of custom resource stripped from uneeded properites.
+      //We need a version of custom resource stripped from unneeded properties.
       return Stream.of(new TypeDefBuilder(CUSTOM_RESOURCE)
         .withProperties(typeDef.getProperties()
           .stream()
