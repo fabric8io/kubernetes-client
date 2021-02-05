@@ -68,23 +68,23 @@ public abstract class JsonSchema<T, B> {
   protected static final TypeRef P_BOOLEAN_REF = new PrimitiveRefBuilder().withName("boolean")
     .build();
 
-  public static final Map<TypeRef, String> JAVA_TYPE_TO_SCHEMA_TYPE = new HashMap<>();
+  public static final Map<TypeRef, String> COMMON_MAPPINGS = new HashMap<>();
   private static final String INT_OR_STRING_MARKER = "int_or_string";
 
   static {
-    JAVA_TYPE_TO_SCHEMA_TYPE.put(STRING_REF, "string");
-    JAVA_TYPE_TO_SCHEMA_TYPE.put(DATE_REF, "string");
-    JAVA_TYPE_TO_SCHEMA_TYPE.put(INT_REF, "integer");
-    JAVA_TYPE_TO_SCHEMA_TYPE.put(P_INT_REF, "integer");
-    JAVA_TYPE_TO_SCHEMA_TYPE.put(LONG_REF, "number");
-    JAVA_TYPE_TO_SCHEMA_TYPE.put(P_LONG_REF, "number");
-    JAVA_TYPE_TO_SCHEMA_TYPE.put(DOUBLE_REF, "number");
-    JAVA_TYPE_TO_SCHEMA_TYPE.put(P_DOUBLE_REF, "number");
-    JAVA_TYPE_TO_SCHEMA_TYPE.put(BOOLEAN_REF, "boolean");
-    JAVA_TYPE_TO_SCHEMA_TYPE.put(P_BOOLEAN_REF, "boolean");
-    JAVA_TYPE_TO_SCHEMA_TYPE.put(QUANTITY_REF, INT_OR_STRING_MARKER);
-    JAVA_TYPE_TO_SCHEMA_TYPE.put(INT_OR_STRING_REF, INT_OR_STRING_MARKER);
-    JAVA_TYPE_TO_SCHEMA_TYPE.put(DURATION_REF, "string");
+    COMMON_MAPPINGS.put(STRING_REF, "string");
+    COMMON_MAPPINGS.put(DATE_REF, "string");
+    COMMON_MAPPINGS.put(INT_REF, "integer");
+    COMMON_MAPPINGS.put(P_INT_REF, "integer");
+    COMMON_MAPPINGS.put(LONG_REF, "number");
+    COMMON_MAPPINGS.put(P_LONG_REF, "number");
+    COMMON_MAPPINGS.put(DOUBLE_REF, "number");
+    COMMON_MAPPINGS.put(P_DOUBLE_REF, "number");
+    COMMON_MAPPINGS.put(BOOLEAN_REF, "boolean");
+    COMMON_MAPPINGS.put(P_BOOLEAN_REF, "boolean");
+    COMMON_MAPPINGS.put(QUANTITY_REF, INT_OR_STRING_MARKER);
+    COMMON_MAPPINGS.put(INT_OR_STRING_REF, INT_OR_STRING_MARKER);
+    COMMON_MAPPINGS.put(DURATION_REF, "string");
   }
 
   /**
@@ -117,7 +117,7 @@ public abstract class JsonSchema<T, B> {
           .equals("javax.validation.constraints.NotNull"))) {
         required.add(name);
       }
-      
+
       addProperty(property, builder, internalFrom(property.getTypeRef()));
     }
     return build(builder, required);
@@ -130,24 +130,28 @@ public abstract class JsonSchema<T, B> {
   public abstract T build(B builder, List<String> required);
 
   public T internalFrom(TypeRef typeRef) {
-    if (typeRef.getDimensions() > 0 || TypeUtils.isCollection(typeRef)) { // Handle Collections and Arrays
+    // Note that ordering of the checks here is meaningful: we need to check for complex types last
+    // in case some "complex" types are handled specifically
+    if (typeRef.getDimensions() > 0 || TypeUtils.isCollection(typeRef)) { // Handle Collections & Arrays
       return collectionProperty(
         internalFrom(TypeAs.combine(TypeAs.UNWRAP_ARRAY_OF, TypeAs.UNWRAP_COLLECTION_OF).apply(typeRef)));
-
     } else if (TypeUtils.isOptional(typeRef)) { // Handle Optionals
       return internalFrom(TypeAs.UNWRAP_OPTIONAL_OF.apply(typeRef));
-    } else if (typeRef instanceof ClassRef) { // Handle complex types
-      ClassRef classRef = (ClassRef) typeRef;
-      TypeDef def = classRef.getDefinition();
-      return internalFrom(def);
     } else {
-      final String typeName = JAVA_TYPE_TO_SCHEMA_TYPE.get(typeRef);
-      if(INT_OR_STRING_MARKER.equals(typeName)) {
-        // Handle int or string mapped types
-        return mappedProperty(typeRef);
+      final String typeName = COMMON_MAPPINGS.get(typeRef);
+      if(typeName != null) { // we have a type that we handle specifically
+        if (INT_OR_STRING_MARKER.equals(typeName)) { // Handle int or string mapped types
+          return mappedProperty(typeRef);
+        } else {
+          return singleProperty(typeName); // Handle Standard Types
+        }
       } else {
-        // Handle Standard Types
-        return singleProperty(typeName);
+        if (typeRef instanceof ClassRef) { // Handle complex types
+          ClassRef classRef = (ClassRef) typeRef;
+          TypeDef def = classRef.getDefinition();
+          return internalFrom(def);
+        }
+        return null;
       }
     }
   }

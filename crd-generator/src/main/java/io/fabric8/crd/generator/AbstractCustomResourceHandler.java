@@ -95,7 +95,7 @@ public abstract class AbstractCustomResourceHandler {
       Map<String, Object> parameters = property.getAnnotations().stream()
         .filter(a -> a.getClassRef().getName().equals("PrinterColumn")).map(a -> a.getParameters())
         .findFirst().orElse(Collections.emptyMap());
-      String type = JsonSchema.JAVA_TYPE_TO_SCHEMA_TYPE.getOrDefault(property.getTypeRef(), "object");
+      String type = JsonSchema.COMMON_MAPPINGS.getOrDefault(property.getTypeRef(), "object");
       String column = (String) parameters.get("name");
       if (Strings.isNullOrEmpty(column)) {
         column = property.getName().toUpperCase();
