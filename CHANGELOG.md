@@ -23,6 +23,11 @@ _**Note**_: Breaking changes in the API
 - Classes in `io.fabric8.kubernetes.api.model.certificates` have been moved to `io.fabric8.kubernetes.api.model.certificates.v1` and `io.fabric8.kubernetes.api.model.certificates.v1beta1`
 - Classes in `io.fabric8.kubernetes.api.model.events` have been moved to `io.fabric8.kubernetes.api.model.events.v1` and `io.fabric8.kubernetes.api.model.events.v1beta1`
 
+### 4.13.2 (2021-02-05)
+
+#### Bugs
+* Fix #2715: CVE-2021-20218 vulnerable to a path traversal leading to integrity and availability compromise
+
 ### 5.0.1 (2021-01-27)
 
 #### Bugs
