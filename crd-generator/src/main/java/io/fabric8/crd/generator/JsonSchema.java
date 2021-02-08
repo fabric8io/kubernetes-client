@@ -37,6 +37,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Encapsulates the common logic supporting OpenAPI schema generation for CRD generation.
+ *
+ * @param <T> the concrete type of the generated JSON Schema
+ * @param <B> the concrete type of the JSON Schema builder
+ */
 public abstract class JsonSchema<T, B> {
 
   protected static final TypeDef QUANTITY = ClassTo.TYPEDEF.apply(Quantity.class);
@@ -88,7 +94,8 @@ public abstract class JsonSchema<T, B> {
   }
 
   /**
-   * Creates the JSON schema for the particular {@link TypeDef}.
+   * Creates the JSON schema for the particular {@link TypeDef}. This is template method where
+   * sub-classes are supposed to provide specific implementations of abstract methods.
    *
    * @param definition The definition.
    * @param ignore a potentially empty list of property names to ignore while generating the schema
@@ -123,12 +130,39 @@ public abstract class JsonSchema<T, B> {
     return build(builder, required);
   }
 
+  /**
+   * Creates a new specific builder object.
+   *
+   * @return a new builder object specific to the CRD generation version
+   */
   public abstract B newBuilder();
 
+  /**
+   * Adds the specified property to the specified builder, calling {@link #internalFrom(TypeRef)}
+   * to create the property schema.
+   *
+   * @param property the property to add to the currently being built schema
+   * @param builder the builder representing the schema being built
+   * @param schema the built schema for the property being added
+   */
   public abstract void addProperty(Property property, B builder, T schema);
 
+  /**
+   * Finishes up the process by actually building the final JSON schema based on the provided
+   * builder and a potentially empty list of names of fields which should be marked as required
+   *
+   * @param builder the builder used to build the final schema
+   * @param required the list of names of required fields
+   * @return the built JSON schema
+   */
   public abstract T build(B builder, List<String> required);
 
+  /**
+   * Builds the specific JSON schema representing the structural schema for the specified property
+   *
+   * @param typeRef the type of the property which schema we want to build
+   * @return the structural schema associated with the specified property
+   */
   public T internalFrom(TypeRef typeRef) {
     // Note that ordering of the checks here is meaningful: we need to check for complex types last
     // in case some "complex" types are handled specifically
@@ -156,10 +190,28 @@ public abstract class JsonSchema<T, B> {
     }
   }
 
+  /**
+   * Builds the schema for specifically handled property types (e.g. intOrString properties)
+   *
+   * @param ref the type of the specifically handled property
+   * @return the property schema
+   */
   protected abstract T mappedProperty(TypeRef ref);
 
+  /**
+   * Builds the schema for collection properties
+   *
+   * @param schema the schema for the extracted element type for this collection-like property
+   * @return the schema for the collection-like property
+   */
   protected abstract T collectionProperty(T schema);
 
+  /**
+   * Builds the schema for standard, simple (e.g. string) property types
+   *
+   * @param typeName the mapped name of the property type
+   * @return the schema for the property
+   */
   protected abstract T singleProperty(String typeName);
 
 }

@@ -37,6 +37,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.lang.model.element.TypeElement;
 
+/**
+ * This class encapsulates the common behavior between v1beta1 and v1 CRD generation logic. The
+ * intent is that each CRD spec version is implemented as a sub-class of this one.
+ */
 public abstract class AbstractCustomResourceHandler {
 
   protected final Resources resources;
@@ -109,9 +113,33 @@ public abstract class AbstractCustomResourceHandler {
     });
   }
 
+  /**
+   * Provides the decorator implementation associated with the CRD generation version.
+   *
+   * @param name the resource name
+   * @param version the associated version
+   * @param path the path from which the printer column is extracted
+   * @param type the data type of the printer column
+   * @param column the name of the column
+   * @param description the description of the column
+   * @param format the format of the printer column
+   * @return the concrete decorator implementing the addition of a printer column to the currently built CRD
+   */
   protected abstract Decorator getPrinterColumnDecorator(String name, String version, String path,
     String type, String column, String description, String format);
 
+  /**
+   * Adds all the necessary decorators to build the specific CRD version. For optional paths, see
+   * https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#customresourcesubresourcescale-v1-apiextensions-k8s-io
+   * These paths
+   *
+   * @param config the gathered {@link CustomResourceInfo} used as basis for the CRD generation
+   * @param def the {@link TypeDef} associated with the {@link io.fabric8.kubernetes.client.CustomResource} from which the CRD is generated
+   * @param specReplicasPath an optionally detected path of field defining spec replicas
+   * @param statusReplicasPath an optionally detected path of field defining status replicas
+   * @param labelSelectorPath  an optionally detected path of field defining `status.selector`
+   * @param statusExists {@code true} if the {@link io.fabric8.kubernetes.client.CustomResource} from which the CRD is generated defines a status field, {@code false} otherwise
+   */
   protected abstract void addDecorators(CustomResourceInfo config, TypeDef def,
     Optional<String> specReplicasPath, Optional<String> statusReplicasPath,
     Optional<String> labelSelectorPath, boolean statusExists);
