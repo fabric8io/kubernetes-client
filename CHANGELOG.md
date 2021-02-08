@@ -14,9 +14,10 @@
 
 #### New Features
 * Fix #2708: Update CSI Volume Snapshot API to v1
-* Fix #2702 : Add support for discovery.k8s.io/v1beta1 EndpointSlice in KubernetesClient DSL
-* Fix #2703 : Add support for `certificates.k8s.io` v1 and v1beta1 API in KubernetesClient DSL
-* Add DSL support for `scheduling.k8s.io` v1 and v1beta1 to SchedulingAPIGroupDSL
+* Fix #2702: Add support for `discovery.k8s.io/v1beta1` EndpointSlice in KubernetesClient DSL
+* Fix #2703: Add support for `certificates.k8s.io` `v1` and `v1beta1` API in KubernetesClient DSL
+* Fix #2789: Use thread context class loader instead of `Class.forName`
+* Add DSL support for `scheduling.k8s.io` `v1` and `v1beta1` to SchedulingAPIGroupDSL
 
 _**Note**_: Breaking changes in the API
 - `client.settings()` DSL has been removed since PodPreset v1alpha1 API is no longer present in Kubernetes 1.20.x
