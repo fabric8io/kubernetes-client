@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
-import io.fabric8.kubernetes.api.model.AuthInfo;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -34,8 +33,10 @@ import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.URL;
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -47,10 +48,11 @@ import java.util.regex.PatternSyntaxException;
 import static okhttp3.ConnectionSpec.CLEARTEXT;
 
 public class HttpClientUtils {
+  private HttpClientUtils() { }
 
   private static Pattern VALID_IPV4_PATTERN = null;
   public static final String ipv4Pattern = "(http:\\/\\/|https:\\/\\/)?(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.){3}([01]?\\d\\d?|2[0-4]\\d|25[0-5])(\\/[0-9]\\d|1[0-9]\\d|2[0-9]\\d|3[0-2]\\d)?";
-  private static final Logger logger = LoggerFactory.getLogger(HttpClientUtils.class);
+  protected static final String KUBERNETES_BACKWARDS_COMPATIBILITY_INTERCEPTOR_DISABLE = "kubernetes.backwardsCompatibilityInterceptor.disable";
 
   static {
     try {
@@ -138,20 +140,8 @@ public class HttpClientUtils {
               httpClientBuilder.sslSocketFactory(context.getSocketFactory(), (X509TrustManager) trustManagers[0]);
             }
 
-          httpClientBuilder.addInterceptor(chain -> {
-            Request request = chain.request();
-            if (Utils.isNotNullOrEmpty(config.getUsername()) && Utils.isNotNullOrEmpty(config.getPassword())) {
-              Request authReq = chain.request().newBuilder().addHeader("Authorization", Credentials.basic(config.getUsername(), config.getPassword())).build();
-              return chain.proceed(authReq);
-            } else if (Utils.isNotNullOrEmpty(config.getOauthToken())) {
-              Request authReq = chain.request().newBuilder().addHeader("Authorization", "Bearer " + config.getOauthToken()).build();
-              return chain.proceed(authReq);
-            }
-            return chain.proceed(request);
-          }).addInterceptor(new ImpersonatorInterceptor(config))
-            .addInterceptor(new TokenRefreshInterceptor(config))
-            .addInterceptor(new BackwardsCompatibilityInterceptor());
-
+            List<Interceptor> interceptors = createApplicableInterceptors(config);
+            interceptors.forEach(httpClientBuilder::addInterceptor);
             Logger reqLogger = LoggerFactory.getLogger(HttpLoggingInterceptor.class);
             if (reqLogger.isTraceEnabled()) {
                 HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
@@ -277,5 +267,32 @@ public class HttpClientUtils {
    */
   private static boolean shouldDisableHttp2() {
       return System.getProperty("java.version", "").startsWith("1.8");
+  }
+
+  static List<Interceptor> createApplicableInterceptors(Config config) {
+    List<Interceptor> interceptors = new ArrayList<>();
+    // Header Interceptor
+    interceptors.add(chain -> {
+      Request request = chain.request();
+      if (Utils.isNotNullOrEmpty(config.getUsername()) && Utils.isNotNullOrEmpty(config.getPassword())) {
+        Request authReq = chain.request().newBuilder().addHeader("Authorization", Credentials.basic(config.getUsername(), config.getPassword())).build();
+        return chain.proceed(authReq);
+      } else if (Utils.isNotNullOrEmpty(config.getOauthToken())) {
+        Request authReq = chain.request().newBuilder().addHeader("Authorization", "Bearer " + config.getOauthToken()).build();
+        return chain.proceed(authReq);
+      }
+      return chain.proceed(request);
+    });
+    // Impersonator Interceptor
+    interceptors.add(new ImpersonatorInterceptor(config));
+    // Token Refresh Interceptor
+    interceptors.add(new TokenRefreshInterceptor(config));
+    // Backwards Compatibility Interceptor
+    String shouldDisableBackwardsCompatibilityInterceptor = Utils.getSystemPropertyOrEnvVar(KUBERNETES_BACKWARDS_COMPATIBILITY_INTERCEPTOR_DISABLE, "false");
+    if (!Boolean.parseBoolean(shouldDisableBackwardsCompatibilityInterceptor)) {
+      interceptors.add(new BackwardsCompatibilityInterceptor());
     }
+
+    return interceptors;
+  }
 }
