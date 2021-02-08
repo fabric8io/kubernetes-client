@@ -15,15 +15,34 @@
  */
 package io.fabric8.kubernetes.api.model;
 
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
+import org.junit.jupiter.api.Test;
+
 
 class HasMetadataTest {
+  @Test
+  void validGroupAndVersionShouldResultInApiVersion() {
+    Valid valid = new Valid();
+    final String fromGroupAndVersion = HasMetadata
+      .getApiVersion(HasMetadata.getGroup(Valid.class), HasMetadata.getVersion(Valid.class));
+    final String fromClass = HasMetadata.getApiVersion(Valid.class);
+    assertEquals(Valid.GROUP + "/" + Valid.VERSION, valid.getApiVersion());
+    assertEquals(fromGroupAndVersion, fromClass);
+    assertEquals(fromClass, valid.getApiVersion());
+  }
+
+  @Test
+  void missingGroupOrVersionShouldFailToProduceApiVersion() {
+    assertThrows(IllegalArgumentException.class, () -> new MissingGroup().getApiVersion());
+    assertThrows(IllegalArgumentException.class, () -> new MissingVersion().getApiVersion());
+  }
+
   @Test
   void validFinalizersShouldBeAddedAndCanBeRemoved() {
     HasMetadata hasMetadata = new Default();
@@ -67,7 +86,23 @@ class HasMetadataTest {
     assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer("fabric8.io/finalizer-"));
     assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer("fabric8.io/finalizerreallyreallywaywaywaytooooooooooooooooooooolooooooooonnnnnnnnnnng"));
   }
-  
+
+  @Group(Valid.GROUP)
+  @Version(Valid.VERSION)
+  private static class Valid extends Default {
+    public static final String GROUP = "example.com";
+    public static final String VERSION = "v1alpha1";
+  }
+
+
+  @Version(Valid.VERSION)
+  private static class MissingGroup extends Default {
+  }
+
+  @Group(Valid.GROUP)
+  private static class MissingVersion extends Default {
+  }
+
   private static class Default implements HasMetadata {
     private final ObjectMeta meta = new ObjectMeta();
     
@@ -88,7 +123,7 @@ class HasMetadataTest {
     
     @Override
     public String getApiVersion() {
-      throw new RuntimeException("shouldn't be called");
+      return HasMetadata.super.getApiVersion();
     }
     
     @Override

@@ -15,13 +15,12 @@
  */
 package io.fabric8.kubernetes.api.model;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Kind;
 import io.fabric8.kubernetes.model.annotation.Version;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Represents any {@link KubernetesResource} which possesses a {@link ObjectMeta} and is associated with a kind and API version.
@@ -34,11 +33,11 @@ public interface HasMetadata extends KubernetesResource {
    * Pattern that checks the format of finalizer identifiers, which should be in {@code <domain name>/<finalizer name>} format.
    */
   Pattern FINALIZER_NAME_MATCHER = Pattern.compile("^((" + DNS_LABEL_REGEXP + "\\.)+" + DNS_LABEL_START + 2 + DNS_LABEL_END + ")/" + DNS_LABEL_REGEXP);
-  
+
   ObjectMeta getMetadata();
-  
+
   void setMetadata(ObjectMeta metadata);
-  
+
   /**
    * Retrieves the kind associated with the specified HasMetadata implementation. If the implementation is annotated with
    * {@link Kind}, the annotation value will be used, otherwise the value will be derived from the class name.
@@ -50,13 +49,13 @@ public interface HasMetadata extends KubernetesResource {
     final Kind kind = clazz.getAnnotation(Kind.class);
     return kind != null ? kind.value() : clazz.getSimpleName();
   }
-  
+
   default String getKind() {
     return getKind(getClass());
   }
-  
+
   /**
-   * Computes the {@code apiVersion} associated with this HasMetadata implementation. The value is derived from the
+   * Computes the {@code apiVersion} associated with the specified HasMetadata implementation. The value is derived from the
    * {@link Group} and {@link Version} annotations.
    *
    * @param clazz the HasMetadata whose {@code apiVersion} we want to compute
@@ -66,15 +65,24 @@ public interface HasMetadata extends KubernetesResource {
   static String getApiVersion(Class<? extends HasMetadata> clazz) {
     final String group = getGroup(clazz);
     final String version = getVersion(clazz);
+    return getApiVersion(group, version);
+  }
+
+  /**
+   * Computes the {@code apiVersion} associated with the specified group and version.
+   *
+   * @param group the group of the resource for which we want to compute the {@code apiVersion}
+   * @param version the version of the resource for which we want to compute the {@code apiVersion}
+   * @return the computed {@code apiVersion}
+   * @throws IllegalArgumentException if either group or version is absent
+   */
+  static String getApiVersion(String group, String version) {
     if (group != null && version != null) {
       return group + "/" + version;
     }
-    if (group != null || version != null) {
-      throw new IllegalArgumentException("You need to specify both @" + Group.class.getSimpleName() + " and @" + Version.class.getSimpleName() + " annotations if you specify either");
-    }
-    return null;
+    throw new IllegalArgumentException("Group and version must be provided");
   }
-  
+
   /**
    * Retrieves the group associated with the specified HasMetadata as defined by the {@link Group} annotation.
    *
@@ -85,7 +93,7 @@ public interface HasMetadata extends KubernetesResource {
     final Group group = clazz.getAnnotation(Group.class);
     return group != null ? group.value() : null;
   }
-  
+
   /**
    * Retrieves the version associated with the specified HasMetadata as defined by the {@link Version} annotation.
    *
@@ -96,13 +104,13 @@ public interface HasMetadata extends KubernetesResource {
     final Version version = clazz.getAnnotation(Version.class);
     return version != null ? version.value() : null;
   }
-  
+
   default String getApiVersion() {
     return getApiVersion(getClass());
   }
-  
+
   void setApiVersion(String version);
-  
+
   /**
    * Determines whether this {@code HasMetadata} is marked for deletion or not.
    *
@@ -113,7 +121,7 @@ public interface HasMetadata extends KubernetesResource {
     final String deletionTimestamp = getMetadata().getDeletionTimestamp();
     return deletionTimestamp != null && !deletionTimestamp.isEmpty();
   }
-  
+
   /**
    * Determines whether this {@code HasMetadata} holds the specified finalizer.
    *
@@ -123,7 +131,7 @@ public interface HasMetadata extends KubernetesResource {
   default boolean hasFinalizer(String finalizer) {
     return getMetadata().getFinalizers().contains(finalizer);
   }
-  
+
   /**
    * Adds the specified finalizer to this {@code HasMetadata} if it's valid. See {@link #isFinalizerValid(String)}.
    *
@@ -144,7 +152,7 @@ public interface HasMetadata extends KubernetesResource {
       throw new IllegalArgumentException("Invalid finalizer name: '" + finalizer + "'. Must consist of a domain name, a forward slash and the valid kubernetes name.");
     }
   }
-  
+
   /**
    * Determines whether the specified finalizer is valid according to the
    * <a href='https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizer'>finalizer specification</a>.
@@ -164,7 +172,7 @@ public interface HasMetadata extends KubernetesResource {
       return false;
     }
   }
-  
+
   /**
    * Removes the specified finalizer if it's held by this {@code HasMetadata}.
    *

@@ -26,6 +26,7 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.utils.Pluralize;
+import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Plural;
 import io.fabric8.kubernetes.model.annotation.Singular;
@@ -72,6 +73,7 @@ import org.slf4j.LoggerFactory;
 })
 @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false)
 public abstract class CustomResource<S, T> implements HasMetadata {
+
   private static final Logger LOG = LoggerFactory.getLogger(CustomResource.class);
 
   public static final String NAMESPACE_SCOPE = "Namespaced";
@@ -88,17 +90,20 @@ public abstract class CustomResource<S, T> implements HasMetadata {
   private final String crdName;
   private final String kind;
   private final String apiVersion;
+  private final String group;
+  private final String version;
   private final String scope;
   private final String plural;
   private final boolean served;
   private final boolean storage;
 
   public CustomResource() {
-    final String version = HasMetadata.super.getApiVersion();
+    final String version = getApiVersion();
     final Class<? extends CustomResource> clazz = getClass();
     if (isNullOrEmpty(version)) {
-      throw new IllegalArgumentException(clazz.getName() + " CustomResource must provide an API version using @"
-        + Group.class.getName() + " and @" + Version.class.getName() + " annotations");
+      throw new IllegalArgumentException(
+        clazz.getName() + " CustomResource must provide an API version using @"
+          + Group.class.getName() + " and @" + Version.class.getName() + " annotations");
     }
     this.apiVersion = version;
     this.kind = HasMetadata.super.getKind();
@@ -108,34 +113,128 @@ public abstract class CustomResource<S, T> implements HasMetadata {
     this.crdName = getCRDName(clazz);
     this.served = getServed(clazz);
     this.storage = getStorage(clazz);
+    this.group = getGroup();
+    this.version = getVersion();
     this.spec = initSpec();
     this.status = initStatus();
   }
 
+  public CustomResource(S spec, T status, String kind, String group, String version,
+    String singular, String plural, String scope, boolean served, boolean storage) {
+    this.group = group;
+    this.version = version;
+    this.apiVersion = HasMetadata.getApiVersion(group, version);
+    this.spec = spec;
+    this.status = status;
+    this.singular = singular;
+    this.plural = plural;
+    this.kind = kind;
+    this.scope = scope;
+    this.served = served;
+    this.storage = storage;
+    this.crdName = getCRDName(plural, group);
+  }
+
+  /**
+   * Retrieves the scope name for the specified CustomResource class.
+   *
+   * @param clazz the CustomResource whose scope we want to retrieve
+   * @return the scope associated with the specified CustomResource
+   */
+  public static String getScope(Class<? extends CustomResource> clazz) {
+    return Utils.isResourceNamespaced(clazz) ? NAMESPACE_SCOPE : CLUSTER_SCOPE;
+  }
+
+  /**
+   * Retrieves the served status of the specified CustomResource classas determined by its
+   * associated {@link Version} annotation.
+   *
+   * @param clazz the CustomResource whose served status we want to determine
+   * @return {@code true} if the specified CustomResource is served, {@code false} otherwise
+   */
   public static boolean getServed(Class<? extends CustomResource> clazz) {
     final Version annotation = clazz.getAnnotation(Version.class);
     return annotation == null || annotation.served();
   }
 
+  /**
+   * Retrieves the storage status of the specified CustomResource class as determined by its
+   * associated {@link Version} annotation.
+   *
+   * @param clazz the CustomResource whose storage status we want to determine
+   * @return {@code true} if the specified CustomResource is persisted, {@code false} otherwise
+   */
   public static boolean getStorage(Class<? extends CustomResource> clazz) {
     final Version annotation = clazz.getAnnotation(Version.class);
     return annotation == null || annotation.storage();
   }
 
   /**
+   * Retrieves the plural form associated with the specified CustomResource if annotated with {@link
+   * Plural} or computes a default value using the value returned by {@link #getSingular(Class)} as
+   * input to {@link Pluralize#toPlural(String)}.
+   *
+   * @param clazz the CustomResource whose plural form we want to retrieve
+   * @return the plural form defined by the {@link Plural} annotation or a computed default value
+   */
+  public static String getPlural(Class<? extends CustomResource> clazz) {
+    final Plural fromAnnotation = clazz.getAnnotation(Plural.class);
+    return (fromAnnotation != null ? fromAnnotation.value().toLowerCase(Locale.ROOT)
+      : Pluralize.toPlural(getSingular(clazz)));
+  }
+
+  /**
+   * Retrieves the singular form associated with the specified CustomResource as defined by the
+   * {@link Singular} annotation or computes a default value (lower-cased version of the value
+   * returned by {@link HasMetadata#getKind(Class)}) if the annotation is not present.
+   *
+   * @param clazz the CustomResource whose singular form we want to retrieve
+   * @return the singular form defined by the {@link Singular} annotation or a computed default
+   * value
+   */
+  public static String getSingular(Class<? extends CustomResource> clazz) {
+    final Singular fromAnnotation = clazz.getAnnotation(Singular.class);
+    return (fromAnnotation != null ? fromAnnotation.value() : HasMetadata.getKind(clazz))
+      .toLowerCase(Locale.ROOT);
+  }
+
+  /**
+   * Computes the name of the Custom Resource Definition (CRD) associated with the specified
+   * CustomResource. See https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/
+   * for more details.
+   *
+   * @param clazz the CustomResource whose CRD name we want to compute
+   * @return the CRD name associated with the CustomResource
+   */
+  public static String getCRDName(Class<? extends CustomResource> clazz) {
+    return getCRDName(getPlural(clazz), HasMetadata.getGroup(clazz));
+  }
+
+  private static String getCRDName(String plural, String group) {
+    return plural + "." + group;
+  }
+
+
+  /**
    * Override to provide your own Spec instance
    * @return a new Spec instance
    */
   protected S initSpec() {
-    return (S)genericInit(0);
+    if (spec == null) {
+      return (S) genericInit(0);
+    }
+    return spec;
   }
-  
+
   /**
    * Override to provide your own Status instance
    * @return a new Status instance
    */
   protected T initStatus() {
-    return (T)genericInit(1);
+    if (status == null) {
+      return (T) genericInit(1);
+    }
+    return status;
   }
 
   @Override
@@ -157,7 +256,8 @@ public abstract class CustomResource<S, T> implements HasMetadata {
   @Override
   public void setApiVersion(String version) {
     // already set in constructor
-    LOG.debug("Calling CustomResource#setApiVersion doesn't do anything because the API version is computed and shouldn't be changed");
+    LOG.debug(
+      "Calling CustomResource#setApiVersion doesn't do anything because the API version is computed and shouldn't be changed");
   }
 
   @Override
@@ -167,7 +267,8 @@ public abstract class CustomResource<S, T> implements HasMetadata {
 
   public void setKind(String kind) {
     // already set in constructor
-    LOG.debug("Calling CustomResource#setKind doesn't do anything because the Kind is computed and shouldn't be changed");
+    LOG.debug(
+      "Calling CustomResource#setKind doesn't do anything because the Kind is computed and shouldn't be changed");
   }
 
   @Override
@@ -180,34 +281,9 @@ public abstract class CustomResource<S, T> implements HasMetadata {
     this.metadata = metadata;
   }
 
-  /**
-   * Retrieves the plural form associated with the specified CustomResource if annotated with {@link Plural} or computes a default value
-   * using the value returned by {@link #getSingular(Class)} as input to {@link Pluralize#toPlural(String)}.
-   *
-   * @param clazz the CustomResource whose plural form we want to retrieve
-   * @return the plural form defined by the {@link Plural} annotation or a computed default value
-   */
-  public static String getPlural(Class<? extends CustomResource> clazz) {
-    final Plural fromAnnotation = clazz.getAnnotation(Plural.class);
-    return (fromAnnotation != null ? fromAnnotation.value().toLowerCase(Locale.ROOT) : Pluralize.toPlural(getSingular(clazz)));
-  }
-
   @JsonIgnore
   public String getPlural() {
     return plural;
-  }
-
-  /**
-   * Retrieves the singular form associated with the specified CustomResource as defined by the {@link Singular} annotation or
-   * computes a default value (lower-cased version of the value returned by {@link HasMetadata#getKind(Class)}) if the annotation
-   * is not present.
-   *
-   * @param clazz the CustomResource whose singular form we want to retrieve
-   * @return the singular form defined by the {@link Singular} annotation or a computed default value
-   */
-  public static String getSingular(Class<? extends CustomResource> clazz) {
-    final Singular fromAnnotation = clazz.getAnnotation(Singular.class);
-    return (fromAnnotation != null ? fromAnnotation.value() : HasMetadata.getKind(clazz)).toLowerCase(Locale.ROOT);
   }
 
   @JsonIgnore
@@ -215,16 +291,6 @@ public abstract class CustomResource<S, T> implements HasMetadata {
     return singular;
   }
 
-  /**
-   * Computes the name of the Custom Resource Definition (CRD) associated with the specified CustomResource.
-   * See https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/ for more details.
-   *
-   * @param clazz the CustomResource whose CRD name we want to compute
-   * @return the CRD name associated with the CustomResource
-   */
-  public static String getCRDName(Class<? extends CustomResource> clazz) {
-    return getPlural(clazz) + "." + HasMetadata.getGroup(clazz);
-  }
 
   @JsonIgnore
   public String getCRDName() {
@@ -243,12 +309,12 @@ public abstract class CustomResource<S, T> implements HasMetadata {
 
   @JsonIgnore
   public String getGroup() {
-    return HasMetadata.getGroup(getClass());
+    return group;
   }
 
   @JsonIgnore
   public String getVersion() {
-    return HasMetadata.getVersion(getClass());
+    return version;
   }
 
   @JsonIgnore
@@ -276,25 +342,25 @@ public abstract class CustomResource<S, T> implements HasMetadata {
   public void setStatus(T status) {
     this.status = status;
   }
-  
+
   private final static String TYPE_NAME = CustomResource.class.getTypeName();
   private final static String VOID_TYPE_NAME = Void.class.getTypeName();
   private final static Map<String, Instantiator> instantiators = new ConcurrentHashMap<>();
-  
+
   /**
    * Encapsulates an instantiation means. Needed to provide no-op when needed.
    */
   @FunctionalInterface
   private interface Instantiator {
-    
+
     Object instantiate() throws Exception;
-    
+
     /**
      * No-op instantiator.
      */
     Instantiator NULL = () -> null;
   }
-  
+
   /**
    * Returns the {@link Instantiator} instance associated with the type parameter associated with the specified index in the
    * generic type definition. Records the result so that it's only done once per CustomResource implementation.
@@ -310,7 +376,7 @@ public abstract class CustomResource<S, T> implements HasMetadata {
     Instantiator instantiator = instantiators.get(key);
     if (instantiator == null) {
       instantiator = Instantiator.NULL;
-      
+
       // walk the type hierarchy until we reach CustomResource or a ParameterizedType
       Type genericSuperclass = getClass().getGenericSuperclass();
       String typeName = genericSuperclass.getTypeName();
@@ -318,7 +384,7 @@ public abstract class CustomResource<S, T> implements HasMetadata {
         genericSuperclass = ((Class) genericSuperclass).getGenericSuperclass();
         typeName = genericSuperclass.getTypeName();
       }
-  
+
       // this works because CustomResource is an abstract class
       if (genericSuperclass instanceof ParameterizedType) {
         final Type[] types = ((ParameterizedType) genericSuperclass).getActualTypeArguments();
@@ -329,12 +395,13 @@ public abstract class CustomResource<S, T> implements HasMetadata {
         // get the associated class from the type name, if not Void
         String className = types[genericTypeIndex].getTypeName();
         if (!VOID_TYPE_NAME.equals(className)) {
-          final Class<?> clazz = Thread.currentThread().getContextClassLoader().loadClass(className);
+          final Class<?> clazz = Thread.currentThread().getContextClassLoader()
+            .loadClass(className);
           if (clazz.isInterface() || Modifier.isAbstract(clazz.getModifiers())) {
             throw new IllegalArgumentException(
               "Cannot instantiate interface/abstract type " + className);
           }
-          
+
           // record the instantiator associated with the identified type
           instantiator = () -> {
             final Constructor<?> constructor;
@@ -354,7 +421,7 @@ public abstract class CustomResource<S, T> implements HasMetadata {
     }
     return instantiator;
   }
-  
+
   private Object genericInit(int genericTypeIndex) {
     try {
       return getInstantiator(genericTypeIndex).instantiate();
@@ -365,7 +432,7 @@ public abstract class CustomResource<S, T> implements HasMetadata {
           + e.getMessage(), e);
     }
   }
-  
+
   private final static String getKey(Class<? extends CustomResource> clazz, int genericTypeIndex) {
     return clazz.getCanonicalName() + "_" + genericTypeIndex;
   }
