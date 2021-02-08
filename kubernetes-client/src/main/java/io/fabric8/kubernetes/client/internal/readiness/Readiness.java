@@ -35,13 +35,19 @@ import io.fabric8.kubernetes.api.model.apps.StatefulSet;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetSpec;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetStatus;
 import io.fabric8.kubernetes.client.utils.Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class Readiness {
 
   private static final String POD_READY = "Ready";
   private static final String NODE_READY = "Ready";
   private static final String TRUE = "True";
-
+  private static final Logger logger = LoggerFactory.getLogger(Readiness.class);
 
   public static boolean isReadinessApplicable(Class<? extends HasMetadata> itemClass) {
     return Deployment.class.isAssignableFrom(itemClass)
@@ -59,8 +65,28 @@ public class Readiness {
     if (isReadiableKubernetesResource(item)) {
       return isKubernetesResourceReady(item);
     } else {
-      throw new IllegalArgumentException("Item needs to be one of [Node, Deployment, ReplicaSet, StatefulSet, Pod, ReplicationController], but was: [" + (item != null ? item.getKind() : "Unknown (null)") + "]");
+      return handleNonReadinessApplicableResource(item, getReadinessApplicableResourcesList());
     }
+  }
+
+  public static boolean handleNonReadinessApplicableResource(HasMetadata item, List<String> readinessApplicableResources) {
+    boolean doesItemExist = Objects.nonNull(item);
+    String readinessApplicableResourcesStr = String.join(",", readinessApplicableResources);
+    logger.warn("{} is not a Readiableresource. It needs to be one of [{}]",
+      doesItemExist ? item.getKind() : "Unknown", readinessApplicableResourcesStr);
+    return doesItemExist;
+  }
+
+  public static List<String> getReadinessApplicableResourcesList() {
+    List<String> readinessApplicableResources = new ArrayList<>();
+    readinessApplicableResources.add("Node");
+    readinessApplicableResources.add("Deployment");
+    readinessApplicableResources.add("ReplicaSet");
+    readinessApplicableResources.add("StatefulSet");
+    readinessApplicableResources.add("Pod");
+    readinessApplicableResources.add("ReplicationController");
+
+    return readinessApplicableResources;
   }
 
   private static boolean isKubernetesResourceReady(HasMetadata item) {

@@ -15,6 +15,8 @@
  */
 package io.fabric8.kubernetes.client.internal.readiness;
 
+import io.fabric8.kubernetes.api.model.Service;
+import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.api.model.apps.StatefulSet;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetSpec;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetStatus;
@@ -93,5 +95,15 @@ public class ReadinessTest {
 
     assertTrue(Readiness.isReady(statefulSet));
     assertTrue(Readiness.isStatefulSetReady(statefulSet));
+  }
+
+  @Test
+  void testReadinessWithNonNullResource() {
+    assertTrue(Readiness.isReady(new ServiceBuilder().withNewMetadata().withName("svc1").endMetadata().build()));
+  }
+
+  @Test
+  void testReadinessNullResource() {
+    assertFalse(Readiness.isReady(null));
   }
 }

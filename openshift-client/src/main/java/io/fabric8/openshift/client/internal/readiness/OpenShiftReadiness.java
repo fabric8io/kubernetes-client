@@ -22,6 +22,9 @@ import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigSpec;
 import io.fabric8.openshift.api.model.DeploymentConfigStatus;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class OpenShiftReadiness extends Readiness {
   public static boolean isReadinessApplicable(Class<? extends HasMetadata> itemClass) {
     return Readiness.isReadinessApplicable(itemClass)
@@ -35,7 +38,7 @@ public class OpenShiftReadiness extends Readiness {
     } else if (item instanceof DeploymentConfig) {
       return isDeploymentConfigReady((DeploymentConfig) item);
     } else {
-      throw new IllegalArgumentException("Item needs to be one of [Node, Deployment, ReplicaSet, StatefulSet, Pod, DeploymentConfig, ReplicationController], but was: [" + (item != null ? item.getKind() : "Unknown (null)") + "]");
+      return handleNonReadinessApplicableResource(item, getOpenShiftReadinessApplicableResourcesList());
     }
   }
 
@@ -55,5 +58,12 @@ public class OpenShiftReadiness extends Readiness {
 
     return spec.getReplicas().intValue() == status.getReplicas() &&
       spec.getReplicas() <= status.getAvailableReplicas();
+  }
+
+  private static List<String> getOpenShiftReadinessApplicableResourcesList() {
+    List<String> openShiftReadinessApplicableResources = new ArrayList<>(Readiness.getReadinessApplicableResourcesList());
+    openShiftReadinessApplicableResources.add("DeploymentConfig");
+
+    return openShiftReadinessApplicableResources;
   }
 }

@@ -26,7 +26,6 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
-import org.assertj.core.internal.bytebuddy.build.ToStringPlugin;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -223,6 +222,22 @@ public class ServiceIT {
     assertEquals("serviceit-externalname-createorreplace", service.getMetadata().getName());
     assertEquals("ExternalName", service.getSpec().getType());
     assertEquals("his.database.example.com", service.getSpec().getExternalName());
+  }
+
+  @Test
+  public void waitUntilReady() throws InterruptedException {
+    // Given
+    String svcName = "service-wait-until-ready";
+
+    // When
+    Service service = client.services().inNamespace(session.getNamespace())
+      .withName(svcName)
+      .waitUntilReady(10, TimeUnit.SECONDS);
+
+    // Then
+    assertNotNull(service);
+    assertEquals(svcName, service.getMetadata().getName());
+    assertTrue(client.pods().inNamespace(session.getNamespace()).withName(svcName).delete());
   }
 
   @AfterClass
