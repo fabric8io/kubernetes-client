@@ -19,11 +19,11 @@ import static io.fabric8.crd.generator.utils.Metadata.getMetadata;
 
 import io.fabric8.crd.generator.decorator.Decorator;
 import io.fabric8.crd.generator.utils.Generics;
-import io.fabric8.crd.generator.utils.Strings;
 import io.fabric8.kubernetes.api.builder.TypedVisitor;
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionVersionBuilder;
+import io.fabric8.kubernetes.client.utils.Utils;
 import java.util.Optional;
 
 public abstract class CustomResourceDefinitionVersionDecorator<T> extends Decorator<VisitableBuilder> {
@@ -47,7 +47,7 @@ public abstract class CustomResourceDefinitionVersionDecorator<T> extends Decora
     if (!objectMeta.isPresent()) {
       return;
     }
-    if (Strings.isNullOrEmpty(name) || objectMeta.map(m -> m.getName()).filter(s -> s.equals(name)).isPresent()) {
+    if (Utils.isNullOrEmpty(name) || objectMeta.map(ObjectMeta::getName).filter(s -> s.equals(name)).isPresent()) {
       builder.accept(versionSelector);
     }
   }

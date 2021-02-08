@@ -20,11 +20,11 @@ import static io.fabric8.crd.generator.utils.Types.findStatusProperty;
 import io.fabric8.crd.generator.apt.CustomResourceInfo;
 import io.fabric8.crd.generator.apt.Resources;
 import io.fabric8.crd.generator.decorator.Decorator;
-import io.fabric8.crd.generator.utils.Strings;
 import io.fabric8.crd.generator.visitor.AdditionalPrinterColumnDetector;
 import io.fabric8.crd.generator.visitor.LabelSelectorPathDetector;
 import io.fabric8.crd.generator.visitor.SpecReplicasPathDetector;
 import io.fabric8.crd.generator.visitor.StatusReplicasPathDetector;
+import io.fabric8.kubernetes.client.utils.Utils;
 import io.sundr.codegen.functions.ElementTo;
 import io.sundr.codegen.model.Property;
 import io.sundr.codegen.model.TypeDef;
@@ -97,7 +97,7 @@ public abstract class AbstractCustomResourceHandler {
         .findFirst().orElse(Collections.emptyMap());
       String type = JsonSchema.COMMON_MAPPINGS.getOrDefault(property.getTypeRef(), "object");
       String column = (String) parameters.get("name");
-      if (Strings.isNullOrEmpty(column)) {
+      if (Utils.isNullOrEmpty(column)) {
         column = property.getName().toUpperCase();
       }
       String description = property.getComments().stream().filter(l -> !l.trim().startsWith("@"))

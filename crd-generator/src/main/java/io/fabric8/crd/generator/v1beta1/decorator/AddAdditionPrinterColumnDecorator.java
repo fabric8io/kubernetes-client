@@ -15,9 +15,9 @@
  */
 package io.fabric8.crd.generator.v1beta1.decorator;
 
-import io.fabric8.crd.generator.utils.Strings;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceColumnDefinitionBuilder;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersionFluent;
+import io.fabric8.kubernetes.client.utils.Utils;
 import java.util.function.Predicate;
 
 public class AddAdditionPrinterColumnDecorator extends
@@ -53,8 +53,8 @@ public class AddAdditionPrinterColumnDecorator extends
       .withType(type)
       .withName(name)
       .withJSONPath(path)
-      .withFormat(Strings.isNotNullOrEmpty(format) ? format : null)
-      .withDescription(Strings.isNotNullOrEmpty(description) ? description : null)
+      .withFormat(Utils.isNotNullOrEmpty(format) ? format : null)
+      .withDescription(Utils.isNotNullOrEmpty(description) ? description : null)
       .endAdditionalPrinterColumn();
   }
 }

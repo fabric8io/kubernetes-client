@@ -19,10 +19,10 @@ import static io.fabric8.crd.generator.utils.Metadata.getKind;
 import static io.fabric8.crd.generator.utils.Metadata.getMetadata;
 
 import io.fabric8.crd.generator.utils.Generics;
-import io.fabric8.crd.generator.utils.Strings;
 import io.fabric8.kubernetes.api.builder.TypedVisitor;
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.client.utils.Utils;
 import java.util.Optional;
 
 public abstract class NamedResourceDecorator<T> extends Decorator<VisitableBuilder> {
@@ -58,16 +58,16 @@ public abstract class NamedResourceDecorator<T> extends Decorator<VisitableBuild
     if (!resourceKind.isPresent() || !objectMeta.isPresent()) {
       return;
     }
-    if (Strings.isNullOrEmpty(kind)) {
-      if (Strings.isNullOrEmpty(name)) {
+    if (Utils.isNullOrEmpty(kind)) {
+      if (Utils.isNullOrEmpty(name)) {
         builder.accept(visitor.withKind(resourceKind.get()).withMetadata(objectMeta.get()));
-      } else if (objectMeta.map(m -> m.getName()).filter(s -> s.equals(name)).isPresent()) {
+      } else if (objectMeta.map(ObjectMeta::getName).filter(s -> s.equals(name)).isPresent()) {
         builder.accept(visitor.withKind(resourceKind.get()).withMetadata(objectMeta.get()));
       }
     } else if (resourceKind.filter(k -> k.equals(kind)).isPresent()) {
-      if (Strings.isNullOrEmpty(name)) {
+      if (Utils.isNullOrEmpty(name)) {
         builder.accept(visitor.withKind(resourceKind.get()).withMetadata(objectMeta.get()));
-      } else if (objectMeta.map(m -> m.getName()).filter(s -> s.equals(name)).isPresent()) {
+      } else if (objectMeta.map(ObjectMeta::getName).filter(s -> s.equals(name)).isPresent()) {
         builder.accept(visitor.withKind(resourceKind.get()).withMetadata(objectMeta.get()));
       }
     }
