@@ -10,6 +10,7 @@
 * Fix #2757: add `storage` and `served` to `Version` annotation
 * Fix #2759: add `ShortNames` annotation to specify short names for CRD generation
 * Fix #2694: Remove deprecated methods from KubernetesClient DSL
+* Fix #2716: Add a property to disable BackwardCompatibilityInterceptor
 
 #### Dependency Upgrade
 * update Tekton Triggers model to v0.11.1
