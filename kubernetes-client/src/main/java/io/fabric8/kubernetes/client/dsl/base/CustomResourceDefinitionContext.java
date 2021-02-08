@@ -96,7 +96,8 @@ public class CustomResourceDefinitionContext {
         .endMetadata()
         .withNewSpec()
         .withGroup(instance.getGroup())
-        .addNewVersion().withName(instance.getVersion()).withServed(true).withStorage(true).endVersion()
+        .addNewVersion().withName(instance.getVersion()).withServed(instance.isServed()).withStorage(
+          instance.isStorage()).endVersion()
         .withScope(instance.getScope())
         .withNewNames()
         .withKind(instance.getKind())
