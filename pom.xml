@@ -632,6 +632,7 @@
             <exclude>.editorconfig</exclude>
             <exclude>license.txt</exclude>
             <exclude>**/test-kubeconfig</exclude>
+            <exclude>**/io/fabric8/kubernetes/client/lib/**/*.java</exclude>
             <exclude>kubernetes-model/vendor/**/*</exclude>
             <exclude>kubernetes-model/generate</exclude>
             <exclude>kubernetes-model/.openshift-version</exclude>
