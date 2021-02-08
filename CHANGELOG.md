@@ -5,6 +5,7 @@
 #### Bugs
 * Fix #2748: Pass custom headers in kubernetes-client to watch api by modify WatchConnectionManager
 * Fix #2745: Filtering Operations can't configure PropagationPolicy
+* Fix #2672: WaitUntilReady for Service resource throws IllegalArgumentException
 
 #### Improvements
 * Fix #2717: Remove edit() methods from RawCustomResourceOperationsImpl taking InputStream arguments

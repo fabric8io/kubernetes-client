@@ -15,6 +15,10 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.api.model.EndpointAddressBuilder;
+import io.fabric8.kubernetes.api.model.EndpointPortBuilder;
+import io.fabric8.kubernetes.api.model.EndpointSubsetBuilder;
+import io.fabric8.kubernetes.api.model.EndpointsBuilder;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
@@ -29,6 +33,7 @@ import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 import java.util.Collections;
+import java.util.concurrent.TimeUnit;
 
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
@@ -40,6 +45,8 @@ class ServiceTest {
   public KubernetesServer server = new KubernetesServer();
 
   Service service;
+
+  private KubernetesClient client;
 
   @BeforeEach
   void prepareService() {
@@ -57,11 +64,11 @@ class ServiceTest {
       .addToSelector("deploymentconfig", "httpbin")
       .endSpec()
       .build();
+    client = server.getClient();
   }
 
   @Test
   void testLoad() {
-    KubernetesClient client = server.getClient();
     Service svc = client.services().load(getClass().getResourceAsStream("/test-service.yml")).get();
     assertNotNull(svc);
     assertEquals("httpbin", svc.getMetadata().getName());
@@ -74,7 +81,6 @@ class ServiceTest {
       .andReturn(200, service)
       .once();
 
-    KubernetesClient client = server.getClient();
     Service responseSvc = client.services().inNamespace("test").create(service);
     assertNotNull(responseSvc);
     assertEquals("httpbin", responseSvc.getMetadata().getName());
@@ -104,7 +110,6 @@ class ServiceTest {
       .andReturn(HttpURLConnection.HTTP_OK, serviceUpdated)
       .once();
 
-    KubernetesClient client = server.getClient();
     Service responseSvc = client.services().inNamespace("test").createOrReplace(serviceUpdated);
     assertNotNull(responseSvc);
     assertEquals("httpbin", responseSvc.getMetadata().getName());
@@ -122,7 +127,6 @@ class ServiceTest {
       .andReturn(200, service)
       .once();
 
-    KubernetesClient client = server.getClient();
     boolean isDeleted = client.services().inNamespace("test").withName("httpbin").delete();
     assertTrue(isDeleted);
   }
@@ -142,7 +146,6 @@ class ServiceTest {
       .andReturn(200, serviceFromServer)
       .once();
 
-    KubernetesClient client = server.getClient();
     Service responseFromServer = client.services().inNamespace("test").withName("httpbin").edit(s -> new ServiceBuilder(s)
       .editOrNewMetadata().addToLabels("foo", "bar").endMetadata()
       .build());
@@ -171,12 +174,38 @@ class ServiceTest {
       .andReturn(HttpURLConnection.HTTP_OK, service).always();
     server.expect().get().withPath("/apis/extensions/v1beta1/namespaces/ns1/ingresses")
       .andReturn(HttpURLConnection.HTTP_OK, new IngressListBuilder().build()).always();
-    KubernetesClient client = server.getClient();
 
     // When
     String url = client.services().inNamespace("ns1").withName("svc1").getURL("http");
 
     // Then
     assertEquals("tcp://187.30.14.32:8080", url);
+  }
+
+  @Test
+  void testWaitUntilReady() throws InterruptedException {
+    // Given
+    Service svc1 = new ServiceBuilder().withNewMetadata().withName("svc1").endMetadata().build();
+    server.expect().get().withPath("/api/v1/namespaces/ns1/endpoints/svc1")
+      .andReturn(HttpURLConnection.HTTP_OK, new EndpointsBuilder()
+        .withNewMetadata().withName("svc1").endMetadata()
+        .addToSubsets(new EndpointSubsetBuilder()
+          .addToAddresses(new EndpointAddressBuilder().withIp("192.168.64.13").build())
+          .addToPorts(new EndpointPortBuilder().withPort(8443).build())
+          .build())
+        .build())
+      .once();
+    server.expect().get().withPath("/api/v1/namespaces/ns1/services/svc1")
+      .andReturn(HttpURLConnection.HTTP_OK, svc1)
+      .times(2);
+
+    // When
+    Service service = client.services()
+      .inNamespace("ns1")
+      .withName("svc1")
+      .waitUntilReady(60, TimeUnit.SECONDS);
+
+    // Then
+    assertNotNull(service);
   }
 }
