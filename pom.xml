@@ -190,6 +190,11 @@
       <!-- Internal -->
       <dependency>
         <groupId>io.fabric8</groupId>
+        <artifactId>crd-generator</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
         <artifactId>kubernetes-model-core</artifactId>
         <version>${project.version}</version>
       </dependency>

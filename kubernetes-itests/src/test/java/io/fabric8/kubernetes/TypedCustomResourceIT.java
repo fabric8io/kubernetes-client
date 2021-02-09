@@ -17,9 +17,9 @@ package io.fabric8.kubernetes;
 
 import io.fabric8.commons.AssumingK8sVersionAtLeast;
 import io.fabric8.commons.ClusterEntity;
-import io.fabric8.crd.Pet;
-import io.fabric8.crd.PetSpec;
-import io.fabric8.crd.PetStatus;
+import io.fabric8.crd.pet.Pet;
+import io.fabric8.crd.pet.PetSpec;
+import io.fabric8.crd.pet.PetStatus;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;

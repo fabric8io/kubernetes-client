@@ -13,21 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crd;
+package io.fabric8.crd.pet;
 
-public class PetStatus {
-  private String currentStatus;
+public class PetSpec {
+  private String type;
 
-  public String getCurrentStatus() {
-    return currentStatus;
+  public String getType() {
+    return type;
   }
 
-  public void setCurrentStatus(String currentStatus) {
-    this.currentStatus = currentStatus;
+  public void setType(String type) {
+    this.type = type;
   }
 
   @Override
   public String toString() {
-    return "PetStatus{currentStatus=" + currentStatus + "}";
+    return "PetSpec{type=" + type  + "}";
   }
 }
+
