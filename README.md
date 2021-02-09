@@ -351,6 +351,7 @@ Then you can use the server like:
 | kubernetes-client 4.6.3   | -                | -                | -                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | -                 |
 | kubernetes-client 4.6.4   | -                | -                | -                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | -                 |
 | kubernetes-client 4.7.0   | -                | -                | -                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 |
+| kubernetes-client 4.7.2   | -                | -                | -                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 |
 
 |                           | OpenShift  3.6.0 | OpenShift  3.7.0  | OpenShift  3.9.0  | OpenShift 3.10.0 | OpenShift 3.11.0 | OpenShift 4.1.0 |
 |---------------------------|------------------|-------------------|-------------------|------------------|------------------|-----------------|
@@ -382,6 +383,7 @@ Then you can use the server like:
 | openshift-client 4.6.3   | -                | -                 | ✓                 | ✓                | ✓                | ✓                |
 | openshift-client 4.6.4   | -                | -                 | ✓                 | ✓                | ✓                | ✓                |
 | openshift-client 4.7.0   | -                | -                 | ✓                 | ✓                | ✓                | ✓                |
+| openshift-client 4.7.2   | -                | -                 | ✓                 | ✓                | ✓                | ✓                |
 
 ## Major Changes in Kubernetes Client 4.0.0
 All the resource objects used here will be according to OpenShift 3.9.0  and Kubernetes 1.9.0. All the resource objects will give all the fields according to OpenShift 3.9.0 and Kubernetes 1.9.0
