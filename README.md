@@ -416,6 +416,7 @@ You can also enable crudMode by using annotation field `crud`.
 | kubernetes-client 4.6.4   | -                | -                | -                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | -                 | -                 |
 | kubernetes-client 4.7.0   | -                | -                | -                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | -                 |
 | kubernetes-client 4.7.1   | -                | -                | -                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | -                 |
+| kubernetes-client 4.7.2   | -                | -                | -                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | -                 |
 | kubernetes-client 4.8.0   | -                | -                | -                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | -                 |
 | kubernetes-client 4.9.0   | -                | -                | -                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | -                 |
 | kubernetes-client 4.9.1   | -                | -                | -                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | ✓                 | -                 |
@@ -458,6 +459,7 @@ You can also enable crudMode by using annotation field `crud`.
 | openshift-client 4.6.4    | -                | -                 | ✓                 | ✓                | ✓                | ✓                | -              |
 | openshift-client 4.7.0    | -                | -                 | ✓                 | ✓                | ✓                | ✓                | ✓              |
 | openshift-client 4.7.1    | -                | -                 | ✓                 | ✓                | ✓                | ✓                | ✓              |
+| openshift-client 4.7.2    | -                | -                 | ✓                 | ✓                | ✓                | ✓                | ✓              |
 | openshift-client 4.8.0    | -                | -                 | ✓                 | ✓                | ✓                | ✓                | ✓              |
 | openshift-client 4.9.0    | -                | -                 | ✓                 | ✓                | ✓                | ✓                | ✓              |
 | openshift-client 4.9.1    | -                | -                 | ✓                 | ✓                | ✓                | ✓                | ✓              |
