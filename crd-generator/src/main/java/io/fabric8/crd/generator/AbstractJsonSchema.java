@@ -43,7 +43,7 @@ import java.util.Set;
  * @param <T> the concrete type of the generated JSON Schema
  * @param <B> the concrete type of the JSON Schema builder
  */
-public abstract class JsonSchema<T, B> {
+public abstract class AbstractJsonSchema<T, B> {
 
   protected static final TypeDef QUANTITY = ClassTo.TYPEDEF.apply(Quantity.class);
   protected static final TypeDef DURATION = ClassTo.TYPEDEF.apply(Duration.class);

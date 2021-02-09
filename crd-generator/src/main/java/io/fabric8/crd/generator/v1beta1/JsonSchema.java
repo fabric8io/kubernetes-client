@@ -15,6 +15,7 @@
  */
 package io.fabric8.crd.generator.v1beta1;
 
+import io.fabric8.crd.generator.AbstractJsonSchema;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsBuilder;
 import io.sundr.codegen.model.Property;
@@ -22,8 +23,7 @@ import io.sundr.codegen.model.TypeDef;
 import io.sundr.codegen.model.TypeRef;
 import java.util.List;
 
-public class JsonSchema extends
-  io.fabric8.crd.generator.JsonSchema<JSONSchemaProps, JSONSchemaPropsBuilder> {
+public class JsonSchema extends AbstractJsonSchema<JSONSchemaProps, JSONSchemaPropsBuilder> {
 
   private static final JsonSchema instance = new JsonSchema();
 
