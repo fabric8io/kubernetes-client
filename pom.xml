@@ -91,7 +91,7 @@
     <jsr305.version>3.0.2</jsr305.version>
 
     <!-- Testing versions -->
-    <assertj.core.version>3.14.0</assertj.core.version>
+    <assertj.core.version>3.19.0</assertj.core.version>
     <arquillian.core.version>1.2.0.Final</arquillian.core.version>
     <awaitility.version>4.0.2</awaitility.version>
     <jsonassert.version>1.5.0</jsonassert.version>
@@ -296,6 +296,13 @@
         <version>${junit.version}</version>
         <scope>import</scope>
         <type>pom</type>
+      </dependency>
+
+      <dependency>
+        <groupId>org.assertj</groupId>
+        <artifactId>assertj-core</artifactId>
+        <version>${assertj.core.version}</version>
+        <scope>test</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>

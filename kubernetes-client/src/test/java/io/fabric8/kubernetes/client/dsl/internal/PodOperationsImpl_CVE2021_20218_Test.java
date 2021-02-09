@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.dsl.internal.core.v1;
+package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.mockito.Mockito;
 
 import java.nio.file.Path;
 
@@ -41,7 +41,7 @@ class PodOperationsImpl_CVE2021_20218_Test {
   void testWithForgedTar(@TempDir Path targetDirParent) throws Exception {
     // Given
     final Path targetDir = targetDirParent.resolve("target");
-    final PodOperationsImpl poi = spy(new PodOperationsImpl(baseContext.withDir("/var/source-dir")));
+    final PodOperationsImpl poi = Mockito.spy(new PodOperationsImpl(baseContext.withDir("/var/source-dir")));
     doReturn(PodOperationsImpl_CVE2021_20218_Test.class.getResourceAsStream("/2021_20218/tar-with-parent-traversal.tar"))
       .when(poi).readTar("/var/source-dir");
     // When
