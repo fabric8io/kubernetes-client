@@ -22,22 +22,26 @@ import io.sundr.codegen.model.TypeDef;
 import io.sundr.codegen.model.TypeRef;
 import java.util.List;
 
-public class JsonSchema extends io.fabric8.crd.generator.JsonSchema<JSONSchemaProps, JSONSchemaPropsBuilder> {
+public class JsonSchema extends
+  io.fabric8.crd.generator.JsonSchema<JSONSchemaProps, JSONSchemaPropsBuilder> {
 
   private static final JsonSchema instance = new JsonSchema();
 
-  private static final JSONSchemaProps JSON_SCHEMA_INT_OR_STRING = new JSONSchemaPropsBuilder().withAnyOf(
-    new JSONSchemaPropsBuilder().withType("integer").build(),
-    new JSONSchemaPropsBuilder().withType("string").build()).build();
+  private static final JSONSchemaProps JSON_SCHEMA_INT_OR_STRING = new JSONSchemaPropsBuilder()
+    .withXKubernetesIntOrString(true)
+    .withAnyOf(
+      new JSONSchemaPropsBuilder().withType("integer").build(),
+      new JSONSchemaPropsBuilder().withType("string").build())
+    .build();
 
   /**
    * Creates the JSON schema for the particular {@link TypeDef}.
-   * 
+   *
    * @param definition The definition.
    * @param ignore an optional list of property names to ignore
    * @return The schema.
    */
-  public static JSONSchemaProps from(TypeDef definition, String ... ignore) {
+  public static JSONSchemaProps from(TypeDef definition, String... ignore) {
     return instance.internalFrom(definition, ignore);
   }
 
@@ -49,7 +53,8 @@ public class JsonSchema extends io.fabric8.crd.generator.JsonSchema<JSONSchemaPr
   }
 
   @Override
-  public void addProperty(Property property, JSONSchemaPropsBuilder builder, JSONSchemaProps schema) {
+  public void addProperty(Property property, JSONSchemaPropsBuilder builder,
+    JSONSchemaProps schema) {
     if (schema != null) {
       builder.addToProperties(property.getName(), schema);
     }

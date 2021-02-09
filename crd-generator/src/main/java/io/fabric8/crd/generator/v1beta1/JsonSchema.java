@@ -22,13 +22,17 @@ import io.sundr.codegen.model.TypeDef;
 import io.sundr.codegen.model.TypeRef;
 import java.util.List;
 
-public class JsonSchema extends io.fabric8.crd.generator.JsonSchema<JSONSchemaProps, JSONSchemaPropsBuilder> {
+public class JsonSchema extends
+  io.fabric8.crd.generator.JsonSchema<JSONSchemaProps, JSONSchemaPropsBuilder> {
 
   private static final JsonSchema instance = new JsonSchema();
 
-  public static final JSONSchemaProps JSON_SCHEMA_INT_OR_STRING = new JSONSchemaPropsBuilder().withAnyOf(
-    new JSONSchemaPropsBuilder().withType("integer").build(),
-    new JSONSchemaPropsBuilder().withType("string").build()).build();
+  public static final JSONSchemaProps JSON_SCHEMA_INT_OR_STRING = new JSONSchemaPropsBuilder()
+    .withXKubernetesIntOrString(true)
+    .withAnyOf(
+      new JSONSchemaPropsBuilder().withType("integer").build(),
+      new JSONSchemaPropsBuilder().withType("string").build())
+    .build();
 
   /**
    * Creates the JSON schema for the particular {@link TypeDef}.
