@@ -127,6 +127,28 @@ class CustomResourceTest {
       IllegalArgumentException.class, CRInterface::new);
     assertTrue(exception.getMessage().contains(KubernetesResource.class.getName()));
   }
+
+  @Test
+  void inconsistentGroupShouldFail() {
+    final IllegalArgumentException e = assertThrows(
+      IllegalArgumentException.class, InconsistentGroup::new);
+    final String message = e.getMessage();
+    assertTrue(message.contains(InconsistentGroup.class.getName()));
+    assertTrue(message.contains("group"));
+    assertTrue(message.contains("foo.com"));
+    assertTrue(message.contains("example.com"));
+  }
+  
+  @Test
+  void inconsistentVersionShouldFail() {
+    final IllegalArgumentException e = assertThrows(
+      IllegalArgumentException.class, InconsistentVersion::new);
+    final String message = e.getMessage();
+    assertTrue(message.contains(InconsistentVersion.class.getName()));
+    assertTrue(message.contains("version"));
+    assertTrue(message.contains("v1"));
+    assertTrue(message.contains("v2"));
+  }
   
   private static class Foo {
     public Foo() {
@@ -192,4 +214,24 @@ class CustomResourceTest {
   @Group("example.com")
   @Version("v1")
   private static class VoidVoid extends CustomResource<Void, Void> {}
+
+  @Group("example.com")
+  @Version("v1")
+  private static class InconsistentGroup extends CustomResource<Void, Void> {
+
+    @Override
+    public String getApiVersion() {
+      return "foo.com/v1";
+    }
+  }
+
+  @Group("example.com")
+  @Version("v1")
+  private static class InconsistentVersion extends CustomResource<Void, Void> {
+
+    @Override
+    public String getApiVersion() {
+      return "example.com/v2";
+    }
+  }
 }

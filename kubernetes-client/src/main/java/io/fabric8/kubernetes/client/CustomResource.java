@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.Pluralize;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.model.annotation.Group;
@@ -99,14 +100,28 @@ public abstract class CustomResource<S, T> implements HasMetadata {
 
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false)
   public CustomResource() {
-    final String version = getApiVersion();
     final Class<? extends CustomResource> clazz = getClass();
-    if (isNullOrEmpty(version)) {
-      throw new IllegalArgumentException(
-        clazz.getName() + " CustomResource must provide an API version using @"
-          + Group.class.getName() + " and @" + Version.class.getName() + " annotations");
+
+    // first check if the subclass overrode the getApiVersion method
+    String apiVersion = getApiVersion();
+    if(isNullOrEmpty(apiVersion)) {
+      // try to get the default version from group and version annotations
+      apiVersion = HasMetadata.super.getApiVersion();
+      if (isNullOrEmpty(apiVersion)) {
+        // if we still don't have a valid apiVersion, fail
+        throw new IllegalArgumentException(
+          clazz.getName() + " CustomResource must provide an API version using @"
+            + Group.class.getName() + " and @" + Version.class.getName() + " annotations");
+      }
     }
-    this.apiVersion = version;
+
+    // now that we have an API version, get group and version
+    this.apiVersion = apiVersion;
+    this.group = ApiVersionUtil.trimGroup(apiVersion);
+    checkCoherence(clazz, true);
+    this.version = ApiVersionUtil.trimVersion(apiVersion);
+    checkCoherence(clazz, false);
+
     this.kind = HasMetadata.super.getKind();
     scope = this instanceof Namespaced ? NAMESPACE_SCOPE : CLUSTER_SCOPE;
     this.singular = getSingular(clazz);
@@ -114,10 +129,19 @@ public abstract class CustomResource<S, T> implements HasMetadata {
     this.crdName = getCRDName(clazz);
     this.served = getServed(clazz);
     this.storage = getStorage(clazz);
-    this.group = getGroup();
-    this.version = getVersion();
     this.spec = initSpec();
     this.status = initStatus();
+  }
+
+  private void checkCoherence(Class<? extends CustomResource> clazz, boolean checkGroup) {
+    final String fromAnnotation = checkGroup ? HasMetadata.getGroup(clazz) : HasMetadata.getVersion(clazz);
+    final String fromApiVersion = checkGroup ? this.group : this.version;
+    final String type = checkGroup ? "group" : "version";
+    if(fromAnnotation != null && !fromApiVersion.equals(fromAnnotation)) {
+      throw new IllegalArgumentException(
+        clazz.getName() + " CustomResource provides inconsistent " + type
+          + " information: '" + fromAnnotation + "' from annotation, '" + fromApiVersion + "' from apiVersion");
+    }
   }
 
   public CustomResource(S spec, T status, String kind, String group, String version,
