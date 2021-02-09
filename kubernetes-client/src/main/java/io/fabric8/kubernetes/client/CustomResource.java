@@ -97,6 +97,7 @@ public abstract class CustomResource<S, T> implements HasMetadata {
   private final boolean served;
   private final boolean storage;
 
+  @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false)
   public CustomResource() {
     final String version = getApiVersion();
     final Class<? extends CustomResource> clazz = getClass();
