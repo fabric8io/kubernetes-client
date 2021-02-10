@@ -182,11 +182,17 @@
     <module>platforms</module>
     <module>kubernetes-tests</module>
     <module>uberjar</module>
+    <module>crd-generator</module>
   </modules>
 
   <dependencyManagement>
     <dependencies>
       <!-- Internal -->
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>crd-generator</artifactId>
+        <version>${project.version}</version>
+      </dependency>
       <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>kubernetes-model-core</artifactId>

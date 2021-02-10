@@ -90,6 +90,8 @@ public abstract class CustomResource<S, T> implements HasMetadata {
   private final String apiVersion;
   private final String scope;
   private final String plural;
+  private final boolean served;
+  private final boolean storage;
 
   public CustomResource() {
     final String version = HasMetadata.super.getApiVersion();
@@ -104,10 +106,22 @@ public abstract class CustomResource<S, T> implements HasMetadata {
     this.singular = getSingular(clazz);
     this.plural = getPlural(clazz);
     this.crdName = getCRDName(clazz);
+    this.served = getServed(clazz);
+    this.storage = getStorage(clazz);
     this.spec = initSpec();
     this.status = initStatus();
   }
-  
+
+  public static boolean getServed(Class<? extends CustomResource> clazz) {
+    final Version annotation = clazz.getAnnotation(Version.class);
+    return annotation == null || annotation.served();
+  }
+
+  public static boolean getStorage(Class<? extends CustomResource> clazz) {
+    final Version annotation = clazz.getAnnotation(Version.class);
+    return annotation == null || annotation.storage();
+  }
+
   /**
    * Override to provide your own Spec instance
    * @return a new Spec instance
@@ -188,7 +202,7 @@ public abstract class CustomResource<S, T> implements HasMetadata {
    * computes a default value (lower-cased version of the value returned by {@link HasMetadata#getKind(Class)}) if the annotation
    * is not present.
    *
-   * @param clazz the CustomeResource whose singular form we want to retrieve
+   * @param clazz the CustomResource whose singular form we want to retrieve
    * @return the singular form defined by the {@link Singular} annotation or a computed default value
    */
   public static String getSingular(Class<? extends CustomResource> clazz) {
@@ -235,6 +249,16 @@ public abstract class CustomResource<S, T> implements HasMetadata {
   @JsonIgnore
   public String getVersion() {
     return HasMetadata.getVersion(getClass());
+  }
+
+  @JsonIgnore
+  public boolean isServed() {
+    return served;
+  }
+
+  @JsonIgnore
+  public boolean isStorage() {
+    return storage;
   }
 
   public S getSpec() {

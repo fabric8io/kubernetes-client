@@ -13,21 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crd;
+package io.fabric8.crd.annotation;
 
-public class PetStatus {
-  private String currentStatus;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-  public String getCurrentStatus() {
-    return currentStatus;
-  }
-
-  public void setCurrentStatus(String currentStatus) {
-    this.currentStatus = currentStatus;
-  }
-
-  @Override
-  public String toString() {
-    return "PetStatus{currentStatus=" + currentStatus + "}";
-  }
+@Target({ ElementType.FIELD })
+@Retention(RetentionPolicy.SOURCE)
+public @interface LabelSelector {
+  
 }

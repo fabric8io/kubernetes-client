@@ -13,22 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crd;
+package io.fabric8.crd.example.webserver;
 
-public class PetSpec {
-  private String type;
+public class WebServerWithSpec {
 
-  public String getType() {
-    return type;
-  }
+  private String name;
 
-  public void setType(String type) {
-    this.type = type;
-  }
+  private WebServerSpec spec;
 
-  @Override
-  public String toString() {
-    return "PetSpec{type=" + type  + "}";
-  }
+  private WebServerStatus status;
 }
 
