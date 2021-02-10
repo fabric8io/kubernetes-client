@@ -401,6 +401,7 @@ class ExampleTest {
 | kubernetes-client 4.13.1  | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         | -         | -         | -         |
 | kubernetes-client 4.13.0  | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         | -         | -         | -         |
 | kubernetes-client 4.12.0  | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         | -         | -         | -         |
+| kubernetes-client 4.11.2  | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         | -         | -         | -         |
 | kubernetes-client 4.11.1  | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         | -         | -         | -         |
 | kubernetes-client 4.11.0  | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         | -         | -         | -         |
 | kubernetes-client 4.10.3  | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         | -         | -         | -         |
@@ -411,6 +412,7 @@ class ExampleTest {
 | kubernetes-client 4.9.1   | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         | -         | -         | -         |
 | kubernetes-client 4.9.0   | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         | -         | -         | -         |
 | kubernetes-client 4.8.0   | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         | -         | -         | -         |
+| kubernetes-client 4.7.2   | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         | -         | -         | -         |
 | kubernetes-client 4.7.1   | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         | -         | -         | -         |
 | kubernetes-client 4.7.0   | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         | -         | -         | -         |
 | kubernetes-client 4.6.4   | -          | -          | -          | -          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         | -         | -         | -         |
@@ -454,6 +456,7 @@ class ExampleTest {
 | openshift-client 4.13.1   | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
 | openshift-client 4.13.0   | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
 | openshift-client 4.12.0   | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 4.11.2   | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
 | openshift-client 4.11.1   | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
 | openshift-client 4.11.0   | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
 | openshift-client 4.10.3   | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
@@ -464,6 +467,7 @@ class ExampleTest {
 | openshift-client 4.9.1    | -          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
 | openshift-client 4.9.0    | -          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
 | openshift-client 4.8.0    | -          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 4.7.2    | -          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
 | openshift-client 4.7.1    | -          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
 | openshift-client 4.7.0    | -          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
 | openshift-client 4.6.4    | -          | -         | ✓         | ✓          | ✓          | ✓          | -         | -         |
