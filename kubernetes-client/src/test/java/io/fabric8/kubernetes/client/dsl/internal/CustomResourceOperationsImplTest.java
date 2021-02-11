@@ -15,8 +15,14 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import java.io.IOException;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.MappingJsonFactory;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
 import io.fabric8.kubernetes.client.CustomResource;
@@ -26,19 +32,10 @@ import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.internal.KubernetesDeserializer;
-
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
+import java.io.IOException;
 import org.junit.jupiter.api.Test;
-
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.MappingJsonFactory;
-
-import static org.hamcrest.core.IsInstanceOf.instanceOf;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
 
 public class CustomResourceOperationsImplTest {
 
@@ -94,13 +91,6 @@ public class CustomResourceOperationsImplTest {
       .withListType(MyCustomResourceList.class));
   }
   
-  @Test
-  void canProperlyInferListType() {
-    assertEquals(MyCustomResourceList.class, CustomResourceOperationsImpl.inferListType(MyCustomResource.class));
-    assertEquals(FooList.class, CustomResourceOperationsImpl.inferListType(Foo.class));
-    assertEquals(CustomResourceList.class, CustomResourceOperationsImpl.inferListType(Bar.class));
-  }
-
   private void assertForContext(CustomResourceOperationContext context) throws IOException {
     // CustomResourceOperationsImpl constructor invokes KubernetesDeserializer::registerCustomKind
     new CustomResourceOperationsImpl<>(context);

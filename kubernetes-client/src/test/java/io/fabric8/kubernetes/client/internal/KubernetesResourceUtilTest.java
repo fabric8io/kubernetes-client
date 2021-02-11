@@ -16,11 +16,17 @@
 
 package io.fabric8.kubernetes.client.internal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.ConfigMapList;
 import io.fabric8.kubernetes.api.model.Event;
 import io.fabric8.kubernetes.api.model.EventBuilder;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
@@ -28,19 +34,16 @@ import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.batch.CronJob;
 import io.fabric8.kubernetes.api.model.batch.CronJobList;
+import io.fabric8.kubernetes.client.Good;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 import java.time.Duration;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 class KubernetesResourceUtilTest {
   private ConfigMap configMap1;
@@ -211,5 +214,6 @@ class KubernetesResourceUtilTest {
     assertEquals(PodList.class, KubernetesResourceUtil.inferListType(Pod.class));
     assertEquals(ConfigMapList.class, KubernetesResourceUtil.inferListType(ConfigMap.class));
     assertEquals(CronJobList.class, KubernetesResourceUtil.inferListType(CronJob.class));
+    assertEquals(KubernetesResourceList.class, KubernetesResourceUtil.inferListType(Good.class));
   }
 }
