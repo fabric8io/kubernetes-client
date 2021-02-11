@@ -15,6 +15,10 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
+import io.fabric8.kubernetes.api.model.Namespaced;
+import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 import java.io.Closeable;
 import java.io.Flushable;
 import java.io.IOException;
@@ -40,11 +44,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Stream;
-
-import io.fabric8.kubernetes.api.model.Namespaced;
-import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.model.annotation.Group;
-import io.fabric8.kubernetes.model.annotation.Version;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
