@@ -15,6 +15,8 @@
  */
 package io.fabric8.kubernetes.client.informers;
 
+import static io.fabric8.kubernetes.client.utils.KubernetesResourceUtil.inferListType;
+
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ListOptions;
@@ -26,13 +28,8 @@ import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.kubernetes.client.dsl.internal.CustomResourceOperationsImpl;
 import io.fabric8.kubernetes.client.informers.impl.DefaultSharedIndexInformer;
-import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
-import io.fabric8.kubernetes.client.utils.Pluralize;
 import io.fabric8.kubernetes.internal.KubernetesDeserializer;
-import okhttp3.OkHttpClient;
-
 import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.HashMap;
@@ -40,6 +37,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import okhttp3.OkHttpClient;
 
 /**
  * SharedInformerFactory class constructs and caches informers for api types.
@@ -109,7 +107,7 @@ public class SharedInformerFactory extends BaseOperation {
    * @return the shared index informer
    */
   public synchronized <T extends HasMetadata> SharedIndexInformer<T> sharedIndexInformerFor(Class<T> apiTypeClass, long resyncPeriodInMillis) {
-    return sharedIndexInformerFor(apiTypeClass, KubernetesResourceUtil.inferListType(apiTypeClass), null, resyncPeriodInMillis);
+    return sharedIndexInformerFor(apiTypeClass, inferListType(apiTypeClass), null, resyncPeriodInMillis);
   }
 
   /**
@@ -124,7 +122,7 @@ public class SharedInformerFactory extends BaseOperation {
    * @return the shared index informer
    */
   public synchronized <T extends HasMetadata> SharedIndexInformer<T> sharedIndexInformerFor(Class<T> apiTypeClass, OperationContext operationContext, long resyncPeriodInMillis) {
-    return sharedIndexInformerFor(apiTypeClass, KubernetesResourceUtil.inferListType(apiTypeClass), operationContext, resyncPeriodInMillis);
+    return sharedIndexInformerFor(apiTypeClass, inferListType(apiTypeClass), operationContext, resyncPeriodInMillis);
   }
 
   /**
@@ -136,7 +134,7 @@ public class SharedInformerFactory extends BaseOperation {
    * @param <T> the type parameter (should extend {@link CustomResource} and implement {@link io.fabric8.kubernetes.api.model.Namespaced})
    * @return the shared index informer
    */
-  public synchronized <T extends CustomResource, L extends CustomResourceList<T>> SharedIndexInformer<T> sharedIndexInformerForCustomResource(Class<T> apiTypeClass, Class<L> apiTypeListClass, long resyncPeriodInMillis) {
+  public synchronized <T extends CustomResource<?,?>, L extends CustomResourceList<T>> SharedIndexInformer<T> sharedIndexInformerForCustomResource(Class<T> apiTypeClass, Class<L> apiTypeListClass, long resyncPeriodInMillis) {
     return sharedIndexInformerFor(apiTypeClass, apiTypeListClass, null, resyncPeriodInMillis);
   }
 
@@ -164,7 +162,7 @@ public class SharedInformerFactory extends BaseOperation {
    * @return the shared index informer
    */
   public synchronized <T extends CustomResource> SharedIndexInformer<T> sharedIndexInformerForCustomResource(Class<T> apiTypeClass, OperationContext operationContext, long resyncPeriodInMillis) {
-    return sharedIndexInformerFor(apiTypeClass, CustomResourceOperationsImpl.inferListType(apiTypeClass), operationContext, resyncPeriodInMillis);
+    return sharedIndexInformerFor(apiTypeClass, inferListType(apiTypeClass), operationContext, resyncPeriodInMillis);
   }
 
   /**
@@ -176,7 +174,7 @@ public class SharedInformerFactory extends BaseOperation {
    * @return the shared index informer
    */
   public synchronized <T extends CustomResource> SharedIndexInformer<T> sharedIndexInformerForCustomResource(Class<T> apiTypeClass, long resyncPeriodInMillis) {
-    return sharedIndexInformerFor(apiTypeClass, CustomResourceOperationsImpl.inferListType(apiTypeClass), null, resyncPeriodInMillis);
+    return sharedIndexInformerFor(apiTypeClass, inferListType(apiTypeClass), null, resyncPeriodInMillis);
   }
 
   /**
@@ -195,7 +193,7 @@ public class SharedInformerFactory extends BaseOperation {
     ListerWatcher<T, L> listerWatcher = listerWatcherFor(apiTypeClass, apiListTypeClass);
     OperationContext context = this.context.withApiGroupName(HasMetadata.getGroup(apiTypeClass))
       .withApiGroupVersion(HasMetadata.getVersion(apiTypeClass))
-      .withPlural(resolvePlural(apiTypeClass))
+      .withPlural(CustomResource.getPlural(apiTypeClass))
       .withIsNamespaceConfiguredFromGlobalConfig(this.context.isNamespaceFromGlobalConfig());
     if (this.namespace != null) {
       context = context.withNamespace(this.namespace).withIsNamespaceConfiguredFromGlobalConfig(false);
@@ -321,12 +319,5 @@ public class SharedInformerFactory extends BaseOperation {
     if (CustomResource.class.isAssignableFrom(apiTypeClass)) {
       KubernetesDeserializer.registerCustomKind(HasMetadata.getApiVersion(apiTypeClass), apiTypeClass.getSimpleName(), apiTypeClass);
     }
-  }
-
-  private <T extends HasMetadata> String resolvePlural(Class<T> apiTypeClass) {
-    if (CustomResource.class.isAssignableFrom(apiTypeClass)) {
-      return CustomResource.getPlural((Class<? extends CustomResource>)apiTypeClass);
-    }
-    return Pluralize.toPlural(HasMetadata.getKind(apiTypeClass)).toLowerCase();
   }
 }

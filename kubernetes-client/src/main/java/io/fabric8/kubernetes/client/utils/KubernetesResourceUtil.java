@@ -25,7 +25,6 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.OwnerReference;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
-
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -371,13 +370,10 @@ public class KubernetesResourceUtil {
 
   public static <T extends HasMetadata> Class<? extends KubernetesResourceList> inferListType(Class<T> type) {
     try {
-      Class<?> listTypeClass = Class.forName(type.getName() + "List");
-      if (KubernetesResourceList.class.isAssignableFrom(listTypeClass)) {
-        return (Class<KubernetesResourceList<T>>) listTypeClass;
-      }
-    } catch (ClassNotFoundException e) {
-      throw new IllegalStateException("No List type found for " + type.getName() + ". Is it a Custom Resource?");
+      Class<?> listTypeClass = Thread.currentThread().getContextClassLoader().loadClass(type.getName() + "List");
+      return (Class<KubernetesResourceList<T>>) listTypeClass;
+    } catch (ClassNotFoundException | ClassCastException e) {
+      return KubernetesResourceList.class;
     }
-    return null;
   }
 }
