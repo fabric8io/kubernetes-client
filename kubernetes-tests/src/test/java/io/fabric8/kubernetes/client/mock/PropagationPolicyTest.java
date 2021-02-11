@@ -15,9 +15,13 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
@@ -31,20 +35,15 @@ import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.mock.crd.PodSet;
-import io.fabric8.kubernetes.client.mock.crd.PodSetList;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.util.Map;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.Rule;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
-
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.util.Map;
-
-import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @EnableRuleMigrationSupport
 class PropagationPolicyTest {
@@ -405,8 +404,8 @@ class PropagationPolicyTest {
   void testDeleteCustomResource() throws InterruptedException {
     // Given
     server.expect().delete().withPath("/apis/demo.k8s.io/v1alpha1/namespaces/test/podsets/example-podset").andReturn(HttpURLConnection.HTTP_OK, new PodSet()).once();
-    MixedOperation<PodSet, PodSetList, Resource<PodSet>> podSetClient = server.getClient()
-      .customResources(PodSet.class, PodSetList.class);
+    MixedOperation<PodSet, KubernetesResourceList<PodSet>, Resource<PodSet>> podSetClient = server.getClient()
+      .customResources(PodSet.class);
 
     // When
     boolean isDeleted = podSetClient.inNamespace("test").withName("example-podset").delete();

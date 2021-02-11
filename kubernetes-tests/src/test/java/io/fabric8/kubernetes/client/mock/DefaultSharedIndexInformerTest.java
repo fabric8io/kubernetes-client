@@ -15,10 +15,13 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
+import static org.awaitility.Awaitility.await;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.api.model.ListMeta;
 import io.fabric8.kubernetes.api.model.ListMetaBuilder;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.NamespaceBuilder;
@@ -37,6 +40,8 @@ import io.fabric8.kubernetes.api.model.apps.DeploymentListBuilder;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBinding;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBindingBuilder;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBindingListBuilder;
+import io.fabric8.kubernetes.client.CustomResource;
+import io.fabric8.kubernetes.client.CustomResourceList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
@@ -45,33 +50,25 @@ import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
 import io.fabric8.kubernetes.client.mock.crd.Animal;
 import io.fabric8.kubernetes.client.mock.crd.AnimalSpec;
 import io.fabric8.kubernetes.client.mock.crd.CronTab;
-import io.fabric8.kubernetes.client.mock.crd.CronTabList;
 import io.fabric8.kubernetes.client.mock.crd.CronTabSpec;
 import io.fabric8.kubernetes.client.mock.crd.PodSet;
-import io.fabric8.kubernetes.client.mock.crd.PodSetList;
 import io.fabric8.kubernetes.client.mock.crd.PodSetSpec;
 import io.fabric8.kubernetes.client.mock.crd.Star;
-import io.fabric8.kubernetes.client.mock.crd.StarList;
 import io.fabric8.kubernetes.client.mock.crd.StarSpec;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import io.fabric8.kubernetes.client.utils.Utils;
+import java.net.HttpURLConnection;
+import java.util.Collections;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import org.junit.Rule;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
-
-import java.net.HttpURLConnection;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.awaitility.Awaitility.await;
 
 @EnableRuleMigrationSupport
 class DefaultSharedIndexInformerTest {
@@ -108,7 +105,7 @@ class DefaultSharedIndexInformerTest {
     String startResourceVersion = "1000", endResourceVersion = "1001";
 
     server.expect().withPath("/api/v1/namespaces/test/pods")
-      .andReturn(200, getEmptyPodList(startResourceVersion)).once();
+      .andReturn(200, getList(startResourceVersion, Pod.class)).once();
     server.expect().withPath("/api/v1/namespaces/test/pods?resourceVersion=" + startResourceVersion + "&watch=true")
       .andUpgradeToWebSocket()
       .open()
@@ -151,7 +148,7 @@ class DefaultSharedIndexInformerTest {
     String startResourceVersion = "1000", endResourceVersion = "1001";
 
     server.expect().withPath("/api/v1/namespaces/test/pods?fieldSelector=" + Utils.toUrlEncoded("metadata.name=pod1"))
-      .andReturn(200, getEmptyPodList(startResourceVersion)).once();
+      .andReturn(200, getList(startResourceVersion, Pod.class)).once();
     server.expect().withPath("/api/v1/namespaces/test/pods?fieldSelector=" + Utils.toUrlEncoded("metadata.name=pod1") + "&resourceVersion=" + startResourceVersion + "&watch=true")
       .andUpgradeToWebSocket()
       .open()
@@ -186,7 +183,6 @@ class DefaultSharedIndexInformerTest {
     await().atMost(1, TimeUnit.SECONDS)
       .until(() -> podInformer.lastSyncResourceVersion().equals(endResourceVersion));
     assertEquals(endResourceVersion, podInformer.lastSyncResourceVersion());
-
   }
 
   @Test
@@ -498,8 +494,7 @@ class DefaultSharedIndexInformerTest {
       .andEmit(outdatedEvent).done().always();
 
     // When
-    SharedIndexInformer<PodSet> podSetSharedIndexInformer = factory.inNamespace("ns1").sharedIndexInformerForCustomResource(PodSet.class, PodSetList.class,
-      new OperationContext().withLabels(Collections.singletonMap("foo", "bar")), 100L);
+    SharedIndexInformer<PodSet> podSetSharedIndexInformer = factory.inNamespace("ns1").sharedIndexInformerForCustomResource(PodSet.class, new OperationContext().withLabels(Collections.singletonMap("foo", "bar")), 100L);
     CountDownLatch foundExistingPod = new CountDownLatch(1);
     podSetSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingPod, "pod1"));
     factory.startAllRegisteredInformers();
@@ -513,8 +508,7 @@ class DefaultSharedIndexInformerTest {
   @DisplayName("PodSet Informer should watch in all namespaces")
   void testPodSetCustomResourceInformerShouldWatchInAllNamespaces() throws InterruptedException {
     // Given
-    setupMockServerExpectationsForCustomResource("demo.k8s.io", "v1alpha1", null, "podsets",
-      this::getPodSetList, r -> new WatchEvent(getPodSet("podset1", r), "ADDED"));
+    setupMockServerExpectations(Pod.class, null, this::getList, r -> new WatchEvent(getPodSet("podset1", r), "ADDED"));
 
     // When
     SharedIndexInformer<PodSet> podSetSharedIndexInformer = factory.sharedIndexInformerForCustomResource(PodSet.class, 60 * WATCH_EVENT_EMIT_TIME);
@@ -532,8 +526,7 @@ class DefaultSharedIndexInformerTest {
   @DisplayName("PodSet Informer should watch in ns1(as specified in OperationContext)")
   void testWithPodSetCustomResourceInformerShouldWatchInSpecifiedNamespace() throws InterruptedException {
     // Given
-    setupMockServerExpectationsForCustomResource("demo.k8s.io", "v1alpha1", "ns1", "podsets",
-      this::getPodSetList, r -> new WatchEvent(getPodSet("podset1", r), "ADDED"));
+    setupMockServerExpectations(Pod.class, "ns1", this::getList, r -> new WatchEvent(getPodSet("podset1", r), "ADDED"));
 
     // When
     SharedIndexInformer<PodSet> podSetSharedIndexInformer = factory.inNamespace("ns1").sharedIndexInformerForCustomResource(PodSet.class, 60 * WATCH_EVENT_EMIT_TIME);
@@ -549,11 +542,10 @@ class DefaultSharedIndexInformerTest {
   @Test
   void testWithOperationContextArgumentForClusterScopedCustomResource() throws InterruptedException {
     // Given
-    setupMockServerExpectationsForCustomResource("example.crd.com", "v1alpha1", null, "stars",
-      this::getStarList, r -> new WatchEvent(getStar("star1", r), "ADDED"));
+    setupMockServerExpectations(Star.class, null, this::getList, r -> new WatchEvent(getStar("star1", r), "ADDED"));
 
     // When
-    SharedIndexInformer<Star> starSharedIndexInformer = factory.sharedIndexInformerForCustomResource(Star.class, StarList.class, RESYNC_PERIOD);
+    SharedIndexInformer<Star> starSharedIndexInformer = factory.sharedIndexInformerForCustomResource(Star.class,  RESYNC_PERIOD);
     CountDownLatch foundExistingStar = new CountDownLatch(1);
     starSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingStar, "star1"));
     factory.startAllRegisteredInformers();
@@ -616,11 +608,28 @@ class DefaultSharedIndexInformerTest {
   }
 
   @Test
-  @DisplayName("CronTab Informer should watch in namespace provided in OperationContext")
+  @DisplayName("CronTab Informer without any CRDContext, OperationContext should watch in all namespaces")
+  void testCronTabCustomResourceInformerWithNoCRDContextShouldWatchInAllNamespaces() throws InterruptedException {
+    // Given
+    setupMockServerExpectations(CronTab.class, null, this::getList, r -> new WatchEvent(getCronTab("crontab1", r), "ADDED"));
+
+    // When
+    SharedIndexInformer<CronTab> cronTabSharedIndexInformer = factory.sharedIndexInformerForCustomResource(CronTab.class, 60 * WATCH_EVENT_EMIT_TIME);
+    CountDownLatch foundExistingCronTab = new CountDownLatch(1);
+    cronTabSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingCronTab, "crontab1"));
+    factory.startAllRegisteredInformers();
+    foundExistingCronTab.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
+
+    // Then
+    assertEquals("test", client.getConfiguration().getNamespace());
+    assertEquals(0, foundExistingCronTab.getCount());
+  }
+
+  @Test
+  @DisplayName("CronTab Informer without any CRDContext should watch in namespace provided in OperationContext")
   void testCronTabCustomResourceInformerWithNoCRDContextShouldWatchInNamespaces() throws InterruptedException {
     // Given
-    setupMockServerExpectationsForCustomResource("stable.example.com", "v1", "ns1", "crontabs",
-      this::getCronTabList, r -> new WatchEvent(getCronTab("crontab1", r), "ADDED"));
+    setupMockServerExpectations(CronTab.class, "ns1", this::getList, r -> new WatchEvent(getCronTab("crontab1", r), "ADDED"));
 
     // When
     SharedIndexInformer<CronTab> cronTabSharedIndexInformer = factory.inNamespace("ns1").sharedIndexInformerForCustomResource(CronTab.class, 60 * WATCH_EVENT_EMIT_TIME);
@@ -637,8 +646,7 @@ class DefaultSharedIndexInformerTest {
   @DisplayName("CronTab Informer with no OperationContext should watch in all namespaces")
   void testCronTabCustomResourceInformerWithNoCRDContextAndListShouldWatchInAllNamespaces() throws InterruptedException {
     // Given
-    setupMockServerExpectationsForCustomResource("stable.example.com", "v1", null, "crontabs",
-      this::getCronTabList, r -> new WatchEvent(getCronTab("crontab1", r), "ADDED"));
+    setupMockServerExpectations(CronTab.class, null, this::getList, r -> new WatchEvent(getCronTab("crontab1", r), "ADDED"));
 
     // When
     SharedIndexInformer<CronTab> cronTabSharedIndexInformer = factory.sharedIndexInformerForCustomResource(CronTab.class, 60 * WATCH_EVENT_EMIT_TIME);
@@ -656,8 +664,7 @@ class DefaultSharedIndexInformerTest {
   @DisplayName("CronTab Informer should watch in all namespaces")
   void testCronTabCustomResourceInformerShouldWatchAllNamespaces() throws InterruptedException {
     // Given
-    setupMockServerExpectationsForCustomResource("stable.example.com", "v1", null, "crontabs",
-      this::getCronTabList, r -> new WatchEvent(getCronTab("crontab1", r), "ADDED"));
+    setupMockServerExpectations(CronTab.class, "ns1", this::getList, r -> new WatchEvent(getCronTab("crontab1", r), "ADDED"));
 
     // When
     SharedIndexInformer<CronTab> cronTabSharedIndexInformer = factory.sharedIndexInformerForCustomResource(CronTab.class, 60 * WATCH_EVENT_EMIT_TIME);
@@ -675,8 +682,7 @@ class DefaultSharedIndexInformerTest {
   @DisplayName("CronTab Informer with should watch in namespaces in OperationContext")
   void testCronTabCustomResourceInformerWithShouldWatchNamespaceProvidedInOperationContext() throws InterruptedException {
     // Given
-    setupMockServerExpectationsForCustomResource("stable.example.com", "v1", "ns1", "crontabs",
-      this::getCronTabList, r -> new WatchEvent(getCronTab("crontab1", r), "ADDED"));
+    setupMockServerExpectations(CronTab.class, "ns1", this::getList, r -> new WatchEvent(getCronTab("crontab1", r), "ADDED"));
 
     // When
     SharedIndexInformer<CronTab> cronTabSharedIndexInformer = factory.inNamespace("ns1").sharedIndexInformerForCustomResource(CronTab.class, 60 * WATCH_EVENT_EMIT_TIME);
@@ -693,8 +699,7 @@ class DefaultSharedIndexInformerTest {
   @Test
   void testCustomResourceInformerWithNoListTypeInClassPath() throws InterruptedException {
     // Given
-    setupMockServerExpectationsForCustomResource("jungle.example.com", "v1", null, "animals",
-      this::getAnimalList, r -> new WatchEvent(getAnimal("red-panda", "Carnivora", r), "ADDED"));
+    setupMockServerExpectations(Animal.class, null, this::getList, r -> new WatchEvent(getAnimal("red-panda", "Carnivora", r), "ADDED"));
 
     // When
     SharedIndexInformer<Animal> animalSharedIndexInformer = factory.sharedIndexInformerForCustomResource(Animal.class, 60 * WATCH_EVENT_EMIT_TIME);
@@ -718,16 +723,10 @@ class DefaultSharedIndexInformerTest {
     return animal;
   }
 
-  private StarList getStarList(String startResourceVersion) {
-    StarList starList = new StarList();
-    starList.setMetadata(new ListMetaBuilder().withResourceVersion(startResourceVersion).build());
-    return starList;
-  }
-
-  private CronTabList getCronTabList(String startResourceVersion) {
-    CronTabList cronTabList = new CronTabList();
-    cronTabList.setMetadata(new ListMetaBuilder().withResourceVersion(startResourceVersion).build());
-    return cronTabList;
+  private <T extends HasMetadata> KubernetesResourceList<T> getList(String startResourceVersion, Class<T> crClass) {
+    final CustomResourceList<T> list = new CustomResourceList<>();
+    list.setMetadata(new ListMetaBuilder().withResourceVersion(startResourceVersion).build());
+    return list;
   }
 
   private KubernetesResource getCronTab(String name, String resourceVersion) {
@@ -741,15 +740,15 @@ class DefaultSharedIndexInformerTest {
     return cronTab;
   }
 
-  private <T extends HasMetadata, L extends KubernetesResourceList<T>> void setupMockServerExpectationsForCustomResource(String group, String version, String namespace, String plural, Function<String, L> listSupplier, Function<String, WatchEvent> watchEventSupplier) {
+  private <T extends HasMetadata> void setupMockServerExpectations(Class<T> resourceClass, String namespace, BiFunction<String, Class<T>, KubernetesResourceList<T>> listSupplier, Function<String, WatchEvent> watchEventSupplier) {
     String startResourceVersion = "1000", endResourceVersion = "1001";
-    String url = "/apis/" + group +"/" + version;
+    String url = "/apis/" + HasMetadata.getGroup(resourceClass) +"/" + HasMetadata.getVersion(resourceClass);
     if (namespace != null) {
       url += ("/namespaces/" + namespace);
     }
-    url += ("/" + plural);
+    url += ("/" + CustomResource.getPlural(resourceClass));
     server.expect().withPath(url)
-      .andReturn(HttpURLConnection.HTTP_OK, listSupplier.apply(startResourceVersion)).once();
+      .andReturn(HttpURLConnection.HTTP_OK, listSupplier.apply(startResourceVersion, resourceClass)).once();
 
     server.expect().withPath(url + "?resourceVersion=" + startResourceVersion + "&watch=true")
       .andUpgradeToWebSocket()
@@ -789,7 +788,6 @@ class DefaultSharedIndexInformerTest {
     starSpec.setLocation("Galaxy");
 
     Star star = new Star();
-    star.setApiVersion("example.crd.com/v1alpha1");
     star.setMetadata(new ObjectMetaBuilder().withName(name).withResourceVersion(resourceVersion).build());
     star.setSpec(starSpec);
     return star;
@@ -800,37 +798,9 @@ class DefaultSharedIndexInformerTest {
     podSetSpec.setReplicas(5);
 
     PodSet podSet = new PodSet();
-    podSet.setApiVersion("demo.k8s.io/v1alpha1");
     podSet.setMetadata(new ObjectMetaBuilder().withName(name).withResourceVersion(resourceVersion).build());
     podSet.setSpec(podSetSpec);
 
     return podSet;
   }
-
-  private PodSetList getPodSetList(String startResourceVersion) {
-    PodSetList podSetList = new PodSetList();
-    podSetList.setMetadata(new ListMetaBuilder().withResourceVersion(startResourceVersion).build());
-    return podSetList;
-  }
-
-  private KubernetesResourceList<Animal> getAnimalList(String resourceVersion) {
-    return new KubernetesResourceList<Animal>() {
-      @Override
-      public ListMeta getMetadata() {
-        return new ListMetaBuilder()
-          .withResourceVersion(resourceVersion)
-          .build();
-      }
-
-      @Override
-      public List<Animal> getItems() {
-        return Collections.emptyList();
-      }
-    };
-  }
-
-  private KubernetesResourceList<Pod> getEmptyPodList(String resourceVersion) {
-    return new PodListBuilder().withNewMetadata().withResourceVersion(resourceVersion).endMetadata().withItems(Collections.emptyList()).build();
-  }
-
 }
