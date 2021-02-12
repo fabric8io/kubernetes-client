@@ -508,7 +508,7 @@ class DefaultSharedIndexInformerTest {
   @DisplayName("PodSet Informer should watch in all namespaces")
   void testPodSetCustomResourceInformerShouldWatchInAllNamespaces() throws InterruptedException {
     // Given
-    setupMockServerExpectations(Pod.class, null, this::getList, r -> new WatchEvent(getPodSet("podset1", r), "ADDED"));
+    setupMockServerExpectations(PodSet.class, null, this::getList, r -> new WatchEvent(getPodSet("podset1", r), "ADDED"));
 
     // When
     SharedIndexInformer<PodSet> podSetSharedIndexInformer = factory.sharedIndexInformerForCustomResource(PodSet.class, 60 * WATCH_EVENT_EMIT_TIME);
@@ -526,7 +526,7 @@ class DefaultSharedIndexInformerTest {
   @DisplayName("PodSet Informer should watch in ns1(as specified in OperationContext)")
   void testWithPodSetCustomResourceInformerShouldWatchInSpecifiedNamespace() throws InterruptedException {
     // Given
-    setupMockServerExpectations(Pod.class, "ns1", this::getList, r -> new WatchEvent(getPodSet("podset1", r), "ADDED"));
+    setupMockServerExpectations(PodSet.class, "ns1", this::getList, r -> new WatchEvent(getPodSet("podset1", r), "ADDED"));
 
     // When
     SharedIndexInformer<PodSet> podSetSharedIndexInformer = factory.inNamespace("ns1").sharedIndexInformerForCustomResource(PodSet.class, 60 * WATCH_EVENT_EMIT_TIME);
@@ -664,7 +664,7 @@ class DefaultSharedIndexInformerTest {
   @DisplayName("CronTab Informer should watch in all namespaces")
   void testCronTabCustomResourceInformerShouldWatchAllNamespaces() throws InterruptedException {
     // Given
-    setupMockServerExpectations(CronTab.class, "ns1", this::getList, r -> new WatchEvent(getCronTab("crontab1", r), "ADDED"));
+    setupMockServerExpectations(CronTab.class, null, this::getList, r -> new WatchEvent(getCronTab("crontab1", r), "ADDED"));
 
     // When
     SharedIndexInformer<CronTab> cronTabSharedIndexInformer = factory.sharedIndexInformerForCustomResource(CronTab.class, 60 * WATCH_EVENT_EMIT_TIME);
