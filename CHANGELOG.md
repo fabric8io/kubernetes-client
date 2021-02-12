@@ -4,8 +4,8 @@
 
 #### Bugs
 * Fix #2620: Add support for `config.openshift.io/v1` Ingress
-
-- Fix: CRD generator no longer treat enum values as properties (performance)
+* Fix #2784: Not able to deserialize ClusterServiceVersion
+* Fix: CRD generator no longer treat enum values as properties (performance)
 
 #### Improvements
 - RawCustomResourceOperationsImpl should also work with standard resources
