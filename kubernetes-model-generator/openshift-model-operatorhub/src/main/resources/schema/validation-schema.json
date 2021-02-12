@@ -3665,14 +3665,6 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "os_operatorhub_manifests_OperatorVersion": {
-      "type": "object",
-      "additionalProperties": true,
-      "javaType": "io.fabric8.openshift.api.model.operatorhub.v1alpha1.OperatorVersion",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
     "os_operatorhub_manifests_PackageChannel": {
       "type": "object",
       "properties": {
@@ -4441,8 +4433,7 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
         },
         "version": {
-          "$ref": "#/definitions/os_operatorhub_manifests_OperatorVersion",
-          "existingJavaType": "io.fabric8.openshift.api.model.operatorhub.v1alpha1.OperatorVersion"
+          "type": "string"
         },
         "webhookdefinitions": {
           "type": "array",
@@ -6260,8 +6251,7 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
         },
         "version": {
-          "$ref": "#/definitions/os_operatorhub_manifests_OperatorVersion",
-          "existingJavaType": "io.fabric8.openshift.api.model.operatorhub.v1alpha1.OperatorVersion"
+          "type": "string"
         },
         "webhookdefinitions": {
           "type": "array",
@@ -8130,9 +8120,6 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
         }
       },
-      "additionalProperties": true
-    },
-    "operatorversion": {
       "additionalProperties": true
     },
     "ownerreference": {
