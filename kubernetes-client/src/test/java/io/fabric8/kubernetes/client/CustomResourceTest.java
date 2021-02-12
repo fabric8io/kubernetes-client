@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import org.junit.jupiter.api.DisplayName;
@@ -64,7 +65,28 @@ class CustomResourceTest {
     assertFalse(custom.isServed());
     assertFalse(custom.isStorage());
   }
-  
+
+  @Test
+  void serializationRoundtripShouldWork() {
+    Good cr = new Good();
+    cr.getMetadata().setName("foo");
+    checkRoundtrip(cr);
+
+    Custom custom = new Custom();
+    custom.getMetadata().setName("custom");
+    checkRoundtrip(custom);
+  }
+
+  private void checkRoundtrip(CustomResource<?,?> cr) {
+    final String yml = Serialization.asYaml(cr);
+    assertTrue(yml.contains("apiVersion: \"" + cr.getApiVersion()));
+    assertTrue(yml.contains("name: \"" + cr.getMetadata().getName()));
+    assertTrue(yml.contains("kind: \"" + cr.getKind()));
+    final CustomResource unmarshalled = Serialization.unmarshal(yml, cr.getClass());
+    assertEquals(cr.getApiVersion(), unmarshalled.getApiVersion());
+    assertEquals(cr.getKind(), unmarshalled.getKind());
+  }
+
   @Test
   void untypedCustomResourceInitShouldWork() {
     final CustomResource cr = new Untyped();
@@ -126,6 +148,28 @@ class CustomResourceTest {
     final IllegalArgumentException exception = assertThrows(
       IllegalArgumentException.class, CRInterface::new);
     assertTrue(exception.getMessage().contains(KubernetesResource.class.getName()));
+  }
+
+  @Test
+  void inconsistentGroupShouldFail() {
+    final IllegalArgumentException e = assertThrows(
+      IllegalArgumentException.class, InconsistentGroup::new);
+    final String message = e.getMessage();
+    assertTrue(message.contains(InconsistentGroup.class.getName()));
+    assertTrue(message.contains("group"));
+    assertTrue(message.contains("foo.com"));
+    assertTrue(message.contains("example.com"));
+  }
+  
+  @Test
+  void inconsistentVersionShouldFail() {
+    final IllegalArgumentException e = assertThrows(
+      IllegalArgumentException.class, InconsistentVersion::new);
+    final String message = e.getMessage();
+    assertTrue(message.contains(InconsistentVersion.class.getName()));
+    assertTrue(message.contains("version"));
+    assertTrue(message.contains("v1"));
+    assertTrue(message.contains("v2"));
   }
   
   private static class Foo {
@@ -192,4 +236,24 @@ class CustomResourceTest {
   @Group("example.com")
   @Version("v1")
   private static class VoidVoid extends CustomResource<Void, Void> {}
+
+  @Group("example.com")
+  @Version("v1")
+  private static class InconsistentGroup extends CustomResource<Void, Void> {
+
+    @Override
+    public String getApiVersion() {
+      return "foo.com/v1";
+    }
+  }
+
+  @Group("example.com")
+  @Version("v1")
+  private static class InconsistentVersion extends CustomResource<Void, Void> {
+
+    @Override
+    public String getApiVersion() {
+      return "example.com/v2";
+    }
+  }
 }

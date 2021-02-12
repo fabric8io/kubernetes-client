@@ -142,13 +142,15 @@ public class CustomResourceDefinitionContext {
   public static CustomResourceDefinitionContext fromCrd(
     io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition crd
   ) {
+    final io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionSpec spec = crd
+      .getSpec();
     return new CustomResourceDefinitionContext.Builder()
-      .withGroup(crd.getSpec().getGroup())
-      .withVersion(getVersion(crd.getSpec()))
-      .withScope(crd.getSpec().getScope())
+      .withGroup(spec.getGroup())
+      .withVersion(getVersion(spec))
+      .withScope(spec.getScope())
       .withName(crd.getMetadata().getName())
-      .withPlural(crd.getSpec().getNames().getPlural())
-      .withKind(crd.getSpec().getNames().getKind())
+      .withPlural(spec.getNames().getPlural())
+      .withKind(spec.getNames().getKind())
       .build();
   }
 

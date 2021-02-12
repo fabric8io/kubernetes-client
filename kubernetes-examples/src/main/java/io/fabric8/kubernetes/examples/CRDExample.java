@@ -20,8 +20,8 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionList;
-import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.CustomResourceList;
+import io.fabric8.kubernetes.client.CustomResourceMetadata;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -35,11 +35,10 @@ import io.fabric8.kubernetes.examples.crds.Dummy;
 import io.fabric8.kubernetes.examples.crds.DummyList;
 import io.fabric8.kubernetes.examples.crds.DummySpec;
 import io.fabric8.kubernetes.internal.KubernetesDeserializer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.Date;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CRDExample {
 
@@ -97,7 +96,7 @@ public class CRDExample {
       List<CustomResourceDefinition> crdsItems = crds.getItems();
       System.out.println("Found " + crdsItems.size() + " CRD(s)");
       CustomResourceDefinition dummyCRD = null;
-      final String dummyCRDName = CustomResource.getCRDName(Dummy.class);
+      final String dummyCRDName = CustomResourceMetadata.getCRDName(Dummy.class);
       for (CustomResourceDefinition crd : crdsItems) {
         ObjectMeta metadata = crd.getMetadata();
         if (metadata != null) {
