@@ -26,7 +26,6 @@ import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.ConfigMapList;
 import io.fabric8.kubernetes.api.model.Event;
 import io.fabric8.kubernetes.api.model.EventBuilder;
-import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
@@ -34,6 +33,7 @@ import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.batch.CronJob;
 import io.fabric8.kubernetes.api.model.batch.CronJobList;
+import io.fabric8.kubernetes.client.CustomResourceList;
 import io.fabric8.kubernetes.client.Good;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import java.time.Duration;
@@ -214,6 +214,6 @@ class KubernetesResourceUtilTest {
     assertEquals(PodList.class, KubernetesResourceUtil.inferListType(Pod.class));
     assertEquals(ConfigMapList.class, KubernetesResourceUtil.inferListType(ConfigMap.class));
     assertEquals(CronJobList.class, KubernetesResourceUtil.inferListType(CronJob.class));
-    assertEquals(KubernetesResourceList.class, KubernetesResourceUtil.inferListType(Good.class));
+    assertEquals(CustomResourceList.class, KubernetesResourceUtil.inferListType(Good.class));
   }
 }
