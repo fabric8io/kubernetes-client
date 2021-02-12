@@ -49,8 +49,7 @@ import org.slf4j.LoggerFactory;
  *   <li>computed CRD name using {@link CustomResourceMetadata#getCRDName(Class)}</li>
  * </ul>
  *
- * In addition, {@link #setApiVersion(String)} is overridden to not do anything since these values
- * are set.
+ * In addition, {@link #setApiVersion(String)} and {@link #setKind(String)} are overridden to not do anything since these values are set.
  *
  * @param <S> the class providing the {@code Spec} part of this CustomResource
  * @param <T> the class providing the {@code Status} part of this CustomResource
@@ -161,9 +160,13 @@ public abstract class CustomResource<S, T> implements HasMetadata, CustomResourc
 
   @Override
   public void setApiVersion(String version) {
-    // already set in constructor
     LOG.debug(
       "Calling CustomResource#setApiVersion doesn't do anything because the API version is computed and shouldn't be changed");
+  }
+
+  public void setKind(String kind) {
+    LOG.debug(
+      "Calling CustomResource#setKind doesn't do anything because the Kind is computed and shouldn't be changed");
   }
 
   @Override

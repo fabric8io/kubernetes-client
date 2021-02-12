@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import org.junit.jupiter.api.DisplayName;
@@ -64,7 +65,28 @@ class CustomResourceTest {
     assertFalse(custom.isServed());
     assertFalse(custom.isStorage());
   }
-  
+
+  @Test
+  void serializationRoundtripShouldWork() {
+    Good cr = new Good();
+    cr.getMetadata().setName("foo");
+    checkRoundtrip(cr);
+
+    Custom custom = new Custom();
+    custom.getMetadata().setName("custom");
+    checkRoundtrip(custom);
+  }
+
+  private void checkRoundtrip(CustomResource<?,?> cr) {
+    final String yml = Serialization.asYaml(cr);
+    assertTrue(yml.contains("apiVersion: \"" + cr.getApiVersion()));
+    assertTrue(yml.contains("name: \"" + cr.getMetadata().getName()));
+    assertTrue(yml.contains("kind: \"" + cr.getKind()));
+    final CustomResource unmarshalled = Serialization.unmarshal(yml, cr.getClass());
+    assertEquals(cr.getApiVersion(), unmarshalled.getApiVersion());
+    assertEquals(cr.getKind(), unmarshalled.getKind());
+  }
+
   @Test
   void untypedCustomResourceInitShouldWork() {
     final CustomResource cr = new Untyped();
