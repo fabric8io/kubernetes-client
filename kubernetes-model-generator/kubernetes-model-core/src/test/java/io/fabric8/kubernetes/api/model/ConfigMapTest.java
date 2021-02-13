@@ -15,20 +15,17 @@
  */
 package io.fabric8.kubernetes.api.model;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Test;
-
-import java.util.HashMap;
-
 import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
 import static net.javacrumbs.jsonunit.core.Option.IGNORING_EXTRA_FIELDS;
 import static net.javacrumbs.jsonunit.core.Option.TREATING_NULL_AS_ABSENT;
 import static net.javacrumbs.jsonunit.fluent.JsonFluentAssert.assertThatJson;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.model.util.Helper;
+import java.util.HashMap;
+import org.junit.jupiter.api.Test;
 
 public class ConfigMapTest {
     private final ObjectMapper mapper = new ObjectMapper();
@@ -68,12 +65,11 @@ public class ConfigMapTest {
         assertNotNull(configMap);
         assertEquals("game-config", configMap.getMetadata().getName());
         assertEquals(5,configMap.getData().size());
-        assertTrue(configMap.getData().get("game.properties").equals("enemies=aliens\nlives=3\nsecret.code.lives=30"));
-        assertTrue(configMap.getData().get("ui.properties").equals("color.good=purple\ncolor.bad=yellow\n"));
-        assertTrue(configMap.getData().get("special.how").equals("test1"));
-        assertTrue(configMap.getData().get("special.type").equals("test2"));
-        assertTrue(configMap.getData().get("example.property.file")
-                .equals("property.1=value-1\nproperty.2=value-2\nproperty.3=value-3"));
+        assertEquals("enemies=aliens\nlives=3\nsecret.code.lives=30", configMap.getData().get("game.properties"));
+        assertEquals("color.good=purple\ncolor.bad=yellow\n", configMap.getData().get("ui.properties"));
+        assertEquals("test1", configMap.getData().get("special.how"));
+        assertEquals("test2", configMap.getData().get("special.type"));
+        assertEquals("property.1=value-1\nproperty.2=value-2\nproperty.3=value-3", configMap.getData().get("example.property.file"));
 
     }
 }
