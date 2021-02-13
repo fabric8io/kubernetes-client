@@ -15,26 +15,6 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
-import io.fabric8.kubernetes.api.model.KubernetesList;
-import io.fabric8.kubernetes.api.model.KubernetesResource;
-import io.fabric8.kubernetes.api.model.Pod;
-import io.fabric8.kubernetes.api.model.Quantity;
-import io.fabric8.kubernetes.api.model.Service;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps;
-import io.fabric8.kubernetes.api.model.apps.Deployment;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -43,6 +23,23 @@ import static org.junit.Assert.assertTrue;
 import com.fasterxml.jackson.databind.node.BooleanNode;
 import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.TextNode;
+import io.fabric8.kubernetes.api.model.KubernetesList;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.Quantity;
+import io.fabric8.kubernetes.api.model.Service;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps;
+import io.fabric8.kubernetes.api.model.apps.Deployment;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.util.Map;
+import java.util.stream.Collectors;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 public class SerializationTest {
 
@@ -57,15 +54,15 @@ public class SerializationTest {
       .getProperties()
       .get("spec");
 
-    assertEquals(spec.getRequired().size(), 3);
-    assertEquals(spec.getRequired().get(0), "builderName");
-    assertEquals(spec.getRequired().get(1), "edges");
-    assertEquals(spec.getRequired().get(2), "dimensions");
+    assertEquals(3, spec.getRequired().size());
+    assertEquals("builderName", spec.getRequired().get(0));
+    assertEquals("edges", spec.getRequired().get(1));
+    assertEquals("dimensions", spec.getRequired().get(2));
 
     Map<String, JSONSchemaProps> properties = spec.getProperties();
     assertNotNull(properties.get("builderName"));
     assertEquals(properties.get("builderName").getExample(), new TextNode("builder-example"));
-    assertEquals(properties.get("hollow").getDefault(), BooleanNode.FALSE);
+    assertEquals(BooleanNode.FALSE, properties.get("hollow").getDefault());
 
     assertNotNull(properties.get("dimensions"));
     assertNotNull(properties.get("dimensions").getProperties().get("x"));

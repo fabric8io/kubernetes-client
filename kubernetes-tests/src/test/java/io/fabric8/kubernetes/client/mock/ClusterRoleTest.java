@@ -16,20 +16,19 @@
 
 package io.fabric8.kubernetes.client.mock;
 
+import static org.assertj.core.api.AssertionsForClassTypes.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRole;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import java.util.List;
 import org.junit.Rule;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
-
-import java.util.List;
-
-import static org.assertj.core.api.AssertionsForClassTypes.fail;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @EnableRuleMigrationSupport
 class ClusterRoleTest {
@@ -56,8 +55,8 @@ class ClusterRoleTest {
       List<HasMetadata> hasMetadata = load.get();
 
       assertNotNull(hasMetadata);
-      assertEquals(hasMetadata.size(), 1);
-      assertEquals(hasMetadata.get(0).getMetadata().getName(), "viewer");
+      assertEquals(1, hasMetadata.size());
+      assertEquals("viewer", hasMetadata.get(0).getMetadata().getName());
     } catch (NullPointerException e) {
       fail("No handler found for specified resource");
     }
