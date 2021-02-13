@@ -16,16 +16,14 @@
 
 package io.fabric8.kubernetes.client.dsl.base;
 
-import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.UnaryOperator;
-
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
+import java.util.function.UnaryOperator;
 
 public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>> extends BaseOperation< T, L, R> {
   public static final DeletionPropagation DEFAULT_PROPAGATION_POLICY = DeletionPropagation.BACKGROUND;
@@ -69,7 +67,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
           }
         }
 
-        final Function<T, T> visitor = resource -> {
+        final UnaryOperator<T> visitor = resource -> {
           try {
             resource.getMetadata().setResourceVersion(resourceVersion);
             return handleReplace(resource);
@@ -115,7 +113,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
         } else {
           resourceVersion = null;
         }
-        final Function<T, T> visitor = resource -> {
+        final UnaryOperator<T> visitor = resource -> {
           try {
             resource.getMetadata().setResourceVersion(resourceVersion);
             return handlePatch(got, resource);
