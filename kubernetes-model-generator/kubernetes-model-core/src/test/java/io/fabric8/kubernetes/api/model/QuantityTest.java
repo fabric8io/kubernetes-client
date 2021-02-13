@@ -15,18 +15,15 @@
  */
 package io.fabric8.kubernetes.api.model;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
-import java.math.BigDecimal;
-
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.math.BigDecimal;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 public class QuantityTest {
   private final ObjectMapper mapper = new ObjectMapper();
@@ -117,13 +114,13 @@ public class QuantityTest {
   @Test
   @DisplayName("Test equals operation")
   public void testEquality() {
-    assertTrue(new Quantity(".5Mi").equals( new Quantity("512Ki")));
-    assertTrue(new Quantity("1Gi").equals(new Quantity("1024Mi")));
-    assertFalse(new Quantity("1E").equals(null));
-    assertFalse(((Object)new Quantity("2P")).equals((Object)"2P"));
+    assertEquals(new Quantity(".5Mi"), new Quantity("512Ki"));
+    assertEquals(new Quantity("1Gi"), new Quantity("1024Mi"));
+    assertNotEquals(null, new Quantity("1E"));
+    assertNotEquals(((Object) new Quantity("2P")), (Object) "2P");
 
     Quantity quantity = new Quantity("100.035k");
-    assertTrue(quantity.equals(quantity));
+    assertEquals(quantity, quantity);
     assertEquals(100035, quantity.hashCode());
   }
 

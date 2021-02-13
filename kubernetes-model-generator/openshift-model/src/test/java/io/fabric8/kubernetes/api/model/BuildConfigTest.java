@@ -15,9 +15,17 @@
  */
 package io.fabric8.kubernetes.api.model;
 
+import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
+import static net.javacrumbs.jsonunit.core.Option.IGNORING_EXTRA_FIELDS;
+import static net.javacrumbs.jsonunit.core.Option.TREATING_NULL_AS_ABSENT;
+import static net.javacrumbs.jsonunit.fluent.JsonFluentAssert.assertThatJson;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.fabric8.openshift.api.model.*;
 import io.fabric8.openshift.api.model.BinaryBuildSourceBuilder;
+import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildConfigBuilder;
 import io.fabric8.openshift.api.model.BuildPostCommitSpecBuilder;
 import io.fabric8.openshift.api.model.BuildTriggerPolicyBuilder;
@@ -31,17 +39,8 @@ import io.fabric8.openshift.api.model.SecretBuildSourceBuilder;
 import io.fabric8.openshift.api.model.SourceBuildStrategyBuilder;
 import io.fabric8.openshift.api.model.SourceControlUserBuilder;
 import io.fabric8.openshift.api.model.WebHookTriggerBuilder;
-import org.junit.jupiter.api.Test;
-
 import java.util.HashMap;
-
-import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
-import static net.javacrumbs.jsonunit.core.Option.IGNORING_EXTRA_FIELDS;
-import static net.javacrumbs.jsonunit.core.Option.TREATING_NULL_AS_ABSENT;
-import static net.javacrumbs.jsonunit.fluent.JsonFluentAssert.assertThatJson;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
 
 public class BuildConfigTest {
 
@@ -380,8 +379,8 @@ public class BuildConfigTest {
         assertEquals("--verbose", buildConfig.getSpec().getPostCommit().getArgs().get(4));
         assertEquals(1000L, buildConfig.getSpec().getCompletionDeadlineSeconds().intValue());
         assertEquals(2,buildConfig.getSpec().getNodeSelector().size());
-        assertTrue(buildConfig.getSpec().getNodeSelector().get("key1").equals("value1"));
-        assertTrue(buildConfig.getSpec().getNodeSelector().get("key2").equals("value2"));
+        assertEquals("value1", buildConfig.getSpec().getNodeSelector().get("key1"));
+        assertEquals("value2", buildConfig.getSpec().getNodeSelector().get("key2"));
         assertEquals(5, buildConfig.getSpec().getSuccessfulBuildsHistoryLimit().intValue());
         assertEquals(5, buildConfig.getSpec().getFailedBuildsHistoryLimit().intValue());
     }
