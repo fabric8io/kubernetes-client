@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
+import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.api.model.ObjectReference;
@@ -25,6 +26,7 @@ import io.fabric8.kubernetes.api.model.PodListBuilder;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.Deletable;
+import io.fabric8.kubernetes.client.dsl.EditReplacePatchDeletable;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
 import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.PodResource;
@@ -137,6 +139,9 @@ class PodOperationUtilTest {
 
   private FilterWatchListDeletable<Pod, PodList> getMockPodFilterOperation(String controllerUid) {
     return new FilterWatchListDeletable<Pod, PodList>() {
+      @Override
+      public EditReplacePatchDeletable<Pod> withPropagationPolicy(DeletionPropagation propagationPolicy) { return null; }
+
       @Override
       public Deletable withGracePeriod(long gracePeriodSeconds) { return null; }
 
