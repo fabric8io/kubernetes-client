@@ -22,8 +22,6 @@ import io.fabric8.kubernetes.api.model.extensions.ReplicaSet;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSetBuilder;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSetList;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
 import io.fabric8.kubernetes.client.dsl.Operation;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;

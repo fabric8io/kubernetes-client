@@ -24,9 +24,6 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import okhttp3.OkHttpClient;
 
-import java.util.Map;
-import java.util.TreeMap;
-
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.SECURITY;
 
 public class SecurityContextConstraintsOperationsImpl  extends OpenShiftOperation<SecurityContextConstraints, SecurityContextConstraintsList, Resource<SecurityContextConstraints>> {

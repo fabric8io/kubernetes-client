@@ -22,7 +22,6 @@ import io.fabric8.kubernetes.api.model.apps.StatefulSet;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetBuilder;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetList;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
 import io.fabric8.kubernetes.client.dsl.Operation;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;

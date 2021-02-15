@@ -21,9 +21,6 @@ import io.fabric8.kubernetes.client.Watcher;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.WebSocket;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;

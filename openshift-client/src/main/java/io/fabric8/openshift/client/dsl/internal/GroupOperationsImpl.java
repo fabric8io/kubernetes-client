@@ -24,8 +24,6 @@ import io.fabric8.openshift.api.model.GroupBuilder;
 import io.fabric8.openshift.api.model.GroupList;
 import io.fabric8.openshift.client.OpenShiftConfig;
 
-import java.util.Map;
-import java.util.TreeMap;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.USER;
 

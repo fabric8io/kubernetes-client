@@ -25,7 +25,6 @@ import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import okhttp3.OkHttpClient;
-import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 
 public class DefaultServingV1Beta1Client extends BaseClient implements NamespacedServingV1Beta1Client {
