@@ -17,7 +17,6 @@ package io.fabric8.kubernetes.client.dsl;
 
 import okhttp3.Response;
 
-import java.io.IOException;
 
 public interface ExecListener {
 

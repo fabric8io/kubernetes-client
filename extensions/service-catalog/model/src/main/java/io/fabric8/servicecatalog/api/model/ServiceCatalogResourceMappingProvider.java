@@ -17,7 +17,6 @@ package io.fabric8.servicecatalog.api.model;
 
 import io.fabric8.kubernetes.api.KubernetesResourceMappingProvider;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
-import io.fabric8.servicecatalog.api.model.*;
 
 import java.util.HashMap;
 import java.util.Map;

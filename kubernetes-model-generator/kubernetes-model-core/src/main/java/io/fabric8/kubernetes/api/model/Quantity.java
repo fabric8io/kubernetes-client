@@ -25,7 +25,6 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.sundr.builder.annotations.Buildable;
-import io.sundr.builder.annotations.Inline;
 
 import java.io.IOException;
 import java.math.BigDecimal;

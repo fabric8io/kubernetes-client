@@ -20,7 +20,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.sundr.builder.annotations.Buildable;
-import io.sundr.builder.annotations.Inline;
 
 import io.fabric8.kubernetes.model.annotation.Generated;
 
