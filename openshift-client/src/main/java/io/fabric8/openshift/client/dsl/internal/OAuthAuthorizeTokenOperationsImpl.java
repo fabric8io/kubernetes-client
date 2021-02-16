@@ -19,17 +19,11 @@ import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.openshift.api.model.OAuthAuthorizeToken;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.openshift.api.model.OAuthAccessToken;
 import okhttp3.OkHttpClient;
-import io.fabric8.openshift.api.model.OAuthAuthorizeToken;
 import io.fabric8.openshift.api.model.OAuthAuthorizeTokenBuilder;
 import io.fabric8.openshift.api.model.OAuthAuthorizeTokenList;
 import io.fabric8.openshift.client.OpenShiftConfig;
 
-import java.util.Map;
-import java.util.TreeMap;
-
-import static io.fabric8.openshift.client.OpenShiftAPIGroups.AUTHORIZATION;
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.OAUTH;
 
 public class OAuthAuthorizeTokenOperationsImpl extends OpenShiftOperation<OAuthAuthorizeToken, OAuthAuthorizeTokenList,

@@ -50,7 +50,7 @@ public class VersionInfoTest {
     assertEquals("e6301f88a8", client.getVersion().getGitCommit());
     assertEquals("3", client.getVersion().getMajor());
     assertEquals("6", client.getVersion().getMinor());
-    assertEquals(client.getVersion().getBuildDate().getYear(), 118);
+    assertEquals(118, client.getVersion().getBuildDate().getYear());
     assertEquals(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse("2018-03-01T14:27:17Z").getTime(), client.getVersion().getBuildDate().getTime());
   }
 }

@@ -15,7 +15,6 @@
  */
 package io.fabric8.knative.client;
 
-import io.fabric8.kubernetes.client.GenericKubernetesClient;
 
 public interface NamespacedKnativeClient extends KnativeClient,
         GenericKnativeClient<NamespacedKnativeClient> {

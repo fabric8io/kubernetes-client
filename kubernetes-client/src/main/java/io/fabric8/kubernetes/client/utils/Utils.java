@@ -13,15 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.fabric8.kubernetes.client.utils;
 
 import io.fabric8.kubernetes.api.model.Namespaced;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.Closeable;
 import java.io.Flushable;
 import java.io.IOException;
@@ -47,74 +44,74 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Stream;
-
-import io.fabric8.kubernetes.client.KubernetesClientException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class Utils {
-
+  
   private static final Logger LOGGER = LoggerFactory.getLogger(Utils.class);
   private static final String ALL_CHARS = "abcdefghijklmnopqrstuvwxyz0123456789";
   public static final String WINDOWS = "win";
   public static final String OS_NAME = "os.name";
   public static final String PATH_WINDOWS = "Path";
   public static final String PATH_UNIX = "PATH";
-
+  
   private Utils() {
   }
-
+  
   public static <T> T checkNotNull(T ref, String message) {
     if (ref == null) {
       throw new NullPointerException(message);
     }
     return ref;
   }
-
+  
   public static String getSystemPropertyOrEnvVar(String systemPropertyName, String envVarName, String defaultValue) {
     String answer = System.getProperty(systemPropertyName);
     if (isNotNullOrEmpty(answer)) {
       return answer;
     }
-
+    
     answer = System.getenv(envVarName);
     if (isNotNullOrEmpty(answer)) {
       return answer;
     }
-
+    
     return defaultValue;
   }
-
+  
   public static String convertSystemPropertyNameToEnvVar(String systemPropertyName) {
     return systemPropertyName.toUpperCase(Locale.ROOT).replaceAll("[.-]", "_");
   }
-
+  
   public static String getEnvVar(String envVarName, String defaultValue) {
     String answer = System.getenv(envVarName);
     return isNotNullOrEmpty(answer) ? answer : defaultValue;
   }
-
+  
   public static String getSystemPropertyOrEnvVar(String systemPropertyName, String defaultValue) {
     return getSystemPropertyOrEnvVar(systemPropertyName, convertSystemPropertyNameToEnvVar(systemPropertyName), defaultValue);
   }
-
+  
   public static String getSystemPropertyOrEnvVar(String systemPropertyName) {
     return getSystemPropertyOrEnvVar(systemPropertyName, (String) null);
   }
-
+  
   public static boolean getSystemPropertyOrEnvVar(String systemPropertyName, Boolean defaultValue) {
     String result = getSystemPropertyOrEnvVar(systemPropertyName, defaultValue.toString());
     return Boolean.parseBoolean(result);
   }
-
+  
   public static int getSystemPropertyOrEnvVar(String systemPropertyName, int defaultValue) {
     String result = getSystemPropertyOrEnvVar(systemPropertyName, Integer.toString(defaultValue));
     return Integer.parseInt(result);
   }
-
+  
   public static String join(final Object[] array) {
     return join(array, ',');
   }
-
+  
   public static String join(final Object[] array, final char separator) {
     if (array == null) {
       return null;
@@ -133,8 +130,8 @@ public class Utils {
     }
     return buf.toString();
   }
-
-
+  
+  
   /**
    * Wait until an other thread signals the completion of a task.
    * If an exception is passed, it will be propagated to the caller.
@@ -159,7 +156,7 @@ public class Utils {
       throw KubernetesClientException.launderThrowable(t);
     }
   }
-
+  
   /**
    * Closes the specified {@link ExecutorService}.
    * @param executorService   The executorService.
@@ -173,22 +170,22 @@ public class Utils {
     if (!executorService.isShutdown()) {
       executorService.shutdown();
     }
-
+    
     try {
       //Wait for clean termination
       if (executorService.awaitTermination(5, TimeUnit.SECONDS)) {
         return true;
       }
-
+      
       //If not already terminated (via shutdownNow) do shutdownNow.
       if (!executorService.isTerminated()) {
         executorService.shutdownNow();
       }
-
+      
       if (executorService.awaitTermination(5, TimeUnit.SECONDS)) {
         return true;
       }
-
+      
       if (LOGGER.isDebugEnabled()) {
         List<Runnable> tasks = executorService.shutdownNow();
         if (!tasks.isEmpty()) {
@@ -202,7 +199,7 @@ public class Utils {
     }
     return false;
   }
-
+  
   /**
    * Closes and flushes the specified {@link Closeable} items.
    * @param closeables  An {@link Iterable} of {@link Closeable} items.
@@ -214,7 +211,7 @@ public class Utils {
         if (c instanceof Flushable) {
           ((Flushable) c).flush();
         }
-
+        
         if (c != null) {
           c.close();
         }
@@ -223,7 +220,7 @@ public class Utils {
       }
     }
   }
-
+  
   /**
    * Closes and flushes the specified {@link Closeable} items.
    * @param closeables  An array of {@link Closeable} items.
@@ -231,7 +228,7 @@ public class Utils {
   public static void closeQuietly(Closeable... closeables) {
     closeQuietly(Arrays.asList(closeables));
   }
-
+  
   public static String coalesce(String... items) {
     for (String str : items) {
       if (str != null) {
@@ -240,7 +237,7 @@ public class Utils {
     }
     return null;
   }
-
+  
   public static String randomString(int length) {
     Random random = new Random();
     StringBuilder sb = new StringBuilder();
@@ -250,7 +247,7 @@ public class Utils {
     }
     return sb.toString();
   }
-
+  
   public static String randomString(String prefix, int length) {
     Random random = new Random();
     StringBuilder sb = new StringBuilder();
@@ -260,7 +257,7 @@ public class Utils {
     }
     return sb.toString();
   }
-
+  
   public static String filePath(URL path) {
     try {
       return Paths.get(path.toURI()).toString();
@@ -268,7 +265,7 @@ public class Utils {
       throw new RuntimeException(e);
     }
   }
-
+  
   /**
    * Replaces all occurrences of the from text with to text without any regular expressions
    *
@@ -286,7 +283,7 @@ public class Utils {
       idx = text.indexOf(from, idx);
       if (idx >= 0) {
         text = text.substring(0, idx) + to + text.substring(idx + from.length());
-
+        
         // lets start searching after the end of the `to` to avoid possible infinite recursion
         idx += to.length();
       } else {
@@ -295,42 +292,42 @@ public class Utils {
     }
     return text;
   }
-
+  
   public static boolean isNullOrEmpty(String str) {
     return str == null || str.isEmpty();
   }
-
+  
   public static boolean isNotNullOrEmpty(Map map) {
     return !(map == null || map.isEmpty());
   }
-
+  
   public static boolean isNotNullOrEmpty(String str) {
     return !isNullOrEmpty(str);
   }
-
+  
   public static boolean isNotNullOrEmpty(String[] array) {
     return !(array == null || array.length == 0);
   }
-
-  public static <T> boolean isNotNull(T ...refList) {
+  
+  public static <T> boolean isNotNull(T... refList) {
     return Optional.ofNullable(refList)
       .map(refs -> Stream.of(refs).allMatch(Objects::nonNull))
       .orElse(false);
   }
-
+  
   public static String getProperty(Map<String, Object> properties, String propertyName, String defaultValue) {
     String answer = (String) properties.get(propertyName);
     if (!isNullOrEmpty(answer)) {
       return answer;
     }
-
+    
     return getSystemPropertyOrEnvVar(propertyName, defaultValue);
   }
-
+  
   public static String getProperty(Map<String, Object> properties, String propertyName) {
     return getProperty(properties, propertyName, null);
   }
-
+  
   /**
    * Converts string to URL encoded string.
    *
@@ -345,7 +342,10 @@ public class Utils {
     }
     return null;
   }
-
+  
+  /**
+   *  todo: we should unify this with {@link Pluralize}
+   */
   public static String getPluralFromKind(String kind) {
     StringBuilder pluralBuffer = new StringBuilder(kind.toLowerCase(Locale.ROOT));
     switch (kind) {
@@ -370,7 +370,7 @@ public class Utils {
     }
     return pluralBuffer.toString();
   }
-
+  
   /**
    * Reads @Namespaced annotation in resource class to check whether
    * resource is namespaced or not
@@ -381,9 +381,9 @@ public class Utils {
   public static boolean isResourceNamespaced(Class kubernetesResourceType) {
     return Namespaced.class.isAssignableFrom(kubernetesResourceType);
   }
-
+  
   public static String getAnnotationValue(Class kubernetesResourceType, Class annotationClass) {
-    Annotation annotation = getAnnotation(kubernetesResourceType, annotationClass);
+    Annotation annotation = kubernetesResourceType.getAnnotation(annotationClass);
     if (annotation instanceof Group) {
       return ((Group) annotation).value();
     } else if (annotation instanceof Version) {
@@ -391,14 +391,7 @@ public class Utils {
     }
     return null;
   }
-
-  private static Annotation getAnnotation(Class kubernetesResourceType, Class annotationClass) {
-    return Arrays.stream(kubernetesResourceType.getAnnotations())
-      .filter(annotation -> annotation.annotationType().equals(annotationClass))
-      .findFirst()
-      .orElse(null);
-  }
-
+  
   /**
    * Interpolates a String containing variable placeholders with the values provided in the valuesMap.
    *
@@ -432,7 +425,7 @@ public class Utils {
       .reduce(Function.identity(), Function::andThen)
       .apply(Objects.requireNonNull(templateInput, "templateInput is required"));
   }
-
+  
   /**
    * Check whether platform is windows or not
    *
@@ -441,7 +434,7 @@ public class Utils {
   public static boolean isWindowsOperatingSystem() {
     return getOperatingSystemFromSystemProperty().toLowerCase().contains(WINDOWS);
   }
-
+  
   /**
    * Get system PATH variable
    *
@@ -450,7 +443,7 @@ public class Utils {
   public static String getSystemPathVariable() {
     return System.getenv(isWindowsOperatingSystem() ? PATH_WINDOWS : PATH_UNIX);
   }
-
+  
   /**
    * Returns prefixes needed to invoke specified command
    * in a subprocess.
@@ -468,9 +461,9 @@ public class Utils {
     }
     return platformPrefixParts;
   }
-
+  
   private static String getOperatingSystemFromSystemProperty() {
     return System.getProperty(OS_NAME);
   }
-
+  
 }

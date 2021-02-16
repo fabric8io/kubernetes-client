@@ -15,36 +15,34 @@
  */
 package io.fabric8.kubernetes.api.model;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.hamcrest.CoreMatchers;
-import org.junit.jupiter.api.Test;
-import io.fabric8.kubernetes.api.builder.Visitor;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import org.hamcrest.CoreMatchers;
+import org.junit.jupiter.api.Test;
+
 public class KubernetesListTest {
 
     @Test
-    public void testDefaultValues() throws JsonProcessingException {
+    public void testDefaultValues() {
         Service service = new io.fabric8.kubernetes.api.model.ServiceBuilder()
                 .withNewMetadata()
                     .withName("test-service")
                 .endMetadata()
                 .build();
         assertNotNull(service.getApiVersion());
-        assertEquals(service.getKind(), "Service");
-        
+        assertEquals("Service", service.getKind());
+
         ReplicationController replicationController = new io.fabric8.kubernetes.api.model.ReplicationControllerBuilder()
                 .withNewMetadata()
                 .withName("test-controller")
                 .endMetadata()
                 .build();
         assertNotNull(replicationController.getApiVersion());
-        assertEquals(replicationController.getKind(), "ReplicationController");
-        
+        assertEquals("ReplicationController", replicationController.getKind());
+
         KubernetesList kubernetesList;
         kubernetesList = new io.fabric8.kubernetes.api.model.KubernetesListBuilder()
                 .addNewServiceItem()
@@ -60,14 +58,14 @@ public class KubernetesListTest {
                 .build();
 
         assertNotNull(kubernetesList.getApiVersion());
-        assertEquals(kubernetesList.getApiVersion(), "v1");
-        assertEquals(kubernetesList.getKind(), "List");
+        assertEquals("v1", kubernetesList.getApiVersion());
+        assertEquals("List", kubernetesList.getKind());
         assertThat(kubernetesList.getItems(), CoreMatchers.hasItem(service));
         assertThat(kubernetesList.getItems(), CoreMatchers.hasItem(replicationController));
     }
 
     @Test
-    public void testVisitor() throws JsonProcessingException {
+    void testVisitor() {
         KubernetesList list = new io.fabric8.kubernetes.api.model.KubernetesListBuilder()
                 .addNewPodItem()
                     .withNewSpec()
@@ -79,25 +77,25 @@ public class KubernetesListTest {
                 .and()
                 .build();
 
-        list = new io.fabric8.kubernetes.api.model.KubernetesListBuilder(list).accept(new Visitor() {
-            public void visit(Object item) {
-                if (item instanceof io.fabric8.kubernetes.api.model.PodSpecBuilder) {
-                    ((io.fabric8.kubernetes.api.model.PodSpecBuilder)item).addNewContainer()
-                            .withName("other-container")
-                            .withImage("other/image")
-                            .and();
-                }
+        final KubernetesList visitedList =new io.fabric8.kubernetes.api.model.KubernetesListBuilder(list).accept(item -> {
+            if (item instanceof io.fabric8.kubernetes.api.model.PodSpecBuilder) {
+                ((io.fabric8.kubernetes.api.model.PodSpecBuilder)item).addNewContainer()
+                        .withName("other-container")
+                        .withImage("other/image")
+                        .and();
             }
         }).build();
+        final Container visitedContainer = ((Pod)visitedList.getItems().get(0)).getSpec().getContainers().get(1);
+        assertEquals("other-container", visitedContainer.getName());
+        assertEquals("other/image", visitedContainer.getImage());
     }
 
 
     @Test
-    public void testDefaultNullValues() throws JsonProcessingException {
+    public void testDefaultNullValues() {
         Container container = new io.fabric8.kubernetes.api.model.ContainerBuilder().build();
         assertNull(container.getLifecycle());
         assertNull(container.getLivenessProbe());
-
 
         Pod pod = new io.fabric8.kubernetes.api.model.PodBuilder().build();
         assertNull(pod.getSpec());

@@ -20,12 +20,10 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
 import io.fabric8.kubernetes.examples.crds.Dummy;
-import io.fabric8.kubernetes.examples.crds.DummyList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,13 +35,8 @@ public class CustomResourceInformerExample {
 
   public static void main(String[] args) {
     try (KubernetesClient client = new DefaultKubernetesClient()) {
-      final CustomResourceDefinition crd = CustomResourceDefinitionContext
-        .v1beta1CRDFromCustomResourceType(Dummy.class).build();
-      client.apiextensions().v1beta1().customResourceDefinitions().createOrReplace(crd);
-      final CustomResourceDefinitionContext crdContext = CustomResourceDefinitionContext.fromCustomResourceType(Dummy.class);
       SharedInformerFactory sharedInformerFactory = client.informers();
-      SharedIndexInformer<Dummy> podInformer = sharedInformerFactory
-        .sharedIndexInformerForCustomResource(crdContext, Dummy.class, DummyList.class,  60 * 1000L);
+      SharedIndexInformer<Dummy> podInformer = sharedInformerFactory.sharedIndexInformerForCustomResource(Dummy.class, 60 * 1000L);
       logger.info("Informer factory initialized.");
 
       podInformer.addEventHandler(
@@ -95,7 +88,7 @@ public class CustomResourceInformerExample {
           .map(HasMetadata::getMetadata).map(ObjectMeta::getNamespace).orElse("default"));
       }
 
-      client.customResources(Dummy.class, DummyList.class).createOrReplace(toCreate);
+      client.customResources(Dummy.class).createOrReplace(toCreate);
       // Wait for some time now
       TimeUnit.MINUTES.sleep(5);
     } catch (InterruptedException interruptedException) {

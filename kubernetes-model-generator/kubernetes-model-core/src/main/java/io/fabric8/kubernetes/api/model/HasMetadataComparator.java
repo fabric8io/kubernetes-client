@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.api.model;
 
-import io.fabric8.kubernetes.api.model.HasMetadata;
 
 import java.util.Comparator;
 

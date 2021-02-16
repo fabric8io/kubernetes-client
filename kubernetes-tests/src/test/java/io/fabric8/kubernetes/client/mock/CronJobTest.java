@@ -259,7 +259,7 @@ class CronJobTest {
     List<HasMetadata> hasMetadata = client.load(getClass().getResourceAsStream("/test-cronjob.yml")).get();
 
     assertNotNull(hasMetadata);
-    assertEquals(hasMetadata.size(), 1);
-    assertEquals(hasMetadata.get(0).getMetadata().getName(), "pi");
+    assertEquals(1, hasMetadata.size());
+    assertEquals("pi", hasMetadata.get(0).getMetadata().getName());
   }
 }

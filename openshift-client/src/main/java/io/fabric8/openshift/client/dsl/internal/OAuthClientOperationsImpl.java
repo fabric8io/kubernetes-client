@@ -24,9 +24,6 @@ import io.fabric8.openshift.api.model.OAuthClientBuilder;
 import io.fabric8.openshift.api.model.OAuthClientList;
 import io.fabric8.openshift.client.OpenShiftConfig;
 
-import java.util.Map;
-import java.util.TreeMap;
-
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.OAUTH;
 
 public class OAuthClientOperationsImpl extends OpenShiftOperation<OAuthClient, OAuthClientList,

@@ -15,7 +15,6 @@
  */
 package io.fabric8.tekton.client;
 
-import io.fabric8.kubernetes.client.GenericKubernetesClient;
 
 public interface NamespacedTektonClient extends TektonClient,
         GenericTektonClient<NamespacedTektonClient> {

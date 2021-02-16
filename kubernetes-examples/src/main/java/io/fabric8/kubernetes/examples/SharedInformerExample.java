@@ -17,7 +17,6 @@ package io.fabric8.kubernetes.examples;
 
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
-import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
@@ -38,7 +37,7 @@ public class SharedInformerExample {
   public static void main(String[] args) throws InterruptedException {
     try (final KubernetesClient client = new DefaultKubernetesClient()) {
       SharedInformerFactory sharedInformerFactory = client.informers();
-      SharedIndexInformer<Pod> podInformer = sharedInformerFactory.sharedIndexInformerFor(Pod.class, PodList.class, 30 * 1000L);
+      SharedIndexInformer<Pod> podInformer = sharedInformerFactory.sharedIndexInformerFor(Pod.class, 30 * 1000L);
       logger.info("Informer factory initialized.");
 
       podInformer.addEventHandler(

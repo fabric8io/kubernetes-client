@@ -4,6 +4,7 @@
 
 #### Bugs
 * Fix #2748: Pass custom headers in kubernetes-client to watch api by modify WatchConnectionManager
+* Fix #2745: Filtering Operations can't configure PropagationPolicy
 
 #### Improvements
 * Fix #2717: Remove edit() methods from RawCustomResourceOperationsImpl taking InputStream arguments
@@ -110,6 +111,7 @@ _**Note**_: Breaking changes in the API
 * Fix #2678: Adds a convenience method for referring to Cache keys by namespace and name rather than item
 * Fix #2665: CustomResourceDefinitionContext.fromCrd support for v1 CustomResourceDefinition
 * Fix #2642: Update kubernetes-examples to use apps/v1 Deployment rather than extensions/v1beta1
+* Fix #2666: Align SharedIndexInformer API with Custom Resource Improvements
 
 #### New Features
 * Fix #2611: Support for Custom Resource and Custom Resource Definitions has been improved

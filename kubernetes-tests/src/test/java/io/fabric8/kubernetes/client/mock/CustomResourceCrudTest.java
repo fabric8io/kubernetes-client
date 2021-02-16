@@ -19,15 +19,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.junit.Rule;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
-
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -36,10 +28,16 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.RawCustomResourceOperationsImpl;
 import io.fabric8.kubernetes.client.mock.crd.CronTab;
-import io.fabric8.kubernetes.client.mock.crd.CronTabList;
 import io.fabric8.kubernetes.client.mock.crd.CronTabSpec;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import io.fabric8.kubernetes.internal.KubernetesDeserializer;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import org.junit.Rule;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 @EnableRuleMigrationSupport
 class CustomResourceCrudTest {
@@ -66,13 +64,13 @@ class CustomResourceCrudTest {
     CronTab cronTab3 = createCronTab("my-third-cron-object", "* * * * */3", 1, "my-third-cron-image");
     KubernetesClient client = kubernetesServer.getClient();
 
-    MixedOperation<CronTab, CronTabList, Resource<CronTab>> cronTabClient = client.customResources(CronTab.class, CronTabList.class);
+    MixedOperation<CronTab, KubernetesResourceList<CronTab>, Resource<CronTab>> cronTabClient = client.customResources(CronTab.class);
 
     cronTabClient.inNamespace("test-ns").create(cronTab1);
     cronTabClient.inNamespace("test-ns").create(cronTab2);
     cronTabClient.inNamespace("test-ns").create(cronTab3);
 
-    CronTabList cronTabList = cronTabClient.inNamespace("test-ns").list();
+    KubernetesResourceList<CronTab> cronTabList = cronTabClient.inNamespace("test-ns").list();
     assertNotNull(cronTabList);
     assertEquals(3, cronTabList.getItems().size());
 
@@ -122,14 +120,14 @@ class CustomResourceCrudTest {
     CronTab cronTab3 = createCronTab("my-third-cron-object", "* * * * */3", 1, "my-third-cron-image");
     KubernetesClient client = kubernetesServer.getClient();
 
-    MixedOperation<CronTab, CronTabList, Resource<CronTab>> cronTabClient = client
-      .customResources(CronTab.class, CronTabList.class);
+    MixedOperation<CronTab, KubernetesResourceList<CronTab>, Resource<CronTab>> cronTabClient = client
+      .customResources(CronTab.class);
 
     cronTabClient.inNamespace("test-ns").create(cronTab1);
     cronTabClient.inNamespace("test-ns").create(cronTab2);
     cronTabClient.inNamespace("test-ns").create(cronTab3);
 
-    CronTabList cronTabList = cronTabClient.inNamespace("test-ns").list();
+    KubernetesResourceList<CronTab> cronTabList = cronTabClient.inNamespace("test-ns").list();
     assertNotNull(cronTabList);
     assertEquals(3, cronTabList.getItems().size());
 

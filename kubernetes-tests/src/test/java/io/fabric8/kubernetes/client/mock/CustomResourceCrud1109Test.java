@@ -15,12 +15,14 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.mock.crd.FooBar;
-import io.fabric8.kubernetes.client.mock.crd.FooBarList;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import org.junit.Rule;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,21 +30,19 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 @EnableRuleMigrationSupport
 class CustomResourceCrud1109Test {
   @Rule
   public KubernetesServer server = new KubernetesServer(true,true);
 
   private CustomResourceDefinition customResourceDefinition;
-  private MixedOperation<FooBar, FooBarList, Resource<FooBar>> fooBarClient;
+  private MixedOperation<FooBar, KubernetesResourceList<FooBar>, Resource<FooBar>> fooBarClient;
 
   @BeforeEach
   void setUp() {
     customResourceDefinition = server.getClient().apiextensions().v1beta1().customResourceDefinitions()
       .create(CustomResourceDefinitionContext.v1beta1CRDFromCustomResourceType(FooBar.class).build());
-    fooBarClient = server.getClient().customResources(FooBar.class, FooBarList.class);
+    fooBarClient = server.getClient().customResources(FooBar.class);
   }
 
   @Test
@@ -89,11 +89,11 @@ class CustomResourceCrud1109Test {
     fb1.getMetadata().setName("example");
     fooBarClient.inNamespace("default").create(fb1);
     // When
-    final FooBarList fooBarList = fooBarClient.inNamespace("default").list();
+    final KubernetesResourceList<FooBar> fooBarList = fooBarClient.inNamespace("default").list();
     // Then
     assertThat(fooBarList)
       .isNotNull()
-      .extracting(FooBarList::getItems)
+      .extracting(KubernetesResourceList::getItems)
       .asList()
       .hasSize(1);
   }

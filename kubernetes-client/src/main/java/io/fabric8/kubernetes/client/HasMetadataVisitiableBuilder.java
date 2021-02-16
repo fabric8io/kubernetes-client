@@ -18,6 +18,5 @@ package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.client.handlers.KubernetesListHandler;
 
 public interface HasMetadataVisitiableBuilder extends VisitableBuilder<HasMetadata, HasMetadataVisitiableBuilder> {}
