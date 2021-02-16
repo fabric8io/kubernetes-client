@@ -38,8 +38,6 @@ import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class Readiness {
@@ -48,6 +46,7 @@ public class Readiness {
   private static final String NODE_READY = "Ready";
   private static final String TRUE = "True";
   private static final Logger logger = LoggerFactory.getLogger(Readiness.class);
+  private static final String READINESS_APPLICABLE_RESOURCES = "Node, Deployment, ReplicaSet, StatefulSet, Pod, ReplicationController";
 
   public static boolean isReadinessApplicable(Class<? extends HasMetadata> itemClass) {
     return Deployment.class.isAssignableFrom(itemClass)
@@ -65,28 +64,19 @@ public class Readiness {
     if (isReadiableKubernetesResource(item)) {
       return isKubernetesResourceReady(item);
     } else {
-      return handleNonReadinessApplicableResource(item, getReadinessApplicableResourcesList());
+      return handleNonReadinessApplicableResource(item, getReadinessApplicableResources());
     }
   }
 
-  public static boolean handleNonReadinessApplicableResource(HasMetadata item, List<String> readinessApplicableResources) {
+  public static boolean handleNonReadinessApplicableResource(HasMetadata item, String readinessApplicableResourcesStr) {
     boolean doesItemExist = Objects.nonNull(item);
-    String readinessApplicableResourcesStr = String.join(",", readinessApplicableResources);
     logger.warn("{} is not a Readiableresource. It needs to be one of [{}]",
       doesItemExist ? item.getKind() : "Unknown", readinessApplicableResourcesStr);
     return doesItemExist;
   }
 
-  public static List<String> getReadinessApplicableResourcesList() {
-    List<String> readinessApplicableResources = new ArrayList<>();
-    readinessApplicableResources.add("Node");
-    readinessApplicableResources.add("Deployment");
-    readinessApplicableResources.add("ReplicaSet");
-    readinessApplicableResources.add("StatefulSet");
-    readinessApplicableResources.add("Pod");
-    readinessApplicableResources.add("ReplicationController");
-
-    return readinessApplicableResources;
+  public static String getReadinessApplicableResources() {
+    return READINESS_APPLICABLE_RESOURCES;
   }
 
   private static boolean isKubernetesResourceReady(HasMetadata item) {

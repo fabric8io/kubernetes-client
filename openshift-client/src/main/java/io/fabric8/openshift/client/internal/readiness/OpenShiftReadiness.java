@@ -22,10 +22,8 @@ import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigSpec;
 import io.fabric8.openshift.api.model.DeploymentConfigStatus;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class OpenShiftReadiness extends Readiness {
+  private static final String OPENSHIFT_READINESS_APPLICABLE_RESOURCES = "DeploymentConfig";
   public static boolean isReadinessApplicable(Class<? extends HasMetadata> itemClass) {
     return Readiness.isReadinessApplicable(itemClass)
       || DeploymentConfig.class.isAssignableFrom(itemClass)
@@ -38,7 +36,7 @@ public class OpenShiftReadiness extends Readiness {
     } else if (item instanceof DeploymentConfig) {
       return isDeploymentConfigReady((DeploymentConfig) item);
     } else {
-      return handleNonReadinessApplicableResource(item, getOpenShiftReadinessApplicableResourcesList());
+      return handleNonReadinessApplicableResource(item, getOpenShiftReadinessApplicableResources());
     }
   }
 
@@ -60,10 +58,7 @@ public class OpenShiftReadiness extends Readiness {
       spec.getReplicas() <= status.getAvailableReplicas();
   }
 
-  private static List<String> getOpenShiftReadinessApplicableResourcesList() {
-    List<String> openShiftReadinessApplicableResources = new ArrayList<>(Readiness.getReadinessApplicableResourcesList());
-    openShiftReadinessApplicableResources.add("DeploymentConfig");
-
-    return openShiftReadinessApplicableResources;
+  private static String getOpenShiftReadinessApplicableResources() {
+    return Readiness.getReadinessApplicableResources() + ", " + OPENSHIFT_READINESS_APPLICABLE_RESOURCES;
   }
 }
