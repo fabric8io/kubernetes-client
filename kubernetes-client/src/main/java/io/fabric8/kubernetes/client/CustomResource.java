@@ -187,7 +187,7 @@ public abstract class CustomResource<S, T> implements HasMetadata {
    * @param clazz the CustomResource whose plural form we want to retrieve
    * @return the plural form defined by the {@link Plural} annotation or a computed default value
    */
-  public static String getPlural(Class<? extends CustomResource> clazz) {
+  public static String getPlural(Class<? extends HasMetadata> clazz) {
     final Plural fromAnnotation = clazz.getAnnotation(Plural.class);
     return (fromAnnotation != null ? fromAnnotation.value().toLowerCase(Locale.ROOT) : Pluralize.toPlural(getSingular(clazz)));
   }
@@ -205,7 +205,7 @@ public abstract class CustomResource<S, T> implements HasMetadata {
    * @param clazz the CustomResource whose singular form we want to retrieve
    * @return the singular form defined by the {@link Singular} annotation or a computed default value
    */
-  public static String getSingular(Class<? extends CustomResource> clazz) {
+  public static String getSingular(Class<? extends HasMetadata> clazz) {
     final Singular fromAnnotation = clazz.getAnnotation(Singular.class);
     return (fromAnnotation != null ? fromAnnotation.value() : HasMetadata.getKind(clazz)).toLowerCase(Locale.ROOT);
   }

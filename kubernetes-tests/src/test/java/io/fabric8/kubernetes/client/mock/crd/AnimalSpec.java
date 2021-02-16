@@ -15,7 +15,27 @@
  */
 package io.fabric8.kubernetes.client.mock.crd;
 
-import io.fabric8.kubernetes.client.CustomResourceList;
 
-public class StarList extends CustomResourceList<Star> {
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
+
+@JsonDeserialize(
+  using = JsonDeserializer.None.class
+)
+public class AnimalSpec implements KubernetesResource {
+  public String getOrder() {
+    return order;
+  }
+
+  @Override
+  public String toString() {
+    return "AnimalSpec{order=" + order + "}";
+  }
+
+  public void setOrder(String order) {
+    this.order = order;
+  }
+
+  private String order;
 }

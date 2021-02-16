@@ -148,6 +148,121 @@ with the information provided by a specific `CustomResource` implementation.
 These methods simplify the creation of `CustomResourceDefinition`s by inferring the boiler-plate spec values from
 the annotations and other information already provided in the `CustomResource` implementation.
 
+## SharedIndexInformer API improvements
+
+We have added some minor improvements in shared informer APIs. Changes are as follows:
+
+- No List type required in `SharedInformerFactory.sharedIndexInformerFor`
+  and `SharedInformerFactory.sharedIndexInformerForCustomResource` methods. Now you don't need to
+  provide any List type for creatinga new SharedIndexInformer. Now the method only accepts Type and
+  resyncPeriod as parameter. Here is an example of 4.x and 5.x versions to give you a clear idea:
+
+  4.x:
+  ```java
+    SharedIndexInformer<Pod> podInformer = sharedInformerFactory.sharedIndexInformerFor(Pod.class, PodList.class, resyncPeriod);
+  ```
+
+  5.x:
+  ```java
+  SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, resyncPeriod);
+  ```
+
+- `SharedInformerFactory.sharedIndexInformerForCustomResource` uses `CustomResource` as base type
+  rather than `HasMetadata`. Although we're already enforcing this in our CustomResource API for
+  your CustomResource POJOs to extend `CustomResource`; we've made this change more explicit in
+  SharedInformer API.
+
+- Utility methods for creating Namespaced Informers. Now you don't have to provide an
+  explicit `OperationContext` for creating a Namespaced Informer. You can simply use `inNamespace()`
+  method for configuring namespace in `SharedInformerFactory`. Here is an example:
+
+  4.x:
+  ```java
+  SharedIndexInformer<Pod> podInformer = sharedInformerFactory.sharedIndexInformerFor(
+          Pod.class,
+          PodList.class,
+          new OperationContext().withNamespace("default"),
+          RESYNC_PERIOD);
+  ```
+
+  5.x:
+  ```java
+  SharedIndexInformer<Pod> podInformer = factory.inNamespace("default").sharedIndexInformerFor(Pod.class, RESYNC_PERIOD);
+  ```
+- No need to provide `CustomResourceDefinitionContext`
+  in `SharedInformerFactory.sharedIndexInformerForCustomResource`. `CustomResourceDefinition`
+  related information is now discovered automatically from CustomResource annotations or opinionated
+  defaults. Here is an example of 4.x and 5.x versions for a `CustomResource` called `Dummy`, we're
+  trying to create SharedIndexInformers.
+
+  4.x
+
+  Dummy.java
+  ```java
+  import io.fabric8.kubernetes.api.model.Namespaced;
+  import io.fabric8.kubernetes.api.model.ObjectMeta;
+  import io.fabric8.kubernetes.client.CustomResource;
+
+  public class Dummy extends CustomResource implements Namespaced {
+      private DummySpec spec;
+
+
+      @Override
+      public String toString() {
+        return "Dummy{" +
+            "apiVersion='" + getApiVersion() + '\'' +
+            ", metadata=" + getMetadata() +
+            ", spec=" + spec +
+            '}';
+      }
+
+      public DummySpec getSpec() {
+        return spec;
+      }
+
+      public void setSpec(DummySpec spec) {
+        this.spec = spec;
+      }
+
+      @Override
+      public ObjectMeta getMetadata() { return super.getMetadata(); }
+  }
+  ```
+
+  Create SharedIndexInformer for `Dummy`:
+  ```java
+  CustomResourceDefinitionContext crdContext = new CustomResourceDefinitionContext.Builder()
+    .withVersion("v1")
+    .withScope("Namespaced")
+    .withGroup("demo.fabric8.io")
+    .withPlural("dummies")
+    .build();
+  SharedIndexInformer<Dummy> dummyInformer = sharedInformerFactory.sharedIndexInformerForCustomResource(crdContext, Dummy.class, DummyList.class, 60 * 1000L);
+  ```
+
+  5.x:
+
+  Dummy.java
+  ```java
+  import io.fabric8.kubernetes.api.model.KubernetesResource;
+  import io.fabric8.kubernetes.api.model.Namespaced;
+  import io.fabric8.kubernetes.client.CustomResource;
+  import io.fabric8.kubernetes.model.annotation.Group;
+  import io.fabric8.kubernetes.model.annotation.Version;
+
+  @Version(Dummy.VERSION)
+  @Group(Dummy.GROUP)
+  public class Dummy extends CustomResource<DummySpec, KubernetesResource> implements Namespaced {
+    public static final String GROUP = "demo.fabric8.io";
+    public static final String VERSION = "v1";
+  }
+  ```
+
+  Create SharedIndexInformer for `Dummy`:
+  ```java
+  SharedIndexInformer<Dummy> dummyInformer = sharedInformerFactory.sharedIndexInformerForCustomResource(Dummy.class, 60 * 1000L);
+  ```
+
 ## kube-validation-schema.json files renamed to validation-schema.json
 
 `kube-validation-schema.json` files are no longer included in our model packaged. The equivalent file
