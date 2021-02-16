@@ -34,7 +34,7 @@ public class KubernetesListTest {
                 .build();
         assertNotNull(service.getApiVersion());
         assertEquals("Service", service.getKind());
-        
+
         ReplicationController replicationController = new io.fabric8.kubernetes.api.model.ReplicationControllerBuilder()
                 .withNewMetadata()
                 .withName("test-controller")
@@ -42,7 +42,7 @@ public class KubernetesListTest {
                 .build();
         assertNotNull(replicationController.getApiVersion());
         assertEquals("ReplicationController", replicationController.getKind());
-        
+
         KubernetesList kubernetesList;
         kubernetesList = new io.fabric8.kubernetes.api.model.KubernetesListBuilder()
                 .addNewServiceItem()
@@ -65,7 +65,7 @@ public class KubernetesListTest {
     }
 
     @Test
-    public void testVisitor() {
+    void testVisitor() {
         KubernetesList list = new io.fabric8.kubernetes.api.model.KubernetesListBuilder()
                 .addNewPodItem()
                     .withNewSpec()
@@ -77,7 +77,7 @@ public class KubernetesListTest {
                 .and()
                 .build();
 
-        list = new io.fabric8.kubernetes.api.model.KubernetesListBuilder(list).accept(item -> {
+        final KubernetesList visitedList =new io.fabric8.kubernetes.api.model.KubernetesListBuilder(list).accept(item -> {
             if (item instanceof io.fabric8.kubernetes.api.model.PodSpecBuilder) {
                 ((io.fabric8.kubernetes.api.model.PodSpecBuilder)item).addNewContainer()
                         .withName("other-container")
@@ -85,6 +85,9 @@ public class KubernetesListTest {
                         .and();
             }
         }).build();
+        final Container visitedContainer = ((Pod)visitedList.getItems().get(0)).getSpec().getContainers().get(1);
+        assertEquals("other-container", visitedContainer.getName());
+        assertEquals("other/image", visitedContainer.getImage());
     }
 
 
