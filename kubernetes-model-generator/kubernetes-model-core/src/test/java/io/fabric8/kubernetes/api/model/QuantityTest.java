@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.api.model;
 
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -116,8 +116,7 @@ public class QuantityTest {
   public void testEquality() {
     assertEquals(new Quantity(".5Mi"), new Quantity("512Ki"));
     assertEquals(new Quantity("1Gi"), new Quantity("1024Mi"));
-    assertNotEquals(null, new Quantity("1E"));
-    assertNotEquals(((Object) new Quantity("2P")), (Object) "2P");
+    assertNotEquals(new Quantity("2P"), "2P");
 
     Quantity quantity = new Quantity("100.035k");
     assertEquals(quantity, quantity);
