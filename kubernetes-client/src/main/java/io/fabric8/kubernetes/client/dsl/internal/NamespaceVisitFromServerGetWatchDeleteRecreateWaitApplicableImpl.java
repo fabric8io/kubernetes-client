@@ -242,9 +242,13 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl ex
     return h.watch(client, config, meta.getMetadata().getNamespace(), meta, options, watcher);
   }
 
+  protected Readiness getReadiness() {
+    return Readiness.getInstance();
+  }
+
   @Override
-  public Boolean isReady() {
-    return Readiness.isReady(get());
+  public final Boolean isReady() {
+    return getReadiness().isReady(get());
   }
 
   @Override

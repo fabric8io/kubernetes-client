@@ -23,21 +23,39 @@ import io.fabric8.openshift.api.model.DeploymentConfigSpec;
 import io.fabric8.openshift.api.model.DeploymentConfigStatus;
 
 public class OpenShiftReadiness extends Readiness {
-  private static final String OPENSHIFT_READINESS_APPLICABLE_RESOURCES = "DeploymentConfig";
-  public static boolean isReadinessApplicable(Class<? extends HasMetadata> itemClass) {
-    return Readiness.isReadinessApplicable(itemClass)
-      || DeploymentConfig.class.isAssignableFrom(itemClass)
+
+  private static final String OPENSHIFT_READINESS_APPLICABLE_RESOURCES = READINESS_APPLICABLE_RESOURCES +
+    ", " + "DeploymentConfig";
+
+  private static OpenShiftReadiness instance;
+
+  public static OpenShiftReadiness getInstance() {
+    if (instance == null) {
+      synchronized (OpenShiftReadiness.class) {
+        instance = new OpenShiftReadiness();
+      }
+    }
+    return instance;
+  }
+
+  @Override
+  protected boolean isReadinessApplicable(HasMetadata item) {
+    return super.isReadinessApplicable(item) ||
+      item instanceof DeploymentConfig
       ;
   }
 
-  public static boolean isReady(HasMetadata item) {
-    if (Readiness.isReadiableKubernetesResource(item)) {
-      return Readiness.isReady(item);
-    } else if (item instanceof DeploymentConfig) {
+  @Override
+  protected boolean isResourceReady(HasMetadata item) {
+    if (item instanceof DeploymentConfig) {
       return isDeploymentConfigReady((DeploymentConfig) item);
-    } else {
-      return handleNonReadinessApplicableResource(item, getOpenShiftReadinessApplicableResources());
     }
+    return super.isResourceReady(item);
+  }
+
+  @Override
+  protected String getReadinessResourcesList() {
+    return OPENSHIFT_READINESS_APPLICABLE_RESOURCES;
   }
 
   public static boolean isDeploymentConfigReady(DeploymentConfig d) {
@@ -58,7 +76,4 @@ public class OpenShiftReadiness extends Readiness {
       spec.getReplicas() <= status.getAvailableReplicas();
   }
 
-  private static String getOpenShiftReadinessApplicableResources() {
-    return Readiness.getReadinessApplicableResources() + ", " + OPENSHIFT_READINESS_APPLICABLE_RESOURCES;
-  }
 }

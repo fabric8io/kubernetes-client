@@ -36,7 +36,7 @@
     suffixed with the specification version, e.g. `mycrplural.group.example.com-v1.yml`
   - The CRD files are generated in the `target/META-INF/fabric8` directory of your project
 
-_**Note**_: Breaking changes in the API
+#### _**Note**_: Breaking changes in the API
 ##### DSL Changes:
 - `client.settings()` DSL has been removed since PodPreset v1alpha1 API is no longer present in Kubernetes 1.20.x
 - `client.customResourceDefinitions()` has been removed. Use `client.apiextensions().v1beta1().customResourceDefinitions()` instead

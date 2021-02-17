@@ -206,7 +206,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
   @Override
   public Boolean isReady() {
     for (final HasMetadata meta : acceptVisitors(get(), visitors)) {
-      if (!isResourceReady(meta)) {
+      if (!getReadiness().isReady(meta)) {
         return false;
       }
     }
@@ -403,11 +403,11 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
     return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, null, null, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
 
-  protected boolean isResourceReady(HasMetadata meta) {
-    return Readiness.isReady(meta);
+  protected Readiness getReadiness() {
+    return Readiness.getInstance();
   }
 
-  protected <T> List<HasMetadata> asHasMetadata(T item, Boolean enableProccessing) {
+  protected <T> List<HasMetadata> asHasMetadata(T item, Boolean enableProcessing) {
     List<HasMetadata> result = new ArrayList<>();
     if (item instanceof KubernetesList) {
       result.addAll(((KubernetesList) item).getItems());
@@ -417,7 +417,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
       result.add((HasMetadata) item);
     }  else if (item instanceof String) {
       try (InputStream is = new ByteArrayInputStream(((String)item).getBytes(StandardCharsets.UTF_8))) {
-        return asHasMetadata(unmarshal(is), enableProccessing);
+        return asHasMetadata(unmarshal(is), enableProcessing);
       } catch (IOException e) {
         throw KubernetesClientException.launderThrowable(e);
       }
