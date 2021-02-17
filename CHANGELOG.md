@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 5.1-SNAPSHOT
+### 5.1.0 (2021-02-17)
 
 #### Bugs
 * Fix #2748: Pass custom headers in kubernetes-client to watch api by modify WatchConnectionManager
@@ -15,16 +15,16 @@
 * Fix #2716: Add a property to disable BackwardCompatibilityInterceptor
 
 #### Dependency Upgrade
-* update Tekton Triggers model to v0.11.1
+* Fix #2706: update Tekton Triggers model to v0.11.1
 * Fix #2684: Upgrade Kubernetes Model to v1.20.2
 
 #### New Features
-* Fix #2702 : Add support for discovery.k8s.io/v1beta1 EndpointSlice in KubernetesClient DSL
-* Fix #2703 : Add support for `certificates.k8s.io` v1 and v1beta1 API in KubernetesClient DSL
+* Fix #2702: Add support for discovery.k8s.io/v1beta1 EndpointSlice in KubernetesClient DSL
+* Fix #2703: Add support for `certificates.k8s.io` v1 and v1beta1 API in KubernetesClient DSL
 * Fix #2708: Update CSI Volume Snapshot API to v1
 * Fix #2789: Use thread context class loader instead of `Class.forName`
-* Add DSL support for `scheduling.k8s.io` `v1` and `v1beta1` to SchedulingAPIGroupDSL
-* Preview release of CRD generator based on annotations
+* Fix #2779: Add DSL support for `scheduling.k8s.io` `v1` and `v1beta1` to SchedulingAPIGroupDSL
+* Fix #2776: Preview release of CRD generator based on annotations
   - Classes extending the `CustomResource` class can now be used as the basis for CRD generation
   - Several annotations are available to override the default behavior if it doesn't fit your needs
   - Validation schema is automatically derived from your class' spec implementation (or from the CR
