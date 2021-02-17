@@ -90,7 +90,7 @@ public class DeploymentIT {
     await().atMost(120, TimeUnit.SECONDS).until(deploymentReady);
     Deployment deploymentOne = client.apps().deployments()
       .inNamespace(session.getNamespace()).withName("deployment-wait").get();
-    assertTrue(Readiness.isDeploymentReady(deploymentOne));
+    assertTrue(Readiness.getInstance().isDeploymentReady(deploymentOne));
   }
 
   @Test
