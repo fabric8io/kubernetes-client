@@ -54,8 +54,9 @@ public class OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicab
     super(client, config, namespace, explicitNamespace, fromServer, deletingExisting, visitors, item, inputStream, parameters, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
   }
 
-  protected boolean isResourceReady(HasMetadata meta) {
-    return OpenShiftReadiness.isReady(meta);
+  @Override
+  protected OpenShiftReadiness getReadiness() {
+    return OpenShiftReadiness.getInstance();
   }
 
   @Override

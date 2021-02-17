@@ -38,7 +38,7 @@ public class ReadinessWatcher<T extends HasMetadata> implements Watcher<T> {
   public void eventReceived(Action action, T resource) {
     switch (action) {
       case MODIFIED:
-        if (Readiness.isReady(resource)) {
+        if (Readiness.getInstance().isReady(resource)) {
           reference.set(resource);
           latch.countDown();
         }

@@ -356,7 +356,7 @@ public class KubernetesResourceUtil {
    * @return boolean value indicating it's status
    */
   public static boolean isResourceReady(HasMetadata item) {
-    return Readiness.isReady(item);
+    return Readiness.getInstance().isReady(item);
   }
 
   /**

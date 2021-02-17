@@ -15,56 +15,63 @@
  */
 package io.fabric8.kubernetes.client.internal.readiness;
 
-import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.api.model.apps.StatefulSet;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetSpec;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetStatus;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ReadinessTest {
+class ReadinessTest {
+
+  private Readiness readiness;
+
+  @BeforeEach
+  void setUp() {
+    readiness = Readiness.getInstance();
+  }
 
   @Test
-  public void testStatefulSetReadinessNoSpecNoStatus() {
+  void testStatefulSetReadinessNoSpecNoStatus() {
     StatefulSet statefulSet = new StatefulSet();
-    assertFalse(Readiness.isReady(statefulSet));
+    assertFalse(readiness.isReady(statefulSet));
     assertFalse(Readiness.isStatefulSetReady(statefulSet));
   }
 
   @Test
-  public void testStatefulSetReadinessNoSpec() {
+  void testStatefulSetReadinessNoSpec() {
     StatefulSetStatus status = new StatefulSetStatus();
 
     StatefulSet statefulSet = new StatefulSet();
     statefulSet.setStatus(status);
 
-    assertFalse(Readiness.isReady(statefulSet));
+    assertFalse(readiness.isReady(statefulSet));
     assertFalse(Readiness.isStatefulSetReady(statefulSet));
 
     status.setReadyReplicas(1);
 
-    assertFalse(Readiness.isReady(statefulSet));
+    assertFalse(readiness.isReady(statefulSet));
     assertFalse(Readiness.isStatefulSetReady(statefulSet));
   }
 
   @Test
-  public void testStatefulSetReadinessNoStatus() {
+  void testStatefulSetReadinessNoStatus() {
     StatefulSetSpec spec = new StatefulSetSpec();
     spec.setReplicas(1);
 
     StatefulSet statefulSet = new StatefulSet();
     statefulSet.setSpec(spec);
 
-    assertFalse(Readiness.isReady(statefulSet));
+    assertFalse(readiness.isReady(statefulSet));
     assertFalse(Readiness.isStatefulSetReady(statefulSet));
 
   }
 
   @Test
-  public void testStatefulSetReadinessNotEnoughReadyReplicas() {
+  void testStatefulSetReadinessNotEnoughReadyReplicas() {
     StatefulSetStatus status = new StatefulSetStatus();
     status.setReadyReplicas(1);
     status.setReplicas(2);
@@ -76,12 +83,12 @@ public class ReadinessTest {
     statefulSet.setStatus(status);
     statefulSet.setSpec(spec);
 
-    assertFalse(Readiness.isReady(statefulSet));
+    assertFalse(readiness.isReady(statefulSet));
     assertFalse(Readiness.isStatefulSetReady(statefulSet));
   }
 
   @Test
-  public void testStatefulSetReadiness() {
+  void testStatefulSetReadiness() {
     StatefulSetStatus status = new StatefulSetStatus();
     status.setReadyReplicas(2);
     status.setReplicas(2);
@@ -93,17 +100,17 @@ public class ReadinessTest {
     statefulSet.setStatus(status);
     statefulSet.setSpec(spec);
 
-    assertTrue(Readiness.isReady(statefulSet));
+    assertTrue(readiness.isReady(statefulSet));
     assertTrue(Readiness.isStatefulSetReady(statefulSet));
   }
 
   @Test
   void testReadinessWithNonNullResource() {
-    assertTrue(Readiness.isReady(new ServiceBuilder().withNewMetadata().withName("svc1").endMetadata().build()));
+    assertTrue(readiness.isReady(new ServiceBuilder().withNewMetadata().withName("svc1").endMetadata().build()));
   }
 
   @Test
   void testReadinessNullResource() {
-    assertFalse(Readiness.isReady(null));
+    assertFalse(readiness.isReady(null));
   }
 }

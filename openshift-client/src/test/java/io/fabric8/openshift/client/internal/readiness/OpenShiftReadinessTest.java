@@ -15,15 +15,25 @@
  */
 package io.fabric8.openshift.client.internal.readiness;
 
+import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigBuilder;
 import io.fabric8.openshift.api.model.ImageStreamBuilder;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class OpenShiftReadinessTest {
+
+  private Readiness readiness;
+
+  @BeforeEach
+  void setUp() {
+    readiness = OpenShiftReadiness.getInstance();
+  }
+
   @Test
   void testOpenShiftReadinessWithDeploymentConfig() {
     DeploymentConfig dc = new DeploymentConfigBuilder()
@@ -31,16 +41,16 @@ class OpenShiftReadinessTest {
       .withNewStatus().withAvailableReplicas(2).withReplicas(2).endStatus()
       .build();
 
-    assertTrue(OpenShiftReadiness.isReady(dc));
+    assertTrue(readiness.isReady(dc));
   }
 
   @Test
   void testOpenShiftReadinessWithNonReadinessApplicableResource() {
-    assertTrue(OpenShiftReadiness.isReady(new ImageStreamBuilder().withNewMetadata().withName("is1").endMetadata().build()));
+    assertTrue(readiness.isReady(new ImageStreamBuilder().withNewMetadata().withName("is1").endMetadata().build()));
   }
 
   @Test
   void testOpenShiftReadinessWithNullResource() {
-    assertFalse(OpenShiftReadiness.isReady(null));
+    assertFalse(readiness.isReady(null));
   }
 }

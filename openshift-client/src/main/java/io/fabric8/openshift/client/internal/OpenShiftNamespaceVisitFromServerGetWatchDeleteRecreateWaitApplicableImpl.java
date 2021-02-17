@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl;
+import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import io.fabric8.openshift.client.internal.readiness.OpenShiftReadiness;
 import okhttp3.OkHttpClient;
 
@@ -35,7 +36,7 @@ public class OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicab
   }
 
   @Override
-  public Boolean isReady() {
-    return OpenShiftReadiness.isReady(get());
+  protected Readiness getReadiness() {
+    return OpenShiftReadiness.getInstance();
   }
 }

@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.client.OpenShiftConfig;
@@ -30,8 +31,6 @@ import io.fabric8.openshift.client.internal.readiness.OpenShiftReadiness;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>>
   extends HasMetadataOperation<T, L, R> {
@@ -102,13 +101,8 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
   }
 
   @Override
-  public Boolean isReady() {
-    return OpenShiftReadiness.isReady(get());
-  }
-
-  @Override
-  public T waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException {
-    return waitUntilCondition(resource -> Objects.nonNull(resource) && OpenShiftReadiness.isReady(resource), amount, timeUnit);
+  public Readiness getReadiness() {
+    return OpenShiftReadiness.getInstance();
   }
 
   private void updateApiVersion() {

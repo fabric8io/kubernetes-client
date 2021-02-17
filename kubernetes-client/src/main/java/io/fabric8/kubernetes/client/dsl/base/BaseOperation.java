@@ -254,7 +254,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     throw new KubernetesClientException("Cannot edit read-only resources");
   }
 
-  @Override 
+  @Override
   public <V> T edit(final Class<V> visitorType, final Visitor<V> visitor) {
     return edit(new TypedVisitor<V>() {
         @Override
@@ -1085,14 +1085,18 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     return apiVersion != null && apiVersion.indexOf('/') > 0;
   }
 
+  public Readiness getReadiness() {
+    return Readiness.getInstance();
+  }
+
   @Override
-  public Boolean isReady() {
-    return Readiness.isReady(get());
+  public final Boolean isReady() {
+    return getReadiness().isReady(get());
   }
 
   @Override
   public T waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException {
-    return waitUntilCondition(resource -> Objects.nonNull(resource) && Readiness.isReady(resource), amount, timeUnit);
+    return waitUntilCondition(resource -> Objects.nonNull(resource) && getReadiness().isReady(resource), amount, timeUnit);
   }
 
   @Override

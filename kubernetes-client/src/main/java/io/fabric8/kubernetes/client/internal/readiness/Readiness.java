@@ -46,40 +46,57 @@ public class Readiness {
   private static final String NODE_READY = "Ready";
   private static final String TRUE = "True";
   private static final Logger logger = LoggerFactory.getLogger(Readiness.class);
-  private static final String READINESS_APPLICABLE_RESOURCES = "Node, Deployment, ReplicaSet, StatefulSet, Pod, ReplicationController";
+  protected static final String READINESS_APPLICABLE_RESOURCES =
+    "Node, Deployment, ReplicaSet, StatefulSet, Pod, ReplicationController";
 
-  public static boolean isReadinessApplicable(Class<? extends HasMetadata> itemClass) {
-    return Deployment.class.isAssignableFrom(itemClass)
-      || io.fabric8.kubernetes.api.model.extensions.Deployment.class.isAssignableFrom(itemClass)
-      || ReplicaSet.class.isAssignableFrom(itemClass)
-      || Pod.class.isAssignableFrom(itemClass)
-      || ReplicationController.class.isAssignableFrom(itemClass)
-      || Endpoints.class.isAssignableFrom(itemClass)
-      || Node.class.isAssignableFrom(itemClass)
-      || StatefulSet.class.isAssignableFrom(itemClass)
-      ;
+  private static Readiness instance;
+
+  public static Readiness getInstance() {
+    if (instance == null) {
+      synchronized (Readiness.class) {
+        instance = new Readiness();
+      }
+    }
+    return instance;
   }
 
-  public static boolean isReady(HasMetadata item) {
-    if (isReadiableKubernetesResource(item)) {
-      return isKubernetesResourceReady(item);
+  /**
+   * Checks if the provided {@link HasMetadata} is marked as ready by the cluster.
+   *
+   * <p> A "Readiable" resources is a subjective trait for Kubernetes Resources. Many Resources, such as ConfigMaps,
+   * Secrets, etc. become ready as soon as they've been created in the cluster.
+   *
+   * <p> However, other resources such as Pods, Endpoints, Deployments, and controllers in general, only become
+   * ready when their desired state matches their actual state.
+   *
+   * <p> This method returns true for those "Readiable" resources once they are considered ready (even if the resource
+   * exists in the cluster). For "non-Readiable" resources, this method returns true once the resources are created in
+   * the cluster (in addition it logs a warning stating that the given resource is not considered "Readiable").
+   *
+   * @param item resource to be checked for Readiness.
+   * @return true if it's a Readiable Resource and is ready, or it's a non-readiable resource and has been created. false
+   * otherwise.
+   */
+  public boolean isReady(HasMetadata item) {
+    if (isReadinessApplicable(item)) {
+      return isResourceReady(item);
     } else {
-      return handleNonReadinessApplicableResource(item, getReadinessApplicableResources());
+      return handleNonReadinessApplicableResource(item);
     }
   }
 
-  public static boolean handleNonReadinessApplicableResource(HasMetadata item, String readinessApplicableResourcesStr) {
-    boolean doesItemExist = Objects.nonNull(item);
-    logger.warn("{} is not a Readiableresource. It needs to be one of [{}]",
-      doesItemExist ? item.getKind() : "Unknown", readinessApplicableResourcesStr);
-    return doesItemExist;
+  protected boolean isReadinessApplicable(HasMetadata item) {
+    return (item instanceof Deployment ||
+      item instanceof io.fabric8.kubernetes.api.model.extensions.Deployment ||
+      item instanceof ReplicaSet ||
+      item instanceof Pod ||
+      item instanceof ReplicationController ||
+      item instanceof Endpoints ||
+      item instanceof Node ||
+      item instanceof StatefulSet);
   }
 
-  public static String getReadinessApplicableResources() {
-    return READINESS_APPLICABLE_RESOURCES;
-  }
-
-  private static boolean isKubernetesResourceReady(HasMetadata item) {
+  protected boolean isResourceReady(HasMetadata item) {
     if (item instanceof Deployment) {
       return isDeploymentReady((Deployment) item);
     } else if (item instanceof io.fabric8.kubernetes.api.model.extensions.Deployment) {
@@ -98,6 +115,17 @@ public class Readiness {
       return isStatefulSetReady((StatefulSet) item);
     }
     return false;
+  }
+
+  protected String getReadinessResourcesList() {
+    return READINESS_APPLICABLE_RESOURCES;
+  }
+
+  final boolean handleNonReadinessApplicableResource(HasMetadata item) {
+    boolean doesItemExist = Objects.nonNull(item);
+    logger.warn("{} is not a Readiable resource. It needs to be one of [{}]",
+      doesItemExist ? item.getKind() : "Unknown", getReadinessResourcesList());
+    return doesItemExist;
   }
 
   public static boolean isStatefulSetReady(StatefulSet ss) {
@@ -251,7 +279,7 @@ public class Readiness {
 
   /**
    * Returns the ready condition of the node.
-   * 
+   *
    * @param node The target node.
    * @return The {@link NodeCondition} or null if not found.
    */
@@ -270,16 +298,6 @@ public class Readiness {
     return null;
   }
 
-  protected static boolean isReadiableKubernetesResource(HasMetadata item) {
-    return (item instanceof Deployment ||
-      item instanceof io.fabric8.kubernetes.api.model.extensions.Deployment ||
-    item instanceof ReplicaSet ||
-    item instanceof Pod ||
-    item instanceof ReplicationController ||
-    item instanceof Endpoints ||
-    item instanceof Node ||
-    item instanceof StatefulSet);
-  }
 }
 
 
