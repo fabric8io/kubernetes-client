@@ -1,5 +1,15 @@
 ## CHANGELOG
 
+### 5.2-SNAPSHOT
+
+#### Bugs
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
 ### 5.1.0 (2021-02-17)
 
 #### Bugs
