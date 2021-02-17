@@ -31,5 +31,4 @@ jobs:
         uses: actions/checkout@v2
       - name: Build Project
         run: |
-          cd kubernetes-model-generator
-          /bin/bash generateModelDocker.sh all
+          ./kubernetes-model-generator/generateModelDocker.sh
