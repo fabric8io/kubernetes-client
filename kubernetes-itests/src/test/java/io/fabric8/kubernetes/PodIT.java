@@ -166,7 +166,7 @@ public class PodIT {
     // cant evict because only one left
     assertFalse(client.pods().inNamespace(session.getNamespace()).withName(pod1.getMetadata().getName()).evict());
     // ensure it really is still up
-    assertTrue(Readiness.isReady(client.pods().inNamespace(session.getNamespace()).withName(pod1.getMetadata().getName()).fromServer().get()));
+    assertTrue(Readiness.getInstance().isReady(client.pods().inNamespace(session.getNamespace()).withName(pod1.getMetadata().getName()).fromServer().get()));
 
     // create another pod to satisfy PDB
     client.pods().inNamespace(session.getNamespace()).createOrReplace(pod3);
