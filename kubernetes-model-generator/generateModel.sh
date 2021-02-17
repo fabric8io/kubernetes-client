@@ -17,6 +17,10 @@
 
 set -e
 
+BASEDIR=$(dirname "$BASH_SOURCE")
+ABSOLUTE_BASEDIR=$(realpath "$BASEDIR")
+
+# Array for all existing modules
 declare -a modules=(
     "kubernetes-model-core"
     "kubernetes-model-rbac"
@@ -42,11 +46,25 @@ declare -a modules=(
     "openshift-model-console"
     "openshift-model-monitoring"
 )
+generateAll() {
+  for module in ${modules[*]}
+  do
+    generateSingleModule "$module"
+  done
+}
 
-for module in ${modules[*]}
-do
-    echo "Compiling ${module}"
-    cd "$module" || exit 1
-    make "${1:-"gobuild"}"
-    cd .. || exit 1
-done
+generateSingleModule() {
+  echo "Compiling $1"
+  cd "$ABSOLUTE_BASEDIR/$1" || exit 1
+  make "gobuild"
+  if test -n "${LOCAL_USER-}"; then
+    chown -R "$LOCAL_USER" ./src/main/resources/schema
+  fi
+  cd "$ABSOLUTE_BASEDIR" || exit 1
+}
+
+if [ -z "$1" ]; then
+  generateAll
+else
+  generateSingleModule "$1"
+fi
