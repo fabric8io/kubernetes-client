@@ -30,9 +30,13 @@ public class ChaosMeshResourceMappingProvider implements KubernetesResourceMappi
     mappings.put("chaos-mesh.org/v1alpha1#KernelChaos", io.fabric8.chaosmesh.v1alpha1.KernelChaos.class);
     mappings.put("chaos-mesh.org/v1alpha1#NetworkChaos", io.fabric8.chaosmesh.v1alpha1.NetworkChaos.class);
     mappings.put("chaos-mesh.org/v1alpha1#PodChaos", io.fabric8.chaosmesh.v1alpha1.PodChaos.class);
+    mappings.put("chaos-mesh.org/v1alpha1#PodIoChaos", io.fabric8.chaosmesh.v1alpha1.PodIoChaos.class);
     mappings.put("chaos-mesh.org/v1alpha1#PodNetworkChaos", io.fabric8.chaosmesh.v1alpha1.PodNetworkChaos.class);
     mappings.put("chaos-mesh.org/v1alpha1#StressChaos", io.fabric8.chaosmesh.v1alpha1.StressChaos.class);
     mappings.put("chaos-mesh.org/v1alpha1#TimeChaos", io.fabric8.chaosmesh.v1alpha1.TimeChaos.class);
+    mappings.put("chaos-mesh.org/v1alpha1#JVMChaos", io.fabric8.chaosmesh.v1alpha1.JVMChaos.class);
+    mappings.put("chaos-mesh.org/v1alpha1#HTTPChaos", io.fabric8.chaosmesh.v1alpha1.HTTPChaos.class);
+    mappings.put("chaos-mesh.org/v1alpha1#DNSChaos", io.fabric8.chaosmesh.v1alpha1.DNSChaos.class);
   }
 
   public Map<String, Class<? extends KubernetesResource>> getMappings() {

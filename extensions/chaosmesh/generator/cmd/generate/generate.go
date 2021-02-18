@@ -33,9 +33,13 @@ func main() {
 		reflect.TypeOf(chaosmesh.KernelChaosList{}): schemagen.Namespaced,
 		reflect.TypeOf(chaosmesh.NetworkChaosList{}): schemagen.Namespaced,
 		reflect.TypeOf(chaosmesh.PodChaosList{}): schemagen.Namespaced,
+		reflect.TypeOf(chaosmesh.PodIoChaosList{}): schemagen.Namespaced,
 		reflect.TypeOf(chaosmesh.PodNetworkChaosList{}): schemagen.Namespaced,
 		reflect.TypeOf(chaosmesh.StressChaosList{}): schemagen.Namespaced,
 		reflect.TypeOf(chaosmesh.TimeChaosList{}): schemagen.Namespaced,
+		reflect.TypeOf(chaosmesh.JVMChaosList{}): schemagen.Namespaced,
+		reflect.TypeOf(chaosmesh.HTTPChaosList{}): schemagen.Namespaced,
+		reflect.TypeOf(chaosmesh.DNSChaosList{}): schemagen.Namespaced,
 	}
 
 	// constraints and patterns for fields

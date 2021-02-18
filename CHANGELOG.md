@@ -9,6 +9,7 @@
 #### Dependency Upgrade
 
 #### New Features
+- Update chaos-mesh extension to v1.1.1. Add PodIoChaos, JVMChaos, HTTPChaos and DNSChaos.
 
 ### 5.1.1 (2021-02-24)
 

@@ -1,9 +1,8 @@
 module github.com/fabric8io/kubernetes-client/extensions/chaosmesh/generator
 
 require (
-	github.com/chaos-mesh/chaos-mesh v1.0.1
+	github.com/chaos-mesh/chaos-mesh v1.1.1
 	github.com/fabric8io/kubernetes-client/generator v0.0.0
-	github.com/ugorji/go v1.2.0 // indirect
 	k8s.io/apimachinery v0.17.0
 )
 
