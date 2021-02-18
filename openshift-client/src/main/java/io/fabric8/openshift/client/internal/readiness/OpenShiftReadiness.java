@@ -27,15 +27,12 @@ public class OpenShiftReadiness extends Readiness {
   private static final String OPENSHIFT_READINESS_APPLICABLE_RESOURCES = READINESS_APPLICABLE_RESOURCES +
     ", " + "DeploymentConfig";
 
-  private static OpenShiftReadiness instance;
+  private static class OpenShiftReadinessHolder {
+    public static final OpenShiftReadiness INSTANCE = new OpenShiftReadiness();
+  }
 
   public static OpenShiftReadiness getInstance() {
-    if (instance == null) {
-      synchronized (OpenShiftReadiness.class) {
-        instance = new OpenShiftReadiness();
-      }
-    }
-    return instance;
+    return OpenShiftReadinessHolder.INSTANCE;
   }
 
   @Override
