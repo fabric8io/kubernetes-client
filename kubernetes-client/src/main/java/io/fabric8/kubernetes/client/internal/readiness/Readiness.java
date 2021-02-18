@@ -49,15 +49,12 @@ public class Readiness {
   protected static final String READINESS_APPLICABLE_RESOURCES =
     "Node, Deployment, ReplicaSet, StatefulSet, Pod, ReplicationController";
 
-  private static Readiness instance;
+  private static class ReadinessHolder {
+    public static final Readiness INSTANCE = new Readiness();
+  }
 
   public static Readiness getInstance() {
-    if (instance == null) {
-      synchronized (Readiness.class) {
-        instance = new Readiness();
-      }
-    }
-    return instance;
+    return ReadinessHolder.INSTANCE;
   }
 
   /**
