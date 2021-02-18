@@ -6,6 +6,7 @@
 * Apiextensions DSL should use NonNamespaceOperation for CustomResourceDefinitions
 * Fix #2819: simple enums are now supported when generating CRDs
 * CNFE when initialzing CustomResource instances
+* `client.isAdaptable(OpenShiftClient.class)` doesn't work on OpenShift 4
 
 #### Improvements
 

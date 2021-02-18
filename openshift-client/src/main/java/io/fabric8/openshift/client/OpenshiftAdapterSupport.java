@@ -32,6 +32,8 @@ import java.net.URL;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import static io.fabric8.openshift.client.DefaultOpenShiftClient.clientWithOpenShiftOAuthInterceptor;
+
 public class OpenshiftAdapterSupport {
 
   static final ConcurrentMap<URL, Boolean> IS_OPENSHIFT = new ConcurrentHashMap<>();
@@ -39,48 +41,50 @@ public class OpenshiftAdapterSupport {
   public static final String APIS = "/apis";
 
   public Boolean isAdaptable(Client client) {
-        OpenShiftConfig config = new OpenShiftConfig(client.getConfiguration());
-        if (!hasCustomOpenShiftUrl(config) && !isOpenShift(client)) {
-            return false;
-        }
-        return true;
+    OpenShiftConfig config = new OpenShiftConfig(client.getConfiguration());
+    if (!hasCustomOpenShiftUrl(config) && !isOpenShift(client, config)) {
+      return false;
     }
+    return true;
+  }
 
   /**
    * Check if OpenShift is available.
    * @param client   The client.
+   * @param config {@link OpenShiftConfig} OpenShift Configuration
    * @return         True if oapi is found in the root paths.
    */
-    static boolean isOpenShift(Client client) {
-      return isOpenShiftAPIGroups(client);
-    }
+  static boolean isOpenShift(Client client, OpenShiftConfig config) {
+    return isOpenShiftAPIGroups(client, config);
+  }
 
-    /**
-     * Check if OpenShift API Groups are available
-     * @param client   The client.
-     * @return         True if the new <code>/apis/*.openshift.io/</code> APIs are found in the root paths.
-     */
-    static boolean isOpenShiftAPIGroups(Client client) {
-      URL masterUrl = client.getMasterUrl();
+  /**
+   * Check if OpenShift API Groups are available
+   * @param client   The client.
+   * @param config {@link OpenShiftConfig} OpenShift config
+   * @return         True if the new <code>/apis/*.openshift.io/</code> APIs are found in the root paths.
+   */
+  static boolean isOpenShiftAPIGroups(Client client, OpenShiftConfig config) {
+    URL masterUrl = client.getMasterUrl();
 
-      OkHttpClient httpClient = ((BaseClient)client).getHttpClient();
-      try {
-        Request.Builder requestBuilder = new Request.Builder()
-          .get()
-          .url(URLUtils.join(masterUrl.toString(), APIS));
-        Response response = httpClient.newCall(requestBuilder.build()).execute();
-        APIGroupList apiGroupList = Serialization.unmarshal(response.body().string(), APIGroupList.class);
+    OkHttpClient httpClient = clientWithOpenShiftOAuthInterceptor(((BaseClient)client).getHttpClient(), config);
+    try {
+      Request.Builder requestBuilder = new Request.Builder()
+        .get()
+        .url(URLUtils.join(masterUrl.toString(), APIS));
+      Response response = httpClient.newCall(requestBuilder.build()).execute();
+      APIGroupList apiGroupList = Serialization.unmarshal(response.body().string(), APIGroupList.class);
 
-        for (APIGroup apiGroup : apiGroupList.getGroups()) {
-          if (apiGroup.getName().endsWith("openshift.io")) {
-            return true;
-          }
+      for (APIGroup apiGroup : apiGroupList.getGroups()) {
+        if (apiGroup.getName().endsWith("openshift.io")) {
+          return true;
         }
-      } catch(Exception e) {
-        KubernetesClientException.launderThrowable(e);
       }
-      return false;
+    } catch(Exception e) {
+      KubernetesClientException.launderThrowable(e);
     }
+    return false;
+  }
 
     /**
      * Check if OpenShift API Groups are available
