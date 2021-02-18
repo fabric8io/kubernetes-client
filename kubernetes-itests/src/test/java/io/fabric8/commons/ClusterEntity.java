@@ -17,14 +17,18 @@ package io.fabric8.commons;
 
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.NamedCluster;
+import io.fabric8.kubernetes.api.model.NamedContext;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.NamespaceList;
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.openshift.client.DefaultOpenShiftClient;
-import io.fabric8.openshift.client.OpenShiftClient;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.VersionInfo;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
@@ -103,6 +107,26 @@ public class ClusterEntity {
             return namespace.getMetadata().getName();
           }
         }
+      }
+    }
+    return null;
+  }
+
+  public static String getClusterUrl() throws IOException {
+    io.fabric8.kubernetes.api.model.Config kubeConfig = Serialization.yamlMapper().readValue(new File(Config.getKubeconfigFilename()), io.fabric8.kubernetes.api.model.Config.class);
+
+    String currentContext = kubeConfig.getCurrentContext();
+    NamedContext currentNamedContext = kubeConfig.getContexts().stream()
+      .filter(c -> c.getName().equals(currentContext)).findFirst()
+      .orElse(null);
+    if (currentNamedContext != null) {
+      String clusterInContext = currentNamedContext.getContext().getCluster();
+      NamedCluster namedCluster = kubeConfig.getClusters().stream()
+        .filter(c -> c.getName().equals(clusterInContext))
+        .findFirst()
+        .orElse(null);
+      if (namedCluster != null) {
+        return namedCluster.getCluster().getServer();
       }
     }
     return null;

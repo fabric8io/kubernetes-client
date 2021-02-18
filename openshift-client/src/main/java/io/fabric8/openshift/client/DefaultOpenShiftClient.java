@@ -299,7 +299,7 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
     return clientWithOpenShiftOAuthInterceptor(null, config);
   }
 
-  private static OkHttpClient clientWithOpenShiftOAuthInterceptor(OkHttpClient httpClient, Config config) {
+  static OkHttpClient clientWithOpenShiftOAuthInterceptor(OkHttpClient httpClient, Config config) {
     OkHttpClient.Builder builder = httpClient != null ?
       httpClient.newBuilder().authenticator(Authenticator.NONE) :
       new OkHttpClient.Builder().authenticator(Authenticator.NONE);

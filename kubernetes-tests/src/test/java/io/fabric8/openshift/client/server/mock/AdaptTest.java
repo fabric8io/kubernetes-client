@@ -16,19 +16,24 @@
 
 package io.fabric8.openshift.client.server.mock;
 
+import io.fabric8.kubernetes.api.model.APIGroupBuilder;
 import io.fabric8.kubernetes.api.model.APIGroupListBuilder;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.mockwebserver.utils.ResponseProvider;
+import okhttp3.Headers;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 
+import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.Rule;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
-import java.io.IOException;
+import java.net.HttpURLConnection;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableRuleMigrationSupport
 class AdaptTest {
@@ -53,5 +58,46 @@ class AdaptTest {
     OpenShiftClient oclient = client.adapt(OpenShiftClient.class);
     assertNotNull(client.adapt(OkHttpClient.class));
     assertNotNull(oclient.adapt(OkHttpClient.class));
+  }
+
+  @Test
+  void testCheckIfAvailableAPIGroupsContainOpenShiftOpenShift4() {
+    // Given
+    String authorizationEndpoint = server.getClient().getMasterUrl() + "oauth/authorize";
+    server.expect().withPath("/apis").andReturn(HttpURLConnection.HTTP_UNAUTHORIZED, null).once();
+    server.expect().get().withPath("/.well-known/oauth-authorization-server")
+      .andReturn(HttpURLConnection.HTTP_OK, "{\"authorization_endpoint\":\"" + authorizationEndpoint + "\"}")
+      .once();
+    server.expect().get().withPath("/oauth/authorize?response_type=token&client_id=openshift-challenging-client")
+      .andReply(new ResponseProvider<Object>() {
+        @Override
+        public Object getBody(RecordedRequest recordedRequest) { return null; }
+
+        @Override
+        public int getStatusCode(RecordedRequest recordedRequest) { return HttpURLConnection.HTTP_MOVED_TEMP; }
+
+        @Override
+        public Headers getHeaders() {
+          return new Headers.Builder()
+            .add("Location", server.getClient().getMasterUrl() + "oauth/token/implicit#access_token=sha256~UkDpAaw0AARKGVvJ0nypSjIDGGLMyxuS9ORWVyMQ2F8&expires_in=86400&scope=user%3Afull&token_type=Bearer")
+            .build();
+        }
+
+        @Override
+        public void setHeaders(Headers headers) { }
+      }).once();
+    server.expect().withPath("/apis").andReturn(HttpURLConnection.HTTP_OK, new APIGroupListBuilder()
+      .addToGroups(new APIGroupBuilder().withName("security.internal.openshift.io").build()))
+      .once();
+
+    KubernetesClient client = server.getClient();
+    client.getConfiguration().setUsername("foo");
+    client.getConfiguration().setPassword("foo-pwd");
+
+    // When
+    boolean isOpenShiftAdaptable = client.isAdaptable(OpenShiftClient.class);
+
+    // Then
+    assertTrue(isOpenShiftAdaptable);
   }
 }
