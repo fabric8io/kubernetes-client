@@ -15,6 +15,8 @@
  */
 package io.fabric8.crd.generator;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import io.fabric8.crd.generator.utils.Types;
 import io.fabric8.kubernetes.api.model.Duration;
 import io.fabric8.kubernetes.api.model.IntOrString;
@@ -183,7 +185,18 @@ public abstract class AbstractJsonSchema<T, B> {
         if (typeRef instanceof ClassRef) { // Handle complex types
           ClassRef classRef = (ClassRef) typeRef;
           TypeDef def = classRef.getDefinition();
-          return internalFrom(def);
+
+          // check if we're dealing with an enum
+          if(def.isEnum()) {
+            final JsonNode[] enumValues = def.getProperties().stream()
+              .map(Property::getName)
+              .map(JsonNodeFactory.instance::textNode)
+              .toArray(JsonNode[]::new);
+            return enumProperty(enumValues);
+          } else {
+            return internalFrom(def);
+          }
+
         }
         return null;
       }
@@ -214,4 +227,5 @@ public abstract class AbstractJsonSchema<T, B> {
    */
   protected abstract T singleProperty(String typeName);
 
+  protected abstract T enumProperty(JsonNode... enumValues);
 }
