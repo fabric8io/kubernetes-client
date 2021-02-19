@@ -15,6 +15,7 @@
  */
 package io.fabric8.crd.generator.v1;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.crd.generator.AbstractJsonSchema;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsBuilder;
@@ -77,13 +78,16 @@ public class JsonSchema extends AbstractJsonSchema<JSONSchemaProps, JSONSchemaPr
 
   @Override
   protected JSONSchemaProps singleProperty(String typeName) {
-    return new JSONSchemaPropsBuilder()
-      .withType(typeName)
-      .build();
+    return new JSONSchemaPropsBuilder().withType(typeName).build();
   }
 
   @Override
   protected JSONSchemaProps mappedProperty(TypeRef ref) {
     return JSON_SCHEMA_INT_OR_STRING;
+  }
+
+  @Override
+  protected JSONSchemaProps enumProperty(JsonNode... enumValues) {
+    return new JSONSchemaPropsBuilder().withType("string").withEnum(enumValues).build();
   }
 }

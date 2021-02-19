@@ -24,6 +24,7 @@ import io.sundr.codegen.model.Property;
 import io.sundr.codegen.model.PropertyBuilder;
 import io.sundr.codegen.model.TypeDef;
 import io.sundr.codegen.model.TypeDefBuilder;
+import io.sundr.codegen.model.TypeParamDef;
 import io.sundr.codegen.model.TypeParamRef;
 import io.sundr.codegen.model.TypeRef;
 import java.util.HashMap;
@@ -88,26 +89,33 @@ public class Types {
    */
   public static TypeDef applyTypeArguments(ClassRef ref) {
     Map<String, TypeRef> bounds = new HashMap<>();
-    for (int i = 0; i < ref.getArguments().size(); i++) {
-      bounds.put(ref.getDefinition().getParameters().get(i).getName(), ref.getArguments().get(i));
-    }
+    final List<TypeRef> arguments = ref.getArguments();
+    final TypeDef definition = ref.getDefinition();
+    final List<TypeParamDef> parameters = definition.getParameters();
+    // only apply type arguments if their number matches the definition
+    if (arguments.size() == parameters.size()) {
+      for (int i = 0; i < arguments.size(); i++) {
+        bounds.put(parameters.get(i).getName(), arguments.get(i));
+      }
 
-    return new TypeDefBuilder(ref.getDefinition()).accept(new TypedVisitor<PropertyBuilder>() {
-      @Override
-      public void visit(PropertyBuilder property) {
-        TypeRef typeRef = property.buildTypeRef();
-        if (typeRef instanceof TypeParamRef) {
-          TypeParamRef typeParamRef = (TypeParamRef) typeRef;
-          String key = typeParamRef.getName();
-          if (bounds.containsKey(key)) {
-            TypeRef paramRef = bounds.get(key);
-            if (paramRef != null) {
-              property.withTypeRef(paramRef);
+      return new TypeDefBuilder(definition).accept(new TypedVisitor<PropertyBuilder>() {
+        @Override
+        public void visit(PropertyBuilder property) {
+          TypeRef typeRef = property.buildTypeRef();
+          if (typeRef instanceof TypeParamRef) {
+            TypeParamRef typeParamRef = (TypeParamRef) typeRef;
+            String key = typeParamRef.getName();
+            if (bounds.containsKey(key)) {
+              TypeRef paramRef = bounds.get(key);
+              if (paramRef != null) {
+                property.withTypeRef(paramRef);
+              }
             }
           }
         }
-      }
-    }).build();
+      }).build();
+    }
+    return new TypeDefBuilder(definition).build();
   }
 
 

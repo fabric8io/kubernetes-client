@@ -4,6 +4,7 @@
 
 #### Bugs
 * Apiextensions DSL should use NonNamespaceOperation for CustomResourceDefinitions
+* Fix #2819: simple enums are now supported when generating CRDs
 * CNFE when initialzing CustomResource instances
 
 #### Improvements
