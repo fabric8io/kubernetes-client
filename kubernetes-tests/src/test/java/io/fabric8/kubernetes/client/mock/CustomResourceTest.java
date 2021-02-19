@@ -19,6 +19,7 @@ package io.fabric8.kubernetes.client.mock;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -32,11 +33,13 @@ import java.util.concurrent.TimeUnit;
 import io.fabric8.kubernetes.api.model.DeleteOptions;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
+import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.api.model.WatchEvent;
 import io.fabric8.kubernetes.client.WatcherException;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.Rule;
 import org.junit.jupiter.api.Assertions;
@@ -60,7 +63,7 @@ class CustomResourceTest {
   @Rule
   public KubernetesServer server = new KubernetesServer();
 
-  private CustomResourceDefinitionContext customResourceDefinitionContext = new CustomResourceDefinitionContext.Builder()
+  private final CustomResourceDefinitionContext customResourceDefinitionContext = new CustomResourceDefinitionContext.Builder()
     .withGroup("test.fabric8.io")
     .withName("hellos.test.fabric8.io")
     .withPlural("hellos")
@@ -198,21 +201,49 @@ class CustomResourceTest {
 
   @Test
   void testDelete() throws IOException {
+    // Given
     server.expect().delete().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/example-hello").andReturn(HttpURLConnection.HTTP_OK, "{\"metadata\":{},\"apiVersion\":\"v1\",\"kind\":\"Status\",\"details\":{\"name\":\"prometheus-example-rules\",\"group\":\"monitoring.coreos.com\",\"kind\":\"prometheusrules\",\"uid\":\"b3d085bd-6a5c-11e9-8787-525400b18c1d\"},\"status\":\"Success\"}").once();
-
     KubernetesClient client = server.getClient();
-    Map<String, Object> result = client.customResource(customResourceDefinitionContext).delete("ns1", "example-hello");
-    assertEquals("Success", result.get("status"));
+
+    // When
+    boolean result = client.customResource(customResourceDefinitionContext).delete("ns1", "example-hello");
+
+    // Then
+    assertTrue(result);
+  }
+
+  @Test
+  void testDeleteNonExistentItem() throws IOException {
+    // Given
+    Status notFoundStatus = new StatusBuilder()
+      .withStatus("Failure")
+      .withMessage("\"idontexist\" not found")
+      .withReason("NotFound")
+      .withNewDetails().withKind("pods").withName("idontexist").endDetails()
+      .withCode(HttpURLConnection.HTTP_NOT_FOUND)
+      .build();
+    server.expect().delete().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/idontexist").andReturn(HttpURLConnection.HTTP_NOT_FOUND, Serialization.jsonMapper().writeValueAsString(notFoundStatus)).once();
+    KubernetesClient client = server.getClient();
+
+    // When
+    boolean isDeleted = client.customResource(customResourceDefinitionContext).delete("ns1", "idontexist");
+
+    // Then
+    assertFalse(isDeleted);
   }
 
   @Test
   void testCascadingDeletion() throws IOException, InterruptedException {
+    // Given
     server.expect().delete().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/example-hello").andReturn(HttpURLConnection.HTTP_OK, "{\"metadata\":{},\"apiVersion\":\"v1\",\"kind\":\"Status\",\"details\":{\"name\":\"prometheus-example-rules\",\"group\":\"monitoring.coreos.com\",\"kind\":\"prometheusrules\",\"uid\":\"b3d085bd-6a5c-11e9-8787-525400b18c1d\"},\"status\":\"Success\"}").once();
-
     KubernetesClient client = server.getClient();
-    Map<String, Object> result = client.customResource(customResourceDefinitionContext)
+
+    // When
+    boolean result = client.customResource(customResourceDefinitionContext)
       .delete("ns1", "example-hello", true);
-    assertEquals("Success", result.get("status"));
+
+    // Then
+    assertTrue(result);
 
     RecordedRequest request = server.getLastRequest();
     assertEquals("DELETE", request.getMethod());
@@ -222,13 +253,17 @@ class CustomResourceTest {
 
   @Test
   void testPropagationPolicy() throws IOException, InterruptedException {
+    // Given
     server.expect().delete().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/example-hello").andReturn(HttpURLConnection.HTTP_OK, "{\"metadata\":{},\"apiVersion\":\"v1\",\"kind\":\"Status\",\"details\":{\"name\":\"prometheus-example-rules\",\"group\":\"monitoring.coreos.com\",\"kind\":\"prometheusrules\",\"uid\":\"b3d085bd-6a5c-11e9-8787-525400b18c1d\"},\"status\":\"Success\"}").once();
 
     KubernetesClient client = server.getClient();
-    Map<String, Object> result = client.customResource(customResourceDefinitionContext)
-      .delete("ns1", "example-hello", "Orphan");
-    assertEquals("Success", result.get("status"));
 
+    // When
+    boolean result = client.customResource(customResourceDefinitionContext)
+      .delete("ns1", "example-hello", "Orphan");
+
+    // Then
+    assertTrue(result);
     RecordedRequest request = server.getLastRequest();
     assertEquals("DELETE", request.getMethod());
     assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Orphan\"}",
@@ -237,18 +272,20 @@ class CustomResourceTest {
 
   @Test
   void testDeleteOptions() throws InterruptedException, IOException {
+    // Given
     server.expect().delete().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/example-hello").andReturn(HttpURLConnection.HTTP_OK, "{\"metadata\":{},\"apiVersion\":\"v1\",\"kind\":\"Status\",\"details\":{\"name\":\"prometheus-example-rules\",\"group\":\"monitoring.coreos.com\",\"kind\":\"prometheusrules\",\"uid\":\"b3d085bd-6a5c-11e9-8787-525400b18c1d\"},\"status\":\"Success\"}").once();
-
     KubernetesClient client = server.getClient();
 
     DeleteOptions deleteOptions = new DeleteOptions();
     deleteOptions.setGracePeriodSeconds(0L);
     deleteOptions.setPropagationPolicy("Orphan");
-    Map<String, Object> result = client.customResource(customResourceDefinitionContext)
+
+    // When
+    boolean result = client.customResource(customResourceDefinitionContext)
       .delete("ns1", "example-hello", deleteOptions);
 
-    assertEquals("Success", result.get("status"));
-
+    // Then
+    assertTrue(result);
     RecordedRequest request = server.getLastRequest();
     assertEquals("DELETE", request.getMethod());
     assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"gracePeriodSeconds\":0,\"propagationPolicy\":\"Orphan\"}",

@@ -146,8 +146,8 @@ public class RawCustomResourceIT {
     assertAnimal(bison, "bison", "bison-bonasus");
 
     // Delete
-    Map<String, Object> deletionStatusMap = client.customResource(customResourceDefinitionContext).delete(currentNamespace, name);
-    assertDeletionStatus(deletionStatusMap, "Success");
+    boolean isDeleted = client.customResource(customResourceDefinitionContext).delete(currentNamespace, name);
+    assertTrue(isDeleted);
   }
 
   @Test
@@ -163,8 +163,8 @@ public class RawCustomResourceIT {
     assertAnimal(hippoCr, name, "Hippopotamidae");
 
     // Delete
-    Map<String, Object> deletionStatusMap = client.customResource(customResourceDefinitionContext).delete(currentNamespace, name);
-    assertDeletionStatus(deletionStatusMap, "Success");
+    boolean isDeleted = client.customResource(customResourceDefinitionContext).delete(currentNamespace, name);
+    assertTrue(isDeleted);
   }
 
   @Test
@@ -189,8 +189,8 @@ public class RawCustomResourceIT {
     assertAnimal(rhinoCr, name, "rhinoceros");
 
     // Delete
-    Map<String, Object> deletionStatusMap = client.customResource(customResourceDefinitionContext).delete(currentNamespace, name);
-    assertDeletionStatus(deletionStatusMap, "Success");
+    boolean isDeleted = client.customResource(customResourceDefinitionContext).delete(currentNamespace, name);
+    assertTrue(isDeleted);
   }
 
   @Test
@@ -238,6 +238,12 @@ public class RawCustomResourceIT {
     assertEquals("endangered", ((Map<String, Object>)deer.get("status")).get("conservationStatus").toString());
   }
 
+  @Test
+  public void testDeleteNonExistingResource() throws IOException {
+    boolean isDeleted = client.customResource(customResourceDefinitionContext).delete(currentNamespace, "idontexist");
+    assertFalse(isDeleted);
+  }
+
   @AfterClass
   public static void cleanup() {
     ClusterEntity.remove(RawCustomResourceIT.class.getResourceAsStream("/test-rawcustomresource-definition.yml"));
@@ -248,12 +254,6 @@ public class RawCustomResourceIT {
     assertFalse(animal.isEmpty());
     assertThat(((HashMap<String, String>)animal.get("metadata")).get("name")).isEqualTo(name);
     assertThat(((HashMap<String, String>)animal.get("spec")).get("image")).isEqualTo(image);
-  }
-
-  private void assertDeletionStatus(Map<String, Object> deletionStatusAsMap, String status) {
-    Status deletionStatus = Serialization.jsonMapper().convertValue(deletionStatusAsMap, Status.class);
-    assertNotNull(deletionStatus);
-    assertEquals(status, deletionStatus.getStatus());
   }
 
   private Map<String, Object> createNewAnimal(String name, String image) {

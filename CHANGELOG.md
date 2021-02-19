@@ -5,6 +5,7 @@
 #### Bugs
 
 #### Improvements
+* Fix #2781: RawCustomResourceOperationsImpl#delete now returns a boolean value for deletion status
 
 #### Dependency Upgrade
 
