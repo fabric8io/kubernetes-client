@@ -18,15 +18,16 @@ package io.fabric8.kubernetes.client.utils;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
+import java.util.function.UnaryOperator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Pluralize implements Function<String, String> {
+public class Pluralize implements UnaryOperator<String> {
 
   private static Pluralize INSTANCE = null;
   private static final Object LOCK = new Object();
   private static final List<String> UNCOUNTABLE = Arrays.asList("equipment", "fish", "information", "money", "rice", "series", "sheep", "species");
-  private static final List<Function<String, String>> PLURALS = Arrays.<Function<String, String>>asList(
+  private static final List<UnaryOperator<String>> PLURALS = Arrays.<Function<String, String>>asList(
             //Irregulars
             new StringReplace("(p)eople$", "$1erson"),
             new StringReplace("(m)en$", "$1an"),
@@ -87,7 +88,7 @@ public class Pluralize implements Function<String, String> {
             return word;
         }
 
-        for (Function<String, String> function : PLURALS) {
+        for (UnaryOperator<String> function : PLURALS) {
             String result = function.apply(word);
             if (result != null) {
                 return result;
@@ -112,7 +113,7 @@ public class Pluralize implements Function<String, String> {
         return false;
     }
 
-  private static class StringReplace implements Function<String, String> {
+  private static class StringReplace implements UnaryOperator<String> {
 
     private final String target;
     private final String replacement;
