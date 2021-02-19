@@ -16,6 +16,8 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.*;
 
@@ -25,6 +27,8 @@ import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.fabric8.kubernetes.api.model.DeleteOptionsBuilder;
+import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -109,14 +113,132 @@ public class RawCustomResourceOperationsImplTest {
     assertEquals("POST", captor.getAllValues().get(3).method());
   }
 
-  private Response mockResponse(int code) {
-    return new Response.Builder()
-      .request(new Request.Builder().url("http://mock").build())
-      .protocol(Protocol.HTTP_1_1)
-      .code(code)
-      .body(ResponseBody.create(MediaType.get("application/json"), ""))
-      .message("mock")
-      .build();
+  @Test
+  void testDeleteWithNamespaceAndNameForNonExistentResource() throws IOException {
+    // Given
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, customResourceDefinitionContext);
+    mockDeletionCallWithResponse(HttpURLConnection.HTTP_NOT_FOUND, "{\"kind\":\"Status\",\"status\":\"Failure\"}");
+    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
+
+    // When
+    boolean result = rawCustomResourceOperations.delete("ns1", "foo");
+
+    // Then
+    assertFalse(result);
+    verify(mockClient).newCall(captor.capture());
+    assertEquals("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/foo", captor.getValue().url().encodedPath());
+  }
+
+  @Test
+  void testDeleteWithNamespaceForNonExistentResource() throws IOException {
+    // Given
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, customResourceDefinitionContext);
+    mockDeletionCallWithResponse(HttpURLConnection.HTTP_NOT_FOUND, "{\"kind\":\"Status\",\"status\":\"Failure\"}");
+    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
+
+    // When
+    boolean result = rawCustomResourceOperations.delete("ns1");
+
+    // Then
+    assertFalse(result);
+    verify(mockClient).newCall(captor.capture());
+    assertEquals("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos", captor.getValue().url().encodedPath());
+  }
+
+  @Test
+  void testDeleteWithNamespaceAndCascadingForNonExistentResource() throws IOException {
+    // Given
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, customResourceDefinitionContext);
+    mockDeletionCallWithResponse(HttpURLConnection.HTTP_NOT_FOUND, "{\"kind\":\"Status\",\"status\":\"Failure\"}");
+    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
+
+    // When
+    boolean result = rawCustomResourceOperations.delete("ns1", true);
+
+    // Then
+    assertFalse(result);
+    verify(mockClient).newCall(captor.capture());
+    assertEquals("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos", captor.getValue().url().encodedPath());
+  }
+
+  @Test
+  void testDeleteWithNamespaceAndDeleteOptionsForNonExistentResource() throws IOException {
+    // Given
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, customResourceDefinitionContext);
+    mockDeletionCallWithResponse(HttpURLConnection.HTTP_NOT_FOUND, "{\"kind\":\"Status\",\"status\":\"Failure\"}");
+    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
+
+    // When
+    boolean result = rawCustomResourceOperations.delete("ns1", new DeleteOptionsBuilder().withOrphanDependents(true).build());
+
+    // Then
+    assertFalse(result);
+    verify(mockClient).newCall(captor.capture());
+    assertEquals("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos", captor.getValue().url().encodedPath());
+  }
+
+  @Test
+  void testDeleteWithNamespaceNameAndCascading() throws IOException {
+    // Given
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, customResourceDefinitionContext);
+    mockDeletionCallWithResponse(HttpURLConnection.HTTP_OK, "{\"kind\":\"Hello\",\"metadata\":{\"name\":\"Failure\"}}");
+    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
+
+    // When
+    boolean result = rawCustomResourceOperations.delete("ns1", "foo", true);
+
+    // Then
+    assertTrue(result);
+    verify(mockClient).newCall(captor.capture());
+    assertEquals("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/foo", captor.getValue().url().encodedPath());
+  }
+
+  @Test
+  void testDeleteWithNamespaceNameAndCascadingForNonExistentResource() throws IOException {
+    // Given
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, customResourceDefinitionContext);
+    mockDeletionCallWithResponse(HttpURLConnection.HTTP_NOT_FOUND, "{\"kind\":\"Status\",\"status\":\"Failure\"}");
+    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
+
+    // When
+    boolean result = rawCustomResourceOperations.delete("ns1", "foo", true);
+
+    // Then
+    assertFalse(result);
+    verify(mockClient).newCall(captor.capture());
+    assertEquals("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/foo", captor.getValue().url().encodedPath());
+  }
+
+  @Test
+  void testDeleteWithNamespaceNameAndPropagationPolicyForNonExistentResource() throws IOException {
+    // Given
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, customResourceDefinitionContext);
+    mockDeletionCallWithResponse(HttpURLConnection.HTTP_NOT_FOUND, "{\"kind\":\"Status\",\"status\":\"Failure\"}");
+    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
+
+    // When
+    boolean result = rawCustomResourceOperations.delete("ns1", "foo", DeletionPropagation.BACKGROUND.toString());
+
+    // Then
+    assertFalse(result);
+    verify(mockClient).newCall(captor.capture());
+    assertEquals("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/foo", captor.getValue().url().encodedPath());
+  }
+
+  @Test
+  void testDeleteWithNamespaceNameAndDeleteOptionsForNonExistentResource() throws IOException {
+    // Given
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, customResourceDefinitionContext);
+    mockDeletionCallWithResponse(HttpURLConnection.HTTP_NOT_FOUND, "{\"kind\":\"Status\",\"status\":\"Failure\"}");
+    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
+
+    // When
+    boolean result = rawCustomResourceOperations.delete("ns1", "foo", new DeleteOptionsBuilder().withPropagationPolicy(DeletionPropagation.FOREGROUND.toString()).build());
+
+    // Then
+    assertFalse(result);
+    verify(mockClient).newCall(captor.capture());
+    assertEquals("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/foo", captor.getValue().url().encodedPath());
   }
 
   @Test
@@ -138,11 +260,13 @@ public class RawCustomResourceOperationsImplTest {
     // Given
     RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, customResourceDefinitionContext);
     ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
+    mockDeletionCallWithResponse(HttpURLConnection.HTTP_OK, "{\"kind\":\"Status\",\"status\":\"Success\"}");
 
     // When
-    rawCustomResourceOperations.delete("myns", "myresource");
+    boolean result = rawCustomResourceOperations.delete("myns", "myresource");
 
     // Then
+    assertTrue(result);
     verify(mockClient).newCall(captor.capture());
     assertEquals("/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos/myresource", captor.getValue().url().encodedPath());
   }
@@ -252,4 +376,27 @@ public class RawCustomResourceOperationsImplTest {
     assertThat(configFromRawOp.getWatchReconnectInterval()).isEqualTo(10);
     assertThat(configFromRawOp.getWatchReconnectLimit()).isEqualTo(1);
   }
+
+  private void mockDeletionCallWithResponse(int code, String status) throws IOException {
+    Call mockCall = mock(Call.class);
+    Response mockNotFoundResponse = mockResponse(code, status);
+    when(mockCall.execute())
+      .thenReturn(mockNotFoundResponse);
+    when(mockClient.newCall(any())).thenReturn(mockCall);
+  }
+
+  private Response mockResponse(int code) {
+    return mockResponse(code, "");
+  }
+
+  private Response mockResponse(int code, String body) {
+    return new Response.Builder()
+      .request(new Request.Builder().url("http://mock").build())
+      .protocol(Protocol.HTTP_1_1)
+      .code(code)
+      .body(ResponseBody.create(MediaType.get("application/json"), body))
+      .message("mock")
+      .build();
+  }
+
 }

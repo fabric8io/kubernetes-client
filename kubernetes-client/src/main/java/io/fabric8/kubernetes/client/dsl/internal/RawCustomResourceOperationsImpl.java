@@ -30,6 +30,7 @@ import io.fabric8.kubernetes.api.model.DeleteOptions;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
+import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
@@ -422,10 +423,10 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * Delete all custom resources in a specific namespace
    *
    * @param namespace desired namespace
-   * @return deleted objects as HashMap
+   * @return a boolean value whether item was deleted or item didn't exist in server
    */
-  public Map<String, Object> delete(String namespace) {
-    return makeCall(fetchUrl(namespace, null, null), null, HttpCallMethod.DELETE);
+  public boolean delete(String namespace) {
+    return handleDelete(namespace, null, null);
   }
 
   /**
@@ -434,11 +435,11 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @param namespace desired namespace
    * @param cascading whether dependent object need to be orphaned or not.  If true/false, the "orphan"
    *                   finalizer will be added to/removed from the object's finalizers list.
-   * @return deleted objects as HashMap
+   * @return a boolean value whether item was deleted or item didn't exist in server
    * @throws IOException in case of any network/parsing exception
    */
-  public Map<String, Object> delete(String namespace, boolean cascading) throws IOException {
-    return makeCall(fetchUrl(namespace, null, null), objectMapper.writeValueAsString(fetchDeleteOptions(cascading, null)), HttpCallMethod.DELETE);
+  public boolean delete(String namespace, boolean cascading) throws IOException {
+    return handleDelete(namespace, null,  objectMapper.writeValueAsString(fetchDeleteOptions(cascading, null)));
   }
 
   /**
@@ -447,11 +448,11 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @param namespace desired namespace
    * @param deleteOptions object provided by Kubernetes API for more fine grained control over deletion.
    *                       For more information please see https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.16/#deleteoptions-v1-meta
-   * @return deleted object as HashMap
+   * @return a boolean value whether item was deleted or item didn't exist in server
    * @throws IOException in case of any network/object parse problems
    */
-  public Map<String, Object> delete(String namespace, DeleteOptions deleteOptions) throws IOException {
-    return makeCall(fetchUrl(namespace, null, null), objectMapper.writeValueAsString(deleteOptions), HttpCallMethod.DELETE);
+  public boolean delete(String namespace, DeleteOptions deleteOptions) throws IOException {
+    return handleDelete(namespace, null, objectMapper.writeValueAsString(deleteOptions));
   }
 
   /**
@@ -459,11 +460,11 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    *
    * @param namespace desired namespace
    * @param name custom resource's name
-   * @return object as HashMap
+   * @return a boolean value whether item was deleted or item didn't exist in server
    * @throws IOException in case of any network/object parse problems
    */
-  public Map<String, Object> delete(String namespace, String name) throws IOException {
-    return makeCall(fetchUrl(namespace, name, null), objectMapper.writeValueAsString(fetchDeleteOptions(false, DeletionPropagation.BACKGROUND.toString())), HttpCallMethod.DELETE);
+  public boolean delete(String namespace, String name) throws IOException {
+    return handleDelete(namespace, name, objectMapper.writeValueAsString(fetchDeleteOptions(false, DeletionPropagation.BACKGROUND.toString())));
   }
 
   /**
@@ -473,11 +474,11 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @param name required name of custom resource
    * @param cascading whether dependent object need to be orphaned or not.  If true/false, the "orphan"
    *                   finalizer will be added to/removed from the object's finalizers list.
-   * @return deleted objects as HashMap
+   * @return a boolean value whether item was deleted or item didn't exist in server
    * @throws IOException exception related to network/object parsing
    */
-  public Map<String, Object> delete(String namespace, String name, boolean cascading) throws IOException {
-    return makeCall(fetchUrl(namespace, name, null), objectMapper.writeValueAsString(fetchDeleteOptions(cascading, null)), HttpCallMethod.DELETE);
+  public boolean delete(String namespace, String name, boolean cascading) throws IOException {
+    return handleDelete(namespace, name, objectMapper.writeValueAsString(fetchDeleteOptions(cascading, null)));
   }
 
   /**
@@ -492,11 +493,11 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    *                            'Orphan' - orphan the dependents;
    *                            'Background' - allow the garbage collector to delete the dependents in the background;
    *                            'Foreground' - a cascading policy that deletes all dependents in the foreground.
-   * @return deleted object as HashMap
+   * @return a boolean value whether item was deleted or item didn't exist in server
    * @throws IOException in case of network/object parse exception
    */
-  public Map<String, Object> delete(String namespace, String name, String propagationPolicy) throws IOException {
-    return makeCall(fetchUrl(namespace, name, null), objectMapper.writeValueAsString(fetchDeleteOptions(false, propagationPolicy)) , HttpCallMethod.DELETE);
+  public boolean delete(String namespace, String name, String propagationPolicy) throws IOException {
+    return handleDelete(namespace, name, objectMapper.writeValueAsString(fetchDeleteOptions(false, propagationPolicy)));
   }
 
   /**
@@ -506,11 +507,11 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @param name name of custom resource
    * @param deleteOptions object provided by Kubernetes API for more fine grained control over deletion.
    *                       For more information please see https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.16/#deleteoptions-v1-meta
-   * @return deleted object as HashMap
+   * @return a boolean value whether item was deleted or item didn't exist in server
    * @throws IOException in case of any network/object parse exception
    */
-  public Map<String, Object> delete(String namespace, String name, DeleteOptions deleteOptions) throws IOException {
-    return makeCall(fetchUrl(namespace, name, null), objectMapper.writeValueAsString(deleteOptions), HttpCallMethod.DELETE);
+  public boolean delete(String namespace, String name, DeleteOptions deleteOptions) throws IOException {
+    return handleDelete(namespace, name, objectMapper.writeValueAsString(deleteOptions));
   }
 
   /**
@@ -760,6 +761,10 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
   }
 
   private Map<String, Object> makeCall(String url, String body, HttpCallMethod callMethod) {
+    return makeCall(url, body, callMethod, true);
+  }
+
+  private Map<String, Object> makeCall(String url, String body, HttpCallMethod callMethod, boolean shouldRequestFailure) {
     Request request = (body == null) ? getRequest(url, callMethod) : getRequest(url, body, callMethod);
     try (Response response = client.newCall(request).execute()) {
       if (response.isSuccessful()) {
@@ -769,11 +774,29 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
         else
           return objectMapper.readValue(respBody, HashMap.class);
       } else {
-        throw requestFailure(request, createStatus(response));
+        return handleFailure(request, response, shouldRequestFailure);
       }
     } catch(Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }
+  }
+
+  private Map<String, Object> handleFailure(Request request, Response response, boolean shouldRequestFailure) throws IOException {
+    if (shouldRequestFailure) {
+      throw requestFailure(request, createStatus(response));
+    }
+    return objectMapper.readValue(response.body().string(), HashMap.class);
+  }
+
+  private boolean handleDelete(String namespace, String name, String requestBody) {
+    Map<String, Object> response = makeCall(fetchUrl(namespace, name, null), requestBody, HttpCallMethod.DELETE, false);
+
+    // In most cases Status object is sent on deletion, but when deprecated DeleteOptions.orphanDependents
+    // is used; object which is being deleted is sent
+    if (response.get("kind").toString().equals("Status")) {
+      return response.get("status").toString().equals("Success");
+    }
+    return true;
   }
 
   private Map<String, Object> validateAndSubmitRequest(String namespace, String name, String objectAsString, HttpCallMethod httpCallMethod) throws IOException {

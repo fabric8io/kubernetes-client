@@ -391,7 +391,7 @@ class PropagationPolicyTest {
     KubernetesClient client = server.getClient();
 
     // When
-    Map<String, Object> result = client.customResource(new CustomResourceDefinitionContext.Builder()
+    boolean result = client.customResource(new CustomResourceDefinitionContext.Builder()
       .withGroup("test.fabric8.io")
       .withName("hellos.test.fabric8.io")
       .withPlural("hellos")
@@ -401,6 +401,7 @@ class PropagationPolicyTest {
       .delete("ns1", "example-hello");
 
     // Then
+    assertTrue(result);
     assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.BACKGROUND.toString(), server.getLastRequest());
   }
 
