@@ -22,12 +22,13 @@ import java.util.function.UnaryOperator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Pluralize implements UnaryOperator<String> {
+public class Pluralize implements UnaryOperator<String>
+{
 
   private static Pluralize INSTANCE = null;
   private static final Object LOCK = new Object();
   private static final List<String> UNCOUNTABLE = Arrays.asList("equipment", "fish", "information", "money", "rice", "series", "sheep", "species");
-  private static final List<UnaryOperator<String>> PLURALS = Arrays.<Function<String, String>>asList(
+  private static final List<UnaryOperator<String>> PLURALS = Arrays.<UnaryOperator<String>>asList(
             //Irregulars
             new StringReplace("(p)eople$", "$1erson"),
             new StringReplace("(m)en$", "$1an"),
