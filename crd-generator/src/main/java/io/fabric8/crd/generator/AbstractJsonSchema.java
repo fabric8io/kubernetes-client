@@ -74,23 +74,25 @@ public abstract class AbstractJsonSchema<T, B> {
   protected static final TypeRef P_BOOLEAN_REF = new PrimitiveRefBuilder().withName("boolean")
     .build();
 
-  public static final Map<TypeRef, String> COMMON_MAPPINGS = new HashMap<>();
+  protected static final Map<TypeRef, String> COMMON_MAPPINGS = new HashMap<>();
   private static final String INT_OR_STRING_MARKER = "int_or_string";
+  private static final String STRING_MARKER = "string";
+  private static final String NUMBER_MARKER = "number";
 
   static {
-    COMMON_MAPPINGS.put(STRING_REF, "string");
-    COMMON_MAPPINGS.put(DATE_REF, "string");
+    COMMON_MAPPINGS.put(STRING_REF, STRING_MARKER);
+    COMMON_MAPPINGS.put(DATE_REF, STRING_MARKER);
     COMMON_MAPPINGS.put(INT_REF, "integer");
     COMMON_MAPPINGS.put(P_INT_REF, "integer");
-    COMMON_MAPPINGS.put(LONG_REF, "number");
-    COMMON_MAPPINGS.put(P_LONG_REF, "number");
-    COMMON_MAPPINGS.put(DOUBLE_REF, "number");
-    COMMON_MAPPINGS.put(P_DOUBLE_REF, "number");
+    COMMON_MAPPINGS.put(LONG_REF, NUMBER_MARKER);
+    COMMON_MAPPINGS.put(P_LONG_REF, NUMBER_MARKER);
+    COMMON_MAPPINGS.put(DOUBLE_REF, NUMBER_MARKER);
+    COMMON_MAPPINGS.put(P_DOUBLE_REF, NUMBER_MARKER);
     COMMON_MAPPINGS.put(BOOLEAN_REF, "boolean");
     COMMON_MAPPINGS.put(P_BOOLEAN_REF, "boolean");
     COMMON_MAPPINGS.put(QUANTITY_REF, INT_OR_STRING_MARKER);
     COMMON_MAPPINGS.put(INT_OR_STRING_REF, INT_OR_STRING_MARKER);
-    COMMON_MAPPINGS.put(DURATION_REF, "string");
+    COMMON_MAPPINGS.put(DURATION_REF, STRING_MARKER);
   }
 
   /**
@@ -109,12 +111,9 @@ public abstract class AbstractJsonSchema<T, B> {
     List<String> required = new ArrayList<>();
 
     for (Property property : Types.allProperties(definition)) {
-      if (property.isStatic()) {
-        continue;
-      }
-
       final String name = property.getName();
-      if (ignores.contains(name)) {
+
+      if (property.isStatic() || ignores.contains(name)) {
         continue;
       }
 
