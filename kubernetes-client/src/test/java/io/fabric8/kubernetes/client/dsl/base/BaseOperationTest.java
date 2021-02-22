@@ -22,23 +22,31 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.verify;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.fabric8.kubernetes.api.model.ConfigMap;
+import io.fabric8.kubernetes.api.model.ConfigMapList;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.dsl.EditReplacePatchDeletable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.utils.URLUtils;
+import okhttp3.Request;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
+import org.mockito.ArgumentCaptor;
 
 class BaseOperationTest {
 
@@ -165,5 +173,40 @@ class BaseOperationTest {
     assertEquals(URLUtils.join(url.toString(), "?watch=true"), operation.fetchListUrl(url, new ListOptionsBuilder()
       .withWatch(true)
       .build()).toString());
+  }
+
+  @Test
+  void testGetWriteOperationUrlWithDryRunEnabled() throws MalformedURLException {
+    // Given
+    BaseOperation baseOp = new BaseOperation(new OperationContext()
+      .withConfig(new ConfigBuilder().withMasterUrl("https://172.17.0.2:8443").build())
+      .withPlural("pods")
+      .withDryRun(true));
+    baseOp.setType(Pod.class);
+    baseOp.setListType(PodList.class);
+
+    // When
+    URL result = baseOp.getResourceURLForWriteOperation(new URL("https://172.17.0.2:8443/api/v1/namespaces/ns1/pods/foo"));
+
+    // Then
+    assertNotNull(result);
+    assertEquals("https://172.17.0.2:8443/api/v1/namespaces/ns1/pods/foo?dryRun=All", result.toString());
+  }
+
+  @Test
+  void testGetWriteOperationUrlWithDryRunDisabled() throws MalformedURLException {
+    // Given
+    BaseOperation baseOp = new BaseOperation(new OperationContext()
+      .withConfig(new ConfigBuilder().withMasterUrl("https://172.17.0.2:8443").build())
+      .withPlural("pods"));
+    baseOp.setType(Pod.class);
+    baseOp.setListType(PodList.class);
+
+    // When
+    URL result = baseOp.getResourceURLForWriteOperation(new URL("https://172.17.0.2:8443/api/v1/namespaces/ns1/pods/foo"));
+
+    // Then
+    assertNotNull(result);
+    assertEquals("https://172.17.0.2:8443/api/v1/namespaces/ns1/pods/foo", result.toString());
   }
 }

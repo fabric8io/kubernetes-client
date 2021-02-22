@@ -343,7 +343,7 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
         context.getLabelsNot(), context.getLabelsIn(), context.getLabelsNotIn(), context.getFields(), context.getFieldsNot(),
         context.getResourceVersion(), context.isReloadingFromServer(), context.getGracePeriodSeconds(), context.getPropagationPolicy(),
         context.getWatchRetryInitialBackoffMillis(), context.getWatchRetryBackoffMultiplier(), false, 0, null,
-      context.isNamespaceFromGlobalConfig()), podLogWaitTimeout);
+      context.isNamespaceFromGlobalConfig(), context.getDryRun()), podLogWaitTimeout);
     ReplicaSetList rcList = rsOperations.withLabels(getDeploymentSelectorLabels(deployment)).list();
 
 

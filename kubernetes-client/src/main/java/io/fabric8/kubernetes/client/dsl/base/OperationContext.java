@@ -41,6 +41,7 @@ public class OperationContext {
   protected String name;
   protected boolean cascading;
   protected boolean reloadingFromServer;
+  protected boolean dryRun;
   /*
    * This field is added in order to distinguish whether namespace is picked from global
    * Configuration (either your KUBECONFIG or /var/run/secrets/kubernetes.io/serviceaccount/namespace)
@@ -70,7 +71,7 @@ public class OperationContext {
       Map<String, String[]> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn,
       Map<String, String> fields, Map<String, String[]> fieldsNot, String resourceVersion, boolean reloadingFromServer,
       long gracePeriodSeconds, DeletionPropagation propagationPolicy, long watchRetryInitialBackoffMillis,
-      double watchRetryBackoffMultiplier, boolean namespaceFromGlobalConfig) {
+      double watchRetryBackoffMultiplier, boolean namespaceFromGlobalConfig, boolean dryRun) {
     this.client = client;
     this.config = config;
     this.plural = plural;
@@ -93,6 +94,7 @@ public class OperationContext {
     this.watchRetryInitialBackoffMillis = watchRetryInitialBackoffMillis;
     this.watchRetryBackoffMultiplier = watchRetryBackoffMultiplier;
     this.namespaceFromGlobalConfig = namespaceFromGlobalConfig;
+    this.dryRun = dryRun;
   }
 
   public OkHttpClient getClient() {
@@ -183,6 +185,10 @@ public class OperationContext {
     return namespaceFromGlobalConfig;
   }
 
+  public boolean getDryRun() {
+    return dryRun;
+  }
+
   public OperationContext withOkhttpClient(OkHttpClient client) {
     if (this.client == client) {
       return this;
@@ -191,7 +197,7 @@ public class OperationContext {
         this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
         this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
         this.propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
-        this.namespaceFromGlobalConfig);
+        this.namespaceFromGlobalConfig, this.dryRun);
   }
 
   public OperationContext withConfig(Config config) {
@@ -199,10 +205,10 @@ public class OperationContext {
       return this;
     }
     return new OperationContext(this.client, config, this.plural, this.namespace, this.name, this.apiGroupName,
-        this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
-        this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
-        this.propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
-        this.namespaceFromGlobalConfig);
+      this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
+      this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
+      this.propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
+      this.namespaceFromGlobalConfig, this.dryRun);
   }
 
   public OperationContext withPlural(String plural) {
@@ -213,7 +219,7 @@ public class OperationContext {
         this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
         this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
         this.propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
-        this.namespaceFromGlobalConfig);
+        this.namespaceFromGlobalConfig, this.dryRun);
   }
 
   public OperationContext withNamespace(String namespace) {
@@ -224,7 +230,7 @@ public class OperationContext {
         this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
         this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
         this.propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
-        this.namespaceFromGlobalConfig);
+        this.namespaceFromGlobalConfig, this.dryRun);
   }
 
   public OperationContext withName(String name) {
@@ -235,7 +241,7 @@ public class OperationContext {
         this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
         this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
         this.propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
-        this.namespaceFromGlobalConfig);
+        this.namespaceFromGlobalConfig, this.dryRun);
   }
 
   public OperationContext withApiGroupName(String apiGroupName) {
@@ -246,7 +252,7 @@ public class OperationContext {
         this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
         this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
         this.propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
-        this.namespaceFromGlobalConfig);
+        this.namespaceFromGlobalConfig, this.dryRun);
   }
 
   public OperationContext withApiGroupVersion(String apiGroupVersion) {
@@ -257,7 +263,7 @@ public class OperationContext {
         apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
         this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
         this.propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
-        this.namespaceFromGlobalConfig);
+        this.namespaceFromGlobalConfig, this.dryRun);
   }
 
   public OperationContext withItem(Object item) {
@@ -268,7 +274,7 @@ public class OperationContext {
         this.apiGroupVersion, this.cascading, item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
         this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
         this.propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
-        this.namespaceFromGlobalConfig);
+        this.namespaceFromGlobalConfig, this.dryRun);
   }
 
   public OperationContext withCascading(boolean cascading) {
@@ -279,7 +285,7 @@ public class OperationContext {
         this.apiGroupVersion, cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
         this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
         this.propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
-        this.namespaceFromGlobalConfig);
+        this.namespaceFromGlobalConfig, this.dryRun);
   }
 
   public OperationContext withLabels(Map<String, String> labels) {
@@ -290,7 +296,7 @@ public class OperationContext {
         this.apiGroupVersion, this.cascading, this.item, labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
         this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
         this.propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
-        this.namespaceFromGlobalConfig);
+        this.namespaceFromGlobalConfig, this.dryRun);
   }
 
   public OperationContext withLabelsIn(Map<String, String[]> labelsIn) {
@@ -301,7 +307,7 @@ public class OperationContext {
         this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, labelsIn, this.labelsNotIn,
         this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
         this.propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
-        this.namespaceFromGlobalConfig);
+        this.namespaceFromGlobalConfig, this.dryRun);
   }
 
   public OperationContext withLabelsNot(Map<String, String[]> labelsNot) {
@@ -312,7 +318,7 @@ public class OperationContext {
         this.apiGroupVersion, this.cascading, this.item, this.labels, labelsNot, this.labelsIn, this.labelsNotIn,
         this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
         this.propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
-        this.namespaceFromGlobalConfig);
+        this.namespaceFromGlobalConfig, this.dryRun);
   }
 
   public OperationContext withLabelsNotIn(Map<String, String[]> labelsNotIn) {
@@ -323,7 +329,7 @@ public class OperationContext {
         this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, labelsNotIn,
         this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
         this.propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
-        this.namespaceFromGlobalConfig);
+        this.namespaceFromGlobalConfig, this.dryRun);
   }
 
   public OperationContext withFields(Map<String, String> fields) {
@@ -334,7 +340,7 @@ public class OperationContext {
         this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
         fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
         this.propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
-        this.namespaceFromGlobalConfig);
+        this.namespaceFromGlobalConfig, this.dryRun);
   }
 
   public OperationContext withFieldsNot(Map<String, String[]> fieldsNot) {
@@ -345,7 +351,7 @@ public class OperationContext {
         this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
         this.fields, fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
         this.propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
-        this.namespaceFromGlobalConfig);
+        this.namespaceFromGlobalConfig, this.dryRun);
   }
 
   public OperationContext withResourceVersion(String resourceVersion) {
@@ -356,7 +362,7 @@ public class OperationContext {
         this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
         this.fields, this.fieldsNot, resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
         this.propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
-        this.namespaceFromGlobalConfig);
+        this.namespaceFromGlobalConfig, this.dryRun);
   }
 
   public OperationContext withReloadingFromServer(boolean reloadingFromServer) {
@@ -367,7 +373,7 @@ public class OperationContext {
         this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
         this.fields, this.fieldsNot, this.resourceVersion, reloadingFromServer, this.gracePeriodSeconds,
         this.propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
-        this.namespaceFromGlobalConfig);
+        this.namespaceFromGlobalConfig, this.dryRun);
   }
 
   public OperationContext withGracePeriodSeconds(long gracePeriodSeconds) {
@@ -378,7 +384,7 @@ public class OperationContext {
         this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
         this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, gracePeriodSeconds,
         this.propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
-        this.namespaceFromGlobalConfig);
+        this.namespaceFromGlobalConfig, this.dryRun);
   }
 
   public OperationContext withPropagationPolicy(DeletionPropagation propagationPolicy) {
@@ -389,7 +395,7 @@ public class OperationContext {
         this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
         this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
         propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
-        this.namespaceFromGlobalConfig);
+        this.namespaceFromGlobalConfig, this.dryRun);
   }
 
   public OperationContext withWatchRetryInitialBackoffMillis(long watchRetryInitialBackoffMillis) {
@@ -400,7 +406,7 @@ public class OperationContext {
         this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
         this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
         this.propagationPolicy, watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
-        this.namespaceFromGlobalConfig);
+        this.namespaceFromGlobalConfig, this.dryRun);
   }
 
   public OperationContext withWatchRetryBackoffMultiplier(double watchRetryBackoffMultiplier) {
@@ -411,7 +417,7 @@ public class OperationContext {
         this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
         this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
         this.propagationPolicy, this.watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier,
-        this.namespaceFromGlobalConfig);
+        this.namespaceFromGlobalConfig, this.dryRun);
   }
 
   public OperationContext withIsNamespaceConfiguredFromGlobalConfig(boolean namespaceFromGlobalConfig) {
@@ -422,7 +428,11 @@ public class OperationContext {
         this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
         this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
         this.propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
-        namespaceFromGlobalConfig);
+        namespaceFromGlobalConfig, this.dryRun);
+  }
+
+  public OperationContext withDryRun(boolean dryRun) {
+    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, namespaceFromGlobalConfig, dryRun);
   }
 
   /**
@@ -433,26 +443,27 @@ public class OperationContext {
    */
   public OperationContext withOperationContext(OperationContext context) {
     return new OperationContext(Utils.getNonNullOrElse(context.getClient(), getClient()),
-        Utils.getNonNullOrElse(context.getConfig(), getConfig()),
-        Utils.getNonNullOrElse(context.getPlural(), getPlural()),
-        Utils.getNonNullOrElse(context.getNamespace(), getNamespace()),
-        Utils.getNonNullOrElse(context.getName(), getName()),
-        Utils.getNonNullOrElse(context.getApiGroupName(), getApiGroupName()),
-        Utils.getNonNullOrElse(context.getApiGroupVersion(), getApiGroupVersion()),
-        context.getCascading() ? context.getCascading() : getCascading(),
-        Utils.getNonNullOrElse(context.getItem(), getItem()),
-        Utils.getNonNullOrElse(context.getLabels(), getLabels()),
-        Utils.getNonNullOrElse(context.getLabelsNot(), getLabelsNot()),
-        Utils.getNonNullOrElse(context.getLabelsIn(), getLabelsIn()),
-        Utils.getNonNullOrElse(context.getLabelsNotIn(), getLabelsNotIn()),
-        Utils.getNonNullOrElse(context.getFields(), getFields()),
-        Utils.getNonNullOrElse(context.getFieldsNot(), getFieldsNot()),
-        Utils.getNonNullOrElse(context.getResourceVersion(), getResourceVersion()),
-        context.isReloadingFromServer() ? context.isReloadingFromServer() : isReloadingFromServer(),
-        context.getGracePeriodSeconds() > 0 ? context.getGracePeriodSeconds() : getGracePeriodSeconds(),
-        Utils.getNonNullOrElse(context.getPropagationPolicy(), getPropagationPolicy()),
-        getWatchRetryInitialBackoffMillis(), getWatchRetryBackoffMultiplier(),
-        context.isNamespaceFromGlobalConfig() ? context.isNamespaceFromGlobalConfig() : isNamespaceFromGlobalConfig());
+      Utils.getNonNullOrElse(context.getConfig(), getConfig()),
+      Utils.getNonNullOrElse(context.getPlural(), getPlural()),
+      Utils.getNonNullOrElse(context.getNamespace(), getNamespace()),
+      Utils.getNonNullOrElse(context.getName(), getName()),
+      Utils.getNonNullOrElse(context.getApiGroupName(), getApiGroupName()),
+      Utils.getNonNullOrElse(context.getApiGroupVersion(), getApiGroupVersion()),
+      context.getCascading() ? context.getCascading() : getCascading(),
+      Utils.getNonNullOrElse(context.getItem(), getItem()),
+      Utils.getNonNullOrElse(context.getLabels(), getLabels()),
+      Utils.getNonNullOrElse(context.getLabelsNot(), getLabelsNot()),
+      Utils.getNonNullOrElse(context.getLabelsIn(), getLabelsIn()),
+      Utils.getNonNullOrElse(context.getLabelsNotIn(), getLabelsNotIn()),
+      Utils.getNonNullOrElse(context.getFields(), getFields()),
+      Utils.getNonNullOrElse(context.getFieldsNot(), getFieldsNot()),
+      Utils.getNonNullOrElse(context.getResourceVersion(), getResourceVersion()),
+      context.isReloadingFromServer() ? context.isReloadingFromServer() : isReloadingFromServer(),
+      context.getGracePeriodSeconds() > 0 ? context.getGracePeriodSeconds() : getGracePeriodSeconds(),
+      Utils.getNonNullOrElse(context.getPropagationPolicy(), getPropagationPolicy()),
+      getWatchRetryInitialBackoffMillis(), getWatchRetryBackoffMultiplier(),
+      context.isNamespaceFromGlobalConfig() ? context.isNamespaceFromGlobalConfig() : isNamespaceFromGlobalConfig(),
+      context.getDryRun() ? context.getDryRun() : getDryRun());
   }
 
 }

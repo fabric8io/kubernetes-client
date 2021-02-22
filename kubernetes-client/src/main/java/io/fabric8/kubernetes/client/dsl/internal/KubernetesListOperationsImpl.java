@@ -55,14 +55,15 @@ public class KubernetesListOperationsImpl
   private final Boolean deletingExisting;
 
   public KubernetesListOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(client, config, namespace, null, null, false, false, null, null);
+    this(client, config, namespace, null, null, false, false, null, null, false);
   }
 
-  public KubernetesListOperationsImpl(OkHttpClient client, Config config, String namespace, String name, DeletionPropagation propagationPolicy, Boolean fromServer, Boolean deletingExisting, KubernetesList item, String resourceVersion) {
+  public KubernetesListOperationsImpl(OkHttpClient client, Config config, String namespace, String name, DeletionPropagation propagationPolicy, Boolean fromServer, Boolean deletingExisting, KubernetesList item, String resourceVersion, boolean dryRun) {
     super(client, config, namespace, propagationPolicy);
     this.fromServer = fromServer;
     this.deletingExisting = deletingExisting;
     this.item = item;
+    this.dryRun = dryRun;
   }
 
   @Override
@@ -115,7 +116,7 @@ public class KubernetesListOperationsImpl
 
   @Override
   public RecreateFromServerGettable<KubernetesList> load(InputStream is) {
-    return new KubernetesListOperationsImpl(client, config, namespace, null, DeletionPropagation.BACKGROUND, fromServer, deletingExisting, unmarshal(is, KubernetesList.class), null);
+    return new KubernetesListOperationsImpl(client, config, namespace, null, DeletionPropagation.BACKGROUND, fromServer, deletingExisting, unmarshal(is, KubernetesList.class), null, dryRun);
   }
 
   @Override
@@ -126,7 +127,7 @@ public class KubernetesListOperationsImpl
   private <T extends HasMetadata, V extends VisitableBuilder<T, V>> T create(T resource) {
     ResourceHandler<T, V> handler = Handlers.get(resource.getKind(), resource.getApiVersion());
     if (handler != null) {
-      return handler.create(client, config, namespace, resource);
+      return handler.create(client, config, namespace, resource, dryRun);
     }
     throw new IllegalStateException("Could not find handler");
   }
@@ -141,7 +142,7 @@ public class KubernetesListOperationsImpl
     for (KubernetesList list : lists) {
       for (HasMetadata item : list.getItems()) {
         ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> handler = Handlers.get(item.getKind(), item.getApiVersion());
-        if (!handler.delete(client, config, namespace, DeletionPropagation.BACKGROUND, item)) {
+        if (!handler.delete(client, config, namespace, DeletionPropagation.BACKGROUND, item, dryRun)) {
           return false;
         }
       }
@@ -151,12 +152,12 @@ public class KubernetesListOperationsImpl
 
   @Override
   public Gettable<KubernetesList> fromServer() {
-    return new KubernetesListOperationsImpl(client, config, namespace, null, context.getPropagationPolicy(), true, deletingExisting, item, null);
+    return new KubernetesListOperationsImpl(client, config, namespace, null, context.getPropagationPolicy(), true, deletingExisting, item, null, dryRun);
   }
 
   @Override
   public Createable<KubernetesList> deletingExisting() {
-    return new KubernetesListOperationsImpl(client, config, namespace, null, context.getPropagationPolicy(), fromServer, true, item, null);
+    return new KubernetesListOperationsImpl(client, config, namespace, null, context.getPropagationPolicy(), fromServer, true, item, null, dryRun);
   }
 
   private List<HasMetadata> createItemsInKubernetesList(KubernetesList list) {

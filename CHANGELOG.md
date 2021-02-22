@@ -18,7 +18,7 @@
 #### New Features
 * Update chaos-mesh extension to v1.1.1. Add PodIoChaos, JVMChaos, HTTPChaos and DNSChaos.
 * Fix #2699: Add support for `@EnableOpenShiftMockClient` for OpenShiftClient
-
+* Fix #2588: Support for Server side dry runs
 
 ### 5.1.1 (2021-02-24)
 

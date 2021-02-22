@@ -56,12 +56,12 @@ public class KubernetesListHandler implements ResourceHandler<KubernetesList, Ku
   }
 
   @Override
-  public KubernetesList create(OkHttpClient client, Config config, String namespace, KubernetesList item) {
-    return new KubernetesListOperationsImpl(client, config, namespace, null, DeletionPropagation.BACKGROUND, false, false, item, null).create();
+  public KubernetesList create(OkHttpClient client, Config config, String namespace, KubernetesList item, boolean dryRun) {
+    return new KubernetesListOperationsImpl(client, config, namespace, null, DeletionPropagation.BACKGROUND, false, false, item, null, dryRun).create();
   }
 
   @Override
-  public KubernetesList replace(OkHttpClient client, Config config, String namespace, KubernetesList item) {
+  public KubernetesList replace(OkHttpClient client, Config config, String namespace, KubernetesList item, boolean dryRun) {
     List<HasMetadata> replacedItems = new ArrayList<>();
 
     for (HasMetadata metadata : item.getItems()) {
@@ -69,7 +69,7 @@ public class KubernetesListHandler implements ResourceHandler<KubernetesList, Ku
       if (handler == null) {
         LOGGER.warn("No handler found for:" + item.getKind() + ". Ignoring");
       } else {
-        replacedItems.add(handler.replace(client, config, namespace, metadata));
+        replacedItems.add(handler.replace(client, config, namespace, metadata, dryRun));
       }
     }
     return new KubernetesListBuilder(item).withItems(replacedItems).build();
@@ -96,8 +96,8 @@ public class KubernetesListHandler implements ResourceHandler<KubernetesList, Ku
   }
 
   @Override
-  public Boolean delete(OkHttpClient client, Config config, String namespace, DeletionPropagation propagationPolicy, KubernetesList item) {
-    return new KubernetesListOperationsImpl(client, config, namespace, null, propagationPolicy, false, false, item, null).delete(item);
+  public Boolean delete(OkHttpClient client, Config config, String namespace, DeletionPropagation propagationPolicy, KubernetesList item, boolean dryRun) {
+    return new KubernetesListOperationsImpl(client, config, namespace, null, propagationPolicy, false, false, item, null, dryRun).delete(item);
   }
 
   @Override

@@ -24,5 +24,6 @@ public interface Resource<T> extends CreateOrReplaceable<T>,
   CreateFromServerGettable<T>,
   CascadingEditReplacePatchDeletable<T>,
   VersionWatchAndWaitable<T>,
+  DryRunable<WritableOperation<T>>,
   Requirable<T>, Readiable {
 }

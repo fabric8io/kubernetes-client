@@ -67,6 +67,7 @@ public class OperationSupport {
   protected String name;
   protected String apiGroupName;
   protected String apiGroupVersion;
+  protected boolean dryRun;
 
   public OperationSupport() {
     this (new OperationContext());
@@ -88,6 +89,7 @@ public class OperationSupport {
     this.namespace = ctx.getNamespace();
     this.name = ctx.getName() ;
     this.apiGroupName = ctx.getApiGroupName();
+    this.dryRun = ctx.getDryRun();
     if (ctx.getApiGroupVersion() != null) {
       this.apiGroupVersion = ctx.getApiGroupVersion();
     } else if (ctx.getConfig() != null) {
@@ -165,6 +167,13 @@ public class OperationSupport {
     return new URL(URLUtils.join(getNamespacedUrl().toString(), name));
   }
 
+  public URL getResourceURLForWriteOperation(URL resourceURL) throws MalformedURLException {
+    if (dryRun) {
+      return new URL(URLUtils.join(resourceURL.toString(), "?dryRun=All"));
+    }
+    return resourceURL;
+  }
+
   protected <T> String checkNamespace(T item) {
     String operationNs = getNamespace();
     String itemNs = (item instanceof HasMetadata && ((HasMetadata)item).getMetadata() != null) ? ((HasMetadata) item).getMetadata().getNamespace() : null;
@@ -207,7 +216,7 @@ public class OperationSupport {
   }
 
   protected <T> void handleDelete(T resource, long gracePeriodSeconds, DeletionPropagation propagationPolicy, boolean cascading) throws ExecutionException, InterruptedException, IOException {
-    handleDelete(getResourceUrl(checkNamespace(resource), checkName(resource)), gracePeriodSeconds, propagationPolicy, cascading);
+    handleDelete(getResourceURLForWriteOperation(getResourceUrl(checkNamespace(resource), checkName(resource))), gracePeriodSeconds, propagationPolicy, cascading);
   }
 
   protected void handleDelete(URL requestUrl, long gracePeriodSeconds, DeletionPropagation propagationPolicy, boolean cascading) throws ExecutionException, InterruptedException, IOException {
@@ -223,6 +232,10 @@ public class OperationSupport {
       deleteOptions.setPropagationPolicy(propagationPolicy.toString());
     } else {
       deleteOptions.setOrphanDependents(!cascading);
+    }
+
+    if (dryRun) {
+      deleteOptions.setDryRun(Collections.singletonList("All"));
     }
     requestBody = RequestBody.create(JSON, JSON_MAPPER.writeValueAsString(deleteOptions));
 
@@ -246,7 +259,7 @@ public class OperationSupport {
    */
   protected <T, I> T handleCreate(I resource, Class<T> outputType) throws ExecutionException, InterruptedException, IOException {
     RequestBody body = RequestBody.create(JSON, JSON_MAPPER.writeValueAsString(resource));
-    Request.Builder requestBuilder = new Request.Builder().post(body).url(getNamespacedUrl(checkNamespace(resource)));
+    Request.Builder requestBuilder = new Request.Builder().post(body).url(getResourceURLForWriteOperation(getResourceUrl(checkNamespace(resource), null)));
     return handleResponse(requestBuilder, outputType, Collections.<String, String>emptyMap());
   }
 
@@ -282,7 +295,7 @@ public class OperationSupport {
    */
   protected <T> T handleReplace(T updated, Class<T> type, Map<String, String> parameters) throws ExecutionException, InterruptedException, IOException {
     RequestBody body = RequestBody.create(JSON, JSON_MAPPER.writeValueAsString(updated));
-    Request.Builder requestBuilder = new Request.Builder().put(body).url(getResourceUrl(checkNamespace(updated), checkName(updated)));
+    Request.Builder requestBuilder = new Request.Builder().put(body).url(getResourceURLForWriteOperation(getResourceUrl(checkNamespace(updated), checkName(updated))));
     return handleResponse(requestBuilder, type, parameters);
   }
 
@@ -308,7 +321,7 @@ public class OperationSupport {
   protected <T> T handlePatch(T current, T updated, Class<T> type) throws ExecutionException, InterruptedException, IOException {
     JsonNode diff = JsonDiff.asJson(patchMapper().valueToTree(current), patchMapper().valueToTree(updated));
     RequestBody body = RequestBody.create(JSON_PATCH, JSON_MAPPER.writeValueAsString(diff));
-    Request.Builder requestBuilder = new Request.Builder().patch(body).url(getResourceUrl(checkNamespace(updated), checkName(updated)));
+    Request.Builder requestBuilder = new Request.Builder().patch(body).url(getResourceURLForWriteOperation(getResourceUrl(checkNamespace(updated), checkName(updated))));
     return handleResponse(requestBuilder, type, Collections.<String, String>emptyMap());
   }
 
