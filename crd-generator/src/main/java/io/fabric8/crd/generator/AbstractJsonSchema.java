@@ -70,16 +70,18 @@ public abstract class AbstractJsonSchema<T, B> {
   protected static final TypeRef DOUBLE_REF = DOUBLE.toReference();
   protected static final TypeRef DATE_REF = DATE.toReference();
 
-  protected static final TypeRef P_INT_REF = new PrimitiveRefBuilder().withName("int").build();
-  protected static final TypeRef P_LONG_REF = new PrimitiveRefBuilder().withName("long").build();
-  protected static final TypeRef P_DOUBLE_REF = new PrimitiveRefBuilder().withName("double").build();
-  protected static final TypeRef P_BOOLEAN_REF = new PrimitiveRefBuilder().withName("boolean")
-    .build();
-
-  protected static final Map<TypeRef, String> COMMON_MAPPINGS = new HashMap<>();
   private static final String INT_OR_STRING_MARKER = "int_or_string";
   private static final String STRING_MARKER = "string";
   private static final String NUMBER_MARKER = "number";
+  private static final String BOOLEAN_MARKER = "boolean";
+
+  protected static final TypeRef P_INT_REF = new PrimitiveRefBuilder().withName("int").build();
+  protected static final TypeRef P_LONG_REF = new PrimitiveRefBuilder().withName("long").build();
+  protected static final TypeRef P_DOUBLE_REF = new PrimitiveRefBuilder().withName("double").build();
+  protected static final TypeRef P_BOOLEAN_REF = new PrimitiveRefBuilder().withName(BOOLEAN_MARKER)
+    .build();
+
+  protected static final Map<TypeRef, String> COMMON_MAPPINGS = new HashMap<>();
 
   static {
     COMMON_MAPPINGS.put(STRING_REF, STRING_MARKER);
@@ -90,8 +92,8 @@ public abstract class AbstractJsonSchema<T, B> {
     COMMON_MAPPINGS.put(P_LONG_REF, NUMBER_MARKER);
     COMMON_MAPPINGS.put(DOUBLE_REF, NUMBER_MARKER);
     COMMON_MAPPINGS.put(P_DOUBLE_REF, NUMBER_MARKER);
-    COMMON_MAPPINGS.put(BOOLEAN_REF, "boolean");
-    COMMON_MAPPINGS.put(P_BOOLEAN_REF, "boolean");
+    COMMON_MAPPINGS.put(BOOLEAN_REF, BOOLEAN_MARKER);
+    COMMON_MAPPINGS.put(P_BOOLEAN_REF, BOOLEAN_MARKER);
     COMMON_MAPPINGS.put(QUANTITY_REF, INT_OR_STRING_MARKER);
     COMMON_MAPPINGS.put(INT_OR_STRING_REF, INT_OR_STRING_MARKER);
     COMMON_MAPPINGS.put(DURATION_REF, STRING_MARKER);
