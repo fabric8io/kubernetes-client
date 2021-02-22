@@ -74,10 +74,10 @@ public class DeleteAndCreateHelper<T extends HasMetadata> {
     }
   }
 
-  public static HasMetadata deleteAndCreateItem(OkHttpClient client, Config config, HasMetadata meta, ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h, String namespaceToUse, DeletionPropagation propagationPolicy) {
+  public static HasMetadata deleteAndCreateItem(OkHttpClient client, Config config, HasMetadata meta, ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h, String namespaceToUse, DeletionPropagation propagationPolicy, boolean dryRun) {
     DeleteAndCreateHelper<HasMetadata> deleteAndCreateHelper = new DeleteAndCreateHelper<>(
-      m -> h.create(client, config, namespaceToUse, m),
-      m -> h.delete(client, config, namespaceToUse, propagationPolicy, m),
+      m -> h.create(client, config, namespaceToUse, m, dryRun),
+      m -> h.delete(client, config, namespaceToUse, propagationPolicy, m, dryRun),
       waitUntilDeletedOrInterrupted(client, config, h, namespaceToUse)
     );
 

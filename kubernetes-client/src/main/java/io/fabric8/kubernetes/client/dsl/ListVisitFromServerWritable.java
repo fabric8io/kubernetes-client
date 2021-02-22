@@ -13,17 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.api.builder.Visitable;
-import io.fabric8.kubernetes.client.FromServerGettable;
-import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.GracePeriodConfigurable;
+import io.fabric8.kubernetes.client.PropagationPolicyConfigurable;
 
-public interface VisitFromServerGetWatchDeleteRecreateWaitApplicable<T> extends Visitable<VisitFromServerGetWatchDeleteRecreateWaitApplicable<T>>,
-  FromServerGettable<T>,
-  Watchable<Watcher<T>>,
-  Waitable<T, T>,
-  VisitFromServerWritable<T>,
-  DryRunable<VisitFromServerWritable<T>> {
+import java.util.List;
+
+public interface ListVisitFromServerWritable<T> extends RecreateApplicable<List<T>, T>,
+  CascadingDeletable<List<T>>,
+  GracePeriodConfigurable<CascadingDeletable<List<T>>>,
+  PropagationPolicyConfigurable<CascadingDeletable<List<T>>> {
 }

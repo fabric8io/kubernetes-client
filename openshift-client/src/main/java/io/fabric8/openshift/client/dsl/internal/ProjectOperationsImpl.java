@@ -74,7 +74,7 @@ public class ProjectOperationsImpl extends OpenShiftOperation<Project, ProjectLi
     result.add(create(project));
 
     // Create Role Bindings
-    NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl listOp = new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, getNamespace(), null, false, false, new ArrayList<>(), projectRoleBindings, null, DeletionPropagation.BACKGROUND, true) {};
+    NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl listOp = new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, getNamespace(), null, false, false, new ArrayList<>(), projectRoleBindings, null, DeletionPropagation.BACKGROUND, true, context.getDryRun()) {};
     result.addAll(listOp.createOrReplace());
 
     return result;

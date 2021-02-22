@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.dsl.base;
 
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.client.WatcherException;
+import io.fabric8.kubernetes.client.dsl.WritableOperation;
 import io.fabric8.kubernetes.client.utils.CreateOrReplaceHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -761,7 +762,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
         updateApiVersion(item);
         handleDelete(item, gracePeriodSeconds, propagationPolicy, cascading);
       } else {
-        handleDelete(getResourceUrl(), gracePeriodSeconds, propagationPolicy, cascading);
+        handleDelete(getResourceURLForWriteOperation(getResourceUrl()), gracePeriodSeconds, propagationPolicy, cascading);
       }
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(forOperationType("delete"), e);
@@ -1160,6 +1161,11 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   public void setNamespace(String namespace) {
     this.namespace = namespace;
+  }
+
+  @Override
+  public WritableOperation<T> dryRun(boolean isDryRun) {
+    return newInstance(context.withDryRun(isDryRun));
   }
 }
 

@@ -49,6 +49,7 @@ import java.util.concurrent.TimeUnit;
 import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(ArquillianConditionalRunner.class)
@@ -234,6 +235,38 @@ public class TypedCustomResourceIT {
     // Then
     assertNotNull(isDeleted);
     assertTrue(isDeleted);
+  }
+
+  @Test
+  public void dryRunCreate() {
+    // Given
+    Pet parrot = createNewPet("dry-run-create", "Parrot", "Chirping");
+
+    // When
+    Pet createdParrot = petClient.inNamespace(currentNamespace).dryRun().create(parrot);
+
+    // Then
+    assertNotNull(createdParrot);
+    assertNotNull(createdParrot.getMetadata());
+    assertNotNull(createdParrot.getMetadata().getUid());
+    assertNotNull(createdParrot.getMetadata().getCreationTimestamp());
+    Pet parrotFromServer = petClient.inNamespace(currentNamespace).withName("dry-run-create").get();
+    assertNull(parrotFromServer);
+  }
+
+  @Test
+  public void dryRunDelete() {
+    // Given
+    Pet duck = createNewPet("dry-run-delete", "Duck", "Quacking");
+    petClient.inNamespace(currentNamespace).createOrReplace(duck);
+
+    // When
+    boolean isDeleted = petClient.inNamespace(currentNamespace).withName("dry-run-delete").dryRun().delete();
+
+    // Then
+    assertTrue(isDeleted);
+    Pet duckFromServer = petClient.inNamespace(currentNamespace).withName("dry-run-delete").get();
+    assertNotNull(duckFromServer);
   }
 
   private void assertPet(Pet pet, String name, String type, String currentStatus) {

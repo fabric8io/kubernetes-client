@@ -42,16 +42,16 @@ import java.util.List;
 import java.util.Map;
 
 public class OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl extends NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl {
-  public OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, InputStream is, Map<String, String> parameters, Boolean cascading, DeletionPropagation propagationPolicy) {
-    super(client, config, namespace, explicitNamespace, fromServer, deletingExisting, visitors, is, parameters, cascading, propagationPolicy);
+  public OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, InputStream is, Map<String, String> parameters, Boolean cascading, DeletionPropagation propagationPolicy, boolean dryRun) {
+    super(client, config, namespace, explicitNamespace, fromServer, deletingExisting, visitors, is, parameters, cascading, propagationPolicy, dryRun);
   }
 
-  public OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, Object item, Map<String, String> parameters, DeletionPropagation propagationPolicy, Boolean cascading) {
-    super(client, config, namespace, explicitNamespace, fromServer, deletingExisting, visitors, item, parameters, propagationPolicy, cascading);
+  public OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, Object item, Map<String, String> parameters, DeletionPropagation propagationPolicy, Boolean cascading, boolean dryRun) {
+    super(client, config, namespace, explicitNamespace, fromServer, deletingExisting, visitors, item, parameters, propagationPolicy, cascading, dryRun);
   }
 
-  public OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, Object item, InputStream inputStream, Map<String, String> parameters, long gracePeriodSeconds, DeletionPropagation propagationPolicy, Boolean cascading, long watchRetryInitialBackoffMillis, double watchRetryBackoffMultiplier) {
-    super(client, config, namespace, explicitNamespace, fromServer, deletingExisting, visitors, item, inputStream, parameters, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
+  public OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, Object item, InputStream inputStream, Map<String, String> parameters, long gracePeriodSeconds, DeletionPropagation propagationPolicy, Boolean cascading, long watchRetryInitialBackoffMillis, double watchRetryBackoffMultiplier, boolean dryRun) {
+    super(client, config, namespace, explicitNamespace, fromServer, deletingExisting, visitors, item, inputStream, parameters, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, dryRun);
   }
 
   @Override

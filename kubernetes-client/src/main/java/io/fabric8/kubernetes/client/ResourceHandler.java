@@ -78,24 +78,26 @@ public interface ResourceHandler<T, V extends VisitableBuilder<T, V>> {
   String getApiVersion();
 
   /**
-   * Create the specified resource.
+   * Create the specified resource
    * @param client        An instance of the http client.
    * @param config        The client config.
    * @param namespace     The target namespace.
    * @param item          The resource to create.
+   * @param dryRun        Enable dry run
    * @return              The created resource.
    */
-  T create(OkHttpClient client, Config config, String namespace, T item);
+  T create(OkHttpClient client, Config config, String namespace, T item, boolean dryRun);
 
   /**
-   * Replace the specified resource.
+   * Replace the specified resource
    * @param client        An instance of the http client.
    * @param config        The client config.
    * @param namespace     The target namespace.
    * @param item          The resource to replace.
-   * @return              The created resource.
+   * @param dryRun        Enable dry run
+   * @return              The replaced resource.
    */
-  T replace(OkHttpClient client, Config config, String namespace, T item);
+  T replace(OkHttpClient client, Config config, String namespace, T item, boolean dryRun);
 
   /**
    * Reload the specified resource (if exists).
@@ -121,9 +123,10 @@ public interface ResourceHandler<T, V extends VisitableBuilder<T, V>> {
    * @param namespace     The target namespace.
    * @param propagationPolicy  Whether and how garbage collection will be performed.
    * @param item          The resource to delete.
+   * @param dryRun        enable dry run
    * @return              The true if the resource was successfully deleted.
    */
-  Boolean delete(OkHttpClient client, Config config, String namespace, DeletionPropagation propagationPolicy, T item);
+  Boolean delete(OkHttpClient client, Config config, String namespace, DeletionPropagation propagationPolicy, T item, boolean dryRun);
 
 
     /**
