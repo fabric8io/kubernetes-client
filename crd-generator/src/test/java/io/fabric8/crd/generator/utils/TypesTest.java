@@ -15,7 +15,7 @@
  */
 package io.fabric8.crd.generator.utils;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import io.fabric8.crd.example.webserver.WebServerWithStatusProperty;
 import io.sundr.codegen.functions.ClassTo;

@@ -15,12 +15,18 @@
  */
 package io.fabric8.crd.generator.v1;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.crd.example.person.Person;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 import io.sundr.codegen.functions.ClassTo;
 import io.sundr.codegen.model.TypeDef;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 
 class JsonSchemaTest {
@@ -30,6 +36,22 @@ class JsonSchemaTest {
     TypeDef person = ClassTo.TYPEDEF.apply(Person.class);
     JSONSchemaProps schema = JsonSchema.from(person);
     assertNotNull(schema);
+    final Map<String, JSONSchemaProps> properties = schema.getProperties();
+    assertEquals(7, properties.size());
+    final List<String> personTypes = properties.get("type").getEnum().stream().map(JsonNode::asText)
+      .collect(Collectors.toList());
+    assertEquals(2, personTypes.size());
+    assertTrue(personTypes.contains("crazy"));
+    assertTrue(personTypes.contains("crazier"));
+    final Map<String, JSONSchemaProps> addressProperties = properties.get("addresses").getItems()
+      .getSchema().getProperties();
+    assertEquals(5, addressProperties.size());
+    final List<String> addressTypes = addressProperties.get("type").getEnum().stream()
+      .map(JsonNode::asText)
+      .collect(Collectors.toList());
+    assertEquals(2, addressTypes.size());
+    assertTrue(addressTypes.contains("home"));
+    assertTrue(addressTypes.contains("work"));
   }
 
 }

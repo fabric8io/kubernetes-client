@@ -26,5 +26,9 @@ public class Person {
   private int birthYear;
   private List<String> hobbies;
   private List<Address> addresses;
+  private Type type;
 
+  public enum Type {
+    crazy, crazier;
+  }
 }
