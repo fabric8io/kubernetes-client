@@ -20,4 +20,9 @@ public class Address {
   private int number;
   private String zip;
   private String country;
+  private Type type;
+
+  public enum Type {
+    home, work;
+  }
 }

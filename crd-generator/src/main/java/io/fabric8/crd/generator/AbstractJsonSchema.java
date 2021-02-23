@@ -190,6 +190,7 @@ public abstract class AbstractJsonSchema<T, B> {
           if(def.isEnum()) {
             final JsonNode[] enumValues = def.getProperties().stream()
               .map(Property::getName)
+              .filter(n -> !n.startsWith("$"))
               .map(JsonNodeFactory.instance::textNode)
               .toArray(JsonNode[]::new);
             return enumProperty(enumValues);
