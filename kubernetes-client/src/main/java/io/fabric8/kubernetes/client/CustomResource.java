@@ -35,9 +35,14 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.stream.Stream;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -329,7 +334,8 @@ public abstract class CustomResource<S, T> implements HasMetadata {
         // get the associated class from the type name, if not Void
         String className = types[genericTypeIndex].getTypeName();
         if (!VOID_TYPE_NAME.equals(className)) {
-          final Class<?> clazz = Thread.currentThread().getContextClassLoader().loadClass(className);
+          final Class<?> clazz = loadClass(className, getClass().getClassLoader())
+            .orElseThrow(() -> new KubernetesClientException("Failed to load class:" + className + ", using neihter " + getClass().getName() + " ClassLoader, nor Thread context classLoader."));
           if (clazz.isInterface() || Modifier.isAbstract(clazz.getModifiers())) {
             throw new IllegalArgumentException(
               "Cannot instantiate interface/abstract type " + className);
@@ -368,5 +374,20 @@ public abstract class CustomResource<S, T> implements HasMetadata {
   
   private final static String getKey(Class<? extends CustomResource> clazz, int genericTypeIndex) {
     return clazz.getCanonicalName() + "_" + genericTypeIndex;
+  }
+
+  private static final Optional<Class<?>> loadClass(String fqcn, ClassLoader ... classLoaders) {
+    Function<ClassLoader, Class<?>> mapper = cl -> {
+	    try {
+	      return cl.loadClass(fqcn);
+	    } catch (ClassNotFoundException | NoClassDefFoundError e) {
+	      return null;
+	    }
+	  };
+
+    return Stream.concat(Stream.of(classLoaders), Stream.of(Thread.currentThread().getContextClassLoader()))
+      .map(mapper)
+      .filter(c -> c != null)
+      .findFirst();
   }
 }

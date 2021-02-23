@@ -4,6 +4,7 @@
 
 #### Bugs
 * Apiextensions DSL should use NonNamespaceOperation for CustomResourceDefinitions
+* CNFE when initialzing CustomResource instances
 
 #### Improvements
 
