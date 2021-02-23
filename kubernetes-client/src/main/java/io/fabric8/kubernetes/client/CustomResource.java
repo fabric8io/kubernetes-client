@@ -335,7 +335,7 @@ public abstract class CustomResource<S, T> implements HasMetadata {
         String className = types[genericTypeIndex].getTypeName();
         if (!VOID_TYPE_NAME.equals(className)) {
           final Class<?> clazz = loadClass(className, getClass().getClassLoader())
-            .orElseThrow(() -> new KubernetesClientException("Failed to load class:" + className + ", using neihter " + getClass().getName() + " ClassLoader, nor Thread context classLoader."));
+            .orElseThrow(() -> new KubernetesClientException("Failed to load class:" + className + ", using neither " + getClass().getName() + " ClassLoader, nor Thread context classLoader."));
           if (clazz.isInterface() || Modifier.isAbstract(clazz.getModifiers())) {
             throw new IllegalArgumentException(
               "Cannot instantiate interface/abstract type " + className);
