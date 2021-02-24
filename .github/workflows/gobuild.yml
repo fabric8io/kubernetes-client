@@ -24,7 +24,7 @@ on:
 
 jobs:
   build:
-    name: Kubernetes Model Go to JSON Schema Generator Build
+    name: Kubernetes Model Generator Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -32,3 +32,11 @@ jobs:
       - name: Build Project
         run: |
           ./kubernetes-model-generator/generateModelDocker.sh
+          git status
+          MODIFIED_KUBE_SCHEMA=`git status | grep kube-schema.json | wc -l`
+          if [ $MODIFIED_KUBE_SCHEMA -eq "0" ]; then
+            echo "No Schema files modified. Build Success.";
+          else
+            echo "Schema files modified. Build Failure";
+            exit 1;
+          fi;
