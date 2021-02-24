@@ -139,7 +139,7 @@ class CustomResourceTest {
     String jsonObject = "{\"metadata\":{\"continue\":\"\",\"resourceVersion\":\"539617\",\"selfLink\":\"test.fabric8.io/v1alpha1/namespaces/ns1/hellos/\"},\"apiVersion\":\"test.fabric8.io/v1alpha1\",\"kind\":\"HelloList\",\"items\":[{\"apiVersion\": \"test.fabric8.io/v1alpha1\",\"kind\": \"Hello\"," +
       "\"metadata\": {\"name\": \"example-hello\", \"labels\": {\"scope\":\"test\"}},\"spec\": {\"size\": 3},\"uid\":\"3525437a-6a56-11e9-8787-525400b18c1d\"}]}";
 
-    server.expect().get().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos?labelSelector=org%3Dfabric8,scope%3Dtest").andReturn(HttpURLConnection.HTTP_CREATED, jsonObject).once();
+    server.expect().get().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos?labelSelector=org%3Dfabric8" + Utils.toUrlEncoded(",") + "scope%3Dtest").andReturn(HttpURLConnection.HTTP_CREATED, jsonObject).once();
     KubernetesClient client = server.getClient();
 
     Map<String, String> labels = new HashMap<>();
