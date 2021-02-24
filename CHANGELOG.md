@@ -11,6 +11,7 @@
 
 #### Improvements
 * Fix #2781: RawCustomResourceOperationsImpl#delete now returns a boolean value for deletion status
+* Fix #2780: Refactor RawCustomResourceOperationsImpl#delete(String)
 
 #### Dependency Upgrade
 

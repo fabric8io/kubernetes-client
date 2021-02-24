@@ -24,6 +24,7 @@ import static org.mockito.Mockito.*;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,18 +55,26 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class RawCustomResourceOperationsImplTest {
   private OkHttpClient mockClient;
   private Config config;
-  private CustomResourceDefinitionContext customResourceDefinitionContext;
+  private CustomResourceDefinitionContext namespacedCustomResourceDefinitionContext;
+  private CustomResourceDefinitionContext clusterCustomResourceDefinitionContext;
   private Response mockSuccessResponse;
 
   @BeforeEach
   public void setUp() throws IOException {
     this.mockClient = Mockito.mock(OkHttpClient.class, Mockito.RETURNS_DEEP_STUBS);
     this.config = new ConfigBuilder().withMasterUrl("https://localhost:8443/").build();
-    this.customResourceDefinitionContext = new CustomResourceDefinitionContext.Builder()
+    this.namespacedCustomResourceDefinitionContext = new CustomResourceDefinitionContext.Builder()
       .withGroup("test.fabric8.io")
       .withName("hellos.test.fabric8.io")
       .withPlural("hellos")
       .withScope("Namespaced")
+      .withVersion("v1alpha1")
+      .build();
+    this.clusterCustomResourceDefinitionContext = new CustomResourceDefinitionContext.Builder()
+      .withGroup("test.fabric8.io")
+      .withName("hellos.test.fabric8.io")
+      .withPlural("hellos")
+      .withScope("Cluster")
       .withVersion("v1alpha1")
       .build();
 
@@ -79,7 +88,7 @@ public class RawCustomResourceOperationsImplTest {
   @Test
   void testCreateOrReplaceUrl() throws IOException {
     // Given
-    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, customResourceDefinitionContext);
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, namespacedCustomResourceDefinitionContext);
     String resourceAsString = "{\"metadata\":{\"name\":\"myresource\",\"namespace\":\"myns\"}, \"kind\":\"raw\", \"apiVersion\":\"v1\"}";
     ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
 
@@ -116,7 +125,7 @@ public class RawCustomResourceOperationsImplTest {
   @Test
   void testDeleteWithNamespaceAndNameForNonExistentResource() throws IOException {
     // Given
-    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, customResourceDefinitionContext);
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, namespacedCustomResourceDefinitionContext);
     mockDeletionCallWithResponse(HttpURLConnection.HTTP_NOT_FOUND, "{\"kind\":\"Status\",\"status\":\"Failure\"}");
     ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
 
@@ -132,7 +141,7 @@ public class RawCustomResourceOperationsImplTest {
   @Test
   void testDeleteWithNamespaceForNonExistentResource() throws IOException {
     // Given
-    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, customResourceDefinitionContext);
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, namespacedCustomResourceDefinitionContext);
     mockDeletionCallWithResponse(HttpURLConnection.HTTP_NOT_FOUND, "{\"kind\":\"Status\",\"status\":\"Failure\"}");
     ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
 
@@ -148,7 +157,7 @@ public class RawCustomResourceOperationsImplTest {
   @Test
   void testDeleteWithNamespaceAndCascadingForNonExistentResource() throws IOException {
     // Given
-    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, customResourceDefinitionContext);
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, namespacedCustomResourceDefinitionContext);
     mockDeletionCallWithResponse(HttpURLConnection.HTTP_NOT_FOUND, "{\"kind\":\"Status\",\"status\":\"Failure\"}");
     ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
 
@@ -164,7 +173,7 @@ public class RawCustomResourceOperationsImplTest {
   @Test
   void testDeleteWithNamespaceAndDeleteOptionsForNonExistentResource() throws IOException {
     // Given
-    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, customResourceDefinitionContext);
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, namespacedCustomResourceDefinitionContext);
     mockDeletionCallWithResponse(HttpURLConnection.HTTP_NOT_FOUND, "{\"kind\":\"Status\",\"status\":\"Failure\"}");
     ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
 
@@ -180,7 +189,7 @@ public class RawCustomResourceOperationsImplTest {
   @Test
   void testDeleteWithNamespaceNameAndCascading() throws IOException {
     // Given
-    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, customResourceDefinitionContext);
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, namespacedCustomResourceDefinitionContext);
     mockDeletionCallWithResponse(HttpURLConnection.HTTP_OK, "{\"kind\":\"Hello\",\"metadata\":{\"name\":\"Failure\"}}");
     ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
 
@@ -196,7 +205,7 @@ public class RawCustomResourceOperationsImplTest {
   @Test
   void testDeleteWithNamespaceNameAndCascadingForNonExistentResource() throws IOException {
     // Given
-    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, customResourceDefinitionContext);
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, namespacedCustomResourceDefinitionContext);
     mockDeletionCallWithResponse(HttpURLConnection.HTTP_NOT_FOUND, "{\"kind\":\"Status\",\"status\":\"Failure\"}");
     ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
 
@@ -212,7 +221,7 @@ public class RawCustomResourceOperationsImplTest {
   @Test
   void testDeleteWithNamespaceNameAndPropagationPolicyForNonExistentResource() throws IOException {
     // Given
-    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, customResourceDefinitionContext);
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, namespacedCustomResourceDefinitionContext);
     mockDeletionCallWithResponse(HttpURLConnection.HTTP_NOT_FOUND, "{\"kind\":\"Status\",\"status\":\"Failure\"}");
     ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
 
@@ -228,7 +237,7 @@ public class RawCustomResourceOperationsImplTest {
   @Test
   void testDeleteWithNamespaceNameAndDeleteOptionsForNonExistentResource() throws IOException {
     // Given
-    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, customResourceDefinitionContext);
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, namespacedCustomResourceDefinitionContext);
     mockDeletionCallWithResponse(HttpURLConnection.HTTP_NOT_FOUND, "{\"kind\":\"Status\",\"status\":\"Failure\"}");
     ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
 
@@ -244,21 +253,20 @@ public class RawCustomResourceOperationsImplTest {
   @Test
   void testGetUrl() {
     // Given
-    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, customResourceDefinitionContext);
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, namespacedCustomResourceDefinitionContext);
     ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
 
     // When
     rawCustomResourceOperations.get("myns", "myresource");
 
     // Then
-    verify(mockClient).newCall(captor.capture());
-    assertEquals("/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos/myresource", captor.getValue().url().encodedPath());
+    assertRequestCaptured(captor, "/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos/myresource", "GET");
   }
 
   @Test
   void testDeleteUrl() throws IOException {
     // Given
-    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, customResourceDefinitionContext);
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, namespacedCustomResourceDefinitionContext);
     ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
     mockDeletionCallWithResponse(HttpURLConnection.HTTP_OK, "{\"kind\":\"Status\",\"status\":\"Success\"}");
 
@@ -267,17 +275,16 @@ public class RawCustomResourceOperationsImplTest {
 
     // Then
     assertTrue(result);
-    verify(mockClient).newCall(captor.capture());
-    assertEquals("/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos/myresource", captor.getValue().url().encodedPath());
+    assertRequestCaptured(captor, "/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos/myresource", "DELETE");
   }
 
   @Test
   void testFetchWatchUrlWithNamespace() throws MalformedURLException {
     // Given
-    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, customResourceDefinitionContext);
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, namespacedCustomResourceDefinitionContext);
 
     // When
-    HttpUrl url = rawCustomResourceOperations.fetchWatchUrl("test", null, null, new ListOptionsBuilder().withWatch(true).build()).build();
+    HttpUrl url = rawCustomResourceOperations.inNamespace("test").fetchWatchUrl(null, new ListOptionsBuilder().withWatch(true).build()).build();
 
     // Then
     assertEquals("https://localhost:8443/apis/test.fabric8.io/v1alpha1/namespaces/test/hellos?watch=true", url.url().toString());
@@ -286,10 +293,10 @@ public class RawCustomResourceOperationsImplTest {
   @Test
   void testFetchWatchUrlWithNamespaceAndName() throws MalformedURLException {
     // Given
-    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, customResourceDefinitionContext);
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, namespacedCustomResourceDefinitionContext);
 
     // When
-    HttpUrl url = rawCustomResourceOperations.fetchWatchUrl("test", "example-resource", null, new ListOptionsBuilder().withWatch(true).build()).build();
+    HttpUrl url = rawCustomResourceOperations.inNamespace("test").withName("example-resource").fetchWatchUrl(null, new ListOptionsBuilder().withWatch(true).build()).build();
 
     // Then
     assertEquals("https://localhost:8443/apis/test.fabric8.io/v1alpha1/namespaces/test/hellos?fieldSelector=metadata.name%3Dexample-resource&watch=true", url.url().toString());
@@ -298,10 +305,10 @@ public class RawCustomResourceOperationsImplTest {
   @Test
   void testFetchWatchUrlWithNamespaceAndNameAndResourceVersion() throws MalformedURLException {
     // Given
-    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, customResourceDefinitionContext);
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, namespacedCustomResourceDefinitionContext);
 
     // When
-    HttpUrl url = rawCustomResourceOperations.fetchWatchUrl("test", "example-resource", null, new ListOptionsBuilder().withResourceVersion("100069").withWatch(true).build()).build();
+    HttpUrl url = rawCustomResourceOperations.inNamespace("test").withName("example-resource").fetchWatchUrl(null, new ListOptionsBuilder().withResourceVersion("100069").withWatch(true).build()).build();
 
     // Then
     assertEquals("https://localhost:8443/apis/test.fabric8.io/v1alpha1/namespaces/test/hellos?fieldSelector=metadata.name%3Dexample-resource&resourceVersion=100069&watch=true", url.url().toString());
@@ -310,10 +317,10 @@ public class RawCustomResourceOperationsImplTest {
   @Test
   void testFetchWatchUrlWithoutAnything() throws MalformedURLException {
     // Given
-    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, customResourceDefinitionContext);
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, namespacedCustomResourceDefinitionContext);
 
     // When
-    HttpUrl url = rawCustomResourceOperations.fetchWatchUrl(null, null, null, new ListOptionsBuilder().withWatch(true).build()).build();
+    HttpUrl url = rawCustomResourceOperations.fetchWatchUrl(null, new ListOptionsBuilder().withWatch(true).build()).build();
 
     // Then
     assertEquals("https://localhost:8443/apis/test.fabric8.io/v1alpha1/hellos?watch=true", url.url().toString());
@@ -322,33 +329,33 @@ public class RawCustomResourceOperationsImplTest {
   @Test
   void testFetchWatchUrlWithLabels() throws MalformedURLException {
     // Given
-    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, customResourceDefinitionContext);
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, namespacedCustomResourceDefinitionContext);
 
     // When
     Map<String, String> labels = new HashMap<>();
     labels.put("foo", "bar");
     labels.put("foo1", "bar1");
 
-    HttpUrl url = rawCustomResourceOperations.fetchWatchUrl(null, null, labels, new ListOptionsBuilder().withWatch(true).build()).build();
+    HttpUrl url = rawCustomResourceOperations.fetchWatchUrl(labels, new ListOptionsBuilder().withWatch(true).build()).build();
 
     // Then
-    assertEquals("https://localhost:8443/apis/test.fabric8.io/v1alpha1/hellos?labelSelector=" + Utils.toUrlEncoded("foo=bar") + "," + Utils.toUrlEncoded("foo1=bar1") + "&watch=true", url.url().toString());
+    assertEquals("https://localhost:8443/apis/test.fabric8.io/v1alpha1/hellos?labelSelector=" + Utils.toUrlEncoded("foo=bar") + Utils.toUrlEncoded(",") + Utils.toUrlEncoded("foo1=bar1") + "&watch=true", url.url().toString());
   }
 
   @Test
   void testFetchWatchUrlWithLabelsWithNamespace() throws MalformedURLException {
     // Given
-    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, customResourceDefinitionContext);
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, namespacedCustomResourceDefinitionContext);
 
     // When
     Map<String, String> labels = new HashMap<>();
     labels.put("foo", "bar");
     labels.put("foo1", "bar1");
 
-    HttpUrl url = rawCustomResourceOperations.fetchWatchUrl("test", null, labels, new ListOptionsBuilder().withWatch(true).build()).build();
+    HttpUrl url = rawCustomResourceOperations.inNamespace("test").fetchWatchUrl(labels, new ListOptionsBuilder().withWatch(true).build()).build();
 
     // Then
-    assertEquals("https://localhost:8443/apis/test.fabric8.io/v1alpha1/namespaces/test/hellos?labelSelector=" + Utils.toUrlEncoded("foo=bar") + "," + Utils.toUrlEncoded("foo1=bar1") + "&watch=true", url.url().toString());
+    assertEquals("https://localhost:8443/apis/test.fabric8.io/v1alpha1/namespaces/test/hellos?labelSelector=" + Utils.toUrlEncoded("foo=bar") + Utils.toUrlEncoded(",") + Utils.toUrlEncoded("foo1=bar1") + "&watch=true", url.url().toString());
   }
 
   @Test
@@ -362,7 +369,7 @@ public class RawCustomResourceOperationsImplTest {
       .withWatchReconnectLimit(1)
       .withWatchReconnectInterval(10)
       .build();
-    RawCustomResourceOperationsImpl rawOp = new RawCustomResourceOperationsImpl(mockClient, config, customResourceDefinitionContext);
+    RawCustomResourceOperationsImpl rawOp = new RawCustomResourceOperationsImpl(mockClient, config, namespacedCustomResourceDefinitionContext);
 
     // When
     Config configFromRawOp = rawOp.getConfig();
@@ -386,7 +393,7 @@ public class RawCustomResourceOperationsImplTest {
   }
 
   private Response mockResponse(int code) {
-    return mockResponse(code, "");
+    return mockResponse(code, "{\"kind\":\"Status\",\"status\":\"Success\"}");
   }
 
   private Response mockResponse(int code, String body) {
@@ -399,4 +406,168 @@ public class RawCustomResourceOperationsImplTest {
       .build();
   }
 
+  @Test
+  void testDeleteWithNamespaceAndName() {
+    // Given
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, namespacedCustomResourceDefinitionContext);
+    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
+
+    // When
+    rawCustomResourceOperations.inNamespace("myns").withName("myresource").delete();
+
+    // Then
+    assertRequestCaptured(captor, "/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos/myresource", "DELETE");
+  }
+
+  @Test
+  void testListWithLabels() {
+    // Given
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, namespacedCustomResourceDefinitionContext);
+    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
+
+    // When
+    rawCustomResourceOperations.list("myns", Collections.singletonMap("foo", "bar"));
+
+    // Then
+    assertRequestCaptured(captor, "/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos", "GET");
+    assertEquals("labelSelector=foo%3Dbar", captor.getValue().url().encodedQuery());
+  }
+
+  @Test
+  void testDeleteInSpecifiedNamespace() {
+    // Given
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, namespacedCustomResourceDefinitionContext);
+    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
+
+    // When
+    rawCustomResourceOperations.inNamespace("myns").delete();
+
+    // Then
+    assertRequestCaptured(captor, "/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos", "DELETE");
+  }
+
+  @Test
+  void testDeleteInAllNamespaces() {
+    // Given
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, namespacedCustomResourceDefinitionContext);
+    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
+
+    // When
+    rawCustomResourceOperations.inAnyNamespace().delete();
+
+    // Then
+    assertRequestCaptured(captor, "/apis/test.fabric8.io/v1alpha1/hellos", "DELETE");
+  }
+
+  @Test
+  void testClusterScopedDeletionWithName() {
+    // Given
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, clusterCustomResourceDefinitionContext);
+    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
+
+    // When
+    rawCustomResourceOperations.withName("myresource").delete();
+
+    // Then
+    assertRequestCaptured(captor, "/apis/test.fabric8.io/v1alpha1/hellos/myresource", "DELETE");
+  }
+
+  @Test
+  void testClusterScopeDeletionAll() {
+    // Given
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, clusterCustomResourceDefinitionContext);
+    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
+
+    // When
+    rawCustomResourceOperations.delete();
+
+    // Then
+    assertRequestCaptured(captor, "/apis/test.fabric8.io/v1alpha1/hellos", "DELETE");
+  }
+
+  @Test
+  void testDeleteByNamespaceOrNameWithNamespacedScopedCRD() {
+    // Given
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, namespacedCustomResourceDefinitionContext);
+    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
+
+    // When
+    rawCustomResourceOperations.delete("myns");
+
+    // Then
+    assertRequestCaptured(captor, "/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos", "DELETE");
+  }
+
+  @Test
+  void testDeleteByNamespaceOrNameWithCascadingWithNamespacedScopedCRD() throws IOException {
+    // Given
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, namespacedCustomResourceDefinitionContext);
+    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
+
+    // When
+    rawCustomResourceOperations.delete("myns", true);
+
+    // Then
+    assertRequestCaptured(captor, "/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos", "DELETE");
+  }
+
+  @Test
+  void testDeleteByNamespaceOrNameWithDeleteOptionsWithNamespacedScopedCRD() throws IOException {
+    // Given
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, namespacedCustomResourceDefinitionContext);
+    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
+
+    // When
+    rawCustomResourceOperations.delete("myns", new DeleteOptionsBuilder()
+      .withPropagationPolicy(DeletionPropagation.BACKGROUND.toString()).build());
+
+    // Then
+    assertRequestCaptured(captor, "/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos", "DELETE");
+  }
+
+  @Test
+  void testDeleteByNamespaceOrNameWithClusterScopedCRD() {
+    // Given
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, clusterCustomResourceDefinitionContext);
+    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
+
+    // When
+    rawCustomResourceOperations.delete("myresource");
+
+    // Then
+    assertRequestCaptured(captor, "/apis/test.fabric8.io/v1alpha1/hellos/myresource", "DELETE");
+  }
+
+  @Test
+  void testDeleteByNamespaceOrNameWithCascadingWithClusterScopedCRD() throws IOException {
+    // Given
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, clusterCustomResourceDefinitionContext);
+    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
+
+    // When
+    rawCustomResourceOperations.delete("myresource", true);
+
+    // Then
+    assertRequestCaptured(captor, "/apis/test.fabric8.io/v1alpha1/hellos/myresource", "DELETE");
+  }
+
+  @Test
+  void testDeleteByNamespaceOrNameWithDeleteOptionsWithClusterScopedCRD() throws IOException {
+    // Given
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, clusterCustomResourceDefinitionContext);
+    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
+
+    // When
+    rawCustomResourceOperations.delete("myresource", new DeleteOptionsBuilder()
+      .withPropagationPolicy(DeletionPropagation.BACKGROUND.toString()).build());
+
+    // Then
+    assertRequestCaptured(captor, "/apis/test.fabric8.io/v1alpha1/hellos/myresource", "DELETE");
+  }
+
+  private void assertRequestCaptured(ArgumentCaptor<Request> captor, String url, String method) {
+    verify(mockClient).newCall(captor.capture());
+    assertEquals(url, captor.getValue().url().encodedPath());
+    assertEquals(method, captor.getValue().method());
+  }
 }
