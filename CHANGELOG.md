@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 5.2-SNAPSHOT
+### 5.1.1 (2021-02-24)
 
 #### Bugs
 * Fix #2747: Apiextensions DSL should use NonNamespaceOperation for CustomResourceDefinitions
@@ -8,13 +8,6 @@
 * Fix #2827: CNFE when initialzing CustomResource instances
 * Fix #2815: `client.isAdaptable(OpenShiftClient.class)` doesn't work on OpenShift 4
 * Fix #2833: Knative model genrator is now aligned with all other generators
-
-
-#### Improvements
-
-#### Dependency Upgrade
-
-#### New Features
 
 ### 5.1.0 (2021-02-17)
 
