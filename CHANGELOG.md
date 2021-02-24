@@ -3,10 +3,12 @@
 ### 5.2-SNAPSHOT
 
 #### Bugs
-* Apiextensions DSL should use NonNamespaceOperation for CustomResourceDefinitions
+* Fix #2747: Apiextensions DSL should use NonNamespaceOperation for CustomResourceDefinitions
 * Fix #2819: simple enums are now supported when generating CRDs
-* CNFE when initialzing CustomResource instances
-* `client.isAdaptable(OpenShiftClient.class)` doesn't work on OpenShift 4
+* Fix #2827: CNFE when initialzing CustomResource instances
+* Fix #2815: `client.isAdaptable(OpenShiftClient.class)` doesn't work on OpenShift 4
+* Fix #2833: Knative model genrator is now aligned with all other generators
+
 
 #### Improvements
 
@@ -20,7 +22,6 @@
 * Fix #2748: Pass custom headers in kubernetes-client to watch api by modify WatchConnectionManager
 * Fix #2745: Filtering Operations can't configure PropagationPolicy
 * Fix #2672: WaitUntilReady for Service resource throws IllegalArgumentException
-* Fix: Knative model genrator is now aligned with all other generators
 
 #### Improvements
 * Fix #2717: Remove edit() methods from RawCustomResourceOperationsImpl taking InputStream arguments
