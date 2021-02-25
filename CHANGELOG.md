@@ -5,6 +5,7 @@
 #### Bugs
 
 #### Improvements
+* Fix #2843: Singular is missing from CustomResourceDefinitionContext
 
 #### Dependency Upgrade
 

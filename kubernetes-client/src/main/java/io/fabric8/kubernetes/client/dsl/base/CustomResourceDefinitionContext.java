@@ -28,14 +28,18 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class CustomResourceDefinitionContext {
+
   private String name;
   private String group;
   private String scope;
+  private String singular;
   private String plural;
   private String version;
   private String kind;
 
-  public String getName() { return name; }
+  public String getName() {
+    return name;
+  }
 
   public String getGroup() {
     return group;
@@ -43,6 +47,10 @@ public class CustomResourceDefinitionContext {
 
   public String getScope() {
     return scope;
+  }
+
+  public String getSingular() {
+    return singular;
   }
 
   public String getPlural() {
@@ -119,6 +127,7 @@ public class CustomResourceDefinitionContext {
         .withVersion(instance.getVersion())
         .withScope(instance.getScope())
         .withName(instance.getCRDName())
+        .withSingular(instance.getSingular())
         .withPlural(instance.getPlural())
         .withKind(instance.getKind())
         .build();
@@ -134,6 +143,7 @@ public class CustomResourceDefinitionContext {
       .withVersion(getVersion(spec))
       .withScope(spec.getScope())
       .withName(crd.getMetadata().getName())
+      .withSingular(spec.getNames().getSingular())
       .withPlural(spec.getNames().getPlural())
       .withKind(spec.getNames().getKind())
       .build();
@@ -147,6 +157,7 @@ public class CustomResourceDefinitionContext {
       .withVersion(getVersion(crd.getSpec()))
       .withScope(crd.getSpec().getScope())
       .withName(crd.getMetadata().getName())
+      .withSingular(crd.getSpec().getNames().getSingular())
       .withPlural(crd.getSpec().getNames().getPlural())
       .withKind(crd.getSpec().getNames().getKind())
       .build();
@@ -200,6 +211,11 @@ public class CustomResourceDefinitionContext {
       return this;
     }
 
+    public Builder withSingular(String singular) {
+      this.customResourceDefinitionContext.singular = singular;
+      return this;
+    }
+
     public Builder withPlural(String plural) {
       this.customResourceDefinitionContext.plural = plural;
       return this;
@@ -219,6 +235,5 @@ public class CustomResourceDefinitionContext {
       return this.customResourceDefinitionContext;
     }
   }
-
 
 }
