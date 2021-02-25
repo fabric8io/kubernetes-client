@@ -81,7 +81,7 @@ class CustomResourceTest {
   @Test
   void subclassWithOverriddenInitShouldWork() {
     final CRI cri = new CRI();
-    assertEquals("", cri.getSpec());
+    assertNull(cri.getSpec());
     assertEquals(7, cri.getStatus());
   }
   
