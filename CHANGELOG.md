@@ -3,6 +3,7 @@
 ### 5.2-SNAPSHOT
 
 #### Bugs
+* Fix #2828: Remove automatic instantiation of CustomResource spec and status as this feature was causing more issues than it was solving
 
 #### Improvements
 
