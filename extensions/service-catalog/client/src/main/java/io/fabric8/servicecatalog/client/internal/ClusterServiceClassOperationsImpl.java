@@ -71,7 +71,6 @@ public class ClusterServiceClassOperationsImpl extends HasMetadataOperation<Clus
         if (list.size() != 1) {
             throw new IllegalArgumentException("No unique ClusterServicePlan with external name: " + externalName + " found for ClusterServiceBroker: " + item.getSpec().getClusterServiceBrokerName()+" and ClusterServiceClass: " + item.getSpec().getExternalName()+".");
         }
-        ClusterServicePlan p = list.get(0);
         return new ClusterServicePlanOperationsImpl(context);
     }
 
