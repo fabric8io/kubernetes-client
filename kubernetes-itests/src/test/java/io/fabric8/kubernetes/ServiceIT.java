@@ -32,6 +32,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 import static junit.framework.TestCase.assertNotNull;
@@ -102,6 +103,7 @@ public class ServiceIT {
     svc.getSpec().setType("ExternalName");
     svc.getSpec().setExternalName("my.database.example.com");
     svc.getSpec().setClusterIP("");
+    svc.getSpec().setClusterIPs(Collections.emptyList());
     svc = client.services().inNamespace(session.getNamespace()).createOrReplace(svc);
 
     // Then

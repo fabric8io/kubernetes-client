@@ -114,6 +114,7 @@ public class CreateOrReplaceIT {
     ServiceSpec serviceSpec = service.getSpec();
     // https://github.com/fabric8io/kubernetes-client/issues/2399
     service.getSpec().setClusterIP(null);
+    service.getSpec().setClusterIPs(Collections.emptyList());
     List<ServicePort> ports = serviceSpec.getPorts();
     ports.get(0).setTargetPort(new IntOrString(9090));
 
