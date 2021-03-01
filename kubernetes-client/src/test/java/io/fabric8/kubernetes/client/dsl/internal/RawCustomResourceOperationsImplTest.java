@@ -420,6 +420,47 @@ public class RawCustomResourceOperationsImplTest {
   }
 
   @Test
+  void testGet() {
+    // Given
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, namespacedCustomResourceDefinitionContext);
+    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
+
+    // When
+    rawCustomResourceOperations.inNamespace("myns").withName("myresource").get();
+
+    // Then
+    assertRequestCaptured(captor, "/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos/myresource", "GET");
+  }
+
+  @Test
+  void testListWithLimitAndContinue() {
+    // Given
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, namespacedCustomResourceDefinitionContext);
+    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
+
+    // When
+    rawCustomResourceOperations.inNamespace("myns").list(4, "eyJ2IjoibWV0YS5rOHMuaW8vdj");
+
+    // Then
+    assertRequestCaptured(captor, "/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos", "GET");
+    assertEquals("limit=4&continue=eyJ2IjoibWV0YS5rOHMuaW8vdj", captor.getValue().url().encodedQuery());
+  }
+
+  @Test
+  void testListWithListOptions() {
+    // Given
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, namespacedCustomResourceDefinitionContext);
+    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
+
+    // When
+    rawCustomResourceOperations.inNamespace("myns").list(new ListOptionsBuilder().withLimit(4L).build());
+
+    // Then
+    assertRequestCaptured(captor, "/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos", "GET");
+    assertEquals("limit=4", captor.getValue().url().encodedQuery());
+  }
+
+  @Test
   void testListWithLabels() {
     // Given
     RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, namespacedCustomResourceDefinitionContext);
