@@ -29,8 +29,8 @@ import java.util.HashMap;
 
 /**
  * The class that implements JUnit5 extension mechanism. You can use it directly in your JUnit test
- * by annotating it with `@ExtendWith(OpenShiftMockServerExtension.class)` or through
- * `@EnableOpenShiftMockClient` annotation
+ * by annotating it with <code>@ExtendWith(OpenShiftMockServerExtension.class)</code> or through
+ * <code>@EnableOpenShiftMockClient</code> annotation
  */
 public class OpenShiftMockServerExtension extends KubernetesMockServerExtension {
   private OpenShiftMockServer openShiftMockServer;
