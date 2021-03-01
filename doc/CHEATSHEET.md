@@ -1798,67 +1798,67 @@ CustomResourceDefinitionContext customResourceDefinitionContext = new CustomReso
 ```
 Once you have built it, you can pass it to typeless DSL as argument `client.customResource(customResourceDefinitionContext)`. With this in place, you can do your standard `CustomResource` operations, but you would have to deal with Serialization/Deserialization part yourself. You can convert HashMap to some `JSON` object using JSON parsing libraries available on internet.
 - Load a `CustomResource` from yaml:
-```
+```java
 Map<String, Object> customResource = client.customResource(crdContext).load(new FileInputStream("cr.yaml"));
 ```
 - Get a `CustomResource` from Kubernetes API server:
-```
-Map<String, Object> customResourceObject = client.customResource(customResourceDefinitionContext).get(currentNamespace, "otter");
+```java
+Map<String, Object> customResourceObject = client.customResource(customResourceDefinitionContext).inNamespace(currentNamespace).withName("otter").get();
 ```
 - Create a `CustomResource`:
-```
+```java
 // Create via file
-Map<String, Object> object = client.customResource(customResourceDefinitionContext).create(currentNamespace, new FileInputStream("test-rawcustomresource.yml"));
+Map<String, Object> object = client.customResource(customResourceDefinitionContext).inNamespace(currentNamespace).create(new FileInputStream("test-rawcustomresource.yml"));
 
 // Create via raw JSON string
 
 String rawJsonCustomResourceObj = "{\"apiVersion\":\"jungle.example.com/v1\"," +
   "\"kind\":\"Animal\",\"metadata\": {\"name\": \"walrus\"}," +
   "\"spec\": {\"image\": \"my-awesome-walrus-image\"}}";
-Map<String, Object> object = client.customResource(customResourceDefinitionContext).create(currentNamespace, rawJsonCustomResourceObj);
+Map<String, Object> object = client.customResource(customResourceDefinitionContext).inNamespace(currentNamespace).create(rawJsonCustomResourceObj);
 ```
 - List `CustomResource`:
-```
-Map<String, Object> list = client.customResource(customResourceDefinitionContext).list(currentNamespace);
+```java
+Map<String, Object> list = client.customResource(customResourceDefinitionContext).inNamespace(currentNamespace).list();
 ```
 - List `CustomResource` with labels:
-```
+```java
 Map<String, Object> list = client.customResource(customResourceDefinitionContext).list(currentNamespace, Collections.singletonMap("foo", "bar"));
 ```
 - Update `CustomResource`:
-```
+```java
 Map<String, Object> object = client.customResource(customResourceDefinitionContext).get(currentNamespace, "walrus");
 ((HashMap<String, Object>)object.get("spec")).put("image", "my-updated-awesome-walrus-image");
 object = client.customResource(customResourceDefinitionContext).edit(currentNamespace, "walrus", new ObjectMapper().writeValueAsString(object));
 ```
 - Delete `CustomResource`:
-```
-client.customResource(customResourceDefinitionContext).delete(currentNamespace, "otter");
+```java
+client.customResource(customResourceDefinitionContext).inNamespace(currentNamespace).withName("otter").delete();
 ```
 - Update Status of `CustomResource`:
-```
-Map<String, Object> result = client.customResource(customResourceDefinitionContext).updateStatus("ns1", "example-hello", objectAsJsonString);
+```java
+Map<String, Object> result = client.customResource(customResourceDefinitionContext).inNamespace("ns1").withName("example-hello").updateStatus(objectAsJsonString);
 ```
 - Watch `CustomResource`:
-```
+```java
 
-  final CountDownLatch closeLatch = new CountDownLatch(1);
-  client.customResource(crdContext).watch(namespace, new Watcher<String>() {
+final CountDownLatch closeLatch = new CountDownLatch(1);
+client.customResource(crdContext).inNamespace(namespace).watch(new Watcher<String>() {
     @Override
     public void eventReceived(Action action, String resource) {
-      logger.info("{}: {}", action, resource);
+        logger.info("{}: {}", action, resource);
     }
 
     @Override
     public void onClose(KubernetesClientException e) {
-      logger.debug("Watcher onClose");
-      closeLatch.countDown();
-      if (e != null) {
-        logger.error(e.getMessage(), e);
-      }
+        logger.debug("Watcher onClose");
+        closeLatch.countDown();
+        if (e != null) {
+            logger.error(e.getMessage(), e);
+        }
     }
-  });
-  closeLatch.await(10, TimeUnit.MINUTES);
+});
+closeLatch.await(10, TimeUnit.MINUTES);
 ```
 
 ### CertificateSigningRequest
