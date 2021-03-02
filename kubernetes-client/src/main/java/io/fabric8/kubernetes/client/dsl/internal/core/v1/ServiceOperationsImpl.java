@@ -28,11 +28,11 @@ import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import okhttp3.OkHttpClient;
 
-
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 
 public class ServiceOperationsImpl extends HasMetadataOperation<Service, ServiceList, ServiceResource<Service>> implements ServiceResource<Service> {
 
@@ -59,21 +59,12 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
 
   @Override
   public Service replace(Service item) {
-    return super.replace(patchClusterIpIntoServiceAndReplace(item));
+    return super.replace(handleClusterIp(item, () -> fromServer().get(), "replace"));
   }
 
   @Override
   public Service patch(Service item) {
-    try {
-      Service old = getMandatory();
-      return super.patch(new ServiceBuilder(item)
-        .editSpec()
-        .withClusterIP(old.getSpec().getClusterIP())
-        .endSpec()
-        .build());
-    } catch (Exception e) {
-      throw KubernetesClientException.launderThrowable(forOperationType("patch"), e);
-    }
+    return super.patch(handleClusterIp(item, this::getMandatory, "patch"));
   }
 
   @Override
@@ -92,35 +83,35 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
   }
 
   public String getURL(String portName) {
-    String clusterIP =  getMandatory().getSpec().getClusterIP();
-    if("None".equals(clusterIP)) {
-      throw new IllegalStateException("Service: " + getMandatory().getMetadata().getName() + " in namespace " +
-        namespace + " is head-less. Search for endpoints instead");
+    String clusterIP = getMandatory().getSpec().getClusterIP();
+    if ("None".equals(clusterIP)) {
+      throw new IllegalStateException("Service: " + getMandatory().getMetadata().getName() + " in namespace "
+          + namespace + " is head-less. Search for endpoints instead");
     }
     return getUrlHelper(portName);
   }
 
   private String getUrlHelper(String portName) {
-    ServiceLoader<ServiceToURLProvider> urlProvider = ServiceLoader.load(ServiceToURLProvider.class, Thread.currentThread().getContextClassLoader());
+    ServiceLoader<ServiceToURLProvider> urlProvider = ServiceLoader.load(ServiceToURLProvider.class,
+        Thread.currentThread().getContextClassLoader());
     Iterator<ServiceToURLProvider> iterator = urlProvider.iterator();
     List<ServiceToURLProvider> servicesList = new ArrayList<>();
 
-    while(iterator.hasNext()) {
+    while (iterator.hasNext()) {
       servicesList.add(iterator.next());
     }
 
     // Sort all loaded implementations according to priority
     Collections.sort(servicesList, new ServiceToUrlSortComparator());
-    for(ServiceToURLProvider serviceToURLProvider : servicesList) {
+    for (ServiceToURLProvider serviceToURLProvider : servicesList) {
       String url = serviceToURLProvider.getURL(getMandatory(), portName, namespace, new DefaultKubernetesClient(client, getConfig()));
-      if(url != null && URLUtils.isValidURL(url)) {
+      if (url != null && URLUtils.isValidURL(url)) {
         return url;
       }
     }
 
     return null;
   }
-
 
   private Pod matchingPod() {
     Service item = fromServer().get();
@@ -132,20 +123,28 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
   @Override
   public PortForward portForward(int port, ReadableByteChannel in, WritableByteChannel out) {
     Pod m = matchingPod();
-    return  new PodOperationsImpl(client, config).inNamespace(m.getMetadata().getNamespace()).withName(m.getMetadata().getName()).portForward(port, in, out);
+    return new PodOperationsImpl(client, config)
+        .inNamespace(m.getMetadata().getNamespace())
+        .withName(m.getMetadata().getName())
+        .portForward(port, in, out);
   }
-
 
   @Override
   public LocalPortForward portForward(int port, int localPort) {
     Pod m = matchingPod();
-    return  new PodOperationsImpl(client, config).inNamespace(m.getMetadata().getNamespace()).withName(m.getMetadata().getName()).portForward(port, localPort);
+    return new PodOperationsImpl(client, config)
+        .inNamespace(m.getMetadata().getNamespace())
+        .withName(m.getMetadata().getName())
+        .portForward(port, localPort);
   }
 
   @Override
   public LocalPortForward portForward(int port) {
     Pod m = matchingPod();
-    return  new PodOperationsImpl(client, config).inNamespace(m.getMetadata().getNamespace()).withName(m.getMetadata().getName()).portForward(port);
+    return new PodOperationsImpl(client, config)
+        .inNamespace(m.getMetadata().getNamespace())
+        .withName(m.getMetadata().getName())
+        .portForward(port);
   }
 
   @Override
@@ -159,17 +158,17 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
     }
   }
 
-  private Service patchClusterIpIntoServiceAndReplace(Service item) {
+  private Service handleClusterIp(Service item, Supplier<Service> current, String opType) {
     if (!isExternalNameService(item)) {
       try {
-        Service old = fromServer().get();
+        Service old = current.get();
         return new ServiceBuilder(item)
           .editSpec()
           .withClusterIP(old.getSpec().getClusterIP())
           .endSpec()
           .build();
       } catch (Exception e) {
-        throw KubernetesClientException.launderThrowable(forOperationType("replace"), e);
+        throw KubernetesClientException.launderThrowable(forOperationType(opType), e);
       }
     }
     return item;

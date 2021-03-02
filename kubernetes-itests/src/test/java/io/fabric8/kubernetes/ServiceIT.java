@@ -113,6 +113,32 @@ public class ServiceIT {
   }
 
   @Test
+  public void testChangeServiceTypePatch() {
+    // Given
+    Service svc = new ServiceBuilder()
+      .withNewMetadata()
+      .withNamespace(session.getNamespace())
+      .withName("service-change-service-type-patch")
+      .endMetadata()
+      .withNewSpec()
+      .withType("ExternalName")
+      .withExternalName("my.database.example.com")
+      .endSpec()
+      .build();
+
+    // When
+    svc = client.services()
+      .inNamespace(session.getNamespace())
+      .withName("service-change-service-type-patch")
+      .patch(svc);
+
+    // Then
+    assertNotNull(svc);
+    assertEquals("ExternalName", svc.getSpec().getType());
+    assertEquals("my.database.example.com", svc.getSpec().getExternalName());
+  }
+
+  @Test
   public void testClusterIpServiceCreateOrReplace() {
     // Given
     Service clusterIPSvc = new ServiceBuilder()
