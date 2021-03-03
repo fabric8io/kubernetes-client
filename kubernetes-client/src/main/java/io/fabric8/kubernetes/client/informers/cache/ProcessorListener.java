@@ -60,7 +60,7 @@ public class ProcessorListener<T> implements Runnable {
         Thread.currentThread().interrupt();
         return;
       } catch (Exception ex) {
-        log.error("Failed invoking {} event handler: {}", ex.getMessage());
+        log.error("Failed invoking {} event handler: {}", handler, ex.getMessage(), ex);
       }
     }
   }
