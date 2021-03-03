@@ -117,7 +117,7 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
       }
       final TypeElement spec = ((TypeElement) ((DeclaredType) typeArguments.get(0)).asElement());
       final TypeElement status = ((TypeElement) ((DeclaredType) typeArguments.get(1)).asElement());
-      final CustomResourceInfo info = new CustomResourceInfo(element, spec, status, processingEnv);
+      final CustomResourceInfo info = new CustomResourceInfo(element, status, processingEnv);
       System.out.println(
         "Generating '"
           + info.crdName()
@@ -125,8 +125,6 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
           + info.version()
           + "' with "
           + crClassName
-          + " (spec: "
-          + spec.getQualifiedName()
           + " / status: "
           + status.getQualifiedName()
           + ")");

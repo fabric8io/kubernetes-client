@@ -31,7 +31,6 @@ import javax.lang.model.element.TypeElement;
 public class CustomResourceInfo {
 
   private final TypeElement customResource;
-  private final TypeElement spec;
   private final TypeElement status;
   private final String group;
   private final String version;
@@ -39,11 +38,9 @@ public class CustomResourceInfo {
 
   public CustomResourceInfo(
     TypeElement customResource,
-    TypeElement spec,
     TypeElement status,
     ProcessingEnvironment env) {
     this.customResource = customResource;
-    this.spec = spec;
     this.status = status;
     this.group = customResource.getAnnotation(Group.class).value();
     this.version = customResource.getAnnotation(Version.class).value();
