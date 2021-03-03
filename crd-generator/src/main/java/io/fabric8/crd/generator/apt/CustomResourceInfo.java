@@ -31,7 +31,6 @@ import javax.lang.model.element.TypeElement;
 public class CustomResourceInfo {
 
   private final TypeElement customResource;
-  private final TypeElement spec;
   private final TypeElement status;
   private final String group;
   private final String version;
