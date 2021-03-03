@@ -36,12 +36,12 @@ import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.Map;
 
-import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.ACCESS_TOKEN_PARAM;
 import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.CLIENT_ID_KUBECONFIG;
 import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.CLIENT_SECRET_KUBECONFIG;
 import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.ID_TOKEN_KUBECONFIG;
 import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.ID_TOKEN_PARAM;
 import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.REFRESH_TOKEN_KUBECONFIG;
+import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.REFRESH_TOKEN_PARAM;
 import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.TOKEN_ENDPOINT_PARAM;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -144,7 +144,7 @@ class OpenIDConnectionUtilsTest {
     // Given
     Map<String, Object> openIdProviderResponse = new HashMap<>();
     openIdProviderResponse.put(ID_TOKEN_PARAM, "id-token-updated");
-    openIdProviderResponse.put(ACCESS_TOKEN_PARAM, "refresh-token-updated");
+    openIdProviderResponse.put(REFRESH_TOKEN_PARAM, "refresh-token-updated");
     File tempFile = Files.createTempFile("test", "kubeconfig").toFile();
     Files.copy(getClass().getResourceAsStream("/test-kubeconfig-oidc"), Paths.get(tempFile.getPath()), StandardCopyOption.REPLACE_EXISTING);
 

@@ -6,6 +6,7 @@
 * Fix #2828: Remove automatic instantiation of CustomResource spec and status as this feature was causing more issues than it was solving
 * Fix #2857: Fix the log of an unexpected error from an Informer's EventHandler
 * Fix #2853: Cannot change the type of the Service from ClusterIP to ExternalName with PATCH
+* Fix #2783: OpenIDConnectionUtils#persistKubeConfigWithUpdatedToken persists access token instead of refresh token
 
 #### Improvements
 * Fix #2781: RawCustomResourceOperationsImpl#delete now returns a boolean value for deletion status
