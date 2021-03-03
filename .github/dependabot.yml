@@ -1,0 +1,21 @@
+version: 2
+updates:
+- package-ecosystem: maven
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "11:00"
+  open-pull-requests-limit: 99
+  reviewers:
+  - oscerd
+  - rohanKanojia
+  - manusa
+  ignore:
+  - dependency-name: com.squareup.okhttp3:logging-interceptor
+    versions:
+    - ">= 3.13.a"
+    - "< 3.14"
+  - dependency-name: com.squareup.okhttp3:okhttp
+    versions:
+    - ">= 3.13.a"
+    - "< 3.14"
