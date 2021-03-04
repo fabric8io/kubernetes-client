@@ -11,6 +11,7 @@
 * Fix #2781: RawCustomResourceOperationsImpl#delete now returns a boolean value for deletion status
 
 #### Dependency Upgrade
+* Update Tekton Triggers model to v0.12.0
 
 #### New Features
 * Update chaos-mesh extension to v1.1.1. Add PodIoChaos, JVMChaos, HTTPChaos and DNSChaos.

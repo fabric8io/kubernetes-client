@@ -69,6 +69,7 @@ func main() {
 		reflect.TypeOf(apis.VolatileTime{}):                "java.lang.String",
 		reflect.TypeOf(apis.URL{}):                         "java.lang.String",
 		reflect.TypeOf(triggers.TriggerResourceTemplate{}): "io.fabric8.kubernetes.api.model.HasMetadata",
+		reflect.TypeOf(triggers.CustomResource{}):          "io.fabric8.kubernetes.api.model.HasMetadata",
 	}
 
 	json := schemagen.GenerateSchema("http://fabric8.io/tekton/triggers/TektonSchema#", crdLists, providedPackages, manualTypeMap, packageMapping, mappingSchema, providedTypes, constraints)

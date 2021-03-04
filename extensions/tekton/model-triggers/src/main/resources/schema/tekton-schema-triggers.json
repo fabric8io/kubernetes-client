@@ -428,6 +428,9 @@
     "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_Resources": {
       "type": "object",
       "properties": {
+        "customResource": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.HasMetadata"
+        },
         "kubernetesResource": {
           "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_KubernetesResource",
           "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.KubernetesResource"
@@ -596,9 +599,6 @@
       "type": "object",
       "properties": {
         "apiversion": {
-          "type": "string"
-        },
-        "name": {
           "type": "string"
         },
         "ref": {
