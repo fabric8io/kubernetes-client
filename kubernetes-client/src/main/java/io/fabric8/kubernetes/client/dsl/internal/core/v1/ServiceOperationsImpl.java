@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.client.*;
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.ServiceResource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
@@ -32,7 +33,6 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Supplier;
 
 public class ServiceOperationsImpl extends HasMetadataOperation<Service, ServiceList, ServiceResource<Service>> implements ServiceResource<Service> {
 
@@ -59,7 +59,7 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
 
   @Override
   public Service replace(Service item) {
-    return super.replace(handleClusterIp(item, () -> fromServer().get(), "replace"));
+    return super.replace(handleClusterIp(item, fromServer(), "replace"));
   }
 
   @Override
@@ -158,7 +158,7 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
     }
   }
 
-  private Service handleClusterIp(Service item, Supplier<Service> current, String opType) {
+  private Service handleClusterIp(Service item, Gettable<Service> current, String opType) {
     if (!isExternalNameService(item)) {
       try {
         Service old = current.get();
