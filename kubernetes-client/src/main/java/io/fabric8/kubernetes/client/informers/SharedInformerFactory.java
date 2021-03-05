@@ -28,8 +28,9 @@ import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.informers.impl.DefaultSharedIndexInformer;
+import io.fabric8.kubernetes.client.utils.Pluralize;
+import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.internal.KubernetesDeserializer;
-import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,9 +46,9 @@ import okhttp3.OkHttpClient;
  * which is ported from offical go client https://github.com/kubernetes/client-go/blob/master/informers/factory.go
  */
 public class SharedInformerFactory extends BaseOperation {
-  private final Map<Type, SharedIndexInformer> informers = new HashMap<>();
+  private final Map<String, SharedIndexInformer> informers = new HashMap<>();
 
-  private final Map<Type, Future> startedInformers = new HashMap<>();
+  private final Map<String, Future> startedInformers = new HashMap<>();
 
   private final ExecutorService informerExecutor;
 
@@ -198,7 +199,7 @@ public class SharedInformerFactory extends BaseOperation {
       }
     }
     SharedIndexInformer<T> informer = new DefaultSharedIndexInformer<>(apiTypeClass, listerWatcher, resyncPeriodInMillis, context, eventListeners);
-    this.informers.put(apiTypeClass, informer);
+    this.informers.put(getInformerKey(context), informer);
     return informer;
   }
 
@@ -223,14 +224,21 @@ public class SharedInformerFactory extends BaseOperation {
 
   /**
    * Gets existing shared index informer, return null if the requesting informer
-   * is never constructed.
+   * is never constructed. If there are multiple SharedIndexInformer objects corresponding
+   * to a Kubernetes resource, then it returns the first one
    *
    * @param apiTypeClass API type class
    * @param <T> type of API type
    * @return SharedIndexInformer object
    */
   public synchronized <T> SharedIndexInformer<T> getExistingSharedIndexInformer(Class<T> apiTypeClass) {
-    return this.informers.get(apiTypeClass);
+    SharedIndexInformer<T> foundSharedIndexInformer = null;
+    for (Map.Entry<String, SharedIndexInformer> entry : this.informers.entrySet()) {
+      if (entry.getKey().contains(Pluralize.toPlural(apiTypeClass.getSimpleName().toLowerCase()))) {
+        foundSharedIndexInformer = (SharedIndexInformer<T>) entry.getValue();
+      }
+    }
+    return foundSharedIndexInformer;
   }
 
   /**
@@ -277,6 +285,33 @@ public class SharedInformerFactory extends BaseOperation {
 
   public void addSharedInformerEventListener(SharedInformerEventListener event) {
     this.eventListeners.add(event);
+  }
+
+  Map<String, SharedIndexInformer> getInformers() {
+    return this.informers;
+  }
+
+  static String getInformerKey(OperationContext operationContext) {
+    StringBuilder keyBuilder = new StringBuilder();
+    if (operationContext.getApiGroupName() == null) {
+      keyBuilder.append(operationContext.getApiGroupVersion());
+    } else {
+      keyBuilder.append(operationContext.getApiGroupName()).append("/").append(operationContext.getApiGroupVersion());
+    }
+    keyBuilder.append(getKeyStrForField(operationContext.getPlural()));
+    keyBuilder.append(getKeyStrForField(operationContext.getNamespace()));
+    keyBuilder.append(getKeyStrForField(operationContext.getName()));
+
+    return keyBuilder.toString();
+  }
+
+  private static String getKeyStrForField(String str) {
+    StringBuilder keyBuilder = new StringBuilder();
+    if (Utils.isNotNullOrEmpty(str)) {
+      keyBuilder.append("/");
+      keyBuilder.append(str);
+    }
+    return keyBuilder.toString();
   }
 
   private <T extends HasMetadata, L extends KubernetesResourceList<T>> BaseOperation<T, L, ?> getConfiguredBaseOperation(String namespace, OperationContext context, Class<T> apiTypeClass, Class<L> apiListTypeClass) {
