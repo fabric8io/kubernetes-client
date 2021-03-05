@@ -16,7 +16,6 @@
 
 package io.fabric8.kubernetes;
 
-import com.google.common.io.Files;
 import io.fabric8.commons.ClusterEntity;
 import io.fabric8.commons.ReadyEntity;
 import io.fabric8.kubernetes.api.model.HasMetadata;
@@ -30,9 +29,9 @@ import io.fabric8.kubernetes.api.model.policy.PodDisruptionBudgetSpecBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
+import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import okhttp3.Response;
-import org.apache.commons.io.IOUtils;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
@@ -52,6 +51,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -250,78 +253,75 @@ public class PodIT {
   public void uploadFile() throws IOException {
     // Wait for resources to get ready
     Pod pod1 = client.pods().inNamespace(session.getNamespace()).withName("pod-standard").get();
-    ReadyEntity<Pod> podReady = new ReadyEntity<>(Pod.class, client, pod1.getMetadata().getName(), session.getNamespace());
+    ReadyEntity<Pod> podReady = new ReadyEntity<>(Pod.class, client, pod1.getMetadata().getName(),
+        session.getNamespace());
     await().atMost(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS).until(podReady);
 
-    final File tmpDir = Files.createTempDir();
-    final File tmpFile = new File(tmpDir, "toBeUploaded");
-    tmpFile.createNewFile();
-    Files.write("I'm uploaded", tmpFile, StandardCharsets.UTF_8);
+    final Path tmpFile = Files.createTempFile("PodIT", "toBeUploaded");
+    Files.write(tmpFile, Arrays.asList("I'm uploaded"));
 
-    client.pods().inNamespace(session.getNamespace()).withName(pod1.getMetadata().getName())
-      .file("/tmp/toBeUploaded").upload(tmpFile.toPath());
+    PodResource<Pod> podResource = client.pods().inNamespace(session.getNamespace())
+        .withName(pod1.getMetadata().getName());
 
-    try (
-      final InputStream checkIs = client.pods().inNamespace(session.getNamespace())
-        .withName(pod1.getMetadata().getName()).file("/tmp/toBeUploaded").read();
-      final ByteArrayOutputStream resultOs = new ByteArrayOutputStream()
-    ) {
-      IOUtils.copy(checkIs, resultOs);
-      assertEquals(resultOs.toString(StandardCharsets.UTF_8.name()),"I'm uploaded");
+    podResource.file("/tmp/toBeUploaded").upload(tmpFile);
+
+    try (InputStream checkIs = podResource.file("/tmp/toBeUploaded").read();
+        BufferedReader br = new BufferedReader(new InputStreamReader(checkIs, StandardCharsets.UTF_8))) {
+      String result = br.lines().collect(Collectors.joining(System.lineSeparator()));
+      assertEquals("I'm uploaded", result);
     }
   }
 
   @Test
-  public void uploadDir() {
+  public void uploadDir() throws IOException {
     // Wait for resources to get ready
     Pod pod1 = client.pods().inNamespace(session.getNamespace()).withName("pod-standard").get();
-    ReadyEntity<Pod> podReady = new ReadyEntity<>(Pod.class, client, pod1.getMetadata().getName(), session.getNamespace());
+    ReadyEntity<Pod> podReady = new ReadyEntity<>(Pod.class, client, pod1.getMetadata().getName(),
+        session.getNamespace());
     await().atMost(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS).until(podReady);
 
-    final String[] files = new String[]{"1", "2"};
-    final File tmpDir = Files.createTempDir();
-    final File uploadDir = new File(tmpDir, "uploadDir");
-    assertTrue(uploadDir.mkdir());
-    Stream.of(files).map(fileName -> new File(uploadDir, fileName)).forEach(f -> {
-      try {
-        assertTrue(f.createNewFile());
-        Files.write("I'm uploaded", f, StandardCharsets.UTF_8);
-      } catch (IOException ex) {
-        fail(ex.getMessage());
-      }
-    });
+    final String[] files = new String[] { "1", "2", "a", "b", "c" };
+    final Path tmpDir = Files.createTempDirectory("uploadDir");
+    for (String fileName : files) {
+      Path file = tmpDir.resolve(fileName);
+      Files.write(Files.createFile(file), Arrays.asList("I'm uploaded", fileName));
+    }
 
-    client.pods().inNamespace(session.getNamespace()).withName(pod1.getMetadata().getName())
-      .dir("/tmp/uploadDir").upload(uploadDir.toPath());
+    PodResource<Pod> podResource = client.pods().inNamespace(session.getNamespace())
+        .withName(pod1.getMetadata().getName());
 
-    Stream.of(files).forEach(fileName -> {
-      try (
-        final InputStream checkIs = client.pods().inNamespace(session.getNamespace())
-          .withName(pod1.getMetadata().getName()).file("/tmp/uploadDir/"+fileName).read();
-        final ByteArrayOutputStream resultOs = new ByteArrayOutputStream()
-      ) {
-        IOUtils.copy(checkIs, resultOs);
-        assertEquals(resultOs.toString(StandardCharsets.UTF_8.name()),"I'm uploaded");
-      } catch(IOException ex) {
-        fail(ex.getMessage());
+    podResource.dir("/tmp/uploadDir").upload(tmpDir);
+
+    for (String fileName : files) {
+      try (InputStream checkIs = podResource.file("/tmp/uploadDir/" + fileName).read();
+          BufferedReader br = new BufferedReader(new InputStreamReader(checkIs, StandardCharsets.UTF_8))) {
+        String result = br.lines().collect(Collectors.joining(System.lineSeparator()));
+        assertEquals("I'm uploaded" + System.lineSeparator() + fileName, result);
       }
-    });
+    }
   }
 
   @Test
   public void copyFile() throws IOException {
     // Wait for resources to get ready
     Pod pod1 = client.pods().inNamespace(session.getNamespace()).withName("pod-standard").get();
-    ReadyEntity<Pod> podReady = new ReadyEntity<>(Pod.class, client, pod1.getMetadata().getName(), session.getNamespace());
+    ReadyEntity<Pod> podReady = new ReadyEntity<>(Pod.class, client, pod1.getMetadata().getName(),
+        session.getNamespace());
     await().atMost(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS).until(podReady);
 
-    File tmpDir = Files.createTempDir();
-    ExecWatch watch = client.pods().inNamespace(session.getNamespace()).withName(pod1.getMetadata().getName()).writingOutput(System.out).exec("sh", "-c", "echo 'hello' > /msg");
-    client.pods().inNamespace(session.getNamespace()).withName(pod1.getMetadata().getName()).file("/msg").copy(tmpDir.toPath());
-    File msg = tmpDir.toPath().resolve("msg").toFile();
-    assertTrue(msg.exists());
-    try (InputStream is = new FileInputStream(msg))  {
-      String result = new BufferedReader(new InputStreamReader(is)).lines().collect(Collectors.joining("\n"));
+    final Path tmpDir = Files.createTempDirectory("copyFile");
+
+    PodResource<Pod> podResource = client.pods().inNamespace(session.getNamespace())
+        .withName(pod1.getMetadata().getName());
+    podResource.writingOutput(System.out).exec("sh", "-c", "echo 'hello' > /msg.txt");
+    podResource.file("/msg.txt").copy(tmpDir);
+
+    Path msg = tmpDir.resolve("msg.txt");
+    assertTrue(Files.exists(msg));
+
+    try (InputStream is = Files.newInputStream(msg);
+        BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
+      String result = br.lines().collect(Collectors.joining(System.lineSeparator()));
       assertEquals("hello", result);
     }
   }
