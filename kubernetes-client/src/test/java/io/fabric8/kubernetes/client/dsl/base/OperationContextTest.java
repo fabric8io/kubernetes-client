@@ -105,7 +105,7 @@ class OperationContextTest {
     assertEquals("field", operationContext.getFields().get("test"));
     assertArrayEquals(new String[]{ "fieldsNot"}, operationContext.getFieldsNot().get("test"));
     assertEquals("234343", operationContext.getResourceVersion());
-    assertFalse(operationContext.getReloadingFromServer());
+    assertFalse(operationContext.isReloadingFromServer());
     assertEquals(0, operationContext.getGracePeriodSeconds());
     assertEquals(DeletionPropagation.BACKGROUND, operationContext.getPropagationPolicy());
     assertEquals(0, operationContext.getWatchRetryInitialBackoffMillis());

@@ -98,7 +98,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   private static final String INVOLVED_OBJECT_API_VERSION = "involvedObject.apiVersion";
   private static final String INVOLVED_OBJECT_FIELD_PATH = "involvedObject.fieldPath";
 
-  private final Boolean cascading;
+  private final boolean cascading;
   private final T item;
 
   private final Map<String, String> labels;
@@ -110,7 +110,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   private final Map<String, String[]> fieldsNot;
 
   private final String resourceVersion;
-  private final Boolean reloadingFromServer;
+  private final boolean reloadingFromServer;
   private final long gracePeriodSeconds;
   private final DeletionPropagation propagationPolicy;
   private final long watchRetryInitialBackoffMillis;
@@ -125,7 +125,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     super(ctx);
     this.cascading = ctx.getCascading();
     this.item = (T) ctx.getItem();
-    this.reloadingFromServer = ctx.getReloadingFromServer();
+    this.reloadingFromServer = ctx.isReloadingFromServer();
     this.resourceVersion = ctx.getResourceVersion();
     this.gracePeriodSeconds = ctx.getGracePeriodSeconds();
     this.propagationPolicy = ctx.getPropagationPolicy();
@@ -166,8 +166,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     } catch (ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("list"), e);
     }
-
-
  }
 
   protected URL fetchListUrl(URL url, ListOptions listOptions) throws MalformedURLException {
@@ -952,11 +950,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   public String getResourceVersion() {
     return resourceVersion;
-  }
-
-  @Deprecated
-  public Boolean getReloadingFromServer() {
-    return isReloadingFromServer();
   }
 
   public Boolean isReloadingFromServer() {
