@@ -713,6 +713,58 @@ class DefaultSharedIndexInformerTest {
     assertEquals(0, foundExistingCronTab.getCount());
   }
 
+  @Test
+  @DisplayName("Test Informers of Same Resource but watching different namespaces")
+  void testDifferentDeploymentInformersWatchingInDifferentNamespaces() throws InterruptedException {
+    // Given
+    setupMockServerExpectations(Deployment.class, "ns1", this::getList, r -> new WatchEvent(new DeploymentBuilder()
+      .withNewMetadata().withName("d1")
+      .withResourceVersion(r).endMetadata().build(), "ADDED"));
+    setupMockServerExpectations(Deployment.class, "ns2", this::getList, r -> new WatchEvent(new DeploymentBuilder()
+      .withNewMetadata().withName("d2")
+      .withResourceVersion(r).endMetadata().build(), "ADDED"));
+    CountDownLatch ns1FoundLatch = new CountDownLatch(1);
+    CountDownLatch ns2FoundLatch = new CountDownLatch(1);
+
+    // When
+    SharedIndexInformer<Deployment> deploymentSharedIndexInformerInNamespace1 = factory.inNamespace("ns1").sharedIndexInformerFor(Deployment.class, 60 * WATCH_EVENT_EMIT_TIME);
+    SharedIndexInformer<Deployment> deploymentSharedIndexInformerInNamespace2 = factory.inNamespace("ns2").sharedIndexInformerFor(Deployment.class, 60 * WATCH_EVENT_EMIT_TIME);
+    deploymentSharedIndexInformerInNamespace1.addEventHandler(new TestResourceHandler<>(ns1FoundLatch, "d1"));
+    deploymentSharedIndexInformerInNamespace2.addEventHandler(new TestResourceHandler<>(ns2FoundLatch, "d2"));
+    factory.startAllRegisteredInformers();
+    ns1FoundLatch.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
+    ns2FoundLatch.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
+
+    // Then
+    assertEquals(0, ns1FoundLatch.getCount());
+    assertEquals(0, ns2FoundLatch.getCount());
+  }
+
+  @Test
+  @DisplayName("Test CustomResource Informers with different versions")
+  void testCustomResourceInformerWithDifferentVersions() throws InterruptedException {
+    // Given
+    setupMockServerExpectationsWithVersion(CronTab.class, "v1", "default", this::getList, r -> new WatchEvent(getCronTab("v1-crontab", r), "ADDED"));
+    setupMockServerExpectationsWithVersion(CronTab.class, "v1beta1", "default", this::getList, r -> new WatchEvent(getCronTab("v1beta1-crontab", r), "ADDED"));
+    CountDownLatch v1CronTabFound = new CountDownLatch(1);
+    CountDownLatch v1beta1CronTabFound = new CountDownLatch(1);
+
+    // When
+    SharedIndexInformer<CronTab> v1CronTabSharedIndexInformer = factory.inNamespace("default")
+      .sharedIndexInformerForCustomResource(CronTab.class, 60 * WATCH_EVENT_EMIT_TIME);
+    SharedIndexInformer<CronTab> v1beta1CronTabSharedIndexInformer = factory.inNamespace("default")
+      .sharedIndexInformerForCustomResource(CronTab.class, new OperationContext().withApiGroupVersion("v1beta1"), 60 * WATCH_EVENT_EMIT_TIME);
+    v1CronTabSharedIndexInformer.addEventHandler(new TestResourceHandler<>(v1CronTabFound, "v1-crontab"));
+    v1beta1CronTabSharedIndexInformer.addEventHandler(new TestResourceHandler<>(v1beta1CronTabFound, "v1beta1-crontab"));
+    factory.startAllRegisteredInformers();
+    v1CronTabFound.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
+    v1beta1CronTabFound.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
+
+    // Then
+    assertEquals(0, v1CronTabFound.getCount());
+    assertEquals(0, v1beta1CronTabFound.getCount());
+  }
+
   private KubernetesResource getAnimal(String name, String order, String resourceVersion) {
     AnimalSpec animalSpec = new AnimalSpec();
     animalSpec.setOrder(order);
@@ -741,8 +793,12 @@ class DefaultSharedIndexInformerTest {
   }
 
   private <T extends HasMetadata> void setupMockServerExpectations(Class<T> resourceClass, String namespace, BiFunction<String, Class<T>, KubernetesResourceList<T>> listSupplier, Function<String, WatchEvent> watchEventSupplier) {
+    setupMockServerExpectationsWithVersion(resourceClass, HasMetadata.getVersion(resourceClass), namespace, listSupplier, watchEventSupplier);
+  }
+
+  private <T extends HasMetadata> void setupMockServerExpectationsWithVersion(Class<T> resourceClass, String version, String namespace, BiFunction<String, Class<T>, KubernetesResourceList<T>> listSupplier, Function<String, WatchEvent> watchEventSupplier) {
     String startResourceVersion = "1000", endResourceVersion = "1001";
-    String url = "/apis/" + HasMetadata.getGroup(resourceClass) +"/" + HasMetadata.getVersion(resourceClass);
+    String url = "/apis/" + HasMetadata.getGroup(resourceClass) +"/" + version;
     if (namespace != null) {
       url += ("/namespaces/" + namespace);
     }
