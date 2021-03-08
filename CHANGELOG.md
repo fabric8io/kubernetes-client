@@ -23,9 +23,9 @@
 #### Bugs
 * Fix #2747: Apiextensions DSL should use NonNamespaceOperation for CustomResourceDefinitions
 * Fix #2819: simple enums are now supported when generating CRDs
-* Fix #2827: CNFE when initialzing CustomResource instances
+* Fix #2827: CNFE when initializing CustomResource instances
 * Fix #2815: `client.isAdaptable(OpenShiftClient.class)` doesn't work on OpenShift 4
-* Fix #2833: Knative model genrator is now aligned with all other generators
+* Fix #2833: Knative model generator is now aligned with all other generators
 
 ### 5.1.0 (2021-02-17)
 
