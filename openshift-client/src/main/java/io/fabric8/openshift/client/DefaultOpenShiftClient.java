@@ -211,9 +211,6 @@ import io.fabric8.openshift.client.dsl.internal.UserOperationsImpl;
 import io.fabric8.openshift.client.internal.OpenShiftClusterOperationsImpl;
 import io.fabric8.openshift.client.internal.OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl;
 import io.fabric8.openshift.client.internal.OpenShiftOAuthInterceptor;
-import okhttp3.Authenticator;
-import okhttp3.OkHttpClient;
-
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -225,6 +222,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
+import okhttp3.Authenticator;
+import okhttp3.OkHttpClient;
 
 /**
  * Class for Default Openshift Client implementing KubernetesClient interface.
@@ -640,7 +639,9 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
 
   @Override
   public VersionInfo getVersion() {
-    return new OpenShiftClusterOperationsImpl(httpClient, getConfiguration(), OpenShiftClusterOperationsImpl.OPENSHIFT_VERSION_ENDPOINT).fetchVersion();
+    final VersionInfo versionInfo = new OpenShiftClusterOperationsImpl(httpClient,
+      getConfiguration(), OpenShiftClusterOperationsImpl.OPENSHIFT_VERSION_ENDPOINT).fetchVersion();
+    return versionInfo == null ? DefaultKubernetesClient.getVersion(this) : versionInfo;
   }
 
   @Override
