@@ -151,12 +151,12 @@ public class KubernetesListOperationsImpl
 
   @Override
   public Gettable<KubernetesList> fromServer() {
-    return new KubernetesListOperationsImpl(client, config, namespace, null, DeletionPropagation.BACKGROUND, true, deletingExisting, item, null);
+    return new KubernetesListOperationsImpl(client, config, namespace, null, context.getPropagationPolicy(), true, deletingExisting, item, null);
   }
 
   @Override
   public Createable<KubernetesList> deletingExisting() {
-    return new KubernetesListOperationsImpl(client, config, namespace, null, DeletionPropagation.BACKGROUND, fromServer, true, item, null);
+    return new KubernetesListOperationsImpl(client, config, namespace, null, context.getPropagationPolicy(), fromServer, true, item, null);
   }
 
   private List<HasMetadata> createItemsInKubernetesList(KubernetesList list) {
