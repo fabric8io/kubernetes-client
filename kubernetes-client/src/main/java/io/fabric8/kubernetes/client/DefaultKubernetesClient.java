@@ -482,7 +482,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
    */
   @Override
   public VersionInfo getVersion() {
-    return new ClusterOperationsImpl(httpClient, getConfiguration(), ClusterOperationsImpl.KUBERNETES_VERSION_ENDPOINT).fetchVersion();
+    return getVersion(this);
   }
 
   public static VersionInfo getVersion(BaseClient client) {
