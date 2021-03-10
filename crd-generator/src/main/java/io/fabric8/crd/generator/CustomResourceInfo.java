@@ -18,6 +18,7 @@ package io.fabric8.crd.generator;
 import io.fabric8.crd.generator.apt.Scope;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.client.CustomResource;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.utils.Pluralize;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Kind;
@@ -25,9 +26,14 @@ import io.fabric8.kubernetes.model.annotation.Plural;
 import io.fabric8.kubernetes.model.annotation.ShortNames;
 import io.fabric8.kubernetes.model.annotation.Singular;
 import io.fabric8.kubernetes.model.annotation.Version;
+import io.sundr.codegen.functions.ClassTo;
 import io.sundr.codegen.functions.ElementTo;
 import io.sundr.codegen.model.TypeDef;
 import io.sundr.codegen.model.TypeRef;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -148,12 +154,10 @@ public class CustomResourceInfo {
         return null;
       }
       final TypeElement spec = ((TypeElement) ((DeclaredType) typeArguments.get(0)).asElement());
-      Optional<TypeRef> statusType;
       final TypeElement status = ((TypeElement) ((DeclaredType) typeArguments.get(1)).asElement());
+      Optional<TypeRef> statusType = Optional.empty();
       if (!status.getQualifiedName().contentEquals(Void.class.getCanonicalName())) {
         statusType = Optional.of(ElementTo.TYPEDEF.apply(status).toReference());
-      } else {
-        statusType = Optional.empty();
       }
 
       final String group = customResource.getAnnotation(Group.class).value();
@@ -190,6 +194,58 @@ public class CustomResourceInfo {
       System.out.println(
         "Ignoring " + crClassName + " because it doesn't extend " + CUSTOM_RESOURCE_NAME);
       return null;
+    }
+  }
+
+  private final static String TYPE_NAME = CustomResource.class.getTypeName();
+  private final static String VOID_TYPE_NAME = Void.class.getTypeName();
+
+
+  public static CustomResourceInfo fromClass(Class<? extends CustomResource> customResource) {
+    try {
+      final CustomResource instance = customResource.getDeclaredConstructor().newInstance();
+
+      final String[] shortNames = Optional.ofNullable(customResource.getAnnotation(ShortNames.class))
+        .map(ShortNames::value)
+        .orElse(new String[]{});
+
+      final Scope scope = Arrays.stream(customResource.getInterfaces())
+        .filter(t -> t.toString().equals(Namespaced.class.getTypeName()))
+        .map(t -> Scope.Namespaced).findFirst().orElse(Scope.Cluster);
+
+      final TypeDef definition = ClassTo.TYPEDEF.apply(customResource);
+      
+      // walk the type hierarchy until we reach CustomResource or a ParameterizedType
+      Type genericSuperclass = customResource.getGenericSuperclass();
+      String typeName = genericSuperclass.getTypeName();
+      while (!TYPE_NAME.equals(typeName) && !(genericSuperclass instanceof ParameterizedType)) {
+        genericSuperclass = ((Class) genericSuperclass).getGenericSuperclass();
+        typeName = genericSuperclass.getTypeName();
+      }
+
+      // this works because CustomResource is an abstract class
+      String specClassName = null, statusClassName = null;
+      Optional<TypeRef> statusType = Optional.empty();
+      if (genericSuperclass instanceof ParameterizedType) {
+        final Type[] types = ((ParameterizedType) genericSuperclass).getActualTypeArguments();
+        if (types.length == 2) {
+          specClassName = types[0].getTypeName();
+          statusClassName = types[1].getTypeName();
+
+          if (!VOID_TYPE_NAME.equals(statusClassName)) {
+            // load status class
+            final Class<?> statusClass = Thread.currentThread().getContextClassLoader()
+              .loadClass(statusClassName);
+            statusType = Optional.of(ClassTo.TYPEDEF.apply(statusClass).toReference());
+          } 
+        }
+      }
+
+      return new CustomResourceInfo(instance.getGroup(), instance.getVersion(), instance.getKind(),
+        instance.getSingular(), instance.getPlural(), shortNames, instance.isStorage(), instance.isServed(), scope, statusType, definition,
+        customResource.getCanonicalName(), specClassName, statusClassName);
+    } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException | ClassNotFoundException e) {
+      throw KubernetesClientException.launderThrowable(e);
     }
   }
 }
