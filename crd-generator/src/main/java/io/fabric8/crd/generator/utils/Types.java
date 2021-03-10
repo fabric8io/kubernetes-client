@@ -55,9 +55,9 @@ public class Types {
   }
 
   /**
-   * Unrolls the hierararchy of a specified type.
+   * Unrolls the hierarchy of a specified type.
    * @param typeDef       The specified type.
-   * @return A set that contains all the hierarching (including the specified type).
+   * @return A set that contains the complete type hierarchy (including the specified type).
    */
   public static Set<TypeDef> unrollHierarchy(TypeDef typeDef) {
     if (typeDef.getPackageName() != null && (typeDef.getPackageName().startsWith("java.") ||
