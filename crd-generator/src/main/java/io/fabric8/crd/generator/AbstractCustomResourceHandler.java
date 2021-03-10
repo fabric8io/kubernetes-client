@@ -17,7 +17,6 @@ package io.fabric8.crd.generator;
 
 import static io.fabric8.crd.generator.utils.Types.findStatusProperty;
 
-import io.fabric8.crd.generator.apt.CustomResourceInfo;
 import io.fabric8.crd.generator.apt.Resources;
 import io.fabric8.crd.generator.decorator.Decorator;
 import io.fabric8.crd.generator.visitor.AdditionalPrinterColumnDetector;
@@ -25,7 +24,6 @@ import io.fabric8.crd.generator.visitor.LabelSelectorPathDetector;
 import io.fabric8.crd.generator.visitor.SpecReplicasPathDetector;
 import io.fabric8.crd.generator.visitor.StatusReplicasPathDetector;
 import io.fabric8.kubernetes.client.utils.Utils;
-import io.sundr.codegen.functions.ElementTo;
 import io.sundr.codegen.model.Property;
 import io.sundr.codegen.model.TypeDef;
 import io.sundr.codegen.model.TypeDefBuilder;
@@ -35,7 +33,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import javax.lang.model.element.TypeElement;
 
 /**
  * This class encapsulates the common behavior between v1beta1 and v1 CRD generation logic. The
@@ -49,17 +46,13 @@ public abstract class AbstractCustomResourceHandler {
     this.resources = resources;
   }
 
-  public void handle(CustomResourceInfo config, TypeDef def) {
+  public void handle(CustomResourceInfo config) {
     final String name = config.crdName();
     final String version = config.version();
 
-    Optional<TypeRef> statusType;
-    final TypeElement status = config.status();
-    if (!status.getQualifiedName().contentEquals(Void.class.getCanonicalName())) {
-      statusType = Optional.of(ElementTo.TYPEDEF.apply(status).toReference());
-    } else {
-      statusType = Optional.empty();
-    }
+    TypeDef def = config.definition();
+
+    final Optional<TypeRef> statusType = config.status();
 
     SpecReplicasPathDetector specReplicasPathDetector = new SpecReplicasPathDetector();
     StatusReplicasPathDetector statusReplicasPathDetector = new StatusReplicasPathDetector();
