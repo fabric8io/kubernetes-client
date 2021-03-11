@@ -11,6 +11,9 @@
 * Fix #2871: Change longFileMode to LONGFILE\_POSIX for creating tar in PodUpload, improve exception handling in PodUpload.
 * Fix #2746: SharedInformerFactory should use key formed from OperationContext
 * Fix #2736: Move CRD annotations to kubernetes-model-common module for greater coherence
+* Fix #2836: Make CRD generation usable at runtime, split the generator into api and apt modules, 
+  the `crd-generator-apt` artifact corresponding to the previous `crd-generator` artifact, while the
+  `crd-generator-api` artifact can be consumed directly to generate the CRDs at runtime.
 
 #### Improvements
 * Fix #2781: RawCustomResourceOperationsImpl#delete now returns a boolean value for deletion status
