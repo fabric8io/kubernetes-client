@@ -17,7 +17,7 @@ package io.fabric8.crd.generator.v1;
 
 import io.fabric8.crd.generator.AbstractCustomResourceHandler;
 import io.fabric8.crd.generator.CustomResourceInfo;
-import io.fabric8.crd.generator.apt.Resources;
+import io.fabric8.crd.generator.Resources;
 import io.fabric8.crd.generator.decorator.Decorator;
 import io.fabric8.crd.generator.v1.decorator.AddAdditionPrinterColumnDecorator;
 import io.fabric8.crd.generator.v1.decorator.AddCustomResourceDefinitionResourceDecorator;

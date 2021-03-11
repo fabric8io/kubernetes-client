@@ -20,7 +20,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator.Feature;
-import io.fabric8.crd.generator.apt.Resources;
 import io.fabric8.crd.generator.v1.CustomResourceHandler;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
