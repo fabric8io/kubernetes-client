@@ -1,0 +1,84 @@
+#*
+ * Copyright (C) 2015 Red Hat, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *#
+
+#set ($version = "unknown")
+#set ($group = "")
+#set ($annotations = $model.annotations)
+#foreach ($annotation in $annotations)
+  #set ($annotationName = $annotation.getClassRef().getName())
+  #if ($annotationName.endsWith("Version"))
+    #set ($apiGroupVersion = $annotation.getParameters().get("value"))
+  #end
+  #if ($annotationName.endsWith("Group"))
+    #set ($apiGroupName = $annotation.getParameters().get("value"))
+  #end
+#end
+
+#set ($isResourceNamespacedFlag = false)
+#foreach ($impl in $model.getImplementsList())
+  #if ($impl.getFullyQualifiedName().equals("io.fabric8.kubernetes.api.model.Namespaced"))
+    #set ($isResourceNamespacedFlag = true)
+  #end
+#end
+
+package io.fabric8.camelk.client.internal.$apiGroupVersion;
+
+import io.fabric8.kubernetes.api.builder.Visitor;
+import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
+import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
+import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+
+import okhttp3.OkHttpClient;
+
+import ${model.packageName}.${model.name};
+import ${model.packageName}.${model.name}Builder;
+import ${model.packageName}.${model.name}List;
+
+import java.util.Map;
+import java.util.TreeMap;
+
+
+public class ${model.name}OperationsImpl extends HasMetadataOperation<${model.name}, ${model.name}List, Resource<${model.name}>> {
+
+  public ${model.name}OperationsImpl(OkHttpClient client, Config config) {
+    this(new OperationContext().withOkhttpClient(client).withConfig(config).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
+  }
+
+  public ${model.name}OperationsImpl(OperationContext context) {
+    super(context.withApiGroupName("$apiGroupName")
+    .withApiGroupVersion("$apiGroupVersion")
+    .withPlural("#pluralize ($model.name.toLowerCase())"));
+    this.type = ${model.name}.class;
+    this.listType = ${model.name}List.class;
+  }
+
+  public ${model.name}OperationsImpl newInstance(OperationContext context) {
+    return new ${model.name}OperationsImpl(context);
+  }
+
+  @Override
+  public ${model.name} edit(Visitor... visitors) {
+    return patch(new ${model.name}Builder(getMandatory()).accept(visitors).build());
+  }
+  
+  @Override
+  public boolean isResourceNamespaced() {
+    return $isResourceNamespacedFlag;
+  }
+}
