@@ -17,8 +17,8 @@ package io.fabric8.crd.zookeeper.v1alpha1;
 
 import java.util.Map;
 
-import io.fabric8.crd.annotation.LabelSelector;
-import io.fabric8.crd.annotation.StatusReplicas;
+import io.fabric8.kubernetes.model.annotation.LabelSelector;
+import io.fabric8.kubernetes.model.annotation.StatusReplicas;
 
 public class ZookeeperStatus {
 

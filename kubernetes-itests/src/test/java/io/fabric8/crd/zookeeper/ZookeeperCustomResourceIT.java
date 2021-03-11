@@ -15,21 +15,18 @@
  */
 package io.fabric8.crd.zookeeper;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.junit.Test;
-import io.fabric8.kubernetes.client.utils.Serialization;
-import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersion;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps;
+import io.fabric8.kubernetes.client.utils.Serialization;
+import org.junit.Test;
+
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 public class ZookeeperCustomResourceIT {
 
