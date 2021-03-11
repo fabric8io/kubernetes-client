@@ -8,7 +8,8 @@
 * Fix #2853: Cannot change the type of the Service from ClusterIP to ExternalName with PATCH
 * Fix #2783: OpenIDConnectionUtils#persistKubeConfigWithUpdatedToken persists access token instead of refresh token
 * Fix #2871: Change longFileMode to LONGFILE\_POSIX for creating tar in PodUpload, improve exception handling in PodUpload.
-* Fix #2746: SharedInformerFactory should use key formed from OperationContext 
+* Fix #2746: SharedInformerFactory should use key formed from OperationContext
+* Fix #2736: Move CRD annotations to kubernetes-model-common module for greater coherence
 
 #### Improvements
 * Fix #2781: RawCustomResourceOperationsImpl#delete now returns a boolean value for deletion status
