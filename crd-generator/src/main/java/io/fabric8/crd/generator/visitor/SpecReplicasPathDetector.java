@@ -15,7 +15,7 @@
  */
 package io.fabric8.crd.generator.visitor;
 
-import io.fabric8.crd.annotation.SpecReplicas;
+import io.fabric8.kubernetes.model.annotation.SpecReplicas;
 import java.util.ArrayList;
 
 public class SpecReplicasPathDetector extends AnnotatedPropertyPathDetector {
