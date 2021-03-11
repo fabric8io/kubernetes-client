@@ -20,6 +20,8 @@
 * Fix #2699: Add support for `@EnableOpenShiftMockClient` for OpenShiftClient
 
 
+- CamelK extension
+
 ### 5.1.1 (2021-02-24)
 
 #### Bugs
