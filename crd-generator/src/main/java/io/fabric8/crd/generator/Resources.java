@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crd.generator.apt;
+package io.fabric8.crd.generator;
 
 import io.fabric8.crd.generator.decorator.Decorator;
 import io.fabric8.kubernetes.api.model.HasMetadata;

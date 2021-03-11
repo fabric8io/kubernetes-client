@@ -17,7 +17,6 @@ package io.fabric8.crd.generator;
 
 import static io.fabric8.crd.generator.utils.Types.findStatusProperty;
 
-import io.fabric8.crd.generator.apt.Resources;
 import io.fabric8.crd.generator.decorator.Decorator;
 import io.fabric8.crd.generator.visitor.AdditionalPrinterColumnDetector;
 import io.fabric8.crd.generator.visitor.LabelSelectorPathDetector;
