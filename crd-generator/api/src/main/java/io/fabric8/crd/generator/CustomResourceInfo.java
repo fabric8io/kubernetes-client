@@ -15,10 +15,10 @@
  */
 package io.fabric8.crd.generator;
 
-import io.fabric8.crd.generator.apt.Scope;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.model.Scope;
 import io.fabric8.kubernetes.model.annotation.ShortNames;
 import io.sundr.codegen.functions.ClassTo;
 import io.sundr.codegen.model.TypeDef;
@@ -143,7 +143,7 @@ public class CustomResourceInfo {
 
       final Scope scope = Arrays.stream(customResource.getInterfaces())
         .filter(t -> t.toString().equals(Namespaced.class.getTypeName()))
-        .map(t -> Scope.Namespaced).findFirst().orElse(Scope.Cluster);
+        .map(t -> Scope.NAMESPACED).findFirst().orElse(Scope.CLUSTER);
 
       final TypeDef definition = ClassTo.TYPEDEF.apply(customResource);
       
