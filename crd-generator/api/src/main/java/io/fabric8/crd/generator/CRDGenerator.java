@@ -112,7 +112,7 @@ public class CRDGenerator {
 
     public DirCRDOutput(File dir) {
       if(!dir.isDirectory() || !dir.canWrite() || !dir.exists()) {
-        throw new IllegalArgumentException("Must specify an existing, writeable output directory");
+        throw new IllegalArgumentException(dir + " must exist, be a writeable output directory");
       }
       this.dir = dir;
     }
