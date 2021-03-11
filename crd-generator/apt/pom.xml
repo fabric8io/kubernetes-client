@@ -28,12 +28,7 @@
 
   <artifactId>crd-generator-apt</artifactId>
   <name>Fabric8 :: CRD generator :: Annotation Processor</name>
-
-  <properties>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
-  </properties>
-
+  
   <dependencies>
     <dependency>
       <groupId>io.fabric8</groupId>
