@@ -34,7 +34,6 @@ import io.sundr.codegen.model.TypeRef;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -53,27 +52,25 @@ import javax.tools.StandardLocation;
 @SupportedAnnotationTypes({"io.fabric8.kubernetes.model.annotation.Version"})
 public class CustomResourceAnnotationProcessor extends AbstractProcessor {
 
+  final CRDGenerator generator = new CRDGenerator();
+
   public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-    final CRDGenerator generator = new CRDGenerator();
     if (roundEnv.processingOver()) {
       generator.withOutput(new FileObjectCRDOutput()).generate();
       return true;
     }
 
     CodegenContext.create(processingEnv.getElementUtils(), processingEnv.getTypeUtils());
-    Set<TypeElement> annotatedTypes = new LinkedHashSet<>();
 
     //Collect all annotated types.
     for (TypeElement annotation : annotations) {
       for (Element element : roundEnv.getElementsAnnotatedWith(annotation)) {
         if (element instanceof TypeElement) {
-          annotatedTypes.add((TypeElement) element);
+          generator.customResources(toCustomResourceInfo((TypeElement) element));
         }
       }
     }
 
-    //Add annotated types
-    generator.customResources(annotatedTypes.stream().map(this::toCustomResourceInfo).toArray(CustomResourceInfo[]::new));
     return false;
   }
 
