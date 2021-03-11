@@ -51,8 +51,7 @@
             <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
             <Import-Package>*</Import-Package>
             <Export-Package>
-              io.fabric8.kubernetes.model.annotation,
-              io.fabric8.kubernetes.model.util
+              io.fabric8.kubernetes.model**
             </Export-Package>
           </instructions>
         </configuration>
