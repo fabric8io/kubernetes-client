@@ -15,9 +15,8 @@
  */
 package io.fabric8.crd.zookeeper.v1;
 
+import io.fabric8.kubernetes.model.annotation.SpecReplicas;
 import javax.validation.constraints.NotNull;
-
-import io.fabric8.crd.annotation.SpecReplicas;
 
 public class ZookeeperSpec {
 

@@ -13,15 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crd.annotation;
+package io.fabric8.kubernetes.model;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+/**
+ * Represents the scope of a resource in the cluster. Resources can either be cluster-scoped or only
+ * are visible within the confines of a given namespace.
+ */
+public enum Scope {
+  NAMESPACED("Namespaced"), CLUSTER("Cluster");
 
-@Target({ ElementType.FIELD })
-@Retention(RetentionPolicy.SOURCE)
-public @interface SpecReplicas {
-  
+  private final String value;
+
+  Scope(String value) {
+    this.value = value;
+  }
+
+  public String value() {
+    return value;
+  }
+
+  @Override
+  public String toString() {
+    return value;
+  }
 }
