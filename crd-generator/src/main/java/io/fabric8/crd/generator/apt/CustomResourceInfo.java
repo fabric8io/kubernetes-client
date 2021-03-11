@@ -17,6 +17,7 @@ package io.fabric8.crd.generator.apt;
 
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.client.utils.Pluralize;
+import io.fabric8.kubernetes.model.Scope;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Kind;
 import io.fabric8.kubernetes.model.annotation.Plural;
@@ -66,7 +67,7 @@ public class CustomResourceInfo {
   public Scope scope() {
     return customResource.getInterfaces().stream()
       .filter(t -> t.toString().equals(Namespaced.class.getTypeName()))
-      .map(t -> Scope.Namespaced).findFirst().orElse(Scope.Cluster);
+      .map(t -> Scope.NAMESPACED).findFirst().orElse(Scope.CLUSTER);
   }
 
   public String crdName() {

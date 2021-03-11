@@ -13,8 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crd.generator.apt;
+package io.fabric8.kubernetes.model;
 
+/**
+ * Represents the scope of a resource in the cluster. Resources can either be cluster-scoped or only
+ * are visible within the confines of a given namespace.
+ */
 public enum Scope {
-  Namespaced, Cluster,
+  NAMESPACED("Namespaced"), CLUSTER("Cluster");
+
+  private final String value;
+
+  Scope(String value) {
+    this.value = value;
+  }
+
+  public String value() {
+    return value;
+  }
+
+  @Override
+  public String toString() {
+    return value;
+  }
 }

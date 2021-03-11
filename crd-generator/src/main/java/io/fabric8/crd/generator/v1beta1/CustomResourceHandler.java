@@ -57,7 +57,7 @@ public class CustomResourceHandler extends AbstractCustomResourceHandler {
     final String version = config.version();
     resources.decorate(
       new AddCustomResourceDefinitionResourceDecorator(name, config.group(), config.kind(),
-        config.scope().name(), config.shortNames(), config.plural(), config.singular()));
+        config.scope().value(), config.shortNames(), config.plural(), config.singular()));
 
     resources.decorate(new AddCustomResourceDefinitionVersionDecorator(name, version));
 
