@@ -17,8 +17,14 @@ package io.fabric8.kubernetes.client.server.mock;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.Status;
+import io.fabric8.kubernetes.api.model.StatusBuilder;
+import io.fabric8.kubernetes.api.model.StatusCause;
+import io.fabric8.kubernetes.api.model.StatusCauseBuilder;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.utils.Serialization;
+import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.mockwebserver.Context;
 import io.fabric8.mockwebserver.crud.Attribute;
 import io.fabric8.mockwebserver.crud.AttributeSet;
@@ -27,6 +33,7 @@ import io.fabric8.mockwebserver.crud.ResponseComposer;
 import io.fabric8.zjsonpatch.JsonPatch;
 import okhttp3.mockwebserver.MockResponse;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -36,11 +43,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Supplier;
 
 import okhttp3.mockwebserver.RecordedRequest;
 import okhttp3.mockwebserver.SocketPolicy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static io.fabric8.kubernetes.client.server.mock.KubernetesAttributesExtractor.toKubernetesResource;
 
 public class KubernetesCrudDispatcher extends CrudDispatcher {
 
@@ -51,6 +61,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
   private static final String DELETE = "DELETE";
 
   private static final Logger LOGGER = LoggerFactory.getLogger(KubernetesCrudDispatcher.class);
+  public static final int HTTP_UNPROCESSABLE_ENTITY = 422;
   private final Set<WatchEventsListener> watchEventListeners = new CopyOnWriteArraySet<>();
 
   public KubernetesCrudDispatcher() {
@@ -94,7 +105,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
    */
   @Override
   public MockResponse handleCreate(String path, String s) {
-    return new MockResponse().setResponseCode(doCreate(path, s, "ADDED")).setBody(s);
+    return validateRequestBodyAndHandleRequest(s, () -> new MockResponse().setResponseCode(doCreate(path, s, "ADDED")).setBody(s));
   }
 
   /**
@@ -107,7 +118,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
     if (doDelete(path, null) == 404) {
       return new MockResponse().setResponseCode(404);
     }
-    return new MockResponse().setResponseCode(doCreate(path, s, "MODIFIED")).setBody(s);
+    return validateRequestBodyAndHandleRequest(s, () -> new MockResponse().setResponseCode(doCreate(path, s, "MODIFIED")).setBody(s));
   }
 
   /**
@@ -315,5 +326,62 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
         .forEach(listener -> listener.sendWebSocketResponse(s, event));
     }
     return HttpURLConnection.HTTP_OK;
+  }
+
+  private MockResponse validateRequestBodyAndHandleRequest(String s, Supplier<MockResponse> mockResponseSupplier) {
+    HasMetadata h = toKubernetesResource(s);
+    if (h != null) {
+      try {
+        validateResource(h);
+      } catch (IllegalArgumentException illegalArgumentException) {
+        return getUnprocessableEntityMockResponse(s, h, illegalArgumentException);
+      }
+    }
+    return mockResponseSupplier.get();
+  }
+
+  private MockResponse getUnprocessableEntityMockResponse(String s, HasMetadata h, IllegalArgumentException illegalArgumentException) {
+    String statusBody = getStatusBody(h, HTTP_UNPROCESSABLE_ENTITY, illegalArgumentException);
+    if (statusBody == null) {
+      statusBody = s;
+    }
+    return new MockResponse().setResponseCode(HTTP_UNPROCESSABLE_ENTITY).setBody(statusBody);
+  }
+
+  private String getStatusBody(HasMetadata h, int code, IllegalArgumentException illegalArgumentException) {
+    String kind = Utils.getNonNullOrElse(h.getKind(), "Unknown");
+    Status status = new StatusBuilder().withStatus("Failure")
+      .withReason("Invalid")
+      .withMessage(kind + " is invalid")
+      .withNewDetails()
+      .withKind(h.getKind())
+      .withCauses(getFailureStatusCause(illegalArgumentException))
+      .endDetails()
+      .withCode(code)
+      .build();
+    try {
+      return Serialization.jsonMapper().writeValueAsString(status);
+    } catch (IOException ioException) {
+      return null;
+    }
+  }
+
+  private StatusCause getFailureStatusCause(IllegalArgumentException illegalArgumentException) {
+    return new StatusCauseBuilder()
+      .withMessage(illegalArgumentException.getMessage())
+      .withReason("ValueRequired")
+      .build();
+  }
+
+  private void validateResource(HasMetadata item) {
+    if (item == null) {
+      throw new IllegalArgumentException("No item provided");
+    }
+    if (item.getMetadata() == null) {
+      throw new IllegalArgumentException("Required value: metadata is required");
+    }
+    if (Utils.isNullOrEmpty(item.getMetadata().getName()) && Utils.isNullOrEmpty(item.getMetadata().getGenerateName())) {
+      throw new IllegalArgumentException("Required value: name or generateName is required");
+    }
   }
 }
