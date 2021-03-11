@@ -50,6 +50,10 @@
 * Fix #2699: Add support for `@EnableOpenShiftMockClient` for OpenShiftClient
 * Fix #2588: Support for Server side dry runs
 
+- CamelK extension
+
+- CamelK extension
+
 ### 5.1.1 (2021-02-24)
 
 #### Bugs
