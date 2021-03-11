@@ -24,16 +24,20 @@ import io.fabric8.crd.generator.apt.Resources;
 import io.fabric8.crd.generator.v1.CustomResourceHandler;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
+import java.io.Closeable;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
 
 public class CRDGenerator {
 
-  private static final Resources resources = new Resources();
-  private static final CustomResourceHandler v1Handler = new CustomResourceHandler(resources);
-  private static final io.fabric8.crd.generator.v1beta1.CustomResourceHandler v1beta1Handler = new io.fabric8.crd.generator.v1beta1.CustomResourceHandler(
+  private final Resources resources = new Resources();
+  private final CustomResourceHandler v1Handler = new CustomResourceHandler(resources);
+  private final io.fabric8.crd.generator.v1beta1.CustomResourceHandler v1beta1Handler = new io.fabric8.crd.generator.v1beta1.CustomResourceHandler(
     resources);
+  private CRDOutput output;
 
   private static final ObjectMapper YAML_MAPPER = new ObjectMapper(
     new YAMLFactory()
@@ -48,41 +52,88 @@ public class CRDGenerator {
     YAML_MAPPER.configure(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, false);
   }
 
-
-  public static void add(CustomResourceInfo info) {
-    System.out.println(
-      "Generating '"
-        + info.crdName()
-        + "' version '"
-        + info.version()
-        + "' with "
-        + info.crClassName()
-        + " (spec: "
-        + info.specClassName()
-        + " / status: "
-        + info.statusClassName()
-        + ")");
-
-    v1Handler.handle(info);
-    v1beta1Handler.handle(info);
+  public CRDGenerator() {
   }
 
-  public static void generateAt(CRDOutput output) {
+  public CRDGenerator inOutputDir(File outputDir) {
+    output = new DirCRDOutput(outputDir);
+    return this;
+  }
+
+  public CRDGenerator withOutput(CRDOutput output) {
+    this.output = output;
+    return this;
+  }
+  
+  public CRDGenerator customResources(CustomResourceInfo... infos) {
+    for (CustomResourceInfo info : infos) {
+      System.out.println(
+        "Generating '"
+          + info.crdName()
+          + "' version '"
+          + info.version()
+          + "' with "
+          + info.crClassName()
+          + " (spec: "
+          + info.specClassName()
+          + " / status: "
+          + info.statusClassName()
+          + ")");
+
+      v1Handler.handle(info);
+      v1beta1Handler.handle(info);
+    }
+    return this;
+  }
+
+  public void generate() {
     final KubernetesList list = resources.generate();
     list.getItems().forEach(crd -> {
       final String version = ApiVersionUtil.trimVersion(crd.getApiVersion());
       try {
-        final OutputStream outputStream = output.outputFor(crd.getMetadata().getName() + "-" + version + ".yml");
-        YAML_MAPPER.writeValue(outputStream, crd);
-        System.out.println("Created " + output.crdURI());
+        try (final OutputStream outputStream = output.outputFor(crd.getMetadata().getName() + "-" + version + ".yml")){
+          YAML_MAPPER.writeValue(outputStream, crd);
+          System.out.println("Created " + output.crdURI());
+        }
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
     });
   }
 
-  public interface CRDOutput {
+  public interface CRDOutput extends Closeable {
     OutputStream outputFor(String crdFileName) throws IOException;
     URI crdURI();
+  }
+
+  static class DirCRDOutput implements CRDOutput {
+    private final File dir;
+    private OutputStream output;
+    private URI uri;
+
+    public DirCRDOutput(File dir) {
+      if(!dir.isDirectory() || !dir.canWrite() || !dir.exists()) {
+        throw new IllegalArgumentException("Must specify an existing, writeable output directory");
+      }
+      this.dir = dir;
+    }
+
+    @Override
+    public OutputStream outputFor(String crdFileName) throws IOException {
+      final File file = new File(dir, crdFileName);
+      uri = file.toURI();
+      output = new FileOutputStream(file);
+      return output;
+    }
+
+    @Override
+    public URI crdURI() {
+      return uri;
+    }
+
+    @Override
+    public void close() throws IOException {
+      output.close();
+    }
   }
 }
