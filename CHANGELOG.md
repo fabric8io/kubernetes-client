@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 5.2-SNAPSHOT
+### 5.2.0
 
 #### Bugs
 * Fix #2802: NullPointerException in HasMetadataOperation patch/replace when using KubernetesMockServer
@@ -23,7 +23,7 @@
 #### Dependency Upgrade
 
 #### New Features
-* Update chaos-mesh extension to v1.1.1. Add PodIoChaos, JVMChaos, HTTPChaos and DNSChaos.
+* Fix #2818: Update chaos-mesh extension to v1.1.1. Add PodIoChaos, JVMChaos, HTTPChaos and DNSChaos.
 * Fix #2699: Add support for `@EnableOpenShiftMockClient` for OpenShiftClient
 * Fix #2588: Support for Server side dry runs
 
