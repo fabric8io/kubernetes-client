@@ -35,6 +35,8 @@ import io.fabric8.kubernetes.internal.KubernetesDeserializer;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -143,9 +145,13 @@ public class SharedInformerFactory extends BaseOperation {
   @Deprecated
   public synchronized <T extends CustomResource<?, ?>, L extends KubernetesResourceList<T>> SharedIndexInformer<T> sharedIndexInformerForCustomResource(
     CustomResourceDefinitionContext customResourceContext, Class<T> apiTypeClass, Class<L> apiListTypeClass, long resyncPeriodInMillis) {
+    KubernetesDeserializer.registerCustomKind(String.format("%s/%s",
+      Objects.requireNonNull(customResourceContext.getGroup()),
+      Objects.requireNonNull(customResourceContext.getVersion())
+    ), Optional.ofNullable(customResourceContext.getKind()).orElse(apiTypeClass.getSimpleName()), apiTypeClass);
     return sharedIndexInformerFor(apiTypeClass, apiListTypeClass, context
-      .withApiGroupVersion(customResourceContext.getVersion())
       .withApiGroupName(customResourceContext.getGroup())
+      .withApiGroupVersion(customResourceContext.getVersion())
       .withPlural(customResourceContext.getPlural())
       .withIsNamespaceConfiguredFromGlobalConfig(context.isNamespaceFromGlobalConfig()), resyncPeriodInMillis);
   }
