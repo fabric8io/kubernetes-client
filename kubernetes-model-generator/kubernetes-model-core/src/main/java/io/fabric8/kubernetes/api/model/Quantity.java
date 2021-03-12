@@ -29,8 +29,11 @@ import io.sundr.builder.annotations.Buildable;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.io.Serializable;
 
 
@@ -47,7 +50,7 @@ public class Quantity  implements Serializable {
 
   private static final String AT_LEAST_ONE_DIGIT_REGEX = ".*\\d+.*";
   private String amount;
-  private String format;
+  private String format = "";
   private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
   /**
@@ -76,7 +79,9 @@ public class Quantity  implements Serializable {
    */
   public Quantity(String amount, String format) {
     this.amount = amount;
-    this.format = format;
+    if (format != null) {
+      this.format = format;
+    }
   }
 
   public String getAmount() {
@@ -94,6 +99,8 @@ public class Quantity  implements Serializable {
   public void setFormat(String format) {
     this.format = format;
   }
+
+  private static Set<String> validFormats = new HashSet<String>(Arrays.asList("Ki", "Mi", "Gi", "Ti", "Pi", "Ei", "n", "u", "m", "k", "M", "G", "T", "P", "E", ""));
 
   public static BigDecimal getAmountInBytes(Quantity quantity) throws ArithmeticException {
     String value = "";
@@ -117,6 +124,8 @@ public class Quantity  implements Serializable {
     if ((formatStr.matches(AT_LEAST_ONE_DIGIT_REGEX)) && formatStr.length() > 1) {
       int exponent = Integer.parseInt(formatStr.substring(1));
       return new BigDecimal("10").pow(exponent, MathContext.DECIMAL64).multiply(new BigDecimal(amountFormatPair.getAmount()));
+    } else if (!validFormats.contains(quantity.getFormat())) {
+      throw new IllegalArgumentException("Invalid quantity format passed to parse");
     }
 
     BigDecimal digit = new BigDecimal(amountFormatPair.getAmount());
