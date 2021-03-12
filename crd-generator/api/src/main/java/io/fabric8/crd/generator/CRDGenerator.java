@@ -32,11 +32,11 @@ import java.net.URI;
 
 public class CRDGenerator {
 
-  private final Resources resources = new Resources();
-  private final CustomResourceHandler v1Handler = new CustomResourceHandler(resources);
-  private final io.fabric8.crd.generator.v1beta1.CustomResourceHandler v1beta1Handler = new io.fabric8.crd.generator.v1beta1.CustomResourceHandler(
-    resources);
+  private final Resources resources;
+  private final CustomResourceHandler v1Handler;
+  private final io.fabric8.crd.generator.v1beta1.CustomResourceHandler v1beta1Handler;
   private CRDOutput output;
+  private boolean hasResources;
 
   private static final ObjectMapper YAML_MAPPER = new ObjectMapper(
     new YAMLFactory()
@@ -52,6 +52,9 @@ public class CRDGenerator {
   }
 
   public CRDGenerator() {
+    resources = new Resources();
+    v1Handler = new CustomResourceHandler(resources);
+    v1beta1Handler = new io.fabric8.crd.generator.v1beta1.CustomResourceHandler(resources);
   }
 
   public CRDGenerator inOutputDir(File outputDir) {
@@ -66,6 +69,7 @@ public class CRDGenerator {
   
   public CRDGenerator customResources(CustomResourceInfo... infos) {
     for (CustomResourceInfo info : infos) {
+      hasResources = true;
       System.out.println(
         "Generating '"
           + info.crdName()
@@ -86,18 +90,26 @@ public class CRDGenerator {
   }
 
   public void generate() {
-    final KubernetesList list = resources.generate();
-    list.getItems().forEach(crd -> {
-      final String version = ApiVersionUtil.trimVersion(crd.getApiVersion());
-      try {
-        try (final OutputStream outputStream = output.outputFor(crd.getMetadata().getName() + "-" + version + ".yml")){
-          YAML_MAPPER.writeValue(outputStream, crd);
-          System.out.println("Created " + output.crdURI());
-        }
-      } catch (IOException e) {
-        throw new RuntimeException(e);
+    if (hasResources) {
+      if (output == null) {
+        System.out.println("No output option was selected either using 'inOutputDir' or 'withOutput' methods. Skipping generation.");
+      } else {
+        final KubernetesList list = resources.generate();
+        list.getItems().forEach(crd -> {
+          final String version = ApiVersionUtil.trimVersion(crd.getApiVersion());
+          try {
+            try (final OutputStream outputStream = output.outputFor(crd.getMetadata().getName() + "-" + version + ".yml")){
+              YAML_MAPPER.writeValue(outputStream, crd);
+              System.out.println("Created " + output.crdURI());
+            }
+          } catch (IOException e) {
+            throw new RuntimeException(e);
+          }
+        });
       }
-    });
+    } else {
+      System.out.println("No resources were registered with the 'customResources' method to be generated");
+    }
   }
 
   public interface CRDOutput extends Closeable {
