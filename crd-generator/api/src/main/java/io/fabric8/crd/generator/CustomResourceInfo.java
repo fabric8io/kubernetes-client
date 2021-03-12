@@ -47,7 +47,7 @@ public class CustomResourceInfo {
 
   public CustomResourceInfo(String group, String version, String kind, String singular,
     String plural, String[] shortNames, boolean storage, boolean served,
-    Scope scope, Optional<TypeRef> status, TypeDef definition, String crClassName,
+    Scope scope, TypeRef status, TypeDef definition, String crClassName,
     String specClassName, String statusClassName) {
     this.group = group;
     this.version = version;
@@ -58,7 +58,7 @@ public class CustomResourceInfo {
     this.storage = storage;
     this.served = served;
     this.scope = scope;
-    this.status = status;
+    this.status = Optional.ofNullable(status);
     this.definition = definition;
     this.crClassName = crClassName;
     this.specClassName = specClassName;
@@ -157,7 +157,7 @@ public class CustomResourceInfo {
 
       // this works because CustomResource is an abstract class
       String specClassName = null, statusClassName = null;
-      Optional<TypeRef> statusType = Optional.empty();
+      TypeRef statusType = null;
       if (genericSuperclass instanceof ParameterizedType) {
         final Type[] types = ((ParameterizedType) genericSuperclass).getActualTypeArguments();
         if (types.length == 2) {
@@ -168,7 +168,7 @@ public class CustomResourceInfo {
             // load status class
             final Class<?> statusClass = Thread.currentThread().getContextClassLoader()
               .loadClass(statusClassName);
-            statusType = Optional.of(ClassTo.TYPEDEF.apply(statusClass).toReference());
+            statusType = ClassTo.TYPEDEF.apply(statusClass).toReference();
           } 
         }
       }

@@ -87,9 +87,9 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
       }
       final TypeElement spec = ((TypeElement) ((DeclaredType) typeArguments.get(0)).asElement());
       final TypeElement status = ((TypeElement) ((DeclaredType) typeArguments.get(1)).asElement());
-      Optional<TypeRef> statusType = Optional.empty();
+      TypeRef statusType = null;
       if (!status.getQualifiedName().contentEquals(Void.class.getCanonicalName())) {
-        statusType = Optional.of(ElementTo.TYPEDEF.apply(status).toReference());
+        statusType = ElementTo.TYPEDEF.apply(status).toReference();
       }
 
       final String group = customResource.getAnnotation(Group.class).value();
