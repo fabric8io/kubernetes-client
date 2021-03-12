@@ -25,6 +25,7 @@
 * Fix #3133: Add DSL Support for `authorization.openshift.io/v1` resources in OpenShiftClient
 * Fix #3166: Add DSL Support for `machineconfiguration.openshift.io/v1` resources in OpenShiftClient
 * Fix #3142: Add DSL support for missing resources in `operator.openshift.io` and `monitoring.coreos.com` apiGroups
+* Fix #2565: Add support for CertManager extension
 * Add DSL support for missing resources in `template.openshift.io`, `helm.openshift.io`, `network.openshift.io`, `user.openshift.io` apigroups
 * Fix #3087: Support HTTP operation retry with exponential backoff (for status code >= 500)
 * Add DSL support for `autoscaling.openshift.io` resources in OpenShiftClient
