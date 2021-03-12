@@ -43,6 +43,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation.DEFAULT_GRACE_PERIOD_IN_SECONDS;
+
 public class KubernetesListOperationsImpl
   extends OperationSupport
   implements KubernetesListOperation,
@@ -55,11 +57,11 @@ public class KubernetesListOperationsImpl
   private final Boolean deletingExisting;
 
   public KubernetesListOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(client, config, namespace, null, null, false, false, null, null, false);
+    this(client, config, namespace, null, null, DEFAULT_GRACE_PERIOD_IN_SECONDS, false, false, null, null, false);
   }
 
-  public KubernetesListOperationsImpl(OkHttpClient client, Config config, String namespace, String name, DeletionPropagation propagationPolicy, Boolean fromServer, Boolean deletingExisting, KubernetesList item, String resourceVersion, boolean dryRun) {
-    super(client, config, namespace, propagationPolicy);
+  public KubernetesListOperationsImpl(OkHttpClient client, Config config, String namespace, String name, DeletionPropagation propagationPolicy, long gracePeriodSeconds, Boolean fromServer, Boolean deletingExisting, KubernetesList item, String resourceVersion, boolean dryRun) {
+    super(client, config, namespace, propagationPolicy, gracePeriodSeconds);
     this.fromServer = fromServer;
     this.deletingExisting = deletingExisting;
     this.item = item;
@@ -116,7 +118,7 @@ public class KubernetesListOperationsImpl
 
   @Override
   public RecreateFromServerGettable<KubernetesList> load(InputStream is) {
-    return new KubernetesListOperationsImpl(client, config, namespace, null, DeletionPropagation.BACKGROUND, fromServer, deletingExisting, unmarshal(is, KubernetesList.class), null, dryRun);
+    return new KubernetesListOperationsImpl(client, config, namespace, null, context.getPropagationPolicy(), context.getGracePeriodSeconds(), fromServer, deletingExisting, unmarshal(is, KubernetesList.class), null, dryRun);
   }
 
   @Override
@@ -142,7 +144,7 @@ public class KubernetesListOperationsImpl
     for (KubernetesList list : lists) {
       for (HasMetadata item : list.getItems()) {
         ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> handler = Handlers.get(item.getKind(), item.getApiVersion());
-        if (!handler.delete(client, config, namespace, DeletionPropagation.BACKGROUND, item, dryRun)) {
+        if (!handler.delete(client, config, namespace, context.getPropagationPolicy(), context.getGracePeriodSeconds(), item, dryRun)) {
           return false;
         }
       }
@@ -152,12 +154,12 @@ public class KubernetesListOperationsImpl
 
   @Override
   public Gettable<KubernetesList> fromServer() {
-    return new KubernetesListOperationsImpl(client, config, namespace, null, context.getPropagationPolicy(), true, deletingExisting, item, null, dryRun);
+    return new KubernetesListOperationsImpl(client, config, namespace, null, context.getPropagationPolicy(), context.getGracePeriodSeconds(), true, deletingExisting, item, null, dryRun);
   }
 
   @Override
   public Createable<KubernetesList> deletingExisting() {
-    return new KubernetesListOperationsImpl(client, config, namespace, null, context.getPropagationPolicy(), fromServer, true, item, null, dryRun);
+    return new KubernetesListOperationsImpl(client, config, namespace, null, context.getPropagationPolicy(), context.getGracePeriodSeconds(), fromServer, true, item, null, dryRun);
   }
 
   private List<HasMetadata> createItemsInKubernetesList(KubernetesList list) {

@@ -77,8 +77,8 @@ public class OperationSupport {
     this(new OperationContext().withOkhttpClient(client).withConfig(config));
   }
 
-  public OperationSupport(OkHttpClient client, Config config, String namespace, DeletionPropagation propagationPolicy) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(propagationPolicy));
+  public OperationSupport(OkHttpClient client, Config config, String namespace, DeletionPropagation propagationPolicy, long gracePeriodInSeconds) {
+    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(propagationPolicy).withGracePeriodSeconds(gracePeriodInSeconds));
   }
 
   public OperationSupport(OperationContext ctx) {

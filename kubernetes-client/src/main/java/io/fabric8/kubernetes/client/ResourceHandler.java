@@ -122,11 +122,12 @@ public interface ResourceHandler<T, V extends VisitableBuilder<T, V>> {
    * @param config        The client config.
    * @param namespace     The target namespace.
    * @param propagationPolicy  Whether and how garbage collection will be performed.
+   * @param gracePeriodSeconds The duration in seconds before the object should be deleted.
    * @param item          The resource to delete.
    * @param dryRun        enable dry run
    * @return              The true if the resource was successfully deleted.
    */
-  Boolean delete(OkHttpClient client, Config config, String namespace, DeletionPropagation propagationPolicy, T item, boolean dryRun);
+  Boolean delete(OkHttpClient client, Config config, String namespace, DeletionPropagation propagationPolicy, long gracePeriodSeconds, T item, boolean dryRun);
 
 
     /**
