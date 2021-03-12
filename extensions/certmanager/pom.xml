@@ -19,23 +19,24 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <artifactId>kubernetes-client-project</artifactId>
     <groupId>io.fabric8</groupId>
+    <artifactId>kubernetes-extensions</artifactId>
     <version>5.5-SNAPSHOT</version>
   </parent>
 
-  <artifactId>kubernetes-extensions</artifactId>
+  <artifactId>certmanager-extension-pom</artifactId>
   <packaging>pom</packaging>
-  <name>Fabric8 :: Kubernetes :: Extensions</name>
+  <name>Fabric8 :: Cert Manager :: Extension</name>
 
   <modules>
-    <module>knative</module>
-    <module>tekton</module>
-    <module>service-catalog</module>
-    <module>volumesnapshot</module>
-    <module>chaosmesh</module>
-    <module>camel-k</module>
-    <module>certmanager</module>
+    <module>model-v1alpha2</module>
+    <module>model-v1alpha3</module>
+    <module>model-v1beta1</module>
+    <module>model-v1</module>
+    <module>client</module>
+    <module>mock</module>
+    <module>examples</module>
+    <module>tests</module>
   </modules>
 
 </project>
