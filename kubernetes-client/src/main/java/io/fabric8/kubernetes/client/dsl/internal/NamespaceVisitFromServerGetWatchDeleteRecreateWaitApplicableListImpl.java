@@ -319,7 +319,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
         //Second pass do delete
         for (HasMetadata meta :  acceptVisitors(asHasMetadata(item, true), visitors)) {
             ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
-            if (!h.delete(client, config, meta.getMetadata().getNamespace(), propagationPolicy, meta, dryRun)) {
+            if (!h.delete(client, config, meta.getMetadata().getNamespace(), propagationPolicy, gracePeriodSeconds, meta, dryRun)) {
                 return false;
             }
         }
@@ -449,7 +449,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
 
   private HasMetadata createOrReplaceOrDeleteExisting(HasMetadata meta, ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h, String namespaceToUse, boolean dryRun) {
       if (Boolean.TRUE.equals(deletingExisting)) {
-        return deleteAndCreateItem(client, config, meta, h, namespaceToUse, propagationPolicy, dryRun);
+        return deleteAndCreateItem(client, config, meta, h, namespaceToUse, propagationPolicy, gracePeriodSeconds, dryRun);
       }
       return createOrReplaceItem(client, config, meta, h, namespaceToUse, dryRun);
   }

@@ -68,7 +68,7 @@ public class ProjectRequestHandler implements ResourceHandler<ProjectRequest, Pr
   }
 
   @Override
-  public Boolean delete(OkHttpClient client, Config config, String namespace, DeletionPropagation propagationPolicy, ProjectRequest item, boolean dryRun) {
+  public Boolean delete(OkHttpClient client, Config config, String namespace, DeletionPropagation propagationPolicy, long gracePeriodSeconds, ProjectRequest item, boolean dryRun) {
     throw new UnsupportedOperationException();
   }
 

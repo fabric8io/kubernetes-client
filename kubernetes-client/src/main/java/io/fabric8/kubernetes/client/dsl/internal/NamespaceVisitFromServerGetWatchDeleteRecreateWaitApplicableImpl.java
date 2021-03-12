@@ -139,7 +139,7 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl ex
     ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
     String namespaceToUse = meta.getMetadata().getNamespace();
     if (Boolean.TRUE.equals(deletingExisting)) {
-      return deleteAndCreateItem(client, config, meta, h, namespaceToUse, propagationPolicy, dryRun);
+      return deleteAndCreateItem(client, config, meta, h, namespaceToUse, propagationPolicy, gracePeriodSeconds, dryRun);
     }
     return createOrReplaceItem(client, config, meta, h, namespaceToUse, dryRun);
   }
@@ -154,7 +154,7 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl ex
     //First pass check before deleting
     HasMetadata meta = acceptVisitors(asHasMetadata(item), visitors);
     ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
-    return h.delete(client, config, meta.getMetadata().getNamespace(), propagationPolicy, meta, dryRun);
+    return h.delete(client, config, meta.getMetadata().getNamespace(), propagationPolicy, gracePeriodSeconds, meta, dryRun);
   }
 
   @Override

@@ -37,6 +37,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import static io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation.DEFAULT_GRACE_PERIOD_IN_SECONDS;
+import static io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation.DEFAULT_PROPAGATION_POLICY;
+
 @Component
 @org.apache.felix.scr.annotations.Service
 public class KubernetesListHandler implements ResourceHandler<KubernetesList, KubernetesListBuilder> {
@@ -57,7 +60,7 @@ public class KubernetesListHandler implements ResourceHandler<KubernetesList, Ku
 
   @Override
   public KubernetesList create(OkHttpClient client, Config config, String namespace, KubernetesList item, boolean dryRun) {
-    return new KubernetesListOperationsImpl(client, config, namespace, null, DeletionPropagation.BACKGROUND, false, false, item, null, dryRun).create();
+    return new KubernetesListOperationsImpl(client, config, namespace, null, DEFAULT_PROPAGATION_POLICY, DEFAULT_GRACE_PERIOD_IN_SECONDS, false, false, item, null, dryRun).create();
   }
 
   @Override
@@ -96,8 +99,8 @@ public class KubernetesListHandler implements ResourceHandler<KubernetesList, Ku
   }
 
   @Override
-  public Boolean delete(OkHttpClient client, Config config, String namespace, DeletionPropagation propagationPolicy, KubernetesList item, boolean dryRun) {
-    return new KubernetesListOperationsImpl(client, config, namespace, null, propagationPolicy, false, false, item, null, dryRun).delete(item);
+  public Boolean delete(OkHttpClient client, Config config, String namespace, DeletionPropagation propagationPolicy, long gracePeriodSeconds, KubernetesList item, boolean dryRun) {
+    return new KubernetesListOperationsImpl(client, config, namespace, null, propagationPolicy, gracePeriodSeconds, false, false, item, null, dryRun).delete(item);
   }
 
   @Override

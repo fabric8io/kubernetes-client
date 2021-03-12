@@ -27,6 +27,7 @@ import java.util.function.UnaryOperator;
 
 public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>> extends BaseOperation< T, L, R> {
   public static final DeletionPropagation DEFAULT_PROPAGATION_POLICY = DeletionPropagation.BACKGROUND;
+  public static final long DEFAULT_GRACE_PERIOD_IN_SECONDS = -1L;
 
   public HasMetadataOperation(OperationContext ctx) {
     super(ctx);
