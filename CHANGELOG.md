@@ -1,6 +1,16 @@
 ## CHANGELOG
 
-### 5.2.0
+### 5.3-SNAPSHOT
+
+#### Bugs
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
+### 5.2.0 (2021-03-12)
 
 #### Bugs
 * Fix #2802: NullPointerException in HasMetadataOperation patch/replace when using KubernetesMockServer
@@ -19,8 +29,6 @@
 #### Improvements
 * Fix #2781: RawCustomResourceOperationsImpl#delete now returns a boolean value for deletion status
 * Fix #2780: Refactor RawCustomResourceOperationsImpl#delete(String)
-
-#### Dependency Upgrade
 
 #### New Features
 * Fix #2818: Update chaos-mesh extension to v1.1.1. Add PodIoChaos, JVMChaos, HTTPChaos and DNSChaos.
