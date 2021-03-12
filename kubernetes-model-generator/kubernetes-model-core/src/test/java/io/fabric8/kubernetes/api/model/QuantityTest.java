@@ -160,5 +160,7 @@ public class QuantityTest {
     assertThrows(IllegalArgumentException.class, () -> new Quantity(""));
     assertThrows(IllegalArgumentException.class, () -> new Quantity(null));
     assertThrows(IllegalArgumentException.class, () -> Quantity.getAmountInBytes(new Quantity()));
+    assertThrows(IllegalArgumentException.class, () -> Quantity.getAmountInBytes(new Quantity("4MiB")));
+    assertThrows(IllegalArgumentException.class, () -> Quantity.getAmountInBytes(new Quantity("4megabyte")));
   }
 }

@@ -47,7 +47,7 @@ public class Quantity  implements Serializable {
 
   private static final String AT_LEAST_ONE_DIGIT_REGEX = ".*\\d+.*";
   private String amount;
-  private String format;
+  private String format = "";
   private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
   /**
@@ -76,7 +76,9 @@ public class Quantity  implements Serializable {
    */
   public Quantity(String amount, String format) {
     this.amount = amount;
-    this.format = format;
+    if (format != null) {
+      this.format = format;
+    }
   }
 
   public String getAmount() {
@@ -170,6 +172,10 @@ public class Quantity  implements Serializable {
       case "E":
         multiple = decimalFactor.pow(18, MathContext.DECIMAL64);
         break;
+      case "":
+        break;
+      default:
+        throw new IllegalArgumentException("Invalid quantity format passed to parse");
     }
 
     return digit.multiply(multiple);
