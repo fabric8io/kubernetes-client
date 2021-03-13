@@ -34,4 +34,4 @@ jobs:
         with:
           java-version: '8'
       - name: Check Java Docs
-        run: mvn clean install javadoc:jar -DskipTests -Pjavadoc-test
+        run: mvn -B -C -V -ntp clean install javadoc:jar -DskipTests -Pjavadoc-test
