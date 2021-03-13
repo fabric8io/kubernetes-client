@@ -115,6 +115,7 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
         System.out.println("Ignoring " + crClassName + " because it isn't parameterized");
         return null;
       }
+      final TypeElement spec = ((TypeElement) ((DeclaredType) typeArguments.get(0)).asElement());
       final TypeElement status = ((TypeElement) ((DeclaredType) typeArguments.get(1)).asElement());
       final CustomResourceInfo info = new CustomResourceInfo(element, status, processingEnv);
       System.out.println(
@@ -124,6 +125,8 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
           + info.version()
           + "' with "
           + crClassName
+          + " (spec: "
+          + spec.getQualifiedName()
           + " / status: "
           + status.getQualifiedName()
           + ")");
