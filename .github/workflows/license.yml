@@ -34,4 +34,4 @@ jobs:
         with:
           java-version: '8'
       - name: Check License Headers
-        run: mvn -N license:check
+        run: mvn -B -C -V -ntp -N license:check
