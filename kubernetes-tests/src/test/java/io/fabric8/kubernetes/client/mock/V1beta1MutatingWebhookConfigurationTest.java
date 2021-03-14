@@ -16,25 +16,22 @@
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.*;
 import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingWebhookBuilder;
-import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingWebhookConfiguration;
 import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingWebhookConfigurationBuilder;
-import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingWebhookConfigurationList;
 import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.MutatingWebhookConfigurationListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import org.junit.Rule;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 public class V1beta1MutatingWebhookConfigurationTest {
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
+
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   @Test
   public void create() {
@@ -42,7 +39,6 @@ public class V1beta1MutatingWebhookConfigurationTest {
 
     server.expect().post().withPath("/apis/admissionregistration.k8s.io/v1beta1/mutatingwebhookconfigurations").andReturn(201, mutatingWebhookConfiguration).once();
 
-    KubernetesClient client = server.getClient();
     HasMetadata response = client.resource(mutatingWebhookConfiguration).inNamespace("test").createOrReplace();
     assertEquals(mutatingWebhookConfiguration, response);
   }
@@ -52,7 +48,6 @@ public class V1beta1MutatingWebhookConfigurationTest {
   public void get() {
     // Given
     server.expect().get().withPath("/apis/admissionregistration.k8s.io/v1beta1/mutatingwebhookconfigurations/mutatingWebhookConfiguration1").andReturn(200, getMutatingWebhookConfigurationSample()).once();
-    KubernetesClient client = server.getClient();
 
     // When
     MutatingWebhookConfiguration mutatingWebhookConfiguration = client.admissionRegistration().v1beta1().mutatingWebhookConfigurations().withName("mutatingWebhookConfiguration1").get();
@@ -67,7 +62,6 @@ public class V1beta1MutatingWebhookConfigurationTest {
     // Given
     server.expect().get().withPath("/apis/admissionregistration.k8s.io/v1beta1/mutatingwebhookconfigurations")
       .andReturn(200, new MutatingWebhookConfigurationListBuilder().withItems(getMutatingWebhookConfigurationSample()).build()).once();
-    KubernetesClient client = server.getClient();
 
     // When
     MutatingWebhookConfigurationList mutatingWebhookConfigurationList = client.admissionRegistration().v1beta1().mutatingWebhookConfigurations().list();
@@ -84,7 +78,6 @@ public class V1beta1MutatingWebhookConfigurationTest {
 
     server.expect().post().withPath("/apis/admissionregistration.k8s.io/v1beta1/mutatingwebhookconfigurations").andReturn(200, mutatingWebhookConfiguration).once();
 
-    KubernetesClient client = server.getClient();
     MutatingWebhookConfiguration mutatingWebhookConfiguration1 = client.admissionRegistration().v1beta1().mutatingWebhookConfigurations().createOrReplace(mutatingWebhookConfiguration);
     assertNotNull(mutatingWebhookConfiguration1);
     assertEquals("mutatingWebhookConfiguration1", mutatingWebhookConfiguration1.getMetadata().getName());
@@ -95,7 +88,6 @@ public class V1beta1MutatingWebhookConfigurationTest {
     // Given
     server.expect().delete().withPath("/apis/admissionregistration.k8s.io/v1beta1/mutatingwebhookconfigurations/mutatingWebhookConfiguration1")
       .andReturn(200, getMutatingWebhookConfigurationSample()).once();
-    KubernetesClient client = server.getClient();
 
     // When
     Boolean isDeleted = client.admissionRegistration().v1beta1().mutatingWebhookConfigurations().withName("mutatingWebhookConfiguration1").delete();

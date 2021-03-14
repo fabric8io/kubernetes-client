@@ -21,25 +21,19 @@ import io.fabric8.openshift.api.model.SecurityContextConstraints;
 import io.fabric8.openshift.api.model.SecurityContextConstraintsBuilder;
 import io.fabric8.openshift.api.model.SecurityContextConstraintsList;
 import io.fabric8.openshift.api.model.SecurityContextConstraintsListBuilder;
-import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-@EnableRuleMigrationSupport
+@EnableOpenShiftMockClient
 class SecurityContextConstraintsTest {
-  @Rule
-  public OpenShiftServer server = new OpenShiftServer();
+
+  OpenShiftMockServer server;
+  OpenShiftClient client;
 
   @Test
   void testCreateOrReplace() {
@@ -55,7 +49,6 @@ class SecurityContextConstraintsTest {
     server.expect().post().withPath("/apis/security.openshift.io/v1/securitycontextconstraints")
       .andReturn(HttpURLConnection.HTTP_OK, scc)
     .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     scc = client.securityContextConstraints().createOrReplace(scc);
@@ -73,7 +66,6 @@ class SecurityContextConstraintsTest {
     server.expect().post().withPath("/apis/security.openshift.io/v1/securitycontextconstraints")
       .andReturn(HttpURLConnection.HTTP_OK, new SecurityContextConstraintsBuilder().build())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     List<HasMetadata> items = client.load(getClass().getResourceAsStream("/test-scc.yml")).createOrReplace();
@@ -91,7 +83,6 @@ class SecurityContextConstraintsTest {
             .build()).once();
 
 
-    OpenShiftClient client = server.getOpenshiftClient();
     SecurityContextConstraintsList sccList = client.securityContextConstraints().list();
     assertNotNull(sccList);
     assertEquals(1, sccList.getItems().size());
@@ -102,7 +93,6 @@ class SecurityContextConstraintsTest {
    server.expect().withPath("/apis/security.openshift.io/v1/securitycontextconstraints/scc1").andReturn(200, new SecurityContextConstraintsBuilder().build()).once();
    server.expect().withPath("/apis/security.openshift.io/v1/securitycontextconstraints/scc2").andReturn(200, new SecurityContextConstraintsBuilder().build()).once();
 
-    OpenShiftClient client = server.getOpenshiftClient();
 
     Boolean deleted = client.securityContextConstraints().withName("scc1").delete();
     assertNotNull(deleted);
@@ -119,7 +109,6 @@ class SecurityContextConstraintsTest {
    server.expect().withPath("/apis/security.openshift.io/v1/securitycontextconstraints/scc1").andReturn(200, new SecurityContextConstraintsBuilder().withNewMetadata().withName("scc1").and().build()).times(2);
    server.expect().withPath("/apis/security.openshift.io/v1/securitycontextconstraints/scc1").andReturn(200, new SecurityContextConstraintsBuilder().withNewMetadata().withName("scc1").and().addToAllowedCapabilities("allowed").build()).once();
 
-    OpenShiftClient client = server.getOpenshiftClient();
     SecurityContextConstraints scc = client.securityContextConstraints().withName("scc1").edit(s -> new SecurityContextConstraintsBuilder(s).addToAllowedCapabilities("allowed").build());
     assertNotNull(scc);
     assertEquals(1, scc.getAllowedCapabilities().size());

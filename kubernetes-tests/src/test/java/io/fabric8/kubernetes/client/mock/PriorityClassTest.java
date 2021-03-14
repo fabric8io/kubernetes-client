@@ -22,21 +22,19 @@ import io.fabric8.kubernetes.api.model.scheduling.v1beta1.PriorityClassList;
 import io.fabric8.kubernetes.api.model.scheduling.v1beta1.PriorityClassListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.Utils;
-import org.junit.Rule;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 public class PriorityClassTest {
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
+
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   @Test
   void testList() {
@@ -46,7 +44,6 @@ public class PriorityClassTest {
       .addNewItem()
       .and().build()).once();
 
-    KubernetesClient client = server.getClient();
 
     PriorityClassList priorityClassList = client.scheduling().v1beta1().priorityClasses().list();
     assertNotNull(priorityClassList);
@@ -62,7 +59,6 @@ public class PriorityClassTest {
       .addNewItem().and()
       .build()).once();
 
-    KubernetesClient client = server.getClient();
 
     PriorityClassList priorityClassList = client.scheduling().v1beta1().priorityClasses()
       .withLabel("key1", "value1")
@@ -83,7 +79,6 @@ public class PriorityClassTest {
     server.expect().withPath("/apis/scheduling.k8s.io/v1beta1/priorityclasses/priorityclass1").andReturn(200, new PriorityClassBuilder().build()).once();
     server.expect().withPath("/apis/scheduling.k8s.io/v1beta1/priorityclasses/priorityclass2").andReturn(200, new PriorityClassBuilder().build()).once();
 
-    KubernetesClient client = server.getClient();
 
     PriorityClass priorityClass1 = client.scheduling().v1beta1().priorityClasses().withName("priorityclass1").get();
     assertNotNull(priorityClass1);
@@ -102,7 +97,6 @@ public class PriorityClassTest {
       .withDescription("This priority class should be used for XYZ service pods only.")
       .build()).once();
 
-    KubernetesClient client = server.getClient();
 
     Boolean deleted = client.scheduling().v1beta1().priorityClasses().withName("priorityclass1").delete();
     assertNotNull(deleted);
@@ -131,7 +125,6 @@ public class PriorityClassTest {
     server.expect().withPath("/apis/scheduling.k8s.io/v1beta1/priorityclasses/priorityclass2").andReturn(200, new PriorityClassBuilder(priorityClass2)
       .editMetadata().addToAnnotations("foo", "bar").endMetadata().build()).times(5);
 
-    KubernetesClient client = server.getClient();
 
     Boolean deleted = client.scheduling().v1beta1().priorityClasses().delete(priorityClass1, priorityClass2);
     assertNotNull(deleted);
@@ -141,7 +134,6 @@ public class PriorityClassTest {
   void testCreateWithNameMismatch() {
     Assertions.assertThrows(KubernetesClientException.class, () -> {
       PriorityClass priorityClass1 = new PriorityClassBuilder().withNewMetadata().withName("priorityclass1").and().build();
-      KubernetesClient client = server.getClient();
 
       client.scheduling().v1beta1().priorityClasses().withName("mypriorityclass1").create(priorityClass1);
     });
@@ -149,7 +141,6 @@ public class PriorityClassTest {
 
   @Test
   void testLoadFromFile() {
-    KubernetesClient client = server.getClient();
     assertNotNull(client.scheduling().v1beta1().priorityClasses().load(getClass().getResourceAsStream("/test-priorityclass.yml")).get());
   }
 }

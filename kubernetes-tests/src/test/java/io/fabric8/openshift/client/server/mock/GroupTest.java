@@ -23,22 +23,18 @@ import io.fabric8.openshift.api.model.GroupBuilder;
 import io.fabric8.openshift.api.model.GroupList;
 import io.fabric8.openshift.api.model.GroupListBuilder;
 import io.fabric8.openshift.client.NamespacedOpenShiftClient;
-import io.fabric8.openshift.client.OpenShiftClient;
-
-import org.junit.Rule;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-@EnableRuleMigrationSupport
+@EnableOpenShiftMockClient
 class GroupTest {
-  @Rule
-  public OpenShiftServer server = new OpenShiftServer();
+
+  OpenShiftMockServer server;
+  NamespacedOpenShiftClient client;
+  @BeforeEach
+  void setUp() { client = server.createOpenShiftClient(); }
 
   @Test
   void testList() {
@@ -57,8 +53,6 @@ class GroupTest {
       .endGroup()
       .build()).always();
 
-
-    NamespacedOpenShiftClient client = server.getOpenshiftClient();
 
     GroupList groupList = client.groups().list();
     assertNotNull(groupList);
@@ -81,7 +75,6 @@ class GroupTest {
       .withNewMetadata().withName("Group2").endMetadata()
       .build()).once();
 
-    OpenShiftClient client = server.getOpenshiftClient();
 
     Group group = client.groups().withName("group1").get();
     assertNotNull(group);
@@ -101,7 +94,6 @@ class GroupTest {
    server.expect().withPath("/apis/user.openshift.io/v1/groups/group1").andReturn(200, new GroupBuilder().build()).once();
    server.expect().withPath("/apis/user.openshift.io/v1/groups/Group2").andReturn( 200, new GroupBuilder().build()).once();
 
-    OpenShiftClient client = server.getOpenshiftClient();
 
     Boolean deleted = client.groups().withName("group1").delete();
     assertNotNull(deleted);
@@ -118,7 +110,6 @@ class GroupTest {
     server.expect().withPath("/apis/user.openshift.io/v1/groups/group1").andReturn(200, new GroupBuilder().build()).once();
     server.expect().withPath("/apis/user.openshift.io/v1/groups/Group2").andReturn( 200, new GroupBuilder().build()).once();
 
-    OpenShiftClient client = server.getOpenshiftClient();
 
     Boolean deleted = client.groups().withName("group1").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete();
     assertNotNull(deleted);

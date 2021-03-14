@@ -17,20 +17,16 @@ package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.Duration;
 import io.fabric8.kubernetes.api.model.Quantity;
-import io.fabric8.kubernetes.api.model.metrics.v1beta1.NodeMetrics;
+import io.fabric8.kubernetes.api.model.metrics.v1beta1.*;
 import io.fabric8.kubernetes.api.model.metrics.v1beta1.NodeMetricsBuilder;
-import io.fabric8.kubernetes.api.model.metrics.v1beta1.NodeMetricsList;
 import io.fabric8.kubernetes.api.model.metrics.v1beta1.NodeMetricsListBuilder;
-import io.fabric8.kubernetes.api.model.metrics.v1beta1.PodMetrics;
 import io.fabric8.kubernetes.api.model.metrics.v1beta1.PodMetricsBuilder;
-import io.fabric8.kubernetes.api.model.metrics.v1beta1.PodMetricsList;
 import io.fabric8.kubernetes.api.model.metrics.v1beta1.PodMetricsListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.Utils;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -38,17 +34,17 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 class MetricsTest {
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
+
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   @Test
   void testPodMetricsAllNamespace() throws Exception {
     server.expect().get().withPath("/apis/metrics.k8s.io/v1beta1/pods")
       .andReturn(200, new PodMetricsListBuilder().withItems(getPodMetric()).build()).once();
 
-    KubernetesClient client = server.getClient();
 
     PodMetricsList podMetricsList = client.top().pods().metrics();
     assertEquals(1, podMetricsList.getItems().size());
@@ -60,7 +56,6 @@ class MetricsTest {
     server.expect().get().withPath("/apis/metrics.k8s.io/v1beta1/namespaces/test/pods")
       .andReturn(200, new PodMetricsListBuilder().withItems(getPodMetric()).build()).once();
 
-    KubernetesClient client = server.getClient();
 
     PodMetricsList podMetricsList = client.top().pods().metrics("test");
     assertEquals(1, podMetricsList.getItems().size());
@@ -72,7 +67,6 @@ class MetricsTest {
     server.expect().get().withPath("/apis/metrics.k8s.io/v1beta1/namespaces/test/pods/test-pod")
       .andReturn(200, getPodMetric()).once();
 
-    KubernetesClient client = server.getClient();
 
     PodMetrics podMetrics = client.top().pods().metrics("test", "test-pod");
     assertEquals("foo", podMetrics.getMetadata().getName());
@@ -82,7 +76,6 @@ class MetricsTest {
   void testAllNodeMetrics() {
     server.expect().get().withPath("/apis/metrics.k8s.io/v1beta1/nodes")
       .andReturn(200, new NodeMetricsListBuilder().withItems(getNodeMetric()).build()).once();
-    KubernetesClient client = server.getClient();
 
     NodeMetricsList nodeMetricsList = client.top().nodes().metrics();
     assertEquals(1, nodeMetricsList.getItems().size());
@@ -93,7 +86,6 @@ class MetricsTest {
   void testNodeMetric() {
     server.expect().get().withPath("/apis/metrics.k8s.io/v1beta1/nodes/test-node")
       .andReturn(200, getNodeMetric()).once();
-    KubernetesClient client = server.getClient();
 
     NodeMetrics nodeMetrics = client.top().nodes().metrics("test-node");
     assertEquals("foo", nodeMetrics.getMetadata().getName());
@@ -105,7 +97,6 @@ class MetricsTest {
     server.expect().get().withPath("/apis/metrics.k8s.io/v1beta1/nodes?labelSelector=" + Utils.toUrlEncoded("ss=true,cs=true"))
       .andReturn(200, new NodeMetricsListBuilder().withItems(getNodeMetric()).build()).once();
 
-    KubernetesClient client = server.getClient();
     Map<String,Object> lablesMap = new HashMap();
     lablesMap.put("ss", "true");
     lablesMap.put("cs", "true");

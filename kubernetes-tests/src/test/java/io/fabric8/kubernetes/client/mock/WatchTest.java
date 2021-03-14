@@ -16,52 +16,39 @@
 
 package io.fabric8.kubernetes.client.mock;
 
-import static io.fabric8.kubernetes.client.Watcher.Action.DELETED;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
+import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
-import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
-import io.fabric8.kubernetes.api.model.WatchEvent;
 import io.fabric8.kubernetes.api.model.WatchEventBuilder;
-import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.Watcher;
-import io.fabric8.kubernetes.client.WatcherException;
+import io.fabric8.kubernetes.client.*;
 import io.fabric8.kubernetes.client.dsl.Watchable;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.Rule;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
+import static io.fabric8.kubernetes.client.Watcher.Action.DELETED;
+import static org.junit.Assert.*;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient(https = false)
 class WatchTest {
 
   private static final Long EVENT_WAIT_PERIOD_MS = 10L;
 
-  @Rule
-  public KubernetesServer server = new KubernetesServer(false);
-
+  KubernetesMockServer server;
   private KubernetesClient client;
   private Pod pod1;
 
   @BeforeEach
   void setUp() {
-    client = server.getClient().inNamespace("test");
+    client = server.createClient().inNamespace("test");
     pod1 = new PodBuilder().withNewMetadata().withNamespace("test").withName("pod1")
       .withResourceVersion("1").endMetadata().build();
   }
@@ -147,7 +134,6 @@ class WatchTest {
       .waitFor(EVENT_WAIT_PERIOD_MS).andEmit(new WatchEvent(pod1, "DELETED"))
       .waitFor(EVENT_WAIT_PERIOD_MS).andEmit(outdatedEvent()).done().once();
 
-    KubernetesClient client = server.getClient();
 
     // When
     final CountDownLatch eventReceivedLatch = new CountDownLatch(1);

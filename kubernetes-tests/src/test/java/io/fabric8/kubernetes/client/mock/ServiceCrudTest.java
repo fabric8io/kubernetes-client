@@ -20,24 +20,21 @@ import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import org.junit.Rule;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient(crud = true)
 public class ServiceCrudTest {
-  @Rule
-  public KubernetesServer server = new KubernetesServer(true, true);
+
+  KubernetesClient client;
 
   @Test
   public void testCrud() {
-    KubernetesClient client = server.getClient();
 
     Service service1 = new ServiceBuilder().withNewMetadata().withName("svc1").and().withNewSpec().and().build();
     Service service2 = new ServiceBuilder().withNewMetadata().withName("svc2").addToLabels("foo", "bar").and().withNewSpec().and().build();

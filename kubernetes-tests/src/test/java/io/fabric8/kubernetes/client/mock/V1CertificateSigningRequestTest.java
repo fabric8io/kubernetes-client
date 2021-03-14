@@ -21,28 +21,21 @@ import io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequest
 import io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestList;
 import io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import org.junit.Rule;
-import org.junit.jupiter.api.BeforeEach;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 class V1CertificateSigningRequestTest {
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
 
-  private KubernetesClient client;
+  KubernetesMockServer server;
+  KubernetesClient client;
 
-  @BeforeEach
-  void initializeClient() {
-    client = server.getClient();
-  }
 
   @Test
   void testLoad() {

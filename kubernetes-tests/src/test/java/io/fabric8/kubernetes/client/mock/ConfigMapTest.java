@@ -15,28 +15,26 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.ConfigMapList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import org.junit.Rule;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 class ConfigMapTest {
 
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
-
+  KubernetesMockServer server;
+  KubernetesClient client;
+  
   @Test
   void testLiteralConfigMap() throws InterruptedException {
     HashMap<String, String> data = new HashMap<>();
@@ -52,7 +50,6 @@ class ConfigMapTest {
         .build())
       .once();
 
-    NamespacedKubernetesClient client = server.getClient();
     ConfigMapList cfgList = client.configMaps().list();
     assertNotNull(cfgList);
     assertEquals(1, cfgList.getAdditionalProperties().size());
@@ -63,7 +60,6 @@ class ConfigMapTest {
 
   @Test
   void testFromResourceWithFileConfigMap() throws InterruptedException {
-    KubernetesClient client = server.getClient();
     ConfigMap configMap = client.configMaps().load(getClass().getResourceAsStream("/test-application-properties-config-map.yml")).get();
     assertEquals("cfg1", configMap.getMetadata().getName());
 
@@ -81,7 +77,6 @@ class ConfigMapTest {
 
   @Test
   void testFromResourceConfigMap() throws InterruptedException {
-    KubernetesClient client = server.getClient();
     ConfigMap configMap = client.configMaps().load(getClass().getResourceAsStream("/test-config-map.yml")).get();
     assertEquals("cfg1", configMap.getMetadata().getName());
 

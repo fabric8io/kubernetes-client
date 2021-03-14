@@ -15,19 +15,16 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
-import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.api.model.ContainerBuilder;
 import io.fabric8.kubernetes.api.model.ContainerPortBuilder;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.OwnerReferenceBuilder;
-import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
-import io.fabric8.kubernetes.api.model.apps.Deployment;
+import io.fabric8.kubernetes.api.model.apps.*;
 import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
-import io.fabric8.kubernetes.api.model.apps.DeploymentList;
 import io.fabric8.kubernetes.api.model.apps.DeploymentListBuilder;
-import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetBuilder;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetListBuilder;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
@@ -36,14 +33,12 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.mockwebserver.RecordedRequest;
-import org.junit.Rule;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 import java.util.Collections;
@@ -51,17 +46,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 class DeploymentTest {
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
+
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   @Test
   void testList() {
@@ -77,7 +68,6 @@ class DeploymentTest {
       .and().build()).once();
 
 
-    KubernetesClient client = server.getClient();
     DeploymentList deploymentList = client.apps().deployments().list();
     assertNotNull(deploymentList);
     assertEquals(0, deploymentList.getItems().size());
@@ -100,7 +90,6 @@ class DeploymentTest {
       .addNewItem().and()
       .build()).once();
 
-    KubernetesClient client = server.getClient();
     DeploymentList deploymentList = client.apps().deployments()
       .withLabel("key1", "value1")
       .withLabel("key2", "value2")
@@ -126,7 +115,6 @@ class DeploymentTest {
     server.expect().withPath("/apis/apps/v1/namespaces/test/deployments/deployment1").andReturn(200, new DeploymentBuilder().build()).once();
     server.expect().withPath("/apis/apps/v1/namespaces/ns1/deployments/deployment2").andReturn(200, new DeploymentBuilder().build()).once();
 
-    KubernetesClient client = server.getClient();
 
     Deployment deployment = client.apps().deployments().withName("deployment1").get();
     assertNotNull(deployment);
@@ -206,8 +194,6 @@ class DeploymentTest {
     server.expect().withPath("/apis/apps/v1/namespaces/ns1/deployments/deployment2").andReturn(200, deployment2).once();
     server.expect().withPath("/apis/apps/v1/namespaces/ns1/deployments/deployment2").andReturn(200, new DeploymentBuilder(deployment2).editSpec().withReplicas(0).endSpec().build()).times(5);
 
-    KubernetesClient client = server.getClient();
-
     Boolean deleted = client.apps().deployments().withName("deployment1").delete();
     assertTrue(deleted);
 
@@ -273,7 +259,6 @@ class DeploymentTest {
       .endStatus()
       .build()).times(5);
 
-    KubernetesClient client = server.getClient();
 
     Boolean deleted = client.apps().deployments().inAnyNamespace().delete(deployment1, deployment2);
     assertTrue(deleted);
@@ -289,7 +274,6 @@ class DeploymentTest {
       .withReplicas(1)
       .endSpec()
       .build();
-    KubernetesClient client = server.getClient();
     NonNamespaceOperation<Deployment, DeploymentList, RollableScalableResource<Deployment>> deployOp =
       client.apps().deployments().inNamespace("test1");
     assertThrows(KubernetesClientException.class, () -> deployOp.delete(deployment1));
@@ -298,7 +282,6 @@ class DeploymentTest {
   @Test
   void testCreateWithNameMismatch() {
     Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withName("deployment1").withNamespace("test").and().build();
-    KubernetesClient client = server.getClient();
     RollableScalableResource<Deployment> deployOp = client
       .apps().deployments()
       .inNamespace("test1")
@@ -343,7 +326,6 @@ class DeploymentTest {
     server.expect().withPath("/apis/apps/v1/namespaces/ns1/deployments/deployment1").andReturn(200, deployment).always();
     server.expect().withPath("/api/v1/namespaces/ns1/pods?labelSelector=service%3Dhttp-server").andReturn(200, new KubernetesListBuilder().build()).once();
     server.expect().post().withPath("/apis/apps/v1/namespaces/ns1/deployments").andReturn(201, deployment).times(2);
-    KubernetesClient client = server.getClient();
 
     client.apps().deployments().inNamespace("ns1")
       .withName("deployment1")
@@ -377,7 +359,6 @@ class DeploymentTest {
       .withPath("/apis/apps/v1/namespaces/test/deployments/deployment1")
       .andReturn(200, serverDeployment).once();
 
-    KubernetesClient client = server.getClient();
 
     List<HasMetadata> resources = client.resourceList(clientDeployment).fromServer().get();
 
@@ -408,7 +389,6 @@ class DeploymentTest {
       .withPath("/apis/apps/v1/namespaces/test/deployments/deployment1/scale")
       .andReturn(200, scaleObj).once();
 
-    KubernetesClient client = server.getClient();
     Scale scaleResponse  = client.apps().deployments().inNamespace("test").withName("deployment1").scale();
     assertEquals("bar", scaleResponse.getMetadata().getLabels().get("foo"));
   }
@@ -425,7 +405,6 @@ class DeploymentTest {
       .withPath("/apis/apps/v1/namespaces/test/deployments/deployment1/scale")
       .andReturn(200, scaleObj).once();
 
-    KubernetesClient client = server.getClient();
 
     Scale scaleResponse  = client.apps().deployments().inNamespace("test").withName("deployment1").scale(scaleObj);
     assertEquals("bar", scaleResponse.getMetadata().getLabels().get("foo"));
@@ -443,7 +422,6 @@ class DeploymentTest {
       .andReturn(200, deployment1)
       .once();
 
-    KubernetesClient client = server.getClient();
     Deployment result = client.apps().deployments().inNamespace("test").create(deployment1);
     assertNotNull(result);
     assertEquals("deployment1", result.getMetadata().getName());
@@ -466,7 +444,6 @@ class DeploymentTest {
       .andReturn(200, deployment1)
       .once();
 
-    KubernetesClient client = server.getClient();
     NonNamespaceOperation<Deployment, DeploymentList, RollableScalableResource<Deployment>> deployOp =
       client.apps().deployments().inNamespace("test");
     // Will throw exception
@@ -488,7 +465,6 @@ class DeploymentTest {
           .withImage(imageToUpdate)
         .endContainer().endSpec().endTemplate().endSpec()
         .build()).once();
-    KubernetesClient client = server.getClient();
 
     // When
     Deployment deployment = client.apps().deployments().inNamespace("ns1").withName("deploy1")
@@ -497,7 +473,9 @@ class DeploymentTest {
     // Then
     assertNotNull(deployment);
     assertEquals(imageToUpdate, deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getImage());
-    RecordedRequest recordedRequest = server.getLastRequest();
+    int requestCount = server.getRequestCount();
+    RecordedRequest recordedRequest = null;
+    while(requestCount-- > 0)recordedRequest = server.takeRequest();
     assertEquals("PATCH", recordedRequest.getMethod());
     assertTrue(recordedRequest.getBody().readUtf8().contains(imageToUpdate));
   }
@@ -515,7 +493,6 @@ class DeploymentTest {
         .withImage(containerToImageMap.get("nginx"))
         .endContainer().endSpec().endTemplate().endSpec()
         .build()).once();
-    KubernetesClient client = server.getClient();
 
     // When
     Deployment deployment = client.apps().deployments().inNamespace("ns1").withName("deploy1")
@@ -524,7 +501,9 @@ class DeploymentTest {
     // Then
     assertNotNull(deployment);
     assertEquals(containerToImageMap.get("nginx"), deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getImage());
-    RecordedRequest recordedRequest = server.getLastRequest();
+    int requestCount = server.getRequestCount();
+    RecordedRequest recordedRequest = null;
+    while(requestCount-- > 0)recordedRequest = server.takeRequest();
     assertEquals("PATCH", recordedRequest.getMethod());
     assertTrue(recordedRequest.getBody().readUtf8().contains(containerToImageMap.get("nginx")));
   }
@@ -537,15 +516,15 @@ class DeploymentTest {
       .andReturn(HttpURLConnection.HTTP_OK, getDeploymentBuilder().build()).times(3);
     server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
       .andReturn(HttpURLConnection.HTTP_OK, getDeploymentBuilder().build()).once();
-    KubernetesClient client = server.getClient();
 
     // When
     Deployment deployment = client.apps().deployments().inNamespace("ns1").withName("deploy1")
       .rolling().pause();
 
     // Then
-    RecordedRequest recordedRequest = server.getLastRequest();
-    assertNotNull(deployment);
+    int requestCount = server.getRequestCount();
+    RecordedRequest recordedRequest = null;
+    while(requestCount-- > 0)recordedRequest = server.takeRequest();    assertNotNull(deployment);
     assertEquals("PATCH", recordedRequest.getMethod());
     assertEquals("{\"spec\":{\"paused\":true}}", recordedRequest.getBody().readUtf8());
   }
@@ -558,14 +537,15 @@ class DeploymentTest {
       .andReturn(HttpURLConnection.HTTP_OK, getDeploymentBuilder().build()).times(3);
     server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
       .andReturn(HttpURLConnection.HTTP_OK, getDeploymentBuilder().build()).once();
-    KubernetesClient client = server.getClient();
 
     // When
     Deployment deployment = client.apps().deployments().inNamespace("ns1").withName("deploy1")
       .rolling().resume();
 
     // Then
-    RecordedRequest recordedRequest = server.getLastRequest();
+    int requestCount = server.getRequestCount();
+    RecordedRequest recordedRequest = null;
+    while(requestCount-- > 0)recordedRequest = server.takeRequest();
     assertNotNull(deployment);
     assertEquals("PATCH", recordedRequest.getMethod());
     assertEquals("{\"spec\":{\"paused\":null}}", recordedRequest.getBody().readUtf8());
@@ -579,14 +559,15 @@ class DeploymentTest {
       .andReturn(HttpURLConnection.HTTP_OK, getDeploymentBuilder().build()).times(3);
     server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
       .andReturn(HttpURLConnection.HTTP_OK, getDeploymentBuilder().build()).once();
-    KubernetesClient client = server.getClient();
 
     // When
     Deployment deployment = client.apps().deployments().inNamespace("ns1").withName("deploy1")
       .rolling().restart();
 
     // Then
-    RecordedRequest recordedRequest = server.getLastRequest();
+    int requestCount = server.getRequestCount();
+    RecordedRequest recordedRequest = null;
+    while(requestCount-- > 0)recordedRequest = server.takeRequest();
     assertNotNull(deployment);
     assertEquals("PATCH", recordedRequest.getMethod());
     assertTrue(recordedRequest.getBody().readUtf8().contains("kubectl.kubernetes.io/restartedAt"));
@@ -651,14 +632,15 @@ class DeploymentTest {
       .andReturn(HttpURLConnection.HTTP_OK, getDeploymentBuilder().build()).times(3);
     server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
       .andReturn(HttpURLConnection.HTTP_OK, getDeploymentBuilder().build()).once();
-    KubernetesClient client = server.getClient();
 
     // When
     Deployment deployment = client.apps().deployments().inNamespace("ns1").withName("deploy1")
       .rolling().undo();
 
     // Then
-    RecordedRequest recordedRequest = server.getLastRequest();
+    int requestCount = server.getRequestCount();
+    RecordedRequest recordedRequest = null;
+    while(requestCount-- > 0)recordedRequest = server.takeRequest();
     assertNotNull(deployment);
     assertEquals("PATCH", recordedRequest.getMethod());
     assertTrue(recordedRequest.getBody().readUtf8().contains("\"app\":\"rs1\""));
@@ -715,7 +697,6 @@ class DeploymentTest {
     server.expect().get().withPath("/api/v1/namespaces/ns1/pods/deploy1-hk9nf/log?pretty=false")
       .andReturn(HttpURLConnection.HTTP_OK, "hello")
       .once();
-    KubernetesClient client = server.getClient();
 
     // When
     String log = client.apps().deployments().inNamespace("ns1").withName("deploy1").getLog();
@@ -754,7 +735,6 @@ class DeploymentTest {
   @Test
   void testDeploymentLoadWithoutApiVersion() {
     // Given
-    KubernetesClient client = server.getClient();
 
     // When
     List<HasMetadata> list = client.load(getClass().getResourceAsStream("/valid-deployment-without-apiversion.json")).get();

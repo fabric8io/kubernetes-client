@@ -23,24 +23,18 @@ import io.fabric8.openshift.api.model.ProjectBuilder;
 import io.fabric8.openshift.api.model.ProjectList;
 import io.fabric8.openshift.api.model.ProjectListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
-
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-@EnableRuleMigrationSupport
+@EnableOpenShiftMockClient
 class ProjectTest {
-  @Rule
-  public OpenShiftServer server = new OpenShiftServer();
+
+  OpenShiftMockServer server;
+  OpenShiftClient client;
 
   @Test
   void testList() {
@@ -49,7 +43,6 @@ class ProjectTest {
       .addNewItem().and().build()).once();
 
 
-    OpenShiftClient client = server.getOpenshiftClient();
 
     ProjectList projectList = client.projects().list();
     assertNotNull(projectList);
@@ -67,7 +60,6 @@ class ProjectTest {
       .withNewMetadata().withName("project2").endMetadata()
       .build()).once();
 
-    OpenShiftClient client = server.getOpenshiftClient();
 
     Project project = client.projects().withName("project1").get();
     assertNotNull(project);
@@ -87,7 +79,6 @@ class ProjectTest {
    server.expect().withPath("/apis/project.openshift.io/v1/projects/project1").andReturn(200, new ProjectBuilder().build()).once();
    server.expect().withPath("/apis/project.openshift.io/v1/projects/project2").andReturn( 200, new ProjectBuilder().build()).once();
 
-    OpenShiftClient client = server.getOpenshiftClient();
 
     Boolean deleted = client.projects().withName("project1").delete();
     assertNotNull(deleted);
@@ -192,7 +183,6 @@ class ProjectTest {
         .build()).once();
 
 
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     List<HasMetadata> result = client.projects().createProjectAndRoleBindings(name, description, displayName, adminUser, requestingUser);

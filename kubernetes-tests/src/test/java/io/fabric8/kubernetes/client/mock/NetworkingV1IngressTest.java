@@ -24,30 +24,25 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.Utils;
-import org.junit.Rule;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 class NetworkingV1IngressTest {
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
+
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   @Test
   void testLoad() {
-    KubernetesClient client = server.getClient();
     List<HasMetadata> itemList = client.load(getClass().getResourceAsStream("/test-v1-ingress.yml")).get();
 
     assertEquals(1, itemList.size());
@@ -70,7 +65,6 @@ class NetworkingV1IngressTest {
       .and().build()).once();
 
 
-    KubernetesClient client = server.getClient();
     IngressList ingressList = client.network().v1().ingresses().list();
     assertNotNull(ingressList);
     assertEquals(0, ingressList.getItems().size());
@@ -93,7 +87,6 @@ class NetworkingV1IngressTest {
       .addNewItem().and()
       .build()).once();
 
-    KubernetesClient client = server.getClient();
     IngressList ingressList = client.network().v1().ingresses()
       .withLabel("key1", "value1")
       .withLabel("key2","value2")
@@ -119,7 +112,6 @@ class NetworkingV1IngressTest {
     server.expect().withPath("/apis/networking.k8s.io/v1/namespaces/test/ingresses/ingress1").andReturn(HttpURLConnection.HTTP_OK, new IngressBuilder().build()).once();
     server.expect().withPath("/apis/networking.k8s.io/v1/namespaces/ns1/ingresses/ingress2").andReturn(HttpURLConnection.HTTP_OK, new IngressBuilder().build()).once();
 
-    KubernetesClient client = server.getClient();
 
     Ingress ingress = client.network().v1().ingresses().withName("ingress1").get();
     assertNotNull(ingress);
@@ -137,7 +129,6 @@ class NetworkingV1IngressTest {
     server.expect().withPath("/apis/networking.k8s.io/v1/namespaces/test/ingresses/ingress1").andReturn(HttpURLConnection.HTTP_OK, new IngressBuilder().build()).once();
     server.expect().withPath("/apis/networking.k8s.io/v1/namespaces/ns1/ingresses/ingress2").andReturn(HttpURLConnection.HTTP_OK, new IngressBuilder().build()).once();
 
-    KubernetesClient client = server.getClient();
 
     Boolean deleted = client.network().v1().ingresses().withName("ingress1").delete();
     assertTrue(deleted);
@@ -159,7 +150,6 @@ class NetworkingV1IngressTest {
     server.expect().withPath("/apis/networking.k8s.io/v1/namespaces/test/ingresses/ingress1").andReturn(HttpURLConnection.HTTP_OK, ingress1).once();
     server.expect().withPath("/apis/networking.k8s.io/v1/namespaces/ns1/ingresses/ingress2").andReturn(HttpURLConnection.HTTP_OK, ingress2).once();
 
-    KubernetesClient client = server.getClient();
 
     Boolean deleted = client.network().v1().ingresses().inAnyNamespace().delete(ingress1, ingress2);
     assertTrue(deleted);
@@ -171,7 +161,6 @@ class NetworkingV1IngressTest {
   @Test
   void testDeleteWithNamespaceMismatch() {
     Ingress ingress1 = new IngressBuilder().withNewMetadata().withName("ingress1").withNamespace("test").and().build();
-    KubernetesClient client = server.getClient();
     NonNamespaceOperation<Ingress, IngressList, Resource<Ingress>> ingressOp = client
       .network()
       .v1()
@@ -183,7 +172,6 @@ class NetworkingV1IngressTest {
   @Test
   void testCreateWithNameMismatch() {
     Ingress ingress1 = new IngressBuilder().withNewMetadata().withName("ingress1").withNamespace("test").and().build();
-    KubernetesClient client = server.getClient();
     Resource<Ingress> ingressOp = client.network().v1().ingresses().inNamespace("test1").withName("myingress1");
 
     Assertions.assertThrows(KubernetesClientException.class, () -> ingressOp.create(ingress1));
@@ -192,7 +180,6 @@ class NetworkingV1IngressTest {
   @Test
   void testIngressLoadWithoutApiVersion() {
     // Given
-    KubernetesClient client = server.getClient();
 
     // When
     List<HasMetadata> items = client.load(getClass().getResourceAsStream("/test-ingress-no-apiversion.yml")).get();
@@ -216,7 +203,6 @@ class NetworkingV1IngressTest {
       .andReturn(HttpURLConnection.HTTP_OK, ingressFromServer).times(2);
     server.expect().put().withPath("/apis/networking.k8s.io/v1/namespaces/ns1/ingresses/ing1")
       .andReturn(HttpURLConnection.HTTP_OK, ingressUpdated).once();
-    KubernetesClient client = server.getClient();
 
     // When
     ingressUpdated = client.network().v1().ingresses().inNamespace("ns1").createOrReplace(ingressUpdated);

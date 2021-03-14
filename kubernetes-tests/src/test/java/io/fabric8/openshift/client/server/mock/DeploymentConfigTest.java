@@ -16,43 +16,35 @@
 
 package io.fabric8.openshift.client.server.mock;
 
-import static org.awaitility.Awaitility.await;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import io.fabric8.kubernetes.api.builder.TypedVisitor;
+import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.api.model.APIGroupListBuilder;
 import io.fabric8.kubernetes.api.model.ContainerFluent;
-import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
-import io.fabric8.kubernetes.api.model.WatchEvent;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.utils.Utils;
-import io.fabric8.openshift.api.model.DeploymentConfigSpecFluent;
-import okhttp3.mockwebserver.RecordedRequest;
-import org.junit.Rule;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
-
-import io.fabric8.openshift.api.model.DeploymentConfig;
+import io.fabric8.openshift.api.model.*;
 import io.fabric8.openshift.api.model.DeploymentConfigBuilder;
-import io.fabric8.openshift.api.model.DeploymentConfigList;
 import io.fabric8.openshift.api.model.DeploymentConfigListBuilder;
+import io.fabric8.openshift.api.model.DeploymentConfigSpecFluent;
 import io.fabric8.openshift.client.OpenShiftClient;
+import okhttp3.mockwebserver.RecordedRequest;
+import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.net.HttpURLConnection;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-@EnableRuleMigrationSupport
+import static org.awaitility.Awaitility.await;
+import static org.junit.jupiter.api.Assertions.*;
+
+@EnableOpenShiftMockClient
 class DeploymentConfigTest {
-  @Rule
-  public OpenShiftServer server = new OpenShiftServer();
+
+  OpenShiftMockServer server;
+  OpenShiftClient client;
 
   @Test
   void testList() {
@@ -77,7 +69,6 @@ class DeploymentConfigTest {
       .addNewItem()
       .and().build()).once();
 
-    OpenShiftClient client = server.getOpenshiftClient();
 
     DeploymentConfigList buildConfigList = client.deploymentConfigs().list();
     assertNotNull(buildConfigList);
@@ -102,7 +93,6 @@ class DeploymentConfigTest {
       .withNewMetadata().withName("dc2").endMetadata()
       .build()).once();
 
-    OpenShiftClient client = server.getOpenshiftClient();
 
     DeploymentConfig buildConfig = client.deploymentConfigs().withName("dc1").get();
     assertNotNull(buildConfig);
@@ -160,7 +150,6 @@ class DeploymentConfigTest {
    server.expect().withPath("/apis/apps.openshift.io/v1/namespaces/test/deploymentconfigs/dc1").andReturn(200, dc1).times(2);
    server.expect().withPath("/apis/apps.openshift.io/v1/namespaces/ns1/deploymentconfigs/dc2").andReturn( 200, dc2).times(5);
 
-    OpenShiftClient client = server.getOpenshiftClient();
 
     Boolean deleted = client.deploymentConfigs().withName("dc1").delete();
     assertNotNull(deleted);
@@ -169,7 +158,9 @@ class DeploymentConfigTest {
 
     deleted = client.deploymentConfigs().inNamespace("ns1").withName("dc2").delete();
     assertTrue(deleted);
-    RecordedRequest recordedRequest = server.getLastRequest();
+    int requestCount = server.getRequestCount();
+    RecordedRequest recordedRequest = null;
+    while(requestCount-- > 0)recordedRequest = server.takeRequest();
     assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Background\"}", recordedRequest.getBody().readUtf8());
   }
 
@@ -179,11 +170,12 @@ class DeploymentConfigTest {
       .withPath("/apis/apps.openshift.io/v1/namespaces/test/deploymentconfigs/dc1")
       .andReturn(200, new DeploymentConfigBuilder().build())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     Boolean isDeleted = client.deploymentConfigs().inNamespace("test").withName("dc1").withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
     assertTrue(isDeleted);
-    RecordedRequest recordedRequest = server.getLastRequest();
+    int requestCount = server.getRequestCount();
+    RecordedRequest recordedRequest = null;
+    while(requestCount-- > 0)recordedRequest = server.takeRequest();
     assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Orphan\"}", recordedRequest.getBody().readUtf8());
   }
 
@@ -199,7 +191,6 @@ class DeploymentConfigTest {
 						.withNewStatus().withLatestVersion(2L).endStatus().build())
 				.once();
 
-		OpenShiftClient client = server.getOpenshiftClient();
 
 		DeploymentConfig deploymentConfig = client.deploymentConfigs().withName("dc1").deployLatest();
 		assertNotNull(deploymentConfig);
@@ -218,7 +209,6 @@ class DeploymentConfigTest {
         .withNewStatus().withLatestVersion(1L).endStatus().build())
       .once();
 
-    OpenShiftClient client = server.getOpenshiftClient();
 
     DeploymentConfig deploymentConfig = client.deploymentConfigs().withName("dc1").deployLatest();
     assertNotNull(deploymentConfig);
@@ -259,7 +249,6 @@ class DeploymentConfigTest {
     server.expect().get().withPath("/apis/apps.openshift.io/v1/namespaces/ns1/deploymentconfigs/dc1/log")
       .andReturn(HttpURLConnection.HTTP_OK, "testlog")
       .times(2);
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     String log = client.deploymentConfigs().inNamespace("ns1").withName("dc1").getLog();
@@ -289,7 +278,6 @@ class DeploymentConfigTest {
     server.expect().get().withPath("/apis/apps.openshift.io/v1/namespaces/ns1/deploymentconfigs/dc1/log?follow=true")
       .andReturn(HttpURLConnection.HTTP_OK, "testlog")
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
     // When
@@ -314,7 +302,6 @@ class DeploymentConfigTest {
     server.expect().get().withPath("/apis/apps.openshift.io/v1/namespaces/ns1/deploymentconfigs/dc1")
       .andReturn(HttpURLConnection.HTTP_OK, deploymentConfig)
       .always();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     deploymentConfig = client.deploymentConfigs().inNamespace("ns1").withName("dc1").waitUntilReady(10, TimeUnit.SECONDS);
@@ -337,7 +324,6 @@ class DeploymentConfigTest {
     server.expect().get().withPath("/apis/apps.openshift.io/v1/namespaces/ns1/deploymentconfigs/dc1")
       .andReturn(HttpURLConnection.HTTP_OK, deploymentConfig)
       .always();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     boolean result =  client.deploymentConfigs().inNamespace("ns1").withName("dc1").isReady();

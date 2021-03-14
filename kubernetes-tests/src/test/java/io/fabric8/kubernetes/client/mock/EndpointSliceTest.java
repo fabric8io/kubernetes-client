@@ -20,27 +20,20 @@ import io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointSliceBuilder;
 import io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointSliceList;
 import io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointSliceListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import org.junit.Rule;
-import org.junit.jupiter.api.BeforeEach;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 class EndpointSliceTest {
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
 
-  private KubernetesClient client;
+  KubernetesMockServer server;
+  KubernetesClient client;
 
-  @BeforeEach
-  void init() {
-    this.client = server.getClient();
-  }
 
   @Test
   void load() {

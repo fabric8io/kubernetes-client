@@ -22,22 +22,19 @@ import io.fabric8.openshift.api.model.ClusterResourceQuotaBuilder;
 import io.fabric8.openshift.api.model.ClusterResourceQuotaList;
 import io.fabric8.openshift.api.model.ClusterResourceQuotaListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-@EnableRuleMigrationSupport
+@EnableOpenShiftMockClient
 class ClusterResourceQuotaTest {
-  @Rule
-  public OpenShiftServer server = new OpenShiftServer();
+
+  OpenShiftMockServer server;
+  OpenShiftClient client;
 
   @Test
   void create() {
@@ -47,7 +44,6 @@ class ClusterResourceQuotaTest {
       .withPath("/apis/quota.openshift.io/v1/clusterresourcequotas")
       .andReturn(HttpURLConnection.HTTP_OK, featureGate)
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     featureGate = client.quotas().clusterResourceQuotas().create(featureGate);
@@ -64,7 +60,6 @@ class ClusterResourceQuotaTest {
       .withPath("/apis/quota.openshift.io/v1/clusterresourcequotas/foo")
       .andReturn(HttpURLConnection.HTTP_OK, getClusterResourceQuota())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     ClusterResourceQuota f = client.quotas().clusterResourceQuotas().withName("foo").get();
@@ -81,7 +76,6 @@ class ClusterResourceQuotaTest {
       .withPath("/apis/quota.openshift.io/v1/clusterresourcequotas")
       .andReturn(HttpURLConnection.HTTP_OK, new ClusterResourceQuotaListBuilder().withItems(getClusterResourceQuota()).build())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     ClusterResourceQuotaList fgList = client.quotas().clusterResourceQuotas().list();
@@ -99,7 +93,6 @@ class ClusterResourceQuotaTest {
       .withPath("/apis/quota.openshift.io/v1/clusterresourcequotas/foo")
       .andReturn(HttpURLConnection.HTTP_OK, getClusterResourceQuota())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     Boolean deleted = client.quotas().clusterResourceQuotas().withName("foo").delete();

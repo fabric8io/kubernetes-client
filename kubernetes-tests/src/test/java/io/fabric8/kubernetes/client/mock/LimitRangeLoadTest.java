@@ -18,23 +18,21 @@ package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.LimitRange;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import org.junit.Rule;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 public class LimitRangeLoadTest {
 
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   @Test
   public void load() {
-    KubernetesClient client = server.getClient();
     LimitRange limitRange = client.limitRanges().load(getClass().getResourceAsStream("/test-limitRange.yml")).get();
     assertNotNull(limitRange);
     assertEquals("resource-limits", limitRange.getMetadata().getName());

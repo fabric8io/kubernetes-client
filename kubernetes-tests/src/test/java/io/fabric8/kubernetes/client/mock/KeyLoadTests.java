@@ -16,9 +16,9 @@
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.client.internal.CertUtils;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.io.IOException;
 import java.security.KeyStore;
@@ -29,7 +29,7 @@ import java.security.spec.InvalidKeySpecException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 public class KeyLoadTests {
   @Test
   public void testECKeyLoad() throws InvalidKeySpecException, CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {

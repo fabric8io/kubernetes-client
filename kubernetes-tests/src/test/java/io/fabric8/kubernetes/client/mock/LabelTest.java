@@ -20,12 +20,11 @@ import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.Utils;
-import org.junit.Rule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,10 +32,11 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 class LabelTest {
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
+
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   static Pod pod1 = null, pod2 = null;
 
@@ -74,7 +74,6 @@ class LabelTest {
       .andReturn(200, new PodListBuilder().withItems(pod1, pod2).build())
       .once();
 
-    KubernetesClient client = server.getClient();
 
     PodList list = client.pods().inNamespace("test").list();
     assertNotNull(list);
@@ -95,7 +94,6 @@ class LabelTest {
       .andReturn(200, new PodListBuilder().withItems(pod2).build())
       .once();
 
-    KubernetesClient client = server.getClient();
     Map<String, String> filterLabels = new HashMap<>();
 
     filterLabels.put("foo", "bar");
@@ -124,7 +122,6 @@ class LabelTest {
       .andReturn(200, new PodListBuilder().withItems(pod2).build())
       .once();
 
-    KubernetesClient client = server.getClient();
     PodList list = client.pods().inNamespace("test").withLabel("foo").list();
     assertNotNull(list);
     assertEquals(1, list.getItems().size());
@@ -148,7 +145,6 @@ class LabelTest {
       .andReturn(200, new PodListBuilder().withItems(pod1).build())
       .once();
 
-    KubernetesClient client = server.getClient();
     Map<String, String> filterLabels = new HashMap<>();
 
     filterLabels.put("foo", "bar");
@@ -177,7 +173,6 @@ class LabelTest {
       .andReturn(200, new PodListBuilder().withItems(pod1).build())
       .once();
 
-    KubernetesClient client = server.getClient();
     PodList list = client.pods().inNamespace("test").withoutLabel("foo").list();
     assertNotNull(list);
     assertEquals(1, list.getItems().size());
@@ -197,7 +192,6 @@ class LabelTest {
       .andReturn(200, new PodListBuilder().withItems(pod2).build())
       .once();
 
-    KubernetesClient client = server.getClient();
     Map<String, String> filterLabels = new HashMap<>();
 
     PodList list = client.pods().inNamespace("test").withLabelIn("foo", "bar").list();
@@ -220,7 +214,6 @@ class LabelTest {
       .andReturn(200, new PodListBuilder().withItems(pod1).build())
       .once();
 
-    KubernetesClient client = server.getClient();
     Map<String, String> filterLabels = new HashMap<>();
 
     PodList list = client.pods().inNamespace("test").withLabelNotIn("foo", "bar").list();

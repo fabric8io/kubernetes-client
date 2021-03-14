@@ -20,27 +20,21 @@ import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.apps.DeploymentList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import org.junit.Rule;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient(crud = true)
 class DeploymentCrudTest {
-  @Rule
-  public KubernetesServer server = new KubernetesServer(true, true);
+
+  KubernetesClient client;
 
   @Test
   void testCrud() {
-    KubernetesClient client = server.getClient();
 
     Deployment deployment1 = new DeploymentBuilder().withNewMetadata()
       .withName("deployment1")
@@ -107,7 +101,6 @@ class DeploymentCrudTest {
   @DisplayName("Should replace Deployment in CRUD server")
   void testReplace() {
     // Given
-    KubernetesClient client = server.getClient();
     Deployment deployment1 = new DeploymentBuilder().withNewMetadata()
       .withName("d1")
       .withNamespace("ns1")

@@ -20,25 +20,20 @@ import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.api.model.SecretBuilder;
 import io.fabric8.kubernetes.api.model.SecretList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import org.junit.Rule;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient(crud = true)
 public class SecretCrudTest {
-  @Rule
-  public KubernetesServer server = new KubernetesServer(true, true);
+
+  KubernetesClient client;
 
   @Test
   public void testCrud() {
-    KubernetesClient client = server.getClient();
 
     Secret secret1 = new SecretBuilder()
       .withNewMetadata().withName("secret1").addToLabels("foo", "bar").endMetadata()

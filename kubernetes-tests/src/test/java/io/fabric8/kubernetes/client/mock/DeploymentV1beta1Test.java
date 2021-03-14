@@ -15,9 +15,6 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
-import java.net.HttpURLConnection;
-import java.util.Collections;
-
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.api.model.extensions.Deployment;
@@ -25,18 +22,21 @@ import io.fabric8.kubernetes.api.model.extensions.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollbackBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import org.junit.Rule;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.net.HttpURLConnection;
+import java.util.Collections;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 class DeploymentV1beta1Test {
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
+
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   @Test
   void testCreateOrReplace() {
@@ -73,7 +73,6 @@ class DeploymentV1beta1Test {
       .andReturn(HttpURLConnection.HTTP_OK, newDeployment)
       .once();
 
-    KubernetesClient client = server.getClient();
 
     Deployment result = client.extensions().deployments().inNamespace("test").createOrReplace(newDeployment);
     assertNotNull(result);
@@ -89,7 +88,6 @@ class DeploymentV1beta1Test {
       .build();
 
     Status status = new StatusBuilder().build();
-    KubernetesClient client = server.getClient();
     server.expect()
       .post()
       .withPath("/apis/extensions/v1beta1/namespaces/test/deployments/deployment1/rollback")

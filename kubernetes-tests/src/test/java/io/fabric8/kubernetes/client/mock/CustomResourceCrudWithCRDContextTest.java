@@ -20,36 +20,32 @@ import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.mock.crd.EntandoBundleRelease;
 import io.fabric8.kubernetes.client.mock.crd.EntandoBundleReleaseList;
 import io.fabric8.kubernetes.client.mock.crd.EntandoBundleReleaseSpec;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.internal.KubernetesDeserializer;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
-
-import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient(crud = true)
 class CustomResourceCrudWithCRDContextTest {
-  @Rule
-  public KubernetesServer kubernetesServer = new KubernetesServer(true, true, Collections.singletonList(new CustomResourceDefinitionContext.Builder()
-    .withScope("Namespaced")
-    .withPlural("entandobundlereleases")
-    .withVersion("v1alpha1")
-    .withGroup("demo.fabric8.io")
-    .withKind("EntandoBundleRelease")
-    .build()));
+//  @Rule
+//  public KubernetesServer kubernetesServer = new KubernetesServer(true, true, Collections.singletonList(new CustomResourceDefinitionContext.Builder()
+//    .withScope("Namespaced")
+//    .withPlural("entandobundlereleases")
+//    .withVersion("v1alpha1")
+//    .withGroup("demo.fabric8.io")
+//    .withKind("EntandoBundleRelease")
+//    .build()));
+
+  KubernetesClient client;
 
   @Test
   void testCreateAndGet() {
     // Given
-    KubernetesClient client = kubernetesServer.getClient();
     KubernetesDeserializer.registerCustomKind("demo.fabric8.io/v1alpha1", "EntandoBundleRelease", EntandoBundleRelease.class);
     MixedOperation<EntandoBundleRelease, EntandoBundleReleaseList, Resource<EntandoBundleRelease>> ebrClient = client
       .customResources(EntandoBundleRelease.class, EntandoBundleReleaseList.class);
@@ -66,7 +62,6 @@ class CustomResourceCrudWithCRDContextTest {
   @Test
   void testCreateAndGetWithInferredContext() {
     // Given
-    KubernetesClient client = kubernetesServer.getClient();
     KubernetesDeserializer.registerCustomKind("demo.fabric8.io/v1alpha1", "EntandoBundleRelease", EntandoBundleRelease.class);
     MixedOperation<EntandoBundleRelease, KubernetesResourceList<EntandoBundleRelease>, Resource<EntandoBundleRelease>> ebrClient = client.customResources(EntandoBundleRelease.class);
 

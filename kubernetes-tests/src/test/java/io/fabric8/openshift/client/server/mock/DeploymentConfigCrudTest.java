@@ -20,23 +20,21 @@ import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigBuilder;
 import io.fabric8.openshift.api.model.DeploymentConfigList;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableRuleMigrationSupport
+@EnableOpenShiftMockClient(crud = true)
 class DeploymentConfigCrudTest {
-  @Rule
-  public OpenShiftServer server = new OpenShiftServer(true, true);
+
+  OpenShiftMockServer server;
+  OpenShiftClient client;
 
   @Test
   void testCrud() {
-    OpenShiftClient client = server.getOpenshiftClient();
 
     DeploymentConfig deploymentConfig1 = new DeploymentConfigBuilder().withNewMetadata()
       .withName("deploymentConfig1")

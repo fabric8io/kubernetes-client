@@ -18,34 +18,29 @@ package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HorizontalPodAutoscaler;
-import io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HorizontalPodAutoscalerList;
 import io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HorizontalPodAutoscalerBuilder;
+import io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HorizontalPodAutoscalerList;
 import io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HorizontalPodAutoscalerListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.Utils;
-import org.junit.Rule;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 public class V2beta2HorizontalPodAutoscalerTest {
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
+
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   @Test
   void testLoadAsPlainList() {
-    KubernetesClient client = server.getClient();
     List<HasMetadata> itemsList = client.load(getClass().getResourceAsStream("/test-v2beta2-hpa.yml")).get();
 
     assertNotNull(itemsList);
@@ -63,7 +58,6 @@ public class V2beta2HorizontalPodAutoscalerTest {
       .addNewItem().and()
       .build()).once();
 
-    KubernetesClient client = server.getClient();
     HorizontalPodAutoscalerList horizontalPodAutoscalerList = client.autoscaling().v2beta2().horizontalPodAutoscalers().inNamespace("test").list();
     assertNotNull(horizontalPodAutoscalerList);
     assertEquals(0, horizontalPodAutoscalerList.getItems().size());
@@ -82,7 +76,6 @@ public class V2beta2HorizontalPodAutoscalerTest {
       .addNewItem().and()
       .build()).once();
 
-    KubernetesClient client = server.getClient();
     HorizontalPodAutoscalerList horizontalPodAutoscalerList = client.autoscaling().v2beta2().horizontalPodAutoscalers()
       .withLabel("key1", "value1")
       .withLabel("key2","value2")
@@ -104,7 +97,6 @@ public class V2beta2HorizontalPodAutoscalerTest {
     server.expect().withPath("/apis/autoscaling/v2beta2/namespaces/test/horizontalpodautoscalers/horizontalpodautoscaler1").andReturn(200, new HorizontalPodAutoscalerBuilder().build()).once();
     server.expect().withPath("/apis/autoscaling/v2beta2/namespaces/ns1/horizontalpodautoscalers/horizontalpodautoscaler2").andReturn(200, new HorizontalPodAutoscalerBuilder().build()).once();
 
-    KubernetesClient client = server.getClient();
     HorizontalPodAutoscaler horizontalPodAutoscaler = client.autoscaling().v2beta2().horizontalPodAutoscalers().inNamespace("test").withName("horizontalpodautoscaler1").get();
     assertNotNull(horizontalPodAutoscaler);
 
@@ -120,7 +112,6 @@ public class V2beta2HorizontalPodAutoscalerTest {
 
     Assertions.assertThrows(KubernetesClientException.class, () -> {
       server.expect().withPath("/apis/autoscaling/v2beta2/namespaces/test/horizontalpodautoscalers/horizontalpodautoscaler").andReturn(404, "error message from kubernetes").always();
-      KubernetesClient client = server.getClient();
 
       client.autoscaling().v2beta2().horizontalPodAutoscalers().inNamespace("test").withName("horizontalpodautoscaler").edit(h -> h);
     });
@@ -131,7 +122,6 @@ public class V2beta2HorizontalPodAutoscalerTest {
     server.expect().withPath("/apis/autoscaling/v2beta2/namespaces/test/horizontalpodautoscalers/horizontalpodautoscaler1").andReturn(200, new HorizontalPodAutoscalerBuilder().build()).once();
     server.expect().withPath("/apis/autoscaling/v2beta2/namespaces/ns1/horizontalpodautoscalers/horizontalpodautoscaler2").andReturn(200, new HorizontalPodAutoscalerBuilder().build()).once();
 
-    KubernetesClient client = server.getClient();
     Boolean deleted = client.autoscaling().v2beta2().horizontalPodAutoscalers().inNamespace("test").withName("horizontalpodautoscaler1").delete();
     assertTrue(deleted);
 
@@ -151,7 +141,6 @@ public class V2beta2HorizontalPodAutoscalerTest {
     server.expect().withPath("/apis/autoscaling/v2beta2/namespaces/test/horizontalpodautoscalers/horizontalpodautoscaler1").andReturn(200, horizontalPodAutoscaler1).once();
     server.expect().withPath("/apis/autoscaling/v2beta2/namespaces/ns1/horizontalpodautoscalers/horizontalpodautoscaler2").andReturn(200, horizontalPodAutoscaler2).once();
 
-    KubernetesClient client = server.getClient();
     Boolean deleted = client.autoscaling().v2beta2().horizontalPodAutoscalers().inAnyNamespace().delete(horizontalPodAutoscaler1, horizontalPodAutoscaler2);
     assertTrue(deleted);
 
@@ -163,14 +152,12 @@ public class V2beta2HorizontalPodAutoscalerTest {
   public void testCreateWithNameMismatch() {
     Assertions.assertThrows(KubernetesClientException.class, () -> {
       HorizontalPodAutoscaler horizontalPodAutoscaler1 = new HorizontalPodAutoscalerBuilder().withNewMetadata().withName("horizontalpodautoscaler1").withNamespace("test").endMetadata().build();
-      KubernetesClient client = server.getClient();
       client.autoscaling().v2beta2().horizontalPodAutoscalers().inNamespace("test").withName("horizontalpodautoscaler1").create(horizontalPodAutoscaler1);
     });
   }
 
   @Test
   public void testLoadFromFile() {
-    KubernetesClient client = server.getClient();
     HorizontalPodAutoscaler horizontalPodAutoscaler = client.autoscaling().v2beta2().horizontalPodAutoscalers().load(getClass().getResourceAsStream("/test-horizontalpodautoscaler.yml")).get();
     assertEquals("php-apache", horizontalPodAutoscaler.getMetadata().getName());
   }
@@ -192,7 +179,6 @@ public class V2beta2HorizontalPodAutoscalerTest {
 
     server.expect().withPath("/apis/autoscaling/v2beta2/namespaces/test/horizontalpodautoscalers/test-hpa").andReturn(200, horizontalPodAutoscaler).once();
 
-    KubernetesClient client = server.getClient();
     horizontalPodAutoscaler = client.autoscaling().v2beta2().horizontalPodAutoscalers().inNamespace("test").withName("test-hpa").get();
     assertNotNull(horizontalPodAutoscaler);
   }

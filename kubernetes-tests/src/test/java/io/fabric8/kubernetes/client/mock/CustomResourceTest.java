@@ -16,10 +16,22 @@
 
 package io.fabric8.kubernetes.client.mock;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import io.fabric8.kubernetes.api.model.*;
+import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
+import io.fabric8.kubernetes.api.model.StatusBuilder;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionList;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionListBuilder;
+import io.fabric8.kubernetes.client.*;
+import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
+import io.fabric8.kubernetes.client.utils.Serialization;
+import io.fabric8.kubernetes.client.utils.Utils;
+import okhttp3.mockwebserver.RecordedRequest;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -30,38 +42,15 @@ import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import io.fabric8.kubernetes.api.model.DeleteOptions;
-import io.fabric8.kubernetes.api.model.ListOptions;
-import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
-import io.fabric8.kubernetes.api.model.Status;
-import io.fabric8.kubernetes.api.model.StatusBuilder;
-import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.Watcher;
-import io.fabric8.kubernetes.api.model.WatchEvent;
-import io.fabric8.kubernetes.client.WatcherException;
-import io.fabric8.kubernetes.client.utils.Serialization;
-import okhttp3.mockwebserver.RecordedRequest;
-import org.junit.Rule;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
+import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionList;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionListBuilder;
-import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import io.fabric8.kubernetes.client.utils.Utils;
-
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 class CustomResourceTest {
   private static final Long WATCH_EVENT_PERIOD = 5L;
 
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   private final CustomResourceDefinitionContext customResourceDefinitionContext = new CustomResourceDefinitionContext.Builder()
     .withGroup("test.fabric8.io")
@@ -73,7 +62,6 @@ class CustomResourceTest {
 
   @Test
   void testLoad() throws IOException {
-    KubernetesClient client = server.getClient();
     Map<String, Object> customResource = client.customResource(customResourceDefinitionContext).load(getClass().getResourceAsStream("/test-hello-cr.yml"));
     assertNotNull(customResource);
     assertEquals("example-hello", ((Map<String, Object>)customResource.get("metadata")).get("name").toString());
@@ -89,7 +77,7 @@ class CustomResourceTest {
 
     final String newCrdObject = "{\"apiVersion\": \"test.fabric8.io/v1alpha1\",\"kind\": \"Hello\"," +
       "\"metadata\": {\"name\": \"example-hello\"},\"spec\": {\"size\": 3}}";
-    Map<String, Object> resource = server.getClient().customResource(customResourceDefinitionContext).create("ns1", newCrdObject);
+    Map<String, Object> resource = client.customResource(customResourceDefinitionContext).create("ns1", newCrdObject);
 
     final Map<String, String> metadata = (Map<String, String>)resource.get("metadata");
     assertEquals("example-hello", metadata.get("name"));
@@ -107,7 +95,6 @@ class CustomResourceTest {
     server.expect().post().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos").andReturn(HttpURLConnection.HTTP_CONFLICT, jsonObject).once();
     server.expect().put().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/example-hello").andReturn(HttpURLConnection.HTTP_OK, jsonObject).once();
     server.expect().get().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/example-hello").andReturn(HttpURLConnection.HTTP_OK, jsonObject).once();
-    KubernetesClient client = server.getClient();
 
     KubernetesClientException exception = Assertions.assertThrows(KubernetesClientException.class,
       () -> client.customResource(customResourceDefinitionContext).createOrReplace("ns1", jsonObject));
@@ -126,7 +113,6 @@ class CustomResourceTest {
       "\"metadata\": {\"name\": \"example-hello\"},\"spec\": {\"size\": 3},\"uid\":\"3525437a-6a56-11e9-8787-525400b18c1d\"}]}";
 
     server.expect().get().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos").andReturn(HttpURLConnection.HTTP_CREATED, jsonObject).once();
-    KubernetesClient client = server.getClient();
 
     Map<String, Object> list = client.customResource(customResourceDefinitionContext).list("ns1");
     List<Map<String, Object>> items = (List<Map<String, Object>>)list.get("items");
@@ -140,7 +126,6 @@ class CustomResourceTest {
       "\"metadata\": {\"name\": \"example-hello\", \"labels\": {\"scope\":\"test\"}},\"spec\": {\"size\": 3},\"uid\":\"3525437a-6a56-11e9-8787-525400b18c1d\"}]}";
 
     server.expect().get().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos?labelSelector=org%3Dfabric8,scope%3Dtest").andReturn(HttpURLConnection.HTTP_CREATED, jsonObject).once();
-    KubernetesClient client = server.getClient();
 
     Map<String, String> labels = new HashMap<>();
     labels.put("org", "fabric8");
@@ -160,7 +145,6 @@ class CustomResourceTest {
 
     server.expect().get().withPath("/apis/apiextensions.k8s.io/v1beta1/customresourcedefinitions?fieldSelector=" + Utils
         .toUrlEncoded("key1=value1,key2=value2,key3!=value3,key3!=value4")).andReturn(HttpURLConnection.HTTP_CREATED, customResourceDefinitionList).once();
-    KubernetesClient client = server.getClient();
 
     CustomResourceDefinitionList list = client.apiextensions().v1beta1().customResourceDefinitions()
       .withField("key1", "value1")
@@ -180,7 +164,6 @@ class CustomResourceTest {
       "\"metadata\": {\"name\": \"example-hello\"},\"spec\": {\"size\": 3}}";
     server.expect().get().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/example-hello").andReturn(HttpURLConnection.HTTP_OK, jsonObject).once();
 
-    KubernetesClient client = server.getClient();
     Map<String, Object> customResource = client.customResource(customResourceDefinitionContext).get("ns1", "example-hello");
     assertNotNull(customResource);
     assertEquals("example-hello", ((Map<String, Object>)customResource.get("metadata")).get("name").toString());
@@ -193,7 +176,6 @@ class CustomResourceTest {
     server.expect().put().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/example-hello").andReturn(HttpURLConnection.HTTP_OK, jsonObjectNew).once();
     server.expect().get().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/example-hello").andReturn(HttpURLConnection.HTTP_OK, jsonObjectNew).once();
 
-    KubernetesClient client = server.getClient();
     Map<String, Object> customResource = client.customResource(customResourceDefinitionContext).edit("ns1", "example-hello", jsonObjectNew);
     assertNotNull(customResource);
     assertEquals(4, ((Map<String, Object>)customResource.get("spec")).get("size"));
@@ -203,7 +185,6 @@ class CustomResourceTest {
   void testDelete() throws IOException {
     // Given
     server.expect().delete().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/example-hello").andReturn(HttpURLConnection.HTTP_OK, "{\"metadata\":{},\"apiVersion\":\"v1\",\"kind\":\"Status\",\"details\":{\"name\":\"prometheus-example-rules\",\"group\":\"monitoring.coreos.com\",\"kind\":\"prometheusrules\",\"uid\":\"b3d085bd-6a5c-11e9-8787-525400b18c1d\"},\"status\":\"Success\"}").once();
-    KubernetesClient client = server.getClient();
 
     // When
     boolean result = client.customResource(customResourceDefinitionContext).delete("ns1", "example-hello");
@@ -223,7 +204,6 @@ class CustomResourceTest {
       .withCode(HttpURLConnection.HTTP_NOT_FOUND)
       .build();
     server.expect().delete().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/idontexist").andReturn(HttpURLConnection.HTTP_NOT_FOUND, Serialization.jsonMapper().writeValueAsString(notFoundStatus)).once();
-    KubernetesClient client = server.getClient();
 
     // When
     boolean isDeleted = client.customResource(customResourceDefinitionContext).delete("ns1", "idontexist");
@@ -236,7 +216,6 @@ class CustomResourceTest {
   void testCascadingDeletion() throws IOException, InterruptedException {
     // Given
     server.expect().delete().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/example-hello").andReturn(HttpURLConnection.HTTP_OK, "{\"metadata\":{},\"apiVersion\":\"v1\",\"kind\":\"Status\",\"details\":{\"name\":\"prometheus-example-rules\",\"group\":\"monitoring.coreos.com\",\"kind\":\"prometheusrules\",\"uid\":\"b3d085bd-6a5c-11e9-8787-525400b18c1d\"},\"status\":\"Success\"}").once();
-    KubernetesClient client = server.getClient();
 
     // When
     boolean result = client.customResource(customResourceDefinitionContext)
@@ -245,7 +224,9 @@ class CustomResourceTest {
     // Then
     assertTrue(result);
 
-    RecordedRequest request = server.getLastRequest();
+    int requestCount = server.getRequestCount();
+    RecordedRequest request = null;
+    while(requestCount-- > 0)request = server.takeRequest();
     assertEquals("DELETE", request.getMethod());
     assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"orphanDependents\":false}",
       request.getBody().readUtf8());
@@ -256,15 +237,15 @@ class CustomResourceTest {
     // Given
     server.expect().delete().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/example-hello").andReturn(HttpURLConnection.HTTP_OK, "{\"metadata\":{},\"apiVersion\":\"v1\",\"kind\":\"Status\",\"details\":{\"name\":\"prometheus-example-rules\",\"group\":\"monitoring.coreos.com\",\"kind\":\"prometheusrules\",\"uid\":\"b3d085bd-6a5c-11e9-8787-525400b18c1d\"},\"status\":\"Success\"}").once();
 
-    KubernetesClient client = server.getClient();
-
     // When
     boolean result = client.customResource(customResourceDefinitionContext)
       .delete("ns1", "example-hello", "Orphan");
 
     // Then
     assertTrue(result);
-    RecordedRequest request = server.getLastRequest();
+    int requestCount = server.getRequestCount();
+    RecordedRequest request = null;
+    while(requestCount-- > 0)request = server.takeRequest();
     assertEquals("DELETE", request.getMethod());
     assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Orphan\"}",
       request.getBody().readUtf8());
@@ -274,7 +255,6 @@ class CustomResourceTest {
   void testDeleteOptions() throws InterruptedException, IOException {
     // Given
     server.expect().delete().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/example-hello").andReturn(HttpURLConnection.HTTP_OK, "{\"metadata\":{},\"apiVersion\":\"v1\",\"kind\":\"Status\",\"details\":{\"name\":\"prometheus-example-rules\",\"group\":\"monitoring.coreos.com\",\"kind\":\"prometheusrules\",\"uid\":\"b3d085bd-6a5c-11e9-8787-525400b18c1d\"},\"status\":\"Success\"}").once();
-    KubernetesClient client = server.getClient();
 
     DeleteOptions deleteOptions = new DeleteOptions();
     deleteOptions.setGracePeriodSeconds(0L);
@@ -286,7 +266,9 @@ class CustomResourceTest {
 
     // Then
     assertTrue(result);
-    RecordedRequest request = server.getLastRequest();
+    int requestCount = server.getRequestCount();
+    RecordedRequest request = null;
+    while(requestCount-- > 0)request = server.takeRequest();
     assertEquals("DELETE", request.getMethod());
     assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"gracePeriodSeconds\":0,\"propagationPolicy\":\"Orphan\"}",
       request.getBody().readUtf8());;
@@ -295,7 +277,6 @@ class CustomResourceTest {
   @Test
   void testDeleteWithNamespaceMismatch() {
     Assertions.assertThrows(KubernetesClientException.class, () -> {
-      KubernetesClient client = server.getClient();
       client.customResource(customResourceDefinitionContext).delete("ns2", "example-hello");
     });
   }
@@ -305,7 +286,6 @@ class CustomResourceTest {
     String objectAsJsonString = "{\"metadata\":{},\"apiVersion\":\"v1\",\"kind\":\"Status\",\"details\":{\"name\":\"prometheus-example-rules\",\"group\":\"monitoring.coreos.com\",\"kind\":\"prometheusrules\",\"uid\":\"b3d085bd-6a5c-11e9-8787-525400b18c1d\"},\"status\":\"Success\"}";
     server.expect().put().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/example-hello/status").andReturn(HttpURLConnection.HTTP_OK, objectAsJsonString).once();
 
-    KubernetesClient client = server.getClient();
     Map<String, Object> result = client.customResource(customResourceDefinitionContext).updateStatus("ns1", "example-hello", objectAsJsonString);
     assertEquals("Success", result.get("status"));
   }
@@ -321,7 +301,6 @@ class CustomResourceTest {
       .andEmit(new WatchEvent(null, "ADDED"))
       .done().always();
 
-    KubernetesClient client = server.getClient();
 
     CountDownLatch anyEventReceived = new CountDownLatch(1);
     // When
@@ -350,7 +329,6 @@ class CustomResourceTest {
       .andEmit( new WatchEvent(null, "ADDED"))
       .done().always();
 
-    KubernetesClient client = server.getClient();
 
     CountDownLatch anyEventReceieved = new CountDownLatch(1);
     // When
@@ -379,7 +357,6 @@ class CustomResourceTest {
       .andEmit(new WatchEvent(null, "ADDED"))
       .done().always();
 
-    KubernetesClient client = server.getClient();
 
     CountDownLatch anyEventReceived = new CountDownLatch(1);
     // When
@@ -409,7 +386,6 @@ class CustomResourceTest {
       .andEmit(new WatchEvent(null, "ADDED"))
       .done().always();
 
-    KubernetesClient client = server.getClient();
 
     CountDownLatch anyEventReceived = new CountDownLatch(1);
 
@@ -439,7 +415,6 @@ class CustomResourceTest {
       .andEmit(new WatchEvent(null, "ADDED"))
       .done().always();
 
-    KubernetesClient client = server.getClient();
 
     CountDownLatch anyEventReceived = new CountDownLatch(1);
     // When

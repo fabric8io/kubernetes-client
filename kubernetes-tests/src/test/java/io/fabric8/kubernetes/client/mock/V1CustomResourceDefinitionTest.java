@@ -23,12 +23,11 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionList;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import org.junit.Rule;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -36,14 +35,13 @@ import java.net.URL;
 import java.util.List;
 
 import static junit.framework.TestCase.assertNull;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 public class V1CustomResourceDefinitionTest {
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
+
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   private CustomResourceDefinition customResourceDefinition;
 
@@ -77,7 +75,6 @@ public class V1CustomResourceDefinitionTest {
 
   @Test
   void testLoad() {
-    KubernetesClient client = server.getClient();
     List<HasMetadata> crdList = client.load(getClass().getResourceAsStream("/crd-v1-list.yml")).get();
     assertNotNull(crdList);
     assertEquals(1, crdList.size());
@@ -86,7 +83,6 @@ public class V1CustomResourceDefinitionTest {
   @Test
   void testGet() {
     server.expect().get().withPath("/apis/apiextensions.k8s.io/v1/customresourcedefinitions/sparkclusters.radanalytics.io").andReturn(HttpURLConnection.HTTP_OK, customResourceDefinition).once();
-    KubernetesClient client = server.getClient();
 
     CustomResourceDefinition crd = client.apiextensions().v1().customResourceDefinitions().withName("sparkclusters.radanalytics.io").get();
     assertNotNull(crd);
@@ -96,7 +92,6 @@ public class V1CustomResourceDefinitionTest {
   @Test
   void testCreate() {
     server.expect().post().withPath("/apis/apiextensions.k8s.io/v1/customresourcedefinitions").andReturn(HttpURLConnection.HTTP_OK, customResourceDefinition).once();
-    KubernetesClient client = server.getClient();
 
     CustomResourceDefinition crd = client.apiextensions().v1().customResourceDefinitions().createOrReplace(customResourceDefinition);
     assertNotNull(crd);
@@ -108,7 +103,6 @@ public class V1CustomResourceDefinitionTest {
   @Test
   void testList() {
     server.expect().get().withPath("/apis/apiextensions.k8s.io/v1/customresourcedefinitions").andReturn(HttpURLConnection.HTTP_OK, new KubernetesListBuilder().withItems(customResourceDefinition).build()).once();
-    KubernetesClient client = server.getClient();
 
     CustomResourceDefinitionList crdList = client.apiextensions().v1().customResourceDefinitions().list();
     assertNotNull(crdList);
@@ -119,7 +113,6 @@ public class V1CustomResourceDefinitionTest {
   @Test
   void testDelete() {
     server.expect().delete().withPath("/apis/apiextensions.k8s.io/v1/customresourcedefinitions/sparkclusters.radanalytics.io").andReturn(HttpURLConnection.HTTP_OK, customResourceDefinition).once();
-    KubernetesClient client = server.getClient();
 
     Boolean deleted = client.apiextensions().v1().customResourceDefinitions().withName("sparkclusters.radanalytics.io").delete();
     assertTrue(deleted);
@@ -127,9 +120,6 @@ public class V1CustomResourceDefinitionTest {
 
   @Test
   void testCustomResourceDefinitionTest() {
-    // Given
-    KubernetesClient client = server.getClient();
-
     // When
     List<HasMetadata> items = client.load(getClass().getResourceAsStream("/test-crd-no-apiversion.yml")).get();
 

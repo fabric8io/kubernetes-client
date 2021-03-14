@@ -20,20 +20,17 @@ import io.fabric8.openshift.api.model.operator.v1.ImagePrunerBuilder;
 import io.fabric8.openshift.api.model.operator.v1.ImagePrunerList;
 import io.fabric8.openshift.api.model.operator.v1.ImagePrunerListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-@EnableRuleMigrationSupport
+@EnableOpenShiftMockClient
 class ImagePrunerTest {
-  @Rule
-  public OpenShiftServer server = new OpenShiftServer();
+
+  OpenShiftMockServer server;
+  OpenShiftClient client;
 
   @Test
   void create() {
@@ -43,7 +40,6 @@ class ImagePrunerTest {
       .withPath("/apis/imageregistry.operator.openshift.io/v1/imagepruners")
       .andReturn(HttpURLConnection.HTTP_OK, imagePruner)
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     imagePruner = client.operator().imagePruners().create(imagePruner);
@@ -60,7 +56,6 @@ class ImagePrunerTest {
       .withPath("/apis/imageregistry.operator.openshift.io/v1/imagepruners/foo")
       .andReturn(HttpURLConnection.HTTP_OK, getImagePruner())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     ImagePruner f = client.operator().imagePruners().withName("foo").get();
@@ -77,7 +72,6 @@ class ImagePrunerTest {
       .withPath("/apis/imageregistry.operator.openshift.io/v1/imagepruners")
       .andReturn(HttpURLConnection.HTTP_OK, new ImagePrunerListBuilder().withItems(getImagePruner()).build())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     ImagePrunerList fgList = client.operator().imagePruners().list();
@@ -95,7 +89,6 @@ class ImagePrunerTest {
       .withPath("/apis/imageregistry.operator.openshift.io/v1/imagepruners/foo")
       .andReturn(HttpURLConnection.HTTP_OK, getImagePruner())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     Boolean deleted = client.operator().imagePruners().withName("foo").delete();

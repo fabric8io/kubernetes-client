@@ -20,20 +20,17 @@ import io.fabric8.openshift.api.model.console.v1.ConsoleLinkBuilder;
 import io.fabric8.openshift.api.model.console.v1.ConsoleLinkList;
 import io.fabric8.openshift.api.model.console.v1.ConsoleLinkListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-@EnableRuleMigrationSupport
+@EnableOpenShiftMockClient
 class ConsoleLinkTest {
-  @Rule
-  public OpenShiftServer server = new OpenShiftServer();
+
+  OpenShiftMockServer server;
+  OpenShiftClient client;
 
   @Test
   void create() {
@@ -43,7 +40,6 @@ class ConsoleLinkTest {
       .withPath("/apis/console.openshift.io/v1/consolelinks")
       .andReturn(HttpURLConnection.HTTP_OK, consoleLink)
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     consoleLink = client.console().consoleLinks().create(consoleLink);
@@ -60,7 +56,6 @@ class ConsoleLinkTest {
       .withPath("/apis/console.openshift.io/v1/consolelinks/foo")
       .andReturn(HttpURLConnection.HTTP_OK, getConsoleLink())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     ConsoleLink f = client.console().consoleLinks().withName("foo").get();
@@ -77,7 +72,6 @@ class ConsoleLinkTest {
       .withPath("/apis/console.openshift.io/v1/consolelinks")
       .andReturn(HttpURLConnection.HTTP_OK, new ConsoleLinkListBuilder().withItems(getConsoleLink()).build())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     ConsoleLinkList fgList = client.console().consoleLinks().list();
@@ -95,7 +89,6 @@ class ConsoleLinkTest {
       .withPath("/apis/console.openshift.io/v1/consolelinks/foo")
       .andReturn(HttpURLConnection.HTTP_OK, getConsoleLink())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     Boolean deleted = client.console().consoleLinks().withName("foo").delete();

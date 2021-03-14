@@ -16,33 +16,24 @@
 
 package io.fabric8.kubernetes.client.mock;
 
-import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.api.model.Namespace;
-import io.fabric8.kubernetes.api.model.Quantity;
-import io.fabric8.kubernetes.api.model.ResourceQuota;
+import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.api.model.ResourceQuotaBuilder;
-import io.fabric8.kubernetes.api.model.ResourceQuotaList;
 import io.fabric8.kubernetes.api.model.ResourceQuotaListBuilder;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import org.junit.Rule;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 public class ResourceQuotaTest {
 
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   @Test
   public void testList() {
@@ -51,7 +42,6 @@ public class ResourceQuotaTest {
       .addNewItem().and()
       .addNewItem().and().build()).once();
 
-    KubernetesClient client = server.getClient();
 
     ResourceQuotaList resourceQuotaList = client.resourceQuotas().list();
     assertNotNull(resourceQuotaList);
@@ -67,7 +57,6 @@ public class ResourceQuotaTest {
     server.expect().withPath("/api/v1/namespaces/test/resourcequotas/resourcequota1").andReturn(200, new ResourceQuotaListBuilder().build()).once();
     server.expect().withPath("/api/v1/namespaces/ns1/resourcequotas/resourcequota2").andReturn(200, new ResourceQuotaListBuilder().build()).once();
 
-    KubernetesClient client = server.getClient();
 
     ResourceQuota resourceQuota = client.resourceQuotas().withName("resourcequota1").get();
     assertNotNull(resourceQuota);
@@ -84,7 +73,6 @@ public class ResourceQuotaTest {
     server.expect().withPath("/api/v1/namespaces/test/resourcequotas/resourcequota1").andReturn(200, new ResourceQuotaBuilder().build()).once();
     server.expect().withPath("/api/v1/namespaces/ns1/resourcequotas/resourcequota2").andReturn(200, new ResourceQuotaBuilder().build()).once();
 
-    KubernetesClient client = server.getClient();
 
     Boolean deleted = client.resourceQuotas().withName("resourcequota1").delete();
     assertTrue(deleted);
@@ -105,7 +93,6 @@ public class ResourceQuotaTest {
     server.expect().withPath("/api/v1/namespaces/test/resourcequotas/resourcequota1").andReturn(200, resourcequota1).once();
     server.expect().withPath("/api/v1/namespaces/ns1/resourcequotas/resourcequota2").andReturn(200, resourcequota2).once();
 
-    KubernetesClient client = server.getClient();
 
     Boolean deleted = client.resourceQuotas().inAnyNamespace().delete(resourcequota1, resourcequota2);
     assertTrue(deleted);
@@ -116,7 +103,6 @@ public class ResourceQuotaTest {
 
   @Test
   public void testLoadFromFile() {
-    KubernetesClient client = server.getClient();
     List<HasMetadata> list = client.load(getClass().getResourceAsStream("/test-resourcequota.yml")).get();
     assertEquals(3, list.size());
     assertTrue(list.get(0) instanceof ResourceQuota);
@@ -146,7 +132,6 @@ public class ResourceQuotaTest {
       .addToHard("requests.cpu", new Quantity("1"))
       .addToHard("limits.cpu", new Quantity("2")).endSpec().build()).once();
 
-    KubernetesClient client = server.getClient();
 
     Deployment deployment = client.apps().deployments().load(getClass().getResourceAsStream("/test-resourcequota-deployment.yml")).get();
     server.expect().withPath("/apis/apps/v1/namespaces/myspace/deployments/deployment").andReturn(200, deployment).once();

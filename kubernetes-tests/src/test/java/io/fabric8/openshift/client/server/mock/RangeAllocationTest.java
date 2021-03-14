@@ -20,20 +20,17 @@ import io.fabric8.openshift.api.model.RangeAllocationBuilder;
 import io.fabric8.openshift.api.model.RangeAllocationList;
 import io.fabric8.openshift.api.model.RangeAllocationListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-@EnableRuleMigrationSupport
+@EnableOpenShiftMockClient
 class RangeAllocationTest {
-  @Rule
-  public OpenShiftServer server = new OpenShiftServer();
+
+  OpenShiftMockServer server;
+  OpenShiftClient client;
 
   @Test
   void create() {
@@ -43,7 +40,6 @@ class RangeAllocationTest {
       .withPath("/apis/security.openshift.io/v1/rangeallocations")
       .andReturn(HttpURLConnection.HTTP_OK, featureGate)
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     featureGate = client.rangeAllocations().create(featureGate);
@@ -60,7 +56,6 @@ class RangeAllocationTest {
       .withPath("/apis/security.openshift.io/v1/rangeallocations/foo")
       .andReturn(HttpURLConnection.HTTP_OK, getRangeAllocation())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     RangeAllocation f = client.rangeAllocations().withName("foo").get();
@@ -77,7 +72,6 @@ class RangeAllocationTest {
       .withPath("/apis/security.openshift.io/v1/rangeallocations")
       .andReturn(HttpURLConnection.HTTP_OK, new RangeAllocationListBuilder().withItems(getRangeAllocation()).build())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     RangeAllocationList fgList = client.rangeAllocations().list();
@@ -95,7 +89,6 @@ class RangeAllocationTest {
       .withPath("/apis/security.openshift.io/v1/rangeallocations/foo")
       .andReturn(HttpURLConnection.HTTP_OK, getRangeAllocation())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     Boolean deleted = client.rangeAllocations().withName("foo").delete();

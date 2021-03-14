@@ -21,21 +21,15 @@ import io.fabric8.openshift.api.model.OAuthClientBuilder;
 import io.fabric8.openshift.api.model.OAuthClientList;
 import io.fabric8.openshift.api.model.OAuthClientListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
-
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-@EnableRuleMigrationSupport
+@EnableOpenShiftMockClient
 class OAuthClientTest {
-  @Rule
-  public OpenShiftServer server = new OpenShiftServer();
+
+  OpenShiftMockServer server;
+  OpenShiftClient client;
 
   @Test
   public void testList() {
@@ -44,7 +38,6 @@ class OAuthClientTest {
       .addNewItem().and().build()).once();
 
 
-    OpenShiftClient client = server.getOpenshiftClient();
 
     OAuthClientList oauthclientList = client.oAuthClients().list();
     assertNotNull(oauthclientList);
@@ -62,7 +55,6 @@ class OAuthClientTest {
       .withNewMetadata().withName("client2").endMetadata()
       .build()).once();
 
-    OpenShiftClient client = server.getOpenshiftClient();
 
     OAuthClient oauthclient = client.oAuthClients().withName("client1").get();
     assertNotNull(oauthclient);
@@ -82,7 +74,6 @@ class OAuthClientTest {
    server.expect().withPath("/apis/oauth.openshift.io/v1/oauthclients/client1").andReturn(200, new OAuthClientBuilder().build()).once();
    server.expect().withPath("/apis/oauth.openshift.io/v1/oauthclients/client2").andReturn(200, new OAuthClientBuilder().build()).once();
 
-    OpenShiftClient client = server.getOpenshiftClient();
 
     Boolean deleted = client.oAuthClients().withName("client1").delete();
     assertNotNull(deleted);

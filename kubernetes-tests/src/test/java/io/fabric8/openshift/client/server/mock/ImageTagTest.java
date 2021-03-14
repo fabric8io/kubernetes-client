@@ -20,20 +20,17 @@ import io.fabric8.openshift.api.model.ImageTagBuilder;
 import io.fabric8.openshift.api.model.ImageTagList;
 import io.fabric8.openshift.api.model.ImageTagListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-@EnableRuleMigrationSupport
+@EnableOpenShiftMockClient
 class ImageTagTest {
-  @Rule
-  public OpenShiftServer server = new OpenShiftServer();
+
+  OpenShiftMockServer server;
+  OpenShiftClient client;
 
   @Test
   void create() {
@@ -43,7 +40,6 @@ class ImageTagTest {
       .withPath("/apis/image.openshift.io/v1/namespaces/ns1/imagetags")
       .andReturn(HttpURLConnection.HTTP_OK, imageTag)
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     imageTag = client.imageTags().inNamespace("ns1").create(imageTag);
@@ -60,7 +56,6 @@ class ImageTagTest {
       .withPath("/apis/image.openshift.io/v1/namespaces/ns1/imagetags/foo")
       .andReturn(HttpURLConnection.HTTP_OK, getImageTag())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     ImageTag f = client.imageTags().inNamespace("ns1").withName("foo").get();
@@ -77,7 +72,6 @@ class ImageTagTest {
       .withPath("/apis/image.openshift.io/v1/namespaces/ns1/imagetags")
       .andReturn(HttpURLConnection.HTTP_OK, new ImageTagListBuilder().withItems(getImageTag()).build())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     ImageTagList fgList = client.imageTags().inNamespace("ns1").list();
@@ -95,7 +89,6 @@ class ImageTagTest {
       .withPath("/apis/image.openshift.io/v1/namespaces/ns1/imagetags/foo")
       .andReturn(HttpURLConnection.HTTP_OK, getImageTag())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     Boolean deleted = client.imageTags().inNamespace("ns1").withName("foo").delete();

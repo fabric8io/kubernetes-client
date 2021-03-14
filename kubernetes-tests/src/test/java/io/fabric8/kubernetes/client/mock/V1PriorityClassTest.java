@@ -22,31 +22,21 @@ import io.fabric8.kubernetes.api.model.scheduling.v1.PriorityClassListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.Utils;
-import org.junit.Rule;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 class V1PriorityClassTest {
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
 
-  private KubernetesClient client;
-
-  @BeforeEach
-  public void initClient() {
-    this.client = server.getClient();
-  }
+  KubernetesClient client;
+  KubernetesMockServer server;
 
   @Test
   void testList() {
@@ -164,7 +154,6 @@ class V1PriorityClassTest {
 
   @Test
   void testLoadFromFile() {
-    KubernetesClient client = server.getClient();
     assertNotNull(client.scheduling().priorityClass().load(getClass().getResourceAsStream("/test-v1-priorityclass.yml")).get());
   }
 

@@ -16,46 +16,30 @@
 
 package io.fabric8.kubernetes.client.mock;
 
-import io.fabric8.kubernetes.api.model.Quantity;
+import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaimBuilder;
-import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
-import io.fabric8.kubernetes.api.model.PersistentVolumeClaimList;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaimListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.Utils;
-
-import org.junit.Rule;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 class PersistentVolumeClaimTest {
 
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
-
-  private KubernetesClient client;
-
-  @BeforeEach
-  void setUp() {
-    client = server.getClient();
-  }
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   @Test
   void testList() {
@@ -119,7 +103,6 @@ class PersistentVolumeClaimTest {
   @Test
   void testEditMissing() {
     server.expect().withPath("/api/v1/namespaces/test/persistentvolumeclaims/persistentvolumeclaim").andReturn(404, "error message from kubernetes").always();
-    KubernetesClient client = server.getClient();
     Resource<PersistentVolumeClaim> pvcResource =  client.persistentVolumeClaims().inNamespace("test").withName("persistentvolumeclaim");
     Assertions.assertThrows(KubernetesClientException.class, () -> pvcResource.edit(r -> r));
   }

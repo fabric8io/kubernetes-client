@@ -16,37 +16,30 @@
 package io.fabric8.kubernetes.client.mock;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import io.fabric8.kubernetes.api.model.ConfigMap;
+import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
-import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
-import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.PodResource;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import okhttp3.mockwebserver.RecordedRequest;
-import org.junit.Rule;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 class CreateOrReplaceResourceTest {
 
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   @Test
   @DisplayName("Should replace an existing resource in Kubernetes Cluster")
@@ -60,7 +53,7 @@ class CreateOrReplaceResourceTest {
     server.expect().put().withPath("/api/v1/namespaces/test/pods/pod123").andReturn(HttpURLConnection.HTTP_OK, new PodBuilder()
       .withNewMetadata().withResourceVersion("12345").and().build()).once();
 
-    KubernetesClient client = server.getClient();
+//    KubernetesClient client = server.getClient();
     Pod pod = client.resource(new PodBuilder().withNewMetadata().withName("pod123").and().withNewSpec().and().build()).createOrReplace();
     assertNotNull(pod);
     assertEquals("12345", pod.getMetadata().getResourceVersion());
@@ -72,7 +65,7 @@ class CreateOrReplaceResourceTest {
     server.expect().post().withPath("/api/v1/namespaces/test/pods").andReturn(HttpURLConnection.HTTP_CREATED, new PodBuilder()
       .withNewMetadata().withResourceVersion("12345").and().build()).once();
 
-    KubernetesClient client = server.getClient();
+//    KubernetesClient client = server.getClient();
     HasMetadata result = client.resource(new PodBuilder().withNewMetadata().withName("pod123").and().withNewSpec().and().build()).createOrReplace();
     assertNotNull(result);
     assertEquals("12345", result.getMetadata().getResourceVersion());
@@ -84,7 +77,7 @@ class CreateOrReplaceResourceTest {
     // Given
     server.expect().post().withPath("/api/v1/namespaces/test/pods").andReturn(HttpURLConnection.HTTP_BAD_REQUEST, new PodBuilder()
       .withNewMetadata().withResourceVersion("12345").endMetadata().build()).once();
-    KubernetesClient client = server.getClient();
+//    KubernetesClient client = server.getClient();
     NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<Pod> podOperation = client.resource(new PodBuilder().withNewMetadata().withName("pod123").endMetadata().build());
 
     // When
@@ -97,7 +90,7 @@ class CreateOrReplaceResourceTest {
     server.expect().post().withPath("/api/v1/namespaces/test/pods").andReturn(HttpURLConnection.HTTP_CREATED, new PodBuilder()
       .withNewMetadata().withResourceVersion("12345").and().build()).once();
 
-    KubernetesClient client = server.getClient();
+//    KubernetesClient client = server.getClient();
     Pod pod = client.pods().createOrReplace(new PodBuilder().withNewMetadata().withName("pod123").and().withNewSpec().and().build());
     assertNotNull(pod);
     assertEquals("12345", pod.getMetadata().getResourceVersion());
@@ -112,7 +105,7 @@ class CreateOrReplaceResourceTest {
     server.expect().put().withPath("/api/v1/namespaces/test/pods/pod123").andReturn(HttpURLConnection.HTTP_OK, new PodBuilder()
       .withNewMetadata().withResourceVersion("12345").and().build()).once();
 
-    KubernetesClient client = server.getClient();
+//    KubernetesClient client = server.getClient();
     Pod pod = client.pods().createOrReplace(new PodBuilder().withNewMetadata().withName("pod123").and().withNewSpec().and().build());
     assertNotNull(pod);
     assertEquals("12345", pod.getMetadata().getResourceVersion());
@@ -127,7 +120,7 @@ class CreateOrReplaceResourceTest {
     server.expect().put().withPath("/api/v1/namespaces/test/pods/pod123").andReturn(HttpURLConnection.HTTP_BAD_REQUEST, new PodBuilder()
       .withNewMetadata().withResourceVersion("12345").and().build()).once();
     final Pod toCreate = new PodBuilder().withNewMetadata().withName("pod123").and().withNewSpec().and().build();
-    final MixedOperation<Pod, PodList, PodResource<Pod>> pods = server.getClient().pods();
+    final MixedOperation<Pod, PodList, PodResource<Pod>> pods = client.pods();
     // When
     assertThrows(KubernetesClientException.class, () -> pods.create(toCreate));
   }
@@ -138,14 +131,14 @@ class CreateOrReplaceResourceTest {
     server.expect().post().withPath("/api/v1/namespaces/test/pods").andReturn(HttpURLConnection.HTTP_CREATED, new PodBuilder()
       .withNewMetadata().withResourceVersion("12345").and().build()).once();
 
-    KubernetesClient client = server.getClient();
+//    KubernetesClient client = server.getClient();
     List<HasMetadata> result = client.load(getClass().getResourceAsStream("/test-pod-create-from-load.yml")).createOrReplace();
     assertNotNull(result);
     assertEquals(1, result.size());
     Pod pod = (Pod) result.get(0);
     assertEquals("12345", pod.getMetadata().getResourceVersion());
 
-    RecordedRequest request = server.getMockServer().takeRequest();
+    RecordedRequest request = server.takeRequest();
     assertEquals("/api/v1/namespaces/test/pods", request.getPath());
     Pod requestPod = new ObjectMapper().readerFor(Pod.class).readValue(request.getBody().inputStream());
     assertEquals("nginx", requestPod.getMetadata().getName());
@@ -160,14 +153,15 @@ class CreateOrReplaceResourceTest {
     server.expect().put().withPath("/api/v1/namespaces/test/pods/nginx").andReturn(HttpURLConnection.HTTP_OK, new PodBuilder()
       .withNewMetadata().withResourceVersion("12345").and().build()).once();
 
-    KubernetesClient client = server.getClient();
+//    KubernetesClient client = server.getClient();
     List<HasMetadata> result = client.load(getClass().getResourceAsStream("/test-pod-create-from-load.yml")).createOrReplace();
     assertNotNull(result);
     assertEquals(1, result.size());
     Pod pod = (Pod) result.get(0);
     assertEquals("12345", pod.getMetadata().getResourceVersion());
-
-    RecordedRequest request = server.getLastRequest();
+    int count = server.getRequestCount();
+    RecordedRequest request = null;
+    while(count-- > 0)request = server.takeRequest();
     assertEquals("/api/v1/namespaces/test/pods/nginx", request.getPath());
     Pod requestPod = new ObjectMapper().readerFor(Pod.class).readValue(request.getBody().inputStream());
     assertEquals("nginx", requestPod.getMetadata().getName());
@@ -179,12 +173,13 @@ class CreateOrReplaceResourceTest {
     server.expect().post().withPath("/api/v1/namespaces/test/pods").andReturn(HttpURLConnection.HTTP_CREATED, new PodBuilder()
       .withNewMetadata().withResourceVersion("12345").and().build()).once();
 
-    KubernetesClient client = server.getClient();
     Pod pod = client.pods().load(getClass().getResourceAsStream("/test-pod-create-from-load.yml")).createOrReplace();
     assertNotNull(pod);
     assertEquals("12345", pod.getMetadata().getResourceVersion());
 
-    RecordedRequest request = server.getLastRequest();
+    int requestCount = server.getRequestCount();
+    RecordedRequest request = null;
+    while(requestCount-- > 0)request = server.takeRequest();
     Pod requestPod = new ObjectMapper().readerFor(Pod.class).readValue(request.getBody().inputStream());
     assertEquals("nginx", requestPod.getMetadata().getName());
   }
@@ -198,13 +193,14 @@ class CreateOrReplaceResourceTest {
     server.expect().put().withPath("/api/v1/namespaces/test/pods/nginx").andReturn(HttpURLConnection.HTTP_OK, new PodBuilder()
       .withNewMetadata().withResourceVersion("12345").and().build()).once();
 
-    KubernetesClient client = server.getClient();
     Pod pod = client.pods().load(getClass().getResourceAsStream("/test-pod-create-from-load.yml")).createOrReplace();
     assertNotNull(pod);
     assertEquals("12345", pod.getMetadata().getResourceVersion());
 
 
-    RecordedRequest request = server.getLastRequest();
+    int requestCount = server.getRequestCount();
+    RecordedRequest request = null;
+    while(requestCount-- > 0)request = server.takeRequest();
     assertEquals("/api/v1/namespaces/test/pods/nginx", request.getPath());
     Pod requestPod = new ObjectMapper().readerFor(Pod.class).readValue(request.getBody().inputStream());
     assertEquals("nginx", requestPod.getMetadata().getName());
@@ -219,13 +215,14 @@ class CreateOrReplaceResourceTest {
     server.expect().put().withPath("/api/v1/namespaces/test/configmaps/map1").andReturn(HttpURLConnection.HTTP_OK, new ConfigMapBuilder()
       .withNewMetadata().withResourceVersion("1001").and().build()).once();
 
-    KubernetesClient client = server.getClient();
     ConfigMap map = client.configMaps().withName("map1").replace(new ConfigMapBuilder()
       .withNewMetadata().withName("map1").and().build());
     assertNotNull(map);
     assertEquals("1001", map.getMetadata().getResourceVersion());
 
-    RecordedRequest request = server.getLastRequest();
+    int requestCount = server.getRequestCount();
+    RecordedRequest request = null;
+    while(requestCount-- > 0)request = server.takeRequest();
     ConfigMap replacedMap = new ObjectMapper().readerFor(ConfigMap.class).readValue(request.getBody().inputStream());
     assertEquals("1000", replacedMap.getMetadata().getResourceVersion());
   }
@@ -236,14 +233,15 @@ class CreateOrReplaceResourceTest {
     server.expect().put().withPath("/api/v1/namespaces/test/configmaps/map1").andReturn(HttpURLConnection.HTTP_OK, new ConfigMapBuilder()
       .withNewMetadata().withResourceVersion("1001").and().build()).once();
 
-    KubernetesClient client = server.getClient();
     ConfigMap map = client.configMaps().withName("map1")
       .lockResourceVersion("900")
       .replace(new ConfigMapBuilder().withNewMetadata().withName("map1").and().build());
     assertNotNull(map);
     assertEquals("1001", map.getMetadata().getResourceVersion());
 
-    RecordedRequest request = server.getLastRequest();
+    int count = server.getRequestCount();
+    RecordedRequest request = null;
+    while(count-- > 0)request = server.takeRequest();
     ConfigMap replacedMap = new ObjectMapper().readerFor(ConfigMap.class).readValue(request.getBody().inputStream());
     assertEquals("900", replacedMap.getMetadata().getResourceVersion());
   }

@@ -17,32 +17,27 @@ package io.fabric8.openshift.client.server.mock;
 
 import io.fabric8.kubernetes.client.VersionInfo;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@EnableRuleMigrationSupport
+@EnableOpenShiftMockClient
 class OpenShiftVersionInfoTest {
-  @Rule
-  public OpenShiftServer openshiftServer = new OpenShiftServer();
+
+  OpenShiftMockServer server;
+  OpenShiftClient client;
 
   @Test
   void testClusterVersioningOpenshift3() throws ParseException {
     // Given
-    openshiftServer.expect().withPath("/version/openshift").andReturn(200, "{\"major\":\"3\",\"minor\":\"11+\"," +
+    server.expect().withPath("/version/openshift").andReturn(200, "{\"major\":\"3\",\"minor\":\"11+\"," +
       "\"gitVersion\":\"v3.11.154\",\"gitCommit\":\"7a097ad820\",\"gitTreeState\":\"\"," +
       "\"buildDate\":\"2019-10-31T21:06:55Z\",\"goVersion\":\"\",\"compiler\":\"\"," +
       "\"platform\":\"\"}").always();
 
-    // When
-    OpenShiftClient client = openshiftServer.getOpenshiftClient();
-
-    // Then
     assertEquals("v3.11.154", client.getVersion().getGitVersion());
     assertEquals("7a097ad820", client.getVersion().getGitCommit());
     assertEquals("3", client.getVersion().getMajor());
@@ -53,9 +48,9 @@ class OpenShiftVersionInfoTest {
 
   @Test
   void testClusterVersioningOpenshift4() {
-    openshiftServer.expect().get().withPath("/openshift/version").andReturn(404, "").always();
+    server.expect().get().withPath("/openshift/version").andReturn(404, "").always();
 
-    openshiftServer.expect().get().withPath("/apis/config.openshift.io/v1/clusterversions").andReturn(200, "{" +
+    server.expect().get().withPath("/apis/config.openshift.io/v1/clusterversions").andReturn(200, "{" +
       "  \"apiVersion\": \"config.openshift.io/v1\"," +
       "  \"items\": [" +
       "    {" +
@@ -136,9 +131,8 @@ class OpenShiftVersionInfoTest {
       "  }" +
       "}").once();
 
-    OpenShiftClient openShiftClient = openshiftServer.getOpenshiftClient();
 
-    VersionInfo versionInfo = openShiftClient.getVersion();
+    VersionInfo versionInfo = client.getVersion();
     assertEquals("4", versionInfo.getMajor());
     assertEquals("2.14", versionInfo.getMinor());
   }

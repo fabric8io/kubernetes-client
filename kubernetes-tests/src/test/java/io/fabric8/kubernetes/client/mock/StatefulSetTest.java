@@ -16,28 +16,25 @@
 
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.OwnerReferenceBuilder;
-import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
-import io.fabric8.kubernetes.api.model.apps.ControllerRevision;
+import io.fabric8.kubernetes.api.model.apps.*;
 import io.fabric8.kubernetes.api.model.apps.ControllerRevisionBuilder;
 import io.fabric8.kubernetes.api.model.apps.ControllerRevisionListBuilder;
-import io.fabric8.kubernetes.api.model.apps.StatefulSet;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetBuilder;
-import io.fabric8.kubernetes.api.model.apps.StatefulSetList;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.Deletable;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.Disabled;
-import org.junit.Rule;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 import java.util.Collections;
@@ -45,16 +42,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 public class StatefulSetTest {
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
+
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   @Test
   public void testList() {
@@ -64,7 +58,6 @@ public class StatefulSetTest {
       .addNewItem().and().build())
       .once();
 
-    KubernetesClient client = server.getClient();
     StatefulSetList statefulSetList = client.apps().statefulSets().list();
     assertNotNull(statefulSetList);
     assertEquals(0, statefulSetList.getItems().size());
@@ -80,7 +73,6 @@ public class StatefulSetTest {
    server.expect().withPath("/apis/apps/v1/namespaces/test/statefulsets/repl1").andReturn(200, new StatefulSetBuilder().build()).once();
    server.expect().withPath("/apis/apps/v1/namespaces/ns1/statefulsets/repl2").andReturn(200, new StatefulSetBuilder().build()).once();
 
-    KubernetesClient client = server.getClient();
 
     StatefulSet repl1 = client.apps().statefulSets().withName("repl1").get();
     assertNotNull(repl1);
@@ -143,7 +135,6 @@ public class StatefulSetTest {
       .endStatus()
       .build()).times(5);
 
-    KubernetesClient client = server.getClient();
 
     Boolean deleted = client.apps().statefulSets().withName("repl1").delete();
     assertTrue(deleted);
@@ -157,10 +148,9 @@ public class StatefulSetTest {
 
   @Test
   public void testDeleteLoadedResource() {
-    StatefulSet response = server.getClient().apps().statefulSets().load(getClass().getResourceAsStream("/test-statefulset.yml")).get();
+    StatefulSet response = client.apps().statefulSets().load(getClass().getResourceAsStream("/test-statefulset.yml")).get();
     server.expect().delete().withPath("/apis/apps/v1beta1/namespaces/test/statefulsets/example").andReturn(200, response).once();
 
-    KubernetesClient client = server.getClient();
 
     Deletable items = client.load(getClass().getResourceAsStream("/test-statefulset.yml"));
     assertTrue(items.delete());
@@ -181,7 +171,6 @@ public class StatefulSetTest {
       .endStatus()
       .build()).always();
 
-    KubernetesClient client = server.getClient();
     StatefulSet repl = client.apps().statefulSets().withName("repl1").scale(5);
     assertNotNull(repl);
     assertNotNull(repl.getSpec());
@@ -217,7 +206,6 @@ public class StatefulSetTest {
         .endStatus()
         .build()).always();
 
-    KubernetesClient client = server.getClient();
     StatefulSet repl = client.apps().statefulSets().withName("repl1").scale(5, true);
     assertNotNull(repl);
     assertNotNull(repl.getSpec());
@@ -252,7 +240,6 @@ public class StatefulSetTest {
    server.expect().get().withPath("/apis/apps/v1/namespaces/test/statefulsets").andReturn(200, new StatefulSetListBuilder().withItems(repl1).build()).once();
    server.expect().post().withPath("/apis/apps/v1/namespaces/test/statefulsets").andReturn(201, repl1).once();
    server.expect().withPath("/apis/apps/v1/namespaces/test/pods").andReturn(200, new KubernetesListBuilder().build()).once();
-    KubernetesClient client = server.getClient();
 
     repl1 = client.apps().statefulSets().withName("repl1")
       .rolling()
@@ -274,7 +261,6 @@ public class StatefulSetTest {
         .withImage(imageToUpdate)
         .endContainer().endSpec().endTemplate().endSpec()
         .build()).once();
-    KubernetesClient client = server.getClient();
 
     // When
     StatefulSet statefulSet = client.apps().statefulSets().inNamespace("ns1").withName("statefulset1")
@@ -283,7 +269,9 @@ public class StatefulSetTest {
     // Then
     assertNotNull(statefulSet);
     assertEquals(imageToUpdate, statefulSet.getSpec().getTemplate().getSpec().getContainers().get(0).getImage());
-    RecordedRequest recordedRequest = server.getLastRequest();
+    int requestCount = server.getRequestCount();
+    RecordedRequest recordedRequest = null;
+    while(requestCount-- > 0)recordedRequest = server.takeRequest();
     assertEquals("PATCH", recordedRequest.getMethod());
     assertTrue(recordedRequest.getBody().readUtf8().contains(imageToUpdate));
   }
@@ -301,7 +289,6 @@ public class StatefulSetTest {
         .withImage(containerToImageMap.get("nginx"))
         .endContainer().endSpec().endTemplate().endSpec()
         .build()).once();
-    KubernetesClient client = server.getClient();
 
     // When
     StatefulSet deployment = client.apps().statefulSets().inNamespace("ns1").withName("statefulset1")
@@ -310,8 +297,9 @@ public class StatefulSetTest {
     // Then
     assertNotNull(deployment);
     assertEquals(containerToImageMap.get("nginx"), deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getImage());
-    RecordedRequest recordedRequest = server.getLastRequest();
-    assertEquals("PATCH", recordedRequest.getMethod());
+    int requestCount = server.getRequestCount();
+    RecordedRequest recordedRequest = null;
+    while(requestCount-- > 0)recordedRequest = server.takeRequest();    assertEquals("PATCH", recordedRequest.getMethod());
     assertTrue(recordedRequest.getBody().readUtf8().contains(containerToImageMap.get("nginx")));
   }
 
@@ -323,15 +311,15 @@ public class StatefulSetTest {
       .andReturn(HttpURLConnection.HTTP_OK, getStatefulSetBuilder().build()).times(3);
     server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/statefulsets/statefulset1")
       .andReturn(HttpURLConnection.HTTP_OK, getStatefulSetBuilder().build()).once();
-    KubernetesClient client = server.getClient();
 
     // When
     StatefulSet deployment = client.apps().statefulSets().inNamespace("ns1").withName("statefulset1")
       .rolling().pause();
 
     // Then
-    RecordedRequest recordedRequest = server.getLastRequest();
-    assertNotNull(deployment);
+    int requestCount = server.getRequestCount();
+    RecordedRequest recordedRequest = null;
+    while(requestCount-- > 0)recordedRequest = server.takeRequest();    assertNotNull(deployment);
     assertEquals("PATCH", recordedRequest.getMethod());
     assertEquals("{\"spec\":{\"paused\":true}}", recordedRequest.getBody().readUtf8());
   }
@@ -344,15 +332,15 @@ public class StatefulSetTest {
       .andReturn(HttpURLConnection.HTTP_OK, getStatefulSetBuilder().build()).times(3);
     server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/statefulsets/statefulset1")
       .andReturn(HttpURLConnection.HTTP_OK, getStatefulSetBuilder().build()).once();
-    KubernetesClient client = server.getClient();
 
     // When
     StatefulSet deployment = client.apps().statefulSets().inNamespace("ns1").withName("statefulset1")
       .rolling().resume();
 
     // Then
-    RecordedRequest recordedRequest = server.getLastRequest();
-    assertNotNull(deployment);
+    int requestCount = server.getRequestCount();
+    RecordedRequest recordedRequest = null;
+    while(requestCount-- > 0)recordedRequest = server.takeRequest();    assertNotNull(deployment);
     assertEquals("PATCH", recordedRequest.getMethod());
     assertEquals("{\"spec\":{\"paused\":null}}", recordedRequest.getBody().readUtf8());
   }
@@ -365,14 +353,15 @@ public class StatefulSetTest {
       .andReturn(HttpURLConnection.HTTP_OK, getStatefulSetBuilder().build()).times(3);
     server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/statefulsets/statefulset1")
       .andReturn(HttpURLConnection.HTTP_OK, getStatefulSetBuilder().build()).once();
-    KubernetesClient client = server.getClient();
 
     // When
     StatefulSet deployment = client.apps().statefulSets().inNamespace("ns1").withName("statefulset1")
       .rolling().restart();
 
     // Then
-    RecordedRequest recordedRequest = server.getLastRequest();
+    int requestCount = server.getRequestCount();
+    RecordedRequest recordedRequest = null;
+    while(requestCount-- > 0)recordedRequest = server.takeRequest();
     assertNotNull(deployment);
     assertEquals("PATCH", recordedRequest.getMethod());
     assertTrue(recordedRequest.getBody().readUtf8().contains("kubectl.kubernetes.io/restartedAt"));
@@ -443,15 +432,15 @@ public class StatefulSetTest {
       .andReturn(HttpURLConnection.HTTP_OK, getStatefulSetBuilder().build()).times(3);
     server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/statefulsets/statefulset1")
       .andReturn(HttpURLConnection.HTTP_OK, getStatefulSetBuilder().build()).once();
-    KubernetesClient client = server.getClient();
 
     // When
     StatefulSet deployment = client.apps().statefulSets().inNamespace("ns1").withName("statefulset1")
       .rolling().undo();
 
     // Then
-    RecordedRequest recordedRequest = server.getLastRequest();
-    assertNotNull(deployment);
+    int requestCount = server.getRequestCount();
+    RecordedRequest recordedRequest = null;
+    while(requestCount-- > 0)recordedRequest = server.takeRequest();    assertNotNull(deployment);
     assertEquals("PATCH", recordedRequest.getMethod());
     assertTrue(recordedRequest.getBody().readUtf8().contains("\"app\":\"rs1\""));
   }
@@ -483,7 +472,6 @@ public class StatefulSetTest {
     server.expect().get().withPath("/api/v1/namespaces/ns1/pods/ss-hk9nf/log?pretty=false")
       .andReturn(HttpURLConnection.HTTP_OK, "hello")
       .once();
-    KubernetesClient client = server.getClient();
 
     // When
     String log = client.apps().statefulSets().inNamespace("ns1").withName("statefulset1").getLog();

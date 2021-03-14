@@ -20,20 +20,17 @@ import io.fabric8.openshift.api.model.operator.v1.EtcdBuilder;
 import io.fabric8.openshift.api.model.operator.v1.EtcdList;
 import io.fabric8.openshift.api.model.operator.v1.EtcdListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-@EnableRuleMigrationSupport
+@EnableOpenShiftMockClient
 class EtcdTest {
-  @Rule
-  public OpenShiftServer server = new OpenShiftServer();
+
+  OpenShiftMockServer server;
+  OpenShiftClient client;
 
   @Test
   void create() {
@@ -43,7 +40,6 @@ class EtcdTest {
       .withPath("/apis/operator.openshift.io/v1/etcds")
       .andReturn(HttpURLConnection.HTTP_OK, featureGate)
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     featureGate = client.operator().etcds().create(featureGate);
@@ -60,7 +56,6 @@ class EtcdTest {
       .withPath("/apis/operator.openshift.io/v1/etcds/foo")
       .andReturn(HttpURLConnection.HTTP_OK, getEtcd())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     Etcd f = client.operator().etcds().withName("foo").get();
@@ -77,7 +72,6 @@ class EtcdTest {
       .withPath("/apis/operator.openshift.io/v1/etcds")
       .andReturn(HttpURLConnection.HTTP_OK, new EtcdListBuilder().withItems(getEtcd()).build())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     EtcdList fgList = client.operator().etcds().list();
@@ -95,7 +89,6 @@ class EtcdTest {
       .withPath("/apis/operator.openshift.io/v1/etcds/foo")
       .andReturn(HttpURLConnection.HTTP_OK, getEtcd())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     Boolean deleted = client.operator().etcds().withName("foo").delete();

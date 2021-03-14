@@ -15,25 +15,24 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
-import java.net.HttpURLConnection;
-import java.util.Collections;
-
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSet;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSetBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import org.junit.Rule;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
+
+import java.net.HttpURLConnection;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 class ReplicaSetV1beta1Test {
 
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   @Test
   void testCreateOrReplace() {
@@ -70,7 +69,6 @@ class ReplicaSetV1beta1Test {
       .andReturn(HttpURLConnection.HTTP_OK, newReplicaSet)
       .once();
 
-    KubernetesClient client = server.getClient();
 
     ReplicaSet result = client.extensions().replicaSets().inNamespace("test").createOrReplace(newReplicaSet);
     assertNotNull(result);

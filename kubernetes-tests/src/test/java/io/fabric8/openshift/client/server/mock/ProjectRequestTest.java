@@ -21,23 +21,20 @@ import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.openshift.api.model.ProjectRequest;
 import io.fabric8.openshift.api.model.ProjectRequestBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
-
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableRuleMigrationSupport
+@EnableOpenShiftMockClient
 class ProjectRequestTest {
-  @Rule
-  public OpenShiftServer server = new OpenShiftServer();
+
+  OpenShiftMockServer server;
+  OpenShiftClient client;
 
   @Test
   void testList() {
    server.expect().withPath("/apis/project.openshift.io/v1/projectrequests").andReturn(200, new StatusBuilder().withMessage("success").build()).once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     Status status = client.projectrequests().list();
     assertNotNull(status);
@@ -52,7 +49,6 @@ class ProjectRequestTest {
 
    server.expect().withPath("/apis/project.openshift.io/v1/projectrequests").andReturn(201, req1).once();
 
-    OpenShiftClient client = server.getOpenshiftClient();
 
     ProjectRequest result = client.projectrequests().create(req1);
     assertNotNull(result);

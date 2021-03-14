@@ -16,28 +16,28 @@
 
 package io.fabric8.kubernetes.client.mock;
 
-import io.fabric8.kubernetes.client.OAuthTokenProvider;
-import io.fabric8.kubernetes.client.RequestConfig;
-import org.junit.Rule;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
-
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
-import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
-import io.fabric8.kubernetes.client.RequestConfigBuilder;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.*;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import okhttp3.mockwebserver.RecordedRequest;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 public class RequestConfigTest {
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
+
+  KubernetesMockServer server;
+  NamespacedKubernetesClient client;
+
+  @BeforeEach
+  void setUp(){ client = server.createClient(); }
 
   TestableOAuthTokenProvider tokenProvider = new TestableOAuthTokenProvider();
 
@@ -55,18 +55,17 @@ public class RequestConfigTest {
       .endMetadata()
       .build()).always();
 
-    NamespacedKubernetesClient client = server.getClient();
 
     Pod pod1 = client.withRequestConfig(new RequestConfigBuilder().withOauthToken("TOKEN").build()).call(c -> c.pods().inNamespace("test").withName("pod1").get());
 
     //Let's check that request config actually works
-    RecordedRequest request1 = server.getMockServer().takeRequest();
+    RecordedRequest request1 = server.takeRequest();
     String authHeader1 = request1.getHeader("Authorization");
     assertEquals("Bearer TOKEN", authHeader1);
 
     //Let's also check that we didn't pollute client config.
     Pod pod2 = client.pods().inNamespace("test").withName("pod2").get();
-    RecordedRequest request2 = server.getMockServer().takeRequest();
+    RecordedRequest request2 = server.takeRequest();
     String authHeader2 = request2.getHeader("Authorization");
     assertNotEquals("Bearer TOKEN", authHeader2);
   }
@@ -92,13 +91,12 @@ public class RequestConfigTest {
   }
 
   private void sendRequest(RequestConfig requestConfig) {
-    NamespacedKubernetesClient client = server.getClient();
     client.withRequestConfig(requestConfig)
           .call(c -> c.pods().inNamespace("test").withName("podName").get());
   }
 
   private void assertAuthorizationHeader(String expectedValue) throws InterruptedException {
-    RecordedRequest request = server.getMockServer().takeRequest();
+    RecordedRequest request = server.takeRequest();
     String acutalValue = request.getHeader("Authorization");
     assertEquals(expectedValue, acutalValue);
   }

@@ -16,6 +16,27 @@
 
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.api.model.*;
+import io.fabric8.kubernetes.api.model.PodBuilder;
+import io.fabric8.kubernetes.api.model.PodListBuilder;
+import io.fabric8.kubernetes.client.*;
+import io.fabric8.kubernetes.client.dsl.ExecListener;
+import io.fabric8.kubernetes.client.dsl.ExecWatch;
+import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
+import io.fabric8.kubernetes.client.dsl.PodResource;
+import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
+import io.fabric8.kubernetes.client.server.mock.OutputStreamMessage;
+import io.fabric8.kubernetes.client.utils.Utils;
+import okhttp3.Response;
+import okio.ByteString;
+import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -26,62 +47,26 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.channels.WritableByteChannel;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import io.fabric8.kubernetes.api.model.DeletionPropagation;
-import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.api.model.Pod;
-import io.fabric8.kubernetes.api.model.PodBuilder;
-import io.fabric8.kubernetes.api.model.PodList;
-import io.fabric8.kubernetes.api.model.PodListBuilder;
-import io.fabric8.kubernetes.api.model.WatchEvent;
-import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.LocalPortForward;
-import io.fabric8.kubernetes.client.PortForward;
-import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.Watcher;
-import io.fabric8.kubernetes.client.WatcherException;
-import io.fabric8.kubernetes.client.dsl.ExecListener;
-import io.fabric8.kubernetes.client.dsl.ExecWatch;
-import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
-import io.fabric8.kubernetes.client.dsl.PodResource;
-import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import io.fabric8.kubernetes.client.server.mock.OutputStreamMessage;
-import io.fabric8.kubernetes.client.utils.Utils;
-import okhttp3.Response;
-import okio.ByteString;
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
-import org.junit.rules.TemporaryFolder;
+import static org.junit.jupiter.api.Assertions.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 class PodTest {
 
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
-  @Rule
-  public TemporaryFolder temporaryFolder = new TemporaryFolder();
+  KubernetesMockServer server;
+
+  @TempDir
+  Path tempDir;
 
   private KubernetesClient client;
 
   @BeforeEach
   void setUp() {
-    client = server.getClient().inNamespace("test");
+    client = server.createClient().inNamespace("test");
   }
 
   @Test
@@ -161,7 +146,6 @@ class PodTest {
   void testEditMissing() {
     // Given
     server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(404, "error message from kubernetes").always();
-    KubernetesClient client = server.getClient();
 
     // When
     PodResource<Pod> podOp = client.pods().withName("pod1");
@@ -374,7 +358,6 @@ class PodTest {
   @Test
   void testGetLogNotFound() {
     // Given
-    KubernetesClient client = server.getClient();
     PodResource<Pod> podOp = client.pods().withName("pod5");
 
     // When + Then
@@ -383,7 +366,6 @@ class PodTest {
 
   @Test
   void testLoad() {
-    KubernetesClient client = server.getClient();
     Pod pod = client.pods().load(getClass().getResourceAsStream("/test-pod.yml")).get();
     assertEquals("nginx", pod.getMetadata().getName());
   }
@@ -501,21 +483,21 @@ class PodTest {
   @Test
   void testOptionalUpload() {
     Assertions.assertThrows(KubernetesClientException.class, () -> {
-      client.pods().inNamespace("ns1").withName("pod2").dir("/etc/hosts/dir").upload(temporaryFolder.newFolder().toPath());
+      client.pods().inNamespace("ns1").withName("pod2").dir("/etc/hosts/dir").upload(tempDir.toAbsolutePath());
     });
   }
 
   @Test
   void testOptionalCopy() {
     Assertions.assertThrows(KubernetesClientException.class, () -> {
-      client.pods().inNamespace("ns1").withName("pod2").file("/etc/hosts").copy(temporaryFolder.newFolder().toPath());
+      client.pods().inNamespace("ns1").withName("pod2").file("/etc/hosts").copy(tempDir.toAbsolutePath());
     });
   }
 
   @Test
   void testOptionalCopyDir() {
     Assertions.assertThrows(KubernetesClientException.class, () -> {
-      client.pods().inNamespace("ns1").withName("pod2").dir("/etc/hosts").copy(temporaryFolder.newFolder().toPath());
+      client.pods().inNamespace("ns1").withName("pod2").dir("/etc/hosts").copy(tempDir.toAbsolutePath());
     });
   }
 

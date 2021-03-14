@@ -20,31 +20,25 @@ import io.fabric8.kubernetes.api.model.storage.StorageClass;
 import io.fabric8.kubernetes.api.model.storage.StorageClassBuilder;
 import io.fabric8.kubernetes.api.model.storage.StorageClassList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import org.junit.Rule;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient(crud = true)
 public class StorageSpaceCrudTest {
 
   private static final Logger logger = LoggerFactory.getLogger(StorageSpaceCrudTest.class);
 
-  @Rule
-  public KubernetesServer server = new KubernetesServer(true, true);
+  KubernetesClient client;
 
   @Test
   public void testCrud() {
-    KubernetesClient client = server.getClient();
 
     final String name = "test";
     ObjectMeta metadata = new ObjectMeta();

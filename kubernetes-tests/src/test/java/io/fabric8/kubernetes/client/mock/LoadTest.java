@@ -19,26 +19,24 @@ package io.fabric8.kubernetes.client.mock;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicy;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import org.junit.Rule;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 class LoadTest {
 
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   @Test
   void testResourceGetFromLoadWhenMultipleDocumentsWithDelimiter() throws Exception {
     // given
-    KubernetesClient client = server.getClient();
 
     // when
     List<HasMetadata> result = client.load(getClass().getResourceAsStream("/multiple-document-template.yml")).get();
@@ -54,7 +52,6 @@ class LoadTest {
 
   @Test
   void testNetworkPolicyLoad() {
-    KubernetesClient client = server.getClient();
     List<HasMetadata> itemList = client.load(getClass().getResourceAsStream("/test-networkpolicy.yml")).get();
 
     assertEquals(1, itemList.size());

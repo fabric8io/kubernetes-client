@@ -16,32 +16,28 @@
 
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.api.model.NodeSelectorRequirementBuilder;
-import io.fabric8.kubernetes.api.model.PersistentVolume;
 import io.fabric8.kubernetes.api.model.PersistentVolumeBuilder;
-import io.fabric8.kubernetes.api.model.PersistentVolumeList;
 import io.fabric8.kubernetes.api.model.PersistentVolumeListBuilder;
-import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.Utils;
-import org.junit.Rule;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.util.Arrays;
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 public class PersistentVolumeTest {
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
+
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   @Test
   public void testList() {
@@ -50,7 +46,6 @@ public class PersistentVolumeTest {
       .addNewItem().and()
       .build()).once();
 
-    KubernetesClient client = server.getClient();
 
     PersistentVolumeList persistentVolumeList = client.persistentVolumes().list();
     assertNotNull(persistentVolumeList);
@@ -65,7 +60,6 @@ public class PersistentVolumeTest {
       .addNewItem().and()
       .build()).once();
 
-    KubernetesClient client = server.getClient();
     PersistentVolumeList persistentVolumeList = client.persistentVolumes()
       .withLabel("key1", "value1")
       .withLabel("key2","value2")
@@ -78,7 +72,6 @@ public class PersistentVolumeTest {
   @Test
   public void testGet() {
     server.expect().withPath("/api/v1/persistentvolumes/persistentvolume1").andReturn(200, new PersistentVolumeBuilder().build()).once();
-    KubernetesClient client = server.getClient();
     PersistentVolume persistentVolume = client.persistentVolumes().withName("persistentvolume1").get();
     assertNotNull(persistentVolume);
   }
@@ -87,7 +80,6 @@ public class PersistentVolumeTest {
   public void testEditMissing() {
     Assertions.assertThrows(KubernetesClientException.class, () -> {
       server.expect().withPath("/api/v1/persistentvolumes/persistentvolume").andReturn(404, "error message from kubernetes").always();
-      KubernetesClient client = server.getClient();
 
       client.persistentVolumes().withName("persistentvolume").edit(p -> p);
     });
@@ -97,7 +89,6 @@ public class PersistentVolumeTest {
   @Test
   public void testDelete() {
     server.expect().withPath("/api/v1/persistentvolumes/persistentvolume1").andReturn(200, new PersistentVolumeBuilder().build()).once();
-    KubernetesClient client = server.getClient();
     Boolean deleted = client.persistentVolumes().withName("persistentvolume1").delete();
     assertTrue(deleted);
   }
@@ -110,14 +101,12 @@ public class PersistentVolumeTest {
     server.expect().withPath("/api/v1/persistentvolumes/persistentvolume1").andReturn(200, persistentVolume1).once();
     server.expect().withPath("/api/v1/persistentvolumes/persistentvolume2").andReturn(200, persistentVolume2).once();
 
-    KubernetesClient client = server.getClient();
     Boolean deleted = client.persistentVolumes().delete(persistentVolume1, persistentVolume2);
     assertTrue(deleted);
   }
 
   @Test
   public void testLoadFromFile() {
-    KubernetesClient client = server.getClient();
     PersistentVolume persistentVolume = client.persistentVolumes().load(getClass().getResourceAsStream("/test-persistentvolume.yml")).get();
     assertEquals("pv-test", persistentVolume.getMetadata().getName());
   }
@@ -151,7 +140,6 @@ public class PersistentVolumeTest {
 
     server.expect().withPath("/api/v1/persistentvolumes/persistentvolume").andReturn(200, persistentVolume).once();
 
-    KubernetesClient client = server.getClient();
     persistentVolume = client.persistentVolumes().withName("persistentvolume").get();
     assertNotNull(persistentVolume);
   }

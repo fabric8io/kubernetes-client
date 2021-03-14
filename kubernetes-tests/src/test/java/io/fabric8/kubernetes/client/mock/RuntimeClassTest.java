@@ -21,27 +21,24 @@ import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClassBuilder;
 import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClassList;
 import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClassListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import org.junit.Rule;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 class RuntimeClassTest {
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
+
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   @Test
   void testLoad() {
     // Given
-    KubernetesClient client = server.getClient();
 
     // When
     List<HasMetadata> itemList = client.load(getClass().getResourceAsStream("/test-runtimeclass.yml")).get();
@@ -60,7 +57,6 @@ class RuntimeClassTest {
     server.expect().post().withPath("/apis/node.k8s.io/v1beta1/runtimeclasses")
       .andReturn(HttpURLConnection.HTTP_OK, getMockRuntimeClass())
       .once();
-    KubernetesClient client = server.getClient();
 
     // When
     RuntimeClass runtimeClass = client.runtimeClasses().create(getMockRuntimeClass());
@@ -76,7 +72,6 @@ class RuntimeClassTest {
     server.expect().get().withPath("/apis/node.k8s.io/v1beta1/runtimeclasses/test-class")
       .andReturn(HttpURLConnection.HTTP_OK, getMockRuntimeClass())
       .once();
-    KubernetesClient client = server.getClient();
 
     // When
     RuntimeClass runtimeClass = client.runtimeClasses().withName("test-class").get();
@@ -94,7 +89,6 @@ class RuntimeClassTest {
         .addToItems(getMockRuntimeClass())
         .build())
       .once();
-    KubernetesClient client = server.getClient();
 
     // When
     RuntimeClassList runtimeClassList = client.runtimeClasses().list();
@@ -111,7 +105,6 @@ class RuntimeClassTest {
     server.expect().delete().withPath("/apis/node.k8s.io/v1beta1/runtimeclasses/test-class")
       .andReturn(HttpURLConnection.HTTP_OK, getMockRuntimeClass())
       .once();
-    KubernetesClient client = server.getClient();
 
     // When
     Boolean isDeleted = client.runtimeClasses().withName("test-class").delete();

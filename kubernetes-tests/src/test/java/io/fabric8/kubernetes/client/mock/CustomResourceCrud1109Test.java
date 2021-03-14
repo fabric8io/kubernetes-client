@@ -15,34 +15,36 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.mock.crd.FooBar;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import org.junit.Rule;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
+import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
-@EnableRuleMigrationSupport
+import static org.assertj.core.api.Assertions.assertThat;
+
+@EnableKubernetesMockClient(crud = true)
 class CustomResourceCrud1109Test {
-  @Rule
-  public KubernetesServer server = new KubernetesServer(true,true);
+
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   private CustomResourceDefinition customResourceDefinition;
   private MixedOperation<FooBar, KubernetesResourceList<FooBar>, Resource<FooBar>> fooBarClient;
 
   @BeforeEach
   void setUp() {
-    customResourceDefinition = server.getClient().apiextensions().v1beta1().customResourceDefinitions()
+    customResourceDefinition = client.apiextensions().v1beta1().customResourceDefinitions()
       .create(CustomResourceDefinitionContext.v1beta1CRDFromCustomResourceType(FooBar.class).build());
-    fooBarClient = server.getClient().customResources(FooBar.class);
+    fooBarClient = client.customResources(FooBar.class);
   }
 
   @Test
@@ -60,7 +62,11 @@ class CustomResourceCrud1109Test {
     // When
     fooBarClient.inNamespace("my-namespace").list();
     // Then
-    assertThat(server.getLastRequest())
+
+    int requestCount = server.getRequestCount();
+    RecordedRequest lastRequest = null;
+    while(requestCount-- > 0)lastRequest = server.takeRequest();
+    assertThat(lastRequest)
       .hasFieldOrPropertyWithValue("path", "/apis/baz.example.com/v1alpha1/namespaces/my-namespace/foo-bars");
   }
 
