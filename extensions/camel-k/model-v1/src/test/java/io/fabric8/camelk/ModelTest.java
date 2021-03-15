@@ -15,12 +15,9 @@
  */
 package io.fabric8.camelk;
 
-import org.junit.jupiter.api.Test;
-
 import io.fabric8.camelk.v1.Integration;
 import io.fabric8.camelk.v1.IntegrationBuilder;
-
-import static org.junit.Assert.assertNotNull;
+import org.junit.jupiter.api.Test;
 
 class ModelTest {
 
@@ -31,7 +28,7 @@ class ModelTest {
       .withName("my-integration")
       .endMetadata()
       .withNewSpec()
-      .addToFlows("form this to that")
+      //.addToFlows("form this to that")
       .endSpec()
       .build();
   }
