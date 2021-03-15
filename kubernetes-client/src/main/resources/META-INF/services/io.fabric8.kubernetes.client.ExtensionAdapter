@@ -26,6 +26,9 @@ io.fabric8.kubernetes.client.V2beta1AutoscalingAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.V2beta2AutoscalingAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.BatchAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.ExtensionsAPIGroupExtensionAdapter
+io.fabric8.kubernetes.client.EventingAPIGroupExtensionAdapter
+io.fabric8.kubernetes.client.V1EventingAPIGroupExtensionAdapter
+io.fabric8.kubernetes.client.V1beta1EventingAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.MetricAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.NetworkAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.PolicyAPIGroupExtensionAdapter
