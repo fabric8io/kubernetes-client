@@ -652,6 +652,8 @@
             <owner>Red Hat, Inc.</owner>
           </properties>
           <excludes>
+            <exclude>**/.idea</exclude>
+            <exclude>.idea</exclude>
             <exclude>.editorconfig</exclude>
             <exclude>license.txt</exclude>
             <exclude>**/test-kubeconfig</exclude>
@@ -661,7 +663,12 @@
             <exclude>kubernetes-model/.openshift-version</exclude>
             <exclude>kubernetes-model/glide.*</exclude>
             <exclude>kubernetes-model/Gopkg.*</exclude>
+            <exclude>extensions/**/vendor/**/*</exclude>
+            <exclude>**/go.mod</exclude>
+            <exclude>**/go.sum</exclude>
             <exclude>kubernetes-client/src/test/resources/*</exclude>
+            <exclude>kubernetes-client/src/test/resources/mockito-extensions/*</exclude>
+            <exclude>**/src/test/resources/ssl/*</exclude>
             <exclude>Jenkinsfile</exclude>
           </excludes>
           <mapping>
