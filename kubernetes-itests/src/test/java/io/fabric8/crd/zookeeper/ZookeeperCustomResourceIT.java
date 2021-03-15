@@ -15,18 +15,17 @@
  */
 package io.fabric8.crd.zookeeper;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersion;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps;
 import io.fabric8.kubernetes.client.utils.Serialization;
-import org.junit.Test;
-
 import java.util.List;
 import java.util.Optional;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
 public class ZookeeperCustomResourceIT {
 
@@ -47,7 +46,7 @@ public class ZookeeperCustomResourceIT {
     Optional<CustomResourceDefinitionVersion> v1 = d.getSpec().getVersions().stream().filter(v -> v.getName().equals("v1")).findFirst();
     assertTrue(v1.isPresent());
     v1.ifPresent(v -> {
-        //Let's version that version is marekd as reqired
+        //Let's check that version is marked as required
         Object spec = v.getSchema().getOpenAPIV3Schema().getProperties().get("spec");
         assertNotNull(spec);
         JSONSchemaProps props = (JSONSchemaProps) spec;
@@ -58,7 +57,7 @@ public class ZookeeperCustomResourceIT {
     Optional<CustomResourceDefinitionVersion> v1alpha1 = d.getSpec().getVersions().stream().filter(v -> v.getName().equals("v1alpha1")).findFirst();
     assertTrue(v1alpha1.isPresent());
     v1.ifPresent(v -> {
-        //Let's version that version is marekd as reqired
+        //Let's check that version is marked as required
         Object spec = v.getSchema().getOpenAPIV3Schema().getProperties().get("spec");
         assertNotNull(spec);
         JSONSchemaProps props = (JSONSchemaProps) spec;
