@@ -1,17 +1,15 @@
 /**
  * Copyright (C) 2015 Red Hat, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 package io.fabric8.crd.generator.apt;
 
@@ -77,59 +75,64 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
 
   private static final String CUSTOM_RESOURCE_NAME = CustomResource.class.getCanonicalName();
   private CustomResourceInfo toCustomResourceInfo(TypeElement customResource) {
-    final DeclaredType superclass = (DeclaredType) customResource.getSuperclass();
     final Name crClassName = customResource.getQualifiedName();
-    if (superclass.asElement().toString().equals(CUSTOM_RESOURCE_NAME)) {
+
+    String specClassName = null;
+    String statusClassName = null;
+    TypeRef statusType = null;
+    boolean unreliable = true;
+    final DeclaredType superclass = (DeclaredType) customResource.getSuperclass();
+    if (CUSTOM_RESOURCE_NAME.equals(superclass.asElement().toString())) {
       final List<? extends TypeMirror> typeArguments = superclass.getTypeArguments();
-      if (typeArguments.size() != 2) {
-        System.out.println("Ignoring " + crClassName + " because it isn't parameterized");
-        return null;
+      if (typeArguments.size() == 2) {
+        specClassName = ((TypeElement) ((DeclaredType) typeArguments.get(0)).asElement())
+          .getQualifiedName().toString();
+        TypeElement status = ((TypeElement) ((DeclaredType) typeArguments.get(1)).asElement());
+        statusClassName = status.getQualifiedName().toString();
+        if (!statusClassName.equals(Void.class.getCanonicalName())) {
+          statusType = ElementTo.TYPEDEF.apply(status).toReference();
+        }
+        unreliable = false;
       }
-      final TypeElement spec = ((TypeElement) ((DeclaredType) typeArguments.get(0)).asElement());
-      final TypeElement status = ((TypeElement) ((DeclaredType) typeArguments.get(1)).asElement());
-      TypeRef statusType = null;
-      if (!status.getQualifiedName().contentEquals(Void.class.getCanonicalName())) {
-        statusType = ElementTo.TYPEDEF.apply(status).toReference();
-      }
-
-      final String group = customResource.getAnnotation(Group.class).value();
-      final String version = customResource.getAnnotation(Version.class).value();
-
-      final String kind = Optional.ofNullable(customResource.getAnnotation(Kind.class))
-        .map(Kind::value)
-        .orElse(customResource.getSimpleName().toString());
-
-      final String singular = Optional.ofNullable(customResource.getAnnotation(Singular.class))
-        .map(Singular::value)
-        .orElse(kind.toLowerCase(Locale.ROOT));
-
-      final String plural = Optional.ofNullable(customResource.getAnnotation(Plural.class))
-        .map(Plural::value)
-        .map(s -> s.toLowerCase(Locale.ROOT))
-        .orElse(Pluralize.toPlural(singular));
-
-      final String[] shortNames = Optional
-        .ofNullable(customResource.getAnnotation(ShortNames.class))
-        .map(ShortNames::value)
-        .orElse(new String[]{});
-
-      final boolean storage = customResource.getAnnotation(Version.class).storage();
-      final boolean served = customResource.getAnnotation(Version.class).served();
-
-      final Scope scope = customResource.getInterfaces().stream()
-        .filter(t -> t.toString().equals(Namespaced.class.getTypeName()))
-        .map(t -> Scope.NAMESPACED).findFirst().orElse(Scope.CLUSTER);
-
-      final TypeDef definition = ElementTo.TYPEDEF.apply(customResource);
-
-      return new CustomResourceInfo(group, version, kind, singular, plural, shortNames, storage,
-        served, scope, statusType, definition, crClassName.toString(),
-        spec.getQualifiedName().toString(), status.getQualifiedName().toString());
-    } else {
-      System.out.println(
-        "Ignoring " + crClassName + " because it doesn't extend " + CUSTOM_RESOURCE_NAME);
-      return null;
     }
+    if (unreliable) {
+      System.out.println("Cannot reliably determine spec and status types for  " + crClassName
+        + " because it isn't parameterized with only spec and status types. Status replicas detection will be deactivated.");
+    }
+
+    final String group = customResource.getAnnotation(Group.class).value();
+    final String version = customResource.getAnnotation(Version.class).value();
+
+    final String kind = Optional.ofNullable(customResource.getAnnotation(Kind.class))
+      .map(Kind::value)
+      .orElse(customResource.getSimpleName().toString());
+
+    final String singular = Optional.ofNullable(customResource.getAnnotation(Singular.class))
+      .map(Singular::value)
+      .orElse(kind.toLowerCase(Locale.ROOT));
+
+    final String plural = Optional.ofNullable(customResource.getAnnotation(Plural.class))
+      .map(Plural::value)
+      .map(s -> s.toLowerCase(Locale.ROOT))
+      .orElse(Pluralize.toPlural(singular));
+
+    final String[] shortNames = Optional
+      .ofNullable(customResource.getAnnotation(ShortNames.class))
+      .map(ShortNames::value)
+      .orElse(new String[]{});
+
+    final boolean storage = customResource.getAnnotation(Version.class).storage();
+    final boolean served = customResource.getAnnotation(Version.class).served();
+
+    final Scope scope = customResource.getInterfaces().stream()
+      .filter(t -> t.toString().equals(Namespaced.class.getTypeName()))
+      .map(t -> Scope.NAMESPACED).findFirst().orElse(Scope.CLUSTER);
+
+    final TypeDef definition = ElementTo.TYPEDEF.apply(customResource);
+
+    return new CustomResourceInfo(group, version, kind, singular, plural, shortNames, storage,
+      served, scope, statusType, definition, crClassName.toString(),
+      specClassName, statusClassName);
   }
 
   private class FileObjectCRDOutput implements CRDOutput {

@@ -66,7 +66,7 @@ public class CRDGenerator {
     this.output = output;
     return this;
   }
-  
+
   public CRDGenerator customResources(CustomResourceInfo... infos) {
     for (CustomResourceInfo info : infos) {
       if (info != null) {
@@ -79,9 +79,9 @@ public class CRDGenerator {
             + "' with "
             + info.crClassName()
             + " (spec: "
-            + info.specClassName()
+            + info.specClassName().orElse("undetermined")
             + " / status: "
-            + info.statusClassName()
+            + info.statusClassName().orElse("undetermined")
             + ")");
 
         v1Handler.handle(info);
@@ -125,7 +125,7 @@ public class CRDGenerator {
     private URI uri;
 
     public DirCRDOutput(File dir) {
-      if(!dir.isDirectory() || !dir.canWrite() || !dir.exists()) {
+      if (!dir.isDirectory() || !dir.canWrite() || !dir.exists()) {
         throw new IllegalArgumentException(dir + " must exist, be a writeable output directory");
       }
       this.dir = dir;
