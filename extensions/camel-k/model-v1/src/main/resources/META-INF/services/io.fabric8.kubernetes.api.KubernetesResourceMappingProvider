@@ -13,4 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-io.fabric8.tekton.TektonV1beta1ResourceMappingProvider
+io.fabric8.camelk.CamelKV1ResourceMappingProvider
