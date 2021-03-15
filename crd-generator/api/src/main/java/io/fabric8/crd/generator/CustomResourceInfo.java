@@ -42,8 +42,8 @@ public class CustomResourceInfo {
   private final Optional<TypeRef> status;
   private final TypeDef definition;
   private final String crClassName;
-  private final String specClassName;
-  private final String statusClassName;
+  private final Optional<String> specClassName;
+  private final Optional<String> statusClassName;
 
   public CustomResourceInfo(String group, String version, String kind, String singular,
     String plural, String[] shortNames, boolean storage, boolean served,
@@ -61,8 +61,8 @@ public class CustomResourceInfo {
     this.status = Optional.ofNullable(status);
     this.definition = definition;
     this.crClassName = crClassName;
-    this.specClassName = specClassName;
-    this.statusClassName = statusClassName;
+    this.specClassName = Optional.ofNullable(specClassName);
+    this.statusClassName = Optional.ofNullable(statusClassName);
   }
 
   public boolean storage() {
@@ -117,11 +117,11 @@ public class CustomResourceInfo {
     return crClassName;
   }
 
-  public String specClassName() {
+  public Optional<String> specClassName() {
     return specClassName;
   }
 
-  public String statusClassName() {
+  public Optional<String> statusClassName() {
     return statusClassName;
   }
 
