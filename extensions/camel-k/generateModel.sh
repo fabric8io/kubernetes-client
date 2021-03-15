@@ -14,8 +14,7 @@
 # limitations under the License.
 #
 
-declare -a modules=("generator-v1alpha1" "generator-v1beta1" "generator-triggers"
-)
+declare -a modules=("generator-v1alpha1" "generator-v1")
 
 for module in ${modules[*]}
 do
@@ -23,4 +22,4 @@ do
     cd $module
     make
     cd ..
-done    
+done
