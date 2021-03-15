@@ -15,8 +15,12 @@
  */
 package io.fabric8.crd;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
 import io.fabric8.kubernetes.client.utils.Serialization;
+import org.junit.Test;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
