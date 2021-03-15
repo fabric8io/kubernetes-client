@@ -78,6 +78,7 @@ import io.fabric8.kubernetes.client.dsl.BatchAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.CertificatesAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.Createable;
 import io.fabric8.kubernetes.client.dsl.DiscoveryAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.EventingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.KubernetesListMixedOperation;
@@ -437,6 +438,11 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
   @Override
   public DiscoveryAPIGroupDSL discovery() {
     return delegate.discovery();
+  }
+
+  @Override
+  public EventingAPIGroupDSL events() {
+    return delegate.events();
   }
 
   @Override

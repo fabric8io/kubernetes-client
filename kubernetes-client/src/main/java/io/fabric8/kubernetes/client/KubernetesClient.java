@@ -166,6 +166,15 @@ public interface KubernetesClient extends Client {
   DiscoveryAPIGroupDSL discovery();
 
   /**
+   * Event API entrypoint for APIGroup events.k8s.io
+   *
+   * <b>Note:</b> This should not be confused with v1.Event
+   *
+   * @return {@link EventingAPIGroupDSL} with which you can access Events API resources objects.
+   */
+  EventingAPIGroupDSL events();
+
+  /**
    * Extensions API entrypoint for APIGroup extensions/v1beta1
    *
    * @return ExtensionsAPIGroupDSL with which you can access entrypoints for extension objects

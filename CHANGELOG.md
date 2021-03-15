@@ -11,6 +11,7 @@
 #### Dependency Upgrade
 
 #### New Features
+* Fix #2837: Add Support for `events.k8s.io` APIGroup DSL
 
 ### 5.2.1 (2021-03-16)
 
