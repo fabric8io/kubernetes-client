@@ -17,13 +17,14 @@ package main
 
 import (
 	"fmt"
-	"github.com/apache/camel-k/pkg/apis/camel/v1"
+	"reflect"
+
+	v1 "github.com/apache/camel-k/pkg/apis/camel/v1"
 	"github.com/apache/camel-k/pkg/apis/camel/v1alpha1"
 	"github.com/fabric8io/kubernetes-client/generator/pkg/schemagen"
 	machinery "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"knative.dev/pkg/apis"
-	"reflect"
 )
 
 func main() {
@@ -44,8 +45,8 @@ func main() {
 	// types that are manually defined in the model
 	providedTypes := []schemagen.ProvidedType{
 		{GoType: reflect.TypeOf(v1alpha1.JSONSchemaProps{}), JavaClass: "io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps"},
-		{GoType: reflect.TypeOf(v1.Flow{}), JavaClass: "java.lang.String"},
-		{GoType: reflect.TypeOf(v1.RawMessage{}), JavaClass: "java.lang.String"},
+		{GoType: reflect.TypeOf(v1.Flow{}), JavaClass: "com.fasterxml.jackson.databind.JsonNode"},
+		{GoType: reflect.TypeOf(v1.TraitConfiguration{}), JavaClass: "com.fasterxml.jackson.databind.JsonNode"},
 	}
 
 	// go packages that are provided and where no generation is required and their corresponding java package

@@ -43,10 +43,11 @@ func main() {
 		//		reflect.TypeOf(v1.Step{}): {"Name": &schemagen.Constraint{MaxLength: 63, Pattern: "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"}},
 	}
 
+
 	// types that are manually defined in the model
 	providedTypes := []schemagen.ProvidedType{
-		{GoType: reflect.TypeOf(v1.Flow{}), JavaClass: "java.lang.String"},
-		{GoType: reflect.TypeOf(v1.TraitConfiguration{}), JavaClass: "java.lang.String"},
+		{GoType: reflect.TypeOf(v1.Flow{}), JavaClass: "com.fasterxml.jackson.databind.JsonNode"},
+		{GoType: reflect.TypeOf(v1.TraitConfiguration{}), JavaClass: "com.fasterxml.jackson.databind.JsonNode"},
 	}
 
 	// go packages that are provided and where no generation is required and their corresponding java package

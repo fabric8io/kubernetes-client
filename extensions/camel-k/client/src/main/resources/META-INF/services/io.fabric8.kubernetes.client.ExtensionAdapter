@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-io.fabric8.tekton.client.CamelKExtensionAdapter
-io.fabric8.tekton.client.V1beta1APIGroupExtensionAdapter
-io.fabric8.tekton.client.V1alpha1APIGroupExtensionAdapter
+io.fabric8.camelk.client.CamelKExtensionAdapter
+io.fabric8.camelk.client.V1APIGroupExtensionAdapter
+io.fabric8.camelk.client.V1alpha1APIGroupExtensionAdapter
