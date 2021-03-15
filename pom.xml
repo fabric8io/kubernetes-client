@@ -190,7 +190,7 @@
       <!-- Internal -->
       <dependency>
         <groupId>io.fabric8</groupId>
-        <artifactId>crd-generator</artifactId>
+        <artifactId>crd-generator-apt</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
