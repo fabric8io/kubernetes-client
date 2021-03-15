@@ -69,22 +69,24 @@ public class CRDGenerator {
   
   public CRDGenerator customResources(CustomResourceInfo... infos) {
     for (CustomResourceInfo info : infos) {
-      hasResources = true;
-      System.out.println(
-        "Generating '"
-          + info.crdName()
-          + "' version '"
-          + info.version()
-          + "' with "
-          + info.crClassName()
-          + " (spec: "
-          + info.specClassName()
-          + " / status: "
-          + info.statusClassName()
-          + ")");
+      if (info != null) {
+        hasResources = true;
+        System.out.println(
+          "Generating '"
+            + info.crdName()
+            + "' version '"
+            + info.version()
+            + "' with "
+            + info.crClassName()
+            + " (spec: "
+            + info.specClassName()
+            + " / status: "
+            + info.statusClassName()
+            + ")");
 
-      v1Handler.handle(info);
-      v1beta1Handler.handle(info);
+        v1Handler.handle(info);
+        v1beta1Handler.handle(info);
+      }
     }
     return this;
   }
