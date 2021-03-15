@@ -13,8 +13,8 @@
 ### 5.2.1
 
 #### Bugs
-
 * Fix #2905: NullPointerException when attempting to generate non-parameterized CustomResources
+* Fix #2900: Improve handling of complex CR hierarchies, falling back to ignoring status replicas instead of skipping CRD generation altogether
 
 ### 5.2.0 (2021-03-12)
 
