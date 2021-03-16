@@ -16,6 +16,9 @@
 
 name: Build
 
+env:
+  MAVEN_ARGS: -V -ntp -Dhttp.keepAlive=false -e
+
 on:
   push:
     branches:
@@ -37,4 +40,4 @@ jobs:
         with:
           java-version: ${{ matrix.java }}
       - name: Build Project
-        run: mvn clean install
+        run: mvn ${MAVEN_ARGS} clean install
