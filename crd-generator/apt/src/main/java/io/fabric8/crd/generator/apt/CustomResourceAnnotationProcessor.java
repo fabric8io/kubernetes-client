@@ -36,7 +36,6 @@ import io.sundr.codegen.model.ClassRef;
 import io.sundr.codegen.model.TypeDef;
 import io.sundr.codegen.model.TypeRef;
 import io.sundr.codegen.utils.TypeUtils;
-import sun.rmi.rmic.iiop.SpecialClassType;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -170,17 +169,17 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
   }
 
   private static Optional<ClassRef> getCustomResourceSpec(TypeDef typeDef) {
-    return getCustomResourceRef(typeDef)
-      .filter(c -> c.getArguments() != null && c.getArguments().size() == 2)
-      .map(c -> c.getArguments().get(0))
-      .filter(t -> t instanceof ClassRef)
-      .map(t -> (ClassRef) t);
+    return getCustomResourceTypeParam(typeDef, 0);
   }
 
   private static Optional<ClassRef> getCustomResourceStatus(TypeDef typeDef) {
+    return getCustomResourceTypeParam(typeDef, 1);
+  }
+
+  private static Optional<ClassRef> getCustomResourceTypeParam(TypeDef typeDef, int paremeterIndex) {
     return getCustomResourceRef(typeDef)
       .filter(c -> c.getArguments() != null && c.getArguments().size() == 2)
-      .map(c -> c.getArguments().get(1))
+      .map(c -> c.getArguments().get(paremeterIndex))
       .filter(t -> t instanceof ClassRef)
       .map(t -> (ClassRef) t);
   }
