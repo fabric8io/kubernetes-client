@@ -10,7 +10,7 @@
 
 #### New Features
 
-### 5.2.1
+### 5.2.1 (2021-03-16)
 
 #### Bugs
 * Fix #2905: NullPointerException when attempting to generate non-parameterized CustomResources
