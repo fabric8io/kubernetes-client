@@ -26,7 +26,7 @@ public interface CamelKClient extends Client {
   /**
    * API entrypoint for tekton.dev/v1beta1 API group resources
    *
-   * @return {@link V1beta1APIGroupDSL} for CamelK resource operations in this API group.
+   * @return {@link V1APIGroupDSL} for CamelK resource operations in this API group.
    */
   V1APIGroupDSL v1();
 

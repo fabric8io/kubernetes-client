@@ -1254,7 +1254,7 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "existingJavaType": "java.lang.String"
+            "existingJavaType": "com.fasterxml.jackson.databind.JsonNode"
           }
         },
         "kit": {
@@ -1567,7 +1567,7 @@
       "type": "object",
       "properties": {
         "configuration": {
-          "existingJavaType": "java.lang.String"
+          "existingJavaType": "com.fasterxml.jackson.databind.JsonNode"
         }
       },
       "javaType": "io.fabric8.camelk.v1.TraitSpec",
