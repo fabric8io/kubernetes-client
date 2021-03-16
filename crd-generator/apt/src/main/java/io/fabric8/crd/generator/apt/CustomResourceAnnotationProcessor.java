@@ -91,8 +91,8 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
     final Name crClassName = customResource.getQualifiedName();
 
     Optional<ClassRef>  specRef = getCustomResourceSpec(definition);
-    Optional<ClassRef> statusRef = getCustomResourceStatus(definition);
 
+    Optional<ClassRef> statusRef = getCustomResourceStatus(definition);
     String specClassName = specRef.map(ClassRef::getFullyQualifiedName).orElse(null);
     String statusClassName = statusRef.map(ClassRef::getFullyQualifiedName).orElse(null);
 
@@ -135,7 +135,7 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
       .map(t -> Scope.NAMESPACED).findFirst().orElse(Scope.CLUSTER);
 
 
-    return new CustomResourceInfo(group, version, kind, singular, plural, shortNames, storage, served, scope, statusRef.orElse(null), definition, crClassName.toString(),
+    return new CustomResourceInfo(group, version, kind, singular, plural, shortNames, storage, served, scope, definition, crClassName.toString(),
       specClassName, statusClassName);
   }
 
