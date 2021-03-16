@@ -16,6 +16,9 @@
 
 name: License
 
+env:
+  MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e
+
 on:
   push:
     branches:
@@ -35,4 +38,4 @@ jobs:
           java-version: '8'
           distribution: 'adopt'
       - name: Check License Headers
-        run: mvn -B -C -V -ntp -N license:check
+        run: mvn ${MAVEN_ARGS} -N license:check

@@ -27,6 +27,7 @@ on:
 env:
   IT_REVISION: master
   IT_DIR: kubernetes-itests
+  MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e
 
 jobs:
   buildWithoutTests:
@@ -42,7 +43,7 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}-${{ github.sha }}
           restore-keys: ${{ runner.os }}-maven-
       - name: Install Kubernetes Client
-        run: mvn -B -C -V -ntp -f pom.xml -DskipTests clean install
+        run: mvn -f pom.xml ${MAVEN_ARGS} -DskipTests clean install
 
   minikube:
     name: K8S
@@ -74,7 +75,8 @@ jobs:
           java-version: '8'
           distribution: 'adopt'
       - name: Install and Run Integration Tests
-        run: mvn -B -C -V -ntp -f $IT_DIR/pom.xml test -Dtest="io.fabric8.kubernetes.**"
+        run: |
+          mvn ${MAVEN_ARGS} -f $IT_DIR/pom.xml test -Dtest="io.fabric8.kubernetes.**"
   openshift:
     name: OpenShift
     needs: buildWithoutTests
@@ -103,4 +105,5 @@ jobs:
           java-version: '8'
           distribution: 'adopt'
       - name: Install and Run Integration Tests
-        run: mvn -B -C -V -ntp -f $IT_DIR/pom.xml test -Dtest="io.fabric8.openshift.**"
+        run: |
+          mvn ${MAVEN_ARGS} -f $IT_DIR/pom.xml test -Dtest="io.fabric8.openshift.**"

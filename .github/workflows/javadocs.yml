@@ -16,6 +16,9 @@
 
 name: JavaDocs
 
+env:
+  MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e
+
 on:
   push:
     branches:
@@ -35,4 +38,4 @@ jobs:
           java-version: '8'
           distribution: 'adopt'
       - name: Check Java Docs
-        run: mvn -B -C -V -ntp clean install javadoc:jar -DskipTests -Pjavadoc-test
+        run: mvn ${MAVEN_ARGS} clean install javadoc:jar -DskipTests -Pjavadoc-test

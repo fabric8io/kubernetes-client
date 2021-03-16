@@ -16,6 +16,9 @@
 
 name: Sonar Scanner
 
+env:
+  MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e
+
 on:
   push:
     branches:
@@ -41,4 +44,4 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
       - name: Maven Sonar
-        run: mvn -B -C -V -ntp clean install sonar:sonar -Psonar
+        run: mvn ${MAVEN_ARGS} clean install sonar:sonar -Psonar
