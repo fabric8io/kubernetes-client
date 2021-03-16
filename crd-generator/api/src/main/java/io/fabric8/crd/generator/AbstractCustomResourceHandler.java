@@ -51,26 +51,22 @@ public abstract class AbstractCustomResourceHandler {
 
     TypeDef def = config.definition();
 
-    final Optional<TypeRef> statusType = config.status();
-
     SpecReplicasPathDetector specReplicasPathDetector = new SpecReplicasPathDetector();
     StatusReplicasPathDetector statusReplicasPathDetector = new StatusReplicasPathDetector();
     LabelSelectorPathDetector labelSelectorPathDetector = new LabelSelectorPathDetector();
     AdditionalPrinterColumnDetector additionalPrinterColumnDetector = new AdditionalPrinterColumnDetector();
 
-    final boolean statusExists = statusType.isPresent();
-    if (statusExists) {
-      TypeDefBuilder builder = new TypeDefBuilder(def);
-      Optional<Property> statusProperty = findStatusProperty(def);
+    TypeDefBuilder builder = new TypeDefBuilder(def);
+    Optional<Property> statusProperty = findStatusProperty(def);
 
-      statusProperty.ifPresent(p -> {
-        builder.removeFromProperties(p);
-      });
+    if (statusProperty.isPresent()) {
+      Property p = statusProperty.get();
+      builder.removeFromProperties(p);
 
       def = builder
         .addNewProperty()
         .withName("status")
-        .withTypeRef(statusType.get())
+        .withTypeRef(p.getTypeRef())
         .endProperty()
         .build();
     }
@@ -82,8 +78,7 @@ public abstract class AbstractCustomResourceHandler {
       .accept(additionalPrinterColumnDetector)
       .build();
 
-    addDecorators(config, def, specReplicasPathDetector.getPath(),
-      statusReplicasPathDetector.getPath(), labelSelectorPathDetector.getPath(), statusExists);
+    addDecorators(config, def, specReplicasPathDetector.getPath(), statusReplicasPathDetector.getPath(), labelSelectorPathDetector.getPath());
 
     Map<String, Property> additionalPrinterColumns = new HashMap<>();
     additionalPrinterColumns.putAll(additionalPrinterColumnDetector.getProperties());
@@ -130,9 +125,8 @@ public abstract class AbstractCustomResourceHandler {
    * @param specReplicasPath an optionally detected path of field defining spec replicas
    * @param statusReplicasPath an optionally detected path of field defining status replicas
    * @param labelSelectorPath  an optionally detected path of field defining `status.selector`
-   * @param statusExists {@code true} if the {@link io.fabric8.kubernetes.client.CustomResource} from which the CRD is generated defines a status field, {@code false} otherwise
    */
   protected abstract void addDecorators(CustomResourceInfo config, TypeDef def,
     Optional<String> specReplicasPath, Optional<String> statusReplicasPath,
-    Optional<String> labelSelectorPath, boolean statusExists);
+    Optional<String> labelSelectorPath);
 }
