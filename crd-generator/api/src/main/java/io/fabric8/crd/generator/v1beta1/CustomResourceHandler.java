@@ -52,7 +52,7 @@ public class CustomResourceHandler extends AbstractCustomResourceHandler {
   @Override
   protected void addDecorators(CustomResourceInfo config, TypeDef def,
     Optional<String> specReplicasPath, Optional<String> statusReplicasPath,
-    Optional<String> labelSelectorPath, boolean statusExists) {
+    Optional<String> labelSelectorPath) {
     final String name = config.crdName();
     final String version = config.version();
     resources.decorate(
@@ -79,7 +79,7 @@ public class CustomResourceHandler extends AbstractCustomResourceHandler {
       resources.decorate(new AddLabelSelectorPathDecorator(name, version, path));
     });
 
-    if (statusExists) {
+    if (statusReplicasPath.isPresent()) {
       resources.decorate(new AddSubresourcesDecorator(name, version));
       resources.decorate(new AddStatusSubresourceDecorator(name, version));
     }
