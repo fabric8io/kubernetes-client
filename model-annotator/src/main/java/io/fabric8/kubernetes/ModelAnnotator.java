@@ -61,6 +61,7 @@ public class ModelAnnotator extends AbstractAnnotator {
 
         JAnnotationArrayMember refs = buildable.paramArray("refs");
         refs.annotate(BuildableReference.class).param(BUILDABLE_REFERENCE_VALUE, new JCodeModel()._class("io.fabric8.kubernetes.api.model.ObjectMeta"));
+        refs.annotate(BuildableReference.class).param(BUILDABLE_REFERENCE_VALUE, new JCodeModel()._class("io.fabric8.kubernetes.api.model.ObjectReference"));
         refs.annotate(BuildableReference.class).param(BUILDABLE_REFERENCE_VALUE, new JCodeModel()._class("io.fabric8.kubernetes.api.model.LabelSelector"));
         refs.annotate(BuildableReference.class).param(BUILDABLE_REFERENCE_VALUE, new JCodeModel()._class("io.fabric8.kubernetes.api.model.Container"));
         refs.annotate(BuildableReference.class).param(BUILDABLE_REFERENCE_VALUE, new JCodeModel()._class("io.fabric8.kubernetes.api.model.EnvVar"));
