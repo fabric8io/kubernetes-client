@@ -304,7 +304,7 @@
           }
         },
         "flow": {
-          "existingJavaType": "java.lang.String"
+          "existingJavaType": "com.fasterxml.jackson.databind.JsonNode"
         },
         "sources": {
           "type": "array",
