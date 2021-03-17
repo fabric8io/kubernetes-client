@@ -18,6 +18,7 @@
 
 #### New Features
 * Fix #2837: Add Support for `events.k8s.io` APIGroup DSL
+* Fix #2891: Introduce CamelK extension
 
 ### 5.2.1 (2021-03-16)
 
@@ -49,10 +50,6 @@
 * Fix #2818: Update chaos-mesh extension to v1.1.1. Add PodIoChaos, JVMChaos, HTTPChaos and DNSChaos.
 * Fix #2699: Add support for `@EnableOpenShiftMockClient` for OpenShiftClient
 * Fix #2588: Support for Server side dry runs
-
-- CamelK extension
-
-- CamelK extension
 
 ### 5.1.1 (2021-02-24)
 
