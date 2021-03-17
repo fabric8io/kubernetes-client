@@ -29,10 +29,12 @@ import io.fabric8.kubernetes.client.utils.Pluralize;
 import io.fabric8.kubernetes.model.Scope;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Plural;
+import io.fabric8.kubernetes.model.annotation.ShortNames;
 import io.fabric8.kubernetes.model.annotation.Singular;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import java.util.Locale;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -222,6 +224,18 @@ public abstract class CustomResource<S, T> implements HasMetadata {
   @JsonIgnore
   public String getCRDName() {
     return crdName;
+  }
+
+  /**
+   * Retrieves the short names associated with this CustomResource or an empty array if none was provided
+   *
+   * @param clazz the CustomResource class which short names we want to retrieve
+   * @return the short names associated with this CustomResource or an empty array if none was provided
+   */
+  public static String[] getShortNames(Class<? extends CustomResource> clazz) {
+    return Optional.ofNullable(clazz.getAnnotation(ShortNames.class))
+      .map(ShortNames::value)
+      .orElse(new String[]{});
   }
 
   /**
