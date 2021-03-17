@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.fabric8.kubernetes.api.model.DeleteOptions;
@@ -48,11 +49,13 @@ import io.fabric8.kubernetes.client.dsl.Nameable;
 import io.fabric8.kubernetes.client.dsl.Namespaceable;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
+import io.fabric8.kubernetes.client.internal.PatchUtils;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.IOHelpers;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.client.utils.WatcherToggle;
+import io.fabric8.zjsonpatch.JsonDiff;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -88,12 +91,12 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
   private final String deletionPropagation;
   private final boolean cascading;
 
-  private enum HttpCallMethod { GET, POST, PUT, DELETE }
+  private enum HttpCallMethod { GET, POST, PUT, PATCH, DELETE }
 
   private RawCustomResourceOperationsImpl(OkHttpClient client, Config config, CustomResourceDefinitionContext crdContext, String namespace, String name, long gracePeriodInSeconds, boolean cascading, String deletionPropagation, ListOptions listOptions, boolean dryRun) {
     super(client, config);
     this.customResourceDefinition = crdContext;
-    this.objectMapper = Serialization.jsonMapper();
+    this.objectMapper = new ObjectMapper();
     this.namespace = namespace;
     this.name = name;
     this.gracePeriodInSeconds = gracePeriodInSeconds;
@@ -298,6 +301,18 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
     return new RawCustomResourceOperationsImpl(client, config, customResourceDefinition, namespace, null, gracePeriodInSeconds, cascading, deletionPropagation, listOptions, dryRun).createOrReplace(objectAsStream);
   }
 
+  private Map<String, Object> replace(String namespace, String name, Map<String, Object> object) throws IOException {
+    return new RawCustomResourceOperationsImpl(client, config, customResourceDefinition, namespace, name, gracePeriodInSeconds, cascading, deletionPropagation, listOptions, dryRun).replace(object);
+  }
+
+  private Map<String, Object> replace(String name, Map<String, Object> object) throws IOException {
+    return new RawCustomResourceOperationsImpl(client, config, customResourceDefinition, null, name, gracePeriodInSeconds, cascading, deletionPropagation, listOptions, dryRun).replace(object);
+  }
+
+  private Map<String, Object> replace(Map<String, Object> object) throws IOException {
+    return validateAndSubmitRequest(objectMapper.writeValueAsString(object), HttpCallMethod.PUT);
+  }
+
   /**
    * Edit a custom resource object which is a non-namespaced object.
    *
@@ -332,7 +347,6 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
    * @throws IOException in case of network/serialization failures or failures from Kubernetes API
    */
   public Map<String, Object> edit(String namespace, String name, Map<String, Object> object) throws IOException {
-    object = appendResourceVersionInObject(namespace, name, object);
     return new RawCustomResourceOperationsImpl(client, config, customResourceDefinition, namespace, name, gracePeriodInSeconds, cascading, deletionPropagation, listOptions, dryRun).edit(object);
   }
 
@@ -346,9 +360,6 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
    * @throws IOException in case of network/serialization failures or failures from Kubernetes API
    */
   public Map<String, Object> edit(String namespace, String name, String objectAsString) throws IOException {
-    // Append resourceVersion in object metadata in order to
-    // avoid : https://github.com/fabric8io/kubernetes-client/issues/1724
-    objectAsString = appendResourceVersionInObject(namespace, name, objectAsString);
     return new RawCustomResourceOperationsImpl(client, config, customResourceDefinition, namespace, name, gracePeriodInSeconds, cascading, deletionPropagation, listOptions, dryRun).edit(objectAsString);
   }
 
@@ -360,7 +371,10 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
    * @throws IOException in case of network/serializatino failures or failures from Kubernetes API
    */
   public Map<String, Object> edit(String objectAsString) throws IOException {
-    return validateAndSubmitRequest(objectAsString, HttpCallMethod.PUT);
+    // Append resourceVersion in object metadata in order to
+    // avoid : https://github.com/fabric8io/kubernetes-client/issues/1724
+    objectAsString = getPatchDiff(namespace, name, objectAsString);
+    return validateAndSubmitRequest(objectAsString, HttpCallMethod.PATCH);
   }
 
   /**
@@ -371,7 +385,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
    * @throws IOException in case of network/serializatino failures or failures from Kubernetes API
    */
   public Map<String, Object> edit(Map<String, Object> object) throws IOException {
-    return validateAndSubmitRequest(objectMapper.writeValueAsString(object), HttpCallMethod.PUT);
+    return validateAndSubmitRequest(objectMapper.writeValueAsString(object), HttpCallMethod.PATCH);
   }
 
   /**
@@ -883,7 +897,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
         }
         String nameFromObject = (String) metadata.get("name");
         ret = this.namespace != null ?
-          edit(this.namespace, nameFromObject, objectAsMap) : edit(nameFromObject, objectAsMap);
+          replace(this.namespace, nameFromObject, objectAsMap) : replace(nameFromObject, objectAsMap);
       } catch (NullPointerException nullPointerException) {
         throw KubernetesClientException.launderThrowable(new IllegalStateException("Invalid object provided -- metadata.name is required."));
       }
@@ -1057,23 +1071,33 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
         return requestBuilder.post(requestBody).url(url).build();
       case PUT:
         return requestBuilder.put(requestBody).url(url).build();
+      case PATCH:
+        return requestBuilder.patch(RequestBody.create(JSON_PATCH, body)).url(url).build();
     }
     return requestBuilder.build();
   }
 
-  private String appendResourceVersionInObject(String namespace, String customResourceName, String customResourceAsJsonString) throws IOException {
+  private String getPatchDiff(String namespace, String customResourceName, String customResourceAsJsonString) throws IOException {
     Map<String, Object> newObject = convertJsonOrYamlStringToMap(customResourceAsJsonString);
 
-    return objectMapper.writeValueAsString(appendResourceVersionInObject(namespace, customResourceName, newObject));
+    return getPatchDiff(namespace, customResourceName, newObject);
   }
 
-  private Map<String, Object> appendResourceVersionInObject(String namespace, String customResourceName, Map<String, Object> customResource) throws IOException {
+  private String getPatchDiff(String namespace, String customResourceName, Map<String, Object> customResource) throws IOException {
     Map<String, Object> oldObject = get(namespace, customResourceName);
     String resourceVersion = ((Map<String, Object>)oldObject.get(METADATA)).get(RESOURCE_VERSION).toString();
 
     ((Map<String, Object>)customResource.get(METADATA)).put(RESOURCE_VERSION, resourceVersion);
 
-    return customResource;
+    // Exclude changes to the status
+    oldObject.put("status", null);
+    customResource.put("status", null);
+
+    JsonNode newone = JsonDiff.asJson(PatchUtils.patchMapper().valueToTree(oldObject), PatchUtils.patchMapper().valueToTree(customResource));
+
+    String patch = objectMapper.writeValueAsString(newone);
+
+    return patch;
   }
 
   private DeleteOptions fetchDeleteOptions(boolean cascading, String propagationPolicy) {
