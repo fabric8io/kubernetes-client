@@ -142,8 +142,8 @@ public class CustomResourceInfo {
         .orElse(new String[]{});
 
       final Scope scope = Arrays.stream(customResource.getInterfaces())
-        .filter(t -> t.toString().equals(Namespaced.class.getTypeName()))
-        .map(t -> Scope.NAMESPACED).findFirst().orElse(Scope.CLUSTER);
+        .filter(t -> t.getTypeName().equals(Namespaced.class.getTypeName()))
+        .findFirst().map(t -> Scope.NAMESPACED).orElse(Scope.CLUSTER);
 
       final TypeDef definition = ClassTo.TYPEDEF.apply(customResource);
       
