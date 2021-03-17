@@ -371,10 +371,8 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
    * @throws IOException in case of network/serializatino failures or failures from Kubernetes API
    */
   public Map<String, Object> edit(String objectAsString) throws IOException {
-    // Append resourceVersion in object metadata in order to
-    // avoid : https://github.com/fabric8io/kubernetes-client/issues/1724
-    objectAsString = getPatchDiff(namespace, name, objectAsString);
-    return validateAndSubmitRequest(objectAsString, HttpCallMethod.PATCH);
+    Map<String, Object> object = convertJsonOrYamlStringToMap(objectAsString);
+    return new RawCustomResourceOperationsImpl(client, config, customResourceDefinition, namespace, name, gracePeriodInSeconds, cascading, deletionPropagation, listOptions, dryRun).edit(object);
   }
 
   /**
@@ -385,7 +383,10 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
    * @throws IOException in case of network/serializatino failures or failures from Kubernetes API
    */
   public Map<String, Object> edit(Map<String, Object> object) throws IOException {
-    return validateAndSubmitRequest(objectMapper.writeValueAsString(object), HttpCallMethod.PATCH);
+    // Append resourceVersion in object metadata in order to
+    // avoid : https://github.com/fabric8io/kubernetes-client/issues/1724
+    String objectAsString = getPatchDiff(namespace, name, object);
+    return validateAndSubmitRequest(objectAsString, HttpCallMethod.PATCH);
   }
 
   /**
@@ -1075,12 +1076,6 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
         return requestBuilder.patch(RequestBody.create(JSON_PATCH, body)).url(url).build();
     }
     return requestBuilder.build();
-  }
-
-  private String getPatchDiff(String namespace, String customResourceName, String customResourceAsJsonString) throws IOException {
-    Map<String, Object> newObject = convertJsonOrYamlStringToMap(customResourceAsJsonString);
-
-    return getPatchDiff(namespace, customResourceName, newObject);
   }
 
   private String getPatchDiff(String namespace, String customResourceName, Map<String, Object> customResource) throws IOException {
