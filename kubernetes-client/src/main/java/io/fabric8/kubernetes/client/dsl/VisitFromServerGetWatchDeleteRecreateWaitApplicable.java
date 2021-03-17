@@ -18,15 +18,12 @@ package io.fabric8.kubernetes.client.dsl;
 
 import io.fabric8.kubernetes.api.builder.Visitable;
 import io.fabric8.kubernetes.client.FromServerGettable;
-import io.fabric8.kubernetes.client.GracePeriodConfigurable;
-import io.fabric8.kubernetes.client.PropagationPolicyConfigurable;
 import io.fabric8.kubernetes.client.Watcher;
 
 public interface VisitFromServerGetWatchDeleteRecreateWaitApplicable<T> extends Visitable<VisitFromServerGetWatchDeleteRecreateWaitApplicable<T>>,
-  FromServerGettable<T>, RecreateApplicable<T, T>,
-  CascadingDeletable<T>,
+  FromServerGettable<T>,
   Watchable<Watcher<T>>,
   Waitable<T, T>,
-  GracePeriodConfigurable<CascadingDeletable<T>>,
-  PropagationPolicyConfigurable<CascadingDeletable<T>> {
+  VisitFromServerWritable<T>,
+  DryRunable<VisitFromServerWritable<T>> {
 }

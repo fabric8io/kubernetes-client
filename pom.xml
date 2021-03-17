@@ -23,7 +23,7 @@
 
   <groupId>io.fabric8</groupId>
   <artifactId>kubernetes-client-project</artifactId>
-  <version>5.2-SNAPSHOT</version>
+  <version>5.3-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Fabric8 :: Kubernetes :: Project</name>
@@ -190,7 +190,7 @@
       <!-- Internal -->
       <dependency>
         <groupId>io.fabric8</groupId>
-        <artifactId>crd-generator</artifactId>
+        <artifactId>crd-generator-apt</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>

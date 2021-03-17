@@ -1,24 +1,47 @@
 ## CHANGELOG
 
-### 5.2-SNAPSHOT
+### 5.3-SNAPSHOT
 
 #### Bugs
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
+### 5.2.1 (2021-03-16)
+
+#### Bugs
+* Fix #2905: NullPointerException when attempting to generate non-parameterized CustomResources
+* Fix #2900: Improve handling of complex CR hierarchies, falling back to ignoring status replicas instead of skipping CRD generation altogether
+
+### 5.2.0 (2021-03-12)
+
+#### Bugs
+* Fix #2802: NullPointerException in HasMetadataOperation patch/replace when using KubernetesMockServer
 * Fix #2828: Remove automatic instantiation of CustomResource spec and status as this feature was causing more issues than it was solving
 * Fix #2857: Fix the log of an unexpected error from an Informer's EventHandler
 * Fix #2853: Cannot change the type of the Service from ClusterIP to ExternalName with PATCH
+* Fix #2855: `.withPropagationPolicy` and `.withGracePeriod` DSL methods can't be combined for Resource API deletion operations
 * Fix #2783: OpenIDConnectionUtils#persistKubeConfigWithUpdatedToken persists access token instead of refresh token
-* Fix #2871: Change longFileMode to LONGFILE_POSIX for creating tar in PodUpload, improve exception handling in PodUpload.
+* Fix #2871: Change longFileMode to LONGFILE\_POSIX for creating tar in PodUpload, improve exception handling in PodUpload.
+* Fix #2746: SharedInformerFactory should use key formed from OperationContext
+* Fix #2736: Move CRD annotations to kubernetes-model-common module for greater coherence
+* Fix #2836: Make CRD generation usable at runtime, split the generator into api and apt modules, 
+  the `crd-generator-apt` artifact corresponding to the previous `crd-generator` artifact, while the
+  `crd-generator-api` artifact can be consumed directly to generate the CRDs at runtime.
 
 #### Improvements
 * Fix #2781: RawCustomResourceOperationsImpl#delete now returns a boolean value for deletion status
 * Fix #2780: Refactor RawCustomResourceOperationsImpl#delete(String)
 
-#### Dependency Upgrade
-
 #### New Features
-* Update chaos-mesh extension to v1.1.1. Add PodIoChaos, JVMChaos, HTTPChaos and DNSChaos.
+* Fix #2818: Update chaos-mesh extension to v1.1.1. Add PodIoChaos, JVMChaos, HTTPChaos and DNSChaos.
 * Fix #2699: Add support for `@EnableOpenShiftMockClient` for OpenShiftClient
+* Fix #2588: Support for Server side dry runs
 
+- CamelK extension
 
 - CamelK extension
 

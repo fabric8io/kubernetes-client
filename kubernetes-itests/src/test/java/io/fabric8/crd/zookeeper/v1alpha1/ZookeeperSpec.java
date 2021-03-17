@@ -15,7 +15,7 @@
  */
 package io.fabric8.crd.zookeeper.v1alpha1;
 
-import io.fabric8.crd.annotation.SpecReplicas;
+import io.fabric8.kubernetes.model.annotation.SpecReplicas;
 
 public class ZookeeperSpec {
 

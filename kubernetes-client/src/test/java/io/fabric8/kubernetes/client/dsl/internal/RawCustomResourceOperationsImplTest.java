@@ -383,6 +383,36 @@ public class RawCustomResourceOperationsImplTest {
     assertThat(configFromRawOp.getWatchReconnectInterval()).isEqualTo(10);
     assertThat(configFromRawOp.getWatchReconnectLimit()).isEqualTo(1);
   }
+  
+  @Test
+  void testDryRunDelete() throws IOException {
+    // Given
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, namespacedCustomResourceDefinitionContext);
+    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
+
+    // When
+    rawCustomResourceOperations.dryRun().delete("myns", "myresource");
+
+    // Then
+    verify(mockClient).newCall(captor.capture());
+    assertEquals("/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos/myresource", captor.getValue().url().encodedPath());
+    assertEquals("dryRun=All", captor.getValue().url().encodedQuery());
+  }
+
+  @Test
+  void testDryRunCreate() throws IOException {
+    // Given
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, namespacedCustomResourceDefinitionContext);
+    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
+
+    // When
+    rawCustomResourceOperations.dryRun().create("myns", "{\"apiVersion\":\"test.fabric8.io/v1alpha1\"}");
+
+    // Then
+    verify(mockClient).newCall(captor.capture());
+    assertEquals("/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos", captor.getValue().url().encodedPath());
+    assertEquals("dryRun=All", captor.getValue().url().encodedQuery());
+  }
 
   private void mockDeletionCallWithResponse(int code, String status) throws IOException {
     Call mockCall = mock(Call.class);

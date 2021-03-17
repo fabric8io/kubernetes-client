@@ -21,12 +21,13 @@ import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import java.util.function.Predicate;
+
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.openshift.api.model.ProjectRequest;
 import io.fabric8.openshift.api.model.ProjectRequestBuilder;
-import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.dsl.internal.ProjectRequestsOperationImpl;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
@@ -47,12 +48,12 @@ public class ProjectRequestHandler implements ResourceHandler<ProjectRequest, Pr
   }
 
   @Override
-  public ProjectRequest create(OkHttpClient client, Config config, String namespace, ProjectRequest item) {
-      return new ProjectRequestsOperationImpl(client, OpenShiftConfig.wrap(config)).create(item);
+  public ProjectRequest create(OkHttpClient client, Config config, String namespace, ProjectRequest item, boolean dryRun) {
+    return new ProjectRequestsOperationImpl(new OperationContext().withOkhttpClient(client).withConfig(config).withDryRun(dryRun)).create();
   }
 
   @Override
-  public ProjectRequest replace(OkHttpClient client, Config config, String namespace, ProjectRequest item) {
+  public ProjectRequest replace(OkHttpClient client, Config config, String namespace, ProjectRequest item, boolean dryRun) {
     throw new UnsupportedOperationException();
   }
 
@@ -67,7 +68,7 @@ public class ProjectRequestHandler implements ResourceHandler<ProjectRequest, Pr
   }
 
   @Override
-  public Boolean delete(OkHttpClient client, Config config, String namespace, DeletionPropagation propagationPolicy, ProjectRequest item) {
+  public Boolean delete(OkHttpClient client, Config config, String namespace, DeletionPropagation propagationPolicy, long gracePeriodSeconds, ProjectRequest item, boolean dryRun) {
     throw new UnsupportedOperationException();
   }
 
