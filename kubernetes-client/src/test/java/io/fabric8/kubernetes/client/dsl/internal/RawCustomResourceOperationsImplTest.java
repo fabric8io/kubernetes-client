@@ -659,18 +659,7 @@ public class RawCustomResourceOperationsImplTest {
   @Test
   void testEditCR() throws IOException {
     // Given
-    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, clusterCustomResourceDefinitionContext) {
-      public Map<String, Object> get(String namespace, String name) {
-
-        Map<String, Object> metadata = new HashMap<String, Object>();
-        metadata.put("resourceVersion", "123");
-
-        Map<String, Object> res = new HashMap<String, Object>();
-        res.put("metadata", metadata);
-
-        return res;
-      }
-    };
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, clusterCustomResourceDefinitionContext);
     String jsonString = "{ \"metadata\": " + Serialization.jsonMapper().writeValueAsString(new ObjectMetaBuilder().withName("myresource").withNamespace("mynamespace").build()) + "}";
 
     // When
