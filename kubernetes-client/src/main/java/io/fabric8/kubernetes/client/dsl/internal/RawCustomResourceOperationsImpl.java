@@ -1080,9 +1080,6 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
 
   private String getPatchDiff(String namespace, String customResourceName, Map<String, Object> customResource) throws IOException {
     Map<String, Object> oldObject = get(namespace, customResourceName);
-    String resourceVersion = ((Map<String, Object>)oldObject.get(METADATA)).get(RESOURCE_VERSION).toString();
-
-    ((Map<String, Object>)customResource.get(METADATA)).put(RESOURCE_VERSION, resourceVersion);
 
     // Exclude changes to the status
     oldObject.put("status", null);
