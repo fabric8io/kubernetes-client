@@ -383,8 +383,6 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
    * @throws IOException in case of network/serializatino failures or failures from Kubernetes API
    */
   public Map<String, Object> edit(Map<String, Object> object) throws IOException {
-    // Append resourceVersion in object metadata in order to
-    // avoid : https://github.com/fabric8io/kubernetes-client/issues/1724
     String objectAsString = getPatchDiff(namespace, name, object);
     return validateAndSubmitRequest(objectAsString, HttpCallMethod.PATCH);
   }
