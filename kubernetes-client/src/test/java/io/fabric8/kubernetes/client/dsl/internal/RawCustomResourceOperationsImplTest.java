@@ -666,7 +666,7 @@ public class RawCustomResourceOperationsImplTest {
     Map<String, Object> res = rawCustomResourceOperations.edit(jsonString);
 
     // Then
-    assertNotEquals(res, null);
+    assertNotEquals(null, res);
   }
 
   private void assertRequestCaptured(ArgumentCaptor<Request> captor, String url, String method) {

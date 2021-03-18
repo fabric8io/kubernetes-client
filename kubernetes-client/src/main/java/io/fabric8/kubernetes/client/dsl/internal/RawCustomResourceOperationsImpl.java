@@ -1085,9 +1085,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
 
     JsonNode newone = JsonDiff.asJson(PatchUtils.patchMapper().valueToTree(oldObject), PatchUtils.patchMapper().valueToTree(customResource));
 
-    String patch = objectMapper.writeValueAsString(newone);
-
-    return patch;
+    return objectMapper.writeValueAsString(newone);
   }
 
   private DeleteOptions fetchDeleteOptions(boolean cascading, String propagationPolicy) {
