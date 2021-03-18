@@ -31,6 +31,7 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class KubernetesCrudAttributesExtractorTest {
 
@@ -232,6 +233,25 @@ public class KubernetesCrudAttributesExtractorTest {
     AttributeSet expected = new AttributeSet();
     expected = expected.add(new Attribute("labels:example.com/name", "myname"));
     assertTrue(attributes.matches(expected));
+  }
+
+  @Test
+  public void shouldGenerateMetadata() {
+    KubernetesServer kubernetesServer = new KubernetesServer(false, true);
+    kubernetesServer.before();
+    KubernetesClient kubernetesClient = kubernetesServer.getClient();
+    Deployment deployment1 = new DeploymentBuilder().withNewMetadata().withGenerateName("prefix")
+      .endMetadata().build();
+    kubernetesClient.apps().deployments().create(deployment1);
+
+    Deployment result = kubernetesClient.apps().deployments().list()
+      .getItems().get(0);
+
+    assertTrue(result.getMetadata().getName().startsWith("prefix"));
+    assertNotNull(result.getMetadata().getUid());
+    assertNotNull(result.getMetadata().getResourceVersion());
+    assertNotNull(result.getMetadata().getCreationTimestamp());
+    assertNotNull(result.getMetadata().getGeneration());
   }
 
   // https://github.com/fabric8io/kubernetes-client/issues/1688

@@ -8,6 +8,8 @@
 
 #### Improvements
 
+* Fix #2921: chore: Kubernetes server mock will generate missing metadata fields
+
 #### Dependency Upgrade
 
 #### New Features
