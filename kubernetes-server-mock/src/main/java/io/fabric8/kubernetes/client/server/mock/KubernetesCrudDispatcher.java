@@ -17,6 +17,8 @@ package io.fabric8.kubernetes.client.server.mock;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
@@ -37,10 +39,14 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
@@ -316,8 +322,13 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
     return HttpURLConnection.HTTP_OK;
   }
 
-  private int doCreate(String path, String s, String event) {
-    AttributeSet features = AttributeSet.merge(attributeExtractor.fromPath(path), attributeExtractor.fromResource(s));
+  private int doCreate(String path, String initial, String event) {
+    AttributeSet fromPath = attributeExtractor.fromPath(path);
+
+    String s = setDefaultMetadata(initial, fromPath);
+
+    AttributeSet features = AttributeSet.merge(fromPath, attributeExtractor.fromResource(s));
+
     map.put(features, s);
 
     if (event != null && !event.isEmpty()) {
@@ -326,6 +337,30 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
         .forEach(listener -> listener.sendWebSocketResponse(s, event));
     }
     return HttpURLConnection.HTTP_OK;
+  }
+
+  private String setDefaultMetadata(String s, AttributeSet fromPath) {
+    try {
+      JsonNode source = context.getMapper().readTree(s);
+      ObjectNode metadata = (ObjectNode)source.findValue("metadata");
+      UUID uuid = UUID.randomUUID();
+      if (metadata.get("name") == null) {
+          metadata.put("name", metadata.get("generateName").asText() + "-" + uuid.toString());
+      }
+      // needs a later release of mockwebserver
+      /*
+      if (metadata.get("namespace") == null) {
+          metadata.put("namespace", fromPath.getAttribute("namespace").getValue().toString());
+      }*/
+      metadata.put("uid", uuid.toString());
+      metadata.put("resourceVersion", "1");
+      metadata.put("generation", 1);
+      metadata.put("creationTimestamp", ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT));
+
+      return context.getMapper().writeValueAsString(source);
+    } catch (JsonProcessingException e) {
+      throw new IllegalArgumentException(e);
+    }
   }
 
   private MockResponse validateRequestBodyAndHandleRequest(String s, Supplier<MockResponse> mockResponseSupplier) {

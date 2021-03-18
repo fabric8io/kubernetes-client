@@ -12,6 +12,8 @@
 
 - Fix #2938: Make it possible to manage Tekton Triggers directly
 
+* Fix #2921: chore: Kubernetes server mock will generate missing metadata fields
+
 #### Dependency Upgrade
 
 #### New Features
