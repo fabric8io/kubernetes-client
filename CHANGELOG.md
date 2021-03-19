@@ -4,6 +4,8 @@
 
 #### Bugs
 
+- Fix: CRD generator no longer treat enum values as properties (performance)
+
 #### Improvements
 
 #### Dependency Upgrade

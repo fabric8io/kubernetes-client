@@ -73,11 +73,13 @@ public class AnnotatedMultiPropertyPathDetector extends TypedVisitor<TypeDefBuil
         if (!parents.contains(p)) {
           ClassRef classRef = (ClassRef) p.getTypeRef();
           TypeDef propertyType = classRef.getDefinition();
-          List<Property> newParents = new ArrayList<>(parents);
-          newParents.add(p);
-          new TypeDefBuilder(propertyType)
-            .accept(new AnnotatedMultiPropertyPathDetector(prefix, annotationName, newParents, properties))
-            .build();
+          if (!propertyType.isEnum()) {
+            List<Property> newParents = new ArrayList<>(parents);
+            newParents.add(p);
+            new TypeDefBuilder(propertyType)
+              .accept(new AnnotatedMultiPropertyPathDetector(prefix, annotationName, newParents, properties))
+              .build();
+          }
         }
       });
   }
