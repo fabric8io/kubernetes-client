@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.dsl.base;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.client.Config;
@@ -40,9 +41,10 @@ public class OperationContext {
   protected String name;
   protected boolean cascading;
   protected boolean reloadingFromServer;
+  protected boolean dryRun;
   /*
    * This field is added in order to distinguish whether namespace is picked from global
-   * Configuration(either your KUBECONFIG or /var/run/secrets/kubernetes.io/serviceaccount/namespace
+   * Configuration (either your KUBECONFIG or /var/run/secrets/kubernetes.io/serviceaccount/namespace)
    * if inside a Pod
    */
   protected boolean namespaceFromGlobalConfig;
@@ -61,33 +63,38 @@ public class OperationContext {
   protected Map<String, String> fields;
   protected Map<String, String[]> fieldsNot;
 
-
   public OperationContext() {
   }
 
-  public OperationContext(OkHttpClient client, Config config, String plural, String namespace, String name, String apiGroupName, String apiGroupVersion, boolean cascading, Object item, Map<String, String> labels, Map<String, String[]> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn, Map<String, String> fields, Map<String, String[]> fieldsNot, String resourceVersion, boolean reloadingFromServer, long gracePeriodSeconds, DeletionPropagation propagationPolicy, long watchRetryInitialBackoffMillis, double watchRetryBackoffMultiplier, boolean namespaceFromGlobalConfig) {
+  public OperationContext(OkHttpClient client, Config config, String plural, String namespace, String name,
+      String apiGroupName, String apiGroupVersion, boolean cascading, Object item, Map<String, String> labels,
+      Map<String, String[]> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn,
+      Map<String, String> fields, Map<String, String[]> fieldsNot, String resourceVersion, boolean reloadingFromServer,
+      long gracePeriodSeconds, DeletionPropagation propagationPolicy, long watchRetryInitialBackoffMillis,
+      double watchRetryBackoffMultiplier, boolean namespaceFromGlobalConfig, boolean dryRun) {
     this.client = client;
     this.config = config;
     this.plural = plural;
+    this.namespace = Utils.isNotNullOrEmpty(namespace) ? namespace : (config != null ? config.getNamespace() : null);
     this.name = name;
+    this.apiGroupName = ApiVersionUtil.apiGroup(item, apiGroupName);
+    this.apiGroupVersion = ApiVersionUtil.apiVersion(item, apiGroupVersion);
     this.cascading = cascading;
-    this.labels = labels != null ? labels : new HashMap<>();
-    this.labelsNot = labelsNot != null ? labelsNot : new HashMap<>();
-    this.labelsIn = labelsIn != null ? labelsIn : new HashMap<>();
-    this.labelsNotIn = labelsNotIn != null ? labelsNotIn : new HashMap<>();
-    this.fields = fields != null ? fields : new HashMap<>();
-    this.fieldsNot = fieldsNot != null ? fieldsNot : new HashMap<>();
+    this.item = item;
+    this.labels = Utils.getNonNullOrElse(labels, new HashMap<>());
+    this.labelsNot = Utils.getNonNullOrElse(labelsNot, new HashMap<>());
+    this.labelsIn = Utils.getNonNullOrElse(labelsIn, new HashMap<>());
+    this.labelsNotIn = Utils.getNonNullOrElse(labelsNotIn, new HashMap<>());
+    this.fields = Utils.getNonNullOrElse(fields, new HashMap<>());
+    this.fieldsNot = Utils.getNonNullOrElse(fieldsNot, new HashMap<>());
     this.resourceVersion = resourceVersion;
     this.reloadingFromServer = reloadingFromServer;
     this.gracePeriodSeconds = gracePeriodSeconds;
     this.propagationPolicy = propagationPolicy;
     this.watchRetryInitialBackoffMillis = watchRetryInitialBackoffMillis;
     this.watchRetryBackoffMultiplier = watchRetryBackoffMultiplier;
-    this.item = item;
-    this.apiGroupName =  ApiVersionUtil.apiGroup(item, apiGroupName);
-    this.apiGroupVersion = ApiVersionUtil.apiVersion(item, apiGroupVersion);
-    this.namespace = Utils.isNotNullOrEmpty(namespace) ? namespace : (config != null ? config.getNamespace() : null);
     this.namespaceFromGlobalConfig = namespaceFromGlobalConfig;
+    this.dryRun = dryRun;
   }
 
   public OkHttpClient getClient() {
@@ -154,7 +161,7 @@ public class OperationContext {
     return resourceVersion;
   }
 
-  public boolean getReloadingFromServer() {
+  public boolean isReloadingFromServer() {
     return reloadingFromServer;
   }
 
@@ -178,203 +185,285 @@ public class OperationContext {
     return namespaceFromGlobalConfig;
   }
 
+  public boolean getDryRun() {
+    return dryRun;
+  }
+
   public OperationContext withOkhttpClient(OkHttpClient client) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading, item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, namespaceFromGlobalConfig);
+    if (this.client == client) {
+      return this;
+    }
+    return new OperationContext(client, this.config, this.plural, this.namespace, this.name, this.apiGroupName,
+        this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
+        this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
+        this.propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
+        this.namespaceFromGlobalConfig, this.dryRun);
   }
 
   public OperationContext withConfig(Config config) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, namespaceFromGlobalConfig);
+    if (this.config == config) {
+      return this;
+    }
+    return new OperationContext(this.client, config, this.plural, this.namespace, this.name, this.apiGroupName,
+      this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
+      this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
+      this.propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
+      this.namespaceFromGlobalConfig, this.dryRun);
   }
 
   public OperationContext withPlural(String plural) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, namespaceFromGlobalConfig);
+    if (Objects.equals(this.plural, plural)) {
+      return this;
+    }
+    return new OperationContext(this.client, this.config, plural, this.namespace, this.name, this.apiGroupName,
+        this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
+        this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
+        this.propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
+        this.namespaceFromGlobalConfig, this.dryRun);
   }
 
   public OperationContext withNamespace(String namespace) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, namespaceFromGlobalConfig);
+    if (Objects.equals(this.namespace, namespace)) {
+      return this;
+    }
+    return new OperationContext(this.client, this.config, this.plural, namespace, this.name, this.apiGroupName,
+        this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
+        this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
+        this.propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
+        this.namespaceFromGlobalConfig, this.dryRun);
   }
 
   public OperationContext withName(String name) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, namespaceFromGlobalConfig);
+    if (Objects.equals(this.name, name)) {
+      return this;
+    }
+    return new OperationContext(this.client, this.config, this.plural, this.namespace, name, this.apiGroupName,
+        this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
+        this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
+        this.propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
+        this.namespaceFromGlobalConfig, this.dryRun);
   }
 
-
   public OperationContext withApiGroupName(String apiGroupName) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, namespaceFromGlobalConfig);
+    if (Objects.equals(this.apiGroupName, apiGroupName)) {
+      return this;
+    }
+    return new OperationContext(this.client, this.config, this.plural, this.namespace, this.name, apiGroupName,
+        this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
+        this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
+        this.propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
+        this.namespaceFromGlobalConfig, this.dryRun);
   }
 
   public OperationContext withApiGroupVersion(String apiGroupVersion) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, namespaceFromGlobalConfig);
+    if (Objects.equals(this.apiGroupVersion, apiGroupVersion)) {
+      return this;
+    }
+    return new OperationContext(this.client, this.config, this.plural, this.namespace, this.name, this.apiGroupName,
+        apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
+        this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
+        this.propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
+        this.namespaceFromGlobalConfig, this.dryRun);
   }
 
   public OperationContext withItem(Object item) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, namespaceFromGlobalConfig);
+    if (this.item == item) {
+      return this;
+    }
+    return new OperationContext(this.client, this.config, this.plural, this.namespace, this.name, this.apiGroupName,
+        this.apiGroupVersion, this.cascading, item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
+        this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
+        this.propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
+        this.namespaceFromGlobalConfig, this.dryRun);
   }
 
   public OperationContext withCascading(boolean cascading) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, namespaceFromGlobalConfig);
+    if (this.cascading == cascading) {
+      return this;
+    }
+    return new OperationContext(this.client, this.config, this.plural, this.namespace, this.name, this.apiGroupName,
+        this.apiGroupVersion, cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
+        this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
+        this.propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
+        this.namespaceFromGlobalConfig, this.dryRun);
   }
 
   public OperationContext withLabels(Map<String, String> labels) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, namespaceFromGlobalConfig);
+    if (this.labels == labels) {
+      return this;
+    }
+    return new OperationContext(this.client, this.config, this.plural, this.namespace, this.name, this.apiGroupName,
+        this.apiGroupVersion, this.cascading, this.item, labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
+        this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
+        this.propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
+        this.namespaceFromGlobalConfig, this.dryRun);
   }
 
   public OperationContext withLabelsIn(Map<String, String[]> labelsIn) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, namespaceFromGlobalConfig);
+    if (this.labelsIn == labelsIn) {
+      return this;
+    }
+    return new OperationContext(this.client, this.config, this.plural, this.namespace, this.name, this.apiGroupName,
+        this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, labelsIn, this.labelsNotIn,
+        this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
+        this.propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
+        this.namespaceFromGlobalConfig, this.dryRun);
   }
 
   public OperationContext withLabelsNot(Map<String, String[]> labelsNot) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, namespaceFromGlobalConfig);
+    if (this.labelsNot == labelsNot) {
+      return this;
+    }
+    return new OperationContext(this.client, this.config, this.plural, this.namespace, this.name, this.apiGroupName,
+        this.apiGroupVersion, this.cascading, this.item, this.labels, labelsNot, this.labelsIn, this.labelsNotIn,
+        this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
+        this.propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
+        this.namespaceFromGlobalConfig, this.dryRun);
   }
 
   public OperationContext withLabelsNotIn(Map<String, String[]> labelsNotIn) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, namespaceFromGlobalConfig);
+    if (this.labelsNotIn == labelsNotIn) {
+      return this;
+    }
+    return new OperationContext(this.client, this.config, this.plural, this.namespace, this.name, this.apiGroupName,
+        this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, labelsNotIn,
+        this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
+        this.propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
+        this.namespaceFromGlobalConfig, this.dryRun);
   }
 
   public OperationContext withFields(Map<String, String> fields) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, namespaceFromGlobalConfig);
+    if (this.fields == fields) {
+      return this;
+    }
+    return new OperationContext(this.client, this.config, this.plural, this.namespace, this.name, this.apiGroupName,
+        this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
+        fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
+        this.propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
+        this.namespaceFromGlobalConfig, this.dryRun);
   }
 
   public OperationContext withFieldsNot(Map<String, String[]> fieldsNot) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, namespaceFromGlobalConfig);
+    if (this.fieldsNot == fieldsNot) {
+      return this;
+    }
+    return new OperationContext(this.client, this.config, this.plural, this.namespace, this.name, this.apiGroupName,
+        this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
+        this.fields, fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
+        this.propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
+        this.namespaceFromGlobalConfig, this.dryRun);
   }
 
   public OperationContext withResourceVersion(String resourceVersion) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, namespaceFromGlobalConfig);
+    if (Objects.equals(this.resourceVersion, resourceVersion)) {
+      return this;
+    }
+    return new OperationContext(this.client, this.config, this.plural, this.namespace, this.name, this.apiGroupName,
+        this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
+        this.fields, this.fieldsNot, resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
+        this.propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
+        this.namespaceFromGlobalConfig, this.dryRun);
   }
 
   public OperationContext withReloadingFromServer(boolean reloadingFromServer) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, namespaceFromGlobalConfig);
+    if (this.reloadingFromServer == reloadingFromServer) {
+      return this;
+    }
+    return new OperationContext(this.client, this.config, this.plural, this.namespace, this.name, this.apiGroupName,
+        this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
+        this.fields, this.fieldsNot, this.resourceVersion, reloadingFromServer, this.gracePeriodSeconds,
+        this.propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
+        this.namespaceFromGlobalConfig, this.dryRun);
   }
 
   public OperationContext withGracePeriodSeconds(long gracePeriodSeconds) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, namespaceFromGlobalConfig);
+    if (this.gracePeriodSeconds == gracePeriodSeconds) {
+      return this;
+    }
+    return new OperationContext(this.client, this.config, this.plural, this.namespace, this.name, this.apiGroupName,
+        this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
+        this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, gracePeriodSeconds,
+        this.propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
+        this.namespaceFromGlobalConfig, this.dryRun);
   }
 
   public OperationContext withPropagationPolicy(DeletionPropagation propagationPolicy) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, namespaceFromGlobalConfig);
+    if (this.propagationPolicy == propagationPolicy) {
+      return this;
+    }
+    return new OperationContext(this.client, this.config, this.plural, this.namespace, this.name, this.apiGroupName,
+        this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
+        this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
+        propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
+        this.namespaceFromGlobalConfig, this.dryRun);
   }
 
   public OperationContext withWatchRetryInitialBackoffMillis(long watchRetryInitialBackoffMillis) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, namespaceFromGlobalConfig);
+    if (this.watchRetryInitialBackoffMillis == watchRetryInitialBackoffMillis) {
+      return this;
+    }
+    return new OperationContext(this.client, this.config, this.plural, this.namespace, this.name, this.apiGroupName,
+        this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
+        this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
+        this.propagationPolicy, watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
+        this.namespaceFromGlobalConfig, this.dryRun);
   }
 
   public OperationContext withWatchRetryBackoffMultiplier(double watchRetryBackoffMultiplier) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, namespaceFromGlobalConfig);
+    if (this.watchRetryBackoffMultiplier == watchRetryBackoffMultiplier) {
+      return this;
+    }
+    return new OperationContext(this.client, this.config, this.plural, this.namespace, this.name, this.apiGroupName,
+        this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
+        this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
+        this.propagationPolicy, this.watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier,
+        this.namespaceFromGlobalConfig, this.dryRun);
   }
 
   public OperationContext withIsNamespaceConfiguredFromGlobalConfig(boolean namespaceFromGlobalConfig) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, namespaceFromGlobalConfig);
+    if (this.namespaceFromGlobalConfig == namespaceFromGlobalConfig) {
+      return this;
+    }
+    return new OperationContext(this.client, this.config, this.plural, this.namespace, this.name, this.apiGroupName,
+        this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
+        this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
+        this.propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
+        namespaceFromGlobalConfig, this.dryRun);
+  }
+
+  public OperationContext withDryRun(boolean dryRun) {
+    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, namespaceFromGlobalConfig, dryRun);
   }
 
   /**
-   * Returns an OperationContext object merged with current object
+   * Returns an OperationContext object merged with current object.
    *
-   * @param operationContext object with modifications
+   * @param context object with modifications
    * @return a merged object between passed argument and current object
    */
-  public OperationContext withOperationContext(OperationContext operationContext) {
-    OkHttpClient clientCloned = getClient();
-    Config configCloned = getConfig();
-    Object itemCloned = getItem();
-    String resourceVersionCloned = getResourceVersion();
-    String pluralCloned = getPlural();
-    String apiGroupNameCloned = getApiGroupName();
-    String apiGroupVersionCloned = getApiGroupVersion();
-    String namespaceCloned = getNamespace();
-    String nameCloned = getName();
-    boolean cascadingCloned = getCascading();
-    boolean reloadingFromServerCloned = getReloadingFromServer();
-    boolean namespaceFromGlobalConfigCloned = isNamespaceFromGlobalConfig();
-    long gracePeriodSecondsCloned = getGracePeriodSeconds();
-    long watchRetryInitialBackoffMillis = getWatchRetryInitialBackoffMillis();
-    double watchRetryBackoffMultiplier = getWatchRetryBackoffMultiplier();
-    DeletionPropagation propagationPolicyCloned = getPropagationPolicy();
-    Map<String, String> labelsCloned = getLabels();
-    Map<String, String[]> labelsNotCloned = getLabelsNot();
-    Map<String, String[]> labelsInCloned = getLabelsIn();
-    Map<String, String[]> labelsNotInCloned = getLabelsNotIn();
-    Map<String, String> fieldsCloned = getFields();
-    Map<String, String[]> fieldsNotCloned = getFieldsNot();
-
-    if (operationContext.getApiGroupVersion() != null) {
-      apiGroupVersionCloned = operationContext.getApiGroupVersion();
-    }
-
-    if (operationContext.getClient() != null) {
-      clientCloned = operationContext.getClient();
-    }
-
-    if (operationContext.getConfig() != null) {
-      configCloned = operationContext.getConfig();
-    }
-
-    if (operationContext.getPlural() != null) {
-      pluralCloned = operationContext.getPlural();
-    }
-
-    if (operationContext.getNamespace() != null) {
-      namespaceCloned = operationContext.getNamespace();
-    }
-
-    if (operationContext.getName() != null) {
-      nameCloned = operationContext.getName();
-    }
-
-    if (operationContext.getApiGroupName() != null) {
-      apiGroupNameCloned = operationContext.getApiGroupName();
-    }
-
-    if (operationContext.getCascading()) {
-      cascadingCloned = operationContext.getCascading();
-    }
-
-    if (operationContext.getItem() != null) {
-      itemCloned = operationContext.getItem();
-    }
-
-    if (operationContext.getLabels() != null) {
-      labelsCloned = operationContext.getLabels();
-    }
-
-    if (operationContext.getLabelsNot() != null) {
-      labelsNotCloned = operationContext.getLabelsNot();
-    }
-
-    if (operationContext.getLabelsIn() != null) {
-      labelsInCloned = operationContext.getLabelsIn();
-    }
-
-    if (operationContext.getLabelsNotIn() != null) {
-      labelsNotInCloned = operationContext.getLabelsNotIn();
-    }
-
-    if (operationContext.getFields() != null) {
-      fieldsCloned = operationContext.getFields();
-    }
-
-    if (operationContext.getFieldsNot() != null) {
-      fieldsNotCloned = operationContext.getFieldsNot();
-    }
-
-    if (operationContext.getResourceVersion() != null) {
-      resourceVersionCloned = operationContext.getResourceVersion();
-    }
-
-    if (operationContext.getReloadingFromServer()) {
-      reloadingFromServerCloned = operationContext.getReloadingFromServer();
-    }
-
-    if (operationContext.getGracePeriodSeconds() > 0) {
-      gracePeriodSecondsCloned = operationContext.getGracePeriodSeconds();
-    }
-
-    if (operationContext.getPropagationPolicy() != null) {
-      propagationPolicyCloned = operationContext.getPropagationPolicy();
-    }
-
-    namespaceFromGlobalConfigCloned = operationContext.isNamespaceFromGlobalConfig();
-
-    return new OperationContext(clientCloned, configCloned, pluralCloned, namespaceCloned, nameCloned, apiGroupNameCloned, apiGroupVersionCloned, cascadingCloned, itemCloned, labelsCloned, labelsNotCloned, labelsInCloned, labelsNotInCloned, fieldsCloned, fieldsNotCloned, resourceVersionCloned, reloadingFromServerCloned, gracePeriodSecondsCloned, propagationPolicyCloned, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, namespaceFromGlobalConfigCloned);
+  public OperationContext withOperationContext(OperationContext context) {
+    return new OperationContext(Utils.getNonNullOrElse(context.getClient(), getClient()),
+      Utils.getNonNullOrElse(context.getConfig(), getConfig()),
+      Utils.getNonNullOrElse(context.getPlural(), getPlural()),
+      Utils.getNonNullOrElse(context.getNamespace(), getNamespace()),
+      Utils.getNonNullOrElse(context.getName(), getName()),
+      Utils.getNonNullOrElse(context.getApiGroupName(), getApiGroupName()),
+      Utils.getNonNullOrElse(context.getApiGroupVersion(), getApiGroupVersion()),
+      context.getCascading() ? context.getCascading() : getCascading(),
+      Utils.getNonNullOrElse(context.getItem(), getItem()),
+      Utils.getNonNullOrElse(context.getLabels(), getLabels()),
+      Utils.getNonNullOrElse(context.getLabelsNot(), getLabelsNot()),
+      Utils.getNonNullOrElse(context.getLabelsIn(), getLabelsIn()),
+      Utils.getNonNullOrElse(context.getLabelsNotIn(), getLabelsNotIn()),
+      Utils.getNonNullOrElse(context.getFields(), getFields()),
+      Utils.getNonNullOrElse(context.getFieldsNot(), getFieldsNot()),
+      Utils.getNonNullOrElse(context.getResourceVersion(), getResourceVersion()),
+      context.isReloadingFromServer() ? context.isReloadingFromServer() : isReloadingFromServer(),
+      context.getGracePeriodSeconds() > 0 ? context.getGracePeriodSeconds() : getGracePeriodSeconds(),
+      Utils.getNonNullOrElse(context.getPropagationPolicy(), getPropagationPolicy()),
+      getWatchRetryInitialBackoffMillis(), getWatchRetryBackoffMultiplier(),
+      context.isNamespaceFromGlobalConfig() ? context.isNamespaceFromGlobalConfig() : isNamespaceFromGlobalConfig(),
+      context.getDryRun() ? context.getDryRun() : getDryRun());
   }
+
 }

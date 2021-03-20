@@ -377,6 +377,26 @@ class PropagationPolicyTest {
   }
 
   @Test
+  @DisplayName("Should deletea resource with specified Propagation policy and Grace Period")
+  void testDeleteResourceWithSpecifiedPropagationPolicyAndGracePeriod() throws InterruptedException {
+    // Given
+    Pod testPod = new PodBuilder().withNewMetadata().withName("testpod").endMetadata().build();
+    server.expect().delete().withPath("/api/v1/namespaces/foo/pods/testpod")
+      .andReturn(HttpURLConnection.HTTP_OK, testPod)
+      .once();
+
+    // When
+    Boolean isDeleted = client.resource(testPod).inNamespace("foo").withPropagationPolicy(DeletionPropagation.FOREGROUND).withGracePeriod(5L).delete();
+
+    // Then
+    assertTrue(isDeleted);
+    int requestCount = server.getRequestCount();
+    RecordedRequest request = null;
+    while(requestCount-- > 0)request = server.takeRequest();
+    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"gracePeriodSeconds\":5,\"propagationPolicy\":\"" + DeletionPropagation.FOREGROUND.toString() + "\"}", request.getBody().readUtf8());
+  }
+
+  @Test
   @DisplayName("Should delete a resource list with PropagationPolicy=Background")
   void testDeleteResourceList() throws InterruptedException {
     // Given
@@ -414,6 +434,26 @@ class PropagationPolicyTest {
     RecordedRequest request = null;
     while(requestCount-- > 0)request = server.takeRequest();
     assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.FOREGROUND.toString(), request);
+  }
+
+  @Test
+  @DisplayName("Should delete a resource list with specified PropagationPolicy")
+  void testDeleteResourceListWithSpecifiedPropagationPolicyAndGracePeriod() throws InterruptedException {
+    // Given
+    Pod testPod = new PodBuilder().withNewMetadata().withName("testpod").endMetadata().build();
+    server.expect().delete().withPath("/api/v1/namespaces/foo/pods/testpod")
+      .andReturn(HttpURLConnection.HTTP_OK, testPod)
+      .once();
+
+    // When
+    Boolean isDeleted = client.resourceList(new KubernetesListBuilder().withItems(testPod).build()).inNamespace("foo").withGracePeriod(10L).withPropagationPolicy(DeletionPropagation.FOREGROUND).delete();
+
+    // Then
+    assertTrue(isDeleted);
+    int requestCount = server.getRequestCount();
+    RecordedRequest request = null;
+    while(requestCount-- > 0)request = server.takeRequest();
+    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"gracePeriodSeconds\":10,\"propagationPolicy\":\"" + DeletionPropagation.FOREGROUND.toString() + "\"}", request.getBody().readUtf8());
   }
 
   @Test

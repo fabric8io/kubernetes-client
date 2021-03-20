@@ -1666,128 +1666,64 @@ spec:
 For a CustomResource like this one, we should have a `CronTab` java class like this:
 
 **Note:** Please make sure that your CustomResource POJO is implementing `Namespaced` interface if it's a namespaced resource. Otherwise it would be considered a Cluster scoped resource.
-```
-/**
- * Copyright (C) 2015 Red Hat, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+```java
 package io.fabric8.kubernetes.client.mock.crd;
 
 import io.fabric8.kubernetes.api.model.Namespaced;
-import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.CustomResource;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 
-public class CronTab extends CustomResource implements Namespaced {
-    private CronTabSpec spec;
-    private CronTabStatus status;
-
-    @Override
-    public ObjectMeta getMetadata() {
-        return super.getMetadata();
-    }
-
-    public CronTabSpec getSpec() {
-        return spec;
-    }
-
-    public void setSpec(CronTabSpec spec) {
-        this.spec = spec;
-    }
-
-    public CronTabStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(CronTabStatus status) {
-        this.status = status;
-    }
-
-    @Override
-    public String getApiVersion() {
-        return "stable.example.com/v1";
-    }
-
-    @Override
-    public String toString() {
-        return "CronTab{"+
-                "apiVersion='" + getApiVersion() + "'" +
-                ", metadata=" + getMetadata() +
-                ", spec=" + spec +
-                ", status=" + status +
-                "}";
-    }
+@Version("v1")
+@Group("stable.example.com")
+public class CronTab extends CustomResource<CronTabSpec, CronTabStatus> implements Namespaced {
 }
 ```
 You can find other helper classes related to `CronTab` in our [tests](https://github.com/fabric8io/kubernetes-client/tree/master/kubernetes-tests/src/test/java/io/fabric8/kubernetes/client/mock/crd). For now, we can proceed with it's common usage examples:
 
 - Get Instance of client for our `CustomResource`:
-```
-// Alternatively use CustomResourceDefinitionContext.fromCrd(crd) if you already have a CustomResourceDefinition
-CustomResourceDefinitionContext context = new CustomResourceDefinitionContext.Builder()
-      .withGroup("stable.example.com)
-      .withVersion("v1")
-      .withScope("Namespaced")
-      .withName("crontabs.stable.example.com)
-      .withPlural("crontabs")
-      .withKind("CronTab")
-      .build()
-MixedOperation<CronTab, CronTabList, Resource<CronTab>> cronTabClient = client
-  .customResources(cronTabCrd, CronTab.class, CronTabList.class);
-```
-- Register your `CustomResource` to `KubernetesDeserializer`:
-```
-KubernetesDeserializer.registerCustomKind("stable.example.com/v1", "CronTab", CronTab.class);
+```java
+MixedOperation<CronTab, KubernetesResourceList<CronTab>, Resource<CronTab>> cronTabClient = client.customResources(CronTab.class);
 ```
 - Get `CustomResource` from Kubernetes APIServer:
-```
+```java
 CronTab ct = cronTabClient.inNamespace("default").withName("my-second-cron-object").get();
 ```
 - Create `CustomResource`:
-```
+```java
 cronTabClient.inNamespace("default").create(cronTab1);
 ```
 - List `CustomResource`:
-```
+```java
 CronTabList cronTabList = cronTabClient.inNamespace("default").list();
 ```
 - Delete `CustomResource`:
-```
+```java
 Boolean isDeleted = cronTabClient.inNamespace("default").withName("my-third-cron-object").delete();
 ```
 - Update Status of `CustomResource`:
-```
+```java
 cronTabClient.inNamespace("default").updateStatus(updatedCronTab);
 ``` 
 - Watch `CustomResource`, (*note:* You need to register your `CustomResource` to `KubernetesDeserializer` otherwise you won't be able to use watch):
-```
+```java
 cronTabClient.inNamespace("default").watch(new Watcher<CronTab>() {
-  @Override
-  public void eventReceived(Action action, CronTab resource) {
-    // Do something depending upon action type
-  }
+   @Override
+   public void eventReceived(Action action, CronTab resource) {
+        
+   }
 
-  @Override
-  public void onClose(KubernetesClientException cause) {
+   @Override
+   public void onClose(WatcherException cause) {
 
-  }
+   }
 });
 ```
 
 ### CustomResource Typeless API
 Although, you should be using Typed API since it's type-safe. But it can get a bit complicated to maintain your `CustomResource` POJOs and sometimes people don't even have them. Kubernetes Client also provides a typeless/raw API to handle your `CustomResource` objects in form of HashMaps. In order to use it, you need to provide it with a `CustomResourceDefinitionContext`, which carries necessary information about `CustomResource`. Here is an example on how to create one:
 - Create `CustomResourceDefinitionContext`:
-```
+```java
 CustomResourceDefinitionContext customResourceDefinitionContext = new CustomResourceDefinitionContext.Builder()
       .withName("animals.jungle.example.com")
       .withGroup("jungle.example.com")
@@ -1798,67 +1734,67 @@ CustomResourceDefinitionContext customResourceDefinitionContext = new CustomReso
 ```
 Once you have built it, you can pass it to typeless DSL as argument `client.customResource(customResourceDefinitionContext)`. With this in place, you can do your standard `CustomResource` operations, but you would have to deal with Serialization/Deserialization part yourself. You can convert HashMap to some `JSON` object using JSON parsing libraries available on internet.
 - Load a `CustomResource` from yaml:
-```
+```java
 Map<String, Object> customResource = client.customResource(crdContext).load(new FileInputStream("cr.yaml"));
 ```
 - Get a `CustomResource` from Kubernetes API server:
-```
-Map<String, Object> customResourceObject = client.customResource(customResourceDefinitionContext).get(currentNamespace, "otter");
+```java
+Map<String, Object> customResourceObject = client.customResource(customResourceDefinitionContext).inNamespace(currentNamespace).withName("otter").get();
 ```
 - Create a `CustomResource`:
-```
+```java
 // Create via file
-Map<String, Object> object = client.customResource(customResourceDefinitionContext).create(currentNamespace, new FileInputStream("test-rawcustomresource.yml"));
+Map<String, Object> object = client.customResource(customResourceDefinitionContext).inNamespace(currentNamespace).create(new FileInputStream("test-rawcustomresource.yml"));
 
 // Create via raw JSON string
 
 String rawJsonCustomResourceObj = "{\"apiVersion\":\"jungle.example.com/v1\"," +
   "\"kind\":\"Animal\",\"metadata\": {\"name\": \"walrus\"}," +
   "\"spec\": {\"image\": \"my-awesome-walrus-image\"}}";
-Map<String, Object> object = client.customResource(customResourceDefinitionContext).create(currentNamespace, rawJsonCustomResourceObj);
+Map<String, Object> object = client.customResource(customResourceDefinitionContext).inNamespace(currentNamespace).create(rawJsonCustomResourceObj);
 ```
 - List `CustomResource`:
-```
-Map<String, Object> list = client.customResource(customResourceDefinitionContext).list(currentNamespace);
+```java
+Map<String, Object> list = client.customResource(customResourceDefinitionContext).inNamespace(currentNamespace).list();
 ```
 - List `CustomResource` with labels:
-```
+```java
 Map<String, Object> list = client.customResource(customResourceDefinitionContext).list(currentNamespace, Collections.singletonMap("foo", "bar"));
 ```
 - Update `CustomResource`:
-```
+```java
 Map<String, Object> object = client.customResource(customResourceDefinitionContext).get(currentNamespace, "walrus");
 ((HashMap<String, Object>)object.get("spec")).put("image", "my-updated-awesome-walrus-image");
 object = client.customResource(customResourceDefinitionContext).edit(currentNamespace, "walrus", new ObjectMapper().writeValueAsString(object));
 ```
 - Delete `CustomResource`:
-```
-client.customResource(customResourceDefinitionContext).delete(currentNamespace, "otter");
+```java
+client.customResource(customResourceDefinitionContext).inNamespace(currentNamespace).withName("otter").delete();
 ```
 - Update Status of `CustomResource`:
-```
-Map<String, Object> result = client.customResource(customResourceDefinitionContext).updateStatus("ns1", "example-hello", objectAsJsonString);
+```java
+Map<String, Object> result = client.customResource(customResourceDefinitionContext).inNamespace("ns1").withName("example-hello").updateStatus(objectAsJsonString);
 ```
 - Watch `CustomResource`:
-```
+```java
 
-  final CountDownLatch closeLatch = new CountDownLatch(1);
-  client.customResource(crdContext).watch(namespace, new Watcher<String>() {
+final CountDownLatch closeLatch = new CountDownLatch(1);
+client.customResource(crdContext).inNamespace(namespace).watch(new Watcher<String>() {
     @Override
     public void eventReceived(Action action, String resource) {
-      logger.info("{}: {}", action, resource);
+        logger.info("{}: {}", action, resource);
     }
 
     @Override
     public void onClose(KubernetesClientException e) {
-      logger.debug("Watcher onClose");
-      closeLatch.countDown();
-      if (e != null) {
-        logger.error(e.getMessage(), e);
-      }
+        logger.debug("Watcher onClose");
+        closeLatch.countDown();
+        if (e != null) {
+            logger.error(e.getMessage(), e);
+        }
     }
-  });
-  closeLatch.await(10, TimeUnit.MINUTES);
+});
+closeLatch.await(10, TimeUnit.MINUTES);
 ```
 
 ### CertificateSigningRequest

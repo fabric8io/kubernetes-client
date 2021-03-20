@@ -65,14 +65,14 @@ public class ${model.name}Handler implements ResourceHandler<${model.name}, ${mo
   }
 
   @Override
-  public ${model.name} create(OkHttpClient client, Config config, String namespace, ${model.name} item) {
-    return new ${model.name}OperationsImpl(client, config).withItem(item).inNamespace(namespace).create();
+  public ${model.name} create(OkHttpClient client, Config config, String namespace, ${model.name} item, boolean dryRun) {
+    return new ${model.name}OperationsImpl(client, config).withItem(item).inNamespace(namespace).dryRun(dryRun).create();
   }
 
   @Override
-  public ${model.name} replace(OkHttpClient client, Config config, String namespace, ${model.name} item) {
-    return new ${model.name}OperationsImpl(client, config).withItem(item).inNamespace(namespace).withName(item.getMetadata().getName()).replace(item);
-  }
+  public ${model.name} replace(OkHttpClient client, Config config, String namespace, ${model.name} item, boolean dryRun) {
+    return new ${model.name}OperationsImpl(client, config).withItem(item).inNamespace(namespace).withName(item.getMetadata().getName()).dryRun(dryRun).replace(item);
+  }  
 
   @Override
   public ${model.name} reload(OkHttpClient client, Config config, String namespace, ${model.name} item) {
@@ -85,9 +85,9 @@ public class ${model.name}Handler implements ResourceHandler<${model.name}, ${mo
   }
 
   @Override
-  public Boolean delete(OkHttpClient client, Config config, String namespace, DeletionPropagation propagationPolicy, ${model.name} item) {
-    return new ${model.name}OperationsImpl(client, config).withItem(item).inNamespace(namespace).withName(item.getMetadata().getName()).withPropagationPolicy(propagationPolicy).delete();
-  }
+  public Boolean delete(OkHttpClient client, Config config, String namespace, DeletionPropagation propagationPolicy, long gracePeriodSeconds, ${model.name} item, boolean dryRun) {
+    return new ${model.name}OperationsImpl(client, config).withItem(item).inNamespace(namespace).withName(item.getMetadata().getName()).dryRun(dryRun).withPropagationPolicy(propagationPolicy).withGracePeriod(gracePeriodSeconds).delete();
+  }  
 
   @Override
   public Watch watch(OkHttpClient client, Config config, String namespace, ${model.name} item, Watcher<${model.name}> watcher) {
@@ -104,7 +104,7 @@ public class ${model.name}Handler implements ResourceHandler<${model.name}, ${mo
     return new ${model.name}OperationsImpl(client, config).withItem(item).inNamespace(namespace).withName(item.getMetadata().getName()).watch(listOptions, watcher);
   }
 
-@Override
+  @Override
   public ${model.name} waitUntilReady(OkHttpClient client, Config config, String namespace, ${model.name} item, long amount, TimeUnit timeUnit) throws InterruptedException {
     return new ${model.name}OperationsImpl(client, config).withItem(item).inNamespace(namespace).withName(item.getMetadata().getName()).waitUntilReady(amount, timeUnit);
   }

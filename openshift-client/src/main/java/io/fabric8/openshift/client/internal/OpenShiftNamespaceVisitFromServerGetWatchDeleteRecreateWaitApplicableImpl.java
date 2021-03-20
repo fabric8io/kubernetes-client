@@ -27,12 +27,12 @@ import java.io.InputStream;
 import java.util.List;
 
 public class OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl extends NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl {
-  public OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, InputStream is, Boolean cascading, long watchRetryInitialBackoffMillis, double watchRetryBackoffMultiplier) {
-    super(client, config, namespace, explicitNamespace, fromServer, deletingExisting, visitors, is, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
+  public OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, InputStream is, Boolean cascading, long watchRetryInitialBackoffMillis, double watchRetryBackoffMultiplier, boolean dryRun) {
+    super(client, config, namespace, explicitNamespace, fromServer, deletingExisting, visitors, is, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, dryRun);
   }
 
-  public OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, Object item, long gracePeriodSeconds, DeletionPropagation propagationPolicy, Boolean cascading, long watchRetryInitialBackoffMillis, double watchRetryBackoffMultiplier) {
-    super(client, config, namespace, explicitNamespace, fromServer, deletingExisting, visitors, item, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
+  public OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, Object item, long gracePeriodSeconds, DeletionPropagation propagationPolicy, Boolean cascading, long watchRetryInitialBackoffMillis, double watchRetryBackoffMultiplier, boolean dryRun) {
+    super(client, config, namespace, explicitNamespace, fromServer, deletingExisting, visitors, item, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, dryRun);
   }
 
   @Override

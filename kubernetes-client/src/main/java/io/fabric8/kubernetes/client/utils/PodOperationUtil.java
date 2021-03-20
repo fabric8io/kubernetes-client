@@ -58,8 +58,8 @@ public class PodOperationUtil {
       context.getConfig(), context.getPlural(), context.getNamespace(), null, null,
       "v1", context.getCascading(), context.getItem(), context.getLabels(), context.getLabelsNot(),
       context.getLabelsIn(), context.getLabelsNotIn(), context.getFields(), context.getFieldsNot(), context.getResourceVersion(),
-      context.getReloadingFromServer(), context.getGracePeriodSeconds(), context.getPropagationPolicy(),
-      context.getWatchRetryInitialBackoffMillis(), context.getWatchRetryBackoffMultiplier(), context.isNamespaceFromGlobalConfig(), null, null, null, null, null,
+      context.isReloadingFromServer(), context.getGracePeriodSeconds(), context.getPropagationPolicy(),
+      context.getWatchRetryInitialBackoffMillis(), context.getWatchRetryBackoffMultiplier(), context.isNamespaceFromGlobalConfig(), context.getDryRun(), null, null, null, null, null,
       null, null, null, null, false, false, false, null, null,
       null, isPretty, null, null, null, null, null, podLogWaitTimeout));
   }

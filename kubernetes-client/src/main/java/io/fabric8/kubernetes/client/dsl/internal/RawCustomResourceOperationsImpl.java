@@ -20,21 +20,32 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.fabric8.kubernetes.api.model.DeleteOptions;
+import io.fabric8.kubernetes.api.model.DeleteOptionsBuilder;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
-import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.GracePeriodConfigurable;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.PropagationPolicyConfigurable;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.dsl.AnyNamespaceable;
+import io.fabric8.kubernetes.client.dsl.Deletable;
+import io.fabric8.kubernetes.client.dsl.DryRunable;
+import io.fabric8.kubernetes.client.dsl.Gettable;
+import io.fabric8.kubernetes.client.dsl.Listable;
+import io.fabric8.kubernetes.client.dsl.Nameable;
+import io.fabric8.kubernetes.client.dsl.Namespaceable;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
@@ -57,19 +68,73 @@ import okhttp3.Response;
  * Right now it supports basic operations like GET, POST, PUT, DELETE.
  *
  */
-public class RawCustomResourceOperationsImpl extends OperationSupport {
-  
+public class RawCustomResourceOperationsImpl extends OperationSupport implements Nameable<RawCustomResourceOperationsImpl>,
+  Namespaceable<RawCustomResourceOperationsImpl>,
+  AnyNamespaceable<RawCustomResourceOperationsImpl>,
+  Listable<Map<String, Object>>,
+  Gettable<Map<String, Object>>,
+  GracePeriodConfigurable<RawCustomResourceOperationsImpl>,
+  PropagationPolicyConfigurable<RawCustomResourceOperationsImpl>,
+  DryRunable<RawCustomResourceOperationsImpl>,
+  Deletable {
+
   private static final String METADATA = "metadata";
   private static final String RESOURCE_VERSION = "resourceVersion";
+  private static final String STATUS_SUBRESOURCE_ENDPOINT = "/status";
   private final CustomResourceDefinitionContext customResourceDefinition;
   private final ObjectMapper objectMapper;
+  private final ListOptions listOptions;
+  private final long gracePeriodInSeconds;
+  private final String deletionPropagation;
+  private final boolean cascading;
 
   private enum HttpCallMethod { GET, POST, PUT, DELETE }
 
-  public RawCustomResourceOperationsImpl(OkHttpClient client, Config config, CustomResourceDefinitionContext customResourceDefinition) {
+  private RawCustomResourceOperationsImpl(OkHttpClient client, Config config, CustomResourceDefinitionContext crdContext, String namespace, String name, long gracePeriodInSeconds, boolean cascading, String deletionPropagation, ListOptions listOptions, boolean dryRun) {
     super(client, config);
-    this.customResourceDefinition = customResourceDefinition;
+    this.customResourceDefinition = crdContext;
     this.objectMapper = Serialization.jsonMapper();
+    this.namespace = namespace;
+    this.name = name;
+    this.gracePeriodInSeconds = gracePeriodInSeconds;
+    this.cascading = cascading;
+    this.deletionPropagation = deletionPropagation;
+    this.listOptions = listOptions;
+    this.dryRun = dryRun;
+  }
+
+  public RawCustomResourceOperationsImpl(OkHttpClient client, Config config, CustomResourceDefinitionContext customResourceDefinition) {
+    this(client, config, customResourceDefinition, null, null, 0, false, DeletionPropagation.BACKGROUND.toString(), null, false);
+  }
+
+  @Override
+  public RawCustomResourceOperationsImpl withName(String name) {
+    return new RawCustomResourceOperationsImpl(client, config, customResourceDefinition, namespace, name, gracePeriodInSeconds, cascading, deletionPropagation, listOptions, dryRun);
+  }
+
+  @Override
+  public RawCustomResourceOperationsImpl inNamespace(String namespace) {
+    return new RawCustomResourceOperationsImpl(client, config, customResourceDefinition, namespace, name, gracePeriodInSeconds, cascading, deletionPropagation, listOptions, dryRun);
+  }
+
+  @Override
+  public RawCustomResourceOperationsImpl inAnyNamespace() {
+    return new RawCustomResourceOperationsImpl(client, config, customResourceDefinition, null, name, gracePeriodInSeconds, cascading, deletionPropagation, listOptions, dryRun);
+  }
+
+  @Override
+  public RawCustomResourceOperationsImpl withGracePeriod(long gracePeriodSeconds) {
+    return new RawCustomResourceOperationsImpl(client, config, customResourceDefinition, namespace, name, gracePeriodSeconds, cascading, deletionPropagation, listOptions, dryRun);
+  }
+
+  @Override
+  public RawCustomResourceOperationsImpl withPropagationPolicy(DeletionPropagation propagationPolicy) {
+    return new RawCustomResourceOperationsImpl(client, config, customResourceDefinition, namespace, name, gracePeriodInSeconds, cascading, propagationPolicy.toString(), listOptions, dryRun);
+  }
+
+  @Override
+  public RawCustomResourceOperationsImpl dryRun(boolean isDryRun) {
+    return new RawCustomResourceOperationsImpl(client, config, customResourceDefinition, namespace, name, gracePeriodInSeconds, cascading, deletionPropagation, listOptions, isDryRun);
   }
 
   /**
@@ -102,7 +167,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException exception in case of any network/read problems
    */
   public Map<String, Object> create(String objectAsString) throws IOException {
-    return validateAndSubmitRequest(null, null, objectAsString, HttpCallMethod.POST);
+    return validateAndSubmitRequest(objectAsString, HttpCallMethod.POST);
   }
 
   /**
@@ -113,7 +178,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException in case of problems while reading HashMap
    */
   public Map<String, Object> create(Map<String, Object> object) throws IOException {
-    return validateAndSubmitRequest(null, null, objectMapper.writeValueAsString(object), HttpCallMethod.POST);
+    return validateAndSubmitRequest(objectMapper.writeValueAsString(object), HttpCallMethod.POST);
   }
 
   /**
@@ -125,7 +190,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException in case of problems while reading JSON object
    */
   public Map<String, Object> create(String namespace, String objectAsString) throws IOException {
-    return validateAndSubmitRequest(namespace, null, objectAsString, HttpCallMethod.POST);
+    return new RawCustomResourceOperationsImpl(client, config, customResourceDefinition, namespace, null, gracePeriodInSeconds, cascading, deletionPropagation, listOptions, dryRun).create(objectAsString);
   }
 
   /**
@@ -136,7 +201,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException in case of problems while reading file
    */
   public Map<String, Object> create(InputStream objectAsStream) throws IOException {
-    return validateAndSubmitRequest(null, null, IOHelpers.readFully(objectAsStream), HttpCallMethod.POST);
+    return validateAndSubmitRequest(IOHelpers.readFully(objectAsStream), HttpCallMethod.POST);
   }
 
   /**
@@ -148,7 +213,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException in case of problems while reading file
    */
   public Map<String, Object> create(String namespace, InputStream objectAsStream) throws IOException {
-    return validateAndSubmitRequest(namespace, null, IOHelpers.readFully(objectAsStream), HttpCallMethod.POST);
+    return new RawCustomResourceOperationsImpl(client, config, customResourceDefinition, namespace, null, gracePeriodInSeconds, cascading, deletionPropagation, listOptions, dryRun).create(objectAsStream);
   }
 
   /**
@@ -160,7 +225,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException in case of problems faced while serializing HashMap
    */
   public Map<String, Object> create(String namespace, Map<String, Object> object) throws IOException {
-    return validateAndSubmitRequest(namespace, null, objectMapper.writeValueAsString(object), HttpCallMethod.POST);
+    return new RawCustomResourceOperationsImpl(client, config, customResourceDefinition, namespace, null, gracePeriodInSeconds, cascading, deletionPropagation, listOptions, dryRun).create(object);
   }
 
   /**
@@ -172,7 +237,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException in case of network/serializiation failures or failures from Kuberntes API
    */
   public Map<String, Object> createOrReplace(String objectAsString) throws IOException {
-    return createOrReplaceObject(null, load(objectAsString));
+    return createOrReplaceObject(load(objectAsString));
   }
 
   /**
@@ -183,7 +248,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException in case of network/serialization failures or failures from Kubernetes API
    */
   public Map<String, Object> createOrReplace(Map<String, Object> customResourceObject) throws IOException {
-    return createOrReplaceObject(null, customResourceObject);
+    return createOrReplaceObject(customResourceObject);
   }
 
   /**
@@ -194,7 +259,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException in case of network/serialization failures or failures from Kubernetes API
    */
   public Map<String, Object> createOrReplace(InputStream inputStream) throws IOException {
-    return createOrReplaceObject(null, load(inputStream));
+    return createOrReplaceObject(load(inputStream));
   }
 
   /**
@@ -206,7 +271,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException in case of network/serialization failures or failures from Kubernetes API
    */
   public Map<String, Object> createOrReplace(String namespace, String objectAsString) throws IOException {
-    return createOrReplaceObject(namespace, load(objectAsString));
+    return new RawCustomResourceOperationsImpl(client, config, customResourceDefinition, namespace, null, gracePeriodInSeconds, cascading, deletionPropagation, listOptions, dryRun).createOrReplace(objectAsString);
   }
 
   /**
@@ -218,7 +283,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException in case of network/serialization failures or failures from Kubernetes API
    */
   public Map<String, Object> createOrReplace(String namespace, Map<String, Object> customResourceObject) throws IOException {
-    return createOrReplaceObject(namespace, customResourceObject);
+    return new RawCustomResourceOperationsImpl(client, config, customResourceDefinition, namespace, null, gracePeriodInSeconds, cascading, deletionPropagation, listOptions, dryRun).createOrReplace(customResourceObject);
   }
 
   /**
@@ -230,7 +295,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException in case of network/serialization failures or failures from Kubernetes API
    */
   public Map<String, Object> createOrReplace(String namespace, InputStream objectAsStream) throws IOException {
-    return createOrReplaceObject(namespace, load(objectAsStream));
+    return new RawCustomResourceOperationsImpl(client, config, customResourceDefinition, namespace, null, gracePeriodInSeconds, cascading, deletionPropagation, listOptions, dryRun).createOrReplace(objectAsStream);
   }
 
   /**
@@ -242,7 +307,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException in case of network/serialization failures or failures from Kubernetes API
    */
   public Map<String, Object> edit(String name, Map<String, Object> object) throws IOException {
-    return validateAndSubmitRequest(null, name, objectMapper.writeValueAsString(object), HttpCallMethod.PUT);
+    return new RawCustomResourceOperationsImpl(client, config, customResourceDefinition, null, name, gracePeriodInSeconds, cascading, deletionPropagation, listOptions, dryRun).edit(object);
   }
 
   /**
@@ -254,7 +319,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException in case of network/serialization failures or failures from Kubernetes API
    */
   public Map<String, Object> edit(String name, String objectAsString) throws IOException {
-    return validateAndSubmitRequest(null, name, objectAsString, HttpCallMethod.PUT);
+    return new RawCustomResourceOperationsImpl(client, config, customResourceDefinition, null, name, gracePeriodInSeconds, cascading, deletionPropagation, listOptions, dryRun).edit(objectAsString);
   }
 
   /**
@@ -268,7 +333,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    */
   public Map<String, Object> edit(String namespace, String name, Map<String, Object> object) throws IOException {
     object = appendResourceVersionInObject(namespace, name, object);
-    return validateAndSubmitRequest(namespace, name, objectMapper.writeValueAsString(object), HttpCallMethod.PUT);
+    return new RawCustomResourceOperationsImpl(client, config, customResourceDefinition, namespace, name, gracePeriodInSeconds, cascading, deletionPropagation, listOptions, dryRun).edit(object);
   }
 
   /**
@@ -284,7 +349,29 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
     // Append resourceVersion in object metadata in order to
     // avoid : https://github.com/fabric8io/kubernetes-client/issues/1724
     objectAsString = appendResourceVersionInObject(namespace, name, objectAsString);
-    return validateAndSubmitRequest(namespace, name, objectAsString, HttpCallMethod.PUT);
+    return new RawCustomResourceOperationsImpl(client, config, customResourceDefinition, namespace, name, gracePeriodInSeconds, cascading, deletionPropagation, listOptions, dryRun).edit(objectAsString);
+  }
+
+  /**
+   * Edit a custom resource object.
+   *
+   * @param objectAsString new object as JSON string
+   * @return Object as HashMap
+   * @throws IOException in case of network/serializatino failures or failures from Kubernetes API
+   */
+  public Map<String, Object> edit(String objectAsString) throws IOException {
+    return validateAndSubmitRequest(objectAsString, HttpCallMethod.PUT);
+  }
+
+  /**
+   * Edit a custom resource object.
+   *
+   * @param object new object as Map
+   * @return Object as HashMap
+   * @throws IOException in case of network/serializatino failures or failures from Kubernetes API
+   */
+  public Map<String, Object> edit(Map<String, Object> object) throws IOException {
+    return validateAndSubmitRequest(objectMapper.writeValueAsString(object), HttpCallMethod.PUT);
   }
 
   /**
@@ -297,7 +384,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException in case any failure to parse Map
    */
   public Map<String, Object> updateStatus(String name, Map<String, Object> objectAsMap) throws IOException {
-    return validateAndSubmitRequest(fetchUrl(null, name, null) + "/status", objectMapper.writeValueAsString(objectAsMap), HttpCallMethod.PUT);
+    return new RawCustomResourceOperationsImpl(client, config, customResourceDefinition, null, name, gracePeriodInSeconds, cascading, deletionPropagation, listOptions, dryRun).updateStatus(objectAsMap);
   }
 
   /**
@@ -310,7 +397,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException in case any failure to parse Map
    */
   public Map<String, Object> updateStatus(String name, String objectAsJsonString) throws IOException {
-    return validateAndSubmitRequest(fetchUrl(null, name, null) + "/status", objectAsJsonString, HttpCallMethod.PUT);
+    return new RawCustomResourceOperationsImpl(client, config, customResourceDefinition, null, name, gracePeriodInSeconds, cascading, deletionPropagation, listOptions, dryRun).updateStatus(objectAsJsonString);
   }
 
   /**
@@ -324,7 +411,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException in case any failure to parse Map
    */
   public Map<String, Object> updateStatus(String namespace, String name, Map<String, Object> objectAsMap) throws IOException {
-    return validateAndSubmitRequest(fetchUrl(namespace, name, null) + "/status", objectMapper.writeValueAsString(objectAsMap), HttpCallMethod.PUT);
+    return new RawCustomResourceOperationsImpl(client, config, customResourceDefinition, namespace, name, gracePeriodInSeconds, cascading, deletionPropagation, listOptions, dryRun).updateStatus(objectAsMap);
   }
 
   /**
@@ -337,7 +424,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException in case any failure to parse Map
    */
   public Map<String, Object> updateStatus(String name, InputStream objectAsStream) throws IOException {
-    return validateAndSubmitRequest(fetchUrl(null, name, null) + "/status", IOHelpers.readFully(objectAsStream), HttpCallMethod.PUT);
+    return new RawCustomResourceOperationsImpl(client, config, customResourceDefinition, null, name, gracePeriodInSeconds, cascading, deletionPropagation, listOptions, dryRun).updateStatus(objectAsStream);
   }
 
   /**
@@ -351,7 +438,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException in case any failure to parse Map
    */
   public Map<String, Object> updateStatus(String namespace, String name, InputStream objectAsStream) throws IOException {
-    return validateAndSubmitRequest(fetchUrl(namespace, name, null) + "/status", IOHelpers.readFully(objectAsStream), HttpCallMethod.PUT);
+    return new RawCustomResourceOperationsImpl(client, config, customResourceDefinition, namespace, name, gracePeriodInSeconds, cascading, deletionPropagation, listOptions, dryRun).updateStatus(objectAsStream);
   }
 
   /**
@@ -365,7 +452,48 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException in case any failure to parse Map
    */
   public Map<String, Object> updateStatus(String namespace, String name, String objectAsJsonString) throws IOException {
-    return validateAndSubmitRequest(fetchUrl(namespace, name, null) + "/status", objectAsJsonString, HttpCallMethod.PUT);
+    return new RawCustomResourceOperationsImpl(client, config, customResourceDefinition, namespace, name, gracePeriodInSeconds, cascading, deletionPropagation, listOptions, dryRun).updateStatus(objectAsJsonString);
+  }
+
+  /**
+   * Update status related to a CustomResource, this method does a PUT request on /status endpoint related
+   * to the CustomResource
+   *
+   * @param objectAsJsonString CustomResource object as a JSON string
+   * @return updated CustomResource as HashMap
+   * @throws IOException in case any failures to parse provided object or failure from Kubernetes API
+   */
+  public Map<String, Object> updateStatus(String objectAsJsonString) throws IOException {
+    return validateAndSubmitRequest(fetchUrl(null) + STATUS_SUBRESOURCE_ENDPOINT, objectAsJsonString, HttpCallMethod.PUT);
+  }
+
+  /**
+   * Update status related to a CustomResource, this method does a PUT request on /status endpoint related
+   * to the CustomResource
+   *
+   * @param objectAsMap CustomResource object as a HashMap
+   * @return updated CustomResource as HashMap
+   * @throws IOException in case any failures to parse provided object or failure from Kubernetes API
+   */
+  public Map<String, Object> updateStatus(Map<String, Object> objectAsMap) throws IOException {
+    return validateAndSubmitRequest(fetchUrl(null) + STATUS_SUBRESOURCE_ENDPOINT, objectMapper.writeValueAsString(objectAsMap), HttpCallMethod.PUT);
+  }
+
+  /**
+   * Update status related to a CustomResource, this method does a PUT request on /status endpoint related
+   * to the CustomResource
+   *
+   * @param objectAsInputStream CustomResource object as a InputStream
+   * @return updated CustomResource as HashMap
+   * @throws IOException in case any failures to parse provided object or failure from Kubernetes API
+   */
+  public Map<String, Object> updateStatus(InputStream objectAsInputStream) throws IOException {
+    return validateAndSubmitRequest(fetchUrl(null) + STATUS_SUBRESOURCE_ENDPOINT, IOHelpers.readFully(objectAsInputStream), HttpCallMethod.PUT);
+  }
+
+  @Override
+  public Map<String, Object> get() {
+    return makeCall(fetchUrl(null), null, HttpCallMethod.GET);
   }
 
   /**
@@ -375,7 +503,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @return Object as HashMap
    */
   public Map<String, Object> get(String name) {
-    return makeCall(fetchUrl(null, name, null), null, HttpCallMethod.GET);
+    return new RawCustomResourceOperationsImpl(client, config, customResourceDefinition, null, name, gracePeriodInSeconds, cascading, deletionPropagation, listOptions, dryRun).get();
   }
 
   /**
@@ -386,7 +514,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @return Object as HashMap
    */
   public Map<String, Object> get(String namespace, String name) {
-      return makeCall(fetchUrl(namespace, name, null), null, HttpCallMethod.GET);
+    return new RawCustomResourceOperationsImpl(client, config, customResourceDefinition, namespace, name, gracePeriodInSeconds, cascading, deletionPropagation, listOptions, dryRun).get();
   }
 
   /**
@@ -395,7 +523,20 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @return list of custom resources as HashMap
    */
   public Map<String, Object> list() {
-    return makeCall(fetchUrl(null, null, null), null, HttpCallMethod.GET);
+    return makeCall(fetchUrl(null), null, HttpCallMethod.GET);
+  }
+
+  @Override
+  public Map<String, Object> list(Integer limitVal, String continueVal) {
+    return new RawCustomResourceOperationsImpl(client, config, customResourceDefinition, namespace, name, gracePeriodInSeconds, cascading, deletionPropagation, new ListOptionsBuilder()
+      .withLimit(limitVal.longValue())
+      .withContinue(continueVal)
+      .build(), dryRun).list();
+  }
+
+  @Override
+  public Map<String, Object> list(ListOptions listOptions) {
+    return new RawCustomResourceOperationsImpl(client, config, customResourceDefinition, namespace, name, gracePeriodInSeconds, cascading, deletionPropagation, listOptions, dryRun).list();
   }
 
   /**
@@ -405,7 +546,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @return list of custom resources as HashMap
    */
   public Map<String, Object> list(String namespace) {
-    return makeCall(fetchUrl(namespace, null, null), null, HttpCallMethod.GET);
+    return new RawCustomResourceOperationsImpl(client, config, customResourceDefinition, namespace, null, gracePeriodInSeconds, cascading, deletionPropagation, listOptions, dryRun).list();
   }
 
   /**
@@ -416,43 +557,77 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @return list of custom resources as HashMap
    */
   public Map<String, Object> list(String namespace, Map<String, String> labels) {
-    return makeCall(fetchUrl(namespace, null, labels), null, HttpCallMethod.GET);
+    return new RawCustomResourceOperationsImpl(client, config, customResourceDefinition, namespace, null,
+      gracePeriodInSeconds, cascading, deletionPropagation, new ListOptionsBuilder().withLabelSelector(getLabelsQueryParam(labels)).build(), dryRun).list();
   }
 
   /**
-   * Delete all custom resources in a specific namespace
+   * Delete all Namespaced Scoped Custom Resources in a specified namespace
+   * <b>OR</b>
+   * Delete a Cluster Scoped Custom Resource with specified name
    *
-   * @param namespace desired namespace
-   * @return a boolean value whether item was deleted or item didn't exist in server
+   * <p>
+   * Note: This method behaves differently based on the scope of CRD:
+   *
+   * If specified CRD is of Namespaced scope, this method would delete all Custom Resources in namespace which is
+   * specified as parameter.
+   * If specified CRD is of Cluster scope, this method would delete a Custom Resource matching the name which is
+   * specified as parameter
+   * </p>
+   *
+   * @param namespaceOrName desired namespace(if CRD is Namespaced) or name(If CRD is Cluster)
+   * @return deleted objects as HashMap
    */
-  public boolean delete(String namespace) {
-    return handleDelete(namespace, null, null);
+  public boolean delete(String namespaceOrName) {
+    return pickNamespaceOrNameBasedOnScopeAndDelete(namespaceOrName, null);
   }
 
   /**
-   * Delete all custom resources in a specific namespace
+   * Delete all Namespaced Scoped Custom Resources in a specified namespace
+   * <b>OR</b>
+   * Delete a Cluster Scoped Custom Resource with specified name
    *
-   * @param namespace desired namespace
+   * <p>
+   * Note: This method behaves differently based on the scope of CRD:
+   *
+   * If specified CRD is of Namespaced scope, this method would delete all Custom Resources in namespace which is
+   * specified as parameter.
+   * If specified CRD is of Cluster scope, this method would delete a Custom Resource matching the name which is
+   * specified as parameter
+   * </p>
+   *
+   * @param namespaceOrName desired namespace(If CRD is Namespaced) or name(If CRD is Cluster)
    * @param cascading whether dependent object need to be orphaned or not.  If true/false, the "orphan"
    *                   finalizer will be added to/removed from the object's finalizers list.
    * @return a boolean value whether item was deleted or item didn't exist in server
    * @throws IOException in case of any network/parsing exception
    */
-  public boolean delete(String namespace, boolean cascading) throws IOException {
-    return handleDelete(namespace, null,  objectMapper.writeValueAsString(fetchDeleteOptions(cascading, null)));
+  public boolean delete(String namespaceOrName, boolean cascading) throws IOException {
+    return pickNamespaceOrNameBasedOnScopeAndDelete(namespaceOrName, objectMapper.writeValueAsString(fetchDeleteOptions(cascading, null)));
   }
 
   /**
-   * Delete all custom resources in a specific namespace
+   * Delete all Namespaced Scoped Custom Resources in a specified namespace
+   * <b>OR</b>
+   * Delete a Cluster Scoped Custom Resource with specified name
    *
-   * @param namespace desired namespace
+   * <p>
+   * Note: This method behaves differently based on the scope of CRD:
+   *
+   * If specified CRD is of Namespaced scope, this method would delete all Custom Resources in namespace which is
+   * specified as parameter.
+   * If specified CRD is of Cluster scope, this method would delete a Custom Resource matching the name which is
+   * specified as parameter
+   * </p>
+   *
+   * @param namespaceOrName desired namespace(If CRD is Namespaced) or name(If CRD is Cluster)
    * @param deleteOptions object provided by Kubernetes API for more fine grained control over deletion.
    *                       For more information please see https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.16/#deleteoptions-v1-meta
    * @return a boolean value whether item was deleted or item didn't exist in server
    * @throws IOException in case of any network/object parse problems
    */
-  public boolean delete(String namespace, DeleteOptions deleteOptions) throws IOException {
-    return handleDelete(namespace, null, objectMapper.writeValueAsString(deleteOptions));
+  public boolean delete(String namespaceOrName, DeleteOptions deleteOptions) throws IOException {
+    return pickNamespaceOrNameBasedOnScopeAndDelete(namespaceOrName, objectMapper.writeValueAsString(deleteOptions));
   }
 
   /**
@@ -464,7 +639,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException in case of any network/object parse problems
    */
   public boolean delete(String namespace, String name) throws IOException {
-    return handleDelete(namespace, name, objectMapper.writeValueAsString(fetchDeleteOptions(false, DeletionPropagation.BACKGROUND.toString())));
+    return new RawCustomResourceOperationsImpl(client, config, customResourceDefinition, namespace, name, gracePeriodInSeconds, cascading, deletionPropagation, listOptions, dryRun).delete();
   }
 
   /**
@@ -478,7 +653,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException exception related to network/object parsing
    */
   public boolean delete(String namespace, String name, boolean cascading) throws IOException {
-    return handleDelete(namespace, name, objectMapper.writeValueAsString(fetchDeleteOptions(cascading, null)));
+    return new RawCustomResourceOperationsImpl(client, config, customResourceDefinition, namespace, name, gracePeriodInSeconds, cascading, null, listOptions, dryRun).delete();
   }
 
   /**
@@ -497,7 +672,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException in case of network/object parse exception
    */
   public boolean delete(String namespace, String name, String propagationPolicy) throws IOException {
-    return handleDelete(namespace, name, objectMapper.writeValueAsString(fetchDeleteOptions(false, propagationPolicy)));
+    return new RawCustomResourceOperationsImpl(client, config, customResourceDefinition, namespace, name, gracePeriodInSeconds, cascading, propagationPolicy, listOptions, dryRun).delete();
   }
 
   /**
@@ -511,7 +686,17 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException in case of any network/object parse exception
    */
   public boolean delete(String namespace, String name, DeleteOptions deleteOptions) throws IOException {
-    return handleDelete(namespace, name, objectMapper.writeValueAsString(deleteOptions));
+    return new RawCustomResourceOperationsImpl(client, config, customResourceDefinition, namespace, name,
+      gracePeriodInSeconds, cascading, deletionPropagation, listOptions, dryRun).handleDelete(objectMapper.writeValueAsString(deleteOptions));
+  }
+
+  @Override
+  public Boolean delete() {
+    try {
+      return handleDelete(objectMapper.writeValueAsString(fetchDeleteOptions(cascading, null)));
+    } catch (JsonProcessingException jpe) {
+      throw KubernetesClientException.launderThrowable(jpe);
+    }
   }
 
   /**
@@ -598,17 +783,36 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
    * @throws IOException in case of network error
    */
   public Watch watch(String namespace, String name, Map<String, String> labels, ListOptions options, Watcher<String> watcher) throws IOException {
+    return new RawCustomResourceOperationsImpl(client, config, customResourceDefinition,
+      namespace, name, gracePeriodInSeconds, cascading, deletionPropagation, listOptions, dryRun)
+      .watch(labels, options, watcher);
+  }
+
+  /**
+   * Watch custom resources in the parameters specified.
+   *
+   * Most of the parameters except watcher are optional, they would be
+   * skipped if passed null. Here watcher is provided for string type
+   * only. User has to deserialize the object itself.
+   *
+   * @param labels HashMap containing labels (optional)
+   * @param options {@link ListOptions} list options for watch
+   * @param watcher watcher object which reports events
+   * @return watch object for watching resource
+   * @throws IOException in case of network error
+   */
+  public Watch watch(Map<String, String> labels, ListOptions options, Watcher<String> watcher) throws IOException {
     if (options == null) {
       options = new ListOptions();
     }
     options.setWatch(true);
-    HttpUrl.Builder watchUrlBuilder = fetchWatchUrl(namespace, name, labels, options);
+    HttpUrl.Builder watchUrlBuilder = fetchWatchUrl(labels, options);
 
     OkHttpClient.Builder clonedClientBuilder = client.newBuilder();
-      clonedClientBuilder.readTimeout(getConfig() != null ?
-        getConfig().getWebsocketTimeout() : Config.DEFAULT_WEBSOCKET_TIMEOUT, TimeUnit.MILLISECONDS);
-      clonedClientBuilder.pingInterval(getConfig() != null ?
-        getConfig().getWebsocketPingInterval() : Config.DEFAULT_WEBSOCKET_PING_INTERVAL, TimeUnit.MILLISECONDS);
+    clonedClientBuilder.readTimeout(getConfig() != null ?
+      getConfig().getWebsocketTimeout() : Config.DEFAULT_WEBSOCKET_TIMEOUT, TimeUnit.MILLISECONDS);
+    clonedClientBuilder.pingInterval(getConfig() != null ?
+      getConfig().getWebsocketPingInterval() : Config.DEFAULT_WEBSOCKET_PING_INTERVAL, TimeUnit.MILLISECONDS);
 
     OkHttpClient clonedOkHttpClient = clonedClientBuilder.build();
     WatcherToggle<String> watcherToggle = new WatcherToggle<>(watcher, true);
@@ -647,10 +851,9 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
         getConfig() != null ? getConfig().getWatchReconnectInterval() : 1000,
         5);
     }
-
   }
 
-  private Map<String, Object> createOrReplaceObject(String namespace, Map<String, Object> objectAsMap) throws IOException {
+  private Map<String, Object> createOrReplaceObject(Map<String, Object> objectAsMap) throws IOException {
     Map<String, Object> metadata = (Map<String, Object>) objectAsMap.get(METADATA);
     if (metadata == null) {
       throw KubernetesClientException.launderThrowable(new IllegalStateException("Invalid object provided -- metadata is required."));
@@ -663,8 +866,8 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
     metadata.remove(RESOURCE_VERSION);
 
     try {
-      if(namespace != null) {
-        ret = create(namespace, objectAsMap);
+      if(this.namespace != null) {
+        ret = create(this.namespace, objectAsMap);
       } else {
         ret = create(objectAsMap);
       }
@@ -678,9 +881,9 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
         if (originalResourceVersion != null) {
           metadata.put(RESOURCE_VERSION, originalResourceVersion);
         }
-        String name = (String) metadata.get("name");
-        ret = namespace != null ?
-          edit(namespace, name, objectAsMap) : edit(name, objectAsMap);
+        String nameFromObject = (String) metadata.get("name");
+        ret = this.namespace != null ?
+          edit(this.namespace, nameFromObject, objectAsMap) : edit(nameFromObject, objectAsMap);
       } catch (NullPointerException nullPointerException) {
         throw KubernetesClientException.launderThrowable(new IllegalStateException("Invalid object provided -- metadata.name is required."));
       }
@@ -706,27 +909,44 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
     return retVal;
   }
 
-  protected HttpUrl.Builder fetchWatchUrl(String namespace, String name, Map<String, String> labels, ListOptions options) throws MalformedURLException {
-    String resourceUrl = fetchUrl(namespace, null, labels);
+  protected HttpUrl.Builder fetchWatchUrl(Map<String, String> labels, ListOptions options) throws MalformedURLException {
+    String configuredName = this.name;
+    // Get Url without resource name configured
+    this.name = null;
+    String resourceUrl = fetchUrl(labels);
     if (resourceUrl.endsWith("/")) {
       resourceUrl = resourceUrl.substring(0, resourceUrl.length() - 1);
     }
     URL url = new URL(resourceUrl);
     HttpUrl.Builder httpUrlBuilder = HttpUrl.get(url).newBuilder();
 
-    if (name != null) {
-      httpUrlBuilder.addQueryParameter("fieldSelector", "metadata.name=" + name);
+    if (configuredName != null) {
+      httpUrlBuilder.addQueryParameter("fieldSelector", "metadata.name=" + configuredName);
     }
 
     HttpClientUtils.appendListOptionParams(httpUrlBuilder, options);
     return httpUrlBuilder;
   }
 
-  private String fetchUrl(String namespace, String name, Map<String, String> labels) {
+  private String fetchUrl(Map<String, String> labels) {
     if (config.getMasterUrl() == null) {
       return null;
     }
 
+    HttpUrl.Builder urlBuilder = HttpUrl.get(getNamespacedUrl(namespace, name)).newBuilder();
+    if (labels != null) {
+      urlBuilder.addQueryParameter("labelSelector", getLabelsQueryParam(labels));
+    }
+    if (listOptions != null) {
+      urlBuilder = HttpClientUtils.appendListOptionParams(urlBuilder, listOptions);
+    }
+    if (dryRun) {
+      urlBuilder.addQueryParameter("dryRun", "All");
+    }
+    return urlBuilder.toString();
+  }
+
+  private String getNamespacedUrl(String namespace, String name) {
     StringBuilder urlBuilder = new StringBuilder(config.getMasterUrl());
 
     urlBuilder.append(config.getMasterUrl().endsWith("/") ? "" : "/");
@@ -743,9 +963,6 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
     if (name != null) {
       urlBuilder.append("/").append(name);
     }
-    if(labels != null) {
-      urlBuilder.append("?labelSelector").append("=").append(getLabelsQueryParam(labels));
-    }
     return urlBuilder.toString();
   }
 
@@ -755,7 +972,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
       if(labelQueryBuilder.length() > 0) {
         labelQueryBuilder.append(",");
       }
-      labelQueryBuilder.append(entry.getKey()).append(Utils.toUrlEncoded("=")).append(entry.getValue());
+      labelQueryBuilder.append(entry.getKey()).append("=").append(entry.getValue());
     }
     return labelQueryBuilder.toString();
   }
@@ -788,8 +1005,8 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
     return objectMapper.readValue(response.body().string(), HashMap.class);
   }
 
-  private boolean handleDelete(String namespace, String name, String requestBody) {
-    Map<String, Object> response = makeCall(fetchUrl(namespace, name, null), requestBody, HttpCallMethod.DELETE, false);
+  private boolean handleDelete(String requestBody) {
+    Map<String, Object> response = makeCall(fetchUrl(null), requestBody, HttpCallMethod.DELETE, false);
 
     // In most cases Status object is sent on deletion, but when deprecated DeleteOptions.orphanDependents
     // is used; object which is being deleted is sent
@@ -799,8 +1016,8 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
     return true;
   }
 
-  private Map<String, Object> validateAndSubmitRequest(String namespace, String name, String objectAsString, HttpCallMethod httpCallMethod) throws IOException {
-    return validateAndSubmitRequest(fetchUrl(namespace, name, null), objectAsString, httpCallMethod);
+  private Map<String, Object> validateAndSubmitRequest(String objectAsString, HttpCallMethod httpCallMethod) throws IOException {
+    return validateAndSubmitRequest(fetchUrl(null), objectAsString, httpCallMethod);
   }
 
   private Map<String, Object> validateAndSubmitRequest(String resourceUrl, String objectAsString, HttpCallMethod httpCallMethod) throws IOException {
@@ -855,12 +1072,40 @@ public class RawCustomResourceOperationsImpl extends OperationSupport {
   }
 
   private DeleteOptions fetchDeleteOptions(boolean cascading, String propagationPolicy) {
-    DeleteOptions deleteOptions = new DeleteOptions();
-    if (propagationPolicy != null) {
-      deleteOptions.setPropagationPolicy(propagationPolicy);
+    DeleteOptionsBuilder deleteOptionsBuilder = new DeleteOptionsBuilder();
+    String resolvedPropagationPolicy = resolvePropagationPolicy(propagationPolicy);
+    if (resolvedPropagationPolicy != null) {
+      deleteOptionsBuilder.withPropagationPolicy(resolvedPropagationPolicy);
     } else {
-      deleteOptions.setOrphanDependents(!cascading);
+      deleteOptionsBuilder.withOrphanDependents(!cascading);
     }
-    return deleteOptions;
+    if (this.gracePeriodInSeconds > 0) {
+      deleteOptionsBuilder.withGracePeriodSeconds(this.gracePeriodInSeconds);
+    }
+    if (this.dryRun) {
+      deleteOptionsBuilder.withDryRun(Collections.singletonList("All"));
+    }
+    return deleteOptionsBuilder.build();
+  }
+
+  private String resolvePropagationPolicy(String propagationPolicyProvided) {
+    if (propagationPolicyProvided != null) {
+      return propagationPolicyProvided;
+    } else if (this.deletionPropagation != null) {
+      return this.deletionPropagation;
+    }
+    return null;
+  }
+
+  private boolean pickNamespaceOrNameBasedOnScopeAndDelete(String namespaceOrName, String deleteOptionsAsString) {
+    String operationNamespace = null;
+    String operationName = null;
+    if (customResourceDefinition.getScope().equals("Namespaced")) {
+      operationNamespace = namespaceOrName;
+    } else {
+      operationName = namespaceOrName;
+    }
+    return new RawCustomResourceOperationsImpl(client, config, customResourceDefinition, operationNamespace, operationName, gracePeriodInSeconds, cascading, deletionPropagation, listOptions, dryRun)
+      .handleDelete(deleteOptionsAsString);
   }
 }

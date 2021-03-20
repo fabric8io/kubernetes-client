@@ -18,34 +18,44 @@ package io.fabric8.kubernetes;
 import io.fabric8.commons.ClusterEntity;
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
+import io.fabric8.kubernetes.api.model.ContainerBuilder;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
+import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
+import io.fabric8.kubernetes.api.model.PodTemplateSpecBuilder;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
+import io.fabric8.kubernetes.api.model.apps.DeploymentSpecBuilder;
+import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetList;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.utils.Utils;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import static junit.framework.TestCase.assertNotNull;
 import static org.awaitility.Awaitility.await;
@@ -56,33 +66,30 @@ import static org.junit.Assert.assertTrue;
 @RunWith(ArquillianConditionalRunner.class)
 @RequiresKubernetes
 public class ResourceIT {
+
   @ArquillianResource
   KubernetesClient client;
 
   @ArquillianResource
   Session session;
 
-  private final Deployment deployment = new DeploymentBuilder()
-    .withNewMetadata().withName("deploy1").endMetadata()
-    .withNewSpec()
-    .withReplicas(1)
-    .withNewSelector().withMatchLabels(Collections.singletonMap("run", "deploy1")).endSelector()
-    .withNewTemplate()
-    .withNewMetadata().withLabels(Collections.singletonMap("run", "deploy1")).endMetadata()
-    .withNewSpec()
-    .addNewContainer()
-    .withImage("httpd")
-    .withName("deploy1")
-    .addNewPort().withContainerPort(80).endPort()
-    .endContainer()
-    .endSpec()
-    .endTemplate()
-    .endSpec()
-    .build();
+  private String deploymentName;
+  private Deployment deployment;
 
   @BeforeClass
   public static void init() {
     ClusterEntity.apply(ResourceIT.class.getResourceAsStream("/resource-it.yml"));
+  }
+
+  @Before
+  public void setUp() {
+    deploymentName = UUID.randomUUID().toString();
+    deployment = initDeployment(deploymentName);
+  }
+
+  @After
+  public void tearDown() {
+    client.apps().deployments().withName(deploymentName).withGracePeriod(0L).delete();
   }
 
   @Test
@@ -162,30 +169,32 @@ public class ResourceIT {
   }
 
   @Test
-  public void testDeleteExistingWithOrphanDeletion() {
+  public void testDeleteExistingWithOrphanDeletion() throws Exception {
     // Create Deployment
     client.resource(deployment).inNamespace(session.getNamespace()).createOrReplace();
     await().atMost(30, TimeUnit.SECONDS).until(resourceIsReady(deployment));
 
-    // get creationTimestamp of underlying replicaset. we expect this NOT to match later, meaning the orphan WAS deleted.
-    ReplicaSetList replicaSetList = client.apps().replicaSets().inNamespace(session.getNamespace()).withLabel("run", "deploy1").list();
+    // get uid of underlying replicaset. we expect this NOT to match later, meaning the orphan WAS deleted.
+    ReplicaSetList replicaSetList = client.apps().replicaSets().inNamespace(session.getNamespace()).withLabel("run", deploymentName).list();
     assertEquals(1, replicaSetList.getItems().size());
-    String replicaSetCreationTimestamp = replicaSetList.getItems().get(0).getMetadata().getCreationTimestamp();
+    String replicaSetUid = replicaSetList.getItems().get(0).getMetadata().getUid();
 
     // Recreate deployment with deleteExisting
-    client.resource(deployment).inNamespace(session.getNamespace()).withPropagationPolicy(DeletionPropagation.FOREGROUND).deletingExisting().createOrReplace();
-    await().atMost(30, TimeUnit.SECONDS).until(resourceIsReady(deployment));
-
-    // check that creationTimestamp DOES NOT MATCH original, meaning the orphan WAS deleted
-    replicaSetList = client.apps().replicaSets().inNamespace(session.getNamespace()).withLabel("run", "deploy1").list();
-    assertEquals(1, replicaSetList.getItems().size());
-    assertNotEquals(replicaSetCreationTimestamp, replicaSetList.getItems().get(0).getMetadata().getCreationTimestamp());
+    client.resource(deployment).inNamespace(session.getNamespace()).deletingExisting().createOrReplace();
+    final Callable<List<ReplicaSet>> replicaSets = () -> client.apps().replicaSets()
+      .inNamespace(session.getNamespace()).withLabel("run", deploymentName).list().getItems().stream()
+      .filter(rs -> Utils.isNullOrEmpty(rs.getMetadata().getDeletionTimestamp()))
+      .collect(Collectors.toList());
+    await().atMost(30, TimeUnit.SECONDS)
+      .until(() -> resourceIsReady(deployment).call() && replicaSets.call().size() == 1);
+    // check that uid DOES NOT MATCH original, meaning the orphan WAS deleted
+    assertNotEquals(replicaSetUid, replicaSets.call().iterator().next().getMetadata().getUid());
 
     // cleanup
-    assertEquals(true, client.resource(deployment).inNamespace(session.getNamespace()).delete());
+    assertEquals(true, client.resource(deployment).inNamespace(session.getNamespace()).withGracePeriod(0L).delete());
     // Check whether child resources are also deleted
     await().atMost(30, TimeUnit.SECONDS)
-      .until(() -> client.apps().replicaSets().inNamespace(session.getNamespace()).withLabel("run", "deploy1").list().getItems().size() == 0);
+      .until(() -> client.apps().replicaSets().inNamespace(session.getNamespace()).withLabel("run", deploymentName).list().getItems().isEmpty());
   }
 
   @Test
@@ -194,10 +203,10 @@ public class ResourceIT {
     client.resource(deployment).inNamespace(session.getNamespace()).createOrReplace();
     await().atMost(30, TimeUnit.SECONDS).until(resourceIsReady(deployment));
 
-    // get creationTimestamp of underlying replicaset. we expect this to match later, meaning the orphan was not deleted.
-    ReplicaSetList replicaSetList = client.apps().replicaSets().inNamespace(session.getNamespace()).withLabel("run", "deploy1").list();
+    // get uid of underlying replicaset. we expect this to match later, meaning the orphan was not deleted.
+    ReplicaSetList replicaSetList = client.apps().replicaSets().inNamespace(session.getNamespace()).withLabel("run", deploymentName).list();
     assertEquals(1, replicaSetList.getItems().size());
-    String replicaSetCreationTimestamp = replicaSetList.getItems().get(0).getMetadata().getCreationTimestamp();
+    String replicaSetUid= replicaSetList.getItems().get(0).getMetadata().getUid();
 
     // Recreate deployment with deleteExisting
     client.resource(deployment)
@@ -208,16 +217,16 @@ public class ResourceIT {
 
     await().atMost(30, TimeUnit.SECONDS).until(resourceIsReady(deployment));
 
-    // check that creationTimestamp matches original, meaning the orphan was not deleted
-    replicaSetList = client.apps().replicaSets().inNamespace(session.getNamespace()).withLabel("run", "deploy1").list();
+    // check that uid matches original, meaning the orphan was not deleted
+    replicaSetList = client.apps().replicaSets().inNamespace(session.getNamespace()).withLabel("run", deploymentName).list();
     assertEquals(1, replicaSetList.getItems().size());
-    assertEquals(replicaSetCreationTimestamp, replicaSetList.getItems().get(0).getMetadata().getCreationTimestamp());
+    assertEquals(replicaSetUid, replicaSetList.getItems().get(0).getMetadata().getUid());
 
     // cleanup
     assertEquals(true, client.resource(deployment).inNamespace(session.getNamespace()).delete());
     // Check whether child resources are also deleted
     await().atMost(30, TimeUnit.SECONDS)
-      .until(() -> client.apps().replicaSets().inNamespace(session.getNamespace()).withLabel("run", "deploy1").list().getItems().size() == 0);
+      .until(() -> client.apps().replicaSets().inNamespace(session.getNamespace()).withLabel("run", deploymentName).list().getItems().size() == 0);
   }
 
   @Test
@@ -226,7 +235,7 @@ public class ResourceIT {
     client.resource(deployment).inNamespace(session.getNamespace()).createOrReplace();
     await().atMost(30, TimeUnit.SECONDS).until(resourceIsReady(deployment));
     // Check whether child resources are also created
-    assertEquals(1, client.apps().replicaSets().inNamespace(session.getNamespace()).withLabel("run", "deploy1").list().getItems().size());
+    assertEquals(1, client.apps().replicaSets().inNamespace(session.getNamespace()).withLabel("run", deploymentName).list().getItems().size());
 
     // Delete deployment
     Boolean deleted = client.resource(deployment).inNamespace(session.getNamespace()).withPropagationPolicy(DeletionPropagation.BACKGROUND).delete();
@@ -234,7 +243,7 @@ public class ResourceIT {
 
     // Check whether child resources are also deleted
     await().atMost(30, TimeUnit.SECONDS)
-      .until(() -> client.apps().replicaSets().inNamespace(session.getNamespace()).withLabel("run", "deploy1").list().getItems().size() == 0);
+      .until(() -> client.apps().replicaSets().inNamespace(session.getNamespace()).withLabel("run", deploymentName).list().getItems().size() == 0);
   }
 
   @Test
@@ -243,7 +252,7 @@ public class ResourceIT {
     client.resource(deployment).inNamespace(session.getNamespace()).createOrReplace();
     await().atMost(30, TimeUnit.SECONDS).until(resourceIsReady(deployment));
     // Check whether child resources are also created
-    assertEquals(1, client.apps().replicaSets().inNamespace(session.getNamespace()).withLabel("run", "deploy1").list().getItems().size());
+    assertEquals(1, client.apps().replicaSets().inNamespace(session.getNamespace()).withLabel("run", deploymentName).list().getItems().size());
 
     // Delete deployment
     Boolean deleted = client.resource(deployment).inNamespace(session.getNamespace()).withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
@@ -251,13 +260,13 @@ public class ResourceIT {
 
     // wait till deployment is deleted
     await().atMost(30, TimeUnit.SECONDS)
-      .until(() -> client.apps().deployments().inNamespace(session.getNamespace()).withLabel("run", "deploy1").list().getItems().size() == 0);
+      .until(() -> client.apps().deployments().inNamespace(session.getNamespace()).withLabel("run", deploymentName).list().getItems().size() == 0);
 
     // Check whether child resources are not deleted, they should be alive
-    assertEquals(1, client.apps().replicaSets().inNamespace(session.getNamespace()).withLabel("run", "deploy1").list().getItems().size());
+    assertEquals(1, client.apps().replicaSets().inNamespace(session.getNamespace()).withLabel("run", deploymentName).list().getItems().size());
 
     // cleanup resources which are not cleaned up during cascade deletion
-    client.apps().replicaSets().inNamespace(session.getNamespace()).withLabel("run", "deploy1").delete();
+    client.apps().replicaSets().inNamespace(session.getNamespace()).withLabel("run", deploymentName).delete();
   }
 
   private Callable<Boolean> resourceIsReady(HasMetadata resource) {
@@ -271,5 +280,29 @@ public class ResourceIT {
   @AfterClass
   public static void cleanup() {
     ClusterEntity.remove(ResourceIT.class.getResourceAsStream("/resource-it.yml"));
+  }
+
+  private static Deployment initDeployment(String name) {
+    return new DeploymentBuilder()
+      .withMetadata(new ObjectMetaBuilder()
+        .withName(name)
+        .build())
+      .withSpec(new DeploymentSpecBuilder()
+        .withReplicas(1)
+        .withNewSelector().withMatchLabels(Collections.singletonMap("run", name)).endSelector()
+        .withTemplate(new PodTemplateSpecBuilder()
+          .withNewMetadata().withLabels(Collections.singletonMap("run", name)).endMetadata()
+          .withNewSpec()
+            .withTerminationGracePeriodSeconds(1L)
+            .addToContainers(new ContainerBuilder()
+              .withImage("busybox")
+              .withCommand("sh", "-c", "sleep 60")
+              .withName(name)
+              .addNewPort().withContainerPort(80).endPort()
+              .build())
+            .endSpec()
+          .build())
+        .build())
+      .build();
   }
 }

@@ -26,11 +26,11 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 class BindingTest {
 
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   @DisplayName("create, with created response, should return created resource")
   @Test
@@ -39,7 +39,7 @@ class BindingTest {
       .andReturn(201, "{\"metadata\": {\"name\": \"binding-name\"}}")
       .once();
     // When
-    final Binding result = server.getClient().bindings().inNamespace("default").create(new BindingBuilder()
+    final Binding result = client.bindings().inNamespace("default").create(new BindingBuilder()
       .withNewMetadata().withName("binding-name").endMetadata()
       .withNewTarget().withKind("Node").withApiVersion("v1").withName("node-name").endTarget()
       .build());

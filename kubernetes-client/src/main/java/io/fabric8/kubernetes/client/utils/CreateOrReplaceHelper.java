@@ -69,10 +69,10 @@ public class CreateOrReplaceHelper<T extends HasMetadata> {
     return future.join();
   }
 
-  public static HasMetadata createOrReplaceItem(OkHttpClient client, Config config, HasMetadata meta, ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h, String namespaceToUse) {
+  public static HasMetadata createOrReplaceItem(OkHttpClient client, Config config, HasMetadata meta, ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h, String namespaceToUse, boolean dryRun) {
     CreateOrReplaceHelper<HasMetadata> createOrReplaceHelper = new CreateOrReplaceHelper<>(
-      m -> h.create(client, config, namespaceToUse, m),
-      m -> h.replace(client, config, namespaceToUse, m),
+      m -> h.create(client, config, namespaceToUse, m, dryRun),
+      m -> h.replace(client, config, namespaceToUse, m, dryRun),
       m -> {
         try {
           return h.waitUntilCondition(client, config, namespaceToUse, m, Objects::nonNull, 1, TimeUnit.SECONDS);

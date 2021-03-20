@@ -119,9 +119,18 @@ class PodUploadTest {
 
   @Test
   void testUploadDirectoryHappyScenarioShouldUploadDirectory() throws Exception {
+    uploadDirectoryAndVerify("/upload");
+  }
+
+  @Test
+  void testUploadDirectoryLongFileNameShouldUploadDirectory() throws Exception {
+    uploadDirectoryAndVerify("/upload_long");
+  }
+
+  private void uploadDirectoryAndVerify(String resourcePath) throws IOException, InterruptedException {
     when(mockContext.getDir()).thenReturn("/mock/dir");
     when(mockPathToUpload.toFile())
-      .thenReturn(new File(PodUpload.class.getResource("/upload").getFile()));
+      .thenReturn(new File(PodUpload.class.getResource(resourcePath).getFile()));
     when(mockClient.newWebSocket(any(), any())).thenAnswer(newWebSocket -> {
       final PodUploadWebSocketListener wsl = newWebSocket.getArgument(1, PodUploadWebSocketListener.class);
       // Set ready status

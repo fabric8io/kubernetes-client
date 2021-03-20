@@ -27,11 +27,13 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
-import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.TimeoutException;
 import java.util.function.ObjIntConsumer;
 import java.util.zip.GZIPOutputStream;
 
@@ -104,31 +106,34 @@ public class PodUpload {
       final GZIPOutputStream gzip = new GZIPOutputStream(b64Out)
 
     ) {
-      final CountDownLatch done = new CountDownLatch(1);
-      final AtomicReference<IOException> readFileException = new AtomicReference<>(null);
       podUploadWebSocketListener.waitUntilReady(DEFAULT_CONNECTION_TIMEOUT_SECONDS);
-      final Runnable readFiles = () -> {
+      final Callable<?> readFiles = () -> {
         try (final TarArchiveOutputStream tar = new TarArchiveOutputStream(gzip)) {
+          tar.setLongFileMode(TarArchiveOutputStream.LONGFILE_POSIX);
           for (File file : pathToUpload.toFile().listFiles()) {
             addFileToTar(null, file, tar);
           }
           tar.flush();
-        } catch (IOException ex) {
-          readFileException.set(ex);
-        } finally {
-          done.countDown();
         }
+        return null;
       };
       final ExecutorService es = Executors.newSingleThreadExecutor();
-      es.submit(readFiles);
+      Future<?> readFilesFuture = es.submit(readFiles);
       copy(pis, podUploadWebSocketListener::send);
       podUploadWebSocketListener.waitUntilComplete(DEFAULT_COMPLETE_REQUEST_TIMEOUT_SECONDS);
-      final boolean doneGracefully = done.await(100, TimeUnit.SECONDS);
-      es.shutdown();
-      if (readFileException.get() != null) {
-        throw readFileException.get();
+      try {
+        readFilesFuture.get(100, TimeUnit.SECONDS);
+        return true;
+      } catch (ExecutionException ex) {
+        if (ex.getCause() instanceof IOException) {
+          throw (IOException) ex.getCause();
+        }
+        throw new IOException(ex.getMessage(), ex.getCause());
+      } catch (TimeoutException e) {
+        return false;
+      } finally {
+        es.shutdown();
       }
-      return doneGracefully;
     }
   }
 

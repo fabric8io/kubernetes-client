@@ -15,8 +15,15 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
+import io.fabric8.kubernetes.client.GracePeriodConfigurable;
+import io.fabric8.kubernetes.client.PropagationPolicyConfigurable;
+
 /**
  * Created by iocanel on 9/15/16.
  */
-public interface CascadingDeletable<T> extends Deletable, Cascading<Deletable>, Recreateable<Applicable<T>> {
+public interface CascadingDeletable<T> extends Deletable,
+  Cascading<Deletable>,
+  GracePeriodConfigurable<CascadingDeletable<T>>,
+  PropagationPolicyConfigurable<CascadingDeletable<T>>,
+  Recreateable<Applicable<T>> {
 }

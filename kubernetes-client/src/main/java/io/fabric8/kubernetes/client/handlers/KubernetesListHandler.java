@@ -37,6 +37,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import static io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation.DEFAULT_GRACE_PERIOD_IN_SECONDS;
+import static io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation.DEFAULT_PROPAGATION_POLICY;
+
 @Component
 @org.apache.felix.scr.annotations.Service
 public class KubernetesListHandler implements ResourceHandler<KubernetesList, KubernetesListBuilder> {
@@ -56,12 +59,12 @@ public class KubernetesListHandler implements ResourceHandler<KubernetesList, Ku
   }
 
   @Override
-  public KubernetesList create(OkHttpClient client, Config config, String namespace, KubernetesList item) {
-    return new KubernetesListOperationsImpl(client, config, namespace, null, DeletionPropagation.BACKGROUND, false, false, item, null).create();
+  public KubernetesList create(OkHttpClient client, Config config, String namespace, KubernetesList item, boolean dryRun) {
+    return new KubernetesListOperationsImpl(client, config, namespace, null, DEFAULT_PROPAGATION_POLICY, DEFAULT_GRACE_PERIOD_IN_SECONDS, false, false, item, null, dryRun).create();
   }
 
   @Override
-  public KubernetesList replace(OkHttpClient client, Config config, String namespace, KubernetesList item) {
+  public KubernetesList replace(OkHttpClient client, Config config, String namespace, KubernetesList item, boolean dryRun) {
     List<HasMetadata> replacedItems = new ArrayList<>();
 
     for (HasMetadata metadata : item.getItems()) {
@@ -69,7 +72,7 @@ public class KubernetesListHandler implements ResourceHandler<KubernetesList, Ku
       if (handler == null) {
         LOGGER.warn("No handler found for:" + item.getKind() + ". Ignoring");
       } else {
-        replacedItems.add(handler.replace(client, config, namespace, metadata));
+        replacedItems.add(handler.replace(client, config, namespace, metadata, dryRun));
       }
     }
     return new KubernetesListBuilder(item).withItems(replacedItems).build();
@@ -96,8 +99,8 @@ public class KubernetesListHandler implements ResourceHandler<KubernetesList, Ku
   }
 
   @Override
-  public Boolean delete(OkHttpClient client, Config config, String namespace, DeletionPropagation propagationPolicy, KubernetesList item) {
-    return new KubernetesListOperationsImpl(client, config, namespace, null, propagationPolicy, false, false, item, null).delete(item);
+  public Boolean delete(OkHttpClient client, Config config, String namespace, DeletionPropagation propagationPolicy, long gracePeriodSeconds, KubernetesList item, boolean dryRun) {
+    return new KubernetesListOperationsImpl(client, config, namespace, null, propagationPolicy, gracePeriodSeconds, false, false, item, null, dryRun).delete(item);
   }
 
   @Override

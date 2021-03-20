@@ -215,7 +215,12 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
 
   @Override
   public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> withParameters(Map<String, String> parameters) {
-    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, namespace, explicitNamespace, fromServer, deletingExisting, visitors, null, inputStream, parameters, -1, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, namespace, explicitNamespace, fromServer, deletingExisting, visitors, null, inputStream, parameters, -1, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, dryRun);
+  }
+
+  @Override
+  public ListVisitFromServerWritable<HasMetadata> dryRun(boolean isDryRun) {
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, namespace, explicitNamespace, fromServer, deletingExisting, visitors, item, inputStream, null, -1, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, isDryRun);
   }
 
   /**
@@ -243,15 +248,15 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
         }
     }
 
-    public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, InputStream is, Map<String, String> parameters, Boolean cascading, DeletionPropagation propagationPolicy) {
-        this(client, config, namespace, explicitNamespace, fromServer, deletingExisting, visitors, null, is, parameters, -1, propagationPolicy, cascading, Waitable.DEFAULT_INITIAL_BACKOFF_MILLIS, Waitable.DEFAULT_BACKOFF_MULTIPLIER);
+    public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, InputStream is, Map<String, String> parameters, Boolean cascading, DeletionPropagation propagationPolicy, boolean dryRun) {
+        this(client, config, namespace, explicitNamespace, fromServer, deletingExisting, visitors, null, is, parameters, -1, propagationPolicy, cascading, Waitable.DEFAULT_INITIAL_BACKOFF_MILLIS, Waitable.DEFAULT_BACKOFF_MULTIPLIER, dryRun);
     }
 
-    public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, Object item, Map<String, String> parameters, DeletionPropagation propagationPolicy, Boolean cascading) {
-      this(client, config, namespace, explicitNamespace, fromServer, deletingExisting, visitors, item, null, parameters, -1, propagationPolicy, cascading, Waitable.DEFAULT_INITIAL_BACKOFF_MILLIS, Waitable.DEFAULT_BACKOFF_MULTIPLIER);
+    public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, Object item, Map<String, String> parameters, DeletionPropagation propagationPolicy, Boolean cascading, boolean dryRun) {
+      this(client, config, namespace, explicitNamespace, fromServer, deletingExisting, visitors, item, null, parameters, -1, propagationPolicy, cascading, Waitable.DEFAULT_INITIAL_BACKOFF_MILLIS, Waitable.DEFAULT_BACKOFF_MULTIPLIER, dryRun);
     }
 
-    public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, Object item, InputStream inputStream, Map<String, String> parameters, long gracePeriodSeconds, DeletionPropagation propagationPolicy, Boolean cascading, long watchRetryInitialBackoffMillis, double watchRetryBackoffMultiplier) {
+    public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, Object item, InputStream inputStream, Map<String, String> parameters, long gracePeriodSeconds, DeletionPropagation propagationPolicy, Boolean cascading, long watchRetryInitialBackoffMillis, double watchRetryBackoffMultiplier, boolean dryRun) {
         super(client, config);
         this.fallbackNamespace = namespace;
         this.explicitNamespace = explicitNamespace;
@@ -273,6 +278,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
         this.cascading = cascading;
         this.gracePeriodSeconds = gracePeriodSeconds;
         this.propagationPolicy = propagationPolicy;
+        this.dryRun = dryRun;
         this.visitors.add(new ChangeNamespace(explicitNamespace, fallbackNamespace));
     }
 
@@ -288,7 +294,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
       ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
       String namespaceToUse = meta.getMetadata().getNamespace();
 
-      HasMetadata createdItem = createOrReplaceOrDeleteExisting(meta, h, namespaceToUse);
+      HasMetadata createdItem = createOrReplaceOrDeleteExisting(meta, h, namespaceToUse, dryRun);
       if (createdItem != null) {
         result.add(createdItem);
       }
@@ -298,7 +304,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
 
   @Override
   public Waitable<List<HasMetadata>, HasMetadata> createOrReplaceAnd() {
-    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, deletingExisting, visitors, createOrReplace(), inputStream, null, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, deletingExisting, visitors, createOrReplace(), inputStream, null, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, dryRun);
   }
 
   @Override
@@ -313,7 +319,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
         //Second pass do delete
         for (HasMetadata meta :  acceptVisitors(asHasMetadata(item, true), visitors)) {
             ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
-            if (!h.delete(client, config, meta.getMetadata().getNamespace(), propagationPolicy, meta)) {
+            if (!h.delete(client, config, meta.getMetadata().getNamespace(), propagationPolicy, gracePeriodSeconds, meta, dryRun)) {
                 return false;
             }
         }
@@ -360,17 +366,17 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
 
     @Override
     public ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> inNamespace(String explicitNamespace) {
-        return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, deletingExisting, visitors, item, null, null, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
+        return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, deletingExisting, visitors, item, null, null, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, dryRun);
     }
 
     @Override
     public Gettable<List<HasMetadata>> fromServer() {
-        return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, true, deletingExisting, visitors, item, null, null, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
+        return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, true, deletingExisting, visitors, item, null, null, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, dryRun);
     }
 
     @Override
     public Applicable<List<HasMetadata>> deletingExisting() {
-        return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, null, null, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
+        return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, null, null, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, dryRun);
     }
 
     @Override
@@ -379,28 +385,28 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
         for (Visitor v : visitors) {
           newVisitors.add(v);
         }
-        return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, newVisitors, item, null, null, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
+        return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, newVisitors, item, null, null, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, dryRun);
     }
 
   @Override public CascadingDeletable<List<HasMetadata>> withGracePeriod(long gracePeriodSeconds)
   {
-    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, null, null, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, null, null, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, dryRun);
   }
 
   @Override public CascadingDeletable<List<HasMetadata>> withPropagationPolicy(DeletionPropagation propagationPolicy)
   {
-    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, null, null, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, null, null, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, dryRun);
   }
 
   @Override
   public Waitable<List<HasMetadata>, HasMetadata> withWaitRetryBackoff(long initialBackoff, TimeUnit backoffUnit, double backoffMultiplier) {
     long watchRetryInitialBackoffMillis = backoffUnit.toMillis(initialBackoff);
-    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, null, null, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, backoffMultiplier);
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, null, null, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, backoffMultiplier, dryRun);
   }
 
   @Override
   public Deletable cascading(boolean cascading) {
-    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, null, null, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier);
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, fallbackNamespace, explicitNamespace, fromServer, true, visitors, item, null, null, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, dryRun);
   }
 
   protected Readiness getReadiness() {
@@ -441,11 +447,11 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
     }
   }
 
-  private HasMetadata createOrReplaceOrDeleteExisting(HasMetadata meta, ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h, String namespaceToUse) {
+  private HasMetadata createOrReplaceOrDeleteExisting(HasMetadata meta, ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h, String namespaceToUse, boolean dryRun) {
       if (Boolean.TRUE.equals(deletingExisting)) {
-        return deleteAndCreateItem(client, config, meta, h, namespaceToUse, propagationPolicy);
+        return deleteAndCreateItem(client, config, meta, h, namespaceToUse, propagationPolicy, gracePeriodSeconds, dryRun);
       }
-      return createOrReplaceItem(client, config, meta, h, namespaceToUse);
+      return createOrReplaceItem(client, config, meta, h, namespaceToUse, dryRun);
   }
 
 }

@@ -15,11 +15,10 @@
  */
 package io.fabric8.crd.zookeeper.v1;
 
+import io.fabric8.kubernetes.model.annotation.LabelSelector;
+import io.fabric8.kubernetes.model.annotation.PrinterColumn;
+import io.fabric8.kubernetes.model.annotation.StatusReplicas;
 import java.util.Map;
-
-import io.fabric8.crd.annotation.LabelSelector;
-import io.fabric8.crd.annotation.StatusReplicas;
-import io.fabric8.crd.annotation.PrinterColumn;
 
 public class ZookeeperStatus {
 

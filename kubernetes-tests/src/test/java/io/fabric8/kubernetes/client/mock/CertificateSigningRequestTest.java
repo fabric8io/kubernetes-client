@@ -22,21 +22,21 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import org.junit.jupiter.api.Test;
-
 import java.net.HttpURLConnection;
 import java.util.List;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 class CertificateSigningRequestTest {
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
+
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   @Test
   void testLoad() {
     // Given
-    KubernetesClient client = server.getClient();
 
     // When
     List<HasMetadata> resources = client.load(getClass().getResourceAsStream("/test-csr.yml")).get();
@@ -60,7 +60,6 @@ class CertificateSigningRequestTest {
     server.expect().post().withPath("/apis/certificates.k8s.io/v1beta1/certificatesigningrequests")
       .andReturn(HttpURLConnection.HTTP_OK, csr)
       .once();
-    KubernetesClient client = server.getClient();
 
     // When
     csr = client.certificates().v1beta1().certificateSigningRequests().create(csr);

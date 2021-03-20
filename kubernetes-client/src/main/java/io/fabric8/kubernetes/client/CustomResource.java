@@ -26,6 +26,7 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.utils.Pluralize;
+import io.fabric8.kubernetes.model.Scope;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Plural;
 import io.fabric8.kubernetes.model.annotation.Singular;
@@ -68,8 +69,6 @@ import org.slf4j.LoggerFactory;
 public abstract class CustomResource<S, T> implements HasMetadata {
   private static final Logger LOG = LoggerFactory.getLogger(CustomResource.class);
 
-  public static final String NAMESPACE_SCOPE = "Namespaced";
-  public static final String CLUSTER_SCOPE = "Cluster";
   private ObjectMeta metadata = new ObjectMeta();
 
   @JsonProperty("spec")
@@ -96,7 +95,7 @@ public abstract class CustomResource<S, T> implements HasMetadata {
     }
     this.apiVersion = version;
     this.kind = HasMetadata.super.getKind();
-    scope = this instanceof Namespaced ? NAMESPACE_SCOPE : CLUSTER_SCOPE;
+    scope = this instanceof Namespaced ? Scope.NAMESPACED.value() : Scope.CLUSTER.value();
     this.singular = getSingular(clazz);
     this.plural = getPlural(clazz);
     this.crdName = getCRDName(clazz);
@@ -228,7 +227,7 @@ public abstract class CustomResource<S, T> implements HasMetadata {
   /**
    * Retrieves the scope that this CustomResource targets
    *
-   * @return the scope that this CustomResource targets. Possible values are {@link #CLUSTER_SCOPE} or {@link #NAMESPACE_SCOPE}.
+   * @return the scope that this CustomResource targets. Possible values are {@link Scope#CLUSTER} or {@link Scope#NAMESPACED}.
    */
   @JsonIgnore
   public String getScope() {

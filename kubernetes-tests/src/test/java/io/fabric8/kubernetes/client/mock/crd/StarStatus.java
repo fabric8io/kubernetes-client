@@ -15,9 +15,7 @@
  */
 package io.fabric8.kubernetes.client.mock.crd;
 
-import io.fabric8.kubernetes.api.model.KubernetesResource;
-
-public class StarStatus implements KubernetesResource {
+public class StarStatus {
   private String location;
 
   public String getLocation() {

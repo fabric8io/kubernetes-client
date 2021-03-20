@@ -266,7 +266,7 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
     return null;
   }
 
-  private static HasMetadata toKubernetesResource(String s) {
+  static HasMetadata toKubernetesResource(String s) {
     try (InputStream stream = new ByteArrayInputStream(s.getBytes(StandardCharsets.UTF_8.name()))) {
       return Serialization.unmarshal(stream);
     } catch (Exception e) {

@@ -20,14 +20,10 @@ import java.util.List;
 
 import io.fabric8.kubernetes.api.builder.Visitable;
 import io.fabric8.kubernetes.client.FromServerGettable;
-import io.fabric8.kubernetes.client.GracePeriodConfigurable;
-import io.fabric8.kubernetes.client.PropagationPolicyConfigurable;
 
 public interface ListVisitFromServerGetDeleteRecreateWaitApplicable<T> extends Visitable<ListVisitFromServerGetDeleteRecreateWaitApplicable<T>>,
   FromServerGettable<List<T>>,
-  RecreateApplicable<List<T>, T>,
-  CascadingDeletable<List<T>>,
   Waitable<List<T>, T>,
-  GracePeriodConfigurable<CascadingDeletable<List<T>>>,
-  PropagationPolicyConfigurable<CascadingDeletable<List<T>>> {
+  ListVisitFromServerWritable<T>,
+  DryRunable<ListVisitFromServerWritable<T>> {
 }

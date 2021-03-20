@@ -15,11 +15,19 @@
  */
 package io.fabric8.kubernetes;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.fabric8.commons.ClusterEntity;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.WatcherException;
+import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -34,12 +42,14 @@ import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import io.fabric8.commons.AssumingK8sVersionAtLeast;
 import io.fabric8.commons.ClusterEntity;
 import io.fabric8.kubernetes.api.model.Status;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
+import io.fabric8.kubernetes.client.dsl.internal.RawCustomResourceOperationsImpl;
 import io.fabric8.kubernetes.client.utils.Serialization;
-import org.apache.commons.io.FileUtils;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
@@ -47,13 +57,26 @@ import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.ClassRule;
 import org.junit.Test;
+import org.junit.function.ThrowingRunnable;
 import org.junit.runner.RunWith;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
-import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(ArquillianConditionalRunner.class)
 @RequiresKubernetes
@@ -63,6 +86,10 @@ public class RawCustomResourceIT {
 
   @ArquillianResource
   public Session session;
+
+  @ClassRule
+  public static final AssumingK8sVersionAtLeast assumingK8sVersion =
+    new AssumingK8sVersionAtLeast("1", "13");
 
   private String currentNamespace;
 
@@ -242,6 +269,35 @@ public class RawCustomResourceIT {
   public void testDeleteNonExistingResource() throws IOException {
     boolean isDeleted = client.customResource(customResourceDefinitionContext).delete(currentNamespace, "idontexist");
     assertFalse(isDeleted);
+  }
+
+  @Test
+  public void testDryRunCreate() throws IOException {
+    // Given
+    Map<String, Object> elephant = createNewAnimal("elephant", "indian-elephant");
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = client.customResource(customResourceDefinitionContext);
+
+    // When
+    Map<String, Object> createdElephant = rawCustomResourceOperations.dryRun().create(currentNamespace, elephant);
+
+    // Then
+    assertNotNull(createdElephant);
+    assertThrows(KubernetesClientException.class, () -> rawCustomResourceOperations.get(currentNamespace, "elephant"));
+  }
+
+  @Test
+  public void testDryRunDelete() throws IOException {
+    // Given
+    Map<String, Object> dhole = createNewAnimal("dhole", "indian-wild-dog");
+    Map<String, Object> createdDhole = client.customResource(customResourceDefinitionContext).create(currentNamespace, dhole);
+
+    // When
+    boolean deletionStatus = client.customResource(customResourceDefinitionContext).dryRun().delete(currentNamespace, "dhole");
+
+    // Then
+    assertTrue(deletionStatus);
+    Map<String, Object> dholeFromServer = client.customResource(customResourceDefinitionContext).get(currentNamespace, "dhole");
+    assertNotNull(dholeFromServer);
   }
 
   @AfterClass
