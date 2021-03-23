@@ -31,6 +31,8 @@ import io.fabric8.mockwebserver.crud.AttributeSet;
 import io.fabric8.mockwebserver.crud.CrudDispatcher;
 import io.fabric8.mockwebserver.crud.ResponseComposer;
 import io.fabric8.zjsonpatch.JsonPatch;
+import okhttp3.Response;
+import okhttp3.WebSocket;
 import okhttp3.mockwebserver.MockResponse;
 
 import java.io.IOException;
@@ -59,6 +61,8 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
   private static final String PATCH = "PATCH";
   private static final String GET = "GET";
   private static final String DELETE = "DELETE";
+
+  private static final String ADDED = "ADDED";
 
   private static final Logger LOGGER = LoggerFactory.getLogger(KubernetesCrudDispatcher.class);
   public static final int HTTP_UNPROCESSABLE_ENTITY = 422;
@@ -105,7 +109,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
    */
   @Override
   public MockResponse handleCreate(String path, String s) {
-    return validateRequestBodyAndHandleRequest(s, () -> new MockResponse().setResponseCode(doCreate(path, s, "ADDED")).setBody(s));
+    return validateRequestBodyAndHandleRequest(s, () -> new MockResponse().setResponseCode(doCreate(path, s, ADDED)).setBody(s));
   }
 
   /**
@@ -197,7 +201,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
         if (!flag.get()) {
           watchEventListeners.stream()
             .filter(watchEventsListener -> watchEventsListener.attributeMatches(newAttributeSet))
-            .forEach(watchEventsListener -> watchEventsListener.sendWebSocketResponse(updatedAsString, "ADDED"));
+            .forEach(watchEventsListener -> watchEventsListener.sendWebSocketResponse(updatedAsString, ADDED));
         }
 
         response.setResponseCode(HttpURLConnection.HTTP_ACCEPTED);
@@ -233,7 +237,15 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
     if (resourceName != null) {
       query = query.add(new Attribute("name", resourceName));
     }
-    WatchEventsListener watchEventListener = new WatchEventsListener(context, query, watchEventListeners, LOGGER);
+    WatchEventsListener watchEventListener = new WatchEventsListener(context, query, watchEventListeners, LOGGER) {
+      @Override
+      public void onOpen(WebSocket webSocket, Response response) {
+        super.onOpen(webSocket, response);
+        map.entrySet().stream()
+          .filter(entry -> this.attributeMatches(entry.getKey()))
+          .forEach(entry -> this.sendWebSocketResponse(entry.getValue(), ADDED));
+      }
+    };
     watchEventListeners.add(watchEventListener);
     mockResponse.setSocketPolicy(SocketPolicy.KEEP_OPEN);
     return mockResponse.withWebSocketUpgrade(watchEventListener);

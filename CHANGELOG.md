@@ -8,6 +8,8 @@
 
 #### Improvements
 
+* chore: Kubernetes server mock watch will generate intial ADDED events
+
 #### Dependency Upgrade
 
 #### New Features
