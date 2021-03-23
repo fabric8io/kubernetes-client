@@ -13,6 +13,8 @@
 * Fix #2938: Make it possible to manage Tekton Triggers directly
 * Fix #2921: Kubernetes server mock will generate missing metadata fields
 
+* chore: Kubernetes server mock watch will generate intial ADDED events
+
 #### Dependency Upgrade
 
 #### New Features
