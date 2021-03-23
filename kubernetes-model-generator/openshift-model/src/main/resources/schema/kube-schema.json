@@ -7604,6 +7604,91 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "os_config_Ingress": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "config.openshift.io/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "Ingress",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/os_config_IngressSpec",
+          "existingJavaType": "io.fabric8.openshift.api.model.IngressSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/os_config_IngressStatus",
+          "existingJavaType": "io.fabric8.openshift.api.model.IngressStatus"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.Ingress",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "os_config_IngressList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "config.openshift.io/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/os_config_Ingress",
+            "existingJavaType": "io.fabric8.openshift.api.model.Ingress"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "IngressList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.IngressList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openshift.api.model.Ingress\u003e"
+      ]
+    },
+    "os_config_IngressSpec": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.IngressSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_config_IngressStatus": {
+      "type": "object",
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.IngressStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "os_config_IntermediateTLSProfile": {
       "type": "object",
       "additionalProperties": true,
@@ -12410,6 +12495,14 @@
     "InfrastructureList": {
       "$ref": "#/definitions/os_config_InfrastructureList",
       "existingJavaType": "io.fabric8.openshift.api.model.InfrastructureList"
+    },
+    "Ingress": {
+      "$ref": "#/definitions/os_config_Ingress",
+      "existingJavaType": "io.fabric8.openshift.api.model.Ingress"
+    },
+    "IngressList": {
+      "$ref": "#/definitions/os_config_IngressList",
+      "existingJavaType": "io.fabric8.openshift.api.model.IngressList"
     },
     "ListOptions": {
       "$ref": "#/definitions/kubernetes_apimachinery_ListOptions",

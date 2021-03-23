@@ -159,6 +159,8 @@ type Schema struct {
   Scheduler                                openshiftconfigapi.Scheduler
   SchedulerList                            openshiftconfigapi.SchedulerList
   TLSProfileSpec                           openshiftconfigapi.TLSProfileSpec
+  Ingress                                  openshiftconfigapi.Ingress
+  IngressList                              openshiftconfigapi.IngressList
   AppliedClusterResourceQuota              quotaapi.AppliedClusterResourceQuota
   AppliedClusterResourceQuotaList          quotaapi.AppliedClusterResourceQuotaList
   ClusterResourceQuota                     quotaapi.ClusterResourceQuota

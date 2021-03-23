@@ -663,6 +663,7 @@ func (g *schemaGenerator) isClusterScopedResource(t reflect.Type) bool {
 		"github.com/openshift/api/console/v1/ConsoleNotification",
 		"github.com/openshift/api/console/v1/ConsoleYAMLSample",
 		"github.com/openshift/api/console/v1/ConsoleExternalLogLink",
+                "github.com/openshift/api/config/v1/Ingress",
 	}
 
 	return Contains(clusterScopedResourcesList, t.PkgPath() + "/" + t.Name())

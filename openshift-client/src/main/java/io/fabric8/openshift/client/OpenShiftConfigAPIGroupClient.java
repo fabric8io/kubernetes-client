@@ -29,6 +29,8 @@ import io.fabric8.openshift.api.model.FeatureGate;
 import io.fabric8.openshift.api.model.FeatureGateList;
 import io.fabric8.openshift.api.model.Infrastructure;
 import io.fabric8.openshift.api.model.InfrastructureList;
+import io.fabric8.openshift.api.model.Ingress;
+import io.fabric8.openshift.api.model.IngressList;
 import io.fabric8.openshift.api.model.OAuth;
 import io.fabric8.openshift.api.model.OAuthList;
 import io.fabric8.openshift.api.model.OperatorHub;
@@ -46,6 +48,7 @@ import io.fabric8.openshift.client.dsl.internal.InfrastructureOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.OAuthOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.OperatorHubOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.ProxyOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.IngressOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.SchedulerOperationsImpl;
 import okhttp3.OkHttpClient;
 
@@ -81,6 +84,11 @@ public class OpenShiftConfigAPIGroupClient extends BaseClient implements OpenShi
   @Override
   public NonNamespaceOperation<Infrastructure, InfrastructureList, Resource<Infrastructure>> infrastructures() {
     return new InfrastructureOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+  }
+
+  @Override
+  public NonNamespaceOperation<Ingress, IngressList, Resource<Ingress>> ingresses() {
+    return new IngressOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
