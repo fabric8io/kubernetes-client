@@ -89,6 +89,11 @@ public class V1alpha1APIGroupClient extends BaseClient implements V1alpha1APIGro
   }
 
   @Override
+  public MixedOperation<Trigger, TriggerList, Resource<Trigger>> triggers() {
+    return new TriggerOperationsImpl(this.getHttpClient(),this.getConfiguration());
+  }
+
+  @Override
   public MixedOperation<EventListener, EventListenerList, Resource<EventListener>> eventListeners() {
     return new EventListenerOperationsImpl(this.getHttpClient(),this.getConfiguration());
   }
