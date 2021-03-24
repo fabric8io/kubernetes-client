@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ListMeta;
 import lombok.ToString;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +44,19 @@ public class CustomResourceList<T extends HasMetadata> implements KubernetesReso
 
   @JsonProperty("metadata")
   private ListMeta metadata;
+
+  public CustomResourceList() {
+    try {
+      Class<T> customResourceClass = getCustomResourceClass();
+      if (customResourceClass != null) {
+        HasMetadata instance = customResourceClass.getDeclaredConstructor().newInstance();
+        this.apiVersion = instance.getApiVersion();
+        this.kind = instance.getKind() + "List";
+      }
+    } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+            | NoSuchMethodException | SecurityException e) {
+    }
+  }
 
   public String getApiVersion() {
     return apiVersion;
@@ -76,5 +90,9 @@ public class CustomResourceList<T extends HasMetadata> implements KubernetesReso
 
   public void setMetadata(ListMeta metadata) {
     this.metadata = metadata;
+  }
+
+  protected Class<T> getCustomResourceClass() {
+      return null;
   }
 }
