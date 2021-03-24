@@ -8,6 +8,8 @@
 
 #### Improvements
 
+- Fix #2938: Make it possible to manage Tekton Triggers directly
+
 #### Dependency Upgrade
 
 #### New Features

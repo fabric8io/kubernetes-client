@@ -93,6 +93,13 @@ public interface V1alpha1APIGroupDSL extends Client {
   MixedOperation<TriggerBinding, TriggerBindingList, Resource<TriggerBinding>> triggerBindings();
 
   /**
+   * API entrypoint for Trigger(triggers.tekton.dev/v1alpha1)
+   *
+   * @return MixedOperation for Trigger class
+   */
+  MixedOperation<Trigger, TriggerList, Resource<Trigger>> triggers();
+
+  /**
    * API entrypoint for EventListener(triggers.tekton.dev/v1alpha1)
    *
    * @return MixedOperation for EventListener class
