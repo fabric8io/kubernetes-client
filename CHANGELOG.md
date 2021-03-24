@@ -8,6 +8,7 @@
 - Fix: CRD generator no longer treat enum values as properties (performance)
 
 #### Improvements
+- RawCustomResourceOperationsImpl should also work with standard resources
 
 - Fix #2938: Make it possible to manage Tekton Triggers directly
 

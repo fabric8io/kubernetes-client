@@ -950,10 +950,15 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
     StringBuilder urlBuilder = new StringBuilder(config.getMasterUrl());
 
     urlBuilder.append(config.getMasterUrl().endsWith("/") ? "" : "/");
-    urlBuilder.append("apis/")
-      .append(customResourceDefinition.getGroup())
-      .append("/")
-      .append(customResourceDefinition.getVersion())
+
+    if (Utils.isNotNullOrEmpty(customResourceDefinition.getGroup())) {
+      urlBuilder.append("apis/");
+      urlBuilder.append(customResourceDefinition.getGroup())
+        .append("/");
+    } else {
+      urlBuilder.append("api/");
+    }
+    urlBuilder.append(customResourceDefinition.getVersion())
       .append("/");
 
     if(customResourceDefinition.getScope().equals("Namespaced") && namespace != null) {
