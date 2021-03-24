@@ -7,6 +7,7 @@
 - Fix: CRD generator no longer treat enum values as properties (performance)
 
 #### Improvements
+- RawCustomResourceOperationsImpl should also work with standard resources
 
 #### Dependency Upgrade
 
