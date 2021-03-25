@@ -33,8 +33,6 @@ import io.fabric8.mockwebserver.crud.AttributeSet;
 import io.fabric8.mockwebserver.crud.CrudDispatcher;
 import io.fabric8.mockwebserver.crud.ResponseComposer;
 import io.fabric8.zjsonpatch.JsonPatch;
-import okhttp3.Response;
-import okhttp3.WebSocket;
 import okhttp3.mockwebserver.MockResponse;
 
 import java.io.IOException;
@@ -243,15 +241,12 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
     if (resourceName != null) {
       query = query.add(new Attribute("name", resourceName));
     }
-    WatchEventsListener watchEventListener = new WatchEventsListener(context, query, watchEventListeners, LOGGER) {
-      @Override
-      public void onOpen(WebSocket webSocket, Response response) {
-        super.onOpen(webSocket, response);
+    WatchEventsListener watchEventListener = new WatchEventsListener(context, query, watchEventListeners, LOGGER,
+      watch -> {
         map.entrySet().stream()
-          .filter(entry -> this.attributeMatches(entry.getKey()))
-          .forEach(entry -> this.sendWebSocketResponse(entry.getValue(), ADDED));
-      }
-    };
+          .filter(entry -> watch.attributeMatches(entry.getKey()))
+          .forEach(entry -> watch.sendWebSocketResponse(entry.getValue(), ADDED));
+      });
     watchEventListeners.add(watchEventListener);
     mockResponse.setSocketPolicy(SocketPolicy.KEEP_OPEN);
     return mockResponse.withWebSocketUpgrade(watchEventListener);
