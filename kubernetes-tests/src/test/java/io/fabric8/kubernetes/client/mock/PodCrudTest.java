@@ -100,7 +100,8 @@ class PodCrudTest {
   void testPodWatchOnName() throws InterruptedException {
     KubernetesClient client = server.getClient();
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").addToLabels("testKey", "testValue").endMetadata().build();
-    final LatchedWatcher lw = new LatchedWatcher(1, 2, 1, 1, 1);
+    //there are two adds - one when the watch is registered, another later
+    final LatchedWatcher lw = new LatchedWatcher(2, 2, 1, 1, 1);
 
     pod1 = client.pods().inNamespace("ns1").create(pod1);
     Watch watch = client.pods().inNamespace("ns1").withName(pod1.getMetadata().getName()).watch(lw);
@@ -131,7 +132,8 @@ class PodCrudTest {
     KubernetesClient client = server.getClient();
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").addToLabels("testKey", "testValue").endMetadata().build();
 
-    final LatchedWatcher lw = new LatchedWatcher();
+    //there are two adds - one when the watch is registered, another later
+    final LatchedWatcher lw = new LatchedWatcher(2, 1, 1, 1, 1);
 
     client.pods().inNamespace("ns1").create(pod1);
     Watch watch = client.pods().inNamespace("ns1").watch(lw);
@@ -152,6 +154,7 @@ class PodCrudTest {
     assertEquals(0, client.pods().inNamespace("ns1").list().getItems().size());
 
     watch.close();
+    assertTrue(lw.addLatch.await(1, TimeUnit.MINUTES));
     assertTrue(lw.closeLatch.await(1, TimeUnit.MINUTES));
   }
 
@@ -160,7 +163,8 @@ class PodCrudTest {
     KubernetesClient client = server.getClient();
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").addToLabels("test", "watch").endMetadata().build();
 
-    final LatchedWatcher lw = new LatchedWatcher(2, 1, 1, 1, 1);
+    //there are two adds - one when the watch is registered, another later
+    final LatchedWatcher lw = new LatchedWatcher(3, 1, 1, 1, 1);
 
     client.pods().inNamespace("ns1").create(pod1);
     Watch watch = client.pods().inNamespace("ns1")
@@ -275,4 +279,5 @@ class PodCrudTest {
         closeLatch.countDown();
       }
     }
+
 }
