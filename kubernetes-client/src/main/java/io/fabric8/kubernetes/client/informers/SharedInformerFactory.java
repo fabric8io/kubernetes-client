@@ -40,6 +40,9 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+
+import io.fabric8.kubernetes.model.annotation.Kind;
+import io.fabric8.kubernetes.model.annotation.Plural;
 import okhttp3.OkHttpClient;
 
 /**
@@ -267,7 +270,7 @@ public class SharedInformerFactory extends BaseOperation {
   public synchronized <T> SharedIndexInformer<T> getExistingSharedIndexInformer(Class<T> apiTypeClass) {
     SharedIndexInformer<T> foundSharedIndexInformer = null;
     for (Map.Entry<String, SharedIndexInformer> entry : this.informers.entrySet()) {
-      if (entry.getKey().contains(Pluralize.toPlural(apiTypeClass.getSimpleName().toLowerCase()))) {
+      if (isKeyOfType(entry.getKey(), apiTypeClass)) {
         foundSharedIndexInformer = (SharedIndexInformer<T>) entry.getValue();
       }
     }
@@ -347,7 +350,15 @@ public class SharedInformerFactory extends BaseOperation {
     return keyBuilder.toString();
   }
 
-  private <T extends HasMetadata, L extends KubernetesResourceList<T>> BaseOperation<T, L, ?> getConfiguredBaseOperation(String namespace, OperationContext context, Class<T> apiTypeClass, Class<L> apiListTypeClass) {
+  private static <T> boolean isKeyOfType(String key, Class<T> apiTypeClass) {
+    Kind kind = apiTypeClass.getAnnotation(Kind.class);
+    Plural plural = apiTypeClass.getAnnotation(Plural.class);
+    return plural != null && key.contains(plural.value()) ||
+      kind != null && key.contains(Pluralize.toPlural(kind.value().toLowerCase())) ||
+      key.contains(Pluralize.toPlural(apiTypeClass.getSimpleName().toLowerCase()));
+  }
+
+    private <T extends HasMetadata, L extends KubernetesResourceList<T>> BaseOperation<T, L, ?> getConfiguredBaseOperation(String namespace, OperationContext context, Class<T> apiTypeClass, Class<L> apiListTypeClass) {
     BaseOperation<T, L, ?> baseOperationWithContext;
     // Avoid adding Namespace if it's picked from Global Configuration
     if (context.isNamespaceFromGlobalConfig()) {
