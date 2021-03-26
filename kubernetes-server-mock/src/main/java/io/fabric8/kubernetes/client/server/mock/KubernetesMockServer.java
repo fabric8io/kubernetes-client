@@ -28,6 +28,7 @@ import io.fabric8.mockwebserver.ServerRequest;
 import io.fabric8.mockwebserver.ServerResponse;
 import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
 
 import java.net.InetAddress;
 import java.util.HashMap;
@@ -76,7 +77,12 @@ public class KubernetesMockServer extends DefaultMockServer {
     public void onStart() {
        expect().get().withPath("/").andReturn(200, new RootPathsBuilder().addToPaths(getRootPaths()).build()).always();
     }
-
+    public RecordedRequest getLastRequest() throws InterruptedException {
+      int requestCount = this.getRequestCount();
+      RecordedRequest lastRequest = null;
+      while(requestCount--> 0)lastRequest = this.takeRequest();
+      return lastRequest;
+    }
     public String[] getRootPaths() {
         return new String[]{"/api", "/apis/extensions"};
     }

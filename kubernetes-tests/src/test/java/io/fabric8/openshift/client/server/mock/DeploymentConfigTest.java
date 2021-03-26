@@ -17,15 +17,16 @@
 package io.fabric8.openshift.client.server.mock;
 
 import io.fabric8.kubernetes.api.builder.TypedVisitor;
-import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.api.model.APIGroupListBuilder;
 import io.fabric8.kubernetes.api.model.ContainerFluent;
+import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.utils.Utils;
-import io.fabric8.openshift.api.model.*;
+import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigBuilder;
+import io.fabric8.openshift.api.model.DeploymentConfigList;
 import io.fabric8.openshift.api.model.DeploymentConfigListBuilder;
 import io.fabric8.openshift.api.model.DeploymentConfigSpecFluent;
 import io.fabric8.openshift.client.OpenShiftClient;
@@ -38,7 +39,11 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.awaitility.Awaitility.await;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableOpenShiftMockClient
 class DeploymentConfigTest {
@@ -158,10 +163,8 @@ class DeploymentConfigTest {
 
     deleted = client.deploymentConfigs().inNamespace("ns1").withName("dc2").delete();
     assertTrue(deleted);
-    int requestCount = server.getRequestCount();
-    RecordedRequest recordedRequest = null;
-    while(requestCount-- > 0)recordedRequest = server.takeRequest();
-    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Background\"}", recordedRequest.getBody().readUtf8());
+
+    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Background\"}", server.getLastRequest().getBody().readUtf8());
   }
 
   @Test
@@ -173,10 +176,7 @@ class DeploymentConfigTest {
 
     Boolean isDeleted = client.deploymentConfigs().inNamespace("test").withName("dc1").withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
     assertTrue(isDeleted);
-    int requestCount = server.getRequestCount();
-    RecordedRequest recordedRequest = null;
-    while(requestCount-- > 0)recordedRequest = server.takeRequest();
-    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Orphan\"}", recordedRequest.getBody().readUtf8());
+    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Orphan\"}", server.getLastRequest().getBody().readUtf8());
   }
 
   @Test

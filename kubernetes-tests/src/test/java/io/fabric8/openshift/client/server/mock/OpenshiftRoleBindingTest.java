@@ -56,10 +56,7 @@ class OpenshiftRoleBindingTest {
     );
     assertEquals(expectedRoleBinding, response);
 
-    int requestCount = server.getRequestCount();
-    RecordedRequest request = null;
-    while(requestCount-- > 0)request = server.takeRequest();
-    assertEquals(expectedRoleBinding, new ObjectMapper().readerFor(RoleBinding.class).readValue(request.getBody().readByteArray()));
+    assertEquals(expectedRoleBinding, new ObjectMapper().readerFor(RoleBinding.class).readValue(server.getLastRequest().getBody().readByteArray()));
   }
 
   @Test
@@ -75,11 +72,7 @@ class OpenshiftRoleBindingTest {
       .build()
     );
     assertEquals(expectedRoleBinding, response);
-
-    int requestCount = server.getRequestCount();
-    RecordedRequest request = null;
-    while(requestCount-- > 0)request = server.takeRequest();
-    assertEquals(expectedRoleBinding, new ObjectMapper().readerFor(RoleBinding.class).readValue(request.getBody().inputStream()));
+    assertEquals(expectedRoleBinding, new ObjectMapper().readerFor(RoleBinding.class).readValue(server.getLastRequest().getBody().inputStream()));
   }
 
   @Test
@@ -97,10 +90,7 @@ class OpenshiftRoleBindingTest {
     );
     assertEquals(expectedRoleBinding, response);
 
-    int requestCount = server.getRequestCount();
-    RecordedRequest request = null;
-    while(requestCount-- > 0)request = server.takeRequest();
-    assertEquals(expectedRoleBinding, new ObjectMapper().readerFor(RoleBinding.class).readValue(request.getBody().inputStream()));
+       assertEquals(expectedRoleBinding, new ObjectMapper().readerFor(RoleBinding.class).readValue(server.getLastRequest().getBody().inputStream()));
   }
 
   @Test
@@ -120,10 +110,7 @@ class OpenshiftRoleBindingTest {
     );
     assertEquals(expectedRoleBinding, response);
 
-    int requestCount = server.getRequestCount();
-    RecordedRequest request = null;
-    while(requestCount-- > 0)request = server.takeRequest();
-    assertEquals(expectedRoleBinding, new ObjectMapper().readerFor(RoleBinding.class).readValue(request.getBody().inputStream()));
+       assertEquals(expectedRoleBinding, new ObjectMapper().readerFor(RoleBinding.class).readValue(server.getLastRequest().getBody().inputStream()));
   }
 
   @Test
@@ -142,10 +129,7 @@ class OpenshiftRoleBindingTest {
     assertEquals(expectedRoleBinding, response);
 
 
-    int requestCount = server.getRequestCount();
-    RecordedRequest request = null;
-    while(requestCount-- > 0)request = server.takeRequest();
-    assertEquals(expectedRoleBinding, new ObjectMapper().readerFor(RoleBinding.class).readValue(request.getBody().inputStream()));
+       assertEquals(expectedRoleBinding, new ObjectMapper().readerFor(RoleBinding.class).readValue(server.getLastRequest().getBody().inputStream()));
   }
 
   @Test
@@ -164,10 +148,7 @@ class OpenshiftRoleBindingTest {
     );
     assertEquals(expectedRoleBinding, response);
 
-    int requestCount = server.getRequestCount();
-    RecordedRequest request = null;
-    while(requestCount-- > 0)request = server.takeRequest();
-    assertEquals(expectedRoleBinding, new ObjectMapper().readerFor(RoleBinding.class).readValue(request.getBody().inputStream()));
+       assertEquals(expectedRoleBinding, new ObjectMapper().readerFor(RoleBinding.class).readValue(server.getLastRequest().getBody().inputStream()));
   }
 
   @Test
@@ -187,12 +168,9 @@ class OpenshiftRoleBindingTest {
     );
     assertEquals(expectedRoleBinding, response);
 
-    int requestCount = server.getRequestCount();
-    RecordedRequest request = null;
-    while(requestCount-- > 0)request = server.takeRequest();
-    assertEquals(
+       assertEquals(
       "[{\"op\":\"replace\",\"path\":\"/userNames/0\",\"value\":\"testuser1\"},{\"op\":\"add\",\"path\":\"/userNames/1\",\"value\":\"testuser2\"},{\"op\":\"add\",\"path\":\"/userNames/2\",\"value\":\"system:serviceaccount:test:svcacct\"},{\"op\":\"add\",\"path\":\"/metadata\",\"value\":{}},{\"op\":\"add\",\"path\":\"/groupNames\",\"value\":[\"testgroup\"]},{\"op\":\"add\",\"path\":\"/subjects\",\"value\":[{\"kind\":\"User\",\"name\":\"testuser1\"},{\"kind\":\"User\",\"name\":\"testuser2\"},{\"kind\":\"ServiceAccount\",\"name\":\"svcacct\",\"namespace\":\"test\"},{\"kind\":\"Group\",\"name\":\"testgroup\"}]}]",
-      request.getBody().readUtf8()
+      server.getLastRequest().getBody().readUtf8()
     );
   }
 
@@ -211,12 +189,9 @@ class OpenshiftRoleBindingTest {
     );
     assertEquals(expectedRoleBinding, response);
 
-    int requestCount = server.getRequestCount();
-    RecordedRequest request = null;
-    while(requestCount-- > 0)request = server.takeRequest();
-    assertEquals(
+       assertEquals(
       "[{\"op\":\"replace\",\"path\":\"/userNames/0\",\"value\":\"testuser1\"},{\"op\":\"add\",\"path\":\"/userNames/1\",\"value\":\"testuser2\"},{\"op\":\"add\",\"path\":\"/userNames/2\",\"value\":\"system:serviceaccount:test:svcacct\"},{\"op\":\"add\",\"path\":\"/metadata\",\"value\":{}},{\"op\":\"add\",\"path\":\"/groupNames\",\"value\":[\"testgroup\"]},{\"op\":\"add\",\"path\":\"/subjects\",\"value\":[{\"kind\":\"User\",\"name\":\"testuser1\"},{\"kind\":\"User\",\"name\":\"testuser2\"},{\"kind\":\"ServiceAccount\",\"name\":\"svcacct\",\"namespace\":\"test\"},{\"kind\":\"Group\",\"name\":\"testgroup\"}]}]",
-      request.getBody().readUtf8()
+      server.getLastRequest().getBody().readUtf8()
     );
   }
 
@@ -236,12 +211,9 @@ class OpenshiftRoleBindingTest {
     );
     assertEquals(expectedRoleBinding, response);
 
-    int requestCount = server.getRequestCount();
-    RecordedRequest request = null;
-    while(requestCount-- > 0)request = server.takeRequest();
-    assertEquals(
+       assertEquals(
       "[{\"op\":\"replace\",\"path\":\"/userNames/0\",\"value\":\"testuser1\"},{\"op\":\"add\",\"path\":\"/userNames/1\",\"value\":\"testuser2\"},{\"op\":\"add\",\"path\":\"/userNames/2\",\"value\":\"system:serviceaccount:test:svcacct\"},{\"op\":\"add\",\"path\":\"/metadata\",\"value\":{}},{\"op\":\"add\",\"path\":\"/groupNames\",\"value\":[\"testgroup\"]},{\"op\":\"add\",\"path\":\"/subjects\",\"value\":[{\"kind\":\"User\",\"name\":\"testuser1\"},{\"kind\":\"User\",\"name\":\"testuser2\"},{\"kind\":\"ServiceAccount\",\"name\":\"svcacct\",\"namespace\":\"test\"},{\"kind\":\"Group\",\"name\":\"testgroup\"}]}]",
-      request.getBody().readUtf8()
+      server.getLastRequest().getBody().readUtf8()
     );
   }
 
@@ -258,11 +230,7 @@ class OpenshiftRoleBindingTest {
       .addNewSubject().withKind("Group").withName("testgroup").endSubject()
       .build());
     assertEquals(expectedRoleBinding, response);
-
-    int requestCount = server.getRequestCount();
-    RecordedRequest request = null;
-    while(requestCount-- > 0)request = server.takeRequest();
-    assertEquals(expectedRoleBinding, new ObjectMapper().readerFor(RoleBinding.class).readValue(request.getBody().inputStream()));
+    assertEquals(expectedRoleBinding, new ObjectMapper().readerFor(RoleBinding.class).readValue(server.getLastRequest().getBody().inputStream()));
   }
 
 }

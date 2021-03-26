@@ -28,7 +28,9 @@ import org.junit.jupiter.api.Test;
 import java.net.HttpURLConnection;
 import java.nio.charset.Charset;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableKubernetesMockClient
 class TokenReviewTest {

@@ -16,15 +16,17 @@
 
 package io.fabric8.kubernetes.client.mock;
 
-import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.OwnerReferenceBuilder;
+import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
-import io.fabric8.kubernetes.api.model.apps.*;
+import io.fabric8.kubernetes.api.model.apps.ControllerRevision;
 import io.fabric8.kubernetes.api.model.apps.ControllerRevisionBuilder;
 import io.fabric8.kubernetes.api.model.apps.ControllerRevisionListBuilder;
+import io.fabric8.kubernetes.api.model.apps.StatefulSet;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetBuilder;
+import io.fabric8.kubernetes.api.model.apps.StatefulSetList;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.Deletable;
@@ -42,7 +44,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableKubernetesMockClient
 public class StatefulSetTest {
@@ -267,11 +273,9 @@ public class StatefulSetTest {
       .rolling().updateImage(imageToUpdate);
 
     // Then
+    RecordedRequest recordedRequest = server.getLastRequest();
     assertNotNull(statefulSet);
     assertEquals(imageToUpdate, statefulSet.getSpec().getTemplate().getSpec().getContainers().get(0).getImage());
-    int requestCount = server.getRequestCount();
-    RecordedRequest recordedRequest = null;
-    while(requestCount-- > 0)recordedRequest = server.takeRequest();
     assertEquals("PATCH", recordedRequest.getMethod());
     assertTrue(recordedRequest.getBody().readUtf8().contains(imageToUpdate));
   }
@@ -297,10 +301,7 @@ public class StatefulSetTest {
     // Then
     assertNotNull(deployment);
     assertEquals(containerToImageMap.get("nginx"), deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getImage());
-    int requestCount = server.getRequestCount();
-    RecordedRequest recordedRequest = null;
-    while(requestCount-- > 0)recordedRequest = server.takeRequest();    assertEquals("PATCH", recordedRequest.getMethod());
-    assertTrue(recordedRequest.getBody().readUtf8().contains(containerToImageMap.get("nginx")));
+    assertTrue(server.getLastRequest().getBody().readUtf8().contains(containerToImageMap.get("nginx")));
   }
 
   @Test
@@ -317,9 +318,7 @@ public class StatefulSetTest {
       .rolling().pause();
 
     // Then
-    int requestCount = server.getRequestCount();
-    RecordedRequest recordedRequest = null;
-    while(requestCount-- > 0)recordedRequest = server.takeRequest();    assertNotNull(deployment);
+    RecordedRequest recordedRequest = server.getLastRequest();
     assertEquals("PATCH", recordedRequest.getMethod());
     assertEquals("{\"spec\":{\"paused\":true}}", recordedRequest.getBody().readUtf8());
   }
@@ -338,9 +337,7 @@ public class StatefulSetTest {
       .rolling().resume();
 
     // Then
-    int requestCount = server.getRequestCount();
-    RecordedRequest recordedRequest = null;
-    while(requestCount-- > 0)recordedRequest = server.takeRequest();    assertNotNull(deployment);
+    RecordedRequest recordedRequest = server.getLastRequest();
     assertEquals("PATCH", recordedRequest.getMethod());
     assertEquals("{\"spec\":{\"paused\":null}}", recordedRequest.getBody().readUtf8());
   }
@@ -359,9 +356,7 @@ public class StatefulSetTest {
       .rolling().restart();
 
     // Then
-    int requestCount = server.getRequestCount();
-    RecordedRequest recordedRequest = null;
-    while(requestCount-- > 0)recordedRequest = server.takeRequest();
+    RecordedRequest recordedRequest = server.getLastRequest();
     assertNotNull(deployment);
     assertEquals("PATCH", recordedRequest.getMethod());
     assertTrue(recordedRequest.getBody().readUtf8().contains("kubectl.kubernetes.io/restartedAt"));
@@ -438,9 +433,7 @@ public class StatefulSetTest {
       .rolling().undo();
 
     // Then
-    int requestCount = server.getRequestCount();
-    RecordedRequest recordedRequest = null;
-    while(requestCount-- > 0)recordedRequest = server.takeRequest();    assertNotNull(deployment);
+    RecordedRequest recordedRequest = server.getLastRequest();
     assertEquals("PATCH", recordedRequest.getMethod());
     assertTrue(recordedRequest.getBody().readUtf8().contains("\"app\":\"rs1\""));
   }

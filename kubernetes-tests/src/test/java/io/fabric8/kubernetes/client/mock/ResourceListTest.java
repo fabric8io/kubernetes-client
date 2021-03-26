@@ -16,13 +16,20 @@
 
 package io.fabric8.kubernetes.client.mock;
 
-import io.fabric8.kubernetes.api.model.*;
+import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
+import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.IntOrString;
+import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
+import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
+import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
+import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
+import io.fabric8.kubernetes.api.model.WatchEvent;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
@@ -38,10 +45,17 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 
-import static java.net.HttpURLConnection.*;
+import static java.net.HttpURLConnection.HTTP_CONFLICT;
+import static java.net.HttpURLConnection.HTTP_CREATED;
+import static java.net.HttpURLConnection.HTTP_GONE;
+import static java.net.HttpURLConnection.HTTP_OK;
+import static java.net.HttpURLConnection.HTTP_UNAVAILABLE;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableKubernetesMockClient
 public class ResourceListTest {
@@ -130,9 +144,7 @@ public class ResourceListTest {
     client.resourceList(resourcesToUpdate).inNamespace("ns1").createOrReplace();
 
     assertEquals(6, server.getRequestCount());
-    int requestCount = server.getRequestCount();
-    RecordedRequest request = null;
-    while(requestCount-- > 0)request = server.takeRequest();
+    RecordedRequest request = server.getLastRequest();
     assertEquals("/api/v1/namespaces/ns1/configmaps/my-configmap", request.getPath());
     assertEquals("PUT", request.getMethod());
   }
@@ -147,9 +159,7 @@ public class ResourceListTest {
     client.resourceList(resourcesToUpdate).inNamespace("ns1").deletingExisting().createOrReplace();
 
     assertEquals(4, server.getRequestCount());
-    int requestCount = server.getRequestCount();
-    RecordedRequest request = null;
-    while(requestCount-- > 0)request = server.takeRequest();
+    RecordedRequest request = server.getLastRequest();
     assertEquals("/api/v1/namespaces/ns1/configmaps", request.getPath());
     assertEquals("POST", request.getMethod());
   }

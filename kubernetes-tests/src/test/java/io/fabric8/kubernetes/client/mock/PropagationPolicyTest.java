@@ -15,12 +15,15 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
-import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
+import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
+import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
 import io.fabric8.kubernetes.api.model.SecretBuilder;
+import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.api.model.ServiceListBuilder;
 import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
@@ -64,10 +67,7 @@ class PropagationPolicyTest {
 
     // Then
     assertTrue(isDeleted);
-    int requestCount = server.getRequestCount();
-    RecordedRequest request = null;
-    while(requestCount-- > 0)request = server.takeRequest();
-    assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.BACKGROUND.toString(), request);
+   assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.BACKGROUND.toString(), server.getLastRequest());
   }
 
   @Test
@@ -83,10 +83,7 @@ class PropagationPolicyTest {
 
     // Then
     assertTrue(isDeleted);
-    int requestCount = server.getRequestCount();
-    RecordedRequest request = null;
-    while(requestCount-- > 0)request = server.takeRequest();
-    assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.FOREGROUND.toString(), request);
+    assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.FOREGROUND.toString(), server.getLastRequest());
   }
 
   @Test
@@ -102,10 +99,7 @@ class PropagationPolicyTest {
 
     // Then
     assertTrue(isDeleted);
-    int requestCount = server.getRequestCount();
-    RecordedRequest request = null;
-    while(requestCount-- > 0)request = server.takeRequest();
-    assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.BACKGROUND.toString(), request);
+    assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.BACKGROUND.toString(), server.getLastRequest());
   }
 
   @Test
@@ -121,10 +115,7 @@ class PropagationPolicyTest {
 
     // Then
     assertTrue(isDeleted);
-    int requestCount = server.getRequestCount();
-    RecordedRequest request = null;
-    while(requestCount-- > 0)request = server.takeRequest();
-    assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.BACKGROUND.toString(), request);
+    assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.BACKGROUND.toString(), server.getLastRequest());
   }
 
   @Test
@@ -140,10 +131,7 @@ class PropagationPolicyTest {
 
     // Then
     assertTrue(isDeleted);
-    int requestCount = server.getRequestCount();
-    RecordedRequest request = null;
-    while(requestCount-- > 0)request = server.takeRequest();
-    assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.BACKGROUND.toString(), request);
+    assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.BACKGROUND.toString(), server.getLastRequest());
   }
 
   @Test
@@ -159,10 +147,7 @@ class PropagationPolicyTest {
 
     // Then
     assertTrue(isDeleted);
-    int requestCount = server.getRequestCount();
-    RecordedRequest request = null;
-    while(requestCount-- > 0)request = server.takeRequest();
-    assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.FOREGROUND.toString(), request);
+    assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.FOREGROUND.toString(), server.getLastRequest());
   }
 
   @Test
@@ -178,10 +163,7 @@ class PropagationPolicyTest {
 
     // Then
     assertTrue(isDeleted);
-    int requestCount = server.getRequestCount();
-    RecordedRequest request = null;
-    while(requestCount-- > 0)request = server.takeRequest();
-    assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.BACKGROUND.toString(), request);
+    assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.BACKGROUND.toString(), server.getLastRequest());
   }
 
   @Test
@@ -197,10 +179,7 @@ class PropagationPolicyTest {
 
     // Then
     assertTrue(isDeleted);
-    int requestCount = server.getRequestCount();
-    RecordedRequest request = null;
-    while(requestCount-- > 0)request = server.takeRequest();
-    assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.FOREGROUND.toString(), request);
+    assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.FOREGROUND.toString(), server.getLastRequest());
   }
 
   @Test
@@ -216,10 +195,7 @@ class PropagationPolicyTest {
 
     // Then
     assertTrue(isDeleted);
-    int requestCount = server.getRequestCount();
-    RecordedRequest request = null;
-    while(requestCount-- > 0)request = server.takeRequest();
-    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"gracePeriodSeconds\":10,\"propagationPolicy\":\"" + DeletionPropagation.FOREGROUND + "\"}", request.getBody().readUtf8());
+    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"gracePeriodSeconds\":10,\"propagationPolicy\":\"" + DeletionPropagation.FOREGROUND + "\"}", server.getLastRequest().getBody().readUtf8());
   }
 
   @Test
@@ -235,10 +211,7 @@ class PropagationPolicyTest {
 
     // Then
     assertTrue(isDeleted);
-    int requestCount = server.getRequestCount();
-    RecordedRequest request = null;
-    while(requestCount-- > 0)request = server.takeRequest();
-    assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.BACKGROUND.toString(), request);
+    assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.BACKGROUND.toString(), server.getLastRequest());
   }
 
   @Test
@@ -254,10 +227,8 @@ class PropagationPolicyTest {
 
     // Then
     assertTrue(isDeleted);
-    int requestCount = server.getRequestCount();
-    RecordedRequest request = null;
-    while(requestCount-- > 0)request = server.takeRequest();
-    assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.FOREGROUND.toString(), request);
+
+    assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.FOREGROUND.toString(), server.getLastRequest());
   }
 
   @Test
@@ -273,10 +244,8 @@ class PropagationPolicyTest {
 
     // Then
     assertTrue(isDeleted);
-    int requestCount = server.getRequestCount();
-    RecordedRequest request = null;
-    while(requestCount-- > 0)request = server.takeRequest();
-    assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.BACKGROUND.toString(), request);
+
+    assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.BACKGROUND.toString(), server.getLastRequest());
   }
 
   @Test
@@ -292,10 +261,8 @@ class PropagationPolicyTest {
 
     // Then
     assertTrue(isDeleted);
-    int requestCount = server.getRequestCount();
-    RecordedRequest request = null;
-    while(requestCount-- > 0)request = server.takeRequest();
-    assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.ORPHAN.toString(), request);
+
+    assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.ORPHAN.toString(), server.getLastRequest());
   }
 
   @Test
@@ -311,10 +278,8 @@ class PropagationPolicyTest {
 
     // Then
     assertTrue(isDeleted);
-    int requestCount = server.getRequestCount();
-    RecordedRequest request = null;
-    while(requestCount-- > 0)request = server.takeRequest();
-    assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.BACKGROUND.toString(), request);
+
+    assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.BACKGROUND.toString(), server.getLastRequest());
   }
 
   @Test
@@ -330,10 +295,8 @@ class PropagationPolicyTest {
 
     // Then
     assertTrue(isDeleted);
-    int requestCount = server.getRequestCount();
-    RecordedRequest request = null;
-    while(requestCount-- > 0)request = server.takeRequest();
-    assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.FOREGROUND.toString(), request);
+
+    assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.FOREGROUND.toString(), server.getLastRequest());
   }
 
   @Test
@@ -350,10 +313,8 @@ class PropagationPolicyTest {
 
     // Then
     assertTrue(isDeleted);
-    int requestCount = server.getRequestCount();
-    RecordedRequest request = null;
-    while(requestCount-- > 0)request = server.takeRequest();
-    assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.BACKGROUND.toString(), request);
+
+    assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.BACKGROUND.toString(), server.getLastRequest());
   }
 
   @Test
@@ -370,10 +331,8 @@ class PropagationPolicyTest {
 
     // Then
     assertTrue(isDeleted);
-    int requestCount = server.getRequestCount();
-    RecordedRequest request = null;
-    while(requestCount-- > 0)request = server.takeRequest();
-    assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.FOREGROUND.toString(), request);
+
+    assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.FOREGROUND.toString(), server.getLastRequest());
   }
 
   @Test
@@ -390,10 +349,8 @@ class PropagationPolicyTest {
 
     // Then
     assertTrue(isDeleted);
-    int requestCount = server.getRequestCount();
-    RecordedRequest request = null;
-    while(requestCount-- > 0)request = server.takeRequest();
-    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"gracePeriodSeconds\":5,\"propagationPolicy\":\"" + DeletionPropagation.FOREGROUND.toString() + "\"}", request.getBody().readUtf8());
+
+    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"gracePeriodSeconds\":5,\"propagationPolicy\":\"" + DeletionPropagation.FOREGROUND.toString() + "\"}", server.getLastRequest().getBody().readUtf8());
   }
 
   @Test
@@ -410,10 +367,8 @@ class PropagationPolicyTest {
 
     // Then
     assertTrue(isDeleted);
-    int requestCount = server.getRequestCount();
-    RecordedRequest request = null;
-    while(requestCount-- > 0)request = server.takeRequest();
-    assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.BACKGROUND.toString(), request);
+
+    assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.BACKGROUND.toString(), server.getLastRequest());
   }
 
   @Test
@@ -430,10 +385,8 @@ class PropagationPolicyTest {
 
     // Then
     assertTrue(isDeleted);
-    int requestCount = server.getRequestCount();
-    RecordedRequest request = null;
-    while(requestCount-- > 0)request = server.takeRequest();
-    assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.FOREGROUND.toString(), request);
+
+    assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.FOREGROUND.toString(), server.getLastRequest());
   }
 
   @Test
@@ -450,10 +403,8 @@ class PropagationPolicyTest {
 
     // Then
     assertTrue(isDeleted);
-    int requestCount = server.getRequestCount();
-    RecordedRequest request = null;
-    while(requestCount-- > 0)request = server.takeRequest();
-    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"gracePeriodSeconds\":10,\"propagationPolicy\":\"" + DeletionPropagation.FOREGROUND.toString() + "\"}", request.getBody().readUtf8());
+
+    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"gracePeriodSeconds\":10,\"propagationPolicy\":\"" + DeletionPropagation.FOREGROUND.toString() + "\"}", server.getLastRequest().getBody().readUtf8());
   }
 
   @Test
@@ -475,10 +426,8 @@ class PropagationPolicyTest {
 
     // Then
     assertTrue(result);
-    int requestCount = server.getRequestCount();
-    RecordedRequest request = null;
-    while(requestCount-- > 0)request = server.takeRequest();
-    assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.BACKGROUND.toString(), request);
+
+    assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.BACKGROUND.toString(), server.getLastRequest());
   }
 
   @Test
@@ -494,10 +443,8 @@ class PropagationPolicyTest {
 
     // Then
     assertTrue(isDeleted);
-    int requestCount = server.getRequestCount();
-    RecordedRequest request = null;
-    while(requestCount-- > 0)request = server.takeRequest();
-    assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.BACKGROUND.toString(), request);
+
+    assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.BACKGROUND.toString(), server.getLastRequest());
   }
 
   @Test
@@ -509,10 +456,8 @@ class PropagationPolicyTest {
     Boolean isDeleted = kubernetesClient.services().inNamespace("myNameSpace").withLabel("myLabel").withPropagationPolicy(DeletionPropagation.BACKGROUND).delete();
 
     // Then
+    RecordedRequest recordedRequest = server.getLastRequest();
     assertTrue(isDeleted);
-    int requestCount = server.getRequestCount();
-    RecordedRequest recordedRequest = null;
-    while(requestCount-- > 0)recordedRequest = server.takeRequest();
     assertEquals("DELETE", recordedRequest.getMethod());
     assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.BACKGROUND.toString(), recordedRequest);
   }
@@ -527,9 +472,7 @@ class PropagationPolicyTest {
 
     // Then
     assertTrue(isDeleted);
-    int requestCount = server.getRequestCount();
-    RecordedRequest recordedRequest = null;
-    while(requestCount-- > 0)recordedRequest = server.takeRequest();
+    RecordedRequest recordedRequest = server.getLastRequest();
     assertEquals("DELETE", recordedRequest.getMethod());
     assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.BACKGROUND.toString(), recordedRequest);
   }
@@ -544,9 +487,7 @@ class PropagationPolicyTest {
 
     // Then
     assertTrue(isDeleted);
-    int requestCount = server.getRequestCount();
-    RecordedRequest recordedRequest = null;
-    while(requestCount-- > 0)recordedRequest = server.takeRequest();
+    RecordedRequest recordedRequest = server.getLastRequest();
     assertEquals("DELETE", recordedRequest.getMethod());
     assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.BACKGROUND.toString(), recordedRequest);
 

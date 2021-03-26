@@ -15,16 +15,19 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
-import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.api.model.ContainerBuilder;
 import io.fabric8.kubernetes.api.model.ContainerPortBuilder;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.OwnerReferenceBuilder;
+import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
-import io.fabric8.kubernetes.api.model.apps.*;
+import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
+import io.fabric8.kubernetes.api.model.apps.DeploymentList;
 import io.fabric8.kubernetes.api.model.apps.DeploymentListBuilder;
+import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetBuilder;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetListBuilder;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
@@ -46,7 +49,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableKubernetesMockClient
 class DeploymentTest {
@@ -473,9 +481,7 @@ class DeploymentTest {
     // Then
     assertNotNull(deployment);
     assertEquals(imageToUpdate, deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getImage());
-    int requestCount = server.getRequestCount();
-    RecordedRequest recordedRequest = null;
-    while(requestCount-- > 0)recordedRequest = server.takeRequest();
+    RecordedRequest recordedRequest = server.getLastRequest();
     assertEquals("PATCH", recordedRequest.getMethod());
     assertTrue(recordedRequest.getBody().readUtf8().contains(imageToUpdate));
   }
@@ -501,9 +507,7 @@ class DeploymentTest {
     // Then
     assertNotNull(deployment);
     assertEquals(containerToImageMap.get("nginx"), deployment.getSpec().getTemplate().getSpec().getContainers().get(0).getImage());
-    int requestCount = server.getRequestCount();
-    RecordedRequest recordedRequest = null;
-    while(requestCount-- > 0)recordedRequest = server.takeRequest();
+    RecordedRequest recordedRequest = server.getLastRequest();
     assertEquals("PATCH", recordedRequest.getMethod());
     assertTrue(recordedRequest.getBody().readUtf8().contains(containerToImageMap.get("nginx")));
   }
@@ -522,9 +526,7 @@ class DeploymentTest {
       .rolling().pause();
 
     // Then
-    int requestCount = server.getRequestCount();
-    RecordedRequest recordedRequest = null;
-    while(requestCount-- > 0)recordedRequest = server.takeRequest();    assertNotNull(deployment);
+    RecordedRequest recordedRequest = server.getLastRequest();
     assertEquals("PATCH", recordedRequest.getMethod());
     assertEquals("{\"spec\":{\"paused\":true}}", recordedRequest.getBody().readUtf8());
   }
@@ -543,9 +545,7 @@ class DeploymentTest {
       .rolling().resume();
 
     // Then
-    int requestCount = server.getRequestCount();
-    RecordedRequest recordedRequest = null;
-    while(requestCount-- > 0)recordedRequest = server.takeRequest();
+    RecordedRequest recordedRequest = server.getLastRequest();
     assertNotNull(deployment);
     assertEquals("PATCH", recordedRequest.getMethod());
     assertEquals("{\"spec\":{\"paused\":null}}", recordedRequest.getBody().readUtf8());
@@ -565,9 +565,7 @@ class DeploymentTest {
       .rolling().restart();
 
     // Then
-    int requestCount = server.getRequestCount();
-    RecordedRequest recordedRequest = null;
-    while(requestCount-- > 0)recordedRequest = server.takeRequest();
+    RecordedRequest recordedRequest = server.getLastRequest();
     assertNotNull(deployment);
     assertEquals("PATCH", recordedRequest.getMethod());
     assertTrue(recordedRequest.getBody().readUtf8().contains("kubectl.kubernetes.io/restartedAt"));
@@ -638,9 +636,7 @@ class DeploymentTest {
       .rolling().undo();
 
     // Then
-    int requestCount = server.getRequestCount();
-    RecordedRequest recordedRequest = null;
-    while(requestCount-- > 0)recordedRequest = server.takeRequest();
+    RecordedRequest recordedRequest = server.getLastRequest();
     assertNotNull(deployment);
     assertEquals("PATCH", recordedRequest.getMethod());
     assertTrue(recordedRequest.getBody().readUtf8().contains("\"app\":\"rs1\""));

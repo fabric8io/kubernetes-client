@@ -33,7 +33,9 @@ import org.junit.jupiter.api.Test;
 import java.net.HttpURLConnection;
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableKubernetesMockClient
 class TypedCustomResourceApiTest {
@@ -99,9 +101,7 @@ class TypedCustomResourceApiTest {
     boolean isDeleted = podSetClient.inNamespace("test").withName("example-podset").cascading(true).delete();
     assertTrue(isDeleted);
 
-    int requestCount = server.getRequestCount();
-    RecordedRequest recordedRequest = null;
-    while(requestCount-- > 0)recordedRequest = server.takeRequest();
+    RecordedRequest recordedRequest = server.getLastRequest();
     assertEquals("DELETE", recordedRequest.getMethod());
     assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"orphanDependents\":false}", recordedRequest.getBody().readUtf8());
   }
@@ -115,9 +115,7 @@ class TypedCustomResourceApiTest {
     boolean isDeleted = podSetClient.inNamespace("test").withName("example-podset").withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
     assertTrue(isDeleted);
 
-    int requestCount = server.getRequestCount();
-    RecordedRequest recordedRequest = null;
-    while(requestCount-- > 0)recordedRequest = server.takeRequest();
+    RecordedRequest recordedRequest = server.getLastRequest();
     assertEquals("DELETE", recordedRequest.getMethod());
     assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Orphan\"}", recordedRequest.getBody().readUtf8());
   }
@@ -133,9 +131,7 @@ class TypedCustomResourceApiTest {
     podSetClient = client.customResources(PodSet.class);
 
     podSetClient.inNamespace("test").updateStatus(updatedPodSet);
-    int requestCount = server.getRequestCount();
-    RecordedRequest recordedRequest = null;
-    while(requestCount-- > 0)recordedRequest = server.takeRequest();
+    RecordedRequest recordedRequest = server.getLastRequest();
     assertEquals("PUT", recordedRequest.getMethod());
     assertEquals("{\"apiVersion\":\"demo.k8s.io/v1alpha1\",\"kind\":\"PodSet\",\"metadata\":{\"name\":\"example-podset\"},\"spec\":{\"replicas\":5},\"status\":{\"availableReplicas\":4}}", recordedRequest.getBody().readUtf8());
     System.out.println(recordedRequest.getBody().readUtf8());

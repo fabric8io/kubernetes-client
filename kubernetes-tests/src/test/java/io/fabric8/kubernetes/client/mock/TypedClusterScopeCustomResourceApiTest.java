@@ -35,7 +35,9 @@ import org.junit.jupiter.api.Test;
 import java.net.HttpURLConnection;
 import java.util.Collections;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 @EnableKubernetesMockClient
 class TypedClusterScopeCustomResourceApiTest {
@@ -107,10 +109,7 @@ class TypedClusterScopeCustomResourceApiTest {
 
       boolean isDeleted = starClient.inNamespace("test").withName("sun").cascading(true).delete();
       assertTrue(isDeleted);
-
-      int requestCount = server.getRequestCount();
-      RecordedRequest recordedRequest = null;
-      while(requestCount-- > 0)recordedRequest = server.takeRequest();
+      RecordedRequest recordedRequest = server.getLastRequest();
       assertEquals("DELETE", recordedRequest.getMethod());
       assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"orphanDependents\":false}", recordedRequest.getBody().readUtf8());
     }
@@ -123,9 +122,7 @@ class TypedClusterScopeCustomResourceApiTest {
 
       boolean isDeleted = starClient.inNamespace("test").withName("sun").withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
       assertTrue(isDeleted);
-      int requestCount = server.getRequestCount();
-      RecordedRequest recordedRequest = null;
-      while(requestCount-- > 0)recordedRequest = server.takeRequest();
+      RecordedRequest recordedRequest = server.getLastRequest();
       assertEquals("DELETE", recordedRequest.getMethod());
       assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Orphan\"}", recordedRequest.getBody().readUtf8());
     }
@@ -141,9 +138,7 @@ class TypedClusterScopeCustomResourceApiTest {
       starClient = client.customResources(Star.class);
 
       starClient.inNamespace("test").updateStatus(updatedStar);
-      int requestCount = server.getRequestCount();
-      RecordedRequest recordedRequest = null;
-      while(requestCount-- > 0)recordedRequest = server.takeRequest();
+      RecordedRequest recordedRequest = server.getLastRequest();
       assertEquals("PUT", recordedRequest.getMethod());
       assertEquals("{\"apiVersion\":\"example.crd.com/v1alpha1\",\"kind\":\"Star\",\"metadata\":{\"name\":\"sun\"},\"spec\":{\"type\":\"G\",\"location\":\"Galaxy\"},\"status\":{\"location\":\"M\"}}", recordedRequest.getBody().readUtf8());
       System.out.println(recordedRequest.getBody().readUtf8());

@@ -35,7 +35,9 @@ import java.net.URL;
 import java.util.List;
 
 import static junit.framework.TestCase.assertNull;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 @EnableKubernetesMockClient
 public class V1CustomResourceDefinitionTest {

@@ -39,7 +39,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableKubernetesMockClient
 class ReplicaSetTest {
@@ -284,10 +288,7 @@ class ReplicaSetTest {
     assertNotNull(replicationController);
     assertEquals(imageToUpdate, replicationController.getSpec().getTemplate().getSpec().getContainers().get(0).getImage());
     int requestCount = server.getRequestCount();
-    RecordedRequest recordedRequest = null;
-    while(requestCount-- > 0)recordedRequest = server.takeRequest();
-    assertEquals("PATCH", recordedRequest.getMethod());
-    assertTrue(recordedRequest.getBody().readUtf8().contains(imageToUpdate));
+    assertTrue(server.getLastRequest().getBody().readUtf8().contains(imageToUpdate));
   }
 
   @Test
@@ -311,10 +312,7 @@ class ReplicaSetTest {
     // Then
     assertNotNull(replicationController);
     assertEquals(containerToImageMap.get("nginx"), replicationController.getSpec().getTemplate().getSpec().getContainers().get(0).getImage());
-    int requestCount = server.getRequestCount();
-    RecordedRequest recordedRequest = null;
-    while(requestCount-- > 0)recordedRequest = server.takeRequest();    assertEquals("PATCH", recordedRequest.getMethod());
-    assertTrue(recordedRequest.getBody().readUtf8().contains(containerToImageMap.get("nginx")));
+    assertTrue(server.getLastRequest().getBody().readUtf8().contains(containerToImageMap.get("nginx")));
   }
 
   @Test

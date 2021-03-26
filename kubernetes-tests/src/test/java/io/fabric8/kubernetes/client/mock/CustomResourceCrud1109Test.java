@@ -24,7 +24,6 @@ import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.mock.crd.FooBar;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
-import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -63,10 +62,7 @@ class CustomResourceCrud1109Test {
     fooBarClient.inNamespace("my-namespace").list();
     // Then
 
-    int requestCount = server.getRequestCount();
-    RecordedRequest lastRequest = null;
-    while(requestCount-- > 0)lastRequest = server.takeRequest();
-    assertThat(lastRequest)
+    assertThat(server.getLastRequest())
       .hasFieldOrPropertyWithValue("path", "/apis/baz.example.com/v1alpha1/namespaces/my-namespace/foo-bars");
   }
 

@@ -16,13 +16,20 @@
 
 package io.fabric8.kubernetes.client.mock;
 
-import io.fabric8.kubernetes.api.model.*;
+import io.fabric8.kubernetes.api.model.DeleteOptions;
+import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
+import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
+import io.fabric8.kubernetes.api.model.WatchEvent;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionList;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionListBuilder;
-import io.fabric8.kubernetes.client.*;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
@@ -42,7 +49,9 @@ import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @EnableKubernetesMockClient
@@ -225,9 +234,7 @@ class CustomResourceTest {
     // Then
     assertTrue(result);
 
-    int requestCount = server.getRequestCount();
-    RecordedRequest request = null;
-    while(requestCount-- > 0)request = server.takeRequest();
+    RecordedRequest request = server.getLastRequest();
     assertEquals("DELETE", request.getMethod());
     assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"orphanDependents\":false}",
       request.getBody().readUtf8());
@@ -244,9 +251,7 @@ class CustomResourceTest {
 
     // Then
     assertTrue(result);
-    int requestCount = server.getRequestCount();
-    RecordedRequest request = null;
-    while(requestCount-- > 0)request = server.takeRequest();
+    RecordedRequest request = server.getLastRequest();
     assertEquals("DELETE", request.getMethod());
     assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Orphan\"}",
       request.getBody().readUtf8());
@@ -267,9 +272,7 @@ class CustomResourceTest {
 
     // Then
     assertTrue(result);
-    int requestCount = server.getRequestCount();
-    RecordedRequest request = null;
-    while(requestCount-- > 0)request = server.takeRequest();
+    RecordedRequest request = server.getLastRequest();
     assertEquals("DELETE", request.getMethod());
     assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"gracePeriodSeconds\":0,\"propagationPolicy\":\"Orphan\"}",
       request.getBody().readUtf8());;
