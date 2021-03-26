@@ -3,8 +3,13 @@
 ### 5.3-SNAPSHOT
 
 #### Bugs
+* Fix #2620: Add support for `config.openshift.io/v1` Ingress
+
+- Fix: CRD generator no longer treat enum values as properties (performance)
 
 #### Improvements
+
+- Fix #2938: Make it possible to manage Tekton Triggers directly
 
 #### Dependency Upgrade
 

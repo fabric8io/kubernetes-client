@@ -14,24 +14,9 @@
 # limitations under the License.
 #
 
-name: License
-
-on:
-  push:
-    branches:
-      - master
-  pull_request:
-
-jobs:
-  license-check:
-    name: License Check
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Setup Java 8
-        uses: actions/setup-java@v1
-        with:
-          java-version: '8'
-      - name: Check License Headers
-        run: mvn -B -C -V -ntp -N license:check
+apiVersion: config.openshift.io/v1
+kind: Ingress
+metadata:
+  name: cluster
+spec:
+  domain: apps.openshiftdemos.com

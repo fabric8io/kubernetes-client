@@ -28,6 +28,8 @@ import io.fabric8.openshift.api.model.FeatureGate;
 import io.fabric8.openshift.api.model.FeatureGateList;
 import io.fabric8.openshift.api.model.Infrastructure;
 import io.fabric8.openshift.api.model.InfrastructureList;
+import io.fabric8.openshift.api.model.Ingress;
+import io.fabric8.openshift.api.model.IngressList;
 import io.fabric8.openshift.api.model.OAuth;
 import io.fabric8.openshift.api.model.OAuthList;
 import io.fabric8.openshift.api.model.OperatorHub;
@@ -68,6 +70,13 @@ public interface OpenShiftConfigAPIGroupDSL extends Client {
    * @return NonNamespaceOperation object for Infrastructure type
    */
   NonNamespaceOperation<Infrastructure, InfrastructureList, Resource<Infrastructure>> infrastructures();
+
+  /**
+   * API entrypoint for Ingress (config.openshift.io/v1)
+   *
+   * @return {@link NonNamespaceOperation} for Ingress type
+   */
+  NonNamespaceOperation<Ingress, IngressList, Resource<Ingress>> ingresses();
   /**
    * API entrypoint for OAuth related operations(config.openshift.io/v1)
    *

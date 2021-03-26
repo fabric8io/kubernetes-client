@@ -42,7 +42,7 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}-${{ github.sha }}
           restore-keys: ${{ runner.os }}-maven-
       - name: Install Kubernetes Client
-        run: mvn -f pom.xml -B -DskipTests clean install
+        run: mvn -B -C -V -ntp -f pom.xml -DskipTests clean install
 
   minikube:
     name: K8S
@@ -73,9 +73,7 @@ jobs:
         with:
           java-version: '8'
       - name: Install and Run Integration Tests
-        run: |
-          cd $IT_DIR
-          mvn test -Dtest="io.fabric8.kubernetes.**"
+        run: mvn -B -C -V -ntp -f $IT_DIR/pom.xml test -Dtest="io.fabric8.kubernetes.**"
   openshift:
     name: OpenShift
     needs: buildWithoutTests
@@ -103,6 +101,4 @@ jobs:
         with:
           java-version: '8'
       - name: Install and Run Integration Tests
-        run: |
-          cd $IT_DIR
-          mvn test -Dtest="io.fabric8.openshift.**"
+        run: mvn -B -C -V -ntp -f $IT_DIR/pom.xml test -Dtest="io.fabric8.openshift.**"

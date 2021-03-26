@@ -37,4 +37,4 @@ jobs:
         with:
           java-version: ${{ matrix.java }}
       - name: Build Project
-        run: mvn clean install
+        run: mvn -B -C -V -ntp clean install

@@ -29,6 +29,7 @@ func main() {
 	// the CRD List types for which the model should be generated
 	// no other types need to be defined as they are auto discovered
 	crdLists := map[reflect.Type]schemagen.CrdScope{
+		reflect.TypeOf(triggers.TriggerList{}):               schemagen.Namespaced,
 		reflect.TypeOf(triggers.TriggerTemplateList{}):       schemagen.Namespaced,
 		reflect.TypeOf(triggers.TriggerBindingList{}):        schemagen.Namespaced,
 		reflect.TypeOf(triggers.EventListenerList{}):         schemagen.Namespaced,

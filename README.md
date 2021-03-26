@@ -4,27 +4,25 @@ This client provides access to the full [Kubernetes](http://kubernetes.io/) &
 
 [![Build](https://github.com/fabric8io/kubernetes-client/workflows/Build/badge.svg)](https://github.com/fabric8io/kubernetes-client/actions?query=workflow%3ABuild)
 [![Sonar Scanner](https://github.com/fabric8io/kubernetes-client/workflows/Sonar%20Scanner/badge.svg)](https://github.com/fabric8io/kubernetes-client/actions?query=workflow%3A%22Sonar+Scanner%22)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=fabric8io_kubernetes-client&metric=bugs)](https://sonarcloud.io/dashboard?id=fabric8io_kubernetes-client)
 [![E2E Tests](https://github.com/fabric8io/kubernetes-client/workflows/E2E%20Tests/badge.svg)](https://github.com/fabric8io/kubernetes-client/actions?query=workflow%3A%22E2E+Tests%22)
 [![Release](https://img.shields.io/github/v/release/fabric8io/kubernetes-client)](https://search.maven.org/search?q=g:io.fabric8%20a:kubernetes-client)
 [![Twitter](https://img.shields.io/twitter/follow/fabric8io?style=social)](https://twitter.com/fabric8io)
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=fabric8io_kubernetes-client&metric=bugs)](https://sonarcloud.io/dashboard?id=fabric8io_kubernetes-client)
 
+| Module | Maven Central | Javadoc |
+|-|:-:|:-:|
+| kubernetes-client | [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.fabric8/kubernetes-client/badge.svg?color=blue)](https://maven-badges.herokuapp.com/maven-central/io.fabric8/kubernetes-client) | [![Javadocs](https://www.javadoc.io/badge/io.fabric8/kubernetes-client.svg?color=blue)](https://www.javadoc.io/doc/io.fabric8/kubernetes-client) |
+| openshift-client | [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.fabric8/openshift-client/badge.svg?color=blue)](https://maven-badges.herokuapp.com/maven-central/io.fabric8/openshift-client) | [![Javadocs](https://www.javadoc.io/badge/io.fabric8/openshift-client.svg?color=blue)](https://www.javadoc.io/doc/io.fabric8/openshift-client) |
 
-* kubernetes-client: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/kubernetes-client.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Akubernetes-client)
-[![Javadocs](http://www.javadoc.io/badge/io.fabric8/kubernetes-client.svg?color=blue)](http://www.javadoc.io/doc/io.fabric8/kubernetes-client)
-* kubernetes-model-core: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/kubernetes-model-core.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Akubernetes-model-core)
-[![Javadocs](http://www.javadoc.io/badge/io.fabric8/kubernetes-model-core.svg?color=blue)](http://www.javadoc.io/doc/io.fabric8/kubernetes-model-core)
-* openshift-client: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/openshift-client.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Aopenshift-client)
-[![Javadocs](http://www.javadoc.io/badge/io.fabric8/openshift-client.svg?color=blue)](http://www.javadoc.io/doc/io.fabric8/openshift-client)
-* knative-client: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/knative-client.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Aknative-client)
-[![Javadocs](http://www.javadoc.io/badge/io.fabric8/knative-client.svg?color=blue)](http://www.javadoc.io/doc/io.fabric8/knative-client)
-* tekton-client: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/tekton-client.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Atekton-client)
-[![Javadocs](http://www.javadoc.io/badge/io.fabric8/tekton-client.svg?color=blue)](http://www.javadoc.io/doc/io.fabric8/tekton-client)
-* servicecatalog-client: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/servicecatalog-client.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Aservicecatalog-client)
-[![Javadocs](http://www.javadoc.io/badge/io.fabric8/servicecatalog-client.svg?color=blue)](http://www.javadoc.io/doc/io.fabric8/servicecatalog-client)
-* chaosmesh-client: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/chaosmesh-client.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Achaosmesh-client)
-[![Javadocs](http://www.javadoc.io/badge/io.fabric8/chaosmesh-client.svg?color=blue)](http://www.javadoc.io/doc/io.fabric8/chaosmesh-client)
+| Extensions | Maven Central | Javadoc |
+|-|:-:|:-:|
+| knative-client | [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.fabric8/knative-client/badge.svg?color=blue)](https://maven-badges.herokuapp.com/maven-central/io.fabric8/knative-client) | [![Javadocs](https://www.javadoc.io/badge/io.fabric8/knative-client.svg?color=blue)](https://www.javadoc.io/doc/io.fabric8/knative-client) |
+| tekton-client | [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.fabric8/tekton-client/badge.svg?color=blue)](https://maven-badges.herokuapp.com/maven-central/io.fabric8/tekton-client) | [![Javadocs](https://www.javadoc.io/badge/io.fabric8/tekton-client.svg?color=blue)](https://www.javadoc.io/doc/io.fabric8/tekton-client) |
+| servicecatalog-client | [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.fabric8/servicecatalog-client/badge.svg?color=blue)](https://maven-badges.herokuapp.com/maven-central/io.fabric8/servicecatalog-client) | [![Javadocs](https://www.javadoc.io/badge/io.fabric8/servicecatalog-client.svg?color=blue)](https://www.javadoc.io/doc/io.fabric8/servicecatalog-client) |
+| chaosmesh-client | [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.fabric8/chaosmesh-client/badge.svg?color=blue)](https://maven-badges.herokuapp.com/maven-central/io.fabric8/chaosmesh-client) | [![Javadocs](https://www.javadoc.io/badge/io.fabric8/chaosmesh-client.svg?color=blue)](https://www.javadoc.io/doc/io.fabric8/chaosmesh-client) |
+| volumesnapshot-client | [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.fabric8/volumesnapshot-client/badge.svg?color=blue)](https://maven-badges.herokuapp.com/maven-central/io.fabric8/volumesnapshot-client) | [![Javadocs](https://www.javadoc.io/badge/io.fabric8/volumesnapshot-client.svg?color=blue)](https://www.javadoc.io/doc/io.fabric8/volumesnapshot-client) |
 
+## Contents
 - [Usage](#usage)
     - [Creating a client](#creating-a-client)
     - [Configuring the client](#configuring-the-client)
@@ -520,14 +518,14 @@ All the resource objects used here will be according to OpenShift 3.9.0  and Kub
 * PodSecurityPolicies moved from `client base DSL` and `extensions` to only `extensions`
 * ThirdPartyResource has been removed.
 
-## Who uses Kubernetes & OpenShift Java client? 
-  
+## Who uses Kubernetes & OpenShift Java client?
+
   Extensions:
   - [Istio API](https://github.com/snowdrop/istio-java-api)
   - [Service Catalog API](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/service-catalog)
   - [Knative](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/knative)
   - [Tekton](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/tekton)
-  
+
   Frameworks/Libraries/Tools:
   - [Arquillian Cube](http://arquillian.org/arquillian-cube/)
   - [Apache Camel](https://github.com/apache/camel/blob/master/README.md)
@@ -535,24 +533,24 @@ All the resource objects used here will be according to OpenShift 3.9.0  and Kub
   - [Jaeger Kubernetes](https://github.com/jaegertracing/jaeger-kubernetes)
   - [Loom](https://github.com/datawire/loom)
   - [Microsoft Azure Libraries for Java](https://github.com/Azure/azure-libraries-for-java)
-  - [Spinnaker Halyard](https://github.com/spinnaker/halyard) 
-  - [Spring Cloud Connectors for Kubernetes](https://github.com/spring-cloud/spring-cloud-kubernetes-connector)  
+  - [Spinnaker Halyard](https://github.com/spinnaker/halyard)
+  - [Spring Cloud Connectors for Kubernetes](https://github.com/spring-cloud/spring-cloud-kubernetes-connector)
   - [Spring Cloud Kubernetes](https://github.com/fabric8io/spring-cloud-kubernetes)
 
   CI Plugins:
-  - [Deployment Pipeline Plugin (Jenkins)](https://github.com/pearsontechnology/deployment-pipeline-jenkins-plugin) 
+  - [Deployment Pipeline Plugin (Jenkins)](https://github.com/pearsontechnology/deployment-pipeline-jenkins-plugin)
   - [Kubernetes Eleastic Agent (GoCD)](https://github.com/gocd/kubernetes-elastic-agents)
   - [Kubernetes Plugin (Jenkins)](https://github.com/jenkinsci/kubernetes-plugin)
   - [Kubernetes Pipeline Plugin (Jenkins)](https://github.com/jenkinsci/kubernetes-pipeline-plugin)
   - [OpenShift Sync Plugin (Jenkins)](https://github.com/openshift/jenkins-sync-plugin)
   - [Kubernetes Plugin (Teamcity from Jetbrains)](https://github.com/JetBrains/teamcity-kubernetes-plugin)
   - [Kubernetes Agents for Bamboo (WindTunnel Technologies)](https://marketplace.atlassian.com/apps/1222674/kubernetes-agents-for-bamboo)
-  
+
   Build Tools:
   - [Fabric8 Maven Plugin](https://github.com/fabric8io/fabric8-maven-plugin)
   - [Eclipse JKube](https://github.com/eclipse/jkube)
   - [Gradle Kubernetes Plugin](https://github.com/bmuschko/gradle-kubernetes-plugin)
-  
+
   Platforms:
   - [Apache Openwhisk](https://github.com/apache/incubator-openwhisk)
   - [Eclipse che](https://www.eclipse.org/che/)
@@ -561,11 +559,12 @@ All the resource objects used here will be according to OpenShift 3.9.0  and Kub
   - [Spotify Styx](https://github.com/spotify/styx)
   - [Strimzi](https://github.com/strimzi/)
   - [Syndesis](https://syndesis.io/)
-  
+  - [StackGres](https://stackgres.io/)
+
   Proprietary Platforms:
   - [vCommander](https://www.embotics.com/hybrid-cloud-management-platform)
-  
-As our community grows, we would like to track keep track of our users. Please send a PR with your organization/community name.   
+
+As our community grows, we would like to track keep track of our users. Please send a PR with your organization/community name.
 
 ## Tests we run for every new Pull Request
 There are the links of the Github Actions and Jenkins for the tests which run for every new Pull Request. You can view all the recent builds also.
@@ -595,20 +594,20 @@ operations. However, some might require slightly more code to achieve same resul
 | `kubectl exec my-pod -- ls /`                                                      | [PodExecEquivalent.java](./kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/kubectl/equivalents/PodExecEquivalent.java) |
 | `kubectl delete pod my-pod`                                                        | [PodDelete.java](./kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/kubectl/equivalents/PodDelete.java) |
 | `kubectl delete -f test-pod.yaml`                                                  | [PodDeleteViaYaml.java](./kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/kubectl/equivalents/PodDeleteViaYaml.java) |
-| `kubectl cp /foo_dir my-pod:/bar_dir`                                              | [UploadDirectoryToPod.java](./kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/kubectl/equivalents/UploadDirectoryToPod.java) |   
-| `kubectl cp my-pod:/tmp/foo /tmp/bar`                                              | [DownloadFileFromPod.java](./kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/kubectl/equivalents/DownloadFileFromPod.java) | 
-| `kubectl cp my-pod:/tmp/foo -c c1 /tmp/bar`                                        | [DownloadFileFromMultiContainerPod.java](./kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/kubectl/equivalents/DownloadFileFromMultiContainerPod.java) | 
-| `kubectl cp /foo_dir my-pod:/tmp/bar_dir`                                          | [UploadFileToPod.java](./kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/kubectl/equivalents/UploadFileToPod.java) | 
-| `kubectl logs pod/my-pod`                                                          | [PodLogsEquivalent.java](./kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/kubectl/equivalents/PodLogsEquivalent.java) | 
-| `kubectl logs pod/my-pod -f`                                                       | [PodLogsFollowEquivalent.java](./kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/kubectl/equivalents/PodLogsFollowEquivalent.java) | 
-| `kubectl logs pod/my-pod -c c1`                                                    | [PodLogsMultiContainerEquivalent.java](./kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/kubectl/equivalents/PodLogsMultiContainerEquivalent.java) | 
-| `kubectl port-forward my-pod 8080:80`                                              | [PortForwardEquivalent.java](./kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/kubectl/equivalents/PortForwardEquivalent.java) | 
+| `kubectl cp /foo_dir my-pod:/bar_dir`                                              | [UploadDirectoryToPod.java](./kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/kubectl/equivalents/UploadDirectoryToPod.java) |
+| `kubectl cp my-pod:/tmp/foo /tmp/bar`                                              | [DownloadFileFromPod.java](./kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/kubectl/equivalents/DownloadFileFromPod.java) |
+| `kubectl cp my-pod:/tmp/foo -c c1 /tmp/bar`                                        | [DownloadFileFromMultiContainerPod.java](./kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/kubectl/equivalents/DownloadFileFromMultiContainerPod.java) |
+| `kubectl cp /foo_dir my-pod:/tmp/bar_dir`                                          | [UploadFileToPod.java](./kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/kubectl/equivalents/UploadFileToPod.java) |
+| `kubectl logs pod/my-pod`                                                          | [PodLogsEquivalent.java](./kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/kubectl/equivalents/PodLogsEquivalent.java) |
+| `kubectl logs pod/my-pod -f`                                                       | [PodLogsFollowEquivalent.java](./kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/kubectl/equivalents/PodLogsFollowEquivalent.java) |
+| `kubectl logs pod/my-pod -c c1`                                                    | [PodLogsMultiContainerEquivalent.java](./kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/kubectl/equivalents/PodLogsMultiContainerEquivalent.java) |
+| `kubectl port-forward my-pod 8080:80`                                              | [PortForwardEquivalent.java](./kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/kubectl/equivalents/PortForwardEquivalent.java) |
 | `kubectl get pods --selector=version=v1 -o jsonpath='{.items[*].metadata.name}'`   | [PodListFilterByLabel.java](./kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/kubectl/equivalents/PodListFilterByLabel.java)
 | `kubectl get pods --field-selector=status.phase=Running`                           | [PodListFilterFieldSelector.java](./kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/kubectl/equivalents/PodListFilterFieldSelector.java)
 | `kubectl get pods --show-labels`                                                   | [PodShowLabels.java](./kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/kubectl/equivalents/PodShowLabels.java)
 | `kubectl label pods my-pod new-label=awesome`                                      | [PodAddLabel.java](./kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/kubectl/equivalents/PodAddLabel.java)
 | `kubectl annotate pods my-pod icon-url=http://goo.gl/XXBTWq`                       | [PodAddAnnotation.java](./kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/kubectl/equivalents/PodAddAnnotation.java)
-| `kubectl get configmap cm1 -o jsonpath='{.data.database}'`                         | [ConfigMapJsonPathEquivalent.java](./kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/kubectl/equivalents/ConfigMapJsonPathEquivalent.java) | 
+| `kubectl get configmap cm1 -o jsonpath='{.data.database}'`                         | [ConfigMapJsonPathEquivalent.java](./kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/kubectl/equivalents/ConfigMapJsonPathEquivalent.java) |
 | `kubectl create -f test-svc.yaml`                                                  | [LoadAndCreateService.java](./kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/kubectl/equivalents/LoadAndCreateService.java) |
 | `kubectl create -f test-deploy.yaml`                                               | [LoadAndCreateDeployment.java](./kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/kubectl/equivalents/LoadAndCreateDeployment.java) |
 | `kubectl set image deploy/d1 nginx=nginx:v2`                                       | [RolloutSetImageEquivalent.java](./kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/kubectl/equivalents/RolloutSetImageEquivalent.java)
@@ -624,4 +623,4 @@ operations. However, some might require slightly more code to achieve same resul
 | `kubectl apply -f test-resource-list.yml`                                          | [CreateOrReplaceResourceList.java](./kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/kubectl/equivalents/CreateOrReplaceResourceList.java) |
 | `kubectl get events`                                                               | [EventsGetEquivalent.java](./kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/kubectl/equivalents/EventsGetEquivalent.java) |
 | `kubectl top nodes`                                                                | [TopEquivalent.java](./kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/kubectl/equivalents/TopEquivalent.java) |
-| `kubectl auth can-i create deployment.apps`                                        | [CanIEquivalent.java](./kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/kubectl/equivalents/CanIEquivalent.java) |                           
+| `kubectl auth can-i create deployment.apps`                                        | [CanIEquivalent.java](./kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/kubectl/equivalents/CanIEquivalent.java) |

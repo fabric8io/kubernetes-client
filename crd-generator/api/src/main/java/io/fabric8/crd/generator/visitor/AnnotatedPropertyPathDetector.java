@@ -73,11 +73,13 @@ public class AnnotatedPropertyPathDetector extends TypedVisitor<TypeDefBuilder> 
         if (!parents.contains(p)) {
           ClassRef classRef = (ClassRef) p.getTypeRef();
           TypeDef propertyType = classRef.getDefinition();
-          List<Property> newParents = new ArrayList<>(parents);
-          newParents.add(p);
-          new TypeDefBuilder(propertyType)
-            .accept(new AnnotatedPropertyPathDetector(prefix, annotationName, newParents, reference))
-            .build();
+          if (!propertyType.isEnum()) {
+            List<Property> newParents = new ArrayList<>(parents);
+            newParents.add(p);
+            new TypeDefBuilder(propertyType)
+              .accept(new AnnotatedPropertyPathDetector(prefix, annotationName, newParents, reference))
+              .build();
+          }
         }
       });
   }
