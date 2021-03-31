@@ -5,14 +5,13 @@
 #### Bugs
 * Fix #2620: Add support for `config.openshift.io/v1` Ingress
 * Fix #2784: Not able to deserialize ClusterServiceVersion
-* Fix: CRD generator no longer treat enum values as properties (performance)
+* Fix #2935: CRD generator no longer treat enum values as properties (performance)
+* Fix #2812: SharedIndexInformer EventHandler sees double updates at resync interval
 
 #### Improvements
-- RawCustomResourceOperationsImpl should also work with standard resources
-
-- Fix #2938: Make it possible to manage Tekton Triggers directly
-
-* Fix #2921: chore: Kubernetes server mock will generate missing metadata fields
+* Fix #2950: RawCustomResourceOperationsImpl should also work with standard resources
+* Fix #2938: Make it possible to manage Tekton Triggers directly
+* Fix #2921: Kubernetes server mock will generate missing metadata fields
 
 #### Dependency Upgrade
 
