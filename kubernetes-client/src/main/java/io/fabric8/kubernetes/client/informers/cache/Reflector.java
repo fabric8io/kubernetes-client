@@ -27,7 +27,6 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.Executors;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -82,7 +81,6 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
     try {
       log.info("Started ReflectorRunnable watch for {}", apiTypeClass);
       reListAndSync();
-      scheduleResyncExecution();
       startWatcher();
     } catch (Exception exception) {
       store.isPopulated(false);
@@ -92,6 +90,10 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
 
   public void stop() {
     isActive.set(false);
+    if (watch.get() != null) {
+      watch.get().close();
+      watch.set(null);
+    }
   }
 
   public long getResyncPeriodMillis() {
@@ -137,11 +139,5 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
 
   public String getLastSyncResourceVersion() {
     return lastSyncResourceVersion.get();
-  }
-
-  void scheduleResyncExecution() {
-    if (resyncPeriodMillis > 0) {
-      resyncExecutor.scheduleWithFixedDelay(this::reListAndSync, 0L, resyncPeriodMillis, TimeUnit.MILLISECONDS);
-    }
   }
 }
