@@ -32,14 +32,7 @@ import static org.junit.Assert.assertNotNull;
 
 @EnableKubernetesMockClient(crud = true)
 class CustomResourceCrudWithCRDContextTest {
-//  @Rule
-//  public KubernetesServer kubernetesServer = new KubernetesServer(true, true, Collections.singletonList(new CustomResourceDefinitionContext.Builder()
-//    .withScope("Namespaced")
-//    .withPlural("entandobundlereleases")
-//    .withVersion("v1alpha1")
-//    .withGroup("demo.fabric8.io")
-//    .withKind("EntandoBundleRelease")
-//    .build()));
+
 
   KubernetesClient client;
 

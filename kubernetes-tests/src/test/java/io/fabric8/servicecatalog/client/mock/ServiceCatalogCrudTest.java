@@ -15,18 +15,21 @@
  */
 package io.fabric8.servicecatalog.client.mock;
 
+import io.fabric8.kubernetes.client.server.mock.KubernetesCrudDispatcher;
+import io.fabric8.mockwebserver.Context;
+import io.fabric8.mockwebserver.ServerRequest;
+import io.fabric8.mockwebserver.ServerResponse;
 import io.fabric8.servicecatalog.api.model.ClusterServiceBroker;
 import io.fabric8.servicecatalog.api.model.ClusterServiceBrokerBuilder;
 import io.fabric8.servicecatalog.api.model.ClusterServiceBrokerList;
 import io.fabric8.servicecatalog.client.ServiceCatalogClient;
-import io.fabric8.servicecatalog.server.mock.ServiceCatalogServer;
+import io.fabric8.servicecatalog.server.mock.ServiceCatalogMockServer;
 
-import org.junit.Rule;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
+import okhttp3.mockwebserver.MockWebServer;
+import org.junit.jupiter.api.*;
+
+import java.util.HashMap;
+import java.util.Queue;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -36,13 +39,23 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 /**
  * Class testing crud operations on ServiceCatalog
  */
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@EnableRuleMigrationSupport
+
 class ServiceCatalogCrudTest {
 
-  @Rule
-  public ServiceCatalogServer server = new ServiceCatalogServer(true, true);
 
+  public ServiceCatalogMockServer server = null;
+  public ServiceCatalogClient client = null;
+  @BeforeEach
+  void setUp(){
+    server =  new ServiceCatalogMockServer(
+      new Context(),
+      new MockWebServer(),
+      new HashMap<ServerRequest, Queue<ServerResponse>>(),
+      new KubernetesCrudDispatcher(),
+      true
+    );
+    client = server.createServiceCatalog();
+  }
   /**
    * Creates two brokers and gets list of all brokers.
    * List mustn't be null and have size of 2.
@@ -50,7 +63,7 @@ class ServiceCatalogCrudTest {
   @Test
   @Order(1)
   void testList() {
-    ServiceCatalogClient client = server.getServiceCatalogClient();
+//    ServiceCatalogClient client = server.getServiceCatalogClient();
 
     ClusterServiceBroker broker1 = new ClusterServiceBrokerBuilder()
       .withNewMetadata()
@@ -86,7 +99,7 @@ class ServiceCatalogCrudTest {
   @Test
   @Order(2)
   void testGet() {
-    ServiceCatalogClient client = server.getServiceCatalogClient();
+//    ServiceCatalogClient client = server.getServiceCatalogClient();
 
     ClusterServiceBroker brokerMock = new ClusterServiceBrokerBuilder()
       .withNewMetadata()
@@ -111,7 +124,7 @@ class ServiceCatalogCrudTest {
   @Test
   @Order(3)
   void testLoadFromFile() {
-    ServiceCatalogClient client = server.getServiceCatalogClient();
+//    ServiceCatalogClient client = server.getServiceCatalogClient();
 
 
     ClusterServiceBroker brokerFromFile = client.clusterServiceBrokers().load(getClass().getResourceAsStream("/test-broker.yml")).get();
@@ -131,7 +144,7 @@ class ServiceCatalogCrudTest {
   @Test
   @Order(4)
   void testDelete() {
-    ServiceCatalogClient client = server.getServiceCatalogClient();
+//    ServiceCatalogClient client = server.getServiceCatalogClient();
 
     ClusterServiceBroker broker = new ClusterServiceBrokerBuilder()
       .withNewMetadata()

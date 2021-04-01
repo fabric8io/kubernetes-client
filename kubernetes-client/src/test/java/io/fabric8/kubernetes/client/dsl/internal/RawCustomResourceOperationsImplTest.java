@@ -636,6 +636,27 @@ public class RawCustomResourceOperationsImplTest {
     assertRequestCaptured(captor, "/apis/test.fabric8.io/v1alpha1/hellos/myresource", "DELETE");
   }
 
+  @Test
+  void testGetConfigmap() {
+    // Given
+    CustomResourceDefinitionContext configMapContext = new CustomResourceDefinitionContext.Builder()
+      .withGroup(null)
+      .withVersion("v1")
+      .withPlural("configmaps")
+      .withScope("Namespaced")
+      .withKind("ConfigMap")
+      .build();
+    RawCustomResourceOperationsImpl rawOp = new RawCustomResourceOperationsImpl(mockClient, config, configMapContext);
+    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
+
+    // When
+    Map<String, Object> unstructuredConfigMap = rawOp.inNamespace("default").withName("game-config").get();
+
+    // Then
+    assertThat(unstructuredConfigMap).isNotNull();
+    assertRequestCaptured(captor, "/api/v1/namespaces/default/configmaps/game-config", "GET");
+  }
+
   private void assertRequestCaptured(ArgumentCaptor<Request> captor, String url, String method) {
     verify(mockClient).newCall(captor.capture());
     assertEquals(url, captor.getValue().url().encodedPath());

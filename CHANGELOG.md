@@ -8,12 +8,14 @@
 - Fix: CRD generator no longer treat enum values as properties (performance)
 
 #### Improvements
+- RawCustomResourceOperationsImpl should also work with standard resources
 
 - Fix #2938: Make it possible to manage Tekton Triggers directly
 
 #### Dependency Upgrade
 
 #### New Features
+* Fix #2837: Add Support for `events.k8s.io` APIGroup DSL
 
 ### 5.2.1 (2021-03-16)
 
