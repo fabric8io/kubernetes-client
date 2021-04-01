@@ -63,7 +63,6 @@ class ServiceCatalogCrudTest {
   @Test
   @Order(1)
   void testList() {
-//    ServiceCatalogClient client = server.getServiceCatalogClient();
 
     ClusterServiceBroker broker1 = new ClusterServiceBrokerBuilder()
       .withNewMetadata()
@@ -99,7 +98,6 @@ class ServiceCatalogCrudTest {
   @Test
   @Order(2)
   void testGet() {
-//    ServiceCatalogClient client = server.getServiceCatalogClient();
 
     ClusterServiceBroker brokerMock = new ClusterServiceBrokerBuilder()
       .withNewMetadata()
@@ -124,7 +122,6 @@ class ServiceCatalogCrudTest {
   @Test
   @Order(3)
   void testLoadFromFile() {
-//    ServiceCatalogClient client = server.getServiceCatalogClient();
 
 
     ClusterServiceBroker brokerFromFile = client.clusterServiceBrokers().load(getClass().getResourceAsStream("/test-broker.yml")).get();
@@ -144,7 +141,6 @@ class ServiceCatalogCrudTest {
   @Test
   @Order(4)
   void testDelete() {
-//    ServiceCatalogClient client = server.getServiceCatalogClient();
 
     ClusterServiceBroker broker = new ClusterServiceBrokerBuilder()
       .withNewMetadata()
