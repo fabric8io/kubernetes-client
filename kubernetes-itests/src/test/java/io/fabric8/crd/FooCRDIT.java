@@ -30,13 +30,12 @@ public class FooCRDIT {
   @Test
   public void testCrd() {
     CustomResourceDefinition d = Serialization.unmarshal(getClass().getClassLoader()
-        .getResourceAsStream("META-INF/fabric8/foos.acme.com-v1.yml"),
+        .getResourceAsStream("META-INF/fabric8/fooes.acme.com-v1.yml"),
       CustomResourceDefinition.class);
     assertNotNull(d);
     assertEquals("Foo", d.getSpec().getNames().getKind());
-    assertEquals("foos", d.getSpec().getNames().getPlural());
+    assertEquals("fooes", d.getSpec().getNames().getPlural());
     assertEquals("Namespaced", d.getSpec().getScope());
-
     assertNotNull(d.getSpec().getSubresources());
   }
 

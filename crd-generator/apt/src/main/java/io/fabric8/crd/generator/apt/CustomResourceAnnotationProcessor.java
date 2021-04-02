@@ -32,6 +32,7 @@ import io.sundr.builder.TypedVisitor;
 import io.sundr.codegen.CodegenContext;
 import io.sundr.codegen.Constants;
 import io.sundr.codegen.DefinitionRepository;
+import io.sundr.codegen.functions.ClassTo;
 import io.sundr.codegen.functions.ElementTo;
 import io.sundr.codegen.model.ClassRef;
 import io.sundr.codegen.model.ClassRefBuilder;
@@ -40,6 +41,8 @@ import io.sundr.codegen.model.TypeDefBuilder;
 import io.sundr.codegen.model.TypeParamDef;
 import io.sundr.codegen.model.TypeParamRef;
 import io.sundr.codegen.model.TypeRef;
+import io.sundr.codegen.utils.TypeUtils;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
@@ -184,10 +187,13 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
     final boolean storage = customResource.getAnnotation(Version.class).storage();
     final boolean served = customResource.getAnnotation(Version.class).served();
 
-    final Scope scope = customResource.getInterfaces().stream()
-      .filter(t -> t.toString().equals(Namespaced.class.getTypeName()))
-      .map(t -> Scope.NAMESPACED).findFirst().orElse(Scope.CLUSTER);
-
+    //TypeUtils.unrollHierarchy only return the classes, so we will use nested streaming to also get the interfaces 
+    final Scope scope = TypeUtils.unrollHierarchy(definition).stream()
+      .flatMap(s -> Stream.concat(Stream.of(s), s.getImplementsList().stream().flatMap(i -> TypeUtils.unrollHierarchy(i.getDefinition()).stream())))
+      .filter(d -> d.getFullyQualifiedName().equals(Namespaced.class.getName()))
+      .map(d -> Scope.NAMESPACED)
+      .findAny()
+      .orElse(Scope.CLUSTER);
 
     return new CustomResourceInfo(group, version, kind, singular, plural, shortNames, storage,
       served, scope, statusType, definition, crClassName.toString(),
