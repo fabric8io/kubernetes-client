@@ -29,7 +29,6 @@ import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.informers.impl.DefaultSharedIndexInformer;
-import io.fabric8.kubernetes.client.utils.Pluralize;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.internal.KubernetesDeserializer;
 import java.util.Collections;
@@ -40,9 +39,6 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
-
-import io.fabric8.kubernetes.model.annotation.Kind;
-import io.fabric8.kubernetes.model.annotation.Plural;
 import okhttp3.OkHttpClient;
 
 /**
@@ -351,11 +347,8 @@ public class SharedInformerFactory extends BaseOperation {
   }
 
   private static <T> boolean isKeyOfType(String key, Class<T> apiTypeClass) {
-    Kind kind = apiTypeClass.getAnnotation(Kind.class);
-    Plural plural = apiTypeClass.getAnnotation(Plural.class);
-    return plural != null && key.contains(plural.value()) ||
-      kind != null && key.contains(Pluralize.toPlural(kind.value().toLowerCase())) ||
-      key.contains(Pluralize.toPlural(apiTypeClass.getSimpleName().toLowerCase()));
+    String plural = CustomResource.getPlural(apiTypeClass);
+    return key.contains(plural);
   }
 
     private <T extends HasMetadata, L extends KubernetesResourceList<T>> BaseOperation<T, L, ?> getConfiguredBaseOperation(String namespace, OperationContext context, Class<T> apiTypeClass, Class<L> apiListTypeClass) {
