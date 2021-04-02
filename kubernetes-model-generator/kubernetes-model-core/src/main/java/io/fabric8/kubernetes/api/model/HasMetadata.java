@@ -15,13 +15,12 @@
  */
 package io.fabric8.kubernetes.api.model;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Kind;
 import io.fabric8.kubernetes.model.annotation.Version;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Represents any {@link KubernetesResource} which possesses a {@link ObjectMeta} and is associated with a kind and API version.
@@ -46,7 +45,7 @@ public interface HasMetadata extends KubernetesResource {
    * @param clazz the HasMetadata implementation whose Kind we want to retrieve
    * @return the kind associated with the specified HasMetadata
    */
-  static String getKind(Class<? extends HasMetadata> clazz) {
+  static String getKind(Class<?> clazz) {
     final Kind kind = clazz.getAnnotation(Kind.class);
     return kind != null ? kind.value() : clazz.getSimpleName();
   }
@@ -63,7 +62,7 @@ public interface HasMetadata extends KubernetesResource {
    * @return the computed {@code apiVersion} or {@code null} if neither {@link Group} or {@link Version} annotations are present
    * @throws IllegalArgumentException if only one of {@link Group} or {@link Version} is provided
    */
-  static String getApiVersion(Class<? extends HasMetadata> clazz) {
+  static String getApiVersion(Class<?> clazz) {
     final String group = getGroup(clazz);
     final String version = getVersion(clazz);
     if (group != null && version != null) {
@@ -81,7 +80,7 @@ public interface HasMetadata extends KubernetesResource {
    * @param clazz the HasMetadata whose group we want to retrieve
    * @return the associated group or {@code null} if the HasMetadata is not annotated with {@link Group}
    */
-  static String getGroup(Class<? extends HasMetadata> clazz) {
+  static String getGroup(Class<?> clazz) {
     final Group group = clazz.getAnnotation(Group.class);
     return group != null ? group.value() : null;
   }
@@ -92,7 +91,7 @@ public interface HasMetadata extends KubernetesResource {
    * @param clazz the HasMetadata whose version we want to retrieve
    * @return the associated version or {@code null} if the HasMetadata is not annotated with {@link Version}
    */
-  static String getVersion(Class<? extends HasMetadata> clazz) {
+  static String getVersion(Class<?> clazz) {
     final Version version = clazz.getAnnotation(Version.class);
     return version != null ? version.value() : null;
   }
