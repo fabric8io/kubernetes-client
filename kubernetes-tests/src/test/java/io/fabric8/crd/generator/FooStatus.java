@@ -13,14 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crd;
+package io.fabric8.crd.generator;
 
-import io.fabric8.kubernetes.model.annotation.Group;
-import io.fabric8.kubernetes.model.annotation.Version;
-
-@Version("v1alpha1")
-@Group("acme.com")
-public class Foo extends Base<FooSpec, FooStatus>{
-
+/**
+ * @author <a href="claprun@redhat.com">Christophe Laprun</a>
+ */
+public class FooStatus extends BaseStatus {
 
 }

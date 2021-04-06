@@ -13,25 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crd.zookeeper.v1;
+package io.fabric8.crd.generator.zookeeper.v1alpha1;
+
+import java.util.Map;
 
 import io.fabric8.kubernetes.model.annotation.LabelSelector;
-import io.fabric8.kubernetes.model.annotation.PrinterColumn;
 import io.fabric8.kubernetes.model.annotation.StatusReplicas;
-import java.util.Map;
 
 public class ZookeeperStatus {
 
-  @PrinterColumn
   @StatusReplicas
   private int size;
-
   @LabelSelector
   private Map<String, String> selector;
 
   private boolean running;
-
-  @PrinterColumn
   private long uptime;
 
   public long getUptime() {

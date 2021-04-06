@@ -13,11 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crd;
+package io.fabric8.crd.generator.zookeeper.v1;
 
-/**
- * @author <a href="claprun@redhat.com">Christophe Laprun</a>
- */
-public class BaseStatus {
+import io.fabric8.kubernetes.model.annotation.SpecReplicas;
+import javax.validation.constraints.NotNull;
 
+public class ZookeeperSpec {
+
+    @SpecReplicas
+    private int size;
+    @NotNull
+    private String version;
+    private boolean ephemeral;
 }

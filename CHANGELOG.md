@@ -5,6 +5,7 @@
 #### Bugs
 
 #### Improvements
+* Fix #2910: Move crd-generator tests from kubernetes-itests to kubernetes-tests
 
 #### Dependency Upgrade
 
@@ -26,7 +27,6 @@
 * Fix #2950: RawCustomResourceOperationsImpl should also work with standard resources
 * Fix #2938: Make it possible to manage Tekton Triggers directly
 * Fix #2921: Kubernetes server mock will generate missing metadata fields
-* Fix #2946: Kubernetes server mock watch will generate initial ADDED events
 * Fix #2925: Add CustomResource.getShortNames(Class) method
 
 #### Dependency Upgrade
