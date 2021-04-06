@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crd.zookeeper;
+package io.fabric8.crd.generator.zookeeper;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -23,14 +23,15 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefin
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersion;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps;
 import io.fabric8.kubernetes.client.utils.Serialization;
+import org.junit.jupiter.api.Test;
+
 import java.util.List;
 import java.util.Optional;
-import org.junit.Test;
 
-public class ZookeeperCustomResourceIT {
+class ZookeeperCustomResourceTest {
 
   @Test
-  public void testCrd() {
+  void testCrd() {
     CustomResourceDefinition d = Serialization.unmarshal(getClass().getClassLoader().getResourceAsStream("META-INF/fabric8/zookeepers.io.zookeeper-v1beta1.yml"), CustomResourceDefinition.class);
     assertNotNull(d);
     assertEquals("Zookeeper", d.getSpec().getNames().getKind());

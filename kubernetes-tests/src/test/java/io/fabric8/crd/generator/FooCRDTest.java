@@ -13,23 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crd;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+package io.fabric8.crd.generator;
 
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
 import io.fabric8.kubernetes.client.utils.Serialization;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
-public class FooCRDIT {
+class FooCRDTest {
 
   @Test
-  public void testCrd() {
+  void testCrd() {
     CustomResourceDefinition d = Serialization.unmarshal(getClass().getClassLoader()
         .getResourceAsStream("META-INF/fabric8/fooes.acme.com-v1.yml"),
       CustomResourceDefinition.class);

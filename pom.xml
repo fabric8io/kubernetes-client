@@ -168,6 +168,7 @@
     <osgi.include.resources>{maven-resources}</osgi.include.resources>
     <karaf.itest.skip>false</karaf.itest.skip>
     <project.build.outputTimestamp>2020-11-14T12:24:00Z</project.build.outputTimestamp>
+    <validation-api.version>2.0.1.Final</validation-api.version>
   </properties>
 
   <modules>
@@ -472,6 +473,13 @@
         <groupId>org.awaitility</groupId>
         <artifactId>awaitility</artifactId>
         <version>${awaitility.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>javax.validation</groupId>
+        <artifactId>validation-api</artifactId>
+        <version>${validation-api.version}</version>
         <scope>test</scope>
       </dependency>
     </dependencies>

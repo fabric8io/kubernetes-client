@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.fabric8.crd.zookeeper.v1;
+package io.fabric8.crd.generator.zookeeper.v1;
 
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.client.CustomResource;
