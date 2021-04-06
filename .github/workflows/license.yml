@@ -33,5 +33,6 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '8'
+          distribution: 'adopt'
       - name: Check License Headers
         run: mvn -B -C -V -ntp -N license:check
