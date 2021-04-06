@@ -576,7 +576,6 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
                   throw new IOException("Failed to create directory: " + f);
                 }
                 try (OutputStream fs = new FileOutputStream(f)) {
-                  System.out.println("Writing: " + f.getCanonicalPath());
                   BlockingInputStreamPumper pumper = new BlockingInputStreamPumper(tis, new Callback<byte[]>() {
                     @Override
                     public void call(byte[] input) {
@@ -604,7 +603,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
       }
     }.run();
      } catch (NoClassDefFoundError e) {
-      throw new KubernetesClientException("TarArchiveInputStream class is provided by commons-codec, an optional dependency. To use the read/copy functionality you must explicitly add this dependency to the classpath.");
+      throw new KubernetesClientException("TarArchiveInputStream class is provided by commons-compress, an optional dependency. To use the read/copy functionality you must explicitly add this dependency to the classpath.");
     }
   }
 
