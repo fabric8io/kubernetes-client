@@ -13,16 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crd.zookeeper.v1;
+package io.fabric8.crd.generator.zookeeper.v1alpha1;
 
 import io.fabric8.kubernetes.model.annotation.SpecReplicas;
-import javax.validation.constraints.NotNull;
 
 public class ZookeeperSpec {
 
     @SpecReplicas
     private int size;
-    @NotNull
     private String version;
     private boolean ephemeral;
 }

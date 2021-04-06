@@ -13,14 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crd.zookeeper.v1alpha1;
+package io.fabric8.crd.generator;
 
-import io.fabric8.kubernetes.model.annotation.SpecReplicas;
+import io.fabric8.kubernetes.api.model.Namespaced;
+import io.fabric8.kubernetes.client.CustomResource;
 
-public class ZookeeperSpec {
+/**
+ * @author <a href="claprun@redhat.com">Christophe Laprun</a>
+ */
+public abstract class Base<Spec extends BaseSpec, Status extends BaseStatus>
+  extends CustomResource<Spec, Status>
+  implements Namespaced {
 
-    @SpecReplicas
-    private int size;
-    private String version;
-    private boolean ephemeral;
 }

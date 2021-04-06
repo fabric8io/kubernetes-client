@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crd;
+package io.fabric8.crd.generator;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
