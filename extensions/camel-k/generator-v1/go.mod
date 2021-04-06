@@ -11,6 +11,7 @@ require (
 
 replace (
 	github.com/fabric8io/kubernetes-client/generator v0.0.0 => ./../../../generator
+	github.com/openshift/api => github.com/openshift/api v0.0.0-20190927182313-d4a64ec2cbd8 // invalid pseudo-version: preceding tag (v3.9.0) not found
 	k8s.io/api => k8s.io/api v0.16.5
 	k8s.io/apimachinery => k8s.io/apimachinery v0.16.5
 	k8s.io/client-go => k8s.io/client-go v0.16.5
