@@ -33,5 +33,6 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '8'
+          distribution: 'adopt'
       - name: Check Java Docs
         run: mvn -B -C -V -ntp clean install javadoc:jar -DskipTests -Pjavadoc-test
