@@ -8,17 +8,15 @@
 * Fix: CRD generator no longer treat enum values as properties (performance)
 
 #### Improvements
-- RawCustomResourceOperationsImpl should also work with standard resources
-
-- Fix #2938: Make it possible to manage Tekton Triggers directly
-
-* Fix #2921: chore: Kubernetes server mock will generate missing metadata fields
+* Fix #2950: RawCustomResourceOperationsImpl should also work with standard resources
+* Fix #2938: Make it possible to manage Tekton Triggers directly
+* Fix #2921: Kubernetes server mock will generate missing metadata fields
 
 #### Dependency Upgrade
 
 #### New Features
 * Fix #2837: Add Support for `events.k8s.io` APIGroup DSL
-* Fix #2891: Introduce CamelK extension
+* Fix #2964: Introduce CamelK extension
 
 ### 5.2.1 (2021-03-16)
 
@@ -141,7 +139,7 @@
 * Fix #2723: Dependency cleanup
  - Remove javax.annotation-api 
  - Remove jaxb-api
- - Remove jacson-module-jaxb-annotations
+ - Remove jackson-module-jaxb-annotations
 * Fix #2744: Automatically instantiates spec and status fields on `CustomResource` when possible.
   `initSpec` and `initStatus` methods are also provided to allow for overriding of the default implementation.
 
