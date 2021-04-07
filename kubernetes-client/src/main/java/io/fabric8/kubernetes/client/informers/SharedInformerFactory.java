@@ -215,7 +215,7 @@ public class SharedInformerFactory extends BaseOperation {
     ListerWatcher<T, L> listerWatcher = listerWatcherFor(apiTypeClass, apiListTypeClass);
     OperationContext context = this.context.withApiGroupName(HasMetadata.getGroup(apiTypeClass))
       .withApiGroupVersion(HasMetadata.getVersion(apiTypeClass))
-      .withPlural(CustomResource.getPlural(apiTypeClass))
+      .withPlural(HasMetadata.getPlural(apiTypeClass))
       .withIsNamespaceConfiguredFromGlobalConfig(this.context.isNamespaceFromGlobalConfig());
     if (this.namespace != null) {
       context = context.withNamespace(this.namespace).withIsNamespaceConfiguredFromGlobalConfig(false);
@@ -347,7 +347,7 @@ public class SharedInformerFactory extends BaseOperation {
   }
 
   private static <T> boolean isKeyOfType(String key, Class<T> apiTypeClass) {
-    String plural = CustomResource.getPlural(apiTypeClass);
+    String plural = HasMetadata.getPlural(apiTypeClass);
     return key.contains(plural);
   }
 
