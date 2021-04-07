@@ -121,7 +121,6 @@ import io.fabric8.kubernetes.client.extended.run.RunConfigBuilder;
 import io.fabric8.kubernetes.client.extended.run.RunOperations;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
 import io.fabric8.kubernetes.client.utils.Serialization;
-import io.fabric8.kubernetes.client.utils.Utils;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -394,7 +393,7 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
    */
   @Override
   public Createable<TokenReview> tokenReviews() {
-    return new CreateOnlyResourceOperationsImpl<>(httpClient, getConfiguration(), "authentication.k8s.io", "v1", Utils.getPluralFromKind(TokenReview.class.getSimpleName()), TokenReview.class);
+    return new CreateOnlyResourceOperationsImpl<>(httpClient, getConfiguration(), "authentication.k8s.io", "v1", HasMetadata.getPlural(TokenReview.class), TokenReview.class);
   }
 
   /**

@@ -346,6 +346,12 @@ public class Utils {
     return null;
   }
 
+  /**
+   *
+   * @param kind
+   * @return
+   * @deprecated use {@link io.fabric8.kubernetes.api.model.HasMetadata#getPlural(Class)}
+   */
   public static String getPluralFromKind(String kind) {
     return Pluralize.toPlural(kind.toLowerCase(Locale.ROOT));
   }
