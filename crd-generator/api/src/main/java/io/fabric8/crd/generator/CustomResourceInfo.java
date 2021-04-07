@@ -22,7 +22,6 @@ import io.fabric8.kubernetes.model.Scope;
 import io.fabric8.kubernetes.model.annotation.ShortNames;
 import io.sundr.codegen.functions.ClassTo;
 import io.sundr.codegen.model.TypeDef;
-import io.sundr.codegen.model.TypeRef;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -156,19 +155,13 @@ public class CustomResourceInfo {
         if (types.length == 2) {
           specClassName = types[0].getTypeName();
           statusClassName = types[1].getTypeName();
-
-          if (!VOID_TYPE_NAME.equals(statusClassName)) {
-            // load status class
-            final Class<?> statusClass = Thread.currentThread().getContextClassLoader()
-              .loadClass(statusClassName);
-          } 
         }
       }
 
       return new CustomResourceInfo(instance.getGroup(), instance.getVersion(), instance.getKind(),
         instance.getSingular(), instance.getPlural(), shortNames, instance.isStorage(), instance.isServed(), scope, definition,
         customResource.getCanonicalName(), specClassName, statusClassName);
-    } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException | ClassNotFoundException e) {
+    } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
   }
