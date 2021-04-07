@@ -39,7 +39,6 @@ import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBinding;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBindingBuilder;
-import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.CustomResourceList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
@@ -781,7 +780,7 @@ class DefaultSharedIndexInformerTest {
     if (namespace != null) {
       url += ("/namespaces/" + namespace);
     }
-    url += ("/" + CustomResource.getPlural(resourceClass));
+    url += ("/" + HasMetadata.getPlural(resourceClass));
     String queryParams = "";
     if (labelSelector != null) {
       queryParams += "labelSelector=" + labelSelector;

@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
+import io.fabric8.kubernetes.api.Pluralize;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.model.annotation.Group;
@@ -345,32 +346,8 @@ public class Utils {
     return null;
   }
 
-  /**
-   *  todo: we should unify this with {@link Pluralize}
-   */
   public static String getPluralFromKind(String kind) {
-    StringBuilder pluralBuffer = new StringBuilder(kind.toLowerCase(Locale.ROOT));
-    switch (kind) {
-      case "ComponentStatus":
-      case "Ingress":
-      case "RuntimeClass":
-      case "PriorityClass":
-      case "StorageClass":
-        pluralBuffer.append("es");
-        break;
-      case "NetworkPolicy":
-      case "PodSecurityPolicy":
-      case "ServiceEntry": // an Istio resource. Needed as getPluralFromKind is currently not configurable #2489
-        // Delete last character
-        pluralBuffer.deleteCharAt(pluralBuffer.length() - 1);
-        pluralBuffer.append("ies");
-        break;
-      case "Endpoints":
-        break;
-      default:
-        pluralBuffer.append("s");
-    }
-    return pluralBuffer.toString();
+    return Pluralize.toPlural(kind.toLowerCase(Locale.ROOT));
   }
 
   /**

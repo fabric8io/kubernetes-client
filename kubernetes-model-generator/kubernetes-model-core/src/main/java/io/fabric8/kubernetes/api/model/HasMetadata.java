@@ -16,9 +16,13 @@
 package io.fabric8.kubernetes.api.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.fabric8.kubernetes.api.Pluralize;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Kind;
+import io.fabric8.kubernetes.model.annotation.Plural;
+import io.fabric8.kubernetes.model.annotation.Singular;
 import io.fabric8.kubernetes.model.annotation.Version;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -101,6 +105,43 @@ public interface HasMetadata extends KubernetesResource {
   }
   
   void setApiVersion(String version);
+
+  /**
+   * Retrieves the plural form associated with the specified class if annotated with {@link
+   * Plural} or computes a default value using the value returned by {@link #getSingular(Class)} as
+   * input to {@link Pluralize#toPlural(String)}.
+   *
+   * @param clazz the CustomResource whose plural form we want to retrieve
+   * @return the plural form defined by the {@link Plural} annotation or a computed default value
+   */
+  static String getPlural(Class<?> clazz) {
+    final Plural fromAnnotation = clazz.getAnnotation(Plural.class);
+    return (fromAnnotation != null ? fromAnnotation.value().toLowerCase(Locale.ROOT)
+      : Pluralize.toPlural(getSingular(clazz)));
+  }
+
+  default String getPlural() {
+    return getPlural(getClass());
+  }
+
+  /**
+   * Retrieves the singular form associated with the specified class as defined by the
+   * {@link Singular} annotation or computes a default value (lower-cased version of the value
+   * returned by {@link HasMetadata#getKind(Class)}) if the annotation is not present.
+   *
+   * @param clazz the class whose singular form we want to retrieve
+   * @return the singular form defined by the {@link Singular} annotation or a computed default
+   * value
+   */
+  static String getSingular(Class<?> clazz) {
+    final Singular fromAnnotation = clazz.getAnnotation(Singular.class);
+    return (fromAnnotation != null ? fromAnnotation.value() : HasMetadata.getKind(clazz))
+      .toLowerCase(Locale.ROOT);
+  }
+
+  default String getSingular() {
+    return getSingular(getClass());
+  }
   
   /**
    * Determines whether this {@code HasMetadata} is marked for deletion or not.
