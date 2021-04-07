@@ -15,12 +15,17 @@
  */
 package io.fabric8.kubernetes.client.internal;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import io.fabric8.kubernetes.api.model.Binding;
 import io.fabric8.kubernetes.api.model.ComponentStatus;
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.Endpoints;
 import io.fabric8.kubernetes.api.model.Event;
-import io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HorizontalPodAutoscaler;
 import io.fabric8.kubernetes.api.model.LimitRange;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.Node;
@@ -46,6 +51,7 @@ import io.fabric8.kubernetes.api.model.authorization.v1.LocalSubjectAccessReview
 import io.fabric8.kubernetes.api.model.authorization.v1.SelfSubjectAccessReview;
 import io.fabric8.kubernetes.api.model.authorization.v1.SelfSubjectRulesReview;
 import io.fabric8.kubernetes.api.model.authorization.v1.SubjectAccessReview;
+import io.fabric8.kubernetes.api.model.autoscaling.v2beta2.HorizontalPodAutoscaler;
 import io.fabric8.kubernetes.api.model.batch.CronJob;
 import io.fabric8.kubernetes.api.model.batch.Job;
 import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequest;
@@ -65,22 +71,17 @@ import io.fabric8.kubernetes.api.model.storage.VolumeAttachment;
 import io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriver;
 import io.fabric8.kubernetes.api.model.storage.v1beta1.CSINode;
 import io.fabric8.kubernetes.client.utils.Utils;
-import org.apache.commons.lang.SystemUtils;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 import java.io.File;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import java.util.SortedMap;
+import java.util.TreeMap;
+import org.apache.commons.lang.SystemUtils;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 class UtilsTest {
 
@@ -170,7 +171,7 @@ class UtilsTest {
   @Test
   void testGetPluralFromKind() {
     // Given
-    Map<String, Class> pluralToKubernetesResourceMap = new HashMap<>();
+    SortedMap<String, Class> pluralToKubernetesResourceMap = new TreeMap<>();
     pluralToKubernetesResourceMap.put("bindings", Binding.class);
     pluralToKubernetesResourceMap.put("componentstatuses", ComponentStatus.class);
     pluralToKubernetesResourceMap.put("configmaps", ConfigMap.class);
