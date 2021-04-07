@@ -21,13 +21,19 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Resource;
+
+import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 
+import static io.fabric8.kubernetes.client.utils.IOHelpers.convertToJson;
+
 public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>> extends BaseOperation< T, L, R> {
   public static final DeletionPropagation DEFAULT_PROPAGATION_POLICY = DeletionPropagation.BACKGROUND;
   public static final long DEFAULT_GRACE_PERIOD_IN_SECONDS = -1L;
+  private static final String PATCH_OPERATION = "patch";
 
   public HasMetadataOperation(OperationContext ctx) {
     super(ctx);
@@ -119,7 +125,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
             resource.getMetadata().setResourceVersion(resourceVersion);
             return handlePatch(got, resource);
           } catch (Exception e) {
-            throw KubernetesClientException.launderThrowable(forOperationType("patch"), e);
+            throw KubernetesClientException.launderThrowable(forOperationType(PATCH_OPERATION), e);
           }
         };
         return visitor.apply(item);
@@ -142,6 +148,22 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
         caught = e;
       }
     }
-    throw KubernetesClientException.launderThrowable(forOperationType("patch"), caught);
+    throw KubernetesClientException.launderThrowable(forOperationType(PATCH_OPERATION), caught);
+  }
+
+  @Override
+  public T patch(PatchContext patchContext, String patch) {
+    try {
+      final T got = fromServer().get();
+      if (got == null) {
+        return null;
+      }
+      return handlePatch(patchContext, got, convertToJson(patch), getType());
+    } catch (InterruptedException interruptedException) {
+      Thread.currentThread().interrupt();
+      throw KubernetesClientException.launderThrowable(forOperationType(PATCH_OPERATION), interruptedException);
+    } catch (IOException | ExecutionException e) {
+      throw KubernetesClientException.launderThrowable(forOperationType(PATCH_OPERATION), e);
+    }
   }
 }
