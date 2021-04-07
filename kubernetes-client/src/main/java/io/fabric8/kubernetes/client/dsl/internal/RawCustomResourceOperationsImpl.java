@@ -52,7 +52,6 @@ import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.internal.PatchUtils;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.IOHelpers;
-import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.client.utils.WatcherToggle;
 import io.fabric8.zjsonpatch.JsonDiff;
@@ -96,7 +95,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
   private RawCustomResourceOperationsImpl(OkHttpClient client, Config config, CustomResourceDefinitionContext crdContext, String namespace, String name, long gracePeriodInSeconds, boolean cascading, String deletionPropagation, ListOptions listOptions, boolean dryRun) {
     super(client, config);
     this.customResourceDefinition = crdContext;
-    this.objectMapper = new ObjectMapper();
+    this.objectMapper = PatchUtils.patchMapper();
     this.namespace = namespace;
     this.name = name;
     this.gracePeriodInSeconds = gracePeriodInSeconds;
