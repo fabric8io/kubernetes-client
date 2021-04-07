@@ -15,8 +15,35 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
+import io.fabric8.kubernetes.client.dsl.base.PatchContext;
+
 public interface Patchable<T> {
 
+  /**
+   * Update field(s) of a resource using a JSON patch.
+   *
+   * @param item item to be patched with patched values
+   * @return returns deserialized version of api server response
+   */
   T patch(T item);
+
+  /**
+   * Update field(s) of a resource using strategic merge patch.
+   *
+   * @param patch The patch to be applied to the resource JSON file.
+   * @return returns deserialized version of api server response
+   */
+  default T patch(String patch) {
+    return patch(null, patch);
+  }
+
+  /**
+   * Update field(s) of a resource using type specified in {@link PatchContext}(defaults to strategic merge if not specified).
+   *
+   * @param patchContext {@link PatchContext} for patch request
+   * @param patch The patch to be applied to the resource JSON file.
+   * @return The patch to be applied to the resource JSON file.
+   */
+  T patch(PatchContext patchContext, String patch);
 
 }

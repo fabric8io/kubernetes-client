@@ -55,6 +55,7 @@ public class OperationSupport {
   public static final MediaType JSON = MediaType.parse("application/json");
   public static final MediaType JSON_PATCH = MediaType.parse("application/json-patch+json");
   public static final MediaType STRATEGIC_MERGE_JSON_PATCH = MediaType.parse("application/strategic-merge-patch+json");
+  public static final MediaType JSON_MERGE_PATCH = MediaType.parse("application/merge-patch+json");
   protected static final ObjectMapper JSON_MAPPER = Serialization.jsonMapper();
   protected static final ObjectMapper YAML_MAPPER = Serialization.yamlMapper();
   private static final String CLIENT_STATUS_FLAG = "CLIENT_STATUS_FLAG";
@@ -172,6 +173,23 @@ public class OperationSupport {
       return new URL(URLUtils.join(resourceURL.toString(), "?dryRun=All"));
     }
     return resourceURL;
+  }
+
+  public URL getResourceURLForPatchOperation(URL resourceUrl, PatchContext patchContext) throws MalformedURLException {
+    if (patchContext != null) {
+      String url = resourceUrl.toString();
+      if (patchContext.getForce() != null) {
+        url = URLUtils.join(url, "?force=" + patchContext.getForce());
+      }
+      if ((patchContext.getDryRun() != null && !patchContext.getDryRun().isEmpty()) || dryRun) {
+        url = URLUtils.join(url, "?dryRun=All");
+      }
+      if (patchContext.getFieldManager() != null) {
+        url = URLUtils.join(url, "?fieldManager=" + patchContext.getFieldManager());
+      }
+      return new URL(url);
+    }
+    return resourceUrl;
   }
 
   protected <T> String checkNamespace(T item) {
@@ -342,6 +360,26 @@ public class OperationSupport {
     RequestBody body = RequestBody.create(STRATEGIC_MERGE_JSON_PATCH, JSON_MAPPER.writeValueAsString(patchForUpdate));
     Request.Builder requestBuilder = new Request.Builder().patch(body).url(getResourceUrl(checkNamespace(current), checkName(current)));
     return handleResponse(requestBuilder, type, Collections.<String, String>emptyMap());
+  }
+
+  /**
+   * Send an http patch and handle the response.
+   *
+   * @param patchContext patch options for patch request
+   * @param current current object
+   * @param patchForUpdate Patch string
+   * @param type type of object
+   * @param <T> template argument provided
+   * @return returns de-serialized version of api server response
+   * @throws ExecutionException Execution Exception
+   * @throws InterruptedException Interrupted Exception
+   * @throws IOException IOException in case of network errors
+   */
+  protected <T> T handlePatch(PatchContext patchContext, T current, String patchForUpdate, Class<T> type) throws ExecutionException, InterruptedException, IOException {
+    MediaType bodyMediaType = getMediaTypeFromPatchContextOrDefault(patchContext);
+    RequestBody body = RequestBody.create(bodyMediaType, patchForUpdate);
+    Request.Builder requestBuilder = new Request.Builder().patch(body).url(getResourceURLForPatchOperation(getResourceUrl(checkNamespace(current), checkName(current)), patchContext));
+    return handleResponse(requestBuilder, type, Collections.emptyMap());
   }
 
   /**
@@ -610,5 +648,12 @@ public class OperationSupport {
 
   public Config getConfig() {
     return config;
+  }
+
+  private MediaType getMediaTypeFromPatchContextOrDefault(PatchContext patchContext) {
+    if (patchContext != null && patchContext.getPatchType() != null) {
+      return patchContext.getPatchType().getMediaType();
+    }
+    return STRATEGIC_MERGE_JSON_PATCH;
   }
 }

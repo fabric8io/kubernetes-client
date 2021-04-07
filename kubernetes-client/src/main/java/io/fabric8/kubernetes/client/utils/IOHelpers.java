@@ -75,4 +75,11 @@ public class IOHelpers {
     return jsonWriter.writeValueAsString(obj);
   }
 
+  public static String convertToJson(String jsonOrYaml) throws IOException {
+      if (isJSONValid(jsonOrYaml)) {
+        return jsonOrYaml;
+      }
+      return convertYamlToJson(jsonOrYaml);
+  }
+
 }
