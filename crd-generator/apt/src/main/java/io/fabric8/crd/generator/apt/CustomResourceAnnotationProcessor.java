@@ -34,28 +34,19 @@ import io.sundr.codegen.functions.ClassTo;
 import io.sundr.codegen.functions.ElementTo;
 import io.sundr.codegen.model.ClassRef;
 import io.sundr.codegen.model.TypeDef;
-import io.sundr.codegen.model.TypeRef;
-import io.sundr.codegen.utils.TypeUtils;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.TypeMirror;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 
@@ -89,9 +80,9 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
     final TypeDef definition = ElementTo.TYPEDEF.apply(customResource);
     final Name crClassName = customResource.getQualifiedName();
 
-    Optional<ClassRef>  specRef = getCustomResourceSpec(definition);
-
-    Optional<ClassRef> statusRef = getCustomResourceStatus(definition);
+    Optional<ClassRef> customResourceRef = getCustomResourceRef(definition);
+    Optional<ClassRef>  specRef = getCustomResourceSpec(customResourceRef);
+    Optional<ClassRef> statusRef = getCustomResourceStatus(customResourceRef);
     String specClassName = specRef.map(ClassRef::getFullyQualifiedName).orElse(null);
     String statusClassName = statusRef.map(ClassRef::getFullyQualifiedName).orElse(null);
 
@@ -168,18 +159,19 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
       .findFirst();
   }
 
-  private static Optional<ClassRef> getCustomResourceSpec(TypeDef typeDef) {
-    return getCustomResourceTypeParam(typeDef, 0);
+  private static Optional<ClassRef> getCustomResourceSpec(Optional<ClassRef> customResourceRef) {
+    return getCustomResourceTypeParam(customResourceRef, 0);
   }
 
-  private static Optional<ClassRef> getCustomResourceStatus(TypeDef typeDef) {
-    return getCustomResourceTypeParam(typeDef, 1);
+  private static Optional<ClassRef> getCustomResourceStatus(Optional<ClassRef> customResourceRef) {
+    return getCustomResourceTypeParam(customResourceRef, 1);
   }
 
-  private static Optional<ClassRef> getCustomResourceTypeParam(TypeDef typeDef, int paremeterIndex) {
-    return getCustomResourceRef(typeDef)
+  private static Optional<ClassRef> getCustomResourceTypeParam(Optional<ClassRef> customResourceRef,
+    int parameterIndex) {
+    return customResourceRef
       .filter(c -> c.getArguments() != null && c.getArguments().size() == 2)
-      .map(c -> c.getArguments().get(paremeterIndex))
+      .map(c -> c.getArguments().get(parameterIndex))
       .filter(t -> t instanceof ClassRef)
       .map(t -> (ClassRef) t);
   }
