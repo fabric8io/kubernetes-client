@@ -30,6 +30,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
+import java.security.SecureRandom;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,7 +57,7 @@ public class Utils {
   public static final String OS_NAME = "os.name";
   public static final String PATH_WINDOWS = "Path";
   public static final String PATH_UNIX = "PATH";
-  private static final Random random = new Random();
+  private static final Random random = new SecureRandom();
 
   private Utils() {
   }
