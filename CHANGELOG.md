@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 5.3-SNAPSHOT
+### 5.3.0 (2021-04-08)
 
 #### Bugs
 * Fix #2620: Add support for `config.openshift.io/v1` Ingress
@@ -24,7 +24,7 @@
 
 #### New Features
 * Fix #2837: Add Support for `events.k8s.io` APIGroup DSL
-* Fix #2964: Introduce CamelK extension
+* Fix #2854: Introduce CamelK extension
 
 ### 5.2.1 (2021-03-16)
 
