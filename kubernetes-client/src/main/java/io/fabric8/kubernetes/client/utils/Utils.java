@@ -56,6 +56,7 @@ public class Utils {
   public static final String OS_NAME = "os.name";
   public static final String PATH_WINDOWS = "Path";
   public static final String PATH_UNIX = "PATH";
+  private static final Random random = new Random();
 
   private Utils() {
   }
@@ -238,7 +239,6 @@ public class Utils {
   }
 
   public static String randomString(int length) {
-    Random random = new Random();
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < length; i++) {
       int index = random.nextInt(ALL_CHARS.length());
@@ -248,7 +248,6 @@ public class Utils {
   }
 
   public static String randomString(String prefix, int length) {
-    Random random = new Random();
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < length - prefix.length(); i++) {
       int index = random.nextInt(ALL_CHARS.length());
