@@ -174,6 +174,7 @@ public abstract class CustomResource<S, T> implements HasMetadata {
   /**
    * @deprecated use {@link HasMetadata#getPlural(Class)} instead
    */
+  @Deprecated
   public static String getPlural(Class<?> clazz) {
     return HasMetadata.getPlural(clazz);
   }
@@ -186,6 +187,7 @@ public abstract class CustomResource<S, T> implements HasMetadata {
   /**
    * @deprecated use {@link HasMetadata#getSingular(Class)} instead
    */
+  @Deprecated
   public static String getSingular(Class<?> clazz) {
     return HasMetadata.getSingular(clazz);
   }
