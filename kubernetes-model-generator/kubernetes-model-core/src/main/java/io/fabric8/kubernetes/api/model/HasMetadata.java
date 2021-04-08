@@ -120,6 +120,7 @@ public interface HasMetadata extends KubernetesResource {
       : Pluralize.toPlural(getSingular(clazz)));
   }
 
+  @JsonIgnore
   default String getPlural() {
     return getPlural(getClass());
   }
@@ -139,6 +140,7 @@ public interface HasMetadata extends KubernetesResource {
       .toLowerCase(Locale.ROOT);
   }
 
+  @JsonIgnore
   default String getSingular() {
     return getSingular(getClass());
   }
