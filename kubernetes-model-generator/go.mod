@@ -6,19 +6,19 @@ require (
 	github.com/coreos/prometheus-operator v0.41.1
 	github.com/openshift/api v0.0.0-20200803131051-87466835fcc0
 	github.com/operator-framework/api v0.3.12
-	k8s.io/api v0.20.2
-	k8s.io/apiextensions-apiserver v0.20.2
-	k8s.io/apimachinery v0.20.2
-	k8s.io/client-go v0.20.2
-	k8s.io/kube-aggregator v0.20.2
-	k8s.io/kubernetes v1.20.2
-	k8s.io/metrics v0.20.2
+	k8s.io/api v0.21.0
+	k8s.io/apiextensions-apiserver v0.21.0
+	k8s.io/apimachinery v0.21.0
+	k8s.io/client-go v0.21.0
+	k8s.io/kube-aggregator v0.21.0
+	k8s.io/kubernetes v1.21.0
+	k8s.io/metrics v0.21.0
 )
 
 replace (
-        k8s.io/component-helpers => k8s.io/component-helpers v0.20.2
-        k8s.io/controller-manager => k8s.io/controller-manager v0.20.2
-        k8s.io/mount-utils => k8s.io/mount-utils v0.20.3-rc.0
+        k8s.io/component-helpers => k8s.io/component-helpers v0.21.0
+        k8s.io/controller-manager => k8s.io/controller-manager v0.21.0
+        k8s.io/mount-utils => k8s.io/mount-utils v0.21.0
 )
 
 exclude (

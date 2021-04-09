@@ -1430,6 +1430,10 @@
     "kubernetes_apps_RollingUpdateDaemonSet": {
       "type": "object",
       "properties": {
+        "maxSurge": {
+          "$ref": "#/definitions/kubernetes_apimachinery_pkg_util_intstr_IntOrString",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.IntOrString"
+        },
         "maxUnavailable": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_util_intstr_IntOrString",
           "existingJavaType": "io.fabric8.kubernetes.api.model.IntOrString"
@@ -3149,9 +3153,6 @@
     "kubernetes_core_EphemeralVolumeSource": {
       "type": "object",
       "properties": {
-        "readOnly": {
-          "type": "boolean"
-        },
         "volumeClaimTemplate": {
           "$ref": "#/definitions/kubernetes_core_PersistentVolumeClaimTemplate",
           "existingJavaType": "io.fabric8.kubernetes.api.model.PersistentVolumeClaimTemplate"
@@ -5020,6 +5021,10 @@
           "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
           "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
         },
+        "namespaceSelector": {
+          "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
+        },
         "namespaces": {
           "type": "array",
           "javaOmitEmpty": true,
@@ -5663,6 +5668,10 @@
         "tcpSocket": {
           "$ref": "#/definitions/kubernetes_core_TCPSocketAction",
           "existingJavaType": "io.fabric8.kubernetes.api.model.TCPSocketAction"
+        },
+        "terminationGracePeriodSeconds": {
+          "type": "integer",
+          "existingJavaType": "Long"
         },
         "timeoutSeconds": {
           "type": "integer"
@@ -6729,6 +6738,9 @@
         "healthCheckNodePort": {
           "type": "integer"
         },
+        "internalTrafficPolicy": {
+          "type": "string"
+        },
         "ipFamilies": {
           "type": "array",
           "javaOmitEmpty": true,
@@ -6737,6 +6749,9 @@
           }
         },
         "ipFamilyPolicy": {
+          "type": "string"
+        },
+        "loadBalancerClass": {
           "type": "string"
         },
         "loadBalancerIP": {
@@ -9374,9 +9389,6 @@
     },
     "ephemeralvolumesource": {
       "properties": {
-        "readOnly": {
-          "type": "boolean"
-        },
         "volumeClaimTemplate": {
           "$ref": "#/definitions/kubernetes_core_PersistentVolumeClaimTemplate",
           "existingJavaType": "io.fabric8.kubernetes.api.model.PersistentVolumeClaimTemplate"
@@ -11285,6 +11297,10 @@
           "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
           "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
         },
+        "namespaceSelector": {
+          "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
+        },
         "namespaces": {
           "type": "array",
           "javaOmitEmpty": true,
@@ -11852,6 +11868,10 @@
           "$ref": "#/definitions/kubernetes_core_TCPSocketAction",
           "existingJavaType": "io.fabric8.kubernetes.api.model.TCPSocketAction"
         },
+        "terminationGracePeriodSeconds": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
         "timeoutSeconds": {
           "type": "integer"
         }
@@ -12356,6 +12376,10 @@
     },
     "rollingupdatedaemonset": {
       "properties": {
+        "maxSurge": {
+          "$ref": "#/definitions/kubernetes_apimachinery_pkg_util_intstr_IntOrString",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.IntOrString"
+        },
         "maxUnavailable": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_util_intstr_IntOrString",
           "existingJavaType": "io.fabric8.kubernetes.api.model.IntOrString"
@@ -12912,6 +12936,9 @@
         "healthCheckNodePort": {
           "type": "integer"
         },
+        "internalTrafficPolicy": {
+          "type": "string"
+        },
         "ipFamilies": {
           "type": "array",
           "javaOmitEmpty": true,
@@ -12920,6 +12947,9 @@
           }
         },
         "ipFamilyPolicy": {
+          "type": "string"
+        },
+        "loadBalancerClass": {
           "type": "string"
         },
         "loadBalancerIP": {

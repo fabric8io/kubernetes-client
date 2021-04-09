@@ -924,6 +924,10 @@
         "lastScheduleTime": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
           "existingJavaType": "String"
+        },
+        "lastSuccessfulTime": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "existingJavaType": "String"
         }
       },
       "additionalProperties": true,
@@ -1037,6 +1041,9 @@
         "backoffLimit": {
           "type": "integer"
         },
+        "completionMode": {
+          "type": "string"
+        },
         "completions": {
           "type": "integer"
         },
@@ -1049,6 +1056,9 @@
         "selector": {
           "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
           "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
+        },
+        "suspend": {
+          "type": "boolean"
         },
         "template": {
           "$ref": "#/definitions/kubernetes_core_PodTemplateSpec",
@@ -1069,6 +1079,9 @@
       "properties": {
         "active": {
           "type": "integer"
+        },
+        "completedIndexes": {
+          "type": "string"
         },
         "completionTime": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
@@ -1931,9 +1944,6 @@
     "kubernetes_core_EphemeralVolumeSource": {
       "type": "object",
       "properties": {
-        "readOnly": {
-          "type": "boolean"
-        },
         "volumeClaimTemplate": {
           "$ref": "#/definitions/kubernetes_core_PersistentVolumeClaimTemplate",
           "existingJavaType": "io.fabric8.kubernetes.api.model.PersistentVolumeClaimTemplate"
@@ -2579,6 +2589,10 @@
           "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
           "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
         },
+        "namespaceSelector": {
+          "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
+        },
         "namespaces": {
           "type": "array",
           "javaOmitEmpty": true,
@@ -3021,6 +3035,10 @@
         "tcpSocket": {
           "$ref": "#/definitions/kubernetes_core_TCPSocketAction",
           "existingJavaType": "io.fabric8.kubernetes.api.model.TCPSocketAction"
+        },
+        "terminationGracePeriodSeconds": {
+          "type": "integer",
+          "existingJavaType": "Long"
         },
         "timeoutSeconds": {
           "type": "integer"
@@ -4517,6 +4535,10 @@
         "lastScheduleTime": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
           "existingJavaType": "String"
+        },
+        "lastSuccessfulTime": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "existingJavaType": "String"
         }
       },
       "additionalProperties": true
@@ -4920,9 +4942,6 @@
     },
     "ephemeralvolumesource": {
       "properties": {
-        "readOnly": {
-          "type": "boolean"
-        },
         "volumeClaimTemplate": {
           "$ref": "#/definitions/kubernetes_core_PersistentVolumeClaimTemplate",
           "existingJavaType": "io.fabric8.kubernetes.api.model.PersistentVolumeClaimTemplate"
@@ -5343,6 +5362,9 @@
         "backoffLimit": {
           "type": "integer"
         },
+        "completionMode": {
+          "type": "string"
+        },
         "completions": {
           "type": "integer"
         },
@@ -5355,6 +5377,9 @@
         "selector": {
           "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
           "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
+        },
+        "suspend": {
+          "type": "boolean"
         },
         "template": {
           "$ref": "#/definitions/kubernetes_core_PodTemplateSpec",
@@ -5370,6 +5395,9 @@
       "properties": {
         "active": {
           "type": "integer"
+        },
+        "completedIndexes": {
+          "type": "string"
         },
         "completionTime": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
@@ -5944,6 +5972,10 @@
           "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
           "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
         },
+        "namespaceSelector": {
+          "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
+        },
         "namespaces": {
           "type": "array",
           "javaOmitEmpty": true,
@@ -6341,6 +6373,10 @@
         "tcpSocket": {
           "$ref": "#/definitions/kubernetes_core_TCPSocketAction",
           "existingJavaType": "io.fabric8.kubernetes.api.model.TCPSocketAction"
+        },
+        "terminationGracePeriodSeconds": {
+          "type": "integer",
+          "existingJavaType": "Long"
         },
         "timeoutSeconds": {
           "type": "integer"

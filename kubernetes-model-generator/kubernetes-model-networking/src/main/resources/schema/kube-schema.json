@@ -1091,6 +1091,31 @@
         "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.networking.v1.IngressClass\u003e"
       ]
     },
+    "kubernetes_networking_v1_IngressClassParametersReference": {
+      "type": "object",
+      "properties": {
+        "apiGroup": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.networking.v1.IngressClassParametersReference",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_networking_v1_IngressClassSpec": {
       "type": "object",
       "properties": {
@@ -1098,8 +1123,8 @@
           "type": "string"
         },
         "parameters": {
-          "$ref": "#/definitions/kubernetes_core_TypedLocalObjectReference",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.TypedLocalObjectReference"
+          "$ref": "#/definitions/kubernetes_networking_v1_IngressClassParametersReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1.IngressClassParametersReference"
         }
       },
       "additionalProperties": true,
@@ -1393,6 +1418,9 @@
     "kubernetes_networking_v1_NetworkPolicyPort": {
       "type": "object",
       "properties": {
+        "endPort": {
+          "type": "integer"
+        },
         "port": {
           "$ref": "#/definitions/kubernetes_apimachinery_pkg_util_intstr_IntOrString",
           "existingJavaType": "io.fabric8.kubernetes.api.model.IntOrString"
@@ -1611,6 +1639,31 @@
         "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.networking.v1beta1.IngressClass\u003e"
       ]
     },
+    "kubernetes_networking_v1beta1_IngressClassParametersReference": {
+      "type": "object",
+      "properties": {
+        "apiGroup": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.networking.v1beta1.IngressClassParametersReference",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_networking_v1beta1_IngressClassSpec": {
       "type": "object",
       "properties": {
@@ -1618,8 +1671,8 @@
           "type": "string"
         },
         "parameters": {
-          "$ref": "#/definitions/kubernetes_core_TypedLocalObjectReference",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.TypedLocalObjectReference"
+          "$ref": "#/definitions/kubernetes_networking_v1beta1_IngressClassParametersReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1beta1.IngressClassParametersReference"
         }
       },
       "additionalProperties": true,
