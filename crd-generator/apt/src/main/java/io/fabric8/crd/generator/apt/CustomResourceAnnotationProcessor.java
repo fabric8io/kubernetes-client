@@ -18,6 +18,7 @@ package io.fabric8.crd.generator.apt;
 import io.fabric8.crd.generator.CRDGenerator;
 import io.fabric8.crd.generator.CRDGenerator.CRDOutput;
 import io.fabric8.crd.generator.CustomResourceInfo;
+import io.fabric8.crd.generator.utils.Types;
 import io.fabric8.kubernetes.api.Pluralize;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.client.CustomResource;
@@ -28,30 +29,19 @@ import io.fabric8.kubernetes.model.annotation.Plural;
 import io.fabric8.kubernetes.model.annotation.ShortNames;
 import io.fabric8.kubernetes.model.annotation.Singular;
 import io.fabric8.kubernetes.model.annotation.Version;
-import io.sundr.builder.TypedVisitor;
 import io.sundr.codegen.CodegenContext;
-import io.sundr.codegen.Constants;
 import io.sundr.codegen.functions.ClassTo;
 import io.sundr.codegen.functions.ElementTo;
 import io.sundr.codegen.model.ClassRef;
-import io.sundr.codegen.model.ClassRefBuilder;
 import io.sundr.codegen.model.TypeDef;
-import io.sundr.codegen.model.TypeDefBuilder;
-import io.sundr.codegen.model.TypeParamDef;
-import io.sundr.codegen.model.TypeParamRef;
 import io.sundr.codegen.model.TypeRef;
 import io.sundr.codegen.utils.TypeUtils;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
@@ -88,68 +78,25 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
     return false;
   }
 
-  /**
-   * Gets the definition of the {@link ClassRef} but projects type arguments to the definiton.
-   */
-  public TypeDef projectDefinition(ClassRef ref) {
-    List<TypeRef> arguments = ref.getArguments();
-    TypeDef definition = ref.getDefinition();
-    if (arguments.isEmpty()) {
-      return definition;
-    }
-
-    Map<String, TypeRef> genericMap = new HashMap<>();
-    for (int i=0; i < arguments.size(); i++) {
-      String name = definition.getParameters().get(i).getName();
-      TypeRef typeRef = ref.getArguments().get(i);
-      genericMap.put(name, typeRef);
-    }
-
-    definition.getParameters().stream().collect(Collectors.toMap(TypeParamDef::getName, TypeParamDef::getBounds));
-    return new TypeDefBuilder(definition)
-      .accept(new TypedVisitor<ClassRefBuilder>() {
-          @Override
-          public void visit(ClassRefBuilder c) {
-            List<TypeRef> arguments = new ArrayList<>();
-            for (TypeRef arg : c.buildArguments()) {
-              TypeRef mappedRef = arg;
-              if (arg instanceof TypeParamRef) {
-                TypeParamRef typeParamRef = (TypeParamRef) arg;
-                TypeRef mapping = genericMap.get(typeParamRef.getName());
-                if (mapping != null) {
-                  mappedRef = mapping;
-                }
-              }
-              arguments.add(mappedRef);
-            }
-            c.withArguments(arguments);
-          }
-        }).build();
-  }
-
   private static final String CUSTOM_RESOURCE_NAME = CustomResource.class.getCanonicalName();
   private CustomResourceInfo toCustomResourceInfo(TypeElement customResource) {
     final TypeDef definition = ElementTo.TYPEDEF.apply(customResource);
     final Name crClassName = customResource.getQualifiedName();
 
-    TypeRef specType = null;
     String specClassName = null;
     String statusClassName = null;
-    TypeRef statusType = null;
     boolean unreliable = true;
 
-
-    Set<ClassRef> superClasses = definition.getExtendsList().stream().flatMap(s -> Stream.concat(Stream.of(s), projectDefinition(s).getExtendsList().stream()))
-                                                                              .collect(Collectors.toSet());
+    Set<ClassRef> superClasses = Types.getSuperClasses(definition);
 
     Optional<ClassRef> optionalCustomResourceRef = superClasses.stream().filter(s -> s.getFullyQualifiedName().equals(CUSTOM_RESOURCE_NAME)).findFirst();
     if (optionalCustomResourceRef.isPresent()) {
       ClassRef customResourceRef = optionalCustomResourceRef.get();
       if (customResourceRef.getArguments().size() == 2) {
         unreliable = false;
-        specType = customResourceRef.getArguments().get(0);
+        TypeRef specType = customResourceRef.getArguments().get(0);
         specClassName = specType instanceof ClassRef ? ((ClassRef)specType).getFullyQualifiedName() : null;
-        statusType = customResourceRef.getArguments().get(1);
+        TypeRef statusType = customResourceRef.getArguments().get(1);
         statusClassName = statusType instanceof ClassRef ? ((ClassRef)statusType).getFullyQualifiedName() : null;
       }
     }
@@ -217,36 +164,6 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
     public void close() throws IOException {
       out.close();
     }
-  }
-
-  private static Optional<ClassRef> getCustomResourceRef(TypeDef typeDef) {
-    return superClassStream(typeDef)
-      .filter(s -> s.getDefinition().getFullyQualifiedName().equals(CustomResource.class.getName()))
-      .findFirst();
-  }
-
-  private static Optional<ClassRef> getCustomResourceSpec(Optional<ClassRef> customResourceRef) {
-    return getCustomResourceTypeParam(customResourceRef, 0);
-  }
-
-  private static Optional<ClassRef> getCustomResourceStatus(Optional<ClassRef> customResourceRef) {
-    return getCustomResourceTypeParam(customResourceRef, 1);
-  }
-
-  private static Optional<ClassRef> getCustomResourceTypeParam(Optional<ClassRef> customResourceRef,
-    int parameterIndex) {
-    return customResourceRef
-      .filter(c -> c.getArguments() != null && c.getArguments().size() == 2)
-      .map(c -> c.getArguments().get(parameterIndex))
-      .filter(t -> t instanceof ClassRef)
-      .map(t -> (ClassRef) t);
-  }
-
-  public static Stream<ClassRef> superClassStream(TypeDef typeDef) {
-    if (Constants.OBJECT.equals(typeDef)) {
-      return Stream.empty();
-    }
-    return typeDef.getExtendsList().stream().flatMap(s -> superClassStream(s.getDefinition()));
   }
 }
 

@@ -17,11 +17,14 @@ package io.fabric8.crd.generator.utils;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import io.fabric8.crd.example.basic.Basic;
 import io.fabric8.crd.example.webserver.WebServerWithStatusProperty;
 import io.sundr.codegen.functions.ClassTo;
+import io.sundr.codegen.model.ClassRef;
 import io.sundr.codegen.model.Property;
 import io.sundr.codegen.model.TypeDef;
 import java.util.Optional;
+import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 public class TypesTest {
@@ -31,6 +34,13 @@ public class TypesTest {
     TypeDef def = ClassTo.TYPEDEF.apply(WebServerWithStatusProperty.class);
     Optional<Property> p = Types.findStatusProperty(def);
     assertTrue(p.isPresent());
+  }
+  
+  @Test
+  public void findingSuperClassesShouldWork() {
+    TypeDef def = ClassTo.TYPEDEF.apply(Basic.class);
+    Set<ClassRef> superClasses = Types.getSuperClasses(def);
+    assertTrue(superClasses.stream().anyMatch(c -> c.getName().contains("CustomResource")));
   }
 
 }
