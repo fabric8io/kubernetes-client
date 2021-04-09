@@ -203,7 +203,7 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
     @Override
     public OutputStream outputFor(String crdFileName) throws IOException {
       yml = processingEnv.getFiler().createResource(StandardLocation.CLASS_OUTPUT, "",
-        "META-INF/fabric8/" + crdFileName);
+        "META-INF/fabric8/" + crdFileName + ".yml");
       out = yml.openOutputStream();
       return out;
     }
