@@ -13,7 +13,7 @@
 
 #### New Features
 * Add DSL Support for `apps/v1#ControllerRevision` resource
-
+* Add DSL support for CSIDriver, CSINode and VolumeAttachment
 
 #### _**Note**_: Breaking changes in the API
 ##### DSL Changes:
@@ -25,7 +25,6 @@
 ##### Model Changes:
 - Classes in `io.fabric8.kubernetes.api.model.batch` have been moved to `io.fabric8.kubernetes.api.model.batch.v1` and `io.fabric8.kubernetes.api.model.batch.v1beta1`
 - Classes in `io.fabric8.kubernetes.api.model.policy` have been moved to `io.fabric8.kubernetes.api.model.policy.v1` and `io.fabric8.kubernetes.api.model.policy.v1beta1`
-
 
 ### 5.3.0 (2021-04-08)
 

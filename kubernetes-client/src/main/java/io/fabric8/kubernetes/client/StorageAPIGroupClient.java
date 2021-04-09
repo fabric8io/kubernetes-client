@@ -15,12 +15,22 @@
  */
 package io.fabric8.kubernetes.client;
 
+import io.fabric8.kubernetes.api.model.storage.CSIDriver;
+import io.fabric8.kubernetes.api.model.storage.CSIDriverList;
+import io.fabric8.kubernetes.api.model.storage.CSINode;
+import io.fabric8.kubernetes.api.model.storage.CSINodeList;
 import io.fabric8.kubernetes.api.model.storage.StorageClass;
 import io.fabric8.kubernetes.api.model.storage.StorageClassList;
+import io.fabric8.kubernetes.api.model.storage.VolumeAttachment;
+import io.fabric8.kubernetes.api.model.storage.VolumeAttachmentList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.StorageAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.internal.storage.v1.CSIDriverOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.storage.v1.CSINodeOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.storage.v1.StorageClassOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.storage.v1.VolumeAttachmentOperationsImpl;
 import okhttp3.OkHttpClient;
 
 public class StorageAPIGroupClient extends BaseClient implements StorageAPIGroupDSL {
@@ -36,5 +46,20 @@ public class StorageAPIGroupClient extends BaseClient implements StorageAPIGroup
   @Override
   public MixedOperation<StorageClass, StorageClassList, Resource<StorageClass>> storageClasses() {
     return new StorageClassOperationsImpl(httpClient, getConfiguration());
+  }
+
+  @Override
+  public NonNamespaceOperation<CSIDriver, CSIDriverList, Resource<CSIDriver>> csiDrivers() {
+    return new CSIDriverOperationsImpl(httpClient, getConfiguration());
+  }
+
+  @Override
+  public NonNamespaceOperation<CSINode, CSINodeList, Resource<CSINode>> csiNodes() {
+    return new CSINodeOperationsImpl(httpClient, getConfiguration());
+  }
+
+  @Override
+  public NonNamespaceOperation<VolumeAttachment, VolumeAttachmentList, Resource<VolumeAttachment>> volumeAttachments() {
+    return new VolumeAttachmentOperationsImpl(httpClient, getConfiguration());
   }
 }
