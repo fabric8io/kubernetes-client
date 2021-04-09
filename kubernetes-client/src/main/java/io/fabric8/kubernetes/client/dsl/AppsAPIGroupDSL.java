@@ -16,6 +16,8 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
+import io.fabric8.kubernetes.api.model.apps.ControllerRevision;
+import io.fabric8.kubernetes.api.model.apps.ControllerRevisionList;
 import io.fabric8.kubernetes.api.model.apps.DaemonSet;
 import io.fabric8.kubernetes.api.model.apps.DaemonSetList;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
@@ -35,5 +37,12 @@ public interface AppsAPIGroupDSL extends Client {
   MixedOperation<ReplicaSet, ReplicaSetList, RollableScalableResource<ReplicaSet>> replicaSets();
 
   MixedOperation<StatefulSet, StatefulSetList, RollableScalableResource<StatefulSet>> statefulSets();
+
+  /**
+   * DSL entrypoint for ControllerRevision in api group apps/v1
+   *
+   * @return {@link MixedOperation} for ControllerRevision resource
+   */
+  MixedOperation<ControllerRevision, ControllerRevisionList, Resource<ControllerRevision>> controllerRevisions();
 
 }

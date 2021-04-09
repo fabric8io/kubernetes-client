@@ -12,6 +12,7 @@
 * Update Kubernetes Model to v1.21.0
 
 #### New Features
+* Add DSL Support for `apps/v1#ControllerRevision` resource
 
 
 #### _**Note**_: Breaking changes in the API
