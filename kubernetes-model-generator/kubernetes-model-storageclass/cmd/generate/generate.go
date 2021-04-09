@@ -62,6 +62,10 @@ type Schema struct {
   StorageClassList                         storageclassapi.StorageClassList
   VolumeAttachment                         storageclassapi.VolumeAttachment
   VolumeAttachmentList                     storageclassapi.VolumeAttachmentList
+  V1CSIDriver                              storageclassapi.CSIDriver
+  V1CSIDriverList                          storageclassapi.CSIDriverList
+  V1CSINode                                storageclassapi.CSINode
+  V1CSINodeList                            storageclassapi.CSINodeList
   CSIDriver                                storageclassapiv1beta1.CSIDriver
   CSIDriverList                            storageclassapiv1beta1.CSIDriverList
   CSINode                                  storageclassapiv1beta1.CSINode

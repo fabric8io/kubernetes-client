@@ -1727,6 +1727,209 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_storageclass_CSIDriver": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "storage.k8s.io/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "CSIDriver",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/kubernetes_storageclass_CSIDriverSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.storage.CSIDriverSpec"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.storage.CSIDriver",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "kubernetes_storageclass_CSIDriverList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "storage.k8s.io/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/kubernetes_storageclass_CSIDriver",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.storage.CSIDriver"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "CSIDriverList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.storage.CSIDriverList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.storage.CSIDriver\u003e"
+      ]
+    },
+    "kubernetes_storageclass_CSIDriverSpec": {
+      "type": "object",
+      "properties": {
+        "attachRequired": {
+          "type": "boolean"
+        },
+        "fsGroupPolicy": {
+          "type": "string"
+        },
+        "podInfoOnMount": {
+          "type": "boolean"
+        },
+        "requiresRepublish": {
+          "type": "boolean"
+        },
+        "storageCapacity": {
+          "type": "boolean"
+        },
+        "tokenRequests": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_storageclass_TokenRequest",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.storage.TokenRequest"
+          }
+        },
+        "volumeLifecycleModes": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.storage.CSIDriverSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_storageclass_CSINode": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "storage.k8s.io/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "CSINode",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/kubernetes_storageclass_CSINodeSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.storage.CSINodeSpec"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.storage.CSINode",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "kubernetes_storageclass_CSINodeDriver": {
+      "type": "object",
+      "properties": {
+        "allocatable": {
+          "$ref": "#/definitions/kubernetes_storageclass_VolumeNodeResources",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.storage.VolumeNodeResources"
+        },
+        "name": {
+          "type": "string"
+        },
+        "nodeID": {
+          "type": "string"
+        },
+        "topologyKeys": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.storage.CSINodeDriver",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_storageclass_CSINodeList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "storage.k8s.io/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/kubernetes_storageclass_CSINode",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.storage.CSINode"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "CSINodeList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.storage.CSINodeList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.storage.CSINode\u003e"
+      ]
+    },
+    "kubernetes_storageclass_CSINodeSpec": {
+      "type": "object",
+      "properties": {
+        "drivers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/kubernetes_storageclass_CSINodeDriver",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.storage.CSINodeDriver"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.storage.CSINodeSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_storageclass_StorageClass": {
       "type": "object",
       "properties": {
@@ -1817,6 +2020,23 @@
         "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.storage.StorageClass\u003e"
       ]
     },
+    "kubernetes_storageclass_TokenRequest": {
+      "type": "object",
+      "properties": {
+        "audience": {
+          "type": "string"
+        },
+        "expirationSeconds": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.storage.TokenRequest",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_storageclass_VolumeAttachment": {
       "type": "object",
       "properties": {
@@ -1846,8 +2066,7 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.storage.VolumeAttachment",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata",
-        "io.fabric8.kubernetes.api.model.Namespaced"
+        "io.fabric8.kubernetes.api.model.HasMetadata"
       ]
     },
     "kubernetes_storageclass_VolumeAttachmentList": {
@@ -1960,6 +2179,19 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.storage.VolumeError",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_storageclass_VolumeNodeResources": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.storage.VolumeNodeResources",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -2296,6 +2528,22 @@
       "$ref": "#/definitions/kubernetes_apimachinery_UpdateOptions",
       "existingJavaType": "io.fabric8.kubernetes.api.model.UpdateOptions"
     },
+    "V1CSIDriver": {
+      "$ref": "#/definitions/kubernetes_storageclass_CSIDriver",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.storage.CSIDriver"
+    },
+    "V1CSIDriverList": {
+      "$ref": "#/definitions/kubernetes_storageclass_CSIDriverList",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.storage.CSIDriverList"
+    },
+    "V1CSINode": {
+      "$ref": "#/definitions/kubernetes_storageclass_CSINode",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.storage.CSINode"
+    },
+    "V1CSINodeList": {
+      "$ref": "#/definitions/kubernetes_storageclass_CSINodeList",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.storage.CSINodeList"
+    },
     "VolumeAttachment": {
       "$ref": "#/definitions/kubernetes_storageclass_VolumeAttachment",
       "existingJavaType": "io.fabric8.kubernetes.api.model.storage.VolumeAttachment"
@@ -2497,7 +2745,7 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "storage.k8s.io/v1beta1",
+          "default": "storage.k8s.io/v1",
           "required": true
         },
         "kind": {
@@ -2510,8 +2758,8 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/kubernetes_storageclass_v1beta1_CSIDriverSpec",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriverSpec"
+          "$ref": "#/definitions/kubernetes_storageclass_CSIDriverSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.storage.CSIDriverSpec"
         }
       },
       "additionalProperties": true
@@ -2581,7 +2829,7 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "storage.k8s.io/v1beta1",
+          "default": "storage.k8s.io/v1",
           "required": true
         },
         "kind": {
@@ -2594,8 +2842,8 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/kubernetes_storageclass_v1beta1_CSINodeSpec",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSINodeSpec"
+          "$ref": "#/definitions/kubernetes_storageclass_CSINodeSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.storage.CSINodeSpec"
         }
       },
       "additionalProperties": true
@@ -2603,8 +2851,8 @@
     "csinodedriver": {
       "properties": {
         "allocatable": {
-          "$ref": "#/definitions/kubernetes_storageclass_v1beta1_VolumeNodeResources",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.VolumeNodeResources"
+          "$ref": "#/definitions/kubernetes_storageclass_VolumeNodeResources",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.storage.VolumeNodeResources"
         },
         "name": {
           "type": "string"
@@ -2625,14 +2873,14 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "storage.k8s.io/v1beta1",
+          "default": "storage.k8s.io/v1",
           "required": true
         },
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_storageclass_v1beta1_CSINode",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSINode"
+            "$ref": "#/definitions/kubernetes_storageclass_CSINode",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.storage.CSINode"
           }
         },
         "kind": {
@@ -2652,8 +2900,8 @@
         "drivers": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_storageclass_v1beta1_CSINodeDriver",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSINodeDriver"
+            "$ref": "#/definitions/kubernetes_storageclass_CSINodeDriver",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.storage.CSINodeDriver"
           }
         }
       },

@@ -278,7 +278,7 @@ class UtilsTest {
     assertFalse(Utils.isResourceNamespaced(CSIDriver.class));
     assertFalse(Utils.isResourceNamespaced(CSINode.class));
     assertFalse(Utils.isResourceNamespaced(StorageClass.class));
-    assertTrue(Utils.isResourceNamespaced(VolumeAttachment.class));
+    assertFalse(Utils.isResourceNamespaced(VolumeAttachment.class));
   }
 
   @Test

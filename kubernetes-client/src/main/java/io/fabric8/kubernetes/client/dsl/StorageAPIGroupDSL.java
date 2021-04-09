@@ -17,10 +17,37 @@ package io.fabric8.kubernetes.client.dsl;
 
 import io.fabric8.kubernetes.api.model.storage.StorageClass;
 import io.fabric8.kubernetes.api.model.storage.StorageClassList;
+import io.fabric8.kubernetes.api.model.storage.VolumeAttachment;
+import io.fabric8.kubernetes.api.model.storage.VolumeAttachmentList;
+import io.fabric8.kubernetes.api.model.storage.CSIDriver;
+import io.fabric8.kubernetes.api.model.storage.CSIDriverList;
+import io.fabric8.kubernetes.api.model.storage.CSINode;
+import io.fabric8.kubernetes.api.model.storage.CSINodeList;
 import io.fabric8.kubernetes.client.Client;
 
 public interface StorageAPIGroupDSL extends Client{
 
-  MixedOperation<StorageClass, StorageClassList, Resource<StorageClass>> storageClasses();
+  NonNamespaceOperation<StorageClass, StorageClassList, Resource<StorageClass>> storageClasses();
+
+  /**
+   * DSL entrypoint for storage.k8s.io/v1 CSIDriver
+   *
+   * @return {@link NonNamespaceOperation} for CSIDriver resource
+   */
+  NonNamespaceOperation<CSIDriver, CSIDriverList, Resource<CSIDriver>> csiDrivers();
+
+  /**
+   * DSL entrypoint for storage.k8s.io/v1 CSINode
+   *
+   * @return {@link NonNamespaceOperation} for CSINode resource
+   */
+  NonNamespaceOperation<CSINode, CSINodeList, Resource<CSINode>> csiNodes();
+
+  /**
+   * DSL entrypoint for storage.k8s.io/v1 VolumeAttachment
+   *
+   * @return {@link NonNamespaceOperation} for VolumeAttachment resource
+   */
+  NonNamespaceOperation<VolumeAttachment, VolumeAttachmentList, Resource<VolumeAttachment>> volumeAttachments();
 
 }
