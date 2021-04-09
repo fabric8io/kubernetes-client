@@ -116,11 +116,11 @@ public class CRDGenerator {
   }
 
   public static String getOutputName(String crdName, String crdSpecVersion) {
-    return crdName + "-" + crdSpecVersion + ".yml";
+    return crdName + "-" + crdSpecVersion;
   }
 
   public interface CRDOutput extends Closeable {
-    OutputStream outputFor(String crdFileName) throws IOException;
+    OutputStream outputFor(String crdName) throws IOException;
     URI crdURI();
   }
 
@@ -137,8 +137,8 @@ public class CRDGenerator {
     }
 
     @Override
-    public OutputStream outputFor(String crdFileName) throws IOException {
-      final File file = new File(dir, crdFileName);
+    public OutputStream outputFor(String crdName) throws IOException {
+      final File file = new File(dir, crdName + ".yml");
       uri = file.toURI();
       output = new FileOutputStream(file);
       return output;
