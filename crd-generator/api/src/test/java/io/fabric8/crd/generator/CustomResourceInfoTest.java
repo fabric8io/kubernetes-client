@@ -75,8 +75,8 @@ public class CustomResourceInfoTest {
     assertEquals(ClusteredCR.class.getCanonicalName(), info.crClassName()); // todo: should we actually use the type name here?
     assertEquals(Spec.class.getTypeName(), info.specClassName().get());
     assertEquals(Status.class.getTypeName(), info.statusClassName().get());
-    assertEquals(CustomResource.getSingular(ClusteredCR.class), info.singular());
-    assertEquals(CustomResource.getPlural(ClusteredCR.class), info.plural());
+    assertEquals(HasMetadata.getSingular(ClusteredCR.class), info.singular());
+    assertEquals(HasMetadata.getPlural(ClusteredCR.class), info.plural());
     assertEquals(CustomResource.getCRDName(ClusteredCR.class), info.crdName());
     assertArrayEquals(CustomResource.getShortNames(ClusteredCR.class), info.shortNames());
     assertEquals(true, info.served());
