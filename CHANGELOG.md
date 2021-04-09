@@ -9,6 +9,7 @@
 #### Improvements
 
 #### Dependency Upgrade
+* Update Kubernetes Model to v1.21.0
 
 #### New Features
 

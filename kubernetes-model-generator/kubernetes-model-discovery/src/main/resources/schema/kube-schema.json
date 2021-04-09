@@ -788,6 +788,10 @@
           "$ref": "#/definitions/kubernetes_discovery_v1beta1_EndpointConditions",
           "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointConditions"
         },
+        "hints": {
+          "$ref": "#/definitions/kubernetes_discovery_v1beta1_EndpointHints",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointHints"
+        },
         "hostname": {
           "type": "string"
         },
@@ -827,6 +831,24 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointConditions",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_discovery_v1beta1_EndpointHints": {
+      "type": "object",
+      "properties": {
+        "forZones": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_discovery_v1beta1_ForZone",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1beta1.ForZone"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointHints",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -927,6 +949,19 @@
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource",
         "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointSlice\u003e"
+      ]
+    },
+    "kubernetes_discovery_v1beta1_ForZone": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.discovery.v1beta1.ForZone",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     }
   },
