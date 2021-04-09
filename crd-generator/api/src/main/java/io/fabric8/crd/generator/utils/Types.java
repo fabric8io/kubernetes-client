@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.client.CustomResource;
 import io.sundr.builder.TypedVisitor;
 import io.sundr.codegen.functions.ClassTo;
 import io.sundr.codegen.model.ClassRef;
+import io.sundr.codegen.model.ClassRefBuilder;
 import io.sundr.codegen.model.Property;
 import io.sundr.codegen.model.PropertyBuilder;
 import io.sundr.codegen.model.TypeDef;
@@ -27,12 +28,14 @@ import io.sundr.codegen.model.TypeDefBuilder;
 import io.sundr.codegen.model.TypeParamDef;
 import io.sundr.codegen.model.TypeParamRef;
 import io.sundr.codegen.model.TypeRef;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -40,6 +43,7 @@ public class Types {
 
   private static final TypeDef NAMESPACED = ClassTo.TYPEDEF.apply(Namespaced.class);
   private static final TypeDef CUSTOM_RESOURCE = ClassTo.TYPEDEF.apply(CustomResource.class);
+  private static final Map<TypeDef, List<Property>> propertiesCache = new ConcurrentHashMap<>(7);
 
 
   /**
@@ -48,10 +52,17 @@ public class Types {
    * @return A list with all properties.
    */
   public static List<Property> allProperties(TypeDef typeDef) {
-    return unrollHierarchy(typeDef)
+    List<Property> properties = propertiesCache.get(typeDef);
+    if(properties != null) {
+      return properties;
+    }
+
+    properties = unrollHierarchy(typeDef)
       .stream()
       .flatMap(h -> h.getProperties().stream())
       .collect(Collectors.toList());
+    propertiesCache.put(typeDef, properties);
+    return properties;
   }
 
   /**
@@ -118,6 +129,53 @@ public class Types {
     return new TypeDefBuilder(definition).build();
   }
 
+
+  /**
+   * Gets the definition of the {@link ClassRef} but projects type arguments to the definiton.
+   */
+  public static TypeDef projectDefinition(ClassRef ref) {
+    List<TypeRef> arguments = ref.getArguments();
+    TypeDef definition = ref.getDefinition();
+    if (arguments.isEmpty()) {
+      return definition;
+    }
+
+    Map<String, TypeRef> genericMap = new HashMap<>();
+    for (int i = 0; i < arguments.size(); i++) {
+      String name = definition.getParameters().get(i).getName();
+      TypeRef typeRef = ref.getArguments().get(i);
+      genericMap.put(name, typeRef);
+    }
+
+    definition.getParameters().stream()
+      .collect(Collectors.toMap(TypeParamDef::getName, TypeParamDef::getBounds));
+    return new TypeDefBuilder(definition)
+      .accept(new TypedVisitor<ClassRefBuilder>() {
+        @Override
+        public void visit(ClassRefBuilder c) {
+          List<TypeRef> arguments = new ArrayList<>();
+          for (TypeRef arg : c.buildArguments()) {
+            TypeRef mappedRef = arg;
+            if (arg instanceof TypeParamRef) {
+              TypeParamRef typeParamRef = (TypeParamRef) arg;
+              TypeRef mapping = genericMap.get(typeParamRef.getName());
+              if (mapping != null) {
+                mappedRef = mapping;
+              }
+            }
+            arguments.add(mappedRef);
+          }
+          c.withArguments(arguments);
+        }
+      }).build();
+  }
+  
+  public static Set<ClassRef> getSuperClasses(TypeDef definition) {
+    List<ClassRef> extendsList = definition.getExtendsList();
+    return extendsList.stream()
+      .flatMap(s -> Stream.concat(Stream.of(s), projectDefinition(s).getExtendsList().stream()))
+      .collect(Collectors.toSet());
+  }
 
   public static boolean isNamespaced(TypeDef definition) {
     return isNamespaced(definition, new HashSet<TypeDef>());
