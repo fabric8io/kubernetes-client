@@ -15,6 +15,8 @@
  */
 package io.fabric8.kubernetes.client;
 
+import io.fabric8.kubernetes.api.model.apps.ControllerRevision;
+import io.fabric8.kubernetes.api.model.apps.ControllerRevisionList;
 import io.fabric8.kubernetes.api.model.apps.DaemonSet;
 import io.fabric8.kubernetes.api.model.apps.DaemonSetList;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
@@ -27,6 +29,7 @@ import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.AppsAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.internal.apps.v1.ControllerRevisionOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.DaemonSetOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.DeploymentOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.ReplicaSetOperationsImpl;
@@ -62,5 +65,10 @@ public class AppsAPIGroupClient extends BaseClient implements AppsAPIGroupDSL {
   @Override
   public MixedOperation<StatefulSet, StatefulSetList, RollableScalableResource<StatefulSet>> statefulSets() {
     return new StatefulSetOperationsImpl(httpClient, getConfiguration());
+  }
+
+  @Override
+  public MixedOperation<ControllerRevision, ControllerRevisionList, Resource<ControllerRevision>> controllerRevisions() {
+    return new ControllerRevisionOperationsImpl(httpClient, getConfiguration());
   }
 }

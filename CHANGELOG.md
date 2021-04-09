@@ -9,6 +9,7 @@
 #### Dependency Upgrade
 
 #### New Features
+* Add DSL Support for `apps/v1#ControllerRevision` resource
 
 ### 5.3.0 (2021-04-08)
 
