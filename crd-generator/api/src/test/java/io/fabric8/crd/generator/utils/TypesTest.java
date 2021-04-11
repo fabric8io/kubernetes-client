@@ -16,11 +16,13 @@
 package io.fabric8.crd.generator.utils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import io.fabric8.crd.example.basic.Basic;
 import io.fabric8.crd.example.basic.BasicSpec;
 import io.fabric8.crd.example.basic.BasicStatus;
+import io.fabric8.crd.example.person.Person;
 import io.fabric8.crd.example.webserver.WebServerWithStatusProperty;
 import io.sundr.codegen.functions.ClassTo;
 import io.sundr.codegen.model.ClassRef;
@@ -67,4 +69,11 @@ public class TypesTest {
     assertTrue(parameters.get(1).getName().contains(BasicStatus.class.getSimpleName()));
   }
 
+  @Test
+  public void isNamespacedShouldWork() {
+    TypeDef def = ClassTo.TYPEDEF.apply(Basic.class);
+    assertTrue(Types.isNamespaced(def));
+    def = ClassTo.TYPEDEF.apply(Person.class);
+    assertFalse(Types.isNamespaced(def));
+  }
 }
