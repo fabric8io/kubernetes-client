@@ -131,7 +131,7 @@ public class Types {
 
 
   /**
-   * Gets the definition of the {@link ClassRef} but projects type arguments to the definiton.
+   * Gets the definition of the {@link ClassRef} but projects type arguments to the definition.
    */
   public static TypeDef projectDefinition(ClassRef ref) {
     List<TypeRef> arguments = ref.getArguments();
