@@ -19,6 +19,7 @@ import io.fabric8.crd.generator.AbstractCustomResourceHandler;
 import io.fabric8.crd.generator.CustomResourceInfo;
 import io.fabric8.crd.generator.Resources;
 import io.fabric8.crd.generator.decorator.Decorator;
+import io.fabric8.crd.generator.utils.Types;
 import io.fabric8.crd.generator.v1.decorator.AddAdditionPrinterColumnDecorator;
 import io.fabric8.crd.generator.v1.decorator.AddCustomResourceDefinitionResourceDecorator;
 import io.fabric8.crd.generator.v1.decorator.AddCustomResourceDefinitionVersionDecorator;
@@ -78,7 +79,7 @@ public class CustomResourceHandler extends AbstractCustomResourceHandler {
       resources.decorate(new AddLabelSelectorPathDecorator(name, version, path));
     });
 
-    if (statusReplicasPath.isPresent()) {
+    if (Types.findStatusProperty(def).isPresent()) {
       resources.decorate(new AddSubresourcesDecorator(name, version));
       resources.decorate(new AddStatusSubresourceDecorator(name, version));
     }
