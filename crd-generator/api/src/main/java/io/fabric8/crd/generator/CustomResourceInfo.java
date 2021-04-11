@@ -122,9 +122,6 @@ public class CustomResourceInfo {
   }
 
   private final static String TYPE_NAME = CustomResource.class.getTypeName();
-  private final static String VOID_TYPE_NAME = Void.class.getTypeName();
-
-
   public static CustomResourceInfo fromClass(Class<? extends CustomResource> customResource) {
     try {
       final CustomResource instance = customResource.getDeclaredConstructor().newInstance();
