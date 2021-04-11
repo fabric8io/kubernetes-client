@@ -34,6 +34,10 @@ public class TypesTest {
     TypeDef def = ClassTo.TYPEDEF.apply(WebServerWithStatusProperty.class);
     Optional<Property> p = Types.findStatusProperty(def);
     assertTrue(p.isPresent());
+
+    def = ClassTo.TYPEDEF.apply(Basic.class);
+    p = Types.findStatusProperty(def);
+    assertTrue(p.isPresent());
   }
   
   @Test
