@@ -15,7 +15,7 @@
  */
 package io.fabric8.crd.generator;
 
-import io.fabric8.kubernetes.api.model.Namespaced;
+import io.fabric8.crd.generator.utils.Types;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.model.Scope;
@@ -24,7 +24,6 @@ import io.sundr.codegen.model.TypeDef;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.Arrays;
 import java.util.Optional;
 
 public class CustomResourceInfo {
@@ -128,12 +127,10 @@ public class CustomResourceInfo {
 
       final String[] shortNames = CustomResource.getShortNames(customResource);
 
-      final Scope scope = Arrays.stream(customResource.getInterfaces())
-        .filter(t -> t.getTypeName().equals(Namespaced.class.getTypeName()))
-        .findFirst().map(t -> Scope.NAMESPACED).orElse(Scope.CLUSTER);
-
       final TypeDef definition = ClassTo.TYPEDEF.apply(customResource);
-      
+
+      final Scope scope = Types.isNamespaced(definition) ? Scope.NAMESPACED : Scope.CLUSTER;
+
       // walk the type hierarchy until we reach CustomResource or a ParameterizedType
       Type genericSuperclass = customResource.getGenericSuperclass();
       String typeName = genericSuperclass.getTypeName();
