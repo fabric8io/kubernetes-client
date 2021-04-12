@@ -15,10 +15,10 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.api.model.policy.PodDisruptionBudget;
-import io.fabric8.kubernetes.api.model.policy.PodDisruptionBudgetList;
-import io.fabric8.kubernetes.api.model.policy.PodSecurityPolicy;
-import io.fabric8.kubernetes.api.model.policy.PodSecurityPolicyList;
+import io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudget;
+import io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudgetList;
+import io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicy;
+import io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicyList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.PolicyAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.Resource;

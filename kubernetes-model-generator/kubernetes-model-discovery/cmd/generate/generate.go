@@ -26,6 +26,7 @@ import (
   kapi "k8s.io/api/core/v1"
 
   discovery "k8s.io/api/discovery/v1beta1"
+  discoveryv1 "k8s.io/api/discovery/v1"
 
   "log"
   "reflect"
@@ -60,6 +61,8 @@ type Schema struct {
   DiscoveryEndpointPort                    discovery.EndpointPort
   EndpointSlice                            discovery.EndpointSlice
   EndpointSliceList                        discovery.EndpointSliceList
+  V1EndpointSlice                          discoveryv1.EndpointSlice
+  V1EndpointSliceList                      discoveryv1.EndpointSliceList
 }
 
 func main() {
@@ -70,6 +73,7 @@ func main() {
     {"k8s.io/apimachinery/pkg/apis/meta/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_", false},
     {"k8s.io/api/core/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_core_", false},
     {"k8s.io/api/discovery/v1beta1", "discovery.k8s.io", "io.fabric8.kubernetes.api.model.discovery.v1beta1", "kubernetes_discovery_v1beta1_", true},
+    {"k8s.io/api/discovery/v1", "discovery.k8s.io", "io.fabric8.kubernetes.api.model.discovery.v1", "kubernetes_discovery_v1_", true},
   }
 
   typeMap := map[reflect.Type]reflect.Type{

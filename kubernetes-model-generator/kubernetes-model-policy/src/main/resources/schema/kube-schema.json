@@ -895,138 +895,12 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_policy_AllowedCSIDriver": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.policy.AllowedCSIDriver",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_policy_AllowedFlexVolume": {
-      "type": "object",
-      "properties": {
-        "driver": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.policy.AllowedFlexVolume",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_policy_AllowedHostPath": {
-      "type": "object",
-      "properties": {
-        "pathPrefix": {
-          "type": "string"
-        },
-        "readOnly": {
-          "type": "boolean"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.policy.AllowedHostPath",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_policy_Eviction": {
+    "kubernetes_policy_v1_PodDisruptionBudget": {
       "type": "object",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "policy/v1beta1",
-          "required": true
-        },
-        "deleteOptions": {
-          "$ref": "#/definitions/kubernetes_apimachinery_DeleteOptions",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.DeleteOptions"
-        },
-        "kind": {
-          "type": "string",
-          "default": "Eviction",
-          "required": true
-        },
-        "metadata": {
-          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.policy.Eviction",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata",
-        "io.fabric8.kubernetes.api.model.Namespaced"
-      ]
-    },
-    "kubernetes_policy_FSGroupStrategyOptions": {
-      "type": "object",
-      "properties": {
-        "ranges": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "$ref": "#/definitions/kubernetes_policy_IDRange",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.policy.IDRange"
-          }
-        },
-        "rule": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.policy.FSGroupStrategyOptions",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_policy_HostPortRange": {
-      "type": "object",
-      "properties": {
-        "max": {
-          "type": "integer"
-        },
-        "min": {
-          "type": "integer"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.policy.HostPortRange",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_policy_IDRange": {
-      "type": "object",
-      "properties": {
-        "max": {
-          "type": "integer",
-          "existingJavaType": "Long"
-        },
-        "min": {
-          "type": "integer",
-          "existingJavaType": "Long"
-        }
-      },
-      "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.policy.IDRange",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
-    "kubernetes_policy_PodDisruptionBudget": {
-      "type": "object",
-      "properties": {
-        "apiVersion": {
-          "type": "string",
-          "default": "policy/v1beta1",
+          "default": "policy/v1",
           "required": true
         },
         "kind": {
@@ -1039,34 +913,34 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/kubernetes_policy_PodDisruptionBudgetSpec",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.policy.PodDisruptionBudgetSpec"
+          "$ref": "#/definitions/kubernetes_policy_v1_PodDisruptionBudgetSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1.PodDisruptionBudgetSpec"
         },
         "status": {
-          "$ref": "#/definitions/kubernetes_policy_PodDisruptionBudgetStatus",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.policy.PodDisruptionBudgetStatus"
+          "$ref": "#/definitions/kubernetes_policy_v1_PodDisruptionBudgetStatus",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1.PodDisruptionBudgetStatus"
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.policy.PodDisruptionBudget",
+      "javaType": "io.fabric8.kubernetes.api.model.policy.v1.PodDisruptionBudget",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.HasMetadata",
         "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
-    "kubernetes_policy_PodDisruptionBudgetList": {
+    "kubernetes_policy_v1_PodDisruptionBudgetList": {
       "type": "object",
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "policy/v1beta1",
+          "default": "policy/v1",
           "required": true
         },
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_policy_PodDisruptionBudget",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.policy.PodDisruptionBudget"
+            "$ref": "#/definitions/kubernetes_policy_v1_PodDisruptionBudget",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1.PodDisruptionBudget"
           }
         },
         "kind": {
@@ -1080,13 +954,13 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.policy.PodDisruptionBudgetList",
+      "javaType": "io.fabric8.kubernetes.api.model.policy.v1.PodDisruptionBudgetList",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource",
-        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.policy.PodDisruptionBudget\u003e"
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.policy.v1.PodDisruptionBudget\u003e"
       ]
     },
-    "kubernetes_policy_PodDisruptionBudgetSpec": {
+    "kubernetes_policy_v1_PodDisruptionBudgetSpec": {
       "type": "object",
       "properties": {
         "maxUnavailable": {
@@ -1103,12 +977,12 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.policy.PodDisruptionBudgetSpec",
+      "javaType": "io.fabric8.kubernetes.api.model.policy.v1.PodDisruptionBudgetSpec",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_policy_PodDisruptionBudgetStatus": {
+    "kubernetes_policy_v1_PodDisruptionBudgetStatus": {
       "type": "object",
       "properties": {
         "conditions": {
@@ -1145,12 +1019,267 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.policy.PodDisruptionBudgetStatus",
+      "javaType": "io.fabric8.kubernetes.api.model.policy.v1.PodDisruptionBudgetStatus",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_policy_PodSecurityPolicy": {
+    "kubernetes_policy_v1beta1_AllowedCSIDriver": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.AllowedCSIDriver",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_policy_v1beta1_AllowedFlexVolume": {
+      "type": "object",
+      "properties": {
+        "driver": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.AllowedFlexVolume",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_policy_v1beta1_AllowedHostPath": {
+      "type": "object",
+      "properties": {
+        "pathPrefix": {
+          "type": "string"
+        },
+        "readOnly": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.AllowedHostPath",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_policy_v1beta1_Eviction": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "policy/v1beta1",
+          "required": true
+        },
+        "deleteOptions": {
+          "$ref": "#/definitions/kubernetes_apimachinery_DeleteOptions",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.DeleteOptions"
+        },
+        "kind": {
+          "type": "string",
+          "default": "Eviction",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.Eviction",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "kubernetes_policy_v1beta1_FSGroupStrategyOptions": {
+      "type": "object",
+      "properties": {
+        "ranges": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_policy_v1beta1_IDRange",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.IDRange"
+          }
+        },
+        "rule": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.FSGroupStrategyOptions",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_policy_v1beta1_HostPortRange": {
+      "type": "object",
+      "properties": {
+        "max": {
+          "type": "integer"
+        },
+        "min": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.HostPortRange",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_policy_v1beta1_IDRange": {
+      "type": "object",
+      "properties": {
+        "max": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "min": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.IDRange",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_policy_v1beta1_PodDisruptionBudget": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "policy/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "PodDisruptionBudget",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/kubernetes_policy_v1beta1_PodDisruptionBudgetSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudgetSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/kubernetes_policy_v1beta1_PodDisruptionBudgetStatus",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudgetStatus"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudget",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "kubernetes_policy_v1beta1_PodDisruptionBudgetList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "policy/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/kubernetes_policy_v1beta1_PodDisruptionBudget",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudget"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "PodDisruptionBudgetList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudgetList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudget\u003e"
+      ]
+    },
+    "kubernetes_policy_v1beta1_PodDisruptionBudgetSpec": {
+      "type": "object",
+      "properties": {
+        "maxUnavailable": {
+          "$ref": "#/definitions/kubernetes_apimachinery_pkg_util_intstr_IntOrString",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.IntOrString"
+        },
+        "minAvailable": {
+          "$ref": "#/definitions/kubernetes_apimachinery_pkg_util_intstr_IntOrString",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.IntOrString"
+        },
+        "selector": {
+          "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudgetSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_policy_v1beta1_PodDisruptionBudgetStatus": {
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_apimachinery_Condition",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.Condition"
+          }
+        },
+        "currentHealthy": {
+          "type": "integer"
+        },
+        "desiredHealthy": {
+          "type": "integer"
+        },
+        "disruptedPods": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/kubernetes_apimachinery_Time",
+            "existingJavaType": "String"
+          },
+          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+        },
+        "disruptionsAllowed": {
+          "type": "integer"
+        },
+        "expectedPods": {
+          "type": "integer"
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudgetStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_policy_v1beta1_PodSecurityPolicy": {
       "type": "object",
       "properties": {
         "apiVersion": {
@@ -1168,17 +1297,17 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/kubernetes_policy_PodSecurityPolicySpec",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.policy.PodSecurityPolicySpec"
+          "$ref": "#/definitions/kubernetes_policy_v1beta1_PodSecurityPolicySpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicySpec"
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.policy.PodSecurityPolicy",
+      "javaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicy",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.HasMetadata"
       ]
     },
-    "kubernetes_policy_PodSecurityPolicyList": {
+    "kubernetes_policy_v1beta1_PodSecurityPolicyList": {
       "type": "object",
       "properties": {
         "apiVersion": {
@@ -1189,8 +1318,8 @@
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_policy_PodSecurityPolicy",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.policy.PodSecurityPolicy"
+            "$ref": "#/definitions/kubernetes_policy_v1beta1_PodSecurityPolicy",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicy"
           }
         },
         "kind": {
@@ -1204,13 +1333,13 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.policy.PodSecurityPolicyList",
+      "javaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicyList",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource",
-        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.policy.PodSecurityPolicy\u003e"
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicy\u003e"
       ]
     },
-    "kubernetes_policy_PodSecurityPolicySpec": {
+    "kubernetes_policy_v1beta1_PodSecurityPolicySpec": {
       "type": "object",
       "properties": {
         "allowPrivilegeEscalation": {
@@ -1220,8 +1349,8 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_policy_AllowedCSIDriver",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.policy.AllowedCSIDriver"
+            "$ref": "#/definitions/kubernetes_policy_v1beta1_AllowedCSIDriver",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.AllowedCSIDriver"
           }
         },
         "allowedCapabilities": {
@@ -1235,16 +1364,16 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_policy_AllowedFlexVolume",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.policy.AllowedFlexVolume"
+            "$ref": "#/definitions/kubernetes_policy_v1beta1_AllowedFlexVolume",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.AllowedFlexVolume"
           }
         },
         "allowedHostPaths": {
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_policy_AllowedHostPath",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.policy.AllowedHostPath"
+            "$ref": "#/definitions/kubernetes_policy_v1beta1_AllowedHostPath",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.AllowedHostPath"
           }
         },
         "allowedProcMountTypes": {
@@ -1279,8 +1408,8 @@
           }
         },
         "fsGroup": {
-          "$ref": "#/definitions/kubernetes_policy_FSGroupStrategyOptions",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.policy.FSGroupStrategyOptions"
+          "$ref": "#/definitions/kubernetes_policy_v1beta1_FSGroupStrategyOptions",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.FSGroupStrategyOptions"
         },
         "hostIPC": {
           "type": "boolean"
@@ -1295,8 +1424,8 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_policy_HostPortRange",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.policy.HostPortRange"
+            "$ref": "#/definitions/kubernetes_policy_v1beta1_HostPortRange",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.HostPortRange"
           }
         },
         "privileged": {
@@ -1313,24 +1442,24 @@
           }
         },
         "runAsGroup": {
-          "$ref": "#/definitions/kubernetes_policy_RunAsGroupStrategyOptions",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.policy.RunAsGroupStrategyOptions"
+          "$ref": "#/definitions/kubernetes_policy_v1beta1_RunAsGroupStrategyOptions",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.RunAsGroupStrategyOptions"
         },
         "runAsUser": {
-          "$ref": "#/definitions/kubernetes_policy_RunAsUserStrategyOptions",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.policy.RunAsUserStrategyOptions"
+          "$ref": "#/definitions/kubernetes_policy_v1beta1_RunAsUserStrategyOptions",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.RunAsUserStrategyOptions"
         },
         "runtimeClass": {
-          "$ref": "#/definitions/kubernetes_policy_RuntimeClassStrategyOptions",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.policy.RuntimeClassStrategyOptions"
+          "$ref": "#/definitions/kubernetes_policy_v1beta1_RuntimeClassStrategyOptions",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.RuntimeClassStrategyOptions"
         },
         "seLinux": {
-          "$ref": "#/definitions/kubernetes_policy_SELinuxStrategyOptions",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.policy.SELinuxStrategyOptions"
+          "$ref": "#/definitions/kubernetes_policy_v1beta1_SELinuxStrategyOptions",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.SELinuxStrategyOptions"
         },
         "supplementalGroups": {
-          "$ref": "#/definitions/kubernetes_policy_SupplementalGroupsStrategyOptions",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.policy.SupplementalGroupsStrategyOptions"
+          "$ref": "#/definitions/kubernetes_policy_v1beta1_SupplementalGroupsStrategyOptions",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.SupplementalGroupsStrategyOptions"
         },
         "volumes": {
           "type": "array",
@@ -1341,20 +1470,20 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.policy.PodSecurityPolicySpec",
+      "javaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicySpec",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_policy_RunAsGroupStrategyOptions": {
+    "kubernetes_policy_v1beta1_RunAsGroupStrategyOptions": {
       "type": "object",
       "properties": {
         "ranges": {
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_policy_IDRange",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.policy.IDRange"
+            "$ref": "#/definitions/kubernetes_policy_v1beta1_IDRange",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.IDRange"
           }
         },
         "rule": {
@@ -1362,20 +1491,20 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.policy.RunAsGroupStrategyOptions",
+      "javaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.RunAsGroupStrategyOptions",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_policy_RunAsUserStrategyOptions": {
+    "kubernetes_policy_v1beta1_RunAsUserStrategyOptions": {
       "type": "object",
       "properties": {
         "ranges": {
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_policy_IDRange",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.policy.IDRange"
+            "$ref": "#/definitions/kubernetes_policy_v1beta1_IDRange",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.IDRange"
           }
         },
         "rule": {
@@ -1383,12 +1512,12 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.policy.RunAsUserStrategyOptions",
+      "javaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.RunAsUserStrategyOptions",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_policy_RuntimeClassStrategyOptions": {
+    "kubernetes_policy_v1beta1_RuntimeClassStrategyOptions": {
       "type": "object",
       "properties": {
         "allowedRuntimeClassNames": {
@@ -1402,12 +1531,12 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.policy.RuntimeClassStrategyOptions",
+      "javaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.RuntimeClassStrategyOptions",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_policy_SELinuxStrategyOptions": {
+    "kubernetes_policy_v1beta1_SELinuxStrategyOptions": {
       "type": "object",
       "properties": {
         "rule": {
@@ -1419,20 +1548,20 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.policy.SELinuxStrategyOptions",
+      "javaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.SELinuxStrategyOptions",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "kubernetes_policy_SupplementalGroupsStrategyOptions": {
+    "kubernetes_policy_v1beta1_SupplementalGroupsStrategyOptions": {
       "type": "object",
       "properties": {
         "ranges": {
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_policy_IDRange",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.policy.IDRange"
+            "$ref": "#/definitions/kubernetes_policy_v1beta1_IDRange",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.IDRange"
           }
         },
         "rule": {
@@ -1440,7 +1569,7 @@
         }
       },
       "additionalProperties": true,
-      "javaType": "io.fabric8.kubernetes.api.model.policy.SupplementalGroupsStrategyOptions",
+      "javaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.SupplementalGroupsStrategyOptions",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1469,8 +1598,8 @@
       "existingJavaType": "io.fabric8.kubernetes.api.model.DeleteOptions"
     },
     "Eviction": {
-      "$ref": "#/definitions/kubernetes_policy_Eviction",
-      "existingJavaType": "io.fabric8.kubernetes.api.model.policy.Eviction"
+      "$ref": "#/definitions/kubernetes_policy_v1beta1_Eviction",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.Eviction"
     },
     "GetOptions": {
       "$ref": "#/definitions/kubernetes_apimachinery_GetOptions",
@@ -1481,8 +1610,8 @@
       "existingJavaType": "io.fabric8.kubernetes.api.model.version.Info"
     },
     "KubernetesRunAsUserStrategyOptions": {
-      "$ref": "#/definitions/kubernetes_policy_RunAsUserStrategyOptions",
-      "existingJavaType": "io.fabric8.kubernetes.api.model.policy.RunAsUserStrategyOptions"
+      "$ref": "#/definitions/kubernetes_policy_v1beta1_RunAsUserStrategyOptions",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.RunAsUserStrategyOptions"
     },
     "ListOptions": {
       "$ref": "#/definitions/kubernetes_apimachinery_ListOptions",
@@ -1505,20 +1634,20 @@
       "existingJavaType": "io.fabric8.kubernetes.api.model.PatchOptions"
     },
     "PodDisruptionBudget": {
-      "$ref": "#/definitions/kubernetes_policy_PodDisruptionBudget",
-      "existingJavaType": "io.fabric8.kubernetes.api.model.policy.PodDisruptionBudget"
+      "$ref": "#/definitions/kubernetes_policy_v1beta1_PodDisruptionBudget",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudget"
     },
     "PodDisruptionBudgetList": {
-      "$ref": "#/definitions/kubernetes_policy_PodDisruptionBudgetList",
-      "existingJavaType": "io.fabric8.kubernetes.api.model.policy.PodDisruptionBudgetList"
+      "$ref": "#/definitions/kubernetes_policy_v1beta1_PodDisruptionBudgetList",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudgetList"
     },
     "PodSecurityPolicy": {
-      "$ref": "#/definitions/kubernetes_policy_PodSecurityPolicy",
-      "existingJavaType": "io.fabric8.kubernetes.api.model.policy.PodSecurityPolicy"
+      "$ref": "#/definitions/kubernetes_policy_v1beta1_PodSecurityPolicy",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicy"
     },
     "PodSecurityPolicyList": {
-      "$ref": "#/definitions/kubernetes_policy_PodSecurityPolicyList",
-      "existingJavaType": "io.fabric8.kubernetes.api.model.policy.PodSecurityPolicyList"
+      "$ref": "#/definitions/kubernetes_policy_v1beta1_PodSecurityPolicyList",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicyList"
     },
     "Quantity": {
       "$ref": "#/definitions/k8s_io_apimachinery_pkg_api_resource_Quantity",
@@ -1543,6 +1672,14 @@
     "UpdateOptions": {
       "$ref": "#/definitions/kubernetes_apimachinery_UpdateOptions",
       "existingJavaType": "io.fabric8.kubernetes.api.model.UpdateOptions"
+    },
+    "V1PodDisruptionBudget": {
+      "$ref": "#/definitions/kubernetes_policy_v1_PodDisruptionBudget",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1.PodDisruptionBudget"
+    },
+    "V1PodDisruptionBudgetList": {
+      "$ref": "#/definitions/kubernetes_policy_v1_PodDisruptionBudgetList",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1.PodDisruptionBudgetList"
     }
   },
   "additionalProperties": true

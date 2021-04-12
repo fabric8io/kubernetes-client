@@ -775,6 +775,198 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_discovery_v1_Endpoint": {
+      "type": "object",
+      "properties": {
+        "addresses": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "conditions": {
+          "$ref": "#/definitions/kubernetes_discovery_v1_EndpointConditions",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1.EndpointConditions"
+        },
+        "deprecatedTopology": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+        },
+        "hints": {
+          "$ref": "#/definitions/kubernetes_discovery_v1_EndpointHints",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1.EndpointHints"
+        },
+        "hostname": {
+          "type": "string"
+        },
+        "nodeName": {
+          "type": "string"
+        },
+        "targetRef": {
+          "$ref": "#/definitions/kubernetes_core_ObjectReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+        },
+        "zone": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.discovery.v1.Endpoint",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_discovery_v1_EndpointConditions": {
+      "type": "object",
+      "properties": {
+        "ready": {
+          "type": "boolean"
+        },
+        "serving": {
+          "type": "boolean"
+        },
+        "terminating": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.discovery.v1.EndpointConditions",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_discovery_v1_EndpointHints": {
+      "type": "object",
+      "properties": {
+        "forZones": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_discovery_v1_ForZone",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1.ForZone"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.discovery.v1.EndpointHints",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_discovery_v1_EndpointPort": {
+      "type": "object",
+      "properties": {
+        "appProtocol": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 63,
+          "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
+        },
+        "port": {
+          "type": "integer"
+        },
+        "protocol": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.discovery.v1.EndpointPort",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_discovery_v1_EndpointSlice": {
+      "type": "object",
+      "properties": {
+        "addressType": {
+          "type": "string"
+        },
+        "apiVersion": {
+          "type": "string",
+          "default": "discovery.k8s.io/v1",
+          "required": true
+        },
+        "endpoints": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/kubernetes_discovery_v1_Endpoint",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1.Endpoint"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "EndpointSlice",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "ports": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/kubernetes_discovery_v1_EndpointPort",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1.EndpointPort"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.discovery.v1.EndpointSlice",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "kubernetes_discovery_v1_EndpointSliceList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "discovery.k8s.io/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/kubernetes_discovery_v1_EndpointSlice",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1.EndpointSlice"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "EndpointSliceList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.discovery.v1.EndpointSliceList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.discovery.v1.EndpointSlice\u003e"
+      ]
+    },
+    "kubernetes_discovery_v1_ForZone": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.discovery.v1.ForZone",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_discovery_v1beta1_Endpoint": {
       "type": "object",
       "properties": {
@@ -1050,6 +1242,14 @@
     "UpdateOptions": {
       "$ref": "#/definitions/kubernetes_apimachinery_UpdateOptions",
       "existingJavaType": "io.fabric8.kubernetes.api.model.UpdateOptions"
+    },
+    "V1EndpointSlice": {
+      "$ref": "#/definitions/kubernetes_discovery_v1_EndpointSlice",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1.EndpointSlice"
+    },
+    "V1EndpointSliceList": {
+      "$ref": "#/definitions/kubernetes_discovery_v1_EndpointSliceList",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1.EndpointSliceList"
     }
   },
   "additionalProperties": true
