@@ -18,9 +18,9 @@ package io.fabric8.kubernetes;
 
 import io.fabric8.commons.ClusterEntity;
 import io.fabric8.commons.DeleteEntity;
-import io.fabric8.kubernetes.api.model.policy.PodSecurityPolicy;
-import io.fabric8.kubernetes.api.model.policy.PodSecurityPolicyBuilder;
-import io.fabric8.kubernetes.api.model.policy.PodSecurityPolicyList;
+import io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicy;
+import io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicyBuilder;
+import io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicyList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;

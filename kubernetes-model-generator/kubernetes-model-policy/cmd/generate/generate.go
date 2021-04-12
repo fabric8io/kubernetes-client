@@ -26,6 +26,7 @@ import (
   kapi "k8s.io/api/core/v1"
 
   policy "k8s.io/api/policy/v1beta1"
+  v1policy "k8s.io/api/policy/v1"
 
   "log"
   "reflect"
@@ -63,6 +64,8 @@ type Schema struct {
   PodDisruptionBudget                      policy.PodDisruptionBudget
   PodDisruptionBudgetList                  policy.PodDisruptionBudgetList
   Eviction                                 policy.Eviction
+  V1PodDisruptionBudget                    v1policy.PodDisruptionBudget
+  V1PodDisruptionBudgetList                v1policy.PodDisruptionBudgetList
 }
 
 func main() {
@@ -72,7 +75,8 @@ func main() {
     {"k8s.io/apimachinery/pkg/version", "", "io.fabric8.kubernetes.api.model.version", "kubernetes_apimachinery_pkg_version_", false},
     {"k8s.io/apimachinery/pkg/apis/meta/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_", false},
     {"k8s.io/api/core/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_core_", false},
-    {"k8s.io/api/policy/v1beta1", "", "io.fabric8.kubernetes.api.model.policy", "kubernetes_policy_", true},
+    {"k8s.io/api/policy/v1beta1", "", "io.fabric8.kubernetes.api.model.policy.v1beta1", "kubernetes_policy_v1beta1_", true},
+    {"k8s.io/api/policy/v1", "", "io.fabric8.kubernetes.api.model.policy.v1", "kubernetes_policy_v1_", true},
   }
 
   typeMap := map[reflect.Type]reflect.Type{

@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.api.model.batch;
+package io.fabric8.kubernetes.api.model.batch.v1;
 
 import org.junit.jupiter.api.Test;
-import io.fabric8.kubernetes.api.model.batch.JobBuilder;
+import io.fabric8.kubernetes.api.model.batch.v1.JobBuilder;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

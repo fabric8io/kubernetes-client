@@ -16,8 +16,8 @@
 package io.fabric8.kubernetes.examples;
 
 import io.fabric8.kubernetes.api.model.PodList;
-import io.fabric8.kubernetes.api.model.batch.Job;
-import io.fabric8.kubernetes.api.model.batch.JobBuilder;
+import io.fabric8.kubernetes.api.model.batch.v1.Job;
+import io.fabric8.kubernetes.api.model.batch.v1.JobBuilder;
 import io.fabric8.kubernetes.client.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

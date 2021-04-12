@@ -15,8 +15,8 @@
  */
 package io.fabric8.kubernetes.examples;
 
-import io.fabric8.kubernetes.api.model.policy.PodSecurityPolicy;
-import io.fabric8.kubernetes.api.model.policy.PodSecurityPolicyBuilder;
+import io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicy;
+import io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicyBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
