@@ -1,0 +1,731 @@
+{
+  "id": "http://fabric8.io/fabric8/v2/Schema#",
+  "$schema": "http://json-schema.org/draft-05/schema#",
+  "$module": "flowcontrol",
+  "definitions": {
+    "kubernetes_apimachinery_FieldsV1": {
+      "type": "object",
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.kubernetes.api.model.FieldsV1",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_apimachinery_ListMeta": {
+      "type": "object",
+      "properties": {
+        "continue": {
+          "type": "string"
+        },
+        "remainingItemCount": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "resourceVersion": {
+          "type": "string"
+        },
+        "selfLink": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_apimachinery_ManagedFieldsEntry": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string"
+        },
+        "fieldsType": {
+          "type": "string"
+        },
+        "fieldsV1": {
+          "$ref": "#/definitions/kubernetes_apimachinery_FieldsV1",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.FieldsV1"
+        },
+        "manager": {
+          "type": "string"
+        },
+        "operation": {
+          "type": "string"
+        },
+        "time": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "existingJavaType": "String"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.kubernetes.api.model.ManagedFieldsEntry",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_apimachinery_ObjectMeta": {
+      "type": "object",
+      "properties": {
+        "annotations": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+        },
+        "clusterName": {
+          "type": "string"
+        },
+        "creationTimestamp": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "existingJavaType": "String"
+        },
+        "deletionGracePeriodSeconds": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "deletionTimestamp": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "existingJavaType": "String"
+        },
+        "finalizers": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "generateName": {
+          "type": "string"
+        },
+        "generation": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "labels": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+        },
+        "managedFields": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_apimachinery_ManagedFieldsEntry",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.ManagedFieldsEntry"
+          }
+        },
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string",
+          "maxLength": 253,
+          "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
+        },
+        "ownerReferences": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_apimachinery_OwnerReference",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.OwnerReference"
+          }
+        },
+        "resourceVersion": {
+          "type": "string"
+        },
+        "selfLink": {
+          "type": "string"
+        },
+        "uid": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_apimachinery_OwnerReference": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string"
+        },
+        "blockOwnerDeletion": {
+          "type": "boolean"
+        },
+        "controller": {
+          "type": "boolean"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "uid": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.kubernetes.api.model.OwnerReference",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_apimachinery_Time": {
+      "type": "object",
+      "properties": {
+        "Time": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "String",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_apimachinery_TypeMeta": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.kubernetes.api.model.TypeMeta",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_flowcontrol_v1beta1_FlowDistinguisherMethod": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.FlowDistinguisherMethod",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_flowcontrol_v1beta1_FlowSchema": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "flowcontrol.apiserver.k8s.io/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "FlowSchema",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/kubernetes_flowcontrol_v1beta1_FlowSchemaSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.FlowSchemaSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/kubernetes_flowcontrol_v1beta1_FlowSchemaStatus",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.FlowSchemaStatus"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.FlowSchema",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "kubernetes_flowcontrol_v1beta1_FlowSchemaCondition": {
+      "type": "object",
+      "properties": {
+        "lastTransitionTime": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "existingJavaType": "String"
+        },
+        "message": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.FlowSchemaCondition",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_flowcontrol_v1beta1_FlowSchemaList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "flowcontrol.apiserver.k8s.io/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/kubernetes_flowcontrol_v1beta1_FlowSchema",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.FlowSchema"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "FlowSchemaList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.FlowSchemaList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.flowcontrol.v1beta1.FlowSchema\u003e"
+      ]
+    },
+    "kubernetes_flowcontrol_v1beta1_FlowSchemaSpec": {
+      "type": "object",
+      "properties": {
+        "distinguisherMethod": {
+          "$ref": "#/definitions/kubernetes_flowcontrol_v1beta1_FlowDistinguisherMethod",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.FlowDistinguisherMethod"
+        },
+        "matchingPrecedence": {
+          "type": "integer"
+        },
+        "priorityLevelConfiguration": {
+          "$ref": "#/definitions/kubernetes_flowcontrol_v1beta1_PriorityLevelConfigurationReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.PriorityLevelConfigurationReference"
+        },
+        "rules": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_flowcontrol_v1beta1_PolicyRulesWithSubjects",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.PolicyRulesWithSubjects"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.FlowSchemaSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_flowcontrol_v1beta1_FlowSchemaStatus": {
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_flowcontrol_v1beta1_FlowSchemaCondition",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.FlowSchemaCondition"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.FlowSchemaStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_flowcontrol_v1beta1_GroupSubject": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.GroupSubject",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_flowcontrol_v1beta1_LimitResponse": {
+      "type": "object",
+      "properties": {
+        "queuing": {
+          "$ref": "#/definitions/kubernetes_flowcontrol_v1beta1_QueuingConfiguration",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.QueuingConfiguration"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.LimitResponse",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_flowcontrol_v1beta1_LimitedPriorityLevelConfiguration": {
+      "type": "object",
+      "properties": {
+        "assuredConcurrencyShares": {
+          "type": "integer"
+        },
+        "limitResponse": {
+          "$ref": "#/definitions/kubernetes_flowcontrol_v1beta1_LimitResponse",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.LimitResponse"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.LimitedPriorityLevelConfiguration",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_flowcontrol_v1beta1_NonResourcePolicyRule": {
+      "type": "object",
+      "properties": {
+        "nonResourceURLs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "verbs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.NonResourcePolicyRule",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_flowcontrol_v1beta1_PolicyRulesWithSubjects": {
+      "type": "object",
+      "properties": {
+        "nonResourceRules": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_flowcontrol_v1beta1_NonResourcePolicyRule",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.NonResourcePolicyRule"
+          }
+        },
+        "resourceRules": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_flowcontrol_v1beta1_ResourcePolicyRule",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.ResourcePolicyRule"
+          }
+        },
+        "subjects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/kubernetes_flowcontrol_v1beta1_Subject",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.Subject"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.PolicyRulesWithSubjects",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_flowcontrol_v1beta1_PriorityLevelConfiguration": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "flowcontrol.apiserver.k8s.io/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "PriorityLevelConfiguration",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/kubernetes_flowcontrol_v1beta1_PriorityLevelConfigurationSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.PriorityLevelConfigurationSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/kubernetes_flowcontrol_v1beta1_PriorityLevelConfigurationStatus",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.PriorityLevelConfigurationStatus"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.PriorityLevelConfiguration",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "kubernetes_flowcontrol_v1beta1_PriorityLevelConfigurationCondition": {
+      "type": "object",
+      "properties": {
+        "lastTransitionTime": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "existingJavaType": "String"
+        },
+        "message": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.PriorityLevelConfigurationCondition",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_flowcontrol_v1beta1_PriorityLevelConfigurationList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "flowcontrol.apiserver.k8s.io/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/kubernetes_flowcontrol_v1beta1_PriorityLevelConfiguration",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.PriorityLevelConfiguration"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "PriorityLevelConfigurationList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.PriorityLevelConfigurationList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.flowcontrol.v1beta1.PriorityLevelConfiguration\u003e"
+      ]
+    },
+    "kubernetes_flowcontrol_v1beta1_PriorityLevelConfigurationReference": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.PriorityLevelConfigurationReference",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_flowcontrol_v1beta1_PriorityLevelConfigurationSpec": {
+      "type": "object",
+      "properties": {
+        "limited": {
+          "$ref": "#/definitions/kubernetes_flowcontrol_v1beta1_LimitedPriorityLevelConfiguration",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.LimitedPriorityLevelConfiguration"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.PriorityLevelConfigurationSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_flowcontrol_v1beta1_PriorityLevelConfigurationStatus": {
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_flowcontrol_v1beta1_PriorityLevelConfigurationCondition",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.PriorityLevelConfigurationCondition"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.PriorityLevelConfigurationStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_flowcontrol_v1beta1_QueuingConfiguration": {
+      "type": "object",
+      "properties": {
+        "handSize": {
+          "type": "integer"
+        },
+        "queueLengthLimit": {
+          "type": "integer"
+        },
+        "queues": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.QueuingConfiguration",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_flowcontrol_v1beta1_ResourcePolicyRule": {
+      "type": "object",
+      "properties": {
+        "apiGroups": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "clusterScope": {
+          "type": "boolean"
+        },
+        "namespaces": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "resources": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "verbs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.ResourcePolicyRule",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_flowcontrol_v1beta1_ServiceAccountSubject": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.ServiceAccountSubject",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_flowcontrol_v1beta1_Subject": {
+      "type": "object",
+      "properties": {
+        "group": {
+          "$ref": "#/definitions/kubernetes_flowcontrol_v1beta1_GroupSubject",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.GroupSubject"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "serviceAccount": {
+          "$ref": "#/definitions/kubernetes_flowcontrol_v1beta1_ServiceAccountSubject",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.ServiceAccountSubject"
+        },
+        "user": {
+          "$ref": "#/definitions/kubernetes_flowcontrol_v1beta1_UserSubject",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.UserSubject"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.Subject",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_flowcontrol_v1beta1_UserSubject": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.UserSubject",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "V1beta1FlowSchema": {
+      "$ref": "#/definitions/kubernetes_flowcontrol_v1beta1_FlowSchema",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.FlowSchema"
+    },
+    "V1beta1FlowSchemaList": {
+      "$ref": "#/definitions/kubernetes_flowcontrol_v1beta1_FlowSchemaList",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.FlowSchemaList"
+    },
+    "V1beta1PriorityLevelConfiguration": {
+      "$ref": "#/definitions/kubernetes_flowcontrol_v1beta1_PriorityLevelConfiguration",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.PriorityLevelConfiguration"
+    },
+    "V1beta1PriorityLevelConfigurationList": {
+      "$ref": "#/definitions/kubernetes_flowcontrol_v1beta1_PriorityLevelConfigurationList",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.PriorityLevelConfigurationList"
+    }
+  },
+  "additionalProperties": true
+}

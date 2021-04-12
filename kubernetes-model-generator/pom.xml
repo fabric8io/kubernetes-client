@@ -46,6 +46,7 @@
     <module>kubernetes-model-discovery</module>
     <module>kubernetes-model-events</module>
     <module>kubernetes-model-extensions</module>
+    <module>kubernetes-model-flowcontrol</module>
     <module>kubernetes-model-networking</module>
     <module>kubernetes-model-node</module>
     <module>kubernetes-model-metrics</module>

@@ -182,6 +182,13 @@ public interface KubernetesClient extends Client {
   ExtensionsAPIGroupDSL extensions();
 
   /**
+   * FlowControl APIServer API for apigroup flowcontrol.apiserver.k8s.io
+   *
+   * @return {@link FlowControlAPIGroupDSL} with which you can access entry points for FlowControl objects
+   */
+  FlowControlAPIGroupDSL flowControl();
+
+  /**
    * Get Kubernetes API server version
    *
    * @return VersionInfo object containing versioning information

@@ -69,6 +69,7 @@ import io.fabric8.kubernetes.client.dsl.Createable;
 import io.fabric8.kubernetes.client.dsl.DiscoveryAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.EventingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.FlowControlAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.KubernetesListMixedOperation;
 import io.fabric8.kubernetes.client.dsl.MetricAPIGroupDSL;
@@ -480,6 +481,11 @@ public class DefaultKubernetesClient extends BaseClient implements NamespacedKub
   @Override
   public ExtensionsAPIGroupDSL extensions() {
     return adapt(ExtensionsAPIGroupClient.class);
+  }
+
+  @Override
+  public FlowControlAPIGroupDSL flowControl() {
+    return adapt(FlowControlAPIGroupClient.class);
   }
 
   /**

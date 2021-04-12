@@ -12,6 +12,7 @@
 * Update Kubernetes Model to v1.21.0
 
 #### New Features
+* Add support for `flowcontrol.apiserver.k8s.io/v1beta1` FlowSchema and PriorityLevelConfiguration
 * Add DSL Support for `apps/v1#ControllerRevision` resource
 * Add DSL support for CSIDriver, CSINode and VolumeAttachment
 
