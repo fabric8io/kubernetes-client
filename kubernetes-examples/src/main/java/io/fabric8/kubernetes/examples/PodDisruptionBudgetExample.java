@@ -49,7 +49,7 @@ public class PodDisruptionBudgetExample {
         .build();
 
       logger.info("Current namespace is {}", namespace);
-      client.policy().podDisruptionBudget().inNamespace(namespace).createOrReplace(podDisruptionBudget);
+      client.policy().v1beta1().podDisruptionBudget().inNamespace(namespace).createOrReplace(podDisruptionBudget);
 
     } catch (KubernetesClientException e) {
       logger.error("Could not create resource: {}", e.getMessage(), e);

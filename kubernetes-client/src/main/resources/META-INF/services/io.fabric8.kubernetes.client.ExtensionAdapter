@@ -25,6 +25,8 @@ io.fabric8.kubernetes.client.V1AutoscalingAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.V2beta1AutoscalingAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.V2beta2AutoscalingAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.BatchAPIGroupExtensionAdapter
+io.fabric8.kubernetes.client.V1BatchAPIGroupExtensionAdapter
+io.fabric8.kubernetes.client.V1beta1BatchAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.ExtensionsAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.EventingAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.V1EventingAPIGroupExtensionAdapter
@@ -32,6 +34,8 @@ io.fabric8.kubernetes.client.V1beta1EventingAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.MetricAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.NetworkAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.PolicyAPIGroupExtensionAdapter
+io.fabric8.kubernetes.client.V1PolicyAPIGroupExtensionAdapter
+io.fabric8.kubernetes.client.V1beta1PolicyAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.RbacAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.SchedulingAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.V1SchedulingAPIGroupExtensionAdapter
@@ -46,6 +50,7 @@ io.fabric8.kubernetes.client.V1NetworkAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.V1beta1NetworkAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.DiscoveryAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.V1beta1DiscoveryAPIGroupExtensionAdapter
+io.fabric8.kubernetes.client.V1DiscoveryAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.CertificatesAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.V1CertificatesAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.V1beta1CertificatesAPIGroupExtensionAdapter

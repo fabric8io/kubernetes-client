@@ -15,15 +15,10 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudget;
-import io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudgetList;
-import io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicy;
-import io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicyList;
 import io.fabric8.kubernetes.client.Client;
 
 public interface PolicyAPIGroupDSL extends Client {
+  V1PolicyAPIGroupDSL v1();
 
-  MixedOperation<PodDisruptionBudget, PodDisruptionBudgetList, Resource<PodDisruptionBudget>> podDisruptionBudget();
-
-  MixedOperation<PodSecurityPolicy, PodSecurityPolicyList, Resource<PodSecurityPolicy>> podSecurityPolicies();
+  V1beta1PolicyAPIGroupDSL v1beta1();
 }

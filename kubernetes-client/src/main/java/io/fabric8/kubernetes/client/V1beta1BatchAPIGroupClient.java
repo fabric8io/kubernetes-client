@@ -15,28 +15,25 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.client.dsl.BatchAPIGroupDSL;
-import io.fabric8.kubernetes.client.dsl.V1BatchAPIGroupDSL;
+import io.fabric8.kubernetes.api.model.batch.v1beta1.CronJob;
+import io.fabric8.kubernetes.api.model.batch.v1beta1.CronJobList;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.V1beta1BatchAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.internal.batch.v1beta1.CronJobOperationsImpl;
 import okhttp3.OkHttpClient;
 
-public class BatchAPIGroupClient extends BaseClient implements BatchAPIGroupDSL {
-
-  public BatchAPIGroupClient() {
+public class V1beta1BatchAPIGroupClient  extends BaseClient implements V1beta1BatchAPIGroupDSL {
+  public V1beta1BatchAPIGroupClient() {
     super();
   }
 
-  public BatchAPIGroupClient(OkHttpClient httpClient, final Config config) {
+  public V1beta1BatchAPIGroupClient(OkHttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 
   @Override
-  public V1BatchAPIGroupDSL v1() {
-    return adapt(V1BatchAPIGroupClient.class);
-  }
-
-  @Override
-  public V1beta1BatchAPIGroupDSL v1beta1() {
-    return adapt(V1beta1BatchAPIGroupClient.class);
+  public MixedOperation<CronJob, CronJobList, Resource<CronJob>> cronjobs() {
+    return new CronJobOperationsImpl(httpClient, getConfiguration());
   }
 }

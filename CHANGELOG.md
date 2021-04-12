@@ -13,6 +13,19 @@
 
 #### New Features
 
+
+#### _**Note**_: Breaking changes in the API
+##### DSL Changes:
+- `client.batch().jobs()` moved to `client.batch().v1().jobs()`
+- `client.batch().cronjobs()` moved to `client.batch().v1().cronjobs()` or `client.batch().v1beta1().cronjobs()`
+- `client.policy().podSecurityPolicies()` moved to `client.policy().v1beta1().podSecurityPolicies()`
+- `client.policy().podDisruptionBudget()` moved to `client.policy().v1().podDisruptionBudget()` or `client.policy().v1beta1().podDisruptionBudget()`
+
+##### Model Changes:
+- Classes in `io.fabric8.kubernetes.api.model.batch` have been moved to `io.fabric8.kubernetes.api.model.batch.v1` and `io.fabric8.kubernetes.api.model.batch.v1beta1`
+- Classes in `io.fabric8.kubernetes.api.model.policy` have been moved to `io.fabric8.kubernetes.api.model.policy.v1` and `io.fabric8.kubernetes.api.model.policy.v1beta1`
+
+
 ### 5.3.0 (2021-04-08)
 
 #### Bugs

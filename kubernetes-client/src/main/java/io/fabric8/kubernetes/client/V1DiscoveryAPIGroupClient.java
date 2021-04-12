@@ -15,27 +15,25 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.client.dsl.DiscoveryAPIGroupDSL;
+import io.fabric8.kubernetes.api.model.discovery.v1.EndpointSlice;
+import io.fabric8.kubernetes.api.model.discovery.v1.EndpointSliceList;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.V1DiscoveryAPIGroupDSL;
-import io.fabric8.kubernetes.client.dsl.V1beta1DiscoveryAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.internal.discovery.v1.EndpointSliceOperationsImpl;
 import okhttp3.OkHttpClient;
 
-public class DiscoveryAPIGroupClient extends BaseClient implements DiscoveryAPIGroupDSL {
-  public DiscoveryAPIGroupClient() {
+public class V1DiscoveryAPIGroupClient  extends BaseClient implements V1DiscoveryAPIGroupDSL {
+  public V1DiscoveryAPIGroupClient() {
     super();
   }
 
-  public DiscoveryAPIGroupClient(OkHttpClient httpClient, final Config config) {
+  public V1DiscoveryAPIGroupClient(OkHttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 
   @Override
-  public V1DiscoveryAPIGroupDSL v1() {
-    return adapt(V1DiscoveryAPIGroupClient.class);
-  }
-
-  @Override
-  public V1beta1DiscoveryAPIGroupDSL v1beta1() {
-    return adapt(V1beta1DiscoveryAPIGroupClient.class);
+  public MixedOperation<EndpointSlice, EndpointSliceList, Resource<EndpointSlice>> endpointSlices() {
+    return new EndpointSliceOperationsImpl(httpClient, getConfiguration());
   }
 }

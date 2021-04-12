@@ -49,7 +49,7 @@ public class JobTest {
   KubernetesClient client;
 
   @Test
-  public void testList() {
+  void testList() {
    server.expect().withPath("/apis/batch/v1/namespaces/test/jobs").andReturn(200, new JobListBuilder().build()).once();
    server.expect().withPath("/apis/batch/v1/namespaces/ns1/jobs").andReturn(200, new JobListBuilder()
       .addNewItem().and()
@@ -66,17 +66,17 @@ public class JobTest {
     assertNotNull(jobList);
     assertEquals(0, jobList.getItems().size());
 
-    jobList = client.batch().jobs().inNamespace("ns1").list();
+    jobList = client.batch().v1().jobs().inNamespace("ns1").list();
     assertNotNull(jobList);
     assertEquals(2, jobList.getItems().size());
 
-    jobList = client.batch().jobs().inAnyNamespace().list();
+    jobList = client.batch().v1().jobs().inAnyNamespace().list();
     assertNotNull(jobList);
     assertEquals(3, jobList.getItems().size());
   }
 
   @Test
-  public void testListWithLables() {
+  void testListWithLables() {
    server.expect().withPath("/apis/batch/v1/namespaces/test/jobs?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2,key3=value3")).andReturn(200, new JobListBuilder().build()).always();
    server.expect().withPath("/apis/batch/v1/namespaces/test/jobs?labelSelector=" + Utils.toUrlEncoded("key1=value1,key2=value2")).andReturn(200, new JobListBuilder()
       .addNewItem().and()
@@ -94,7 +94,7 @@ public class JobTest {
     assertNotNull(jobList);
     assertEquals(0, jobList.getItems().size());
 
-    jobList = client.batch().jobs()
+    jobList = client.batch().v1().jobs()
       .withLabel("key1", "value1")
       .withLabel("key2","value2")
       .list();
@@ -105,24 +105,24 @@ public class JobTest {
 
 
   @Test
-  public void testGet() {
+  void testGet() {
    server.expect().withPath("/apis/batch/v1/namespaces/test/jobs/job1").andReturn(200, new JobBuilder().build()).once();
    server.expect().withPath("/apis/batch/v1/namespaces/ns1/jobs/job2").andReturn(200, new JobBuilder().build()).once();
 
 
-    Job job = client.batch().jobs().withName("job1").get();
+    Job job = client.batch().v1().jobs().withName("job1").get();
     assertNotNull(job);
 
-    job = client.batch().jobs().withName("job2").get();
+    job = client.batch().v1().jobs().withName("job2").get();
     assertNull(job);
 
-    job = client.batch().jobs().inNamespace("ns1").withName("job2").get();
+    job = client.batch().v1().jobs().inNamespace("ns1").withName("job2").get();
     assertNotNull(job);
   }
 
 
   @Test
-  public void testDelete() {
+  void testDelete() {
    server.expect().withPath("/apis/batch/v1/namespaces/test/jobs/job1").andReturn(200, new JobBuilder().withNewMetadata()
       .withName("job1")
       .withResourceVersion("1")
@@ -170,16 +170,16 @@ public class JobTest {
       .build()).times(5);
 
 
-    Boolean deleted = client.batch().jobs().withName("job1").delete();
+    Boolean deleted = client.batch().v1().jobs().withName("job1").delete();
     assertTrue(deleted);
 
-    deleted = client.batch().jobs().withName("job2").delete();
+    deleted = client.batch().v1().jobs().withName("job2").delete();
     assertTrue(deleted);
   }
 
 
   @Test
-  public void testDeleteMulti() {
+  void testDeleteMulti() {
     Job job1 = new JobBuilder().withNewMetadata()
       .withNamespace("test")
       .withName("job1")
@@ -214,19 +214,19 @@ public class JobTest {
       .editStatus().withActive(0).endStatus().build()).times(5);
 
 
-    Boolean deleted = client.batch().jobs().inAnyNamespace().delete(job1, job2);
+    Boolean deleted = client.batch().v1().jobs().inAnyNamespace().delete(job1, job2);
     assertTrue(deleted);
 
-    deleted = client.batch().jobs().inAnyNamespace().delete(job3);
+    deleted = client.batch().v1().jobs().inAnyNamespace().delete(job3);
     assertFalse(deleted);
   }
 
   @Test
-  public void testDeleteWithNamespaceMismatch() {
+  void testDeleteWithNamespaceMismatch() {
     Assertions.assertThrows(KubernetesClientException.class, () -> {
       Job job1 = new JobBuilder().withNewMetadata().withName("job1").withNamespace("test").and().build();
 
-      Boolean deleted = client.batch().jobs().inNamespace("test1").delete(job1);
+      Boolean deleted = client.batch().v1().jobs().inNamespace("test1").delete(job1);
       assertTrue(deleted);
     });
   }
@@ -236,7 +236,7 @@ public class JobTest {
     Assertions.assertThrows(KubernetesClientException.class, () -> {
       Job job1 = new JobBuilder().withNewMetadata().withName("job1").withNamespace("test").and().build();
 
-      client.batch().jobs().inNamespace("test1").withName("myjob1").create(job1);
+      client.batch().v1().jobs().inNamespace("test1").withName("myjob1").create(job1);
     });
   }
 
@@ -277,7 +277,7 @@ public class JobTest {
       .build();
 
     // When
-    job = client.batch().jobs().inNamespace("test").createOrReplace(job);
+    job = client.batch().v1().jobs().inNamespace("test").createOrReplace(job);
 
     // Then
     assertNotNull(job);
@@ -318,7 +318,7 @@ public class JobTest {
       .once();
 
     // When
-    String log = client.batch().jobs().inNamespace("ns1").withName("job1").getLog();
+    String log = client.batch().v1().jobs().inNamespace("ns1").withName("job1").getLog();
 
     // Then
     assertNotNull(log);
