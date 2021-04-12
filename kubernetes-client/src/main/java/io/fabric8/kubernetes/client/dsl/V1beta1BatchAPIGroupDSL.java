@@ -15,11 +15,14 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface Evictable<B> {
+import io.fabric8.kubernetes.api.model.batch.v1beta1.CronJob;
+import io.fabric8.kubernetes.api.model.batch.v1beta1.CronJobList;
+import io.fabric8.kubernetes.client.Client;
+
+public interface V1beta1BatchAPIGroupDSL extends Client {
   /**
-   * Evicts resource, respecting {@link io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudget}
-   * @return value indicating object was evicted or not
-   * @throws io.fabric8.kubernetes.client.KubernetesClientException if an error occurs.
+   * DSL entrypoint for batch/v1beta1 CronJob resource
+   * @return {@link MixedOperation} for CronJob resource
    */
-  B evict();
+  MixedOperation<CronJob, CronJobList, Resource<CronJob>> cronjobs();
 }

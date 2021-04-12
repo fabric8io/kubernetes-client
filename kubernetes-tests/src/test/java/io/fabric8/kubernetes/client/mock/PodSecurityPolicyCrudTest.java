@@ -57,7 +57,7 @@ public class PodSecurityPolicyCrudTest {
 
     //test of Creation
 
-    podSecurityPolicy = client.policy().podSecurityPolicies().create(podSecurityPolicy);
+    podSecurityPolicy = client.policy().v1beta1().podSecurityPolicies().create(podSecurityPolicy);
     assertNotNull(podSecurityPolicy);
     assertEquals("test-example",podSecurityPolicy.getMetadata().getName());
     assertFalse(podSecurityPolicy.getSpec().getPrivileged());
@@ -67,7 +67,7 @@ public class PodSecurityPolicyCrudTest {
     assertEquals("RunAsAny",podSecurityPolicy.getSpec().getSupplementalGroups().getRule());
 
     //test of list
-    PodSecurityPolicyList podSecurityPolicyList = client.policy().podSecurityPolicies().list();
+    PodSecurityPolicyList podSecurityPolicyList = client.policy().v1beta1().podSecurityPolicies().list();
     logger.info(podSecurityPolicyList.toString());
 
     assertNotNull(podSecurityPolicyList);
@@ -80,7 +80,7 @@ public class PodSecurityPolicyCrudTest {
     assertEquals("RunAsAny",podSecurityPolicyList.getItems().get(0).getSpec().getSupplementalGroups().getRule());
 
     //test of updation
-    podSecurityPolicy = client.policy().podSecurityPolicies().withName("test-example").edit(p -> new PodSecurityPolicyBuilder(p)
+    podSecurityPolicy = client.policy().v1beta1().podSecurityPolicies().withName("test-example").edit(p -> new PodSecurityPolicyBuilder(p)
         .editSpec().withPrivileged(true).endSpec()
         .build());
 
@@ -95,9 +95,9 @@ public class PodSecurityPolicyCrudTest {
     assertEquals("RunAsAny",podSecurityPolicy.getSpec().getSupplementalGroups().getRule());
 
     //test of deletion
-    boolean deleted = client.policy().podSecurityPolicies().delete(podSecurityPolicy);
+    boolean deleted = client.policy().v1beta1().podSecurityPolicies().delete(podSecurityPolicy);
     assertTrue(deleted);
-    podSecurityPolicyList = client.policy().podSecurityPolicies().list();
+    podSecurityPolicyList = client.policy().v1beta1().podSecurityPolicies().list();
     assertEquals(0,podSecurityPolicyList.getItems().size());
 
   }

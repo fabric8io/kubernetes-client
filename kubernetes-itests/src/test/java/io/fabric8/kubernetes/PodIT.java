@@ -163,7 +163,7 @@ public class PodIT {
     client.pods().inNamespace(session.getNamespace()).withName(pod2.getMetadata().getName())
       .waitUntilReady(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS);
 
-    client.policy().podDisruptionBudget().inNamespace(session.getNamespace()).createOrReplace(pdb);
+    client.policy().v1beta1().podDisruptionBudget().inNamespace(session.getNamespace()).createOrReplace(pdb);
 
     assertTrue(client.pods().inNamespace(session.getNamespace()).withName(pod2.getMetadata().getName()).evict());
     // cant evict because only one left

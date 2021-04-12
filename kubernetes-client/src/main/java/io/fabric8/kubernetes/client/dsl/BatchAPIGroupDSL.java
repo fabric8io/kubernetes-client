@@ -15,15 +15,11 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-import io.fabric8.kubernetes.api.model.batch.v1beta1.CronJob;
-import io.fabric8.kubernetes.api.model.batch.v1.Job;
-import io.fabric8.kubernetes.api.model.batch.v1.JobList;
-import io.fabric8.kubernetes.api.model.batch.v1beta1.CronJobList;
 import io.fabric8.kubernetes.client.Client;
 
 public interface BatchAPIGroupDSL extends Client{
 
-  MixedOperation<Job, JobList, ScalableResource<Job>> jobs();
+  V1BatchAPIGroupDSL v1();
 
-  MixedOperation<CronJob, CronJobList, Resource<CronJob>> cronjobs();
+  V1beta1BatchAPIGroupDSL v1beta1();
 }

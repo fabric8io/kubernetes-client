@@ -15,28 +15,22 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.client.dsl.BatchAPIGroupDSL;
-import io.fabric8.kubernetes.client.dsl.V1BatchAPIGroupDSL;
-import io.fabric8.kubernetes.client.dsl.V1beta1BatchAPIGroupDSL;
 import okhttp3.OkHttpClient;
 
-public class BatchAPIGroupClient extends BaseClient implements BatchAPIGroupDSL {
-
-  public BatchAPIGroupClient() {
-    super();
-  }
-
-  public BatchAPIGroupClient(OkHttpClient httpClient, final Config config) {
-    super(httpClient, config);
+public class V1beta1PolicyAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<V1beta1PolicyAPIGroupClient> {
+  @Override
+  protected String getAPIGroupName() {
+    return "policy/v1beta1";
   }
 
   @Override
-  public V1BatchAPIGroupDSL v1() {
-    return adapt(V1BatchAPIGroupClient.class);
+  public Class<V1beta1PolicyAPIGroupClient> getExtensionType() {
+    return V1beta1PolicyAPIGroupClient.class;
   }
 
   @Override
-  public V1beta1BatchAPIGroupDSL v1beta1() {
-    return adapt(V1beta1BatchAPIGroupClient.class);
+  protected V1beta1PolicyAPIGroupClient newInstance(Client client) {
+    return new V1beta1PolicyAPIGroupClient(client.adapt(OkHttpClient.class), client.getConfiguration());
   }
 }
+
