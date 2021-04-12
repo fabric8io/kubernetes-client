@@ -68,14 +68,19 @@ public class CustomResourceInfoTest {
   }
 
   @Test
-  void shouldProperlyCreateCustomResourceInfo() {
+  void shouldProperlyCreateCustomResourceInfo() throws Exception {
     CustomResourceInfo info = CustomResourceInfo.fromClass(ClusteredCR.class);
     assertEquals(GROUP, info.group());
     assertEquals(VERSION, info.version());
     assertEquals(Scope.CLUSTER, info.scope());
     assertEquals(ClusteredCR.class.getCanonicalName(), info.crClassName()); // todo: should we actually use the type name here?
-    assertEquals(Spec.class.getTypeName(), info.specClassName().get());
-    assertEquals(Status.class.getTypeName(), info.statusClassName().get());
+    String specClassName = info.specClassName().get();
+    assertEquals(Spec.class.getCanonicalName(), specClassName);
+    // todo: check that we can load and instantiate class from the returned class name
+    /*Class<?> specClass = Class.forName(specClassName);
+    Object o = specClass.getDeclaredConstructor().newInstance();
+    assertNotNull(o);*/
+    assertEquals(Status.class.getCanonicalName(), info.statusClassName().get());
     assertEquals(HasMetadata.getSingular(ClusteredCR.class), info.singular());
     assertEquals(HasMetadata.getPlural(ClusteredCR.class), info.plural());
     assertEquals(CustomResource.getCRDName(ClusteredCR.class), info.crdName());
