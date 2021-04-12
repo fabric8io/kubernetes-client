@@ -17,6 +17,7 @@ package io.fabric8.crd.generator;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Namespaced;
@@ -79,8 +80,8 @@ public class CustomResourceInfoTest {
     assertEquals(HasMetadata.getPlural(ClusteredCR.class), info.plural());
     assertEquals(CustomResource.getCRDName(ClusteredCR.class), info.crdName());
     assertArrayEquals(CustomResource.getShortNames(ClusteredCR.class), info.shortNames());
-    assertEquals(true, info.served());
-    assertEquals(true, info.storage());
+    assertTrue(info.served());
+    assertTrue(info.storage());
     assertEquals(HasMetadata.getKind(ClusteredCR.class), info.kind());
   }
 }
