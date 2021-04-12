@@ -84,6 +84,10 @@
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-model-flowcontrol</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model-networking</artifactId>
     </dependency>
     <dependency>
@@ -235,6 +239,7 @@
                   <include>io.fabric8:kubernetes-model-discovery</include>
                   <include>io.fabric8:kubernetes-model-events</include>
                   <include>io.fabric8:kubernetes-model-extensions</include>
+                  <include>io.fabric8:kubernetes-model-flowcontrol</include>
                   <include>io.fabric8:kubernetes-model-networking</include>
                   <include>io.fabric8:kubernetes-model-node</include>
                   <include>io.fabric8:kubernetes-model-metrics</include>
@@ -283,6 +288,7 @@
                   <include>io.fabric8:kubernetes-model-discovery</include>
                   <include>io.fabric8:kubernetes-model-events</include>
                   <include>io.fabric8:kubernetes-model-extensions</include>
+                  <include>io.fabric8:kubernetes-model-flowcontrol</include>
                   <include>io.fabric8:kubernetes-model-networking</include>
                   <include>io.fabric8:kubernetes-model-node</include>
                   <include>io.fabric8:kubernetes-model-metrics</include>

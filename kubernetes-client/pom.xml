@@ -108,6 +108,10 @@
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-model-flowcontrol</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-model-networking</artifactId>
     </dependency>
     <dependency>

@@ -126,6 +126,7 @@
               io.fabric8.kubernetes.api.model.discovery.v1,
               io.fabric8.kubernetes.api.model.discovery.v1beta1,
               io.fabric8.kubernetes.api.model.extensions,
+              io.fabric8.kubernetes.api.model.flowcontrol.v1beta1,
               io.fabric8.kubernetes.api.model.metrics.v1beta1,
               io.fabric8.kubernetes.api.model.networking.v1,
               io.fabric8.kubernetes.api.model.networking.v1beta1,

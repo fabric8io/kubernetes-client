@@ -31,6 +31,8 @@ io.fabric8.kubernetes.client.ExtensionsAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.EventingAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.V1EventingAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.V1beta1EventingAPIGroupExtensionAdapter
+io.fabric8.kubernetes.client.FlowControlAPIGroupExtensionAdapter
+io.fabric8.kubernetes.client.V1beta1FlowControlAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.MetricAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.NetworkAPIGroupExtensionAdapter
 io.fabric8.kubernetes.client.PolicyAPIGroupExtensionAdapter
