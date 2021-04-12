@@ -55,7 +55,7 @@ public class AnnotatedPropertyPathDetector extends TypedVisitor<TypeDefBuilder> 
   @Override
   public void visit(TypeDefBuilder builder) {
     TypeDef type = builder.build();
-    for (Property p : Types.allProperties(type)) {
+    for (Property p : Types.projectProperties(type)) {
       if (parents.contains(p)) {
           continue;
         }
@@ -69,7 +69,7 @@ public class AnnotatedPropertyPathDetector extends TypedVisitor<TypeDefBuilder> 
         }
     }
 
-    Types.allProperties(type).stream().filter(p -> p.getTypeRef() instanceof ClassRef).forEach(p -> {
+    Types.projectProperties(type).stream().filter(p -> p.getTypeRef() instanceof ClassRef).forEach(p -> {
         if (!parents.contains(p)) {
           ClassRef classRef = (ClassRef) p.getTypeRef();
           TypeDef propertyType = classRef.getDefinition();

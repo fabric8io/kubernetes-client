@@ -21,7 +21,9 @@ import io.fabric8.crd.generator.utils.Types;
 import io.fabric8.kubernetes.api.model.Duration;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.Quantity;
+import io.fabric8.kubernetes.client.CustomResource;
 import io.sundr.builder.internal.functions.TypeAs;
+import io.sundr.codegen.Constants;
 import io.sundr.codegen.functions.ClassTo;
 import io.sundr.codegen.model.ClassRef;
 import io.sundr.codegen.model.PrimitiveRefBuilder;
@@ -114,7 +116,7 @@ public abstract class AbstractJsonSchema<T, B> {
         .emptySet();
     List<String> required = new ArrayList<>();
 
-    for (Property property : Types.allProperties(definition)) {
+    for (Property property : Types.projectProperties(definition)) {
       final String name = property.getName();
 
       if (property.isStatic() || ignores.contains(name)) {

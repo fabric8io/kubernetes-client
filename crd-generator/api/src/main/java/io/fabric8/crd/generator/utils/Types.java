@@ -25,7 +25,6 @@ import io.sundr.codegen.model.Property;
 import io.sundr.codegen.model.PropertyBuilder;
 import io.sundr.codegen.model.TypeDef;
 import io.sundr.codegen.model.TypeDefBuilder;
-import io.sundr.codegen.model.TypeParamDef;
 import io.sundr.codegen.model.TypeParamRef;
 import io.sundr.codegen.model.TypeRef;
 import java.util.ArrayList;
@@ -36,8 +35,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 
 public class Types {
 
@@ -46,93 +47,6 @@ public class Types {
   private static final Map<TypeDef, List<Property>> propertiesCache = new ConcurrentHashMap<>(7);
 
 
-  /**
-   * All properties (including inherited).
-   * @param typeDef   The type.
-   * @return A list with all properties.
-   */
-  public static List<Property> allProperties(TypeDef typeDef) {
-    List<Property> properties = propertiesCache.get(typeDef);
-    if(properties != null) {
-      return properties;
-    }
-
-    properties = unrollHierarchy(typeDef)
-      .stream()
-      .flatMap(h -> h.getProperties().stream())
-      .collect(Collectors.toList());
-    propertiesCache.put(typeDef, properties);
-    return properties;
-  }
-
-  /**
-   * Unrolls the hierarchy of a specified type.
-   * @param typeDef       The specified type.
-   * @return A set that contains the complete type hierarchy (including the specified type).
-   */
-  public static Set<TypeDef> unrollHierarchy(TypeDef typeDef) {
-    if (typeDef.getPackageName() != null && (typeDef.getPackageName().startsWith("java.") ||
-      typeDef.getPackageName().startsWith("javax.") ||
-      typeDef.getPackageName().startsWith("com.sun.") ||
-      typeDef.getPackageName().startsWith("com.ibm."))) {
-      return new HashSet<>();
-    }
-    if (typeDef.getFullyQualifiedName().equals(CUSTOM_RESOURCE.getFullyQualifiedName())) {
-      //We need a version of custom resource stripped from unneeded properties.
-      return Stream.of(new TypeDefBuilder(CUSTOM_RESOURCE)
-        .withProperties(typeDef.getProperties()
-          .stream()
-          .filter(p -> p.getName().equals("spec") || p.getName().equals("status"))
-          .collect(Collectors.toList())).build()).collect(Collectors.toSet());
-    }
-    Set<TypeDef> hierarchy = new HashSet<>();
-    hierarchy.add(typeDef);
-    hierarchy.addAll(typeDef.getExtendsList().stream()
-      .flatMap(s -> unrollHierarchy(applyTypeArguments(s)).stream()).collect(Collectors.toSet()));
-    return hierarchy;
-  }
-
-  /**
-   * Apply type arguments on all generic properties of a {@link ClassRef}.
-   *
-   * @param ref the {@link ClassRef} on which we want to apply the type arguments
-   * @return the result of the application
-   */
-  public static TypeDef applyTypeArguments(ClassRef ref) {
-    Map<String, TypeRef> bounds = new HashMap<>();
-    final List<TypeRef> arguments = ref.getArguments();
-    final TypeDef definition = ref.getDefinition();
-    final List<TypeParamDef> parameters = definition.getParameters();
-    // only apply type arguments if their number matches the definition
-    if (arguments.size() == parameters.size()) {
-      for (int i = 0; i < arguments.size(); i++) {
-        bounds.put(parameters.get(i).getName(), arguments.get(i));
-      }
-
-      return new TypeDefBuilder(definition).accept(new TypedVisitor<PropertyBuilder>() {
-        @Override
-        public void visit(PropertyBuilder property) {
-          TypeRef typeRef = property.buildTypeRef();
-          if (typeRef instanceof TypeParamRef) {
-            TypeParamRef typeParamRef = (TypeParamRef) typeRef;
-            String key = typeParamRef.getName();
-            if (bounds.containsKey(key)) {
-              TypeRef paramRef = bounds.get(key);
-              if (paramRef != null) {
-                property.withTypeRef(paramRef);
-              }
-            }
-          }
-        }
-      }).build();
-    }
-    return new TypeDefBuilder(definition).build();
-  }
-
-
-  /**
-   * Gets the definition of the {@link ClassRef} but projects type arguments to the definition.
-   */
   public static TypeDef projectDefinition(ClassRef ref) {
     List<TypeRef> arguments = ref.getArguments();
     TypeDef definition = ref.getDefinition();
@@ -140,17 +54,51 @@ public class Types {
       return definition;
     }
 
-    Map<String, TypeRef> genericMap = new HashMap<>();
+    Map<String, TypeRef> mappings = new HashMap<>();
     for (int i = 0; i < arguments.size(); i++) {
       String name = definition.getParameters().get(i).getName();
       TypeRef typeRef = ref.getArguments().get(i);
-      genericMap.put(name, typeRef);
+      mappings.put(name, typeRef);
     }
 
-    definition.getParameters().stream()
-      .collect(Collectors.toMap(TypeParamDef::getName, TypeParamDef::getBounds));
     return new TypeDefBuilder(definition)
-      .accept(new TypedVisitor<ClassRefBuilder>() {
+      .accept(mapClassRefArguments(mappings), mapGenericProperties(mappings))
+      .build();
+  }
+
+  /**
+   * Map generic properties to known {@link TypeRef} based on the specified mappings.
+   * Example: Given a property `T size` and a map containing `T -> Integer` the final property will be: `Integer type`.
+   * @param mappings A map that maps class arguments names to types.
+   * @return a visitors that performs the actual mapping.
+   */
+  public static TypedVisitor<PropertyBuilder> mapGenericProperties(Map<String, TypeRef> mappings) {
+      return new TypedVisitor<PropertyBuilder>() {
+        @Override
+        public void visit(PropertyBuilder property) {
+          TypeRef typeRef = property.buildTypeRef();
+          if (typeRef instanceof TypeParamRef) {
+            TypeParamRef typeParamRef = (TypeParamRef) typeRef;
+            String key = typeParamRef.getName();
+            if (mappings.containsKey(key)) {
+              TypeRef paramRef = mappings.get(key);
+              if (paramRef != null) {
+                property.withTypeRef(paramRef);
+              }
+            }
+          }
+        }
+      };
+  }
+
+  /**
+   * Map arguments, of {@link ClassRef} instances to known {@link TypeRef} based on the specified mappings.
+   * Example: Given a class reference to `Shape<T>` and a map containing `T -> Integer` the final reference will be: `Shape<Integer> type`.
+   * @param mappings A map that maps class arguments names to types.
+   * @return a visitors that performs the actual mapping.
+   */
+  public static TypedVisitor<ClassRefBuilder> mapClassRefArguments(Map<String, TypeRef> mappings) {
+      return new TypedVisitor<ClassRefBuilder>() {
         @Override
         public void visit(ClassRefBuilder c) {
           List<TypeRef> arguments = new ArrayList<>();
@@ -158,7 +106,7 @@ public class Types {
             TypeRef mappedRef = arg;
             if (arg instanceof TypeParamRef) {
               TypeParamRef typeParamRef = (TypeParamRef) arg;
-              TypeRef mapping = genericMap.get(typeParamRef.getName());
+              TypeRef mapping = mappings.get(typeParamRef.getName());
               if (mapping != null) {
                 mappedRef = mapping;
               }
@@ -167,14 +115,44 @@ public class Types {
           }
           c.withArguments(arguments);
         }
-      }).build();
+      };
   }
-  
-  public static Set<ClassRef> getSuperClasses(TypeDef definition) {
+ 
+  public static Set<ClassRef> projectSuperClasses(TypeDef definition) {
     List<ClassRef> extendsList = definition.getExtendsList();
     return extendsList.stream()
       .flatMap(s -> Stream.concat(Stream.of(s), projectDefinition(s).getExtendsList().stream()))
       .collect(Collectors.toSet());
+  }
+
+  /**
+   * All properties (including inherited).
+   * @param typeDef        The type.
+   * @return A list with all properties.
+   */
+  public static List<Property> projectProperties(TypeDef typeDef) {
+    List<Property> properties = propertiesCache.get(typeDef);
+    if(properties != null) {
+      return properties;
+    }
+
+    properties = Stream.concat(typeDef.getProperties().stream(),
+                               typeDef.getExtendsList()
+                               .stream()
+                               .peek(e -> System.out.println("Projected class:" + e))
+                               .flatMap(e -> projectDefinition(e)
+                                        .getProperties()
+                                        .stream()
+                                        .peek(p -> System.out.println("\t" + p + " filtered:" + filterCustomResourceProperties(e).test(p)))
+                                        .filter(p -> filterCustomResourceProperties(e).test(p))))
+                               .collect(Collectors.toList());
+    propertiesCache.put(typeDef, properties);
+    return properties;
+  }
+
+
+  public static Predicate<Property> filterCustomResourceProperties(ClassRef ref) {
+    return p -> !ref.getFullyQualifiedName().equals(CUSTOM_RESOURCE_NAME) || (p.getName().equals("spec") || p.getName().equals("status"));
   }
 
   public static class SpecAndStatus {
@@ -203,7 +181,7 @@ public class Types {
   }
   private static final String CUSTOM_RESOURCE_NAME = CustomResource.class.getCanonicalName();
   public static SpecAndStatus resolveSpecAndStatusTypes(TypeDef definition) {
-    Set<ClassRef> superClasses = Types.getSuperClasses(definition);
+    Set<ClassRef> superClasses = Types.projectSuperClasses(definition);
 
     Optional<ClassRef> optionalCustomResourceRef = superClasses.stream()
       .filter(s -> s.getFullyQualifiedName().equals(CUSTOM_RESOURCE_NAME)).findFirst();
@@ -259,7 +237,7 @@ public class Types {
    * @return the an optional property.
    */
   public static Optional<Property> findStatusProperty(TypeDef typeDef) {
-    return allProperties(typeDef).stream()
+    return projectProperties(typeDef).stream()
       .filter(Types::isStatusProperty)
       .findFirst();
   }
