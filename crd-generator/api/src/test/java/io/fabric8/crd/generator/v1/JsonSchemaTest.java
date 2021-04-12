@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.crd.example.basic.Basic;
 import io.fabric8.crd.example.person.Person;
+import io.fabric8.crd.generator.utils.Types;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 import io.sundr.codegen.functions.ClassTo;
 import io.sundr.codegen.model.TypeDef;
@@ -55,12 +56,16 @@ class JsonSchemaTest {
     assertTrue(addressTypes.contains("work"));
 
     TypeDef def = ClassTo.TYPEDEF.apply(Basic.class);
+    Types.projectProperties(def).stream().forEach(p -> System.out.println("Property:" + p));
     schema = JsonSchema.from(def);
     assertNotNull(schema);
     properties = schema.getProperties();
     assertNotNull(properties);
+    System.out.println("Properties: " + properties.keySet());
     assertEquals(2, properties.size());
     Map<String, JSONSchemaProps> spec = properties.get("spec").getProperties();
+    System.out.println("\tspec:" + properties.get("spec"));
+    System.out.println("\nt\tspec properties:" + spec);
     assertEquals("integer", spec.get("myInt").getType());
     Map<String, JSONSchemaProps> status = properties.get("status").getProperties();
     assertEquals("string", status.get("message").getType());
