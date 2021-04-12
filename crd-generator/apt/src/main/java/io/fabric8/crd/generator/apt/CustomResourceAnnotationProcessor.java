@@ -19,6 +19,7 @@ import io.fabric8.crd.generator.CRDGenerator;
 import io.fabric8.crd.generator.CRDGenerator.CRDOutput;
 import io.fabric8.crd.generator.CustomResourceInfo;
 import io.fabric8.crd.generator.utils.Types;
+import io.fabric8.crd.generator.utils.Types.SpecAndStatus;
 import io.fabric8.kubernetes.api.Pluralize;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.client.CustomResource;
@@ -77,31 +78,13 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
 
     return false;
   }
-
-  private static final String CUSTOM_RESOURCE_NAME = CustomResource.class.getCanonicalName();
+  
   private CustomResourceInfo toCustomResourceInfo(TypeElement customResource) {
     final TypeDef definition = ElementTo.TYPEDEF.apply(customResource);
     final Name crClassName = customResource.getQualifiedName();
 
-    String specClassName = null;
-    String statusClassName = null;
-    boolean unreliable = true;
-
-    Set<ClassRef> superClasses = Types.getSuperClasses(definition);
-
-    Optional<ClassRef> optionalCustomResourceRef = superClasses.stream().filter(s -> s.getFullyQualifiedName().equals(CUSTOM_RESOURCE_NAME)).findFirst();
-    if (optionalCustomResourceRef.isPresent()) {
-      ClassRef customResourceRef = optionalCustomResourceRef.get();
-      if (customResourceRef.getArguments().size() == 2) {
-        unreliable = false;
-        TypeRef specType = customResourceRef.getArguments().get(0);
-        specClassName = specType instanceof ClassRef ? ((ClassRef)specType).getFullyQualifiedName() : null;
-        TypeRef statusType = customResourceRef.getArguments().get(1);
-        statusClassName = statusType instanceof ClassRef ? ((ClassRef)statusType).getFullyQualifiedName() : null;
-      }
-    }
-
-    if (unreliable) {
+    SpecAndStatus specAndStatus = Types.resolveSpecAndStatusTypes(definition);
+    if (specAndStatus.isUnreliable()) {
       System.out.println("Cannot reliably determine status types for  " + crClassName
         + " because it isn't parameterized with only spec and status types. Status replicas detection will be deactivated.");
     }
@@ -139,7 +122,7 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
       .orElse(Scope.CLUSTER);
 
     return new CustomResourceInfo(group, version, kind, singular, plural, shortNames, storage, served, scope, definition, crClassName.toString(),
-      specClassName, statusClassName);
+      specAndStatus.getSpecClassName(), specAndStatus.getStatusClassName());
   }
 
   private class FileObjectCRDOutput implements CRDOutput {
