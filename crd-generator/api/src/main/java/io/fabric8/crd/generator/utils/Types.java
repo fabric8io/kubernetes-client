@@ -177,6 +177,51 @@ public class Types {
       .collect(Collectors.toSet());
   }
 
+  public static class SpecAndStatus {
+    private static SpecAndStatus UNRESOLVED = new SpecAndStatus(null, null);
+    private final String specClassName;
+    private final String statusClassName;
+    private final boolean unreliable;
+
+    public SpecAndStatus(String specClassName, String statusClassName) {
+      this.specClassName = specClassName;
+      this.statusClassName = statusClassName;
+      this.unreliable = specClassName == null || statusClassName == null;
+    }
+
+    public String getSpecClassName() {
+      return specClassName;
+    }
+
+    public String getStatusClassName() {
+      return statusClassName;
+    }
+
+    public boolean isUnreliable() {
+      return unreliable;
+    }
+  }
+  private static final String CUSTOM_RESOURCE_NAME = CustomResource.class.getCanonicalName();
+  public static SpecAndStatus resolveSpecAndStatusTypes(TypeDef definition) {
+    Set<ClassRef> superClasses = Types.getSuperClasses(definition);
+
+    Optional<ClassRef> optionalCustomResourceRef = superClasses.stream()
+      .filter(s -> s.getFullyQualifiedName().equals(CUSTOM_RESOURCE_NAME)).findFirst();
+    if (optionalCustomResourceRef.isPresent()) {
+      ClassRef customResourceRef = optionalCustomResourceRef.get();
+      if (customResourceRef.getArguments().size() == 2) {
+        TypeRef specType = customResourceRef.getArguments().get(0);
+        String specClassName =
+          specType instanceof ClassRef ? ((ClassRef) specType).getFullyQualifiedName() : null;
+        TypeRef statusType = customResourceRef.getArguments().get(1);
+        String statusClassName =
+          statusType instanceof ClassRef ? ((ClassRef) statusType).getFullyQualifiedName() : null;
+        return new SpecAndStatus(specClassName, statusClassName);
+      }
+    }
+    return SpecAndStatus.UNRESOLVED;
+  }
+
   public static boolean isNamespaced(TypeDef definition) {
     return isNamespaced(definition, new HashSet<TypeDef>());
   }
