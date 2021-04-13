@@ -175,7 +175,7 @@ public class CRDGenerator {
 
     @Override
     public URI crdURI(String crdName) {
-      return getCRDFile(crdName).toURI();
+      return URI.create("file://" + getCRDFile(crdName));
     }
   }
 }
