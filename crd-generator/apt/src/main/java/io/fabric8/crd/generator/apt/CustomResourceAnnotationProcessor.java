@@ -29,30 +29,31 @@ import io.fabric8.kubernetes.model.annotation.ShortNames;
 import io.fabric8.kubernetes.model.annotation.Singular;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.codegen.CodegenContext;
+import io.sundr.codegen.Constants;
+import io.sundr.codegen.functions.ClassTo;
 import io.sundr.codegen.functions.ElementTo;
+import io.sundr.codegen.model.ClassRef;
 import io.sundr.codegen.model.TypeDef;
-import io.sundr.codegen.model.TypeRef;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
-import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Name;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.TypeMirror;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 
 @SupportedAnnotationTypes({"io.fabric8.kubernetes.model.annotation.Version"})
 public class CustomResourceAnnotationProcessor extends AbstractProcessor {
 
+  private static final TypeDef CUSTOM_RESOURCE_DEF = ClassTo.TYPEDEF.apply(CustomResource.class);
   final CRDGenerator generator = new CRDGenerator();
 
   public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
@@ -75,30 +76,23 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
     return false;
   }
 
-  private static final String CUSTOM_RESOURCE_NAME = CustomResource.class.getCanonicalName();
   private CustomResourceInfo toCustomResourceInfo(TypeElement customResource) {
+    final TypeDef definition = ElementTo.TYPEDEF.apply(customResource);
     final Name crClassName = customResource.getQualifiedName();
 
-    String specClassName = null;
-    String statusClassName = null;
-    TypeRef statusType = null;
-    boolean unreliable = true;
-    final DeclaredType superclass = (DeclaredType) customResource.getSuperclass();
-    if (CUSTOM_RESOURCE_NAME.equals(superclass.asElement().toString())) {
-      final List<? extends TypeMirror> typeArguments = superclass.getTypeArguments();
-      if (typeArguments.size() == 2) {
-        specClassName = ((TypeElement) ((DeclaredType) typeArguments.get(0)).asElement())
-          .getQualifiedName().toString();
-        TypeElement status = ((TypeElement) ((DeclaredType) typeArguments.get(1)).asElement());
-        statusClassName = status.getQualifiedName().toString();
-        if (!statusClassName.equals(Void.class.getCanonicalName())) {
-          statusType = ElementTo.TYPEDEF.apply(status).toReference();
-        }
-        unreliable = false;
-      }
+    Optional<ClassRef> customResourceRef = getCustomResourceRef(definition);
+    Optional<ClassRef>  specRef = getCustomResourceSpec(customResourceRef);
+    Optional<ClassRef> statusRef = getCustomResourceStatus(customResourceRef);
+    String specClassName = specRef.map(ClassRef::getFullyQualifiedName).orElse(null);
+    String statusClassName = statusRef.map(ClassRef::getFullyQualifiedName).orElse(null);
+
+    if (!specRef.isPresent()) {
+      System.out.println("Cannot reliably determine spec for  " + crClassName
+        + " because it isn't parameterized with only spec and status types. Spec replicas detection will be deactivated.");
     }
-    if (unreliable) {
-      System.out.println("Cannot reliably determine spec and status types for  " + crClassName
+
+    if (!statusRef.isPresent()) {
+      System.out.println("Cannot reliably determine status types for  " + crClassName
         + " because it isn't parameterized with only spec and status types. Status replicas detection will be deactivated.");
     }
 
@@ -130,10 +124,8 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
       .filter(t -> t.toString().equals(Namespaced.class.getTypeName()))
       .map(t -> Scope.NAMESPACED).findFirst().orElse(Scope.CLUSTER);
 
-    final TypeDef definition = ElementTo.TYPEDEF.apply(customResource);
 
-    return new CustomResourceInfo(group, version, kind, singular, plural, shortNames, storage,
-      served, scope, statusType, definition, crClassName.toString(),
+    return new CustomResourceInfo(group, version, kind, singular, plural, shortNames, storage, served, scope, definition, crClassName.toString(),
       specClassName, statusClassName);
   }
 
@@ -160,4 +152,35 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
       out.close();
     }
   }
+
+  private static Optional<ClassRef> getCustomResourceRef(TypeDef typeDef) {
+    return superClassStream(typeDef)
+      .filter(s -> s.getDefinition().getFullyQualifiedName().equals(CustomResource.class.getName()))
+      .findFirst();
+  }
+
+  private static Optional<ClassRef> getCustomResourceSpec(Optional<ClassRef> customResourceRef) {
+    return getCustomResourceTypeParam(customResourceRef, 0);
+  }
+
+  private static Optional<ClassRef> getCustomResourceStatus(Optional<ClassRef> customResourceRef) {
+    return getCustomResourceTypeParam(customResourceRef, 1);
+  }
+
+  private static Optional<ClassRef> getCustomResourceTypeParam(Optional<ClassRef> customResourceRef,
+    int parameterIndex) {
+    return customResourceRef
+      .filter(c -> c.getArguments() != null && c.getArguments().size() == 2)
+      .map(c -> c.getArguments().get(parameterIndex))
+      .filter(t -> t instanceof ClassRef)
+      .map(t -> (ClassRef) t);
+  }
+
+  public static Stream<ClassRef> superClassStream(TypeDef typeDef) {
+    if (Constants.OBJECT.equals(typeDef)) {
+      return Stream.empty();
+    }
+    return typeDef.getExtendsList().stream().flatMap(s -> superClassStream(s.getDefinition()));
+  }
 }
+

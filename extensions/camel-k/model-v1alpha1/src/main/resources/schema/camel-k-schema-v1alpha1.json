@@ -1,0 +1,419 @@
+{
+  "id": "http://fabric8.io/camel-k/v1alpha1/CamelKSchema#",
+  "$schema": "http://json-schema.org/draft-05/schema#",
+  "definitions": {
+    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_AuthorizationSpec": {
+      "type": "object",
+      "javaType": "io.fabric8.camelk.v1alpha1.AuthorizationSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_Endpoint": {
+      "type": "object",
+      "properties": {
+        "properties": {
+          "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_EndpointProperties",
+          "existingJavaType": "io.fabric8.camelk.v1alpha1.EndpointProperties"
+        },
+        "ref": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+        },
+        "types": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,io.fabric8.camelk.v1alpha1.EventTypeSpec\u003e"
+        },
+        "uri": {
+          "type": "string",
+          "existingJavaType": "String"
+        }
+      },
+      "javaType": "io.fabric8.camelk.v1alpha1.Endpoint",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_EndpointProperties": {
+      "type": "object",
+      "javaType": "io.fabric8.camelk.v1alpha1.EndpointProperties",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_EventTypeSpec": {
+      "type": "object",
+      "properties": {
+        "mediaType": {
+          "type": "string"
+        },
+        "schema": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps"
+        }
+      },
+      "javaType": "io.fabric8.camelk.v1alpha1.EventTypeSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_Kamelet": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "camel.apache.org/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "Kamelet",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_KameletSpec",
+          "existingJavaType": "io.fabric8.camelk.v1alpha1.KameletSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_KameletStatus",
+          "existingJavaType": "io.fabric8.camelk.v1alpha1.KameletStatus"
+        }
+      },
+      "javaType": "io.fabric8.camelk.v1alpha1.Kamelet",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_KameletBinding": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "camel.apache.org/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "KameletBinding",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_KameletBindingSpec",
+          "existingJavaType": "io.fabric8.camelk.v1alpha1.KameletBindingSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_KameletBindingStatus",
+          "existingJavaType": "io.fabric8.camelk.v1alpha1.KameletBindingStatus"
+        }
+      },
+      "javaType": "io.fabric8.camelk.v1alpha1.KameletBinding",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_KameletBindingCondition": {
+      "type": "object",
+      "properties": {
+        "lastTransitionTime": {
+          "existingJavaType": "java.lang.String"
+        },
+        "lastUpdateTime": {
+          "existingJavaType": "java.lang.String"
+        },
+        "message": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.camelk.v1alpha1.KameletBindingCondition",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_KameletBindingList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "camel.apache.org/v1alpha1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_KameletBinding",
+            "existingJavaType": "io.fabric8.camelk.v1alpha1.KameletBinding"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "KameletBindingList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.camelk.v1alpha1.KameletBindingList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.camelk.v1alpha1.KameletBinding\u003e"
+      ]
+    },
+    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_KameletBindingSpec": {
+      "type": "object",
+      "properties": {
+        "integration": {
+          "existingJavaType": "io.fabric8.camelk.v1.IntegrationSpec"
+        },
+        "sink": {
+          "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_Endpoint",
+          "existingJavaType": "io.fabric8.camelk.v1alpha1.Endpoint"
+        },
+        "source": {
+          "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_Endpoint",
+          "existingJavaType": "io.fabric8.camelk.v1alpha1.Endpoint"
+        }
+      },
+      "javaType": "io.fabric8.camelk.v1alpha1.KameletBindingSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_KameletBindingStatus": {
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_KameletBindingCondition",
+            "existingJavaType": "io.fabric8.camelk.v1alpha1.KameletBindingCondition"
+          }
+        },
+        "phase": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.camelk.v1alpha1.KameletBindingStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_KameletCondition": {
+      "type": "object",
+      "properties": {
+        "lastTransitionTime": {
+          "existingJavaType": "java.lang.String"
+        },
+        "lastUpdateTime": {
+          "existingJavaType": "java.lang.String"
+        },
+        "message": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.camelk.v1alpha1.KameletCondition",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_KameletList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "camel.apache.org/v1alpha1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_Kamelet",
+            "existingJavaType": "io.fabric8.camelk.v1alpha1.Kamelet"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "KameletList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.camelk.v1alpha1.KameletList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.camelk.v1alpha1.Kamelet\u003e"
+      ]
+    },
+    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_KameletProperty": {
+      "type": "object",
+      "properties": {
+        "default": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.camelk.v1alpha1.KameletProperty",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_KameletSpec": {
+      "type": "object",
+      "properties": {
+        "authorization": {
+          "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_AuthorizationSpec",
+          "existingJavaType": "io.fabric8.camelk.v1alpha1.AuthorizationSpec"
+        },
+        "definition": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps"
+        },
+        "dependencies": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "flow": {
+          "existingJavaType": "com.fasterxml.jackson.databind.JsonNode"
+        },
+        "sources": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "existingJavaType": "io.fabric8.camelk.v1.SourceSpec"
+          }
+        },
+        "types": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,io.fabric8.camelk.v1alpha1.EventTypeSpec\u003e"
+        }
+      },
+      "javaType": "io.fabric8.camelk.v1alpha1.KameletSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_KameletStatus": {
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_KameletCondition",
+            "existingJavaType": "io.fabric8.camelk.v1alpha1.KameletCondition"
+          }
+        },
+        "phase": {
+          "type": "string"
+        },
+        "properties": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_KameletProperty",
+            "existingJavaType": "io.fabric8.camelk.v1alpha1.KameletProperty"
+          }
+        }
+      },
+      "javaType": "io.fabric8.camelk.v1alpha1.KameletStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_AuthorizationSpec": {
+      "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_AuthorizationSpec",
+      "existingJavaType": "io.fabric8.camelk.v1alpha1.AuthorizationSpec"
+    },
+    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_Endpoint": {
+      "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_Endpoint",
+      "existingJavaType": "io.fabric8.camelk.v1alpha1.Endpoint"
+    },
+    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_EndpointProperties": {
+      "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_EndpointProperties",
+      "existingJavaType": "io.fabric8.camelk.v1alpha1.EndpointProperties"
+    },
+    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_EventTypeSpec": {
+      "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_EventTypeSpec",
+      "existingJavaType": "io.fabric8.camelk.v1alpha1.EventTypeSpec"
+    },
+    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_Kamelet": {
+      "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_Kamelet",
+      "existingJavaType": "io.fabric8.camelk.v1alpha1.Kamelet"
+    },
+    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_KameletBinding": {
+      "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_KameletBinding",
+      "existingJavaType": "io.fabric8.camelk.v1alpha1.KameletBinding"
+    },
+    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_KameletBindingCondition": {
+      "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_KameletBindingCondition",
+      "existingJavaType": "io.fabric8.camelk.v1alpha1.KameletBindingCondition"
+    },
+    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_KameletBindingList": {
+      "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_KameletBindingList",
+      "existingJavaType": "io.fabric8.camelk.v1alpha1.KameletBindingList"
+    },
+    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_KameletBindingSpec": {
+      "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_KameletBindingSpec",
+      "existingJavaType": "io.fabric8.camelk.v1alpha1.KameletBindingSpec"
+    },
+    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_KameletBindingStatus": {
+      "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_KameletBindingStatus",
+      "existingJavaType": "io.fabric8.camelk.v1alpha1.KameletBindingStatus"
+    },
+    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_KameletCondition": {
+      "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_KameletCondition",
+      "existingJavaType": "io.fabric8.camelk.v1alpha1.KameletCondition"
+    },
+    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_KameletList": {
+      "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_KameletList",
+      "existingJavaType": "io.fabric8.camelk.v1alpha1.KameletList"
+    },
+    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_KameletProperty": {
+      "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_KameletProperty",
+      "existingJavaType": "io.fabric8.camelk.v1alpha1.KameletProperty"
+    },
+    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_KameletSpec": {
+      "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_KameletSpec",
+      "existingJavaType": "io.fabric8.camelk.v1alpha1.KameletSpec"
+    },
+    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_KameletStatus": {
+      "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_KameletStatus",
+      "existingJavaType": "io.fabric8.camelk.v1alpha1.KameletStatus"
+    }
+  },
+  "additionalProperties": false
+}

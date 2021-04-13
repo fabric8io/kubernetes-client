@@ -22,7 +22,6 @@ import io.fabric8.kubernetes.model.Scope;
 import io.fabric8.kubernetes.model.annotation.ShortNames;
 import io.sundr.codegen.functions.ClassTo;
 import io.sundr.codegen.model.TypeDef;
-import io.sundr.codegen.model.TypeRef;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -39,7 +38,6 @@ public class CustomResourceInfo {
   private final boolean storage;
   private final boolean served;
   private final Scope scope;
-  private final Optional<TypeRef> status;
   private final TypeDef definition;
   private final String crClassName;
   private final Optional<String> specClassName;
@@ -47,7 +45,7 @@ public class CustomResourceInfo {
 
   public CustomResourceInfo(String group, String version, String kind, String singular,
     String plural, String[] shortNames, boolean storage, boolean served,
-    Scope scope, TypeRef status, TypeDef definition, String crClassName,
+    Scope scope, TypeDef definition, String crClassName,
     String specClassName, String statusClassName) {
     this.group = group;
     this.version = version;
@@ -58,7 +56,6 @@ public class CustomResourceInfo {
     this.storage = storage;
     this.served = served;
     this.scope = scope;
-    this.status = Optional.ofNullable(status);
     this.definition = definition;
     this.crClassName = crClassName;
     this.specClassName = Optional.ofNullable(specClassName);
@@ -109,10 +106,6 @@ public class CustomResourceInfo {
     return group;
   }
 
-  public Optional<TypeRef> status() {
-    return status;
-  }
-
   public String crClassName() {
     return crClassName;
   }
@@ -157,26 +150,18 @@ public class CustomResourceInfo {
 
       // this works because CustomResource is an abstract class
       String specClassName = null, statusClassName = null;
-      TypeRef statusType = null;
       if (genericSuperclass instanceof ParameterizedType) {
         final Type[] types = ((ParameterizedType) genericSuperclass).getActualTypeArguments();
         if (types.length == 2) {
           specClassName = types[0].getTypeName();
           statusClassName = types[1].getTypeName();
-
-          if (!VOID_TYPE_NAME.equals(statusClassName)) {
-            // load status class
-            final Class<?> statusClass = Thread.currentThread().getContextClassLoader()
-              .loadClass(statusClassName);
-            statusType = ClassTo.TYPEDEF.apply(statusClass).toReference();
-          } 
         }
       }
 
       return new CustomResourceInfo(instance.getGroup(), instance.getVersion(), instance.getKind(),
-        instance.getSingular(), instance.getPlural(), shortNames, instance.isStorage(), instance.isServed(), scope, statusType, definition,
+        instance.getSingular(), instance.getPlural(), shortNames, instance.isStorage(), instance.isServed(), scope, definition,
         customResource.getCanonicalName(), specClassName, statusClassName);
-    } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException | ClassNotFoundException e) {
+    } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
   }

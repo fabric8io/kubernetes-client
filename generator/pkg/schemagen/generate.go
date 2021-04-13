@@ -327,6 +327,12 @@ func (g *schemaGenerator) getFields(t reflect.Type) []reflect.StructField {
 
 	var fields = make([]reflect.StructField, 0)
 
+	//Not all types are Structs (e.g. `type RawMessage byte[]`) will cause this function to fail.
+	//So, we need to add a guard for this case. It's expected that this will handled using external/provided mappings.
+	if t.Kind() != reflect.Struct {
+		return fields
+	}
+
 	for i := 0; i < t.NumField(); i++ {
 		field := t.Field(i)
 

@@ -32,6 +32,7 @@ import (
   operatorhubv1 "github.com/operator-framework/api/pkg/operators/v1"
   operatormanifest "github.com/operator-framework/api/pkg/manifests"
   operatorhubv1alpha1 "github.com/operator-framework/api/pkg/operators/v1alpha1"
+  version "github.com/operator-framework/api/pkg/lib/version"
 
   "os"
 
@@ -88,6 +89,7 @@ func main() {
   typeMap := map[reflect.Type]reflect.Type{
     reflect.TypeOf(time.Time{}): reflect.TypeOf(""),
     reflect.TypeOf(struct{}{}):  reflect.TypeOf(""),
+    reflect.TypeOf(version.OperatorVersion{}): reflect.TypeOf(""),
   }
   schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, map[reflect.Type]string{},"operatorhub")
   if err != nil {

@@ -32,6 +32,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 class WatchEventsListener extends WebSocketListener {
   private final AtomicReference<WebSocket> webSocketRef = new AtomicReference<>();
@@ -40,12 +41,14 @@ class WatchEventsListener extends WebSocketListener {
   private final Context context;
   private final Set<WatchEventsListener> watchEventListenerList;
   private final Logger logger;
+  private final Consumer<WatchEventsListener> onOpenAction;
 
-  public WatchEventsListener(Context context, AttributeSet attributeSet, final Set<WatchEventsListener> watchEventListenerList, Logger logger) {
+  public WatchEventsListener(Context context, AttributeSet attributeSet, final Set<WatchEventsListener> watchEventListenerList, Logger logger, Consumer<WatchEventsListener> onOpenAction) {
     this.logger = logger;
     this.context = context;
     this.attributeSet = attributeSet;
     this.watchEventListenerList = watchEventListenerList;
+    this.onOpenAction = onOpenAction;
   }
 
   public boolean attributeMatches(AttributeSet set) {
@@ -54,6 +57,7 @@ class WatchEventsListener extends WebSocketListener {
   @Override
   public void onOpen(WebSocket webSocket, Response response) {
     webSocketRef.set(webSocket);
+    onOpenAction.accept(this);
   }
 
   @Override

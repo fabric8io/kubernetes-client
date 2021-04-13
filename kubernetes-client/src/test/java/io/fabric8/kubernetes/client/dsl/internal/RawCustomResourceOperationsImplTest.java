@@ -15,10 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.io.IOException;
@@ -30,6 +27,8 @@ import java.util.Map;
 
 import io.fabric8.kubernetes.api.model.DeleteOptionsBuilder;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
+import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -655,6 +654,19 @@ public class RawCustomResourceOperationsImplTest {
     // Then
     assertThat(unstructuredConfigMap).isNotNull();
     assertRequestCaptured(captor, "/api/v1/namespaces/default/configmaps/game-config", "GET");
+  }
+
+  @Test
+  void testEditCR() throws IOException {
+    // Given
+    RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, clusterCustomResourceDefinitionContext);
+    String jsonString = "{ \"metadata\": " + Serialization.jsonMapper().writeValueAsString(new ObjectMetaBuilder().withName("myresource").withNamespace("mynamespace").build()) + "}";
+
+    // When
+    Map<String, Object> res = rawCustomResourceOperations.edit(jsonString);
+
+    // Then
+    assertNotEquals(null, res);
   }
 
   private void assertRequestCaptured(ArgumentCaptor<Request> captor, String url, String method) {

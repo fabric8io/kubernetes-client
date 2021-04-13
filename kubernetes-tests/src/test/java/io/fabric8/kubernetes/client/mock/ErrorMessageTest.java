@@ -47,11 +47,16 @@ public class ErrorMessageTest {
 
     try{
       client.v1().events().inNamespace("test").delete();
+      fail();
     } catch (Exception e){
+      System.out.println("exception: "+e);
       Assertions.assertThat(e.getMessage().startsWith("Failure executing: DELETE"));
       Assertions.assertThat(e.getMessage().contains("Message: MSG"));
       Assertions.assertThat(not(e.getMessage().contains("Received status")));
     }
+  }
+
+  private void fail() {
   }
 
   @Test
@@ -67,6 +72,7 @@ public class ErrorMessageTest {
 
     try{
       client.v1().events().inNamespace("test").create(new EventBuilder().withNewMetadata().withName("event1").endMetadata().build());
+      fail();
     } catch( Exception e){
       Assertions.assertThat(e.getMessage().startsWith("Failure executing: POST"));
       Assertions.assertThat(e.getMessage().contains("Received status"));

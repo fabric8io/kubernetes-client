@@ -34,6 +34,7 @@
     <module>service-catalog</module>
     <module>volumesnapshot</module>
     <module>chaosmesh</module>
+    <module>camel-k</module>
   </modules>
 
 </project>

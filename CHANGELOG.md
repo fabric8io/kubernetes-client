@@ -4,18 +4,22 @@
 
 #### Bugs
 * Fix #2620: Add support for `config.openshift.io/v1` Ingress
-
-- Fix: CRD generator no longer treat enum values as properties (performance)
+* Fix #2784: Not able to deserialize ClusterServiceVersion
+* Fix #2935: CRD generator no longer treat enum values as properties (performance)
+* Fix #2812: SharedIndexInformer EventHandler sees double updates at resync interval
 
 #### Improvements
-- RawCustomResourceOperationsImpl should also work with standard resources
+* Fix #2950: RawCustomResourceOperationsImpl should also work with standard resources
+* Fix #2938: Make it possible to manage Tekton Triggers directly
+* Fix #2921: Kubernetes server mock will generate missing metadata fields
 
-- Fix #2938: Make it possible to manage Tekton Triggers directly
+* chore: Kubernetes server mock watch will generate intial ADDED events
 
 #### Dependency Upgrade
 
 #### New Features
 * Fix #2837: Add Support for `events.k8s.io` APIGroup DSL
+* Fix #2964: Introduce CamelK extension
 
 ### 5.2.1 (2021-03-16)
 
@@ -138,7 +142,7 @@
 * Fix #2723: Dependency cleanup
  - Remove javax.annotation-api 
  - Remove jaxb-api
- - Remove jacson-module-jaxb-annotations
+ - Remove jackson-module-jaxb-annotations
 * Fix #2744: Automatically instantiates spec and status fields on `CustomResource` when possible.
   `initSpec` and `initStatus` methods are also provided to allow for overriding of the default implementation.
 

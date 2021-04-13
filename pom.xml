@@ -112,7 +112,7 @@
     <arquillian.cube.version>1.18.2</arquillian.cube.version>
     <slf4j.version>1.7.30</slf4j.version>
     <mockito.version>3.8.0</mockito.version>
-    <lombok.version>1.18.18</lombok.version>
+    <lombok.version>1.18.20</lombok.version>
     <snakeyaml.version>1.26</snakeyaml.version>
     <bouncycastle.version>1.68</bouncycastle.version>
     <commons-codec.version>1.15</commons-codec.version>
@@ -366,6 +366,27 @@
       <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>tekton-server-mock</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>camel-k-model-v1alpha1</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>camel-k-model-v1</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>camel-k-client</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>camel-k-server-mock</artifactId>
         <version>${project.version}</version>
       </dependency>
 
@@ -631,6 +652,8 @@
             <owner>Red Hat, Inc.</owner>
           </properties>
           <excludes>
+            <exclude>**/.idea</exclude>
+            <exclude>.idea</exclude>
             <exclude>.editorconfig</exclude>
             <exclude>license.txt</exclude>
             <exclude>**/test-kubeconfig</exclude>
@@ -640,7 +663,12 @@
             <exclude>kubernetes-model/.openshift-version</exclude>
             <exclude>kubernetes-model/glide.*</exclude>
             <exclude>kubernetes-model/Gopkg.*</exclude>
+            <exclude>extensions/**/vendor/**/*</exclude>
+            <exclude>**/go.mod</exclude>
+            <exclude>**/go.sum</exclude>
             <exclude>kubernetes-client/src/test/resources/*</exclude>
+            <exclude>kubernetes-client/src/test/resources/mockito-extensions/*</exclude>
+            <exclude>**/src/test/resources/ssl/*</exclude>
             <exclude>Jenkinsfile</exclude>
           </excludes>
           <mapping>
