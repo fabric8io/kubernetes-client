@@ -4,6 +4,8 @@
 
 #### Bugs
 
+* Fix #2989: serialization will generate valid yaml when using subtypes
+
 #### Improvements
 
 #### Dependency Upgrade
