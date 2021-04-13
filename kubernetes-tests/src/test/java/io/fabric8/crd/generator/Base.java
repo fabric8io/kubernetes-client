@@ -15,6 +15,8 @@
  */
 package io.fabric8.crd.generator;
 
+import io.fabric8.crd.generator.inherited.BaseSpec;
+import io.fabric8.crd.generator.inherited.BaseStatus;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.client.CustomResource;
 

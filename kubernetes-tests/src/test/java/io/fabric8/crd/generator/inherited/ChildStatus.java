@@ -13,11 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crd.generator;
+package io.fabric8.crd.generator.inherited;
 
-/**
- * @author <a href="claprun@redhat.com">Christophe Laprun</a>
- */
-public class BaseStatus {
+public class ChildStatus extends BaseStatus {
 
 }
