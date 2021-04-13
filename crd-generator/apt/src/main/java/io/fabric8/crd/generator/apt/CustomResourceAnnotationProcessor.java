@@ -16,7 +16,7 @@
 package io.fabric8.crd.generator.apt;
 
 import io.fabric8.crd.generator.CRDGenerator;
-import io.fabric8.crd.generator.CRDGenerator.CRDOutput;
+import io.fabric8.crd.generator.CRDGenerator.AbstractCRDOutput;
 import io.fabric8.crd.generator.CustomResourceInfo;
 import io.fabric8.crd.generator.utils.Types;
 import io.fabric8.crd.generator.utils.Types.SpecAndStatus;
@@ -33,9 +33,7 @@ import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.codegen.CodegenContext;
 import io.sundr.codegen.functions.ClassTo;
 import io.sundr.codegen.functions.ElementTo;
-import io.sundr.codegen.model.ClassRef;
 import io.sundr.codegen.model.TypeDef;
-import io.sundr.codegen.model.TypeRef;
 import io.sundr.codegen.utils.TypeUtils;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -45,6 +43,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 import javax.annotation.processing.AbstractProcessor;
+import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.lang.model.element.Element;
@@ -61,7 +60,7 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
 
   public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
     if (roundEnv.processingOver()) {
-      generator.withOutput(new FileObjectCRDOutput()).generate();
+      generator.withOutput(new FileObjectCRDOutput(processingEnv)).generate();
       return true;
     }
 
@@ -125,27 +124,64 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
       specAndStatus.getSpecClassName(), specAndStatus.getStatusClassName());
   }
 
-  private class FileObjectCRDOutput implements CRDOutput {
+  private static class FileObjectOutputStream extends OutputStream {
 
-    private FileObject yml;
-    private OutputStream out;
+    private final FileObject yml;
+    private final OutputStream out;
 
-    @Override
-    public OutputStream outputFor(String crdFileName) throws IOException {
-      yml = processingEnv.getFiler().createResource(StandardLocation.CLASS_OUTPUT, "",
-        "META-INF/fabric8/" + crdFileName + ".yml");
-      out = yml.openOutputStream();
-      return out;
+    public FileObjectOutputStream(FileObject yml) throws IOException {
+      this.yml = yml;
+      this.out = yml.openOutputStream();
     }
 
     @Override
-    public URI crdURI() {
-      return yml.toUri();
+    public void write(byte[] b) throws IOException {
+      out.write(b);
+    }
+
+    @Override
+    public void write(byte[] b, int off, int len) throws IOException {
+      out.write(b, off, len);
+    }
+
+    @Override
+    public void flush() throws IOException {
+      out.flush();
     }
 
     @Override
     public void close() throws IOException {
       out.close();
+    }
+
+    @Override
+    public void write(int b) throws IOException {
+      out.write(b);
+    }
+
+    public URI toUri() {
+      return yml.toUri();
+    }
+  }
+
+  private static class FileObjectCRDOutput extends AbstractCRDOutput<FileObjectOutputStream> {
+
+    private final ProcessingEnvironment processingEnv;
+
+    public FileObjectCRDOutput(ProcessingEnvironment processingEnv) {
+      this.processingEnv = processingEnv;
+    }
+
+    @Override
+    protected FileObjectOutputStream createStreamFor(String crdName) throws IOException {
+      return new FileObjectOutputStream(
+        processingEnv.getFiler().createResource(StandardLocation.CLASS_OUTPUT, "",
+          "META-INF/fabric8/" + crdName + ".yml"));
+    }
+
+    @Override
+    public URI crdURI(String crdName) {
+      return getStreamFor(crdName).toUri();
     }
   }
 }
