@@ -45,7 +45,7 @@ public class Types {
 
   private static final TypeDef NAMESPACED = ClassTo.TYPEDEF.apply(Namespaced.class);
   private static final Map<TypeDef, List<Property>> propertiesCache = new ConcurrentHashMap<>(7);
-  public static final TypeRef VOID = ClassTo.TYPEREF.apply(Void.TYPE);
+  public static final String JAVA_LANG_VOID = "java.lang.Void";
 
 
   public static TypeDef projectDefinition(ClassRef ref) {
@@ -187,13 +187,10 @@ public class Types {
       .filter(s -> s.getFullyQualifiedName().equals(CUSTOM_RESOURCE_NAME)).findFirst();
     if (optionalCustomResourceRef.isPresent()) {
       ClassRef customResourceRef = optionalCustomResourceRef.get();
-      if (customResourceRef.getArguments().size() == 2) {
-        TypeRef specType = customResourceRef.getArguments().get(0);
-        String specClassName =
-          specType instanceof ClassRef ? ((ClassRef) specType).getFullyQualifiedName() : null;
-        TypeRef statusType = customResourceRef.getArguments().get(1);
-        String statusClassName =
-          statusType instanceof ClassRef ? ((ClassRef) statusType).getFullyQualifiedName() : null;
+      List<TypeRef> arguments = customResourceRef.getArguments();
+      if (arguments.size() == 2) {
+        String specClassName = getClassFQNIfNotVoid(arguments.get(0));
+        String statusClassName = getClassFQNIfNotVoid(arguments.get(1));
         return new SpecAndStatus(specClassName, statusClassName);
       }
     }
@@ -201,7 +198,7 @@ public class Types {
   }
 
   public static boolean isNamespaced(TypeDef definition) {
-    return isNamespaced(definition, new HashSet<TypeDef>());
+    return isNamespaced(definition, new HashSet<>());
   }
 
   public static boolean isNamespaced(TypeDef definition, Set<TypeDef> visited) {
@@ -250,6 +247,14 @@ public class Types {
    * @return {@code true} if named {@code status}, {@code false} otherwise
    */
   public static boolean isStatusProperty(Property property) {
-    return "status".equals(property.getName()) && !property.getTypeRef().isAssignableFrom(VOID);
+    return "status".equals(property.getName()) && getClassFQNIfNotVoid(property.getTypeRef()) != null;
+  }
+
+  private static String getClassFQNIfNotVoid(TypeRef typeRef) {
+    if (!(typeRef instanceof ClassRef)) {
+      return null;
+    }
+    String fullyQualifiedName = ((ClassRef) typeRef).getFullyQualifiedName();
+    return JAVA_LANG_VOID.equals(fullyQualifiedName) ? null : fullyQualifiedName;
   }
 }
