@@ -43,7 +43,6 @@ import java.util.stream.Stream;
 public class Types {
 
   private static final TypeDef NAMESPACED = ClassTo.TYPEDEF.apply(Namespaced.class);
-  private static final TypeDef CUSTOM_RESOURCE = ClassTo.TYPEDEF.apply(CustomResource.class);
   private static final Map<TypeDef, List<Property>> propertiesCache = new ConcurrentHashMap<>(7);
 
 
