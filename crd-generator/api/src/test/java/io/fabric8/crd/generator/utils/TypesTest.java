@@ -28,10 +28,7 @@ import io.sundr.codegen.functions.ClassTo;
 import io.sundr.codegen.model.ClassRef;
 import io.sundr.codegen.model.Property;
 import io.sundr.codegen.model.TypeDef;
-import io.sundr.codegen.model.TypeParamDef;
-import io.sundr.codegen.model.TypeParamRef;
 import io.sundr.codegen.model.TypeRef;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -58,10 +55,9 @@ public class TypesTest {
   }
 
   @Test
-  public void unrollHierarchyShouldProduceProperlyTypedClasses() {
+  public void projectSuperClassesShouldProduceProperlyTypedClasses() {
     TypeDef def = ClassTo.TYPEDEF.apply(Basic.class);
     Set<ClassRef> superClasses = Types.projectSuperClasses(def);
-    System.out.println("Defs:" + superClasses);
     assertEquals(2, superClasses.size());
     Optional<ClassRef> crOpt = superClasses.stream()
       .filter(c -> c.getName().contains("CustomResource")).findFirst();

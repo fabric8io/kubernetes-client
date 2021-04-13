@@ -25,6 +25,7 @@ import io.sundr.codegen.model.Property;
 import io.sundr.codegen.model.PropertyBuilder;
 import io.sundr.codegen.model.TypeDef;
 import io.sundr.codegen.model.TypeDefBuilder;
+import io.sundr.codegen.model.TypeParamDef;
 import io.sundr.codegen.model.TypeParamRef;
 import io.sundr.codegen.model.TypeRef;
 import java.util.ArrayList;
@@ -53,10 +54,11 @@ public class Types {
       return definition;
     }
 
+    List<TypeParamDef> parameters = definition.getParameters();
     Map<String, TypeRef> mappings = new HashMap<>();
     for (int i = 0; i < arguments.size(); i++) {
-      String name = definition.getParameters().get(i).getName();
-      TypeRef typeRef = ref.getArguments().get(i);
+      String name = parameters.get(i).getName();
+      TypeRef typeRef = arguments.get(i);
       mappings.put(name, typeRef);
     }
 
@@ -138,11 +140,9 @@ public class Types {
     properties = Stream.concat(typeDef.getProperties().stream(),
                                typeDef.getExtendsList()
                                .stream()
-                               .peek(e -> System.out.println("Projected class:" + e))
                                .flatMap(e -> projectDefinition(e)
                                         .getProperties()
                                         .stream()
-                                        .peek(p -> System.out.println("\t" + p + " filtered:" + filterCustomResourceProperties(e).test(p)))
                                         .filter(p -> filterCustomResourceProperties(e).test(p))))
                                .collect(Collectors.toList());
     propertiesCache.put(typeDef, properties);
