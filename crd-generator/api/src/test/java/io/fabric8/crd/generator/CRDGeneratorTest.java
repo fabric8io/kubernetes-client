@@ -64,8 +64,11 @@ public class CRDGeneratorTest {
     CustomResourceDefinitionVersion version = checkCRD(Joke.class, "Joke", "jokes",
       Scope.NAMESPACED);
     assertNull(version.getSubresources());
+  }
 
-    version = checkCRD(JokeRequest.class, "JokeRequest", "jokerequests", Scope.NAMESPACED);
+  @Test
+  public void jokerequestCRDShouldWork() {
+    CustomResourceDefinitionVersion version = checkCRD(JokeRequest.class, "JokeRequest", "jokerequests", Scope.NAMESPACED);
     assertNotNull(version.getSubresources());
   }
 
