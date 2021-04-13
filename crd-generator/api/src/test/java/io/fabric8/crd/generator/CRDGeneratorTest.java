@@ -20,6 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import io.fabric8.crd.example.basic.Basic;
+import io.fabric8.crd.example.inherited.Child;
+import io.fabric8.crd.example.simplest.Simplest;
 import io.fabric8.crd.generator.CRDGenerator.AbstractCRDOutput;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionNames;
@@ -29,6 +31,7 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceValidation
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.utils.Serialization;
+import io.fabric8.kubernetes.model.Scope;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -40,9 +43,37 @@ public class CRDGeneratorTest {
   private final static Class<CustomResourceDefinition> crdClass = CustomResourceDefinition.class;
 
   @Test
+  public void simplestCRDShouldWork() {
+    final CustomResourceDefinitionVersion version = checkCRD(Simplest.class, "Simplest", "simplests",
+      Scope.CLUSTER);
+    assertNotNull(version.getSubresources());
+  }
+
+  @Test
+  public void inheritedCRDShouldWork() {
+    final CustomResourceDefinitionVersion version = checkCRD(Child.class, "Child", "children",
+      Scope.NAMESPACED);
+    assertNotNull(version.getSubresources());
+  }
+
+  @Test
   public void checkCRDGenerator() {
+    final CustomResourceDefinitionVersion version = checkCRD(Basic.class, "Basic", "basics",
+      Scope.NAMESPACED);
+    assertNotNull(version.getSubresources());
+    CustomResourceValidation schema = version.getSchema();
+    assertNotNull(schema);
+    Map<String, JSONSchemaProps> properties = schema.getOpenAPIV3Schema().getProperties();
+    assertEquals(2, properties.size());
+    Map<String, JSONSchemaProps> specProps = properties.get("spec").getProperties();
+    assertEquals("integer", specProps.get("myInt").getType());
+    Map<String, JSONSchemaProps> status = properties.get("status").getProperties();
+    assertEquals("string", status.get("message").getType());
+  }
+
+  private CustomResourceDefinitionVersion checkCRD(Class<? extends CustomResource> customResource, String kind, String plural,
+    Scope scope) {
     CRDGenerator generator = new CRDGenerator();
-    Class<Basic> customResource = Basic.class;
     TestCRDOutput output = new TestCRDOutput();
     generator.withOutput(output)
       .customResources(CustomResourceInfo.fromClass(customResource))
@@ -55,21 +86,13 @@ public class CRDGeneratorTest {
     CustomResourceDefinitionNames names = spec.getNames();
 
     assertEquals("apiextensions.k8s.io/v1", definition.getApiVersion());
-    assertEquals("Basic", names.getKind());
-    assertEquals("basics", names.getPlural());
-    assertEquals("Namespaced", spec.getScope());
+    assertEquals(kind, names.getKind());
+    assertEquals(plural, names.getPlural());
+    assertEquals(scope.toString(), spec.getScope());
     CustomResourceDefinitionVersion version = spec.getVersions().get(0);
     assertTrue(version.getServed());
     assertTrue(version.getStorage());
-    assertNotNull(version.getSubresources());
-    CustomResourceValidation schema = version.getSchema();
-    assertNotNull(schema);
-    Map<String, JSONSchemaProps> properties = schema.getOpenAPIV3Schema().getProperties();
-    assertEquals(2, properties.size());
-    Map<String, JSONSchemaProps> specProps = properties.get("spec").getProperties();
-    assertEquals("integer", specProps.get("myInt").getType());
-    Map<String, JSONSchemaProps> status = properties.get("status").getProperties();
-    assertEquals("string", status.get("message").getType());
+    return version;
   }
 
   private static class TestCRDOutput extends AbstractCRDOutput<ByteArrayOutputStream> {
