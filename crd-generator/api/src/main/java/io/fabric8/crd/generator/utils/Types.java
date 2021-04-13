@@ -18,7 +18,6 @@ package io.fabric8.crd.generator.utils;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.sundr.builder.TypedVisitor;
-import io.sundr.codegen.functions.ClassTo;
 import io.sundr.codegen.model.ClassRef;
 import io.sundr.codegen.model.ClassRefBuilder;
 import io.sundr.codegen.model.Property;
@@ -43,7 +42,7 @@ import java.util.stream.Stream;
 
 public class Types {
 
-  private static final TypeDef NAMESPACED = ClassTo.TYPEDEF.apply(Namespaced.class);
+  private static final String NAMESPACED = Namespaced.class.getName();
   private static final Map<TypeDef, List<Property>> propertiesCache = new ConcurrentHashMap<>(7);
   public static final String JAVA_LANG_VOID = "java.lang.Void";
 
@@ -202,7 +201,7 @@ public class Types {
   }
 
   public static boolean isNamespaced(TypeDef definition, Set<TypeDef> visited) {
-    if (definition.getFullyQualifiedName().equals(NAMESPACED.getFullyQualifiedName())) {
+    if (definition.getFullyQualifiedName().equals(NAMESPACED)) {
       return true;
     }
 
