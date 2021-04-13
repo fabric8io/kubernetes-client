@@ -17,8 +17,9 @@ package io.fabric8.crd;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import org.junit.Test;
 
@@ -30,14 +31,14 @@ public class FooCRDIT {
   @Test
   public void testCrd() {
     CustomResourceDefinition d = Serialization.unmarshal(getClass().getClassLoader()
-        .getResourceAsStream("META-INF/fabric8/foos.acme.com-v1.yml"),
+        .getResourceAsStream("META-INF/fabric8/fooes.acme.com-v1.yml"),
       CustomResourceDefinition.class);
     assertNotNull(d);
     assertEquals("Foo", d.getSpec().getNames().getKind());
-    assertEquals("foos", d.getSpec().getNames().getPlural());
+    assertEquals("fooes", d.getSpec().getNames().getPlural());
     assertEquals("Namespaced", d.getSpec().getScope());
-
-    assertNotNull(d.getSpec().getSubresources());
+    assertTrue(d.getSpec().getVersions().stream().filter(v -> v.getSubresources() != null)
+      .findAny().isPresent());
   }
 
 }

@@ -1,25 +1,40 @@
 ## CHANGELOG
 
-### 5.3-SNAPSHOT
+### 5.4-SNAPSHOT
+
+#### Bugs
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
+### 5.3.0 (2021-04-08)
 
 #### Bugs
 * Fix #2620: Add support for `config.openshift.io/v1` Ingress
 * Fix #2784: Not able to deserialize ClusterServiceVersion
 * Fix #2935: CRD generator no longer treat enum values as properties (performance)
 * Fix #2812: SharedIndexInformer EventHandler sees double updates at resync interval
+* Fix #2937: SharedInformerFactory#getExistingSharedIndexInformer returns null when @Kind is configured
+* Fix #2924: Creating a CustomResourceInfo from a class doesn't result in the expected information
+* Fix #2967: Copy to/from pods: fixed error message; removed debug output
+* Fix #2923: Edit a CustomResource should result in a patch
 
 #### Improvements
 * Fix #2950: RawCustomResourceOperationsImpl should also work with standard resources
 * Fix #2938: Make it possible to manage Tekton Triggers directly
 * Fix #2921: Kubernetes server mock will generate missing metadata fields
-
-* chore: Kubernetes server mock watch will generate intial ADDED events
+* Fix #2946: Kubernetes server mock watch will generate initial ADDED events
+* Fix #2925: Add CustomResource.getShortNames(Class) method
 
 #### Dependency Upgrade
+* Fix #2971: Upgrade to sundrio 0.30.0
 
 #### New Features
 * Fix #2837: Add Support for `events.k8s.io` APIGroup DSL
-* Fix #2964: Introduce CamelK extension
+* Fix #2854: Introduce CamelK extension
 
 ### 5.2.1 (2021-03-16)
 

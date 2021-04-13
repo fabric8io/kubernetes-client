@@ -25,14 +25,12 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.client.utils.Pluralize;
 import io.fabric8.kubernetes.model.Scope;
 import io.fabric8.kubernetes.model.annotation.Group;
-import io.fabric8.kubernetes.model.annotation.Plural;
-import io.fabric8.kubernetes.model.annotation.Singular;
+import io.fabric8.kubernetes.model.annotation.ShortNames;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
-import java.util.Locale;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,8 +42,8 @@ import org.slf4j.LoggerFactory;
  * <ul>
  *   <li>group is set using {@link HasMetadata#getGroup(Class)}</li>
  *   <li>version is set using {@link HasMetadata#getVersion(Class)}</li>
- *   <li>singular is set using {@link CustomResource#getSingular(Class)}</li>
- *   <li>plural is set using {@link CustomResource#getPlural(Class)}</li>
+ *   <li>singular is set using {@link HasMetadata#getSingular(Class)}</li>
+ *   <li>plural is set using {@link HasMetadata#getPlural(Class)}</li>
  *   <li>computed CRD name using {@link CustomResource#getCRDName(Class)}</li>
  * </ul>
  *
@@ -96,8 +94,8 @@ public abstract class CustomResource<S, T> implements HasMetadata {
     this.apiVersion = version;
     this.kind = HasMetadata.super.getKind();
     scope = this instanceof Namespaced ? Scope.NAMESPACED.value() : Scope.CLUSTER.value();
-    this.singular = getSingular(clazz);
-    this.plural = getPlural(clazz);
+    this.singular = HasMetadata.super.getSingular();
+    this.plural = HasMetadata.super.getPlural();
     this.crdName = getCRDName(clazz);
     this.served = getServed(clazz);
     this.storage = getStorage(clazz);
@@ -174,15 +172,11 @@ public abstract class CustomResource<S, T> implements HasMetadata {
   }
 
   /**
-   * Retrieves the plural form associated with the specified CustomResource if annotated with {@link Plural} or computes a default value
-   * using the value returned by {@link #getSingular(Class)} as input to {@link Pluralize#toPlural(String)}.
-   *
-   * @param clazz the CustomResource whose plural form we want to retrieve
-   * @return the plural form defined by the {@link Plural} annotation or a computed default value
+   * @deprecated use {@link HasMetadata#getPlural(Class)} instead
    */
-  public static String getPlural(Class<? extends HasMetadata> clazz) {
-    final Plural fromAnnotation = clazz.getAnnotation(Plural.class);
-    return (fromAnnotation != null ? fromAnnotation.value().toLowerCase(Locale.ROOT) : Pluralize.toPlural(getSingular(clazz)));
+  @Deprecated
+  public static String getPlural(Class<?> clazz) {
+    return HasMetadata.getPlural(clazz);
   }
 
   @JsonIgnore
@@ -191,16 +185,11 @@ public abstract class CustomResource<S, T> implements HasMetadata {
   }
 
   /**
-   * Retrieves the singular form associated with the specified CustomResource as defined by the {@link Singular} annotation or
-   * computes a default value (lower-cased version of the value returned by {@link HasMetadata#getKind(Class)}) if the annotation
-   * is not present.
-   *
-   * @param clazz the CustomResource whose singular form we want to retrieve
-   * @return the singular form defined by the {@link Singular} annotation or a computed default value
+   * @deprecated use {@link HasMetadata#getSingular(Class)} instead
    */
-  public static String getSingular(Class<? extends HasMetadata> clazz) {
-    final Singular fromAnnotation = clazz.getAnnotation(Singular.class);
-    return (fromAnnotation != null ? fromAnnotation.value() : HasMetadata.getKind(clazz)).toLowerCase(Locale.ROOT);
+  @Deprecated
+  public static String getSingular(Class<?> clazz) {
+    return HasMetadata.getSingular(clazz);
   }
 
   @JsonIgnore
@@ -215,13 +204,25 @@ public abstract class CustomResource<S, T> implements HasMetadata {
    * @param clazz the CustomResource whose CRD name we want to compute
    * @return the CRD name associated with the CustomResource
    */
-  public static String getCRDName(Class<? extends CustomResource> clazz) {
-    return getPlural(clazz) + "." + HasMetadata.getGroup(clazz);
+  public static String getCRDName(Class<?> clazz) {
+    return HasMetadata.getPlural(clazz) + "." + HasMetadata.getGroup(clazz);
   }
 
   @JsonIgnore
   public String getCRDName() {
     return crdName;
+  }
+
+  /**
+   * Retrieves the short names associated with this CustomResource or an empty array if none was provided
+   *
+   * @param clazz the CustomResource class which short names we want to retrieve
+   * @return the short names associated with this CustomResource or an empty array if none was provided
+   */
+  public static String[] getShortNames(Class<? extends CustomResource> clazz) {
+    return Optional.ofNullable(clazz.getAnnotation(ShortNames.class))
+      .map(ShortNames::value)
+      .orElse(new String[]{});
   }
 
   /**

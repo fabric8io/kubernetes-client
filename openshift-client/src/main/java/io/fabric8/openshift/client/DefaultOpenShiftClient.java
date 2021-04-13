@@ -124,7 +124,6 @@ import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
 import io.fabric8.kubernetes.client.utils.BackwardsCompatibilityInterceptor;
 import io.fabric8.kubernetes.client.utils.ImpersonatorInterceptor;
 import io.fabric8.kubernetes.client.utils.Serialization;
-import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildConfigList;
@@ -706,12 +705,12 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
 
   @Override
   public InOutCreateable<SubjectAccessReview, SubjectAccessReviewResponse> subjectAccessReviews() {
-    return new OpenShiftSubjectAccessReviewOperationsImpl(httpClient, getConfiguration(), "authorization.openshift.io", "v1", Utils.getPluralFromKind(SubjectAccessReview.class.getSimpleName()));
+    return new OpenShiftSubjectAccessReviewOperationsImpl(httpClient, getConfiguration(), "authorization.openshift.io", "v1", HasMetadata.getPlural(SubjectAccessReview.class));
   }
 
   @Override
   public OpenShiftLocalSubjectAccessReviewOperationsImpl localSubjectAccessReviews() {
-    return new OpenShiftLocalSubjectAccessReviewOperationsImpl(httpClient, getConfiguration(), "authorization.openshift.io", "v1", Utils.getPluralFromKind(LocalSubjectAccessReview.class.getSimpleName()));
+    return new OpenShiftLocalSubjectAccessReviewOperationsImpl(httpClient, getConfiguration(), "authorization.openshift.io", "v1", HasMetadata.getPlural(LocalSubjectAccessReview.class));
   }
 
   @Override

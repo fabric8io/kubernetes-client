@@ -19,7 +19,6 @@ import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.model.Scope;
-import io.fabric8.kubernetes.model.annotation.ShortNames;
 import io.sundr.codegen.functions.ClassTo;
 import io.sundr.codegen.model.TypeDef;
 import java.lang.reflect.InvocationTargetException;
@@ -130,13 +129,11 @@ public class CustomResourceInfo {
     try {
       final CustomResource instance = customResource.getDeclaredConstructor().newInstance();
 
-      final String[] shortNames = Optional.ofNullable(customResource.getAnnotation(ShortNames.class))
-        .map(ShortNames::value)
-        .orElse(new String[]{});
+      final String[] shortNames = CustomResource.getShortNames(customResource);
 
       final Scope scope = Arrays.stream(customResource.getInterfaces())
-        .filter(t -> t.toString().equals(Namespaced.class.getTypeName()))
-        .map(t -> Scope.NAMESPACED).findFirst().orElse(Scope.CLUSTER);
+        .filter(t -> t.getTypeName().equals(Namespaced.class.getTypeName()))
+        .findFirst().map(t -> Scope.NAMESPACED).orElse(Scope.CLUSTER);
 
       final TypeDef definition = ClassTo.TYPEDEF.apply(customResource);
       

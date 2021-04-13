@@ -15,13 +15,16 @@
  */
 package io.fabric8.kubernetes.api.model;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.fabric8.kubernetes.api.Pluralize;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Kind;
+import io.fabric8.kubernetes.model.annotation.Plural;
+import io.fabric8.kubernetes.model.annotation.Singular;
 import io.fabric8.kubernetes.model.annotation.Version;
+import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Represents any {@link KubernetesResource} which possesses a {@link ObjectMeta} and is associated with a kind and API version.
@@ -46,7 +49,7 @@ public interface HasMetadata extends KubernetesResource {
    * @param clazz the HasMetadata implementation whose Kind we want to retrieve
    * @return the kind associated with the specified HasMetadata
    */
-  static String getKind(Class<? extends HasMetadata> clazz) {
+  static String getKind(Class<?> clazz) {
     final Kind kind = clazz.getAnnotation(Kind.class);
     return kind != null ? kind.value() : clazz.getSimpleName();
   }
@@ -63,7 +66,7 @@ public interface HasMetadata extends KubernetesResource {
    * @return the computed {@code apiVersion} or {@code null} if neither {@link Group} or {@link Version} annotations are present
    * @throws IllegalArgumentException if only one of {@link Group} or {@link Version} is provided
    */
-  static String getApiVersion(Class<? extends HasMetadata> clazz) {
+  static String getApiVersion(Class<?> clazz) {
     final String group = getGroup(clazz);
     final String version = getVersion(clazz);
     if (group != null && version != null) {
@@ -81,7 +84,7 @@ public interface HasMetadata extends KubernetesResource {
    * @param clazz the HasMetadata whose group we want to retrieve
    * @return the associated group or {@code null} if the HasMetadata is not annotated with {@link Group}
    */
-  static String getGroup(Class<? extends HasMetadata> clazz) {
+  static String getGroup(Class<?> clazz) {
     final Group group = clazz.getAnnotation(Group.class);
     return group != null ? group.value() : null;
   }
@@ -92,7 +95,7 @@ public interface HasMetadata extends KubernetesResource {
    * @param clazz the HasMetadata whose version we want to retrieve
    * @return the associated version or {@code null} if the HasMetadata is not annotated with {@link Version}
    */
-  static String getVersion(Class<? extends HasMetadata> clazz) {
+  static String getVersion(Class<?> clazz) {
     final Version version = clazz.getAnnotation(Version.class);
     return version != null ? version.value() : null;
   }
@@ -102,6 +105,45 @@ public interface HasMetadata extends KubernetesResource {
   }
   
   void setApiVersion(String version);
+
+  /**
+   * Retrieves the plural form associated with the specified class if annotated with {@link
+   * Plural} or computes a default value using the value returned by {@link #getSingular(Class)} as
+   * input to {@link Pluralize#toPlural(String)}.
+   *
+   * @param clazz the CustomResource whose plural form we want to retrieve
+   * @return the plural form defined by the {@link Plural} annotation or a computed default value
+   */
+  static String getPlural(Class<?> clazz) {
+    final Plural fromAnnotation = clazz.getAnnotation(Plural.class);
+    return (fromAnnotation != null ? fromAnnotation.value().toLowerCase(Locale.ROOT)
+      : Pluralize.toPlural(getSingular(clazz)));
+  }
+
+  @JsonIgnore
+  default String getPlural() {
+    return getPlural(getClass());
+  }
+
+  /**
+   * Retrieves the singular form associated with the specified class as defined by the
+   * {@link Singular} annotation or computes a default value (lower-cased version of the value
+   * returned by {@link HasMetadata#getKind(Class)}) if the annotation is not present.
+   *
+   * @param clazz the class whose singular form we want to retrieve
+   * @return the singular form defined by the {@link Singular} annotation or a computed default
+   * value
+   */
+  static String getSingular(Class<?> clazz) {
+    final Singular fromAnnotation = clazz.getAnnotation(Singular.class);
+    return (fromAnnotation != null ? fromAnnotation.value() : HasMetadata.getKind(clazz))
+      .toLowerCase(Locale.ROOT);
+  }
+
+  @JsonIgnore
+  default String getSingular() {
+    return getSingular(getClass());
+  }
   
   /**
    * Determines whether this {@code HasMetadata} is marked for deletion or not.

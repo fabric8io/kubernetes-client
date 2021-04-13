@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
+import io.fabric8.kubernetes.api.Pluralize;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.model.annotation.Group;
@@ -55,6 +56,7 @@ public class Utils {
   public static final String OS_NAME = "os.name";
   public static final String PATH_WINDOWS = "Path";
   public static final String PATH_UNIX = "PATH";
+  private static final Random random = new Random();
 
   private Utils() {
   }
@@ -237,7 +239,6 @@ public class Utils {
   }
 
   public static String randomString(int length) {
-    Random random = new Random();
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < length; i++) {
       int index = random.nextInt(ALL_CHARS.length());
@@ -247,7 +248,6 @@ public class Utils {
   }
 
   public static String randomString(String prefix, int length) {
-    Random random = new Random();
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < length - prefix.length(); i++) {
       int index = random.nextInt(ALL_CHARS.length());
@@ -346,31 +346,14 @@ public class Utils {
   }
 
   /**
-   *  todo: we should unify this with {@link Pluralize}
+   *
+   * @param kind
+   * @return
+   * @deprecated use {@link io.fabric8.kubernetes.api.model.HasMetadata#getPlural(Class)}
    */
+  @Deprecated
   public static String getPluralFromKind(String kind) {
-    StringBuilder pluralBuffer = new StringBuilder(kind.toLowerCase(Locale.ROOT));
-    switch (kind) {
-      case "ComponentStatus":
-      case "Ingress":
-      case "RuntimeClass":
-      case "PriorityClass":
-      case "StorageClass":
-        pluralBuffer.append("es");
-        break;
-      case "NetworkPolicy":
-      case "PodSecurityPolicy":
-      case "ServiceEntry": // an Istio resource. Needed as getPluralFromKind is currently not configurable #2489
-        // Delete last character
-        pluralBuffer.deleteCharAt(pluralBuffer.length() - 1);
-        pluralBuffer.append("ies");
-        break;
-      case "Endpoints":
-        break;
-      default:
-        pluralBuffer.append("s");
-    }
-    return pluralBuffer.toString();
+    return Pluralize.toPlural(kind.toLowerCase(Locale.ROOT));
   }
 
   /**

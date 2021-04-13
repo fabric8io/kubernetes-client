@@ -29,7 +29,6 @@ import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.informers.impl.DefaultSharedIndexInformer;
-import io.fabric8.kubernetes.client.utils.Pluralize;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.internal.KubernetesDeserializer;
 import java.util.Collections;
@@ -216,7 +215,7 @@ public class SharedInformerFactory extends BaseOperation {
     ListerWatcher<T, L> listerWatcher = listerWatcherFor(apiTypeClass, apiListTypeClass);
     OperationContext context = this.context.withApiGroupName(HasMetadata.getGroup(apiTypeClass))
       .withApiGroupVersion(HasMetadata.getVersion(apiTypeClass))
-      .withPlural(CustomResource.getPlural(apiTypeClass))
+      .withPlural(HasMetadata.getPlural(apiTypeClass))
       .withIsNamespaceConfiguredFromGlobalConfig(this.context.isNamespaceFromGlobalConfig());
     if (this.namespace != null) {
       context = context.withNamespace(this.namespace).withIsNamespaceConfiguredFromGlobalConfig(false);
@@ -267,7 +266,7 @@ public class SharedInformerFactory extends BaseOperation {
   public synchronized <T> SharedIndexInformer<T> getExistingSharedIndexInformer(Class<T> apiTypeClass) {
     SharedIndexInformer<T> foundSharedIndexInformer = null;
     for (Map.Entry<String, SharedIndexInformer> entry : this.informers.entrySet()) {
-      if (entry.getKey().contains(Pluralize.toPlural(apiTypeClass.getSimpleName().toLowerCase()))) {
+      if (isKeyOfType(entry.getKey(), apiTypeClass)) {
         foundSharedIndexInformer = (SharedIndexInformer<T>) entry.getValue();
       }
     }
@@ -347,7 +346,12 @@ public class SharedInformerFactory extends BaseOperation {
     return keyBuilder.toString();
   }
 
-  private <T extends HasMetadata, L extends KubernetesResourceList<T>> BaseOperation<T, L, ?> getConfiguredBaseOperation(String namespace, OperationContext context, Class<T> apiTypeClass, Class<L> apiListTypeClass) {
+  private static <T> boolean isKeyOfType(String key, Class<T> apiTypeClass) {
+    String plural = HasMetadata.getPlural(apiTypeClass);
+    return key.contains(plural);
+  }
+
+    private <T extends HasMetadata, L extends KubernetesResourceList<T>> BaseOperation<T, L, ?> getConfiguredBaseOperation(String namespace, OperationContext context, Class<T> apiTypeClass, Class<L> apiListTypeClass) {
     BaseOperation<T, L, ?> baseOperationWithContext;
     // Avoid adding Namespace if it's picked from Global Configuration
     if (context.isNamespaceFromGlobalConfig()) {

@@ -15,30 +15,72 @@
  */
 package io.fabric8.crd.generator;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.client.CustomResource;
+import io.fabric8.kubernetes.model.Scope;
 import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.ShortNames;
 import io.fabric8.kubernetes.model.annotation.Version;
 import org.junit.jupiter.api.Test;
 
 public class CustomResourceInfoTest {
 
-  public static class Spec {}
-  public static class Status {}
+  public static class Spec {
 
-  @Group(Foo.GROUP)
-  @Version(Foo.VERSION)
-  public static class Foo extends CustomResource<Spec, Status> {
+  }
 
-    public static final String GROUP = "sample.fabric8.io";
-    public static final String VERSION = "v1";
+  public static class Status {
+
+  }
+
+  private static final String GROUP = "sample.fabric8.io";
+  private static final String VERSION = "v1";
+
+  @Group(GROUP)
+  @Version(VERSION)
+  @ShortNames("s")
+  public static class ClusteredCR extends CustomResource<Spec, Status> {
+
+  }
+
+  @Group(GROUP)
+  @Version(VERSION)
+  public static class NamespacedCR extends CustomResource<Spec, Status> implements Namespaced {
+
   }
 
   @Test
-  void foo() {
-    final CustomResourceInfo info = CustomResourceInfo.fromClass(Foo.class);
-    assertEquals(Foo.GROUP, info.group());
-    assertEquals(Foo.VERSION, info.version());
+  void shouldBeProperlyScoped() {
+    CustomResourceInfo info = CustomResourceInfo.fromClass(ClusteredCR.class);
+    assertEquals(GROUP, info.group());
+    assertEquals(VERSION, info.version());
+    assertEquals(Scope.CLUSTER, info.scope());
+
+    info = CustomResourceInfo.fromClass(NamespacedCR.class);
+    assertEquals(GROUP, info.group());
+    assertEquals(VERSION, info.version());
+    assertEquals(Scope.NAMESPACED, info.scope());
+  }
+
+  @Test
+  void shouldProperlyCreateCustomResourceInfo() {
+    CustomResourceInfo info = CustomResourceInfo.fromClass(ClusteredCR.class);
+    assertEquals(GROUP, info.group());
+    assertEquals(VERSION, info.version());
+    assertEquals(Scope.CLUSTER, info.scope());
+    assertEquals(ClusteredCR.class.getCanonicalName(), info.crClassName()); // todo: should we actually use the type name here?
+    assertEquals(Spec.class.getTypeName(), info.specClassName().get());
+    assertEquals(Status.class.getTypeName(), info.statusClassName().get());
+    assertEquals(CustomResource.getSingular(ClusteredCR.class), info.singular());
+    assertEquals(CustomResource.getPlural(ClusteredCR.class), info.plural());
+    assertEquals(CustomResource.getCRDName(ClusteredCR.class), info.crdName());
+    assertArrayEquals(CustomResource.getShortNames(ClusteredCR.class), info.shortNames());
+    assertEquals(true, info.served());
+    assertEquals(true, info.storage());
+    assertEquals(HasMetadata.getKind(ClusteredCR.class), info.kind());
   }
 }

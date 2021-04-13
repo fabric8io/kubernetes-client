@@ -22,13 +22,13 @@ import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Kind;
 import io.fabric8.kubernetes.model.annotation.Version;
 import okhttp3.OkHttpClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.util.Collections;
 import java.util.concurrent.ExecutorService;
 
 import static io.fabric8.kubernetes.client.informers.SharedInformerFactory.getInformerKey;
@@ -44,6 +44,11 @@ class SharedInformerFactoryTest {
   @Group("io.fabric8")
   @Version("v1")
   private static class TestCustomResource extends CustomResource<TestCustomResourceSpec, TestCustomResourceStatus> { }
+
+  @Group("com.acme")
+  @Version("v1")
+  @Kind("MyApp")
+  public static class MyAppCustomResource extends CustomResource<Void, Void> { }
 
   @BeforeEach
   void init() {
@@ -105,6 +110,21 @@ class SharedInformerFactoryTest {
     // Then
     assertThat(sharedInformerFactory.getExistingSharedIndexInformer(Deployment.class)).isNotNull();
     assertThat(sharedInformerFactory.getExistingSharedIndexInformer(Pod.class)).isNotNull();
+  }
+
+  @Test
+  void testGetExistingSharedIndexInformerWithKindDifferentFromClassName() {
+    // Given
+    SharedInformerFactory sharedInformerFactory = new SharedInformerFactory(executorService, mockClient, config);
+
+    // When
+    SharedIndexInformer<MyAppCustomResource> createdInformer = sharedInformerFactory.sharedIndexInformerFor(MyAppCustomResource.class, 10 * 1000L);
+    SharedIndexInformer<MyAppCustomResource> existingInformer = sharedInformerFactory.getExistingSharedIndexInformer(MyAppCustomResource.class);
+
+    // Then
+    assertThat(createdInformer).isNotNull();
+    assertThat(existingInformer).isNotNull();
+    assertThat(createdInformer).isEqualTo(existingInformer);
   }
 
 }
