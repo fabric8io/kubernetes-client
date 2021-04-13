@@ -45,6 +45,7 @@ public class Types {
 
   private static final TypeDef NAMESPACED = ClassTo.TYPEDEF.apply(Namespaced.class);
   private static final Map<TypeDef, List<Property>> propertiesCache = new ConcurrentHashMap<>(7);
+  public static final TypeRef VOID = ClassTo.TYPEREF.apply(Void.TYPE);
 
 
   public static TypeDef projectDefinition(ClassRef ref) {
@@ -249,6 +250,6 @@ public class Types {
    * @return {@code true} if named {@code status}, {@code false} otherwise
    */
   public static boolean isStatusProperty(Property property) {
-    return "status".equals(property.getName());
+    return "status".equals(property.getName()) && !property.getTypeRef().isAssignableFrom(VOID);
   }
 }
