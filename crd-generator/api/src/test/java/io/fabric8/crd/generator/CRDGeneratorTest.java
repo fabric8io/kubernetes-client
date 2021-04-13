@@ -20,18 +20,17 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import io.fabric8.crd.example.basic.Basic;
-import io.fabric8.crd.generator.CRDGenerator.CRDOutput;
+import io.fabric8.crd.generator.CRDGenerator.AbstractCRDOutput;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionNames;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionSpec;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionVersion;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceValidation;
+import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.net.URI;
 import org.junit.jupiter.api.Test;
 
 public class CRDGeneratorTest {
@@ -47,7 +46,8 @@ public class CRDGeneratorTest {
       .customResources(CustomResourceInfo.fromClass(customResource))
       .generate();
 
-    CustomResourceDefinition definition = output.definition();
+    String outputName = CRDGenerator.getOutputName(CustomResource.getCRDName(customResource), "v1");
+    CustomResourceDefinition definition = output.definition(outputName);
     assertNotNull(definition);
     CustomResourceDefinitionSpec spec = definition.getSpec();
     CustomResourceDefinitionNames names = spec.getNames();
@@ -64,30 +64,14 @@ public class CRDGeneratorTest {
     assertNotNull(schema);
   }
 
-  private static class TestCRDOutput implements CRDOutput {
-
-    private ByteArrayOutputStream crdStream;
-    private String name;
-
+  private static class TestCRDOutput extends AbstractCRDOutput<ByteArrayOutputStream> {
     @Override
-    public OutputStream outputFor(String crdName) throws IOException {
-      crdStream = new ByteArrayOutputStream();
-      name = crdName;
-      return crdStream;
+    protected ByteArrayOutputStream createStreamFor(String crdName) throws IOException {
+      return new ByteArrayOutputStream();
     }
 
-    @Override
-    public URI crdURI() {
-      return URI.create(name);
-    }
-
-    @Override
-    public void close() throws IOException {
-      crdStream.close();
-    }
-
-    CustomResourceDefinition definition() {
-      return Serialization.unmarshal(new ByteArrayInputStream(crdStream.toByteArray()), crdClass);
+    CustomResourceDefinition definition(String outputName) {
+      return Serialization.unmarshal(new ByteArrayInputStream(getStreamFor(outputName).toByteArray()), crdClass);
     }
   }
 }
