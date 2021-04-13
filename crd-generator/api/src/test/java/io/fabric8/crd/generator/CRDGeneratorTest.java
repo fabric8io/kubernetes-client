@@ -26,11 +26,13 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionSpec;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionVersion;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceValidation;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 public class CRDGeneratorTest {
@@ -62,6 +64,12 @@ public class CRDGeneratorTest {
     assertNotNull(version.getSubresources());
     CustomResourceValidation schema = version.getSchema();
     assertNotNull(schema);
+    Map<String, JSONSchemaProps> properties = schema.getOpenAPIV3Schema().getProperties();
+    assertEquals(2, properties.size());
+    Map<String, JSONSchemaProps> specProps = properties.get("spec").getProperties();
+    assertEquals("integer", specProps.get("myInt").getType());
+    Map<String, JSONSchemaProps> status = properties.get("status").getProperties();
+    assertEquals("string", status.get("message").getType());
   }
 
   private static class TestCRDOutput extends AbstractCRDOutput<ByteArrayOutputStream> {
