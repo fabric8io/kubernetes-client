@@ -51,6 +51,8 @@ public class CRDGeneratorTest {
     assertNotNull(definition);
     CustomResourceDefinitionSpec spec = definition.getSpec();
     CustomResourceDefinitionNames names = spec.getNames();
+
+    assertEquals("apiextensions.k8s.io/v1", definition.getApiVersion());
     assertEquals("Basic", names.getKind());
     assertEquals("basics", names.getPlural());
     assertEquals("Namespaced", spec.getScope());
