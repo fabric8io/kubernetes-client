@@ -13,16 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crd.generator;
+package io.fabric8.crd.example.inherited;
 
-import io.fabric8.kubernetes.api.model.Namespaced;
-import io.fabric8.kubernetes.model.annotation.Group;
-import io.fabric8.kubernetes.model.annotation.Plural;
-import io.fabric8.kubernetes.model.annotation.Version;
-
-@Version("v1alpha1")
-@Group("acme.com")
-public class Foo extends Base<FooSpec, FooStatus> implements Namespaced {
-
+/**
+ * @author <a href="claprun@redhat.com">Christophe Laprun</a>
+ */
+public class BaseStatus {
 
 }

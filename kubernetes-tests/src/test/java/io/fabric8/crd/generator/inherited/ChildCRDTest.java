@@ -13,29 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crd.generator;
-
-import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
-import io.fabric8.kubernetes.client.utils.Serialization;
-import org.junit.jupiter.api.Test;
+package io.fabric8.crd.generator.inherited;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-/**
- * @author <a href="claprun@redhat.com">Christophe Laprun</a>
- */
-class FooCRDTest {
+import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
+import io.fabric8.kubernetes.client.utils.Serialization;
+import org.junit.jupiter.api.Test;
+
+class ChildCRDTest {
 
   @Test
   void testCrd() {
     CustomResourceDefinition d = Serialization.unmarshal(getClass().getClassLoader()
-        .getResourceAsStream("META-INF/fabric8/fooes.acme.com-v1.yml"),
+        .getResourceAsStream("META-INF/fabric8/children.acme.com-v1.yml"),
       CustomResourceDefinition.class);
     assertNotNull(d);
-    assertEquals("Foo", d.getSpec().getNames().getKind());
-    assertEquals("fooes", d.getSpec().getNames().getPlural());
+    assertEquals("Child", d.getSpec().getNames().getKind());
+    assertEquals("children", d.getSpec().getNames().getPlural());
     assertEquals("Namespaced", d.getSpec().getScope());
     assertTrue(d.getSpec().getVersions().stream().filter(v -> v.getSubresources() != null)
       .findAny().isPresent());
