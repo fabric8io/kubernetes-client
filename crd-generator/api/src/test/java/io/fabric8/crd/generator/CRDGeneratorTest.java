@@ -17,10 +17,13 @@ package io.fabric8.crd.generator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import io.fabric8.crd.example.basic.Basic;
 import io.fabric8.crd.example.inherited.Child;
+import io.fabric8.crd.example.joke.Joke;
+import io.fabric8.crd.example.joke.JokeRequest;
 import io.fabric8.crd.example.simplest.Simplest;
 import io.fabric8.crd.generator.CRDGenerator.AbstractCRDOutput;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
@@ -53,6 +56,16 @@ public class CRDGeneratorTest {
   public void inheritedCRDShouldWork() {
     final CustomResourceDefinitionVersion version = checkCRD(Child.class, "Child", "children",
       Scope.NAMESPACED);
+    assertNotNull(version.getSubresources());
+  }
+
+  @Test
+  public void jokeCRDShouldWork() {
+    CustomResourceDefinitionVersion version = checkCRD(Joke.class, "Joke", "jokes",
+      Scope.NAMESPACED);
+    assertNull(version.getSubresources());
+
+    version = checkCRD(JokeRequest.class, "JokeRequest", "jokerequests", Scope.NAMESPACED);
     assertNotNull(version.getSubresources());
   }
 
