@@ -15,10 +15,6 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
@@ -29,32 +25,35 @@ import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.RawCustomResourceOperationsImpl;
 import io.fabric8.kubernetes.client.mock.crd.CronTab;
 import io.fabric8.kubernetes.client.mock.crd.CronTabSpec;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.internal.KubernetesDeserializer;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.Rule;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
-@EnableRuleMigrationSupport
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+
+@EnableKubernetesMockClient(crud = true)
 class CustomResourceCrudTest {
-  @Rule
-  public KubernetesServer kubernetesServer = new KubernetesServer(true,true);
+
+  KubernetesClient client;
   
   private CustomResourceDefinition cronTabCrd;
 
   @BeforeEach
   void setUp() {
     KubernetesDeserializer.registerCustomKind("stable.example.com/v1", "CronTab", CronTab.class);
-    cronTabCrd = kubernetesServer.getClient()
+    cronTabCrd = client
       .apiextensions().v1beta1()
       .customResourceDefinitions()
       .load(getClass().getResourceAsStream("/crontab-crd.yml"))
       .get();
-    kubernetesServer.getClient().apiextensions().v1beta1().customResourceDefinitions().create(cronTabCrd);
+    client.apiextensions().v1beta1().customResourceDefinitions().create(cronTabCrd);
   }
 
   @Test
@@ -62,7 +61,6 @@ class CustomResourceCrudTest {
     CronTab cronTab1 = createCronTab("my-new-cron-object", "* * * * */5", 3, "my-awesome-cron-image");
     CronTab cronTab2 = createCronTab("my-second-cron-object", "* * * * */4", 2, "my-second-cron-image");
     CronTab cronTab3 = createCronTab("my-third-cron-object", "* * * * */3", 1, "my-third-cron-image");
-    KubernetesClient client = kubernetesServer.getClient();
 
     MixedOperation<CronTab, KubernetesResourceList<CronTab>, Resource<CronTab>> cronTabClient = client.customResources(CronTab.class);
 
@@ -93,7 +91,7 @@ class CustomResourceCrudTest {
 
   @Test
   void testCreateOrReplaceRaw() throws IOException {
-    RawCustomResourceOperationsImpl raw = kubernetesServer.getClient().customResource(CustomResourceDefinitionContext.fromCrd(cronTabCrd));
+    RawCustomResourceOperationsImpl raw = client.customResource(CustomResourceDefinitionContext.fromCrd(cronTabCrd));
 
     Map<String, Object> object = new HashMap<>();
     Map<String, Object> metadata = new HashMap<>();
@@ -118,8 +116,7 @@ class CustomResourceCrudTest {
     CronTab cronTab1 = createCronTab("my-new-cron-object", "* * * * */5", 3, "my-awesome-cron-image");
     CronTab cronTab2 = createCronTab("my-second-cron-object", "* * * * */4", 2, "my-second-cron-image");
     CronTab cronTab3 = createCronTab("my-third-cron-object", "* * * * */3", 1, "my-third-cron-image");
-    KubernetesClient client = kubernetesServer.getClient();
-
+    
     MixedOperation<CronTab, KubernetesResourceList<CronTab>, Resource<CronTab>> cronTabClient = client
       .customResources(CronTab.class);
 

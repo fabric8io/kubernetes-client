@@ -20,9 +20,7 @@ import io.fabric8.openshift.api.model.operatorhub.v1alpha1.SubscriptionBuilder;
 import io.fabric8.openshift.api.model.operatorhub.v1alpha1.SubscriptionList;
 import io.fabric8.openshift.api.model.operatorhub.v1alpha1.SubscriptionListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 
@@ -30,10 +28,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableRuleMigrationSupport
+@EnableOpenShiftMockClient
 class SubscriptionTest {
-  @Rule
-  public OpenShiftServer server = new OpenShiftServer();
+
+  OpenShiftMockServer server;
+  OpenShiftClient client;
 
   @Test
   void create() {
@@ -43,7 +42,6 @@ class SubscriptionTest {
       .withPath("/apis/operators.coreos.com/v1alpha1/namespaces/ns1/subscriptions")
       .andReturn(HttpURLConnection.HTTP_OK, subscription)
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     subscription = client.operatorHub().subscriptions().inNamespace("ns1").create(subscription);
@@ -60,7 +58,6 @@ class SubscriptionTest {
       .withPath("/apis/operators.coreos.com/v1alpha1/namespaces/ns1/subscriptions/foo")
       .andReturn(HttpURLConnection.HTTP_OK, getSubscription())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     Subscription f = client.operatorHub().subscriptions().inNamespace("ns1").withName("foo").get();
@@ -77,7 +74,6 @@ class SubscriptionTest {
       .withPath("/apis/operators.coreos.com/v1alpha1/namespaces/ns1/subscriptions")
       .andReturn(HttpURLConnection.HTTP_OK, new SubscriptionListBuilder().withItems(getSubscription()).build())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     SubscriptionList fgList = client.operatorHub().subscriptions().inNamespace("ns1").list();
@@ -95,7 +91,6 @@ class SubscriptionTest {
       .withPath("/apis/operators.coreos.com/v1alpha1/namespaces/ns1/subscriptions/foo")
       .andReturn(HttpURLConnection.HTTP_OK, getSubscription())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     Boolean deleted = client.operatorHub().subscriptions().inNamespace("ns1").withName("foo").delete();

@@ -21,29 +21,25 @@ import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBindingList;
 import io.fabric8.kubernetes.api.model.rbac.RoleRefBuilder;
 import io.fabric8.kubernetes.api.model.rbac.SubjectBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import org.junit.Rule;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient(crud = true)
 class ClusterRoleBindingCrudTest {
 
   private static final Logger logger = LoggerFactory.getLogger(ClusterRoleBindingCrudTest.class);
 
-  @Rule
-  public KubernetesServer kubernetesServer = new KubernetesServer(true,true);
+  KubernetesClient client;
 
   @Test
   void crudTest() {
 
-    KubernetesClient client = kubernetesServer.getClient();
 
     ClusterRoleBinding kubernetesClusterRoleBinding = new ClusterRoleBindingBuilder()
       .withNewMetadata()

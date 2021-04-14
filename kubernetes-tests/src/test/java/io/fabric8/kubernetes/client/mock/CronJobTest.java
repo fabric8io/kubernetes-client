@@ -17,28 +17,31 @@
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.api.model.batch.*;
+import io.fabric8.kubernetes.api.model.batch.CronJob;
+import io.fabric8.kubernetes.api.model.batch.CronJobBuilder;
+import io.fabric8.kubernetes.api.model.batch.CronJobList;
+import io.fabric8.kubernetes.api.model.batch.CronJobListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.Utils;
-import org.junit.Rule;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 class CronJobTest {
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
+
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   @Test
   void testList() {
@@ -53,7 +56,6 @@ class CronJobTest {
       .addNewItem()
       .and().build()).once();
 
-    KubernetesClient client = server.getClient();
     CronJobList cronJobList = client.batch().cronjobs().list();
     assertNotNull(cronJobList);
     assertEquals(0, cronJobList.getItems().size());
@@ -76,7 +78,6 @@ class CronJobTest {
       .addNewItem().and()
       .build()).once();
 
-    KubernetesClient client = server.getClient();
     CronJobList cronJobList = client.batch().cronjobs()
       .withLabel("key1", "value1")
       .withLabel("key2","value2")
@@ -100,7 +101,6 @@ class CronJobTest {
     server.expect().withPath("/apis/batch/v1beta1/namespaces/test/cronjobs/cronjob1").andReturn(200, new CronJobBuilder().build()).once();
     server.expect().withPath("/apis/batch/v1beta1/namespaces/ns1/cronjobs/cronjob2").andReturn(200, new CronJobBuilder().build()).once();
 
-    KubernetesClient client = server.getClient();
 
     CronJob cronjob = client.batch().cronjobs().withName("cronjob1").get();
     assertNotNull(cronjob);
@@ -177,7 +177,6 @@ class CronJobTest {
       .endSpec()
       .build()).once();
 
-    KubernetesClient client = server.getClient();
 
     Boolean deleted = client.batch().cronjobs().withName("cronJob1").delete();
     assertNotNull(deleted);
@@ -218,7 +217,6 @@ class CronJobTest {
     server.expect().withPath("/apis/batch/v1beta1/namespaces/ns1/cronjobs/cronjob2").andReturn(200, new CronJobBuilder(cronjob2)
       .editStatus().endStatus().build()).times(5);
 
-    KubernetesClient client = server.getClient();
 
     Boolean deleted = client.batch().cronjobs().inAnyNamespace().delete(cronjob1, cronjob2);
     assertTrue(deleted);
@@ -231,7 +229,6 @@ class CronJobTest {
   void testDeleteWithNamespaceMismatch() {
     Assertions.assertThrows(KubernetesClientException.class, () -> {
       CronJob cronjob1 = new CronJobBuilder().withNewMetadata().withName("cronjob1").withNamespace("test").and().build();
-      KubernetesClient client = server.getClient();
 
       Boolean deleted = client.batch().cronjobs().inNamespace("test1").delete(cronjob1);
       assertFalse(deleted);
@@ -242,7 +239,6 @@ class CronJobTest {
   void testCreateWithNameMismatch() {
     Assertions.assertThrows(KubernetesClientException.class, () -> {
       CronJob cronjob1 = new CronJobBuilder().withNewMetadata().withName("cronjob1").withNamespace("test").and().build();
-      KubernetesClient client = server.getClient();
 
       client.batch().cronjobs().inNamespace("test1").withName("mycronjob1").create(cronjob1);
     });
@@ -250,12 +246,10 @@ class CronJobTest {
 
   @Test
   void testLoadFromFile() {
-    KubernetesClient client = server.getClient();
     assertNotNull(client.batch().cronjobs().load(getClass().getResourceAsStream("/test-cronjob.yml")).get());
   }
   @Test
   void testHandlersLoadFromFile() {
-    KubernetesClient client = server.getClient();
     List<HasMetadata> hasMetadata = client.load(getClass().getResourceAsStream("/test-cronjob.yml")).get();
 
     assertNotNull(hasMetadata);

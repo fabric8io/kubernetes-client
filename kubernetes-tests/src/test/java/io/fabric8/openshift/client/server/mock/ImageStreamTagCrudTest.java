@@ -20,9 +20,7 @@ import io.fabric8.openshift.api.model.ImageStreamTag;
 import io.fabric8.openshift.api.model.ImageStreamTagBuilder;
 import io.fabric8.openshift.api.model.ImageStreamTagList;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,18 +28,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableRuleMigrationSupport
+@EnableOpenShiftMockClient(crud = true)
 class ImageStreamTagCrudTest {
 
   private static final Logger logger = LoggerFactory.getLogger(ImageStreamTagCrudTest.class);
 
-  @Rule
-  public OpenShiftServer openshiftServer = new OpenShiftServer(true, true);
+  OpenShiftClient client;
 
   @Test
   void crudTest() {
 
-    OpenShiftClient client = openshiftServer.getOpenshiftClient();
 
     logger.info("Current User " + client.currentUser());
 

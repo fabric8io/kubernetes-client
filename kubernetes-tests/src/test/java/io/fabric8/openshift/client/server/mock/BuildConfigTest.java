@@ -26,17 +26,13 @@ import io.fabric8.openshift.api.model.BuildConfigList;
 import io.fabric8.openshift.api.model.BuildConfigListBuilder;
 import io.fabric8.openshift.api.model.BuildListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
-
 import org.junit.jupiter.api.Disabled;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.util.concurrent.TimeUnit;
 
@@ -47,10 +43,11 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-@EnableRuleMigrationSupport
+@EnableOpenShiftMockClient
 class BuildConfigTest {
-  @Rule
-  public OpenShiftServer server = new OpenShiftServer();
+
+  OpenShiftMockServer server;
+  OpenShiftClient client;
 
   @Test
   void testList() {
@@ -77,7 +74,6 @@ class BuildConfigTest {
       .addNewItem()
       .and().build()).once();
 
-    OpenShiftClient client = server.getOpenshiftClient();
 
     BuildConfigList buildConfigList = client.buildConfigs().list();
     assertNotNull(buildConfigList);
@@ -103,7 +99,6 @@ class BuildConfigTest {
       .withNewMetadata().withName("bc2").endMetadata()
       .build()).once();
 
-    OpenShiftClient client = server.getOpenshiftClient();
 
     BuildConfig buildConfig = client.buildConfigs().withName("bc1").get();
     assertNotNull(buildConfig);
@@ -125,7 +120,6 @@ class BuildConfigTest {
       .withNewMetadata().withName("bc2").endMetadata().build()).once();
 
 
-    OpenShiftClient client = server.getOpenshiftClient();
     InputStream dummy = new ByteArrayInputStream("".getBytes() );
 
     Build build = client.buildConfigs().inNamespace("ns1").withName("bc2").instantiateBinary()
@@ -148,8 +142,6 @@ class BuildConfigTest {
       .andReturn(201, new BuildBuilder()
       .withNewMetadata().withName("bc2").endMetadata().build()).once();
 
-    OpenShiftClient client = server.getOpenshiftClient();
-
     Build build = client.buildConfigs()
       .inNamespace("ns1")
       .withName("bc2")
@@ -161,13 +153,12 @@ class BuildConfigTest {
   }
 
   // TODO Add delay to mockwebserver. Disabled as too dependent on timing issues right now.
-  //@Test
+//  @Test
   void testBinaryBuildWithTimeout() {
    server.expect().post().delay(200).withPath("/apis/build.openshift.io/v1/namespaces/ns1/buildconfigs/bc2/instantiatebinary?commit=")
       .andReturn(201, new BuildBuilder()
       .withNewMetadata().withName("bc2").endMetadata().build()).once();
 
-    OpenShiftClient client = server.getOpenshiftClient();
     InputStream dummy = new ByteArrayInputStream("".getBytes() );
 
     try {
@@ -189,7 +180,6 @@ class BuildConfigTest {
    server.expect().withPath("/apis/build.openshift.io/v1/namespaces/ns1/buildconfigs/bc2").andReturn( 200, new BuildConfigBuilder().withNewMetadata().withName("bc2").and().build()).once();
    server.expect().withPath("/apis/build.openshift.io/v1/namespaces/ns1/builds?labelSelector=openshift.io%2Fbuild-config.name%3Dbc2").andReturn( 200, new BuildListBuilder().build()).once();
 
-    OpenShiftClient client = server.getOpenshiftClient();
 
     Boolean deleted = client.buildConfigs().withName("bc1").delete();
     assertNotNull(deleted);

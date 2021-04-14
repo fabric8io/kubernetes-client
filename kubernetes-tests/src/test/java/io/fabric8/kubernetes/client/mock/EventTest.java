@@ -19,18 +19,16 @@ import io.fabric8.kubernetes.api.model.Event;
 import io.fabric8.kubernetes.api.model.EventBuilder;
 import io.fabric8.kubernetes.api.model.EventList;
 import io.fabric8.kubernetes.api.model.EventListBuilder;
-import io.fabric8.kubernetes.api.model.ObjectReferenceBuilder;
 import io.fabric8.kubernetes.api.model.WatchEvent;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.Utils;
-import org.junit.Rule;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 import java.util.concurrent.CountDownLatch;
@@ -40,10 +38,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 class EventTest {
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
+
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   @Test
   @DisplayName("Should be able to watch events in specified namespace")
@@ -61,7 +60,6 @@ class EventTest {
       .andUpgradeToWebSocket().open().waitFor(50)
       .andEmit(new WatchEvent(testEvent, "ADDED"))
       .done().once();
-    KubernetesClient client = server.getClient();
     final CountDownLatch eventReceivedLatch = new CountDownLatch(1);
 
     // When
@@ -94,10 +92,9 @@ class EventTest {
         .withNewMetadata().withName("foo-event").endMetadata()
         .build())
         .build()).once();
-    KubernetesClient client = server.getClient();
 
     // When
-    EventList eventList = client.v1().events().inNamespace("ns1").withInvolvedObject(new ObjectReferenceBuilder()
+    EventList eventList = client.v1().events().inNamespace("ns1").withInvolvedObject(new io.fabric8.kubernetes.api.model.ObjectReferenceBuilder()
       .withName("foo")
       .withNamespace("ns1")
       .withKind("Deployment")

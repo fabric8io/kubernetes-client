@@ -17,24 +17,21 @@ package io.fabric8.openshift.client.server.mock;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableRuleMigrationSupport
+@EnableOpenShiftMockClient
 class OpenShiftLoadTest {
-  @Rule
-  public OpenShiftServer server = new OpenShiftServer();
+
+  OpenShiftMockServer server;
+  OpenShiftClient client;
 
   @Test
   void testResourceGetFromLoadWhenSingleDocumentsWithStartingDelimiter() {
-    // given
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // when
     List<HasMetadata> result = client.load(getClass().getResourceAsStream("/test-template.yml")).get();
@@ -50,8 +47,6 @@ class OpenShiftLoadTest {
 
   @Test
   void testResourceGetFromLoadWhenSingleDocumentsWithoutDelimiter() {
-    // given
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // when
     List<HasMetadata> result = client.load(getClass().getResourceAsStream("/template-with-params.yml")).get();

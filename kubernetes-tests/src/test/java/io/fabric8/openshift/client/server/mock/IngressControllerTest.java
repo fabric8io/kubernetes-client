@@ -20,9 +20,7 @@ import io.fabric8.openshift.api.model.operator.v1.IngressControllerBuilder;
 import io.fabric8.openshift.api.model.operator.v1.IngressControllerList;
 import io.fabric8.openshift.api.model.operator.v1.IngressControllerListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 
@@ -30,10 +28,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableRuleMigrationSupport
+@EnableOpenShiftMockClient
 class IngressControllerTest {
-  @Rule
-  public OpenShiftServer server = new OpenShiftServer();
+
+  OpenShiftMockServer server;
+  OpenShiftClient client;
 
   @Test
   void create() {
@@ -43,7 +42,6 @@ class IngressControllerTest {
       .withPath("/apis/operator.openshift.io/v1/namespaces/ns1/ingresscontrollers")
       .andReturn(HttpURLConnection.HTTP_OK, dnsrecord)
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     dnsrecord = client.operator().ingressControllers().inNamespace("ns1").create(dnsrecord);
@@ -60,7 +58,6 @@ class IngressControllerTest {
       .withPath("/apis/operator.openshift.io/v1/namespaces/ns1/ingresscontrollers/foo")
       .andReturn(HttpURLConnection.HTTP_OK, getIngressController())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     IngressController f = client.operator().ingressControllers().inNamespace("ns1").withName("foo").get();
@@ -77,7 +74,6 @@ class IngressControllerTest {
       .withPath("/apis/operator.openshift.io/v1/namespaces/ns1/ingresscontrollers")
       .andReturn(HttpURLConnection.HTTP_OK, new IngressControllerListBuilder().withItems(getIngressController()).build())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     IngressControllerList fgList = client.operator().ingressControllers().inNamespace("ns1").list();
@@ -95,7 +91,6 @@ class IngressControllerTest {
       .withPath("/apis/operator.openshift.io/v1/namespaces/ns1/ingresscontrollers/foo")
       .andReturn(HttpURLConnection.HTTP_OK, getIngressController())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     Boolean deleted = client.operator().ingressControllers().inNamespace("ns1").withName("foo").delete();

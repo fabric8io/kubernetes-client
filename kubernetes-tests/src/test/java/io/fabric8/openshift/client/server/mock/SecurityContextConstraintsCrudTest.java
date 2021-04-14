@@ -19,30 +19,24 @@ import io.fabric8.openshift.api.model.SecurityContextConstraints;
 import io.fabric8.openshift.api.model.SecurityContextConstraintsBuilder;
 import io.fabric8.openshift.api.model.SecurityContextConstraintsList;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collections;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableRuleMigrationSupport
+@EnableOpenShiftMockClient(crud = true)
 class SecurityContextConstraintsCrudTest {
 
   private static final Logger logger = LoggerFactory.getLogger(SecurityContextConstraintsCrudTest.class);
 
-  @Rule
-  public OpenShiftServer openshiftServer = new OpenShiftServer(true,true);
+  OpenShiftClient client;
 
   @Test
   void crudTest(){
-    OpenShiftClient client = openshiftServer.getOpenshiftClient();
 
     logger.info("Current User " + client.currentUser());
 

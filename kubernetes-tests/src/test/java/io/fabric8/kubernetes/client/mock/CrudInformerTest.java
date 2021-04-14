@@ -17,15 +17,12 @@ package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
-import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import org.junit.Rule;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -34,16 +31,15 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient(crud = true)
 class CrudInformerTest {
-  @Rule
-  public KubernetesServer server = new KubernetesServer(true, true);
+
+  KubernetesClient client;
 
   // https://github.com/fabric8io/kubernetes-client/issues/2306
   @Test
   void testCrudInformer() throws InterruptedException {
     Pod podToCreate = new PodBuilder().withNewMetadata().withName("pod1").endMetadata().build();
-    KubernetesClient client = server.getClient();
     SharedInformerFactory factory = client.informers();
     SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, 4000);
     BlockingQueue<Pod> events = new LinkedBlockingQueue<>();

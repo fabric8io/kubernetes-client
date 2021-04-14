@@ -20,25 +20,24 @@ import io.fabric8.kubernetes.api.model.PodTemplateBuilder;
 import io.fabric8.kubernetes.api.model.PodTemplateList;
 import io.fabric8.kubernetes.api.model.PodTemplateListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import org.junit.Rule;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 public class PodTemplateTest {
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
+
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   @Test
   @DisplayName("Should load a PodTemplate from yaml")
   public void testLoad() {
-    KubernetesClient client = server.getClient();
     PodTemplate podTemplate = client.v1().podTemplates().load(getClass().getResourceAsStream("/test-podtemplate.yml")).get();
     assertNotNull(podTemplate);
     assertEquals("hello", podTemplate.getMetadata().getName());
@@ -53,7 +52,6 @@ public class PodTemplateTest {
     server.expect().post().withPath("/api/v1/namespaces/test/podtemplates")
       .andReturn(200, pt1)
       .once();
-    KubernetesClient client = server.getClient();
 
     // When
     PodTemplate result = client.v1().podTemplates().inNamespace("test").create(pt1);
@@ -70,7 +68,6 @@ public class PodTemplateTest {
     server.expect().get().withPath("/api/v1/namespaces/test/podtemplates/pt1")
       .andReturn(200, getPodTemplate())
       .once();
-    KubernetesClient client = server.getClient();
 
     // When
     PodTemplate result = client.v1().podTemplates().inNamespace("test").withName("pt1").get();
@@ -87,7 +84,6 @@ public class PodTemplateTest {
     server.expect().get().withPath("/api/v1/namespaces/test/podtemplates")
       .andReturn(200, new PodTemplateListBuilder().withItems(getPodTemplate()).build())
       .once();
-    KubernetesClient client = server.getClient();
 
     // When
     PodTemplateList podTemplateList = client.v1().podTemplates().inNamespace("test").list();
@@ -123,7 +119,6 @@ public class PodTemplateTest {
     server.expect().patch().withPath("/api/v1/namespaces/test/podtemplates/pt1")
       .andReturn(200, updatedPodTemplate)
       .once();
-    KubernetesClient client = server.getClient();
 
     // When
     PodTemplate podTemplate = client.v1().podTemplates().inNamespace("test").withName("pt1").edit(p -> new PodTemplateBuilder(p).editMetadata().addToLabels("foo", "bar").endMetadata().build());
@@ -141,7 +136,6 @@ public class PodTemplateTest {
     server.expect().delete().withPath("/api/v1/namespaces/test/podtemplates/pt1")
       .andReturn(200, getPodTemplate())
       .once();
-    KubernetesClient client = server.getClient();
 
     // When
     Boolean isDeleted = client.v1().podTemplates().inNamespace("test").withName("pt1").delete();

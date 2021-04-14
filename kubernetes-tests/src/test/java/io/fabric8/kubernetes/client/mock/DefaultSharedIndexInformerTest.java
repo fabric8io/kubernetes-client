@@ -15,10 +15,6 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
-import static org.awaitility.Awaitility.await;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
@@ -53,25 +49,29 @@ import io.fabric8.kubernetes.client.mock.crd.PodSet;
 import io.fabric8.kubernetes.client.mock.crd.PodSetSpec;
 import io.fabric8.kubernetes.client.mock.crd.Star;
 import io.fabric8.kubernetes.client.mock.crd.StarSpec;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.Utils;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
 import java.net.HttpURLConnection;
 import java.util.Collections;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import org.junit.Rule;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
-@EnableRuleMigrationSupport
+import static org.awaitility.Awaitility.await;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+
+@EnableKubernetesMockClient
 class DefaultSharedIndexInformerTest {
-  @Rule
-  public KubernetesServer server = new KubernetesServer(false);
+
+  KubernetesMockServer server;
 
   static final Status outdatedStatus = new StatusBuilder().withCode(HttpURLConnection.HTTP_GONE)
     .withMessage(
@@ -87,7 +87,6 @@ class DefaultSharedIndexInformerTest {
 
   @BeforeEach
   void setup() {
-    client = server.getClient();
     factory = client.informers();
   }
 

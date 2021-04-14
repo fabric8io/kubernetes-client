@@ -16,28 +16,26 @@
 
 package io.fabric8.kubernetes.client.mock;
 
-import static org.assertj.core.api.AssertionsForClassTypes.fail;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRole;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import java.util.List;
-import org.junit.Rule;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
-@EnableRuleMigrationSupport
+import java.util.List;
+
+import static org.assertj.core.api.AssertionsForClassTypes.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+@EnableKubernetesMockClient
 class ClusterRoleTest {
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
+
+  KubernetesClient client;
 
   @Test
   void testLoadFromFile() {
-    KubernetesClient client = server.getClient();
     ClusterRole kubernetesClusterRole = client.rbac().clusterRoles().load(getClass().getResourceAsStream("/test-clusterrole.yml")).get();
 
     assertNotNull(kubernetesClusterRole);
@@ -45,7 +43,6 @@ class ClusterRoleTest {
 
   @Test
   void testHandlersLoadFromFile() {
-    KubernetesClient client = server.getClient();
 
     ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> load = client.load(getClass().getResourceAsStream("/test-clusterrole.yml"));
 

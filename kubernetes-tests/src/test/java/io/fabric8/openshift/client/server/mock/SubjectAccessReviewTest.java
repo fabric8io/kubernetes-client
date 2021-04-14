@@ -21,28 +21,26 @@ import io.fabric8.openshift.api.model.SubjectAccessReviewBuilder;
 import io.fabric8.openshift.api.model.SubjectAccessReviewResponse;
 import io.fabric8.openshift.api.model.SubjectAccessReviewResponseBuilder;
 import io.fabric8.openshift.client.NamespacedOpenShiftClient;
-import io.fabric8.openshift.client.OpenShiftClient;
-
-import org.junit.Rule;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableRuleMigrationSupport
+@EnableOpenShiftMockClient
 class SubjectAccessReviewTest {
-  @Rule
-  public OpenShiftServer server = new OpenShiftServer();
+
+  OpenShiftMockServer server;
+  NamespacedOpenShiftClient client;
+
+  @BeforeEach
+  void setUp() { client = server.createOpenShiftClient(); }
 
   @Test
   void testCreate() {
     server.expect().withPath("/apis/authorization.openshift.io/v1/subjectaccessreviews").andReturn(201, new SubjectAccessReviewResponseBuilder()
       .withReason("r1")
       .build()).once();
-
-    NamespacedOpenShiftClient client = server.getOpenshiftClient();
-
     SubjectAccessReviewResponse response = client.inAnyNamespace().subjectAccessReviews().create(new SubjectAccessReviewBuilder()
       .build());
     assertNotNull(response);
@@ -55,8 +53,6 @@ class SubjectAccessReviewTest {
     server.expect().withPath("/apis/authorization.openshift.io/v1/subjectaccessreviews").andReturn(201, new SubjectAccessReviewResponseBuilder()
       .withReason("r2")
       .build()).once();
-
-    NamespacedOpenShiftClient client = server.getOpenshiftClient();
 
     SubjectAccessReviewResponse response = client.inAnyNamespace().subjectAccessReviews()
       .create(new SubjectAccessReviewBuilder().build());
@@ -71,7 +67,6 @@ class SubjectAccessReviewTest {
       .withReason("r1")
       .build()).once();
 
-    OpenShiftClient client = server.getOpenshiftClient();
 
     SubjectAccessReviewResponse response = client.localSubjectAccessReviews().inNamespace("test").create(new LocalSubjectAccessReviewBuilder()
       .withNamespace("test")
@@ -89,7 +84,6 @@ class SubjectAccessReviewTest {
       .withReason("r2")
       .build()).once();
 
-    OpenShiftClient client = server.getOpenshiftClient();
 
     SubjectAccessReviewResponse response = client.localSubjectAccessReviews().inNamespace("test").create(new LocalSubjectAccessReviewBuilder()
       .withUser("user")

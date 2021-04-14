@@ -22,25 +22,25 @@ import io.fabric8.kubernetes.api.model.policy.PodDisruptionBudgetList;
 import io.fabric8.kubernetes.api.model.policy.PodDisruptionBudgetListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.Utils;
-import org.junit.Rule;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 public class PodDisruptionBudgetTest {
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
+
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   @Test
   public void list() {
@@ -55,7 +55,6 @@ public class PodDisruptionBudgetTest {
       .addNewItem()
       .and().build()).once();
 
-    KubernetesClient client = server.getClient();
     PodDisruptionBudgetList podDisruptionBudgetList = client.policy().podDisruptionBudget().list();
     assertNotNull(podDisruptionBudgetList);
     assertEquals(0, podDisruptionBudgetList.getItems().size());
@@ -78,7 +77,6 @@ public class PodDisruptionBudgetTest {
       .addNewItem().and()
       .build()).once();
 
-    KubernetesClient client = server.getClient();
     PodDisruptionBudgetList podDisruptionBudgetList = client.policy().podDisruptionBudget()
       .withLabel("key1", "value1")
       .withLabel("key2", "value2")
@@ -103,7 +101,6 @@ public class PodDisruptionBudgetTest {
     server.expect().withPath("/apis/policy/v1beta1/namespaces/test/poddisruptionbudgets/poddisruptionbudget1").andReturn(200, new PodDisruptionBudgetBuilder().build()).once();
     server.expect().withPath("/apis/policy/v1beta1/namespaces/ns1/poddisruptionbudgets/poddisruptionbudget2").andReturn(200, new PodDisruptionBudgetBuilder().build()).once();
 
-    KubernetesClient client = server.getClient();
 
     PodDisruptionBudget podDisruptionBudget = client.policy().podDisruptionBudget().withName("poddisruptionbudget1").get();
     assertNotNull(podDisruptionBudget);
@@ -127,7 +124,6 @@ public class PodDisruptionBudgetTest {
       .endSpec()
       .build()).once();
 
-    KubernetesClient client = server.getClient();
 
     Boolean deleted = client.policy().podDisruptionBudget().withName("poddisruptionbudget1").delete();
     assertNotNull(deleted);
@@ -138,7 +134,6 @@ public class PodDisruptionBudgetTest {
   public void testDeleteWithNamespaceMismatch() {
     Assertions.assertThrows(KubernetesClientException.class, () -> {
       PodDisruptionBudget podDisruptionBudget1 = new PodDisruptionBudgetBuilder().withNewMetadata().withName("podDisruptionBudget1").withNamespace("test").and().build();
-      KubernetesClient client = server.getClient();
 
       Boolean deleted = client.policy().podDisruptionBudget().inNamespace("test1").delete(podDisruptionBudget1);
       assertFalse(deleted);
@@ -150,7 +145,6 @@ public class PodDisruptionBudgetTest {
   public void testCreateWithNameMismatch() {
     Assertions.assertThrows(KubernetesClientException.class, () -> {
       PodDisruptionBudget podDisruptionBudget1 = new PodDisruptionBudgetBuilder().withNewMetadata().withName("podDisruptionBudget1").withNamespace("test").and().build();
-      KubernetesClient client = server.getClient();
 
       client.policy().podDisruptionBudget().inNamespace("test1").withName("mypodDisruptionBudget1").create(podDisruptionBudget1);
     });
@@ -158,7 +152,6 @@ public class PodDisruptionBudgetTest {
 
   @Test
   public void testLoadFromFile() {
-    KubernetesClient client = server.getClient();
     assertNotNull(client.policy().podDisruptionBudget().load(getClass().getResourceAsStream("/test-pdb.yml")).get());
   }
 }

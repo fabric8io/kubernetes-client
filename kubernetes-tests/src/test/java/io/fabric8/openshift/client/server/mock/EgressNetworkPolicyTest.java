@@ -20,9 +20,7 @@ import io.fabric8.openshift.api.model.EgressNetworkPolicyBuilder;
 import io.fabric8.openshift.api.model.EgressNetworkPolicyList;
 import io.fabric8.openshift.api.model.EgressNetworkPolicyListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 
@@ -30,10 +28,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableRuleMigrationSupport
+@EnableOpenShiftMockClient
 class EgressNetworkPolicyTest {
-  @Rule
-  public OpenShiftServer server = new OpenShiftServer();
+
+  OpenShiftMockServer server;
+  OpenShiftClient client;
 
   @Test
   void create() {
@@ -43,7 +42,6 @@ class EgressNetworkPolicyTest {
       .withPath("/apis/network.openshift.io/v1/namespaces/ns1/egressnetworkpolicies")
       .andReturn(HttpURLConnection.HTTP_OK, egressNetworkPolicy)
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     egressNetworkPolicy = client.egressNetworkPolicies().inNamespace("ns1").create(egressNetworkPolicy);
@@ -60,7 +58,6 @@ class EgressNetworkPolicyTest {
       .withPath("/apis/network.openshift.io/v1/namespaces/ns1/egressnetworkpolicies/foo")
       .andReturn(HttpURLConnection.HTTP_OK, getEgressNetworkPolicy())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     EgressNetworkPolicy f = client.egressNetworkPolicies().inNamespace("ns1").withName("foo").get();
@@ -77,7 +74,6 @@ class EgressNetworkPolicyTest {
       .withPath("/apis/network.openshift.io/v1/namespaces/ns1/egressnetworkpolicies")
       .andReturn(HttpURLConnection.HTTP_OK, new EgressNetworkPolicyListBuilder().withItems(getEgressNetworkPolicy()).build())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     EgressNetworkPolicyList fgList = client.egressNetworkPolicies().inNamespace("ns1").list();
@@ -95,7 +91,6 @@ class EgressNetworkPolicyTest {
       .withPath("/apis/network.openshift.io/v1/namespaces/ns1/egressnetworkpolicies/foo")
       .andReturn(HttpURLConnection.HTTP_OK, getEgressNetworkPolicy())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     Boolean deleted = client.egressNetworkPolicies().inNamespace("ns1").withName("foo").delete();

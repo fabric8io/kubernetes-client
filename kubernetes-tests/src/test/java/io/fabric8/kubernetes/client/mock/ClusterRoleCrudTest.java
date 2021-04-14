@@ -20,29 +20,25 @@ import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBuilder;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRoleList;
 import io.fabric8.kubernetes.api.model.rbac.PolicyRuleBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import org.junit.Rule;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient(crud = true)
 class ClusterRoleCrudTest {
 
   private static final Logger logger = LoggerFactory.getLogger(ClusterRoleCrudTest.class);
 
-  @Rule
-  public KubernetesServer kubernetesServer = new KubernetesServer(true,true);
+  KubernetesClient client;
 
   @Test
   void crudTest(){
 
-    KubernetesClient client = kubernetesServer.getClient();
 
     ClusterRole kubernetesClusterRole = new ClusterRoleBuilder()
       .withNewMetadata()
@@ -160,7 +156,6 @@ class ClusterRoleCrudTest {
 
   @Test
   void testLoadFromFile() {
-    KubernetesClient client = kubernetesServer.getClient();
     assertNotNull(client.rbac().clusterRoles().load(getClass().getResourceAsStream("/test-clusterrole.yml")).get());
   }
 }

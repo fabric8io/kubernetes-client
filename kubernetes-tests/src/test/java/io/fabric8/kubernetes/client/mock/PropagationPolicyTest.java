@@ -34,13 +34,12 @@ import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.mock.crd.PodSet;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.mockwebserver.RecordedRequest;
-import org.junit.Rule;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -49,10 +48,11 @@ import java.util.Collections;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 class PropagationPolicyTest {
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
+
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   @Test
   @DisplayName("Should delete a ConfigMap with PropagationPolicy=Background")
@@ -61,14 +61,13 @@ class PropagationPolicyTest {
     server.expect().delete().withPath("/api/v1/namespaces/ns1/configmaps/myconfigMap")
       .andReturn(HttpURLConnection.HTTP_OK, new ConfigMapBuilder().build())
       .once();
-    KubernetesClient client = server.getClient();
 
     // When
     Boolean isDeleted = client.configMaps().inNamespace("ns1").withName("myconfigMap").delete();
 
     // Then
     assertTrue(isDeleted);
-    assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.BACKGROUND.toString(), server.getLastRequest());
+   assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.BACKGROUND.toString(), server.getLastRequest());
   }
 
   @Test
@@ -78,7 +77,6 @@ class PropagationPolicyTest {
     server.expect().delete().withPath("/api/v1/namespaces/ns1/configmaps/myconfigMap")
       .andReturn(HttpURLConnection.HTTP_OK, new ConfigMapBuilder().build())
       .once();
-    KubernetesClient client = server.getClient();
 
     // When
     Boolean isDeleted = client.configMaps().inNamespace("ns1").withName("myconfigMap").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete();
@@ -95,7 +93,6 @@ class PropagationPolicyTest {
     server.expect().delete().withPath("/api/v1/namespaces/ns1/services/myservice")
       .andReturn(HttpURLConnection.HTTP_OK, new ServiceBuilder().build())
       .once();
-    KubernetesClient client = server.getClient();
 
     // When
     Boolean isDeleted = client.services().inNamespace("ns1").withName("myservice").delete();
@@ -112,7 +109,6 @@ class PropagationPolicyTest {
     server.expect().delete().withPath("/api/v1/namespaces/ns1/services/myservice")
       .andReturn(HttpURLConnection.HTTP_OK, new ServiceBuilder().build())
       .once();
-    KubernetesClient client = server.getClient();
 
     // When
     Boolean isDeleted = client.services().inNamespace("ns1").withName("myservice").delete();
@@ -129,7 +125,6 @@ class PropagationPolicyTest {
     server.expect().delete().withPath("/api/v1/namespaces/ns1/secrets/mysecret")
       .andReturn(HttpURLConnection.HTTP_OK, new SecretBuilder().build())
       .once();
-    KubernetesClient client = server.getClient();
 
     // When
     Boolean isDeleted = client.secrets().inNamespace("ns1").withName("mysecret").delete();
@@ -146,7 +141,6 @@ class PropagationPolicyTest {
     server.expect().delete().withPath("/api/v1/namespaces/ns1/secrets/mysecret")
       .andReturn(HttpURLConnection.HTTP_OK, new SecretBuilder().build())
       .once();
-    KubernetesClient client = server.getClient();
 
     // When
     Boolean isDeleted = client.secrets().inNamespace("ns1").withName("mysecret").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete();
@@ -163,7 +157,6 @@ class PropagationPolicyTest {
     server.expect().delete().withPath("/apis/apps/v1/namespaces/ns1/deployments/mydeployment")
       .andReturn(HttpURLConnection.HTTP_OK, new DeploymentBuilder().build())
       .once();
-    KubernetesClient client = server.getClient();
 
     // When
     Boolean isDeleted = client.apps().deployments().inNamespace("ns1").withName("mydeployment").delete();
@@ -180,7 +173,6 @@ class PropagationPolicyTest {
     server.expect().delete().withPath("/apis/apps/v1/namespaces/ns1/deployments/mydeployment")
       .andReturn(HttpURLConnection.HTTP_OK, new DeploymentBuilder().build())
       .once();
-    KubernetesClient client = server.getClient();
 
     // When
     Boolean isDeleted = client.apps().deployments().inNamespace("ns1").withName("mydeployment").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete();
@@ -197,7 +189,6 @@ class PropagationPolicyTest {
     server.expect().delete().withPath("/apis/apps/v1/namespaces/ns1/deployments/mydeployment")
       .andReturn(HttpURLConnection.HTTP_OK, new DeploymentBuilder().build())
       .once();
-    KubernetesClient client = server.getClient();
 
     // When
     Boolean isDeleted = client.apps().deployments().inNamespace("ns1").withName("mydeployment").withPropagationPolicy(DeletionPropagation.FOREGROUND).withGracePeriod(10).delete();
@@ -214,7 +205,6 @@ class PropagationPolicyTest {
     server.expect().delete().withPath("/apis/apps/v1/namespaces/ns1/statefulsets/mystatefulset")
       .andReturn(HttpURLConnection.HTTP_OK, new StatefulSetBuilder().build())
       .once();
-    KubernetesClient client = server.getClient();
 
     // When
     Boolean isDeleted = client.apps().statefulSets().inNamespace("ns1").withName("mystatefulset").delete();
@@ -231,13 +221,13 @@ class PropagationPolicyTest {
     server.expect().delete().withPath("/apis/apps/v1/namespaces/ns1/statefulsets/mystatefulset")
       .andReturn(HttpURLConnection.HTTP_OK, new StatefulSetBuilder().build())
       .once();
-    KubernetesClient client = server.getClient();
 
     // When
     Boolean isDeleted = client.apps().statefulSets().inNamespace("ns1").withName("mystatefulset").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete();
 
     // Then
     assertTrue(isDeleted);
+
     assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.FOREGROUND.toString(), server.getLastRequest());
   }
 
@@ -248,13 +238,13 @@ class PropagationPolicyTest {
     server.expect().delete().withPath("/api/v1/namespaces/ns1/replicationcontrollers/myreplicationcontroller")
       .andReturn(HttpURLConnection.HTTP_OK, new ReplicationControllerBuilder().build())
       .once();
-    KubernetesClient client = server.getClient();
 
     // When
     Boolean isDeleted = client.replicationControllers().inNamespace("ns1").withName("myreplicationcontroller").delete();
 
     // Then
     assertTrue(isDeleted);
+
     assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.BACKGROUND.toString(), server.getLastRequest());
   }
 
@@ -265,13 +255,13 @@ class PropagationPolicyTest {
     server.expect().delete().withPath("/api/v1/namespaces/ns1/replicationcontrollers/myreplicationcontroller")
       .andReturn(HttpURLConnection.HTTP_OK, new ReplicationControllerBuilder().build())
       .once();
-    KubernetesClient client = server.getClient();
 
     // When
     Boolean isDeleted = client.replicationControllers().inNamespace("ns1").withName("myreplicationcontroller").withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
 
     // Then
     assertTrue(isDeleted);
+
     assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.ORPHAN.toString(), server.getLastRequest());
   }
 
@@ -282,13 +272,13 @@ class PropagationPolicyTest {
     server.expect().delete().withPath("/apis/batch/v1/namespaces/ns1/jobs/myjob")
       .andReturn(HttpURLConnection.HTTP_OK, new JobBuilder().build())
       .once();
-    KubernetesClient client = server.getClient();
 
     // When
     Boolean isDeleted = client.batch().jobs().inNamespace("ns1").withName("myjob").delete();
 
     // Then
     assertTrue(isDeleted);
+
     assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.BACKGROUND.toString(), server.getLastRequest());
   }
 
@@ -299,13 +289,13 @@ class PropagationPolicyTest {
     server.expect().delete().withPath("/apis/batch/v1/namespaces/ns1/jobs/myjob")
       .andReturn(HttpURLConnection.HTTP_OK, new JobBuilder().build())
       .once();
-    KubernetesClient client = server.getClient();
 
     // When
     Boolean isDeleted = client.batch().jobs().inNamespace("ns1").withName("myjob").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete();
 
     // Then
     assertTrue(isDeleted);
+
     assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.FOREGROUND.toString(), server.getLastRequest());
   }
 
@@ -317,13 +307,13 @@ class PropagationPolicyTest {
     server.expect().delete().withPath("/api/v1/namespaces/foo/pods/testpod")
       .andReturn(HttpURLConnection.HTTP_OK, testPod)
       .once();
-    KubernetesClient client = server.getClient();
 
     // When
     Boolean isDeleted = client.resource(testPod).inNamespace("foo").delete();
 
     // Then
     assertTrue(isDeleted);
+
     assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.BACKGROUND.toString(), server.getLastRequest());
   }
 
@@ -335,13 +325,13 @@ class PropagationPolicyTest {
     server.expect().delete().withPath("/api/v1/namespaces/foo/pods/testpod")
       .andReturn(HttpURLConnection.HTTP_OK, testPod)
       .once();
-    KubernetesClient client = server.getClient();
 
     // When
     Boolean isDeleted = client.resource(testPod).inNamespace("foo").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete();
 
     // Then
     assertTrue(isDeleted);
+
     assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.FOREGROUND.toString(), server.getLastRequest());
   }
 
@@ -353,13 +343,13 @@ class PropagationPolicyTest {
     server.expect().delete().withPath("/api/v1/namespaces/foo/pods/testpod")
       .andReturn(HttpURLConnection.HTTP_OK, testPod)
       .once();
-    KubernetesClient client = server.getClient();
 
     // When
     Boolean isDeleted = client.resource(testPod).inNamespace("foo").withPropagationPolicy(DeletionPropagation.FOREGROUND).withGracePeriod(5L).delete();
 
     // Then
     assertTrue(isDeleted);
+
     assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"gracePeriodSeconds\":5,\"propagationPolicy\":\"" + DeletionPropagation.FOREGROUND.toString() + "\"}", server.getLastRequest().getBody().readUtf8());
   }
 
@@ -371,13 +361,13 @@ class PropagationPolicyTest {
     server.expect().delete().withPath("/api/v1/namespaces/foo/pods/testpod")
       .andReturn(HttpURLConnection.HTTP_OK, testPod)
       .once();
-    KubernetesClient client = server.getClient();
 
     // When
     Boolean isDeleted = client.resourceList(new KubernetesListBuilder().withItems(testPod).build()).inNamespace("foo").delete();
 
     // Then
     assertTrue(isDeleted);
+
     assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.BACKGROUND.toString(), server.getLastRequest());
   }
 
@@ -389,13 +379,13 @@ class PropagationPolicyTest {
     server.expect().delete().withPath("/api/v1/namespaces/foo/pods/testpod")
       .andReturn(HttpURLConnection.HTTP_OK, testPod)
       .once();
-    KubernetesClient client = server.getClient();
 
     // When
     Boolean isDeleted = client.resourceList(new KubernetesListBuilder().withItems(testPod).build()).inNamespace("foo").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete();
 
     // Then
     assertTrue(isDeleted);
+
     assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.FOREGROUND.toString(), server.getLastRequest());
   }
 
@@ -407,13 +397,13 @@ class PropagationPolicyTest {
     server.expect().delete().withPath("/api/v1/namespaces/foo/pods/testpod")
       .andReturn(HttpURLConnection.HTTP_OK, testPod)
       .once();
-    KubernetesClient client = server.getClient();
 
     // When
     Boolean isDeleted = client.resourceList(new KubernetesListBuilder().withItems(testPod).build()).inNamespace("foo").withGracePeriod(10L).withPropagationPolicy(DeletionPropagation.FOREGROUND).delete();
 
     // Then
     assertTrue(isDeleted);
+
     assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"gracePeriodSeconds\":10,\"propagationPolicy\":\"" + DeletionPropagation.FOREGROUND.toString() + "\"}", server.getLastRequest().getBody().readUtf8());
   }
 
@@ -423,7 +413,6 @@ class PropagationPolicyTest {
     // Given
     server.expect().delete().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/example-hello")
       .andReturn(HttpURLConnection.HTTP_OK, "{\"metadata\":{},\"apiVersion\":\"v1\",\"kind\":\"Status\",\"details\":{\"name\":\"prometheus-example-rules\",\"group\":\"monitoring.coreos.com\",\"kind\":\"prometheusrules\",\"uid\":\"b3d085bd-6a5c-11e9-8787-525400b18c1d\"},\"status\":\"Success\"}").once();
-    KubernetesClient client = server.getClient();
 
     // When
     boolean result = client.customResource(new CustomResourceDefinitionContext.Builder()
@@ -437,6 +426,7 @@ class PropagationPolicyTest {
 
     // Then
     assertTrue(result);
+
     assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.BACKGROUND.toString(), server.getLastRequest());
   }
 
@@ -445,7 +435,7 @@ class PropagationPolicyTest {
   void testDeleteCustomResource() throws InterruptedException {
     // Given
     server.expect().delete().withPath("/apis/demo.k8s.io/v1alpha1/namespaces/test/podsets/example-podset").andReturn(HttpURLConnection.HTTP_OK, new PodSet()).once();
-    MixedOperation<PodSet, KubernetesResourceList<PodSet>, Resource<PodSet>> podSetClient = server.getClient()
+    MixedOperation<PodSet, KubernetesResourceList<PodSet>, Resource<PodSet>> podSetClient = client
       .customResources(PodSet.class);
 
     // When
@@ -453,6 +443,7 @@ class PropagationPolicyTest {
 
     // Then
     assertTrue(isDeleted);
+
     assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.BACKGROUND.toString(), server.getLastRequest());
   }
 
@@ -465,8 +456,8 @@ class PropagationPolicyTest {
     Boolean isDeleted = kubernetesClient.services().inNamespace("myNameSpace").withLabel("myLabel").withPropagationPolicy(DeletionPropagation.BACKGROUND).delete();
 
     // Then
-    assertTrue(isDeleted);
     RecordedRequest recordedRequest = server.getLastRequest();
+    assertTrue(isDeleted);
     assertEquals("DELETE", recordedRequest.getMethod());
     assertDeleteOptionsInLastRecordedRequest(DeletionPropagation.BACKGROUND.toString(), recordedRequest);
   }
@@ -514,7 +505,7 @@ class PropagationPolicyTest {
     server.expect().delete().withPath("/api/v1/namespaces/myNameSpace/services/svc2")
       .andReturn(HttpURLConnection.HTTP_OK, svc2)
       .once();
-    return server.getClient();
+    return client;
   }
 
   private void assertDeleteOptionsInLastRecordedRequest(String propagationPolicy, RecordedRequest recordedRequest) {

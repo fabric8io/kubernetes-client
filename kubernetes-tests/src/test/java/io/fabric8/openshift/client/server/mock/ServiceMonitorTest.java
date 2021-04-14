@@ -21,9 +21,7 @@ import io.fabric8.openshift.api.model.monitoring.v1.ServiceMonitorBuilder;
 import io.fabric8.openshift.api.model.monitoring.v1.ServiceMonitorList;
 import io.fabric8.openshift.api.model.monitoring.v1.ServiceMonitorListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 import java.util.List;
@@ -32,14 +30,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableRuleMigrationSupport
+@EnableOpenShiftMockClient
 class ServiceMonitorTest {
-  @Rule
-  public OpenShiftServer server = new OpenShiftServer();
+
+  OpenShiftMockServer server;
+  OpenShiftClient client;
 
   @Test
   void load() {
-    OpenShiftClient client = server.getOpenshiftClient();
     List<HasMetadata> items = client.load(getClass().getResourceAsStream("/test-servicemonitor.yml")).get();
     assertEquals(1, items.size());
     assertTrue(items.get(0) instanceof ServiceMonitor);
@@ -56,7 +54,6 @@ class ServiceMonitorTest {
       .withPath("/apis/monitoring.coreos.com/v1/namespaces/ns1/servicemonitors")
       .andReturn(HttpURLConnection.HTTP_OK, serviceMonitor)
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     serviceMonitor = client.monitoring().serviceMonitors().inNamespace("ns1").create(serviceMonitor);
@@ -73,7 +70,6 @@ class ServiceMonitorTest {
       .withPath("/apis/monitoring.coreos.com/v1/namespaces/ns1/servicemonitors/foo")
       .andReturn(HttpURLConnection.HTTP_OK, getServiceMonitor())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     ServiceMonitor serviceMonitor = client.monitoring().serviceMonitors().inNamespace("ns1").withName("foo").get();
@@ -90,7 +86,6 @@ class ServiceMonitorTest {
       .withPath("/apis/monitoring.coreos.com/v1/namespaces/ns1/servicemonitors")
       .andReturn(HttpURLConnection.HTTP_OK, new ServiceMonitorListBuilder().withItems(getServiceMonitor()).build())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     ServiceMonitorList fgList = client.monitoring().serviceMonitors().inNamespace("ns1").list();
@@ -108,7 +103,6 @@ class ServiceMonitorTest {
       .withPath("/apis/monitoring.coreos.com/v1/namespaces/ns1/servicemonitors/foo")
       .andReturn(HttpURLConnection.HTTP_OK, getServiceMonitor())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     Boolean deleted = client.monitoring().serviceMonitors().inNamespace("ns1").withName("foo").delete();

@@ -30,12 +30,11 @@ import io.fabric8.kubernetes.api.model.authorization.v1.SubjectAccessReviewBuild
 import io.fabric8.kubernetes.api.model.authorization.v1.SubjectAccessReviewStatus;
 import io.fabric8.kubernetes.api.model.authorization.v1.SubjectRulesReviewStatusBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.Serialization;
-import org.junit.Rule;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 import java.nio.charset.Charset;
@@ -47,10 +46,11 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 class V1SubjectAccessReviewAuthTest {
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
+
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   @Test
   @DisplayName("Should Create SubjectAccessReview")
@@ -73,7 +73,6 @@ class V1SubjectAccessReviewAuthTest {
 
         return reviewResponse;
       }).once();
-    KubernetesClient client = server.getClient();
 
     // When
     SubjectAccessReview reviewResponse = client.authorization().v1().subjectAccessReview().create(review);
@@ -104,7 +103,6 @@ class V1SubjectAccessReviewAuthTest {
 
         return reviewResponse;
       }).once();
-    KubernetesClient client = server.getClient();
 
     // When
     LocalSubjectAccessReview reviewResponse = client.authorization().v1()
@@ -160,7 +158,6 @@ class V1SubjectAccessReviewAuthTest {
 
         return reviewResponse;
       }).once();
-    KubernetesClient client = server.getClient();
 
     // When
     SelfSubjectRulesReview reviewResponse = client.authorization().v1()
@@ -198,7 +195,6 @@ class V1SubjectAccessReviewAuthTest {
 
         return reviewResponse;
       }).once();
-    KubernetesClient client = server.getClient();
 
     // When
     SelfSubjectAccessReview reviewResponse = client.authorization().v1()

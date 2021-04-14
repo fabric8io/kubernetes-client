@@ -15,31 +15,33 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.client.CustomResourceList;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.mock.crd.PodSet;
 import io.fabric8.kubernetes.client.mock.crd.PodSetSpec;
 import io.fabric8.kubernetes.client.mock.crd.PodSetStatus;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
+import okhttp3.mockwebserver.RecordedRequest;
+import org.junit.jupiter.api.Test;
+
 import java.net.HttpURLConnection;
 import java.util.Collections;
-import okhttp3.mockwebserver.RecordedRequest;
-import org.junit.Rule;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
-@EnableRuleMigrationSupport
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+@EnableKubernetesMockClient
 class TypedCustomResourceApiTest {
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
+
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   private MixedOperation<PodSet, KubernetesResourceList<PodSet>, Resource<PodSet>> podSetClient;
 
@@ -47,7 +49,7 @@ class TypedCustomResourceApiTest {
   void create() {
     server.expect().post().withPath("/apis/demo.k8s.io/v1alpha1/namespaces/test/podsets").andReturn(200, getPodSet()).once();
 
-    podSetClient = server.getClient().customResources(PodSet.class);
+    podSetClient = client.customResources(PodSet.class);
 
     PodSet returnedPodSet = podSetClient.inNamespace("test").create(getPodSet());
     assertNotNull(returnedPodSet);
@@ -59,7 +61,7 @@ class TypedCustomResourceApiTest {
     KubernetesResourceList<PodSet> podSetList = new CustomResourceList<>();
     ((CustomResourceList<PodSet>)podSetList).setItems(Collections.singletonList(getPodSet()));
     server.expect().get().withPath("/apis/demo.k8s.io/v1alpha1/namespaces/test/podsets").andReturn(200, podSetList).once();
-    podSetClient = server.getClient().customResources(PodSet.class);
+    podSetClient = client.customResources(PodSet.class);
 
     podSetList = podSetClient.inNamespace("test").list();
     assertNotNull(podSetList);
@@ -73,7 +75,7 @@ class TypedCustomResourceApiTest {
     server.expect().post().withPath("/apis/demo.k8s.io/v1alpha1/namespaces/test/podsets").andReturn(HttpURLConnection.HTTP_CONFLICT, getPodSet()).times(2);
     server.expect().put().withPath("/apis/demo.k8s.io/v1alpha1/namespaces/test/podsets/example-podset").andReturn(HttpURLConnection.HTTP_OK, getPodSet()).once();
 
-    podSetClient = server.getClient().customResources(PodSet.class);
+    podSetClient = client.customResources(PodSet.class);
     PodSet returnedPodSet = podSetClient.inNamespace("test").createOrReplace(getPodSet());
 
     assertNotNull(returnedPodSet);
@@ -84,7 +86,7 @@ class TypedCustomResourceApiTest {
   void delete() {
     server.expect().delete().withPath("/apis/demo.k8s.io/v1alpha1/namespaces/test/podsets/example-podset").andReturn(200, getPodSet()).once();
 
-    podSetClient = server.getClient().customResources(PodSet.class);
+    podSetClient = client.customResources(PodSet.class);
 
     boolean isDeleted = podSetClient.inNamespace("test").withName("example-podset").delete();
     assertTrue(isDeleted);
@@ -94,7 +96,7 @@ class TypedCustomResourceApiTest {
   void testCascadingDeletion() throws InterruptedException {
     server.expect().delete().withPath("/apis/demo.k8s.io/v1alpha1/namespaces/test/podsets/example-podset").andReturn(200, getPodSet()).once();
 
-    podSetClient = server.getClient().customResources(PodSet.class);
+    podSetClient = client.customResources(PodSet.class);
 
     boolean isDeleted = podSetClient.inNamespace("test").withName("example-podset").cascading(true).delete();
     assertTrue(isDeleted);
@@ -108,7 +110,7 @@ class TypedCustomResourceApiTest {
   void testPropagationPolicyDeletion() throws InterruptedException {
     server.expect().delete().withPath("/apis/demo.k8s.io/v1alpha1/namespaces/test/podsets/example-podset").andReturn(200, getPodSet()).once();
 
-    podSetClient = server.getClient().customResources(PodSet.class);
+    podSetClient = client.customResources(PodSet.class);
 
     boolean isDeleted = podSetClient.inNamespace("test").withName("example-podset").withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
     assertTrue(isDeleted);
@@ -126,7 +128,7 @@ class TypedCustomResourceApiTest {
     updatedPodSet.setStatus(podSetStatus);
 
     server.expect().put().withPath("/apis/demo.k8s.io/v1alpha1/namespaces/test/podsets/example-podset/status").andReturn(200, updatedPodSet).once();
-    podSetClient = server.getClient().customResources(PodSet.class);
+    podSetClient = client.customResources(PodSet.class);
 
     podSetClient.inNamespace("test").updateStatus(updatedPodSet);
     RecordedRequest recordedRequest = server.getLastRequest();

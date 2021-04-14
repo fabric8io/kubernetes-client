@@ -21,9 +21,7 @@ import io.fabric8.openshift.api.model.monitoring.v1.PrometheusRuleBuilder;
 import io.fabric8.openshift.api.model.monitoring.v1.PrometheusRuleList;
 import io.fabric8.openshift.api.model.monitoring.v1.PrometheusRuleListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 import java.util.List;
@@ -32,14 +30,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableRuleMigrationSupport
+@EnableOpenShiftMockClient
 class PrometheusRuleTest {
-  @Rule
-  public OpenShiftServer server = new OpenShiftServer();
+
+  OpenShiftMockServer server;
+  OpenShiftClient client;
 
   @Test
   void load() {
-    OpenShiftClient client = server.getOpenshiftClient();
     List<HasMetadata> items = client.load(getClass().getResourceAsStream("/test-prometheusrule.yml")).get();
     assertEquals(1, items.size());
     assertTrue(items.get(0) instanceof PrometheusRule);
@@ -57,7 +55,6 @@ class PrometheusRuleTest {
       .withPath("/apis/monitoring.coreos.com/v1/namespaces/ns1/prometheusrules")
       .andReturn(HttpURLConnection.HTTP_OK, prometheusRule)
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     prometheusRule = client.monitoring().prometheusRules().inNamespace("ns1").create(prometheusRule);
@@ -74,7 +71,6 @@ class PrometheusRuleTest {
       .withPath("/apis/monitoring.coreos.com/v1/namespaces/ns1/prometheusrules/foo")
       .andReturn(HttpURLConnection.HTTP_OK, getPrometheusRule())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     PrometheusRule f = client.monitoring().prometheusRules().inNamespace("ns1").withName("foo").get();
@@ -91,7 +87,6 @@ class PrometheusRuleTest {
       .withPath("/apis/monitoring.coreos.com/v1/namespaces/ns1/prometheusrules")
       .andReturn(HttpURLConnection.HTTP_OK, new PrometheusRuleListBuilder().withItems(getPrometheusRule()).build())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     PrometheusRuleList fgList = client.monitoring().prometheusRules().inNamespace("ns1").list();
@@ -109,7 +104,6 @@ class PrometheusRuleTest {
       .withPath("/apis/monitoring.coreos.com/v1/namespaces/ns1/prometheusrules/foo")
       .andReturn(HttpURLConnection.HTTP_OK, getPrometheusRule())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     Boolean deleted = client.monitoring().prometheusRules().inNamespace("ns1").withName("foo").delete();

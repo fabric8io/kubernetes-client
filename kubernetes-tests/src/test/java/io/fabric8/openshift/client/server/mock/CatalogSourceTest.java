@@ -15,15 +15,12 @@
  */
 package io.fabric8.openshift.client.server.mock;
 
-import io.fabric8.kubernetes.api.model.APIGroupListBuilder;
 import io.fabric8.openshift.api.model.operatorhub.v1alpha1.CatalogSource;
 import io.fabric8.openshift.api.model.operatorhub.v1alpha1.CatalogSourceBuilder;
 import io.fabric8.openshift.api.model.operatorhub.v1alpha1.CatalogSourceList;
 import io.fabric8.openshift.api.model.operatorhub.v1alpha1.CatalogSourceListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 
@@ -31,10 +28,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableRuleMigrationSupport
+@EnableOpenShiftMockClient
 class CatalogSourceTest {
-  @Rule
-  public OpenShiftServer server = new OpenShiftServer();
+
+  OpenShiftMockServer server;
+  OpenShiftClient client;
 
   @Test
   void create() {
@@ -44,7 +42,6 @@ class CatalogSourceTest {
       .withPath("/apis/operators.coreos.com/v1alpha1/namespaces/ns1/catalogsources")
       .andReturn(HttpURLConnection.HTTP_OK, catalogSource)
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     catalogSource = client.operatorHub().catalogSources().inNamespace("ns1").create(catalogSource);
@@ -61,7 +58,6 @@ class CatalogSourceTest {
       .withPath("/apis/operators.coreos.com/v1alpha1/namespaces/ns1/catalogsources/foo")
       .andReturn(HttpURLConnection.HTTP_OK, getCatalogSource())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     CatalogSource f = client.operatorHub().catalogSources().inNamespace("ns1").withName("foo").get();
@@ -78,7 +74,6 @@ class CatalogSourceTest {
       .withPath("/apis/operators.coreos.com/v1alpha1/namespaces/ns1/catalogsources")
       .andReturn(HttpURLConnection.HTTP_OK, new CatalogSourceListBuilder().withItems(getCatalogSource()).build())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     CatalogSourceList csList = client.operatorHub().catalogSources().inNamespace("ns1").list();
@@ -96,7 +91,6 @@ class CatalogSourceTest {
       .withPath("/apis/operators.coreos.com/v1alpha1/namespaces/ns1/catalogsources/foo")
       .andReturn(HttpURLConnection.HTTP_OK, getCatalogSource())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     Boolean deleted = client.operatorHub().catalogSources().inNamespace("ns1").withName("foo").delete();

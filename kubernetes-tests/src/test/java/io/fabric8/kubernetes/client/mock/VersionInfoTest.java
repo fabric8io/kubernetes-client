@@ -17,23 +17,20 @@
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.VersionInfo;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import io.fabric8.openshift.client.OpenShiftClient;
-import io.fabric8.openshift.client.server.mock.OpenShiftServer;
-import org.junit.Rule;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 public class VersionInfoTest {
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
+
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   @Test
   public void testClusterVersioning() throws ParseException {
@@ -45,7 +42,6 @@ public class VersionInfoTest {
       "    \"minor\": \"6\"" +
       "}").always();
 
-    KubernetesClient client = server.getClient();
     assertEquals("v1.6.1+5115d708d7", client.getVersion().getGitVersion());
     assertEquals("e6301f88a8", client.getVersion().getGitCommit());
     assertEquals("3", client.getVersion().getMajor());

@@ -15,34 +15,27 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
-import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.api.model.EventBuilder;
+import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import org.junit.Rule;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
-import org.junit.rules.ExpectedException;
 
-import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.startsWith;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 public class ErrorMessageTest {
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
 
-  @Rule
-  public ExpectedException expectedEx = ExpectedException.none();
+  KubernetesMockServer server;
+  KubernetesClient client;
+
 
   @Test
   public void testCustomMessage() {
-    expectedEx.expectMessage(startsWith("Failure executing: DELETE"));
-    expectedEx.expectMessage(containsString("Message: MSG"));
-    expectedEx.expectMessage(not(containsString("Received status")));
 
-    server.getClient().getConfiguration().getErrorMessages().put(403, "MSG");
+    client.getConfiguration().getErrorMessages().put(403, "MSG");
     server.expect().withPath("/api/v1/namespaces/test/events").andReturn(200, new io.fabric8.kubernetes.api.model.EventListBuilder()
       .addNewItem()
       .withNewMetadata()
@@ -51,16 +44,23 @@ public class ErrorMessageTest {
       .endItem().build()).once();
     server.expect().withPath("/api/v1/namespaces/test/events/event1").andReturn(403, Boolean.FALSE).once();
 
-    KubernetesClient client = server.getClient();
 
-    client.v1().events().inNamespace("test").delete();
+    try{
+      client.v1().events().inNamespace("test").delete();
+      fail();
+    } catch (Exception e){
+      System.out.println("exception: "+e);
+      Assertions.assertThat(e.getMessage().startsWith("Failure executing: DELETE"));
+      Assertions.assertThat(e.getMessage().contains("Message: MSG"));
+      Assertions.assertThat(not(e.getMessage().contains("Received status")));
+    }
+  }
+
+  private void fail() {
   }
 
   @Test
   public void testServerErrorWithStatus() {
-    expectedEx.expectMessage(startsWith("Failure executing: POST"));
-    expectedEx.expectMessage(containsString("Received status"));
-    expectedEx.expectMessage(containsString("Message: This operation"));
 
     server.expect().withPath("/api/v1/namespaces/test/events").andReturn(500, new StatusBuilder()
       .withMessage("This operation is not allowed for some reason")
@@ -69,8 +69,14 @@ public class ErrorMessageTest {
       .build()).once();
 
 
-    KubernetesClient client = server.getClient();
 
-    client.v1().events().inNamespace("test").create(new EventBuilder().withNewMetadata().withName("event1").endMetadata().build());
+    try{
+      client.v1().events().inNamespace("test").create(new EventBuilder().withNewMetadata().withName("event1").endMetadata().build());
+      fail();
+    } catch( Exception e){
+      Assertions.assertThat(e.getMessage().startsWith("Failure executing: POST"));
+      Assertions.assertThat(e.getMessage().contains("Received status"));
+      Assertions.assertThat(not(e.getMessage().contains("Message: This operation")));
+    }
   }
 }

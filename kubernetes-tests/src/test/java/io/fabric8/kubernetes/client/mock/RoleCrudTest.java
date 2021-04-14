@@ -20,29 +20,25 @@ import io.fabric8.kubernetes.api.model.rbac.Role;
 import io.fabric8.kubernetes.api.model.rbac.RoleBuilder;
 import io.fabric8.kubernetes.api.model.rbac.RoleList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import org.junit.Rule;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient(crud = true)
 public class RoleCrudTest {
 
   private static final Logger logger = LoggerFactory.getLogger(RoleCrudTest.class);
 
-  @Rule
-  public KubernetesServer kubernetesServer = new KubernetesServer(true,true);
+  KubernetesClient client;
 
   @Test
   public void crudTest(){
 
-    KubernetesClient client = kubernetesServer.getClient();
 
     Role kubernetesRole = new RoleBuilder()
       .withNewMetadata()

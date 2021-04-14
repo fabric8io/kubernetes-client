@@ -34,16 +34,15 @@ import io.fabric8.kubernetes.client.dsl.Applicable;
 import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.Assert;
-import org.junit.Rule;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 import java.util.Objects;
@@ -53,26 +52,26 @@ import java.util.function.Predicate;
 import static java.net.HttpURLConnection.HTTP_GONE;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 import static org.assertj.core.api.Assertions.tuple;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 class ResourceTest {
 
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   @Test
   void testCreateOrReplace() {
     // Given
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
     server.expect().post().withPath("/api/v1/namespaces/test/pods").andReturn(HttpURLConnection.HTTP_CREATED, pod1).once();
-    KubernetesClient client = server.getClient();
 
     // When
     HasMetadata response = client.resource(pod1).createOrReplace();
@@ -86,7 +85,7 @@ class ResourceTest {
     // Given
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
     server.expect().post().withPath("/api/v1/namespaces/test/pods").andReturn(HttpURLConnection.HTTP_BAD_REQUEST, pod1).once();
-    KubernetesClient client = server.getClient();
+    
     NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<Pod> podOperation = client.resource(pod1);
 
     // When
@@ -99,7 +98,6 @@ class ResourceTest {
 
       server.expect().post().withPath("/api/v1/namespaces/ns1/pods").andReturn(HttpURLConnection.HTTP_CREATED, pod1).once();
 
-      KubernetesClient client = server.getClient();
       HasMetadata response = client.resource(pod1).inNamespace("ns1").createOrReplace();
       assertEquals(pod1, response);
     }
@@ -111,12 +109,11 @@ class ResourceTest {
       server.expect().delete().withPath("/api/v1/namespaces/ns1/pods/pod1").andReturn(HttpURLConnection.HTTP_OK, pod1).once();
       server.expect().post().withPath("/api/v1/namespaces/ns1/pods").andReturn(HttpURLConnection.HTTP_CREATED, pod1).once();
 
-      KubernetesClient client = server.getClient();
       HasMetadata response = client.resource(pod1).inNamespace("ns1").deletingExisting().createOrReplace();
       assertEquals(pod1, response);
 
       RecordedRequest request = server.getLastRequest();
-      assertEquals(2, server.getMockServer().getRequestCount());
+      assertEquals(2, server.getRequestCount());
       assertEquals("/api/v1/namespaces/ns1/pods", request.getPath());
       assertEquals("POST", request.getMethod());
     }
@@ -128,19 +125,18 @@ class ResourceTest {
     server.expect().delete().withPath("/api/v1/namespaces/ns1/pods/pod1").andReturn(HttpURLConnection.HTTP_OK, pod1).once();
     server.expect().post().withPath("/api/v1/namespaces/ns1/pods").andReturn(HttpURLConnection.HTTP_CREATED, pod1).once();
 
-    KubernetesClient client = server.getClient();
     HasMetadata response = client.resource(pod1).inNamespace("ns1").withPropagationPolicy(DeletionPropagation.FOREGROUND).deletingExisting().createOrReplace();
     assertEquals(pod1, response);
 
-    assertEquals(2, server.getMockServer().getRequestCount());
+    assertEquals(2, server.getRequestCount());
 
-    RecordedRequest deleteRequest = server.getMockServer().takeRequest();
+    RecordedRequest deleteRequest = server.takeRequest();
     assertEquals("/api/v1/namespaces/ns1/pods/pod1", deleteRequest.getPath());
     assertEquals("DELETE", deleteRequest.getMethod());
     DeleteOptions deleteOptions = Serialization.unmarshal(deleteRequest.getBody().readUtf8(), DeleteOptions.class);
     assertEquals("Foreground", deleteOptions.getPropagationPolicy());
 
-    RecordedRequest postRequest = server.getMockServer().takeRequest();
+    RecordedRequest postRequest = server.takeRequest();
     assertEquals("/api/v1/namespaces/ns1/pods", postRequest.getPath());
     assertEquals("POST", postRequest.getMethod());
   }
@@ -152,7 +148,6 @@ class ResourceTest {
     server.expect().post().withPath("/api/v1/namespaces/ns1/pods").andReturn(HttpURLConnection.HTTP_CONFLICT, pod1).once();
     server.expect().delete().withPath("/api/v1/namespaces/ns1/pods/pod1").andReturn(HttpURLConnection.HTTP_OK, pod1).once();
     server.expect().post().withPath("/api/v1/namespaces/ns1/pods").andReturn(HttpURLConnection.HTTP_BAD_REQUEST, pod1).once();
-    KubernetesClient client = server.getClient();
     Applicable<Pod> podOperation = client.resource(pod1).inNamespace("ns1").deletingExisting();
 
     // When
@@ -162,7 +157,6 @@ class ResourceTest {
     @Test
     void testRequire() {
       server.expect().get().withPath("/api/v1/namespaces/ns1/pods/pod1").andReturn(HttpURLConnection.HTTP_NOT_FOUND, "").once();
-      KubernetesClient client = server.getClient();
       PodResource<Pod> podOp = client.pods().inNamespace("ns1").withName("pod1");
 
       Assertions.assertThrows(ResourceNotFoundException.class, podOp::require);
@@ -177,7 +171,6 @@ class ResourceTest {
    server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, pod1).once();
    server.expect().withPath("/api/v1/namespaces/ns1/pods/pod2").andReturn(200, pod2).once();
 
-    KubernetesClient client = server.getClient();
     Boolean deleted = client.resource(pod1).delete();
     assertTrue(deleted);
     deleted = client.resource(pod2).delete();
@@ -204,7 +197,6 @@ class ResourceTest {
         .done()
       .always();
 
-    KubernetesClient client = server.getClient();
     final CountDownLatch latch = new CountDownLatch(1);
 
     Watch watch = client.resource(pod1).watch(new Watcher<Pod>() {
@@ -241,7 +233,7 @@ class ResourceTest {
       .done()
       .always();
 
-    KubernetesClient client = server.getClient();
+    
     Pod p = client.resource(noReady).waitUntilReady(5, SECONDS);
     Assert.assertTrue(Readiness.isPodReady(p));
   }
@@ -268,7 +260,7 @@ class ResourceTest {
       .done()
       .always();
 
-    KubernetesClient client = server.getClient();
+    
     Pod p = client.pods().withName("pod1").waitUntilReady(5, SECONDS);
     Assert.assertTrue(Readiness.isPodReady(p));
   }
@@ -318,7 +310,7 @@ class ResourceTest {
       .done()
       .always();
 
-    KubernetesClient client = server.getClient();
+    
     Pod p = client.pods().withName("pod1").waitUntilCondition(
       r -> r.getStatus().getConditions()
             .stream()
@@ -367,26 +359,24 @@ class ResourceTest {
     Predicate<Pod> isReady = p -> p.getStatus().getConditions().stream()
       .anyMatch(c -> "True".equals(c.getStatus()));
 
-    try (KubernetesClient client = server.getClient()) {
-      final PodResource<Pod> ops = client.pods().withName("pod1");
-      KubernetesClientException ex = assertThrows(KubernetesClientException.class, () ->
-        ops.waitUntilCondition(isReady, 4, SECONDS)
-      );
-      assertThat(ex)
-        .hasCauseExactlyInstanceOf(WatcherException.class)
-        .extracting(Throwable::getCause)
-        .asInstanceOf(InstanceOfAssertFactories.type(WatcherException.class))
-        .extracting(WatcherException::isHttpGone)
-        .isEqualTo(true);
+    final PodResource<Pod> ops = client.pods().withName("pod1");
+    KubernetesClientException ex = assertThrows(KubernetesClientException.class, () ->
+      ops.waitUntilCondition(isReady, 4, SECONDS)
+    );
+    assertThat(ex)
+      .hasCauseExactlyInstanceOf(WatcherException.class)
+      .extracting(Throwable::getCause)
+      .asInstanceOf(InstanceOfAssertFactories.type(WatcherException.class))
+      .extracting(WatcherException::isHttpGone)
+      .isEqualTo(true);
 
-      Pod pod = client.pods()
-        .withName("pod1")
-        .withResourceVersion("2")
-        .waitUntilCondition(isReady, 4, SECONDS);
-      assertThat(pod.getMetadata().getName()).isEqualTo("pod1");
-      assertThat(pod.getMetadata().getResourceVersion()).isEqualTo("1");
-      assertTrue(isReady.test(pod));
-    }
+    Pod pod = client.pods()
+      .withName("pod1")
+      .withResourceVersion("2")
+      .waitUntilCondition(isReady, 4, SECONDS);
+    assertThat(pod.getMetadata().getName()).isEqualTo("pod1");
+    assertThat(pod.getMetadata().getResourceVersion()).isEqualTo("1");
+    assertTrue(isReady.test(pod));
   }
 
   @Test
@@ -414,7 +404,7 @@ class ResourceTest {
       .done()
       .once();
 
-    KubernetesClient client = server.getClient();
+    
     Pod p = client.resource(noReady).waitUntilReady(5, SECONDS);
     Assert.assertTrue(Readiness.isPodReady(p));
   }
@@ -448,7 +438,7 @@ class ResourceTest {
       .done()
       .once();
 
-    KubernetesClient client = server.getClient();
+    
     Pod p = client.resource(noReady).waitUntilReady(5, SECONDS);
     Assert.assertTrue(Readiness.isPodReady(p));
   }
@@ -466,7 +456,7 @@ class ResourceTest {
     // once not ready, to begin watch
     server.expect().get().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, ready).once();
 
-    KubernetesClient client = server.getClient();
+    
     Pod p = client.resource(noReady).waitUntilReady(5, SECONDS);
     Assert.assertTrue(Readiness.isPodReady(p));
   }
@@ -497,7 +487,7 @@ class ResourceTest {
       .done()
       .once();
 
-    KubernetesClient client = server.getClient();
+    
     try {
       client.resource(noReady).waitUntilReady(5, SECONDS);
       fail("should have thrown KubernetesClientException");
@@ -527,7 +517,7 @@ class ResourceTest {
       .done()
       .once();
 
-    KubernetesClient client = server.getClient();
+    
     Pod p = client.pods().withName("pod1").waitUntilCondition(Objects::isNull,8, SECONDS);
     assertNull(p);
   }
@@ -553,7 +543,7 @@ class ResourceTest {
       .done()
       .always();
 
-    KubernetesClient client = server.getClient();
+    
     Pod p = client.resource(noReady).createOrReplaceAnd().waitUntilReady(10, SECONDS);
     Assert.assertTrue(Readiness.isPodReady(p));
   }
@@ -569,7 +559,7 @@ class ResourceTest {
 
     server.expect().get().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, pod).once();
 
-    KubernetesClient client = server.getClient();
+    
     HasMetadata response = client.resource(pod).fromServer().get();
     assertEquals(pod, response);
   }
@@ -598,12 +588,12 @@ class ResourceTest {
       .done()
       .once();
     // When
-    HasMetadata response = server.getClient()
+    HasMetadata response = client
       .resource(new PodBuilder(conditionMetPod).build())
       .waitUntilCondition(p -> "MET".equals(p.getMetadata().getLabels().get("CONDITION")), 1, SECONDS);
     // Then
     assertEquals(conditionMetPod, response);
-    assertEquals(2, server.getMockServer().getRequestCount());
+    assertEquals(2, server.getRequestCount());
   }
 
   private static Pod createReadyFrom(Pod pod, String status) {

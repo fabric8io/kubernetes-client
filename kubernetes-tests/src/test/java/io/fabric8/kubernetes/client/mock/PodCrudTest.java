@@ -24,11 +24,10 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import junit.framework.AssertionFailedError;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -36,18 +35,18 @@ import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient(crud = true)
 class PodCrudTest {
 
-  @Rule
-  public KubernetesServer server = new KubernetesServer(true, true);
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   @Test
-  void testCrud() { KubernetesClient client = server.getClient();
+  void testCrud() {
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").addToLabels("testKey", "testValue").endMetadata().build();
     Pod pod2 = new PodBuilder().withNewMetadata().withName("pod2").addToLabels("testKey", "testValue").endMetadata().build();
     Pod pod3 = new PodBuilder().withNewMetadata().withName("pod3").endMetadata().build();
@@ -98,7 +97,6 @@ class PodCrudTest {
 
   @Test
   void testPodWatchOnName() throws InterruptedException {
-    KubernetesClient client = server.getClient();
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").addToLabels("testKey", "testValue").endMetadata().build();
     //there are two adds - one when the watch is registered, another later
     final LatchedWatcher lw = new LatchedWatcher(2, 2, 1, 1, 1);
@@ -129,7 +127,6 @@ class PodCrudTest {
 
   @Test
   void testPodWatchOnNamespace() throws InterruptedException {
-    KubernetesClient client = server.getClient();
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").addToLabels("testKey", "testValue").endMetadata().build();
 
     //there are two adds - one when the watch is registered, another later
@@ -160,7 +157,6 @@ class PodCrudTest {
 
   @Test
   void testPodWatchOnLabels() throws InterruptedException {
-    KubernetesClient client = server.getClient();
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").addToLabels("test", "watch").endMetadata().build();
 
     //there are two adds - one when the watch is registered, another later
@@ -209,7 +205,6 @@ class PodCrudTest {
 
   @Test
   void testPodWatchTryWithResources() throws InterruptedException {
-    KubernetesClient client = server.getClient();
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").addToLabels("testKey", "testValue").endMetadata().build();
 
     final LatchedWatcher lw = new LatchedWatcher();

@@ -18,19 +18,19 @@ package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.Binding;
 import io.fabric8.kubernetes.api.model.BindingBuilder;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import org.junit.Rule;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 class BindingTest {
 
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   @DisplayName("create, with created response, should return created resource")
   @Test
@@ -39,7 +39,7 @@ class BindingTest {
       .andReturn(201, "{\"metadata\": {\"name\": \"binding-name\"}}")
       .once();
     // When
-    final Binding result = server.getClient().bindings().inNamespace("default").create(new BindingBuilder()
+    final Binding result = client.bindings().inNamespace("default").create(new BindingBuilder()
       .withNewMetadata().withName("binding-name").endMetadata()
       .withNewTarget().withKind("Node").withApiVersion("v1").withName("node-name").endTarget()
       .build());

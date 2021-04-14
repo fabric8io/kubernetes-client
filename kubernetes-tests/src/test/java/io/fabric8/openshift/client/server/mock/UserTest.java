@@ -16,17 +16,13 @@
 
 package io.fabric8.openshift.client.server.mock;
 
-import io.fabric8.kubernetes.api.model.APIGroupListBuilder;
 import io.fabric8.openshift.api.model.User;
 import io.fabric8.openshift.api.model.UserBuilder;
 import io.fabric8.openshift.api.model.UserList;
 import io.fabric8.openshift.api.model.UserListBuilder;
 import io.fabric8.openshift.client.NamespacedOpenShiftClient;
-import io.fabric8.openshift.client.OpenShiftClient;
-
-import org.junit.Rule;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -34,10 +30,14 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableRuleMigrationSupport
+@EnableOpenShiftMockClient
 class UserTest {
-  @Rule
-  public OpenShiftServer server = new OpenShiftServer();
+
+  OpenShiftMockServer server;
+  NamespacedOpenShiftClient client;
+
+  @BeforeEach
+  void setUp() { client = server.createOpenShiftClient(); }
 
   @Test
   void testList() {
@@ -45,7 +45,6 @@ class UserTest {
       .addNewItem().and()
       .addNewItem().and().build()).always();
 
-    NamespacedOpenShiftClient client = server.getOpenshiftClient();
 
     UserList userList = client.users().list();
     assertNotNull(userList);
@@ -68,7 +67,6 @@ class UserTest {
       .withNewMetadata().withName("User2").endMetadata()
       .build()).once();
 
-    OpenShiftClient client = server.getOpenshiftClient();
 
     User user = client.users().withName("user1").get();
     assertNotNull(user);
@@ -88,7 +86,6 @@ class UserTest {
    server.expect().withPath("/apis/user.openshift.io/v1/users/user1").andReturn(200, new UserBuilder().build()).once();
    server.expect().withPath("/apis/user.openshift.io/v1/users/User2").andReturn( 200, new UserBuilder().build()).once();
 
-    OpenShiftClient client = server.getOpenshiftClient();
 
     Boolean deleted = client.users().withName("user1").delete();
     assertNotNull(deleted);

@@ -25,14 +25,13 @@ import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
 import io.fabric8.kubernetes.api.model.ReplicationControllerList;
 import io.fabric8.kubernetes.api.model.ReplicationControllerListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.Disabled;
-import org.junit.Rule;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 import java.util.Collections;
@@ -40,16 +39,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 class ReplicationControllerTest {
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
+
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   @Test
   void testList() {
@@ -59,7 +59,6 @@ class ReplicationControllerTest {
       .addNewItem().and().build())
       .once();
 
-    KubernetesClient client = server.getClient();
     ReplicationControllerList replicationControllerList = client.replicationControllers().list();
     assertNotNull(replicationControllerList);
     assertEquals(0, replicationControllerList.getItems().size());
@@ -75,7 +74,6 @@ class ReplicationControllerTest {
    server.expect().withPath("/api/v1/namespaces/test/replicationcontrollers/repl1").andReturn(200, new ReplicationControllerBuilder().build()).once();
    server.expect().withPath("/api/v1/namespaces/ns1/replicationcontrollers/repl2").andReturn(200, new ReplicationControllerBuilder().build()).once();
 
-    KubernetesClient client = server.getClient();
 
     ReplicationController repl1 = client.replicationControllers().withName("repl1").get();
     assertNotNull(repl1);
@@ -138,7 +136,6 @@ class ReplicationControllerTest {
       .endStatus()
       .build()).times(5);
 
-    KubernetesClient client = server.getClient();
 
     Boolean deleted = client.replicationControllers().withName("repl1").delete();
     assertTrue(deleted);
@@ -165,7 +162,6 @@ class ReplicationControllerTest {
       .endStatus()
       .build()).always();
 
-    KubernetesClient client = server.getClient();
     ReplicationController repl = client.replicationControllers().withName("repl1").scale(5);
     assertNotNull(repl);
     assertNotNull(repl.getSpec());
@@ -201,7 +197,6 @@ class ReplicationControllerTest {
         .endStatus()
         .build()).always();
 
-    KubernetesClient client = server.getClient();
     ReplicationController repl = client.replicationControllers().withName("repl1").scale(5, true);
     assertNotNull(repl);
     assertNotNull(repl.getSpec());
@@ -236,7 +231,6 @@ class ReplicationControllerTest {
    server.expect().get().withPath("/api/v1/namespaces/test/replicationcontrollers").andReturn(200, new ReplicationControllerListBuilder().withItems(repl1).build()).once();
    server.expect().post().withPath("/api/v1/namespaces/test/replicationcontrollers").andReturn(201, repl1).once();
    server.expect().withPath("/api/v1/namespaces/test/pods").andReturn(200, new KubernetesListBuilder().build()).once();
-    KubernetesClient client = server.getClient();
 
     repl1 = client.replicationControllers().withName("repl1")
       .rolling()
@@ -258,7 +252,6 @@ class ReplicationControllerTest {
         .withImage(imageToUpdate)
         .endContainer().endSpec().endTemplate().endSpec()
         .build()).once();
-    KubernetesClient client = server.getClient();
 
     // When
     ReplicationController replicationController = client.replicationControllers().inNamespace("ns1").withName("replicationcontroller1")
@@ -267,9 +260,7 @@ class ReplicationControllerTest {
     // Then
     assertNotNull(replicationController);
     assertEquals(imageToUpdate, replicationController.getSpec().getTemplate().getSpec().getContainers().get(0).getImage());
-    RecordedRequest recordedRequest = server.getLastRequest();
-    assertEquals("PATCH", recordedRequest.getMethod());
-    assertTrue(recordedRequest.getBody().readUtf8().contains(imageToUpdate));
+    assertTrue(server.getLastRequest().getBody().readUtf8().contains(imageToUpdate));
   }
 
   @Test
@@ -285,7 +276,6 @@ class ReplicationControllerTest {
         .withImage(containerToImageMap.get("nginx"))
         .endContainer().endSpec().endTemplate().endSpec()
         .build()).once();
-    KubernetesClient client = server.getClient();
 
     // When
     ReplicationController replicationController = client.replicationControllers().inNamespace("ns1").withName("replicationcontroller1")
@@ -294,9 +284,7 @@ class ReplicationControllerTest {
     // Then
     assertNotNull(replicationController);
     assertEquals(containerToImageMap.get("nginx"), replicationController.getSpec().getTemplate().getSpec().getContainers().get(0).getImage());
-    RecordedRequest recordedRequest = server.getLastRequest();
-    assertEquals("PATCH", recordedRequest.getMethod());
-    assertTrue(recordedRequest.getBody().readUtf8().contains(containerToImageMap.get("nginx")));
+    assertTrue(server.getLastRequest().getBody().readUtf8().contains(containerToImageMap.get("nginx")));
   }
 
   @Test
@@ -309,7 +297,6 @@ class ReplicationControllerTest {
       .andReturn(HttpURLConnection.HTTP_OK, getReplicationControllerPodList(replicationController)).once();
     server.expect().get().withPath("/api/v1/namespaces/ns1/pods/pod1/log?pretty=true")
       .andReturn(HttpURLConnection.HTTP_OK, "testlog").once();
-    KubernetesClient client = server.getClient();
 
     // When
     String log = client.replicationControllers().inNamespace("ns1").withName("replicationcontroller1").getLog(true);

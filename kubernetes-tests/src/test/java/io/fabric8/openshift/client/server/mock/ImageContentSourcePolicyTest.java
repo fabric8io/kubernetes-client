@@ -20,9 +20,7 @@ import io.fabric8.openshift.api.model.operator.v1alpha1.ImageContentSourcePolicy
 import io.fabric8.openshift.api.model.operator.v1alpha1.ImageContentSourcePolicyList;
 import io.fabric8.openshift.api.model.operator.v1alpha1.ImageContentSourcePolicyListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 
@@ -30,10 +28,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableRuleMigrationSupport
+@EnableOpenShiftMockClient
 class ImageContentSourcePolicyTest {
-  @Rule
-  public OpenShiftServer server = new OpenShiftServer();
+
+  OpenShiftMockServer server;
+  OpenShiftClient client;
 
   @Test
   void create() {
@@ -43,7 +42,6 @@ class ImageContentSourcePolicyTest {
       .withPath("/apis/operator.openshift.io/v1alpha1/imagecontentsourcepolicies")
       .andReturn(HttpURLConnection.HTTP_OK, imageContentSourcePolicy)
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     imageContentSourcePolicy = client.operator().imageContentSourcePolicies().create(imageContentSourcePolicy);
@@ -60,7 +58,6 @@ class ImageContentSourcePolicyTest {
       .withPath("/apis/operator.openshift.io/v1alpha1/imagecontentsourcepolicies/foo")
       .andReturn(HttpURLConnection.HTTP_OK, getImageContentSourcePolicy())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     ImageContentSourcePolicy f = client.operator().imageContentSourcePolicies().withName("foo").get();
@@ -77,7 +74,6 @@ class ImageContentSourcePolicyTest {
       .withPath("/apis/operator.openshift.io/v1alpha1/imagecontentsourcepolicies")
       .andReturn(HttpURLConnection.HTTP_OK, new ImageContentSourcePolicyListBuilder().withItems(getImageContentSourcePolicy()).build())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     ImageContentSourcePolicyList fgList = client.operator().imageContentSourcePolicies().list();
@@ -95,7 +91,6 @@ class ImageContentSourcePolicyTest {
       .withPath("/apis/operator.openshift.io/v1alpha1/imagecontentsourcepolicies/foo")
       .andReturn(HttpURLConnection.HTTP_OK, getImageContentSourcePolicy())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     Boolean deleted = client.operator().imageContentSourcePolicies().withName("foo").delete();

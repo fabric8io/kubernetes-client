@@ -23,12 +23,11 @@ import io.fabric8.kubernetes.api.model.networking.v1.IngressClassListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.Utils;
-import org.junit.Rule;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 import java.util.List;
@@ -37,16 +36,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 class V1IngressClassTest {
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
+
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   @Test
   void testLoad() {
-    // Given
-    KubernetesClient client = server.getClient();
-
     // When
     List<HasMetadata> itemList = client.load(getClass().getResourceAsStream("/test-v1-ingressclass.yml")).get();
 
@@ -73,7 +70,6 @@ class V1IngressClassTest {
       .and().build()).once();
 
 
-    KubernetesClient client = server.getClient();
 
     // When + Then
     IngressClassList ingressClassList = client.network().v1().ingressClasses().list();
@@ -99,7 +95,6 @@ class V1IngressClassTest {
       .addNewItem().and()
       .build()).once();
 
-    KubernetesClient client = server.getClient();
 
     // When + Then
     IngressClassList ingressClassList = client.network().v1().ingressClasses()
@@ -127,7 +122,6 @@ class V1IngressClassTest {
     // Given
     server.expect().withPath("/apis/networking.k8s.io/v1/ingressclasses/ingressClass1").andReturn(HttpURLConnection.HTTP_OK, new IngressClassBuilder().build()).once();
     server.expect().withPath("/apis/networking.k8s.io/v1/ingressclasses/ingressClass2").andReturn(HttpURLConnection.HTTP_OK, new IngressClassBuilder().build()).once();
-    KubernetesClient client = server.getClient();
 
     // When
     IngressClass ingressClass1 = client.network().v1().ingressClasses().withName("ingressClass1").get();
@@ -144,7 +138,6 @@ class V1IngressClassTest {
     // Given
     server.expect().withPath("/apis/networking.k8s.io/v1/ingressclasses/ingressClass1").andReturn(HttpURLConnection.HTTP_OK, new IngressClassBuilder().build()).once();
     server.expect().withPath("/apis/networking.k8s.io/v1/ingressclasses/ingressClass2").andReturn(HttpURLConnection.HTTP_OK, new IngressClassBuilder().build()).once();
-    KubernetesClient client = server.getClient();
 
     // When
     Boolean result1 = client.network().v1().ingressClasses().withName("ingressClass1").delete();
@@ -159,7 +152,6 @@ class V1IngressClassTest {
   void testCreateWithNameMismatch() {
     // Given
     IngressClass ingressClass1 = new IngressClassBuilder().withNewMetadata().withName("ingressClass1").and().build();
-    KubernetesClient client = server.getClient();
 
     // When
     Resource<IngressClass> ingressClassOp = client.network().v1().ingressClasses().withName("myingressClass1");

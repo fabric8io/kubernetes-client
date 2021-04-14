@@ -16,25 +16,23 @@
 
 package io.fabric8.openshift.client.server.mock;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-
 import io.fabric8.kubernetes.api.model.APIGroupListBuilder;
-import org.junit.Rule;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
-
 import io.fabric8.openshift.api.model.Role;
 import io.fabric8.openshift.api.model.RoleBuilder;
 import io.fabric8.openshift.api.model.RoleList;
 import io.fabric8.openshift.api.model.RoleListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
+import org.junit.jupiter.api.Test;
 
-@EnableRuleMigrationSupport
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
+@EnableOpenShiftMockClient
 class OpenshiftRoleTest {
-  @Rule
-  public OpenShiftServer server = new OpenShiftServer();
+
+  OpenShiftMockServer server;
+  OpenShiftClient client;
 
   @Test
   void testList() {
@@ -59,7 +57,6 @@ class OpenshiftRoleTest {
       .addNewItem()
       .and().build()).once();
 
-    OpenShiftClient client = server.getOpenshiftClient();
 
     RoleList roleList = client.roles().list();
     assertNotNull(roleList);
@@ -84,7 +81,6 @@ class OpenshiftRoleTest {
       .withNewMetadata().withName("role2").endMetadata()
       .build()).once();
 
-    OpenShiftClient client = server.getOpenshiftClient();
 
     Role role = client.roles().withName("role1").get();
     assertNotNull(role);

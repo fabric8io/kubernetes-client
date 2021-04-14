@@ -21,21 +21,21 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import org.junit.Rule;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 public class HttpServerTest {
-  @Rule
-  public KubernetesServer server = new KubernetesServer(false);
+
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   @Test
   public void testListWithTrustCerts() {
    server.expect().withPath("/api/v1/namespaces/test/pods").andReturn(200, new PodListBuilder().build()).once();
     //We override the config to create a client that doesn't trust all certs.
-    Config override = new ConfigBuilder(server.getClient().getConfiguration()).build();
+    Config override = new ConfigBuilder(client.getConfiguration()).build();
 
     KubernetesClient client = new DefaultKubernetesClient(override);
     client.pods().list();

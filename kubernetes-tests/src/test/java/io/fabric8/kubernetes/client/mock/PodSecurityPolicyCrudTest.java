@@ -20,29 +20,27 @@ import io.fabric8.kubernetes.api.model.policy.PodSecurityPolicy;
 import io.fabric8.kubernetes.api.model.policy.PodSecurityPolicyBuilder;
 import io.fabric8.kubernetes.api.model.policy.PodSecurityPolicyList;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import org.junit.Rule;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
-import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient(crud = true)
 public class PodSecurityPolicyCrudTest {
 
   private static final Logger logger = LoggerFactory.getLogger(PodSecurityPolicyCrudTest.class);
 
-  @Rule
-  public KubernetesServer kubernetesServer = new KubernetesServer(true,true);
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   @Test
   public void crudTest(){
-    KubernetesClient client = kubernetesServer.getClient();
 
     PodSecurityPolicy podSecurityPolicy = new PodSecurityPolicyBuilder()
       .withNewMetadata()

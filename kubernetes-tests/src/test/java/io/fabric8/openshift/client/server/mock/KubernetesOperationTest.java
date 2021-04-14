@@ -19,27 +19,23 @@ package io.fabric8.openshift.client.server.mock;
 import io.fabric8.kubernetes.api.model.APIGroupListBuilder;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
-import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.openshift.api.model.BuildConfigBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
-
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableRuleMigrationSupport
+@EnableOpenShiftMockClient
 class KubernetesOperationTest {
-  @Rule
-  public OpenShiftServer server = new OpenShiftServer();
+
+  OpenShiftMockServer server;
+  OpenShiftClient client;
 
   @Test
   void testDelete() {
    server.expect().withPath("/api/v1/namespaces/test/replicationcontrollers/rc1").andReturn(200, new ReplicationControllerBuilder().build()).once();
    server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, new PodBuilder().build()).once();
 
-    OpenShiftClient client = server.getOpenshiftClient();
 
     Boolean deleted = client.replicationControllers().withName("rc1").cascading(false).delete();
     assertTrue(deleted);
@@ -65,21 +61,19 @@ class KubernetesOperationTest {
    server.expect().withPath("/apis/build.openshift.io/v1/namespaces/test/buildconfigs/bc1").andReturn(200, new BuildConfigBuilder().build()).once();
    server.expect().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, new PodBuilder().build()).once();
 
-    try (KubernetesClient client = server.getKubernetesClient()) {
-      Boolean deleted = client.replicationControllers().withName("rc1").cascading(false).delete();
-      assertTrue(deleted);
+    Boolean deleted = client.replicationControllers().withName("rc1").cascading(false).delete();
+    assertTrue(deleted);
 
-      deleted = client.pods().withName("pod1").cascading(false).delete();
-      assertTrue(deleted);
+    deleted = client.pods().withName("pod1").cascading(false).delete();
+    assertTrue(deleted);
 
-      OpenShiftClient oclient = client.adapt(OpenShiftClient.class);
+    OpenShiftClient oclient = client.adapt(OpenShiftClient.class);
 
-      deleted = oclient.buildConfigs().withName("bc1").cascading(false).delete();
-      assertTrue(deleted);
+    deleted = oclient.buildConfigs().withName("bc1").cascading(false).delete();
+    assertTrue(deleted);
 
-      deleted = oclient.pods().withName("pod1").cascading(false).delete();
-      assertTrue(deleted);
-    }
+    deleted = oclient.pods().withName("pod1").cascading(false).delete();
+    assertTrue(deleted);
   }
 
 }

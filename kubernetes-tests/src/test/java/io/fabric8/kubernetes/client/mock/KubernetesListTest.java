@@ -26,23 +26,23 @@ import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import org.junit.Rule;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.io.InputStream;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 public class KubernetesListTest {
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
+
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
   Service service1 = new ServiceBuilder().withNewMetadata().withName("service1").withNamespace("test").and().build();
@@ -61,7 +61,6 @@ public class KubernetesListTest {
    server.expect().withPath("/api/v1/namespaces/test/services").andReturn(201, service1).once();
    server.expect().withPath("/api/v1/namespaces/test/replicationcontrollers").andReturn(201, replicationController1).once();
 
-    KubernetesClient client = server.getClient();
     KubernetesList result = client.lists().inNamespace("test").create(list);
 
     assertNotNull(result);
@@ -77,7 +76,6 @@ public class KubernetesListTest {
   public void testLoadAndCreate() {
    server.expect().withPath("/api/v1/namespaces/test/replicationcontrollers").andReturn(201, replicationController1).times(2);
 
-    KubernetesClient client = server.getClient();
     InputStream is = KubernetesListTest.class.getResourceAsStream("/test-rclist.json");
     KubernetesList result = client.lists().inNamespace("test").load(is).create();
 
@@ -95,7 +93,6 @@ public class KubernetesListTest {
       .editStatus().withReplicas(0).and().build()
     ).times(5);
 
-    KubernetesClient client = server.getClient();
     Boolean result = client.lists().delete(list);
 
     assertTrue(result);
@@ -104,7 +101,6 @@ public class KubernetesListTest {
   @Test
   public void testDeleteWithMismatch() {
     Assertions.assertThrows(KubernetesClientException.class, () -> {
-      KubernetesClient client = server.getClient();
       Boolean result = client.lists().inNamespace("test1").delete(list);
 
       assertFalse(result);

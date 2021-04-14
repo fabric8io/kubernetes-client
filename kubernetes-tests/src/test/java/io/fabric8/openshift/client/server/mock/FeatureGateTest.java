@@ -20,9 +20,7 @@ import io.fabric8.openshift.api.model.FeatureGateBuilder;
 import io.fabric8.openshift.api.model.FeatureGateList;
 import io.fabric8.openshift.api.model.FeatureGateListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 
@@ -30,10 +28,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableRuleMigrationSupport
+@EnableOpenShiftMockClient
 class FeatureGateTest {
-  @Rule
-  public OpenShiftServer server = new OpenShiftServer();
+
+  OpenShiftMockServer server;
+  OpenShiftClient client;
 
   @Test
   void create() {
@@ -43,7 +42,6 @@ class FeatureGateTest {
       .withPath("/apis/config.openshift.io/v1/featuregates")
       .andReturn(HttpURLConnection.HTTP_OK, featureGate)
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     featureGate = client.config().featureGates().create(featureGate);
@@ -60,7 +58,6 @@ class FeatureGateTest {
       .withPath("/apis/config.openshift.io/v1/featuregates/foo")
       .andReturn(HttpURLConnection.HTTP_OK, getFeatureGate())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     FeatureGate f = client.config().featureGates().withName("foo").get();
@@ -77,7 +74,6 @@ class FeatureGateTest {
       .withPath("/apis/config.openshift.io/v1/featuregates")
       .andReturn(HttpURLConnection.HTTP_OK, new FeatureGateListBuilder().withItems(getFeatureGate()).build())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     FeatureGateList fgList = client.config().featureGates().list();
@@ -95,7 +91,6 @@ class FeatureGateTest {
       .withPath("/apis/config.openshift.io/v1/featuregates/foo")
       .andReturn(HttpURLConnection.HTTP_OK, getFeatureGate())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     Boolean deleted = client.config().featureGates().withName("foo").delete();

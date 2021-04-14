@@ -20,20 +20,18 @@ import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
-import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetBuilder;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetList;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.Disabled;
-import org.junit.Rule;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 import java.util.Collections;
@@ -41,16 +39,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 class ReplicaSetTest {
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
+
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   @Test
   void testList() {
@@ -60,7 +59,6 @@ class ReplicaSetTest {
       .addNewItem().and().build())
       .once();
 
-    KubernetesClient client = server.getClient();
     ReplicaSetList replicaSetList = client.apps().replicaSets().list();
     assertNotNull(replicaSetList);
     assertEquals(0, replicaSetList.getItems().size());
@@ -76,7 +74,6 @@ class ReplicaSetTest {
    server.expect().withPath("/apis/apps/v1/namespaces/test/replicasets/repl1").andReturn(200, new ReplicaSetBuilder().build()).once();
    server.expect().withPath("/apis/apps/v1/namespaces/ns1/replicasets/repl2").andReturn(200, new ReplicaSetBuilder().build()).once();
 
-    KubernetesClient client = server.getClient();
 
     ReplicaSet repl1 = client.apps().replicaSets().withName("repl1").get();
     assertNotNull(repl1);
@@ -139,7 +136,6 @@ class ReplicaSetTest {
       .endStatus()
       .build()).times(5);
 
-    KubernetesClient client = server.getClient();
 
     Boolean deleted = client.apps().replicaSets().withName("repl1").delete();
     assertTrue(deleted);
@@ -166,7 +162,6 @@ class ReplicaSetTest {
       .endStatus()
       .build()).always();
 
-    KubernetesClient client = server.getClient();
     ReplicaSet repl = client.apps().replicaSets().withName("repl1").scale(5);
     assertNotNull(repl);
     assertNotNull(repl.getSpec());
@@ -202,7 +197,6 @@ class ReplicaSetTest {
         .endStatus()
         .build()).always();
 
-    KubernetesClient client = server.getClient();
     ReplicaSet repl = client.apps().replicaSets().withName("repl1").scale(5, true);
     assertNotNull(repl);
     assertNotNull(repl.getSpec());
@@ -237,7 +231,6 @@ class ReplicaSetTest {
    server.expect().get().withPath("/apis/apps/v1/namespaces/test/replicasets").andReturn(200, new ReplicaSetListBuilder().withItems(repl1).build()).once();
    server.expect().post().withPath("/apis/apps/v1/namespaces/test/replicasets").andReturn(201, repl1).once();
    server.expect().withPath("/apis/apps/v1/namespaces/test/pods").andReturn(200, new KubernetesListBuilder().build()).once();
-    KubernetesClient client = server.getClient();
 
     repl1 = client.apps().replicaSets().withName("repl1")
       .rolling()
@@ -270,7 +263,6 @@ class ReplicaSetTest {
 
     server.expect().withPath("/apis/extensions/v1beta1/namespaces/test/replicasets").andReturn(200, repl1).once();
 
-    KubernetesClient client = server.getClient();
     client.resource(repl1).inNamespace("test").createOrReplace();
   }
 
@@ -287,7 +279,6 @@ class ReplicaSetTest {
         .withImage(imageToUpdate)
         .endContainer().endSpec().endTemplate().endSpec()
         .build()).times(2);
-    KubernetesClient client = server.getClient();
 
     // When
     ReplicaSet replicationController = client.apps().replicaSets().inNamespace("ns1").withName("replicaset1")
@@ -296,9 +287,8 @@ class ReplicaSetTest {
     // Then
     assertNotNull(replicationController);
     assertEquals(imageToUpdate, replicationController.getSpec().getTemplate().getSpec().getContainers().get(0).getImage());
-    RecordedRequest recordedRequest = server.getLastRequest();
-    assertEquals("PATCH", recordedRequest.getMethod());
-    assertTrue(recordedRequest.getBody().readUtf8().contains(imageToUpdate));
+    int requestCount = server.getRequestCount();
+    assertTrue(server.getLastRequest().getBody().readUtf8().contains(imageToUpdate));
   }
 
   @Test
@@ -314,7 +304,6 @@ class ReplicaSetTest {
         .withImage(containerToImageMap.get("nginx"))
         .endContainer().endSpec().endTemplate().endSpec()
         .build()).once();
-    KubernetesClient client = server.getClient();
 
     // When
     ReplicaSet replicationController = client.apps().replicaSets().inNamespace("ns1").withName("replicaset1")
@@ -323,9 +312,7 @@ class ReplicaSetTest {
     // Then
     assertNotNull(replicationController);
     assertEquals(containerToImageMap.get("nginx"), replicationController.getSpec().getTemplate().getSpec().getContainers().get(0).getImage());
-    RecordedRequest recordedRequest = server.getLastRequest();
-    assertEquals("PATCH", recordedRequest.getMethod());
-    assertTrue(recordedRequest.getBody().readUtf8().contains(containerToImageMap.get("nginx")));
+    assertTrue(server.getLastRequest().getBody().readUtf8().contains(containerToImageMap.get("nginx")));
   }
 
   @Test
@@ -337,7 +324,6 @@ class ReplicaSetTest {
       .andReturn(HttpURLConnection.HTTP_OK, getReplicaSetPodList(replicaSet)).once();
     server.expect().get().withPath("/api/v1/namespaces/ns1/pods/pod1/log?pretty=true")
       .andReturn(HttpURLConnection.HTTP_OK, "testlog").once();
-    KubernetesClient client = server.getClient();
 
     // When
     String log = client.apps().replicaSets().inNamespace("ns1").withName("replicaset1").getLog(true);

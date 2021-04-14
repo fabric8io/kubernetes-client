@@ -20,24 +20,22 @@ import io.fabric8.openshift.api.model.Route;
 import io.fabric8.openshift.api.model.RouteBuilder;
 import io.fabric8.openshift.api.model.RouteList;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.util.Collections;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@EnableRuleMigrationSupport
+@EnableOpenShiftMockClient(crud = true)
 class RouteCrudTest {
-  @Rule
-  public OpenShiftServer server = new OpenShiftServer(true, true);
+
+  OpenShiftMockServer server;
+  OpenShiftClient client;
 
   @Test
   void testCrud() {
-    OpenShiftClient client = server.getOpenshiftClient();
 
     Route route1 = new RouteBuilder().withNewMetadata().withName("route1")
       .addToLabels("foo", "bar")

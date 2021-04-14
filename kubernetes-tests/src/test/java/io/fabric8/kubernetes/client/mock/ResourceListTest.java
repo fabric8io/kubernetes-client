@@ -35,13 +35,11 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
 import io.fabric8.kubernetes.client.dsl.ListVisitFromServerGetDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import okhttp3.mockwebserver.RecordedRequest;
-import org.junit.Rule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.util.Collections;
 import java.util.List;
@@ -55,17 +53,16 @@ import static java.net.HttpURLConnection.HTTP_UNAVAILABLE;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 public class ResourceListTest {
 
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
+  KubernetesMockServer server;
+  KubernetesClient client;
 
-  private KubernetesClient client;
   private Service service;
   private Service updatedService;
   private ConfigMap configMap;
@@ -74,7 +71,6 @@ public class ResourceListTest {
 
   @BeforeEach
   void setUp() {
-    client = server.getClient();
     service = mockService().build();
     configMap = mockConfigMap().build();
     updatedService = mockService().editSpec().editFirstPort()
@@ -147,7 +143,7 @@ public class ResourceListTest {
 
     client.resourceList(resourcesToUpdate).inNamespace("ns1").createOrReplace();
 
-    assertEquals(6, server.getMockServer().getRequestCount());
+    assertEquals(6, server.getRequestCount());
     RecordedRequest request = server.getLastRequest();
     assertEquals("/api/v1/namespaces/ns1/configmaps/my-configmap", request.getPath());
     assertEquals("PUT", request.getMethod());
@@ -162,7 +158,7 @@ public class ResourceListTest {
 
     client.resourceList(resourcesToUpdate).inNamespace("ns1").deletingExisting().createOrReplace();
 
-    assertEquals(4, server.getMockServer().getRequestCount());
+    assertEquals(4, server.getRequestCount());
     RecordedRequest request = server.getLastRequest();
     assertEquals("/api/v1/namespaces/ns1/configmaps", request.getPath());
     assertEquals("POST", request.getMethod());
@@ -203,13 +199,11 @@ public class ResourceListTest {
       .done()
       .once();
 
-    try (KubernetesClient client = server.getClient()) {
-      KubernetesList list = new KubernetesListBuilder().withItems(pod1, pod2).build();
-      List<HasMetadata> results = client.resourceList(list).inNamespace("ns1")
-        .waitUntilCondition(isReady, 5, SECONDS);
-      assertThat(results)
-        .containsExactlyInAnyOrder(ready1, ready2);
-    }
+    KubernetesList list = new KubernetesListBuilder().withItems(pod1, pod2).build();
+    List<HasMetadata> results = client.resourceList(list).inNamespace("ns1")
+      .waitUntilCondition(isReady, 5, SECONDS);
+    assertThat(results)
+      .containsExactlyInAnyOrder(ready1, ready2);
   }
 
   @Test
@@ -254,7 +248,6 @@ public class ResourceListTest {
       .done()
       .once();
 
-    try (KubernetesClient client = server.getClient()) {
       KubernetesList list = new KubernetesListBuilder().withItems(pod1, pod2).build();
       final ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> ops = client.resourceList(list).inNamespace("ns1");
       KubernetesClientTimeoutException ex = assertThrows(KubernetesClientTimeoutException.class, () ->
@@ -262,7 +255,6 @@ public class ResourceListTest {
       );
       assertThat(ex.getResourcesNotReady())
         .containsExactly(pod1);
-    }
   }
 
   @Test
@@ -305,15 +297,13 @@ public class ResourceListTest {
       .done()
       .once();
 
-    try (KubernetesClient client = server.getClient()) {
-      KubernetesList list = new KubernetesListBuilder().withItems(pod1, pod2).build();
-      final ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> ops = client.resourceList(list).inNamespace("ns1");
-      KubernetesClientTimeoutException ex = assertThrows(KubernetesClientTimeoutException.class, () ->
-        ops.waitUntilCondition(isReady, 5, SECONDS)
-      );
-      assertThat(ex.getResourcesNotReady())
-        .containsExactlyInAnyOrder(pod1, pod2);
-    }
+    KubernetesList list = new KubernetesListBuilder().withItems(pod1, pod2).build();
+    final ListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> ops = client.resourceList(list).inNamespace("ns1");
+    KubernetesClientTimeoutException ex = assertThrows(KubernetesClientTimeoutException.class, () ->
+      ops.waitUntilCondition(isReady, 5, SECONDS)
+    );
+    assertThat(ex.getResourcesNotReady())
+      .containsExactlyInAnyOrder(pod1, pod2);
   }
 
   private static Pod createReadyFrom(Pod pod, String status) {

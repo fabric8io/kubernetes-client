@@ -22,19 +22,19 @@ import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingW
 import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingWebhookConfigurationList;
 import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingWebhookConfigurationListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import org.junit.Rule;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 public class V1beta1ValidatingWebhookConfigurationTest {
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
+
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   @Test
   public void createUsingResource() {
@@ -42,14 +42,12 @@ public class V1beta1ValidatingWebhookConfigurationTest {
 
     server.expect().post().withPath("/apis/admissionregistration.k8s.io/v1beta1/validatingwebhookconfigurations").andReturn(201, validatingWebhookConfiguration).once();
 
-    KubernetesClient client = server.getClient();
     HasMetadata response = client.resource(validatingWebhookConfiguration).inNamespace("test").createOrReplace();
     assertEquals(validatingWebhookConfiguration, response);
   }
 
   @Test
   public void load() {
-    KubernetesClient client = server.getClient();
     ValidatingWebhookConfiguration vwc = client.admissionRegistration().v1beta1().validatingWebhookConfigurations().load(getClass().getResourceAsStream("/v1beta1-vwc.yml")).get();
     assertNotNull(vwc);
     assertEquals("pod-policy.example.com", vwc.getMetadata().getName());
@@ -60,7 +58,6 @@ public class V1beta1ValidatingWebhookConfigurationTest {
   public void get() {
     // Given
     server.expect().get().withPath("/apis/admissionregistration.k8s.io/v1beta1/validatingwebhookconfigurations/validatingWebhookConfiguration1").andReturn(200, getValidatingWebhookConfigurationSample()).once();
-    KubernetesClient client = server.getClient();
 
     // When
     ValidatingWebhookConfiguration validatingWebhookConfiguration = client.admissionRegistration().v1beta1().validatingWebhookConfigurations().withName("validatingWebhookConfiguration1").get();
@@ -75,7 +72,6 @@ public class V1beta1ValidatingWebhookConfigurationTest {
     // Given
     server.expect().get().withPath("/apis/admissionregistration.k8s.io/v1beta1/validatingwebhookconfigurations")
       .andReturn(200, new ValidatingWebhookConfigurationListBuilder().withItems(getValidatingWebhookConfigurationSample()).build()).once();
-    KubernetesClient client = server.getClient();
 
     // When
     ValidatingWebhookConfigurationList validatingWebhookConfigurationList = client.admissionRegistration().v1beta1().validatingWebhookConfigurations().list();
@@ -92,7 +88,6 @@ public class V1beta1ValidatingWebhookConfigurationTest {
 
     server.expect().post().withPath("/apis/admissionregistration.k8s.io/v1beta1/validatingwebhookconfigurations").andReturn(200, validatingWebhookConfiguration).once();
 
-    KubernetesClient client = server.getClient();
     ValidatingWebhookConfiguration validatingWebhookConfiguration1 = client.admissionRegistration().v1beta1().validatingWebhookConfigurations().createOrReplace(validatingWebhookConfiguration);
     assertNotNull(validatingWebhookConfiguration1);
     assertEquals("validatingWebhookConfiguration1", validatingWebhookConfiguration1.getMetadata().getName());
@@ -103,7 +98,6 @@ public class V1beta1ValidatingWebhookConfigurationTest {
     // Given
     server.expect().delete().withPath("/apis/admissionregistration.k8s.io/v1beta1/validatingwebhookconfigurations/validatingWebhookConfiguration1")
       .andReturn(200, getValidatingWebhookConfigurationSample()).once();
-    KubernetesClient client = server.getClient();
 
     // When
     Boolean isDeleted = client.admissionRegistration().v1beta1().validatingWebhookConfigurations().withName("validatingWebhookConfiguration1").delete();

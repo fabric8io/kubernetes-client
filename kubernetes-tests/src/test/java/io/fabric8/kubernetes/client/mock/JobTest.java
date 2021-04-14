@@ -26,27 +26,27 @@ import io.fabric8.kubernetes.api.model.batch.JobList;
 import io.fabric8.kubernetes.api.model.batch.JobListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.Utils;
-import org.junit.Rule;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableRuleMigrationSupport
+@EnableKubernetesMockClient
 public class JobTest {
-  @Rule
-  public KubernetesServer server = new KubernetesServer();
+
+  KubernetesMockServer server;
+  KubernetesClient client;
 
   @Test
   public void testList() {
@@ -62,7 +62,6 @@ public class JobTest {
       .and().build()).once();
 
 
-    KubernetesClient client = server.getClient();
     JobList jobList = client.batch().jobs().list();
     assertNotNull(jobList);
     assertEquals(0, jobList.getItems().size());
@@ -85,7 +84,6 @@ public class JobTest {
       .addNewItem().and()
       .build()).once();
 
-    KubernetesClient client = server.getClient();
     JobList jobList = client.batch().jobs()
       .withLabel("key1", "value1")
       .withLabel("key2","value2")
@@ -111,7 +109,6 @@ public class JobTest {
    server.expect().withPath("/apis/batch/v1/namespaces/test/jobs/job1").andReturn(200, new JobBuilder().build()).once();
    server.expect().withPath("/apis/batch/v1/namespaces/ns1/jobs/job2").andReturn(200, new JobBuilder().build()).once();
 
-    KubernetesClient client = server.getClient();
 
     Job job = client.batch().jobs().withName("job1").get();
     assertNotNull(job);
@@ -172,7 +169,6 @@ public class JobTest {
       .endStatus()
       .build()).times(5);
 
-    KubernetesClient client = server.getClient();
 
     Boolean deleted = client.batch().jobs().withName("job1").delete();
     assertTrue(deleted);
@@ -217,7 +213,6 @@ public class JobTest {
    server.expect().withPath("/apis/batch/v1/namespaces/ns1/jobs/job2").andReturn(200, new JobBuilder(job2)
       .editStatus().withActive(0).endStatus().build()).times(5);
 
-    KubernetesClient client = server.getClient();
 
     Boolean deleted = client.batch().jobs().inAnyNamespace().delete(job1, job2);
     assertTrue(deleted);
@@ -230,7 +225,6 @@ public class JobTest {
   public void testDeleteWithNamespaceMismatch() {
     Assertions.assertThrows(KubernetesClientException.class, () -> {
       Job job1 = new JobBuilder().withNewMetadata().withName("job1").withNamespace("test").and().build();
-      KubernetesClient client = server.getClient();
 
       Boolean deleted = client.batch().jobs().inNamespace("test1").delete(job1);
       assertTrue(deleted);
@@ -241,7 +235,6 @@ public class JobTest {
   public void testCreateWithNameMismatch() {
     Assertions.assertThrows(KubernetesClientException.class, () -> {
       Job job1 = new JobBuilder().withNewMetadata().withName("job1").withNamespace("test").and().build();
-      KubernetesClient client = server.getClient();
 
       client.batch().jobs().inNamespace("test1").withName("myjob1").create(job1);
     });
@@ -283,8 +276,6 @@ public class JobTest {
       .editOrNewMetadata().addToLabels("foo", "bar").addToLabels("foo1", "bar1").endMetadata()
       .build();
 
-    KubernetesClient client = server.getClient();
-
     // When
     job = client.batch().jobs().inNamespace("test").createOrReplace(job);
 
@@ -325,7 +316,6 @@ public class JobTest {
     server.expect().get().withPath("/api/v1/namespaces/ns1/pods/job1-hk9nf/log?pretty=false")
       .andReturn(HttpURLConnection.HTTP_OK, "hello")
       .once();
-    KubernetesClient client = server.getClient();
 
     // When
     String log = client.batch().jobs().inNamespace("ns1").withName("job1").getLog();

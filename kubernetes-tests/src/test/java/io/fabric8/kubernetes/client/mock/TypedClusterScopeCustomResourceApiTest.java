@@ -15,33 +15,35 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.client.CustomResourceList;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.mock.crd.Star;
 import io.fabric8.kubernetes.client.mock.crd.StarSpec;
 import io.fabric8.kubernetes.client.mock.crd.StarStatus;
-import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
-import java.net.HttpURLConnection;
-import java.util.Collections;
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import okhttp3.mockwebserver.RecordedRequest;
-import org.junit.Rule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
-@EnableRuleMigrationSupport
+import java.net.HttpURLConnection;
+import java.util.Collections;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+@EnableKubernetesMockClient
 class TypedClusterScopeCustomResourceApiTest {
-    @Rule
-    public KubernetesServer server = new KubernetesServer();
+  
+    KubernetesMockServer server;
+    KubernetesClient client;
 
     private MixedOperation<Star, KubernetesResourceList<Star>, Resource<Star>> starClient;
     
@@ -56,7 +58,7 @@ class TypedClusterScopeCustomResourceApiTest {
     void create() {
       server.expect().post().withPath("/apis/example.crd.com/v1alpha1/stars").andReturn(200, getStar()).once();
 
-      starClient = server.getClient().customResources(Star.class);
+      starClient = client.customResources(Star.class);
 
       Star returnedStar = starClient.inNamespace("test").create(getStar());
       assertNotNull(returnedStar);
@@ -68,7 +70,7 @@ class TypedClusterScopeCustomResourceApiTest {
       KubernetesResourceList<Star> starList = new CustomResourceList<>();
       ((CustomResourceList<Star>)starList).setItems(Collections.singletonList(getStar()));
       server.expect().get().withPath("/apis/example.crd.com/v1alpha1/stars").andReturn(200, starList).once();
-      starClient = server.getClient().customResources(Star.class);
+      starClient = client.customResources(Star.class);
 
       starList = starClient.inNamespace("test").list();
       assertNotNull(starList);
@@ -82,7 +84,7 @@ class TypedClusterScopeCustomResourceApiTest {
       server.expect().post().withPath("/apis/example.crd.com/v1alpha1/stars").andReturn(HttpURLConnection.HTTP_CONFLICT, getStar()).times(2);
       server.expect().put().withPath("/apis/example.crd.com/v1alpha1/stars/sun").andReturn(HttpURLConnection.HTTP_OK, getStar()).once();
 
-      starClient = server.getClient().customResources(Star.class);
+      starClient = client.customResources(Star.class);
       Star returnedStar = starClient.inNamespace("test").createOrReplace(getStar());
 
       assertNotNull(returnedStar);
@@ -93,7 +95,7 @@ class TypedClusterScopeCustomResourceApiTest {
     void delete() {
       server.expect().delete().withPath("/apis/example.crd.com/v1alpha1/stars/sun").andReturn(200, getStar()).once();
 
-      starClient = server.getClient().customResources(Star.class);
+      starClient = client.customResources(Star.class);
 
       boolean isDeleted = starClient.inNamespace("test").withName("sun").delete();
       assertTrue(isDeleted);
@@ -103,11 +105,10 @@ class TypedClusterScopeCustomResourceApiTest {
     void testCascadingDeletion() throws InterruptedException {
       server.expect().delete().withPath("/apis/example.crd.com/v1alpha1/stars/sun").andReturn(200, getStar()).once();
 
-      starClient = server.getClient().customResources(Star.class);
+      starClient = client.customResources(Star.class);
 
       boolean isDeleted = starClient.inNamespace("test").withName("sun").cascading(true).delete();
       assertTrue(isDeleted);
-
       RecordedRequest recordedRequest = server.getLastRequest();
       assertEquals("DELETE", recordedRequest.getMethod());
       assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"orphanDependents\":false}", recordedRequest.getBody().readUtf8());
@@ -117,11 +118,10 @@ class TypedClusterScopeCustomResourceApiTest {
     void testPropagationPolicyDeletion() throws InterruptedException {
       server.expect().delete().withPath("/apis/example.crd.com/v1alpha1/stars/sun").andReturn(200, getStar()).once();
 
-      starClient = server.getClient().customResources(Star.class);
+      starClient = client.customResources(Star.class);
 
       boolean isDeleted = starClient.inNamespace("test").withName("sun").withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
       assertTrue(isDeleted);
-
       RecordedRequest recordedRequest = server.getLastRequest();
       assertEquals("DELETE", recordedRequest.getMethod());
       assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Orphan\"}", recordedRequest.getBody().readUtf8());
@@ -135,7 +135,7 @@ class TypedClusterScopeCustomResourceApiTest {
       updatedStar.setStatus(starStatus);
 
       server.expect().put().withPath("/apis/example.crd.com/v1alpha1/stars/sun/status").andReturn(200, updatedStar).once();
-      starClient = server.getClient().customResources(Star.class);
+      starClient = client.customResources(Star.class);
 
       starClient.inNamespace("test").updateStatus(updatedStar);
       RecordedRequest recordedRequest = server.getLastRequest();

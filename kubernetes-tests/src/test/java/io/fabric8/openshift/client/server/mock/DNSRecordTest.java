@@ -20,9 +20,7 @@ import io.fabric8.openshift.api.model.operator.v1.DNSRecordBuilder;
 import io.fabric8.openshift.api.model.operator.v1.DNSRecordList;
 import io.fabric8.openshift.api.model.operator.v1.DNSRecordListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 
@@ -30,10 +28,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableRuleMigrationSupport
+@EnableOpenShiftMockClient
 class DNSRecordTest {
-  @Rule
-  public OpenShiftServer server = new OpenShiftServer();
+
+  OpenShiftMockServer server;
+  OpenShiftClient client;
 
   @Test
   void create() {
@@ -43,7 +42,6 @@ class DNSRecordTest {
       .withPath("/apis/ingress.operator.openshift.io/v1/namespaces/ns1/dnsrecords")
       .andReturn(HttpURLConnection.HTTP_OK, dnsrecord)
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     dnsrecord = client.operator().dnsRecords().inNamespace("ns1").create(dnsrecord);
@@ -60,7 +58,6 @@ class DNSRecordTest {
       .withPath("/apis/ingress.operator.openshift.io/v1/namespaces/ns1/dnsrecords/foo")
       .andReturn(HttpURLConnection.HTTP_OK, getDNSRecord())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     DNSRecord f = client.operator().dnsRecords().inNamespace("ns1").withName("foo").get();
@@ -77,7 +74,6 @@ class DNSRecordTest {
       .withPath("/apis/ingress.operator.openshift.io/v1/namespaces/ns1/dnsrecords")
       .andReturn(HttpURLConnection.HTTP_OK, new DNSRecordListBuilder().withItems(getDNSRecord()).build())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     DNSRecordList fgList = client.operator().dnsRecords().inNamespace("ns1").list();
@@ -95,7 +91,6 @@ class DNSRecordTest {
       .withPath("/apis/ingress.operator.openshift.io/v1/namespaces/ns1/dnsrecords/foo")
       .andReturn(HttpURLConnection.HTTP_OK, getDNSRecord())
       .once();
-    OpenShiftClient client = server.getOpenshiftClient();
 
     // When
     Boolean deleted = client.operator().dnsRecords().inNamespace("ns1").withName("foo").delete();
