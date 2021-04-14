@@ -70,6 +70,20 @@ public class CRDGeneratorTest {
   public void jokerequestCRDShouldWork() {
     CustomResourceDefinitionVersion version = checkCRD(JokeRequest.class, "JokeRequest", "jokerequests", Scope.NAMESPACED);
     assertNotNull(version.getSubresources());
+    CustomResourceValidation schema = version.getSchema();
+    assertNotNull(schema);
+    Map<String, JSONSchemaProps> properties = schema.getOpenAPIV3Schema().getProperties();
+    assertEquals(2, properties.size());
+    Map<String, JSONSchemaProps> specProps = properties.get("spec").getProperties();
+    assertEquals(3, specProps.size());
+    assertEquals("boolean", specProps.get("safe").getType());
+    JSONSchemaProps category = specProps.get("category");
+    assertEquals("string", category.getType());
+    assertEquals(7, category.getEnum().size());
+    JSONSchemaProps excluded = specProps.get("excluded");
+    assertEquals("array", excluded.getType());
+    assertEquals("string", excluded.getItems().getSchema().getType());
+    assertEquals(6, excluded.getEnum().size());
   }
 
   @Test
