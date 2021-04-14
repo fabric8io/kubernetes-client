@@ -172,7 +172,7 @@ public class Types {
       System.out.print(indent + "\t" + property);
       TypeRef typeRef = property.getTypeRef();
       if (typeRef instanceof ClassRef) {
-        System.out.println(" - ClassRef");
+        System.out.println(" - ClassRef ["+((ClassRef)typeRef).getDefinition().getKind()+"]");
         TypeDef typeDef = ((ClassRef)typeRef).getDefinition();
         if (!visited.contains(typeDef.getFullyQualifiedName())) {
           describeType(typeDef, indent + "\t", visited);
