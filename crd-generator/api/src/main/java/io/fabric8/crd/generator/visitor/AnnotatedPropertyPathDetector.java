@@ -74,7 +74,6 @@ public class AnnotatedPropertyPathDetector extends TypedVisitor<TypeDefBuilder> 
       .filter(p -> p.getTypeRef() instanceof ClassRef)
       .forEach(p -> {
         if (!parents.contains(p)) {
-          System.out.println("\tp = " + p);
           ClassRef classRef = (ClassRef) p.getTypeRef();
           TypeDef propertyType = classRef.getDefinition();
           if (!propertyType.isEnum()) {
