@@ -6,6 +6,7 @@
 * Fix #2989: serialization will generate valid yaml when using subtypes
 * Fix #2996: Generating CRDs from the API should now properly work
 * Fix #3000: Set no_proxy in the okhttp builder in case the proxy_url is null
+* Fix #2991: reduced the level of ReflectWatcher event recieved log
 
 #### Improvements
 * Fix #2910: Move crd-generator tests from kubernetes-itests to kubernetes-tests
