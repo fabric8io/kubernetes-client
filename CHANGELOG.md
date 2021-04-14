@@ -16,10 +16,10 @@
 
 #### _**Note**_: Breaking changes in the API
 ##### DSL Changes:
-- `client.batch().jobs()` moved to `client.batch().v1().jobs()`
-- `client.batch().cronjobs()` moved to `client.batch().v1().cronjobs()` or `client.batch().v1beta1().cronjobs()`
-- `client.policy().podSecurityPolicies()` moved to `client.policy().v1beta1().podSecurityPolicies()`
-- `client.policy().podDisruptionBudget()` moved to `client.policy().v1().podDisruptionBudget()` or `client.policy().v1beta1().podDisruptionBudget()`
+- `client.batch().jobs()` deprecated, suggestion to move to `client.batch().v1().jobs()`
+- `client.batch().cronjobs()` deprecated, suggestion to move to `client.batch().v1().cronjobs()` or `client.batch().v1beta1().cronjobs()`
+- `client.policy().podSecurityPolicies()` deprecated, suggestion to move to `client.policy().v1beta1().podSecurityPolicies()`
+- `client.policy().podDisruptionBudget()` deprecated, suggestion to move to `client.policy().v1().podDisruptionBudget()` or `client.policy().v1beta1().podDisruptionBudget()`
 
 ##### Model Changes:
 - Classes in `io.fabric8.kubernetes.api.model.batch` have been moved to `io.fabric8.kubernetes.api.model.batch.v1` and `io.fabric8.kubernetes.api.model.batch.v1beta1`

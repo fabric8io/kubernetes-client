@@ -15,9 +15,31 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
+import io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudget;
+import io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudgetList;
+import io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicy;
+import io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicyList;
 import io.fabric8.kubernetes.client.Client;
 
 public interface PolicyAPIGroupDSL extends Client {
+  /**
+   * DSL entrypoint for policy/v1beta1 PodDisruptionBudget
+   *
+   * @deprecated Use client.policy().v1beta1().podDisruptionBudget() or client.policy().v1().podDisruptionBudget()
+   * @return {@link MixedOperation} for PodDisruptionBudget
+   */
+  @Deprecated
+  MixedOperation<PodDisruptionBudget, PodDisruptionBudgetList, Resource<PodDisruptionBudget>> podDisruptionBudget();
+
+  /**
+   * DSL entrypoint for policy/v1beta1 PodSecurityPolicy
+   *
+   * @deprecated Use client.policy().v1beta1().podSecurityPolicies() or client.policy().v1().podSecurityPolicies() instead
+   * @return {@link MixedOperation} for PodSecurityPolicy
+   */
+  @Deprecated
+  MixedOperation<PodSecurityPolicy, PodSecurityPolicyList, Resource<PodSecurityPolicy>> podSecurityPolicies();
+
   V1PolicyAPIGroupDSL v1();
 
   V1beta1PolicyAPIGroupDSL v1beta1();

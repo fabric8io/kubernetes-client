@@ -60,7 +60,7 @@ public class JobExample {
             .build();
 
           logger.info("Creating job pi.");
-          client.batch().v1().jobs().inNamespace(namespace).createOrReplace(job);
+          client.batch().jobs().inNamespace(namespace).createOrReplace(job);
 
           // Get All pods created by the job
           PodList podList = client.pods().inNamespace(namespace).withLabel("job-name", job.getMetadata().getName()).list();
@@ -69,7 +69,7 @@ public class JobExample {
             .waitUntilCondition(pod -> pod.getStatus().getPhase().equals("Succeeded"), 1, TimeUnit.MINUTES);
 
           // Print Job's log
-          String joblog = client.batch().v1().jobs().inNamespace(namespace).withName("pi").getLog();
+          String joblog = client.batch().jobs().inNamespace(namespace).withName("pi").getLog();
           logger.info(joblog);
 
         } catch (KubernetesClientException e) {

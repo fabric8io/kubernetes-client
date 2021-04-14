@@ -274,7 +274,7 @@ class PropagationPolicyTest {
       .once();
 
     // When
-    Boolean isDeleted = client.batch().v1().jobs().inNamespace("ns1").withName("myjob").delete();
+    Boolean isDeleted = client.batch().jobs().inNamespace("ns1").withName("myjob").delete();
 
     // Then
     assertTrue(isDeleted);
@@ -291,7 +291,7 @@ class PropagationPolicyTest {
       .once();
 
     // When
-    Boolean isDeleted = client.batch().v1().jobs().inNamespace("ns1").withName("myjob").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete();
+    Boolean isDeleted = client.batch().jobs().inNamespace("ns1").withName("myjob").withPropagationPolicy(DeletionPropagation.FOREGROUND).delete();
 
     // Then
     assertTrue(isDeleted);
