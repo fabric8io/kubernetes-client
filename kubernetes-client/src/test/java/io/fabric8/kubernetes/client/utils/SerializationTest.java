@@ -20,6 +20,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.node.BooleanNode;
 import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.TextNode;
@@ -162,4 +164,50 @@ public class SerializationTest {
     assertEquals("python:3.7", pod.getSpec().getContainers().get(1).getImage());
     assertEquals(new Quantity("100m"), pod.getSpec().getContainers().get(1).getResources().getRequests().get("cpu"));
   }
+
+  @JsonTypeInfo(
+          use = JsonTypeInfo.Id.NAME,
+          include = JsonTypeInfo.As.EXISTING_PROPERTY,
+          property = "type"
+  )
+  @JsonSubTypes(
+      @JsonSubTypes.Type(value = Typed.class, name = "x")
+  )
+  public interface Typeable {
+
+      String getType();
+
+  }
+
+  public static class Typed implements Typeable {
+
+      @Override
+      public String getType() {
+          return "x";
+      }
+
+  }
+
+  public static class Root {
+
+      private Typeable typeable;
+
+      public Typeable getTypeable() {
+          return typeable;
+      }
+
+      public void setTypeable(Typeable typeable) {
+          this.typeable = typeable;
+      }
+  }
+
+  @Test
+  void testSerializeYamlWithJsonSubTypes() {
+      Root root = new Root();
+      root.setTypeable(new Typed());
+      assertEquals("---\n"
+              + "typeable:\n"
+              + "  type: \"x\"\n", Serialization.asYaml(root));
+  }
+
 }
