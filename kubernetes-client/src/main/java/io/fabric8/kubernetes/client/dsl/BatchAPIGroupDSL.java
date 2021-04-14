@@ -15,9 +15,31 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
+import io.fabric8.kubernetes.api.model.batch.v1.Job;
+import io.fabric8.kubernetes.api.model.batch.v1.JobList;
+import io.fabric8.kubernetes.api.model.batch.v1beta1.CronJob;
+import io.fabric8.kubernetes.api.model.batch.v1beta1.CronJobList;
 import io.fabric8.kubernetes.client.Client;
 
 public interface BatchAPIGroupDSL extends Client{
+
+  /**
+   * DSL entrypoint for batch/v1 Jobs
+   *
+   * @deprecated Use client.batch().v1().jobs() instead
+   * @return {@link MixedOperation} for Job resource
+   */
+  @Deprecated
+  MixedOperation<Job, JobList, ScalableResource<Job>> jobs();
+
+  /**
+   * DSL entrypoint for batch/v1beta1 CronJob
+   *
+   * @deprecated Use client.batch().v1beta1().cronjobs() or client.batch().v1().cronjobs()
+   * @return {@link MixedOperation} for CronJob resource
+   */
+  @Deprecated
+  MixedOperation<CronJob, CronJobList, Resource<CronJob>> cronjobs();
 
   V1BatchAPIGroupDSL v1();
 

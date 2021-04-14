@@ -53,7 +53,7 @@ public class CronJobIT {
 
   @Test
   public void load() {
-    CronJob aCronJob = client.batch().v1beta1().cronjobs().load(getClass().getResourceAsStream("/test-cronjob.yml")).get();
+    CronJob aCronJob = client.batch().cronjobs().load(getClass().getResourceAsStream("/test-cronjob.yml")).get();
     assertNotNull(aCronJob);
     assertEquals("hello", aCronJob.getMetadata().getName());
   }
@@ -61,14 +61,14 @@ public class CronJobIT {
   @Test
   public void get() {
     currentNamespace = session.getNamespace();
-    CronJob cronJob1 = client.batch().v1beta1().cronjobs().inNamespace(currentNamespace).withName("hello-get").get();
+    CronJob cronJob1 = client.batch().cronjobs().inNamespace(currentNamespace).withName("hello-get").get();
     assertThat(cronJob1).isNotNull();
   }
 
   @Test
   public void list() {
     currentNamespace = session.getNamespace();
-    CronJobList cronJobList = client.batch().v1beta1().cronjobs().inNamespace(currentNamespace).list();
+    CronJobList cronJobList = client.batch().cronjobs().inNamespace(currentNamespace).list();
     assertNotNull(cronJobList);
     assertTrue(cronJobList.getItems().size() >= 1);
   }
@@ -76,7 +76,7 @@ public class CronJobIT {
   @Test
   public void update() {
     currentNamespace = session.getNamespace();
-    CronJob cronJob1 = client.batch().v1beta1().cronjobs().inNamespace(currentNamespace).withName("hello-update")
+    CronJob cronJob1 = client.batch().cronjobs().inNamespace(currentNamespace).withName("hello-update")
       .edit(c -> new CronJobBuilder(c)
       .editSpec()
       .withSchedule("*/1 * * * *")
@@ -88,7 +88,7 @@ public class CronJobIT {
   @Test
   public void delete() {
     currentNamespace = session.getNamespace();
-    assertTrue(client.batch().v1beta1().cronjobs().inNamespace(currentNamespace).withName("hello-delete").delete());
+    assertTrue(client.batch().cronjobs().inNamespace(currentNamespace).withName("hello-delete").delete());
   }
 
   @AfterClass

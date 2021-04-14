@@ -64,7 +64,7 @@ public class NamespaceQuotaExample {
 
         try {
           logger.info("Listing jobs in namespace");
-          client.batch().v1().jobs().inNamespace(namespace).list().getItems()
+          client.batch().jobs().inNamespace(namespace).list().getItems()
             .forEach(j -> logger.info(" - {}", j.getMetadata().getName()));
         } catch (APIGroupNotAvailableException e) {
           logger.warn("Skipping jobs example - extensions API group not available");

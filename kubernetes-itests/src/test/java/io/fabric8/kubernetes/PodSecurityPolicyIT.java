@@ -55,7 +55,7 @@ public class PodSecurityPolicyIT {
   @Test
   public void load() {
 
-    PodSecurityPolicy loadedPodSecurityPolicy = client.policy().v1beta1().podSecurityPolicies()
+    PodSecurityPolicy loadedPodSecurityPolicy = client.policy().podSecurityPolicies()
       .load(getClass().getResourceAsStream("/test-podsecuritypolicy.yml")).get();
 
     assertNotNull(loadedPodSecurityPolicy);
@@ -69,7 +69,7 @@ public class PodSecurityPolicyIT {
 
   @Test
   public void get() {
-    PodSecurityPolicy getPodSecurityPolicy = client.policy().v1beta1().podSecurityPolicies()
+    PodSecurityPolicy getPodSecurityPolicy = client.policy().podSecurityPolicies()
       .withName("psp-get").get();
     assertNotNull(getPodSecurityPolicy);
     assertEquals("psp-get", getPodSecurityPolicy.getMetadata().getName());
@@ -78,7 +78,7 @@ public class PodSecurityPolicyIT {
   @Test
   public void list() {
 
-    PodSecurityPolicyList podSecurityPolicyList = client.policy().v1beta1().podSecurityPolicies()
+    PodSecurityPolicyList podSecurityPolicyList = client.policy().podSecurityPolicies()
       .withLabels(Collections.singletonMap("foo","bar")).list();
     assertNotNull(podSecurityPolicyList);
     assertEquals(1,podSecurityPolicyList.getItems().size());
@@ -92,7 +92,7 @@ public class PodSecurityPolicyIT {
   @Test
   public void update(){
 
-    PodSecurityPolicy podSecurityPolicy = client.policy().v1beta1().podSecurityPolicies().withName("psp-update").edit(p -> new PodSecurityPolicyBuilder(p)
+    PodSecurityPolicy podSecurityPolicy = client.policy().podSecurityPolicies().withName("psp-update").edit(p -> new PodSecurityPolicyBuilder(p)
       .editSpec().withPrivileged(true).endSpec()
       .build());
 
@@ -107,7 +107,7 @@ public class PodSecurityPolicyIT {
 
   @Test
   public void delete(){
-    boolean deleted = client.policy().v1beta1().podSecurityPolicies().withName("psp-delete").delete();
+    boolean deleted = client.policy().podSecurityPolicies().withName("psp-delete").delete();
     assertTrue(deleted);
 
     DeleteEntity<PodSecurityPolicy> deleteEntity = new DeleteEntity<>(PodSecurityPolicy.class, client, "psp-delete", null);

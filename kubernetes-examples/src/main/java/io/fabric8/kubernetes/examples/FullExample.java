@@ -74,7 +74,7 @@ public class FullExample {
                 log("Create resource quota", client.resourceQuotas().inNamespace("thisisatest").create(quota));
 
                 try {
-                  log("Get jobs in namespace", client.batch().v1().jobs().inNamespace("thisisatest").list());
+                  log("Get jobs in namespace", client.batch().jobs().inNamespace("thisisatest").list());
                 } catch (APIGroupNotAvailableException e) {
                   log("Skipping jobs example - extensions API group not available");
                 }
