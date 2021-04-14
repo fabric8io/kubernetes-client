@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.client.CustomResource;
 import io.sundr.builder.TypedVisitor;
 import io.sundr.codegen.model.ClassRef;
 import io.sundr.codegen.model.ClassRefBuilder;
+import io.sundr.codegen.model.PrimitiveRef;
 import io.sundr.codegen.model.Property;
 import io.sundr.codegen.model.PropertyBuilder;
 import io.sundr.codegen.model.TypeDef;
@@ -27,6 +28,9 @@ import io.sundr.codegen.model.TypeDefBuilder;
 import io.sundr.codegen.model.TypeParamDef;
 import io.sundr.codegen.model.TypeParamRef;
 import io.sundr.codegen.model.TypeRef;
+import io.sundr.codegen.model.VoidRef;
+import io.sundr.codegen.model.WildcardRef;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -153,6 +157,38 @@ public class Types {
 
   public static Predicate<Property> filterCustomResourceProperties(ClassRef ref) {
     return p -> !ref.getFullyQualifiedName().equals(CUSTOM_RESOURCE_NAME) || (p.getName().equals("spec") || p.getName().equals("status"));
+  }
+
+
+  public static void describeType(TypeDef def, String indent, Set<String> visited) {
+    if (visited.isEmpty()) {
+      System.out.println(indent + def.getFullyQualifiedName());
+    }
+    if (visited.contains(def.getFullyQualifiedName())) {
+      return;
+    }
+    visited.add(def.getFullyQualifiedName());
+    for (Property property : projectProperties(def)) {
+      System.out.print(indent + "\t" + property);
+      TypeRef typeRef = property.getTypeRef();
+      if (typeRef instanceof ClassRef) {
+        System.out.println(" - ClassRef");
+        TypeDef typeDef = ((ClassRef)typeRef).getDefinition();
+        if (!visited.contains(typeDef.getFullyQualifiedName())) {
+          describeType(typeDef, indent + "\t", visited);
+        }
+      } else if (typeRef instanceof PrimitiveRef) {
+        System.out.println(" - PrimitiveRef");
+      } else if (typeRef instanceof TypeParamRef) {
+        System.out.println(" - TypeParamRef");
+      } else if (typeRef instanceof VoidRef) {
+        System.out.println(" - VoidRef");
+      } else if (typeRef instanceof WildcardRef)  {
+        System.out.println(" - WildcardRef");
+      } else {
+        System.out.println(" - Unknown");
+      }
+    }
   }
 
   public static class SpecAndStatus {
