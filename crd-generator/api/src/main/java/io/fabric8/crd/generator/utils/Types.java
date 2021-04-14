@@ -127,7 +127,7 @@ public class Types {
   }
 
   /**
-   * All properties (including inherited).
+   * All non-static properties (including inherited).
    * @param typeDef        The type.
    * @return A list with all properties.
    */
@@ -144,6 +144,7 @@ public class Types {
                                         .getProperties()
                                         .stream()
                                         .filter(p -> filterCustomResourceProperties(e).test(p))))
+                               .filter(p -> !p.isStatic())
                                .collect(Collectors.toList());
     propertiesCache.put(typeDef, properties);
     return properties;
