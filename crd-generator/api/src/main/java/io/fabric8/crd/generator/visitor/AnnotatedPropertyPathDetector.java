@@ -57,7 +57,7 @@ public class AnnotatedPropertyPathDetector extends TypedVisitor<TypeDefBuilder> 
     TypeDef type = builder.build();
     List<Property> properties = Types.projectProperties(type);
     for (Property p : properties) {
-      if (parents.contains(p)) {
+      if (p.isStatic() || parents.contains(p)) {
           continue;
         }
 
@@ -73,7 +73,7 @@ public class AnnotatedPropertyPathDetector extends TypedVisitor<TypeDefBuilder> 
     properties.stream()
       .filter(p -> p.getTypeRef() instanceof ClassRef)
       .forEach(p -> {
-        if (!parents.contains(p)) {
+        if (!p.isStatic() && !parents.contains(p)) {
           ClassRef classRef = (ClassRef) p.getTypeRef();
           TypeDef propertyType = classRef.getDefinition();
           if (!propertyType.isEnum()) {

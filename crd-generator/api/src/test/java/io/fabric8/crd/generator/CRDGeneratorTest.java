@@ -35,6 +35,7 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.model.Scope;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -54,8 +55,7 @@ public class CRDGeneratorTest {
 
   @Test
   public void inheritedCRDShouldWork() {
-    final CustomResourceDefinitionVersion version = checkCRD(Child.class, "Child", "children",
-      Scope.NAMESPACED);
+    final CustomResourceDefinitionVersion version = checkCRD(Child.class, "Child", "children", Scope.NAMESPACED);
     assertNotNull(version.getSubresources());
   }
 
