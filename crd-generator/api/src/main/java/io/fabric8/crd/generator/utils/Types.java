@@ -132,22 +132,22 @@ public class Types {
    * @return A list with all properties.
    */
   public static List<Property> projectProperties(TypeDef typeDef) {
-    List<Property> properties = propertiesCache.get(typeDef);
-    if(properties != null) {
-      return properties;
-    }
+    // List<Property> properties = propertiesCache.get(typeDef);
+    // if(properties != null) {
+    //   return properties;
+    // }
 
-    properties = Stream.concat(typeDef.getProperties().stream(),
+   return Stream.concat(typeDef.getProperties().stream(),
                                typeDef.getExtendsList()
                                .stream()
-                               .flatMap(e -> projectDefinition(e)
-                                        .getProperties()
+                               .filter(e -> !e.getFullyQualifiedName().equals("java.lang.Object"))
+                               .flatMap(e -> projectProperties(projectDefinition(e))
                                         .stream()
                                         .filter(p -> filterCustomResourceProperties(e).test(p))))
                                .filter(p -> !p.isStatic())
                                .collect(Collectors.toList());
-    propertiesCache.put(typeDef, properties);
-    return properties;
+    //    propertiesCache.put(typeDef, properties);
+   //    return properties;
   }
 
 
