@@ -194,6 +194,11 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
         case DELETION:
           if (!(delta.getValue() instanceof DeltaFIFO.DeletedFinalStateUnknown)) {
             this.indexer.delete((T) delta.getValue());
+          } else {
+            T obj = (T)((DeltaFIFO.DeletedFinalStateUnknown)delta.getValue()).getObj();
+            if (obj != null) {
+              this.indexer.delete(obj);
+            }
           }
           this.processor.distribute(new ProcessorListener.DeleteNotification(delta.getValue()), false);
           break;
