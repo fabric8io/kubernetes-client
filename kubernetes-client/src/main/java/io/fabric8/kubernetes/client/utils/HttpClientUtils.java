@@ -182,6 +182,8 @@ public class HttpClientUtils {
                             return response.request().newBuilder().header("Proxy-Authorization", credential).build();
                           });
                         }
+                    } else {
+                        httpClientBuilder.proxy(Proxy.NO_PROXY);
                     }
 
                 } catch (MalformedURLException e) {
