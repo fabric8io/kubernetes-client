@@ -37,6 +37,8 @@ import java.util.Optional;
 
 public class CustomResourceHandler extends AbstractCustomResourceHandler {
 
+  public static final String VERSION = "v1";
+
   public CustomResourceHandler(Resources resources) {
     super(resources);
   }

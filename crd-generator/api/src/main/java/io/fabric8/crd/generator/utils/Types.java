@@ -40,10 +40,13 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class Types {
 
+  private static final Logger LOGGER = LoggerFactory.getLogger(Types.class);
   private static final String NAMESPACED = Namespaced.class.getName();
   public static final String JAVA_LANG_VOID = "java.lang.Void";
 
@@ -83,11 +86,9 @@ public class Types {
           if (typeRef instanceof TypeParamRef) {
             TypeParamRef typeParamRef = (TypeParamRef) typeRef;
             String key = typeParamRef.getName();
-            if (mappings.containsKey(key)) {
-              TypeRef paramRef = mappings.get(key);
-              if (paramRef != null) {
-                property.withTypeRef(paramRef);
-              }
+            TypeRef paramRef = mappings.get(key);
+            if (paramRef != null) {
+              property.withTypeRef(paramRef);
             }
           }
         }
@@ -152,31 +153,40 @@ public class Types {
   }
 
 
-  public static void describeType(TypeDef def, String indent, Set<String> visited) {
+  public static void output(TypeDef def) {
+    final StringBuilder builder = new StringBuilder(300);
+    Types.describeType(def, "", new HashSet<>(), builder);
+    LOGGER.debug("\n{}", builder);
+  }
+
+  public static void describeType(TypeDef def, String indent, Set<String> visited, StringBuilder builder) {
     if (visited.isEmpty()) {
-      System.out.println(indent + def.getFullyQualifiedName());
+      builder.append(indent).append(def.getFullyQualifiedName()).append("\n");
     }
 
     visited.add(def.getFullyQualifiedName());
     for (Property property : projectProperties(def)) {
-      System.out.print(indent + "\t" + property);
       TypeRef typeRef = property.getTypeRef();
       if (typeRef instanceof ClassRef) {
-        System.out.println(" - ClassRef ["+((ClassRef)typeRef).getDefinition().getKind()+"]");
-        TypeDef typeDef = ((ClassRef)typeRef).getDefinition();
+        final TypeDef typeDef = ((ClassRef) typeRef).getDefinition();
+        builder.append(indent).append("\t").append(property).append(" - ClassRef [").append(typeDef.getKind()).append("]\n");
         if (!visited.contains(typeDef.getFullyQualifiedName())) {
-          describeType(typeDef, indent + "\t", visited);
+          describeType(typeDef, indent + "\t", visited, builder);
         }
-      } else if (typeRef instanceof PrimitiveRef) {
-        System.out.println(" - PrimitiveRef");
-      } else if (typeRef instanceof TypeParamRef) {
-        System.out.println(" - TypeParamRef");
-      } else if (typeRef instanceof VoidRef) {
-        System.out.println(" - VoidRef");
-      } else if (typeRef instanceof WildcardRef)  {
-        System.out.println(" - WildcardRef");
       } else {
-        System.out.println(" - Unknown");
+        final String type;
+        if (typeRef instanceof PrimitiveRef) {
+          type = "PrimitiveRef";
+        } else if (typeRef instanceof TypeParamRef) {
+          type = "TypeParamRef";
+        } else if (typeRef instanceof VoidRef) {
+          type = "VoidRef";
+        } else if (typeRef instanceof WildcardRef)  {
+          type = "WildcardRef";
+        } else {
+          type = "Unknown";
+        }
+        builder.append(indent).append("\t").append(property).append(" - ").append(type).append("\n");
       }
     }
     visited.remove(def.getFullyQualifiedName());
