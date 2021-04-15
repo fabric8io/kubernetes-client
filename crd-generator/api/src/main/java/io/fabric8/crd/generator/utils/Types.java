@@ -30,7 +30,6 @@ import io.sundr.codegen.model.TypeParamRef;
 import io.sundr.codegen.model.TypeRef;
 import io.sundr.codegen.model.VoidRef;
 import io.sundr.codegen.model.WildcardRef;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -38,7 +37,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -47,7 +45,6 @@ import java.util.stream.Stream;
 public class Types {
 
   private static final String NAMESPACED = Namespaced.class.getName();
-  private static final Map<TypeDef, List<Property>> propertiesCache = new ConcurrentHashMap<>(7);
   public static final String JAVA_LANG_VOID = "java.lang.Void";
 
 
@@ -136,12 +133,7 @@ public class Types {
    * @return A list with all properties.
    */
   public static List<Property> projectProperties(TypeDef typeDef) {
-    // List<Property> properties = propertiesCache.get(typeDef);
-    // if(properties != null) {
-    //   return properties;
-    // }
-
-   return Stream.concat(typeDef.getProperties().stream(),
+    return Stream.concat(typeDef.getProperties().stream(),
                                typeDef.getExtendsList()
                                .stream()
                                .filter(e -> !e.getFullyQualifiedName().equals("java.lang.Object"))
@@ -150,8 +142,6 @@ public class Types {
                                         .filter(p -> filterCustomResourceProperties(e).test(p))))
                                .filter(p -> !p.isStatic())
                                .collect(Collectors.toList());
-    //    propertiesCache.put(typeDef, properties);
-   //    return properties;
   }
 
 
@@ -192,7 +182,7 @@ public class Types {
   }
 
   public static class SpecAndStatus {
-    private static SpecAndStatus UNRESOLVED = new SpecAndStatus(null, null);
+    private static final SpecAndStatus UNRESOLVED = new SpecAndStatus(null, null);
     private final String specClassName;
     private final String statusClassName;
     private final boolean unreliable;

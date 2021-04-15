@@ -35,7 +35,6 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.model.Scope;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -43,31 +42,28 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 public class CRDGeneratorTest {
-
-  private final static Class<CustomResourceDefinition> crdClass = CustomResourceDefinition.class;
-
   @Test
-  public void simplestCRDShouldWork() {
+  void simplestCRDShouldWork() {
     final CustomResourceDefinitionVersion version = checkCRD(Simplest.class, "Simplest", "simplests",
       Scope.CLUSTER);
     assertNotNull(version.getSubresources());
   }
 
   @Test
-  public void inheritedCRDShouldWork() {
+  void inheritedCRDShouldWork() {
     final CustomResourceDefinitionVersion version = checkCRD(Child.class, "Child", "children", Scope.NAMESPACED);
     assertNotNull(version.getSubresources());
   }
 
   @Test
-  public void jokeCRDShouldWork() {
+  void jokeCRDShouldWork() {
     CustomResourceDefinitionVersion version = checkCRD(Joke.class, "Joke", "jokes",
       Scope.NAMESPACED);
     assertNull(version.getSubresources());
   }
 
   @Test
-  public void jokerequestCRDShouldWork() {
+  void jokerequestCRDShouldWork() {
     CustomResourceDefinitionVersion version = checkCRD(JokeRequest.class, "JokeRequest", "jokerequests", Scope.NAMESPACED);
     assertNotNull(version.getSubresources());
     CustomResourceValidation schema = version.getSchema();
@@ -87,7 +83,7 @@ public class CRDGeneratorTest {
   }
 
   @Test
-  public void checkCRDGenerator() {
+  void checkCRDGenerator() {
     final CustomResourceDefinitionVersion version = checkCRD(Basic.class, "Basic", "basics",
       Scope.NAMESPACED);
     assertNotNull(version.getSubresources());
@@ -101,7 +97,7 @@ public class CRDGeneratorTest {
     assertEquals("string", status.get("message").getType());
   }
 
-  private CustomResourceDefinitionVersion checkCRD(Class<? extends CustomResource> customResource, String kind, String plural,
+  CustomResourceDefinitionVersion checkCRD(Class<? extends CustomResource> customResource, String kind, String plural,
     Scope scope) {
     CRDGenerator generator = new CRDGenerator();
     TestCRDOutput output = new TestCRDOutput();
@@ -126,6 +122,9 @@ public class CRDGeneratorTest {
   }
 
   private static class TestCRDOutput extends AbstractCRDOutput<ByteArrayOutputStream> {
+
+    private final static Class<CustomResourceDefinition> crdClass = CustomResourceDefinition.class;
+    
     @Override
     protected ByteArrayOutputStream createStreamFor(String crdName) throws IOException {
       return new ByteArrayOutputStream();
