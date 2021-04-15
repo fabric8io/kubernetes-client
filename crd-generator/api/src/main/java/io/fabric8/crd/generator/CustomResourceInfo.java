@@ -23,10 +23,14 @@ import io.fabric8.kubernetes.model.Scope;
 import io.sundr.codegen.functions.ClassTo;
 import io.sundr.codegen.model.TypeDef;
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashSet;
+import java.util.Objects;
 import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CustomResourceInfo {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(CustomResourceInfo.class);
   public static final boolean DESCRIBE_TYPE_DEFS = false;
   private final String group;
   private final String version;
@@ -129,15 +133,15 @@ public class CustomResourceInfo {
 
       final TypeDef definition = ClassTo.TYPEDEF.apply(customResource);
       if (DESCRIBE_TYPE_DEFS) {
-        Types.describeType(definition, "", new HashSet<>());
+        Types.output(definition);
       }
 
       final Scope scope = Types.isNamespaced(definition) ? Scope.NAMESPACED : Scope.CLUSTER;
 
       SpecAndStatus specAndStatus = Types.resolveSpecAndStatusTypes(definition);
       if (specAndStatus.isUnreliable()) {
-        System.out.println("Cannot reliably determine status types for  " + customResource.getCanonicalName()
-          + " because it isn't parameterized with only spec and status types. Status replicas detection will be deactivated.");
+        LOGGER.warn("Cannot reliably determine status types for {} because it isn't parameterized with only spec and status types. Status replicas detection will be deactivated.",
+          customResource.getCanonicalName());
       }
 
       return new CustomResourceInfo(instance.getGroup(), instance.getVersion(), instance.getKind(),
@@ -147,5 +151,22 @@ public class CustomResourceInfo {
     } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    CustomResourceInfo that = (CustomResourceInfo) o;
+    return Objects.equals(crdName() + version, that.crdName() + that.version);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(crdName(), version);
   }
 }
