@@ -34,6 +34,7 @@ import io.sundr.codegen.model.TypeDef;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
@@ -74,6 +75,9 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
   
   private CustomResourceInfo toCustomResourceInfo(TypeElement customResource) {
     final TypeDef definition = ElementTo.TYPEDEF.apply(customResource);
+    if (CustomResourceInfo.DESCRIBE_TYPE_DEFS) {
+      Types.describeType(definition, "", new HashSet<>());
+    }
     final Name crClassName = customResource.getQualifiedName();
 
     SpecAndStatus specAndStatus = Types.resolveSpecAndStatusTypes(definition);
