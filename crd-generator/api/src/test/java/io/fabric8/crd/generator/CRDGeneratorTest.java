@@ -39,9 +39,74 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 public class CRDGeneratorTest {
+
+  @Test
+  void choosingCRDVersionsShouldWork() {
+    CRDGenerator generator = new CRDGenerator();
+    assertTrue(generator.getHandlers().isEmpty());
+
+    generator.forCRDVersions("v2");
+    assertTrue(generator.getHandlers().isEmpty());
+
+    String version = "v1";
+    generator.forCRDVersions(version);
+    Map<String, AbstractCustomResourceHandler> handlers = generator.getHandlers();
+    assertEquals(1, handlers.size());
+    assertTrue(handlers.containsKey(version));
+
+    generator.forCRDVersions(version, "v1beta1", version, "v3", null);
+    handlers = generator.getHandlers();
+    assertEquals(2, handlers.size());
+    assertTrue(handlers.containsKey(version));
+    assertTrue(handlers.containsKey("v1beta1"));
+  }
+
+  @Test
+  void addingCustomResourceInfosShouldWork() {
+    CRDGenerator generator = new CRDGenerator();
+    assertTrue(generator.getCustomResourceInfos().isEmpty());
+
+    generator.customResourceClasses();
+    assertTrue(generator.getCustomResourceInfos().isEmpty());
+
+    generator.customResources();
+    assertTrue(generator.getCustomResourceInfos().isEmpty());
+
+    generator.customResources(null);
+    assertTrue(generator.getCustomResourceInfos().isEmpty());
+
+    generator.customResources(null, null);
+    assertTrue(generator.getCustomResourceInfos().isEmpty());
+
+    generator.customResourceClasses(Simplest.class);
+    assertEquals(1, generator.getCustomResourceInfos().size());
+    assertTrue(generator.getCustomResourceInfos().stream().allMatch(cri -> cri.crClassName().equals(Simplest.class.getName())));
+
+    generator.customResourceClasses(Child.class);
+    assertEquals(2, generator.getCustomResourceInfos().size());
+    CustomResourceInfo simplest = CustomResourceInfo.fromClass(Simplest.class);
+    assertTrue(generator.getCustomResourceInfos().contains(simplest));
+    CustomResourceInfo child = CustomResourceInfo.fromClass(Child.class);
+    assertTrue(generator.getCustomResourceInfos().contains(child));
+
+    generator.customResources(CustomResourceInfo.fromClass(Child.class));
+    assertEquals(2, generator.getCustomResourceInfos().size());
+
+    CustomResourceInfo joke = CustomResourceInfo.fromClass(Joke.class);
+    CustomResourceInfo jr = CustomResourceInfo.fromClass(JokeRequest.class);
+    generator.customResources(joke, jr);
+    Set<CustomResourceInfo> infos = generator.getCustomResourceInfos();
+    assertEquals(4, infos.size());
+    assertTrue(infos.contains(simplest));
+    assertTrue(infos.contains(child));
+    assertTrue(infos.contains(joke));
+    assertTrue(infos.contains(jr));
+  }
+
   @Test
   void simplestCRDShouldWork() {
     final CustomResourceDefinitionVersion version = checkCRD(Simplest.class, "Simplest", "simplests",
@@ -97,12 +162,13 @@ public class CRDGeneratorTest {
     assertEquals("string", status.get("message").getType());
   }
 
-  CustomResourceDefinitionVersion checkCRD(Class<? extends CustomResource> customResource, String kind, String plural,
+  private CustomResourceDefinitionVersion checkCRD(Class<? extends CustomResource> customResource, String kind, String plural,
     Scope scope) {
     CRDGenerator generator = new CRDGenerator();
     TestCRDOutput output = new TestCRDOutput();
     generator.withOutput(output)
-      .customResources(CustomResourceInfo.fromClass(customResource))
+      .forCRDVersions("v1")
+      .customResourceClasses(customResource)
       .generate();
 
     String outputName = CRDGenerator.getOutputName(CustomResource.getCRDName(customResource), "v1");
@@ -124,7 +190,7 @@ public class CRDGeneratorTest {
   private static class TestCRDOutput extends AbstractCRDOutput<ByteArrayOutputStream> {
 
     private final static Class<CustomResourceDefinition> crdClass = CustomResourceDefinition.class;
-    
+
     @Override
     protected ByteArrayOutputStream createStreamFor(String crdName) throws IOException {
       return new ByteArrayOutputStream();

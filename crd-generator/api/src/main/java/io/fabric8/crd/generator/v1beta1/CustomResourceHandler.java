@@ -37,6 +37,7 @@ import io.sundr.codegen.model.TypeDef;
 import java.util.Optional;
 
 public class CustomResourceHandler extends AbstractCustomResourceHandler {
+  public final static String VERSION = "v1beta1";
 
   public CustomResourceHandler(Resources resources) {
     super(resources);

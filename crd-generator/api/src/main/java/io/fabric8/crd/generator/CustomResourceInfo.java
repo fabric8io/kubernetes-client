@@ -24,6 +24,7 @@ import io.sundr.codegen.functions.ClassTo;
 import io.sundr.codegen.model.TypeDef;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Optional;
 
 public class CustomResourceInfo {
@@ -147,5 +148,22 @@ public class CustomResourceInfo {
     } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    CustomResourceInfo that = (CustomResourceInfo) o;
+    return Objects.equals(crdName() + version, that.crdName() + that.version);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(crdName(), version);
   }
 }
