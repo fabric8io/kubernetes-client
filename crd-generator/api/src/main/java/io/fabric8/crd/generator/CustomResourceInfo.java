@@ -23,9 +23,11 @@ import io.fabric8.kubernetes.model.Scope;
 import io.sundr.codegen.functions.ClassTo;
 import io.sundr.codegen.model.TypeDef;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashSet;
 import java.util.Optional;
 
 public class CustomResourceInfo {
+  public static final boolean DESCRIBE_TYPE_DEFS = false;
   private final String group;
   private final String version;
   private final String kind;
@@ -126,6 +128,9 @@ public class CustomResourceInfo {
       final String[] shortNames = CustomResource.getShortNames(customResource);
 
       final TypeDef definition = ClassTo.TYPEDEF.apply(customResource);
+      if (DESCRIBE_TYPE_DEFS) {
+        Types.describeType(definition, "", new HashSet<>());
+      }
 
       final Scope scope = Types.isNamespaced(definition) ? Scope.NAMESPACED : Scope.CLUSTER;
 
