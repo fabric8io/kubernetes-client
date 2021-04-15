@@ -101,9 +101,14 @@ public class CRDGeneratorTest {
     Scope scope) {
     CRDGenerator generator = new CRDGenerator();
     TestCRDOutput output = new TestCRDOutput();
-    generator.withOutput(output)
-      .customResources(CustomResourceInfo.fromClass(customResource))
-      .generate();
+    try {
+      CustomResourceInfo.describeTypeDefs = true;
+      generator.withOutput(output)
+        .customResources(CustomResourceInfo.fromClass(customResource))
+        .generate();
+    } finally {
+      CustomResourceInfo.describeTypeDefs = false;
+    }
 
     String outputName = CRDGenerator.getOutputName(CustomResource.getCRDName(customResource), "v1");
     CustomResourceDefinition definition = output.definition(outputName);
