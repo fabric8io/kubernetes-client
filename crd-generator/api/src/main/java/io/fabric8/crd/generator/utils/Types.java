@@ -70,7 +70,8 @@ public class Types {
 
   /**
    * Map generic properties to known {@link TypeRef} based on the specified mappings.
-   * Example: Given a property `T size` and a map containing `T -> Integer` the final property will be: `Integer type`.
+   * Example: Given a property {@code T size} and a map containing {@code T -> Integer} the final
+   * property will be: {@code Integer type}.
    * @param mappings A map that maps class arguments names to types.
    * @return a visitors that performs the actual mapping.
    */
@@ -95,7 +96,8 @@ public class Types {
 
   /**
    * Map arguments, of {@link ClassRef} instances to known {@link TypeRef} based on the specified mappings.
-   * Example: Given a class reference to `Shape<T>` and a map containing `T -> Integer` the final reference will be: `Shape<Integer> type`.
+   * Example: Given a class reference to {@code Shape<T>} and a map containing {@code T -> Integer}
+   * the final reference will be: {@code Shape<Integer> type}.
    * @param mappings A map that maps class arguments names to types.
    * @return a visitors that performs the actual mapping.
    */
