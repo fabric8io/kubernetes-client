@@ -48,7 +48,7 @@ public class ReflectorWatcher<T extends HasMetadata> implements Watcher<T> {
       log.error(errorMessage);
       throw new KubernetesClientException(errorMessage);
     }
-    log.info("Event received {}", action.name());
+    log.debug("Event received {}", action.name());
     switch (action) {
       case ERROR:
         final String errorMessage = String.format("ERROR event for %s", resource.getMetadata().getName());

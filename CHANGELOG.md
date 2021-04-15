@@ -25,6 +25,7 @@
 * Fix #2923: Edit a CustomResource should result in a patch
 
 #### Improvements
+* Fix #2991: Make ReflectorWatcher to log in debug mode on eventReceived
 * Fix #2950: RawCustomResourceOperationsImpl should also work with standard resources
 * Fix #2938: Make it possible to manage Tekton Triggers directly
 * Fix #2921: Kubernetes server mock will generate missing metadata fields
