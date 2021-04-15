@@ -39,7 +39,6 @@ import io.fabric8.kubernetes.model.Scope;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -51,7 +50,7 @@ import org.slf4j.LoggerFactory;
 class CRDGeneratorTest {
 
   private final TestCRDOutput output = new TestCRDOutput();
-  
+
   @Test
   void choosingCRDVersionsShouldWork() {
     CRDGenerator generator = new CRDGenerator();
@@ -59,7 +58,7 @@ class CRDGeneratorTest {
 
     generator.forCRDVersions();
     assertTrue(generator.getHandlers().isEmpty());
-    
+
     generator.forCRDVersions((List<String>) null);
     assertTrue(generator.getHandlers().isEmpty());
 
@@ -283,8 +282,7 @@ class CRDGeneratorTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TestCRDOutput.class);
     private final static Class<CustomResourceDefinition> crdClass = CustomResourceDefinition.class;
-    private final Map<String, CustomResourceInfo> infos = new ConcurrentHashMap<>();
-
+private final Map<String, CustomResourceInfo> infos = new ConcurrentHashMap<>();
     @Override
     protected ByteArrayOutputStream createStreamFor(String crdName) throws IOException {
       return new ByteArrayOutputStream();
@@ -301,7 +299,7 @@ class CRDGeneratorTest {
     CustomResourceInfo get(String outputName) {
       return infos.get(outputName);
     }
-    
+
     void outputCRD(Class<? extends CustomResource<?, ?>> customResource) {
       String s = getStreamFor(keyFor(customResource)).toString();
       LOGGER.debug(s);
