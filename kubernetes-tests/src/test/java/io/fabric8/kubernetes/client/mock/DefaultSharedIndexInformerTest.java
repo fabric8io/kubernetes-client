@@ -75,7 +75,7 @@ class DefaultSharedIndexInformerTest {
 
   static final Status outdatedStatus = new StatusBuilder().withCode(HttpURLConnection.HTTP_GONE)
     .withMessage(
-      "401: The event in requested index is outdated and cleared (the requested history has been cleared [3/1]) [2]")
+      "410: The event in requested index is outdated and cleared (the requested history has been cleared [3/1]) [2]")
     .build();
   static final WatchEvent outdatedEvent = new WatchEventBuilder().withStatusObject(outdatedStatus).build();
   static final Long WATCH_EVENT_EMIT_TIME = 1L;
@@ -241,7 +241,8 @@ class DefaultSharedIndexInformerTest {
       .andEmit(outdatedEvent)
       .done().always();
     server.expect().withPath("/api/v1/pods")
-      .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(mid2ResourceVersion).endMetadata().withItems(Collections.emptyList()).build()).times(2);
+      .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(mid2ResourceVersion).endMetadata().withItems(
+              new PodBuilder().withNewMetadata().withNamespace("test").withName("pod1").withResourceVersion(endResourceVersion).endMetadata().build()).build()).times(2);
     server.expect().withPath("/api/v1/pods?resourceVersion=" + mid2ResourceVersion + "&watch=true")
       .andUpgradeToWebSocket()
       .open()
@@ -256,7 +257,8 @@ class DefaultSharedIndexInformerTest {
     podInformer.addEventHandler(
       new ResourceEventHandler<Pod>() {
         @Override
-        public void onAdd(Pod obj) { }
+        public void onAdd(Pod obj) {
+        }
 
         @Override
         public void onUpdate(Pod oldObj, Pod newObj) {
@@ -274,6 +276,53 @@ class DefaultSharedIndexInformerTest {
 
     // Then
     assertEquals(0, relistSuccessful.getCount());
+  }
+
+  @Test
+  @DisplayName("Pod Informer should delete the entry from the index")
+  void shouldDeleteIfMissingOnResync() throws InterruptedException {
+    // Given
+    String startResourceVersion = "1000", midResourceVersion = "1001", mid2ResourceVersion = "1002";
+
+    server.expect().withPath("/api/v1/pods")
+      .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(startResourceVersion).endMetadata().withItems(Collections.emptyList()).build()).once();
+    server.expect().withPath("/api/v1/pods?resourceVersion=" + startResourceVersion + "&watch=true")
+      .andUpgradeToWebSocket()
+      .open()
+      .waitFor(WATCH_EVENT_EMIT_TIME)
+      .andEmit(new WatchEvent(new PodBuilder().withNewMetadata().withNamespace("test").withName("pod1").withResourceVersion(midResourceVersion).endMetadata().build(), "ADDED"))
+      .waitFor(OUTDATED_WATCH_EVENT_EMIT_TIME)
+      .andEmit(outdatedEvent)
+      .done().always();
+    server.expect().withPath("/api/v1/pods")
+      .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(mid2ResourceVersion).endMetadata().withItems(Collections.emptyList()).build()).times(2);
+
+    // When
+    SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, 10000L);
+    CountDownLatch delete = new CountDownLatch(1);
+    podInformer.addEventHandler(
+      new ResourceEventHandler<Pod>() {
+        @Override
+        public void onAdd(Pod obj) {
+        }
+
+        @Override
+        public void onUpdate(Pod oldObj, Pod newObj) {
+        }
+
+        @Override
+        public void onDelete(Pod oldObj, boolean deletedFinalStateUnknown) {
+          if (deletedFinalStateUnknown) {
+            delete.countDown();
+          }
+        }
+      });
+    factory.startAllRegisteredInformers();
+    delete.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
+
+    // Then
+    assertEquals(0, delete.getCount());
+    assertEquals(0, podInformer.getIndexer().list().size());
   }
 
   @Test
