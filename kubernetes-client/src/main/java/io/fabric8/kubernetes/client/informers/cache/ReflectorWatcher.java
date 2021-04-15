@@ -47,7 +47,9 @@ public class ReflectorWatcher<T extends HasMetadata> implements Watcher<T> {
       final String errorMessage = String.format("Unrecognized event %s", resource.getMetadata().getName());
       throw new KubernetesClientException(errorMessage);
     }
-    log.trace("Event received {}", action.name());
+    if (log.isDebugEnabled()) {
+      log.debug("Event received {} {}# resourceVersion {}", action.name(), resource.getKind(), resource.getMetadata().getResourceVersion());
+    }
     switch (action) {
       case ERROR:
         final String errorMessage = String.format("ERROR event for %s", resource.getMetadata().getName());
@@ -63,7 +65,6 @@ public class ReflectorWatcher<T extends HasMetadata> implements Watcher<T> {
         break;
     }
     lastSyncResourceVersion.set(resource.getMetadata().getResourceVersion());
-    log.trace("{}#Receiving resourceVersion {}", resource.getKind(), lastSyncResourceVersion.get());
   }
 
   @Override
