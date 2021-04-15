@@ -102,7 +102,7 @@ public class CRDGeneratorTest {
     CRDGenerator generator = new CRDGenerator();
     TestCRDOutput output = new TestCRDOutput();
     try {
-      CustomResourceInfo.describeTypeDefs = true;
+      CustomResourceInfo.describeTypeDefs = false;
       generator.withOutput(output)
         .customResources(CustomResourceInfo.fromClass(customResource))
         .generate();
