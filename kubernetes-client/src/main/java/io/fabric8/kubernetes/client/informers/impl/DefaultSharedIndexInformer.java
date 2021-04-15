@@ -95,7 +95,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
 
     if (resyncPeriodMillis > 0) {
       if (resyncPeriodMillis < MINIMUM_RESYNC_PERIOD_MILLIS) {
-        log.warn("DefaultSharedIndexInformer#resyncPeriod {} is too small. Chanding it to minimul allowed rule of {}", resyncPeriodMillis, MINIMUM_RESYNC_PERIOD_MILLIS);
+        log.warn("DefaultSharedIndexInformer#resyncPeriod {} is too small. Changing it to minimal allowed value of {}", resyncPeriodMillis, MINIMUM_RESYNC_PERIOD_MILLIS);
         resyncPeriodMillis = MINIMUM_RESYNC_PERIOD_MILLIS;
       }
 
