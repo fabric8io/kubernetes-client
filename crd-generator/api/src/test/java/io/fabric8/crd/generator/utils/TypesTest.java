@@ -37,7 +37,7 @@ import org.junit.jupiter.api.Test;
 public class TypesTest {
 
   @Test
-  public void shouldFindStatusProperty() {
+  void shouldFindStatusProperty() {
     TypeDef def = ClassTo.TYPEDEF.apply(WebServerWithStatusProperty.class);
     Optional<Property> p = Types.findStatusProperty(def);
     assertTrue(p.isPresent());
@@ -48,14 +48,14 @@ public class TypesTest {
   }
   
   @Test
-  public void findingSuperClassesShouldWork() {
+  void findingSuperClassesShouldWork() {
     TypeDef def = ClassTo.TYPEDEF.apply(Basic.class);
     Set<ClassRef> superClasses = Types.projectSuperClasses(def);
     assertTrue(superClasses.stream().anyMatch(c -> c.getName().contains("CustomResource")));
   }
 
   @Test
-  public void projectSuperClassesShouldProduceProperlyTypedClasses() {
+  void projectSuperClassesShouldProduceProperlyTypedClasses() {
     TypeDef def = ClassTo.TYPEDEF.apply(Basic.class);
     Set<ClassRef> superClasses = Types.projectSuperClasses(def);
     assertEquals(2, superClasses.size());
@@ -70,7 +70,7 @@ public class TypesTest {
   }
 
   @Test
-  public void isNamespacedShouldWork() {
+  void isNamespacedShouldWork() {
     TypeDef def = ClassTo.TYPEDEF.apply(Basic.class);
     assertTrue(Types.isNamespaced(def));
     def = ClassTo.TYPEDEF.apply(Person.class);

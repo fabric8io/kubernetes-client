@@ -37,7 +37,7 @@ public class CRDGenerator {
   private final Resources resources;
   private final CustomResourceHandler v1Handler;
   private final io.fabric8.crd.generator.v1beta1.CustomResourceHandler v1beta1Handler;
-  private CRDOutput output;
+  private CRDOutput<? extends OutputStream> output;
   private boolean hasResources;
 
   private static final ObjectMapper YAML_MAPPER = new ObjectMapper(
@@ -64,7 +64,7 @@ public class CRDGenerator {
     return this;
   }
 
-  public CRDGenerator withOutput(CRDOutput output) {
+  public CRDGenerator withOutput(CRDOutput<? extends OutputStream> output) {
     this.output = output;
     return this;
   }
