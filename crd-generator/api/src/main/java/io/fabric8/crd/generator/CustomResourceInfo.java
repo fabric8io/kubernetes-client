@@ -27,7 +27,7 @@ import java.util.HashSet;
 import java.util.Optional;
 
 public class CustomResourceInfo {
-  static boolean describeTypeDefs = false;
+  public static final boolean DESCRIBE_TYPE_DEFS = true;
   private final String group;
   private final String version;
   private final String kind;
@@ -128,7 +128,7 @@ public class CustomResourceInfo {
       final String[] shortNames = CustomResource.getShortNames(customResource);
 
       final TypeDef definition = ClassTo.TYPEDEF.apply(customResource);
-      if (describeTypeDefs) {
+      if (DESCRIBE_TYPE_DEFS) {
         Types.describeType(definition, "", new HashSet<>());
       }
 
