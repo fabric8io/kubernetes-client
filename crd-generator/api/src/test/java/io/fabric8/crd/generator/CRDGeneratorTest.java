@@ -39,6 +39,7 @@ import io.fabric8.kubernetes.model.Scope;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -146,12 +147,6 @@ class CRDGeneratorTest {
       // output type def and crd
       Types.output(output.get(keyFor(customResource)).definition());
       output.outputCRD(customResource);
-      // drop the first two elements so that we output directly the source of the issue instead of this method and its lambda call
-      final StackTraceElement[] originalStackTrace = e.getStackTrace();
-      final int length = originalStackTrace.length - 2;
-      final StackTraceElement[] newStackTrace = new StackTraceElement[length];
-      System.arraycopy(originalStackTrace, 2, newStackTrace, 0, length);
-      e.setStackTrace(newStackTrace);
       throw e;
     }
   }
@@ -259,7 +254,6 @@ class CRDGeneratorTest {
     final String outputName = keyFor(customResource);
     final CustomResourceInfo info = CustomResourceInfo.fromClass(customResource);
     output.put(outputName, info);
-
     assertEquals(1, generator.withOutput(output)
       .forCRDVersions("v1")
       .customResources(info)
@@ -282,7 +276,7 @@ class CRDGeneratorTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TestCRDOutput.class);
     private final static Class<CustomResourceDefinition> crdClass = CustomResourceDefinition.class;
-private final Map<String, CustomResourceInfo> infos = new ConcurrentHashMap<>();
+    private final Map<String, CustomResourceInfo> infos = new ConcurrentHashMap<>();
     @Override
     protected ByteArrayOutputStream createStreamFor(String crdName) throws IOException {
       return new ByteArrayOutputStream();
