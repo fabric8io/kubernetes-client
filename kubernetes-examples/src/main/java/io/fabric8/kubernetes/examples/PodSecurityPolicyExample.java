@@ -40,18 +40,18 @@ public class PodSecurityPolicyExample {
       final String localYamlToCreate = "/PodSecurityPolicy.yml";
       logger.info("Creating PodSecurityPolicy from Yaml file: {}", localYamlToCreate);
       try (final InputStream localYamlStream = PodSecurityPolicyExample.class.getResourceAsStream(localYamlToCreate)) {
-        final PodSecurityPolicy podSecurityPolicy = client.policy().podSecurityPolicies().load(localYamlStream).get();
-        client.policy().podSecurityPolicies().withName(podSecurityPolicy.getMetadata().getName()).delete();
-        client.policy().podSecurityPolicies().withName(podSecurityPolicy.getMetadata().getName())
+        final PodSecurityPolicy podSecurityPolicy = client.policy().v1beta1().podSecurityPolicies().load(localYamlStream).get();
+        client.policy().v1beta1().podSecurityPolicies().withName(podSecurityPolicy.getMetadata().getName()).delete();
+        client.policy().v1beta1().podSecurityPolicies().withName(podSecurityPolicy.getMetadata().getName())
           .waitUntilCondition(Objects::isNull, 5, TimeUnit.SECONDS);
-        client.policy().podSecurityPolicies().create(podSecurityPolicy);
+        client.policy().v1beta1().podSecurityPolicies().create(podSecurityPolicy);
         logger.info("PodSecurityPolicy created with Name : {}", podSecurityPolicy.getMetadata().getName());
       }
 
       logger.info("Starting creating PodSecurityPolicy programmatically");
       final String podSecurityPolicyName = "example2";
-      client.policy().podSecurityPolicies().withName(podSecurityPolicyName).delete();
-      client.policy().podSecurityPolicies().withName(podSecurityPolicyName)
+      client.policy().v1beta1().podSecurityPolicies().withName(podSecurityPolicyName).delete();
+      client.policy().v1beta1().podSecurityPolicies().withName(podSecurityPolicyName)
         .waitUntilCondition(Objects::isNull, 5, TimeUnit.SECONDS);
       final PodSecurityPolicy programmaticPodSecurityPolicy = new PodSecurityPolicyBuilder().withNewMetadata()
         .withName(podSecurityPolicyName)
@@ -64,7 +64,7 @@ public class PodSecurityPolicyExample {
         .withNewSupplementalGroups().withRule("RunAsAny").endSupplementalGroups()
         .endSpec()
         .build();
-      client.policy().podSecurityPolicies().create(programmaticPodSecurityPolicy);
+      client.policy().v1beta1().podSecurityPolicies().create(programmaticPodSecurityPolicy);
       logger.info("PodSecurityPolicy created with Name: {}", programmaticPodSecurityPolicy.getMetadata().getName());
     } catch (KubernetesClientException clientException) {
       logger.error("Problem encountered with Kubernetes client!!", clientException);
