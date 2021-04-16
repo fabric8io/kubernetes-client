@@ -156,9 +156,7 @@ public class Types {
     if (visited.isEmpty()) {
       System.out.println(indent + def.getFullyQualifiedName());
     }
-    if (visited.contains(def.getFullyQualifiedName())) {
-      return;
-    }
+
     visited.add(def.getFullyQualifiedName());
     for (Property property : projectProperties(def)) {
       System.out.print(indent + "\t" + property);
@@ -181,6 +179,7 @@ public class Types {
         System.out.println(" - Unknown");
       }
     }
+    visited.remove(def.getFullyQualifiedName());
   }
 
   public static class SpecAndStatus {
