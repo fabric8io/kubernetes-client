@@ -33,6 +33,8 @@ import io.fabric8.crd.generator.v1.decorator.EnsureSingleStorageVersionDecorator
 import io.fabric8.crd.generator.v1.decorator.SetServedVersionDecorator;
 import io.fabric8.crd.generator.v1.decorator.SetStorageVersionDecorator;
 import io.sundr.codegen.model.TypeDef;
+
+import java.util.HashSet;
 import java.util.Optional;
 
 public class CustomResourceHandler extends AbstractCustomResourceHandler {
@@ -82,6 +84,9 @@ public class CustomResourceHandler extends AbstractCustomResourceHandler {
     if (Types.findStatusProperty(def).isPresent()) {
       resources.decorate(new AddSubresourcesDecorator(name, version));
       resources.decorate(new AddStatusSubresourceDecorator(name, version));
+    } else {
+      System.out.println("Not found status property for: " + def);
+      Types.describeType(def, "", new HashSet<>());
     }
 
     resources.decorate(new SetServedVersionDecorator(name, version, config.served()));
