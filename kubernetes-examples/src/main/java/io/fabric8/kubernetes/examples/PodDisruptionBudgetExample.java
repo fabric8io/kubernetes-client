@@ -16,8 +16,8 @@
 package io.fabric8.kubernetes.examples;
 
 import io.fabric8.kubernetes.api.model.IntOrString;
-import io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudget;
-import io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudgetBuilder;
+import io.fabric8.kubernetes.api.model.policy.v1.PodDisruptionBudget;
+import io.fabric8.kubernetes.api.model.policy.v1.PodDisruptionBudgetBuilder;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -49,7 +49,7 @@ public class PodDisruptionBudgetExample {
         .build();
 
       logger.info("Current namespace is {}", namespace);
-      client.policy().podDisruptionBudget().inNamespace(namespace).createOrReplace(podDisruptionBudget);
+      client.policy().v1().podDisruptionBudget().inNamespace(namespace).createOrReplace(podDisruptionBudget);
 
     } catch (KubernetesClientException e) {
       logger.error("Could not create resource: {}", e.getMessage(), e);

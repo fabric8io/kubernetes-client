@@ -17,8 +17,8 @@
 package io.fabric8.kubernetes.examples;
 
 import io.fabric8.kubernetes.api.model.Pod;
-import io.fabric8.kubernetes.api.model.batch.v1beta1.CronJob;
-import io.fabric8.kubernetes.api.model.batch.v1beta1.CronJobBuilder;
+import io.fabric8.kubernetes.api.model.batch.v1.CronJob;
+import io.fabric8.kubernetes.api.model.batch.v1.CronJobBuilder;
 import io.fabric8.kubernetes.client.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,7 +70,7 @@ public class CronJobExample {
         .build();
 
       log("Creating cron job from object");
-      cronJob1 = client.batch().cronjobs().inNamespace(namespace).create(cronJob1);
+      cronJob1 = client.batch().v1().cronjobs().inNamespace(namespace).create(cronJob1);
       log("Successfully created cronjob with name ", cronJob1.getMetadata().getName());
 
       log("Watching over pod which would be created during cronjob execution...");
