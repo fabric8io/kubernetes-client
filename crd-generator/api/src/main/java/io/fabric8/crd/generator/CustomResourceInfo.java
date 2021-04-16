@@ -27,7 +27,7 @@ import java.util.HashSet;
 import java.util.Optional;
 
 public class CustomResourceInfo {
-  public static final boolean DESCRIBE_TYPE_DEFS = true;
+  public static final boolean DESCRIBE_TYPE_DEFS = false;
   private final String group;
   private final String version;
   private final String kind;
