@@ -35,7 +35,7 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.model.Scope;
-import java.io.ByteArrayInputStream;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Map;
@@ -131,7 +131,10 @@ public class CRDGeneratorTest {
     }
 
     CustomResourceDefinition definition(String outputName) {
-      return Serialization.unmarshal(new ByteArrayInputStream(getStreamFor(outputName).toByteArray()), crdClass);
+      byte[] bytes = getStreamFor(outputName).toByteArray();
+      String s = new String(bytes);
+      System.out.println(s);
+      return Serialization.unmarshal(s, crdClass);
     }
   }
 }
