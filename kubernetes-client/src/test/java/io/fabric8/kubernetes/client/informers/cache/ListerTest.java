@@ -19,7 +19,6 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -33,12 +32,12 @@ class ListerTest {
     List<Pod> emptyPodList = namespacedPodLister.list();
     assertEquals(0, emptyPodList.size());
 
-    podCache.replace(
-      Arrays.asList(
-        new PodBuilder().withNewMetadata().withName("foo1").withNamespace("default").endMetadata().build(),
-        new PodBuilder().withNewMetadata().withName("foo2").withNamespace("default").endMetadata().build(),
-        new PodBuilder().withNewMetadata().withName("foo3").withNamespace("default").endMetadata().build()
-      ), "0");
+    podCache.add(
+        new PodBuilder().withNewMetadata().withName("foo1").withNamespace("default").endMetadata().build());
+    podCache.add(
+        new PodBuilder().withNewMetadata().withName("foo2").withNamespace("default").endMetadata().build());
+    podCache.add(
+        new PodBuilder().withNewMetadata().withName("foo3").withNamespace("default").endMetadata().build());
 
     List<Pod> namespacedPodList = namespacedPodLister.list();
     assertEquals(3, namespacedPodList.size());

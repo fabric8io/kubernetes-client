@@ -129,36 +129,6 @@ public class Cache<T> implements Indexer<T> {
   }
 
   /**
-   * Replace the content in the cache completely.
-   *
-   * @param list list of objects
-   * @param resourceVersion resource version
-   */
-  @Override
-  public synchronized void replace(List<T> list, String resourceVersion) {
-    Map<String, T> newItems = new HashMap<>();
-    for (T item : list) {
-      String key = keyFunc.apply(item);
-      newItems.put(key, item);
-    }
-    this.items = newItems;
-
-    // rebuild any index
-    this.indices = new HashMap<>();
-    for (Map.Entry<String, T> itemEntry : items.entrySet()) {
-      this.updateIndices(null, itemEntry.getValue(), itemEntry.getKey());
-    }
-  }
-
-  /**
-   * Resync
-   */
-  @Override
-  public void resync() {
-    // Do nothing
-  }
-
-  /**
    * List keys
    *
    * @return the list of keys
@@ -217,12 +187,12 @@ public class Cache<T> implements Indexer<T> {
    * @return the list
    */
   @Override
-  public synchronized List<T> index(String indexName, Object obj) {
+  public synchronized List<T> index(String indexName, T obj) {
     if (!this.indexers.containsKey(indexName)) {
       throw new IllegalArgumentException(String.format("index %s doesn't exist!", indexName));
     }
     Function<T, List<String>> indexFunc = this.indexers.get(indexName);
-    List<String> indexKeys = indexFunc.apply((T) obj);
+    List<String> indexKeys = indexFunc.apply(obj);
     Map<String, Set<String>> index = this.indices.get(indexName);
     if (index.isEmpty()) {
       return new ArrayList<>();
@@ -287,11 +257,6 @@ public class Cache<T> implements Indexer<T> {
       items.add(this.items.get(key));
     }
     return items;
-  }
-
-  @Override
-  public void isPopulated(boolean isPopulated) {
-    // Do nothing
   }
 
   /**

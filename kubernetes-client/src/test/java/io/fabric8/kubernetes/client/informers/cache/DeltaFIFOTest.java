@@ -76,7 +76,7 @@ class DeltaFIFOTest {
 
     // Sync operation
     deltaFIFO.replace(Arrays.asList(foo1), "0");
-    cache.replace(Arrays.asList(foo1), "0");
+    cache.add(foo1);
     deltaFIFO.pop(
       (deltas) -> {
         AbstractMap.SimpleEntry<DeltaFIFO.DeltaType, Object> delta = deltas.peekFirst();

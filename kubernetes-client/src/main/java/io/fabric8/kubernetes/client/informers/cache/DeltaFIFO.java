@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.informers.cache;
 
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -40,8 +42,10 @@ import java.util.function.Function;
  *
  * This is taken from official client: https://github.com/kubernetes-client/java/blob/master/util/src/main/java/io/kubernetes/client/informer/cache/DeltaFIFO.java
  * which is ported from official go client: https://github.com/kubernetes/client-go/blob/master/tools/cache/delta_fifo.go
+ * 
+ * Updated to be more type safe, and to take ownership of the lastResourceVersion
  */
-public class DeltaFIFO<T> implements Store<Object> {
+public class DeltaFIFO<T extends HasMetadata> implements Store<T, Deque<AbstractMap.SimpleEntry<DeltaFIFO.DeltaType, Object>>> {
   private static final Logger log = LoggerFactory.getLogger(DeltaFIFO.class);
 
   private Function<T, String> keyFunc;
@@ -56,7 +60,7 @@ public class DeltaFIFO<T> implements Store<Object> {
    */
   private Deque<String> queue;
 
-  private Store<T> knownObjects;
+  private Store<T, T> knownObjects;
 
   /**
    * Populated is true if the first batch of items inserted by Replace() has been
@@ -79,7 +83,9 @@ public class DeltaFIFO<T> implements Store<Object> {
    */
   private Condition notEmpty;
 
-  public DeltaFIFO(Function<T, String> keyFunc, Store knownObjects) {
+  private volatile String lastSyncResourceVersion;
+
+  public DeltaFIFO(Function<T, String> keyFunc, Store<T, T> knownObjects) {
     this.keyFunc = keyFunc;
     this.knownObjects = knownObjects;
     this.items = new HashMap<>();
@@ -93,8 +99,9 @@ public class DeltaFIFO<T> implements Store<Object> {
    * @param obj object
    */
   @Override
-  public void add(Object obj) {
+  public void add(T obj) {
     lock.writeLock().lock();
+    lastSyncResourceVersion = obj.getMetadata().getResourceVersion();
     try {
       populated = true;
       this.queueActionLocked(DeltaType.ADDITION, obj);
@@ -109,8 +116,9 @@ public class DeltaFIFO<T> implements Store<Object> {
    * @param obj object
    */
   @Override
-  public void update(Object obj) {
+  public void update(T obj) {
     lock.writeLock().lock();
+    lastSyncResourceVersion = obj.getMetadata().getResourceVersion();
     try {
       populated = true;
       this.queueActionLocked(DeltaType.UPDATION, obj);
@@ -125,24 +133,17 @@ public class DeltaFIFO<T> implements Store<Object> {
    * @param obj object
    */
   @Override
-  public void delete(Object obj) {
+  public void delete(T obj) {
     String id = this.keyOf(obj);
     lock.writeLock().lock();
+    lastSyncResourceVersion = obj.getMetadata().getResourceVersion();
     try {
       this.populated = true;
-      if (this.knownObjects == null) {
-        if (!this.items.containsKey(id)) {
-          // Maybe this was deleted when a relist happened
-          // don't provide a second report of the same deletion.
-          return;
-        }
-      } else {
-        // We only want to skip the deletion action if the object doesn't
-        // exist in the knownObjects and it doesn't have corresponding item
-        // in items.
-        if (this.knownObjects.getByKey(id) == null && !this.items.containsKey(id)) {
-          return;
-        }
+      // We only want to skip the deletion action if the object doesn't
+      // exist in the knownObjects and it doesn't have corresponding item
+      // in items.
+      if (this.knownObjects.getByKey(id) == null && !this.items.containsKey(id)) {
+        return;
       }
       this.queueActionLocked(DeltaType.DELETION, obj);
     } finally {
@@ -156,36 +157,15 @@ public class DeltaFIFO<T> implements Store<Object> {
    * @param list list of objects
    * @param resourceVersion resource version
    */
-  @Override
-  public void replace(List list, String resourceVersion) {
+  public void replace(List<T> list, String resourceVersion) {
     lock.writeLock().lock();
+    lastSyncResourceVersion = resourceVersion;
     try {
       Set<String> keys = new HashSet<>();
       for (Object obj : list) {
         String key = this.keyOf(obj);
         keys.add(key);
         this.queueActionLocked(DeltaType.SYNCHRONIZATION, obj);
-      }
-
-      if (this.knownObjects == null) {
-        for (Map.Entry<String, Deque<AbstractMap.SimpleEntry<DeltaType, Object>>> entry : this.items.entrySet()) {
-          if (keys.contains(entry.getKey())) {
-            continue;
-          }
-
-          Object deletedObj = null;
-          AbstractMap.SimpleEntry<DeltaType, Object> delta = entry.getValue().peekLast(); // Get newest
-          if (delta != null) {
-            deletedObj = delta.getValue();
-          }
-          this.queueActionLocked(DeltaType.DELETION, new DeletedFinalStateUnknown(entry.getKey(), deletedObj));
-        }
-
-        if (!this.populated) {
-          this.populated = true;
-          this.initialPopulationCount = list.size();
-        }
-        return;
       }
 
       // Detect deletions not already in the queue.
@@ -218,14 +198,9 @@ public class DeltaFIFO<T> implements Store<Object> {
    * operation until it finishes all the pending items in the queue.
    *
    */
-  @Override
   public void resync() {
     lock.writeLock().lock();
     try {
-      if (this.knownObjects == null) {
-        return;
-      }
-
       List<String> keys = this.knownObjects.listKeys();
       for (String key : keys) {
         syncKeyLocked(key);
@@ -261,7 +236,7 @@ public class DeltaFIFO<T> implements Store<Object> {
    * @return the object
    */
   @Override
-  public Object get(Object obj) {
+  public Deque<SimpleEntry<DeltaType, Object>> get(T obj) {
     String key = this.keyOf(obj);
     return this.getByKey(key);
   }
@@ -293,9 +268,9 @@ public class DeltaFIFO<T> implements Store<Object> {
    * @return the list
    */
   @Override
-  public List<Object> list() {
+  public List<Deque<SimpleEntry<DeltaType, Object>>> list() {
     lock.readLock().lock();
-    List<Object> objects = new ArrayList<>();
+    List<Deque<SimpleEntry<DeltaType, Object>>> objects = new ArrayList<>();
     try {
       for (Map.Entry<String, Deque<AbstractMap.SimpleEntry<DeltaType, Object>>> entry : items.entrySet()) {
         Deque<AbstractMap.SimpleEntry<DeltaType, Object>> copiedDeltas = new LinkedList<>(entry.getValue());
@@ -305,6 +280,13 @@ public class DeltaFIFO<T> implements Store<Object> {
       lock.readLock().unlock();
     }
     return objects;
+  }
+
+  /**
+   * @return the last known resource version
+   */
+  public String getLastResourceVersion() {
+    return lastSyncResourceVersion;
   }
 
   /**
@@ -357,7 +339,6 @@ public class DeltaFIFO<T> implements Store<Object> {
     }
   }
 
-  @Override
   public void isPopulated(boolean isPopulated) {
     lock.writeLock().lock();
     try {
@@ -438,7 +419,7 @@ public class DeltaFIFO<T> implements Store<Object> {
 
     String id = this.keyOf(obj);
     Deque<AbstractMap.SimpleEntry<DeltaType, Object>> deltas = this.items.get(id);
-    if (deltas != null && !(deltas == null || deltas.isEmpty())) {
+    if (deltas != null && !deltas.isEmpty()) {
       return;
     }
     this.queueActionLocked(DeltaType.SYNCHRONIZATION, obj);

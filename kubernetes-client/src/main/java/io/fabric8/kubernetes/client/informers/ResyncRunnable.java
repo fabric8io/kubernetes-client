@@ -15,7 +15,8 @@
  */
 package io.fabric8.kubernetes.client.informers;
 
-import io.fabric8.kubernetes.client.informers.cache.Store;
+import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.client.informers.cache.DeltaFIFO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,18 +26,19 @@ import java.util.function.Supplier;
  * Calls the resync function of store interface which is always implemented
  * by DeltaFIFO.
  */
-public class ResyncRunnable<T> implements Runnable {
+public class ResyncRunnable<T extends HasMetadata> implements Runnable {
 
   private static final Logger log = LoggerFactory.getLogger(ResyncRunnable.class);
 
-  private Store<T> store;
+  private DeltaFIFO<T> store;
   private Supplier<Boolean> shouldResyncFunc;
 
-  public ResyncRunnable(Store<T> store, Supplier<Boolean> shouldResyncFunc) {
+  public ResyncRunnable(DeltaFIFO<T> store, Supplier<Boolean> shouldResyncFunc) {
     this.store = store;
     this.shouldResyncFunc = shouldResyncFunc;
   }
 
+  @Override
   public void run() {
     if (log.isDebugEnabled()) {
       log.debug("ResyncRunnable#resync .. ..");

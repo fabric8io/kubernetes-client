@@ -52,7 +52,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
   // value).
   private long defaultEventHandlerResyncPeriod;
 
-  private Indexer<T> indexer;
+  private Cache<T> indexer;
 
   private SharedProcessor<T> processor;
 
@@ -68,7 +68,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
     this.defaultEventHandlerResyncPeriod = resyncPeriod;
 
     this.processor = new SharedProcessor<>();
-    this.indexer = new Cache();
+    this.indexer = new Cache<T>();
 
     DeltaFIFO<T> fifo = new DeltaFIFO<>(Cache::metaNamespaceKeyFunc, this.indexer);
 
@@ -211,7 +211,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
 
 
   @Override
-  public Indexer getIndexer() {
+  public Indexer<T> getIndexer() {
     return this.indexer;
   }
 

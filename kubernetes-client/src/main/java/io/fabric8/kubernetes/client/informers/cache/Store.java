@@ -29,9 +29,12 @@ import java.util.List;
  *
  * This is ported from official go client: https://github.com/kubernetes/client-go/blob/master/tools/cache/store.go
  *
+ * Updated to be more type safe and to not assume the responsibilities of a DeltaFIFO
+ *
  * @param <T> resource
+ * @param <V> value
  */
-public interface Store<T> {
+public interface Store<T, V> {
   /**
    * Inserts an item into the store
    *
@@ -58,7 +61,7 @@ public interface Store<T> {
    *
    * @return list of all items
    */
-  List<T> list();
+  List<V> list();
 
   /**
    * returns a list of all keys of the object currently in the store.
@@ -73,7 +76,7 @@ public interface Store<T> {
    * @param object object
    * @return requested item if exists.
    */
-  Object get(T object);
+  V get(T object);
 
   /**
    * Returns the request item with specific key.
@@ -81,28 +84,6 @@ public interface Store<T> {
    * @param key specific key
    * @return the requested item
    */
-  T getByKey(String key);
-
-  /**
-   * Deletes the contents of the store, using instead the given list.
-   * Store takes ownership of the list, you should not reference it
-   * after calling this function
-   *
-   * @param list list of objects
-   * @param resourceVersion resource version
-   */
-  void replace(List<T> list, String resourceVersion);
-
-  /**
-   * Sends a resync event for each item.
-   */
-  void resync();
-
-  /**
-   * Updates the status of cache in case of any API error from Kubernetes server
-   *
-   * @param isPopulated boolean value indicating whether cache is populated or not
-   */
-  void isPopulated(boolean isPopulated);
+  V getByKey(String key);
 
 }

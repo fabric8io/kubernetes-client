@@ -23,20 +23,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class ReflectorWatcher<T extends HasMetadata> implements Watcher<T> {
 
   private static final Logger log = LoggerFactory.getLogger(ReflectorWatcher.class);
 
-  private final Store<T> store;
-  private final AtomicReference<String> lastSyncResourceVersion;
+  private final DeltaFIFO<T> store;
   private final Runnable onClose;
   private final Runnable onHttpGone;
 
-  public ReflectorWatcher(Store<T> store, AtomicReference<String> lastSyncResourceVersion, Runnable onClose, Runnable onHttpGone) {
+  public ReflectorWatcher(DeltaFIFO<T> store, Runnable onClose, Runnable onHttpGone) {
     this.store = store;
-    this.lastSyncResourceVersion = lastSyncResourceVersion;
     this.onClose = onClose;
     this.onHttpGone = onHttpGone;
   }
@@ -64,8 +61,7 @@ public class ReflectorWatcher<T extends HasMetadata> implements Watcher<T> {
         store.delete(resource);
         break;
     }
-    lastSyncResourceVersion.set(resource.getMetadata().getResourceVersion());
-    log.debug("{}#Receiving resourceVersion {}", resource.getKind(), lastSyncResourceVersion.get());
+    log.debug("{}#Receiving resourceVersion {}", resource.getKind(), resource.getMetadata().getResourceVersion());
   }
 
   @Override

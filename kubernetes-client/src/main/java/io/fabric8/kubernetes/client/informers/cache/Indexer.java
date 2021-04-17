@@ -27,7 +27,7 @@ import java.util.function.Function;
  *
  * @param <T> resource
  */
-public interface Indexer<T> extends Store<T> {
+public interface Indexer<T> extends Store<T, T> {
   /**
    * Retrieve list of obejcts that match on the named indexing function.
    *

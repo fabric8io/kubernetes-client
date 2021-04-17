@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.informers.cache;
 
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -28,14 +29,18 @@ import java.util.function.Function;
 import static org.junit.Assert.assertEquals;
 
 class CacheTest {
-  private static Cache cache = new Cache("mock", CacheTest::mockIndexFunction, CacheTest::mockKeyFunction);
+  private Cache cache;
+
+  @BeforeEach
+  public void initCache() {
+    cache = new Cache("mock", CacheTest::mockIndexFunction, CacheTest::mockKeyFunction);
+  }
 
   @Test
   void testCacheIndex() {
     Pod testPodObj = new PodBuilder().withNewMetadata().withName("test-pod").endMetadata().build();
 
     cache.add(testPodObj);
-    cache.replace(Arrays.asList(testPodObj), "0");
 
     String index = mockIndexFunction(testPodObj).get(0);
     String key = mockKeyFunction(testPodObj);
@@ -56,7 +61,7 @@ class CacheTest {
     Pod testPodObj = new PodBuilder().withNewMetadata().withName("test-pod2").endMetadata().build();
     String index = mockIndexFunction(testPodObj).get(0);
 
-    cache.replace(Arrays.asList(testPodObj), "0");
+    cache.add(testPodObj);
     cache.delete(testPodObj);
 
     List indexedObjectList = cache.byIndex("mock", index);

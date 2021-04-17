@@ -35,10 +35,9 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   private static final Logger log = LoggerFactory.getLogger(Reflector.class);
   private static final Long WATCH_RESTART_DELAY_MILLIS = 5000L;
 
-  private final AtomicReference<String> lastSyncResourceVersion;
   private final Class<T> apiTypeClass;
   private final ListerWatcher<T, L> listerWatcher;
-  private final Store<T> store;
+  private final DeltaFIFO<T> store;
   private final OperationContext operationContext;
   private final long resyncPeriodMillis;
   private final ScheduledExecutorService resyncExecutor;
@@ -47,19 +46,18 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   private final AtomicBoolean isWatcherStarted;
   private final AtomicReference<Watch> watch;
 
-  public Reflector(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, Store store, OperationContext operationContext, long resyncPeriodMillis) {
+  public Reflector(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, DeltaFIFO<T> store, OperationContext operationContext, long resyncPeriodMillis) {
     this(apiTypeClass, listerWatcher, store, operationContext, resyncPeriodMillis, Executors.newSingleThreadScheduledExecutor());
   }
 
-  public Reflector(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, Store store, OperationContext operationContext, long resyncPeriodMillis, ScheduledExecutorService resyncExecutor) {
+  public Reflector(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, DeltaFIFO<T> store, OperationContext operationContext, long resyncPeriodMillis, ScheduledExecutorService resyncExecutor) {
     this.apiTypeClass = apiTypeClass;
     this.listerWatcher = listerWatcher;
     this.store = store;
     this.operationContext = operationContext;
     this.resyncPeriodMillis = resyncPeriodMillis;
-    this.lastSyncResourceVersion = new AtomicReference<>();
     this.resyncExecutor = resyncExecutor;
-    this.watcher = new ReflectorWatcher<>(store, lastSyncResourceVersion, this::startWatcher, this::reListAndSync);
+    this.watcher = new ReflectorWatcher<>(store, this::startWatcher, this::reListAndSync);
     this.isActive = new AtomicBoolean(true);
     this.isWatcherStarted = new AtomicBoolean(false);
     this.watch = new AtomicReference<>(null);
@@ -90,8 +88,9 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
 
   public void stop() {
     isActive.set(false);
-    if (watch.get() != null) {
-      watch.get().close();
+    Watch theWatch = watch.get();
+    if (theWatch != null) {
+      theWatch.close();
       watch.set(null);
     }
   }
@@ -104,7 +103,6 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
     final L list = getList();
     final String latestResourceVersion = list.getMetadata().getResourceVersion();
     log.debug("Listing items ({}) for resource {} v{}", list.getItems().size(), apiTypeClass, latestResourceVersion);
-    lastSyncResourceVersion.set(latestResourceVersion);
     store.replace(list.getItems(), latestResourceVersion);
     if (!isActive.get()) {
       resyncExecutor.shutdown();
@@ -112,7 +110,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   }
 
   private void startWatcher() {
-    log.debug("Starting watcher for resource {} v{}", apiTypeClass, lastSyncResourceVersion.get());
+    log.debug("Starting watcher for resource {} v{}", apiTypeClass, store.getLastResourceVersion());
     if (watch.get() != null) {
       log.debug("Stopping previous watcher");
       watch.get().close();
@@ -131,13 +129,13 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
       isWatcherStarted.set(true);
       watch.set(
         listerWatcher.watch(new ListOptionsBuilder()
-          .withWatch(Boolean.TRUE).withResourceVersion(lastSyncResourceVersion.get()).withTimeoutSeconds(null).build(),
+          .withWatch(Boolean.TRUE).withResourceVersion(store.getLastResourceVersion()).withTimeoutSeconds(null).build(),
         operationContext.getNamespace(), operationContext, watcher)
       );
     }
   }
 
   public String getLastSyncResourceVersion() {
-    return lastSyncResourceVersion.get();
+    return store.getLastResourceVersion();
   }
 }
