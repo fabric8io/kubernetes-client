@@ -15,6 +15,8 @@
  */
 package io.fabric8.kubernetes.client.informers;
 
+import io.fabric8.kubernetes.client.informers.cache.Store;
+
 /**
  * SharedInformer defines basic methods of an informer.
  *
@@ -59,4 +61,9 @@ public interface SharedInformer<T> {
    * @return string value
    */
   String lastSyncResourceVersion();
+
+  /**
+   * @return the informer's local cache as a Store
+   */
+  Store<T, T> getStore();
 }

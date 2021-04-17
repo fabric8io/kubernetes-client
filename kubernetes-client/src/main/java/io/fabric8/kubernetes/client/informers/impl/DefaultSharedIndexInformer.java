@@ -27,6 +27,7 @@ import io.fabric8.kubernetes.client.informers.cache.DeltaFIFO;
 import io.fabric8.kubernetes.client.informers.cache.Indexer;
 import io.fabric8.kubernetes.client.informers.cache.ProcessorListener;
 import io.fabric8.kubernetes.client.informers.cache.SharedProcessor;
+import io.fabric8.kubernetes.client.informers.cache.Store;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,7 +69,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
     this.defaultEventHandlerResyncPeriod = resyncPeriod;
 
     this.processor = new SharedProcessor<>();
-    this.indexer = new Cache<T>();
+    this.indexer = new Cache<>();
 
     DeltaFIFO<T> fifo = new DeltaFIFO<>(Cache::metaNamespaceKeyFunc, this.indexer);
 
@@ -209,6 +210,10 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
     indexer.addIndexers(indexers);
   }
 
+  @Override
+  public Store<T, T> getStore() {
+    return this.indexer;
+  }
 
   @Override
   public Indexer<T> getIndexer() {

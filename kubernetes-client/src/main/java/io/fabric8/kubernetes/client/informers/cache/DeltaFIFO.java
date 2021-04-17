@@ -42,7 +42,7 @@ import java.util.function.Function;
  *
  * This is taken from official client: https://github.com/kubernetes-client/java/blob/master/util/src/main/java/io/kubernetes/client/informer/cache/DeltaFIFO.java
  * which is ported from official go client: https://github.com/kubernetes/client-go/blob/master/tools/cache/delta_fifo.go
- * 
+ *
  * Updated to be more type safe, and to take ownership of the lastResourceVersion
  */
 public class DeltaFIFO<T extends HasMetadata> implements Store<T, Deque<AbstractMap.SimpleEntry<DeltaFIFO.DeltaType, Object>>> {
@@ -285,7 +285,7 @@ public class DeltaFIFO<T extends HasMetadata> implements Store<T, Deque<Abstract
   /**
    * @return the last known resource version
    */
-  public String getLastResourceVersion() {
+  public String getLastSyncResourceVersion() {
     return lastSyncResourceVersion;
   }
 

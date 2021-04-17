@@ -110,7 +110,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   }
 
   private void startWatcher() {
-    log.debug("Starting watcher for resource {} v{}", apiTypeClass, store.getLastResourceVersion());
+    log.debug("Starting watcher for resource {} v{}", apiTypeClass, store.getLastSyncResourceVersion());
     if (watch.get() != null) {
       log.debug("Stopping previous watcher");
       watch.get().close();
@@ -129,13 +129,13 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
       isWatcherStarted.set(true);
       watch.set(
         listerWatcher.watch(new ListOptionsBuilder()
-          .withWatch(Boolean.TRUE).withResourceVersion(store.getLastResourceVersion()).withTimeoutSeconds(null).build(),
+          .withWatch(Boolean.TRUE).withResourceVersion(store.getLastSyncResourceVersion()).withTimeoutSeconds(null).build(),
         operationContext.getNamespace(), operationContext, watcher)
       );
     }
   }
 
   public String getLastSyncResourceVersion() {
-    return store.getLastResourceVersion();
+    return store.getLastSyncResourceVersion();
   }
 }
