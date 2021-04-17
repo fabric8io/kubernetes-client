@@ -121,7 +121,7 @@ class DeltaFIFOTest {
   @Test
   void testResync() {
     Pod foo1 = new PodBuilder().withNewMetadata().withName("foo1").withNamespace("default").endMetadata().build();
-    Cache cache = new Cache();
+    Cache<Pod> cache = new Cache<>();
     DeltaFIFO<Pod> deltaFIFO = new DeltaFIFO<>(Cache::deletionHandlingMetaNamespaceKeyFunc, cache);
 
     // sync after addition
