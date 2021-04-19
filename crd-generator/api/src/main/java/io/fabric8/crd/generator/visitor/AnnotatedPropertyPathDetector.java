@@ -55,7 +55,8 @@ public class AnnotatedPropertyPathDetector extends TypedVisitor<TypeDefBuilder> 
   @Override
   public void visit(TypeDefBuilder builder) {
     TypeDef type = builder.build();
-    List<Property> properties = Types.projectProperties(type);
+//    List<Property> properties = Types.projectProperties(type);
+    final List<Property> properties = type.getProperties();
     for (Property p : properties) {
       if (parents.contains(p)) {
           continue;
@@ -75,7 +76,7 @@ public class AnnotatedPropertyPathDetector extends TypedVisitor<TypeDefBuilder> 
       .forEach(p -> {
         if (!parents.contains(p)) {
           ClassRef classRef = (ClassRef) p.getTypeRef();
-          TypeDef propertyType = classRef.getDefinition();
+          TypeDef propertyType = Types.typeDefFrom(classRef);
           if (!propertyType.isEnum()) {
             List<Property> newParents = new ArrayList<>(parents);
             newParents.add(p);

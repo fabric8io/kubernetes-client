@@ -114,7 +114,8 @@ public abstract class AbstractJsonSchema<T, B> {
         .emptySet();
     List<String> required = new ArrayList<>();
 
-    for (Property property : Types.projectProperties(definition)) {
+//    for (Property property : Types.projectProperties(definition)) {
+    for (Property property : definition.getProperties()) {
       final String name = property.getName();
 
       if (property.isStatic() || ignores.contains(name)) {
@@ -185,7 +186,7 @@ public abstract class AbstractJsonSchema<T, B> {
       } else {
         if (typeRef instanceof ClassRef) { // Handle complex types
           ClassRef classRef = (ClassRef) typeRef;
-          TypeDef def = classRef.getDefinition();
+          TypeDef def = Types.typeDefFrom(classRef);
 
           // check if we're dealing with an enum
           if(def.isEnum()) {
