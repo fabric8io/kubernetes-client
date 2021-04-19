@@ -24,15 +24,15 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 
-public class ReflectorWatcher<T extends HasMetadata> implements Watcher<T> {
+public class ReflectorWatcher<T extends HasMetadata, V> implements Watcher<T> {
 
   private static final Logger log = LoggerFactory.getLogger(ReflectorWatcher.class);
 
-  private final DeltaFIFO<T> store;
+  private final Store<T, V> store;
   private final Runnable onClose;
   private final Runnable onHttpGone;
 
-  public ReflectorWatcher(DeltaFIFO<T> store, Runnable onClose, Runnable onHttpGone) {
+  public ReflectorWatcher(Store<T, V> store, Runnable onClose, Runnable onHttpGone) {
     this.store = store;
     this.onClose = onClose;
     this.onHttpGone = onHttpGone;

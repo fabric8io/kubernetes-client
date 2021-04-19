@@ -37,7 +37,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   private final ListerWatcher<T, L> listerWatcher;
   private final DeltaFIFO<T> store;
   private final OperationContext operationContext;
-  private final ReflectorWatcher<T> watcher;
+  private final ReflectorWatcher<T, ?> watcher;
   private final AtomicBoolean isActive;
   private final AtomicBoolean isWatcherStarted;
   private final AtomicReference<Watch> watch;
