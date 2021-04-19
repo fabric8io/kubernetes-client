@@ -23,6 +23,8 @@ import io.fabric8.kubernetes.api.model.storage.StorageClass;
 import io.fabric8.kubernetes.api.model.storage.StorageClassList;
 import io.fabric8.kubernetes.api.model.storage.VolumeAttachment;
 import io.fabric8.kubernetes.api.model.storage.VolumeAttachmentList;
+import io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacity;
+import io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacityList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
@@ -31,6 +33,7 @@ import io.fabric8.kubernetes.client.dsl.internal.storage.v1.CSIDriverOperationsI
 import io.fabric8.kubernetes.client.dsl.internal.storage.v1.CSINodeOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.storage.v1.StorageClassOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.storage.v1.VolumeAttachmentOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.storage.v1beta1.CSIStorageCapacityOperationsImpl;
 import okhttp3.OkHttpClient;
 
 public class StorageAPIGroupClient extends BaseClient implements StorageAPIGroupDSL {
@@ -56,6 +59,11 @@ public class StorageAPIGroupClient extends BaseClient implements StorageAPIGroup
   @Override
   public NonNamespaceOperation<CSINode, CSINodeList, Resource<CSINode>> csiNodes() {
     return new CSINodeOperationsImpl(httpClient, getConfiguration());
+  }
+
+  @Override
+  public MixedOperation<CSIStorageCapacity, CSIStorageCapacityList, Resource<CSIStorageCapacity>> csiStorageCapacities() {
+    return new CSIStorageCapacityOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override

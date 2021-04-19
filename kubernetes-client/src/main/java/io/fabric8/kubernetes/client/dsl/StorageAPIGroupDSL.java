@@ -23,6 +23,8 @@ import io.fabric8.kubernetes.api.model.storage.CSIDriver;
 import io.fabric8.kubernetes.api.model.storage.CSIDriverList;
 import io.fabric8.kubernetes.api.model.storage.CSINode;
 import io.fabric8.kubernetes.api.model.storage.CSINodeList;
+import io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacity;
+import io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacityList;
 import io.fabric8.kubernetes.client.Client;
 
 public interface StorageAPIGroupDSL extends Client{
@@ -42,6 +44,8 @@ public interface StorageAPIGroupDSL extends Client{
    * @return {@link NonNamespaceOperation} for CSINode resource
    */
   NonNamespaceOperation<CSINode, CSINodeList, Resource<CSINode>> csiNodes();
+
+  MixedOperation<CSIStorageCapacity, CSIStorageCapacityList, Resource<CSIStorageCapacity>> csiStorageCapacities();
 
   /**
    * DSL entrypoint for storage.k8s.io/v1 VolumeAttachment
