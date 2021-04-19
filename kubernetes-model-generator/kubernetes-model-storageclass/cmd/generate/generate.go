@@ -70,6 +70,8 @@ type Schema struct {
   CSIDriverList                            storageclassapiv1beta1.CSIDriverList
   CSINode                                  storageclassapiv1beta1.CSINode
   CSINodeList                              storageclassapiv1beta1.CSINodeList
+  CSIStorageCapacity                       storageclassapiv1beta1.CSIStorageCapacity
+  CSIStorageCapacityList                   storageclassapiv1beta1.CSIStorageCapacityList
 }
 
 func main() {
@@ -77,6 +79,7 @@ func main() {
     {"k8s.io/apimachinery/pkg/util/intstr", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_pkg_util_intstr_", false},
     {"k8s.io/apimachinery/pkg/runtime", "", "io.fabric8.kubernetes.api.model.runtime", "kubernetes_apimachinery_pkg_runtime_", false},
     {"k8s.io/apimachinery/pkg/version", "", "io.fabric8.kubernetes.api.model.version", "kubernetes_apimachinery_pkg_version_", false},
+    {"k8s.io/apimachinery/pkg/api/resource", "", "io.fabric8.kubernetes.api.model", "kubernetes_resource_", false},
     {"k8s.io/apimachinery/pkg/apis/meta/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_", false},
     {"k8s.io/api/core/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_core_", false},
     {"k8s.io/api/storage/v1", "storage.k8s.io", "io.fabric8.kubernetes.api.model.storage", "kubernetes_storageclass_", true},

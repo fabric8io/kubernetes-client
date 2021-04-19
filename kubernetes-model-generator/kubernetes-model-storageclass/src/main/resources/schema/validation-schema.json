@@ -3,19 +3,6 @@
   "$schema": "http://json-schema.org/draft-05/schema#",
   "$module": "storage",
   "definitions": {
-    "k8s_io_apimachinery_pkg_api_resource_Quantity": {
-      "type": "object",
-      "properties": {
-        "Format": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": true,
-      "existingJavaType": "Quantity",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
     "kubernetes_apimachinery_APIGroup": {
       "type": "object",
       "properties": {
@@ -199,6 +186,54 @@
       },
       "additionalProperties": true,
       "existingJavaType": "io.fabric8.kubernetes.api.model.GroupVersionForDiscovery",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_apimachinery_LabelSelector": {
+      "type": "object",
+      "properties": {
+        "matchExpressions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_apimachinery_LabelSelectorRequirement",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelectorRequirement"
+          }
+        },
+        "matchLabels": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_apimachinery_LabelSelectorRequirement": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "operator": {
+          "type": "string"
+        },
+        "values": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelectorRequirement",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1358,10 +1393,10 @@
         "capacity": {
           "type": "object",
           "additionalProperties": {
-            "$ref": "#/definitions/k8s_io_apimachinery_pkg_api_resource_Quantity",
-            "existingJavaType": "Quantity"
+            "$ref": "#/definitions/kubernetes_resource_Quantity",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.Quantity"
           },
-          "existingJavaType": "java.util.Map\u003cString, Quantity\u003e"
+          "existingJavaType": "java.util.Map\u003cString, io.fabric8.kubernetes.api.model.Quantity\u003e"
         },
         "cephfs": {
           "$ref": "#/definitions/kubernetes_core_CephFSPersistentVolumeSource",
@@ -1723,6 +1758,19 @@
       },
       "additionalProperties": true,
       "existingJavaType": "io.fabric8.kubernetes.api.model.VsphereVirtualDiskVolumeSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_resource_Quantity": {
+      "type": "object",
+      "properties": {
+        "Format": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.kubernetes.api.model.Quantity",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -2399,6 +2447,78 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_storageclass_v1beta1_CSIStorageCapacity": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "storage.k8s.io/v1beta1",
+          "required": true
+        },
+        "capacity": {
+          "$ref": "#/definitions/kubernetes_resource_Quantity",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.Quantity"
+        },
+        "kind": {
+          "type": "string",
+          "default": "CSIStorageCapacity",
+          "required": true
+        },
+        "maximumVolumeSize": {
+          "$ref": "#/definitions/kubernetes_resource_Quantity",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.Quantity"
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "nodeTopology": {
+          "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
+        },
+        "storageClassName": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacity",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "kubernetes_storageclass_v1beta1_CSIStorageCapacityList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "storage.k8s.io/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/kubernetes_storageclass_v1beta1_CSIStorageCapacity",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacity"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "CSIStorageCapacityList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacityList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacity\u003e"
+      ]
+    },
     "kubernetes_storageclass_v1beta1_TokenRequest": {
       "type": "object",
       "properties": {
@@ -2460,6 +2580,14 @@
       "$ref": "#/definitions/kubernetes_storageclass_v1beta1_CSINodeList",
       "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSINodeList"
     },
+    "CSIStorageCapacity": {
+      "$ref": "#/definitions/kubernetes_storageclass_v1beta1_CSIStorageCapacity",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacity"
+    },
+    "CSIStorageCapacityList": {
+      "$ref": "#/definitions/kubernetes_storageclass_v1beta1_CSIStorageCapacityList",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacityList"
+    },
     "CreateOptions": {
       "$ref": "#/definitions/kubernetes_apimachinery_CreateOptions",
       "existingJavaType": "io.fabric8.kubernetes.api.model.CreateOptions"
@@ -2497,8 +2625,8 @@
       "existingJavaType": "io.fabric8.kubernetes.api.model.PatchOptions"
     },
     "Quantity": {
-      "$ref": "#/definitions/k8s_io_apimachinery_pkg_api_resource_Quantity",
-      "existingJavaType": "Quantity"
+      "$ref": "#/definitions/kubernetes_resource_Quantity",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.Quantity"
     },
     "RootPaths": {
       "$ref": "#/definitions/kubernetes_apimachinery_RootPaths",
@@ -2745,7 +2873,7 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "storage.k8s.io/v1",
+          "default": "storage.k8s.io/v1beta1",
           "required": true
         },
         "kind": {
@@ -2758,8 +2886,8 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/kubernetes_storageclass_CSIDriverSpec",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.storage.CSIDriverSpec"
+          "$ref": "#/definitions/kubernetes_storageclass_v1beta1_CSIDriverSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriverSpec"
         }
       },
       "additionalProperties": true
@@ -2829,7 +2957,7 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "storage.k8s.io/v1",
+          "default": "storage.k8s.io/v1beta1",
           "required": true
         },
         "kind": {
@@ -2842,8 +2970,8 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/kubernetes_storageclass_CSINodeSpec",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.storage.CSINodeSpec"
+          "$ref": "#/definitions/kubernetes_storageclass_v1beta1_CSINodeSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSINodeSpec"
         }
       },
       "additionalProperties": true
@@ -2873,14 +3001,14 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "storage.k8s.io/v1",
+          "default": "storage.k8s.io/v1beta1",
           "required": true
         },
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_storageclass_CSINode",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.storage.CSINode"
+            "$ref": "#/definitions/kubernetes_storageclass_v1beta1_CSINode",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSINode"
           }
         },
         "kind": {
@@ -2900,8 +3028,8 @@
         "drivers": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_storageclass_CSINodeDriver",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.storage.CSINodeDriver"
+            "$ref": "#/definitions/kubernetes_storageclass_v1beta1_CSINodeDriver",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSINodeDriver"
           }
         }
       },
@@ -2943,6 +3071,66 @@
         },
         "volumeHandle": {
           "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "csistoragecapacity": {
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "storage.k8s.io/v1beta1",
+          "required": true
+        },
+        "capacity": {
+          "$ref": "#/definitions/kubernetes_resource_Quantity",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.Quantity"
+        },
+        "kind": {
+          "type": "string",
+          "default": "CSIStorageCapacity",
+          "required": true
+        },
+        "maximumVolumeSize": {
+          "$ref": "#/definitions/kubernetes_resource_Quantity",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.Quantity"
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "nodeTopology": {
+          "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
+        },
+        "storageClassName": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "csistoragecapacitylist": {
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "storage.k8s.io/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/kubernetes_storageclass_v1beta1_CSIStorageCapacity",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.storage.v1beta1.CSIStorageCapacity"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "CSIStorageCapacityList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
         }
       },
       "additionalProperties": true
@@ -3198,6 +3386,44 @@
         },
         "targetPortal": {
           "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "labelselector": {
+      "properties": {
+        "matchExpressions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_apimachinery_LabelSelectorRequirement",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelectorRequirement"
+          }
+        },
+        "matchLabels": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "existingJavaType": "java.util.Map\u003cString, String\u003e"
+        }
+      },
+      "additionalProperties": true
+    },
+    "labelselectorrequirement": {
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "operator": {
+          "type": "string"
+        },
+        "values": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
         }
       },
       "additionalProperties": true
@@ -3669,10 +3895,10 @@
         "capacity": {
           "type": "object",
           "additionalProperties": {
-            "$ref": "#/definitions/k8s_io_apimachinery_pkg_api_resource_Quantity",
-            "existingJavaType": "Quantity"
+            "$ref": "#/definitions/kubernetes_resource_Quantity",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.Quantity"
           },
-          "existingJavaType": "java.util.Map\u003cString, Quantity\u003e"
+          "existingJavaType": "java.util.Map\u003cString, io.fabric8.kubernetes.api.model.Quantity\u003e"
         },
         "cephfs": {
           "$ref": "#/definitions/kubernetes_core_CephFSPersistentVolumeSource",
