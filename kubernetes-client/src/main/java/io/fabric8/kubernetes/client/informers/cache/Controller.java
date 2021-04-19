@@ -168,6 +168,10 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
   }
 
   private void initReflector() {
-      reflector = new Reflector<>(apiTypeClass, listerWatcher, queue, operationContext, fullResyncPeriod);
+    reflector = new Reflector<>(apiTypeClass, listerWatcher, queue, operationContext);
+  }
+
+  public long getFullResyncPeriod() {
+    return fullResyncPeriod;
   }
 }

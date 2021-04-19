@@ -24,9 +24,7 @@ import io.fabric8.kubernetes.client.informers.ListerWatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.Executors;
 import java.util.concurrent.RejectedExecutionException;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -39,24 +37,16 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   private final ListerWatcher<T, L> listerWatcher;
   private final DeltaFIFO<T> store;
   private final OperationContext operationContext;
-  private final long resyncPeriodMillis;
-  private final ScheduledExecutorService resyncExecutor;
   private final ReflectorWatcher<T> watcher;
   private final AtomicBoolean isActive;
   private final AtomicBoolean isWatcherStarted;
   private final AtomicReference<Watch> watch;
 
-  public Reflector(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, DeltaFIFO<T> store, OperationContext operationContext, long resyncPeriodMillis) {
-    this(apiTypeClass, listerWatcher, store, operationContext, resyncPeriodMillis, Executors.newSingleThreadScheduledExecutor());
-  }
-
-  public Reflector(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, DeltaFIFO<T> store, OperationContext operationContext, long resyncPeriodMillis, ScheduledExecutorService resyncExecutor) {
+  public Reflector(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, DeltaFIFO<T> store, OperationContext operationContext) {
     this.apiTypeClass = apiTypeClass;
     this.listerWatcher = listerWatcher;
     this.store = store;
     this.operationContext = operationContext;
-    this.resyncPeriodMillis = resyncPeriodMillis;
-    this.resyncExecutor = resyncExecutor;
     this.watcher = new ReflectorWatcher<>(store, this::startWatcher, this::reListAndSync);
     this.isActive = new AtomicBoolean(true);
     this.isWatcherStarted = new AtomicBoolean(false);
@@ -88,15 +78,10 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
 
   public void stop() {
     isActive.set(false);
-    Watch theWatch = watch.get();
+    Watch theWatch = watch.getAndSet(null);
     if (theWatch != null) {
       theWatch.close();
-      watch.set(null);
     }
-  }
-
-  public long getResyncPeriodMillis() {
-    return resyncPeriodMillis;
   }
 
   private void reListAndSync() {
@@ -104,16 +89,14 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
     final String latestResourceVersion = list.getMetadata().getResourceVersion();
     log.debug("Listing items ({}) for resource {} v{}", list.getItems().size(), apiTypeClass, latestResourceVersion);
     store.replace(list.getItems(), latestResourceVersion);
-    if (!isActive.get()) {
-      resyncExecutor.shutdown();
-    }
   }
 
   private void startWatcher() {
     log.debug("Starting watcher for resource {} v{}", apiTypeClass, store.getLastSyncResourceVersion());
-    if (watch.get() != null) {
+    Watch theWatch = watch.get();
+    if (theWatch != null) {
       log.debug("Stopping previous watcher");
-      watch.get().close();
+      theWatch.close();
     }
     if (isWatcherStarted.get()) {
       log.debug("Watcher already started, delaying execution of new watcher");
