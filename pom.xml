@@ -79,7 +79,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <!-- Core versions -->
-    <sundrio.version>0.30.0</sundrio.version>
+    <sundrio.version>0.30.3</sundrio.version>
     <okhttp.version>3.12.12</okhttp.version>
     <okhttp.bundle.version>3.12.1_1</okhttp.bundle.version>
     <okio.version>1.15.0</okio.version>
@@ -168,6 +168,7 @@
     <osgi.include.resources>{maven-resources}</osgi.include.resources>
     <karaf.itest.skip>false</karaf.itest.skip>
     <project.build.outputTimestamp>2020-11-14T12:24:00Z</project.build.outputTimestamp>
+    <validation-api.version>2.0.1.Final</validation-api.version>
   </properties>
 
   <modules>
@@ -472,6 +473,13 @@
         <groupId>org.awaitility</groupId>
         <artifactId>awaitility</artifactId>
         <version>${awaitility.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>javax.validation</groupId>
+        <artifactId>validation-api</artifactId>
+        <version>${validation-api.version}</version>
         <scope>test</scope>
       </dependency>
     </dependencies>
@@ -899,7 +907,7 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <version>${maven.surefire.plugin.version}</version>
             <configuration>
-              <skipTests>true</skipTests>
+              <skipTests>false</skipTests>
             </configuration>
           </plugin>
           <plugin>

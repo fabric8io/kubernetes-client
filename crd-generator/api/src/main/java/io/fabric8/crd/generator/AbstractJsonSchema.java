@@ -114,7 +114,7 @@ public abstract class AbstractJsonSchema<T, B> {
         .emptySet();
     List<String> required = new ArrayList<>();
 
-    for (Property property : Types.allProperties(definition)) {
+    for (Property property : Types.projectProperties(definition)) {
       final String name = property.getName();
 
       if (property.isStatic() || ignores.contains(name)) {

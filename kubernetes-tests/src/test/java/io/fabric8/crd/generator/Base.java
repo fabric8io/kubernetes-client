@@ -13,11 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crd;
+package io.fabric8.crd.generator;
+
+import io.fabric8.crd.generator.inherited.BaseSpec;
+import io.fabric8.crd.generator.inherited.BaseStatus;
+import io.fabric8.kubernetes.api.model.Namespaced;
+import io.fabric8.kubernetes.client.CustomResource;
 
 /**
  * @author <a href="claprun@redhat.com">Christophe Laprun</a>
  */
-public class FooStatus extends BaseStatus {
+public abstract class Base<Spec extends BaseSpec, Status extends BaseStatus>
+  extends CustomResource<Spec, Status>
+  implements Namespaced {
 
 }

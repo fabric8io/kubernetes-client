@@ -56,8 +56,8 @@ public class AnnotatedMultiPropertyPathDetector extends TypedVisitor<TypeDefBuil
   @Override
   public void visit(TypeDefBuilder builder) {
     TypeDef type = builder.build();
-    for (Property p : Types.allProperties(type)) {
-        if (parents.contains(p)) {
+    for (Property p : Types.projectProperties(type)) {
+        if (p.isStatic() || parents.contains(p)) {
           continue;
         }
 
@@ -69,8 +69,8 @@ public class AnnotatedMultiPropertyPathDetector extends TypedVisitor<TypeDefBuil
         }
     }
 
-    Types.allProperties(type).stream().filter(p -> p.getTypeRef() instanceof ClassRef).forEach(p -> {
-        if (!parents.contains(p)) {
+    Types.projectProperties(type).stream().filter(p -> p.getTypeRef() instanceof ClassRef).forEach(p -> {
+        if (!p.isStatic() && !parents.contains(p)) {
           ClassRef classRef = (ClassRef) p.getTypeRef();
           TypeDef propertyType = classRef.getDefinition();
           if (!propertyType.isEnum()) {

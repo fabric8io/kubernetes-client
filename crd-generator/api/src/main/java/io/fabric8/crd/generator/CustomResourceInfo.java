@@ -15,19 +15,19 @@
  */
 package io.fabric8.crd.generator;
 
-import io.fabric8.kubernetes.api.model.Namespaced;
+import io.fabric8.crd.generator.utils.Types;
+import io.fabric8.crd.generator.utils.Types.SpecAndStatus;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.model.Scope;
 import io.sundr.codegen.functions.ClassTo;
 import io.sundr.codegen.model.TypeDef;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Optional;
 
 public class CustomResourceInfo {
+  public static final boolean DESCRIBE_TYPE_DEFS = false;
   private final String group;
   private final String version;
   private final String kind;
@@ -121,43 +121,29 @@ public class CustomResourceInfo {
     return definition;
   }
 
-  private final static String TYPE_NAME = CustomResource.class.getTypeName();
-  private final static String VOID_TYPE_NAME = Void.class.getTypeName();
-
-
   public static CustomResourceInfo fromClass(Class<? extends CustomResource> customResource) {
     try {
       final CustomResource instance = customResource.getDeclaredConstructor().newInstance();
 
       final String[] shortNames = CustomResource.getShortNames(customResource);
 
-      final Scope scope = Arrays.stream(customResource.getInterfaces())
-        .filter(t -> t.getTypeName().equals(Namespaced.class.getTypeName()))
-        .findFirst().map(t -> Scope.NAMESPACED).orElse(Scope.CLUSTER);
-
       final TypeDef definition = ClassTo.TYPEDEF.apply(customResource);
-      
-      // walk the type hierarchy until we reach CustomResource or a ParameterizedType
-      Type genericSuperclass = customResource.getGenericSuperclass();
-      String typeName = genericSuperclass.getTypeName();
-      while (!TYPE_NAME.equals(typeName) && !(genericSuperclass instanceof ParameterizedType)) {
-        genericSuperclass = ((Class) genericSuperclass).getGenericSuperclass();
-        typeName = genericSuperclass.getTypeName();
+      if (DESCRIBE_TYPE_DEFS) {
+        Types.describeType(definition, "", new HashSet<>());
       }
 
-      // this works because CustomResource is an abstract class
-      String specClassName = null, statusClassName = null;
-      if (genericSuperclass instanceof ParameterizedType) {
-        final Type[] types = ((ParameterizedType) genericSuperclass).getActualTypeArguments();
-        if (types.length == 2) {
-          specClassName = types[0].getTypeName();
-          statusClassName = types[1].getTypeName();
-        }
+      final Scope scope = Types.isNamespaced(definition) ? Scope.NAMESPACED : Scope.CLUSTER;
+
+      SpecAndStatus specAndStatus = Types.resolveSpecAndStatusTypes(definition);
+      if (specAndStatus.isUnreliable()) {
+        System.out.println("Cannot reliably determine status types for  " + customResource.getCanonicalName()
+          + " because it isn't parameterized with only spec and status types. Status replicas detection will be deactivated.");
       }
 
       return new CustomResourceInfo(instance.getGroup(), instance.getVersion(), instance.getKind(),
         instance.getSingular(), instance.getPlural(), shortNames, instance.isStorage(), instance.isServed(), scope, definition,
-        customResource.getCanonicalName(), specClassName, statusClassName);
+        customResource.getCanonicalName(), specAndStatus.getSpecClassName(),
+        specAndStatus.getStatusClassName());
     } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
       throw KubernetesClientException.launderThrowable(e);
     }

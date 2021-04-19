@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crd;
+package io.fabric8.crd.example.simplest;
 
+import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 
+@Group("samples.fabric8.io")
 @Version("v1alpha1")
-@Group("acme.com")
-public class Foo extends Base<FooSpec, FooStatus>{
-
+public class Simplest extends CustomResource<SimplestSpec,SimplestStatus> {
 
 }

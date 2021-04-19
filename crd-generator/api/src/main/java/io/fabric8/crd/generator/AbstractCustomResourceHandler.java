@@ -26,7 +26,6 @@ import io.fabric8.kubernetes.client.utils.Utils;
 import io.sundr.codegen.model.Property;
 import io.sundr.codegen.model.TypeDef;
 import io.sundr.codegen.model.TypeDefBuilder;
-import io.sundr.codegen.model.TypeRef;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -56,29 +55,41 @@ public abstract class AbstractCustomResourceHandler {
     LabelSelectorPathDetector labelSelectorPathDetector = new LabelSelectorPathDetector();
     AdditionalPrinterColumnDetector additionalPrinterColumnDetector = new AdditionalPrinterColumnDetector();
 
-    TypeDefBuilder builder = new TypeDefBuilder(def);
-    Optional<Property> statusProperty = findStatusProperty(def);
+    boolean statusExists = config.statusClassName().isPresent();
+    if (statusExists) {
+      TypeDefBuilder builder = new TypeDefBuilder(def);
+      Optional<Property> statusProperty = findStatusProperty(def);
+      if (statusProperty.isPresent()) {
+        Property p = statusProperty.get();
+        builder.removeFromProperties(p);
 
-    if (statusProperty.isPresent()) {
-      Property p = statusProperty.get();
-      builder.removeFromProperties(p);
-
-      def = builder
-        .addNewProperty()
-        .withName("status")
-        .withTypeRef(p.getTypeRef())
-        .endProperty()
-        .build();
+        def = builder
+          .addNewProperty()
+          .withName("status")
+          .withTypeRef(p.getTypeRef())
+          .endProperty()
+          .build();
+      } else {
+        statusExists = false;
+      }
     }
 
-    def = new TypeDefBuilder(def)
-      .accept(specReplicasPathDetector)
-      .accept(statusReplicasPathDetector)
+    TypeDefBuilder builder = new TypeDefBuilder(def);
+    if (config.specClassName().isPresent()) {
+      builder.accept(specReplicasPathDetector);
+    }
+
+    if (statusExists) {
+      builder.accept(statusReplicasPathDetector);
+    }
+
+    def = builder
       .accept(labelSelectorPathDetector)
       .accept(additionalPrinterColumnDetector)
       .build();
 
-    addDecorators(config, def, specReplicasPathDetector.getPath(), statusReplicasPathDetector.getPath(), labelSelectorPathDetector.getPath());
+    addDecorators(config, def, specReplicasPathDetector.getPath(),
+      statusReplicasPathDetector.getPath(), labelSelectorPathDetector.getPath());
 
     Map<String, Property> additionalPrinterColumns = new HashMap<>();
     additionalPrinterColumns.putAll(additionalPrinterColumnDetector.getProperties());
@@ -86,7 +97,8 @@ public abstract class AbstractCustomResourceHandler {
       Map<String, Object> parameters = property.getAnnotations().stream()
         .filter(a -> a.getClassRef().getName().equals("PrinterColumn")).map(a -> a.getParameters())
         .findFirst().orElse(Collections.emptyMap());
-      String type = AbstractJsonSchema.COMMON_MAPPINGS.getOrDefault(property.getTypeRef(), "object");
+      String type = AbstractJsonSchema.COMMON_MAPPINGS
+        .getOrDefault(property.getTypeRef(), "object");
       String column = (String) parameters.get("name");
       if (Utils.isNullOrEmpty(column)) {
         column = property.getName().toUpperCase();

@@ -13,18 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.fabric8.crd.example.basic;
 
-package io.fabric8.crd.zookeeper.v1alpha1;
+public class BasicStatus {
+  private String message;
 
-import io.fabric8.kubernetes.api.model.Namespaced;
-import io.fabric8.kubernetes.client.CustomResource;
-import io.fabric8.kubernetes.model.annotation.Group;
-import io.fabric8.kubernetes.model.annotation.Version;
+  public String getMessage() {
+    return message;
+  }
 
-@Version(value="v1alpha1", storage=false)
-@Group("io.zookeeper")
-public class Zookeeper extends CustomResource<ZookeeperSpec, ZookeeperStatus> implements Namespaced {
-  private ZookeeperSpec spec;
-  private ZookeeperStatus status;
+  public void setMessage(String message) {
+    this.message = message;
+  }
 }
-
