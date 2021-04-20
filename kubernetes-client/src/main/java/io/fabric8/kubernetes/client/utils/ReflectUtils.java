@@ -27,6 +27,9 @@ import java.util.List;
 public class ReflectUtils {
 
   public static ObjectMeta objectMetadata(Object obj) throws ReflectiveOperationException {
+    if( obj == null ) {
+      return null;
+    }
     if (obj instanceof HasMetadata) {
       return ((HasMetadata) obj).getMetadata();
     }
@@ -39,6 +42,9 @@ public class ReflectUtils {
   }
 
   public static String namespace(Object obj) throws ReflectiveOperationException {
+    if( obj == null ) {
+      return "";
+    }
     return objectMetadata(obj).getNamespace();
   }
 
