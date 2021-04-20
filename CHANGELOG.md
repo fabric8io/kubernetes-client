@@ -1,5 +1,10 @@
 ## CHANGELOG
 
+### 4.13.3
+
+#### Bugs
+* Fix: Set no_proxy in the okhttp builder in case the proxy_url is null
+
 ### 4.13.2
 
 #### Bugs
