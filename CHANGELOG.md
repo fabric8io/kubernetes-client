@@ -4,18 +4,20 @@
 
 #### Bugs
 * Fix #2989: serialization will generate valid yaml when using subtypes
-* Generating CRDs from the API should now properly work
+* Fix #2996: Generating CRDs from the API should now properly work
+* Fix #3000: Set no_proxy in the okhttp builder in case the proxy_url is null
 
 #### Improvements
 * Fix #2910: Move crd-generator tests from kubernetes-itests to kubernetes-tests
 
 #### Dependency Upgrade
-* Update Kubernetes Model to v1.21.0
+* Fix #2979: Update Kubernetes Model to v1.21.0
 
 #### New Features
-* Add support for `flowcontrol.apiserver.k8s.io/v1beta1` FlowSchema and PriorityLevelConfiguration
-* Add DSL Support for `apps/v1#ControllerRevision` resource
-* Add DSL support for CSIDriver, CSINode and VolumeAttachment
+* Fix #2984: Add support for `flowcontrol.apiserver.k8s.io/v1beta1` FlowSchema and PriorityLevelConfiguration
+* Fix #2980: Add DSL Support for `apps/v1#ControllerRevision` resource
+* Fix #2981: Add DSL support for `storage.k8s.io/v1beta1` CSIDriver, CSINode and VolumeAttachment
+* Fix #2912: Add DSL support for `storage.k8s.io/v1beta1` CSIStorageCapacity
 
 #### _**Note**_: Breaking changes in the API
 ##### DSL Changes:
