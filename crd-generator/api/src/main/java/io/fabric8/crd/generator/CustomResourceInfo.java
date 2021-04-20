@@ -45,6 +45,8 @@ public class CustomResourceInfo {
   private final String crClassName;
   private final Optional<String> specClassName;
   private final Optional<String> statusClassName;
+  private final String id;
+  private final int hash;
 
   public CustomResourceInfo(String group, String version, String kind, String singular,
     String plural, String[] shortNames, boolean storage, boolean served,
@@ -63,6 +65,8 @@ public class CustomResourceInfo {
     this.crClassName = crClassName;
     this.specClassName = Optional.ofNullable(specClassName);
     this.statusClassName = Optional.ofNullable(statusClassName);
+    this.id = crdName() + "/" + version;
+    this.hash = id.hashCode();
   }
 
   public boolean storage() {
@@ -162,11 +166,11 @@ public class CustomResourceInfo {
       return false;
     }
     CustomResourceInfo that = (CustomResourceInfo) o;
-    return Objects.equals(crdName() + version, that.crdName() + that.version);
+    return Objects.equals(id, that.id);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(crdName(), version);
+    return hash;
   }
 }
