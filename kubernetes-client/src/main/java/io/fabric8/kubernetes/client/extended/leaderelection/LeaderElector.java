@@ -200,7 +200,7 @@ public class LeaderElector<C extends Namespaceable<C> & KubernetesClient> {
       countDownLatch.await();
       return true;
     } catch (InterruptedException e) {
-      LOGGER.debug("Loop thread interrupted", e);
+      LOGGER.debug("Loop thread interrupted: {}", e.getMessage());
       Thread.currentThread().interrupt();
       return false;
     } finally {

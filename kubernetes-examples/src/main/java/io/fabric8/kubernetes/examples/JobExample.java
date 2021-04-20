@@ -75,7 +75,7 @@ public class JobExample {
         } catch (KubernetesClientException e) {
             logger.error("Unable to create job", e);
         } catch (InterruptedException interruptedException) {
-          logger.warn("Thread interrupted!");
+          logger.warn("Interrupted while waiting for the job to be ready: {}", interruptedException.getMessage());
           Thread.currentThread().interrupt();
         }
     }

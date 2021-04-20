@@ -21,6 +21,8 @@ import io.fabric8.kubernetes.client.HasMetadataVisitiableBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import okhttp3.OkHttpClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.HttpURLConnection;
 import java.util.Objects;
@@ -29,6 +31,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.UnaryOperator;
 
 public class CreateOrReplaceHelper<T extends HasMetadata> {
+  private static final Logger LOG = LoggerFactory.getLogger(CreateOrReplaceHelper.class);
   public static final int CREATE_OR_REPLACE_RETRIES = 3;
   private final UnaryOperator<T> createTask;
   private final UnaryOperator<T> replaceTask;
@@ -77,7 +80,8 @@ public class CreateOrReplaceHelper<T extends HasMetadata> {
         try {
           return h.waitUntilCondition(client, config, namespaceToUse, m, Objects::nonNull, 1, TimeUnit.SECONDS);
         } catch (InterruptedException interruptedException) {
-          interruptedException.printStackTrace();
+          Thread.currentThread().interrupt();
+          LOG.warn("Interrupted waiting for item to be created or replaced. Gracefully assuming the resource hasn't been created and doesn't exist. ({})", interruptedException.getMessage());
         }
         return null;
       },

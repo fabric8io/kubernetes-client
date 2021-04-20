@@ -67,7 +67,7 @@ public class PodWatchEquivalent {
             // Wait till watch gets closed
             isWatchClosed.await();
         } catch (InterruptedException interruptedException) {
-            logger.info( "Thread Interrupted!");
+            logger.warn("Interrupted while waiting for the watch to close: {}", interruptedException.getMessage());
             Thread.currentThread().interrupt();
         }
     }
