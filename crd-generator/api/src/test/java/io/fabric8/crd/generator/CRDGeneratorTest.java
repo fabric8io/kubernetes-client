@@ -196,6 +196,7 @@ class CRDGeneratorTest {
       assertEquals(1, printerColumns.size());
       final CustomResourceColumnDefinition columnDefinition = printerColumns.get(0);
       assertEquals("string", columnDefinition.getType());
+      assertEquals("jokeCategory", columnDefinition.getName());
       CustomResourceValidation schema = version.getSchema();
       assertNotNull(schema);
       Map<String, JSONSchemaProps> properties = schema.getOpenAPIV3Schema().getProperties();

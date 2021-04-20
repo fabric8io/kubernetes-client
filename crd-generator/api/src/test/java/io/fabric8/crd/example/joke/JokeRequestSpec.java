@@ -38,7 +38,7 @@ public class JokeRequestSpec {
         explicit
     }
 
-  @PrinterColumn
+  @PrinterColumn(name = "jokeCategory")
     private Category category = Category.Any;
     private ExcludedTopic[] excluded = new ExcludedTopic[] { ExcludedTopic.nsfw, ExcludedTopic.racist, ExcludedTopic.sexist };
     private boolean safe;
