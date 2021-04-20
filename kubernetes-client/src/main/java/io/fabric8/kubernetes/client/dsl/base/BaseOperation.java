@@ -403,7 +403,8 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
         try {
           return waitUntilCondition(Objects::nonNull, 1, TimeUnit.SECONDS);
         } catch (InterruptedException interruptedException) {
-          interruptedException.printStackTrace();
+          LOG.warn("Interrupted while waiting for the resource to be created or replaced. Gracefully assuming the resource has not been created and doesn't exist. ({})", interruptedException.getMessage());
+          Thread.currentThread().interrupt();
         }
         return null;
       },

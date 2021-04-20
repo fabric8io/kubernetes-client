@@ -73,7 +73,7 @@ public class CustomResourceInformerExample {
           }
         } catch (InterruptedException inEx) {
           Thread.currentThread().interrupt();
-          logger.info("HAS_SYNCED_THREAD INTERRUPTED!");
+          logger.warn("HAS_SYNCED_THREAD interrupted: {}", inEx.getMessage());
         }
       });
 
@@ -93,7 +93,7 @@ public class CustomResourceInformerExample {
       TimeUnit.MINUTES.sleep(5);
     } catch (InterruptedException interruptedException) {
       Thread.currentThread().interrupt();
-      logger.info("interrupted: {}", interruptedException.getMessage());
+      logger.warn("interrupted: {}", interruptedException.getMessage());
     }
   }
 }
