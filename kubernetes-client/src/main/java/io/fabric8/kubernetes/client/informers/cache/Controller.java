@@ -123,6 +123,8 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
     synchronized (this) {
       reflector.stop();
       reflectExecutor.shutdown();
+      resyncFuture.cancel(true);
+      resyncExecutor.shutdown();
     }
   }
 
