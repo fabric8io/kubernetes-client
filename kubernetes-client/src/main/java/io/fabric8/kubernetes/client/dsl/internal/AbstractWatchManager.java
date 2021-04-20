@@ -78,7 +78,7 @@ public abstract class AbstractWatchManager<T> implements Watch {
   }
 
   final void closeEvent(WatcherException cause) {
-    if (forceClosed.getAndSet(true)) {
+    if (!watcher.reconnecting() && forceClosed.getAndSet(true)) {
       logger.debug("Ignoring duplicate firing of onClose event");
       return;
     }

@@ -82,4 +82,9 @@ public class ReflectorWatcher<T extends HasMetadata> implements Watcher<T> {
     log.debug("Watch gracefully closed");
     onClose.run();
   }
+
+  @Override
+  public boolean reconnecting() {
+    return true;
+  }
 }
