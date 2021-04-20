@@ -187,8 +187,14 @@ class CRDGeneratorTest {
   @Test
   void jokerequestCRDShouldWork() {
     outputCRDIfFailed(JokeRequest.class, (customResource) -> {
-      CustomResourceDefinitionVersion version = checkCRD(customResource, "JokeRequest",
-        "jokerequests", Scope.NAMESPACED);
+      final CustomResourceDefinitionSpec spec = checkSpec(customResource, Scope.NAMESPACED);
+
+      final CustomResourceDefinitionNames names = checkNames("JokeRequest",
+        "jokerequests", spec);
+      assertEquals(1, names.getShortNames().size());
+      assertTrue(names.getShortNames().contains("jr"));
+
+      final CustomResourceDefinitionVersion version = checkVersion(spec);
       assertNotNull(version.getSubresources());
       CustomResourceValidation schema = version.getSchema();
       assertNotNull(schema);
@@ -226,6 +232,28 @@ class CRDGeneratorTest {
 
   private CustomResourceDefinitionVersion checkCRD(Class<? extends CustomResource<?,?>> customResource, String kind, String plural,
     Scope scope) {
+    CustomResourceDefinitionSpec spec = checkSpec(customResource, scope);
+    checkNames(kind, plural, spec);
+
+    return checkVersion(spec);
+  }
+
+  private CustomResourceDefinitionVersion checkVersion(CustomResourceDefinitionSpec spec) {
+    CustomResourceDefinitionVersion version = spec.getVersions().get(0);
+    assertTrue(version.getServed());
+    assertTrue(version.getStorage());
+    return version;
+  }
+
+  private CustomResourceDefinitionNames checkNames(String kind, String plural, CustomResourceDefinitionSpec spec) {
+    CustomResourceDefinitionNames names = spec.getNames();
+    assertEquals(kind, names.getKind());
+    assertEquals(plural, names.getPlural());
+    return names;
+  }
+
+  private CustomResourceDefinitionSpec checkSpec(
+    Class<? extends CustomResource<?, ?>> customResource, Scope scope) {
     CRDGenerator generator = new CRDGenerator();
 
     // record info to be able to output it if the test fails
@@ -240,17 +268,11 @@ class CRDGeneratorTest {
 
     CustomResourceDefinition definition = output.definition(outputName);
     assertNotNull(definition);
-    CustomResourceDefinitionSpec spec = definition.getSpec();
-    CustomResourceDefinitionNames names = spec.getNames();
-
     assertEquals("apiextensions.k8s.io/v1", definition.getApiVersion());
-    assertEquals(kind, names.getKind());
-    assertEquals(plural, names.getPlural());
+
+    CustomResourceDefinitionSpec spec = definition.getSpec();
     assertEquals(scope.toString(), spec.getScope());
-    CustomResourceDefinitionVersion version = spec.getVersions().get(0);
-    assertTrue(version.getServed());
-    assertTrue(version.getStorage());
-    return version;
+    return spec;
   }
 
   private static String keyFor(Class<? extends CustomResource<?, ?>> customResource) {
