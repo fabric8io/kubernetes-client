@@ -44,16 +44,17 @@ public class ReflectorWatcher<T extends HasMetadata> implements Watcher<T> {
   @Override
   public void eventReceived(Action action, T resource) {
     if (action == null) {
-      final String errorMessage = String.format("Unrecognized event %s", resource.getMetadata().getName());
-      throw new KubernetesClientException(errorMessage);
+      throw new KubernetesClientException("Unrecognized event");
+    }
+    if (resource == null) {
+      throw new KubernetesClientException("Unrecognized resource");  
     }
     if (log.isDebugEnabled()) {
       log.debug("Event received {} {}# resourceVersion {}", action.name(), resource.getKind(), resource.getMetadata().getResourceVersion());
     }
     switch (action) {
       case ERROR:
-        final String errorMessage = String.format("ERROR event for %s", resource.getMetadata().getName());
-        throw new KubernetesClientException(errorMessage);
+        throw new KubernetesClientException("ERROR event");
       case ADDED:
         store.add(resource);
         break;
