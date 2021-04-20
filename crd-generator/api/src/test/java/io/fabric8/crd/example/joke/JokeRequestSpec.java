@@ -15,7 +15,10 @@
  */
 package io.fabric8.crd.example.joke;
 
+import io.fabric8.kubernetes.model.annotation.PrinterColumn;
+
 public class JokeRequestSpec {
+
     public enum Category {
         Any,
         Misc,
@@ -35,6 +38,7 @@ public class JokeRequestSpec {
         explicit
     }
 
+  @PrinterColumn
     private Category category = Category.Any;
     private ExcludedTopic[] excluded = new ExcludedTopic[] { ExcludedTopic.nsfw, ExcludedTopic.racist, ExcludedTopic.sexist };
     private boolean safe;

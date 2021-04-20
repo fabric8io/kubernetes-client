@@ -27,6 +27,7 @@ import io.fabric8.crd.example.joke.JokeRequest;
 import io.fabric8.crd.example.simplest.Simplest;
 import io.fabric8.crd.generator.CRDGenerator.AbstractCRDOutput;
 import io.fabric8.crd.generator.utils.Types;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceColumnDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionNames;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionSpec;
@@ -190,6 +191,11 @@ class CRDGeneratorTest {
 
       final CustomResourceDefinitionVersion version = checkVersion(spec);
       assertNotNull(version.getSubresources());
+      final List<CustomResourceColumnDefinition> printerColumns = version
+        .getAdditionalPrinterColumns();
+      assertEquals(1, printerColumns.size());
+      final CustomResourceColumnDefinition columnDefinition = printerColumns.get(0);
+      assertEquals("string", columnDefinition.getType());
       CustomResourceValidation schema = version.getSchema();
       assertNotNull(schema);
       Map<String, JSONSchemaProps> properties = schema.getOpenAPIV3Schema().getProperties();

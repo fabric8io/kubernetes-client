@@ -81,7 +81,7 @@ public abstract class AbstractJsonSchema<T, B> {
   protected static final TypeRef P_BOOLEAN_REF = new PrimitiveRefBuilder().withName(BOOLEAN_MARKER)
     .build();
 
-  protected static final Map<TypeRef, String> COMMON_MAPPINGS = new HashMap<>();
+  private static final Map<TypeRef, String> COMMON_MAPPINGS = new HashMap<>();
 
   static {
     COMMON_MAPPINGS.put(STRING_REF, STRING_MARKER);
@@ -97,6 +97,18 @@ public abstract class AbstractJsonSchema<T, B> {
     COMMON_MAPPINGS.put(QUANTITY_REF, INT_OR_STRING_MARKER);
     COMMON_MAPPINGS.put(INT_OR_STRING_REF, INT_OR_STRING_MARKER);
     COMMON_MAPPINGS.put(DURATION_REF, STRING_MARKER);
+  }
+
+  public static String getSchemaTypeFor(TypeRef typeRef) {
+    String type = COMMON_MAPPINGS.get(typeRef);
+    if (type == null) {
+      if (typeRef instanceof ClassRef) { // Handle complex types
+        ClassRef classRef = (ClassRef) typeRef;
+        TypeDef def = Types.typeDefFrom(classRef);
+        type = def.isEnum()? "string" : "object";
+      }
+    }
+    return type;
   }
 
   /**
