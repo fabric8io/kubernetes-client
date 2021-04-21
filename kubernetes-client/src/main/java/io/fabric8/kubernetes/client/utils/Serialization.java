@@ -23,8 +23,6 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import org.yaml.snakeyaml.Yaml;
-
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -39,6 +37,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import org.yaml.snakeyaml.Yaml;
 
 public class Serialization {
   private Serialization() { }
@@ -47,7 +46,11 @@ public class Serialization {
   static {
     JSON_MAPPER.registerModule(new JavaTimeModule());
   }
-  private static final ObjectMapper YAML_MAPPER = new ObjectMapper(new YAMLFactory().disable(YAMLGenerator.Feature.USE_NATIVE_TYPE_ID));
+
+  private static final ObjectMapper YAML_MAPPER = new ObjectMapper(
+    new YAMLFactory().disable(YAMLGenerator.Feature.USE_NATIVE_TYPE_ID)
+  );
+
   private static final String DOCUMENT_DELIMITER = "---";
 
   public static ObjectMapper jsonMapper() {

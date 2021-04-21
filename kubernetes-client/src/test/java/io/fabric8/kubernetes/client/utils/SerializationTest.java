@@ -33,6 +33,7 @@ import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
+import io.fabric8.kubernetes.client.CustomResource;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -208,6 +209,21 @@ public class SerializationTest {
       assertEquals("---\n"
               + "typeable:\n"
               + "  type: \"x\"\n", Serialization.asYaml(root));
+  }
+
+  private static class MyCR extends CustomResource<String, Void> {
+
+    public MyCR() {
+      setSpec("foo");
+    }
+  }
+
+  @Test
+  void nullValueShouldNotBeOutput() {
+    MyCR cr = new MyCR();
+    final String s = Serialization.asYaml(cr);
+    assertTrue(!s.contains("status"));
+    assertTrue(s.contains("spec: \"foo\""));
   }
 
 }
