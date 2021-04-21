@@ -833,7 +833,7 @@ class DefaultSharedIndexInformerTest {
         }
       });
     factory.startAllRegisteredInformers();
-    updates.await(600, TimeUnit.SECONDS);
+    updates.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
 
     // Then
     assertEquals(0, updates.getCount());
