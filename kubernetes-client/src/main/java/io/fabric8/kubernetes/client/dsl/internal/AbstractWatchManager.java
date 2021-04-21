@@ -121,7 +121,7 @@ public abstract class AbstractWatchManager<T> implements Watch {
   }
 
   final boolean cannotReconnect() {
-    return currentReconnectAttempt.get() >= reconnectLimit && reconnectLimit >= 0;
+    return !watcher.reconnecting() && currentReconnectAttempt.get() >= reconnectLimit && reconnectLimit >= 0;
   }
 
   final long nextReconnectInterval() {
