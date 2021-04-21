@@ -108,14 +108,18 @@ class KubernetesResourceUtilTest {
       .withNewMetadata().withName("event3").endMetadata()
       .withLastTimestamp("2020-06-13T06:45:16Z")
       .build());
+    eventList.add(new EventBuilder()
+      .withNewMetadata().withName("eventWithoutLastTimestamp").endMetadata()
+      .build());
 
     // When
     KubernetesResourceUtil.sortEventListBasedOnTimestamp(eventList);
 
     // Then
-    assertEquals("event3", eventList.get(0).getMetadata().getName());
-    assertEquals("event2", eventList.get(1).getMetadata().getName());
-    assertEquals("event1", eventList.get(2).getMetadata().getName());
+    assertEquals("eventWithoutLastTimestamp", eventList.get(0).getMetadata().getName());
+    assertEquals("event3", eventList.get(1).getMetadata().getName());
+    assertEquals("event2", eventList.get(2).getMetadata().getName());
+    assertEquals("event1", eventList.get(3).getMetadata().getName());
   }
 
   @Test
