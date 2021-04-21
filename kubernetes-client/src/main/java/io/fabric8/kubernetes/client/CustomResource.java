@@ -18,6 +18,8 @@ package io.fabric8.kubernetes.client;
 import static io.fabric8.kubernetes.client.utils.Utils.isNullOrEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.JsonDeserializer;
@@ -64,6 +66,7 @@ import org.slf4j.LoggerFactory;
   "status"
 })
 @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false)
+@JsonInclude(Include.NON_NULL)
 public abstract class CustomResource<S, T> implements HasMetadata {
   private static final Logger LOG = LoggerFactory.getLogger(CustomResource.class);
 
