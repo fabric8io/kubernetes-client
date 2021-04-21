@@ -123,7 +123,9 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
     synchronized (this) {
       reflector.stop();
       reflectExecutor.shutdown();
-      resyncFuture.cancel(true);
+      if (resyncFuture != null) {
+        resyncFuture.cancel(true);
+      }
       resyncExecutor.shutdown();
     }
   }
@@ -171,5 +173,13 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
 
   private void initReflector() {
       reflector = new Reflector<>(apiTypeClass, listerWatcher, queue, operationContext, fullResyncPeriod);
+  }
+
+  ScheduledExecutorService getReflectExecutor() {
+    return this.reflectExecutor;
+  }
+
+  ScheduledExecutorService getResyncExecutor() {
+    return this.resyncExecutor;
   }
 }

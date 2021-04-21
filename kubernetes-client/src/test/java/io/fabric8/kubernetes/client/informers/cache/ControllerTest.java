@@ -26,6 +26,7 @@ import org.mockito.Mockito;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -68,5 +69,22 @@ class ControllerTest {
 
     // Then
     assertEquals(0L, controller.getReflector().getResyncPeriodMillis());
+  }
+
+  @Test
+  @DisplayName("Controller stop shut downs/cancels all executor services")
+  void testStop() {
+    // Given
+    Controller<Pod, PodList> controller = new Controller<>(Pod.class, deltaFIFO, listerWatcher,
+      simpleEntries -> { },
+      () -> true,
+      1000L, operationContext, eventListeners);
+
+    // When
+    controller.stop();
+
+    // Then
+    assertThat(controller.getReflectExecutor().isShutdown()).isTrue();
+    assertThat(controller.getResyncExecutor().isShutdown()).isTrue();
   }
 }
