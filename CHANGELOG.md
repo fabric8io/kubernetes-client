@@ -7,6 +7,7 @@
 * Fix #2996: Generating CRDs from the API should now properly work
 * Fix #3000: Set no_proxy in the okhttp builder in case the proxy_url is null
 * Fix #2991: reduced the level of ReflectWatcher event recieved log
+* Fix #3027: fix NPE when sorting events in KubernetesResourceUtil
 
 #### Improvements
 * Fix #2910: Move crd-generator tests from kubernetes-itests to kubernetes-tests
