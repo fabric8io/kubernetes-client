@@ -58,7 +58,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
     this.resyncPeriodMillis = resyncPeriodMillis;
     this.lastSyncResourceVersion = new AtomicReference<>();
     this.resyncExecutor = resyncExecutor;
-    this.watcher = new ReflectorWatcher<>(store, lastSyncResourceVersion, this::startWatcher, this::reListAndSync);
+    this.watcher = new ReflectorWatcher<>(store, lastSyncResourceVersion, this::stop, this::reListAndSync);
     this.isActive = new AtomicBoolean(true);
     this.isWatcherStarted = new AtomicBoolean(false);
     this.watch = new AtomicReference<>(null);
@@ -78,8 +78,11 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   }
 
   public void stop() {
+    String ns = operationContext.getNamespace();
+    log.debug("Stopping watcher for resource {} v{} in namespace {}", apiTypeClass, lastSyncResourceVersion.get(), ns);
     isActive.set(false);
     if (watch.get() != null) {
+      log.debug("Stopping watcher");
       watch.get().close();
       watch.set(null);
     }

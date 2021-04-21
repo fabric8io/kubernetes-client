@@ -14,6 +14,7 @@
 * Fix #3011: properly handle enum types for additional printer columns
 * Fix #3020: annotations should now properly have their associated values when processing CRDs from the API
 * Fix #3027: fix NPE when sorting events in KubernetesResourceUtil
+* Fix #3024: stopAllRegisteredInformers will not call startWatcher but stopWatcher onClose instead
 
 #### Improvements
 * Fix #2788: Support FIPS mode in kubernetes-client with BouncyCastleFipsProvider

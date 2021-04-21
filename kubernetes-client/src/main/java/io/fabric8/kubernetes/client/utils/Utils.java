@@ -163,6 +163,7 @@ public class Utils {
    * @return True if shutdown is complete.
    */
   public static boolean shutdownExecutorService(ExecutorService executorService) {
+    LOGGER.debug("shuting down executor: {}", executorService);
     if (executorService == null) {
       return false;
     }
@@ -173,6 +174,7 @@ public class Utils {
 
     try {
       //Wait for clean termination
+      LOGGER.debug("waiting for clean termination 5 sec");
       if (executorService.awaitTermination(5, TimeUnit.SECONDS)) {
         return true;
       }
@@ -181,7 +183,7 @@ public class Utils {
       if (!executorService.isTerminated()) {
         executorService.shutdownNow();
       }
-
+      LOGGER.debug("waiting for clean termination 5 sec");
       if (executorService.awaitTermination(5, TimeUnit.SECONDS)) {
         return true;
       }
@@ -189,12 +191,14 @@ public class Utils {
       if (LOGGER.isDebugEnabled()) {
         List<Runnable> tasks = executorService.shutdownNow();
         if (!tasks.isEmpty()) {
-          LOGGER.debug("ExecutorService was not cleanly shutdown, after waiting for 10 seconds. Number of remaining tasks: {}", tasks.size());
+          LOGGER.info("ExecutorService was not cleanly shutdown, after waiting for 10 seconds. Number of remaining tasks: {}", tasks.size());
+          LOGGER.debug("Remaining tasks: {}", tasks);
         }
       }
     } catch (InterruptedException e) {
       executorService.shutdownNow();
       //Preserve interrupted status
+      LOGGER.debug("ServiceExectuor thread forcibly interrupted");
       Thread.currentThread().interrupt();
     }
     return false;
