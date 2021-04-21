@@ -30,6 +30,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -326,12 +327,8 @@ public class KubernetesResourceUtil {
 
   public static void sortEventListBasedOnTimestamp(List<Event> eventList) {
     if (eventList != null) {
-      // Sort to get latest events in begining
-      eventList.sort((o1, o2) -> {
-          Instant d1 = Instant.parse(o1.getLastTimestamp());
-          Instant d2 = Instant.parse(o2.getLastTimestamp());
-          return (int) (d2.getEpochSecond() - d1.getEpochSecond());
-      });
+      // Sort to get latest events in beginning, putting events without lastTimestamp first
+      eventList.sort(Comparator.comparing(Event::getLastTimestamp, Comparator.nullsFirst(Comparator.comparing(Instant::parse).reversed())));
     }
   }
 
