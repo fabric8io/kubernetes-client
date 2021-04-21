@@ -15,8 +15,10 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
+import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import org.junit.jupiter.api.Test;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
@@ -91,6 +93,42 @@ public class ReflectUtilsTest {
     Baz baz = new Baz();
     baz.setMetadata(meta);
     assertSame(meta, ReflectUtils.objectMetadata(baz));
+  }
+
+  @Test
+  void testObjectMetadataReturnsNullOnNull() throws ReflectiveOperationException {
+    // Given
+    Object input = null;
+
+    // When
+    ObjectMeta result = ReflectUtils.objectMetadata(input);
+
+    // Then
+    assertThat(result).isNull();
+  }
+
+  @Test
+  void testNamespaceReturnsValidNamespace() throws ReflectiveOperationException {
+    // Given
+    Object input = new ConfigMapBuilder().withNewMetadata().withNamespace("ns1").endMetadata().build();
+
+    // When
+    String result = ReflectUtils.namespace(input);
+
+    // Then
+    assertThat(result).isNotNull().isEqualTo("ns1");
+  }
+
+  @Test
+  void testNamespaceReturnsBlankNamespace() throws ReflectiveOperationException {
+    // Given
+    Object input = null;
+
+    // When
+    String result = ReflectUtils.namespace(input);
+
+    // Then
+    assertThat(result).isNotNull().isBlank();
   }
 
 }
