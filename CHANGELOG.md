@@ -4,6 +4,7 @@
 
 #### Bugs
 * Fix #2991: reduced the level of ReflectWatcher event recieved log
+* Fix #2992: allowing Watch auto-reconnect for shared informers
 
 ### 4.13.3 (2021-04-22)
 
