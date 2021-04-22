@@ -4,6 +4,7 @@
 
 #### Bugs
 * Fix: Set no_proxy in the okhttp builder in case the proxy_url is null
+* Fix #3027: fix NPE when sorting events in KubernetesResourceUtil
 
 ### 4.13.2
 
