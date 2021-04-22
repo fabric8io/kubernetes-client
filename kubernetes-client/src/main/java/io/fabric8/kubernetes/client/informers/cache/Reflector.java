@@ -25,7 +25,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.Executors;
-import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -66,26 +65,16 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   }
 
   private L getList() {
-    try {
-      return listerWatcher.list(new ListOptionsBuilder()
-        .withWatch(Boolean.FALSE)
-        .withResourceVersion(null)
-        .withTimeoutSeconds(null).build(), operationContext.getNamespace(), operationContext);
-    } catch (Exception exception) {
-      store.isPopulated(false);
-      throw new RejectedExecutionException("Error while doing ReflectorRunnable list", exception);
-    }
+    return listerWatcher.list(new ListOptionsBuilder()
+      .withWatch(Boolean.FALSE)
+      .withResourceVersion(null)
+      .withTimeoutSeconds(null).build(), operationContext.getNamespace(), operationContext);
   }
 
-  public void listAndWatch() throws Exception {
-    try {
-      log.info("Started ReflectorRunnable watch for {}", apiTypeClass);
-      reListAndSync();
-      startWatcher();
-    } catch (Exception exception) {
-      store.isPopulated(false);
-      throw new RejectedExecutionException("Error while starting ReflectorRunnable watch", exception);
-    }
+  public void listAndWatch() {
+    log.info("Started ReflectorRunnable watch for {}", apiTypeClass);
+    reListAndSync();
+    startWatcher();
   }
 
   public void stop() {
@@ -101,6 +90,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   }
 
   private void reListAndSync() {
+    store.isPopulated(false);
     final L list = getList();
     final String latestResourceVersion = list.getMetadata().getResourceVersion();
     log.debug("Listing items ({}) for resource {} v{}", list.getItems().size(), apiTypeClass, latestResourceVersion);

@@ -738,6 +738,59 @@ class DefaultSharedIndexInformerTest {
     assertEquals(0, v1beta1CronTabFound.getCount());
   }
 
+
+  @Test
+  void testReconnectAfterOnCloseException() throws InterruptedException {
+    // Given
+    String startResourceVersion = "1000", midResourceVersion = "1001", mid2ResourceVersion = "1002";
+
+    // initial list
+    server.expect().withPath("/api/v1/pods")
+      .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(startResourceVersion).endMetadata().withItems(Collections.emptyList()).build()).once();
+
+    // initial watch - terminates with an exception
+    server.expect().withPath("/api/v1/pods?resourceVersion=" + startResourceVersion + "&watch=true")
+      .andUpgradeToWebSocket()
+      .open()
+      .waitFor(WATCH_EVENT_EMIT_TIME)
+      .andEmit(new WatchEvent(new PodBuilder().withNewMetadata().withNamespace("test").withName("pod1").withResourceVersion(midResourceVersion).endMetadata().build(), "ADDED"))
+      .waitFor(OUTDATED_WATCH_EVENT_EMIT_TIME)
+      .andEmit(outdatedEvent)
+      .done().always();
+
+    // should pick this up after the termination
+    server.expect().withPath("/api/v1/pods?resourceVersion=" + midResourceVersion + "&watch=true")
+      .andUpgradeToWebSocket()
+      .open()
+      .waitFor(WATCH_EVENT_EMIT_TIME)
+      .andEmit(new WatchEvent(new PodBuilder().withNewMetadata().withNamespace("test").withName("pod1").withResourceVersion(mid2ResourceVersion).endMetadata().build(), "MODIFIED"))
+      .done().always();
+
+    // When
+    SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, 0);
+    CountDownLatch updates = new CountDownLatch(1);
+    podInformer.addEventHandler(
+      new ResourceEventHandler<Pod>() {
+        @Override
+        public void onAdd(Pod obj) {
+        }
+
+        @Override
+        public void onUpdate(Pod oldObj, Pod newObj) {
+            updates.countDown();
+        }
+
+        @Override
+        public void onDelete(Pod oldObj, boolean deletedFinalStateUnknown) {
+        }
+      });
+    factory.startAllRegisteredInformers();
+    updates.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
+
+    // Then
+    assertEquals(0, updates.getCount());
+  }
+
   private KubernetesResource getAnimal(String name, String order, String resourceVersion) {
     AnimalSpec animalSpec = new AnimalSpec();
     animalSpec.setOrder(order);
@@ -856,4 +909,5 @@ class DefaultSharedIndexInformerTest {
 
     return podSet;
   }
+
 }

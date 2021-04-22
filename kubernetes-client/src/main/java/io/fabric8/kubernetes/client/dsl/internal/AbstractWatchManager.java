@@ -78,7 +78,7 @@ public abstract class AbstractWatchManager<T> implements Watch {
   }
 
   final void closeEvent(WatcherException cause) {
-    if (forceClosed.getAndSet(true)) {
+    if (!watcher.reconnecting() && forceClosed.getAndSet(true)) {
       logger.debug("Ignoring duplicate firing of onClose event");
       return;
     }
@@ -121,7 +121,7 @@ public abstract class AbstractWatchManager<T> implements Watch {
   }
 
   final boolean cannotReconnect() {
-    return currentReconnectAttempt.get() >= reconnectLimit && reconnectLimit >= 0;
+    return !watcher.reconnecting() && currentReconnectAttempt.get() >= reconnectLimit && reconnectLimit >= 0;
   }
 
   final long nextReconnectInterval() {
