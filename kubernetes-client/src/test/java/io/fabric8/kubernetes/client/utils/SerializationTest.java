@@ -41,6 +41,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -211,6 +214,8 @@ public class SerializationTest {
               + "  type: \"x\"\n", Serialization.asYaml(root));
   }
 
+  @Group("serialization.fabric8.io")
+  @Version("v1")
   private static class MyCR extends CustomResource<String, Void> {
 
     public MyCR() {
