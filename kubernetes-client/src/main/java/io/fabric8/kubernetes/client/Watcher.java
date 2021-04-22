@@ -19,6 +19,14 @@ import org.slf4j.LoggerFactory;
 
 public interface Watcher<T> {
 
+  /**
+   * If the Watcher can reconnect itself after an error
+   * @return
+   */
+  default boolean reconnecting() {
+    return false;
+  }
+
   void eventReceived(Action action, T resource);
 
   /**

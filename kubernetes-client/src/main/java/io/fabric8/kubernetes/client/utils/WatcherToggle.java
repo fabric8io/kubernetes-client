@@ -63,4 +63,9 @@ public class WatcherToggle<T> implements Watcher<T> {
       delegate.onClose();
     }
   }
+
+  @Override
+  public boolean reconnecting() {
+    return delegate.reconnecting();
+  }
 }
