@@ -1,5 +1,11 @@
 ## CHANGELOG
 
+### 4.13.3 (2021-04-22)
+
+#### Bugs
+* Fix: Set no_proxy in the okhttp builder in case the proxy_url is null
+* Fix #3027: fix NPE when sorting events in KubernetesResourceUtil
+
 ### 5.3.0 (2021-04-08)
 
 #### Bugs
