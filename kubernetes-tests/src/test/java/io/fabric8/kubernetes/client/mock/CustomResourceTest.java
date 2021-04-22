@@ -16,6 +16,15 @@
 
 package io.fabric8.kubernetes.client.mock;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
 import io.fabric8.kubernetes.api.model.DeleteOptions;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
@@ -39,15 +48,6 @@ import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -326,6 +326,35 @@ class CustomResourceTest {
   }
 
   @Test
+  @DisplayName("Should be able to watch some resource in a namespace")
+  void testWatchAllResourceInNamespace() throws IOException, InterruptedException {
+    // Given
+    server.expect().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos?watch=true")
+        .andUpgradeToWebSocket()
+        .open()
+        .waitFor(WATCH_EVENT_PERIOD)
+        .andEmit(new WatchEvent(null, "ADDED"))
+        .done().always();
+
+
+    CountDownLatch anyEventReceived = new CountDownLatch(1);
+    // When
+    Watch watch = client.customResource(customResourceDefinitionContext)
+        .watch(
+            "ns1",
+            new Watcher<String>() {
+              @Override
+              public void eventReceived(Action action, String resource) { anyEventReceived.countDown(); }
+              @Override
+              public void onClose(WatcherException cause) { }
+            });
+
+    // Then
+    assertTrue(anyEventReceived.await(1, TimeUnit.SECONDS));
+    watch.close();
+  }
+
+  @Test
   @DisplayName("Should be able to watch a single resource with some name")
   void testWatchSingleResource() throws IOException, InterruptedException {
     // Given
@@ -412,6 +441,38 @@ class CustomResourceTest {
   }
 
   @Test
+  @DisplayName("Should be able to test watch with namespace and some specific resourceVersion")
+  void testWatchNamespaceAndSomeResourceVersion() throws IOException, InterruptedException {
+    // Given
+    String watchResourceVersion = "1001";
+    server.expect().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos?watch=true&resourceVersion=" + watchResourceVersion)
+        .andUpgradeToWebSocket()
+        .open()
+        .waitFor(WATCH_EVENT_PERIOD)
+        .andEmit(new WatchEvent(null, "ADDED"))
+        .done().always();
+
+
+    CountDownLatch anyEventReceived = new CountDownLatch(1);
+
+    // When
+    Watch watch = client.customResource(customResourceDefinitionContext)
+        .watch(
+            "ns1",
+            watchResourceVersion,
+            new Watcher<String>() {
+              @Override
+              public void eventReceived(Action action, String resource) { anyEventReceived.countDown(); }
+              @Override
+              public void onClose(WatcherException cause) { }
+            });
+
+    // Then
+    assertTrue(anyEventReceived.await(1, TimeUnit.SECONDS));
+    watch.close();
+  }
+
+  @Test
   @DisplayName("Should be able to test watch with ListOptions provided")
   void testWatchWithListOptions() throws IOException, InterruptedException {
     // Given
@@ -437,6 +498,40 @@ class CustomResourceTest {
           @Override
           public void onClose(WatcherException cause) { }
         });
+
+    // Then
+    assertTrue(anyEventReceived.await(1, TimeUnit.SECONDS));
+    watch.close();
+  }
+
+  @Test
+  @DisplayName("Should be able to test watch with Namespace and ListOptions provided")
+  void testWatchWithNamespaceAndListOptions() throws IOException, InterruptedException {
+    // Given
+    server.expect().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos?timeoutSeconds=30&allowWatchBookmarks=true&watch=true&resourceVersion=1003")
+        .andUpgradeToWebSocket()
+        .open()
+        .waitFor(WATCH_EVENT_PERIOD)
+        .andEmit(new WatchEvent(null, "ADDED"))
+        .done().always();
+
+
+    CountDownLatch anyEventReceived = new CountDownLatch(1);
+    // When
+    Watch watch = client.customResource(customResourceDefinitionContext)
+        .watch(
+            "ns1",
+            new ListOptionsBuilder()
+                .withTimeoutSeconds(30L)
+                .withResourceVersion("1003")
+                .withAllowWatchBookmarks(true)
+                .build(),
+            new Watcher<String>() {
+              @Override
+              public void eventReceived(Action action, String resource) { anyEventReceived.countDown(); }
+              @Override
+              public void onClose(WatcherException cause) { }
+            });
 
     // Then
     assertTrue(anyEventReceived.await(1, TimeUnit.SECONDS));
