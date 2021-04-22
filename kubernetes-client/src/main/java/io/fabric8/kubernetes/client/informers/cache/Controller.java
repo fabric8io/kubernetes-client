@@ -91,16 +91,17 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
 
     // Starts one daemon thread for resync
     this.resyncExecutor = Executors.newSingleThreadScheduledExecutor();
-    initReflector();
+    this.reflector = new Reflector<>(apiTypeClass, listerWatcher, queue, operationContext, fullResyncPeriod);
   }
 
   public void run() {
     log.info("informer#Controller: ready to run resync and reflector runnable");
-
     // Start the resync runnable
     if (fullResyncPeriod > 0) {
       ResyncRunnable resyncRunnable = new ResyncRunnable(queue, resyncFunc);
-      resyncFuture = resyncExecutor.scheduleAtFixedRate(resyncRunnable, fullResyncPeriod, fullResyncPeriod, TimeUnit.MILLISECONDS);
+      if(!resyncExecutor.isShutdown()) {
+        resyncFuture = resyncExecutor.scheduleAtFixedRate(resyncRunnable, fullResyncPeriod, fullResyncPeriod, TimeUnit.MILLISECONDS);
+      }
     } else {
       log.info("informer#Controller: resync skipped due to 0 full resync period");
     }
@@ -143,9 +144,6 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
    * @return latest resource version
    */
   public String lastSyncResourceVersion() {
-    if (reflector == null) {
-      return "";
-    }
     return reflector.getLastSyncResourceVersion();
   }
 
@@ -169,10 +167,6 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
         throw e;
       }
     }
-  }
-
-  private void initReflector() {
-      reflector = new Reflector<>(apiTypeClass, listerWatcher, queue, operationContext, fullResyncPeriod);
   }
 
   ScheduledExecutorService getReflectExecutor() {
