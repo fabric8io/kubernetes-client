@@ -29,7 +29,7 @@ import okhttp3.mockwebserver.MockWebServer;
 import java.util.Map;
 import java.util.Queue;
 
-import static okhttp3.TlsVersion.TLS_1_0;
+import static okhttp3.TlsVersion.TLS_1_2;
 
 public class ChaosMeshMockServer extends KubernetesMockServer {
   public ChaosMeshMockServer() {
@@ -54,7 +54,7 @@ public class ChaosMeshMockServer extends KubernetesMockServer {
       .withMasterUrl(url("/"))
       .withNamespace("test")
       .withTrustCerts(true)
-      .withTlsVersions(TLS_1_0)
+      .withTlsVersions(TLS_1_2)
       .build();
     return new DefaultChaosMeshClient(config);
   }

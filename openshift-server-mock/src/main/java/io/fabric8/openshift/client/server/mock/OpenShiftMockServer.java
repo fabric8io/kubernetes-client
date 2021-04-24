@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.Queue;
 
 import static io.fabric8.kubernetes.client.utils.HttpClientUtils.createHttpClientForMockServer;
-import static okhttp3.TlsVersion.TLS_1_0;
+import static okhttp3.TlsVersion.TLS_1_2;
 
 public class OpenShiftMockServer extends KubernetesMockServer {
   private boolean disableApiGroupCheck = true;
@@ -58,7 +58,7 @@ public class OpenShiftMockServer extends KubernetesMockServer {
       .withMasterUrl(url("/"))
       .withNamespace("test")
       .withTrustCerts(true)
-      .withTlsVersions(TLS_1_0)
+      .withTlsVersions(TLS_1_2)
       .withDisableApiGroupCheck(disableApiGroupCheck)
       .build();
     return new DefaultOpenShiftClient(createHttpClientForMockServer(config), config);
