@@ -102,7 +102,9 @@ public class VersionInfo {
     }
 
     public Builder withBuildDate(String buildDate) throws ParseException {
-      this.versionInfo.buildDate = new SimpleDateFormat(VersionKeys.BUILD_DATE_FORMAT).parse(buildDate);
+      if (buildDate != null) {
+        this.versionInfo.buildDate = new SimpleDateFormat(VersionKeys.BUILD_DATE_FORMAT).parse(buildDate);
+      }
       return this;
     }
 
