@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 5.3.1
+### 5.3.1 (2021-04-26)
 
 #### Bugs
 * Fix #2991: reduced the level of ReflectWatcher event recieved log
