@@ -22,42 +22,61 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import io.fabric8.crd.example.basic.Basic;
 import io.fabric8.crd.example.basic.BasicSpec;
 import io.fabric8.crd.example.basic.BasicStatus;
+import io.fabric8.crd.example.inherited.Child;
+import io.fabric8.crd.example.joke.Joke;
 import io.fabric8.crd.example.person.Person;
 import io.fabric8.crd.example.webserver.WebServerWithStatusProperty;
-import io.sundr.codegen.functions.ClassTo;
+import io.fabric8.crd.generator.utils.Types.SpecAndStatus;
 import io.sundr.codegen.model.ClassRef;
 import io.sundr.codegen.model.Property;
 import io.sundr.codegen.model.TypeDef;
 import io.sundr.codegen.model.TypeRef;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 public class TypesTest {
 
   @Test
   void shouldFindStatusProperty() {
-    TypeDef def = ClassTo.TYPEDEF.apply(WebServerWithStatusProperty.class);
+    TypeDef def = Types.typeDefFrom(WebServerWithStatusProperty.class);
     Optional<Property> p = Types.findStatusProperty(def);
     assertTrue(p.isPresent());
 
-    def = ClassTo.TYPEDEF.apply(Basic.class);
+    def = Types.typeDefFrom(Basic.class);
     p = Types.findStatusProperty(def);
     assertTrue(p.isPresent());
+  }
+
+  @Test
+  void shouldFindInheritedStatusProperty() {
+    final TypeDef def = Types.typeDefFrom(Child.class);
+    final Optional<Property> p = Types.findStatusProperty(def);
+    assertTrue(p.isPresent());
+    final Property property = p.get();
+    final TypeRef typeRef = property.getTypeRef();
+    assertTrue(typeRef instanceof ClassRef);
+    final ClassRef classRef = (ClassRef) typeRef;
+    final SpecAndStatus specAndStatus = Types.resolveSpecAndStatusTypes(def);
+    assertEquals(specAndStatus.getStatusClassName(), classRef.getFullyQualifiedName());
+  }
+
+  @Test
+  void shouldHaveAllTheExpectedProperties() {
+    final TypeDef def = Types.typeDefFrom(Joke.class);
+    final List<Property> properties = def.getProperties();
+    assertEquals(7, properties.size());
   }
   
   @Test
   void findingSuperClassesShouldWork() {
-    TypeDef def = ClassTo.TYPEDEF.apply(Basic.class);
-    Set<ClassRef> superClasses = Types.projectSuperClasses(def);
+    List<ClassRef> superClasses = Types.typeDefFrom(Basic.class).getExtendsList();
     assertTrue(superClasses.stream().anyMatch(c -> c.getName().contains("CustomResource")));
   }
 
   @Test
   void projectSuperClassesShouldProduceProperlyTypedClasses() {
-    TypeDef def = ClassTo.TYPEDEF.apply(Basic.class);
-    Set<ClassRef> superClasses = Types.projectSuperClasses(def);
+    List<ClassRef> superClasses = Types.typeDefFrom(Basic.class).getExtendsList();
     assertEquals(2, superClasses.size());
     Optional<ClassRef> crOpt = superClasses.stream()
       .filter(c -> c.getName().contains("CustomResource")).findFirst();
@@ -71,9 +90,9 @@ public class TypesTest {
 
   @Test
   void isNamespacedShouldWork() {
-    TypeDef def = ClassTo.TYPEDEF.apply(Basic.class);
+    TypeDef def = Types.typeDefFrom(Basic.class);
     assertTrue(Types.isNamespaced(def));
-    def = ClassTo.TYPEDEF.apply(Person.class);
+    def = Types.typeDefFrom(Person.class);
     assertFalse(Types.isNamespaced(def));
   }
 }

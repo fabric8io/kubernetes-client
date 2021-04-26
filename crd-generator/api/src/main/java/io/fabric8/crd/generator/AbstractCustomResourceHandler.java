@@ -15,8 +15,6 @@
  */
 package io.fabric8.crd.generator;
 
-import static io.fabric8.crd.generator.utils.Types.findStatusProperty;
-
 import io.fabric8.crd.generator.decorator.Decorator;
 import io.fabric8.crd.generator.visitor.AdditionalPrinterColumnDetector;
 import io.fabric8.crd.generator.visitor.LabelSelectorPathDetector;
@@ -55,31 +53,12 @@ public abstract class AbstractCustomResourceHandler {
     LabelSelectorPathDetector labelSelectorPathDetector = new LabelSelectorPathDetector();
     AdditionalPrinterColumnDetector additionalPrinterColumnDetector = new AdditionalPrinterColumnDetector();
 
-    boolean statusExists = config.statusClassName().isPresent();
-    if (statusExists) {
-      TypeDefBuilder builder = new TypeDefBuilder(def);
-      Optional<Property> statusProperty = findStatusProperty(def);
-      if (statusProperty.isPresent()) {
-        Property p = statusProperty.get();
-        builder.removeFromProperties(p);
-
-        def = builder
-          .addNewProperty()
-          .withName("status")
-          .withTypeRef(p.getTypeRef())
-          .endProperty()
-          .build();
-      } else {
-        statusExists = false;
-      }
-    }
-
     TypeDefBuilder builder = new TypeDefBuilder(def);
     if (config.specClassName().isPresent()) {
       builder.accept(specReplicasPathDetector);
     }
 
-    if (statusExists) {
+    if (config.statusClassName().isPresent()) {
       builder.accept(statusReplicasPathDetector);
     }
 
@@ -97,8 +76,7 @@ public abstract class AbstractCustomResourceHandler {
       Map<String, Object> parameters = property.getAnnotations().stream()
         .filter(a -> a.getClassRef().getName().equals("PrinterColumn")).map(a -> a.getParameters())
         .findFirst().orElse(Collections.emptyMap());
-      String type = AbstractJsonSchema.COMMON_MAPPINGS
-        .getOrDefault(property.getTypeRef(), "object");
+      String type = AbstractJsonSchema.getSchemaTypeFor(property.getTypeRef());
       String column = (String) parameters.get("name");
       if (Utils.isNullOrEmpty(column)) {
         column = property.getName().toUpperCase();

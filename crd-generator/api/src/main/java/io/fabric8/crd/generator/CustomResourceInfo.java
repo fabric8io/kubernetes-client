@@ -20,7 +20,6 @@ import io.fabric8.crd.generator.utils.Types.SpecAndStatus;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.model.Scope;
-import io.sundr.codegen.functions.ClassTo;
 import io.sundr.codegen.model.TypeDef;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
@@ -135,7 +134,7 @@ public class CustomResourceInfo {
 
       final String[] shortNames = CustomResource.getShortNames(customResource);
 
-      final TypeDef definition = ClassTo.TYPEDEF.apply(customResource);
+      final TypeDef definition = Types.typeDefFrom(customResource);
       if (DESCRIBE_TYPE_DEFS) {
         Types.output(definition);
       }
