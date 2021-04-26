@@ -101,12 +101,10 @@ public abstract class AbstractJsonSchema<T, B> {
 
   public static String getSchemaTypeFor(TypeRef typeRef) {
     String type = COMMON_MAPPINGS.get(typeRef);
-    if (type == null) {
-      if (typeRef instanceof ClassRef) { // Handle complex types
-        ClassRef classRef = (ClassRef) typeRef;
-        TypeDef def = Types.typeDefFrom(classRef);
-        type = def.isEnum()? "string" : "object";
-      }
+    if (type == null && typeRef instanceof ClassRef) { // Handle complex types
+      ClassRef classRef = (ClassRef) typeRef;
+      TypeDef def = Types.typeDefFrom(classRef);
+      type = def.isEnum() ? STRING_MARKER : "object";
     }
     return type;
   }
@@ -125,8 +123,7 @@ public abstract class AbstractJsonSchema<T, B> {
       ignore.length > 0 ? new LinkedHashSet<>(Arrays.asList(ignore)) : Collections
         .emptySet();
     List<String> required = new ArrayList<>();
-
-//    for (Property property : Types.projectProperties(definition)) {
+    
     for (Property property : definition.getProperties()) {
       final String name = property.getName();
 

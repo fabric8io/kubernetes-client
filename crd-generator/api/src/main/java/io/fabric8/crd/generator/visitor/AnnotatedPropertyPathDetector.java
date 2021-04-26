@@ -55,7 +55,6 @@ public class AnnotatedPropertyPathDetector extends TypedVisitor<TypeDefBuilder> 
   @Override
   public void visit(TypeDefBuilder builder) {
     TypeDef type = builder.build();
-//    List<Property> properties = Types.projectProperties(type);
     final List<Property> properties = type.getProperties();
     for (Property p : properties) {
       if (parents.contains(p)) {

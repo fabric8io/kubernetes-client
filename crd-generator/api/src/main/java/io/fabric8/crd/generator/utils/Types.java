@@ -202,7 +202,6 @@ public class Types {
     }
 
     visited.add(def.getFullyQualifiedName());
-//    for (Property property : projectProperties(def)) {
     for (Property property : def.getProperties()) {
       TypeRef typeRef = property.getTypeRef();
       if (typeRef instanceof ClassRef) {
@@ -259,8 +258,6 @@ public class Types {
   private static final String CUSTOM_RESOURCE_NAME = CustomResource.class.getCanonicalName();
 
   public static SpecAndStatus resolveSpecAndStatusTypes(TypeDef definition) {
-//    Set<ClassRef> superClasses = Types.projectSuperClasses(definition);
-
     Optional<ClassRef> optionalCustomResourceRef = definition.getExtendsList().stream()
       .filter(s -> s.getFullyQualifiedName().equals(CUSTOM_RESOURCE_NAME)).findFirst();
     if (optionalCustomResourceRef.isPresent()) {
