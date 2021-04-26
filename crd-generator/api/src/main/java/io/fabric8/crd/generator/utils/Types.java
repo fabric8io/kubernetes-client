@@ -56,7 +56,7 @@ public class Types {
     return unshallow(ClassTo.TYPEDEF.apply(clazz));
   }
 
-  private static TypeDef unshallow(TypeDef definition) {
+  public static TypeDef unshallow(TypeDef definition) {
     // resolve hierarchy
     final List<ClassRef> classRefs = new ArrayList<>(Types.projectSuperClasses(definition));
     // resolve properties

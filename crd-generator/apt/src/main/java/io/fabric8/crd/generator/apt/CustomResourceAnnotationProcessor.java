@@ -73,7 +73,9 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
   }
   
   private CustomResourceInfo toCustomResourceInfo(TypeElement customResource) {
-    final TypeDef definition = ElementTo.TYPEDEF.apply(customResource);
+    TypeDef definition = ElementTo.TYPEDEF.apply(customResource);
+    definition = Types.unshallow(definition);
+    
     if (CustomResourceInfo.DESCRIBE_TYPE_DEFS) {
       Types.output(definition);
     }
