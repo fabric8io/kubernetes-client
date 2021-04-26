@@ -34,8 +34,7 @@ class ChildCRDTest {
     assertEquals("Child", d.getSpec().getNames().getKind());
     assertEquals("children", d.getSpec().getNames().getPlural());
     assertEquals("Namespaced", d.getSpec().getScope());
-    assertTrue(d.getSpec().getVersions().stream().filter(v -> v.getSubresources() != null)
-      .findAny().isPresent());
+    assertTrue(d.getSpec().getVersions().stream().anyMatch(v -> v.getSubresources() != null));
   }
 
 }

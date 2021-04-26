@@ -56,8 +56,9 @@ public class AnnotatedMultiPropertyPathDetector extends TypedVisitor<TypeDefBuil
   @Override
   public void visit(TypeDefBuilder builder) {
     TypeDef type = builder.build();
-    for (Property p : Types.projectProperties(type)) {
-        if (p.isStatic() || parents.contains(p)) {
+    final List<Property> props = type.getProperties();
+    for (Property p : props) {
+        if (parents.contains(p)) {
           continue;
         }
 
@@ -65,19 +66,21 @@ public class AnnotatedMultiPropertyPathDetector extends TypedVisitor<TypeDefBuil
         boolean match = p.getAnnotations().stream().anyMatch(a -> a.getClassRef().getName().equals(annotationName));
         if (match) {
           newParents.add(p);
-          properties.put(newParents.stream().map(Property::getName).collect(Collectors.joining(DOT, prefix, "")), p);
+          this.properties
+            .put(newParents.stream().map(Property::getName).collect(Collectors.joining(DOT, prefix, "")), p);
         }
     }
 
-    Types.projectProperties(type).stream().filter(p -> p.getTypeRef() instanceof ClassRef).forEach(p -> {
-        if (!p.isStatic() && !parents.contains(p)) {
+    props.stream().filter(p -> p.getTypeRef() instanceof ClassRef).forEach(p -> {
+        if (!parents.contains(p)) {
           ClassRef classRef = (ClassRef) p.getTypeRef();
-          TypeDef propertyType = classRef.getDefinition();
+          TypeDef propertyType = Types.typeDefFrom(classRef);
           if (!propertyType.isEnum()) {
             List<Property> newParents = new ArrayList<>(parents);
             newParents.add(p);
             new TypeDefBuilder(propertyType)
-              .accept(new AnnotatedMultiPropertyPathDetector(prefix, annotationName, newParents, properties))
+              .accept(new AnnotatedMultiPropertyPathDetector(prefix, annotationName, newParents,
+                this.properties))
               .build();
           }
         }

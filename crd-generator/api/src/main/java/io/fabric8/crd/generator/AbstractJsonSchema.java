@@ -81,7 +81,7 @@ public abstract class AbstractJsonSchema<T, B> {
   protected static final TypeRef P_BOOLEAN_REF = new PrimitiveRefBuilder().withName(BOOLEAN_MARKER)
     .build();
 
-  protected static final Map<TypeRef, String> COMMON_MAPPINGS = new HashMap<>();
+  private static final Map<TypeRef, String> COMMON_MAPPINGS = new HashMap<>();
 
   static {
     COMMON_MAPPINGS.put(STRING_REF, STRING_MARKER);
@@ -99,6 +99,16 @@ public abstract class AbstractJsonSchema<T, B> {
     COMMON_MAPPINGS.put(DURATION_REF, STRING_MARKER);
   }
 
+  public static String getSchemaTypeFor(TypeRef typeRef) {
+    String type = COMMON_MAPPINGS.get(typeRef);
+    if (type == null && typeRef instanceof ClassRef) { // Handle complex types
+      ClassRef classRef = (ClassRef) typeRef;
+      TypeDef def = Types.typeDefFrom(classRef);
+      type = def.isEnum() ? STRING_MARKER : "object";
+    }
+    return type;
+  }
+
   /**
    * Creates the JSON schema for the particular {@link TypeDef}. This is template method where
    * sub-classes are supposed to provide specific implementations of abstract methods.
@@ -113,8 +123,8 @@ public abstract class AbstractJsonSchema<T, B> {
       ignore.length > 0 ? new LinkedHashSet<>(Arrays.asList(ignore)) : Collections
         .emptySet();
     List<String> required = new ArrayList<>();
-
-    for (Property property : Types.projectProperties(definition)) {
+    
+    for (Property property : definition.getProperties()) {
       final String name = property.getName();
 
       if (property.isStatic() || ignores.contains(name)) {
@@ -185,7 +195,7 @@ public abstract class AbstractJsonSchema<T, B> {
       } else {
         if (typeRef instanceof ClassRef) { // Handle complex types
           ClassRef classRef = (ClassRef) typeRef;
-          TypeDef def = classRef.getDefinition();
+          TypeDef def = Types.typeDefFrom(classRef);
 
           // check if we're dealing with an enum
           if(def.isEnum()) {
