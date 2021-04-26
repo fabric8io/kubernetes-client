@@ -57,7 +57,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Setup Minikube-Kubernetes
-        uses: manusa/actions-setup-minikube@v2.3.1
+        uses: manusa/actions-setup-minikube@v2.4.0
         with:
           minikube version: v1.16.0
           kubernetes version: ${{ matrix.kubernetes }}
