@@ -230,4 +230,9 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
     }
     return desired < check ? check : desired;
   }
+
+  @Override
+  public boolean isRunning() {
+    return !stopped && started && controller.isRunning(); 
+  }
 }

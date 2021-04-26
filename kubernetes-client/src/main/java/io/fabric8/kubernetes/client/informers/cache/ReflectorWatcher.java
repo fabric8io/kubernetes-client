@@ -22,7 +22,6 @@ import io.fabric8.kubernetes.client.WatcherException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class ReflectorWatcher<T extends HasMetadata> implements Watcher<T> {
@@ -33,6 +32,7 @@ public class ReflectorWatcher<T extends HasMetadata> implements Watcher<T> {
   private final AtomicReference<String> lastSyncResourceVersion;
   private final Runnable onClose;
   private final Runnable onHttpGone;
+  private volatile boolean closed;
 
   public ReflectorWatcher(Store<T> store, AtomicReference<String> lastSyncResourceVersion, Runnable onClose, Runnable onHttpGone) {
     this.store = store;
@@ -70,15 +70,20 @@ public class ReflectorWatcher<T extends HasMetadata> implements Watcher<T> {
 
   @Override
   public void onClose(WatcherException exception) {
+    // this close was triggered by an exception,
+    // not the user, it is expected that the watch retry will handle this
     log.warn("Watch closing with exception", exception);
-    Optional.ofNullable(exception)
-      .filter(WatcherException::isHttpGone)
-      .ifPresent(c -> onHttpGone.run());
+    if (exception.isHttpGone()) {
+        onHttpGone.run();
+    }
     onClose.run();
   }
 
   @Override
   public void onClose() {
+    // this should be an explicit close by the user,
+    // mark as closed
+    closed = true;
     log.debug("Watch gracefully closed");
     onClose.run();
   }
@@ -86,5 +91,9 @@ public class ReflectorWatcher<T extends HasMetadata> implements Watcher<T> {
   @Override
   public boolean reconnecting() {
     return true;
+  }
+  
+  public boolean isClosed() {
+    return closed;
   }
 }

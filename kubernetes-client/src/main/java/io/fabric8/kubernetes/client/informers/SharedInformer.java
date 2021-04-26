@@ -59,4 +59,9 @@ public interface SharedInformer<T> {
    * @return string value
    */
   String lastSyncResourceVersion();
+  
+  /**
+   * Return true if the informer is running
+   */
+  boolean isRunning();
 }

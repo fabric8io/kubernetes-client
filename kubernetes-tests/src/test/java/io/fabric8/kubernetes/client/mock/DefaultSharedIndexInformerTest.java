@@ -67,6 +67,7 @@ import java.util.function.Function;
 import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableKubernetesMockClient
 class DefaultSharedIndexInformerTest {
@@ -835,8 +836,14 @@ class DefaultSharedIndexInformerTest {
     factory.startAllRegisteredInformers();
     updates.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
 
+    // should still be running after all that
+    assertTrue(podInformer.isRunning());
     // Then
     assertEquals(0, updates.getCount());
+
+    podInformer.stop();
+
+    assertFalse(podInformer.isRunning());
   }
 
   private KubernetesResource getAnimal(String name, String order, String resourceVersion) {
