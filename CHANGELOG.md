@@ -3,6 +3,7 @@
 ### 5.4-SNAPSHOT
 
 #### Bugs
+* Fix #3014: Resync Future is canceled and resync executor is shutdown on informer stop
 * Fix #2989: serialization will generate valid yaml when using subtypes
 * Fix #2996: Generating CRDs from the API should now properly work
 * Fix #3000: Set `no_proxy` in the okhttp builder in case the `proxy_url` is null
