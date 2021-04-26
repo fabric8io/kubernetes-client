@@ -25,6 +25,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @EnableKubernetesMockClient
 public class VersionInfoTest {
@@ -47,6 +48,23 @@ public class VersionInfoTest {
     assertEquals("3", client.getVersion().getMajor());
     assertEquals("6", client.getVersion().getMinor());
     assertEquals(118, client.getVersion().getBuildDate().getYear());
-    assertEquals(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse("2018-03-01T14:27:17Z").getTime(), client.getVersion().getBuildDate().getTime());
+    assertEquals(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse("2018-03-01T14:27:17Z").getTime(),
+      client.getVersion().getBuildDate().getTime());
+  }
+
+  @Test
+  public void testClusterVersioningWithMissingBuildDate() {
+    server.expect().withPath("/version").andReturn(200, "{" +
+      "    \"gitCommit\": \"e6301f88a8\"," +
+      "    \"gitVersion\": \"v1.6.1+5115d708d7\"," +
+      "    \"major\": \"3\"," +
+      "    \"minor\": \"6\"" +
+      "}").always();
+
+    assertEquals("v1.6.1+5115d708d7", client.getVersion().getGitVersion());
+    assertEquals("e6301f88a8", client.getVersion().getGitCommit());
+    assertEquals("3", client.getVersion().getMajor());
+    assertEquals("6", client.getVersion().getMinor());
+    assertNull(client.getVersion().getBuildDate());
   }
 }
