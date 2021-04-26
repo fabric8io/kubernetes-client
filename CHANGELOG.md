@@ -3,6 +3,7 @@
 ### 5.4-SNAPSHOT
 
 #### Bugs
+* Fix #3014: Resync Future is canceled and resync executor is shutdown on informer stop
 * Fix #2989: serialization will generate valid yaml when using subtypes
 * Fix #2991: reduced the level of ReflectWatcher event received log
 * Fix #2992: allowing Watch auto-reconnect for shared informers
