@@ -28,7 +28,7 @@
 
   <artifactId>crd-generator-apt</artifactId>
   <name>Fabric8 :: CRD generator :: Annotation Processor</name>
-  
+
   <dependencies>
     <dependency>
       <groupId>io.fabric8</groupId>

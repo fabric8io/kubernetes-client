@@ -28,7 +28,7 @@
 
   <artifactId>crd-generator-api</artifactId>
   <name>Fabric8 :: CRD generator :: API</name>
-  
+
   <dependencies>
     <dependency>
       <groupId>io.fabric8</groupId>
