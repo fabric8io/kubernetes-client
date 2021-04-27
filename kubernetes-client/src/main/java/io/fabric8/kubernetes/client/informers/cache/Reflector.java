@@ -110,6 +110,6 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   }
   
   public boolean isRunning() {
-    return isActive.get() && !watcher.isClosed();
+    return isActive.get();
   }
 }

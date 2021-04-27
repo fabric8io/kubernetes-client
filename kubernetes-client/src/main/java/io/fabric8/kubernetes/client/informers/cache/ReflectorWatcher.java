@@ -32,7 +32,6 @@ public class ReflectorWatcher<T extends HasMetadata> implements Watcher<T> {
   private final AtomicReference<String> lastSyncResourceVersion;
   private final Runnable onClose;
   private final Runnable onHttpGone;
-  private volatile boolean closed;
 
   public ReflectorWatcher(Store<T> store, AtomicReference<String> lastSyncResourceVersion, Runnable onClose, Runnable onHttpGone) {
     this.store = store;
@@ -81,9 +80,6 @@ public class ReflectorWatcher<T extends HasMetadata> implements Watcher<T> {
 
   @Override
   public void onClose() {
-    // this should be an explicit close by the user,
-    // mark as closed
-    closed = true;
     log.debug("Watch gracefully closed");
     onClose.run();
   }
@@ -93,7 +89,4 @@ public class ReflectorWatcher<T extends HasMetadata> implements Watcher<T> {
     return true;
   }
   
-  public boolean isClosed() {
-    return closed;
-  }
 }
