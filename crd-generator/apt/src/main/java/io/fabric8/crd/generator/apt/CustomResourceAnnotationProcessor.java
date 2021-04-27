@@ -29,6 +29,7 @@ import io.fabric8.kubernetes.model.annotation.ShortNames;
 import io.fabric8.kubernetes.model.annotation.Singular;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.codegen.CodegenContext;
+import io.sundr.codegen.functions.ClassTo;
 import io.sundr.codegen.functions.ElementTo;
 import io.sundr.codegen.model.TypeDef;
 import java.io.IOException;
@@ -50,6 +51,9 @@ import javax.tools.StandardLocation;
 @SupportedAnnotationTypes({"io.fabric8.kubernetes.model.annotation.Version"})
 public class CustomResourceAnnotationProcessor extends AbstractProcessor {
   
+  //Let`s ensure that core types will be registered via ClassTo.
+  private final TypeDef STRING = ClassTo.TYPEDEF.apply(String.class);
+
   private final CRDGenerator generator = new CRDGenerator();
 
   public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
