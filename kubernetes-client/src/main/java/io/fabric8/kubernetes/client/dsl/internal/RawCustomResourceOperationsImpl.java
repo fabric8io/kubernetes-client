@@ -717,10 +717,11 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
    *
    * @param namespace namespace to watch
    * @param watcher watcher object which reports updates with object
+   * @return watch object for watching resource
    * @throws IOException in case of network error
    */
-  public void watch(String namespace, Watcher<String> watcher) throws IOException {
-    watch(namespace, null, null, new ListOptionsBuilder().build(), watcher);
+  public Watch watch(String namespace, Watcher<String> watcher) throws IOException {
+    return watch(namespace, null, null, new ListOptionsBuilder().build(), watcher);
   }
 
   /**
@@ -730,10 +731,11 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
    * @param namespace namespace to watch
    * @param resourceVersion resource version since when to watch
    * @param watcher watcher object which reports updates
+   * @return watch object for watching resource
    * @throws IOException in case of network error
    */
-  public void watch(String namespace, String resourceVersion, Watcher<String> watcher) throws IOException {
-    watch(namespace, null, null, new ListOptionsBuilder().withResourceVersion(resourceVersion).build(), watcher);
+  public Watch watch(String namespace, String resourceVersion, Watcher<String> watcher) throws IOException {
+    return watch(namespace, null, null, new ListOptionsBuilder().withResourceVersion(resourceVersion).build(), watcher);
   }
 
   /**
@@ -743,10 +745,11 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
    * @param namespace namespace to watch
    * @param options {@link ListOptions} list options for watching
    * @param watcher watcher object which reports updates
+   * @return watch object for watching resource
    * @throws IOException in case of network error
    */
-  public void watch(String namespace, ListOptions options, Watcher<String> watcher) throws IOException {
-    watch(namespace, null, null, options, watcher);
+  public Watch watch(String namespace, ListOptions options, Watcher<String> watcher) throws IOException {
+    return watch(namespace, null, null, options, watcher);
   }
 
   /**
@@ -754,10 +757,11 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
    * for string type only. User has to deserialize object itself.
    *
    * @param watcher watcher object which reports events
+   * @return watch object for watching resource
    * @throws IOException in case of network error
    */
-  public void watch(Watcher<String> watcher) throws IOException {
-    watch(null, null, null, new ListOptionsBuilder().build(), watcher);
+  public Watch watch(Watcher<String> watcher) throws IOException {
+    return watch(null, null, null, new ListOptionsBuilder().build(), watcher);
   }
 
   /**

@@ -27,6 +27,7 @@ import io.fabric8.crd.example.joke.JokeRequest;
 import io.fabric8.crd.example.simplest.Simplest;
 import io.fabric8.crd.generator.CRDGenerator.AbstractCRDOutput;
 import io.fabric8.crd.generator.utils.Types;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceColumnDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionNames;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionSpec;
@@ -51,7 +52,7 @@ import org.slf4j.LoggerFactory;
 class CRDGeneratorTest {
 
   private final TestCRDOutput output = new TestCRDOutput();
-  
+
   @Test
   void choosingCRDVersionsShouldWork() {
     CRDGenerator generator = new CRDGenerator();
@@ -59,7 +60,7 @@ class CRDGeneratorTest {
 
     generator.forCRDVersions();
     assertTrue(generator.getHandlers().isEmpty());
-    
+
     generator.forCRDVersions((List<String>) null);
     assertTrue(generator.getHandlers().isEmpty());
 
@@ -147,12 +148,6 @@ class CRDGeneratorTest {
       // output type def and crd
       Types.output(output.get(keyFor(customResource)).definition());
       output.outputCRD(customResource);
-      // drop the first two elements so that we output directly the source of the issue instead of this method and its lambda call
-      final StackTraceElement[] originalStackTrace = e.getStackTrace();
-      final int length = originalStackTrace.length - 2;
-      final StackTraceElement[] newStackTrace = new StackTraceElement[length];
-      System.arraycopy(originalStackTrace, 2, newStackTrace, 0, length);
-      e.setStackTrace(newStackTrace);
       throw e;
     }
   }
@@ -196,6 +191,12 @@ class CRDGeneratorTest {
 
       final CustomResourceDefinitionVersion version = checkVersion(spec);
       assertNotNull(version.getSubresources());
+      final List<CustomResourceColumnDefinition> printerColumns = version
+        .getAdditionalPrinterColumns();
+      assertEquals(1, printerColumns.size());
+      final CustomResourceColumnDefinition columnDefinition = printerColumns.get(0);
+      assertEquals("string", columnDefinition.getType());
+      assertEquals("jokeCategory", columnDefinition.getName());
       CustomResourceValidation schema = version.getSchema();
       assertNotNull(schema);
       Map<String, JSONSchemaProps> properties = schema.getOpenAPIV3Schema().getProperties();
@@ -260,7 +261,6 @@ class CRDGeneratorTest {
     final String outputName = keyFor(customResource);
     final CustomResourceInfo info = CustomResourceInfo.fromClass(customResource);
     output.put(outputName, info);
-
     assertEquals(1, generator.withOutput(output)
       .forCRDVersions("v1")
       .customResources(info)
@@ -284,7 +284,6 @@ class CRDGeneratorTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(TestCRDOutput.class);
     private final static Class<CustomResourceDefinition> crdClass = CustomResourceDefinition.class;
     private final Map<String, CustomResourceInfo> infos = new ConcurrentHashMap<>();
-
     @Override
     protected ByteArrayOutputStream createStreamFor(String crdName) throws IOException {
       return new ByteArrayOutputStream();
@@ -301,7 +300,7 @@ class CRDGeneratorTest {
     CustomResourceInfo get(String outputName) {
       return infos.get(outputName);
     }
-    
+
     void outputCRD(Class<? extends CustomResource<?, ?>> customResource) {
       String s = getStreamFor(keyFor(customResource)).toString();
       LOGGER.debug(s);
