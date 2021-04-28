@@ -22,6 +22,7 @@
 
 #### Dependency Upgrade
 * Fix #2979: Update Kubernetes Model to v1.21.0
+* Update to sundrio 0.30.6
 
 #### New Features
 * Fix #2984: Add support for `flowcontrol.apiserver.k8s.io/v1beta1` FlowSchema and PriorityLevelConfiguration
