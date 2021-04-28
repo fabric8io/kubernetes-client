@@ -63,8 +63,6 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
 
   private final ScheduledExecutorService resyncExecutor;
 
-  private volatile ScheduledFuture resyncFuture;
-
   private final OperationContext operationContext;
 
   private final ConcurrentLinkedQueue<SharedInformerEventListener> eventListeners;
@@ -97,7 +95,7 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
     if (fullResyncPeriod > 0) {
       ResyncRunnable resyncRunnable = new ResyncRunnable(queue, resyncFunc);
       if(!resyncExecutor.isShutdown()) {
-        resyncFuture = resyncExecutor.scheduleAtFixedRate(resyncRunnable, fullResyncPeriod, fullResyncPeriod, TimeUnit.MILLISECONDS);
+        resyncExecutor.scheduleAtFixedRate(resyncRunnable, fullResyncPeriod, fullResyncPeriod, TimeUnit.MILLISECONDS);
       }
     } else {
       log.info("informer#Controller: resync skipped due to 0 full resync period");
@@ -123,10 +121,7 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
    */
   public void stop() {
     reflector.stop();
-    if (resyncFuture != null) {
-      resyncFuture.cancel(true);
-    }
-    resyncExecutor.shutdown();
+    resyncExecutor.shutdownNow();
   }
 
   /**
