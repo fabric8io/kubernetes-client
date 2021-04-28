@@ -30,6 +30,7 @@ public class TektonTriggersResourceMappingProvider implements KubernetesResource
       mappings.put("triggers.tekton.dev/v1alpha1#TriggerBinding", io.fabric8.tekton.triggers.v1alpha1.TriggerBinding.class);
       mappings.put("triggers.tekton.dev/v1alpha1#EventListener", io.fabric8.tekton.triggers.v1alpha1.EventListener.class);
       mappings.put("triggers.tekton.dev/v1alpha1#ClusterTriggerBinding", io.fabric8.tekton.triggers.v1alpha1.ClusterTriggerBinding.class);
+      mappings.put("triggers.tekton.dev/v1alpha1#Trigger", io.fabric8.tekton.triggers.v1alpha1.Trigger.class);
     }
 
     public Map<String, Class<? extends KubernetesResource>> getMappings() {
