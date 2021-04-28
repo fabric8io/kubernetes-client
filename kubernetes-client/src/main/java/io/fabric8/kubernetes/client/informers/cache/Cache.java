@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * It basically saves and indexes all the entries.
@@ -49,6 +50,8 @@ public class Cache<T> implements Indexer<T> {
 
   // indices stores objects' key by their indices
   private Map<String, Map<String, Set<String>>> indices = new HashMap<>();
+  
+  private Supplier<Boolean> isRunning = () -> false;
 
   public Cache() {
     this(NAMESPACE_INDEX, Cache::metaNamespaceIndexFunc, Cache::deletionHandlingMetaNamespaceKeyFunc);
@@ -58,6 +61,10 @@ public class Cache<T> implements Indexer<T> {
     this.indexers.put(indexName, indexFunc);
     this.keyFunc = keyFunc;
     this.indices.put(indexName, new HashMap<>());
+  }
+  
+  public void setIsRunning(Supplier<Boolean> isRunning) {
+    this.isRunning = isRunning;
   }
 
   /**
@@ -85,6 +92,9 @@ public class Cache<T> implements Indexer<T> {
 
   @Override
   public void addIndexers(Map<String, Function<T, List<String>>> indexersNew) {
+    if (isRunning.get()) {
+      throw new IllegalStateException("Cannot add indexers to a running informer.");
+    }  
     if (!items.isEmpty()) {
       throw new IllegalStateException("Cannot add indexers to a Cache which is not empty");
     }

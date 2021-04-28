@@ -267,7 +267,7 @@ public class SharedInformerFactory extends BaseOperation {
     SharedIndexInformer<T> foundSharedIndexInformer = null;
     for (Map.Entry<String, SharedIndexInformer> entry : this.informers.entrySet()) {
       if (isKeyOfType(entry.getKey(), apiTypeClass)) {
-        foundSharedIndexInformer = (SharedIndexInformer<T>) entry.getValue();
+        foundSharedIndexInformer = entry.getValue();
       }
     }
     return foundSharedIndexInformer;
@@ -284,7 +284,7 @@ public class SharedInformerFactory extends BaseOperation {
     if (!informerExecutor.isShutdown()) {
       informers.forEach(
         (informerType, informer) ->
-          startedInformers.computeIfAbsent(informerType, key -> informerExecutor.submit(informer::run)));
+          startedInformers.computeIfAbsent(informerType, key -> informerExecutor.submit((Runnable)informer::run)));
     }
   }
 
