@@ -63,7 +63,7 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
 
   private final ScheduledExecutorService resyncExecutor;
 
-  private ScheduledFuture resyncFuture;
+  private volatile ScheduledFuture resyncFuture;
 
   private final OperationContext operationContext;
 
@@ -105,7 +105,8 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
 
     try {
       running = true;
-      reflector.listAndWatch();
+      log.info("Started Reflector watch for {}", apiTypeClass);
+      reflector.listSyncAndWatch();
 
       // Start the process loop
       this.processLoop();
@@ -121,13 +122,11 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
    * Stops the resync thread pool first, then stops the reflector.
    */
   public void stop() {
-    synchronized (this) {
-      reflector.stop();
-      if (resyncFuture != null) {
-        resyncFuture.cancel(true);
-      }
-      resyncExecutor.shutdown();
+    reflector.stop();
+    if (resyncFuture != null) {
+      resyncFuture.cancel(true);
     }
+    resyncExecutor.shutdown();
   }
 
   /**

@@ -17,6 +17,7 @@
 * Fix #3027: fix NPE when sorting events in KubernetesResourceUtil
 * Fix missing entry for Trigger in TektonTriggersResourceMappingProvider
 * Fix #3047: NPE when getting version when there is no build date
+* Fix #3024: stopAllRegisteredInformers will not call startWatcher
 
 #### Improvements
 * Fix #2788: Support FIPS mode in kubernetes-client with BouncyCastleFipsProvider

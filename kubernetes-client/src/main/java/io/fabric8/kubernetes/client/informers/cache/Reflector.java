@@ -30,7 +30,6 @@ import java.util.concurrent.atomic.AtomicReference;
 public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T>> {
 
   private static final Logger log = LoggerFactory.getLogger(Reflector.class);
-  private static final Long WATCH_RESTART_DELAY_MILLIS = 5000L;
 
   private final AtomicReference<String> lastSyncResourceVersion;
   private final Class<T> apiTypeClass;
@@ -47,7 +46,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
     this.store = store;
     this.operationContext = operationContext;
     this.lastSyncResourceVersion = new AtomicReference<>();
-    this.watcher = new ReflectorWatcher<>(store, lastSyncResourceVersion, this::startWatcher, this::reListAndSync);
+    this.watcher = new ReflectorWatcher<>(store, lastSyncResourceVersion, this::listSyncAndWatch);
     this.isActive = new AtomicBoolean(true);
     this.watch = new AtomicReference<>(null);
   }
@@ -59,54 +58,48 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
       .withTimeoutSeconds(null).build(), operationContext.getNamespace(), operationContext);
   }
 
-  public void listAndWatch() {
-    log.info("Started ReflectorRunnable watch for {}", apiTypeClass);
-    reListAndSync();
-    startWatcher();
-  }
-
   public void stop() {
     isActive.set(false);
+    stopWatcher();
+  }
+
+  private synchronized void stopWatcher() {
     Watch theWatch = watch.getAndSet(null);
     if (theWatch != null) {
+      String ns = operationContext.getNamespace();
+      log.debug("Stopping watcher for resource {} v{} in namespace {}", apiTypeClass, lastSyncResourceVersion.get(), ns);
       theWatch.close();
     }
   }
 
-  private void reListAndSync() {
+  /**
+   * <br>Starts the watch with a fresh store state.
+   * <br>Should be called only at start and when HttpGone is seen.
+   */
+  void listSyncAndWatch() {
     store.isPopulated(false);
     final L list = getList();
     final String latestResourceVersion = list.getMetadata().getResourceVersion();
+    lastSyncResourceVersion.set(list.getMetadata().getResourceVersion());
     log.debug("Listing items ({}) for resource {} v{}", list.getItems().size(), apiTypeClass, latestResourceVersion);
-    lastSyncResourceVersion.set(latestResourceVersion);
     store.replace(list.getItems(), latestResourceVersion);
+    startWatcher(latestResourceVersion);
   }
 
-  private void startWatcher() {
-    log.debug("Starting watcher for resource {} v{}", apiTypeClass, lastSyncResourceVersion.get());
-    Watch theWatch = watch.getAndSet(null);
-    if (theWatch != null) {
-      theWatch.close();
-      log.debug("Stopping previous watcher, and delaying execution of new watcher");
-      try {
-        Thread.sleep(WATCH_RESTART_DELAY_MILLIS);
-      } catch (InterruptedException e) {
-        log.debug("Reflector thread was interrupted: {}", e.getMessage());
-        Thread.currentThread().interrupt();
+  private synchronized void startWatcher(final String latestResourceVersion) {
+    if (!isActive.get()) {
         return;
-      }
     }
-    if (isActive.get()) {
-      watch.set(
-        listerWatcher.watch(new ListOptionsBuilder()
-          .withWatch(Boolean.TRUE).withResourceVersion(lastSyncResourceVersion.get()).withTimeoutSeconds(null).build(),
-        operationContext.getNamespace(), operationContext, watcher)
-      );
-    }
+    log.debug("Starting watcher for resource {} v{}", apiTypeClass, latestResourceVersion);
+    // there's no need to stop the old watch, that will happen automatically when this call completes
+    watch.set(
+      listerWatcher.watch(new ListOptionsBuilder()
+        .withWatch(Boolean.TRUE).withResourceVersion(latestResourceVersion).withTimeoutSeconds(null).build(),
+      operationContext.getNamespace(), operationContext, watcher));
   }
 
   public String getLastSyncResourceVersion() {
-    return lastSyncResourceVersion.get();
+      return lastSyncResourceVersion.get();
   }
   
   public boolean isRunning() {
