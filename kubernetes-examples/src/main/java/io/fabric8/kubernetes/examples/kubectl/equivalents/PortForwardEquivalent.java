@@ -43,7 +43,7 @@ public class PortForwardEquivalent {
       logger.info("Closing port forward");
     } catch (InterruptedException interruptedException) {
       Thread.currentThread().interrupt();
-      interruptedException.printStackTrace();
+      logger.warn("Interrupted while waiting for the port forward to be ready: {}", interruptedException.getMessage());
     }
   }
 }

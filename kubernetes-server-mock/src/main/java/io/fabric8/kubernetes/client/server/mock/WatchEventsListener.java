@@ -74,7 +74,7 @@ class WatchEventsListener extends WebSocketListener {
     try {
       executor.awaitTermination(1, TimeUnit.MINUTES);
     } catch (InterruptedException e) {
-      logger.debug(e.getLocalizedMessage());
+      logger.debug("Interrupted waiting for the executor service to shutdown: {}", e.getMessage());
       Thread.currentThread().interrupt();
     }
     watchEventListenerList.remove(this);
@@ -87,7 +87,7 @@ class WatchEventsListener extends WebSocketListener {
     try {
       executor.awaitTermination(1, TimeUnit.MINUTES);
     } catch (InterruptedException e) {
-      logger.debug(e.getLocalizedMessage());
+      logger.debug("Interrupted waiting for the executor service to shutdown: {}", e.getMessage());
       Thread.currentThread().interrupt();
     }
     watchEventListenerList.remove(this);

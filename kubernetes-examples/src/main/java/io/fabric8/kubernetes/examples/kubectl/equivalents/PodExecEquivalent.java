@@ -54,7 +54,7 @@ public class PodExecEquivalent {
       execWatch.close();
     } catch (InterruptedException ie) {
       Thread.currentThread().interrupt();
-      ie.printStackTrace();
+      logger.warn("Interrupted while waiting for the exec: {}", ie.getMessage());
     }
   }
 

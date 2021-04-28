@@ -87,6 +87,7 @@ class CacheTest {
     Pod testPodObj = new PodBuilder().withNewMetadata().withName("test-pod4").withNamespace("default").endMetadata().build();
 
     cache.add(testPodObj);
+    assertEquals("", Cache.metaNamespaceKeyFunc(null));
     assertEquals("default/test-pod4", Cache.metaNamespaceKeyFunc(testPodObj));
     assertEquals("default/test-pod4", Cache.namespaceKeyFunc("default", "test-pod4"));
   }

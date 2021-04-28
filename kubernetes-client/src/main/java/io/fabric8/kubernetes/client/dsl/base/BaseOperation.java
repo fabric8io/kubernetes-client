@@ -98,6 +98,8 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   private static final String INVOLVED_OBJECT_RESOURCE_VERSION = "involvedObject.resourceVersion";
   private static final String INVOLVED_OBJECT_API_VERSION = "involvedObject.apiVersion";
   private static final String INVOLVED_OBJECT_FIELD_PATH = "involvedObject.fieldPath";
+  private static final String READ_ONLY_UPDATE_EXCEPTION_MESSAGE = "Cannot update read-only resources";
+  private static final String READ_ONLY_EDIT_EXCEPTION_MESSAGE = "Cannot edit read-only resources";
 
   private final boolean cascading;
   private final T item;
@@ -245,12 +247,12 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public T edit(UnaryOperator<T> function) {
-    throw new KubernetesClientException("Cannot edit read-only resources");
+    throw new KubernetesClientException(READ_ONLY_EDIT_EXCEPTION_MESSAGE);
   }
 
   @Override
   public T edit(Visitor... visitors) {
-    throw new KubernetesClientException("Cannot edit read-only resources");
+    throw new KubernetesClientException(READ_ONLY_EDIT_EXCEPTION_MESSAGE);
   }
 
   @Override
@@ -270,7 +272,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public T accept(Consumer<T> consumer) {
-    throw new KubernetesClientException("Cannot edit read-only resources");
+    throw new KubernetesClientException(READ_ONLY_EDIT_EXCEPTION_MESSAGE);
   }
 
   @Override
@@ -401,7 +403,8 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
         try {
           return waitUntilCondition(Objects::nonNull, 1, TimeUnit.SECONDS);
         } catch (InterruptedException interruptedException) {
-          interruptedException.printStackTrace();
+          LOG.warn("Interrupted while waiting for the resource to be created or replaced. Gracefully assuming the resource has not been created and doesn't exist. ({})", interruptedException.getMessage());
+          Thread.currentThread().interrupt();
         }
         return null;
       },
@@ -848,12 +851,17 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public T replace(T item) {
-    throw new KubernetesClientException("Cannot update read-only resources");
+    throw new KubernetesClientException(READ_ONLY_UPDATE_EXCEPTION_MESSAGE);
   }
 
   @Override
   public T patch(T item) {
-    throw new KubernetesClientException("Cannot update read-only resources");
+    throw new KubernetesClientException(READ_ONLY_UPDATE_EXCEPTION_MESSAGE);
+  }
+
+  @Override
+  public T patch(PatchContext patchContext, String patch) {
+    throw new KubernetesClientException(READ_ONLY_UPDATE_EXCEPTION_MESSAGE);
   }
 
   @Override

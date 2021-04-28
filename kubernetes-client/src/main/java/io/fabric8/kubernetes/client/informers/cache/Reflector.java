@@ -91,7 +91,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
       try {
         Thread.sleep(WATCH_RESTART_DELAY_MILLIS);
       } catch (InterruptedException e) {
-        log.error("Reflector thread was interrupted");
+        log.debug("Reflector thread was interrupted: {}", e.getMessage());
         Thread.currentThread().interrupt();
         return;
       }

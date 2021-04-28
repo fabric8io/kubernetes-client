@@ -390,6 +390,9 @@ public class Cache<T> implements Indexer<T> {
    */
   public static String metaNamespaceKeyFunc(Object obj) {
     try {
+      if( obj == null ) {
+        return "";
+      }
       ObjectMeta metadata;
       if(obj instanceof String) {
         return (String) obj;

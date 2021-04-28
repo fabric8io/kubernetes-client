@@ -2066,10 +2066,6 @@ client.pods().inNamespace(namespace).watch(resourceVersion, new Watcher<Pod>() {
 
 // Wait till watch gets closed
 isWatchClosed.await();
-} catch (InterruptedException interruptedException) {
-logger.log(Level.INFO, "Thread Interrupted!");
-Thread.currentThread().interrupt();
-}
 ```
 - Watching with `ListOptions` object:
 ```

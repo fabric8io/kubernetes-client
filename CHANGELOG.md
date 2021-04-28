@@ -4,6 +4,7 @@
 
 #### Bugs
 * Fix #3014: Resync Future is canceled and resync executor is shutdown on informer stop
+* Fix #2978: Fix SharedInformer NPE on initial requests while syncing
 * Fix #2989: serialization will generate valid yaml when using subtypes
 * Fix #2991: reduced the level of ReflectWatcher event received log
 * Fix #2992: allowing Watch auto-reconnect for shared informers
@@ -15,8 +16,10 @@
 * Fix #3027: fix NPE when sorting events in KubernetesResourceUtil
 
 #### Improvements
+* Fix #2788: Support FIPS mode in kubernetes-client with BouncyCastleFipsProvider
 * Fix #2910: Move crd-generator tests from kubernetes-itests to kubernetes-tests
 * Fix #3005: Make it possible to select which CRD version is generated / improve output
+* Fix #3015: Thread interruption in a nominal case (like closing the client) are now logged in debug
 
 #### Dependency Upgrade
 * Fix #2979: Update Kubernetes Model to v1.21.0
@@ -26,6 +29,7 @@
 * Fix #2980: Add DSL Support for `apps/v1#ControllerRevision` resource
 * Fix #2981: Add DSL support for `storage.k8s.io/v1beta1` CSIDriver, CSINode and VolumeAttachment
 * Fix #2912: Add DSL support for `storage.k8s.io/v1beta1` CSIStorageCapacity
+* Fix #2701: Better support for patching in KuberntesClient
 * Fix #3034: Added a SharedInformer.isRunning method
 
 #### _**Note**_: Breaking changes in the API
