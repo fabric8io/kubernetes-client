@@ -24,8 +24,6 @@ import io.fabric8.kubernetes.client.informers.ListerWatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -39,28 +37,18 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   private final ListerWatcher<T, L> listerWatcher;
   private final Store<T> store;
   private final OperationContext operationContext;
-  private final long resyncPeriodMillis;
-  private final ScheduledExecutorService resyncExecutor;
   private final ReflectorWatcher<T> watcher;
   private final AtomicBoolean isActive;
-  private final AtomicBoolean isWatcherStarted;
   private final AtomicReference<Watch> watch;
 
-  public Reflector(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, Store store, OperationContext operationContext, long resyncPeriodMillis) {
-    this(apiTypeClass, listerWatcher, store, operationContext, resyncPeriodMillis, Executors.newSingleThreadScheduledExecutor());
-  }
-
-  public Reflector(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, Store store, OperationContext operationContext, long resyncPeriodMillis, ScheduledExecutorService resyncExecutor) {
+  public Reflector(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, Store store, OperationContext operationContext) {
     this.apiTypeClass = apiTypeClass;
     this.listerWatcher = listerWatcher;
     this.store = store;
     this.operationContext = operationContext;
-    this.resyncPeriodMillis = resyncPeriodMillis;
     this.lastSyncResourceVersion = new AtomicReference<>();
-    this.resyncExecutor = resyncExecutor;
     this.watcher = new ReflectorWatcher<>(store, lastSyncResourceVersion, this::startWatcher, this::reListAndSync);
     this.isActive = new AtomicBoolean(true);
-    this.isWatcherStarted = new AtomicBoolean(false);
     this.watch = new AtomicReference<>(null);
   }
 
@@ -79,14 +67,10 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
 
   public void stop() {
     isActive.set(false);
-    if (watch.get() != null) {
-      watch.get().close();
-      watch.set(null);
+    Watch theWatch = watch.getAndSet(null);
+    if (theWatch != null) {
+      theWatch.close();
     }
-  }
-
-  public long getResyncPeriodMillis() {
-    return resyncPeriodMillis;
   }
 
   private void reListAndSync() {
@@ -96,19 +80,14 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
     log.debug("Listing items ({}) for resource {} v{}", list.getItems().size(), apiTypeClass, latestResourceVersion);
     lastSyncResourceVersion.set(latestResourceVersion);
     store.replace(list.getItems(), latestResourceVersion);
-    if (!isActive.get()) {
-      resyncExecutor.shutdown();
-    }
   }
 
   private void startWatcher() {
     log.debug("Starting watcher for resource {} v{}", apiTypeClass, lastSyncResourceVersion.get());
-    if (watch.get() != null) {
-      log.debug("Stopping previous watcher");
-      watch.get().close();
-    }
-    if (isWatcherStarted.get()) {
-      log.debug("Watcher already started, delaying execution of new watcher");
+    Watch theWatch = watch.getAndSet(null);
+    if (theWatch != null) {
+      theWatch.close();
+      log.debug("Stopping previous watcher, and delaying execution of new watcher");
       try {
         Thread.sleep(WATCH_RESTART_DELAY_MILLIS);
       } catch (InterruptedException e) {
@@ -118,7 +97,6 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
       }
     }
     if (isActive.get()) {
-      isWatcherStarted.set(true);
       watch.set(
         listerWatcher.watch(new ListOptionsBuilder()
           .withWatch(Boolean.TRUE).withResourceVersion(lastSyncResourceVersion.get()).withTimeoutSeconds(null).build(),
@@ -129,5 +107,9 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
 
   public String getLastSyncResourceVersion() {
     return lastSyncResourceVersion.get();
+  }
+  
+  public boolean isRunning() {
+    return isActive.get();
   }
 }

@@ -30,6 +30,7 @@
 * Fix #2981: Add DSL support for `storage.k8s.io/v1beta1` CSIDriver, CSINode and VolumeAttachment
 * Fix #2912: Add DSL support for `storage.k8s.io/v1beta1` CSIStorageCapacity
 * Fix #2701: Better support for patching in KuberntesClient
+* Fix #3034: Added a SharedInformer.isRunning method
 
 #### _**Note**_: Breaking changes in the API
 ##### DSL Changes:

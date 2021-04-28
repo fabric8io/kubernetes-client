@@ -61,8 +61,6 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
 
   private final Consumer<Deque<AbstractMap.SimpleEntry<DeltaFIFO.DeltaType, Object>>> processFunc;
 
-  private final ScheduledExecutorService reflectExecutor;
-
   private final ScheduledExecutorService resyncExecutor;
 
   private ScheduledFuture resyncFuture;
@@ -72,6 +70,8 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
   private final ConcurrentLinkedQueue<SharedInformerEventListener> eventListeners;
 
   private final Class<T> apiTypeClass;
+  
+  private volatile boolean running;
 
   public Controller(Class<T> apiTypeClass, DeltaFIFO<T> queue, ListerWatcher<T, L> listerWatcher, Consumer<Deque<AbstractMap.SimpleEntry<DeltaFIFO.DeltaType, Object>>> processFunc, Supplier<Boolean> resyncFunc, long fullResyncPeriod, OperationContext context, ConcurrentLinkedQueue<SharedInformerEventListener> eventListeners) {
     this.queue = queue;
@@ -86,12 +86,9 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
     this.operationContext = context;
     this.eventListeners = eventListeners;
 
-    // Starts one daemon thread for reflector
-    this.reflectExecutor = Executors.newSingleThreadScheduledExecutor();
-
     // Starts one daemon thread for resync
     this.resyncExecutor = Executors.newSingleThreadScheduledExecutor();
-    this.reflector = new Reflector<>(apiTypeClass, listerWatcher, queue, operationContext, fullResyncPeriod);
+    this.reflector = new Reflector<>(apiTypeClass, listerWatcher, queue, operationContext);
   }
 
   public void run() {
@@ -107,6 +104,7 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
     }
 
     try {
+      running = true;
       reflector.listAndWatch();
 
       // Start the process loop
@@ -114,6 +112,8 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
     } catch (Exception exception) {
       log.warn("Reflector list-watching job exiting because the thread-pool is shutting down", exception);
       this.eventListeners.forEach(listener -> listener.onException(exception));
+    } finally {
+      running = false;
     }
   }
 
@@ -123,7 +123,6 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
   public void stop() {
     synchronized (this) {
       reflector.stop();
-      reflectExecutor.shutdown();
       if (resyncFuture != null) {
         resyncFuture.cancel(true);
       }
@@ -169,11 +168,15 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
     }
   }
 
-  ScheduledExecutorService getReflectExecutor() {
-    return this.reflectExecutor;
-  }
-
   ScheduledExecutorService getResyncExecutor() {
     return this.resyncExecutor;
+  }
+  
+  public boolean isRunning() {
+    return running && this.reflector.isRunning();
+  }
+  
+  public long getFullResyncPeriod() {
+    return fullResyncPeriod;
   }
 }

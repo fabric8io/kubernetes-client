@@ -22,7 +22,6 @@ import io.fabric8.kubernetes.client.WatcherException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class ReflectorWatcher<T extends HasMetadata> implements Watcher<T> {
@@ -70,10 +69,12 @@ public class ReflectorWatcher<T extends HasMetadata> implements Watcher<T> {
 
   @Override
   public void onClose(WatcherException exception) {
+    // this close was triggered by an exception,
+    // not the user, it is expected that the watch retry will handle this
     log.warn("Watch closing with exception", exception);
-    Optional.ofNullable(exception)
-      .filter(WatcherException::isHttpGone)
-      .ifPresent(c -> onHttpGone.run());
+    if (exception.isHttpGone()) {
+        onHttpGone.run();
+    }
     onClose.run();
   }
 
@@ -87,4 +88,5 @@ public class ReflectorWatcher<T extends HasMetadata> implements Watcher<T> {
   public boolean reconnecting() {
     return true;
   }
+  
 }

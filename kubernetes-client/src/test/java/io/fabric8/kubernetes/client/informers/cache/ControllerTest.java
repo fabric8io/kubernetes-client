@@ -55,7 +55,7 @@ class ControllerTest {
       1000L, operationContext, eventListeners);
 
     // Then
-    assertEquals(1000L, controller.getReflector().getResyncPeriodMillis());
+    assertEquals(1000L, controller.getFullResyncPeriod());
   }
 
   @Test
@@ -77,7 +77,7 @@ class ControllerTest {
       0L, operationContext, eventListeners);
 
     // Then
-    assertEquals(0L, controller.getReflector().getResyncPeriodMillis());
+    assertEquals(0L, controller.getFullResyncPeriod());
   }
 
   @Test
@@ -92,7 +92,6 @@ class ControllerTest {
     // When
     controller.stop();
     // Then
-    assertThat(controller.getReflectExecutor().isShutdown()).isTrue();
     assertThat(controller.getResyncExecutor().isShutdown()).isTrue();
   }
 
