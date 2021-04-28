@@ -847,7 +847,8 @@ class DefaultSharedIndexInformerTest {
     assertFalse(podInformer.isRunning());
   }
 
-  @Test public void testRunAfterStop() {
+  @Test
+  void testRunAfterStop() {
     SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, 0);
     podInformer.run();
     podInformer.stop();

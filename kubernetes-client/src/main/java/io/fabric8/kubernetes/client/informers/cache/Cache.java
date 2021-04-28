@@ -27,8 +27,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BooleanSupplier;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 /**
  * It basically saves and indexes all the entries.
@@ -51,7 +51,7 @@ public class Cache<T> implements Indexer<T> {
   // indices stores objects' key by their indices
   private Map<String, Map<String, Set<String>>> indices = new HashMap<>();
   
-  private Supplier<Boolean> isRunning = () -> false;
+  private BooleanSupplier isRunning = () -> false;
 
   public Cache() {
     this(NAMESPACE_INDEX, Cache::metaNamespaceIndexFunc, Cache::deletionHandlingMetaNamespaceKeyFunc);
@@ -63,7 +63,7 @@ public class Cache<T> implements Indexer<T> {
     this.indices.put(indexName, new HashMap<>());
   }
   
-  public void setIsRunning(Supplier<Boolean> isRunning) {
+  public void setIsRunning(BooleanSupplier isRunning) {
     this.isRunning = isRunning;
   }
 
@@ -92,7 +92,7 @@ public class Cache<T> implements Indexer<T> {
 
   @Override
   public void addIndexers(Map<String, Function<T, List<String>>> indexersNew) {
-    if (isRunning.get()) {
+    if (isRunning.getAsBoolean()) {
       throw new IllegalStateException("Cannot add indexers to a running informer.");
     }  
     if (!items.isEmpty()) {
