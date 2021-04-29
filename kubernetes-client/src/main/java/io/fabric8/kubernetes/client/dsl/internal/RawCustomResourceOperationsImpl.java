@@ -1038,7 +1038,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
 
     // In most cases Status object is sent on deletion, but when deprecated DeleteOptions.orphanDependents
     // is used; object which is being deleted is sent
-    if (response.get("kind").toString().equals("Status")) {
+    if (!response.isEmpty() && response.get("kind").toString().equals("Status")) {
       return response.get("status").toString().equals("Success");
     }
     return true;
