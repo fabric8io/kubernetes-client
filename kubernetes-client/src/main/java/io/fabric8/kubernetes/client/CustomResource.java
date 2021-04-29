@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -80,7 +81,9 @@ public abstract class CustomResource<S, T> implements HasMetadata {
 
   private final String singular;
   private final String crdName;
+  @JsonProperty(access = Access.READ_ONLY)
   private final String kind;
+  @JsonProperty(access = Access.READ_ONLY)
   private final String apiVersion;
   private final String scope;
   private final String plural;
