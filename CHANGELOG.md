@@ -20,6 +20,7 @@
 * Fix #2910: Move crd-generator tests from kubernetes-itests to kubernetes-tests
 * Fix #3005: Make it possible to select which CRD version is generated / improve output
 * Fix #3015: Thread interruption in a nominal case (like closing the client) are now logged in debug
+* Fix #3057: Removed debug calls for CustomResource during deserialization
 
 #### Dependency Upgrade
 * Fix #2979: Update Kubernetes Model to v1.21.0
