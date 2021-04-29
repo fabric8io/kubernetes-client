@@ -893,11 +893,18 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
       }
 
       try {
+        String nameFromObject = (String) metadata.get("name");
         // re-add for edit call
         if (originalResourceVersion != null) {
           metadata.put(RESOURCE_VERSION, originalResourceVersion);
+        } else {
+          // we get resourceVersion from existing object
+          // possible race condition if object has been deleted since the HTTP_CONFLICT exception?
+          Map<String, Object> currentObjectAsMap = this.namespace != null ?
+            get(namespace, nameFromObject) : get(nameFromObject);
+          Map<String, Object> currentMetadata = (Map<String, Object>) currentObjectAsMap.get(METADATA);
+          metadata.put(RESOURCE_VERSION, currentMetadata.get(RESOURCE_VERSION));
         }
-        String nameFromObject = (String) metadata.get("name");
         ret = this.namespace != null ?
           replace(this.namespace, nameFromObject, objectAsMap) : replace(nameFromObject, objectAsMap);
       } catch (NullPointerException nullPointerException) {
