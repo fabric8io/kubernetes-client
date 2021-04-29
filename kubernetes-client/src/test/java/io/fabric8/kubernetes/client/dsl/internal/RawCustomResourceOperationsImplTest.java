@@ -88,7 +88,7 @@ public class RawCustomResourceOperationsImplTest {
   void testCreateOrReplaceUrl() throws IOException {
     // Given
     RawCustomResourceOperationsImpl rawCustomResourceOperations = new RawCustomResourceOperationsImpl(mockClient, config, namespacedCustomResourceDefinitionContext);
-    String resourceAsString = "{\"metadata\":{\"name\":\"myresource\",\"namespace\":\"myns\"}, \"kind\":\"raw\", \"apiVersion\":\"v1\"}";
+    String resourceAsString = "{\"metadata\":{\"name\":\"myresource\",\"namespace\":\"myns\",\"resourceVersion\":\"111\"}, \"kind\":\"raw\", \"apiVersion\":\"v1\"}";
     ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
 
     Call mockCall = mock(Call.class);
