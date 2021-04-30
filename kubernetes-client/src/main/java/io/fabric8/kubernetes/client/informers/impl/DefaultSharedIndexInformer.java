@@ -52,7 +52,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
   // value).
   private long defaultEventHandlerResyncPeriod;
 
-  private Indexer<T> indexer;
+  private Cache<T> indexer;
 
   private SharedProcessor<T> processor;
 
@@ -69,6 +69,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
 
     this.processor = new SharedProcessor<>();
     this.indexer = new Cache();
+    this.indexer.setIsRunning(this::isRunning);
 
     DeltaFIFO<T> fifo = new DeltaFIFO<>(Cache::metaNamespaceKeyFunc, this.indexer);
 
@@ -127,14 +128,14 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
 
   @Override
   public String lastSyncResourceVersion() {
-    if (!started) {
-      return "";
-    }
     return this.controller.lastSyncResourceVersion();
   }
 
   @Override
   public void run() {
+    if (stopped) {
+        throw new IllegalStateException("Cannot restart a stopped informer");
+    }
     if (started) {
       return;
     }
@@ -147,7 +148,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
 
   @Override
   public void stop() {
-    if (!started) {
+    if (!started || stopped) {
       return;
     }
 
@@ -208,9 +209,6 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
 
   @Override
   public void addIndexers(Map<String, Function<T, List<String>>> indexers) {
-    if (started) {
-      throw new IllegalStateException("Cannot add indexers to a running informer.");
-    }
     indexer.addIndexers(indexers);
   }
 

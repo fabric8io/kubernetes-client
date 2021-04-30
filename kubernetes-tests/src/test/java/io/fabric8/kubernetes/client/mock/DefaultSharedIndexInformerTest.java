@@ -67,6 +67,7 @@ import java.util.function.Function;
 import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableKubernetesMockClient
@@ -844,6 +845,14 @@ class DefaultSharedIndexInformerTest {
     podInformer.stop();
 
     assertFalse(podInformer.isRunning());
+  }
+
+  @Test
+  void testRunAfterStop() {
+    SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, 0);
+    podInformer.run();
+    podInformer.stop();
+    assertThrows(IllegalStateException.class, podInformer::run);
   }
 
   private KubernetesResource getAnimal(String name, String order, String resourceVersion) {
