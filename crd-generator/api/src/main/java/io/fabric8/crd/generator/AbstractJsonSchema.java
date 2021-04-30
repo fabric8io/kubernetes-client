@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.api.model.Quantity;
 import io.sundr.builder.internal.functions.TypeAs;
 import io.sundr.codegen.functions.ClassTo;
 import io.sundr.codegen.model.ClassRef;
+import io.sundr.codegen.model.Method;
 import io.sundr.codegen.model.PrimitiveRefBuilder;
 import io.sundr.codegen.model.Property;
 import io.sundr.codegen.model.TypeDef;
@@ -82,6 +83,7 @@ public abstract class AbstractJsonSchema<T, B> {
     .build();
 
   private static final Map<TypeRef, String> COMMON_MAPPINGS = new HashMap<>();
+  public static final String ANNOTATION_JSON_PROPERTY = "com.fasterxml.jackson.annotation.JsonProperty";
 
   static {
     COMMON_MAPPINGS.put(STRING_REF, STRING_MARKER);
@@ -123,22 +125,51 @@ public abstract class AbstractJsonSchema<T, B> {
       ignore.length > 0 ? new LinkedHashSet<>(Arrays.asList(ignore)) : Collections
         .emptySet();
     List<String> required = new ArrayList<>();
-    
+
+    final List<Method> methods = definition.getMethods();
+
     for (Property property : definition.getProperties()) {
       final String name = property.getName();
+      final Property[] updated = {property};
 
       if (property.isStatic() || ignores.contains(name)) {
         continue;
       }
 
-      if (property.getAnnotations()
-        .stream()
-        .anyMatch(a -> a.getClassRef().getFullyQualifiedName()
-          .equals("javax.validation.constraints.NotNull"))) {
-        required.add(name);
-      }
+      property.getAnnotations().forEach(a -> {
+        switch(a.getClassRef().getFullyQualifiedName()) {
+          case "javax.validation.constraints.NotNull":
+            required.add(name);
+            break;
+          case ANNOTATION_JSON_PROPERTY:
+            final String fromAnnotation = (String) a.getParameters().get("value");
+            if(!name.equals(fromAnnotation)) {
+              updated[0] = new Property(property.getAnnotations(), property.getTypeRef(), fromAnnotation, property.getComments(),
+                property.getModifiers(), property.getAttributes());
+            }
+            break;
+        }
+      });
 
-      addProperty(property, builder, internalFrom(property.getTypeRef()));
+      // check if accessors are annotated with JsonProperty with a different name
+      methods.stream()
+        .filter(m -> m.getName().matches("(is|get|set)" + property.getNameCapitalized()))
+        .forEach(m -> m.getAnnotations().stream()
+          // check if accessor is annotated with JsonProperty
+          .filter(a -> a.getClassRef().getFullyQualifiedName().equals(ANNOTATION_JSON_PROPERTY))
+          .findAny()
+          // if we found an annotated accessor, override the property's name if needed
+          .ifPresent(a -> {
+            final String fromAnnotation = (String) a.getParameters().get("value");
+            if(!updated[0].getName().equals(fromAnnotation)) {
+              updated[0] = new Property(property.getAnnotations(), property.getTypeRef(),
+                fromAnnotation, property.getComments(),
+                property.getModifiers(), property.getAttributes());
+            }
+          })
+        );
+
+      addProperty(updated[0], builder, internalFrom(updated[0].getTypeRef()));
     }
     return build(builder, required);
   }
