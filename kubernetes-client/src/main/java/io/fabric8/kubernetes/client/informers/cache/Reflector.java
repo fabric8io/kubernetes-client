@@ -36,7 +36,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   private final Store<T> store;
   private final OperationContext operationContext;
   private final ReflectorWatcher<T> watcher;
-  private volatile boolean stopped;
+  private volatile boolean running = true;
   private final AtomicReference<Watch> watch;
 
   public Reflector(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, Store store, OperationContext operationContext) {
@@ -57,7 +57,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   }
 
   public void stop() {
-    stopped = true;
+    running = false;
     stopWatcher();
   }
 
@@ -85,7 +85,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   }
 
   private synchronized void startWatcher(final String latestResourceVersion) {
-    if (stopped) {
+    if (!running) {
         return;
     }
     log.debug("Starting watcher for resource {} v{}", apiTypeClass, latestResourceVersion);
@@ -101,6 +101,6 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   }
   
   public boolean isRunning() {
-    return !stopped;
+    return running;
   }
 }
