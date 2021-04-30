@@ -4,6 +4,7 @@
 
 #### Bugs
 * Fix #3038: Upgrade TLS versions in mock servers to 1.2.
+* Fix #3037: Account for JsonProperty annotations when computing properties' name
 * Fix #3014: Resync Future is canceled and resync executor is shutdown on informer stop
 * Fix #2978: Fix SharedInformer NPE on initial requests while syncing
 * Fix #2989: serialization will generate valid yaml when using subtypes
