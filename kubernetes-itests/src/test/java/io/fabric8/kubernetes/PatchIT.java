@@ -17,8 +17,10 @@ package io.fabric8.kubernetes;
 
 import io.fabric8.commons.ClusterEntity;
 import io.fabric8.kubernetes.api.model.ConfigMap;
+import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchType;
 import org.arquillian.cube.kubernetes.api.Session;
@@ -33,7 +35,8 @@ import org.junit.runner.RunWith;
 
 import java.util.Collections;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertThrows;
 
 @RunWith(ArquillianConditionalRunner.class)
 @RequiresKubernetes
@@ -48,12 +51,12 @@ public class PatchIT {
 
   @BeforeClass
   public static void init() {
-    ClusterEntity.apply(CronJobIT.class.getResourceAsStream("/patch-it.yml"));
+    ClusterEntity.apply(PatchIT.class.getResourceAsStream("/patch-it.yml"));
   }
 
   @Before
   public void initNamespace() {
-    this.currentNamespace = session.getNamespace();
+    this.currentNamespace = ClusterEntity.getArquillianNamespace();
   }
 
   @Test
@@ -130,6 +133,25 @@ public class PatchIT {
     // Then
     assertThat(patchedConfigMap).isNotNull();
     assertThat(patchedConfigMap.getData()).hasFieldOrPropertyWithValue("foo", "bar");
+  }
+
+  @Test
+  public void testFullObjectPatchWithConcurrentChange() {
+    // Given
+    String name = "patchit-fullobjectpatch";
+
+    // When
+    ConfigMap configMapFromServer = client.configMaps().inNamespace(currentNamespace).withName(name).get();
+    configMapFromServer.setData(Collections.singletonMap("conflicting", "change"));
+    ConfigMap base = client.configMaps().inNamespace(currentNamespace).withName(name).patch(configMapFromServer);
+
+    ConfigMap baseCopy = new ConfigMapBuilder(base).build();
+    baseCopy.setData(Collections.emptyMap());
+    client.configMaps().inNamespace(currentNamespace).withName(name).patch(base, baseCopy);
+
+    ConfigMap baseCopy2 = new ConfigMapBuilder(base).build();
+    baseCopy2.setData(Collections.singletonMap("conflicting", "second"));
+    assertThrows(KubernetesClientException.class, () -> client.configMaps().inNamespace(currentNamespace).withName(name).patch(base, baseCopy2));
   }
 
   @AfterClass

@@ -19,8 +19,10 @@ package io.fabric8.kubernetes.client.dsl.base;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.utils.Serialization;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
@@ -42,7 +44,8 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   @Override
   public T edit(UnaryOperator<T> function) {
     T item = getMandatory();
-    return patch(function.apply(item));
+    String yaml = Serialization.asYaml(item);
+    return patch((T) Serialization.unmarshal(yaml, item.getClass()), function.apply(item));
   }
 
   @Override
@@ -105,50 +108,36 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
     throw KubernetesClientException.launderThrowable(forOperationType("replace"), caught);
   }
 
+  @Override
   public T patch(T item) {
-    Exception caught = null;
-    int maxTries = 10;
-    for (int i = 0; i < maxTries; i++) {
-      try {
-        String resourceVersion;
-        final T got = fromServer().get();
-        if (got == null) {
-          return null;
-        }
-        if (got.getMetadata() != null) {
-          resourceVersion = got.getMetadata().getResourceVersion();
-        } else {
-          resourceVersion = null;
-        }
-        final UnaryOperator<T> visitor = resource -> {
-          try {
-            resource.getMetadata().setResourceVersion(resourceVersion);
-            return handlePatch(got, resource);
-          } catch (Exception e) {
-            throw KubernetesClientException.launderThrowable(forOperationType(PATCH_OPERATION), e);
-          }
-        };
-        return visitor.apply(item);
-      } catch (KubernetesClientException e) {
-        caught = e;
-        // Only retry if there's a conflict - this is normally to do with resource version & server updates.
-        if (e.getCode() != 409) {
-          break;
-        }
-        if (i < maxTries - 1) {
-          try {
-            TimeUnit.SECONDS.sleep(1);
-          } catch (InterruptedException e1) {
-            // Ignore this... would only hide the proper exception
-            // ...but make sure to preserve the interrupted status
-            Thread.currentThread().interrupt();
-          }
-        }
-      } catch (Exception e) {
-        caught = e;
+    return patch(null, item);
+  }
+
+  @Override
+  public T patch(T base, T item) {
+    if (base == null) {
+      // no resource version specified, assume the latest
+      base = fromServer().get();
+      if (base == null) {
+        return null;
       }
-    }
-    throw KubernetesClientException.launderThrowable(forOperationType(PATCH_OPERATION), caught);
+      if (item.getMetadata() == null) {
+        item.setMetadata(new ObjectMeta());
+      }
+      if (base.getMetadata() != null) {
+        item.getMetadata().setResourceVersion(base.getMetadata().getResourceVersion());  
+      }
+    } 
+    // else could validate that the base / item are the same resource / resourceVersion
+    final T baseItem = base;
+    final UnaryOperator<T> visitor = resource -> {
+      try {
+        return handlePatch(baseItem, resource);
+      } catch (Exception e) {
+        throw KubernetesClientException.launderThrowable(forOperationType(PATCH_OPERATION), e);
+      }
+    };
+    return visitor.apply(item);
   }
 
   @Override

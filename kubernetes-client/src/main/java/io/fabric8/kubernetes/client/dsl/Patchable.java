@@ -21,11 +21,24 @@ public interface Patchable<T> {
 
   /**
    * Update field(s) of a resource using a JSON patch.
+   * 
+   * <br>WARNING: This call assumes the base object is the current one on the server.
+   * It may overwrite existing changes.
    *
    * @param item item to be patched with patched values
    * @return returns deserialized version of api server response
    */
   T patch(T item);
+  
+  /**
+   * Update field(s) of a resource using a JSON patch, using the base object
+   * as the comparison for the patch.
+   *
+   * @param item item to be patched with patched values
+   * @param item base to be compared with to generate the patch, use null for the current
+   * @return returns deserialized version of api server response
+   */
+  T patch(T base, T item);
 
   /**
    * Update field(s) of a resource using strategic merge patch.
