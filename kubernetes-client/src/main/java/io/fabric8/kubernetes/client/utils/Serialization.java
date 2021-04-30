@@ -312,4 +312,19 @@ public class Serialization {
     }
     return JSON_MAPPER.readerFor(KubernetesResource.class).readValue(jsonString);
   }
+  
+  /**
+   * Create a copy of the resource via serialization
+   * @param <T>
+   * @param resource
+   * @return
+   */
+  public static <T> T clone(T resource) {
+    try {
+      return (T) JSON_MAPPER.readValue(
+          JSON_MAPPER.writeValueAsString(resource), resource.getClass());
+    } catch (JsonProcessingException e) {
+      throw new IllegalStateException(e);
+    }
+  }
 }
