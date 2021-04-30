@@ -23,6 +23,6 @@ public class Address {
   private Type type;
 
   public enum Type {
-    home, work;
+    home, work
   }
 }

@@ -194,12 +194,18 @@ class CRDGeneratorTest {
 
       final CustomResourceDefinitionVersion version = checkVersion(spec);
       assertNotNull(version.getSubresources());
+      // printer columns should be ordered in the alphabetical order of their json path
       final List<CustomResourceColumnDefinition> printerColumns = version
         .getAdditionalPrinterColumns();
-      assertEquals(1, printerColumns.size());
-      final CustomResourceColumnDefinition columnDefinition = printerColumns.get(0);
+      assertEquals(2, printerColumns.size());
+      CustomResourceColumnDefinition columnDefinition = printerColumns.get(0);
       assertEquals("string", columnDefinition.getType());
+      assertEquals(".spec.category", columnDefinition.getJsonPath());
       assertEquals("jokeCategory", columnDefinition.getName());
+      columnDefinition = printerColumns.get(1);
+      assertEquals("string", columnDefinition.getType());
+      assertEquals(".spec.excluded", columnDefinition.getJsonPath());
+      assertEquals("excludedTopics", columnDefinition.getName());
       CustomResourceValidation schema = version.getSchema();
       assertNotNull(schema);
       Map<String, JSONSchemaProps> properties = schema.getOpenAPIV3Schema().getProperties();
