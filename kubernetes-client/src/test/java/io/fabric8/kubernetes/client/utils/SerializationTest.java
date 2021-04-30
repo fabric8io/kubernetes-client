@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.utils;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -28,6 +29,7 @@ import com.fasterxml.jackson.databind.node.TextNode;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
@@ -167,6 +169,20 @@ public class SerializationTest {
     assertEquals("python3", pod.getSpec().getContainers().get(1).getName());
     assertEquals("python:3.7", pod.getSpec().getContainers().get(1).getImage());
     assertEquals(new Quantity("100m"), pod.getSpec().getContainers().get(1).getResources().getRequests().get("cpu"));
+  }
+  
+  @Test
+  void testClone() {
+    // Given
+    Pod pod = new PodBuilder().withNewMetadata().withName("pod").endMetadata().build();
+
+    // When
+    Pod clonePod = Serialization.clone(pod);
+
+    // Then
+    assertNotNull(clonePod);
+    assertNotSame(pod, clonePod);
+    assertEquals(pod.getMetadata().getName(), clonePod.getMetadata().getName());
   }
 
   @JsonTypeInfo(
