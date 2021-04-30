@@ -14,6 +14,8 @@
 * Fix #3000: Set `no_proxy` in the okhttp builder in case the `proxy_url` is null
 * Fix #3011: properly handle enum types for additional printer columns
 * Fix #3020: annotations should now properly have their associated values when processing CRDs from the API
+* Fix #3016: Use scheduleWithFixedDelay for resync task execution
+* Fix #2991: reduced the level of ReflectWatcher event recieved log
 * Fix #3027: fix NPE when sorting events in KubernetesResourceUtil
 * Fix missing entry for Trigger in TektonTriggersResourceMappingProvider
 

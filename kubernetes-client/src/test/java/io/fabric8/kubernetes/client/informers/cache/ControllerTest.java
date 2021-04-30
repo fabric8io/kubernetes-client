@@ -16,9 +16,9 @@
 package io.fabric8.kubernetes.client.informers.cache;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -37,13 +37,18 @@ import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.informers.ListerWatcher;
 import io.fabric8.kubernetes.client.informers.SharedInformerEventListener;
 
-class ControllerTest {
-  private DeltaFIFO<Pod> deltaFIFO = Mockito.mock(DeltaFIFO.class, Mockito.RETURNS_DEEP_STUBS);
-  private abstract class AbstractPodListerWatcher implements ListerWatcher<Pod, PodList> {};
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
-  private ListerWatcher<Pod, PodList> listerWatcher = Mockito.mock(AbstractPodListerWatcher.class, Mockito.RETURNS_DEEP_STUBS);
-  private OperationContext operationContext = Mockito.mock(OperationContext.class, Mockito.RETURNS_DEEP_STUBS);
-  private ConcurrentLinkedQueue<SharedInformerEventListener> eventListeners = Mockito.mock(ConcurrentLinkedQueue.class, Mockito.RETURNS_DEEP_STUBS);
+class ControllerTest {
+  private final DeltaFIFO<Pod> deltaFIFO = Mockito.mock(DeltaFIFO.class, Mockito.RETURNS_DEEP_STUBS);
+  private abstract static class AbstractPodListerWatcher implements ListerWatcher<Pod, PodList> {};
+  private static final Long WAIT_TIME = 500L;
+  private final ListerWatcher<Pod, PodList> listerWatcher = Mockito.mock(AbstractPodListerWatcher.class, Mockito.RETURNS_DEEP_STUBS);
+  private final OperationContext operationContext = Mockito.mock(OperationContext.class, Mockito.RETURNS_DEEP_STUBS);
+  private final ConcurrentLinkedQueue<SharedInformerEventListener> eventListeners = Mockito.mock(ConcurrentLinkedQueue.class, Mockito.RETURNS_DEEP_STUBS);
 
   @Test
   @DisplayName("Controller initialized with resync period greater than zero should use provided resync period")
@@ -97,7 +102,7 @@ class ControllerTest {
 
   @Test
   @DisplayName("Controller initialized with resync period should have synced")
-  void testControllerHasSync() throws InterruptedException {
+  void testControllerHasSync() {
     // Given + When
     Controller<Pod, PodList> controller = new Controller<>(Pod.class, deltaFIFO, listerWatcher,
       simpleEntries -> { }, () -> true,
@@ -116,7 +121,7 @@ class ControllerTest {
   void testControllerRunWithInterruptedThread() throws InterruptedException {
     // Given + When
     // used to be able to interrupt the thread in the lambda
-    ThreadWrapper controllerThreadWrapper = new ThreadWrapper(); 
+    ThreadWrapper controllerThreadWrapper = new ThreadWrapper();
     long fullResyncPeriod = 1L;
     int numberOfResyncs = 1;
     final CountDownLatch countDown = new CountDownLatch(numberOfResyncs);
@@ -130,7 +135,7 @@ class ControllerTest {
     Thread controllerThread = newControllerThread(controller);
     controllerThreadWrapper.thread = controllerThread; // put the thread in the wrapper, so the lamba can interrupt it
     controllerThread.start();
-    countDown.await(500, TimeUnit.MILLISECONDS); // a too short value does not allow the processLoop to start.
+    countDown.await(WAIT_TIME, TimeUnit.MILLISECONDS); // a too short value does not allow the processLoop to start.
     // Then
     ScheduledExecutorService resyncExecutor = controller.getResyncExecutor();
     assertNotNull(resyncExecutor);
@@ -156,7 +161,7 @@ class ControllerTest {
 
   @Test
   @DisplayName("Controller with resync function throwing exception")
-  void testControllerRunsReyncFunctionThrowingException() throws InterruptedException {
+  void testControllerRunsResyncFunctionThrowingException() throws InterruptedException {
     // Given + When
     long fullResyncPeriod = 10L;
     int numberOfResyncs = 10;
@@ -166,8 +171,7 @@ class ControllerTest {
       () -> {
         countDown.countDown();
         if( countDown.getCount() == 2 ) {
-            RuntimeException exception = new RuntimeException("make it fail");
-          throw exception;
+          throw new RuntimeException("make it fail");
         }
         return true;
       },
@@ -175,8 +179,7 @@ class ControllerTest {
 
     Executable controllerRun = newControllerRun(controller);
     assertDoesNotThrow(controllerRun);
-    // We give an extra cycle to avoid clock inaccurracy interruptions
-    countDown.await(( numberOfResyncs + 1 )  * fullResyncPeriod, TimeUnit.MILLISECONDS);
+    countDown.await(WAIT_TIME, TimeUnit.MILLISECONDS);
     controller.stop();
     // Then
     assertThat(countDown.getCount()).isLessThanOrEqualTo(2);
@@ -238,7 +241,7 @@ class ControllerTest {
   void testControllerRunsReyncFunctionExpectedNumberOfTime() throws InterruptedException {
     // Given + When
     long fullResyncPeriod = 10L;
-    int numberOfResyncs = 100;
+    int numberOfResyncs = 10;
     final CountDownLatch countDown = new CountDownLatch(numberOfResyncs);
     Controller<Pod, PodList> controller = new Controller<>(Pod.class, deltaFIFO, listerWatcher,
       simpleEntries -> { },
@@ -248,13 +251,12 @@ class ControllerTest {
     Executable controllerRun = newControllerRun(controller);
     assertDoesNotThrow(controllerRun);
     // We give an extra cycle to avoid clock inaccurracy interruptions
-    countDown.await(( numberOfResyncs + 1 )  * fullResyncPeriod, TimeUnit.MILLISECONDS);
+    countDown.await(WAIT_TIME, TimeUnit.MILLISECONDS);
     controller.stop();
     // Then
     ScheduledExecutorService resyncExecutor = controller.getResyncExecutor();
     assertNotNull(resyncExecutor);
     assertThat(resyncExecutor.isShutdown()).isTrue();
-    assertThat(resyncExecutor.isTerminated()).isTrue();
     assertThat(countDown.getCount()).isLessThanOrEqualTo(1);
   }
 
@@ -270,7 +272,6 @@ class ControllerTest {
       0, operationContext, eventListeners);
     Executable controllerRun = newControllerRun(controller);
     assertDoesNotThrow(controllerRun);
-    // We give an extra cycle to avoid clock inaccurracy interruptions
     countDown.await(1000, TimeUnit.MILLISECONDS);
     controller.stop();
     // Then
@@ -280,7 +281,7 @@ class ControllerTest {
     assertThat(countDown.getCount()).isEqualTo(count);
   }
 
-  private class ThreadWrapper{
+  private static class ThreadWrapper{
     public Thread thread;
     public void interrupt() {
       if( thread != null) {
@@ -290,22 +291,31 @@ class ControllerTest {
   }
 
   private Executable newControllerRun(Controller<Pod, PodList> controller) {
-    return new Executable() {
-      @Override
-      public void execute() {
-        Thread controllerThread = newControllerThread(controller);
-        controllerThread.start();
-      }
+    return () -> {
+      Thread controllerThread = newControllerThread(controller);
+      controllerThread.start();
     };
   }
 
   private Thread newControllerThread(Controller<Pod, PodList> controller) {
-    Thread controllerThread = new Thread( new Runnable() {
-      @Override
-      public void run() {
-        controller.run();
-      }
-    });
-    return controllerThread;
+    return new Thread(controller::run);
+  }
+
+  @Test
+  @DisplayName("Controller schedules resync tasks with fixed delay")
+  void testControllerRunSchedulesResyncTaskWithFixedDelay() {
+    // Given
+    ScheduledExecutorService scheduledExecutorService = Mockito.mock(ScheduledExecutorService.class, Mockito.RETURNS_DEEP_STUBS);
+    Controller<Pod, PodList> controller = new Controller<>(Pod.class, deltaFIFO, listerWatcher,
+      simpleEntries -> {
+      },
+      () -> true,
+      1L, operationContext, eventListeners, scheduledExecutorService);
+
+    // When
+    controller.scheduleResync();
+
+    // Then
+    verify(scheduledExecutorService, times(1)).scheduleWithFixedDelay(any(), eq(1L), eq(1L), any());
   }
 }
