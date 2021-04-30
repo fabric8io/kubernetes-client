@@ -44,15 +44,15 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   @Override
   public T edit(UnaryOperator<T> function) {
     T item = getMandatory();
-    String yaml = Serialization.asYaml(item);
-    return patch((T) Serialization.unmarshal(yaml, item.getClass()), function.apply(item));
+    return patch(Serialization.clone(item), function.apply(item));
   }
 
   @Override
   public T accept(Consumer<T> consumer) {
     T item = getMandatory();
+    T clone = Serialization.clone(item);
     consumer.accept(item);
-    return patch(item);
+    return patch(clone, item);
   }
 
   @Override
