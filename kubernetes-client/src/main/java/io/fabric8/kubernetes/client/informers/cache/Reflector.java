@@ -24,7 +24,6 @@ import io.fabric8.kubernetes.client.informers.ListerWatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T>> {
@@ -37,7 +36,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   private final Store<T> store;
   private final OperationContext operationContext;
   private final ReflectorWatcher<T> watcher;
-  private final AtomicBoolean isActive;
+  private volatile boolean stopped;
   private final AtomicReference<Watch> watch;
 
   public Reflector(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, Store store, OperationContext operationContext) {
@@ -47,7 +46,6 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
     this.operationContext = operationContext;
     this.lastSyncResourceVersion = new AtomicReference<>();
     this.watcher = new ReflectorWatcher<>(store, lastSyncResourceVersion, this::listSyncAndWatch);
-    this.isActive = new AtomicBoolean(true);
     this.watch = new AtomicReference<>(null);
   }
 
@@ -59,7 +57,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   }
 
   public void stop() {
-    isActive.set(false);
+    stopped = true;
     stopWatcher();
   }
 
@@ -87,7 +85,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   }
 
   private synchronized void startWatcher(final String latestResourceVersion) {
-    if (!isActive.get()) {
+    if (stopped) {
         return;
     }
     log.debug("Starting watcher for resource {} v{}", apiTypeClass, latestResourceVersion);
@@ -103,6 +101,6 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   }
   
   public boolean isRunning() {
-    return isActive.get();
+    return !stopped;
   }
 }
