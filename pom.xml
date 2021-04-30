@@ -143,7 +143,7 @@
     <jandex.plugin.version>1.0.8</jandex.plugin.version>
     <jandex.version>2.2.3.Final</jandex.version>
     <jacoco-maven-plugin.version>0.8.6</jacoco-maven-plugin.version>
-    <sonar-maven-plugin.version>3.8.0.2131</sonar-maven-plugin.version>
+    <sonar-maven-plugin.version>3.9.0.2155</sonar-maven-plugin.version>
 
     <!-- Other options -->
     <maven.compiler.source>1.8</maven.compiler.source>
