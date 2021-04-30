@@ -70,7 +70,7 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
   
   private volatile boolean running;
 
-  public Controller(Class<T> apiTypeClass, DeltaFIFO<T> queue, ListerWatcher<T, L> listerWatcher, Consumer<Deque<AbstractMap.SimpleEntry<DeltaFIFO.DeltaType, Object>>> processFunc, Supplier<Boolean> resyncFunc, long fullResyncPeriod, OperationContext context, ConcurrentLinkedQueue<SharedInformerEventListener> eventListeners) {
+  Controller(Class<T> apiTypeClass, DeltaFIFO<T> queue, ListerWatcher<T, L> listerWatcher, Consumer<Deque<AbstractMap.SimpleEntry<DeltaFIFO.DeltaType, Object>>> processFunc, Supplier<Boolean> resyncFunc, long fullResyncPeriod, OperationContext context, ConcurrentLinkedQueue<SharedInformerEventListener> eventListeners, ScheduledExecutorService resyncExecutor) {
     this.queue = queue;
     this.listerWatcher = listerWatcher;
     this.apiTypeClass = apiTypeClass;
@@ -84,21 +84,18 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
     this.eventListeners = eventListeners;
 
     // Starts one daemon thread for resync
-    this.resyncExecutor = Executors.newSingleThreadScheduledExecutor();
     this.reflector = new Reflector<>(apiTypeClass, listerWatcher, queue, operationContext);
+    this.resyncExecutor = resyncExecutor;
+  }
+
+  public Controller(Class<T> apiTypeClass, DeltaFIFO<T> queue, ListerWatcher<T, L> listerWatcher, Consumer<Deque<AbstractMap.SimpleEntry<DeltaFIFO.DeltaType, Object>>> processFunc, Supplier<Boolean> resyncFunc, long fullResyncPeriod, OperationContext context, ConcurrentLinkedQueue<SharedInformerEventListener> eventListeners) {
+    this(apiTypeClass, queue, listerWatcher, processFunc, resyncFunc, fullResyncPeriod, context, eventListeners, Executors.newSingleThreadScheduledExecutor());
   }
 
   public void run() {
     log.info("informer#Controller: ready to run resync and reflector runnable");
-    // Start the resync runnable
-    if (fullResyncPeriod > 0) {
-      ResyncRunnable resyncRunnable = new ResyncRunnable(queue, resyncFunc);
-      if(!resyncExecutor.isShutdown()) {
-        resyncExecutor.scheduleAtFixedRate(resyncRunnable, fullResyncPeriod, fullResyncPeriod, TimeUnit.MILLISECONDS);
-      }
-    } else {
-      log.info("informer#Controller: resync skipped due to 0 full resync period");
-    }
+
+    scheduleResync();
 
     try {
       running = true;
@@ -112,6 +109,16 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
       this.eventListeners.forEach(listener -> listener.onException(exception));
     } finally {
       running = false;
+    }
+  }
+
+  void scheduleResync() {
+    // Start the resync runnable
+    if (fullResyncPeriod > 0) {
+      ResyncRunnable resyncRunnable = new ResyncRunnable(queue, resyncFunc);
+      resyncExecutor.scheduleWithFixedDelay(resyncRunnable, fullResyncPeriod, fullResyncPeriod, TimeUnit.MILLISECONDS);
+    } else {
+      log.info("informer#Controller: resync skipped due to 0 full resync period");
     }
   }
 
