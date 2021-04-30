@@ -32,7 +32,7 @@ import java.util.Map;
 import java.util.Queue;
 
 import static io.fabric8.kubernetes.client.utils.HttpClientUtils.createHttpClientForMockServer;
-import static okhttp3.TlsVersion.TLS_1_0;
+import static okhttp3.TlsVersion.TLS_1_2;
 
 @Deprecated
 // The class has moved under mvn:io.fabric8:kubernetes-server-mock in package: io.fabric8.client.server.mock
@@ -78,7 +78,7 @@ public class KubernetesMockServer extends DefaultMockServer {
         Config config = new ConfigBuilder()
                 .withMasterUrl(url("/"))
                 .withTrustCerts(true)
-                .withTlsVersions(TLS_1_0)
+                .withTlsVersions(TLS_1_2)
                 .withNamespace("test")
                 .build();
         return new DefaultKubernetesClient(createHttpClientForMockServer(config), config);
