@@ -858,6 +858,11 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   public T patch(T item) {
     throw new KubernetesClientException(READ_ONLY_UPDATE_EXCEPTION_MESSAGE);
   }
+  
+  @Override
+  public T patch(T base, T item) {
+    throw new KubernetesClientException(READ_ONLY_UPDATE_EXCEPTION_MESSAGE);
+  }
 
   @Override
   public T patch(PatchContext patchContext, String patch) {
