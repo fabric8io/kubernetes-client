@@ -105,4 +105,11 @@ public interface Store<T> {
    */
   void isPopulated(boolean isPopulated);
 
+  /**
+   * true if synced
+   */
+  default boolean hasSynced() {
+      return true;
+  }
+
 }

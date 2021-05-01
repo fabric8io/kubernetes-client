@@ -27,6 +27,7 @@
 * Fix #3015: Thread interruption in a nominal case (like closing the client) are now logged in debug
 * Fix #3057: Removed debug calls for CustomResource during deserialization
 * Fix #3050: More enforcement of the informer lifecycle
+* Fix #3061: Removed the deltafifo from the informer logic
 
 #### Dependency Upgrade
 * Fix #2979: Update Kubernetes Model to v1.21.0

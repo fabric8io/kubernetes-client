@@ -23,16 +23,14 @@ import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedInformerEventListener;
 import io.fabric8.kubernetes.client.informers.cache.Cache;
 import io.fabric8.kubernetes.client.informers.cache.Controller;
-import io.fabric8.kubernetes.client.informers.cache.DeltaFIFO;
 import io.fabric8.kubernetes.client.informers.cache.Indexer;
 import io.fabric8.kubernetes.client.informers.cache.ProcessorListener;
+import io.fabric8.kubernetes.client.informers.cache.ProcessorStore;
 import io.fabric8.kubernetes.client.informers.cache.SharedProcessor;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.AbstractMap;
-import java.util.Deque;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -68,12 +66,12 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
     this.defaultEventHandlerResyncPeriod = resyncPeriod;
 
     this.processor = new SharedProcessor<>();
-    this.indexer = new Cache();
+    this.indexer = new Cache<>();
     this.indexer.setIsRunning(this::isRunning);
+    
+    ProcessorStore<T> processorStore = new ProcessorStore<>(this.indexer, this.processor);
 
-    DeltaFIFO<T> fifo = new DeltaFIFO<>(Cache::metaNamespaceKeyFunc, this.indexer);
-
-    this.controller = new Controller<>(apiTypeClass, fifo, listerWatcher, this::handleDeltas, processor::shouldResync, resyncCheckPeriodMillis, context, eventListeners);
+    this.controller = new Controller<>(apiTypeClass, processorStore, listerWatcher, processor::shouldResync, resyncCheckPeriodMillis, context, eventListeners);
     controllerThread = new Thread(controller::run, "informer-controller-" + apiTypeClass.getSimpleName());
   }
 
@@ -162,49 +160,6 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
   @Override
   public boolean hasSynced() {
     return controller != null && this.controller.hasSynced();
-  }
-
-  /**
-   * Handles deltas and call processor distribute
-   *
-   * @param deltas deltas
-   */
-  private void handleDeltas(Deque<AbstractMap.SimpleEntry<DeltaFIFO.DeltaType, Object>> deltas) {
-    if (deltas == null || deltas.isEmpty()) {
-      return;
-    }
-
-    // from oldest to newest
-    for (AbstractMap.SimpleEntry<DeltaFIFO.DeltaType, Object> delta : deltas) {
-      DeltaFIFO.DeltaType deltaType = delta.getKey();
-
-      switch (deltaType) {
-        case SYNCHRONIZATION:
-        case ADDITION:
-        case UPDATION:
-          boolean isSync = (deltaType == DeltaFIFO.DeltaType.SYNCHRONIZATION);
-          Object oldObj = this.indexer.get((T) delta.getValue());
-          if (oldObj != null) {
-            this.indexer.update((T) delta.getValue());
-            this.processor.distribute(new ProcessorListener.UpdateNotification(oldObj, delta.getValue()), isSync);
-          } else {
-            this.indexer.add((T) delta.getValue());
-            this.processor.distribute(new ProcessorListener.AddNotification(delta.getValue()), isSync);
-          }
-          break;
-        case DELETION:
-          if (!(delta.getValue() instanceof DeltaFIFO.DeletedFinalStateUnknown)) {
-            this.indexer.delete((T) delta.getValue());
-          } else {
-            T obj = (T)((DeltaFIFO.DeletedFinalStateUnknown)delta.getValue()).getObj();
-            if (obj != null) {
-              this.indexer.delete(obj);
-            }
-          }
-          this.processor.distribute(new ProcessorListener.DeleteNotification(delta.getValue()), false);
-          break;
-      }
-    }
   }
 
   @Override
