@@ -97,7 +97,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   }
 
   public String getLastSyncResourceVersion() {
-      return lastSyncResourceVersion.get();
+    return lastSyncResourceVersion.get();
   }
   
   public boolean isRunning() {

@@ -29,6 +29,7 @@ import java.util.Deque;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -61,6 +62,8 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
   private final Consumer<Deque<AbstractMap.SimpleEntry<DeltaFIFO.DeltaType, Object>>> processFunc;
 
   private final ScheduledExecutorService resyncExecutor;
+
+  private ScheduledFuture resyncFuture;
 
   private final OperationContext operationContext;
 
@@ -116,7 +119,7 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
     // Start the resync runnable
     if (fullResyncPeriod > 0) {
       ResyncRunnable resyncRunnable = new ResyncRunnable(queue, resyncFunc);
-      resyncExecutor.scheduleWithFixedDelay(resyncRunnable, fullResyncPeriod, fullResyncPeriod, TimeUnit.MILLISECONDS);
+      resyncFuture = resyncExecutor.scheduleWithFixedDelay(resyncRunnable, fullResyncPeriod, fullResyncPeriod, TimeUnit.MILLISECONDS);
     } else {
       log.info("informer#Controller: resync skipped due to 0 full resync period");
     }
@@ -126,8 +129,13 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
    * Stops the resync thread pool first, then stops the reflector.
    */
   public void stop() {
-    reflector.stop();
-    resyncExecutor.shutdownNow();
+    synchronized (this) {
+      reflector.stop();
+      if (resyncFuture != null) {
+        resyncFuture.cancel(true);
+      }
+      resyncExecutor.shutdown();
+    }
   }
 
   /**
