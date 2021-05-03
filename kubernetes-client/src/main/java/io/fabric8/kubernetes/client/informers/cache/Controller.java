@@ -102,7 +102,8 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
 
     try {
       running = true;
-      reflector.listAndWatch();
+      log.info("Started Reflector watch for {}", apiTypeClass);
+      reflector.listSyncAndWatch();
 
       // Start the process loop
       this.processLoop();
