@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal.core.v1;
 
-import io.fabric8.kubernetes.api.builder.Visitor;
+import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.ReplicationController;
@@ -242,9 +242,8 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
   }
 
   @Override
-  public ReplicationController edit(Visitor... visitors) {
-    ReplicationController item = new ReplicationControllerBuilder(getMandatory()).accept(visitors).build();
-    return patch(item);
+  protected VisitableBuilder<ReplicationController, ?> createVisitableBuilder(ReplicationController item) {
+    return new ReplicationControllerBuilder(item);
   }
 
   static Map<String, String> getReplicationControllerPodLabels(ReplicationController replicationController) {

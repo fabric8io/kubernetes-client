@@ -16,6 +16,8 @@
 
 package io.fabric8.kubernetes.client.dsl.base;
 
+import io.fabric8.kubernetes.api.builder.VisitableBuilder;
+import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
@@ -33,6 +35,8 @@ import java.util.function.UnaryOperator;
 import static io.fabric8.kubernetes.client.utils.IOHelpers.convertToJson;
 
 public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>> extends BaseOperation< T, L, R> {
+  private static final String NO_BUILDER = "Cannot edit with visitors, no builder is associated";
+  
   public static final DeletionPropagation DEFAULT_PROPAGATION_POLICY = DeletionPropagation.BACKGROUND;
   public static final long DEFAULT_GRACE_PERIOD_IN_SECONDS = -1L;
   private static final String PATCH_OPERATION = "patch";
@@ -53,6 +57,17 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
     T clone = Serialization.clone(item);
     consumer.accept(item);
     return patch(clone, item);
+  }
+  
+  protected VisitableBuilder<T, ?> createVisitableBuilder(T item) {
+    throw new KubernetesClientException(NO_BUILDER);
+  }
+  
+  @Override
+  public T edit(Visitor... visitors) {
+    T item = getMandatory();
+    T clone = Serialization.clone(item);
+    return patch(clone, createVisitableBuilder(item).accept(visitors).build());
   }
 
   @Override

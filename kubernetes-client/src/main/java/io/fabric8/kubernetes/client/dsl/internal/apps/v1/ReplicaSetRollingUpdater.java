@@ -81,24 +81,20 @@ class ReplicaSetRollingUpdater extends RollingUpdater<ReplicaSet, ReplicaSetList
 
   @Override
   protected ReplicaSet updateDeploymentKey(String name, String hash) {
-     ReplicaSet old = resources().inNamespace(namespace).withName(name).get();
-     ReplicaSet updated = new ReplicaSetBuilder(old).editSpec()
+     return resources().inNamespace(namespace).withName(name).edit(old->new ReplicaSetBuilder(old).editSpec()
        .editSelector().addToMatchLabels(DEPLOYMENT_KEY, hash).endSelector()
        .editTemplate().editMetadata().addToLabels(DEPLOYMENT_KEY, hash).endMetadata().endTemplate()
        .endSpec()
-       .build();
-     return resources().inNamespace(namespace).withName(name).patch(updated);
+       .build());
   }
 
   @Override
   protected ReplicaSet removeDeploymentKey(String name) {
-     ReplicaSet old = resources().inNamespace(namespace).withName(name).get();
-     ReplicaSet updated = new ReplicaSetBuilder(old).editSpec()
-       .editSelector().removeFromMatchLabels(DEPLOYMENT_KEY).endSelector()
-       .editTemplate().editMetadata().removeFromLabels(DEPLOYMENT_KEY).endMetadata().endTemplate()
-       .endSpec()
-       .build();
-     return resources().inNamespace(namespace).withName(name).patch(updated);
+     return resources().inNamespace(namespace).withName(name).edit(old->new ReplicaSetBuilder(old).editSpec()
+         .editSelector().removeFromMatchLabels(DEPLOYMENT_KEY).endSelector()
+         .editTemplate().editMetadata().removeFromLabels(DEPLOYMENT_KEY).endMetadata().endTemplate()
+         .endSpec()
+         .build());
   }
 
   @Override

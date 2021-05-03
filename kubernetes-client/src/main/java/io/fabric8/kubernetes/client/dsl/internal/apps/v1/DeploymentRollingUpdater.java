@@ -81,24 +81,20 @@ class DeploymentRollingUpdater extends RollingUpdater<Deployment, DeploymentList
 
   @Override
   protected Deployment updateDeploymentKey(String name, String hash) {
-     Deployment old = resources().inNamespace(namespace).withName(name).get();
-     Deployment updated = new DeploymentBuilder(old).editSpec()
-       .editSelector().addToMatchLabels(DEPLOYMENT_KEY, hash).endSelector()
-       .editTemplate().editMetadata().addToLabels(DEPLOYMENT_KEY, hash).endMetadata().endTemplate()
-       .endSpec()
-       .build();
-     return resources().inNamespace(namespace).withName(name).patch(updated);
+     return resources().inNamespace(namespace).withName(name).edit(old->new DeploymentBuilder(old).editSpec()
+         .editSelector().addToMatchLabels(DEPLOYMENT_KEY, hash).endSelector()
+         .editTemplate().editMetadata().addToLabels(DEPLOYMENT_KEY, hash).endMetadata().endTemplate()
+         .endSpec()
+         .build());
   }
 
   @Override
   protected Deployment removeDeploymentKey(String name) {
-     Deployment old = resources().inNamespace(namespace).withName(name).get();
-     Deployment updated = new DeploymentBuilder(old).editSpec()
-       .editSelector().removeFromMatchLabels(DEPLOYMENT_KEY).endSelector()
-       .editTemplate().editMetadata().removeFromLabels(DEPLOYMENT_KEY).endMetadata().endTemplate()
-       .endSpec()
-       .build();
-     return resources().inNamespace(namespace).withName(name).patch(updated);
+     return resources().inNamespace(namespace).withName(name).edit(old->new DeploymentBuilder(old).editSpec()
+         .editSelector().removeFromMatchLabels(DEPLOYMENT_KEY).endSelector()
+         .editTemplate().editMetadata().removeFromLabels(DEPLOYMENT_KEY).endMetadata().endTemplate()
+         .endSpec()
+         .build());
   }
 
   @Override

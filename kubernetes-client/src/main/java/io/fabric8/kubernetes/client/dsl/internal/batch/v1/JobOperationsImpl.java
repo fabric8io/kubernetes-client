@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal.batch.v1;
 
-import io.fabric8.kubernetes.api.builder.Visitor;;
+import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
@@ -238,10 +238,9 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
     return super.replace(job);
   }
 
-
   @Override
-  public Job edit(Visitor... visitors) {
-    return patch(new JobBuilder(getMandatory()).accept(visitors).build());
+  protected VisitableBuilder<Job, ?> createVisitableBuilder(Job item) {
+    return new JobBuilder(item);
   }
 
   static Map<String, String> getJobPodLabels(Job job) {

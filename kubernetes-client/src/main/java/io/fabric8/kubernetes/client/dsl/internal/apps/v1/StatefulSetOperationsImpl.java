@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal.apps.v1;
 
-import io.fabric8.kubernetes.api.builder.Visitor;
+import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
@@ -262,8 +262,8 @@ public class StatefulSetOperationsImpl extends RollableScalableResourceOperation
   }
 
   @Override
-  public StatefulSet edit(Visitor... visitors) {
-    return patch(new StatefulSetBuilder(getMandatory()).accept(visitors).build());
+  protected VisitableBuilder<StatefulSet, ?> createVisitableBuilder(StatefulSet item) {
+    return new StatefulSetBuilder(item);
   }
 
   private StatefulSet sendPatchedStatefulSet(Map<String, Object> patchedUpdate) {
