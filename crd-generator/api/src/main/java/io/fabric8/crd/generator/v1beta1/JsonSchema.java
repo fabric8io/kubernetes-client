@@ -68,12 +68,24 @@ public class JsonSchema extends AbstractJsonSchema<JSONSchemaProps, JSONSchemaPr
   }
 
   @Override
-  protected JSONSchemaProps collectionProperty(JSONSchemaProps schema) {
+  protected JSONSchemaProps arrayLikeProperty(JSONSchemaProps schema) {
     return new JSONSchemaPropsBuilder()
       .withType("array")
       .withNewItems()
       .withSchema(schema)
       .and()
+      .build();
+  }
+
+  @Override
+  protected JSONSchemaProps mapLikeProperty() {
+    return new JSONSchemaPropsBuilder()
+      .withType("object")
+      .withNewAdditionalProperties()
+      .withNewSchema()
+      .withType("string")
+      .endSchema()
+      .endAdditionalProperties()
       .build();
   }
 

@@ -15,6 +15,10 @@
  */
 package io.fabric8.crd.example.inherited;
 
-public class ChildSpec extends BaseSpec {
+import java.util.Map;
 
+public class ChildSpec extends BaseSpec {
+  private Map<String, Object> unsupported;
+  private Map<String,String> supported;
+  private Map unsupported2;
 }

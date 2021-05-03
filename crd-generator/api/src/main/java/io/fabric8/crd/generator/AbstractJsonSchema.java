@@ -39,6 +39,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Encapsulates the common logic supporting OpenAPI schema generation for CRD generation.
@@ -47,6 +49,8 @@ import java.util.Set;
  * @param <B> the concrete type of the JSON Schema builder
  */
 public abstract class AbstractJsonSchema<T, B> {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(AbstractJsonSchema.class);
 
   protected static final TypeDef QUANTITY = ClassTo.TYPEDEF.apply(Quantity.class);
   protected static final TypeDef DURATION = ClassTo.TYPEDEF.apply(Duration.class);
@@ -169,7 +173,9 @@ public abstract class AbstractJsonSchema<T, B> {
           })
         );
 
-      addProperty(updated[0], builder, internalFrom(updated[0].getTypeRef()));
+      final Property possiblyRenamedProperty = updated[0];
+      addProperty(possiblyRenamedProperty, builder, internalFrom(possiblyRenamedProperty.getName(),
+        possiblyRenamedProperty.getTypeRef()));
     }
     return build(builder, required);
   }
@@ -182,7 +188,7 @@ public abstract class AbstractJsonSchema<T, B> {
   public abstract B newBuilder();
 
   /**
-   * Adds the specified property to the specified builder, calling {@link #internalFrom(TypeRef)}
+   * Adds the specified property to the specified builder, calling {@link #internalFrom(String, TypeRef)}
    * to create the property schema.
    *
    * @param property the property to add to the currently being built schema
@@ -204,17 +210,41 @@ public abstract class AbstractJsonSchema<T, B> {
   /**
    * Builds the specific JSON schema representing the structural schema for the specified property
    *
+   * @param name the name of the property which schema we want to build
    * @param typeRef the type of the property which schema we want to build
    * @return the structural schema associated with the specified property
    */
-  public T internalFrom(TypeRef typeRef) {
+  public T internalFrom(String name, TypeRef typeRef) {
     // Note that ordering of the checks here is meaningful: we need to check for complex types last
     // in case some "complex" types are handled specifically
     if (typeRef.getDimensions() > 0 || TypeUtils.isCollection(typeRef)) { // Handle Collections & Arrays
-      return collectionProperty(
-        internalFrom(TypeAs.combine(TypeAs.UNWRAP_ARRAY_OF, TypeAs.UNWRAP_COLLECTION_OF).apply(typeRef)));
+      final TypeRef collectionType = TypeAs.combine(TypeAs.UNWRAP_ARRAY_OF, TypeAs.UNWRAP_COLLECTION_OF)
+        .apply(typeRef);
+      final T schema = internalFrom(name, collectionType);
+      return arrayLikeProperty(schema);
+    } else if (TypeUtils.isMap(typeRef)) { // Handle Maps
+      final TypeRef keyType = TypeAs.UNWRAP_MAP_KEY_OF.apply(typeRef);
+      boolean degraded = false;
+      if (keyType instanceof ClassRef) {
+        ClassRef classRef = (ClassRef) keyType;
+        if (!classRef.getFullyQualifiedName().equals("java.lang.String")) {
+          degraded = true;
+        } else {
+          final TypeRef valueType = TypeAs.UNWRAP_MAP_VALUE_OF.apply(typeRef);
+          classRef = (ClassRef) valueType;
+          if (!classRef.getFullyQualifiedName().equals("java.lang.String")) {
+            degraded = true;
+          }
+        }
+      } else {
+        degraded = true;
+      }
+      if (degraded) {
+        LOGGER.warn("Property '{}' with '{}' type is mapped to a string to string mapping because of CRD schemas limitations", name, typeRef);
+      }
+      return mapLikeProperty();
     } else if (TypeUtils.isOptional(typeRef)) { // Handle Optionals
-      return internalFrom(TypeAs.UNWRAP_OPTIONAL_OF.apply(typeRef));
+      return internalFrom(name, TypeAs.UNWRAP_OPTIONAL_OF.apply(typeRef));
     } else {
       final String typeName = COMMON_MAPPINGS.get(typeRef);
       if(typeName != null) { // we have a type that we handle specifically
@@ -255,12 +285,19 @@ public abstract class AbstractJsonSchema<T, B> {
   protected abstract T mappedProperty(TypeRef ref);
 
   /**
-   * Builds the schema for collection properties
+   * Builds the schema for array-like properties
    *
-   * @param schema the schema for the extracted element type for this collection-like property
-   * @return the schema for the collection-like property
+   * @param schema the schema for the extracted element type for this array-like property
+   * @return the schema for the array-like property
    */
-  protected abstract T collectionProperty(T schema);
+  protected abstract T arrayLikeProperty(T schema);
+
+  /**
+   * Builds the schema for map-like properties
+   *
+   * @return the schema for the map-like property
+   */
+  protected abstract T mapLikeProperty();
 
   /**
    * Builds the schema for standard, simple (e.g. string) property types
