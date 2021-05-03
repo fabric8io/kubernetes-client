@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal.core.v1;
 
+import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
@@ -49,9 +50,8 @@ public class ComponentStatusOperationsImpl extends HasMetadataOperation<Componen
   }
 
   @Override
-  public ComponentStatus edit(Visitor... visitors) {
-    ComponentStatus item = new ComponentStatusBuilder(getMandatory()).accept(visitors).build();
-    return patch(item);
+  protected VisitableBuilder<ComponentStatus, ?> createVisitableBuilder(ComponentStatus item) {
+    return new ComponentStatusBuilder(item);
   }
 
   @Override

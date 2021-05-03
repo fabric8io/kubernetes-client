@@ -164,11 +164,11 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
   }
 
   @Override
-  public T patch(T t) {
+  public T patch(T base, T item) {
     if (!rolling) {
-      return super.patch(t);
+      return super.patch(base, item);
     }
-    return getRollingUpdater(rollingTimeout, rollingTimeUnit).rollUpdate(getMandatory(), t);
+    return getRollingUpdater(rollingTimeout, rollingTimeUnit).rollUpdate(getMandatory(), item);
   }
 
 }

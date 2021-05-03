@@ -74,7 +74,7 @@ import io.fabric8.kubernetes.client.dsl.internal.uploadable.PodUpload;
 import io.fabric8.kubernetes.client.utils.BlockingInputStreamPumper;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
-import io.fabric8.kubernetes.api.builder.Visitor;
+import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -721,8 +721,8 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   }
 
   @Override
-  public Pod edit(Visitor... visitors) {
-    return patch(new PodBuilder(getMandatory()).accept(visitors).build());
+  protected VisitableBuilder<Pod, ?> createVisitableBuilder(Pod item) {
+    return new PodBuilder(item);
   }
 }
 

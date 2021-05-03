@@ -17,7 +17,7 @@ package io.fabric8.kubernetes.client.dsl.internal.core.v1;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.type.TypeFactory;
-import io.fabric8.kubernetes.api.builder.Visitor;
+import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.model.Binding;
 import io.fabric8.kubernetes.api.model.BindingBuilder;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
@@ -45,9 +45,8 @@ public class BindingOperationsImpl extends HasMetadataOperation<Binding, Kuberne
   }
 
   @Override
-  public Binding edit(Visitor... visitors) {
-    Binding item = new BindingBuilder(getMandatory()).accept(visitors).build();
-    return patch(item);
+  protected VisitableBuilder<Binding, ?> createVisitableBuilder(Binding item) {
+    return new BindingBuilder(item);
   }
 
   public BindingOperationsImpl newInstance(OperationContext context) {

@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal.apps.v1;
 
-import io.fabric8.kubernetes.api.builder.Visitor;
+import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.Status;
@@ -234,8 +234,8 @@ public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<
   }
 
   @Override
-  public ReplicaSet edit(Visitor... visitors) {
-    return patch(new ReplicaSetBuilder(getMandatory()).accept(visitors).build());
+  protected VisitableBuilder<ReplicaSet, ?> createVisitableBuilder(ReplicaSet item) {
+    return new ReplicaSetBuilder(item);
   }
 
   static Map<String, String> getReplicaSetSelectorLabels(ReplicaSet replicaSet) {

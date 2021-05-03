@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal.extensions.v1beta1;
 
-import io.fabric8.kubernetes.api.builder.Visitor;
+import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.OwnerReference;
 import io.fabric8.kubernetes.api.model.Status;
@@ -138,11 +138,11 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
   }
 
   @Override
-  public Deployment patch(Deployment item) {
+  public Deployment patch(Deployment base, Deployment item) {
     if (isCascading()) {
-      return cascading(false).patch(item);
+      return cascading(false).patch(base, item);
     }
-    return super.patch(item);
+    return super.patch(base, item);
   }
 
   @Override
@@ -393,8 +393,8 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
   }
 
   @Override
-  public Deployment edit(Visitor... visitors) {
-    return patch(new DeploymentBuilder(getMandatory()).accept(visitors).build());
+  protected VisitableBuilder<Deployment, ?> createVisitableBuilder(Deployment item) {
+    return new DeploymentBuilder(item);
   }
 
   private Deployment sendPatchedDeployment(Map<String, Object> patchedUpdate) {
