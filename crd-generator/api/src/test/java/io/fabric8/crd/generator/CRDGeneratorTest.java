@@ -170,7 +170,19 @@ class CRDGeneratorTest {
       final CustomResourceDefinitionVersion version = checkCRD(customResource, "Child", "children",
         Scope.NAMESPACED);
       assertNotNull(version.getSubresources());
+      final Map<String, JSONSchemaProps> specProps = version.getSchema().getOpenAPIV3Schema()
+        .getProperties().get("spec").getProperties();
+      assertEquals(3, specProps.size());
+      checkMapProp(specProps, "unsupported");
+      checkMapProp(specProps, "unsupported2");
+      checkMapProp(specProps, "supported");
     });
+  }
+
+  private void checkMapProp(Map<String, JSONSchemaProps> specProps, String name) {
+    final JSONSchemaProps props = specProps.get(name);
+    assertEquals("object", props.getType());
+    assertEquals("string", props.getAdditionalProperties().getSchema().getType());
   }
 
   @Test
