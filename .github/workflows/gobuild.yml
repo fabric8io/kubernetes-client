@@ -34,11 +34,12 @@ jobs:
           ./kubernetes-model-generator/generateModelDocker.sh
       - name: Check No Schema file modified
         run: |
-          git status
-          MODIFIED_KUBE_SCHEMA=`git status | grep kube-schema.json | wc -l`
+          git add .
+          MODIFIED_KUBE_SCHEMA=`git status | grep 'kube-schema.json\|src/generated/java' | wc -l`
           if [ $MODIFIED_KUBE_SCHEMA -eq "0" ]; then
             echo "No Schema files modified. Build Success.";
           else
+            git status
             echo "Schema files modified. Build Failure";
             exit 1;
           fi;

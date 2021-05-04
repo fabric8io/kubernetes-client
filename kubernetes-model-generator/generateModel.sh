@@ -63,6 +63,11 @@ generateSingleModule() {
   cd "$ABSOLUTE_BASEDIR" || exit 1
 }
 
+echo "Installing required common modules"
+mvn clean install -f ../pom.xml -N
+mvn clean install -N
+mvn clean install -pl kubernetes-model-common -pl kubernetes-model-jsonschema2pojo
+
 if [ -z "$1" ]; then
   generateAll
 else
