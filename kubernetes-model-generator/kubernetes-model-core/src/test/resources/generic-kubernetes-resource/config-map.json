@@ -1,0 +1,12 @@
+{
+  "apiVersion": "v1",
+  "kind": "ConfigMap",
+  "metadata": {
+    "name": "generic-resource-test",
+    "namespace": "default"
+  },
+  "data": {
+    "ENTRY_ONE": "1",
+    "other": "other value"
+  }
+}

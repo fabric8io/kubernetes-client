@@ -13,10 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client;
+package io.fabric8.kubernetes.api.model;
 
-import io.fabric8.kubernetes.api.model.DefaultKubernetesResourceList;
-import io.fabric8.kubernetes.api.model.HasMetadata;
-
-public class CustomResourceList<T extends HasMetadata> extends DefaultKubernetesResourceList<T> {
+public class GenericKubernetesResourceList extends DefaultKubernetesResourceList<GenericKubernetesResource> {
 }
