@@ -18,13 +18,13 @@
 set -e
 
 BASEDIR=$(dirname "$BASH_SOURCE")
-ABSOLUTE_BASEDIR=$(realpath "$BASEDIR")
+ABSOLUTE_BASEDIR=$(realpath "$BASEDIR/..")
 
 DOCKER_IMAGE_GOLANG=marcnuri/golang-1.15-java11
 
 docker run                                                   \
   --rm                                                       \
-  -v "$ABSOLUTE_BASEDIR":/usr/src/kubernetes-model-generator \
+  -v "$ABSOLUTE_BASEDIR":/usr/src                            \
   -w /usr/src/kubernetes-model-generator                     \
   -e LOCAL_USER="$(id -u):$(id -g)"                          \
   $DOCKER_IMAGE_GOLANG "./generateModel.sh" "$@"
