@@ -20,7 +20,7 @@ set -e
 BASEDIR=$(dirname "$BASH_SOURCE")
 ABSOLUTE_BASEDIR=$(realpath "$BASEDIR")
 
-DOCKER_IMAGE_GOLANG=golang:1.15.6
+DOCKER_IMAGE_GOLANG=marcnuri/golang-1.15-java11
 
 docker run                                                   \
   --rm                                                       \

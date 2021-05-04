@@ -131,7 +131,8 @@
             <includeJsr303Annotations>false</includeJsr303Annotations>
             <includeToString>false</includeToString>
             <includeHashcodeAndEquals>false</includeHashcodeAndEquals>
-            <outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
+            <removeOldOutput>true</removeOldOutput>
+            <outputDirectory>${generate.targetDirectory}</outputDirectory>
             <annotationStyle>none</annotationStyle>
           </configuration>
           <executions>
@@ -148,6 +149,40 @@
               <version>${project.version}</version>
             </dependency>
           </dependencies>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <version>${maven.buildhelper.plugin.version}</version>
+          <executions>
+            <execution>
+              <phase>generate-sources</phase>
+              <goals>
+                <goal>add-source</goal>
+              </goals>
+              <configuration>
+                <sources>
+                  <source>${generate.targetDirectory}</source>
+                </sources>
+              </configuration>
+            </execution>
+            <execution>
+              <id>attach-artifacts</id>
+              <phase>package</phase>
+              <goals>
+                <goal>attach-artifact</goal>
+              </goals>
+              <configuration>
+                <artifacts>
+                  <artifact>
+                    <file>${project.build.outputDirectory}/schema/kube-schema.json</file>
+                    <type>json</type>
+                    <classifier>schema</classifier>
+                  </artifact>
+                </artifacts>
+              </configuration>
+            </execution>
+          </executions>
         </plugin>
       </plugins>
     </pluginManagement>

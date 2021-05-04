@@ -56,7 +56,7 @@ generateAll() {
 generateSingleModule() {
   echo "Compiling $1"
   cd "$ABSOLUTE_BASEDIR/$1" || exit 1
-  make "gobuild"
+  make "build"
   if test -n "${LOCAL_USER-}"; then
     chown -R "$LOCAL_USER" ./src/main/resources/schema
   fi
