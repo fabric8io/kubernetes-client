@@ -1002,6 +1002,7 @@
         <sonar.links.ci>https://github.com/fabric8io/kubernetes-client/actions</sonar.links.ci>
         <sonar.links.scm>https://github.com/fabric8io/kubernetes-client</sonar.links.scm>
         <sonar.links.issue>https://github.com/fabric8io/kubernetes-client/issues</sonar.links.issue>
+        <sonar.exclusions>**/src/generated/java/**/*</sonar.exclusions>
         <sonar.coverage.exclusions>**/kubernetes-examples/**/*,**/extensions/**/examples/**/*</sonar.coverage.exclusions>
         <karaf.itest.skip>true</karaf.itest.skip>
       </properties>
