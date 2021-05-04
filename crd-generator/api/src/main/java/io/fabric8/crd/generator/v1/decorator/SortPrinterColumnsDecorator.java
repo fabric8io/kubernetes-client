@@ -28,7 +28,7 @@ public class SortPrinterColumnsDecorator extends Decorator<CustomResourceDefinit
     final List<CustomResourceDefinitionVersion> versions = spec.buildVersions();
     for (CustomResourceDefinitionVersion version : versions) {
       List<CustomResourceColumnDefinition> columns = version.getAdditionalPrinterColumns();
-      if(!columns.isEmpty()) {
+      if(columns != null && !columns.isEmpty()) {
         columns.sort((o1, o2) -> String.CASE_INSENSITIVE_ORDER.compare(o1.getJsonPath(), o2.getJsonPath()));
       }
     }
