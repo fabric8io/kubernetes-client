@@ -19,6 +19,7 @@
 * Fix #3027: fix NPE when sorting events in KubernetesResourceUtil
 * Fix missing entry for Trigger in TektonTriggersResourceMappingProvider
 * Fix #3047: NPE when getting version when there is no build date
+* Fix #3024: stopAllRegisteredInformers will not call startWatcher
 
 #### Improvements
 * Fix #2788: Support FIPS mode in kubernetes-client with BouncyCastleFipsProvider
@@ -31,6 +32,7 @@
 
 #### Dependency Upgrade
 * Fix #2979: Update Kubernetes Model to v1.21.0
+* Update to sundrio 0.30.6
 
 #### New Features
 * Fix #2984: Add support for `flowcontrol.apiserver.k8s.io/v1beta1` FlowSchema and PriorityLevelConfiguration

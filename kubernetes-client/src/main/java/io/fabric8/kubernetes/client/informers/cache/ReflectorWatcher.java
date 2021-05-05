@@ -30,13 +30,11 @@ public class ReflectorWatcher<T extends HasMetadata> implements Watcher<T> {
 
   private final Store<T> store;
   private final AtomicReference<String> lastSyncResourceVersion;
-  private final Runnable onClose;
   private final Runnable onHttpGone;
 
-  public ReflectorWatcher(Store<T> store, AtomicReference<String> lastSyncResourceVersion, Runnable onClose, Runnable onHttpGone) {
+  public ReflectorWatcher(Store<T> store, AtomicReference<String> lastSyncResourceVersion, Runnable onHttpGone) {
     this.store = store;
     this.lastSyncResourceVersion = lastSyncResourceVersion;
-    this.onClose = onClose;
     this.onHttpGone = onHttpGone;
   }
 
@@ -75,13 +73,11 @@ public class ReflectorWatcher<T extends HasMetadata> implements Watcher<T> {
     if (exception.isHttpGone()) {
         onHttpGone.run();
     }
-    onClose.run();
   }
 
   @Override
   public void onClose() {
     log.debug("Watch gracefully closed");
-    onClose.run();
   }
 
   @Override

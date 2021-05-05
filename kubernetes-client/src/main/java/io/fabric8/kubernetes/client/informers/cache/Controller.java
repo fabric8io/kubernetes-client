@@ -89,7 +89,8 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
     scheduleResync();
     
     try {
-      reflector.listAndWatch();
+      log.info("Started Reflector watch for {}", apiTypeClass);
+      reflector.listSyncAndWatch();
     } catch (Exception exception) {
       log.warn("Reflector list-watching job exiting because the thread-pool is shutting down", exception);
       this.eventListeners.forEach(listener -> listener.onException(exception));

@@ -282,6 +282,23 @@ class CustomResourceTest {
   }
 
   @Test
+  void testDeleteWithEmptyResponse() throws InterruptedException, IOException {
+    // Given
+    server.expect().delete().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/example-hello").andReturn(HttpURLConnection.HTTP_OK, "").once();
+
+    // When
+    boolean result = client.customResource(customResourceDefinitionContext)
+      .delete("ns1", "example-hello", "Orphan");
+
+    // Then
+    assertTrue(result);
+    RecordedRequest request = server.getLastRequest();
+    assertEquals("DELETE", request.getMethod());
+    assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Orphan\"}",
+      request.getBody().readUtf8());;
+  }
+
+  @Test
   void testDeleteWithNamespaceMismatch() {
     Assertions.assertThrows(KubernetesClientException.class, () -> {
       client.customResource(customResourceDefinitionContext).delete("ns2", "example-hello");
