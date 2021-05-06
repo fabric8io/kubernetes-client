@@ -56,7 +56,7 @@ public class PatchIT {
 
   @Before
   public void initNamespace() {
-    this.currentNamespace = ClusterEntity.getArquillianNamespace();
+    this.currentNamespace = session.getNamespace();
   }
 
   @Test
