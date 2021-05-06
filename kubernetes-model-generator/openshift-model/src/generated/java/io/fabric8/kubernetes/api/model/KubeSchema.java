@@ -25,6 +25,8 @@ import io.fabric8.openshift.api.model.APIServer;
 import io.fabric8.openshift.api.model.APIServerList;
 import io.fabric8.openshift.api.model.AppliedClusterResourceQuota;
 import io.fabric8.openshift.api.model.AppliedClusterResourceQuotaList;
+import io.fabric8.openshift.api.model.Authentication;
+import io.fabric8.openshift.api.model.AuthenticationList;
 import io.fabric8.openshift.api.model.BuildConfigList;
 import io.fabric8.openshift.api.model.BuildList;
 import io.fabric8.openshift.api.model.BuildRequest;
@@ -42,6 +44,10 @@ import io.fabric8.openshift.api.model.ClusterRoleScopeRestriction;
 import io.fabric8.openshift.api.model.ClusterVersion;
 import io.fabric8.openshift.api.model.ClusterVersionList;
 import io.fabric8.openshift.api.model.ConfigMapFileReference;
+import io.fabric8.openshift.api.model.Console;
+import io.fabric8.openshift.api.model.ConsoleList;
+import io.fabric8.openshift.api.model.DNS;
+import io.fabric8.openshift.api.model.DNSList;
 import io.fabric8.openshift.api.model.DNSZone;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigList;
@@ -69,6 +75,8 @@ import io.fabric8.openshift.api.model.LocalResourceAccessReview;
 import io.fabric8.openshift.api.model.LocalSubjectAccessReview;
 import io.fabric8.openshift.api.model.NetNamespace;
 import io.fabric8.openshift.api.model.NetNamespaceList;
+import io.fabric8.openshift.api.model.Network;
+import io.fabric8.openshift.api.model.NetworkList;
 import io.fabric8.openshift.api.model.OAuth;
 import io.fabric8.openshift.api.model.OAuthAccessToken;
 import io.fabric8.openshift.api.model.OAuthAccessTokenList;
@@ -133,6 +141,8 @@ import lombok.ToString;
     "AggregationRule",
     "AppliedClusterResourceQuota",
     "AppliedClusterResourceQuotaList",
+    "Authentication",
+    "AuthenticationList",
     "BaseKubernetesList",
     "BuildConfigList",
     "BuildList",
@@ -147,7 +157,11 @@ import lombok.ToString;
     "ClusterVersionList",
     "Config",
     "ConfigMapFileReference",
+    "Console",
+    "ConsoleList",
     "CreateOptions",
+    "DNS",
+    "DNSList",
     "DNSZone",
     "DeleteOptions",
     "DeploymentConfig",
@@ -179,6 +193,8 @@ import lombok.ToString;
     "LocalSubjectAccessReview",
     "NetNamespace",
     "NetNamespaceList",
+    "Network",
+    "NetworkList",
     "OAuth",
     "OAuthAccessToken",
     "OAuthAccessTokenList",
@@ -270,6 +286,10 @@ public class KubeSchema {
     private AppliedClusterResourceQuota appliedClusterResourceQuota;
     @JsonProperty("AppliedClusterResourceQuotaList")
     private AppliedClusterResourceQuotaList appliedClusterResourceQuotaList;
+    @JsonProperty("Authentication")
+    private Authentication authentication;
+    @JsonProperty("AuthenticationList")
+    private AuthenticationList authenticationList;
     @JsonProperty("BaseKubernetesList")
     private BaseKubernetesList baseKubernetesList;
     @JsonProperty("BuildConfigList")
@@ -298,8 +318,16 @@ public class KubeSchema {
     private Config config;
     @JsonProperty("ConfigMapFileReference")
     private ConfigMapFileReference configMapFileReference;
+    @JsonProperty("Console")
+    private Console console;
+    @JsonProperty("ConsoleList")
+    private ConsoleList consoleList;
     @JsonProperty("CreateOptions")
     private CreateOptions createOptions;
+    @JsonProperty("DNS")
+    private DNS dns;
+    @JsonProperty("DNSList")
+    private DNSList dNSList;
     @JsonProperty("DNSZone")
     private DNSZone dNSZone;
     @JsonProperty("DeleteOptions")
@@ -362,6 +390,10 @@ public class KubeSchema {
     private NetNamespace netNamespace;
     @JsonProperty("NetNamespaceList")
     private NetNamespaceList netNamespaceList;
+    @JsonProperty("Network")
+    private Network network;
+    @JsonProperty("NetworkList")
+    private NetworkList networkList;
     @JsonProperty("OAuth")
     private OAuth oAuth;
     @JsonProperty("OAuthAccessToken")
@@ -512,6 +544,7 @@ public class KubeSchema {
      * @param clusterResourceQuotaList
      * @param operatorHubList
      * @param clusterVersionList
+     * @param dns
      * @param imageStreamImage
      * @param groupList
      * @param tagEvent
@@ -523,6 +556,7 @@ public class KubeSchema {
      * @param tokenReview
      * @param getOptions
      * @param imageList
+     * @param consoleList
      * @param status
      * @param template
      * @param buildRequest
@@ -565,6 +599,7 @@ public class KubeSchema {
      * @param oAuth
      * @param clusterOperator
      * @param podSecurityPolicyReview
+     * @param authenticationList
      * @param deploymentConfig
      * @param openshiftClusterRoleBinding
      * @param egressNetworkPolicy
@@ -588,18 +623,23 @@ public class KubeSchema {
      * @param identityList
      * @param configMapFileReference
      * @param subjectAccessReview
+     * @param networkList
      * @param openshiftRoleBinding
      * @param featureGateList
      * @param clusterNetworkList
      * @param podSecurityPolicySubjectReview
      * @param updateOptions
      * @param clusterVersion
+     * @param network
      * @param scheduler
      * @param netNamespace
      * @param oAuthAuthorizeToken
      * @param clusterOperatorList
+     * @param dNSList
      * @param appliedClusterResourceQuotaList
+     * @param authentication
      * @param localSubjectAccessReview
+     * @param console
      * @param quantity
      * @param templateList
      * @param deploymentConfigList
@@ -611,7 +651,7 @@ public class KubeSchema {
      * @param imageTag
      * @param user
      */
-    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, APIServer aPIServer, APIServerList aPIServerList, AggregationRule aggregationRule, AppliedClusterResourceQuota appliedClusterResourceQuota, AppliedClusterResourceQuotaList appliedClusterResourceQuotaList, BaseKubernetesList baseKubernetesList, BuildConfigList buildConfigList, BuildList buildList, BuildRequest buildRequest, ClusterNetwork clusterNetwork, ClusterNetworkList clusterNetworkList, ClusterOperator clusterOperator, ClusterOperatorList clusterOperatorList, ClusterResourceQuota clusterResourceQuota, ClusterResourceQuotaList clusterResourceQuotaList, ClusterVersion clusterVersion, ClusterVersionList clusterVersionList, Config config, ConfigMapFileReference configMapFileReference, CreateOptions createOptions, DNSZone dNSZone, DeleteOptions deleteOptions, DeploymentConfig deploymentConfig, DeploymentConfigList deploymentConfigList, EgressNetworkPolicy egressNetworkPolicy, EgressNetworkPolicyList egressNetworkPolicyList, FeatureGate featureGate, FeatureGateList featureGateList, GetOptions getOptions, Group group, GroupList groupList, Identity identity, IdentityList identityList, ImageList imageList, ImageStreamImage imageStreamImage, ImageStreamImport imageStreamImport, ImageStreamList imageStreamList, ImageStreamMapping imageStreamMapping, ImageStreamTagList imageStreamTagList, ImageTag imageTag, ImageTagList imageTagList, Info info, Infrastructure infrastructure, InfrastructureList infrastructureList, Ingress ingress, IngressList ingressList, ListOptions listOptions, LocalResourceAccessReview localResourceAccessReview, LocalSubjectAccessReview localSubjectAccessReview, NetNamespace netNamespace, NetNamespaceList netNamespaceList, OAuth oAuth, OAuthAccessToken oAuthAccessToken, OAuthAccessTokenList oAuthAccessTokenList, OAuthAuthorizeToken oAuthAuthorizeToken, OAuthAuthorizeTokenList oAuthAuthorizeTokenList, OAuthClient oAuthClient, OAuthClientAuthorization oAuthClientAuthorization, OAuthClientAuthorizationList oAuthClientAuthorizationList, OAuthClientList oAuthClientList, OAuthList oAuthList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, ClusterRole openshiftClusterRole, ClusterRoleBinding openshiftClusterRoleBinding, ClusterRoleBindingList openshiftClusterRoleBindingList, ClusterRoleList openshiftClusterRoleList, ClusterRoleScopeRestriction openshiftClusterRoleScopeRestriction, Role openshiftRole, RoleBinding openshiftRoleBinding, RoleBindingList openshiftRoleBindingList, RoleBindingRestriction openshiftRoleBindingRestriction, RoleBindingRestrictionSpec openshiftRoleBindingRestrictionSpec, RoleList openshiftRoleList, OperatorHub operatorHub, OperatorHubList operatorHubList, Patch patch, PatchOptions patchOptions, PodSecurityPolicyReview podSecurityPolicyReview, PodSecurityPolicySelfSubjectReview podSecurityPolicySelfSubjectReview, PodSecurityPolicySubjectReview podSecurityPolicySubjectReview, Project project, ProjectList projectList, ProjectRequest projectRequest, Proxy proxy, ProxyList proxyList, Quantity quantity, RangeAllocation rangeAllocation, RangeAllocationList rangeAllocationList, ResourceAccessReview resourceAccessReview, RootPaths rootPaths, Route route, RouteList routeList, Scheduler scheduler, SchedulerList schedulerList, SecretNameReference secretNameReference, SecurityContextConstraints securityContextConstraints, SecurityContextConstraintsList securityContextConstraintsList, SelfSubjectRulesReview selfSubjectRulesReview, Status status, SubjectAccessReview subjectAccessReview, SubjectAccessReviewResponse subjectAccessReviewResponse, SubjectRulesReview subjectRulesReview, TLSProfileSpec tLSProfileSpec, TagEvent tagEvent, Template template, TemplateList templateList, String time, TokenReview tokenReview, TypeMeta typeMeta, UpdateOptions updateOptions, User user, UserList userList) {
+    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, APIServer aPIServer, APIServerList aPIServerList, AggregationRule aggregationRule, AppliedClusterResourceQuota appliedClusterResourceQuota, AppliedClusterResourceQuotaList appliedClusterResourceQuotaList, Authentication authentication, AuthenticationList authenticationList, BaseKubernetesList baseKubernetesList, BuildConfigList buildConfigList, BuildList buildList, BuildRequest buildRequest, ClusterNetwork clusterNetwork, ClusterNetworkList clusterNetworkList, ClusterOperator clusterOperator, ClusterOperatorList clusterOperatorList, ClusterResourceQuota clusterResourceQuota, ClusterResourceQuotaList clusterResourceQuotaList, ClusterVersion clusterVersion, ClusterVersionList clusterVersionList, Config config, ConfigMapFileReference configMapFileReference, Console console, ConsoleList consoleList, CreateOptions createOptions, DNS dns, DNSList dNSList, DNSZone dNSZone, DeleteOptions deleteOptions, DeploymentConfig deploymentConfig, DeploymentConfigList deploymentConfigList, EgressNetworkPolicy egressNetworkPolicy, EgressNetworkPolicyList egressNetworkPolicyList, FeatureGate featureGate, FeatureGateList featureGateList, GetOptions getOptions, Group group, GroupList groupList, Identity identity, IdentityList identityList, ImageList imageList, ImageStreamImage imageStreamImage, ImageStreamImport imageStreamImport, ImageStreamList imageStreamList, ImageStreamMapping imageStreamMapping, ImageStreamTagList imageStreamTagList, ImageTag imageTag, ImageTagList imageTagList, Info info, Infrastructure infrastructure, InfrastructureList infrastructureList, Ingress ingress, IngressList ingressList, ListOptions listOptions, LocalResourceAccessReview localResourceAccessReview, LocalSubjectAccessReview localSubjectAccessReview, NetNamespace netNamespace, NetNamespaceList netNamespaceList, Network network, NetworkList networkList, OAuth oAuth, OAuthAccessToken oAuthAccessToken, OAuthAccessTokenList oAuthAccessTokenList, OAuthAuthorizeToken oAuthAuthorizeToken, OAuthAuthorizeTokenList oAuthAuthorizeTokenList, OAuthClient oAuthClient, OAuthClientAuthorization oAuthClientAuthorization, OAuthClientAuthorizationList oAuthClientAuthorizationList, OAuthClientList oAuthClientList, OAuthList oAuthList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, ClusterRole openshiftClusterRole, ClusterRoleBinding openshiftClusterRoleBinding, ClusterRoleBindingList openshiftClusterRoleBindingList, ClusterRoleList openshiftClusterRoleList, ClusterRoleScopeRestriction openshiftClusterRoleScopeRestriction, Role openshiftRole, RoleBinding openshiftRoleBinding, RoleBindingList openshiftRoleBindingList, RoleBindingRestriction openshiftRoleBindingRestriction, RoleBindingRestrictionSpec openshiftRoleBindingRestrictionSpec, RoleList openshiftRoleList, OperatorHub operatorHub, OperatorHubList operatorHubList, Patch patch, PatchOptions patchOptions, PodSecurityPolicyReview podSecurityPolicyReview, PodSecurityPolicySelfSubjectReview podSecurityPolicySelfSubjectReview, PodSecurityPolicySubjectReview podSecurityPolicySubjectReview, Project project, ProjectList projectList, ProjectRequest projectRequest, Proxy proxy, ProxyList proxyList, Quantity quantity, RangeAllocation rangeAllocation, RangeAllocationList rangeAllocationList, ResourceAccessReview resourceAccessReview, RootPaths rootPaths, Route route, RouteList routeList, Scheduler scheduler, SchedulerList schedulerList, SecretNameReference secretNameReference, SecurityContextConstraints securityContextConstraints, SecurityContextConstraintsList securityContextConstraintsList, SelfSubjectRulesReview selfSubjectRulesReview, Status status, SubjectAccessReview subjectAccessReview, SubjectAccessReviewResponse subjectAccessReviewResponse, SubjectRulesReview subjectRulesReview, TLSProfileSpec tLSProfileSpec, TagEvent tagEvent, Template template, TemplateList templateList, String time, TokenReview tokenReview, TypeMeta typeMeta, UpdateOptions updateOptions, User user, UserList userList) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -620,6 +660,8 @@ public class KubeSchema {
         this.aggregationRule = aggregationRule;
         this.appliedClusterResourceQuota = appliedClusterResourceQuota;
         this.appliedClusterResourceQuotaList = appliedClusterResourceQuotaList;
+        this.authentication = authentication;
+        this.authenticationList = authenticationList;
         this.baseKubernetesList = baseKubernetesList;
         this.buildConfigList = buildConfigList;
         this.buildList = buildList;
@@ -634,7 +676,11 @@ public class KubeSchema {
         this.clusterVersionList = clusterVersionList;
         this.config = config;
         this.configMapFileReference = configMapFileReference;
+        this.console = console;
+        this.consoleList = consoleList;
         this.createOptions = createOptions;
+        this.dns = dns;
+        this.dNSList = dNSList;
         this.dNSZone = dNSZone;
         this.deleteOptions = deleteOptions;
         this.deploymentConfig = deploymentConfig;
@@ -666,6 +712,8 @@ public class KubeSchema {
         this.localSubjectAccessReview = localSubjectAccessReview;
         this.netNamespace = netNamespace;
         this.netNamespaceList = netNamespaceList;
+        this.network = network;
+        this.networkList = networkList;
         this.oAuth = oAuth;
         this.oAuthAccessToken = oAuthAccessToken;
         this.oAuthAccessTokenList = oAuthAccessTokenList;
@@ -797,6 +845,26 @@ public class KubeSchema {
     @JsonProperty("AppliedClusterResourceQuotaList")
     public void setAppliedClusterResourceQuotaList(AppliedClusterResourceQuotaList appliedClusterResourceQuotaList) {
         this.appliedClusterResourceQuotaList = appliedClusterResourceQuotaList;
+    }
+
+    @JsonProperty("Authentication")
+    public Authentication getAuthentication() {
+        return authentication;
+    }
+
+    @JsonProperty("Authentication")
+    public void setAuthentication(Authentication authentication) {
+        this.authentication = authentication;
+    }
+
+    @JsonProperty("AuthenticationList")
+    public AuthenticationList getAuthenticationList() {
+        return authenticationList;
+    }
+
+    @JsonProperty("AuthenticationList")
+    public void setAuthenticationList(AuthenticationList authenticationList) {
+        this.authenticationList = authenticationList;
     }
 
     @JsonProperty("BaseKubernetesList")
@@ -939,6 +1007,26 @@ public class KubeSchema {
         this.configMapFileReference = configMapFileReference;
     }
 
+    @JsonProperty("Console")
+    public Console getConsole() {
+        return console;
+    }
+
+    @JsonProperty("Console")
+    public void setConsole(Console console) {
+        this.console = console;
+    }
+
+    @JsonProperty("ConsoleList")
+    public ConsoleList getConsoleList() {
+        return consoleList;
+    }
+
+    @JsonProperty("ConsoleList")
+    public void setConsoleList(ConsoleList consoleList) {
+        this.consoleList = consoleList;
+    }
+
     @JsonProperty("CreateOptions")
     public CreateOptions getCreateOptions() {
         return createOptions;
@@ -947,6 +1035,26 @@ public class KubeSchema {
     @JsonProperty("CreateOptions")
     public void setCreateOptions(CreateOptions createOptions) {
         this.createOptions = createOptions;
+    }
+
+    @JsonProperty("DNS")
+    public DNS getDns() {
+        return dns;
+    }
+
+    @JsonProperty("DNS")
+    public void setDns(DNS dns) {
+        this.dns = dns;
+    }
+
+    @JsonProperty("DNSList")
+    public DNSList getDNSList() {
+        return dNSList;
+    }
+
+    @JsonProperty("DNSList")
+    public void setDNSList(DNSList dNSList) {
+        this.dNSList = dNSList;
     }
 
     @JsonProperty("DNSZone")
@@ -1257,6 +1365,26 @@ public class KubeSchema {
     @JsonProperty("NetNamespaceList")
     public void setNetNamespaceList(NetNamespaceList netNamespaceList) {
         this.netNamespaceList = netNamespaceList;
+    }
+
+    @JsonProperty("Network")
+    public Network getNetwork() {
+        return network;
+    }
+
+    @JsonProperty("Network")
+    public void setNetwork(Network network) {
+        this.network = network;
+    }
+
+    @JsonProperty("NetworkList")
+    public NetworkList getNetworkList() {
+        return networkList;
+    }
+
+    @JsonProperty("NetworkList")
+    public void setNetworkList(NetworkList networkList) {
+        this.networkList = networkList;
     }
 
     @JsonProperty("OAuth")
