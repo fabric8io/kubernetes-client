@@ -30,11 +30,11 @@ import io.fabric8.openshift.api.model.console.v1.ConsoleNotificationList;
 import io.fabric8.openshift.api.model.console.v1.ConsoleYAMLSample;
 import io.fabric8.openshift.api.model.console.v1.ConsoleYAMLSampleList;
 import io.fabric8.openshift.client.dsl.OpenShiftConsoleAPIGroupDSL;
-import io.fabric8.openshift.client.dsl.internal.ConsoleCLIDownloadOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.ConsoleExternalLogLinkOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.ConsoleLinkOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.ConsoleNotificationOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.ConsoleYAMLSampleOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.console.ConsoleCLIDownloadOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.console.ConsoleExternalLogLinkOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.console.ConsoleLinkOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.console.ConsoleNotificationOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.console.ConsoleYAMLSampleOperationsImpl;
 import okhttp3.OkHttpClient;
 
 public class OpenShiftConsoleAPIGroupClient extends BaseClient implements OpenShiftConsoleAPIGroupDSL {

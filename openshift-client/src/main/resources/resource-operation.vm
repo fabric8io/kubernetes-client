@@ -24,6 +24,13 @@
   #if ($annotationName.endsWith("Group"))
     #set ($apiGroupName = $annotation.getParameters().get("value"))
   #end
+  #if ($apiGroupName.contains(".openshift.io"))
+    #set ($packageSuffix = $apiGroupName.substring(0, $apiGroupName.indexOf(".openshift.io")))
+  #elseif ($apiGroupName.contains(".coreos.com"))
+    #set ($packageSuffix = $apiGroupName.substring(0, $apiGroupName.indexOf(".com")))
+  #else
+    #set ($packageSuffix = "core")
+  #end
 #end
 
 #set ($isResourceNamespacedFlag = false)
@@ -34,7 +41,7 @@
 #end
 
 
-package io.fabric8.openshift.client.dsl.internal;
+package io.fabric8.openshift.client.dsl.internal.$packageSuffix;
 
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.openshift.client.OpenShiftConfig;
@@ -44,6 +51,7 @@ import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.openshift.client.OpenShiftConfig;
+import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
 
 import okhttp3.OkHttpClient;
 

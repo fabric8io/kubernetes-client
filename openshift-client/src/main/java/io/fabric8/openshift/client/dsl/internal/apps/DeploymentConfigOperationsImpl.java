@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.openshift.client.dsl.internal;
+package io.fabric8.openshift.client.dsl.internal.apps;
 
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Pod;
@@ -27,6 +27,7 @@ import io.fabric8.kubernetes.client.dsl.internal.LogWatchCallback;
 import io.fabric8.kubernetes.client.utils.PodOperationUtil;
 import io.fabric8.kubernetes.client.dsl.internal.RollingOperationContext;
 import io.fabric8.kubernetes.client.utils.URLUtils;
+import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.openshift.client.dsl.internal;
+package io.fabric8.openshift.client.dsl.internal.authorization;
 
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.builder.TypedVisitor;
@@ -25,6 +25,7 @@ import io.fabric8.openshift.api.model.RoleBinding;
 import io.fabric8.openshift.api.model.RoleBindingBuilder;
 import io.fabric8.openshift.api.model.RoleBindingList;
 import io.fabric8.openshift.client.OpenShiftConfig;
+import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
 import okhttp3.OkHttpClient;
 
 import java.io.IOException;

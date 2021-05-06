@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.openshift.client.dsl.internal;
+package io.fabric8.openshift.client.dsl.internal.build;
 
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.OpenShiftConfigBuilder;
+import io.fabric8.openshift.client.dsl.internal.build.BuildConfigOperationsImpl;
 import okhttp3.OkHttpClient;
 import okio.BufferedSink;
 import org.junit.jupiter.api.BeforeEach;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.openshift.client.dsl.internal;
+package io.fabric8.openshift.client.dsl.internal.core;
 
 import io.fabric8.kubernetes.api.builder.Visitor;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -36,6 +36,8 @@ import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.ParameterValue;
 import io.fabric8.openshift.client.dsl.TemplateOperation;
 import io.fabric8.openshift.client.dsl.TemplateResource;
+import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
+import io.fabric8.openshift.client.dsl.internal.TemplateOperationContext;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;

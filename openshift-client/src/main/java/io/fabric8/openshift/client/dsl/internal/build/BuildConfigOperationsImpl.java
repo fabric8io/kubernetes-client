@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.openshift.client.dsl.internal;
+package io.fabric8.openshift.client.dsl.internal.build;
 
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Event;
@@ -45,6 +45,8 @@ import io.fabric8.openshift.client.dsl.buildconfig.AuthorMessageAsFileTimeoutInp
 import io.fabric8.openshift.client.dsl.buildconfig.CommitterAuthorMessageAsFileTimeoutInputStreamable;
 import io.fabric8.openshift.client.dsl.buildconfig.CommitterEmailable;
 import io.fabric8.openshift.client.dsl.buildconfig.MessageAsFileTimeoutInputStreamable;
+import io.fabric8.openshift.client.dsl.internal.BuildConfigOperationContext;
+import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

@@ -34,26 +34,25 @@ import io.fabric8.openshift.api.model.ProjectRequest;
 import io.fabric8.openshift.api.model.Route;
 import io.fabric8.openshift.api.model.SecurityContextConstraints;
 import io.fabric8.openshift.api.model.User;
-import io.fabric8.openshift.client.handlers.BuildConfigHandler;
-import io.fabric8.openshift.client.handlers.BuildHandler;
-import io.fabric8.openshift.client.handlers.DeploymentConfigHandler;
-import io.fabric8.openshift.client.handlers.GroupHandler;
-import io.fabric8.openshift.client.handlers.IdentityHandler;
-import io.fabric8.openshift.client.handlers.ImageHandler;
-import io.fabric8.openshift.client.handlers.ImageStreamHandler;
-import io.fabric8.openshift.client.handlers.ImageStreamTagHandler;
-import io.fabric8.openshift.client.handlers.NetNamespaceHandler;
-import io.fabric8.openshift.client.handlers.OAuthAccessTokenHandler;
-import io.fabric8.openshift.client.handlers.OAuthAuthorizeTokenHandler;
-import io.fabric8.openshift.client.handlers.OAuthClientHandler;
-import io.fabric8.openshift.client.handlers.ProjectHandler;
+import io.fabric8.openshift.client.handlers.build.BuildConfigHandler;
+import io.fabric8.openshift.client.handlers.build.BuildHandler;
+import io.fabric8.openshift.client.handlers.apps.DeploymentConfigHandler;
 import io.fabric8.openshift.client.handlers.ProjectRequestHandler;
-import io.fabric8.openshift.client.handlers.RouteHandler;
-import io.fabric8.openshift.client.handlers.SecurityContextConstraintsHandler;
-import io.fabric8.openshift.client.handlers.UserHandler;
+import io.fabric8.openshift.client.handlers.image.ImageHandler;
+import io.fabric8.openshift.client.handlers.image.ImageStreamHandler;
+import io.fabric8.openshift.client.handlers.image.ImageStreamTagHandler;
+import io.fabric8.openshift.client.handlers.network.NetNamespaceHandler;
+import io.fabric8.openshift.client.handlers.oauth.OAuthAccessTokenHandler;
+import io.fabric8.openshift.client.handlers.oauth.OAuthAuthorizeTokenHandler;
+import io.fabric8.openshift.client.handlers.oauth.OAuthClientHandler;
+import io.fabric8.openshift.client.handlers.project.ProjectHandler;
+import io.fabric8.openshift.client.handlers.route.RouteHandler;
+import io.fabric8.openshift.client.handlers.security.SecurityContextConstraintsHandler;
+import io.fabric8.openshift.client.handlers.user.GroupHandler;
+import io.fabric8.openshift.client.handlers.user.IdentityHandler;
+import io.fabric8.openshift.client.handlers.user.UserHandler;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.Assert.assertEquals;
 
 import java.util.Locale;
 
@@ -81,7 +80,7 @@ class HandlersTest {
   }
 
   private void checkHandler(HasMetadata hasMetadata, ResourceHandler handler) {
-    assertEquals(hasMetadata.getKind().toLowerCase(Locale.ROOT), handler.getKind().toLowerCase(Locale.ROOT));
-    assertEquals(hasMetadata.getApiVersion().toLowerCase(Locale.ROOT), handler.getApiVersion().toLowerCase(Locale.ROOT));
+    Assertions.assertEquals(hasMetadata.getKind().toLowerCase(Locale.ROOT), handler.getKind().toLowerCase(Locale.ROOT));
+    Assertions.assertEquals(hasMetadata.getApiVersion().toLowerCase(Locale.ROOT), handler.getApiVersion().toLowerCase(Locale.ROOT));
   }
 }

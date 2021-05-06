@@ -134,8 +134,8 @@ class UberJarTest {
   private boolean containsOpenShiftKubernetesResources(File resourceHandlerServiceFile, String majorVersion, String minorVersion) throws IOException {
     List<String> lines = Files.readAllLines(resourceHandlerServiceFile.toPath());
     final String deploymentConfigOpenShiftHandler = (majorVersion != null && minorVersion != null) ?
-      "io.fabric8.openshift.clnt.v" + majorVersion + "_" + minorVersion + ".handlers.DeploymentConfigHandler" :
-      "io.fabric8.openshift.client.handlers.DeploymentConfigHandler";
+      "io.fabric8.openshift.clnt.v" + majorVersion + "_" + minorVersion + ".handlers.apps.DeploymentConfigHandler" :
+      "io.fabric8.openshift.client.handlers.apps.DeploymentConfigHandler";
     final String deploymentKubernetesHandler = (majorVersion != null && minorVersion != null) ?
       "io.fabric8.kubernetes.clnt.v" + majorVersion + "_" + minorVersion + ".handlers.apps.v1.DeploymentHandler" :
       "io.fabric8.kubernetes.client.handlers.apps.v1.DeploymentHandler";

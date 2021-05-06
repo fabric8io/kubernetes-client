@@ -23,10 +23,17 @@
   #if ($annotationName.endsWith("Group"))
     #set ($apiGroup = $annotation.getParameters().get("value"))
   #end
+  #if ($apiGroup.contains(".openshift.io"))
+    #set ($packageSuffix = $apiGroup.substring(0, $apiGroup.indexOf(".openshift.io")))
+  #elseif ($apiGroup.contains(".coreos.com"))
+    #set ($packageSuffix = $apiGroup.substring(0, $apiGroup.indexOf(".com")))
+  #else
+    #set ($packageSuffix = "core")
+  #end
 #end
 
 
-package io.fabric8.openshift.client.handlers;
+package io.fabric8.openshift.client.handlers.$packageSuffix;
 
 import java.util.function.Predicate;
 
@@ -35,7 +42,7 @@ import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
-import io.fabric8.openshift.client.dsl.internal.${model.name}OperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.$packageSuffix.${model.name}OperationsImpl;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 
 import io.fabric8.openshift.client.OpenShiftConfig;

@@ -24,8 +24,8 @@ import io.fabric8.openshift.api.model.AppliedClusterResourceQuotaList;
 import io.fabric8.openshift.api.model.ClusterResourceQuota;
 import io.fabric8.openshift.api.model.ClusterResourceQuotaList;
 import io.fabric8.openshift.client.dsl.OpenShiftQuotaAPIGroupDSL;
-import io.fabric8.openshift.client.dsl.internal.AppliedClusterResourceQuotaOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.ClusterResourceQuotaOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.quota.AppliedClusterResourceQuotaOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.quota.ClusterResourceQuotaOperationsImpl;
 import okhttp3.OkHttpClient;
 
 public class OpenShiftQuotaAPIGroupClient extends BaseClient implements OpenShiftQuotaAPIGroupDSL {

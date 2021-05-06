@@ -13,41 +13,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.openshift.client.dsl.internal;
+package io.fabric8.openshift.client.dsl.internal.user;
 
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
 import okhttp3.OkHttpClient;
-import io.fabric8.openshift.api.model.OAuthClient;
-import io.fabric8.openshift.api.model.OAuthClientBuilder;
-import io.fabric8.openshift.api.model.OAuthClientList;
+import io.fabric8.openshift.api.model.Group;
+import io.fabric8.openshift.api.model.GroupBuilder;
+import io.fabric8.openshift.api.model.GroupList;
 import io.fabric8.openshift.client.OpenShiftConfig;
 
-import static io.fabric8.openshift.client.OpenShiftAPIGroups.OAUTH;
 
-public class OAuthClientOperationsImpl extends OpenShiftOperation<OAuthClient, OAuthClientList,
-  Resource<OAuthClient>> {
+import static io.fabric8.openshift.client.OpenShiftAPIGroups.USER;
 
-  public OAuthClientOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
+public class GroupOperationsImpl extends OpenShiftOperation<Group, GroupList, Resource<Group>> {
+
+  public GroupOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
     this(new OperationContext().withOkhttpClient(client).withConfig(config));
   }
 
-  public OAuthClientOperationsImpl(OperationContext context) {
-    super(context.withApiGroupName(OAUTH)
-      .withPlural("oauthclients"));
-    this.type = OAuthClient.class;
-    this.listType = OAuthClientList.class;
+  public GroupOperationsImpl(OperationContext context) {
+    super(context.withApiGroupName(USER)
+      .withPlural("groups"));
+    this.type = Group.class;
+    this.listType = GroupList.class;
   }
 
   @Override
-  public OAuthClientOperationsImpl newInstance(OperationContext context) {
-    return new OAuthClientOperationsImpl(context);
+  public GroupOperationsImpl newInstance(OperationContext context) {
+    return new GroupOperationsImpl(context);
   }
 
   @Override
-  public OAuthClient edit(Visitor... visitors) {
-    return patch(new OAuthClientBuilder(getMandatory()).accept(visitors).build());
+  public Group edit(Visitor... visitors) {
+    return patch(new GroupBuilder(getMandatory()).accept(visitors).build());
   }
 
   @Override

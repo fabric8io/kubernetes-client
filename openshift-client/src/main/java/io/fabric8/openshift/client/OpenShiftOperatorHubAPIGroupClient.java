@@ -30,11 +30,11 @@ import io.fabric8.openshift.api.model.operatorhub.v1alpha1.InstallPlanList;
 import io.fabric8.openshift.api.model.operatorhub.v1alpha1.Subscription;
 import io.fabric8.openshift.api.model.operatorhub.v1alpha1.SubscriptionList;
 import io.fabric8.openshift.client.dsl.OpenShiftOperatorHubAPIGroupDSL;
-import io.fabric8.openshift.client.dsl.internal.CatalogSourceOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.ClusterServiceVersionOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.InstallPlanOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.OperatorGroupOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.SubscriptionOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.operators.coreos.CatalogSourceOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.operators.coreos.ClusterServiceVersionOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.operators.coreos.InstallPlanOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.operators.coreos.OperatorGroupOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.operators.coreos.SubscriptionOperationsImpl;
 import okhttp3.OkHttpClient;
 
 public class OpenShiftOperatorHubAPIGroupClient extends BaseClient implements OpenShiftOperatorHubAPIGroupDSL {
