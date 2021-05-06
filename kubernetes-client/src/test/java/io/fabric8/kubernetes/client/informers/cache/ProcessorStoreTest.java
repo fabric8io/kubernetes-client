@@ -82,12 +82,13 @@ public class ProcessorStoreTest {
     ProcessorStore<Pod> processorStore = new ProcessorStore<>(podStore, processor);
     
     Pod pod = new PodBuilder().withNewMetadata().endMetadata().build();
+    Pod pod2 = new PodBuilder().withNewMetadata().withName("pod2").endMetadata().build();
     
     // replace two values with an empty store
-    processorStore.replace(Arrays.asList(pod, pod), null);
+    processorStore.replace(Arrays.asList(pod, pod2), null);
 
     // resync two values
-    Mockito.when(podStore.list()).thenReturn(Arrays.asList(pod, pod));
+    Mockito.when(podStore.list()).thenReturn(Arrays.asList(pod, pod2));
     processorStore.resync();
     
     // relist with deletes

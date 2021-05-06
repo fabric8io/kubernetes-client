@@ -16,9 +16,9 @@
 
 package io.fabric8.kubernetes.client.informers.cache;
 
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 /**
  * Wraps a {@link Store} to distribute events related to changes and syncs 
@@ -37,22 +37,18 @@ public class ProcessorStore<T> implements Store<T> {
 
   @Override
   public void add(T obj) {
-    update(obj, false);
+    update(obj);
   }
 
   @Override
-  public void update(T obj) {
-    update(obj, false);
-  }
-
-  private synchronized void update(T obj, boolean sync) {
+  public synchronized void update(T obj) {
     Object oldObj = this.actualStore.get(obj);
     if (oldObj != null) {
       this.actualStore.update(obj);
-      this.processor.distribute(new ProcessorListener.UpdateNotification(oldObj, obj), sync);
+      this.processor.distribute(new ProcessorListener.UpdateNotification(oldObj, obj), false);
     } else {
       this.actualStore.add(obj);
-      this.processor.distribute(new ProcessorListener.AddNotification(obj), sync);
+      this.processor.distribute(new ProcessorListener.AddNotification(obj), false);
     }
   }
 
@@ -87,18 +83,25 @@ public class ProcessorStore<T> implements Store<T> {
 
   @Override
   public synchronized void replace(List<T> list, String resourceVersion) {
-    Set<String> keys = new HashSet<>();
-    for (T obj : list) {
-      keys.add(Cache.metaNamespaceKeyFunc(obj));
-      update(obj, true);
-    }
-    for (T obj : actualStore.list()) {
-      if (!keys.contains(Cache.metaNamespaceKeyFunc(obj))) {
-        this.processor.distribute(new ProcessorListener.DeleteNotification(obj, true), false);
-      }
-    }
+    // it shouldn't happen, but it's possible for metaNamespaceKeyFunc to return null, so manually collect
+    Map<String, T> oldState = new HashMap<>();
+    actualStore.list().stream().forEach(old -> oldState.put(Cache.metaNamespaceKeyFunc(old), old));
+
     actualStore.replace(list, resourceVersion);
     populated = true;
+    
+    // now that the store is up-to-date, process the notifications
+    for (T newValue : list) {
+      T old = oldState.remove(Cache.metaNamespaceKeyFunc(newValue));
+      if (old == null) {
+        this.processor.distribute(new ProcessorListener.AddNotification(newValue), true);
+      } else {
+        this.processor.distribute(new ProcessorListener.UpdateNotification(old, newValue), true);
+      }
+    }
+    // deletes are not marked as sync=true in keeping with the old code
+    oldState.values()
+        .forEach(old -> this.processor.distribute(new ProcessorListener.DeleteNotification(old, true), false));
   }
 
   @Override
