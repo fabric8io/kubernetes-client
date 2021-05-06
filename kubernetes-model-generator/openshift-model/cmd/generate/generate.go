@@ -161,6 +161,14 @@ type Schema struct {
   TLSProfileSpec                           openshiftconfigapi.TLSProfileSpec
   Ingress                                  openshiftconfigapi.Ingress
   IngressList                              openshiftconfigapi.IngressList
+  Authentication                           openshiftconfigapi.Authentication
+  AuthenticationList                       openshiftconfigapi.AuthenticationList
+  Console                                  openshiftconfigapi.Console
+  ConsoleList                              openshiftconfigapi.ConsoleList
+  DNS                                      openshiftconfigapi.DNS
+  DNSList                                  openshiftconfigapi.DNSList
+  Network                                  openshiftconfigapi.Network
+  NetworkList                              openshiftconfigapi.NetworkList
   AppliedClusterResourceQuota              quotaapi.AppliedClusterResourceQuota
   AppliedClusterResourceQuotaList          quotaapi.AppliedClusterResourceQuotaList
   ClusterResourceQuota                     quotaapi.ClusterResourceQuota
@@ -193,7 +201,7 @@ func main() {
     {"github.com/openshift/api/project/v1", "", "io.fabric8.openshift.api.model", "os_project_", true},
     {"github.com/openshift/api/security/v1", "", "io.fabric8.openshift.api.model", "os_security_", true},
     {"github.com/openshift/api/network/v1", "", "io.fabric8.openshift.api.model", "os_network_", true},
-    {"github.com/openshift/api/config/v1", "", "io.fabric8.openshift.api.model", "os_config_", true},
+    {"github.com/openshift/api/config/v1", "", "io.fabric8.openshift.api.model", "os_config_v1_", true},
     {"github.com/openshift/api/quota/v1", "", "io.fabric8.openshift.api.model", "os_quota_", true},
 
   }
