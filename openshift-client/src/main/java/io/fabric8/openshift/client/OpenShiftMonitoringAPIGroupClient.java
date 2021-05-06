@@ -30,11 +30,11 @@ import io.fabric8.openshift.api.model.monitoring.v1.PrometheusRuleList;
 import io.fabric8.openshift.api.model.monitoring.v1.ServiceMonitor;
 import io.fabric8.openshift.api.model.monitoring.v1.ServiceMonitorList;
 import io.fabric8.openshift.client.dsl.OpenShiftMonitoringAPIGroupDSL;
-import io.fabric8.openshift.client.dsl.internal.AlertmanagerOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.PodMonitorOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.PrometheusOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.PrometheusRuleOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.ServiceMonitorOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.monitoring.coreos.AlertmanagerOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.monitoring.coreos.PodMonitorOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.monitoring.coreos.PrometheusOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.monitoring.coreos.PrometheusRuleOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.monitoring.coreos.ServiceMonitorOperationsImpl;
 import okhttp3.OkHttpClient;
 
 public class OpenShiftMonitoringAPIGroupClient extends BaseClient implements OpenShiftMonitoringAPIGroupDSL {

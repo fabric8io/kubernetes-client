@@ -14,6 +14,20 @@
  * limitations under the License.
  *#
 #foreach ($m in ${model.values()})
-io.fabric8.openshift.client.handlers.${m.name}Handler
+  #foreach ($annotation in $m.annotations)
+    #set ($annotationName = $annotation.getClassRef().getName())
+    #if ($annotationName.endsWith("Group"))
+      #set ($apiGroup = $annotation.getParameters().get("value"))
+    #end
+    #if ($apiGroup.contains(".openshift.io"))
+      #set ($packageSuffix = $apiGroup.substring(0, $apiGroup.indexOf(".openshift.io")))
+    #elseif ($apiGroup.contains(".coreos.com"))
+      #set ($packageSuffix = $apiGroup.substring(0, $apiGroup.indexOf(".com")))
+    #else
+      #set ($packageSuffix = "core")
+    #end
+  #end
+
+io.fabric8.openshift.client.handlers.${packageSuffix}.${m.name}Handler
 #end
 io.fabric8.openshift.client.handlers.ProjectRequestHandler

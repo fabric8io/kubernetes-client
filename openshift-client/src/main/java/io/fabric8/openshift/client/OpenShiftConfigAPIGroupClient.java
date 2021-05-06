@@ -40,16 +40,16 @@ import io.fabric8.openshift.api.model.ProxyList;
 import io.fabric8.openshift.api.model.Scheduler;
 import io.fabric8.openshift.api.model.SchedulerList;
 import io.fabric8.openshift.client.dsl.OpenShiftConfigAPIGroupDSL;
-import io.fabric8.openshift.client.dsl.internal.APIServerOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.ClusterOperatorOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.ClusterVersionOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.FeatureGateOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.InfrastructureOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.OAuthOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.OperatorHubOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.ProxyOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.IngressOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.SchedulerOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.config.APIServerOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.config.ClusterOperatorOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.config.ClusterVersionOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.config.FeatureGateOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.config.InfrastructureOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.config.OAuthOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.config.OperatorHubOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.config.ProxyOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.config.IngressOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.config.SchedulerOperationsImpl;
 import okhttp3.OkHttpClient;
 
 public class OpenShiftConfigAPIGroupClient extends BaseClient implements OpenShiftConfigAPIGroupDSL {
