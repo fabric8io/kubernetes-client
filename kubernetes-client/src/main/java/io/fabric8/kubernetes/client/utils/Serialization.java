@@ -314,12 +314,13 @@ public class Serialization {
   }
   
   /**
-   * Create a copy of the resource via serialization
-   * @param <T>
-   * @param resource
-   * @return
+   * Create a copy of the resource via serialization.
+   * @return a deep clone of the resource
+   * @throws IllegalArgumentException if the cloning cannot be performed
    */
   public static <T> T clone(T resource) {
+    // if full serialization seems too expensive, there is also
+    //return (T) JSON_MAPPER.convertValue(resource, resource.getClass());
     try {
       return (T) JSON_MAPPER.readValue(
           JSON_MAPPER.writeValueAsString(resource), resource.getClass());
