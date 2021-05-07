@@ -39,6 +39,8 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -58,6 +60,7 @@ public class OperationSupport {
   public static final MediaType JSON_MERGE_PATCH = MediaType.parse("application/merge-patch+json");
   protected static final ObjectMapper JSON_MAPPER = Serialization.jsonMapper();
   protected static final ObjectMapper YAML_MAPPER = Serialization.yamlMapper();
+  private static final Logger LOG = LoggerFactory.getLogger(OperationSupport.class);
   private static final String CLIENT_STATUS_FLAG = "CLIENT_STATUS_FLAG";
 
   protected OperationContext context;
@@ -538,7 +541,7 @@ public class OperationSupport {
   protected <T> T handleResponse(OkHttpClient client, Request.Builder requestBuilder, Class<T> type, Map<String, String> parameters) throws ExecutionException, InterruptedException, IOException {
     VersionUsageUtils.log(this.resourceT, this.apiGroupVersion);
     Request request = requestBuilder.build();
-    Response response = client.newCall(request).execute();
+    Response response = retryWithExponentialBackoff(client, request);
     try (ResponseBody body = response.body()) {
       assertResponseCode(request, response);
       if (type != null) {
@@ -558,6 +561,24 @@ public class OperationSupport {
         response.body().close();
       }
     }
+  }
+
+  protected Response retryWithExponentialBackoff(OkHttpClient client, Request request) throws InterruptedException, IOException {
+    int numRetries = config.getRequestRetryBackoffCount();
+    Response response;
+    long currentBackOff = config.getRequestRetryBackoffInitial();
+    boolean doRetry;
+    do {
+      response = client.newCall(request).execute();
+      numRetries--;
+      doRetry = numRetries != -1 && response.code() >= 500;
+      if (doRetry) {
+        LOG.debug("HTTP operation on url: {} should be retried as the response code was {}, retrying after {} millis", request.url(), response.code(), currentBackOff);
+        Thread.sleep(currentBackOff);
+        currentBackOff *= config.getRequestRetryBackoffMultiplier();
+      }
+    } while(doRetry);
+    return response;
   }
 
   /**
