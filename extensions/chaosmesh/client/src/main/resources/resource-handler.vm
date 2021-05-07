@@ -14,19 +14,6 @@
  * limitations under the License.
  *#
 
-#set ($version = "unknown")
-#set ($annotations = $model.annotations)
-#foreach ($annotation in $annotations)
-  #set ($annotationName = $annotation.getClassRef().getName())
-  #if ($annotationName.endsWith("Version"))
-    #set ($apiVersion = $annotation.getParameters().get("value"))
-  #end
-  #if ($annotationName.endsWith("Group"))
-    #set ($apiGroup = $annotation.getParameters().get("value"))
-  #end
-#end
-
-
 package io.fabric8.chaosmesh.client.handlers;
 
 import java.util.function.Predicate;
@@ -40,6 +27,7 @@ import io.fabric8.chaosmesh.client.internal.${model.name}OperationsImpl;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import okhttp3.OkHttpClient;
 
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import ${model.fullyQualifiedName};
@@ -49,19 +37,22 @@ import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
 public class ${model.name}Handler implements ResourceHandler<${model.name}, ${model.name}Builder> {
+  private final String kind;
+  private final String apiVersion;
+
+  public ${model.name}Handler() {
+    kind = HasMetadata.getKind(${model.name}.class);
+    apiVersion = HasMetadata.getApiVersion(${model.name}.class);
+  }
 
   @Override
   public String getKind() {
-    return ${model.name}.class.getSimpleName();
+    return kind;
   }
 
   @Override
   public String getApiVersion() {
-    #if (${apiGroup} != "")
-    return "${apiGroup}/${apiVersion}";
-    #else
-    return "${apiVersion}";
-    #end
+    return apiVersion;
   }
 
   @Override
