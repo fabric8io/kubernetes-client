@@ -67,6 +67,8 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
   private static final String DELETE = "DELETE";
 
   private static final String ADDED = "ADDED";
+  private static final String MODIFIED = "MODIFIED";
+  private static final String STATUS = "status";
 
   private static final Logger LOGGER = LoggerFactory.getLogger(KubernetesCrudDispatcher.class);
   public static final int HTTP_UNPROCESSABLE_ENTITY = 422;
@@ -113,7 +115,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
    */
   @Override
   public MockResponse handleCreate(String path, String s) {
-    return validateRequestBodyAndHandleRequest(s, () -> new MockResponse().setResponseCode(doCreate(path, s, ADDED)).setBody(s));
+    return validateRequestBodyAndHandleRequest(s, () -> doCreateOrModify(path, s, ADDED));
   }
 
   /**
@@ -123,10 +125,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
    * @return The {@link MockResponse}
    */
   public MockResponse handleReplace(String path, String s) {
-    if (doDelete(path, null) == 404) {
-      return new MockResponse().setResponseCode(404);
-    }
-    return validateRequestBodyAndHandleRequest(s, () -> new MockResponse().setResponseCode(doCreate(path, s, "MODIFIED")).setBody(s));
+    return validateRequestBodyAndHandleRequest(s, () -> doCreateOrModify(path, s, MODIFIED));
   }
 
   /**
@@ -178,7 +177,15 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
       try {
         JsonNode patch = context.getMapper().readTree(s);
         JsonNode source = context.getMapper().readTree(body);
+        JsonNode status = removeStatus(source);
         JsonNode updated = JsonPatch.apply(patch, source);
+        // restore the old status
+        if (status == null) {
+            removeStatus(updated);
+        } else {
+            ((ObjectNode)updated).set(STATUS, status);
+        }
+
         String updatedAsString = context.getMapper().writeValueAsString(updated);
 
         AttributeSet attributeSet;
@@ -199,7 +206,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
           .filter(watchEventsListener -> watchEventsListener.attributeMatches(finalAttributeSet))
           .forEach(watchEventsListener -> {
               flag.set(true);
-              watchEventsListener.sendWebSocketResponse(updatedAsString, "MODIFIED");
+              watchEventsListener.sendWebSocketResponse(updatedAsString, MODIFIED);
           });
 
         if (!flag.get()) {
@@ -308,12 +315,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
 
 
   private int doDelete(String path, String event) {
-    List<AttributeSet> items = new ArrayList<>();
-    AttributeSet query = attributeExtractor.fromPath(path);
-
-    map.entrySet().stream()
-      .filter(entry -> entry.getKey().matches(query))
-      .forEach(entry -> items.add(entry.getKey()));
+    List<AttributeSet> items = findItems(path);
 
     if (items.isEmpty()) return HttpURLConnection.HTTP_NOT_FOUND;
 
@@ -329,26 +331,77 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
     return HttpURLConnection.HTTP_OK;
   }
 
-  private int doCreate(String path, String initial, String event) {
-    AttributeSet fromPath = attributeExtractor.fromPath(path);
+  private List<AttributeSet> findItems(String path) {
+    List<AttributeSet> items = new ArrayList<>();
+    AttributeSet query = attributeExtractor.fromPath(path);
 
-    String s = setDefaultMetadata(initial, fromPath);
-
-    AttributeSet features = AttributeSet.merge(fromPath, attributeExtractor.fromResource(s));
-
-    map.put(features, s);
-
-    if (event != null && !event.isEmpty()) {
-      watchEventListeners.stream()
-        .filter(listener -> listener.attributeMatches(features))
-        .forEach(listener -> listener.sendWebSocketResponse(s, event));
-    }
-    return HttpURLConnection.HTTP_OK;
+    map.entrySet().stream()
+      .filter(entry -> entry.getKey().matches(query))
+      .forEach(entry -> items.add(entry.getKey()));
+    return items;
   }
 
-  private String setDefaultMetadata(String s, AttributeSet fromPath) {
+  private MockResponse doCreateOrModify(String path, String initial, String event) {
+    MockResponse mockResponse = new MockResponse();
+    AttributeSet fromPath = attributeExtractor.fromPath(path);
+
     try {
-      JsonNode source = context.getMapper().readTree(s);
+      JsonNode source = context.getMapper().readTree(initial);
+      JsonNode status = removeStatus(source);
+      int responseCode = HttpURLConnection.HTTP_OK;
+
+      List<AttributeSet> items = findItems(path);
+      if (items.isEmpty()) {
+        if (MODIFIED.equals(event)) {
+          responseCode = HttpURLConnection.HTTP_NOT_FOUND;
+        } else {
+          setDefaultMetadata(source, fromPath);
+        }
+      } else if (ADDED.equals(event)) {
+        //responseCode = HttpURLConnection.HTTP_CONFLICT;
+      } else if (MODIFIED.equals(event)) {
+        String existing = map.remove(items.get(0));
+        JsonNode existingNode = context.getMapper().readTree(existing);
+        if (isStatusPath(path)) {
+          // set the status on the existing node
+          source = existingNode;
+        } else {
+          // set the status on the new node and preserve the uid
+          status = removeStatus(existingNode);
+          ObjectNode metadata = (ObjectNode)existingNode.findValue("metadata");
+          ((ObjectNode)source).set("uid", metadata.get("uid"));
+        }
+        if (status != null) {
+          ((ObjectNode) source).set(STATUS, status);
+        } else {
+          ((ObjectNode) source).remove(STATUS);
+        }
+      }
+
+      if (responseCode == HttpURLConnection.HTTP_OK) {
+        String s = context.getMapper().writeValueAsString(source);
+        AttributeSet features = AttributeSet.merge(fromPath, attributeExtractor.fromResource(s));
+        map.put(features, s);
+        if (event != null && !event.isEmpty()) {
+          final String response = s;
+          watchEventListeners.stream()
+              .filter(listener -> listener.attributeMatches(features))
+              .forEach(listener -> listener.sendWebSocketResponse(response, event));
+        }
+        mockResponse.setBody(s);
+      }
+      mockResponse.setResponseCode(responseCode);
+      return mockResponse;
+    } catch (JsonProcessingException e) {
+      throw new IllegalArgumentException(e);
+    }
+  }
+
+  private static boolean isStatusPath(String path) {
+    return path.endsWith("/" + STATUS);
+  }
+
+  private void setDefaultMetadata(JsonNode source, AttributeSet fromPath) throws JsonProcessingException {
       ObjectNode metadata = (ObjectNode)source.findValue("metadata");
       UUID uuid = UUID.randomUUID();
       if (metadata.get("name") == null) {
@@ -363,11 +416,10 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
       metadata.put("resourceVersion", "1");
       metadata.put("generation", 1);
       metadata.put("creationTimestamp", ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT));
+  }
 
-      return context.getMapper().writeValueAsString(source);
-    } catch (JsonProcessingException e) {
-      throw new IllegalArgumentException(e);
-    }
+  private JsonNode removeStatus(JsonNode source) {
+    return ((ObjectNode)source).remove(STATUS);
   }
 
   private MockResponse validateRequestBodyAndHandleRequest(String s, Supplier<MockResponse> mockResponseSupplier) {
