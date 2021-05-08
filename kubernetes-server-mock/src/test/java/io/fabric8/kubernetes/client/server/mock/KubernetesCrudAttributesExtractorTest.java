@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.server.mock;
 
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
+import io.fabric8.kubernetes.api.model.PodStatusBuilder;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -30,8 +31,9 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class KubernetesCrudAttributesExtractorTest {
 
@@ -252,6 +254,76 @@ public class KubernetesCrudAttributesExtractorTest {
     assertNotNull(result.getMetadata().getResourceVersion());
     assertNotNull(result.getMetadata().getCreationTimestamp());
     assertNotNull(result.getMetadata().getGeneration());
+  }
+
+  @Test
+  public void replaceNonExistent() {
+    KubernetesServer kubernetesServer = new KubernetesServer(false, true);
+    kubernetesServer.before();
+    KubernetesClient kubernetesClient = kubernetesServer.getClient();
+    Pod pod = new PodBuilder().withNewMetadata()
+            .withName("name")
+            .withNamespace("test") // required until https://github.com/fabric8io/mockwebserver/pull/59
+            .endMetadata()
+            .withStatus(new PodStatusBuilder().withHostIP("x").build())
+            .build();
+    assertNull(kubernetesClient.pods().inNamespace("test").withName("name").replace(pod));
+  }
+
+  @Test
+  public void statusHandling() {
+    KubernetesServer kubernetesServer = new KubernetesServer(false, true);
+    kubernetesServer.before();
+    KubernetesClient kubernetesClient = kubernetesServer.getClient();
+    Pod pod = new PodBuilder().withNewMetadata()
+            .withName("name")
+            .withNamespace("test") // required until https://github.com/fabric8io/mockwebserver/pull/59
+            .endMetadata()
+            .withStatus(new PodStatusBuilder().withHostIP("x").build())
+            .build();
+    Pod result = kubernetesClient.pods().create(pod);
+
+    kubernetesClient.pods().create(pod);
+
+    // should be null after create
+    assertNull(result.getStatus());
+
+    Map<String, String> labels = new HashMap<>();
+    labels.put("app", "core");
+
+    pod.getMetadata().setLabels(labels);
+
+    result = kubernetesClient.pods()
+        .inNamespace(pod.getMetadata().getNamespace())
+        .withName(pod.getMetadata().getName())
+        .replace(pod);
+
+    String originalUid = result.getMetadata().getUid();
+
+    // should be null after replace
+    assertNull(result.getStatus());
+
+    assertNotNull(kubernetesClient.pods().updateStatus(pod).getStatus());
+
+    labels.put("other", "label");
+    result = kubernetesClient.pods()
+        .inNamespace(pod.getMetadata().getNamespace())
+        .withName(pod.getMetadata().getName())
+        .replace(pod);
+
+    // should retain the existing
+    assertNotNull(result.getStatus());
+
+    labels.put("another", "label");
+    result = kubernetesClient.pods()
+        .inNamespace(pod.getMetadata().getNamespace())
+        .withName(pod.getMetadata().getName())
+        .patch(pod);
+
+    // should retain the existing
+    assertNotNull(result.getStatus());
+
+    assertEquals(originalUid, result.getMetadata().getUid());
   }
 
   // https://github.com/fabric8io/kubernetes-client/issues/1688
