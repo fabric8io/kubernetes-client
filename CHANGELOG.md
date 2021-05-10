@@ -42,6 +42,7 @@
 * Fix #2912: Add DSL support for `storage.k8s.io/v1beta1` CSIStorageCapacity
 * Fix #2701: Better support for patching in KuberntesClient
 * Fix #3034: Added a SharedInformer.isRunning method
+* Fix #3088: mock server will assume /status is a subresource, and other refinements to match kube behavior
 
 #### _**Note**_: Breaking changes in the API
 ##### DSL Changes:
