@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.DeleteOptions;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
@@ -222,7 +223,8 @@ public class OperationSupport {
 
   protected <T> String checkName(T item) {
     String operationName = getName();
-    String itemName = item instanceof HasMetadata ? ((HasMetadata) item).getMetadata().getName() : null;
+    ObjectMeta metadata = item instanceof HasMetadata ? ((HasMetadata) item).getMetadata() : null;
+    String itemName = metadata != null ? metadata.getName() : null;
     if (Utils.isNullOrEmpty(operationName) && Utils.isNullOrEmpty(itemName)) {
       return null;
     } else if (Utils.isNullOrEmpty(itemName)) {
