@@ -37,12 +37,13 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableKubernetesMockClient(crud = true)
 class CustomResourceCrudTest {
 
   KubernetesClient client;
-  
+
   private CustomResourceDefinition cronTabCrd;
 
   @BeforeEach
@@ -102,7 +103,8 @@ class CustomResourceCrudTest {
 
     Map<String, Object> created = raw.createOrReplace(object);
 
-    assertEquals(object, created);
+    assertEquals("initial", created.get("spec"));
+    assertTrue(((Map)created.get("metadata")).entrySet().containsAll(metadata.entrySet()));
 
     object.put("spec", "updated");
 
@@ -116,7 +118,7 @@ class CustomResourceCrudTest {
     CronTab cronTab1 = createCronTab("my-new-cron-object", "* * * * */5", 3, "my-awesome-cron-image");
     CronTab cronTab2 = createCronTab("my-second-cron-object", "* * * * */4", 2, "my-second-cron-image");
     CronTab cronTab3 = createCronTab("my-third-cron-object", "* * * * */3", 1, "my-third-cron-image");
-    
+
     MixedOperation<CronTab, KubernetesResourceList<CronTab>, Resource<CronTab>> cronTabClient = client
       .customResources(CronTab.class);
 
