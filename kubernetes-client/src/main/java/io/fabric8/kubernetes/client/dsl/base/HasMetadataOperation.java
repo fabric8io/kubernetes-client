@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.utils.Serialization;
 
@@ -48,7 +49,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   @Override
   public T edit(UnaryOperator<T> function) {
     T item = getMandatory();
-    return patch(Serialization.clone(item), function.apply(item));
+    return patch(Serialization.clone(item), function.apply(item), false);
   }
 
   @Override
@@ -56,7 +57,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
     T item = getMandatory();
     T clone = Serialization.clone(item);
     consumer.accept(item);
-    return patch(clone, item);
+    return patch(clone, item, false);
   }
   
   protected VisitableBuilder<T, ?> createVisitableBuilder(T item) {
@@ -67,7 +68,20 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   public T edit(Visitor... visitors) {
     T item = getMandatory();
     T clone = Serialization.clone(item);
-    return patch(clone, createVisitableBuilder(item).accept(visitors).build());
+    return patch(clone, createVisitableBuilder(item).accept(visitors).build(), false);
+  }
+  
+  /**
+   * Get the current item from the server, consulting the metadata for the name if needed
+   */
+  protected Gettable<T> fromServer(ObjectMeta metadata) {
+    if (getName() != null) {
+      return fromServer();
+    }
+    if (metadata != null) {
+      return withName(metadata.getName()).fromServer();
+    }
+    throw new KubernetesClientException("Name not specified. But operation requires name.");
   }
 
   @Override
@@ -81,7 +95,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
         if (fixedResourceVersion != null) {
           resourceVersion = fixedResourceVersion;
         } else {
-          T got = fromServer().get();
+          T got = fromServer(item.getMetadata()).get();
           if (got == null) {
             return null;
           }
@@ -95,7 +109,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
         final UnaryOperator<T> visitor = resource -> {
           try {
             resource.getMetadata().setResourceVersion(resourceVersion);
-            return handleReplace(resource);
+            return handleReplace(resource, false);
           } catch (Exception e) {
             throw KubernetesClientException.launderThrowable(forOperationType("replace"), e);
           }
@@ -125,34 +139,36 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
 
   @Override
   public T patch(T item) {
-    return patch(null, item);
+    return patch(fromServer(item.getMetadata()).get(), item, false);
   }
-
+  
   @Override
   public T patch(T base, T item) {
-    if (base == null) {
-      // no resource version specified, assume the latest
-      base = fromServer().get();
-      if (base == null) {
-        return null;
-      }
-      if (item.getMetadata() == null) {
-        item.setMetadata(new ObjectMeta());
-      }
-      if (base.getMetadata() != null) {
-        item.getMetadata().setResourceVersion(base.getMetadata().getResourceVersion());  
-      }
-    } 
-    // else could validate that the base / item are the same resource / resourceVersion
-    final T baseItem = base;
+      return patch(base, item, false);
+  }
+
+  public T patch(T base, T item, boolean status) {
     final UnaryOperator<T> visitor = resource -> {
       try {
-        return handlePatch(baseItem, resource);
+        if (base != null) {
+          if (item.getMetadata() == null) {
+            item.setMetadata(new ObjectMeta());
+          }
+          if (base.getMetadata() != null) {
+            item.getMetadata().setResourceVersion(base.getMetadata().getResourceVersion());  
+          }
+        }  
+        return handlePatch(base, resource, status);
       } catch (Exception e) {
         throw KubernetesClientException.launderThrowable(forOperationType(PATCH_OPERATION), e);
       }
     };
     return visitor.apply(item);
+  }
+  
+  @Override
+  public T applyStatus(T item) {
+    return patch(null, item, true);
   }
 
   @Override
@@ -162,7 +178,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
       if (got == null) {
         return null;
       }
-      return handlePatch(patchContext, got, convertToJson(patch), getType());
+      return handlePatch(patchContext, got, convertToJson(patch), getType(), false);
     } catch (InterruptedException interruptedException) {
       Thread.currentThread().interrupt();
       throw KubernetesClientException.launderThrowable(forOperationType(PATCH_OPERATION), interruptedException);

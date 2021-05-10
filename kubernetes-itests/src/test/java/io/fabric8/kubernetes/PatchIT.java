@@ -128,7 +128,7 @@ public class PatchIT {
     // When
     ConfigMap configMapFromServer = client.configMaps().inNamespace(currentNamespace).withName(name).get();
     configMapFromServer.setData(Collections.singletonMap("foo", "bar"));
-    ConfigMap patchedConfigMap = client.configMaps().inNamespace(currentNamespace).withName(name).patch(configMapFromServer);
+    ConfigMap patchedConfigMap = client.configMaps().patch(configMapFromServer);
 
     // Then
     assertThat(patchedConfigMap).isNotNull();

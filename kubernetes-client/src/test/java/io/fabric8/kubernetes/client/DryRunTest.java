@@ -31,9 +31,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -51,17 +54,29 @@ class DryRunTest {
   public void setUp() throws IOException {
     this.mockClient = Mockito.mock(OkHttpClient.class, Mockito.RETURNS_DEEP_STUBS);
     Config config = new ConfigBuilder().withMasterUrl("https://localhost:8443/").build();
-    Call mockCall = mock(Call.class);
-    Response mockResponse = new Response.Builder()
-      .request(new Request.Builder().url("http://mock").build())
-      .protocol(Protocol.HTTP_1_1)
-      .code(HttpURLConnection.HTTP_OK)
-      .body(ResponseBody.create(MediaType.get("application/json"), "{}"))
-      .message("mock")
-      .build();
-    when(mockCall.execute())
-      .thenReturn(mockResponse);
-    when(mockClient.newCall(any())).thenReturn(mockCall);
+    when(mockClient.newCall(any())).then(new Answer<Call>() {
+      @Override
+      public Call answer(InvocationOnMock invocation) throws Throwable {
+        Call mockCall = mock(Call.class);
+        Request request = invocation.getArgument(0);
+        List<String> segments = request.url().encodedPathSegments();
+        String name = segments.get(segments.size() - 1);
+        String body = "{}";
+        if (!name.endsWith("s")) {
+          body = "{\"metadata\":{\"name\":\""+name+"\"}}";
+        }
+        Response mockResponse = new Response.Builder()
+          .request(new Request.Builder().url("http://mock").build())
+          .protocol(Protocol.HTTP_1_1)
+          .code(HttpURLConnection.HTTP_OK)
+          .body(ResponseBody.create(MediaType.get("application/json"), body))
+          .message("mock")
+          .build();
+        when(mockCall.execute())
+          .thenReturn(mockResponse);
+        return mockCall;
+      }
+    });
     kubernetesClient = new DefaultKubernetesClient(mockClient, config);
   }
 

@@ -34,6 +34,8 @@
 * Fix #3050: More enforcement of the informer lifecycle
 * Fix #3061: Removed the deltafifo from the informer logic
 * Use apiGroupName in generated package for OpenShiftClient Handler/OperationsImpl classes
+* Fix #3089: Allowing patch/edit to infer context from the item
+* Fix #3066: Added an applyStatus method
 
 #### Dependency Upgrade
 * Fix #2979: Update Kubernetes Model to v1.21.0

@@ -17,7 +17,6 @@ package io.fabric8.kubernetes.client.dsl.base;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.DeleteOptions;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
@@ -155,8 +154,18 @@ public class OperationSupport {
   }
 
   public URL getResourceUrl(String namespace, String name) throws MalformedURLException {
+    return getResourceUrl(namespace, name, false);
+  }
+  
+  public URL getResourceUrl(String namespace, String name, boolean status) throws MalformedURLException {
     if (name == null) {
+      if (status) {
+        throw new KubernetesClientException("Name not specified. But operation requires name.");
+      }
       return getNamespacedUrl(namespace);
+    }
+    if (status) {
+      return new URL(URLUtils.join(getNamespacedUrl(namespace).toString(), name, "status"));
     }
     return new URL(URLUtils.join(getNamespacedUrl(namespace).toString(), name));
   }
@@ -287,6 +296,7 @@ public class OperationSupport {
    *
    * @param updated updated object
    * @param type type of the object provided
+   * @param status if this is only the status subresource
    * @param <T> template argument provided
    *
    * @return returns de-serialized version of api server response
@@ -294,8 +304,8 @@ public class OperationSupport {
    * @throws InterruptedException Interrupted Exception
    * @throws IOException IOException
    */
-  protected <T> T handleReplace(T updated, Class<T> type) throws ExecutionException, InterruptedException, IOException {
-    return handleReplace(updated, type, Collections.<String, String>emptyMap());
+  protected <T> T handleReplace(T updated, Class<T> type, boolean status) throws ExecutionException, InterruptedException, IOException {
+    return handleReplace(updated, type, Collections.<String, String>emptyMap(), status);
   }
 
   /**
@@ -304,6 +314,7 @@ public class OperationSupport {
    * @param updated updated object
    * @param type type of object provided
    * @param parameters a HashMap containing parameters for processing object
+   * @param status if this is only the status subresource
    * @param <T> template argument provided
    *
    * @return returns de-serialized version of api server response.
@@ -311,16 +322,10 @@ public class OperationSupport {
    * @throws InterruptedException Interrupted Exception
    * @throws IOException IOException
    */
-  protected <T> T handleReplace(T updated, Class<T> type, Map<String, String> parameters) throws ExecutionException, InterruptedException, IOException {
+  protected <T> T handleReplace(T updated, Class<T> type, Map<String, String> parameters, boolean status) throws ExecutionException, InterruptedException, IOException {
     RequestBody body = RequestBody.create(JSON, JSON_MAPPER.writeValueAsString(updated));
-    Request.Builder requestBuilder = new Request.Builder().put(body).url(getResourceURLForWriteOperation(getResourceUrl(checkNamespace(updated), checkName(updated))));
+    Request.Builder requestBuilder = new Request.Builder().put(body).url(getResourceURLForWriteOperation(getResourceUrl(checkNamespace(updated), checkName(updated), status)));
     return handleResponse(requestBuilder, type, parameters);
-  }
-
-  protected <T> T handleStatusUpdate(T updated, Class<T> type) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
-    RequestBody body = RequestBody.create(JSON, JSON_MAPPER.writeValueAsString(updated));
-    Request.Builder requestBuilder = new Request.Builder().put(body).url(getResourceUrl(checkNamespace(updated), checkName(updated)) + "/status");
-    return handleResponse(requestBuilder, type);
   }
 
   /**
@@ -329,6 +334,7 @@ public class OperationSupport {
    * @param current current object
    * @param updated updated object
    * @param type type of object
+   * @param status if this is only the status subresource
    * @param <T> template argument provided
    *
    * @return returns de-serialized version of api server response
@@ -336,11 +342,17 @@ public class OperationSupport {
    * @throws InterruptedException Interrupted Exception
    * @throws IOException IOException
    */
-  protected <T> T handlePatch(T current, T updated, Class<T> type) throws ExecutionException, InterruptedException, IOException {
-    JsonNode diff = JsonDiff.asJson(patchMapper().valueToTree(current), patchMapper().valueToTree(updated));
-    RequestBody body = RequestBody.create(JSON_PATCH, JSON_MAPPER.writeValueAsString(diff));
-    Request.Builder requestBuilder = new Request.Builder().patch(body).url(getResourceURLForWriteOperation(getResourceUrl(checkNamespace(updated), checkName(updated))));
-    return handleResponse(requestBuilder, type, Collections.<String, String>emptyMap());
+  protected <T> T handlePatch(T current, T updated, Class<T> type, boolean status) throws ExecutionException, InterruptedException, IOException {
+    String patchForUpdate = null;
+    PatchType patchType = PatchType.JSON;
+    if (current != null) {
+      patchForUpdate = JSON_MAPPER.writeValueAsString(JsonDiff.asJson(patchMapper().valueToTree(current), patchMapper().valueToTree(updated)));
+    } else {
+      patchType = PatchType.JSON_MERGE;
+      patchForUpdate = Serialization.asJson(updated);
+      current = updated; // use the updated to determine the path
+    }
+    return handlePatch(new PatchContext.Builder().withPatchType(patchType).build(), current, patchForUpdate, type, status);
   }
 
   /**
@@ -357,9 +369,8 @@ public class OperationSupport {
    * @throws IOException IOException
    */
   protected <T> T handlePatch(T current, Map<String, Object> patchForUpdate, Class<T> type) throws ExecutionException, InterruptedException, IOException {
-    RequestBody body = RequestBody.create(STRATEGIC_MERGE_JSON_PATCH, JSON_MAPPER.writeValueAsString(patchForUpdate));
-    Request.Builder requestBuilder = new Request.Builder().patch(body).url(getResourceUrl(checkNamespace(current), checkName(current)));
-    return handleResponse(requestBuilder, type, Collections.<String, String>emptyMap());
+    return handlePatch(new PatchContext.Builder().withPatchType(PatchType.STRATEGIC_MERGE).build(), current,
+        JSON_MAPPER.writeValueAsString(patchForUpdate), type, false);
   }
 
   /**
@@ -369,16 +380,17 @@ public class OperationSupport {
    * @param current current object
    * @param patchForUpdate Patch string
    * @param type type of object
+   * @param status if this is only the status subresource
    * @param <T> template argument provided
    * @return returns de-serialized version of api server response
    * @throws ExecutionException Execution Exception
    * @throws InterruptedException Interrupted Exception
    * @throws IOException IOException in case of network errors
    */
-  protected <T> T handlePatch(PatchContext patchContext, T current, String patchForUpdate, Class<T> type) throws ExecutionException, InterruptedException, IOException {
+  protected <T> T handlePatch(PatchContext patchContext, T current, String patchForUpdate, Class<T> type, boolean status) throws ExecutionException, InterruptedException, IOException {
     MediaType bodyMediaType = getMediaTypeFromPatchContextOrDefault(patchContext);
     RequestBody body = RequestBody.create(bodyMediaType, patchForUpdate);
-    Request.Builder requestBuilder = new Request.Builder().patch(body).url(getResourceURLForPatchOperation(getResourceUrl(checkNamespace(current), checkName(current)), patchContext));
+    Request.Builder requestBuilder = new Request.Builder().patch(body).url(getResourceURLForPatchOperation(getResourceUrl(checkNamespace(current), checkName(current), status), patchContext));
     return handleResponse(requestBuilder, type, Collections.emptyMap());
   }
 

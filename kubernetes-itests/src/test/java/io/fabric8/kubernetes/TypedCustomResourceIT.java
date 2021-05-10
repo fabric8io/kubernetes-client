@@ -199,6 +199,25 @@ public class TypedCustomResourceIT {
   }
 
   @Test
+  public void applyStatusSubresource() {
+    // Given
+    Pet pet = createNewPet("pet-applystatus", "Pigeon", null);
+    PetStatus petStatusToUpdate = new PetStatus();
+    petStatusToUpdate.setCurrentStatus("Sleeping");
+
+    // When
+    petClient.inNamespace(currentNamespace).create(pet);
+    await().atMost(5, TimeUnit.SECONDS)
+      .until(() -> petClient.inNamespace(currentNamespace).withName("pet-applystatus").get() != null);
+    // use the original pet, no need to pick up the resourceVersion
+    pet.setStatus(petStatusToUpdate);
+    Pet updatedPet = petClient.inNamespace(currentNamespace).applyStatus(pet);
+
+    // Then
+    assertPet(updatedPet, "pet-applystatus", "Pigeon", "Sleeping");
+  }
+
+  @Test
   public void watch() throws InterruptedException {
     // Given
     Pet pet = createNewPet("pet-watch", "Hamster", null);
