@@ -745,7 +745,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   @Override
   public T updateStatus(T item) {
     try {
-      return handleStatusUpdate(item, getType());
+      return handleReplace(item, true);
     } catch (InterruptedException ie) {
       Thread.currentThread().interrupt();
       throw KubernetesClientException.launderThrowable(forOperationType("statusUpdate"), ie);
@@ -753,6 +753,11 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       throw KubernetesClientException.launderThrowable(forOperationType("statusUpdate"), e);
     }
 
+  }
+  
+  @Override
+  public T applyStatus(T item) {
+    throw new KubernetesClientException(READ_ONLY_UPDATE_EXCEPTION_MESSAGE);
   }
 
   public BaseOperation<T, L, R> withItem(T item) {
@@ -883,14 +888,14 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     return handleCreate(resource, getType());
   }
 
-  protected T handleReplace(T updated) throws ExecutionException, InterruptedException, IOException {
+  protected T handleReplace(T updated, boolean status) throws ExecutionException, InterruptedException, IOException {
     updateApiVersion(updated);
-    return handleReplace(updated, getType());
+    return handleReplace(updated, getType(), status);
   }
 
-  protected T handlePatch(T current, T updated) throws ExecutionException, InterruptedException, IOException {
+  protected T handlePatch(T current, T updated, boolean status) throws ExecutionException, InterruptedException, IOException {
     updateApiVersion(updated);
-    return handlePatch(current, updated, getType());
+    return handlePatch(current, updated, getType(), status);
   }
 
   protected T handlePatch(T current, Map<String, Object> patchedUpdate) throws ExecutionException, InterruptedException, IOException {
@@ -900,7 +905,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   protected T sendPatchedObject(T oldObject, T updatedObject) {
     try {
-      return handlePatch(oldObject, updatedObject);
+      return handlePatch(oldObject, updatedObject, false);
     } catch (InterruptedException interruptedException) {
       Thread.currentThread().interrupt();
       throw KubernetesClientException.launderThrowable(interruptedException);

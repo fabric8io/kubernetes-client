@@ -25,4 +25,14 @@ public interface StatusUpdatable<T> {
    * @return updated object
    */
   T updateStatus(T item);
+  
+  /**
+   * When the status subresource is enabled, the /status subresource for the custom resource is exposed.
+   * It does a PATCH requests to the /status subresource take a resource object and ignore changes
+   * to anything except the status stanza.
+   *
+   * @param item kubernetes object
+   * @return updated object
+   */
+  T applyStatus(T item);
 }

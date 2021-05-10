@@ -15,34 +15,25 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
-import io.fabric8.kubernetes.api.model.DeletionPropagation;
-import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.ListOptions;
-import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
-import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.Watcher;
-import io.fabric8.kubernetes.client.dsl.Deletable;
-import io.fabric8.kubernetes.client.dsl.EditReplacePatchDeletable;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
 import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.PodResource;
-import io.fabric8.kubernetes.client.dsl.Waitable;
-import io.fabric8.kubernetes.client.dsl.WatchAndWaitable;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -138,90 +129,13 @@ class PodOperationUtilTest {
   }
 
   private FilterWatchListDeletable<Pod, PodList> getMockPodFilterOperation(String controllerUid) {
-    return new FilterWatchListDeletable<Pod, PodList>() {
+    FilterWatchListDeletable<Pod, PodList> result = Mockito.mock(FilterWatchListDeletable.class);
+    Mockito.when(result.list()).then(new Answer<PodList>() {
       @Override
-      public EditReplacePatchDeletable<Pod> withPropagationPolicy(DeletionPropagation propagationPolicy) { return null; }
-
-      @Override
-      public Deletable withGracePeriod(long gracePeriodSeconds) { return null; }
-
-      @Override
-      public Boolean delete() { return null; }
-
-      @Override
-      public FilterWatchListDeletable<Pod, PodList> withLabels(Map<String, String> labels) { return null; }
-
-      @Override
-      public FilterWatchListDeletable<Pod, PodList> withoutLabels(Map<String, String> labels) { return null; }
-
-      @Override
-      public FilterWatchListDeletable<Pod, PodList> withLabelIn(String key, String... values) { return null; }
-
-      @Override
-      public FilterWatchListDeletable<Pod, PodList> withLabelNotIn(String key, String... values) { return null; }
-
-      @Override
-      public FilterWatchListDeletable<Pod, PodList> withLabel(String key, String value) { return null; }
-
-      @Override
-      public FilterWatchListDeletable<Pod, PodList> withLabel(String key) { return null; }
-
-      @Override
-      public FilterWatchListDeletable<Pod, PodList> withoutLabel(String key, String value) { return null; }
-
-      @Override
-      public FilterWatchListDeletable<Pod, PodList> withoutLabel(String key) { return null; }
-
-      @Override
-      public FilterWatchListDeletable<Pod, PodList> withFields(Map<String, String> labels) { return null; }
-
-      @Override
-      public FilterWatchListDeletable<Pod, PodList> withField(String key, String value) { return null; }
-
-      @Override
-      public FilterWatchListDeletable<Pod, PodList> withoutFields(Map<String, String> fields) { return null; }
-
-      @Override
-      public FilterWatchListDeletable<Pod, PodList> withoutField(String key, String value) { return null; }
-
-      @Override
-      public FilterWatchListDeletable<Pod, PodList> withLabelSelector(LabelSelector selector) { return null; }
-
-      @Override
-      public FilterWatchListDeletable<Pod, PodList> withInvolvedObject(ObjectReference objectReference) { return null; }
-
-      @Override
-      public PodList list() { return getMockPodList(controllerUid); }
-
-      @Override
-      public PodList list(Integer limitVal, String continueVal) { return null; }
-
-      @Override
-      public PodList list(ListOptions listOptions) { return null; }
-
-      @Override
-      public Pod updateStatus(Pod item) { return null; }
-
-      @Override
-      public WatchAndWaitable<Pod> withResourceVersion(String resourceVersion) { return null; }
-
-      @Override
-      public Pod waitUntilReady(long amount, TimeUnit timeUnit) { return null; }
-
-      @Override
-      public Pod waitUntilCondition(Predicate<Pod> condition, long amount, TimeUnit timeUnit) { return null; }
-
-      @Override
-      public Waitable<Pod, Pod> withWaitRetryBackoff(long initialBackoff, TimeUnit backoffUnit, double backoffMultiplier) { return null; }
-
-      @Override
-      public Watch watch(Watcher<Pod> watcher) { return null; }
-
-      @Override
-      public Watch watch(ListOptions options, Watcher<Pod> watcher) { return null; }
-
-      @Override
-      public Watch watch(String resourceVersion, Watcher<Pod> watcher) { return null; }
-    };
+      public PodList answer(InvocationOnMock invocation) throws Throwable {
+        return getMockPodList(controllerUid);
+      }
+    });
+    return result;
   }
 }

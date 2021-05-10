@@ -35,7 +35,7 @@ public interface Patchable<T> {
    * as the comparison for the patch.
    *
    * @param item item to be patched with patched values
-   * @param item base to be compared with to generate the patch, use null for the current
+   * @param base item to be compared with to generate the patch, use null to create a merge patch from item 
    * @return returns deserialized version of api server response
    */
   T patch(T base, T item);
