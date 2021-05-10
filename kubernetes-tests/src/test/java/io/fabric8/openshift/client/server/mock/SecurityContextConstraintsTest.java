@@ -109,8 +109,8 @@ class SecurityContextConstraintsTest {
 
   @Test
   void testEdit() {
-   server.expect().withPath("/apis/security.openshift.io/v1/securitycontextconstraints/scc1").andReturn(200, new SecurityContextConstraintsBuilder().withNewMetadata().withName("scc1").and().build()).times(2);
-   server.expect().withPath("/apis/security.openshift.io/v1/securitycontextconstraints/scc1").andReturn(200, new SecurityContextConstraintsBuilder().withNewMetadata().withName("scc1").and().addToAllowedCapabilities("allowed").build()).once();
+   server.expect().withPath("/apis/security.openshift.io/v1/securitycontextconstraints/scc1").andReturn(200, new SecurityContextConstraintsBuilder().withNewMetadata().withName("scc1").and().build()).once();
+   server.expect().patch().withPath("/apis/security.openshift.io/v1/securitycontextconstraints/scc1").andReturn(200, new SecurityContextConstraintsBuilder().withNewMetadata().withName("scc1").and().addToAllowedCapabilities("allowed").build()).once();
 
     SecurityContextConstraints scc = client.securityContextConstraints().withName("scc1").edit(s -> new SecurityContextConstraintsBuilder(s).addToAllowedCapabilities("allowed").build());
     assertNotNull(scc);

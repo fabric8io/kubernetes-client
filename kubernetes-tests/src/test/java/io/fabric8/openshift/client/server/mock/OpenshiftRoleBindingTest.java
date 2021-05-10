@@ -19,7 +19,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.openshift.api.model.RoleBinding;
 import io.fabric8.openshift.api.model.RoleBindingBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
-import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
