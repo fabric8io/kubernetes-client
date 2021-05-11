@@ -145,13 +145,21 @@ public class PatchIT {
     configMapFromServer.setData(Collections.singletonMap("conflicting", "change"));
     ConfigMap base = client.configMaps().inNamespace(currentNamespace).withName(name).patch(configMapFromServer);
 
+    // concurrent change to empty
     ConfigMap baseCopy = new ConfigMapBuilder(base).build();
     baseCopy.setData(Collections.emptyMap());
-    client.configMaps().inNamespace(currentNamespace).withName(name).patch(base, baseCopy);
+    client.configMaps().patch(baseCopy);
 
+    // concurrent change to empty
     ConfigMap baseCopy2 = new ConfigMapBuilder(base).build();
     baseCopy2.setData(Collections.singletonMap("conflicting", "second"));
-    assertThrows(KubernetesClientException.class, () -> client.configMaps().inNamespace(currentNamespace).withName(name).patch(base, baseCopy2));
+
+    // optimistically locking should work because the resource version is set
+    assertThrows(KubernetesClientException.class, () -> client.configMaps().inNamespace(currentNamespace).withName(name).patch(new PatchContext.Builder().withPatchType(PatchType.JSON_MERGE).build(), baseCopy2));
+
+    baseCopy2.getMetadata().setResourceVersion(null);
+    // will succeed when not locked
+    client.configMaps().inNamespace(currentNamespace).withName(name).patch(new PatchContext.Builder().withPatchType(PatchType.JSON_MERGE).build(), baseCopy2);
   }
 
   @AfterClass

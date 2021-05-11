@@ -49,7 +49,15 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   @Override
   public T edit(UnaryOperator<T> function) {
     T item = getMandatory();
-    return patch(Serialization.clone(item), function.apply(item), false);
+    T clone = Serialization.clone(item);
+    return patch(null, clone, function.apply(item), false);
+  }
+  
+  @Override
+  public T editStatus(UnaryOperator<T> function) {
+    T item = getMandatory();
+    T clone = Serialization.clone(item);
+    return patch(null, clone, function.apply(item), true);
   }
 
   @Override
@@ -57,7 +65,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
     T item = getMandatory();
     T clone = Serialization.clone(item);
     consumer.accept(item);
-    return patch(clone, item, false);
+    return patch(null, clone, item, false);
   }
   
   protected VisitableBuilder<T, ?> createVisitableBuilder(T item) {
@@ -68,7 +76,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   public T edit(Visitor... visitors) {
     T item = getMandatory();
     T clone = Serialization.clone(item);
-    return patch(clone, createVisitableBuilder(item).accept(visitors).build(), false);
+    return patch(null, clone, createVisitableBuilder(item).accept(visitors).build(), false);
   }
   
   /**
@@ -83,9 +91,21 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
     }
     throw new KubernetesClientException("Name not specified. But operation requires name.");
   }
-
+  
   @Override
   public T replace(T item) {
+    return replace(item, false);
+  }
+  
+  @Override
+  public T replaceStatus(T item) {
+    return replace(item, true);
+  }
+
+  /**
+   * base replace operation, which is effectively a forced update with retries
+   */
+  protected T replace(T item, boolean status) {
     String fixedResourceVersion = getResourceVersion();
     Exception caught = null;
     int maxTries = 10;
@@ -109,7 +129,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
         final UnaryOperator<T> visitor = resource -> {
           try {
             resource.getMetadata().setResourceVersion(resourceVersion);
-            return handleReplace(resource, false);
+            return handleUpdate(resource, status);
           } catch (Exception e) {
             throw KubernetesClientException.launderThrowable(forOperationType("replace"), e);
           }
@@ -136,29 +156,24 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
     }
     throw KubernetesClientException.launderThrowable(forOperationType("replace"), caught);
   }
-
-  @Override
-  public T patch(T item) {
-    return patch(fromServer(item.getMetadata()).get(), item, false);
-  }
   
-  @Override
-  public T patch(T base, T item) {
-      return patch(base, item, false);
-  }
-
-  public T patch(T base, T item, boolean status) {
+  protected T patch(PatchContext context, T base, T item, boolean status) {
+    if (base == null && context != null && context.getPatchType() == PatchType.JSON) {
+      base = fromServer(item.getMetadata()).get();
+      if (base == null) {
+        return null;
+      }
+      if (item.getMetadata() == null) {
+        item.setMetadata(new ObjectMeta());
+      }
+      if (base.getMetadata() != null) {
+        item.getMetadata().setResourceVersion(base.getMetadata().getResourceVersion());  
+      }
+    }
+    final T theBase = base;
     final UnaryOperator<T> visitor = resource -> {
       try {
-        if (base != null) {
-          if (item.getMetadata() == null) {
-            item.setMetadata(new ObjectMeta());
-          }
-          if (base.getMetadata() != null) {
-            item.getMetadata().setResourceVersion(base.getMetadata().getResourceVersion());  
-          }
-        }  
-        return handlePatch(base, resource, status);
+        return handlePatch(context, theBase, resource, status);
       } catch (Exception e) {
         throw KubernetesClientException.launderThrowable(forOperationType(PATCH_OPERATION), e);
       }
@@ -167,8 +182,13 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   }
   
   @Override
-  public T applyStatus(T item) {
-    return patch(null, item, true);
+  public T patchStatus(T item) {
+    return patch(new PatchContext.Builder().withPatchType(PatchType.JSON_MERGE).build(), null, item, true);
+  }
+  
+  @Override
+  public T patch(PatchContext patchContext, T item) {
+    return patch(patchContext, null, item, false);
   }
 
   @Override

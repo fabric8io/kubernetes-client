@@ -249,6 +249,11 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   public T edit(UnaryOperator<T> function) {
     throw new KubernetesClientException(READ_ONLY_EDIT_EXCEPTION_MESSAGE);
   }
+  
+  @Override
+  public T editStatus(UnaryOperator<T> function) {
+    throw new KubernetesClientException(READ_ONLY_EDIT_EXCEPTION_MESSAGE);
+  }
 
   @Override
   public T edit(Visitor... visitors) {
@@ -745,7 +750,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   @Override
   public T updateStatus(T item) {
     try {
-      return handleReplace(item, true);
+      return handleUpdate(item, true);
     } catch (InterruptedException ie) {
       Thread.currentThread().interrupt();
       throw KubernetesClientException.launderThrowable(forOperationType("statusUpdate"), ie);
@@ -756,7 +761,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
   
   @Override
-  public T applyStatus(T item) {
+  public T patchStatus(T item) {
     throw new KubernetesClientException(READ_ONLY_UPDATE_EXCEPTION_MESSAGE);
   }
 
@@ -858,19 +863,19 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   public T replace(T item) {
     throw new KubernetesClientException(READ_ONLY_UPDATE_EXCEPTION_MESSAGE);
   }
-
-  @Override
-  public T patch(T item) {
-    throw new KubernetesClientException(READ_ONLY_UPDATE_EXCEPTION_MESSAGE);
-  }
   
   @Override
-  public T patch(T base, T item) {
+  public T replaceStatus(T item) {
     throw new KubernetesClientException(READ_ONLY_UPDATE_EXCEPTION_MESSAGE);
   }
 
   @Override
   public T patch(PatchContext patchContext, String patch) {
+    throw new KubernetesClientException(READ_ONLY_UPDATE_EXCEPTION_MESSAGE);
+  }
+  
+  @Override
+  public T patch(PatchContext patchContext, T item) {
     throw new KubernetesClientException(READ_ONLY_UPDATE_EXCEPTION_MESSAGE);
   }
 
@@ -888,14 +893,14 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     return handleCreate(resource, getType());
   }
 
-  protected T handleReplace(T updated, boolean status) throws ExecutionException, InterruptedException, IOException {
+  protected T handleUpdate(T updated, boolean status) throws ExecutionException, InterruptedException, IOException {
     updateApiVersion(updated);
-    return handleReplace(updated, getType(), status);
+    return handleUpdate(updated, getType(), status);
   }
 
-  protected T handlePatch(T current, T updated, boolean status) throws ExecutionException, InterruptedException, IOException {
+  protected T handlePatch(PatchContext context, T current, T updated, boolean status) throws ExecutionException, InterruptedException, IOException {
     updateApiVersion(updated);
-    return handlePatch(current, updated, getType(), status);
+    return handlePatch(context, current, updated, getType(), status);
   }
 
   protected T handlePatch(T current, Map<String, Object> patchedUpdate) throws ExecutionException, InterruptedException, IOException {
@@ -905,7 +910,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   protected T sendPatchedObject(T oldObject, T updatedObject) {
     try {
-      return handlePatch(oldObject, updatedObject, false);
+      return handlePatch(null, oldObject, updatedObject, false);
     } catch (InterruptedException interruptedException) {
       Thread.currentThread().interrupt();
       throw KubernetesClientException.launderThrowable(interruptedException);

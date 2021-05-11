@@ -15,14 +15,8 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface StatusUpdatable<T> {
-  /**
-   * When the status subresource is enabled, the /status subresource for the custom resource is exposed.
-   * It does a PUT requests to the /status subresource take a resource object and ignore changes
-   * to anything except the status stanza.
-   *
-   * @param item kubernetes object
-   * @return updated object
-   */
-  T updateStatus(T item);
+public interface StatusReplaceable<T> {
+
+  T replaceStatus(T item);
+
 }

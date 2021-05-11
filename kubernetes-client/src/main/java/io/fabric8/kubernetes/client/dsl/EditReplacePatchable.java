@@ -15,5 +15,5 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface EditReplacePatchable<T> extends Editable<T>, Replaceable<T>, Patchable<T>, StatusUpdatable<T> {
+public interface EditReplacePatchable<T> extends Editable<T>, Replaceable<T>, Patchable<T>, StatusUpdatable<T>, StatusEditable<T>, StatusReplaceable<T>, StatusPatchable<T> {
 }

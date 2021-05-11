@@ -306,12 +306,12 @@ public class OperationSupport {
    * @throws InterruptedException Interrupted Exception
    * @throws IOException IOException
    */
-  protected <T> T handleReplace(T updated, Class<T> type, boolean status) throws ExecutionException, InterruptedException, IOException {
-    return handleReplace(updated, type, Collections.<String, String>emptyMap(), status);
+  protected <T> T handleUpdate(T updated, Class<T> type, boolean status) throws ExecutionException, InterruptedException, IOException {
+    return handleUpdate(updated, type, Collections.<String, String>emptyMap(), status);
   }
 
   /**
-   * Replace a resource, optionally performing placeholder substitution to the response.
+   * Update a resource, optionally performing placeholder substitution to the response.
    *
    * @param updated updated object
    * @param type type of object provided
@@ -324,7 +324,7 @@ public class OperationSupport {
    * @throws InterruptedException Interrupted Exception
    * @throws IOException IOException
    */
-  protected <T> T handleReplace(T updated, Class<T> type, Map<String, String> parameters, boolean status) throws ExecutionException, InterruptedException, IOException {
+  protected <T> T handleUpdate(T updated, Class<T> type, Map<String, String> parameters, boolean status) throws ExecutionException, InterruptedException, IOException {
     RequestBody body = RequestBody.create(JSON, JSON_MAPPER.writeValueAsString(updated));
     Request.Builder requestBuilder = new Request.Builder().put(body).url(getResourceURLForWriteOperation(getResourceUrl(checkNamespace(updated), checkName(updated), status)));
     return handleResponse(requestBuilder, type, parameters);
@@ -332,7 +332,10 @@ public class OperationSupport {
 
   /**
    * Send an http patch and handle the response.
+   * 
+   * If current is not null and patchContext does not specify a patch type, then a JSON patch is assumed.  Otherwise a STRATEGIC MERGE is assumed.
    *
+   * @param patchContext patch options for patch request
    * @param current current object
    * @param updated updated object
    * @param type type of object
@@ -344,17 +347,18 @@ public class OperationSupport {
    * @throws InterruptedException Interrupted Exception
    * @throws IOException IOException
    */
-  protected <T> T handlePatch(T current, T updated, Class<T> type, boolean status) throws ExecutionException, InterruptedException, IOException {
+  protected <T> T handlePatch(PatchContext patchContext, T current, T updated, Class<T> type, boolean status) throws ExecutionException, InterruptedException, IOException {
     String patchForUpdate = null;
-    PatchType patchType = PatchType.JSON;
-    if (current != null) {
+    if (current != null && (patchContext == null || patchContext.getPatchType() == PatchType.JSON)) {
       patchForUpdate = JSON_MAPPER.writeValueAsString(JsonDiff.asJson(patchMapper().valueToTree(current), patchMapper().valueToTree(updated)));
+      if (patchContext == null) {
+        patchContext = new PatchContext.Builder().withPatchType(PatchType.JSON).build();
+      }
     } else {
-      patchType = PatchType.JSON_MERGE;
       patchForUpdate = Serialization.asJson(updated);
       current = updated; // use the updated to determine the path
     }
-    return handlePatch(new PatchContext.Builder().withPatchType(patchType).build(), current, patchForUpdate, type, status);
+    return handlePatch(patchContext, current, patchForUpdate, type, status);
   }
 
   /**
