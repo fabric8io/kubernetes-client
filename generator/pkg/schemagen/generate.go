@@ -218,6 +218,13 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 		return g.resolveJavaClassUsingMappingSchema(t)
 	}
 
+	// the interface k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1/JSON is sometimes used to represent any JSON value
+	// example: Tekton Triggers -> Trigger.spec.interceptors.params.value
+	// -> fallback to Object
+	if t.PkgPath() == "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1" && t.Name() == "JSON" {
+		return "java.lang.Object"
+	}
+
 	panic("No type mapping for " + t.PkgPath() + "." + t.Name())
 }
 
