@@ -15,14 +15,20 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
-public interface StatusUpdatable<T> {
+import io.fabric8.kubernetes.client.dsl.base.PatchContext;
+import io.fabric8.kubernetes.client.dsl.base.PatchType;
+
+public interface StatusPatchable<T> {
+
   /**
-   * When the status subresource is enabled, the /status subresource for the custom resource is exposed.
-   * It does a PUT requests to the /status subresource take a resource object and ignore changes
-   * to anything except the status stanza.
+   * Does a PATCH request to the /status subresource ignoring changes to anything except the status stanza.
+   * <p>This method has the same patching behavior as {@link Patchable#patch(PatchContext, Object)}, with {@link PatchType#JSON_MERGE} but against the status subresource.
+   * <p>Set the resourceVersion to null to prevent optimistic locking.
    *
+   * @param patchContext {@link PatchContext} for patch request
    * @param item kubernetes object
    * @return updated object
    */
-  T updateStatus(T item);
+  T patchStatus(T item);
+
 }

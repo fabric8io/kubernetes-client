@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.api.model.apps.ReplicaSetList;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.internal.RollingOperationContext;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -132,11 +133,11 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
   }
 
   @Override
-  public Deployment patch(Deployment base, Deployment item) {
+  public Deployment patch(PatchContext patchContext, Deployment item) {
     if (isCascading()) {
-      return cascading(false).patch(base, item);
+      return cascading(false).patch(patchContext, item);
     }
-    return super.patch(base, item);
+    return super.patch(patchContext, item);
   }
 
   @Override

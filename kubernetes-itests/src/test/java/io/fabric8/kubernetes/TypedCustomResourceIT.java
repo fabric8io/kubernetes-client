@@ -31,6 +31,7 @@ import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
@@ -191,6 +192,7 @@ public class TypedCustomResourceIT {
     pet = petClient.inNamespace(currentNamespace).create(pet);
     await().atMost(5, TimeUnit.SECONDS)
       .until(() -> petClient.inNamespace(currentNamespace).withName("pet-updatestatus").get() != null);
+    pet.getSpec().setType("shouldn't change");
     pet.setStatus(petStatusToUpdate);
     Pet updatedPet = petClient.inNamespace(currentNamespace).updateStatus(pet);
 
@@ -199,7 +201,27 @@ public class TypedCustomResourceIT {
   }
 
   @Test
-  public void applyStatusSubresource() {
+  public void replaceStatusSubresource() {
+    // Given
+    Pet pet = createNewPet("pet-replacestatus", "Pigeon", null);
+    PetStatus petStatusToUpdate = new PetStatus();
+    petStatusToUpdate.setCurrentStatus("Sleeping");
+
+    // When
+    petClient.inNamespace(currentNamespace).create(pet);
+    await().atMost(5, TimeUnit.SECONDS)
+      .until(() -> petClient.inNamespace(currentNamespace).withName("pet-replacestatus").get() != null);
+    // use the original pet, no need to pick up the resourceVersion
+    pet.getSpec().setType("shouldn't change");
+    pet.setStatus(petStatusToUpdate);
+    Pet updatedPet = petClient.inNamespace(currentNamespace).replaceStatus(pet);
+
+    // Then
+    assertPet(updatedPet, "pet-replacestatus", "Pigeon", "Sleeping");
+  }
+
+  @Test
+  public void patchStatusSubresource() {
     // Given
     Pet pet = createNewPet("pet-applystatus", "Pigeon", null);
     PetStatus petStatusToUpdate = new PetStatus();
@@ -210,11 +232,34 @@ public class TypedCustomResourceIT {
     await().atMost(5, TimeUnit.SECONDS)
       .until(() -> petClient.inNamespace(currentNamespace).withName("pet-applystatus").get() != null);
     // use the original pet, no need to pick up the resourceVersion
+    pet.getSpec().setType("shouldn't change");
     pet.setStatus(petStatusToUpdate);
-    Pet updatedPet = petClient.inNamespace(currentNamespace).applyStatus(pet);
+    Pet updatedPet = petClient.inNamespace(currentNamespace).patchStatus(pet);
 
     // Then
     assertPet(updatedPet, "pet-applystatus", "Pigeon", "Sleeping");
+  }
+
+  @Test
+  public void editStatusSubresource() {
+    // Given
+    Pet pet = createNewPet("pet-editstatus", "Pigeon", null);
+    PetStatus petStatusToUpdate = new PetStatus();
+    petStatusToUpdate.setCurrentStatus("Sleeping");
+
+    // When
+    petClient.inNamespace(currentNamespace).create(pet);
+    await().atMost(5, TimeUnit.SECONDS)
+      .until(() -> petClient.inNamespace(currentNamespace).withName("pet-editstatus").get() != null);
+    Pet updatedPet = petClient.inNamespace(currentNamespace).withName("pet-editstatus").editStatus(p->{
+      Pet clone = Serialization.clone(pet);
+      clone.setStatus(petStatusToUpdate);
+      clone.getSpec().setType("shouldn't change");
+      return clone;
+    });
+
+    // Then
+    assertPet(updatedPet, "pet-editstatus", "Pigeon", "Sleeping");
   }
 
   @Test

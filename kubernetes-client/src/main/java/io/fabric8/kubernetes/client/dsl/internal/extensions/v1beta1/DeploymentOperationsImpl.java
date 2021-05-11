@@ -33,6 +33,7 @@ import io.fabric8.kubernetes.client.dsl.Loggable;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.internal.RollingOperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.RollableScalableResourceOperation;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.RollingUpdater;
@@ -138,11 +139,11 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
   }
 
   @Override
-  public Deployment patch(Deployment base, Deployment item) {
+  public Deployment patch(PatchContext patchContext, Deployment item) {
     if (isCascading()) {
-      return cascading(false).patch(base, item);
+      return cascading(false).patch(patchContext, item);
     }
-    return super.patch(base, item);
+    return super.patch(patchContext, item);
   }
 
   @Override
