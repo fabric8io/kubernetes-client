@@ -32,7 +32,7 @@ public class SharedSchedulerTest {
     SharedScheduler scheduler = new SharedScheduler(50);
     assertFalse(scheduler.hasExecutor());
     CountDownLatch latch = new CountDownLatch(2);
-    ScheduledFuture<?> future = scheduler.scheduleWithFixedDelay(()->latch.countDown(), 50, 50, TimeUnit.MILLISECONDS);
+    ScheduledFuture<?> future = scheduler.scheduleWithFixedDelay(latch::countDown, 50, 50, TimeUnit.MILLISECONDS);
     assertTrue(scheduler.hasExecutor());
     latch.await();
     assertFalse(future.isDone());
