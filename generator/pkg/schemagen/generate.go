@@ -218,7 +218,6 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 		return g.resolveJavaClassUsingMappingSchema(t)
 	}
 
-
 	panic("No type mapping for " + t.PkgPath() + "." + t.Name())
 }
 
