@@ -54,13 +54,6 @@ class ProcessorListenerTest {
     listener.add(new ProcessorListener.UpdateNotification<>(null, pod));
     listener.add(new ProcessorListener.DeleteNotification<>(pod));
 
-    Thread listenerThread = new Thread(listener::run);
-    listenerThread.setDaemon(true);
-    listenerThread.start();
-
-    // Sleep 1 second for consuming notifications from queue
-    Thread.sleep(1000);
-
     assertTrue(addNotificationReceived);
     assertTrue(updateNotificationReceived);
     assertTrue(deleteNotificationReceived);
