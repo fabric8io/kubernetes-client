@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.api.model.PodStatusBuilder;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.mockwebserver.crud.Attribute;
 import io.fabric8.mockwebserver.crud.AttributeSet;
 import org.junit.jupiter.api.Test;
@@ -33,6 +34,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class KubernetesCrudAttributesExtractorTest {
@@ -283,8 +285,6 @@ public class KubernetesCrudAttributesExtractorTest {
             .build();
     Pod result = kubernetesClient.pods().create(pod);
 
-    kubernetesClient.pods().create(pod);
-
     // should be null after create
     assertNull(result.getStatus());
 
@@ -324,6 +324,21 @@ public class KubernetesCrudAttributesExtractorTest {
     assertNotNull(result.getStatus());
 
     assertEquals(originalUid, result.getMetadata().getUid());
+  }
+
+  @Test
+  public void createConflict() {
+    KubernetesServer kubernetesServer = new KubernetesServer(false, true);
+    kubernetesServer.before();
+    KubernetesClient kubernetesClient = kubernetesServer.getClient();
+    Pod pod = new PodBuilder().withNewMetadata()
+            .withName("name")
+            .withNamespace("test") // required until https://github.com/fabric8io/mockwebserver/pull/59
+            .endMetadata()
+            .withStatus(new PodStatusBuilder().withHostIP("x").build())
+            .build();
+    kubernetesClient.pods().create(pod);
+    assertThrows(KubernetesClientException.class, ()-> kubernetesClient.pods().create(pod));
   }
 
   // https://github.com/fabric8io/kubernetes-client/issues/1688

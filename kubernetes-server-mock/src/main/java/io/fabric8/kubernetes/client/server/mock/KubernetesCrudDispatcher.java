@@ -50,6 +50,7 @@ import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import okhttp3.mockwebserver.RecordedRequest;
 import okhttp3.mockwebserver.SocketPolicy;
@@ -315,7 +316,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
 
 
   private int doDelete(String path, String event) {
-    List<AttributeSet> items = findItems(path);
+    List<AttributeSet> items = findItems(attributeExtractor.fromPath(path));
 
     if (items.isEmpty()) return HttpURLConnection.HTTP_NOT_FOUND;
 
@@ -331,34 +332,37 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
     return HttpURLConnection.HTTP_OK;
   }
 
-  private List<AttributeSet> findItems(String path) {
-    List<AttributeSet> items = new ArrayList<>();
-    AttributeSet query = attributeExtractor.fromPath(path);
-
-    map.entrySet().stream()
-      .filter(entry -> entry.getKey().matches(query))
-      .forEach(entry -> items.add(entry.getKey()));
-    return items;
+  private List<AttributeSet> findItems(AttributeSet query) {
+    return map.keySet().stream()
+      .filter(entry -> entry.matches(query))
+      .collect(Collectors.toList());
   }
 
   private MockResponse doCreateOrModify(String path, String initial, String event) {
     MockResponse mockResponse = new MockResponse();
-    AttributeSet fromPath = attributeExtractor.fromPath(path);
+    AttributeSet attributes = attributeExtractor.fromPath(path);
 
     try {
       JsonNode source = context.getMapper().readTree(initial);
       JsonNode status = removeStatus(source);
       int responseCode = HttpURLConnection.HTTP_OK;
 
-      List<AttributeSet> items = findItems(path);
+      if (ADDED.equals(event)) {
+        HasMetadata h = toKubernetesResource(context.getMapper().writeValueAsString(source));
+        if (h != null && h.getMetadata() != null && h.getMetadata().getName() != null) {
+          attributes = AttributeSet.merge(attributes, new AttributeSet(new Attribute("name", h.getMetadata().getName())));
+        }
+      }
+
+      List<AttributeSet> items = findItems(attributes);
       if (items.isEmpty()) {
         if (MODIFIED.equals(event)) {
           responseCode = HttpURLConnection.HTTP_NOT_FOUND;
         } else {
-          setDefaultMetadata(source, fromPath);
+          setDefaultMetadata(source, attributes);
         }
       } else if (ADDED.equals(event)) {
-        //responseCode = HttpURLConnection.HTTP_CONFLICT;
+        responseCode = HttpURLConnection.HTTP_CONFLICT;
       } else if (MODIFIED.equals(event)) {
         String existing = map.remove(items.get(0));
         JsonNode existingNode = context.getMapper().readTree(existing);
@@ -380,7 +384,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
 
       if (responseCode == HttpURLConnection.HTTP_OK) {
         String s = context.getMapper().writeValueAsString(source);
-        AttributeSet features = AttributeSet.merge(fromPath, attributeExtractor.fromResource(s));
+        AttributeSet features = AttributeSet.merge(attributes, attributeExtractor.fromResource(s));
         map.put(features, s);
         if (event != null && !event.isEmpty()) {
           final String response = s;
