@@ -996,7 +996,8 @@
         <sonar.moduleKey>${project.artifactId}</sonar.moduleKey>
         <sonar.organization>fabric8io</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-        <sonar.login>${env.SONAR_LOGIN_TOKEN}</sonar.login>
+        <sonar.login/>
+        <sonar.password/>
         <sonar.projectName>Fabric8 :: Kubernetes Client</sonar.projectName>
         <sonar.links.homepage>https://github.com/fabric8io/kubernetes-client</sonar.links.homepage>
         <sonar.links.ci>https://github.com/fabric8io/kubernetes-client/actions</sonar.links.ci>
