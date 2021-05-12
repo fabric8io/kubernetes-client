@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class SharedScheduler {
   
-  public static long DEFAULT_TTL_MILLIS = TimeUnit.SECONDS.toMillis(10);
+  public static final long DEFAULT_TTL_MILLIS = TimeUnit.SECONDS.toMillis(10);
   
   private final long ttlMillis;
   private ScheduledThreadPoolExecutor executor;

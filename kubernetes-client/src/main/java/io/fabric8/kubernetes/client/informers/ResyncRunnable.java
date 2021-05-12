@@ -42,7 +42,7 @@ public class ResyncRunnable<T> implements Runnable {
       log.debug("ResyncRunnable#resync .. ..");
     }
 
-    // TODO if there is a concern that this processing could overwhelm the single
+    // if there is a concern that this processing could overwhelm the single
     // thread, then hand this off to the common pool
     if (shouldResyncFunc == null || shouldResyncFunc.getAsBoolean()) {
       if (log.isDebugEnabled()) {
