@@ -108,7 +108,7 @@ public class SharedProcessor<T> {
   public void stop() {
     lock.writeLock().lock();
     try {
-      toClose.forEach(c->c.run());
+      toClose.forEach(Runnable::run);
       toClose.clear();
       syncingListeners = null;
       listeners = null;
