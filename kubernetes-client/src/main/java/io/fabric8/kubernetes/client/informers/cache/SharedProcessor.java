@@ -15,9 +15,13 @@
  */
 package io.fabric8.kubernetes.client.informers.cache;
 
+import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
+import io.fabric8.kubernetes.client.utils.Utils;
+
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -28,77 +32,33 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * notifications.
  *
  * This has been taken from official-client: https://github.com/kubernetes-client/java/blob/master/util/src/main/java/io/kubernetes/client/informer/cache/SharedProcessor.java
+ * 
+ * <br>Modified to not submit tasks directly
  */
 public class SharedProcessor<T> {
   private ReadWriteLock lock = new ReentrantReadWriteLock();
+  private List<Runnable> toClose = new ArrayList<>();
 
   private List<ProcessorListener<T>> listeners;
   private List<ProcessorListener<T>> syncingListeners;
 
-  private ExecutorService executorService;
-
   public SharedProcessor() {
-    this(Executors.newCachedThreadPool());
-  }
-
-  public SharedProcessor(ExecutorService threadPool) {
     this.listeners = new ArrayList<>();
     this.syncingListeners = new ArrayList<>();
-    this.executorService = threadPool;
   }
 
   /**
-   * First adds the specific processorListener then starts the listener
-   * with executor.
-   *
-   * @param processorListener specific processor listener
-   */
-  public void addAndStartListener(final ProcessorListener<T> processorListener) {
-    lock.writeLock().lock();
-    try {
-      addListenerLocked(processorListener);
-
-      executorService.execute(processorListener);
-    } finally {
-      lock.writeLock().unlock();
-    }
-  }
-
-  /**
-   * Adds the specific processorListener, but not start it.
+   * Adds the specific processorListener
    *
    * @param processorListener specific processor listener
    */
   public void addListener(final ProcessorListener<T> processorListener) {
     lock.writeLock().lock();
     try {
-      addListenerLocked(processorListener);
+      this.listeners.add(processorListener);
+      this.syncingListeners.add(processorListener);
     } finally {
       lock.writeLock().unlock();
-    }
-  }
-
-  private void addListenerLocked(final ProcessorListener<T> processorListener) {
-    this.listeners.add(processorListener);
-    this.syncingListeners.add(processorListener);
-  }
-
-  /**
-   * Starts the processor listeners.
-   */
-  public void run() {
-    lock.readLock().lock();
-    try {
-      if (listeners == null || listeners.isEmpty()) {
-        return;
-      }
-      for (ProcessorListener<T> listener : listeners) {
-        if (!executorService.isShutdown()) {
-          executorService.submit(listener);
-        }
-      }
-    } finally {
-      lock.readLock().unlock();
     }
   }
 
@@ -148,10 +108,30 @@ public class SharedProcessor<T> {
   public void stop() {
     lock.writeLock().lock();
     try {
+      toClose.forEach(c->c.run());
+      toClose.clear();
+      syncingListeners = null;
       listeners = null;
     } finally {
       lock.writeLock().unlock();
     }
-    executorService.shutdownNow();
+  }
+
+  public ProcessorListener<T> addProcessorListener(ResourceEventHandler<T> handler, long resyncPeriodMillis) {
+    lock.writeLock().lock();
+    try {
+      Executor executor = Runnable::run;
+      if (handler.isCalledAsync()) {
+        ExecutorService service = Executors.newSingleThreadExecutor(Utils.daemonThreadFactory(handler));
+        executor = service;
+        toClose.add(service::shutdownNow);
+      }
+  
+      ProcessorListener<T> listener = new ProcessorListener<>(handler, resyncPeriodMillis, executor);
+      addListener(listener);
+      return listener;
+    } finally {
+      lock.writeLock().unlock();
+    }
   }
 }

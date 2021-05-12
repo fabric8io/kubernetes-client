@@ -36,15 +36,13 @@ class SharedProcessorTest {
     ExpectingNotificationHandler<Pod> expectUpdateHandler = new ExpectingNotificationHandler<>(updateNotification);
     ExpectingNotificationHandler<Pod> expectDeleteHandler = new ExpectingNotificationHandler<>(deleteNotification);
 
-    sharedProcessor.addAndStartListener(expectAddHandler);
-    sharedProcessor.addAndStartListener(expectUpdateHandler);
-    sharedProcessor.addAndStartListener(expectDeleteHandler);
+    sharedProcessor.addListener(expectAddHandler);
+    sharedProcessor.addListener(expectUpdateHandler);
+    sharedProcessor.addListener(expectDeleteHandler);
 
     sharedProcessor.distribute(addNotification, false);
     sharedProcessor.distribute(updateNotification, false);
     sharedProcessor.distribute(deleteNotification, false);
-    // Sleep for 1 second for distributing notifications
-    Thread.sleep(1000);
 
     assertTrue(expectAddHandler.isSatisfied());
     assertTrue(expectUpdateHandler.isSatisfied());

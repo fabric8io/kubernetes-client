@@ -54,4 +54,12 @@ public interface ResourceEventHandler<T> {
    * @param deletedFinalStateUnknown get final state of item if it is known or not.
    */
   void onDelete(T obj, boolean deletedFinalStateUnknown);
+  
+  /**
+   * If the event handler should be called in a separate thread
+   * @return
+   */
+  default boolean isCalledAsync() {
+    return true;
+  }
 }

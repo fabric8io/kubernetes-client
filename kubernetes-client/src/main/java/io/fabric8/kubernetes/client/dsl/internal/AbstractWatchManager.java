@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
+import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.WebSocket;
@@ -61,11 +62,7 @@ public abstract class AbstractWatchManager<T> implements Watch {
     this.resourceVersion = new AtomicReference<>(listOptions.getResourceVersion());
     this.currentReconnectAttempt = new AtomicInteger(0);
     this.forceClosed = new AtomicBoolean();
-    this.executorService = Executors.newSingleThreadScheduledExecutor(r -> {
-      Thread ret = new Thread(r, "Executor for Watch " + System.identityHashCode(AbstractWatchManager.this));
-      ret.setDaemon(true);
-      return ret;
-    });
+    this.executorService = Executors.newSingleThreadScheduledExecutor(Utils.daemonThreadFactory(AbstractWatchManager.this));
     
     this.requestBuilder = requestBuilder;
   }

@@ -53,6 +53,7 @@ public class SharedInformerFactory extends BaseOperation {
   private final Map<String, Future> startedInformers = new HashMap<>();
 
   private final ExecutorService informerExecutor;
+  private final SharedScheduler resyncExecutor = new SharedScheduler();
 
   private final BaseOperation baseOperation;
 
@@ -230,7 +231,7 @@ public class SharedInformerFactory extends BaseOperation {
         context = context.withIsNamespaceConfiguredFromGlobalConfig(false);
       }
     }
-    SharedIndexInformer<T> informer = new DefaultSharedIndexInformer<>(apiTypeClass, listerWatcher, resyncPeriodInMillis, context, eventListeners);
+    SharedIndexInformer<T> informer = new DefaultSharedIndexInformer<>(apiTypeClass, listerWatcher, resyncPeriodInMillis, context, eventListeners, resyncExecutor);
     this.informers.put(getInformerKey(context), informer);
     return informer;
   }
@@ -274,7 +275,8 @@ public class SharedInformerFactory extends BaseOperation {
   }
 
   /**
-   * Starts all registered informers.
+   * Starts all registered informers in an asynchronous fashion.
+   * <br>use {@link #addSharedInformerEventListener(SharedInformerEventListener)} to receive startup errors. 
    */
   public synchronized void startAllRegisteredInformers() {
     if (informers.isEmpty()) {

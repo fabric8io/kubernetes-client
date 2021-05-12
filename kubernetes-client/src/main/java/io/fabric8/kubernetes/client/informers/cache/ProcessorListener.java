@@ -21,9 +21,7 @@ import org.slf4j.LoggerFactory;
 
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Optional;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.Executor;
 
 /**
  * ProcessorListener implements Runnable interface. It's supposed to run in background
@@ -31,41 +29,38 @@ import java.util.concurrent.LinkedBlockingQueue;
  *
  * This has been taken from official client: https://github.com/kubernetes-client/java/blob/master/util/src/main/java/io/kubernetes/client/informer/cache/ProcessorListener.java
  * which has been ported from official go client: https://github.com/kubernetes/client-go/blob/master/tools/cache/shared_informer.go#L570
+ * 
+ * <br>Modified to execute loosely coupled from its processing thread
  *
  * @param <T> type of ProcessorListener
  */
-public class ProcessorListener<T> implements Runnable {
+public class ProcessorListener<T> {
   private static final Logger log = LoggerFactory.getLogger(ProcessorListener.class);
   private long resyncPeriodInMillis;
   private ZonedDateTime nextResync;
-  private BlockingQueue<Notification<T>> queue;
   private ResourceEventHandler<T> handler;
-
+  private Executor executor;
+  
   public ProcessorListener(ResourceEventHandler<T> handler, long resyncPeriodInMillis) {
+    this(handler, resyncPeriodInMillis, Runnable::run);
+  }
+
+  public ProcessorListener(ResourceEventHandler<T> handler, long resyncPeriodInMillis, Executor executorService) {
     this.resyncPeriodInMillis = resyncPeriodInMillis;
     this.handler = handler;
-    this.queue = new LinkedBlockingQueue<>();
+    this.executor = executorService;
 
     determineNextResync(ZonedDateTime.now());
   }
 
-  @Override
-  public void run() {
-    while (true) {
+  public void add(Notification<T> notification) {
+    executor.execute(() -> {
       try {
-        queue.take().handle(handler);
-      } catch(InterruptedException ex) {
-        log.warn("Processor thread interrupted: {}", ex.getMessage());
-        Thread.currentThread().interrupt();
-        return;
+        notification.handle(handler);
       } catch (Exception ex) {
         log.error("Failed invoking {} event handler: {}", handler, ex.getMessage(), ex);
       }
-    }
-  }
-
-  public void add(Notification<T> obj) {
-    Optional.ofNullable(obj).ifPresent(this.queue::add);
+    });
   }
 
   public void determineNextResync(ZonedDateTime now) {
