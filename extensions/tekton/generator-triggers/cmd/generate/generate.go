@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"github.com/fabric8io/kubernetes-client/generator/pkg/schemagen"
 	triggers "github.com/tektoncd/triggers/pkg/apis/triggers/v1alpha1"
+	v1apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	machinery "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"knative.dev/pkg/apis"
 	"reflect"
@@ -64,13 +65,14 @@ func main() {
 		"knative.dev": "io.fabric8.tekton.triggers.internal.knative",
 	}
 
-	// overwriting some times
+	// overwriting some types
 	manualTypeMap := map[reflect.Type]string{
 		reflect.TypeOf(machinery.Time{}):                   "java.lang.String",
 		reflect.TypeOf(apis.VolatileTime{}):                "java.lang.String",
 		reflect.TypeOf(apis.URL{}):                         "java.lang.String",
 		reflect.TypeOf(triggers.TriggerResourceTemplate{}): "io.fabric8.kubernetes.api.model.HasMetadata",
 		reflect.TypeOf(triggers.CustomResource{}):          "io.fabric8.kubernetes.api.model.HasMetadata",
+		reflect.TypeOf(v1apiextensions.JSON{}):             "java.lang.Object",
 	}
 
 	json := schemagen.GenerateSchema("http://fabric8.io/tekton/triggers/TektonSchema#", crdLists, providedPackages, manualTypeMap, packageMapping, mappingSchema, providedTypes, constraints)

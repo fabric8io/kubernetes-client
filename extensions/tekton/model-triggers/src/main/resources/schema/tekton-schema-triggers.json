@@ -349,7 +349,6 @@
           "type": "string"
         },
         "value": {
-          "$ref": "#/definitions/k8s_io_apiextensions-apiserver_pkg_apis_apiextensions_v1_JSON",
           "existingJavaType": "java.lang.Object"
         }
       },
@@ -877,21 +876,6 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
-    "k8s_io_apiextensions-apiserver_pkg_apis_apiextensions_v1_JSON": {
-      "type": "object",
-      "properties": {
-        "Raw": {
-          "type": "array",
-          "items": {
-            "type": "integer"
-          }
-        }
-      },
-      "existingJavaType": "java.lang.Object",
-      "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
-    },
     "knative_dev_pkg_apis_Condition": {
       "type": "object",
       "properties": {
@@ -1117,10 +1101,6 @@
     "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_WebhookInterceptor": {
       "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_WebhookInterceptor",
       "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.WebhookInterceptor"
-    },
-    "k8s_io_apiextensions-apiserver_pkg_apis_apiextensions_v1_JSON": {
-      "$ref": "#/definitions/k8s_io_apiextensions-apiserver_pkg_apis_apiextensions_v1_JSON",
-      "existingJavaType": "java.lang.Object"
     },
     "knative_dev_pkg_apis_Condition": {
       "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
