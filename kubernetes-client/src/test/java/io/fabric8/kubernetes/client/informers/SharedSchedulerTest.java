@@ -25,6 +25,8 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import static org.awaitility.Awaitility.await;
+
 public class SharedSchedulerTest {
   
   @Test
@@ -37,16 +39,9 @@ public class SharedSchedulerTest {
     latch.await();
     assertFalse(future.isDone());
     future.cancel(true);
-    for (int i = 0; i < 10; i++) {
-      if (!scheduler.hasExecutor()) {
-        break;
-      }
-      Thread.sleep(100);
-    }
-    // should be shutdown
-    assertFalse(scheduler.hasExecutor());
+    await().atMost(1, TimeUnit.SECONDS).until(()->!scheduler.hasExecutor());
     // should start again
-    future = scheduler.scheduleWithFixedDelay(()->latch.countDown(), 50, 50, TimeUnit.MILLISECONDS);
+    future = scheduler.scheduleWithFixedDelay(latch::countDown, 50, 50, TimeUnit.MILLISECONDS);
     assertTrue(scheduler.hasExecutor());
   }
 }
