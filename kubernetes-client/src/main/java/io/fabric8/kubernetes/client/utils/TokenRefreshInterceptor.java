@@ -31,7 +31,7 @@ import java.net.HttpURLConnection;
  * Interceptor for handling expired OIDC tokens.
  */
 public class TokenRefreshInterceptor implements Interceptor {
-  private Config config;
+  private final Config config;
   public TokenRefreshInterceptor(Config config) {
     this.config = config;
   }
@@ -50,10 +50,11 @@ public class TokenRefreshInterceptor implements Interceptor {
       }
       AuthInfo currentAuthInfo = KubeConfigUtils.getUserAuthInfo(kubeConfig, currentContext);
       // Check if AuthProvider is set or not
-      if (currentAuthInfo != null && currentAuthInfo.getAuthProvider() != null) {
+      if (currentAuthInfo != null) {
         response.close();
         String newAccessToken;
-        if (currentAuthInfo.getAuthProvider().getName().toLowerCase().equals("oidc")) {
+        // Check if AuthProvider is set to oicd
+        if (currentAuthInfo.getAuthProvider() != null && currentAuthInfo.getAuthProvider().getName().equalsIgnoreCase("oidc")) {
           newAccessToken = OpenIDConnectionUtils.resolveOIDCTokenFromAuthConfig(currentAuthInfo.getAuthProvider().getConfig());
         } else {
           Config newestConfig = Config.autoConfigure(currentContextName);
