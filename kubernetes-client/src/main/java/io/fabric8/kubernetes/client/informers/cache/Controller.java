@@ -24,14 +24,11 @@ import io.fabric8.kubernetes.client.informers.SharedInformerEventListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.AbstractMap;
-import java.util.Deque;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
@@ -48,18 +45,13 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
    */
   private final long fullResyncPeriod;
 
-  /**
-   * Queue stores deltas produced by reflector.
-   */
-  private final DeltaFIFO<T> queue;
+  private final Store<T> store;
 
   private final ListerWatcher<T, L> listerWatcher;
 
   private Reflector<T, L> reflector;
 
   private final Supplier<Boolean> resyncFunc;
-
-  private final Consumer<Deque<AbstractMap.SimpleEntry<DeltaFIFO.DeltaType, Object>>> processFunc;
 
   private final ScheduledExecutorService resyncExecutor;
 
@@ -71,13 +63,10 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
 
   private final Class<T> apiTypeClass;
   
-  private volatile boolean running;
-
-  Controller(Class<T> apiTypeClass, DeltaFIFO<T> queue, ListerWatcher<T, L> listerWatcher, Consumer<Deque<AbstractMap.SimpleEntry<DeltaFIFO.DeltaType, Object>>> processFunc, Supplier<Boolean> resyncFunc, long fullResyncPeriod, OperationContext context, ConcurrentLinkedQueue<SharedInformerEventListener> eventListeners, ScheduledExecutorService resyncExecutor) {
-    this.queue = queue;
+  Controller(Class<T> apiTypeClass, Store<T> store, ListerWatcher<T, L> listerWatcher, Supplier<Boolean> resyncFunc, long fullResyncPeriod, OperationContext context, ConcurrentLinkedQueue<SharedInformerEventListener> eventListeners, ScheduledExecutorService resyncExecutor) {
+    this.store = store;
     this.listerWatcher = listerWatcher;
     this.apiTypeClass = apiTypeClass;
-    this.processFunc = processFunc;
     this.resyncFunc = resyncFunc;
     if (fullResyncPeriod < 0) {
       throw new IllegalArgumentException("Invalid resync period provided, It should be a non-negative value");
@@ -86,39 +75,32 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
     this.operationContext = context;
     this.eventListeners = eventListeners;
 
-    // Starts one daemon thread for resync
-    this.reflector = new Reflector<>(apiTypeClass, listerWatcher, queue, operationContext);
+    this.reflector = new Reflector<>(apiTypeClass, listerWatcher, store, operationContext);
     this.resyncExecutor = resyncExecutor;
   }
 
-  public Controller(Class<T> apiTypeClass, DeltaFIFO<T> queue, ListerWatcher<T, L> listerWatcher, Consumer<Deque<AbstractMap.SimpleEntry<DeltaFIFO.DeltaType, Object>>> processFunc, Supplier<Boolean> resyncFunc, long fullResyncPeriod, OperationContext context, ConcurrentLinkedQueue<SharedInformerEventListener> eventListeners) {
-    this(apiTypeClass, queue, listerWatcher, processFunc, resyncFunc, fullResyncPeriod, context, eventListeners, Executors.newSingleThreadScheduledExecutor());
+  public Controller(Class<T> apiTypeClass, Store<T> store, ListerWatcher<T, L> listerWatcher, Supplier<Boolean> resyncFunc, long fullResyncPeriod, OperationContext context, ConcurrentLinkedQueue<SharedInformerEventListener> eventListeners) {
+      this(apiTypeClass, store, listerWatcher, resyncFunc, fullResyncPeriod, context, eventListeners, Executors.newSingleThreadScheduledExecutor());
   }
 
   public void run() {
     log.info("informer#Controller: ready to run resync and reflector runnable");
 
     scheduleResync();
-
+    
     try {
-      running = true;
       log.info("Started Reflector watch for {}", apiTypeClass);
       reflector.listSyncAndWatch();
-
-      // Start the process loop
-      this.processLoop();
     } catch (Exception exception) {
       log.warn("Reflector list-watching job exiting because the thread-pool is shutting down", exception);
       this.eventListeners.forEach(listener -> listener.onException(exception));
-    } finally {
-      running = false;
     }
   }
 
   void scheduleResync() {
     // Start the resync runnable
     if (fullResyncPeriod > 0) {
-      ResyncRunnable resyncRunnable = new ResyncRunnable(queue, resyncFunc);
+      ResyncRunnable resyncRunnable = new ResyncRunnable(store, resyncFunc);
       resyncFuture = resyncExecutor.scheduleWithFixedDelay(resyncRunnable, fullResyncPeriod, fullResyncPeriod, TimeUnit.MILLISECONDS);
     } else {
       log.info("informer#Controller: resync skipped due to 0 full resync period");
@@ -143,7 +125,7 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
    * @return boolean value about queue sync status
    */
   public boolean hasSynced() {
-    return this.queue.hasSynced();
+    return this.store.hasSynced();
   }
 
   /**
@@ -158,30 +140,12 @@ public class Controller<T extends HasMetadata, L extends KubernetesResourceList<
     return reflector;
   }
 
-  /**
-   * drains the work queue.
-   */
-  private void processLoop() throws Exception {
-    while (!Thread.currentThread().isInterrupted()) {
-      try {
-        this.queue.pop(this.processFunc);
-      } catch (InterruptedException t) {
-        log.debug("DefaultController#processLoop got interrupted: {}", t.getMessage());
-        Thread.currentThread().interrupt();
-        return;
-      } catch (Exception e) {
-        log.error("DefaultController#processLoop recovered from crashing {} ", e.getMessage(), e);
-        throw e;
-      }
-    }
-  }
-
   ScheduledExecutorService getResyncExecutor() {
     return this.resyncExecutor;
   }
   
   public boolean isRunning() {
-    return running && this.reflector.isRunning();
+    return this.reflector.isRunning();
   }
   
   public long getFullResyncPeriod() {

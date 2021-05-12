@@ -27,8 +27,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * ProcessorListener implements Runnable interface. It's supposed to run in background
- * and actually executes its event handler on notification. Note that it allows 1000
- * pending notification at maximum.
+ * and actually executes its event handler on notification. 
  *
  * This has been taken from official client: https://github.com/kubernetes-client/java/blob/master/util/src/main/java/io/kubernetes/client/informer/cache/ProcessorListener.java
  * which has been ported from official go client: https://github.com/kubernetes/client-go/blob/master/tools/cache/shared_informer.go#L570
@@ -120,17 +119,21 @@ public class ProcessorListener<T> implements Runnable {
   }
 
   public static final class DeleteNotification<T> extends Notification<T> {
+      
+    private boolean unknownFinalState;
+    
     public DeleteNotification(T oldObject) {
+        this(oldObject, false);
+    }
+    
+    public DeleteNotification(T oldObject, boolean unknownFinalState) {
       super(oldObject, null);
+      this.unknownFinalState = unknownFinalState;
     }
 
     @Override
     public void handle(ResourceEventHandler<T> resourceEventHandler) {
-      if (getOldObject() instanceof  DeltaFIFO.DeletedFinalStateUnknown) {
-        resourceEventHandler.onDelete(((DeltaFIFO.DeletedFinalStateUnknown<T>) getOldObject()).getObj(), true);
-      } else {
-        resourceEventHandler.onDelete(getOldObject(), false);
-      }
+      resourceEventHandler.onDelete(getOldObject(), unknownFinalState);
     }
   }
 }

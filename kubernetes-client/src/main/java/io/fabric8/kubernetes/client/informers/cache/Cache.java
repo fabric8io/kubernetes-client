@@ -382,10 +382,6 @@ public class Cache<T> implements Indexer<T> {
    * @return the key
    */
   public static <T> String deletionHandlingMetaNamespaceKeyFunc(T object) {
-    if (object instanceof DeltaFIFO.DeletedFinalStateUnknown) {
-      DeltaFIFO.DeletedFinalStateUnknown deleteObj = (DeltaFIFO.DeletedFinalStateUnknown) object;
-      return deleteObj.getKey();
-    }
     return metaNamespaceKeyFunc(object);
   }
 

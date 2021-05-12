@@ -22,7 +22,6 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
-import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -33,7 +32,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @RunWith(ArquillianConditionalRunner.class)
 @RequiresKubernetes
@@ -79,6 +78,7 @@ public class DefaultSharedIndexInformerIT {
     // When
     informerFactory.startAllRegisteredInformers();
     updateEvents.await(3 * RESYNC_PERIOD, TimeUnit.MILLISECONDS);
+    addEvents.await(3 * RESYNC_PERIOD, TimeUnit.MILLISECONDS);
 
     // Then
     assertThat(addEvents.getCount()).isZero();
