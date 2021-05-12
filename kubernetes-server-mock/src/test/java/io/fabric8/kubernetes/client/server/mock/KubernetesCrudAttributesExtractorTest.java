@@ -17,15 +17,20 @@ package io.fabric8.kubernetes.client.server.mock;
 
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
+import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.PodStatusBuilder;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.mockwebserver.crud.Attribute;
 import io.fabric8.mockwebserver.crud.AttributeSet;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.net.HttpURLConnection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -337,8 +342,10 @@ public class KubernetesCrudAttributesExtractorTest {
             .endMetadata()
             .withStatus(new PodStatusBuilder().withHostIP("x").build())
             .build();
-    kubernetesClient.pods().create(pod);
-    assertThrows(KubernetesClientException.class, ()-> kubernetesClient.pods().create(pod));
+    MixedOperation<Pod, PodList, PodResource<Pod>> podOp = kubernetesClient.pods();
+    podOp.create(pod);
+    KubernetesClientException exception = assertThrows(KubernetesClientException.class, () -> podOp.create(pod));
+    Assertions.assertEquals(HttpURLConnection.HTTP_CONFLICT, exception.getCode());
   }
 
   // https://github.com/fabric8io/kubernetes-client/issues/1688
