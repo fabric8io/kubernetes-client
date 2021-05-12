@@ -36,6 +36,7 @@
 
 #### Dependency Upgrade
 * Fix #2979: Update Kubernetes Model to v1.21.0
+* Update Tekton Triggers Model to v0.13.0
 * Update to sundrio 0.30.6
 
 #### New Features
