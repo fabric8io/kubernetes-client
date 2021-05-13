@@ -25,7 +25,6 @@ public interface StatusPatchable<T> {
    * <p>This method has the same patching behavior as {@link Patchable#patch(PatchContext, Object)}, with {@link PatchType#JSON_MERGE} but against the status subresource.
    * <p>Set the resourceVersion to null to prevent optimistic locking.
    *
-   * @param patchContext {@link PatchContext} for patch request
    * @param item kubernetes object
    * @return updated object
    */
