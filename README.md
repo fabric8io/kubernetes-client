@@ -576,6 +576,7 @@ All the resource objects used here will be according to OpenShift 3.9.0  and Kub
   - [Strimzi](https://github.com/strimzi/)
   - [Syndesis](https://syndesis.io/)
   - [StackGres](https://stackgres.io/)
+  - [Boomerang Flow](https://github.com/boomerang-io)
 
   Proprietary Platforms:
   - [vCommander](https://www.embotics.com/hybrid-cloud-management-platform)
