@@ -34,7 +34,7 @@ import io.fabric8.crd.generator.v1beta1.decorator.PromoteSingleVersionAttributes
 import io.fabric8.crd.generator.v1beta1.decorator.SetServedVersionDecorator;
 import io.fabric8.crd.generator.v1beta1.decorator.SetStorageVersionDecorator;
 import io.fabric8.crd.generator.v1beta1.decorator.SortPrinterColumnsDecorator;
-import io.sundr.codegen.model.TypeDef;
+import io.sundr.model.TypeDef;
 import java.util.Optional;
 
 public class CustomResourceHandler extends AbstractCustomResourceHandler {

@@ -21,8 +21,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import io.fabric8.crd.example.webserver.WebServerWithSpec;
 import io.fabric8.crd.example.webserver.WebServerWithStatusProperty;
 import io.sundr.codegen.functions.ClassTo;
-import io.sundr.codegen.model.TypeDef;
-import io.sundr.codegen.model.TypeDefBuilder;
+import io.sundr.model.TypeDef;
+import io.sundr.model.TypeDefBuilder;
 import org.junit.jupiter.api.Test;
 
 class SpecReplicasPathDetectorTest {

@@ -17,10 +17,10 @@ package io.fabric8.crd.generator.visitor;
 
 import io.fabric8.crd.generator.utils.Types;
 import io.sundr.builder.TypedVisitor;
-import io.sundr.codegen.model.ClassRef;
-import io.sundr.codegen.model.Property;
-import io.sundr.codegen.model.TypeDef;
-import io.sundr.codegen.model.TypeDefBuilder;
+import io.sundr.model.ClassRef;
+import io.sundr.model.Property;
+import io.sundr.model.TypeDef;
+import io.sundr.model.TypeDefBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

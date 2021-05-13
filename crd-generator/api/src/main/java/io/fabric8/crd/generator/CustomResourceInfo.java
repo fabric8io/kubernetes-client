@@ -20,7 +20,7 @@ import io.fabric8.crd.generator.utils.Types.SpecAndStatus;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.model.Scope;
-import io.sundr.codegen.model.TypeDef;
+import io.sundr.model.TypeDef;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
 import java.util.Optional;
