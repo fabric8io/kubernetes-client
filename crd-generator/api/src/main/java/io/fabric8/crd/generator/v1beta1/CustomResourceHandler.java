@@ -82,7 +82,7 @@ public class CustomResourceHandler extends AbstractCustomResourceHandler {
       resources.decorate(new AddLabelSelectorPathDecorator(name, version, path));
     });
 
-    if (Types.findStatusProperty(def).isPresent()) {
+    if (config.statusClassName().isPresent()) {
       resources.decorate(new AddSubresourcesDecorator(name, version));
       resources.decorate(new AddStatusSubresourceDecorator(name, version));
     }

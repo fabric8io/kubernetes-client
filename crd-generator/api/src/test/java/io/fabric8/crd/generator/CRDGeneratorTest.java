@@ -45,13 +45,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.opentest4j.AssertionFailedError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Disabled("Flaky tests, waiting for a fix in sundr.io ---> See #3102")
 class CRDGeneratorTest {
 
   private final TestCRDOutput output = new TestCRDOutput();
