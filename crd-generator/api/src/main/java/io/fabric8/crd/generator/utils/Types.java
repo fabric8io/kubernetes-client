@@ -327,8 +327,7 @@ public class Types {
    * @return {@code true} if named {@code status}, {@code false} otherwise
    */
   public static boolean isStatusProperty(Property property) {
-    return "status".equals(property.getName())
-      && getClassFQNIfNotVoid(property.getTypeRef()) != null;
+    return "status".equals(property.getName()) && getClassFQNIfNotVoid(property.getTypeRef()) != null;
   }
 
   private static String getClassFQNIfNotVoid(TypeRef typeRef) {
