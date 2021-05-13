@@ -50,7 +50,7 @@
 * Fix #2701: Better support for patching in KuberntesClient
 * Fix #3034: Added a SharedInformer.isRunning method
 * Fix #3088: mock server will assume /status is a subresource, and other refinements to match kube behavior
-* Add DSL Support for `config.openshift.io/v1` resources in OpenShiftClient 
+* Fix #3111: Add DSL Support for `config.openshift.io/v1` resources in OpenShiftClient 
 
 #### _**Note**_: Breaking changes in the API
 ##### DSL Changes:
