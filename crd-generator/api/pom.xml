@@ -43,10 +43,11 @@
 
     <dependency>
       <groupId>io.sundr</groupId>
-      <artifactId>sundr-codegen</artifactId>
+      <artifactId>sundr-adapter-reflect</artifactId>
       <version>${sundrio.version}</version>
       <scope>compile</scope>
     </dependency>
+
     <dependency>
       <groupId>io.sundr</groupId>
       <artifactId>builder-annotations</artifactId>

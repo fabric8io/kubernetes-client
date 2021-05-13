@@ -17,20 +17,24 @@ package io.fabric8.crd.generator.utils;
 
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.client.CustomResource;
+import io.sundr.adapter.api.Adapters;
+import io.sundr.adapter.reflect.ReflectionContext;
 import io.sundr.builder.TypedVisitor;
-import io.sundr.codegen.functions.ClassTo;
-import io.sundr.codegen.model.ClassRef;
-import io.sundr.codegen.model.ClassRefBuilder;
-import io.sundr.codegen.model.PrimitiveRef;
-import io.sundr.codegen.model.Property;
-import io.sundr.codegen.model.PropertyBuilder;
-import io.sundr.codegen.model.TypeDef;
-import io.sundr.codegen.model.TypeDefBuilder;
-import io.sundr.codegen.model.TypeParamDef;
-import io.sundr.codegen.model.TypeParamRef;
-import io.sundr.codegen.model.TypeRef;
-import io.sundr.codegen.model.VoidRef;
-import io.sundr.codegen.model.WildcardRef;
+import io.sundr.model.ClassRef;
+import io.sundr.model.ClassRefBuilder;
+import io.sundr.model.PrimitiveRef;
+import io.sundr.model.Property;
+import io.sundr.model.PropertyBuilder;
+import io.sundr.model.TypeDef;
+import io.sundr.model.TypeDefBuilder;
+import io.sundr.model.TypeParamDef;
+import io.sundr.model.TypeParamRef;
+import io.sundr.model.TypeRef;
+import io.sundr.model.VoidRef;
+import io.sundr.model.WildcardRef;
+import io.sundr.model.functions.GetDefinition;
+import io.sundr.model.repo.DefinitionRepository;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -50,10 +54,11 @@ public class Types {
   private static final Logger LOGGER = LoggerFactory.getLogger(Types.class);
   private static final String NAMESPACED = Namespaced.class.getName();
   public static final String JAVA_LANG_VOID = "java.lang.Void";
+  public static final ReflectionContext REFLECTION_CONTEXT = new ReflectionContext(DefinitionRepository.getRepository());
 
 
   public static TypeDef typeDefFrom(Class<?> clazz) {
-    return unshallow(ClassTo.TYPEDEF.apply(clazz));
+    return unshallow(Adapters.adapt(clazz, REFLECTION_CONTEXT));
   }
 
   public static TypeDef unshallow(TypeDef definition) {
@@ -70,12 +75,12 @@ public class Types {
   }
 
   public static TypeDef typeDefFrom(ClassRef classRef) {
-    return unshallow(classRef.getDefinition());
+    return unshallow(GetDefinition.of(classRef));
   }
 
   private static TypeDef projectDefinition(ClassRef ref) {
     List<TypeRef> arguments = ref.getArguments();
-    TypeDef definition = ref.getDefinition();
+    TypeDef definition = GetDefinition.of(ref);
     if (arguments.isEmpty()) {
       return definition;
     }
@@ -289,13 +294,13 @@ public class Types {
     newVisited.add(definition);
 
     for (ClassRef i : definition.getImplementsList()) {
-      if (isNamespaced(i.getDefinition(), newVisited)) {
+      if (isNamespaced(GetDefinition.of(i), newVisited)) {
         return true;
       }
     }
 
     for (ClassRef e : definition.getExtendsList()) {
-      if (isNamespaced(e.getDefinition(), newVisited)) {
+      if (isNamespaced(GetDefinition.of(e), newVisited)) {
         return true;
       }
     }

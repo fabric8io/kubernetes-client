@@ -45,8 +45,8 @@ public class CustomResourceV1Example {
             .addToRequired("spec")
             .addToProperties("spec", new JSONSchemaPropsBuilder()
               .withType("object")
-              .addToProperties("name", new JSONSchemaPropsBuilder().withNewType("string").build())
-              .addToProperties("score", new JSONSchemaPropsBuilder().withNewType("number").build())
+              .addToProperties("name", new JSONSchemaPropsBuilder().withType("string").build())
+              .addToProperties("score", new JSONSchemaPropsBuilder().withType("number").build())
               .build())
           .endOpenAPIV3Schema().endSchema()
         .endVersion().endSpec().build();

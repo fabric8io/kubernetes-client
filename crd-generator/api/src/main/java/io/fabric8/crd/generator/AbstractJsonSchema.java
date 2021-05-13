@@ -23,13 +23,14 @@ import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.Quantity;
 import io.sundr.builder.internal.functions.TypeAs;
 import io.sundr.codegen.functions.ClassTo;
-import io.sundr.codegen.model.ClassRef;
-import io.sundr.codegen.model.Method;
-import io.sundr.codegen.model.PrimitiveRefBuilder;
-import io.sundr.codegen.model.Property;
-import io.sundr.codegen.model.TypeDef;
-import io.sundr.codegen.model.TypeRef;
-import io.sundr.codegen.utils.TypeUtils;
+import io.sundr.model.ClassRef;
+import io.sundr.model.Method;
+import io.sundr.model.PrimitiveRefBuilder;
+import io.sundr.model.Property;
+import io.sundr.model.TypeDef;
+import io.sundr.model.TypeRef;
+import io.sundr.model.utils.Optionals;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -217,12 +218,12 @@ public abstract class AbstractJsonSchema<T, B> {
   public T internalFrom(String name, TypeRef typeRef) {
     // Note that ordering of the checks here is meaningful: we need to check for complex types last
     // in case some "complex" types are handled specifically
-    if (typeRef.getDimensions() > 0 || TypeUtils.isCollection(typeRef)) { // Handle Collections & Arrays
+    if (typeRef.getDimensions() > 0 || io.sundr.model.utils.Collections.isCollection(typeRef)) { // Handle Collections & Arrays
       final TypeRef collectionType = TypeAs.combine(TypeAs.UNWRAP_ARRAY_OF, TypeAs.UNWRAP_COLLECTION_OF)
         .apply(typeRef);
       final T schema = internalFrom(name, collectionType);
       return arrayLikeProperty(schema);
-    } else if (TypeUtils.isMap(typeRef)) { // Handle Maps
+    } else if (io.sundr.model.utils.Collections.IS_MAP.apply(typeRef)) { // Handle Maps
       final TypeRef keyType = TypeAs.UNWRAP_MAP_KEY_OF.apply(typeRef);
       boolean degraded = false;
       if (keyType instanceof ClassRef) {
@@ -243,7 +244,7 @@ public abstract class AbstractJsonSchema<T, B> {
         LOGGER.warn("Property '{}' with '{}' type is mapped to a string to string mapping because of CRD schemas limitations", name, typeRef);
       }
       return mapLikeProperty();
-    } else if (TypeUtils.isOptional(typeRef)) { // Handle Optionals
+    } else if (io.sundr.model.utils.Optionals.isOptional(typeRef)) { // Handle Optionals
       return internalFrom(name, TypeAs.UNWRAP_OPTIONAL_OF.apply(typeRef));
     } else {
       final String typeName = COMMON_MAPPINGS.get(typeRef);
