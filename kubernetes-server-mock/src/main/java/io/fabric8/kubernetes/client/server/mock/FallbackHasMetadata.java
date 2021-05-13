@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.server.mock;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonDeserializer.None;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -28,6 +29,7 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
  */
 // Override the default KubernetesSerializer so that it doesn't try to deserialize into registered types
 @JsonDeserialize(using = None.class)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class FallbackHasMetadata implements HasMetadata {
 
   private String apiVersion;

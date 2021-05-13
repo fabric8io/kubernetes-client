@@ -32,6 +32,7 @@ import io.fabric8.mockwebserver.crud.Attribute;
 import io.fabric8.mockwebserver.crud.AttributeSet;
 import io.fabric8.mockwebserver.crud.CrudDispatcher;
 import io.fabric8.mockwebserver.crud.ResponseComposer;
+import io.fabric8.zjsonpatch.JsonDiff;
 import io.fabric8.zjsonpatch.JsonPatch;
 import okhttp3.mockwebserver.MockResponse;
 
@@ -359,7 +360,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
         if (MODIFIED.equals(event)) {
           responseCode = HttpURLConnection.HTTP_NOT_FOUND;
         } else {
-          setDefaultMetadata(source, attributes);
+          setDefaultMetadata(source, attributes, null);
         }
       } else if (ADDED.equals(event)) {
         responseCode = HttpURLConnection.HTTP_CONFLICT;
@@ -370,15 +371,19 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
           // set the status on the existing node
           source = existingNode;
         } else {
-          // set the status on the new node and preserve the uid
+          // set the status on the new node and preserve generated fields
           status = removeStatus(existingNode);
-          ObjectNode metadata = (ObjectNode)existingNode.findValue("metadata");
-          ((ObjectNode)source).set("uid", metadata.get("uid"));
+          setDefaultMetadata(source, attributes, existingNode.findValue("metadata"));
         }
         if (status != null) {
           ((ObjectNode) source).set(STATUS, status);
         } else {
           ((ObjectNode) source).remove(STATUS);
+        }
+        // re-read without modifications
+        existingNode = context.getMapper().readTree(existing);
+        if (JsonDiff.asJson(source, existingNode).isEmpty()) {
+          event = null; // no change
         }
       }
 
@@ -388,9 +393,10 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
         map.put(features, s);
         if (event != null && !event.isEmpty()) {
           final String response = s;
+          final String finalEvent = event;
           watchEventListeners.stream()
               .filter(listener -> listener.attributeMatches(features))
-              .forEach(listener -> listener.sendWebSocketResponse(response, event));
+              .forEach(listener -> listener.sendWebSocketResponse(response, finalEvent));
         }
         mockResponse.setBody(s);
       }
@@ -405,7 +411,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
     return path.endsWith("/" + STATUS);
   }
 
-  private void setDefaultMetadata(JsonNode source, AttributeSet fromPath) throws JsonProcessingException {
+  private void setDefaultMetadata(JsonNode source, AttributeSet fromPath, JsonNode exitingMetadata) throws JsonProcessingException {
       ObjectNode metadata = (ObjectNode)source.findValue("metadata");
       UUID uuid = UUID.randomUUID();
       if (metadata.get("name") == null) {
@@ -416,10 +422,21 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
       if (metadata.get("namespace") == null) {
           metadata.put("namespace", fromPath.getAttribute("namespace").getValue().toString());
       }*/
-      metadata.put("uid", uuid.toString());
+      metadata.put("uid", getOrDefault(exitingMetadata, "uid", uuid.toString()));
+      // resourceVersion is not yet handled appropriately
       metadata.put("resourceVersion", "1");
       metadata.put("generation", 1);
-      metadata.put("creationTimestamp", ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT));
+      metadata.put("creationTimestamp", getOrDefault(exitingMetadata, "creationTimestamp", ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT)));
+  }
+
+  private String getOrDefault(JsonNode node, String name, String defaultValue) {
+    if (node != null) {
+      JsonNode field = node.get(name);
+      if (field != null) {
+        return field.asText();
+      }
+    }
+    return defaultValue;
   }
 
   private JsonNode removeStatus(JsonNode source) {

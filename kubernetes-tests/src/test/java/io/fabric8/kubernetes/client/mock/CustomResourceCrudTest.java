@@ -36,6 +36,7 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableKubernetesMockClient(crud = true)
@@ -107,11 +108,9 @@ class CustomResourceCrudTest {
 
     object.put("spec", "updated");
 
-    // with the mock detecting conflicts, this won't work because the
-    // appropriate attributes are extracted to perform the get after the 409
-    //Map<String, Object> updated = raw.createOrReplace(object);
-    //assertNotEquals(created, updated);
-    //assertEquals(object, updated);
+    Map<String, Object> updated = raw.createOrReplace(object);
+    assertNotEquals(created, updated);
+    assertEquals("updated", updated.get("spec"));
   }
 
   @Test

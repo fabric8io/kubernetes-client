@@ -23,6 +23,9 @@ import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.mockwebserver.crud.Attribute;
@@ -34,6 +37,9 @@ import java.net.HttpURLConnection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -348,6 +354,51 @@ public class KubernetesCrudAttributesExtractorTest {
     Assertions.assertEquals(HttpURLConnection.HTTP_CONFLICT, exception.getCode());
   }
 
+  @Test
+  public void testDuplicateUpdateEvent() throws Exception {
+    KubernetesServer kubernetesServer = new KubernetesServer(false, true);
+    kubernetesServer.before();
+    KubernetesClient kubernetesClient = kubernetesServer.getClient();
+    Pod pod = new PodBuilder().withNewMetadata()
+            .withName("name")
+            .withNamespace("test") // required until https://github.com/fabric8io/mockwebserver/pull/59
+            .endMetadata()
+            .withStatus(new PodStatusBuilder().withHostIP("x").build())
+            .build();
+    CountDownLatch latch = new CountDownLatch(1);
+    AtomicBoolean updated = new AtomicBoolean();
+    Watcher<Pod> watcher = new Watcher<Pod> () {
+
+      @Override
+      public void eventReceived(Action action, Pod resource) {
+        if (action == Action.DELETED) {
+          latch.countDown();
+        }
+        if (action == Action.MODIFIED) {
+          updated.set(true);
+        }
+      }
+
+      @Override
+      public void onClose(WatcherException cause) {
+
+      }
+
+    };
+    Watch watch = kubernetesClient.pods().watch(watcher);
+    try {
+      MixedOperation<Pod, PodList, PodResource<Pod>> podOp = kubernetesClient.pods();
+      podOp.create(pod);
+      // should not emit an event
+      podOp.createOrReplace(pod);
+      podOp.delete(pod);
+      latch.await(10, TimeUnit.SECONDS);
+      assertFalse(updated.get());
+    } finally {
+      watch.close();
+    }
+  }
+
   // https://github.com/fabric8io/kubernetes-client/issues/1688
 
   @Test
@@ -471,6 +522,16 @@ public class KubernetesCrudAttributesExtractorTest {
     List<Deployment> deployments = kubernetesClient.apps().deployments().withoutLabel("keepUntil").list().getItems();
     assertEquals(1, deployments.size());
     assertEquals("withoutKeepUntil", deployments.get(0).getMetadata().getName());
+  }
+
+  @Test
+  public void shouldExtractRawMetadata() {
+    KubernetesCrudAttributesExtractor extractor = new KubernetesCrudAttributesExtractor();
+    AttributeSet attributes = extractor.fromResource("{\"metadata\":{\"name\":\"foo\",\"uid\":\"1b089078-51c7-4ff8-a3c9-a8a54246b94c\",\"resourceVersion\":\"1\",\"generation\":1,\"creationTimestamp\":\"2021-05-13T12:06:41.191989Z\"},\"spec\":\"initial\"}");
+
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("name", "foo"));
+    assertTrue(attributes.matches(expected));
   }
 
 }
