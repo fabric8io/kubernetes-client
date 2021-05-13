@@ -18,11 +18,7 @@ package io.fabric8.openshift.client.dsl.internal.config;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
-import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
-import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
 
 import okhttp3.OkHttpClient;
@@ -30,10 +26,6 @@ import okhttp3.OkHttpClient;
 import io.fabric8.openshift.api.model.DNS;
 import io.fabric8.openshift.api.model.DNSBuilder;
 import io.fabric8.openshift.api.model.DNSList;
-
-import java.util.Map;
-import java.util.TreeMap;
-
 
 public class DNSOperationsImpl extends OpenShiftOperation<DNS, DNSList, Resource<DNS>> {
 
@@ -49,6 +41,7 @@ public class DNSOperationsImpl extends OpenShiftOperation<DNS, DNSList, Resource
     this.listType = DNSList.class;
   }
 
+  @Override
   public DNSOperationsImpl newInstance(OperationContext context) {
     return new DNSOperationsImpl(context);
   }
