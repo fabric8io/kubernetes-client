@@ -17,22 +17,19 @@ package io.fabric8.crd.generator.v1beta1.decorator;
 
 import io.fabric8.crd.generator.decorator.Decorator;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceColumnDefinition;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionSpecFluent;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersion;
+import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersionFluent;
+
 import java.util.List;
 
-public class SortPrinterColumnsDecorator extends Decorator<CustomResourceDefinitionSpecFluent<?>> {
+public class SortPrinterColumnsDecorator extends Decorator<CustomResourceDefinitionVersionFluent<?>> {
 
   @Override
-  public void visit(CustomResourceDefinitionSpecFluent<?> spec) {
-    final List<CustomResourceDefinitionVersion> versions = spec.buildVersions();
-    for (CustomResourceDefinitionVersion version : versions) {
-      List<CustomResourceColumnDefinition> columns = version.getAdditionalPrinterColumns();
-      if (columns != null && !columns.isEmpty()) {
-        columns.sort((o1, o2) -> String.CASE_INSENSITIVE_ORDER.compare(o1.getJSONPath(), o2.getJSONPath()));
-      }
+  public void visit(CustomResourceDefinitionVersionFluent<?> version) {
+    List<CustomResourceColumnDefinition> columns = version.buildAdditionalPrinterColumns();
+    if(columns != null && !columns.isEmpty()) {
+      columns.sort((o1, o2) -> String.CASE_INSENSITIVE_ORDER.compare(o1.getJSONPath(), o2.getJSONPath()));
     }
-    spec.withVersions(versions);
+    version.withAdditionalPrinterColumns(columns);
   }
 
   @Override
