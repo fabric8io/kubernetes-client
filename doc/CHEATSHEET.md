@@ -2767,3 +2767,38 @@ try (KnativeClient kn = new DefaultKnativeClient()) {
     kn.services().inNamespace("default").createOrReplace(service);
 }
 ```
+
+#### Logging
+Using logging-interceptor:
+
+- Configure OkHTTP logging:
+``` 
+Logger reqLogger = LoggerFactory.getLogger(HttpLoggingInterceptor.class); 
+```
+ if (reqLogger.isTraceEnabled()) { 
+     HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(); 
+     loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY); 
+     httpClientBuilder.addNetworkInterceptor(loggingInterceptor); 
+ } 
+
+- Set logging level to trace in my simplelogger.properties file:
+```
+ org.slf4j.simpleLogger.defaultLogLevel=trace
+
+- Run following code and get the messsages sent and recived from/to the  kubernetes client:
+```
+try (OpenShiftClient client = new DefaultOpenShiftClient()) {
+    SelfSubjectAccessReview ssar = new SelfSubjectAccessReviewBuilder()
+            .withNewSpec()
+            .withNewResourceAttributes()
+            .withGroup("apps")
+            .withResource("deployments")
+            .withVerb("create")
+            .withNamespace("rokumar")
+            .endResourceAttributes()
+            .endSpec()
+            .build();
+
+    ssar = client.authorization().v1().selfSubjectAccessReview().create(ssar);
+}
+```
