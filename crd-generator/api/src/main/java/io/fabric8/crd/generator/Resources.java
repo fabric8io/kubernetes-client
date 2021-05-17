@@ -20,13 +20,14 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class Resources {
   private final KubernetesListBuilder global = new KubernetesListBuilder();
-  private final Set<Decorator> globalDecorators = new HashSet<>();
+  private final SortedSet<Decorator> globalDecorators = new TreeSet<>();
 
   /**
    * Get the global builder
