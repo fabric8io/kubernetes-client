@@ -633,6 +633,8 @@ func (g *schemaGenerator) isClusterScopedResource(t reflect.Type) bool {
                 "k8s.io/api/flowcontrol/v1beta1/PriorityLevelConfiguration",
                 "github.com/openshift/api/authorization/v1/ClusterRole",
                 "github.com/openshift/api/authorization/v1/ClusterRoleBinding",
+                "github.com/openshift/api/authorization/v1/ResourceAccessReview",
+                "github.com/openshift/api/authorization/v1/SubjectAccessReview",
 		"github.com/openshift/api/config/v1/Authentication",
 		"github.com/openshift/api/config/v1/Console",
 		"github.com/openshift/api/config/v1/DNS",

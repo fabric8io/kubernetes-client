@@ -105,10 +105,12 @@ type Schema struct {
   OpenshiftRoleBinding                     authapi.RoleBinding
   OpenshiftRoleBindingList                 authapi.RoleBindingList
   OpenshiftRoleBindingRestriction          authapi.RoleBindingRestriction
+  OpenShiftRoleBindingRestrictionList      authapi.RoleBindingRestrictionList
   OpenshiftRoleBindingRestrictionSpec      authapi.RoleBindingRestrictionSpec
   LocalSubjectAccessReview                 authapi.LocalSubjectAccessReview
   LocalResourceAccessReview                authapi.LocalResourceAccessReview
   ResourceAccessReview                     authapi.ResourceAccessReview
+  ResourceAccessReviewResponse             authapi.ResourceAccessReviewResponse
   SubjectAccessReview                      authapi.SubjectAccessReview
   SubjectAccessReviewResponse              authapi.SubjectAccessReviewResponse
   SubjectRulesReview                       authapi.SubjectRulesReview
