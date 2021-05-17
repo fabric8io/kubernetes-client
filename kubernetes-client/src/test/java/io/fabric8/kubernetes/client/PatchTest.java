@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchType;
 import okhttp3.Call;
@@ -36,6 +35,8 @@ import java.net.HttpURLConnection;
 import java.util.Collections;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -116,7 +117,7 @@ class PatchTest {
   }
 
   @Test
-  void testPatchReturnsNullWhenResourceNotFound() throws IOException {
+  void testPatchThrowExceptionWhenResourceNotFound() throws IOException {
     // Given
     when(mockCall.execute()).thenReturn(new Response.Builder()
       .request(new Request.Builder().url("http://mock").build())
@@ -128,12 +129,16 @@ class PatchTest {
     ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
 
     // When
-    Pod pod = kubernetesClient.pods().inNamespace("ns1").withName("foo").patch("{\"metadata\":{\"annotations\":{\"bob\":\"martin\"}}}");
+    KubernetesClientException e = assertThrows(KubernetesClientException.class,
+        () -> kubernetesClient.pods()
+            .inNamespace("ns1")
+            .withName("foo")
+            .patch("{\"metadata\":{\"annotations\":{\"bob\":\"martin\"}}}"));
 
     // Then
     verify(mockClient, times(1)).newCall(captor.capture());
     assertRequest(captor.getValue(), "GET", "/api/v1/namespaces/ns1/pods/foo", null);
-    assertThat(pod).isNull();
+    assertEquals(HttpURLConnection.HTTP_NOT_FOUND, e.getCode());
   }
 
   @Test

@@ -230,4 +230,22 @@ class CreateOrReplaceResourceTest {
     ConfigMap replacedMap = new ObjectMapper().readerFor(ConfigMap.class).readValue(server.getLastRequest().getBody().inputStream());
     assertEquals("900", replacedMap.getMetadata().getResourceVersion());
   }
+
+  @Test
+  void testReplaceNonExistant() throws Exception {
+    final KubernetesClientException result = assertThrows(KubernetesClientException.class,
+        () -> client.configMaps()
+            .withName("map1")
+            .replace(new ConfigMapBuilder().withNewMetadata().withName("map1").and().build()));
+    assertEquals(HttpURLConnection.HTTP_NOT_FOUND, result.getCode());
+  }
+
+  @Test
+  void testPatchNonExistant() throws Exception {
+    final KubernetesClientException result = assertThrows(KubernetesClientException.class,
+        () -> client.configMaps()
+            .withName("map1")
+            .patch(new ConfigMapBuilder().withNewMetadata().withName("map1").and().build()));
+    assertEquals(HttpURLConnection.HTTP_NOT_FOUND, result.getCode());
+  }
 }

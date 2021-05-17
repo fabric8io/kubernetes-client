@@ -15,14 +15,13 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal.core.v1;
 
-import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.api.model.ServiceList;
+import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.client.*;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.ServiceResource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
@@ -59,12 +58,12 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
 
   @Override
   public Service replace(Service item) {
-    return super.replace(handleClusterIp(item, fromServer(), "replace"));
+    return super.replace(handleClusterIp(item, "replace"));
   }
 
   @Override
   public Service patch(Service item) {
-    return super.patch(handleClusterIp(item, this::getMandatory, "patch"));
+    return super.patch(handleClusterIp(item, "patch"));
   }
 
   @Override
@@ -114,7 +113,7 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
   }
 
   private Pod matchingPod() {
-    Service item = fromServer().get();
+    Service item = requireFromServer(null);
     Map<String, String> labels = item.getSpec().getSelector();
     PodList list = new PodOperationsImpl(client, config).inNamespace(item.getMetadata().getNamespace()).withLabels(labels).list();
     return list.getItems().stream().findFirst().orElseThrow(() -> new IllegalStateException("Could not find matching pod for service:" + item + "."));
@@ -148,8 +147,8 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
   }
 
   @Override
-  public Service edit(Visitor... visitors) {
-    return patch(new ServiceBuilder(getMandatory()).accept(visitors).build());
+  protected VisitableBuilder<Service, ?> createVisitableBuilder(Service item) {
+    return new ServiceBuilder(item);
   }
 
   public class ServiceToUrlSortComparator implements Comparator<ServiceToURLProvider> {
@@ -158,10 +157,10 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
     }
   }
 
-  private Service handleClusterIp(Service item, Gettable<Service> current, String opType) {
+  private Service handleClusterIp(Service item, String opType) {
     if (!isExternalNameService(item)) {
       try {
-        Service old = current.get();
+        Service old = requireFromServer(item.getMetadata());
         return new ServiceBuilder(item)
           .editSpec()
           .withClusterIP(old.getSpec().getClusterIP())

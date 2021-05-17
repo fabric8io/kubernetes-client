@@ -22,7 +22,7 @@ public interface Requirable<T> {
   /**
    * @return the item or throws an exception if the item doesn't exist.
    * @throws io.fabric8.kubernetes.client.KubernetesClientException if an error occurs
-   * @throws io.fabric8.kubernetes.client.ResourceNotFoundException if resource is absent
+   * @throws io.fabric8.kubernetes.client.ResourceNotFoundException if resource is null
    */
   T require() throws ResourceNotFoundException;
 
