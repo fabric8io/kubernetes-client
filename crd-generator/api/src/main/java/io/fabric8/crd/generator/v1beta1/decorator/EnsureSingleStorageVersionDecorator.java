@@ -34,7 +34,7 @@ public class EnsureSingleStorageVersionDecorator extends
 
   @Override
   public void andThenVisit(CustomResourceDefinitionSpecFluent<?> spec, ObjectMeta resourceMeta) {
-    Predicate<CustomResourceDefinitionVersionBuilder> hasStorageVersion = CustomResourceDefinitionVersionFluentImpl::getStorage;
+    Predicate<CustomResourceDefinitionVersionBuilder> hasStorageVersion = v -> v.getStorage() != null && v.getStorage();
 
     if (spec.hasVersions() && !spec.hasMatchingVersion(hasStorageVersion)) {
       spec.editFirstVersion().withStorage(true).endVersion();
