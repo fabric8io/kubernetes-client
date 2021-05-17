@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionSpecFluent;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionVersion;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionVersionBuilder;
-import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionVersionFluentImpl;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
 
@@ -58,5 +57,10 @@ public class EnsureSingleStorageVersionDecorator extends CustomResourceDefinitio
 	public Class<? extends Decorator>[] after() {
     return new Class[]{AddCustomResourceDefinitionResourceDecorator.class,
       AddCustomResourceDefinitionVersionDecorator.class, SetStorageVersionDecorator.class};
+	}
+
+	@Override
+	public String toString() {
+		return getClass().getName() + " [name:"+ getName() + "]";
 	}
 }

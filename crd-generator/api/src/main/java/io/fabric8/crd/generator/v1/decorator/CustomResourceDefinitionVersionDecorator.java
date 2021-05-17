@@ -36,11 +36,20 @@ public abstract class CustomResourceDefinitionVersionDecorator<T> extends Decora
   private final CustomResourceDefinitionVersionVisitor versionSelector = new CustomResourceDefinitionVersionVisitor();
   private final VersionVisitor versionVisitor = new VersionVisitor();
 
+  
   public CustomResourceDefinitionVersionDecorator(String name, String version) {
     this.name = name;
     this.version = version;
   }
 
+  public String getName() {
+    return this.name;
+  }
+ 
+  public String getVersion() {
+    return this.version;
+  }
+  
   @Override
   public void visit(VisitableBuilder builder) {
     Optional<ObjectMeta> objectMeta = getMetadata(builder);
@@ -58,7 +67,7 @@ public abstract class CustomResourceDefinitionVersionDecorator<T> extends Decora
 
     @Override
     public void visit(CustomResourceDefinitionVersionBuilder builder) {
-      if (builder.getName().equals(version)) {
+      if (Utils.isNullOrEmpty(version) || builder.getName().equals(version)) {
         builder.accept(versionVisitor);
       }
     }
@@ -90,4 +99,34 @@ public abstract class CustomResourceDefinitionVersionDecorator<T> extends Decora
     return new Class[] {  };
   }
 
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((name == null) ? 0 : name.hashCode());
+    result = prime * result + ((version == null) ? 0 : version.hashCode());
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    CustomResourceDefinitionVersionDecorator other = (CustomResourceDefinitionVersionDecorator) obj;
+    if (name == null) {
+      if (other.name != null)
+        return false;
+    } else if (!name.equals(other.name))
+      return false;
+    if (version == null) {
+      if (other.version != null)
+        return false;
+    } else if (!version.equals(other.version))
+      return false;
+    return true;
+  }
 }

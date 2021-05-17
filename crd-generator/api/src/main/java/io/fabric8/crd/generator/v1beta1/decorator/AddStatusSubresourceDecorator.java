@@ -35,4 +35,9 @@ public class AddStatusSubresourceDecorator extends
     return new Class[]{AddCustomResourceDefinitionVersionDecorator.class,
       AddSubresourcesDecorator.class};
   }
+
+	@Override
+	public String toString() {
+		return getClass().getName() + " [name:"+ getName() + ", version:"+ getVersion() +"]";
+	}
 }

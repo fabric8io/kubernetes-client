@@ -42,6 +42,14 @@ public abstract class CustomResourceDefinitionVersionDecorator<T> extends
     this.version = version;
   }
 
+  public String getName() {
+    return name;
+  }
+
+  public String getVersion() {
+    return version;
+  }
+
   @Override
   public void visit(VisitableBuilder builder) {
     Optional<ObjectMeta> objectMeta = getMetadata(builder);
