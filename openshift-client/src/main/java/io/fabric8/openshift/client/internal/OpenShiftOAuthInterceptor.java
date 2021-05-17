@@ -32,6 +32,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static java.net.HttpURLConnection.HTTP_FORBIDDEN;
+import static java.net.HttpURLConnection.HTTP_UNAUTHORIZED;
+
 public class OpenShiftOAuthInterceptor implements Interceptor {
 
   private static final String AUTHORIZATION = "Authorization";
@@ -41,6 +44,8 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
 
   private static final String BEFORE_TOKEN = "access_token=";
   private static final String AFTER_TOKEN = "&expires";
+  private static final String K8S_AUTHORIZATION = "authorization.k8s.io";
+  private static final String OPENSHIFT_AUTHORIZATION = "authorization.openshift.io";
 
   private final OkHttpClient client;
   private final OpenShiftConfig config;
@@ -68,7 +73,7 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
     Response response = chain.proceed(request);
 
     //If response is Forbidden or Unauthorized, try to obtain a token via authorize() or via config.
-    if (response.code() != 401 && response.code() != 403) {
+    if (isResponseSuccessful(request, response)) {
       return response;
     } else if (Utils.isNotNullOrEmpty(config.getUsername()) && Utils.isNotNullOrEmpty(config.getPassword())) {
       synchronized (client) {
@@ -140,5 +145,15 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }
+  }
+
+  private boolean isResponseSuccessful(Request request, Response response) {
+    String url = request.url().toString();
+    // always retry in case of authorization endpoints; since they also return 200 when no
+    // authorization header is provided
+    if (url.contains(K8S_AUTHORIZATION) || url.contains(OPENSHIFT_AUTHORIZATION)) {
+      return false;
+    }
+    return response.code() != HTTP_UNAUTHORIZED && response.code() != HTTP_FORBIDDEN;
   }
 }
