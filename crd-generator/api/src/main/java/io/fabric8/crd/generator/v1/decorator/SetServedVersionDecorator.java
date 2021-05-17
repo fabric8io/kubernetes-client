@@ -30,4 +30,9 @@ public class SetServedVersionDecorator extends CustomResourceDefinitionVersionDe
 	public void andThenVisit(CustomResourceDefinitionVersionFluent<?> version) {
     version.withServed(served);
 	}
+
+	@Override
+	public String toString() {
+		return getClass().getName() + " [name:"+ getName() + ", version:"+ getVersion() + ", served:" + served + "]";
+	}
 }

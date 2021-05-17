@@ -29,6 +29,10 @@ public abstract class Decorator<T> extends TypedVisitor<T> implements Comparable
 
   @Override
   public int compareTo(Decorator o) {
+    //We only want to return 0 if decorators are equal.
+    if (this.equals(o)) {
+      return 0;
+    }
     Class c = o.getClass();
     //1st pass: ours
     for (Class b : before()) {
@@ -52,11 +56,11 @@ public abstract class Decorator<T> extends TypedVisitor<T> implements Comparable
         return -1;
       }
     }
-    //We only want to return 0 if decorators are equal.
-    //If we return 0 otherwise The TreeSet that holds the Decorators will drop o.
-    if (this.equals(o)) {
-      return 0;
+   //Reproducible order every single time
+    int result = getClass().getName().compareTo(o.getClass().getName());
+    if (result == 0) {
+      result = hashCode() - o.hashCode();
     }
-    return -1;
+    return result;
   }
 }
