@@ -44,7 +44,10 @@ public class Resources {
    * @param decorator The decorator.
    */
   public void decorate(Decorator decorator) {
-    globalDecorators.add(decorator);
+    final boolean added = globalDecorators.add(decorator);
+    if (!added) {
+      throw new RuntimeException("Conflict adding decorator " + decorator.getClass().getName());
+    }
   }
 
 
