@@ -106,7 +106,7 @@
     <aries-spifly.bundle.version>1.3.0</aries-spifly.bundle.version>
     <asm.bundle.version>8.0.1</asm.bundle.version>
     <jackson.bundle.version>${jackson.version}</jackson.bundle.version>
-    <junit.version>5.7.1</junit.version>
+    <junit.version>5.7.2</junit.version>
     <junit.compatible-with-arquillian.version>4.13.2</junit.compatible-with-arquillian.version>
     <zjsonpatch.version>0.3.0</zjsonpatch.version>
     <arquillian.cube.version>1.18.2</arquillian.cube.version>
