@@ -23,7 +23,6 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.utils.Serialization;
 
@@ -49,21 +48,29 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   @Override
   public T edit(UnaryOperator<T> function) {
     T item = getMandatory();
-    T clone = Serialization.clone(item);
+    T clone = clone(item);
     return patch(null, clone, function.apply(item), false);
+  }
+
+  private T clone(T item) {
+    try {
+      return createVisitableBuilder(item).build();
+    } catch (KubernetesClientException e) {
+    }
+    return Serialization.clone(item);
   }
   
   @Override
   public T editStatus(UnaryOperator<T> function) {
     T item = getMandatory();
-    T clone = Serialization.clone(item);
+    T clone = clone(item);
     return patch(null, clone, function.apply(item), true);
   }
 
   @Override
   public T accept(Consumer<T> consumer) {
     T item = getMandatory();
-    T clone = Serialization.clone(item);
+    T clone = clone(item);
     consumer.accept(item);
     return patch(null, clone, item, false);
   }
@@ -75,19 +82,20 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   @Override
   public T edit(Visitor... visitors) {
     T item = getMandatory();
-    T clone = Serialization.clone(item);
+    T clone = clone(item);
     return patch(null, clone, createVisitableBuilder(item).accept(visitors).build(), false);
   }
   
   /**
    * Get the current item from the server, consulting the metadata for the name if needed
+   * <br>Will always return non-null or throw an exception.
    */
-  protected Gettable<T> fromServer(ObjectMeta metadata) {
+  protected T requireFromServer(ObjectMeta metadata) {
     if (getName() != null) {
-      return fromServer();
+      return withItem(null).require();
     }
     if (metadata != null) {
-      return withName(metadata.getName()).fromServer();
+      return withItem(null).withName(metadata.getName()).require();
     }
     throw new KubernetesClientException("Name not specified. But operation requires name.");
   }
@@ -115,10 +123,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
         if (fixedResourceVersion != null) {
           resourceVersion = fixedResourceVersion;
         } else {
-          T got = fromServer(item.getMetadata()).get();
-          if (got == null) {
-            return null;
-          }
+          T got = requireFromServer(item.getMetadata());
           if (got.getMetadata() != null) {
             resourceVersion = got.getMetadata().getResourceVersion();
           } else {
@@ -159,10 +164,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   
   protected T patch(PatchContext context, T base, T item, boolean status) {
     if (base == null && context != null && context.getPatchType() == PatchType.JSON) {
-      base = fromServer(item.getMetadata()).get();
-      if (base == null) {
-        return null;
-      }
+      base = requireFromServer(item.getMetadata());
       if (item.getMetadata() == null) {
         item.setMetadata(new ObjectMeta());
       }
@@ -194,10 +196,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   @Override
   public T patch(PatchContext patchContext, String patch) {
     try {
-      final T got = fromServer().get();
-      if (got == null) {
-        return null;
-      }
+      final T got = getMandatory();
       return handlePatch(patchContext, got, convertToJson(patch), getType(), false);
     } catch (InterruptedException interruptedException) {
       Thread.currentThread().interrupt();
