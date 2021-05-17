@@ -9,6 +9,7 @@
 #### Dependency Upgrade
 
 #### New Features
+* Fix #3133: Add DSL Support for `authorization.openshift.io/v1` resources in OpenShiftClient
 
 ### 5.4.0 (2021-05-19)
 

@@ -284,9 +284,60 @@ public interface OpenShiftClient extends KubernetesClient {
    */
   NonNamespaceOperation<SecurityContextConstraints, SecurityContextConstraintsList, Resource<SecurityContextConstraints>> securityContextConstraints();
 
+  /**
+   * API entrypoint for SubjectAccessReview (authorization.openshift.io/v1)
+   * This only supports create operation. SubjectAccessReviewResponse from server is returned as output
+   *
+   * @return {@link InOutCreateable} for SubjectAccessReview
+   */
   InOutCreateable<SubjectAccessReview, SubjectAccessReviewResponse> subjectAccessReviews();
 
-  OpenShiftLocalSubjectAccessReviewOperationsImpl localSubjectAccessReviews();
+  /**
+   * API entrypoint for ResourceAccessReview (authorization.openshift.io/v1)
+   * This only supports create operation. ResourceAccessReviewResponse from server is returned as output
+   *
+   * @return {@link InOutCreateable} for ResourceAccessReview
+   */
+  InOutCreateable<ResourceAccessReview, ResourceAccessReviewResponse> resourceAccessReviews();
+
+  /**
+   * API entrypoint for LocalSubjectAccessReview (authorization.openshift.io/v1)
+   * This only supports create operation. SubjectAccessReviewResponse from server is returned as output
+   *
+   * @return {@link OpenShiftLocalSubjectAccessReviewOperationsImpl} for LocalSubjectAccessReview
+   */
+  OpenShiftLocalSubjectAccessReviewOperationsImpl<LocalSubjectAccessReview, SubjectAccessReviewResponse> localSubjectAccessReviews();
+
+  /**
+   * API entrypoint for LocalResourceAccessReview (authorization.openshift.io/v1)
+   * This only supports create operation. ResourceAccessReviewResponse from server is returned as output
+   *
+   * @return {@link OpenShiftLocalSubjectAccessReviewOperationsImpl} for LocalResourceAccessReview
+   */
+  OpenShiftLocalSubjectAccessReviewOperationsImpl<LocalResourceAccessReview, ResourceAccessReviewResponse> localResourceAccessReviews();
+
+  /**
+   * API entrypoint for SelfSubjectRulesReview (authorization.openshift.io/v1)
+   * This only supports create operation. SelfSubjectRulesReview from server is returned as output
+   *
+   * @return {@link OpenShiftLocalSubjectAccessReviewOperationsImpl} for SelfSubjectRulesReview
+   */
+  OpenShiftLocalSubjectAccessReviewOperationsImpl<SelfSubjectRulesReview, SelfSubjectRulesReview> selfSubjectRulesReviews();
+
+  /**
+   * API entrypoint for SubjectRulesReview (authorization.openshift.io/v1)
+   * This only supports create operation. SubjectRulesReview from server is returned as output
+   *
+   * @return {@link OpenShiftLocalSubjectAccessReviewOperationsImpl} for SubjectRulesReview
+   */
+  OpenShiftLocalSubjectAccessReviewOperationsImpl<SubjectRulesReview, SubjectRulesReview> subjectRulesReviews();
+
+  /**
+   * API entrypoint for ClusterRole (authorization.openshift.io/v1)
+   *
+   * @return {@link NonNamespaceOperation} for ClusterRole
+   */
+  NonNamespaceOperation<ClusterRole, ClusterRoleList, Resource<ClusterRole>> clusterRoles();
 
   /**
    * API entrypoint for accessing ClusterRoleBinding(authorization.openshift.io/v1)
@@ -294,6 +345,13 @@ public interface OpenShiftClient extends KubernetesClient {
    * @return MixedOperation object for ClusterRoleBinding
    */
   MixedOperation<ClusterRoleBinding, ClusterRoleBindingList, Resource<ClusterRoleBinding>> clusterRoleBindings();
+
+  /**
+   * API entrypoint for RoleBindingRestriction (authorization.openshift.io/v1)
+   *
+   * @return {@link MixedOperation} for RoleBindingRestriction
+   */
+  MixedOperation<RoleBindingRestriction, RoleBindingRestrictionList, Resource<RoleBindingRestriction>> roleBindingRestrictions();
 
   /**
    * Configure Request Config
