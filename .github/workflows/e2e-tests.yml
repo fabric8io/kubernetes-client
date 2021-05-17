@@ -89,7 +89,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2.3.4
       - name: Setup OpenShift
-        uses: manusa/actions-setup-openshift@v1.1.2
+        uses: manusa/actions-setup-openshift@v1.1.3
         with:
           oc version: ${{ matrix.openshift }}
           github token: ${{ secrets.GITHUB_TOKEN }}
