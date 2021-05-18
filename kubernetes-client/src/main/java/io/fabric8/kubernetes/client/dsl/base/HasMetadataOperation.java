@@ -23,8 +23,11 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.ResourceNotFoundException;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.kubernetes.client.utils.Serialization;
+import io.fabric8.kubernetes.client.utils.Utils;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
@@ -85,17 +88,37 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
     T clone = clone(item);
     return patch(null, clone, createVisitableBuilder(item).accept(visitors).build(), false);
   }
+
+  /**
+   * Get the current item from the server
+   * <br>Will always return non-null or throw an exception.
+   */
+  protected T requireFromServer() {
+    return requireFromServer(null);
+  }
   
   /**
    * Get the current item from the server, consulting the metadata for the name if needed
    * <br>Will always return non-null or throw an exception.
    */
   protected T requireFromServer(ObjectMeta metadata) {
-    if (getName() != null) {
-      return withItem(null).require();
-    }
-    if (metadata != null) {
-      return withItem(null).withName(metadata.getName()).require();
+    try {
+      if (Utils.isNotNullOrEmpty(getName())) {
+        return withItem(null).require();
+      }
+      if (getItem() != null) {
+        String name = KubernetesResourceUtil.getName(getItem());
+        if (Utils.isNotNullOrEmpty(name)) {
+          return withItem(null).withName(name).require();
+        } 
+      }
+      if (metadata != null && Utils.isNotNullOrEmpty(metadata.getName())) {
+        return withItem(null).withName(metadata.getName()).require();
+      }
+    } catch (ResourceNotFoundException e) {
+      if (e.getCause() instanceof KubernetesClientException) {
+        throw (KubernetesClientException)e.getCause();
+      }
     }
     throw new KubernetesClientException("Name not specified. But operation requires name.");
   }

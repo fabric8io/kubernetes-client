@@ -197,11 +197,18 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public T require() {
-    T answer = getMandatory();
-    if (answer == null) {
-      throw new ResourceNotFoundException("The resource you request doesn't exist or couldn't be fetched.");
+    try {
+      T answer = getMandatory();
+      if (answer == null) {
+        throw new ResourceNotFoundException("The resource you request doesn't exist or couldn't be fetched.");
+      }
+      return answer;
+    } catch (KubernetesClientException e) {
+      if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
+        throw e;
+      }
+      throw new ResourceNotFoundException("Resource not found : " + e.getMessage(), e);
     }
-    return answer;
   }
 
   public T getMandatory() {
