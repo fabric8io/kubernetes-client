@@ -2773,14 +2773,6 @@ Using logging-interceptor:
 
 - Configure OkHTTP logging:
 ``` 
-Logger reqLogger = LoggerFactory.getLogger(HttpLoggingInterceptor.class); 
-```
- if (reqLogger.isTraceEnabled()) { 
-     HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(); 
-     loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY); 
-     httpClientBuilder.addNetworkInterceptor(loggingInterceptor); 
- } 
-
 - Set logging level to trace in my simplelogger.properties file:
 ```
  org.slf4j.simpleLogger.defaultLogLevel=trace
