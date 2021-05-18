@@ -113,7 +113,7 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
   }
 
   private Pod matchingPod() {
-    Service item = requireFromServer(null);
+    Service item = requireFromServer();
     Map<String, String> labels = item.getSpec().getSelector();
     PodList list = new PodOperationsImpl(client, config).inNamespace(item.getMetadata().getNamespace()).withLabels(labels).list();
     return list.getItems().stream().findFirst().orElseThrow(() -> new IllegalStateException("Could not find matching pod for service:" + item + "."));
@@ -174,7 +174,7 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
   }
 
   private boolean isExternalNameService(Service item) {
-    if (item != null && item.getSpec() != null && item.getSpec().getType() != null) {
+    if (item.getSpec() != null && item.getSpec().getType() != null) {
       return item.getSpec().getType().equals(EXTERNAL_NAME);
     }
     return false;

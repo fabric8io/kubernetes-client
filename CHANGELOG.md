@@ -5,6 +5,8 @@
 #### Bugs
 * KubernetesMockServer should not read local `.kube/config` while initializing client
 * Retry only Non-Restful Create-only resources in OpenShiftOAuthInterceptor
+* Fix #3126: a KubernetesClientException will be thrown from patch/replace rather than a null being returned when the item does not exist
+* Fix #3121: ServiceOperationImpl replace will throw a KubernetesClientException rather than a NPE if the item doesn't exist
 
 #### Improvements
 * Fix #3135: added mock crud support for patch status, and will return exceptions for unsupported patch types

@@ -179,7 +179,7 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
   }
 
   private List<PodResource<Pod>> doGetLog(boolean isPretty) {
-    ReplicationController rc = fromServer().get();
+    ReplicationController rc = requireFromServer();
 
     return PodOperationUtil.getPodOperationsForController(context, rc.getMetadata().getUid(),
       getReplicationControllerPodLabels(rc), isPretty, podLogWaitTimeout);

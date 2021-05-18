@@ -176,7 +176,7 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
   }
 
   private List<PodResource<Pod>> doGetLog(boolean isPretty) {
-    Job job = fromServer().get();
+    Job job = requireFromServer();
 
     return PodOperationUtil.getPodOperationsForController(context, job.getMetadata().getUid(),
       getJobPodLabels(job), isPretty, podLogWaitTimeout);
@@ -225,7 +225,7 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
     }
     // Fetch item from server and patch Selector and PodTemplate
     // metadata in case not present already in order to avoid 422
-    Job jobFromServer = fromServer().get();
+    Job jobFromServer = requireFromServer();
     if (job.getSpec().getSelector() == null) {
       job.getSpec().setSelector(jobFromServer.getSpec().getSelector());
     }
