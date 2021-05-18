@@ -25,6 +25,7 @@ import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.api.model.StatusCause;
 import io.fabric8.kubernetes.api.model.StatusCauseBuilder;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
+import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.mockwebserver.Context;
@@ -34,6 +35,7 @@ import io.fabric8.mockwebserver.crud.CrudDispatcher;
 import io.fabric8.mockwebserver.crud.ResponseComposer;
 import io.fabric8.zjsonpatch.JsonDiff;
 import io.fabric8.zjsonpatch.JsonPatch;
+import okhttp3.MediaType;
 import okhttp3.mockwebserver.MockResponse;
 
 import java.io.IOException;
@@ -98,7 +100,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
       case PUT:
         return handleReplace(path, request.getBody().readUtf8());
       case PATCH:
-        return handlePatch(path, request.getBody().readUtf8());
+        return handlePatch(path, request.getBody().readUtf8(), request.getHeader("Content-Type"));
       case GET:
         return detectWatchMode(path)? handleWatch(path): handleGet(path);
       case DELETE:
@@ -167,10 +169,10 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
    *
    * @param path path of resource
    * @param s object
+   * @param contentType
    * @return The {@link MockResponse}
    */
-  @Override
-  public MockResponse handlePatch(String path, String s) {
+  public MockResponse handlePatch(String path, String s, String contentType) {
     MockResponse response = new MockResponse();
     String body = fetchResource(path);
     if (body == null) {
@@ -179,9 +181,27 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
       try {
         JsonNode patch = context.getMapper().readTree(s);
         JsonNode source = context.getMapper().readTree(body);
-        JsonNode status = removeStatus(source);
+        JsonNode status = null;
+
+        if (!isStatusPath(path)) {
+          status = removeStatus(source);
+        }
+
+        if (contentType != null) {
+          MediaType type = MediaType.parse(contentType);
+          if (!type.subtype().equals(OperationSupport.JSON_PATCH.subtype())) {
+            response.setResponseCode(HttpURLConnection.HTTP_UNSUPPORTED_TYPE);
+            return response;
+          }
+        }
         JsonNode updated = JsonPatch.apply(patch, source);
-        // restore the old status
+
+        if (isStatusPath(path)) {
+          status = removeStatus(updated);
+          updated = context.getMapper().readTree(body);
+        }
+
+        // restore the status
         if (status == null) {
             removeStatus(updated);
         } else {
@@ -220,7 +240,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
         response.setResponseCode(HttpURLConnection.HTTP_ACCEPTED);
         response.setBody(updatedAsString);
       } catch (JsonProcessingException e) {
-        throw new IllegalArgumentException(e);
+        response.setResponseCode(HTTP_UNPROCESSABLE_ENTITY);
       }
     }
     return response;
