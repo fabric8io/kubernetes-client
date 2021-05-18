@@ -16,9 +16,6 @@
 package io.fabric8.kubernetes.client.dsl.internal.core.v1;
 
 import io.fabric8.kubernetes.api.builder.Visitor;
-import io.fabric8.kubernetes.api.model.Service;
-import io.fabric8.kubernetes.api.model.ServiceBuilder;
-import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.client.*;
 import io.fabric8.kubernetes.client.Config;
@@ -26,16 +23,21 @@ import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.ServiceResource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import okhttp3.OkHttpClient;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 public class ServiceOperationsImpl extends HasMetadataOperation<Service, ServiceList, ServiceResource<Service>> implements ServiceResource<Service> {
 
+  static final int HTTP_UNPROCESSABLE_ENTITY = 422;
   public static final String EXTERNAL_NAME = "ExternalName";
 
   public ServiceOperationsImpl(OkHttpClient client, Config config) {
@@ -55,6 +57,21 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
   @Override
   public ServiceOperationsImpl newInstance(OperationContext context) {
     return new ServiceOperationsImpl(context);
+  }
+  
+  @Override
+  protected Service handleCreate(Service resource) throws ExecutionException, InterruptedException, IOException {
+    try {
+      return super.handleCreate(resource);
+    } catch (KubernetesClientException e) {
+      // repeated creates will fail with a 422, but client logic generally expects a 409
+      if (e.getCode() == HTTP_UNPROCESSABLE_ENTITY 
+          && fromServer(resource.getMetadata()) != null) {
+        throw new KubernetesClientException(
+            OperationSupport.createStatus(HttpURLConnection.HTTP_CONFLICT, "service already exists"));
+      }
+      throw e;
+    }
   }
 
   @Override

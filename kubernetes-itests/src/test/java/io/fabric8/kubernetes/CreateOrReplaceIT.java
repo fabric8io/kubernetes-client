@@ -105,6 +105,8 @@ public class CreateOrReplaceIT {
 
     // 1st createOrReplace(); should create the resource
     service = client.services().inNamespace(session.getNamespace()).createOrReplace(service);
+    // second call should be a no-op
+    service = client.services().inNamespace(session.getNamespace()).createOrReplace(service);
     assertNotNull(service);
     assertEquals(getTestResourcePrefix() + "-svc", service.getMetadata().getName());
     assertEquals(1, service.getSpec().getPorts().size());
