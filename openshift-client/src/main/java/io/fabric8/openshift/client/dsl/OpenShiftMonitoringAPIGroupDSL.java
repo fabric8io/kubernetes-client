@@ -22,14 +22,26 @@ import io.fabric8.openshift.api.model.monitoring.v1.Alertmanager;
 import io.fabric8.openshift.api.model.monitoring.v1.AlertmanagerList;
 import io.fabric8.openshift.api.model.monitoring.v1.PodMonitor;
 import io.fabric8.openshift.api.model.monitoring.v1.PodMonitorList;
+import io.fabric8.openshift.api.model.monitoring.v1.Probe;
+import io.fabric8.openshift.api.model.monitoring.v1.ProbeList;
 import io.fabric8.openshift.api.model.monitoring.v1.Prometheus;
 import io.fabric8.openshift.api.model.monitoring.v1.PrometheusList;
 import io.fabric8.openshift.api.model.monitoring.v1.PrometheusRule;
 import io.fabric8.openshift.api.model.monitoring.v1.PrometheusRuleList;
 import io.fabric8.openshift.api.model.monitoring.v1.ServiceMonitor;
 import io.fabric8.openshift.api.model.monitoring.v1.ServiceMonitorList;
+import io.fabric8.openshift.api.model.monitoring.v1.ThanosRuler;
+import io.fabric8.openshift.api.model.monitoring.v1.ThanosRulerList;
+import io.fabric8.openshift.api.model.monitoring.v1alpha1.AlertmanagerConfig;
+import io.fabric8.openshift.api.model.monitoring.v1alpha1.AlertmanagerConfigList;
 
 public interface OpenShiftMonitoringAPIGroupDSL extends Client {
+  /**
+   * API entrypoint for AlertmanagerConfig related operations (monitoring.coreos.com/v1alpha1)
+   *
+   * @return {@link MixedOperation} object for AlertmanagerConfig
+   */
+  MixedOperation<AlertmanagerConfig, AlertmanagerConfigList, Resource<AlertmanagerConfig>> alertmanagerConfigs();
   /**
    * API entrypoint for Prometheus related operations(monitoring.coreos.com/v1)
    *
@@ -42,6 +54,13 @@ public interface OpenShiftMonitoringAPIGroupDSL extends Client {
    * @return MixedOperation object for PodMonitor type
    */
   MixedOperation<PodMonitor, PodMonitorList, Resource<PodMonitor>> podMonitors();
+
+  /**
+   * API entrypoint for Probe (monitoring.coreos.com/v1)
+   *
+   * @return {@link MixedOperation} for Probe
+   */
+  MixedOperation<Probe, ProbeList, Resource<Probe>> probes();
   /**
    * API entrypoint for Alertmanager related operations(monitoring.coreos.com/v1)
    *
@@ -60,4 +79,11 @@ public interface OpenShiftMonitoringAPIGroupDSL extends Client {
    * @return MixedOperation object for ServiceMonitor type
    */
   MixedOperation<ServiceMonitor, ServiceMonitorList, Resource<ServiceMonitor>> serviceMonitors();
+
+  /**
+   * API entrypoint for ThanosRuler (monitoring.coreos.com/v1)
+   *
+   * @return {@link MixedOperation} for ThanosRuler
+   */
+  MixedOperation<ThanosRuler, ThanosRulerList, Resource<ThanosRuler>> thanosRulers();
 }

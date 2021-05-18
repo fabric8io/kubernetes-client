@@ -23,18 +23,27 @@ import io.fabric8.openshift.api.model.monitoring.v1.Alertmanager;
 import io.fabric8.openshift.api.model.monitoring.v1.AlertmanagerList;
 import io.fabric8.openshift.api.model.monitoring.v1.PodMonitor;
 import io.fabric8.openshift.api.model.monitoring.v1.PodMonitorList;
+import io.fabric8.openshift.api.model.monitoring.v1.Probe;
+import io.fabric8.openshift.api.model.monitoring.v1.ProbeList;
 import io.fabric8.openshift.api.model.monitoring.v1.Prometheus;
 import io.fabric8.openshift.api.model.monitoring.v1.PrometheusList;
 import io.fabric8.openshift.api.model.monitoring.v1.PrometheusRule;
 import io.fabric8.openshift.api.model.monitoring.v1.PrometheusRuleList;
 import io.fabric8.openshift.api.model.monitoring.v1.ServiceMonitor;
 import io.fabric8.openshift.api.model.monitoring.v1.ServiceMonitorList;
+import io.fabric8.openshift.api.model.monitoring.v1.ThanosRuler;
+import io.fabric8.openshift.api.model.monitoring.v1.ThanosRulerList;
+import io.fabric8.openshift.api.model.monitoring.v1alpha1.AlertmanagerConfig;
+import io.fabric8.openshift.api.model.monitoring.v1alpha1.AlertmanagerConfigList;
 import io.fabric8.openshift.client.dsl.OpenShiftMonitoringAPIGroupDSL;
+import io.fabric8.openshift.client.dsl.internal.monitoring.coreos.AlertmanagerConfigOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.monitoring.coreos.AlertmanagerOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.monitoring.coreos.PodMonitorOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.monitoring.coreos.ProbeOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.monitoring.coreos.PrometheusOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.monitoring.coreos.PrometheusRuleOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.monitoring.coreos.ServiceMonitorOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.monitoring.coreos.ThanosRulerOperationsImpl;
 import okhttp3.OkHttpClient;
 
 public class OpenShiftMonitoringAPIGroupClient extends BaseClient implements OpenShiftMonitoringAPIGroupDSL {
@@ -47,6 +56,11 @@ public class OpenShiftMonitoringAPIGroupClient extends BaseClient implements Ope
   }
 
   @Override
+  public MixedOperation<AlertmanagerConfig, AlertmanagerConfigList, Resource<AlertmanagerConfig>> alertmanagerConfigs() {
+    return new AlertmanagerConfigOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+  }
+
+  @Override
   public MixedOperation<Prometheus, PrometheusList, Resource<Prometheus>> prometheuses() {
     return new PrometheusOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
@@ -54,6 +68,11 @@ public class OpenShiftMonitoringAPIGroupClient extends BaseClient implements Ope
   @Override
   public MixedOperation<PodMonitor, PodMonitorList, Resource<PodMonitor>> podMonitors() {
     return new PodMonitorOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+  }
+
+  @Override
+  public MixedOperation<Probe, ProbeList, Resource<Probe>> probes() {
+    return new ProbeOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
@@ -69,5 +88,10 @@ public class OpenShiftMonitoringAPIGroupClient extends BaseClient implements Ope
   @Override
   public MixedOperation<ServiceMonitor, ServiceMonitorList, Resource<ServiceMonitor>> serviceMonitors() {
     return new ServiceMonitorOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+  }
+
+  @Override
+  public MixedOperation<ThanosRuler, ThanosRulerList, Resource<ThanosRuler>> thanosRulers() {
+    return new ThanosRulerOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 }

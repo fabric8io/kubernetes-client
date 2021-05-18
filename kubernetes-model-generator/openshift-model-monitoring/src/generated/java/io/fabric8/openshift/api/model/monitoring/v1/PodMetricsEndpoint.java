@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.kubernetes.api.model.SecretKeySelector;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -32,6 +33,8 @@ import lombok.ToString;
     "apiVersion",
     "kind",
     "metadata",
+    "basicAuth",
+    "bearerTokenSecret",
     "honorLabels",
     "honorTimestamps",
     "interval",
@@ -43,7 +46,8 @@ import lombok.ToString;
     "relabelings",
     "scheme",
     "scrapeTimeout",
-    "targetPort"
+    "targetPort",
+    "tlsConfig"
 })
 @ToString
 @EqualsAndHashCode
@@ -61,6 +65,10 @@ import lombok.ToString;
 public class PodMetricsEndpoint implements KubernetesResource
 {
 
+    @JsonProperty("basicAuth")
+    private BasicAuth basicAuth;
+    @JsonProperty("bearerTokenSecret")
+    private SecretKeySelector bearerTokenSecret;
     @JsonProperty("honorLabels")
     private Boolean honorLabels;
     @JsonProperty("honorTimestamps")
@@ -87,6 +95,8 @@ public class PodMetricsEndpoint implements KubernetesResource
     private java.lang.String scrapeTimeout;
     @JsonProperty("targetPort")
     private io.fabric8.kubernetes.api.model.IntOrString targetPort;
+    @JsonProperty("tlsConfig")
+    private PodMetricsEndpointTLSConfig tlsConfig;
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
 
@@ -99,21 +109,26 @@ public class PodMetricsEndpoint implements KubernetesResource
 
     /**
      * 
+     * @param bearerTokenSecret
      * @param honorTimestamps
-     * @param path
-     * @param relabelings
      * @param scheme
      * @param scrapeTimeout
-     * @param port
+     * @param basicAuth
      * @param proxyUrl
      * @param metricRelabelings
-     * @param interval
      * @param params
      * @param targetPort
      * @param honorLabels
+     * @param tlsConfig
+     * @param path
+     * @param relabelings
+     * @param port
+     * @param interval
      */
-    public PodMetricsEndpoint(Boolean honorLabels, Boolean honorTimestamps, java.lang.String interval, List<RelabelConfig> metricRelabelings, Map<String, ArrayList<String>> params, java.lang.String path, java.lang.String port, java.lang.String proxyUrl, List<RelabelConfig> relabelings, java.lang.String scheme, java.lang.String scrapeTimeout, io.fabric8.kubernetes.api.model.IntOrString targetPort) {
+    public PodMetricsEndpoint(BasicAuth basicAuth, SecretKeySelector bearerTokenSecret, Boolean honorLabels, Boolean honorTimestamps, java.lang.String interval, List<RelabelConfig> metricRelabelings, Map<String, ArrayList<String>> params, java.lang.String path, java.lang.String port, java.lang.String proxyUrl, List<RelabelConfig> relabelings, java.lang.String scheme, java.lang.String scrapeTimeout, io.fabric8.kubernetes.api.model.IntOrString targetPort, PodMetricsEndpointTLSConfig tlsConfig) {
         super();
+        this.basicAuth = basicAuth;
+        this.bearerTokenSecret = bearerTokenSecret;
         this.honorLabels = honorLabels;
         this.honorTimestamps = honorTimestamps;
         this.interval = interval;
@@ -126,6 +141,27 @@ public class PodMetricsEndpoint implements KubernetesResource
         this.scheme = scheme;
         this.scrapeTimeout = scrapeTimeout;
         this.targetPort = targetPort;
+        this.tlsConfig = tlsConfig;
+    }
+
+    @JsonProperty("basicAuth")
+    public BasicAuth getBasicAuth() {
+        return basicAuth;
+    }
+
+    @JsonProperty("basicAuth")
+    public void setBasicAuth(BasicAuth basicAuth) {
+        this.basicAuth = basicAuth;
+    }
+
+    @JsonProperty("bearerTokenSecret")
+    public SecretKeySelector getBearerTokenSecret() {
+        return bearerTokenSecret;
+    }
+
+    @JsonProperty("bearerTokenSecret")
+    public void setBearerTokenSecret(SecretKeySelector bearerTokenSecret) {
+        this.bearerTokenSecret = bearerTokenSecret;
     }
 
     @JsonProperty("honorLabels")
@@ -246,6 +282,16 @@ public class PodMetricsEndpoint implements KubernetesResource
     @JsonProperty("targetPort")
     public void setTargetPort(io.fabric8.kubernetes.api.model.IntOrString targetPort) {
         this.targetPort = targetPort;
+    }
+
+    @JsonProperty("tlsConfig")
+    public PodMetricsEndpointTLSConfig getTlsConfig() {
+        return tlsConfig;
+    }
+
+    @JsonProperty("tlsConfig")
+    public void setTlsConfig(PodMetricsEndpointTLSConfig tlsConfig) {
+        this.tlsConfig = tlsConfig;
     }
 
     @JsonAnyGetter

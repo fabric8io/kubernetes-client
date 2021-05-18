@@ -10,6 +10,7 @@
 
 #### New Features
 * Fix #3133: Add DSL Support for `authorization.openshift.io/v1` resources in OpenShiftClient
+* Fix #3142: Add DSL support for missing resources in `operator.openshift.io` and `monitoring.coreos.com` apiGroups
 
 ### 5.4.0 (2021-05-19)
 

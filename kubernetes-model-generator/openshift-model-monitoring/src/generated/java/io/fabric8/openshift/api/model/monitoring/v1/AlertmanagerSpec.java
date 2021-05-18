@@ -15,13 +15,13 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.Affinity;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
-import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodSecurityContext;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.Toleration;
+import io.fabric8.kubernetes.api.model.TopologySpreadConstraint;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
@@ -37,12 +37,18 @@ import lombok.ToString;
     "metadata",
     "additionalPeers",
     "affinity",
+    "alertmanagerConfigNamespaceSelector",
+    "alertmanagerConfigSelector",
     "baseImage",
     "clusterAdvertiseAddress",
+    "clusterGossipInterval",
+    "clusterPeerTimeout",
+    "clusterPushpullInterval",
     "configMaps",
     "configSecret",
     "containers",
     "externalUrl",
+    "forceEnableClusterMode",
     "image",
     "imagePullSecrets",
     "initContainers",
@@ -65,6 +71,7 @@ import lombok.ToString;
     "storage",
     "tag",
     "tolerations",
+    "topologySpreadConstraints",
     "version",
     "volumeMounts",
     "volumes"
@@ -73,7 +80,7 @@ import lombok.ToString;
 @EqualsAndHashCode
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
-    @BuildableReference(LabelSelector.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.LabelSelector.class),
     @BuildableReference(io.fabric8.kubernetes.api.model.Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(io.fabric8.kubernetes.api.model.ResourceRequirements.class),
@@ -90,10 +97,20 @@ public class AlertmanagerSpec implements KubernetesResource
     private List<java.lang.String> additionalPeers = new ArrayList<java.lang.String>();
     @JsonProperty("affinity")
     private Affinity affinity;
+    @JsonProperty("alertmanagerConfigNamespaceSelector")
+    private io.fabric8.kubernetes.api.model.LabelSelector alertmanagerConfigNamespaceSelector;
+    @JsonProperty("alertmanagerConfigSelector")
+    private io.fabric8.kubernetes.api.model.LabelSelector alertmanagerConfigSelector;
     @JsonProperty("baseImage")
     private java.lang.String baseImage;
     @JsonProperty("clusterAdvertiseAddress")
     private java.lang.String clusterAdvertiseAddress;
+    @JsonProperty("clusterGossipInterval")
+    private java.lang.String clusterGossipInterval;
+    @JsonProperty("clusterPeerTimeout")
+    private java.lang.String clusterPeerTimeout;
+    @JsonProperty("clusterPushpullInterval")
+    private java.lang.String clusterPushpullInterval;
     @JsonProperty("configMaps")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<java.lang.String> configMaps = new ArrayList<java.lang.String>();
@@ -104,6 +121,8 @@ public class AlertmanagerSpec implements KubernetesResource
     private List<io.fabric8.kubernetes.api.model.Container> containers = new ArrayList<io.fabric8.kubernetes.api.model.Container>();
     @JsonProperty("externalUrl")
     private java.lang.String externalUrl;
+    @JsonProperty("forceEnableClusterMode")
+    private Boolean forceEnableClusterMode;
     @JsonProperty("image")
     private java.lang.String image;
     @JsonProperty("imagePullSecrets")
@@ -152,6 +171,9 @@ public class AlertmanagerSpec implements KubernetesResource
     @JsonProperty("tolerations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Toleration> tolerations = new ArrayList<Toleration>();
+    @JsonProperty("topologySpreadConstraints")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<TopologySpreadConstraint> topologySpreadConstraints = new ArrayList<TopologySpreadConstraint>();
     @JsonProperty("version")
     private java.lang.String version;
     @JsonProperty("volumeMounts")
@@ -184,12 +206,16 @@ public class AlertmanagerSpec implements KubernetesResource
      * @param volumeMounts
      * @param tolerations
      * @param logLevel
+     * @param alertmanagerConfigSelector
+     * @param forceEnableClusterMode
+     * @param clusterPushpullInterval
      * @param tag
      * @param configSecret
      * @param retention
      * @param externalUrl
      * @param image
      * @param replicas
+     * @param topologySpreadConstraints
      * @param volumes
      * @param resources
      * @param listenLocal
@@ -197,25 +223,34 @@ public class AlertmanagerSpec implements KubernetesResource
      * @param sha
      * @param version
      * @param clusterAdvertiseAddress
+     * @param alertmanagerConfigNamespaceSelector
      * @param logFormat
      * @param configMaps
      * @param routePrefix
      * @param additionalPeers
      * @param containers
+     * @param clusterGossipInterval
      * @param podMetadata
      * @param initContainers
      * @param affinity
+     * @param clusterPeerTimeout
      */
-    public AlertmanagerSpec(List<java.lang.String> additionalPeers, Affinity affinity, java.lang.String baseImage, java.lang.String clusterAdvertiseAddress, List<java.lang.String> configMaps, java.lang.String configSecret, List<io.fabric8.kubernetes.api.model.Container> containers, java.lang.String externalUrl, java.lang.String image, List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets, List<io.fabric8.kubernetes.api.model.Container> initContainers, Boolean listenLocal, java.lang.String logFormat, java.lang.String logLevel, Map<String, String> nodeSelector, Boolean paused, EmbeddedObjectMetadata podMetadata, java.lang.String portName, java.lang.String priorityClassName, Integer replicas, io.fabric8.kubernetes.api.model.ResourceRequirements resources, java.lang.String retention, java.lang.String routePrefix, List<java.lang.String> secrets, PodSecurityContext securityContext, java.lang.String serviceAccountName, java.lang.String sha, StorageSpec storage, java.lang.String tag, List<Toleration> tolerations, java.lang.String version, List<VolumeMount> volumeMounts, List<Volume> volumes) {
+    public AlertmanagerSpec(List<java.lang.String> additionalPeers, Affinity affinity, io.fabric8.kubernetes.api.model.LabelSelector alertmanagerConfigNamespaceSelector, io.fabric8.kubernetes.api.model.LabelSelector alertmanagerConfigSelector, java.lang.String baseImage, java.lang.String clusterAdvertiseAddress, java.lang.String clusterGossipInterval, java.lang.String clusterPeerTimeout, java.lang.String clusterPushpullInterval, List<java.lang.String> configMaps, java.lang.String configSecret, List<io.fabric8.kubernetes.api.model.Container> containers, java.lang.String externalUrl, Boolean forceEnableClusterMode, java.lang.String image, List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets, List<io.fabric8.kubernetes.api.model.Container> initContainers, Boolean listenLocal, java.lang.String logFormat, java.lang.String logLevel, Map<String, String> nodeSelector, Boolean paused, EmbeddedObjectMetadata podMetadata, java.lang.String portName, java.lang.String priorityClassName, Integer replicas, io.fabric8.kubernetes.api.model.ResourceRequirements resources, java.lang.String retention, java.lang.String routePrefix, List<java.lang.String> secrets, PodSecurityContext securityContext, java.lang.String serviceAccountName, java.lang.String sha, StorageSpec storage, java.lang.String tag, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, java.lang.String version, List<VolumeMount> volumeMounts, List<Volume> volumes) {
         super();
         this.additionalPeers = additionalPeers;
         this.affinity = affinity;
+        this.alertmanagerConfigNamespaceSelector = alertmanagerConfigNamespaceSelector;
+        this.alertmanagerConfigSelector = alertmanagerConfigSelector;
         this.baseImage = baseImage;
         this.clusterAdvertiseAddress = clusterAdvertiseAddress;
+        this.clusterGossipInterval = clusterGossipInterval;
+        this.clusterPeerTimeout = clusterPeerTimeout;
+        this.clusterPushpullInterval = clusterPushpullInterval;
         this.configMaps = configMaps;
         this.configSecret = configSecret;
         this.containers = containers;
         this.externalUrl = externalUrl;
+        this.forceEnableClusterMode = forceEnableClusterMode;
         this.image = image;
         this.imagePullSecrets = imagePullSecrets;
         this.initContainers = initContainers;
@@ -238,6 +273,7 @@ public class AlertmanagerSpec implements KubernetesResource
         this.storage = storage;
         this.tag = tag;
         this.tolerations = tolerations;
+        this.topologySpreadConstraints = topologySpreadConstraints;
         this.version = version;
         this.volumeMounts = volumeMounts;
         this.volumes = volumes;
@@ -263,6 +299,26 @@ public class AlertmanagerSpec implements KubernetesResource
         this.affinity = affinity;
     }
 
+    @JsonProperty("alertmanagerConfigNamespaceSelector")
+    public io.fabric8.kubernetes.api.model.LabelSelector getAlertmanagerConfigNamespaceSelector() {
+        return alertmanagerConfigNamespaceSelector;
+    }
+
+    @JsonProperty("alertmanagerConfigNamespaceSelector")
+    public void setAlertmanagerConfigNamespaceSelector(io.fabric8.kubernetes.api.model.LabelSelector alertmanagerConfigNamespaceSelector) {
+        this.alertmanagerConfigNamespaceSelector = alertmanagerConfigNamespaceSelector;
+    }
+
+    @JsonProperty("alertmanagerConfigSelector")
+    public io.fabric8.kubernetes.api.model.LabelSelector getAlertmanagerConfigSelector() {
+        return alertmanagerConfigSelector;
+    }
+
+    @JsonProperty("alertmanagerConfigSelector")
+    public void setAlertmanagerConfigSelector(io.fabric8.kubernetes.api.model.LabelSelector alertmanagerConfigSelector) {
+        this.alertmanagerConfigSelector = alertmanagerConfigSelector;
+    }
+
     @JsonProperty("baseImage")
     public java.lang.String getBaseImage() {
         return baseImage;
@@ -281,6 +337,36 @@ public class AlertmanagerSpec implements KubernetesResource
     @JsonProperty("clusterAdvertiseAddress")
     public void setClusterAdvertiseAddress(java.lang.String clusterAdvertiseAddress) {
         this.clusterAdvertiseAddress = clusterAdvertiseAddress;
+    }
+
+    @JsonProperty("clusterGossipInterval")
+    public java.lang.String getClusterGossipInterval() {
+        return clusterGossipInterval;
+    }
+
+    @JsonProperty("clusterGossipInterval")
+    public void setClusterGossipInterval(java.lang.String clusterGossipInterval) {
+        this.clusterGossipInterval = clusterGossipInterval;
+    }
+
+    @JsonProperty("clusterPeerTimeout")
+    public java.lang.String getClusterPeerTimeout() {
+        return clusterPeerTimeout;
+    }
+
+    @JsonProperty("clusterPeerTimeout")
+    public void setClusterPeerTimeout(java.lang.String clusterPeerTimeout) {
+        this.clusterPeerTimeout = clusterPeerTimeout;
+    }
+
+    @JsonProperty("clusterPushpullInterval")
+    public java.lang.String getClusterPushpullInterval() {
+        return clusterPushpullInterval;
+    }
+
+    @JsonProperty("clusterPushpullInterval")
+    public void setClusterPushpullInterval(java.lang.String clusterPushpullInterval) {
+        this.clusterPushpullInterval = clusterPushpullInterval;
     }
 
     @JsonProperty("configMaps")
@@ -321,6 +407,16 @@ public class AlertmanagerSpec implements KubernetesResource
     @JsonProperty("externalUrl")
     public void setExternalUrl(java.lang.String externalUrl) {
         this.externalUrl = externalUrl;
+    }
+
+    @JsonProperty("forceEnableClusterMode")
+    public Boolean getForceEnableClusterMode() {
+        return forceEnableClusterMode;
+    }
+
+    @JsonProperty("forceEnableClusterMode")
+    public void setForceEnableClusterMode(Boolean forceEnableClusterMode) {
+        this.forceEnableClusterMode = forceEnableClusterMode;
     }
 
     @JsonProperty("image")
@@ -541,6 +637,16 @@ public class AlertmanagerSpec implements KubernetesResource
     @JsonProperty("tolerations")
     public void setTolerations(List<Toleration> tolerations) {
         this.tolerations = tolerations;
+    }
+
+    @JsonProperty("topologySpreadConstraints")
+    public List<TopologySpreadConstraint> getTopologySpreadConstraints() {
+        return topologySpreadConstraints;
+    }
+
+    @JsonProperty("topologySpreadConstraints")
+    public void setTopologySpreadConstraints(List<TopologySpreadConstraint> topologySpreadConstraints) {
+        this.topologySpreadConstraints = topologySpreadConstraints;
     }
 
     @JsonProperty("version")

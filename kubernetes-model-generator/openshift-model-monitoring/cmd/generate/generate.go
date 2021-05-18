@@ -25,7 +25,9 @@ import (
   "reflect"
   "strings"
   "time"
-  prometheus "github.com/coreos/prometheus-operator/pkg/apis/monitoring/v1"
+  prometheus "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
+  prometheusv1alpha1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1alpha1"
+  v1apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 
   "os"
 
@@ -52,6 +54,12 @@ type Schema struct {
   PrometheusRuleList                       prometheus.PrometheusRuleList
   ServiceMonitor                           prometheus.ServiceMonitor
   ServiceMonitorList                       prometheus.ServiceMonitorList
+  AlertmanagerConfig                       prometheusv1alpha1.AlertmanagerConfig
+  AlertmanagerConfigList                   prometheusv1alpha1.AlertmanagerConfigList
+  Probe                                    prometheus.Probe
+  ProbeList                                prometheus.ProbeList
+  ThanosRuler                              prometheus.ThanosRuler
+  ThanosRulerList                          prometheus.ThanosRulerList
 }
 
 func main() {
@@ -65,14 +73,18 @@ func main() {
     {"k8s.io/kubernetes/pkg/api/errors", "", "io.fabric8.kubernetes.api.model", "kubernetes_errors_", false},
     {"k8s.io/kubernetes/pkg/api/unversioned", "", "io.fabric8.kubernetes.api.model", "api_", false},
     {"k8s.io/apimachinery/pkg/apis/meta/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_", false},
-    {"github.com/coreos/prometheus-operator/pkg/apis/monitoring/v1", "monitoring.coreos.com", "io.fabric8.openshift.api.model.monitoring.v1", "os_monitoring_v1_", true},
+    {"github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1", "monitoring.coreos.com", "io.fabric8.openshift.api.model.monitoring.v1", "os_monitoring_v1_", true},
+    {"github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1alpha1", "monitoring.coreos.com", "io.fabric8.openshift.api.model.monitoring.v1alpha1", "os_monitoring_v1alpha1_", true},
   }
 
   typeMap := map[reflect.Type]reflect.Type{
     reflect.TypeOf(time.Time{}): reflect.TypeOf(""),
     reflect.TypeOf(struct{}{}):  reflect.TypeOf(""),
   }
-  schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, map[reflect.Type]string{},"monitoring")
+  manualTypeMap := map[reflect.Type]string{
+    reflect.TypeOf(v1apiextensions.JSON{}): "com.fasterxml.jackson.databind.JsonNode",
+  }
+  schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, manualTypeMap,"monitoring")
   if err != nil {
     fmt.Fprintf(os.Stderr, "An error occurred: %v", err)
     return
