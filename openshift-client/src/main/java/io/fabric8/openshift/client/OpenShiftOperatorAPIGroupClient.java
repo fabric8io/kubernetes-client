@@ -20,10 +20,17 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.openshift.api.model.operator.controlplane.v1alpha1.PodNetworkConnectivityCheck;
+import io.fabric8.openshift.api.model.operator.controlplane.v1alpha1.PodNetworkConnectivityCheckList;
 import io.fabric8.openshift.api.model.operator.v1.Authentication;
 import io.fabric8.openshift.api.model.operator.v1.AuthenticationList;
 import io.fabric8.openshift.api.model.operator.v1.CSISnapshotController;
 import io.fabric8.openshift.api.model.operator.v1.CSISnapshotControllerList;
+import io.fabric8.openshift.api.model.operator.v1.CloudCredential;
+import io.fabric8.openshift.api.model.operator.v1.CloudCredentialList;
+import io.fabric8.openshift.api.model.operator.v1.ClusterCSIDriver;
+import io.fabric8.openshift.api.model.operator.v1.ClusterCSIDriverList;
+import io.fabric8.openshift.api.model.operator.v1.ConfigList;
 import io.fabric8.openshift.api.model.operator.v1.Console;
 import io.fabric8.openshift.api.model.operator.v1.ConsoleList;
 import io.fabric8.openshift.api.model.operator.v1.DNS;
@@ -56,11 +63,17 @@ import io.fabric8.openshift.api.model.operator.v1.ServiceCatalogAPIServer;
 import io.fabric8.openshift.api.model.operator.v1.ServiceCatalogAPIServerList;
 import io.fabric8.openshift.api.model.operator.v1.ServiceCatalogControllerManager;
 import io.fabric8.openshift.api.model.operator.v1.ServiceCatalogControllerManagerList;
+import io.fabric8.openshift.api.model.operator.v1.Storage;
+import io.fabric8.openshift.api.model.operator.v1.StorageList;
 import io.fabric8.openshift.api.model.operator.v1alpha1.ImageContentSourcePolicy;
 import io.fabric8.openshift.api.model.operator.v1alpha1.ImageContentSourcePolicyList;
 import io.fabric8.openshift.client.dsl.OpenShiftOperatorAPIGroupDSL;
+import io.fabric8.openshift.client.dsl.internal.controlplane.operator.PodNetworkConnectivityCheckOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.operator.AuthenticationOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.operator.CSISnapshotControllerOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.operator.CloudCredentialOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.operator.ClusterCSIDriverOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.operator.ConfigOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.operator.ConsoleOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.operator.DNSOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.ingress.operator.DNSRecordOperationsImpl;
@@ -78,6 +91,7 @@ import io.fabric8.openshift.client.dsl.internal.operator.OpenShiftControllerMana
 import io.fabric8.openshift.client.dsl.internal.operator.ServiceCAOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.operator.ServiceCatalogAPIServerOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.operator.ServiceCatalogControllerManagerOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.operator.StorageOperationsImpl;
 import okhttp3.OkHttpClient;
 
 public class OpenShiftOperatorAPIGroupClient extends BaseClient implements OpenShiftOperatorAPIGroupDSL {
@@ -175,12 +189,37 @@ public class OpenShiftOperatorAPIGroupClient extends BaseClient implements OpenS
   }
 
   @Override
+  public MixedOperation<PodNetworkConnectivityCheck, PodNetworkConnectivityCheckList, Resource<PodNetworkConnectivityCheck>> podNetworkConnectivityChecks() {
+    return new PodNetworkConnectivityCheckOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+  }
+
+  @Override
   public NonNamespaceOperation<ServiceCatalogAPIServer, ServiceCatalogAPIServerList, Resource<ServiceCatalogAPIServer>> serviceCatalogAPIServers() {
     return new ServiceCatalogAPIServerOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
+  public NonNamespaceOperation<Storage, StorageList, Resource<Storage>> storages() {
+    return new StorageOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+  }
+
+  @Override
   public NonNamespaceOperation<Authentication, AuthenticationList, Resource<Authentication>> authentications() {
     return new AuthenticationOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+  }
+
+  @Override
+  public NonNamespaceOperation<CloudCredential, CloudCredentialList, Resource<CloudCredential>> cloudCredentials() {
+    return new CloudCredentialOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+  }
+
+  @Override
+  public NonNamespaceOperation<ClusterCSIDriver, ClusterCSIDriverList, Resource<ClusterCSIDriver>> clusterCSIDrivers() {
+    return new ClusterCSIDriverOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+  }
+
+  @Override
+  public NonNamespaceOperation<io.fabric8.openshift.api.model.operator.v1.Config, ConfigList, Resource<io.fabric8.openshift.api.model.operator.v1.Config>> configs() {
+    return new ConfigOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 }

@@ -36,6 +36,8 @@ import lombok.ToString;
     "basicAuth",
     "bearerToken",
     "bearerTokenFile",
+    "headers",
+    "metadataConfig",
     "name",
     "proxyUrl",
     "queueConfig",
@@ -63,26 +65,30 @@ public class RemoteWriteSpec implements KubernetesResource
     @JsonProperty("basicAuth")
     private BasicAuth basicAuth;
     @JsonProperty("bearerToken")
-    private String bearerToken;
+    private java.lang.String bearerToken;
     @JsonProperty("bearerTokenFile")
-    private String bearerTokenFile;
+    private java.lang.String bearerTokenFile;
+    @JsonProperty("headers")
+    private Map<String, String> headers;
+    @JsonProperty("metadataConfig")
+    private MetadataConfig metadataConfig;
     @JsonProperty("name")
-    private String name;
+    private java.lang.String name;
     @JsonProperty("proxyUrl")
-    private String proxyUrl;
+    private java.lang.String proxyUrl;
     @JsonProperty("queueConfig")
     private QueueConfig queueConfig;
     @JsonProperty("remoteTimeout")
-    private String remoteTimeout;
+    private java.lang.String remoteTimeout;
     @JsonProperty("tlsConfig")
     private TLSConfig tlsConfig;
     @JsonProperty("url")
-    private String url;
+    private java.lang.String url;
     @JsonProperty("writeRelabelConfigs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<RelabelConfig> writeRelabelConfigs = new ArrayList<RelabelConfig>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -93,6 +99,7 @@ public class RemoteWriteSpec implements KubernetesResource
 
     /**
      * 
+     * @param headers
      * @param bearerToken
      * @param remoteTimeout
      * @param queueConfig
@@ -102,13 +109,16 @@ public class RemoteWriteSpec implements KubernetesResource
      * @param name
      * @param bearerTokenFile
      * @param url
+     * @param metadataConfig
      * @param tlsConfig
      */
-    public RemoteWriteSpec(BasicAuth basicAuth, String bearerToken, String bearerTokenFile, String name, String proxyUrl, QueueConfig queueConfig, String remoteTimeout, TLSConfig tlsConfig, String url, List<RelabelConfig> writeRelabelConfigs) {
+    public RemoteWriteSpec(BasicAuth basicAuth, java.lang.String bearerToken, java.lang.String bearerTokenFile, Map<String, String> headers, MetadataConfig metadataConfig, java.lang.String name, java.lang.String proxyUrl, QueueConfig queueConfig, java.lang.String remoteTimeout, TLSConfig tlsConfig, java.lang.String url, List<RelabelConfig> writeRelabelConfigs) {
         super();
         this.basicAuth = basicAuth;
         this.bearerToken = bearerToken;
         this.bearerTokenFile = bearerTokenFile;
+        this.headers = headers;
+        this.metadataConfig = metadataConfig;
         this.name = name;
         this.proxyUrl = proxyUrl;
         this.queueConfig = queueConfig;
@@ -129,42 +139,62 @@ public class RemoteWriteSpec implements KubernetesResource
     }
 
     @JsonProperty("bearerToken")
-    public String getBearerToken() {
+    public java.lang.String getBearerToken() {
         return bearerToken;
     }
 
     @JsonProperty("bearerToken")
-    public void setBearerToken(String bearerToken) {
+    public void setBearerToken(java.lang.String bearerToken) {
         this.bearerToken = bearerToken;
     }
 
     @JsonProperty("bearerTokenFile")
-    public String getBearerTokenFile() {
+    public java.lang.String getBearerTokenFile() {
         return bearerTokenFile;
     }
 
     @JsonProperty("bearerTokenFile")
-    public void setBearerTokenFile(String bearerTokenFile) {
+    public void setBearerTokenFile(java.lang.String bearerTokenFile) {
         this.bearerTokenFile = bearerTokenFile;
     }
 
+    @JsonProperty("headers")
+    public Map<String, String> getHeaders() {
+        return headers;
+    }
+
+    @JsonProperty("headers")
+    public void setHeaders(Map<String, String> headers) {
+        this.headers = headers;
+    }
+
+    @JsonProperty("metadataConfig")
+    public MetadataConfig getMetadataConfig() {
+        return metadataConfig;
+    }
+
+    @JsonProperty("metadataConfig")
+    public void setMetadataConfig(MetadataConfig metadataConfig) {
+        this.metadataConfig = metadataConfig;
+    }
+
     @JsonProperty("name")
-    public String getName() {
+    public java.lang.String getName() {
         return name;
     }
 
     @JsonProperty("name")
-    public void setName(String name) {
+    public void setName(java.lang.String name) {
         this.name = name;
     }
 
     @JsonProperty("proxyUrl")
-    public String getProxyUrl() {
+    public java.lang.String getProxyUrl() {
         return proxyUrl;
     }
 
     @JsonProperty("proxyUrl")
-    public void setProxyUrl(String proxyUrl) {
+    public void setProxyUrl(java.lang.String proxyUrl) {
         this.proxyUrl = proxyUrl;
     }
 
@@ -179,12 +209,12 @@ public class RemoteWriteSpec implements KubernetesResource
     }
 
     @JsonProperty("remoteTimeout")
-    public String getRemoteTimeout() {
+    public java.lang.String getRemoteTimeout() {
         return remoteTimeout;
     }
 
     @JsonProperty("remoteTimeout")
-    public void setRemoteTimeout(String remoteTimeout) {
+    public void setRemoteTimeout(java.lang.String remoteTimeout) {
         this.remoteTimeout = remoteTimeout;
     }
 
@@ -199,12 +229,12 @@ public class RemoteWriteSpec implements KubernetesResource
     }
 
     @JsonProperty("url")
-    public String getUrl() {
+    public java.lang.String getUrl() {
         return url;
     }
 
     @JsonProperty("url")
-    public void setUrl(String url) {
+    public void setUrl(java.lang.String url) {
         this.url = url;
     }
 
@@ -219,12 +249,12 @@ public class RemoteWriteSpec implements KubernetesResource
     }
 
     @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<java.lang.String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
+    public void setAdditionalProperty(java.lang.String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

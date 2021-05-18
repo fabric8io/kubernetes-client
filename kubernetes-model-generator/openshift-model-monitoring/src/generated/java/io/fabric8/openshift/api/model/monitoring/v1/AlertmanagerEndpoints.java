@@ -36,6 +36,7 @@ import lombok.ToString;
     "pathPrefix",
     "port",
     "scheme",
+    "timeout",
     "tlsConfig"
 })
 @ToString
@@ -68,6 +69,8 @@ public class AlertmanagerEndpoints implements KubernetesResource
     private io.fabric8.kubernetes.api.model.IntOrString port;
     @JsonProperty("scheme")
     private String scheme;
+    @JsonProperty("timeout")
+    private String timeout;
     @JsonProperty("tlsConfig")
     private TLSConfig tlsConfig;
     @JsonIgnore
@@ -89,9 +92,10 @@ public class AlertmanagerEndpoints implements KubernetesResource
      * @param namespace
      * @param bearerTokenFile
      * @param pathPrefix
+     * @param timeout
      * @param tlsConfig
      */
-    public AlertmanagerEndpoints(String apiVersion, String bearerTokenFile, String name, String namespace, String pathPrefix, io.fabric8.kubernetes.api.model.IntOrString port, String scheme, TLSConfig tlsConfig) {
+    public AlertmanagerEndpoints(String apiVersion, String bearerTokenFile, String name, String namespace, String pathPrefix, io.fabric8.kubernetes.api.model.IntOrString port, String scheme, String timeout, TLSConfig tlsConfig) {
         super();
         this.apiVersion = apiVersion;
         this.bearerTokenFile = bearerTokenFile;
@@ -100,6 +104,7 @@ public class AlertmanagerEndpoints implements KubernetesResource
         this.pathPrefix = pathPrefix;
         this.port = port;
         this.scheme = scheme;
+        this.timeout = timeout;
         this.tlsConfig = tlsConfig;
     }
 
@@ -171,6 +176,16 @@ public class AlertmanagerEndpoints implements KubernetesResource
     @JsonProperty("scheme")
     public void setScheme(String scheme) {
         this.scheme = scheme;
+    }
+
+    @JsonProperty("timeout")
+    public String getTimeout() {
+        return timeout;
+    }
+
+    @JsonProperty("timeout")
+    public void setTimeout(String timeout) {
+        this.timeout = timeout;
     }
 
     @JsonProperty("tlsConfig")

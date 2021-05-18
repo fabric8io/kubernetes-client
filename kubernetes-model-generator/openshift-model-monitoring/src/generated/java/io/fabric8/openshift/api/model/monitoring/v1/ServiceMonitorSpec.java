@@ -38,7 +38,8 @@ import lombok.ToString;
     "podTargetLabels",
     "sampleLimit",
     "selector",
-    "targetLabels"
+    "targetLabels",
+    "targetLimit"
 })
 @ToString
 @EqualsAndHashCode
@@ -72,6 +73,8 @@ public class ServiceMonitorSpec implements KubernetesResource
     @JsonProperty("targetLabels")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> targetLabels = new ArrayList<String>();
+    @JsonProperty("targetLimit")
+    private Long targetLimit;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -89,10 +92,11 @@ public class ServiceMonitorSpec implements KubernetesResource
      * @param sampleLimit
      * @param endpoints
      * @param targetLabels
+     * @param targetLimit
      * @param namespaceSelector
      * @param selector
      */
-    public ServiceMonitorSpec(List<Endpoint> endpoints, String jobLabel, NamespaceSelector namespaceSelector, List<String> podTargetLabels, Long sampleLimit, io.fabric8.kubernetes.api.model.LabelSelector selector, List<String> targetLabels) {
+    public ServiceMonitorSpec(List<Endpoint> endpoints, String jobLabel, NamespaceSelector namespaceSelector, List<String> podTargetLabels, Long sampleLimit, io.fabric8.kubernetes.api.model.LabelSelector selector, List<String> targetLabels, Long targetLimit) {
         super();
         this.endpoints = endpoints;
         this.jobLabel = jobLabel;
@@ -101,6 +105,7 @@ public class ServiceMonitorSpec implements KubernetesResource
         this.sampleLimit = sampleLimit;
         this.selector = selector;
         this.targetLabels = targetLabels;
+        this.targetLimit = targetLimit;
     }
 
     @JsonProperty("endpoints")
@@ -171,6 +176,16 @@ public class ServiceMonitorSpec implements KubernetesResource
     @JsonProperty("targetLabels")
     public void setTargetLabels(List<String> targetLabels) {
         this.targetLabels = targetLabels;
+    }
+
+    @JsonProperty("targetLimit")
+    public Long getTargetLimit() {
+        return targetLimit;
+    }
+
+    @JsonProperty("targetLimit")
+    public void setTargetLimit(Long targetLimit) {
+        this.targetLimit = targetLimit;
     }
 
     @JsonAnyGetter

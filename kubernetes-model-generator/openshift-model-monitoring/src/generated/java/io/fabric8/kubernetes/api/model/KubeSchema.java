@@ -23,12 +23,18 @@ import io.fabric8.openshift.api.model.monitoring.v1.Alertmanager;
 import io.fabric8.openshift.api.model.monitoring.v1.AlertmanagerList;
 import io.fabric8.openshift.api.model.monitoring.v1.PodMonitor;
 import io.fabric8.openshift.api.model.monitoring.v1.PodMonitorList;
+import io.fabric8.openshift.api.model.monitoring.v1.Probe;
+import io.fabric8.openshift.api.model.monitoring.v1.ProbeList;
 import io.fabric8.openshift.api.model.monitoring.v1.Prometheus;
 import io.fabric8.openshift.api.model.monitoring.v1.PrometheusList;
 import io.fabric8.openshift.api.model.monitoring.v1.PrometheusRule;
 import io.fabric8.openshift.api.model.monitoring.v1.PrometheusRuleList;
 import io.fabric8.openshift.api.model.monitoring.v1.ServiceMonitor;
 import io.fabric8.openshift.api.model.monitoring.v1.ServiceMonitorList;
+import io.fabric8.openshift.api.model.monitoring.v1.ThanosRuler;
+import io.fabric8.openshift.api.model.monitoring.v1.ThanosRulerList;
+import io.fabric8.openshift.api.model.monitoring.v1alpha1.AlertmanagerConfig;
+import io.fabric8.openshift.api.model.monitoring.v1alpha1.AlertmanagerConfigList;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -43,6 +49,8 @@ import lombok.ToString;
     "APIGroup",
     "APIGroupList",
     "Alertmanager",
+    "AlertmanagerConfig",
+    "AlertmanagerConfigList",
     "AlertmanagerList",
     "BaseKubernetesList",
     "Info",
@@ -50,6 +58,8 @@ import lombok.ToString;
     "Patch",
     "PodMonitor",
     "PodMonitorList",
+    "Probe",
+    "ProbeList",
     "Prometheus",
     "PrometheusList",
     "PrometheusRule",
@@ -57,6 +67,8 @@ import lombok.ToString;
     "ServiceMonitor",
     "ServiceMonitorList",
     "Status",
+    "ThanosRuler",
+    "ThanosRulerList",
     "Time",
     "TypeMeta"
 })
@@ -81,6 +93,10 @@ public class KubeSchema {
     private APIGroupList aPIGroupList;
     @JsonProperty("Alertmanager")
     private Alertmanager alertmanager;
+    @JsonProperty("AlertmanagerConfig")
+    private AlertmanagerConfig alertmanagerConfig;
+    @JsonProperty("AlertmanagerConfigList")
+    private AlertmanagerConfigList alertmanagerConfigList;
     @JsonProperty("AlertmanagerList")
     private AlertmanagerList alertmanagerList;
     @JsonProperty("BaseKubernetesList")
@@ -95,6 +111,10 @@ public class KubeSchema {
     private PodMonitor podMonitor;
     @JsonProperty("PodMonitorList")
     private PodMonitorList podMonitorList;
+    @JsonProperty("Probe")
+    private Probe probe;
+    @JsonProperty("ProbeList")
+    private ProbeList probeList;
     @JsonProperty("Prometheus")
     private Prometheus prometheus;
     @JsonProperty("PrometheusList")
@@ -109,6 +129,10 @@ public class KubeSchema {
     private ServiceMonitorList serviceMonitorList;
     @JsonProperty("Status")
     private Status status;
+    @JsonProperty("ThanosRuler")
+    private ThanosRuler thanosRuler;
+    @JsonProperty("ThanosRulerList")
+    private ThanosRulerList thanosRulerList;
     @JsonProperty("Time")
     private String time;
     @JsonProperty("TypeMeta")
@@ -125,31 +149,39 @@ public class KubeSchema {
 
     /**
      * 
+     * @param thanosRuler
      * @param aPIGroupList
+     * @param alertmanagerConfigList
      * @param baseKubernetesList
      * @param serviceMonitorList
      * @param serviceMonitor
      * @param prometheusRuleList
+     * @param thanosRulerList
      * @param alertmanagerList
      * @param patch
+     * @param probeList
+     * @param podMonitorList
+     * @param prometheus
+     * @param prometheusList
+     * @param alertmanager
+     * @param alertmanagerConfig
+     * @param info
+     * @param probe
      * @param prometheusRule
      * @param aPIGroup
      * @param typeMeta
      * @param objectMeta
      * @param podMonitor
-     * @param podMonitorList
-     * @param prometheus
-     * @param prometheusList
      * @param time
-     * @param alertmanager
-     * @param info
      * @param status
      */
-    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, Alertmanager alertmanager, AlertmanagerList alertmanagerList, BaseKubernetesList baseKubernetesList, Info info, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, Patch patch, PodMonitor podMonitor, PodMonitorList podMonitorList, Prometheus prometheus, PrometheusList prometheusList, PrometheusRule prometheusRule, PrometheusRuleList prometheusRuleList, ServiceMonitor serviceMonitor, ServiceMonitorList serviceMonitorList, Status status, String time, TypeMeta typeMeta) {
+    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, Alertmanager alertmanager, AlertmanagerConfig alertmanagerConfig, AlertmanagerConfigList alertmanagerConfigList, AlertmanagerList alertmanagerList, BaseKubernetesList baseKubernetesList, Info info, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, Patch patch, PodMonitor podMonitor, PodMonitorList podMonitorList, Probe probe, ProbeList probeList, Prometheus prometheus, PrometheusList prometheusList, PrometheusRule prometheusRule, PrometheusRuleList prometheusRuleList, ServiceMonitor serviceMonitor, ServiceMonitorList serviceMonitorList, Status status, ThanosRuler thanosRuler, ThanosRulerList thanosRulerList, String time, TypeMeta typeMeta) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
         this.alertmanager = alertmanager;
+        this.alertmanagerConfig = alertmanagerConfig;
+        this.alertmanagerConfigList = alertmanagerConfigList;
         this.alertmanagerList = alertmanagerList;
         this.baseKubernetesList = baseKubernetesList;
         this.info = info;
@@ -157,6 +189,8 @@ public class KubeSchema {
         this.patch = patch;
         this.podMonitor = podMonitor;
         this.podMonitorList = podMonitorList;
+        this.probe = probe;
+        this.probeList = probeList;
         this.prometheus = prometheus;
         this.prometheusList = prometheusList;
         this.prometheusRule = prometheusRule;
@@ -164,6 +198,8 @@ public class KubeSchema {
         this.serviceMonitor = serviceMonitor;
         this.serviceMonitorList = serviceMonitorList;
         this.status = status;
+        this.thanosRuler = thanosRuler;
+        this.thanosRulerList = thanosRulerList;
         this.time = time;
         this.typeMeta = typeMeta;
     }
@@ -196,6 +232,26 @@ public class KubeSchema {
     @JsonProperty("Alertmanager")
     public void setAlertmanager(Alertmanager alertmanager) {
         this.alertmanager = alertmanager;
+    }
+
+    @JsonProperty("AlertmanagerConfig")
+    public AlertmanagerConfig getAlertmanagerConfig() {
+        return alertmanagerConfig;
+    }
+
+    @JsonProperty("AlertmanagerConfig")
+    public void setAlertmanagerConfig(AlertmanagerConfig alertmanagerConfig) {
+        this.alertmanagerConfig = alertmanagerConfig;
+    }
+
+    @JsonProperty("AlertmanagerConfigList")
+    public AlertmanagerConfigList getAlertmanagerConfigList() {
+        return alertmanagerConfigList;
+    }
+
+    @JsonProperty("AlertmanagerConfigList")
+    public void setAlertmanagerConfigList(AlertmanagerConfigList alertmanagerConfigList) {
+        this.alertmanagerConfigList = alertmanagerConfigList;
     }
 
     @JsonProperty("AlertmanagerList")
@@ -268,6 +324,26 @@ public class KubeSchema {
         this.podMonitorList = podMonitorList;
     }
 
+    @JsonProperty("Probe")
+    public Probe getProbe() {
+        return probe;
+    }
+
+    @JsonProperty("Probe")
+    public void setProbe(Probe probe) {
+        this.probe = probe;
+    }
+
+    @JsonProperty("ProbeList")
+    public ProbeList getProbeList() {
+        return probeList;
+    }
+
+    @JsonProperty("ProbeList")
+    public void setProbeList(ProbeList probeList) {
+        this.probeList = probeList;
+    }
+
     @JsonProperty("Prometheus")
     public Prometheus getPrometheus() {
         return prometheus;
@@ -336,6 +412,26 @@ public class KubeSchema {
     @JsonProperty("Status")
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    @JsonProperty("ThanosRuler")
+    public ThanosRuler getThanosRuler() {
+        return thanosRuler;
+    }
+
+    @JsonProperty("ThanosRuler")
+    public void setThanosRuler(ThanosRuler thanosRuler) {
+        this.thanosRuler = thanosRuler;
+    }
+
+    @JsonProperty("ThanosRulerList")
+    public ThanosRulerList getThanosRulerList() {
+        return thanosRulerList;
+    }
+
+    @JsonProperty("ThanosRulerList")
+    public void setThanosRulerList(ThanosRulerList thanosRulerList) {
+        this.thanosRulerList = thanosRulerList;
     }
 
     @JsonProperty("Time")
