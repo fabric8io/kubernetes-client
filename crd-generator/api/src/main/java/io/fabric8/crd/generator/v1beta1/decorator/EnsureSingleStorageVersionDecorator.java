@@ -41,7 +41,7 @@ public class EnsureSingleStorageVersionDecorator extends
     }
 
     for (CustomResourceDefinitionVersion version : spec.buildVersions()) {
-      if (version.getStorage()) {
+      if (version.getStorage() != null && version.getStorage()) {
         String existing = storageVersion.get();
         if (existing != null && !existing.equals(version.getName())) {
           throw new IllegalStateException(String.format(
