@@ -78,7 +78,7 @@ This would pick up default settings, reading your `kubeconfig` file from `~/.kub
 Config kubeConfig = new ConfigBuilder()
   .withMasterUrl("https://192.168.42.20:8443/")
   .build()
-try (final KubernetesClient client = new DefaultKubernetesClient(config)) {
+try (final KubernetesClient client = new DefaultKubernetesClient(kubeConfig)) {
   // Do stuff with client
 }
 ```
