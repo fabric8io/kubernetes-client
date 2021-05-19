@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 5.4-SNAPSHOT
+### 5.4.0 (2021-05-19)
 
 #### Bugs
 * Fix #3040: Consistently order printer columns by JSON path to prevent undue changes in generated CRDs
