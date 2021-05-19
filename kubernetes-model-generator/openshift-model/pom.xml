@@ -77,7 +77,8 @@
             <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
             <Import-Package>*</Import-Package>
             <Export-Package>
-              io.fabric8.openshift.api.model**
+              io.fabric8.openshift.api.model**,
+              io.fabric8.openshift.api.model.helm.v1beta1**
             </Export-Package>
             <Include-Resource>
               {maven-resources},

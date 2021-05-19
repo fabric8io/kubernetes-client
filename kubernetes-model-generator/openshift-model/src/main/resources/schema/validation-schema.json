@@ -72,6 +72,36 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_apimachinery_Condition": {
+      "type": "object",
+      "properties": {
+        "lastTransitionTime": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "existingJavaType": "String"
+        },
+        "message": {
+          "type": "string"
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.kubernetes.api.model.Condition",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_apimachinery_CreateOptions": {
       "type": "object",
       "properties": {
@@ -9850,6 +9880,129 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "os_helm_v1beta1_ConnectionConfig": {
+      "type": "object",
+      "properties": {
+        "ca": {
+          "$ref": "#/definitions/os_config_v1_ConfigMapNameReference",
+          "existingJavaType": "io.fabric8.openshift.api.model.ConfigMapNameReference"
+        },
+        "tlsClientConfig": {
+          "$ref": "#/definitions/os_config_v1_SecretNameReference",
+          "existingJavaType": "io.fabric8.openshift.api.model.SecretNameReference"
+        },
+        "url": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.ConnectionConfig",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_helm_v1beta1_HelmChartRepository": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "helm.openshift.io/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "HelmChartRepository",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/os_helm_v1beta1_HelmChartRepositorySpec",
+          "existingJavaType": "io.fabric8.openshift.api.model.HelmChartRepositorySpec"
+        },
+        "status": {
+          "$ref": "#/definitions/os_helm_v1beta1_HelmChartRepositoryStatus",
+          "existingJavaType": "io.fabric8.openshift.api.model.HelmChartRepositoryStatus"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.HelmChartRepository",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "os_helm_v1beta1_HelmChartRepositoryList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "helm.openshift.io/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/os_helm_v1beta1_HelmChartRepository",
+            "existingJavaType": "io.fabric8.openshift.api.model.HelmChartRepository"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "HelmChartRepositoryList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.HelmChartRepositoryList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openshift.api.model.HelmChartRepository\u003e"
+      ]
+    },
+    "os_helm_v1beta1_HelmChartRepositorySpec": {
+      "type": "object",
+      "properties": {
+        "connectionConfig": {
+          "$ref": "#/definitions/os_helm_v1beta1_ConnectionConfig",
+          "existingJavaType": "io.fabric8.openshift.api.model.ConnectionConfig"
+        },
+        "description": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.HelmChartRepositorySpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_helm_v1beta1_HelmChartRepositoryStatus": {
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_apimachinery_Condition",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.Condition"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.HelmChartRepositoryStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "os_image_Image": {
       "type": "object",
       "properties": {
@@ -10992,6 +11145,85 @@
       "javaType": "io.fabric8.openshift.api.model.EgressNetworkPolicySpec",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_network_HostSubnet": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "network.openshift.io/v1",
+          "required": true
+        },
+        "egressCIDRs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "egressIPs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "host": {
+          "type": "string"
+        },
+        "hostIP": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string",
+          "default": "HostSubnet",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "subnet": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.HostSubnet",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "os_network_HostSubnetList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "network.openshift.io/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/os_network_HostSubnet",
+            "existingJavaType": "io.fabric8.openshift.api.model.HostSubnet"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "HostSubnetList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.HostSubnetList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openshift.api.model.HostSubnet\u003e"
       ]
     },
     "os_network_NetNamespace": {
@@ -12586,6 +12818,91 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "os_template_BrokerTemplateInstance": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "template.openshift.io/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "BrokerTemplateInstance",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/os_template_BrokerTemplateInstanceSpec",
+          "existingJavaType": "io.fabric8.openshift.api.model.BrokerTemplateInstanceSpec"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.BrokerTemplateInstance",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "os_template_BrokerTemplateInstanceList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "template.openshift.io/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/os_template_BrokerTemplateInstance",
+            "existingJavaType": "io.fabric8.openshift.api.model.BrokerTemplateInstance"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "BrokerTemplateInstanceList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.BrokerTemplateInstanceList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openshift.api.model.BrokerTemplateInstance\u003e"
+      ]
+    },
+    "os_template_BrokerTemplateInstanceSpec": {
+      "type": "object",
+      "properties": {
+        "bindingIDs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "secret": {
+          "$ref": "#/definitions/kubernetes_core_ObjectReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+        },
+        "templateInstance": {
+          "$ref": "#/definitions/kubernetes_core_ObjectReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.BrokerTemplateInstanceSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "os_template_Parameter": {
       "type": "object",
       "properties": {
@@ -12665,6 +12982,192 @@
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.HasMetadata",
         "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "os_template_TemplateInstance": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "template.openshift.io/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "TemplateInstance",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/os_template_TemplateInstanceSpec",
+          "existingJavaType": "io.fabric8.openshift.api.model.TemplateInstanceSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/os_template_TemplateInstanceStatus",
+          "existingJavaType": "io.fabric8.openshift.api.model.TemplateInstanceStatus"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.TemplateInstance",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "os_template_TemplateInstanceCondition": {
+      "type": "object",
+      "properties": {
+        "lastTransitionTime": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "existingJavaType": "String"
+        },
+        "message": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.TemplateInstanceCondition",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_template_TemplateInstanceList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "template.openshift.io/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/os_template_TemplateInstance",
+            "existingJavaType": "io.fabric8.openshift.api.model.TemplateInstance"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "TemplateInstanceList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.TemplateInstanceList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openshift.api.model.TemplateInstance\u003e"
+      ]
+    },
+    "os_template_TemplateInstanceObject": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "$ref": "#/definitions/kubernetes_core_ObjectReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.TemplateInstanceObject",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_template_TemplateInstanceRequester": {
+      "type": "object",
+      "properties": {
+        "extra": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "existingJavaType": "java.util.Map\u003cString, java.util.ArrayList\u003cString\u003e\u003e"
+        },
+        "groups": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "uid": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.TemplateInstanceRequester",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_template_TemplateInstanceSpec": {
+      "type": "object",
+      "properties": {
+        "requester": {
+          "$ref": "#/definitions/os_template_TemplateInstanceRequester",
+          "existingJavaType": "io.fabric8.openshift.api.model.TemplateInstanceRequester"
+        },
+        "secret": {
+          "$ref": "#/definitions/kubernetes_core_LocalObjectReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.LocalObjectReference"
+        },
+        "template": {
+          "$ref": "#/definitions/os_template_Template",
+          "existingJavaType": "io.fabric8.openshift.api.model.Template"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.TemplateInstanceSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_template_TemplateInstanceStatus": {
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_template_TemplateInstanceCondition",
+            "existingJavaType": "io.fabric8.openshift.api.model.TemplateInstanceCondition"
+          }
+        },
+        "objects": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_template_TemplateInstanceObject",
+            "existingJavaType": "io.fabric8.openshift.api.model.TemplateInstanceObject"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.TemplateInstanceStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
     "os_template_TemplateList": {
@@ -12876,6 +13379,38 @@
         "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
+    "os_user_UserIdentityMapping": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "user.openshift.io/v1",
+          "required": true
+        },
+        "identity": {
+          "$ref": "#/definitions/kubernetes_core_ObjectReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+        },
+        "kind": {
+          "type": "string",
+          "default": "UserIdentityMapping",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "user": {
+          "$ref": "#/definitions/kubernetes_core_ObjectReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.UserIdentityMapping",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
     "os_user_UserList": {
       "type": "object",
       "properties": {
@@ -12950,6 +13485,14 @@
     "BaseKubernetesList": {
       "$ref": "#/definitions/kubernetes_apimachinery_List",
       "existingJavaType": "io.fabric8.kubernetes.api.model.BaseKubernetesList"
+    },
+    "BrokerTemplateInstance": {
+      "$ref": "#/definitions/os_template_BrokerTemplateInstance",
+      "existingJavaType": "io.fabric8.openshift.api.model.BrokerTemplateInstance"
+    },
+    "BrokerTemplateInstanceList": {
+      "$ref": "#/definitions/os_template_BrokerTemplateInstanceList",
+      "existingJavaType": "io.fabric8.openshift.api.model.BrokerTemplateInstanceList"
     },
     "BuildConfigList": {
       "$ref": "#/definitions/os_build_BuildConfigList",
@@ -13066,6 +13609,22 @@
     "GroupList": {
       "$ref": "#/definitions/os_user_GroupList",
       "existingJavaType": "io.fabric8.openshift.api.model.GroupList"
+    },
+    "HelmChartRepository": {
+      "$ref": "#/definitions/os_helm_v1beta1_HelmChartRepository",
+      "existingJavaType": "io.fabric8.openshift.api.model.HelmChartRepository"
+    },
+    "HelmChartRepositoryList": {
+      "$ref": "#/definitions/os_helm_v1beta1_HelmChartRepositoryList",
+      "existingJavaType": "io.fabric8.openshift.api.model.HelmChartRepositoryList"
+    },
+    "HostSubnet": {
+      "$ref": "#/definitions/os_network_HostSubnet",
+      "existingJavaType": "io.fabric8.openshift.api.model.HostSubnet"
+    },
+    "HostSubnetList": {
+      "$ref": "#/definitions/os_network_HostSubnetList",
+      "existingJavaType": "io.fabric8.openshift.api.model.HostSubnetList"
     },
     "Identity": {
       "$ref": "#/definitions/os_user_Identity",
@@ -13379,6 +13938,14 @@
       "$ref": "#/definitions/os_template_Template",
       "existingJavaType": "io.fabric8.openshift.api.model.Template"
     },
+    "TemplateInstance": {
+      "$ref": "#/definitions/os_template_TemplateInstance",
+      "existingJavaType": "io.fabric8.openshift.api.model.TemplateInstance"
+    },
+    "TemplateInstanceList": {
+      "$ref": "#/definitions/os_template_TemplateInstanceList",
+      "existingJavaType": "io.fabric8.openshift.api.model.TemplateInstanceList"
+    },
     "TemplateList": {
       "$ref": "#/definitions/os_template_TemplateList",
       "existingJavaType": "io.fabric8.openshift.api.model.TemplateList"
@@ -13402,6 +13969,10 @@
     "User": {
       "$ref": "#/definitions/os_user_User",
       "existingJavaType": "io.fabric8.openshift.api.model.User"
+    },
+    "UserIdentityMapping": {
+      "$ref": "#/definitions/os_user_UserIdentityMapping",
+      "existingJavaType": "io.fabric8.openshift.api.model.UserIdentityMapping"
     },
     "UserList": {
       "$ref": "#/definitions/os_user_UserList",
@@ -14059,6 +14630,75 @@
         },
         "secret": {
           "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "brokertemplateinstance": {
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "template.openshift.io/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "BrokerTemplateInstance",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/os_template_BrokerTemplateInstanceSpec",
+          "existingJavaType": "io.fabric8.openshift.api.model.BrokerTemplateInstanceSpec"
+        }
+      },
+      "additionalProperties": true
+    },
+    "brokertemplateinstancelist": {
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "template.openshift.io/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/os_template_BrokerTemplateInstance",
+            "existingJavaType": "io.fabric8.openshift.api.model.BrokerTemplateInstance"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "BrokerTemplateInstanceList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true
+    },
+    "brokertemplateinstancespec": {
+      "properties": {
+        "bindingIDs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "secret": {
+          "$ref": "#/definitions/kubernetes_core_ObjectReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+        },
+        "templateInstance": {
+          "$ref": "#/definitions/kubernetes_core_ObjectReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
         }
       },
       "additionalProperties": true
@@ -14767,10 +15407,10 @@
     },
     "clusternetworkentry": {
       "properties": {
-        "CIDR": {
+        "cidr": {
           "type": "string"
         },
-        "hostSubnetLength": {
+        "hostPrefix": {
           "type": "integer"
         }
       },
@@ -15347,6 +15987,31 @@
       },
       "additionalProperties": true
     },
+    "condition": {
+      "properties": {
+        "lastTransitionTime": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "existingJavaType": "String"
+        },
+        "message": {
+          "type": "string"
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
     "config": {
       "properties": {
         "apiVersion": {
@@ -15487,6 +16152,22 @@
         },
         "optional": {
           "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "connectionconfig": {
+      "properties": {
+        "ca": {
+          "$ref": "#/definitions/os_config_v1_ConfigMapNameReference",
+          "existingJavaType": "io.fabric8.openshift.api.model.ConfigMapNameReference"
+        },
+        "tlsClientConfig": {
+          "$ref": "#/definitions/os_config_v1_SecretNameReference",
+          "existingJavaType": "io.fabric8.openshift.api.model.SecretNameReference"
+        },
+        "url": {
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -17364,6 +18045,87 @@
       },
       "additionalProperties": true
     },
+    "helmchartrepository": {
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "helm.openshift.io/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "HelmChartRepository",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/os_helm_v1beta1_HelmChartRepositorySpec",
+          "existingJavaType": "io.fabric8.openshift.api.model.HelmChartRepositorySpec"
+        },
+        "status": {
+          "$ref": "#/definitions/os_helm_v1beta1_HelmChartRepositoryStatus",
+          "existingJavaType": "io.fabric8.openshift.api.model.HelmChartRepositoryStatus"
+        }
+      },
+      "additionalProperties": true
+    },
+    "helmchartrepositorylist": {
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "helm.openshift.io/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/os_helm_v1beta1_HelmChartRepository",
+            "existingJavaType": "io.fabric8.openshift.api.model.HelmChartRepository"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "HelmChartRepositoryList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true
+    },
+    "helmchartrepositoryspec": {
+      "properties": {
+        "connectionConfig": {
+          "$ref": "#/definitions/os_helm_v1beta1_ConnectionConfig",
+          "existingJavaType": "io.fabric8.openshift.api.model.ConnectionConfig"
+        },
+        "description": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "helmchartrepositorystatus": {
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_apimachinery_Condition",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.Condition"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
     "hostalias": {
       "properties": {
         "hostnames": {
@@ -17386,6 +18148,74 @@
         },
         "type": {
           "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "hostsubnet": {
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "network.openshift.io/v1",
+          "required": true
+        },
+        "egressCIDRs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "egressIPs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "host": {
+          "type": "string"
+        },
+        "hostIP": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string",
+          "default": "HostSubnet",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "subnet": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "hostsubnetlist": {
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "network.openshift.io/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/os_network_HostSubnet",
+            "existingJavaType": "io.fabric8.openshift.api.model.HostSubnet"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "HostSubnetList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
         }
       },
       "additionalProperties": true
@@ -23104,6 +23934,155 @@
       },
       "additionalProperties": true
     },
+    "templateinstance": {
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "template.openshift.io/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "TemplateInstance",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/os_template_TemplateInstanceSpec",
+          "existingJavaType": "io.fabric8.openshift.api.model.TemplateInstanceSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/os_template_TemplateInstanceStatus",
+          "existingJavaType": "io.fabric8.openshift.api.model.TemplateInstanceStatus"
+        }
+      },
+      "additionalProperties": true
+    },
+    "templateinstancecondition": {
+      "properties": {
+        "lastTransitionTime": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "existingJavaType": "String"
+        },
+        "message": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "templateinstancelist": {
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "template.openshift.io/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/os_template_TemplateInstance",
+            "existingJavaType": "io.fabric8.openshift.api.model.TemplateInstance"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "TemplateInstanceList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true
+    },
+    "templateinstanceobject": {
+      "properties": {
+        "ref": {
+          "$ref": "#/definitions/kubernetes_core_ObjectReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+        }
+      },
+      "additionalProperties": true
+    },
+    "templateinstancerequester": {
+      "properties": {
+        "extra": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "existingJavaType": "java.util.Map\u003cString, java.util.ArrayList\u003cString\u003e\u003e"
+        },
+        "groups": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "uid": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "templateinstancespec": {
+      "properties": {
+        "requester": {
+          "$ref": "#/definitions/os_template_TemplateInstanceRequester",
+          "existingJavaType": "io.fabric8.openshift.api.model.TemplateInstanceRequester"
+        },
+        "secret": {
+          "$ref": "#/definitions/kubernetes_core_LocalObjectReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.LocalObjectReference"
+        },
+        "template": {
+          "$ref": "#/definitions/os_template_Template",
+          "existingJavaType": "io.fabric8.openshift.api.model.Template"
+        }
+      },
+      "additionalProperties": true
+    },
+    "templateinstancestatus": {
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_template_TemplateInstanceCondition",
+            "existingJavaType": "io.fabric8.openshift.api.model.TemplateInstanceCondition"
+          }
+        },
+        "objects": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_template_TemplateInstanceObject",
+            "existingJavaType": "io.fabric8.openshift.api.model.TemplateInstanceObject"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
     "templatelist": {
       "properties": {
         "apiVersion": {
@@ -23436,6 +24415,33 @@
         "metadata": {
           "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        }
+      },
+      "additionalProperties": true
+    },
+    "useridentitymapping": {
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "user.openshift.io/v1",
+          "required": true
+        },
+        "identity": {
+          "$ref": "#/definitions/kubernetes_core_ObjectReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+        },
+        "kind": {
+          "type": "string",
+          "default": "UserIdentityMapping",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "user": {
+          "$ref": "#/definitions/kubernetes_core_ObjectReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
         }
       },
       "additionalProperties": true

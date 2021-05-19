@@ -4,6 +4,7 @@ go 1.14
 
 require (
 	github.com/openshift/api v0.0.0-20200803131051-87466835fcc0
+	github.com/coreos/prometheus-operator v0.41.1
 	github.com/operator-framework/api v0.3.12
 	github.com/prometheus-operator/prometheus-operator v0.47.1
 	k8s.io/api v0.21.0
@@ -13,6 +14,7 @@ require (
 	k8s.io/kube-aggregator v0.21.0
 	k8s.io/kubernetes v1.21.0
 	k8s.io/metrics v0.21.0
+	sigs.k8s.io/structured-merge-diff/v3 v3.0.1-0.20200706213357-43c19bbb7fba // indirect
 )
 
 replace (
