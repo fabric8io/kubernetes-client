@@ -22,7 +22,7 @@
 * Fix #3016: Use scheduleWithFixedDelay for resync task execution
 * Fix #2991: reduced the level of ReflectWatcher event received log
 * Fix #3027: fix NPE when sorting events in KubernetesResourceUtil
-* Fix missing entry for Trigger in TektonTriggersResourceMappingProvider
+* Fix #3054:  missing entry for Trigger in TektonTriggersResourceMappingProvider
 * Fix #3047: NPE when getting version when there is no build date
 * Fix #3024: stopAllRegisteredInformers will not call startWatcher
 * Fix #3067: Added a patch(PatchContext, item) operation to be more explicit about patching and diffing behavior
@@ -36,14 +36,14 @@
 * Fix #3057: Removed debug calls for CustomResource during deserialization
 * Fix #3050: More enforcement of the informer lifecycle
 * Fix #3061: Removed the deltafifo from the informer logic
-* Use apiGroupName in generated package for OpenShiftClient Handler/OperationsImpl classes
+* Fix #3081: Use apiGroupName in generated package for OpenShiftClient Handler/OperationsImpl classes
 * Fix #3089: Allowing patch/edit to infer context from the item
 * Fix #3066: Added replaceStatus (PUT), editStatus (JSON PATCH), and patchStatus (JSON MERGE PATCH) methods to support non-locking status updates
 
 #### Dependency Upgrade
 * Fix #2979: Update Kubernetes Model to v1.21.0
-* Update Tekton Triggers Model to v0.13.0
-* Update to sundrio 0.30.6
+* Fix #3099: Update Tekton Triggers Model to v0.13.0
+* Fix #3118: Update to sundrio 0.40.1
 
 #### New Features
 * Fix #2984: Add support for `flowcontrol.apiserver.k8s.io/v1beta1` FlowSchema and PriorityLevelConfiguration
