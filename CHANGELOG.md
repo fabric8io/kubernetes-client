@@ -4,6 +4,7 @@
 
 #### Bugs
 * KubernetesMockServer should not read local `.kube/config` while initializing client
+* Retry only Non-Restful Create-only resources in OpenShiftOAuthInterceptor
 
 #### Improvements
 * Fix #3135: added mock crud support for patch status, and will return exceptions for unsupported patch types
