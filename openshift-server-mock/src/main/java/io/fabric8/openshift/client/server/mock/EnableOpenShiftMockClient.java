@@ -27,7 +27,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * Annotation that is used for enabling OpenShiftMockServerExtension JUnit5 extension.
- * You may set here two parameters of `OpenShiftServer`: crudMode and https
+ * You may set here two parameters of `OpenShiftServer`: crudMode, https and instanceMock
  */
 @Target({ TYPE, METHOD, ANNOTATION_TYPE })
 @Retention(RUNTIME)
@@ -37,4 +37,9 @@ public @interface EnableOpenShiftMockClient {
   boolean https() default true;
 
   boolean crud() default false;
+
+  /**
+   * mock or skip mocking instance level client in tests, if such is present
+   */
+  boolean instanceMock() default true;
 }

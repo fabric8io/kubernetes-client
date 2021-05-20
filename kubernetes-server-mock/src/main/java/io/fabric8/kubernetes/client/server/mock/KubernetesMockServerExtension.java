@@ -83,13 +83,17 @@ public class KubernetesMockServerExtension implements AfterEachCallback, AfterAl
     }
   }
 
-  protected void initializeKubernetesClientAndMockServer(Class<?> testClass) {
+  protected boolean initializeKubernetesClientAndMockServer(Class<?> testClass, boolean isStatic) {
     EnableKubernetesMockClient a = testClass.getAnnotation(EnableKubernetesMockClient.class);
+    if(!isStatic && !testClass.getAnnotation(EnableKubernetesMockClient.class).instanceMock()) {
+      return false;
+    }
     mock = a.crud()
       ? new KubernetesMockServer(new Context(), new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(Collections.emptyList()), a.https())
       : new KubernetesMockServer(a.https());
     mock.init();
     client = mock.createClient();
+    return true;
   }
 
   protected void destroy() {
@@ -120,11 +124,9 @@ public class KubernetesMockServerExtension implements AfterEachCallback, AfterAl
     Optional<Class<?>> optClass = context.getTestClass();
     if (optClass.isPresent()) {
       Class<?> testClass = optClass.get();
-      if(!isStatic && !testClass.getAnnotation(EnableKubernetesMockClient.class).instanceMock()) {
-        return;
+      if(initializeKubernetesClientAndMockServer(testClass, isStatic)) {
+        processTestClassDeclaredFields(context, isStatic, testClass);
       }
-      initializeKubernetesClientAndMockServer(testClass);
-      processTestClassDeclaredFields(context, isStatic, testClass);
     }
   }
 
