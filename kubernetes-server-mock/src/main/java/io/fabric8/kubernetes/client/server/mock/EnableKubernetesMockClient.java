@@ -37,4 +37,9 @@ public @interface EnableKubernetesMockClient {
 	boolean https() default true;
 
 	boolean crud() default false;
+
+  /**
+   * mock or skip mocking instance level client in tests, if such is present
+   */
+	boolean instanceMock() default true;
 }

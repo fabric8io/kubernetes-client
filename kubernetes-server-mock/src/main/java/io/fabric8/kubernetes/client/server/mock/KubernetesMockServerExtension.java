@@ -120,6 +120,9 @@ public class KubernetesMockServerExtension implements AfterEachCallback, AfterAl
     Optional<Class<?>> optClass = context.getTestClass();
     if (optClass.isPresent()) {
       Class<?> testClass = optClass.get();
+      if(!isStatic && !testClass.getAnnotation(EnableKubernetesMockClient.class).instanceMock()) {
+        return;
+      }
       initializeKubernetesClientAndMockServer(testClass);
       processTestClassDeclaredFields(context, isStatic, testClass);
     }
