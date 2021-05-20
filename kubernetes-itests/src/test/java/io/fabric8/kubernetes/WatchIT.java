@@ -90,7 +90,7 @@ public class WatchIT {
     client.pods()
         .inNamespace(currentNamespace)
         .withName("sample-watch-pod")
-        .patch(new PatchContext.Builder().withPatchType(PatchType.STRATEGIC_MERGE).build(), new PodBuilder()
+        .patch(PatchContext.of(PatchType.STRATEGIC_MERGE), new PodBuilder()
             .withNewMetadata()
             .addToLabels("foo", "bar")
             .endMetadata()

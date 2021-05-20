@@ -22,6 +22,10 @@ public class PatchContext {
   private String fieldManager;
   private Boolean force;
   private PatchType patchType;
+  
+  public static PatchContext of(PatchType type) {
+    return new PatchContext.Builder().withPatchType(type).build();
+  }
 
   public List<String> getDryRun() {
     return dryRun;
