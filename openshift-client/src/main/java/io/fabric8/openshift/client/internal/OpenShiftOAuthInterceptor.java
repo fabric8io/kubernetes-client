@@ -17,10 +17,18 @@
 package io.fabric8.openshift.client.internal;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.authorization.v1.SelfSubjectAccessReview;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
+import io.fabric8.openshift.api.model.LocalResourceAccessReview;
+import io.fabric8.openshift.api.model.LocalSubjectAccessReview;
+import io.fabric8.openshift.api.model.ResourceAccessReview;
+import io.fabric8.openshift.api.model.SelfSubjectRulesReview;
+import io.fabric8.openshift.api.model.SubjectAccessReview;
+import io.fabric8.openshift.api.model.SubjectRulesReview;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import okhttp3.Credentials;
 import okhttp3.Interceptor;
@@ -30,6 +38,10 @@ import okhttp3.Response;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static java.net.HttpURLConnection.HTTP_FORBIDDEN;
@@ -44,8 +56,15 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
 
   private static final String BEFORE_TOKEN = "access_token=";
   private static final String AFTER_TOKEN = "&expires";
-  private static final String K8S_AUTHORIZATION = "authorization.k8s.io";
-  private static final String OPENSHIFT_AUTHORIZATION = "authorization.openshift.io";
+  private static final Set<String> RETRIABLE_RESOURCES = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
+    HasMetadata.getPlural(LocalSubjectAccessReview.class),
+    HasMetadata.getPlural(LocalResourceAccessReview.class),
+    HasMetadata.getPlural(ResourceAccessReview.class),
+    HasMetadata.getPlural(SelfSubjectRulesReview.class),
+    HasMetadata.getPlural(SubjectRulesReview.class),
+    HasMetadata.getPlural(SubjectAccessReview.class),
+    HasMetadata.getPlural(SelfSubjectAccessReview.class)
+    )));
 
   private final OkHttpClient client;
   private final OpenShiftConfig config;
@@ -149,9 +168,10 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
 
   private boolean isResponseSuccessful(Request request, Response response) {
     String url = request.url().toString();
+    String method = request.method();
     // always retry in case of authorization endpoints; since they also return 200 when no
     // authorization header is provided
-    if (url.contains(K8S_AUTHORIZATION) || url.contains(OPENSHIFT_AUTHORIZATION)) {
+    if (method.equals("POST") && RETRIABLE_RESOURCES.stream().anyMatch(url::endsWith)) {
       return false;
     }
     return response.code() != HTTP_UNAUTHORIZED && response.code() != HTTP_FORBIDDEN;

@@ -1,5 +1,10 @@
 ## CHANGELOG
 
+### 5.4.1
+
+#### Bugs
+* Fix #3152 Retry only Non-Restful Create-only resources in OpenShiftOAuthInterceptor
+
 ### 5.4.0 (2021-05-19)
 
 #### Bugs
