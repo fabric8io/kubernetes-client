@@ -18,7 +18,12 @@ package io.fabric8.kubernetes;
 
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
-import io.fabric8.kubernetes.client.*;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.WatcherException;
+import io.fabric8.kubernetes.client.dsl.base.PatchContext;
+import io.fabric8.kubernetes.client.dsl.base.PatchType;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
@@ -82,10 +87,14 @@ public class WatchIT {
       }
     });
 
-    client.pods().inNamespace(currentNamespace).withName("sample-watch-pod").edit(p -> new PodBuilder(p)
-      .editMetadata().addToLabels("foo", "bar")
-      .endMetadata()
-      .build());
+    client.pods()
+        .inNamespace(currentNamespace)
+        .withName("sample-watch-pod")
+        .patch(new PatchContext.Builder().withPatchType(PatchType.STRATEGIC_MERGE).build(), new PodBuilder()
+            .withNewMetadata()
+            .addToLabels("foo", "bar")
+            .endMetadata()
+            .build());
 
     assertTrue(eventLatch.await(10, TimeUnit.SECONDS));
     watch.close();
