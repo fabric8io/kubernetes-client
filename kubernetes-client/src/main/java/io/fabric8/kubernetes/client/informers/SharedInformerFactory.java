@@ -231,7 +231,7 @@ public class SharedInformerFactory extends BaseOperation {
         context = context.withIsNamespaceConfiguredFromGlobalConfig(false);
       }
     }
-    SharedIndexInformer<T> informer = new DefaultSharedIndexInformer<>(apiTypeClass, listerWatcher, resyncPeriodInMillis, context, eventListeners, resyncExecutor);
+    SharedIndexInformer<T> informer = new DefaultSharedIndexInformer<>(apiTypeClass, listerWatcher, resyncPeriodInMillis, context, eventListeners, informerExecutor, resyncExecutor);
     this.informers.put(getInformerKey(context), informer);
     return informer;
   }
