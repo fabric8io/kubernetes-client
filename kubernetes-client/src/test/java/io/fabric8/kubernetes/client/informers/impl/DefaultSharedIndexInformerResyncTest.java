@@ -25,7 +25,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.util.Collections;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -44,7 +43,7 @@ class DefaultSharedIndexInformerResyncTest {
   DefaultSharedIndexInformer<Pod, PodList> defaultSharedIndexInformer;
 
   private DefaultSharedIndexInformer<Pod, PodList> createDefaultSharedIndexInformer(long resyncPeriod) {
-    defaultSharedIndexInformer = new DefaultSharedIndexInformer<>(Pod.class, listerWatcher, resyncPeriod, operationContext, Collections.emptyList(), Runnable::run, sharedScheduler);
+    defaultSharedIndexInformer = new DefaultSharedIndexInformer<>(Pod.class, listerWatcher, resyncPeriod, operationContext, Runnable::run, sharedScheduler);
     return defaultSharedIndexInformer;
   }
   

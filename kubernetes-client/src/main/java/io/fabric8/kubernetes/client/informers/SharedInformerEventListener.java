@@ -17,4 +17,8 @@ package io.fabric8.kubernetes.client.informers;
 
 public interface SharedInformerEventListener {
   void onException(Exception exception);
+
+  default void onException(SharedIndexInformer<?> informer, Exception e) {
+    onException(e);
+  }
 }
