@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.informers.ListerWatcher;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.ResyncRunnable;
+import io.fabric8.kubernetes.client.informers.SerialExecutor;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 import io.fabric8.kubernetes.client.informers.SharedInformerEventListener;
 import io.fabric8.kubernetes.client.informers.SharedScheduler;
@@ -36,6 +37,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -72,7 +74,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
 
   private ScheduledFuture<?> resyncFuture;
   
-  public DefaultSharedIndexInformer(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, long resyncPeriod, OperationContext context, Collection<SharedInformerEventListener> eventListeners, SharedScheduler resyncExecutor) {
+  public DefaultSharedIndexInformer(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, long resyncPeriod, OperationContext context, Collection<SharedInformerEventListener> eventListeners, Executor informerExecutor, SharedScheduler resyncExecutor) {
     if (resyncPeriod < 0) {
       throw new IllegalArgumentException("Invalid resync period provided, It should be a non-negative value");
     }
@@ -82,7 +84,8 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
     this.resyncExecutor = resyncExecutor;
     this.apiTypeClass = apiTypeClass;
 
-    this.processor = new SharedProcessor<>();
+    // reuse the informer executor, but ensure serial processing
+    this.processor = new SharedProcessor<>(new SerialExecutor(informerExecutor));
     this.indexer = new Cache<>();
     this.indexer.setIsRunning(this::isRunning);
     

@@ -55,11 +55,4 @@ public interface ResourceEventHandler<T> {
    */
   void onDelete(T obj, boolean deletedFinalStateUnknown);
   
-  /**
-   * If the event handler should be called in a separate thread
-   * @return
-   */
-  default boolean isCalledAsync() {
-    return true;
-  }
 }

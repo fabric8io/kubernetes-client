@@ -44,7 +44,7 @@ class DefaultSharedIndexInformerResyncTest {
   DefaultSharedIndexInformer<Pod, PodList> defaultSharedIndexInformer;
 
   private DefaultSharedIndexInformer<Pod, PodList> createDefaultSharedIndexInformer(long resyncPeriod) {
-    defaultSharedIndexInformer = new DefaultSharedIndexInformer<>(Pod.class, listerWatcher, resyncPeriod, operationContext, Collections.emptyList(), sharedScheduler);
+    defaultSharedIndexInformer = new DefaultSharedIndexInformer<>(Pod.class, listerWatcher, resyncPeriod, operationContext, Collections.emptyList(), Runnable::run, sharedScheduler);
     return defaultSharedIndexInformer;
   }
   

@@ -21,7 +21,6 @@ import org.slf4j.LoggerFactory;
 
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.concurrent.Executor;
 
 /**
  * ProcessorListener implements Runnable interface. It's supposed to run in background
@@ -39,28 +38,20 @@ public class ProcessorListener<T> {
   private long resyncPeriodInMillis;
   private ZonedDateTime nextResync;
   private ResourceEventHandler<T> handler;
-  private Executor executor;
   
   public ProcessorListener(ResourceEventHandler<T> handler, long resyncPeriodInMillis) {
-    this(handler, resyncPeriodInMillis, Runnable::run);
-  }
-
-  public ProcessorListener(ResourceEventHandler<T> handler, long resyncPeriodInMillis, Executor executorService) {
     this.resyncPeriodInMillis = resyncPeriodInMillis;
     this.handler = handler;
-    this.executor = executorService;
 
     determineNextResync(ZonedDateTime.now());
   }
 
   public void add(Notification<T> notification) {
-    executor.execute(() -> {
-      try {
-        notification.handle(handler);
-      } catch (Exception ex) {
-        log.error("Failed invoking {} event handler: {}", handler, ex.getMessage(), ex);
-      }
-    });
+    try {
+      notification.handle(handler);
+    } catch (Exception ex) {
+      log.error("Failed invoking {} event handler: {}", handler, ex.getMessage(), ex);
+    }
   }
 
   public void determineNextResync(ZonedDateTime now) {

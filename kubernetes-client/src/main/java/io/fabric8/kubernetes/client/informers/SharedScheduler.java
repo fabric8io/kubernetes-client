@@ -24,7 +24,11 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Maintains a single thread daemon scheduler.
- * It is not intended for long-running tasks
+ * 
+ * <br>It is not intended for long-running tasks, 
+ * but it does not assume the task can be handed off to the common pool
+ * 
+ * <br>This is very similar to the CompletableFuture.Delayer, but provides a scheduler method
  */
 public class SharedScheduler {
   

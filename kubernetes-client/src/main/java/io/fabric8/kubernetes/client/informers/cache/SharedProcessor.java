@@ -16,14 +16,11 @@
 package io.fabric8.kubernetes.client.informers.cache;
 
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
-import io.fabric8.kubernetes.client.utils.Utils;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -33,18 +30,23 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  *
  * This has been taken from official-client: https://github.com/kubernetes-client/java/blob/master/util/src/main/java/io/kubernetes/client/informer/cache/SharedProcessor.java
  * 
- * <br>Modified to not submit tasks directly
+ * <br>Modified to simplify threading
  */
 public class SharedProcessor<T> {
   private ReadWriteLock lock = new ReentrantReadWriteLock();
-  private List<Runnable> toClose = new ArrayList<>();
 
   private List<ProcessorListener<T>> listeners;
   private List<ProcessorListener<T>> syncingListeners;
-
+  private final Executor executor;
+  
   public SharedProcessor() {
+    this(Runnable::run);
+  }
+
+  public SharedProcessor(Executor executor) {
     this.listeners = new ArrayList<>();
     this.syncingListeners = new ArrayList<>();
+    this.executor = executor;
   }
 
   /**
@@ -69,20 +71,23 @@ public class SharedProcessor<T> {
    * @param isSync whether in sync or not
    */
   public void distribute(ProcessorListener.Notification<T> obj, boolean isSync) {
+    // obtain the list to call outside before submitting
     lock.readLock().lock();
+    List<ProcessorListener<T>> toCall;
     try {
       if (isSync) {
-        for (ProcessorListener<T> listener : syncingListeners) {
-          listener.add(obj);
-        }
+        toCall = new ArrayList<>(syncingListeners);
       } else {
-        for (ProcessorListener<T> listener : listeners) {
-          listener.add(obj);
-        }
+        toCall = new ArrayList<>(listeners);
       }
     } finally {
       lock.readLock().unlock();
     }
+    executor.execute(() -> {
+      for (ProcessorListener<T> listener : toCall) {
+        listener.add(obj);
+      }
+    });
   }
 
   public boolean shouldResync() {
@@ -108,8 +113,6 @@ public class SharedProcessor<T> {
   public void stop() {
     lock.writeLock().lock();
     try {
-      toClose.forEach(Runnable::run);
-      toClose.clear();
       syncingListeners = null;
       listeners = null;
     } finally {
@@ -120,14 +123,7 @@ public class SharedProcessor<T> {
   public ProcessorListener<T> addProcessorListener(ResourceEventHandler<T> handler, long resyncPeriodMillis) {
     lock.writeLock().lock();
     try {
-      Executor executor = Runnable::run;
-      if (handler.isCalledAsync()) {
-        ExecutorService service = Executors.newSingleThreadExecutor(Utils.daemonThreadFactory(handler));
-        executor = service;
-        toClose.add(service::shutdownNow);
-      }
-  
-      ProcessorListener<T> listener = new ProcessorListener<>(handler, resyncPeriodMillis, executor);
+      ProcessorListener<T> listener = new ProcessorListener<>(handler, resyncPeriodMillis);
       addListener(listener);
       return listener;
     } finally {
