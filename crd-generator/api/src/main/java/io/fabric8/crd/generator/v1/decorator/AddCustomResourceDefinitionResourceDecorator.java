@@ -16,11 +16,12 @@
 package io.fabric8.crd.generator.v1.decorator;
 
 import io.fabric8.crd.generator.decorator.Decorator;
+import io.fabric8.crd.generator.decorator.ResourceProvidingDecorator;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionBuilder;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 
-public class AddCustomResourceDefinitionResourceDecorator extends Decorator<KubernetesListBuilder> {
+public class AddCustomResourceDefinitionResourceDecorator extends ResourceProvidingDecorator<KubernetesListBuilder> {
 
   private String name;
   private String apiGroup;
@@ -71,8 +72,12 @@ public class AddCustomResourceDefinitionResourceDecorator extends Decorator<Kube
 
 	@Override
 	public Class<? extends Decorator>[] before() {
-    return new Class[]{AddCustomResourceDefinitionVersionDecorator.class,
-      CustomResourceDefinitionDecorator.class};
+    return new Class[]{AddCustomResourceDefinitionVersionDecorator.class, CustomResourceDefinitionDecorator.class};
   }
 
+
+	@Override
+	public String toString() {
+		return getClass().getName() + " [apiGroup=" + apiGroup + ", kind=" + kind + ", name=" + name + ", plural=" + plural + ", scope=" + scope + "]";
+	}
 }

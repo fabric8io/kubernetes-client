@@ -93,7 +93,9 @@ public class CertUtils {
     KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
 
     if (Utils.isNotNullOrEmpty(trustStoreFile)) {
-      trustStore.load(new FileInputStream(trustStoreFile), trustStorePassphrase);
+      try (FileInputStream fis = new FileInputStream(trustStoreFile)) {
+        trustStore.load(fis, trustStorePassphrase);
+      }
     } else {
       loadDefaultTrustStoreFile(trustStore, trustStorePassphrase);
     }
@@ -114,7 +116,9 @@ public class CertUtils {
 
       KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
       if (Utils.isNotNullOrEmpty(keyStoreFile)){
-        keyStore.load(new FileInputStream(keyStoreFile), keyStorePassphrase);
+        try (FileInputStream fis = new FileInputStream(keyStoreFile)) {
+          keyStore.load(fis, keyStorePassphrase);
+        }
       } else {
         loadDefaultKeyStoreFile(keyStore, keyStorePassphrase);
       }
@@ -227,7 +231,9 @@ public class CertUtils {
 
     if (fileToLoad.exists() && fileToLoad.isFile() && fileToLoad.length() > 0) {
       try {
-        keyStore.load(new FileInputStream(fileToLoad), passphrase);
+        try (FileInputStream fis = new FileInputStream(fileToLoad)) {
+          keyStore.load(fis, passphrase);
+        }
         return true;
       } catch (Exception e) {
         String passphraseToPrint = passphrase != null ? String.valueOf(passphrase) : null;

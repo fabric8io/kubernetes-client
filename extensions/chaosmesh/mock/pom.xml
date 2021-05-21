@@ -22,7 +22,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>chaosmesh</artifactId>
-    <version>5.4-SNAPSHOT</version>
+    <version>5.5-SNAPSHOT</version>
   </parent>
 
   <artifactId>chaosmesh-server-mock</artifactId>

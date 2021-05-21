@@ -24,13 +24,21 @@ import java.util.function.Predicate;
 public class AddCustomResourceDefinitionVersionDecorator extends
   CustomResourceDefinitionDecorator<CustomResourceDefinitionSpecFluent<?>> {
 
-  private String version;
+  private final String version;
 
   public AddCustomResourceDefinitionVersionDecorator(String name, String version) {
     super(name);
     this.version = version;
   }
 
+  public String getName() {
+    return this.name;
+  }
+ 
+  public String getVersion() {
+    return this.version;
+  }
+ 
   @Override
   public void andThenVisit(CustomResourceDefinitionSpecFluent<?> spec, ObjectMeta resourceMeta) {
     Predicate<CustomResourceDefinitionVersionBuilder> predicate = candidate -> candidate.getName()
@@ -46,5 +54,9 @@ public class AddCustomResourceDefinitionVersionDecorator extends
 	public Class<? extends Decorator>[] after() {
 		return new Class[] { AddCustomResourceDefinitionResourceDecorator.class };
 	}
-	
+
+	@Override
+	public String toString() {
+		return getClass().getName() + " [name:"+ getName() + ", version:"+ version +"]";
+	}
 }

@@ -4605,6 +4605,44 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "os_authorization_ResourceAccessReviewResponse": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "authorization.openshift.io/v1",
+          "required": true
+        },
+        "evalutionError": {
+          "type": "string"
+        },
+        "groups": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "ResourceAccessReviewResponse",
+          "required": true
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "users": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.ResourceAccessReviewResponse",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "os_authorization_Role": {
       "type": "object",
       "properties": {
@@ -4744,6 +4782,38 @@
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.HasMetadata",
         "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "os_authorization_RoleBindingRestrictionList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "authorization.openshift.io/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/os_authorization_RoleBindingRestriction",
+            "existingJavaType": "io.fabric8.openshift.api.model.RoleBindingRestriction"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "RoleBindingRestrictionList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.RoleBindingRestrictionList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openshift.api.model.RoleBindingRestriction\u003e"
       ]
     },
     "os_authorization_RoleBindingRestrictionSpec": {
@@ -13129,6 +13199,10 @@
       "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
       "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
     },
+    "OpenShiftRoleBindingRestrictionList": {
+      "$ref": "#/definitions/os_authorization_RoleBindingRestrictionList",
+      "existingJavaType": "io.fabric8.openshift.api.model.RoleBindingRestrictionList"
+    },
     "OpenshiftClusterRole": {
       "$ref": "#/definitions/os_authorization_ClusterRole",
       "existingJavaType": "io.fabric8.openshift.api.model.ClusterRole"
@@ -13236,6 +13310,10 @@
     "ResourceAccessReview": {
       "$ref": "#/definitions/os_authorization_ResourceAccessReview",
       "existingJavaType": "io.fabric8.openshift.api.model.ResourceAccessReview"
+    },
+    "ResourceAccessReviewResponse": {
+      "$ref": "#/definitions/os_authorization_ResourceAccessReviewResponse",
+      "existingJavaType": "io.fabric8.openshift.api.model.ResourceAccessReviewResponse"
     },
     "RootPaths": {
       "$ref": "#/definitions/kubernetes_apimachinery_RootPaths",

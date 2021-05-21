@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionSpecFluent;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersion;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersionBuilder;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersionFluentImpl;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
 
@@ -35,14 +34,14 @@ public class EnsureSingleStorageVersionDecorator extends
 
   @Override
   public void andThenVisit(CustomResourceDefinitionSpecFluent<?> spec, ObjectMeta resourceMeta) {
-    Predicate<CustomResourceDefinitionVersionBuilder> hasStorageVersion = CustomResourceDefinitionVersionFluentImpl::getStorage;
+    Predicate<CustomResourceDefinitionVersionBuilder> hasStorageVersion = v -> v.getStorage() != null && v.getStorage();
 
     if (spec.hasVersions() && !spec.hasMatchingVersion(hasStorageVersion)) {
       spec.editFirstVersion().withStorage(true).endVersion();
     }
 
     for (CustomResourceDefinitionVersion version : spec.buildVersions()) {
-      if (version.getStorage()) {
+      if (version.getStorage() != null && version.getStorage()) {
         String existing = storageVersion.get();
         if (existing != null && !existing.equals(version.getName())) {
           throw new IllegalStateException(String.format(
@@ -60,4 +59,9 @@ public class EnsureSingleStorageVersionDecorator extends
     return new Class[]{AddCustomResourceDefinitionResourceDecorator.class,
       AddCustomResourceDefinitionVersionDecorator.class, SetStorageVersionDecorator.class};
   }
+
+	@Override
+	public String toString() {
+		return getClass().getName() + " [name:"+ getName() +"]";
+	}
 }
