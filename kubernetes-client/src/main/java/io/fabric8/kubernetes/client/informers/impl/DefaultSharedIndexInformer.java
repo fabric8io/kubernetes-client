@@ -23,7 +23,6 @@ import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.ResyncRunnable;
 import io.fabric8.kubernetes.client.informers.SerialExecutor;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
-import io.fabric8.kubernetes.client.informers.SharedInformerEventListener;
 import io.fabric8.kubernetes.client.informers.SharedScheduler;
 import io.fabric8.kubernetes.client.informers.cache.Cache;
 import io.fabric8.kubernetes.client.informers.cache.Indexer;
@@ -34,7 +33,6 @@ import io.fabric8.kubernetes.client.informers.cache.SharedProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executor;
@@ -58,7 +56,6 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
   // value).
   private long defaultEventHandlerResyncPeriod;
   
-  private final Collection<SharedInformerEventListener> eventListeners;
   private final SharedScheduler resyncExecutor;
   private final Reflector<T, L> reflector;
   private final Class<T> apiTypeClass;
@@ -74,13 +71,12 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
 
   private ScheduledFuture<?> resyncFuture;
   
-  public DefaultSharedIndexInformer(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, long resyncPeriod, OperationContext context, Collection<SharedInformerEventListener> eventListeners, Executor informerExecutor, SharedScheduler resyncExecutor) {
+  public DefaultSharedIndexInformer(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, long resyncPeriod, OperationContext context, Executor informerExecutor, SharedScheduler resyncExecutor) {
     if (resyncPeriod < 0) {
       throw new IllegalArgumentException("Invalid resync period provided, It should be a non-negative value");
     }
     this.resyncCheckPeriodMillis = resyncPeriod;
     this.defaultEventHandlerResyncPeriod = resyncPeriod;
-    this.eventListeners = eventListeners;
     this.resyncExecutor = resyncExecutor;
     this.apiTypeClass = apiTypeClass;
 
@@ -136,8 +132,8 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
     }
 
     List<T> objectList = this.indexer.list();
-    for (Object item : objectList) {
-      listener.add(new ProcessorListener.AddNotification(item));
+    for (T item : objectList) {
+      listener.add(new ProcessorListener.AddNotification<>(item));
     }
   }
 
@@ -155,17 +151,11 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
       return;
     }
 
-    try {
-      log.info("informer#Controller: ready to run resync and reflector for {} with resync {}", apiTypeClass, resyncCheckPeriodMillis);
+    log.info("informer#Controller: ready to run resync and reflector for {} with resync {}", apiTypeClass, resyncCheckPeriodMillis);
 
-      scheduleResync(processor::shouldResync);
-      
-      reflector.listSyncAndWatch();
-    } catch (RuntimeException exception) {
-      log.warn("Informer start did not complete", exception);
-      this.eventListeners.forEach(listener -> listener.onException(exception));
-      throw exception;
-    }
+    scheduleResync(processor::shouldResync);
+    
+    reflector.listSyncAndWatch();
     // stop called while run is called could be ineffective, check for it afterwards
     synchronized (this) {
       if (stopped) {
@@ -200,7 +190,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
   }
 
   @Override
-  public Indexer getIndexer() {
+  public Indexer<T> getIndexer() {
     return this.indexer;
   }
 
@@ -236,6 +226,11 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
   
   ScheduledFuture<?> getResyncFuture() {
     return resyncFuture;
+  }
+  
+  @Override
+  public Class<T> getApiTypeClass() {
+    return apiTypeClass;
   }
 
 }

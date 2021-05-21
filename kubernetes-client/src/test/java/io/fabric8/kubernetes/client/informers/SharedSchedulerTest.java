@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import static org.awaitility.Awaitility.await;
 
-public class SharedSchedulerTest {
+class SharedSchedulerTest {
   
   @Test
   void testAutoShutdown() throws InterruptedException {

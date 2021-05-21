@@ -66,4 +66,9 @@ public interface SharedInformer<T> {
    * Return true if the informer is running
    */
   boolean isRunning();
+
+  /**
+   * Return the class this informer is watching
+   */
+  Class<T> getApiTypeClass();
 }

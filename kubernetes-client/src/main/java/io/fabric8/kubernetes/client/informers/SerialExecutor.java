@@ -26,7 +26,7 @@ import java.util.concurrent.Executor;
  * <br>Effectively creates a derived single thread executor
  */
 public class SerialExecutor implements Executor {
-  final Queue<Runnable> tasks = new ArrayDeque<Runnable>();
+  final Queue<Runnable> tasks = new ArrayDeque<>();
   final Executor executor;
   Runnable active;
 
@@ -35,13 +35,11 @@ public class SerialExecutor implements Executor {
   }
 
   public synchronized void execute(final Runnable r) {
-    tasks.offer(new Runnable() {
-      public void run() {
-        try {
-          r.run();
-        } finally {
-          scheduleNext();
-        }
+    tasks.offer(() -> {
+      try {
+        r.run();
+      } finally {
+        scheduleNext();
       }
     });
     if (active == null) {
