@@ -3,6 +3,7 @@
 ### 5.5-SNAPSHOT
 
 #### Bugs
+* KubernetesMockServer should not read local `.kube/config` while initializing client
 
 #### Improvements
 * Fix #3135: added mock crud support for patch status, and will return exceptions for unsupported patch types
