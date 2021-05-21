@@ -31,6 +31,7 @@ import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
 
 import java.net.InetAddress;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
@@ -88,12 +89,17 @@ public class KubernetesMockServer extends DefaultMockServer {
     }
 
     public NamespacedKubernetesClient createClient() {
-        Config config = new ConfigBuilder()
+        Config config = getMockConfiguration();
+        return new DefaultKubernetesClient(createHttpClientForMockServer(config), config);
+    }
+
+    protected Config getMockConfiguration() {
+        Config config = new ConfigBuilder(Config.empty())
                 .withMasterUrl(url("/"))
                 .withTrustCerts(true)
                 .withTlsVersions(TLS_1_2)
                 .withNamespace("test")
                 .build();
-        return new DefaultKubernetesClient(createHttpClientForMockServer(config), config);
+        return config;
     }
 }

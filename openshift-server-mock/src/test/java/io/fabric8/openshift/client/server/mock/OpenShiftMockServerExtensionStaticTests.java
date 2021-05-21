@@ -19,6 +19,8 @@ import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableOpenShiftMockClient(crud = true)
 class OpenShiftMockServerExtensionStaticTests {
@@ -27,5 +29,8 @@ class OpenShiftMockServerExtensionStaticTests {
   @Test
   void testStaticOpenShiftClientGetsInitialized() {
     assertNotNull(openShiftClient);
+    assertNull(openShiftClient.getConfiguration().getOauthToken());
+    assertNull(openShiftClient.getConfiguration().getCurrentContext());
+    assertTrue(openShiftClient.getConfiguration().getContexts().isEmpty());
   }
 }
