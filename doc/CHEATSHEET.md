@@ -67,7 +67,6 @@ This document contains common usages of different resources using Fabric8 Kubern
   * [Knative Client DSL Usage](#knative-client-dsl-usage)
 * [Logging](#Logging)
   
-
 ### Initializing Kubernetes Client
 Typically, we create Kubernetes Client like this:
 ```
