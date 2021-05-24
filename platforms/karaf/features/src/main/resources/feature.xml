@@ -69,6 +69,7 @@
     <bundle>mvn:io.fabric8/openshift-model-monitoring/${project.version}</bundle>
     <bundle>mvn:io.fabric8/openshift-model-operator/${project.version}</bundle>
     <bundle>mvn:io.fabric8/openshift-model-operatorhub/${project.version}</bundle>
+    <bundle>mvn:io.fabric8/openshift-model-machineconfig/${project.version}</bundle>
   </feature>
 
 </features>

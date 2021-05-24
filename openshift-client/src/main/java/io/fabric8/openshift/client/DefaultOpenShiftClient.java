@@ -195,6 +195,7 @@ import io.fabric8.openshift.api.model.HelmChartRepositoryList;
 import io.fabric8.openshift.client.dsl.BuildConfigResource;
 import io.fabric8.openshift.client.dsl.BuildResource;
 import io.fabric8.openshift.client.dsl.DeployableScalableResource;
+import io.fabric8.openshift.client.dsl.MachineConfigurationAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftConfigAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftConsoleAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftMonitoringAPIGroupDSL;
@@ -731,6 +732,11 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   @Override
   public AutoscalingAPIGroupDSL autoscaling() {
     return adapt(AutoscalingAPIGroupClient.class);
+  }
+
+  @Override
+  public MachineConfigurationAPIGroupDSL machineConfigurations() {
+    return adapt(OpenShiftMachineConfigurationAPIGroupClient.class);
   }
 
   @Override

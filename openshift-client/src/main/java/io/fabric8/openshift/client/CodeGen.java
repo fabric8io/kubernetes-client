@@ -31,6 +31,7 @@ import io.sundr.transform.annotations.VelocityTransformations;
                 @ResourceSelector("operatorhub.properties"),
                 @ResourceSelector("monitoring.properties"),
                 @ResourceSelector("console.properties"),
+                @ResourceSelector("machineconfig.properties"),
         }
 
 )
