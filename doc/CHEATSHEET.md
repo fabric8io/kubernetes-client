@@ -65,7 +65,8 @@ This document contains common usages of different resources using Fabric8 Kubern
 * [Knative Client](#knative-client)
   * [Initializing Knative Client](#initializing-knative-client)
   * [Knative Client DSL Usage](#knative-client-dsl-usage)
-
+* [Logging](#Logging)
+  
 ### Initializing Kubernetes Client
 Typically, we create Kubernetes Client like this:
 ```
@@ -2767,3 +2768,13 @@ try (KnativeClient kn = new DefaultKnativeClient()) {
     kn.services().inNamespace("default").createOrReplace(service);
 }
 ```
+
+#### Logging
+Using logging-interceptor:
+
+- Configure OkHTTP logging:
+- Set logging level to trace in my simplelogger.properties file:
+```
+ org.slf4j.simpleLogger.defaultLogLevel=trace
+```
+
