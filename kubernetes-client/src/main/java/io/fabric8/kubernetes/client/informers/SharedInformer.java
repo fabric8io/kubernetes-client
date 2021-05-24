@@ -51,7 +51,12 @@ public interface SharedInformer<T> {
    */
   void stop();
 
-  boolean hasSynced();
+  /**
+   * Return true if the Informer has ever synced
+   */
+  default boolean hasSynced() {
+    return lastSyncResourceVersion() != null;
+  }
 
   /**
    * The resource version observed when last synced with the underlying store.
@@ -71,4 +76,10 @@ public interface SharedInformer<T> {
    * Return the class this informer is watching
    */
   Class<T> getApiTypeClass();
+  
+  /**
+   * Return true if the informer is actively watching
+   * May return false when {@link #isRunning()} is true when watch needs to be re-established.
+   */
+  boolean isWatching();
 }

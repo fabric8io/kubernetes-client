@@ -18,7 +18,10 @@ package io.fabric8.kubernetes.client.informers.cache;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.informers.ListerWatcher;
 import org.slf4j.Logger;
@@ -30,26 +33,26 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
 
   private static final Logger log = LoggerFactory.getLogger(Reflector.class);
 
-  private final AtomicReference<String> lastSyncResourceVersion;
+  private volatile String lastSyncResourceVersion;
   private final Class<T> apiTypeClass;
   private final ListerWatcher<T, L> listerWatcher;
-  private final Store<T> store;
+  private final SyncableStore<T> store;
   private final OperationContext operationContext;
-  private final ReflectorWatcher<T> watcher;
-  private volatile boolean running = true;
+  private final ReflectorWatcher watcher;
+  private volatile boolean running;
+  private volatile boolean watching;
   private final AtomicReference<Watch> watch;
 
-  public Reflector(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, Store store, OperationContext operationContext) {
+  public Reflector(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, SyncableStore<T> store, OperationContext operationContext) {
     this.apiTypeClass = apiTypeClass;
     this.listerWatcher = listerWatcher;
     this.store = store;
     this.operationContext = operationContext;
-    this.lastSyncResourceVersion = new AtomicReference<>();
-    this.watcher = new ReflectorWatcher<>(store, lastSyncResourceVersion, this::listSyncAndWatch);
+    this.watcher = new ReflectorWatcher();
     this.watch = new AtomicReference<>(null);
   }
 
-  private L getList() {
+  protected L getList() {
     return listerWatcher.list(new ListOptionsBuilder()
       .withWatch(Boolean.FALSE)
       .withResourceVersion(null)
@@ -65,8 +68,9 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
     Watch theWatch = watch.getAndSet(null);
     if (theWatch != null) {
       String ns = operationContext.getNamespace();
-      log.debug("Stopping watcher for resource {} v{} in namespace {}", apiTypeClass, lastSyncResourceVersion.get(), ns);
+      log.debug("Stopping watcher for resource {} v{} in namespace {}", apiTypeClass, lastSyncResourceVersion, ns);
       theWatch.close();
+      watchStopped(); // proactively report as stopped
     }
   }
 
@@ -75,12 +79,13 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
    * <br>Should be called only at start and when HttpGone is seen.
    */
   public void listSyncAndWatch() {
-    store.isPopulated(false);
+    running = true;
+    watching = false;
     final L list = getList();
     final String latestResourceVersion = list.getMetadata().getResourceVersion();
-    lastSyncResourceVersion.set(list.getMetadata().getResourceVersion());
+    lastSyncResourceVersion = latestResourceVersion;
     log.debug("Listing items ({}) for resource {} v{}", list.getItems().size(), apiTypeClass, latestResourceVersion);
-    store.replace(list.getItems(), latestResourceVersion);
+    store.replace(list.getItems());
     startWatcher(latestResourceVersion);
   }
 
@@ -94,13 +99,76 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
       listerWatcher.watch(new ListOptionsBuilder()
         .withWatch(Boolean.TRUE).withResourceVersion(latestResourceVersion).withTimeoutSeconds(null).build(),
       operationContext.getNamespace(), operationContext, watcher));
+    watching = true;
+  }
+  
+  private synchronized void watchStopped() {
+    watching = false;
   }
 
   public String getLastSyncResourceVersion() {
-    return lastSyncResourceVersion.get();
+    return lastSyncResourceVersion;
   }
   
   public boolean isRunning() {
     return running;
   }
+  
+  public boolean isWatching() {
+    return watching;
+  }
+  
+  class ReflectorWatcher implements Watcher<T> {
+
+    @Override
+    public void eventReceived(Action action, T resource) {
+      if (action == null) {
+        throw new KubernetesClientException("Unrecognized event");
+      }
+      if (resource == null) {
+        throw new KubernetesClientException("Unrecognized resource");  
+      }
+      if (log.isDebugEnabled()) {
+        log.debug("Event received {} {}# resourceVersion {}", action.name(), resource.getKind(), resource.getMetadata().getResourceVersion());
+      }
+      switch (action) {
+        case ERROR:
+          throw new KubernetesClientException("ERROR event");
+        case ADDED:
+          store.add(resource);
+          break;
+        case MODIFIED:
+          store.update(resource);
+          break;
+        case DELETED:
+          store.delete(resource);
+          break;
+      }
+      lastSyncResourceVersion = resource.getMetadata().getResourceVersion();
+    }
+
+    @Override
+    public void onClose(WatcherException exception) {
+      watchStopped();
+      // this close was triggered by an exception,
+      // not the user, it is expected that the watch retry will handle this
+      log.warn("Watch closing with exception", exception);
+      if (exception.isHttpGone()) {
+          listSyncAndWatch();
+      }
+    }
+
+    @Override
+    public void onClose() {
+      watchStopped();
+      log.debug("Watch gracefully closed");
+    }
+
+    @Override
+    public boolean reconnecting() {
+      return true;
+    }
+    
+  }
+
 }
