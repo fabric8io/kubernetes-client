@@ -16,6 +16,9 @@
 
 package io.fabric8.kubernetes.client.informers.cache;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +28,8 @@ import java.util.Map;
  * @param <T>
  */
 public class ProcessorStore<T> implements Store<T> {
+  
+  private static final Logger log = LoggerFactory.getLogger(ProcessorStore.class);
 
   private Store<T> actualStore;
   private SharedProcessor<T> processor;
@@ -106,6 +111,7 @@ public class ProcessorStore<T> implements Store<T> {
 
   @Override
   public void resync() {
+    log.debug("resync");
     this.actualStore.list()
         .forEach(i -> this.processor.distribute(new ProcessorListener.UpdateNotification<T>(i, i), true));
   }

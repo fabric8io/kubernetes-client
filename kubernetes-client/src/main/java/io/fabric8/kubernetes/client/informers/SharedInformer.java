@@ -31,12 +31,17 @@ public interface SharedInformer<T> {
 
   /**
    * Adds an event handler to the shared informer using the specified resync period.
+   * The period may be equal to 0 to disable resync events for this listener.  Any other value
+   * will become the same as the SharedInformer default. 
+   * 
    * Events to a single handler are delivered sequentially, but there is no
    * coordination between different handlers.
    *
    * @param handle the event handler
    * @param resyncPeriod the specific resync period
+   * @deprecated
    */
+  @Deprecated
   void addEventHandlerWithResyncPeriod(ResourceEventHandler<T> handle, long resyncPeriod);
 
   /**
@@ -71,4 +76,15 @@ public interface SharedInformer<T> {
    * Return the class this informer is watching
    */
   Class<T> getApiTypeClass();
+
+  /**
+   * Adds an event handler to the shared informer without resync.
+   * 
+   * Events to a single handler are delivered sequentially, but there is no
+   * coordination between different handlers.
+   *
+   * @param handle the event handler
+   * @param resyncPeriod the specific resync period
+   */
+  void addEventHandlerWithoutResync(ResourceEventHandler<T> handler);
 }

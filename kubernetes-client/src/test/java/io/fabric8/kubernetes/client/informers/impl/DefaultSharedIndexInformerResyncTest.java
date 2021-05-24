@@ -42,6 +42,7 @@ class DefaultSharedIndexInformerResyncTest {
 
   private DefaultSharedIndexInformer<Pod, PodList> createDefaultSharedIndexInformer(long resyncPeriod) {
     defaultSharedIndexInformer = new DefaultSharedIndexInformer<>(Pod.class, listerWatcher, resyncPeriod, operationContext, Runnable::run);
+    defaultSharedIndexInformer.setResyncCheckPeriodMillis(resyncPeriod);
     return defaultSharedIndexInformer;
   }
   
@@ -105,27 +106,6 @@ class DefaultSharedIndexInformerResyncTest {
   }
 
   @Test
-  @DisplayName("Controller with resync function throwing exception")
-  void testControllerRunsResyncFunctionThrowingException() throws InterruptedException {
-    // Given + When
-    long fullResyncPeriod = 10L;
-    int numberOfResyncs = 10;
-    final CountDownLatch countDown = new CountDownLatch(numberOfResyncs);
-    DefaultSharedIndexInformer<Pod, PodList> controller = createDefaultSharedIndexInformer(fullResyncPeriod);
-    controller.scheduleResync(() -> {
-      countDown.countDown();
-      if( countDown.getCount() == 2 ) {
-        throw new RuntimeException("make it fail");
-      }
-      return true;
-    });
-    countDown.await(WAIT_TIME, TimeUnit.MILLISECONDS);
-    controller.stop();
-    // Then
-    assertThat(countDown.getCount()).isLessThanOrEqualTo(2);
-  }
-
-  @Test
   @DisplayName("Controller initialized with resync period to 0 should not initialize resyncExecutor")
   void testControllerRunWithResyncPeriodToZero() throws InterruptedException {
     // Given + When
@@ -144,7 +124,7 @@ class DefaultSharedIndexInformerResyncTest {
     int numberOfResyncs = 10;
     final CountDownLatch countDown = new CountDownLatch(numberOfResyncs);
     DefaultSharedIndexInformer<Pod, PodList> controller = createDefaultSharedIndexInformer(fullResyncPeriod);
-    controller.scheduleResync(() -> {countDown.countDown(); return true;});
+    controller.scheduleResync(() -> {countDown.countDown();});
     // We give an extra cycle to avoid clock inaccurracy interruptions
     countDown.await(WAIT_TIME, TimeUnit.MILLISECONDS);
     controller.stop();
@@ -160,7 +140,7 @@ class DefaultSharedIndexInformerResyncTest {
     int count = 10;
     final CountDownLatch countDown = new CountDownLatch(count);
     DefaultSharedIndexInformer<Pod, PodList> controller = createDefaultSharedIndexInformer(0);
-    controller.scheduleResync(() -> {countDown.countDown(); return true;});
+    controller.scheduleResync(() -> {countDown.countDown();});
     countDown.await(1000, TimeUnit.MILLISECONDS);
     controller.stop();
     // Then

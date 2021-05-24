@@ -36,9 +36,9 @@ class SharedProcessorTest {
     ExpectingNotificationHandler<Pod> expectUpdateHandler = new ExpectingNotificationHandler<>(updateNotification);
     ExpectingNotificationHandler<Pod> expectDeleteHandler = new ExpectingNotificationHandler<>(deleteNotification);
 
-    sharedProcessor.addListener(expectAddHandler);
-    sharedProcessor.addListener(expectUpdateHandler);
-    sharedProcessor.addListener(expectDeleteHandler);
+    sharedProcessor.addListener(expectAddHandler, false);
+    sharedProcessor.addListener(expectUpdateHandler, false);
+    sharedProcessor.addListener(expectDeleteHandler, false);
 
     sharedProcessor.distribute(addNotification, false);
     sharedProcessor.distribute(updateNotification, false);
@@ -60,12 +60,12 @@ class SharedProcessorTest {
 
         @Override
         public void onDelete(T obj, boolean deletedFinalStateUnknown) { }
-      }, 0);
+      });
       this.expectingNotification = notification;
     }
 
-    ExpectingNotificationHandler(ResourceEventHandler<T> handler, long resyncPeriod) {
-      super(handler, resyncPeriod);
+    ExpectingNotificationHandler(ResourceEventHandler<T> handler) {
+      super(handler);
     }
 
     private ProcessorListener.Notification<T> expectingNotification;

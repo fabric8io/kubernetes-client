@@ -117,7 +117,7 @@ public class SharedInformerFactory extends BaseOperation {
    * <b>Note:</b>It watches for events in <b>ALL NAMESPACES</b>.
    *
    * @param apiTypeClass apiType class
-   * @param resyncPeriodInMillis resync period in milliseconds
+   * @param resyncPeriodInMillis resync period in milliseconds. Use 0 to disable resyncs. 1000 is the minimum value.
    * @param <T> the type parameter (should extend {@link io.fabric8.kubernetes.api.model.HasMetadata} and implement {@link io.fabric8.kubernetes.api.model.Namespaced}) if Namespace scoped resource
    * @return the shared index informer
    */
@@ -132,7 +132,7 @@ public class SharedInformerFactory extends BaseOperation {
    *
    * @param apiTypeClass apiType class
    * @param operationContext {@link OperationContext} Operation Context
-   * @param resyncPeriodInMillis resync period in milliseconds
+   * @param resyncPeriodInMillis resync period in milliseconds. Use 0 to disable resyncs. 1000 is the minimum value.
    * @param <T> the type parameter (should extend {@link io.fabric8.kubernetes.api.model.HasMetadata} and implement {@link io.fabric8.kubernetes.api.model.Namespaced}) if Namespace scoped resource
    * @return the shared index informer
    */
@@ -148,7 +148,7 @@ public class SharedInformerFactory extends BaseOperation {
    * @param customResourceContext basic information about the Custom Resource Definition corresponding to that custom resource
    * @param apiTypeClass apiType class
    * @param apiListTypeClass api list type class
-   * @param resyncPeriodInMillis resync period in milliseconds
+   * @param resyncPeriodInMillis resync period in milliseconds. Use 0 to disable resyncs. 1000 is the minimum value.
    * @param <T> the type parameter (should extend {@link io.fabric8.kubernetes.api.model.HasMetadata} and implement {@link io.fabric8.kubernetes.api.model.Namespaced})
    * @param <L> the type's list parameter (should extend {@link io.fabric8.kubernetes.api.model.KubernetesResourceList}
    * @return the shared index informer
@@ -172,7 +172,7 @@ public class SharedInformerFactory extends BaseOperation {
    * Constructs and returns a shared index informer with resync period specified for custom resources.
    *
    * @param apiTypeClass apiType class
-   * @param resyncPeriodInMillis resync period in milliseconds
+   * @param resyncPeriodInMillis resync period in milliseconds. Use 0 to disable resyncs. 1000 is the minimum value.
    * @param <T> the type parameter (should extend {@link CustomResource} and implement {@link io.fabric8.kubernetes.api.model.Namespaced})
    * @return the shared index informer
    */
@@ -186,7 +186,7 @@ public class SharedInformerFactory extends BaseOperation {
    * POJO
    *
    * @param apiTypeClass apiType class
-   * @param resyncPeriodInMillis  resync period in milliseconds
+   * @param resyncPeriodInMillis  resync period in milliseconds. Use 0 to disable resyncs.
    * @param <T> the type parameter (should extend {@link io.fabric8.kubernetes.api.model.HasMetadata} and implement {@link io.fabric8.kubernetes.api.model.Namespaced})
    * @return the shared index informer
    */
@@ -202,7 +202,7 @@ public class SharedInformerFactory extends BaseOperation {
    *
    * @param apiTypeClass apiType class
    * @param apiListTypeClass api list type class
-   * @param resyncPeriodInMillis resync period in milliseconds
+   * @param resyncPeriodInMillis resync period in milliseconds. Use 0 to disable resyncs. 1000 is the minimum value.
    * @param <T> the type parameter (should extend {@link io.fabric8.kubernetes.api.model.HasMetadata} and implement {@link io.fabric8.kubernetes.api.model.Namespaced})
    * @param <L> the type's list parameter (should extend {@link io.fabric8.kubernetes.api.model.KubernetesResourceList}
    * @return the shared index informer

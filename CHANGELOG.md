@@ -14,6 +14,10 @@
 #### New Features
 * Fix #3133: Add DSL Support for `authorization.openshift.io/v1` resources in OpenShiftClient
 
+#### _**Note**_: Breaking changes in the API
+##### DSL Changes:
+- #3159 The resync period that an informer is created with is the only relevant period for that informer.  Handlers that are added will use the informer resync period unless resync is disabled when the handler is added.
+
 ### 5.4.0 (2021-05-19)
 
 #### Bugs

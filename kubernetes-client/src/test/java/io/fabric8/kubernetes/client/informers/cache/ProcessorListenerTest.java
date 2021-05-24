@@ -48,7 +48,7 @@ class ProcessorListenerTest {
           assertEquals(pod, obj);
           deleteNotificationReceived = true;
         }
-      }, 0);
+      });
 
     listener.add(new ProcessorListener.AddNotification<>(pod));
     listener.add(new ProcessorListener.UpdateNotification<>(null, pod));

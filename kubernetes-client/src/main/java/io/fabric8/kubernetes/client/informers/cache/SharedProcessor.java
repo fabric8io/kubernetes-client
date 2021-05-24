@@ -15,9 +15,6 @@
  */
 package io.fabric8.kubernetes.client.informers.cache;
 
-import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
-
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -30,7 +27,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  *
  * This has been taken from official-client: https://github.com/kubernetes-client/java/blob/master/util/src/main/java/io/kubernetes/client/informer/cache/SharedProcessor.java
  * 
- * <br>Modified to simplify threading
+ * <br>Modified to simplify threading and synching
  */
 public class SharedProcessor<T> {
   private ReadWriteLock lock = new ReentrantReadWriteLock();
@@ -54,11 +51,13 @@ public class SharedProcessor<T> {
    *
    * @param processorListener specific processor listener
    */
-  public void addListener(final ProcessorListener<T> processorListener) {
+  public void addListener(final ProcessorListener<T> processorListener, boolean synching) {
     lock.writeLock().lock();
     try {
       this.listeners.add(processorListener);
-      this.syncingListeners.add(processorListener);
+      if (synching) {
+        this.syncingListeners.add(processorListener);
+      }
     } finally {
       lock.writeLock().unlock();
     }
@@ -90,26 +89,6 @@ public class SharedProcessor<T> {
     });
   }
 
-  public boolean shouldResync() {
-    lock.writeLock().lock();
-    boolean resyncNeeded = false;
-    try {
-      this.syncingListeners = new ArrayList<>();
-
-      ZonedDateTime now = ZonedDateTime.now();
-      for (ProcessorListener<T> listener : this.listeners) {
-        if (listener.shouldResync(now)) {
-          resyncNeeded = true;
-          this.syncingListeners.add(listener);
-          listener.determineNextResync(now);
-        }
-      }
-    } finally {
-      lock.writeLock().unlock();
-    }
-    return resyncNeeded;
-  }
-
   public void stop() {
     lock.writeLock().lock();
     try {
@@ -120,14 +99,4 @@ public class SharedProcessor<T> {
     }
   }
 
-  public ProcessorListener<T> addProcessorListener(ResourceEventHandler<T> handler, long resyncPeriodMillis) {
-    lock.writeLock().lock();
-    try {
-      ProcessorListener<T> listener = new ProcessorListener<>(handler, resyncPeriodMillis);
-      addListener(listener);
-      return listener;
-    } finally {
-      lock.writeLock().unlock();
-    }
-  }
 }

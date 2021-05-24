@@ -19,9 +19,6 @@ import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.ZonedDateTime;
-import java.time.temporal.ChronoUnit;
-
 /**
  * ProcessorListener implements Runnable interface. It's supposed to run in background
  * and actually executes its event handler on notification. 
@@ -35,15 +32,10 @@ import java.time.temporal.ChronoUnit;
  */
 public class ProcessorListener<T> {
   private static final Logger log = LoggerFactory.getLogger(ProcessorListener.class);
-  private long resyncPeriodInMillis;
-  private ZonedDateTime nextResync;
   private ResourceEventHandler<T> handler;
   
-  public ProcessorListener(ResourceEventHandler<T> handler, long resyncPeriodInMillis) {
-    this.resyncPeriodInMillis = resyncPeriodInMillis;
+  public ProcessorListener(ResourceEventHandler<T> handler) {
     this.handler = handler;
-
-    determineNextResync(ZonedDateTime.now());
   }
 
   public void add(Notification<T> notification) {
@@ -52,14 +44,6 @@ public class ProcessorListener<T> {
     } catch (Exception ex) {
       log.error("Failed invoking {} event handler: {}", handler, ex.getMessage(), ex);
     }
-  }
-
-  public void determineNextResync(ZonedDateTime now) {
-    this.nextResync = now.plus(this.resyncPeriodInMillis, ChronoUnit.MILLIS);
-  }
-
-  public boolean shouldResync(ZonedDateTime now) {
-    return this.resyncPeriodInMillis != 0 && (now.isAfter(this.nextResync) || now.equals(this.nextResync));
   }
 
   public abstract static class Notification<T> {
