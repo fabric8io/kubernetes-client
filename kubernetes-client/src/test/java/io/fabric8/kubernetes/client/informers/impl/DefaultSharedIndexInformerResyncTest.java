@@ -19,7 +19,6 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.informers.ListerWatcher;
-import io.fabric8.kubernetes.client.informers.SharedScheduler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,11 +38,10 @@ class DefaultSharedIndexInformerResyncTest {
   private static final Long WAIT_TIME = 500L;
   private final ListerWatcher<Pod, PodList> listerWatcher = Mockito.mock(AbstractPodListerWatcher.class, Mockito.RETURNS_DEEP_STUBS);
   private final OperationContext operationContext = Mockito.mock(OperationContext.class, Mockito.RETURNS_DEEP_STUBS);
-  private SharedScheduler sharedScheduler = new SharedScheduler(); 
   DefaultSharedIndexInformer<Pod, PodList> defaultSharedIndexInformer;
 
   private DefaultSharedIndexInformer<Pod, PodList> createDefaultSharedIndexInformer(long resyncPeriod) {
-    defaultSharedIndexInformer = new DefaultSharedIndexInformer<>(Pod.class, listerWatcher, resyncPeriod, operationContext, Runnable::run, sharedScheduler);
+    defaultSharedIndexInformer = new DefaultSharedIndexInformer<>(Pod.class, listerWatcher, resyncPeriod, operationContext, Runnable::run);
     return defaultSharedIndexInformer;
   }
   

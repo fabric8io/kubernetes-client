@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.fabric8.kubernetes.client.informers;
+package io.fabric8.kubernetes.client.utils;
 
 import org.junit.jupiter.api.Test;
 
@@ -22,16 +22,15 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import static org.awaitility.Awaitility.await;
-
-class SharedSchedulerTest {
+class CachedSingleThreadSchedulerTest {
   
   @Test
   void testAutoShutdown() throws InterruptedException {
-    SharedScheduler scheduler = new SharedScheduler(50);
+    CachedSingleThreadScheduler scheduler = new CachedSingleThreadScheduler(50);
     assertFalse(scheduler.hasExecutor());
     CountDownLatch latch = new CountDownLatch(2);
     ScheduledFuture<?> future = scheduler.scheduleWithFixedDelay(latch::countDown, 50, 50, TimeUnit.MILLISECONDS);

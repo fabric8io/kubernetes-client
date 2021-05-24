@@ -14,34 +14,33 @@
  * limitations under the License.
  */
 
-package io.fabric8.kubernetes.client.informers;
-
-import io.fabric8.kubernetes.client.utils.Utils;
+package io.fabric8.kubernetes.client.utils;
 
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Maintains a single thread daemon scheduler.
+ * Maintains a single thread daemon scheduler, which will terminate the thread
+ * when not in use.
  * 
  * <br>It is not intended for long-running tasks, 
  * but it does not assume the task can be handed off to the common pool
  * 
  * <br>This is very similar to the CompletableFuture.Delayer, but provides a scheduler method
  */
-public class SharedScheduler {
+public class CachedSingleThreadScheduler {
   
   public static final long DEFAULT_TTL_MILLIS = TimeUnit.SECONDS.toMillis(10);
   
   private final long ttlMillis;
   private ScheduledThreadPoolExecutor executor;
 
-  public SharedScheduler() {
+  public CachedSingleThreadScheduler() {
     this(DEFAULT_TTL_MILLIS);
   }
   
-  public SharedScheduler(long ttlMillis) {
+  public CachedSingleThreadScheduler(long ttlMillis) {
     this.ttlMillis = ttlMillis;
   }
   
@@ -49,13 +48,24 @@ public class SharedScheduler {
       long initialDelay,
       long delay,
       TimeUnit unit) {
+    startExecutor();
+    return executor.scheduleWithFixedDelay(command, initialDelay, delay, unit);
+  }
+  
+  public synchronized ScheduledFuture<?> schedule(Runnable command,
+      long delay,
+      TimeUnit unit) {
+    startExecutor();
+    return executor.schedule(command, delay, unit);
+  }
+
+  private void startExecutor() {
     if (executor == null) {
       // start the executor and add a ttl task
       executor = new ScheduledThreadPoolExecutor(1, Utils.daemonThreadFactory(this));
       executor.setRemoveOnCancelPolicy(true);
       executor.scheduleWithFixedDelay(this::shutdownCheck, ttlMillis, ttlMillis, TimeUnit.MILLISECONDS);
     }
-    return executor.scheduleWithFixedDelay(command, initialDelay, delay, unit);
   }
 
   /**

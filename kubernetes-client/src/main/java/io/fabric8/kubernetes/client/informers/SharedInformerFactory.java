@@ -56,12 +56,21 @@ public class SharedInformerFactory extends BaseOperation {
   private final Map<String, Future> startedInformers = new HashMap<>();
 
   private final ExecutorService informerExecutor;
-  private final SharedScheduler resyncExecutor = new SharedScheduler();
 
   private final BaseOperation baseOperation;
 
   private final ConcurrentLinkedQueue<SharedInformerEventListener> eventListeners = new ConcurrentLinkedQueue<>();
 
+  private boolean allowShutdown = true;
+  
+  public SharedInformerFactory(OkHttpClient okHttpClient, Config configuration) {
+    // ideally this should be bounded.  The current implication is that there
+    // can be 1 thread used (not dedicated to) per informer - which 
+    // could be problematic for a large number of informers.  however
+    // there is already a superceding issue there of thread utilization by okhttp
+    this(Utils.getCommonExecutorSerive(), okHttpClient, configuration);
+    this.allowShutdown = false;
+  }
   /**
    * Constructor with thread pool specified.
    *
@@ -234,7 +243,7 @@ public class SharedInformerFactory extends BaseOperation {
         context = context.withIsNamespaceConfiguredFromGlobalConfig(false);
       }
     }
-    SharedIndexInformer<T> informer = new DefaultSharedIndexInformer<>(apiTypeClass, listerWatcher, resyncPeriodInMillis, context, informerExecutor, resyncExecutor);
+    SharedIndexInformer<T> informer = new DefaultSharedIndexInformer<>(apiTypeClass, listerWatcher, resyncPeriodInMillis, context, informerExecutor);
     this.informers.put(getInformerKey(context), informer);
     return informer;
   }
@@ -322,7 +331,7 @@ public class SharedInformerFactory extends BaseOperation {
           informer.stop();
         }
       });
-    if (shutDownThreadPool) {
+    if (shutDownThreadPool && allowShutdown) {
       informerExecutor.shutdown();
     }
   }
