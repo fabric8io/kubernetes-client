@@ -16,8 +16,6 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.RejectedExecutionException;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -43,7 +41,7 @@ abstract class WatcherWebSocketListener<T> extends WebSocketListener {
    * True if an onOpen callback was received on the first connect attempt, ie. the watch was successfully started.
    */
   private final AtomicBoolean started = new AtomicBoolean(false);
-  private final AtomicBoolean reconnectPending = new AtomicBoolean(false);
+
   /**
    * Blocking queue for startup exceptions.
    */
@@ -152,40 +150,17 @@ abstract class WatcherWebSocketListener<T> extends WebSocketListener {
   }
   
   private void scheduleReconnect() {
-    logger.debug("Submitting reconnect task to the executor");
-    // make sure that whichever thread calls this method, the tasks are
-    // performed serially in the executor
-    manager.submit(new NamedRunnable("scheduleReconnect") {
-      @Override
-      public void execute() {
-        if (!reconnectPending.compareAndSet(false, true)) {
-          logger.debug("Reconnect already scheduled");
-          return;
-        }
+    webSocketRef.set(null);
+    manager.scheduleReconnect(() -> {
+      try {
+        manager.runWatch();
+      } catch (Exception e) {
+        // An unexpected error occurred and we didn't even get an onFailure callback.
+        logger.error("Exception in reconnect", e);
         webSocketRef.set(null);
-        try {
-          // actual reconnect only after the back-off time has passed, without
-          // blocking the thread
-          logger.debug("Scheduling reconnect task");
-          manager.schedule(new NamedRunnable("reconnectAttempt") {
-            @Override
-            public void execute() {
-              try {
-                manager.runWatch();
-                reconnectPending.set(false);
-              } catch (Exception e) {
-                // An unexpected error occurred and we didn't even get an onFailure callback.
-                logger.error("Exception in reconnect", e);
-                webSocketRef.set(null);
-                manager.closeEvent(new WatcherException("Unhandled exception in reconnect attempt", e));
-                manager.close();
-              }
-            }
-          }, manager.nextReconnectInterval(), TimeUnit.MILLISECONDS);
-        } catch (RejectedExecutionException e) {
-          reconnectPending.set(false);
-        }
+        manager.closeEvent(new WatcherException("Unhandled exception in reconnect attempt", e));
+        manager.close();
       }
-    });
+    }, true);
   }
 }

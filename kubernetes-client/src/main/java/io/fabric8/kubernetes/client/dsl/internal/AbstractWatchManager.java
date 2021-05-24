@@ -16,7 +16,6 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.api.model.ListOptions;
-import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
@@ -27,8 +26,7 @@ import okhttp3.WebSocket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -46,11 +44,12 @@ public abstract class AbstractWatchManager<T> implements Watch {
   private final int reconnectInterval;
   private final int maxIntervalExponent;
   final AtomicInteger currentReconnectAttempt;
-  private final ScheduledExecutorService executorService;
+  private ScheduledFuture<?> reconnectAttempt;
   
   private final RequestBuilder requestBuilder;
   protected ClientRunner runner;
 
+  private final AtomicBoolean reconnectPending = new AtomicBoolean(false);
 
   AbstractWatchManager(
     Watcher<T> watcher, ListOptions listOptions, int reconnectLimit, int reconnectInterval, int maxIntervalExponent, RequestBuilder requestBuilder
@@ -62,7 +61,6 @@ public abstract class AbstractWatchManager<T> implements Watch {
     this.resourceVersion = new AtomicReference<>(listOptions.getResourceVersion());
     this.currentReconnectAttempt = new AtomicInteger(0);
     this.forceClosed = new AtomicBoolean();
-    this.executorService = Executors.newSingleThreadScheduledExecutor(Utils.daemonThreadFactory(AbstractWatchManager.this));
     
     this.requestBuilder = requestBuilder;
   }
@@ -90,30 +88,35 @@ public abstract class AbstractWatchManager<T> implements Watch {
     watcher.onClose();
   }
 
-  final void closeExecutorService() {
-    if (executorService != null && !executorService.isShutdown()) {
-      logger.debug("Closing ExecutorService");
-      try {
-        executorService.shutdown();
-        if (!executorService.awaitTermination(1, TimeUnit.SECONDS)) {
-          logger.warn("Executor didn't terminate in time after shutdown in close(), killing it.");
-          executorService.shutdownNow();
+  final synchronized void cancelReconnect() {
+    if (reconnectAttempt != null) {
+      reconnectAttempt.cancel(true);
+    }
+  }
+  
+  void scheduleReconnect(Runnable command, boolean shouldBackoff) {
+    if (!reconnectPending.compareAndSet(false, true)) {
+      logger.debug("Reconnect already scheduled");
+      return;
+    }
+    
+    logger.debug("Scheduling reconnect task");
+    
+    long delay = shouldBackoff
+        ? nextReconnectInterval()
+        : 0;
+    
+    synchronized (this) {
+      reconnectAttempt = Utils.schedule(Utils.getCommonExecutorSerive(), () -> {
+        try {
+          command.run();
+        } finally {
+          reconnectPending.set(false);
         }
-      } catch (Exception t) {
-        throw KubernetesClientException.launderThrowable(t);
+      }, delay, TimeUnit.MILLISECONDS);
+      if (forceClosed.get()) {
+        cancelReconnect();
       }
-    }
-  }
-
-  void submit(Runnable task) {
-    if (!executorService.isShutdown()) {
-      executorService.submit(task);
-    }
-  }
-
-  void schedule(Runnable command, long delay, TimeUnit timeUnit) {
-    if (!executorService.isShutdown()) {
-      executorService.schedule(command, delay, timeUnit);
     }
   }
 
@@ -179,7 +182,7 @@ public abstract class AbstractWatchManager<T> implements Watch {
     logger.debug("Force closing the watch {}", this);
     closeEvent();
     runner.close();
-    closeExecutorService();
+    cancelReconnect();
   }
   
   @FunctionalInterface

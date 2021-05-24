@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.fabric8.kubernetes.client.informers;
+package io.fabric8.kubernetes.client.utils;
 
 import java.util.ArrayDeque;
 import java.util.Queue;

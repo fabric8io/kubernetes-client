@@ -19,7 +19,7 @@ import io.fabric8.kubernetes.client.informers.cache.Store;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.function.BooleanSupplier;
+import java.util.function.Supplier;
 
 /**
  * Calls the resync function of store interface which is always implemented
@@ -30,9 +30,9 @@ public class ResyncRunnable<T> implements Runnable {
   private static final Logger log = LoggerFactory.getLogger(ResyncRunnable.class);
 
   private Store<T> store;
-  private BooleanSupplier shouldResyncFunc;
+  private Supplier<Boolean> shouldResyncFunc;
 
-  public ResyncRunnable(Store<T> store, BooleanSupplier shouldResyncFunc) {
+  public ResyncRunnable(Store<T> store, Supplier<Boolean> shouldResyncFunc) {
     this.store = store;
     this.shouldResyncFunc = shouldResyncFunc;
   }
@@ -42,9 +42,7 @@ public class ResyncRunnable<T> implements Runnable {
       log.debug("ResyncRunnable#resync .. ..");
     }
 
-    // if there is a concern that this processing could overwhelm the single
-    // thread, then hand this off to the common pool
-    if (shouldResyncFunc == null || shouldResyncFunc.getAsBoolean()) {
+    if (shouldResyncFunc == null || shouldResyncFunc.get()) {
       if (log.isDebugEnabled()) {
         log.debug("ResyncRunnable#force resync");
       }

@@ -21,15 +21,15 @@ import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.informers.ListerWatcher;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.ResyncRunnable;
-import io.fabric8.kubernetes.client.informers.SerialExecutor;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
-import io.fabric8.kubernetes.client.informers.SharedScheduler;
 import io.fabric8.kubernetes.client.informers.cache.Cache;
 import io.fabric8.kubernetes.client.informers.cache.Indexer;
 import io.fabric8.kubernetes.client.informers.cache.ProcessorListener;
 import io.fabric8.kubernetes.client.informers.cache.ProcessorStore;
 import io.fabric8.kubernetes.client.informers.cache.Reflector;
 import io.fabric8.kubernetes.client.informers.cache.SharedProcessor;
+import io.fabric8.kubernetes.client.utils.SerialExecutor;
+import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,8 +39,8 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.BooleanSupplier;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class DefaultSharedIndexInformer<T extends HasMetadata, L extends KubernetesResourceList<T>> implements SharedIndexInformer<T> {
   private static final Logger log = LoggerFactory.getLogger(DefaultSharedIndexInformer.class);
@@ -56,30 +56,27 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
   // value).
   private long defaultEventHandlerResyncPeriod;
   
-  private final SharedScheduler resyncExecutor;
   private final Reflector<T, L> reflector;
   private final Class<T> apiTypeClass;
-  
   private final ProcessorStore<T> processorStore;
-  
-  private Cache<T> indexer;
-
-  private SharedProcessor<T> processor;
+  private final Cache<T> indexer;
+  private final SharedProcessor<T> processor;
+  private final Executor informerExecutor;
 
   private AtomicBoolean started = new AtomicBoolean();
   private volatile boolean stopped = false;
 
   private ScheduledFuture<?> resyncFuture;
   
-  public DefaultSharedIndexInformer(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, long resyncPeriod, OperationContext context, Executor informerExecutor, SharedScheduler resyncExecutor) {
+  public DefaultSharedIndexInformer(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, long resyncPeriod, OperationContext context, Executor informerExecutor) {
     if (resyncPeriod < 0) {
       throw new IllegalArgumentException("Invalid resync period provided, It should be a non-negative value");
     }
     this.resyncCheckPeriodMillis = resyncPeriod;
     this.defaultEventHandlerResyncPeriod = resyncPeriod;
-    this.resyncExecutor = resyncExecutor;
     this.apiTypeClass = apiTypeClass;
 
+    this.informerExecutor = informerExecutor;
     // reuse the informer executor, but ensure serial processing
     this.processor = new SharedProcessor<>(new SerialExecutor(informerExecutor));
     this.indexer = new Cache<>();
@@ -210,11 +207,11 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
     return !stopped && started.get() && reflector.isRunning(); 
   }
   
-  synchronized void scheduleResync(BooleanSupplier resyncFunc) {
+  synchronized void scheduleResync(Supplier<Boolean> resyncFunc) {
     // schedule the resync runnable
     if (resyncCheckPeriodMillis > 0) {
       ResyncRunnable<T> resyncRunnable = new ResyncRunnable<>(processorStore, resyncFunc);
-      resyncFuture = resyncExecutor.scheduleWithFixedDelay(resyncRunnable, resyncCheckPeriodMillis, resyncCheckPeriodMillis, TimeUnit.MILLISECONDS);
+      resyncFuture = Utils.scheduleAtFixedRate(informerExecutor, resyncRunnable, resyncCheckPeriodMillis, resyncCheckPeriodMillis, TimeUnit.MILLISECONDS);
     } else {
       log.debug("informer#Controller: resync skipped due to 0 full resync period {}", apiTypeClass);
     }
