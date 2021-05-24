@@ -20,8 +20,13 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.PackageSuffix;
+import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
+import io.sundr.transform.annotations.VelocityTransformation;
+import io.sundr.transform.annotations.VelocityTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -45,6 +50,12 @@ import lombok.ToString;
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
+})
+@Version("v1")
+@Group("authorization.openshift.io")
+@PackageSuffix(".openshift.v1")
+@VelocityTransformations({
+    @VelocityTransformation(value = "/manifest.vm", outputPath = "openshift.properties", gather = true)
 })
 public class RoleBindingRestriction implements HasMetadata, Namespaced
 {

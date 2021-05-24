@@ -338,6 +338,68 @@ public class KubernetesCrudAttributesExtractorTest {
   }
 
   @Test
+  public void jsonPatchStatus() {
+    KubernetesServer kubernetesServer = new KubernetesServer(false, true);
+    kubernetesServer.before();
+    KubernetesClient kubernetesClient = kubernetesServer.getClient();
+    Pod pod = new PodBuilder().withNewMetadata()
+            .withName("name")
+            .withNamespace("test") // required until https://github.com/fabric8io/mockwebserver/pull/59
+            .endMetadata()
+            .build();
+    Pod result = kubernetesClient.pods().create(pod);
+
+    // should be null after create
+    assertNull(result.getStatus());
+
+    pod.setStatus(new PodStatusBuilder().withHostIP("1.2.3.4").build());
+    Map<String, String> labels = new HashMap<>();
+    labels.put("app", "core");
+
+    pod.getMetadata().setLabels(labels);
+
+    result = kubernetesClient.pods()
+        .inNamespace(pod.getMetadata().getNamespace())
+        .withName(pod.getMetadata().getName())
+        .editStatus(p->pod);
+
+    assertNotNull(result.getStatus().getHostIP());
+    assertNull(result.getMetadata().getLabels());
+  }
+
+  /**
+   * merge patch is not supported yet
+   */
+  @Test
+  public void patchStatus() {
+    KubernetesServer kubernetesServer = new KubernetesServer(false, true);
+    kubernetesServer.before();
+    KubernetesClient kubernetesClient = kubernetesServer.getClient();
+    Pod pod = new PodBuilder().withNewMetadata()
+            .withName("name")
+            .withNamespace("test") // required until https://github.com/fabric8io/mockwebserver/pull/59
+            .endMetadata()
+            .build();
+    Pod result = kubernetesClient.pods().create(pod);
+
+    // should be null after create
+    assertNull(result.getStatus());
+
+    pod.setStatus(new PodStatusBuilder().withHostIP("1.2.3.4").build());
+    Map<String, String> labels = new HashMap<>();
+    labels.put("app", "core");
+
+    pod.getMetadata().setLabels(labels);
+
+    KubernetesClientException exception = assertThrows(KubernetesClientException.class, () -> kubernetesClient.pods()
+        .inNamespace(pod.getMetadata().getNamespace())
+        .withName(pod.getMetadata().getName())
+        .patchStatus(pod));
+    Assertions.assertEquals(HttpURLConnection.HTTP_UNSUPPORTED_TYPE, exception.getCode());
+
+  }
+
+  @Test
   public void createConflict() {
     KubernetesServer kubernetesServer = new KubernetesServer(false, true);
     kubernetesServer.before();

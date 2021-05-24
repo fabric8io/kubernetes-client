@@ -107,8 +107,10 @@ import io.fabric8.openshift.api.model.BuildConfigList;
 import io.fabric8.openshift.api.model.BuildList;
 import io.fabric8.openshift.api.model.ClusterNetwork;
 import io.fabric8.openshift.api.model.ClusterNetworkList;
+import io.fabric8.openshift.api.model.ClusterRole;
 import io.fabric8.openshift.api.model.ClusterRoleBinding;
 import io.fabric8.openshift.api.model.ClusterRoleBindingList;
+import io.fabric8.openshift.api.model.ClusterRoleList;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigList;
 import io.fabric8.openshift.api.model.EgressNetworkPolicy;
@@ -123,6 +125,8 @@ import io.fabric8.openshift.api.model.ImageStreamTag;
 import io.fabric8.openshift.api.model.ImageStreamTagList;
 import io.fabric8.openshift.api.model.ImageTag;
 import io.fabric8.openshift.api.model.ImageTagList;
+import io.fabric8.openshift.api.model.LocalResourceAccessReview;
+import io.fabric8.openshift.api.model.LocalSubjectAccessReview;
 import io.fabric8.openshift.api.model.NetNamespace;
 import io.fabric8.openshift.api.model.NetNamespaceList;
 import io.fabric8.openshift.api.model.OAuthAccessToken;
@@ -133,16 +137,22 @@ import io.fabric8.openshift.api.model.OAuthClient;
 import io.fabric8.openshift.api.model.OAuthClientList;
 import io.fabric8.openshift.api.model.RangeAllocation;
 import io.fabric8.openshift.api.model.RangeAllocationList;
+import io.fabric8.openshift.api.model.ResourceAccessReview;
+import io.fabric8.openshift.api.model.ResourceAccessReviewResponse;
 import io.fabric8.openshift.api.model.Role;
 import io.fabric8.openshift.api.model.RoleBinding;
 import io.fabric8.openshift.api.model.RoleBindingList;
+import io.fabric8.openshift.api.model.RoleBindingRestriction;
+import io.fabric8.openshift.api.model.RoleBindingRestrictionList;
 import io.fabric8.openshift.api.model.RoleList;
 import io.fabric8.openshift.api.model.Route;
 import io.fabric8.openshift.api.model.RouteList;
 import io.fabric8.openshift.api.model.SecurityContextConstraints;
 import io.fabric8.openshift.api.model.SecurityContextConstraintsList;
+import io.fabric8.openshift.api.model.SelfSubjectRulesReview;
 import io.fabric8.openshift.api.model.SubjectAccessReview;
 import io.fabric8.openshift.api.model.SubjectAccessReviewResponse;
+import io.fabric8.openshift.api.model.SubjectRulesReview;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateList;
 import io.fabric8.openshift.api.model.User;
@@ -427,6 +437,11 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   @Override
   public MixedOperation<ClusterRoleBinding, ClusterRoleBindingList, Resource<ClusterRoleBinding>> clusterRoleBindings() {
     return delegate.clusterRoleBindings();
+  }
+
+  @Override
+  public MixedOperation<RoleBindingRestriction, RoleBindingRestrictionList, Resource<RoleBindingRestriction>> roleBindingRestrictions() {
+    return null;
   }
 
   @Override
@@ -736,8 +751,33 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
-  public OpenShiftLocalSubjectAccessReviewOperationsImpl localSubjectAccessReviews() {
+  public InOutCreateable<ResourceAccessReview, ResourceAccessReviewResponse> resourceAccessReviews() {
+    return delegate.resourceAccessReviews();
+  }
+
+  @Override
+  public OpenShiftLocalSubjectAccessReviewOperationsImpl<LocalSubjectAccessReview, SubjectAccessReviewResponse> localSubjectAccessReviews() {
     return delegate.localSubjectAccessReviews();
+  }
+
+  @Override
+  public OpenShiftLocalSubjectAccessReviewOperationsImpl<LocalResourceAccessReview, ResourceAccessReviewResponse> localResourceAccessReviews() {
+    return delegate.localResourceAccessReviews();
+  }
+
+  @Override
+  public OpenShiftLocalSubjectAccessReviewOperationsImpl<SelfSubjectRulesReview, SelfSubjectRulesReview> selfSubjectRulesReviews() {
+    return delegate.selfSubjectRulesReviews();
+  }
+
+  @Override
+  public OpenShiftLocalSubjectAccessReviewOperationsImpl<SubjectRulesReview, SubjectRulesReview> subjectRulesReviews() {
+    return delegate.subjectRulesReviews();
+  }
+
+  @Override
+  public NonNamespaceOperation<ClusterRole, ClusterRoleList, Resource<ClusterRole>> clusterRoles() {
+    return delegate.clusterRoles();
   }
 
   @Override

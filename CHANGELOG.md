@@ -1,13 +1,27 @@
 ## CHANGELOG
 
-### 5.4-SNAPSHOT
+### 5.5-SNAPSHOT
+
+#### Bugs
+
+#### Improvements
+* Fix #3135 added mock crud support for patch status, and will return exceptions for unsupported patch types
+
+#### Dependency Upgrade
+
+#### New Features
+* Fix #3133: Add DSL Support for `authorization.openshift.io/v1` resources in OpenShiftClient
+
+### 5.4.0 (2021-05-19)
 
 #### Bugs
 * Fix #3040: Consistently order printer columns by JSON path to prevent undue changes in generated CRDs
 * Fix #3041: Properly output `additionalProperties` field for Maps, output warning for unsupported complex maps
+* Fix #3036: Fix file descriptor leak when loading cacerts file
 * Fix #3038: Upgrade TLS versions in mock servers to 1.2.
 * Fix #3037: Account for JsonProperty annotations when computing properties' name
 * Fix #3014: Resync Future is canceled and resync executor is shutdown on informer stop
+* Fix #2529: SelfSubjectAccessReview not working with OpenShiftClient
 * Fix #2978: Fix SharedInformer NPE on initial requests while syncing
 * Fix #2989: serialization will generate valid yaml when using subtypes
 * Fix #2991: reduced the level of ReflectWatcher event received log
@@ -20,7 +34,7 @@
 * Fix #3016: Use scheduleWithFixedDelay for resync task execution
 * Fix #2991: reduced the level of ReflectWatcher event received log
 * Fix #3027: fix NPE when sorting events in KubernetesResourceUtil
-* Fix missing entry for Trigger in TektonTriggersResourceMappingProvider
+* Fix #3054:  missing entry for Trigger in TektonTriggersResourceMappingProvider
 * Fix #3047: NPE when getting version when there is no build date
 * Fix #3024: stopAllRegisteredInformers will not call startWatcher
 * Fix #3067: Added a patch(PatchContext, item) operation to be more explicit about patching and diffing behavior
@@ -34,14 +48,14 @@
 * Fix #3057: Removed debug calls for CustomResource during deserialization
 * Fix #3050: More enforcement of the informer lifecycle
 * Fix #3061: Removed the deltafifo from the informer logic
-* Use apiGroupName in generated package for OpenShiftClient Handler/OperationsImpl classes
+* Fix #3081: Use apiGroupName in generated package for OpenShiftClient Handler/OperationsImpl classes
 * Fix #3089: Allowing patch/edit to infer context from the item
 * Fix #3066: Added replaceStatus (PUT), editStatus (JSON PATCH), and patchStatus (JSON MERGE PATCH) methods to support non-locking status updates
 
 #### Dependency Upgrade
 * Fix #2979: Update Kubernetes Model to v1.21.0
-* Update Tekton Triggers Model to v0.13.0
-* Update to sundrio 0.30.6
+* Fix #3099: Update Tekton Triggers Model to v0.13.0
+* Fix #3118: Update to sundrio 0.40.1
 
 #### New Features
 * Fix #2984: Add support for `flowcontrol.apiserver.k8s.io/v1beta1` FlowSchema and PriorityLevelConfiguration

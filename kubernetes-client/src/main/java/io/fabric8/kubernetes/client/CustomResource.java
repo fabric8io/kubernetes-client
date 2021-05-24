@@ -43,14 +43,14 @@ import org.slf4j.LoggerFactory;
  *
  * Properties are set up automatically as follows:
  * <ul>
- *   <li>group is set using {@link HasMetadata#getGroup(Class)}</li>
- *   <li>version is set using {@link HasMetadata#getVersion(Class)}</li>
- *   <li>singular is set using {@link HasMetadata#getSingular(Class)}</li>
- *   <li>plural is set using {@link HasMetadata#getPlural(Class)}</li>
+ *   <li>group is set using {@link io.fabric8.kubernetes.api.model.HasMetadata#getGroup(Class)}</li>
+ *   <li>version is set using {@link io.fabric8.kubernetes.api.model.HasMetadata#getVersion(Class)}</li>
+ *   <li>singular is set using {@link io.fabric8.kubernetes.api.model.HasMetadata#getSingular(Class)}</li>
+ *   <li>plural is set using {@link io.fabric8.kubernetes.api.model.HasMetadata#getPlural(Class)}</li>
  *   <li>computed CRD name using {@link CustomResource#getCRDName(Class)}</li>
  * </ul>
  *
- * In addition, {@link #setApiVersion(String)} and {@link #setKind(String)} are overridden to not do anything since these values
+ * In addition, {@link CustomResource#setApiVersion(String)} and {@link CustomResource#setKind(String)} are overridden to not do anything since these values
  * are set.
  *
  * @param <S> the class providing the {@code Spec} part of this CustomResource
@@ -126,7 +126,7 @@ public abstract class CustomResource<S, T> implements HasMetadata {
   protected S initSpec() {
     return null;
   }
-  
+
   /**
    * Override to provide your own Status instance
    * @return a new Status instance or {@code null} if the responsibility of instantiating the Status is left to users of this CustomResource

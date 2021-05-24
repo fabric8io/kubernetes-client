@@ -30,4 +30,9 @@ public class SetStorageVersionDecorator extends CustomResourceDefinitionVersionD
 	public void andThenVisit(CustomResourceDefinitionVersionFluent<?> version) {
     version.withStorage(storage);
 	}
+
+	@Override
+	public String toString() {
+		return getClass().getName() + " [name:"+ getName() + ", version:"+ getVersion() + ", storage:"+ storage+"]";
+	}
 }

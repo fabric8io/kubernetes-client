@@ -21,36 +21,38 @@ import io.fabric8.kubernetes.client.dsl.InOutCreateable;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.openshift.api.model.SubjectAccessReview;
-import io.fabric8.openshift.api.model.SubjectAccessReviewResponse;
 import okhttp3.OkHttpClient;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 
-public class OpenShiftSubjectAccessReviewOperationsImpl extends OperationSupport implements InOutCreateable<SubjectAccessReview, SubjectAccessReviewResponse> {
+public class OpenShiftSubjectAccessReviewOperationsImpl<I, O> extends OperationSupport implements InOutCreateable<I, O> {
+  private final Class<O> responseType;
 
-  public OpenShiftSubjectAccessReviewOperationsImpl(OkHttpClient client, Config config, String apiGroupName, String apiGroupVersion, String plural) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config), apiGroupName, apiGroupVersion, plural);
+  public OpenShiftSubjectAccessReviewOperationsImpl(OkHttpClient client, Config config, String apiGroupName, String apiGroupVersion, String plural, Class<O> responseType) {
+    this(new OperationContext().withOkhttpClient(client).withConfig(config), apiGroupName, apiGroupVersion, plural, responseType);
   }
 
-  public OpenShiftSubjectAccessReviewOperationsImpl(OperationContext context, String apiGroupName, String apiGroupVersion, String plural) {
+  public OpenShiftSubjectAccessReviewOperationsImpl(OperationContext context, String apiGroupName, String apiGroupVersion, String plural, Class<O> responseType) {
     super(context.withApiGroupName(apiGroupName)
       .withApiGroupVersion(apiGroupVersion)
       .withPlural(plural));
+    this.responseType = responseType;
   }
 
+  @SafeVarargs
   @Override
-  public SubjectAccessReviewResponse create(SubjectAccessReview... resources) {
+  public final O create(I... resources) {
     try {
       if (resources.length > 1) {
         throw new IllegalArgumentException("Too many items to create.");
       } else if (resources.length == 1) {
-        return handleCreate(updateApiVersion(resources[0]), SubjectAccessReviewResponse.class);
+        return handleCreate(resources[0], responseType);
       } else if (getItem() == null) {
         throw new IllegalArgumentException("Nothing to create.");
       } else {
-        return handleCreate(updateApiVersion(getItem()), SubjectAccessReviewResponse.class);
+        return handleCreate(getItem(), responseType);
       }
     } catch (ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(e);
@@ -61,9 +63,9 @@ public class OpenShiftSubjectAccessReviewOperationsImpl extends OperationSupport
   }
 
   @Override
-  public SubjectAccessReviewResponse create(SubjectAccessReview item) {
+  public O create(I item) {
     try {
-      return handleCreate(item, SubjectAccessReviewResponse.class);
+      return handleCreate(item, responseType);
     } catch (ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     } catch (InterruptedException ie) {
@@ -75,13 +77,6 @@ public class OpenShiftSubjectAccessReviewOperationsImpl extends OperationSupport
   @Override
   public boolean isResourceNamespaced() {
     return false;
-  }
-
-  private SubjectAccessReview updateApiVersion(SubjectAccessReview p) {
-    if (p.getApiVersion() == null) {
-      p.setApiVersion(this.apiGroupVersion);
-    }
-    return p;
   }
 
   public SubjectAccessReview getItem() {

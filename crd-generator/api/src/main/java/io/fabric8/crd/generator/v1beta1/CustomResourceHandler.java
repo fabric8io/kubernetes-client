@@ -91,11 +91,11 @@ public class CustomResourceHandler extends AbstractCustomResourceHandler {
     resources.decorate(new SetStorageVersionDecorator(name, version, config.storage()));
     resources.decorate(new EnsureSingleStorageVersionDecorator(name));
     resources.decorate(new PromoteSingleVersionAttributesDecorator(name));
+    resources.decorate(new SortPrinterColumnsDecorator(name, version));
   }
 
   @Override
   public void handle(CustomResourceInfo config) {
     super.handle(config);
-    resources.decorate(new SortPrinterColumnsDecorator());
   }
 }
