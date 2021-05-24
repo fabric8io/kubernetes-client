@@ -18,43 +18,26 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
+import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.WebSocket;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 class AbstractWatchManagerTest {
-
-  private MockedStatic<Executors> executors;
-  private ScheduledExecutorService executorService;
-
-  @BeforeEach
-  void setUp() {
-    executorService = mock(ScheduledExecutorService.class, RETURNS_DEEP_STUBS);
-    executors = mockStatic(Executors.class);
-    executors.when(() -> Executors.newSingleThreadScheduledExecutor(any())).thenReturn(executorService);
-  }
-
-  @AfterEach
-  void tearDown() {
-    executors.close();
-  }
 
   @Test
   @DisplayName("closeEvent, is idempotent, multiple calls only close watcher once")
@@ -71,7 +54,7 @@ class AbstractWatchManagerTest {
   }
 
   @Test
-  @DisplayName("closeEvent with Exception, is idempotent, multiple calls only close watcher once")
+  @DisplayName("closeEvent, with Exception, is idempotent, multiple calls only close watcher once")
   void closeEventWithExceptionIsIdempotent() {
     // Given
     final WatcherAdapter<Object> watcher = new WatcherAdapter<>();
@@ -100,7 +83,7 @@ class AbstractWatchManagerTest {
   void nextReconnectInterval() {
     // Given
     final WatchManager<Object> awm = new WatchManager<>(
-      null, mock(ListOptions.class), 0, 10, 5, null);
+      null, mock(ListOptions.class), 0, 10, 5);
     // When-Then
     assertThat(awm.nextReconnectInterval()).isEqualTo(10);
     assertThat(awm.nextReconnectInterval()).isEqualTo(20);
@@ -111,10 +94,65 @@ class AbstractWatchManagerTest {
     assertThat(awm.nextReconnectInterval()).isEqualTo(320);
   }
 
+  @Test
+  @DisplayName("cancelReconnect, with null attempt, should do nothing")
+  void cancelReconnectNullAttempt() {
+    // Given
+    final ScheduledFuture<?> sf = spy(ScheduledFuture.class);
+    final WatcherAdapter<Object> watcher = new WatcherAdapter<>();
+    final WatchManager<Object> awm = withDefaultWatchManager(watcher);
+    // When
+    awm.cancelReconnect();
+    // Then
+    verify(sf, times(0)).cancel(true);
+  }
+
+  @Test
+  @DisplayName("cancelReconnect, with non-null attempt, should cancel")
+  void cancelReconnectNonNullAttempt() {
+    // Given
+    final ScheduledFuture<?> sf = mock(ScheduledFuture.class);
+    final MockedStatic<Utils> utils = mockStatic(Utils.class);
+    utils.when(() -> Utils.schedule(any(), any(), anyLong(), any())).thenReturn(sf);
+    final WatcherAdapter<Object> watcher = new WatcherAdapter<>();
+    final WatchManager<Object> awm = withDefaultWatchManager(watcher);
+    awm.scheduleReconnect(null, false);
+    // When
+    awm.cancelReconnect();
+    // Then
+    verify(sf, times(1)).cancel(true);
+  }
+
+  @Test
+  @DisplayName("isClosed, after close invocation, should return true")
+  void isForceClosedWhenClosed() {
+    // Given
+    final WatcherAdapter<Object> watcher = new WatcherAdapter<>();
+    final WatchManager<Object> awm = withDefaultWatchManager(watcher);
+    awm.initRunner(mock(AbstractWatchManager.ClientRunner.class));
+    // When
+    awm.close();
+    // Then
+    assertThat(awm.isForceClosed()).isTrue();
+  }
+
+  @Test
+  @DisplayName("close, after close invocation, should return true")
+  void closeWithNonNullRunnerShouldCancelRunner() {
+    // Given
+    final AbstractWatchManager.ClientRunner clientRunner = mock(AbstractWatchManager.ClientRunner.class);
+    final WatcherAdapter<Object> watcher = new WatcherAdapter<>();
+    final WatchManager<Object> awm = withDefaultWatchManager(watcher);
+    awm.initRunner(clientRunner);
+    // When
+    awm.close();
+    // Then
+    verify(clientRunner, times(1)).close();
+  }
+
   private static <T> WatchManager<T> withDefaultWatchManager(Watcher<T> watcher) {
     return new WatchManager<>(
-      watcher, mock(ListOptions.class, RETURNS_DEEP_STUBS), 0, 0, 0,
-      mock(OkHttpClient.class));
+      watcher, mock(ListOptions.class, RETURNS_DEEP_STUBS), 0, 0, 0);
   }
 
   private static class WatcherAdapter<T> implements Watcher<T> {
@@ -122,7 +160,7 @@ class AbstractWatchManagerTest {
 
     @Override
     public void eventReceived(Action action, T resource) {}
-    
+
     @Override
     public void onClose(WatcherException cause) {
       closeCount.addAndGet(1);
@@ -136,20 +174,8 @@ class AbstractWatchManagerTest {
 
   private static final class WatchManager<T> extends AbstractWatchManager<T> {
 
-    public WatchManager(Watcher<T> watcher, ListOptions listOptions, int reconnectLimit, int reconnectInterval, int maxIntervalExponent, OkHttpClient clonedClient) {
+    public WatchManager(Watcher<T> watcher, ListOptions listOptions, int reconnectLimit, int reconnectInterval, int maxIntervalExponent) {
       super(watcher, listOptions, reconnectLimit, reconnectInterval, maxIntervalExponent, resourceVersion -> null);
-      initRunner(new ClientRunner(clonedClient) {
-        @Override
-        void run(Request request) {}
-  
-        @Override
-        OkHttpClient cloneAndCustomize(OkHttpClient client) {
-          return clonedClient;
-        }
-      });
-    }
-    @Override
-    public void close() {
     }
   }
 }

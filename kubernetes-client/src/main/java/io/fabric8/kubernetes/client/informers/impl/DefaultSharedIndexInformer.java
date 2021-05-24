@@ -54,8 +54,8 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
   // defaultEventHandlerResyncPeriod is the default resync period for any handlers added via
   // AddEventHandler(i.e they don't specify one and just want to use the shared informer's default
   // value).
-  private long defaultEventHandlerResyncPeriod;
-  
+  private final long defaultEventHandlerResyncPeriod;
+
   private final Reflector<T, L> reflector;
   private final Class<T> apiTypeClass;
   private final ProcessorStore<T> processorStore;
@@ -63,11 +63,11 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
   private final SharedProcessor<T> processor;
   private final Executor informerExecutor;
 
-  private AtomicBoolean started = new AtomicBoolean();
+  private final AtomicBoolean started = new AtomicBoolean();
   private volatile boolean stopped = false;
 
   private ScheduledFuture<?> resyncFuture;
-  
+
   public DefaultSharedIndexInformer(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, long resyncPeriod, OperationContext context, Executor informerExecutor) {
     if (resyncPeriod < 0) {
       throw new IllegalArgumentException("Invalid resync period provided, It should be a non-negative value");
@@ -81,7 +81,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
     this.processor = new SharedProcessor<>(new SerialExecutor(informerExecutor));
     this.indexer = new Cache<>();
     this.indexer.setIsRunning(this::isRunning);
-    
+
     processorStore = new ProcessorStore<>(this.indexer, this.processor);
     this.reflector = new Reflector<>(apiTypeClass, listerWatcher, processorStore, context);
   }
@@ -121,9 +121,9 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
         }
       }
     }
-    
+
     ProcessorListener<T> listener = this.processor.addProcessorListener(handler, determineResyncPeriod(resyncPeriodMillis, this.resyncCheckPeriodMillis));
-    
+
     if (!started.get()) {
       return;
     }
@@ -151,7 +151,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
     log.info("informer#Controller: ready to run resync and reflector for {} with resync {}", apiTypeClass, resyncCheckPeriodMillis);
 
     scheduleResync(processor::shouldResync);
-    
+
     reflector.listSyncAndWatch();
     // stop called while run is called could be ineffective, check for it afterwards
     synchronized (this) {
@@ -204,9 +204,9 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
 
   @Override
   public boolean isRunning() {
-    return !stopped && started.get() && reflector.isRunning(); 
+    return !stopped && started.get() && reflector.isRunning();
   }
-  
+
   synchronized void scheduleResync(Supplier<Boolean> resyncFunc) {
     // schedule the resync runnable
     if (resyncCheckPeriodMillis > 0) {
@@ -216,15 +216,15 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
       log.debug("informer#Controller: resync skipped due to 0 full resync period {}", apiTypeClass);
     }
   }
-  
+
   public long getFullResyncPeriod() {
     return resyncCheckPeriodMillis;
   }
-  
+
   ScheduledFuture<?> getResyncFuture() {
     return resyncFuture;
   }
-  
+
   @Override
   public Class<T> getApiTypeClass() {
     return apiTypeClass;
