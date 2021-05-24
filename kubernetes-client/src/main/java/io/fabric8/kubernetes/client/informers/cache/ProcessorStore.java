@@ -16,22 +16,19 @@
 
 package io.fabric8.kubernetes.client.informers.cache;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Wraps a {@link Store} to distribute events related to changes and syncs 
- * @param <T>
+ * Wraps a {@link Cache} and a {@link SharedProcessor} to distribute events related to changes and syncs 
  */
-public class ProcessorStore<T> implements Store<T> {
+public class ProcessorStore<T> implements SyncableStore<T> {
 
-  private Store<T> actualStore;
+  private Cache<T> cache;
   private SharedProcessor<T> processor;
-  private volatile boolean populated;
 
-  public ProcessorStore(Store<T> actualStore, SharedProcessor<T> processor) {
-    this.actualStore = actualStore;
+  public ProcessorStore(Cache<T> cache, SharedProcessor<T> processor) {
+    this.cache = cache;
     this.processor = processor;
   }
 
@@ -41,58 +38,50 @@ public class ProcessorStore<T> implements Store<T> {
   }
 
   @Override
-  public synchronized void update(T obj) {
-    Object oldObj = this.actualStore.get(obj);
+  public void update(T obj) {
+    Object oldObj = this.cache.put(obj);
     if (oldObj != null) {
-      this.actualStore.update(obj);
       this.processor.distribute(new ProcessorListener.UpdateNotification(oldObj, obj), false);
     } else {
-      this.actualStore.add(obj);
       this.processor.distribute(new ProcessorListener.AddNotification(obj), false);
     }
   }
 
   @Override
-  public synchronized void delete(T obj) {
-    Object oldObj = this.actualStore.get(obj);
+  public void delete(T obj) {
+    Object oldObj = this.cache.remove(obj);
     if (oldObj != null) {
-      this.actualStore.delete(obj);
       this.processor.distribute(new ProcessorListener.DeleteNotification(obj, false), false);
     }
   }
 
   @Override
   public List<T> list() {
-    return actualStore.list();
+    return cache.list();
   }
 
   @Override
   public List<String> listKeys() {
-    return actualStore.listKeys();
+    return cache.listKeys();
   }
 
   @Override
-  public Object get(T object) {
-    return actualStore.get(object);
+  public T get(T object) {
+    return cache.get(object);
   }
 
   @Override
   public T getByKey(String key) {
-    return actualStore.getByKey(key);
+    return cache.getByKey(key);
   }
 
   @Override
-  public synchronized void replace(List<T> list, String resourceVersion) {
-    // it shouldn't happen, but it's possible for metaNamespaceKeyFunc to return null, so manually collect
-    Map<String, T> oldState = new HashMap<>();
-    actualStore.list().stream().forEach(old -> oldState.put(Cache.metaNamespaceKeyFunc(old), old));
-
-    actualStore.replace(list, resourceVersion);
-    populated = true;
+  public void replace(List<T> list) {
+    Map<String, T> oldState = cache.replace(list);
     
     // now that the store is up-to-date, process the notifications
     for (T newValue : list) {
-      T old = oldState.remove(Cache.metaNamespaceKeyFunc(newValue));
+      T old = oldState.remove(cache.getKey(newValue));
       if (old == null) {
         this.processor.distribute(new ProcessorListener.AddNotification(newValue), true);
       } else {
@@ -106,18 +95,8 @@ public class ProcessorStore<T> implements Store<T> {
 
   @Override
   public void resync() {
-    this.actualStore.list()
+    this.cache.list()
         .forEach(i -> this.processor.distribute(new ProcessorListener.UpdateNotification<T>(i, i), true));
-  }
-
-  @Override
-  public void isPopulated(boolean isPopulated) {
-    this.populated = isPopulated;
-  }
-
-  @Override
-  public boolean hasSynced() {
-    return populated;
   }
 
 }

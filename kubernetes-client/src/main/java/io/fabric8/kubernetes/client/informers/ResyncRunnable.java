@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.client.informers;
 
-import io.fabric8.kubernetes.client.informers.cache.Store;
+import io.fabric8.kubernetes.client.informers.cache.SyncableStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,10 +29,10 @@ public class ResyncRunnable<T> implements Runnable {
 
   private static final Logger log = LoggerFactory.getLogger(ResyncRunnable.class);
 
-  private Store<T> store;
+  private SyncableStore<T> store;
   private Supplier<Boolean> shouldResyncFunc;
 
-  public ResyncRunnable(Store<T> store, Supplier<Boolean> shouldResyncFunc) {
+  public ResyncRunnable(SyncableStore<T> store, Supplier<Boolean> shouldResyncFunc) {
     this.store = store;
     this.shouldResyncFunc = shouldResyncFunc;
   }
