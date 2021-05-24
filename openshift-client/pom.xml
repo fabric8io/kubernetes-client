@@ -76,6 +76,10 @@
       <groupId>io.fabric8</groupId>
       <artifactId>openshift-model-console</artifactId>
     </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>openshift-model-machineconfig</artifactId>
+    </dependency>
 
     <!-- Compile Only Dependencies -->
     <dependency>

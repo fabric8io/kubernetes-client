@@ -3,8 +3,9 @@ module github.com/fabric8io/kubernetes-client/kubernetes-model-generator
 go 1.14
 
 require (
-	github.com/openshift/api v0.0.0-20200803131051-87466835fcc0
 	github.com/coreos/prometheus-operator v0.41.1
+	github.com/openshift/api v0.0.0-20210409143810-a99ffa1cac67
+	github.com/openshift/machine-config-operator v0.0.1-0.20210522071823-15494d85812c // indirect
 	github.com/operator-framework/api v0.3.12
 	github.com/prometheus-operator/prometheus-operator v0.47.1
 	k8s.io/api v0.21.0
@@ -22,6 +23,8 @@ replace (
 	k8s.io/controller-manager => k8s.io/controller-manager v0.21.0
 	k8s.io/mount-utils => k8s.io/mount-utils v0.21.0
         k8s.io/client-go => k8s.io/client-go v0.21.0
+	bitbucket.org/ww/goautoneg => github.com/munnerz/goautoneg v0.0.0-20120707110453-a547fc61f48d
+	github.com/openshift/api => github.com/openshift/api v0.0.0-20200803131051-87466835fcc0
 )
 
 exclude (

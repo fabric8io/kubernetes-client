@@ -46,6 +46,8 @@
 [![javadoc](https://javadoc.io/badge2/io.fabric8/openshift-model-operator/javadoc.svg)](https://javadoc.io/doc/io.fabric8/openshift-model-operator)
 * openshift-model-operatorhub: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/openshift-model-operatorhub.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Aopenshift-model-operatorhub)
 [![javadoc](https://javadoc.io/badge2/io.fabric8/openshift-model-operatorhub/javadoc.svg)](https://javadoc.io/doc/io.fabric8/openshift-model-operatorhub)
+* openshift-model-machineconfig: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/openshift-model-machineconfig.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Aopenshift-model-machineconfig)
+[![javadoc](https://javadoc.io/badge2/io.fabric8/openshift-model-machineconfig/javadoc.svg)](https://javadoc.io/doc/io.fabric8/openshift-model-machineconfig)
 
 Uses [Go reflection](https://blog.golang.org/laws-of-reflection) to generate a JSON schema that describes one or more
 API resources in Kubernetes and OpenShift.

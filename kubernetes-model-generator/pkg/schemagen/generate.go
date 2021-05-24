@@ -683,6 +683,11 @@ func (g *schemaGenerator) isClusterScopedResource(t reflect.Type) bool {
                 "github.com/openshift/api/helm/v1beta1/HelmChartRepository",
                 "github.com/openshift/api/network/v1/HostSubnet",
                 "github.com/openshift/api/user/v1/UserIdentityMapping",
+                "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1/ContainerRuntimeConfig",
+                "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1/ControllerConfig",
+                "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1/KubeletConfig",
+                "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1/MachineConfigPool",
+                "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1/MachineConfig",
 	}
 
 	return Contains(clusterScopedResourcesList, t.PkgPath() + "/" + t.Name())
