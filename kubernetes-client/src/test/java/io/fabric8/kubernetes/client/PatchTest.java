@@ -15,6 +15,8 @@
  */
 package io.fabric8.kubernetes.client;
 
+import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchType;
 import okhttp3.Call;
@@ -129,11 +131,11 @@ class PatchTest {
     ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
 
     // When
+    PodResource<Pod> podResource = kubernetesClient.pods()
+        .inNamespace("ns1")
+        .withName("foo");
     KubernetesClientException e = assertThrows(KubernetesClientException.class,
-        () -> kubernetesClient.pods()
-            .inNamespace("ns1")
-            .withName("foo")
-            .patch("{\"metadata\":{\"annotations\":{\"bob\":\"martin\"}}}"));
+        () -> podResource.patch("{\"metadata\":{\"annotations\":{\"bob\":\"martin\"}}}"));
 
     // Then
     verify(mockClient, times(1)).newCall(captor.capture());
