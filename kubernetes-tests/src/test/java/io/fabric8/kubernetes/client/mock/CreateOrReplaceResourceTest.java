@@ -232,7 +232,7 @@ class CreateOrReplaceResourceTest {
   }
 
   @Test
-  void testReplaceNonExistant() throws Exception {
+  void testReplaceNonExistent() {
     final KubernetesClientException result = assertThrows(KubernetesClientException.class,
         () -> client.configMaps()
             .withName("map1")
