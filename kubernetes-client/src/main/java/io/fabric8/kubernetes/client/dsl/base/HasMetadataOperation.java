@@ -59,8 +59,8 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
     try {
       return createVisitableBuilder(item).build();
     } catch (KubernetesClientException e) {
+      return Serialization.clone(item);
     }
-    return Serialization.clone(item);
   }
   
   @Override

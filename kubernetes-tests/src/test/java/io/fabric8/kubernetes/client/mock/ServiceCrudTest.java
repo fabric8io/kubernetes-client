@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.ServiceResource;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import org.junit.jupiter.api.Test;
 
@@ -44,11 +45,12 @@ public class ServiceCrudTest {
     Service service3 = new ServiceBuilder().withNewMetadata().withName("svc3").addToLabels("foo", "bar").and().withNewSpec().and().build();
 
     // try to patch/replace before the service exists
+    ServiceResource<Service> serviceOp = client.services().inNamespace("ns2").withName("svc2");
     KubernetesClientException result = assertThrows(KubernetesClientException.class,
-        () -> client.services().inNamespace("ns2").withName("svc2").patch(service1));
+        () -> serviceOp.patch(service1));
     assertEquals(HttpURLConnection.HTTP_NOT_FOUND, result.getCode());
     result = assertThrows(KubernetesClientException.class,
-        () -> client.services().inNamespace("ns2").withName("svc2").replace(service1));
+        () -> serviceOp.replace(service1));
     assertEquals(HttpURLConnection.HTTP_NOT_FOUND, result.getCode());
 
     client.services().inNamespace("ns1").create(service1);

@@ -27,6 +27,7 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.PodResource;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import okhttp3.mockwebserver.RecordedRequest;
@@ -233,19 +234,19 @@ class CreateOrReplaceResourceTest {
 
   @Test
   void testReplaceNonExistent() {
+    Resource<ConfigMap> resource = client.configMaps().withName("map1");
+    ConfigMap configMap = new ConfigMapBuilder().withNewMetadata().withName("map1").and().build();
     final KubernetesClientException result = assertThrows(KubernetesClientException.class,
-        () -> client.configMaps()
-            .withName("map1")
-            .replace(new ConfigMapBuilder().withNewMetadata().withName("map1").and().build()));
+        () -> resource.replace(configMap));
     assertEquals(HttpURLConnection.HTTP_NOT_FOUND, result.getCode());
   }
 
   @Test
   void testPatchNonExistent() {
+    Resource<ConfigMap> resource = client.configMaps().withName("map1");
+    ConfigMap configMap = new ConfigMapBuilder().withNewMetadata().withName("map1").and().build();
     final KubernetesClientException result = assertThrows(KubernetesClientException.class,
-        () -> client.configMaps()
-            .withName("map1")
-            .patch(new ConfigMapBuilder().withNewMetadata().withName("map1").and().build()));
+        () -> resource.patch(configMap));
     assertEquals(HttpURLConnection.HTTP_NOT_FOUND, result.getCode());
   }
 }
