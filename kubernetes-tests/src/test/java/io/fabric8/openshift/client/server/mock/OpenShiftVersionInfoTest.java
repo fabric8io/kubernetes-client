@@ -225,6 +225,6 @@ class OpenShiftVersionInfoTest {
 
     VersionInfo versionInfo = client.getVersion();
     assertEquals("4", versionInfo.getMajor());
-    assertEquals("8.0", versionInfo.getMinor());
+    assertEquals("8.0-0", versionInfo.getMinor());
   }
 }
