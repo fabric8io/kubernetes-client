@@ -120,7 +120,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
         throw (KubernetesClientException)e.getCause();
       }
     }
-    throw new KubernetesClientException("Name not specified. But operation requires name.");
+    throw new KubernetesClientException("name not specified for an operation requiring one.");
   }
   
   @Override
@@ -140,18 +140,18 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
     String fixedResourceVersion = getResourceVersion();
     Exception caught = null;
     int maxTries = 10;
+    String existingResourceVersion = KubernetesResourceUtil.getResourceVersion(item);
     for (int i = 0; i < maxTries; i++) {
       try {
         final String resourceVersion;
         if (fixedResourceVersion != null) {
           resourceVersion = fixedResourceVersion;
+        } else if (i == 0 && existingResourceVersion != null) {
+          // if a resourceVersion is already there, try it first
+          resourceVersion = existingResourceVersion;
         } else {
           T got = requireFromServer(item.getMetadata());
-          if (got.getMetadata() != null) {
-            resourceVersion = got.getMetadata().getResourceVersion();
-          } else {
-            resourceVersion = null;
-          }
+          resourceVersion = KubernetesResourceUtil.getResourceVersion(got);
         }
 
         final UnaryOperator<T> visitor = resource -> {

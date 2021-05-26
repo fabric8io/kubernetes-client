@@ -161,7 +161,7 @@ public class OperationSupport {
   public URL getResourceUrl(String namespace, String name, boolean status) throws MalformedURLException {
     if (name == null) {
       if (status) {
-        throw new KubernetesClientException("Name not specified. But operation requires name.");
+        throw new KubernetesClientException("name not specified for an operation requiring one.");
       }
       return getNamespacedUrl(namespace);
     }
@@ -209,7 +209,7 @@ public class OperationSupport {
       if (!isResourceNamespaced()) {
         return null;
       } else {
-        throw new KubernetesClientException("Namespace not specified. But operation requires namespace.");
+        throw new KubernetesClientException("namespace not specified for an operation requiring one.");
       }
     } else if (Utils.isNullOrEmpty(itemNs)) {
       return operationNs;
