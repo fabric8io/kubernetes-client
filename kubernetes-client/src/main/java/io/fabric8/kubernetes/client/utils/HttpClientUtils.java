@@ -107,7 +107,7 @@ public class HttpClientUtils {
     return urlBuilder;
   }
 
-  private static OkHttpClient createHttpClient(final Config config, final Consumer<OkHttpClient.Builder> additionalConfig) {
+  public static OkHttpClient createHttpClient(final Config config, final Consumer<OkHttpClient.Builder> additionalConfig) {
         try {
             OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
 
