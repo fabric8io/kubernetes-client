@@ -48,8 +48,6 @@ class OpenShiftVersionInfoTest {
 
   @Test
   void testClusterVersioningOpenshift4() {
-    server.expect().get().withPath("/openshift/version").andReturn(404, "").always();
-
     server.expect().get().withPath("/apis/config.openshift.io/v1/clusterversions").andReturn(200, "{" +
       "  \"apiVersion\": \"config.openshift.io/v1\"," +
       "  \"items\": [" +
@@ -139,8 +137,6 @@ class OpenShiftVersionInfoTest {
 
   @Test
   void testClusterVersioningOpenshift4Unreleased() {
-    server.expect().get().withPath("/openshift/version").andReturn(404, "").always();
-
     server.expect().get().withPath("/apis/config.openshift.io/v1/clusterversions").andReturn(200, "{" +
       "  \"apiVersion\": \"config.openshift.io/v1\"," +
       "  \"items\": [" +
