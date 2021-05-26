@@ -224,7 +224,7 @@ func (g *schemaGenerator) resourceListWithGeneric(t reflect.Type) string {
 }
 
 func (g *schemaGenerator) javaInterfaces(t reflect.Type) []string {
-	if _, ok := t.FieldByName("ObjectMeta"); t.Name() != "JobTemplateSpec" && t.Name() != "PodTemplateSpec" && t.Name() != "PersistentVolumeClaimTemplate" && ok {
+	if _, ok := t.FieldByName("ObjectMeta"); t.Name() != "JobTemplateSpec" && t.Name() != "PodTemplateSpec" && t.Name() != "PersistentVolumeClaimTemplate"  && t.Name() != "MachineSpec" && t.Name() != "MachineTemplateSpec" && ok {
 		scope := g.crdScope(t)
 
 		if scope == Namespaced {

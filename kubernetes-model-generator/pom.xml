@@ -57,6 +57,7 @@
     <module>openshift-model-clusterautoscaling</module>
     <module>openshift-model-operator</module>
     <module>openshift-model-operatorhub</module>
+    <module>openshift-model-machine</module>
     <module>openshift-model-monitoring</module>
     <module>openshift-model-console</module>
     <module>openshift-model-machineconfig</module>
