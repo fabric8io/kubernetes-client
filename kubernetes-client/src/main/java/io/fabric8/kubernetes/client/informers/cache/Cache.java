@@ -135,8 +135,7 @@ public class Cache<T> implements Indexer<T> {
    * Return a copy of the old cache contents
    *
    * @param list list of objects
-   * @param resourceVersion resource version
-   * @return 
+   * @return the old contents
    */
   public synchronized Map<String, T> replace(List<T> list) {
     ConcurrentHashMap<String, T> newItems = new ConcurrentHashMap<>();
@@ -177,6 +176,9 @@ public class Cache<T> implements Indexer<T> {
     return this.getByKey(key);
   }
 
+  /**
+   * Get the key for the given object
+   */
   public String getKey(T obj) {
     String result = this.keyFunc.apply(obj);
     return result == null ? "" : result;
