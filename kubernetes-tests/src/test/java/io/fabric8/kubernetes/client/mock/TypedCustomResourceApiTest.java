@@ -134,7 +134,6 @@ class TypedCustomResourceApiTest {
     RecordedRequest recordedRequest = server.getLastRequest();
     assertEquals("PUT", recordedRequest.getMethod());
     assertEquals("{\"apiVersion\":\"demo.k8s.io/v1alpha1\",\"kind\":\"PodSet\",\"metadata\":{\"name\":\"example-podset\"},\"spec\":{\"replicas\":5},\"status\":{\"availableReplicas\":4}}", recordedRequest.getBody().readUtf8());
-    System.out.println(recordedRequest.getBody().readUtf8());
   }
 
   private PodSet getPodSet() {

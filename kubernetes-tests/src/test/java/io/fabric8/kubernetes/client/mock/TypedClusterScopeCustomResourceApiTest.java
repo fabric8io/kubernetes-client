@@ -41,12 +41,12 @@ import static org.junit.Assert.assertTrue;
 
 @EnableKubernetesMockClient
 class TypedClusterScopeCustomResourceApiTest {
-  
+
     KubernetesMockServer server;
     KubernetesClient client;
 
     private MixedOperation<Star, KubernetesResourceList<Star>, Resource<Star>> starClient;
-    
+
     private CustomResourceDefinitionContext crdContext;
 
     @BeforeEach
@@ -130,6 +130,7 @@ class TypedClusterScopeCustomResourceApiTest {
     @Test
     void testStatusUpdate() throws InterruptedException {
       Star updatedStar = getStar();
+      updatedStar.getMetadata().setResourceVersion("1");
       StarStatus starStatus = new StarStatus();
       starStatus.setLocation("M");
       updatedStar.setStatus(starStatus);
@@ -139,9 +140,30 @@ class TypedClusterScopeCustomResourceApiTest {
 
       starClient.inNamespace("test").updateStatus(updatedStar);
       RecordedRequest recordedRequest = server.getLastRequest();
+      assertEquals(1, server.getRequestCount());
       assertEquals("PUT", recordedRequest.getMethod());
-      assertEquals("{\"apiVersion\":\"example.crd.com/v1alpha1\",\"kind\":\"Star\",\"metadata\":{\"name\":\"sun\"},\"spec\":{\"type\":\"G\",\"location\":\"Galaxy\"},\"status\":{\"location\":\"M\"}}", recordedRequest.getBody().readUtf8());
-      System.out.println(recordedRequest.getBody().readUtf8());
+      assertEquals("{\"apiVersion\":\"example.crd.com/v1alpha1\",\"kind\":\"Star\",\"metadata\":{\"name\":\"sun\",\"resourceVersion\":\"1\"},\"spec\":{\"type\":\"G\",\"location\":\"Galaxy\"},\"status\":{\"location\":\"M\"}}", recordedRequest.getBody().readUtf8());
+    }
+
+    @Test
+    void testStatusReplace() throws InterruptedException {
+      Star updatedStar = getStar();
+      StarStatus starStatus = new StarStatus();
+      starStatus.setLocation("M");
+      updatedStar.setStatus(starStatus);
+
+      // without the resourceVersion set, it must first do a get for the latest version
+      server.expect().get().withPath("/apis/example.crd.com/v1alpha1/stars/sun").andReturn(200, "{\"apiVersion\":\"example.crd.com/v1alpha1\",\"kind\":\"Star\",\"metadata\":{\"name\":\"sun\",\"resourceVersion\":\"1\"},\"spec\":{\"type\":\"G\",\"location\":\"Galaxy\"},\"status\":{\"location\":\"M\"}}").once();
+      server.expect().put().withPath("/apis/example.crd.com/v1alpha1/stars/sun/status").andReturn(200, "{\"apiVersion\":\"example.crd.com/v1alpha1\",\"kind\":\"Star\",\"metadata\":{\"name\":\"sun\",\"resourceVersion\":\"2\"},\"spec\":{\"type\":\"G\",\"location\":\"Galaxy\"},\"status\":{\"location\":\"M\"}}").once();
+      starClient = client.customResources(Star.class);
+
+      Star replaced = starClient.inNamespace("test").replaceStatus(updatedStar);
+      assertEquals("2", replaced.getMetadata().getResourceVersion());
+      RecordedRequest recordedRequest = server.getLastRequest();
+      // get of the latest version, put of status
+      assertEquals(2, server.getRequestCount());
+      assertEquals("PUT", recordedRequest.getMethod());
+      assertEquals("{\"apiVersion\":\"example.crd.com/v1alpha1\",\"kind\":\"Star\",\"metadata\":{\"name\":\"sun\",\"resourceVersion\":\"1\"},\"spec\":{\"type\":\"G\",\"location\":\"Galaxy\"},\"status\":{\"location\":\"M\"}}", recordedRequest.getBody().readUtf8());
     }
 
     private Star getStar() {

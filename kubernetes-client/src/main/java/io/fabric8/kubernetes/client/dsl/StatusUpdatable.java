@@ -23,6 +23,8 @@ public interface StatusUpdatable<T> {
    *
    * @param item kubernetes object
    * @return updated object
+   * @deprecated please use one of patchStatus, editStatus, or replaceStatus
    */
+  @Deprecated
   T updateStatus(T item);
 }
