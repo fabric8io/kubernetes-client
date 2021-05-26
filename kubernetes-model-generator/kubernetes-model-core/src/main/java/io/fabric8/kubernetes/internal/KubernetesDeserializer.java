@@ -175,6 +175,7 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
                 "io.fabric8.openshift.api.model.runtime.",
                 "io.fabric8.openshift.api.model.console.v1.",
                 "io.fabric8.openshift.api.model.monitoring.v1.",
+                "io.fabric8.openshift.api.model.machine.v1beta1.",
                 "io.fabric8.openshift.api.model.operator.",
                 "io.fabric8.openshift.api.model.operator.v1.",
                 "io.fabric8.openshift.api.model.operator.v1alpha1.",

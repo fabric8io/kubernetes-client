@@ -53,7 +53,6 @@ import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.api.model.authentication.TokenReview;
-import io.fabric8.kubernetes.api.model.authorization.v1.SelfSubjectAccessReview;
 import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequest;
 import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestList;
 import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
@@ -199,6 +198,7 @@ import io.fabric8.openshift.client.dsl.MachineConfigurationAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftClusterAutoscalingAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftConfigAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftConsoleAPIGroupDSL;
+import io.fabric8.openshift.client.dsl.OpenShiftMachineAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftMonitoringAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftOperatorAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftOperatorHubAPIGroupDSL;
@@ -743,6 +743,11 @@ public class DefaultOpenShiftClient extends BaseClient implements NamespacedOpen
   @Override
   public MachineConfigurationAPIGroupDSL machineConfigurations() {
     return adapt(OpenShiftMachineConfigurationAPIGroupClient.class);
+  }
+
+  @Override
+  public OpenShiftMachineAPIGroupDSL machine() {
+    return adapt(OpenShiftMachineAPIGroupClient.class);
   }
 
   @Override

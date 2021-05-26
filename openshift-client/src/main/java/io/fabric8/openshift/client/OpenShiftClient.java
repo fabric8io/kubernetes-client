@@ -99,6 +99,13 @@ public interface OpenShiftClient extends KubernetesClient {
    */
   MachineConfigurationAPIGroupDSL machineConfigurations();
 
+  /*
+   * API entrypoint for accessing OpenShift Machine APIGroup resources(machine.openshift.io/v1beta1)
+   *
+   * @return {@link OpenShiftMachineAPIGroupDSL} which contains respective resources in this API group
+   */
+  OpenShiftMachineAPIGroupDSL machine();
+
   /**
    * API entrypoint for accessing OpenShift operator APIGroup resources(monitoring.coreos.com/v1)
    *

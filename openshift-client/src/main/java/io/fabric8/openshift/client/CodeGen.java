@@ -30,6 +30,7 @@ import io.sundr.transform.annotations.VelocityTransformations;
                 @ResourceSelector("openshift.properties"),
                 @ResourceSelector("operator.properties"),
                 @ResourceSelector("operatorhub.properties"),
+                @ResourceSelector("machine.properties"),
                 @ResourceSelector("monitoring.properties"),
                 @ResourceSelector("console.properties"),
                 @ResourceSelector("machineconfig.properties"),

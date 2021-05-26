@@ -1,0 +1,25 @@
+{
+  "value": {
+    "apiVersion": "libvirtproviderconfig.openshift.io/v1beta1",
+    "autostart": false,
+    "cloudInit": null,
+    "domainMemory": 14336,
+    "domainVcpu": 6,
+    "ignKey": "",
+    "ignition": {
+      "userDataSecret": "master-user-data"
+    },
+    "kind": "LibvirtMachineProviderConfig",
+    "networkInterfaceAddress": "192.168.126.0/24",
+    "networkInterfaceHostname": "",
+    "networkInterfaceName": "crc-rsppg",
+    "networkUUID": "",
+    "uri": "qemu+tcp://192.168.122.1/system",
+    "volume": {
+      "baseVolumeID": "crc-rsppg-base",
+      "poolName": "crc-rsppg",
+      "volumeName": "",
+      "volumeSize": 33285996544
+    }
+  }
+}
