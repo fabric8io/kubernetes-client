@@ -30,6 +30,7 @@ import io.sundr.model.Property;
 import io.sundr.model.TypeDef;
 import io.sundr.model.TypeRef;
 import io.sundr.model.utils.Optionals;
+import io.sundr.utils.Strings;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -138,6 +139,7 @@ public abstract class AbstractJsonSchema<T, B> {
       final Property[] updated = {property};
 
       if (property.isStatic() || ignores.contains(name)) {
+        System.out.println("\tIgnoring!");
         continue;
       }
 
@@ -166,10 +168,8 @@ public abstract class AbstractJsonSchema<T, B> {
           // if we found an annotated accessor, override the property's name if needed
           .ifPresent(a -> {
             final String fromAnnotation = (String) a.getParameters().get("value");
-            if(!updated[0].getName().equals(fromAnnotation)) {
-              updated[0] = new Property(property.getAnnotations(), property.getTypeRef(),
-                fromAnnotation, property.getComments(),
-                property.getModifiers(), property.getAttributes());
+            if(!Strings.isNullOrEmpty(fromAnnotation) && !updated[0].getName().equals(fromAnnotation)) {
+              updated[0] = new Property(property.getAnnotations(), property.getTypeRef(), fromAnnotation, property.getComments(), property.getModifiers(), property.getAttributes());
             }
           })
         );
