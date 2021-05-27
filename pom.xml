@@ -706,7 +706,7 @@
             <exclude>extensions/**/vendor/**/*</exclude>
             <exclude>**/go.mod</exclude>
             <exclude>**/go.sum</exclude>
-            <exclude>kubernetes-client/src/test/resources/*</exclude>
+            <exclude>kubernetes-client/src/test/resources/**/*</exclude>
             <exclude>kubernetes-client/src/test/resources/mockito-extensions/*</exclude>
             <exclude>**/src/test/resources/ssl/*</exclude>
             <exclude>Jenkinsfile</exclude>
