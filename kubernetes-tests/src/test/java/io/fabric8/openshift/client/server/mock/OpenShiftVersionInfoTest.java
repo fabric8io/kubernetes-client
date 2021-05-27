@@ -51,7 +51,7 @@ class OpenShiftVersionInfoTest {
 
   @Test
   void testClusterVersioningOpenshift4() throws IOException {
-    server.expect().get().withPath("/apis/config.openshift.io/v1/clusterversions").andReturn(200, IOUtils.resourceToString("/clusterversions-released.yml", StandardCharsets.UTF_8)).once();
+    server.expect().get().withPath("/apis/config.openshift.io/v1/clusterversions").andReturn(200, IOUtils.resourceToString("/clusterversions-released.json", StandardCharsets.UTF_8)).once();
 
     VersionInfo versionInfo = client.getVersion();
     assertEquals("4", versionInfo.getMajor());
@@ -60,7 +60,7 @@ class OpenShiftVersionInfoTest {
 
   @Test
   void testClusterVersioningOpenshift4Unreleased() throws IOException {
-    server.expect().get().withPath("/apis/config.openshift.io/v1/clusterversions").andReturn(200, IOUtils.resourceToString("/clusterversions-unreleased.yml", StandardCharsets.UTF_8)).once();
+    server.expect().get().withPath("/apis/config.openshift.io/v1/clusterversions").andReturn(200, IOUtils.resourceToString("/clusterversions-unreleased.json", StandardCharsets.UTF_8)).once();
 
 
     VersionInfo versionInfo = client.getVersion();
