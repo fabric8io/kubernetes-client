@@ -79,7 +79,7 @@
       <artifactId>jackson-annotations</artifactId>
     </dependency>
 
-    <!-- CompileOnly (provided) depdendencies -->
+    <!-- CompileOnly (provided) dependencies -->
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
