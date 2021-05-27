@@ -16,26 +16,15 @@
 
 package io.fabric8.kubernetes.client.mock;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
 import io.fabric8.kubernetes.api.model.DeleteOptions;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
-import io.fabric8.kubernetes.api.model.WatchEvent;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionList;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
@@ -45,14 +34,23 @@ import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.mockwebserver.RecordedRequest;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @EnableKubernetesMockClient
 class CustomResourceTest {
@@ -72,11 +70,11 @@ class CustomResourceTest {
   @Test
   void testLoad() throws IOException {
     Map<String, Object> customResource = client.customResource(customResourceDefinitionContext).load(getClass().getResourceAsStream("/test-hello-cr.yml"));
-    assertNotNull(customResource);
-    assertEquals("example-hello", ((Map<String, Object>)customResource.get("metadata")).get("name").toString());
+    assertThat(customResource)
+      .isNotNull()
+      .hasFieldOrPropertyWithValue("metadata.name", "example-hello");
   }
 
-  @SuppressWarnings("unchecked")
   @Test
   void testCreate() throws IOException {
     final String createResponse = "{\"apiVersion\": \"test.fabric8.io/v1alpha1\",\"kind\": \"Hello\"," +
@@ -88,10 +86,11 @@ class CustomResourceTest {
       "\"metadata\": {\"name\": \"example-hello\"},\"spec\": {\"size\": 3}}";
     Map<String, Object> resource = client.customResource(customResourceDefinitionContext).create("ns1", newCrdObject);
 
-    final Map<String, String> metadata = (Map<String, String>)resource.get("metadata");
-    assertEquals("example-hello", metadata.get("name"));
-    assertEquals("1", metadata.get("resourceVersion"));
-    assertEquals("19851026T090000Z", ((Map<String, String>)resource.get("spec")).get("creationTimestamp"));
+    assertThat(resource)
+      .isNotNull()
+      .hasFieldOrPropertyWithValue("metadata.name", "example-hello")
+      .hasFieldOrPropertyWithValue("metadata.resourceVersion", "1")
+      .hasFieldOrPropertyWithValue("spec.creationTimestamp", "19851026T090000Z");
   }
 
   @Test
@@ -104,10 +103,6 @@ class CustomResourceTest {
     server.expect().post().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos").andReturn(HttpURLConnection.HTTP_CONFLICT, jsonObject).once();
     server.expect().put().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/example-hello").andReturn(HttpURLConnection.HTTP_OK, jsonObject).once();
     server.expect().get().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/example-hello").andReturn(HttpURLConnection.HTTP_OK, jsonObject).once();
-
-    KubernetesClientException exception = Assertions.assertThrows(KubernetesClientException.class,
-      () -> client.customResource(customResourceDefinitionContext).createOrReplace("ns1", jsonObject));
-    assertEquals(HttpURLConnection.HTTP_INTERNAL_ERROR, exception.getCode());
 
     Map<String, Object> resource = client.customResource(customResourceDefinitionContext).createOrReplace("ns1", jsonObject);
     assertEquals("example-hello", ((Map<String, Object>)resource.get("metadata")).get("name").toString());
@@ -299,16 +294,15 @@ class CustomResourceTest {
   }
 
   @Test
-  void testDeleteWithNamespaceMismatch() {
-    Assertions.assertThrows(KubernetesClientException.class, () -> {
-      client.customResource(customResourceDefinitionContext).delete("ns2", "example-hello");
-    });
+  void testDeleteWithNonExistentResource() throws IOException {
+    assertThat(client.customResource(customResourceDefinitionContext).delete("ns2", "example-hello"))
+      .isFalse();
   }
 
   @Test
   void testStatusUpdate() throws IOException {
     String objectAsJsonString = "{\"metadata\":{},\"apiVersion\":\"v1\",\"kind\":\"Status\",\"details\":{\"name\":\"prometheus-example-rules\",\"group\":\"monitoring.coreos.com\",\"kind\":\"prometheusrules\",\"uid\":\"b3d085bd-6a5c-11e9-8787-525400b18c1d\"},\"status\":\"Success\"}";
-    server.expect().put().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/example-hello/status").andReturn(HttpURLConnection.HTTP_OK, objectAsJsonString).once();
+    server.expect().patch().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/example-hello/status").andReturn(HttpURLConnection.HTTP_OK, objectAsJsonString).once();
 
     Map<String, Object> result = client.customResource(customResourceDefinitionContext).updateStatus("ns1", "example-hello", objectAsJsonString);
     assertEquals("Success", result.get("status"));
@@ -322,7 +316,7 @@ class CustomResourceTest {
       .andUpgradeToWebSocket()
       .open()
       .waitFor(WATCH_EVENT_PERIOD)
-      .andEmit(new WatchEvent(null, "ADDED"))
+      .andEmit("{\"type\":\"ADDED\", \"object\":{\"kind\": \"Hello\", \"metadata\": {\"resourceVersion\": 1003}}}")
       .done().always();
 
 
@@ -350,7 +344,7 @@ class CustomResourceTest {
         .andUpgradeToWebSocket()
         .open()
         .waitFor(WATCH_EVENT_PERIOD)
-        .andEmit(new WatchEvent(null, "ADDED"))
+        .andEmit("{\"type\":\"ADDED\", \"object\":{\"kind\": \"Hello\", \"metadata\": {\"resourceVersion\": 1}}}")
         .done().always();
 
 
@@ -379,7 +373,7 @@ class CustomResourceTest {
       .andUpgradeToWebSocket()
       .open()
       .waitFor(WATCH_EVENT_PERIOD)
-      .andEmit( new WatchEvent(null, "ADDED"))
+      .andEmit("{\"type\":\"ADDED\", \"object\":{\"kind\": \"Hello\", \"metadata\": {\"resourceVersion\": 1}}}")
       .done().always();
 
 
@@ -407,7 +401,7 @@ class CustomResourceTest {
       .andUpgradeToWebSocket()
       .open()
       .waitFor(WATCH_EVENT_PERIOD)
-      .andEmit(new WatchEvent(null, "ADDED"))
+      .andEmit("{\"type\":\"ADDED\", \"object\":{\"kind\": \"Hello\", \"metadata\": {\"resourceVersion\": 1}}}")
       .done().always();
 
 
@@ -432,11 +426,11 @@ class CustomResourceTest {
   void testWatchSomeResourceVersion() throws IOException, InterruptedException {
     // Given
     String watchResourceVersion = "1001";
-    server.expect().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos?watch=true&resourceVersion=" + watchResourceVersion)
+    server.expect().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos?resourceVersion=" + watchResourceVersion + "&watch=true")
       .andUpgradeToWebSocket()
       .open()
       .waitFor(WATCH_EVENT_PERIOD)
-      .andEmit(new WatchEvent(null, "ADDED"))
+      .andEmit("{\"type\":\"ADDED\", \"object\":{\"kind\": \"Hello\", \"metadata\": {\"resourceVersion\": 1001}}}")
       .done().always();
 
 
@@ -462,11 +456,11 @@ class CustomResourceTest {
   void testWatchNamespaceAndSomeResourceVersion() throws IOException, InterruptedException {
     // Given
     String watchResourceVersion = "1001";
-    server.expect().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos?watch=true&resourceVersion=" + watchResourceVersion)
+    server.expect().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos?resourceVersion=" + watchResourceVersion + "&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .waitFor(WATCH_EVENT_PERIOD)
-        .andEmit(new WatchEvent(null, "ADDED"))
+        .andEmit("{\"type\":\"ADDED\", \"object\":{\"kind\": \"Hello\", \"metadata\": {\"resourceVersion\": 1001}}}")
         .done().always();
 
 
@@ -493,11 +487,11 @@ class CustomResourceTest {
   @DisplayName("Should be able to test watch with ListOptions provided")
   void testWatchWithListOptions() throws IOException, InterruptedException {
     // Given
-    server.expect().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos?timeoutSeconds=30&allowWatchBookmarks=true&watch=true&resourceVersion=1003")
+    server.expect().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos?resourceVersion=1003&timeoutSeconds=30&allowWatchBookmarks=true&watch=true")
       .andUpgradeToWebSocket()
       .open()
       .waitFor(WATCH_EVENT_PERIOD)
-      .andEmit(new WatchEvent(null, "ADDED"))
+      .andEmit("{\"type\":\"ADDED\", \"object\":{\"kind\": \"Hello\", \"metadata\": {\"resourceVersion\": 1003}}}")
       .done().always();
 
 
@@ -525,11 +519,11 @@ class CustomResourceTest {
   @DisplayName("Should be able to test watch with Namespace and ListOptions provided")
   void testWatchWithNamespaceAndListOptions() throws IOException, InterruptedException {
     // Given
-    server.expect().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos?timeoutSeconds=30&allowWatchBookmarks=true&watch=true&resourceVersion=1003")
+    server.expect().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos?resourceVersion=1003&timeoutSeconds=30&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .waitFor(WATCH_EVENT_PERIOD)
-        .andEmit(new WatchEvent(null, "ADDED"))
+        .andEmit("{\"type\":\"ADDED\", \"object\":{\"kind\": \"Hello\", \"metadata\": {\"resourceVersion\": 1003}}}")
         .done().always();
 
 
