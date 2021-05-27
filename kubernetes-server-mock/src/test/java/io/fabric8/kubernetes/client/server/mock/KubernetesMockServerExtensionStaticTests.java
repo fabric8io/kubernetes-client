@@ -28,5 +28,8 @@ public class KubernetesMockServerExtensionStaticTests {
 	@Test
 	void testExample() {
 		Assertions.assertNotNull(client);
+    Assertions.assertNull(client.getConfiguration().getOauthToken());
+    Assertions.assertNull(client.getConfiguration().getCurrentContext());
+    Assertions.assertTrue(client.getConfiguration().getContexts().isEmpty());
 	}
 }

@@ -41,6 +41,8 @@ public interface SharedInformer<T> {
 
   /**
    * Starts the shared informer, which will be stopped until stop() is called.
+   * 
+   * <br>If the informer is not already running, this is a blocking call
    */
   void run();
 
@@ -56,7 +58,7 @@ public interface SharedInformer<T> {
    * The value returned is not synchronized with access to the underlying store
    * and is not thread-safe.
    *
-   * @return string value
+   * @return string value or null if never synced
    */
   String lastSyncResourceVersion();
   
@@ -64,4 +66,9 @@ public interface SharedInformer<T> {
    * Return true if the informer is running
    */
   boolean isRunning();
+
+  /**
+   * Return the class this informer is watching
+   */
+  Class<T> getApiTypeClass();
 }

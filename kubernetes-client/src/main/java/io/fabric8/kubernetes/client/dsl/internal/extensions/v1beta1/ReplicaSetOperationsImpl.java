@@ -195,7 +195,7 @@ public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<
   }
 
   private List<PodResource<Pod>> doGetLog(boolean isPretty) {
-    ReplicaSet replicaSet = fromServer().get();
+    ReplicaSet replicaSet = requireFromServer();
     return PodOperationUtil.getPodOperationsForController(context, replicaSet.getMetadata().getUid(),
       getReplicaSetSelectorLabels(replicaSet), isPretty, podLogWaitTimeout);
   }

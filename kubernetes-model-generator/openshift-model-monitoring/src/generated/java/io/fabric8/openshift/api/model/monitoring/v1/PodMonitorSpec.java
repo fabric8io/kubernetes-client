@@ -37,7 +37,8 @@ import lombok.ToString;
     "podMetricsEndpoints",
     "podTargetLabels",
     "sampleLimit",
-    "selector"
+    "selector",
+    "targetLimit"
 })
 @ToString
 @EqualsAndHashCode
@@ -68,6 +69,8 @@ public class PodMonitorSpec implements KubernetesResource
     private Long sampleLimit;
     @JsonProperty("selector")
     private io.fabric8.kubernetes.api.model.LabelSelector selector;
+    @JsonProperty("targetLimit")
+    private Long targetLimit;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -83,11 +86,12 @@ public class PodMonitorSpec implements KubernetesResource
      * @param jobLabel
      * @param podTargetLabels
      * @param sampleLimit
+     * @param targetLimit
      * @param namespaceSelector
      * @param podMetricsEndpoints
      * @param selector
      */
-    public PodMonitorSpec(String jobLabel, NamespaceSelector namespaceSelector, List<PodMetricsEndpoint> podMetricsEndpoints, List<String> podTargetLabels, Long sampleLimit, io.fabric8.kubernetes.api.model.LabelSelector selector) {
+    public PodMonitorSpec(String jobLabel, NamespaceSelector namespaceSelector, List<PodMetricsEndpoint> podMetricsEndpoints, List<String> podTargetLabels, Long sampleLimit, io.fabric8.kubernetes.api.model.LabelSelector selector, Long targetLimit) {
         super();
         this.jobLabel = jobLabel;
         this.namespaceSelector = namespaceSelector;
@@ -95,6 +99,7 @@ public class PodMonitorSpec implements KubernetesResource
         this.podTargetLabels = podTargetLabels;
         this.sampleLimit = sampleLimit;
         this.selector = selector;
+        this.targetLimit = targetLimit;
     }
 
     @JsonProperty("jobLabel")
@@ -155,6 +160,16 @@ public class PodMonitorSpec implements KubernetesResource
     @JsonProperty("selector")
     public void setSelector(io.fabric8.kubernetes.api.model.LabelSelector selector) {
         this.selector = selector;
+    }
+
+    @JsonProperty("targetLimit")
+    public Long getTargetLimit() {
+        return targetLimit;
+    }
+
+    @JsonProperty("targetLimit")
+    public void setTargetLimit(Long targetLimit) {
+        this.targetLimit = targetLimit;
     }
 
     @JsonAnyGetter

@@ -64,6 +64,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -851,10 +852,14 @@ class DefaultSharedIndexInformerTest {
 
   @Test
   void testRunAfterStop() {
+    // Given
     SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, 0);
-    podInformer.run();
     podInformer.stop();
-    assertThrows(IllegalStateException.class, podInformer::run);
+    // When
+    final IllegalStateException result = assertThrows(IllegalStateException.class, podInformer::run);
+    // Then
+    assertThat(result)
+      .hasMessage("Cannot restart a stopped informer");
   }
 
   private KubernetesResource getAnimal(String name, String order, String resourceVersion) {

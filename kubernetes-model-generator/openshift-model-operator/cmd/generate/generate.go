@@ -31,6 +31,7 @@ import (
   operatorv1 "github.com/openshift/api/operator/v1"
   operatorv1alpha1 "github.com/openshift/api/operator/v1alpha1"
   operatoringressv1 "github.com/openshift/api/operatoringress/v1"
+  operatorcontrolpanev1alpha1 "github.com/openshift/api/operatorcontrolplane/v1alpha1"
 
   "os"
 
@@ -76,18 +77,28 @@ type Schema struct {
   OpenShiftAPIServerList                   operatorv1.OpenShiftAPIServerList
   OpenShiftContollerManager                operatorv1.OpenShiftControllerManager
   OpenShiftControllerManagerList           operatorv1.OpenShiftControllerManagerList
+  CloudCredential                          operatorv1.CloudCredential
+  CloudCredentialList                      operatorv1.CloudCredentialList
+  ClusterCSIDriver                         operatorv1.ClusterCSIDriver
+  ClusterCSIDriverList                     operatorv1.ClusterCSIDriverList
+  Config                                   operatorv1.Config
+  ConfigList                               operatorv1.ConfigList
   ServiceCA                                operatorv1.ServiceCA
   ServiceCAList                            operatorv1.ServiceCAList
   ServiceCatalogAPIServer                  operatorv1.ServiceCatalogAPIServer
   ServiceCatalogAPIServerList              operatorv1.ServiceCatalogAPIServerList
   ServiceCatalogControllerManager          operatorv1.ServiceCatalogControllerManager
   ServiceCatalogControllerManagerList      operatorv1.ServiceCatalogControllerManagerList
+  Storage                                  operatorv1.Storage
+  StorageList                              operatorv1.StorageList
   DNSRecord                                operatoringressv1.DNSRecord
   DNSRecordList                            operatoringressv1.DNSRecordList
   ImageContentSourcePolicy                 operatorv1alpha1.ImageContentSourcePolicy
   ImageContentSourcePolicyList             operatorv1alpha1.ImageContentSourcePolicyList
   ImagePruner                              imageregistry.ImagePruner
   ImagePrunerList                          imageregistry.ImagePrunerList
+  PodNetworkConnectivityCheck              operatorcontrolpanev1alpha1.PodNetworkConnectivityCheck
+  PodNetworkConnectivityCheckList          operatorcontrolpanev1alpha1.PodNetworkConnectivityCheckList
 }
 
 func main() {
@@ -106,6 +117,7 @@ func main() {
     {"github.com/openshift/api/operator/v1alpha1", "", "io.fabric8.openshift.api.model.operator.v1alpha1", "os_operator_v1alpha1_", true},
     {"github.com/openshift/api/imageregistry/v1", "imageregistry.operator", "io.fabric8.openshift.api.model.operator.v1", "os_imageregistry_v1_", true},
     {"github.com/openshift/api/operatoringress/v1", "ingress.operator", "io.fabric8.openshift.api.model.operator.v1", "os_operator_v1_", true},
+    {"github.com/openshift/api/operatorcontrolplane/v1alpha1", "controlplane.operator", "io.fabric8.openshift.api.model.operator.controlplane.v1alpha1", "os_operator_controlpane_v1alpha1_", true},
 	}
 
   typeMap := map[reflect.Type]reflect.Type{

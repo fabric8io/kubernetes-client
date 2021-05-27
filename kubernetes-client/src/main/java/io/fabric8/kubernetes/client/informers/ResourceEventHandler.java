@@ -54,4 +54,5 @@ public interface ResourceEventHandler<T> {
    * @param deletedFinalStateUnknown get final state of item if it is known or not.
    */
   void onDelete(T obj, boolean deletedFinalStateUnknown);
+  
 }

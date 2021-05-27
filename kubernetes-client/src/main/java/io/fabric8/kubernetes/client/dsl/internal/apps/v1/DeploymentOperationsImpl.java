@@ -329,7 +329,7 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
 
   private List<RollableScalableResource<ReplicaSet>> doGetLog() {
     List<RollableScalableResource<ReplicaSet>> rcs = new ArrayList<>();
-    Deployment deployment = fromServer().get();
+    Deployment deployment = requireFromServer();
     String rcUid = deployment.getMetadata().getUid();
 
     ReplicaSetOperationsImpl rsOperations = new ReplicaSetOperationsImpl(

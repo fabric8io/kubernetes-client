@@ -70,7 +70,8 @@
             <Import-Package>*</Import-Package>
             <Export-Package>
               io.fabric8.openshift.api.model.operator**,
-              io.fabric8.openshift.api.model.imageregistry**
+              io.fabric8.openshift.api.model.imageregistry**,
+              io.fabric8.openshift.api.model.controlpane.operator**,
             </Export-Package>
             <Include-Resource>
               {maven-resources},

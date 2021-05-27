@@ -40,6 +40,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import okhttp3.OkHttpClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * SharedInformerFactory class constructs and caches informers for api types.
@@ -48,6 +50,7 @@ import okhttp3.OkHttpClient;
  * which is ported from offical go client https://github.com/kubernetes/client-go/blob/master/informers/factory.go
  */
 public class SharedInformerFactory extends BaseOperation {
+  private static final Logger log = LoggerFactory.getLogger(SharedInformerFactory.class);
   private final Map<String, SharedIndexInformer> informers = new HashMap<>();
 
   private final Map<String, Future> startedInformers = new HashMap<>();
@@ -58,6 +61,16 @@ public class SharedInformerFactory extends BaseOperation {
 
   private final ConcurrentLinkedQueue<SharedInformerEventListener> eventListeners = new ConcurrentLinkedQueue<>();
 
+  private boolean allowShutdown = true;
+  
+  public SharedInformerFactory(OkHttpClient okHttpClient, Config configuration) {
+    // ideally this should be bounded.  The current implication is that there
+    // can be 1 thread used (not dedicated to) per informer - which 
+    // could be problematic for a large number of informers.  however
+    // there is already a superceding issue there of thread utilization by okhttp
+    this(Utils.getCommonExecutorSerive(), okHttpClient, configuration);
+    this.allowShutdown = false;
+  }
   /**
    * Constructor with thread pool specified.
    *
@@ -230,7 +243,7 @@ public class SharedInformerFactory extends BaseOperation {
         context = context.withIsNamespaceConfiguredFromGlobalConfig(false);
       }
     }
-    SharedIndexInformer<T> informer = new DefaultSharedIndexInformer<>(apiTypeClass, listerWatcher, resyncPeriodInMillis, context, eventListeners);
+    SharedIndexInformer<T> informer = new DefaultSharedIndexInformer<>(apiTypeClass, listerWatcher, resyncPeriodInMillis, context, informerExecutor);
     this.informers.put(getInformerKey(context), informer);
     return informer;
   }
@@ -274,7 +287,8 @@ public class SharedInformerFactory extends BaseOperation {
   }
 
   /**
-   * Starts all registered informers.
+   * Starts all registered informers in an asynchronous fashion.
+   * <br>use {@link #addSharedInformerEventListener(SharedInformerEventListener)} to receive startup errors. 
    */
   public synchronized void startAllRegisteredInformers() {
     if (informers.isEmpty()) {
@@ -283,8 +297,15 @@ public class SharedInformerFactory extends BaseOperation {
 
     if (!informerExecutor.isShutdown()) {
       informers.forEach(
-        (informerType, informer) ->
-          startedInformers.computeIfAbsent(informerType, key -> informerExecutor.submit(informer::run)));
+          (informerType, informer) -> startedInformers.computeIfAbsent(informerType,
+              key -> informerExecutor.submit(() -> {
+                try {
+                  informer.run();
+                } catch (RuntimeException e) {
+                  this.eventListeners.forEach(listener -> listener.onException(informer, e));
+                  log.warn("Informer start did not complete", e);
+                }
+              })));
     }
   }
 
@@ -310,7 +331,7 @@ public class SharedInformerFactory extends BaseOperation {
           informer.stop();
         }
       });
-    if (shutDownThreadPool) {
+    if (shutDownThreadPool && allowShutdown) {
       informerExecutor.shutdown();
     }
   }

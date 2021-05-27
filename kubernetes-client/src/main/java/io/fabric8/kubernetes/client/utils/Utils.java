@@ -41,7 +41,11 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -57,6 +61,9 @@ public class Utils {
   public static final String PATH_WINDOWS = "Path";
   public static final String PATH_UNIX = "PATH";
   private static final Random random = new Random();
+  
+  private static final ExecutorService SHARED_POOL = Executors.newCachedThreadPool();
+  private static final CachedSingleThreadScheduler SHARED_SCHEDULER = new CachedSingleThreadScheduler();
 
   private Utils() {
   }
@@ -450,5 +457,52 @@ public class Utils {
   private static String getOperatingSystemFromSystemProperty() {
     return System.getProperty(OS_NAME);
   }
+  
+  /**
+   * Create a {@link ThreadFactory} with daemon threads and a thread
+   * name based upon the object passed in.
+   */
+  public static ThreadFactory daemonThreadFactory(Object forObject) {
+    String name = forObject.getClass().getSimpleName() + "-" + System.identityHashCode(forObject);
+    return daemonThreadFactory(name);
+  }
 
+  static ThreadFactory daemonThreadFactory(String name) {
+    return new ThreadFactory() {
+      ThreadFactory threadFactory = Executors.defaultThreadFactory();
+      
+      @Override
+      public Thread newThread(Runnable r) {
+        Thread ret = threadFactory.newThread(r); 
+        ret.setName(name + "-" + ret.getName());
+        ret.setDaemon(true);
+        return ret;
+      }
+    };
+  }
+  
+  /**
+   * Schedule a task to run in the given {@link Executor} - which should run the task in a different thread as to not
+   * hold the scheduling thread
+   */
+  public static ScheduledFuture<?> schedule(Executor executor, Runnable command, long delay, TimeUnit unit) {
+    return SHARED_SCHEDULER.schedule(() -> executor.execute(command), delay, unit);
+  }
+
+  /**
+   * Schedule a repeated task to run in the given {@link Executor} - which should run the task in a different thread as to not
+   * hold the scheduling thread
+   */
+  public static ScheduledFuture<?> scheduleAtFixedRate(Executor executor, Runnable command, long initialDelay, long delay, TimeUnit unit) {
+    // because of the hand-off to the other executor, there's no difference between rate and delay
+    return SHARED_SCHEDULER.scheduleWithFixedDelay(() -> executor.execute(command), initialDelay, delay, unit);
+  }
+  
+  /**
+   * Get the common executor service - callers should not shutdown this service
+   */
+  public static ExecutorService getCommonExecutorSerive() {
+    return SHARED_POOL;
+  }
+    
 }

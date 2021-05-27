@@ -16,5 +16,14 @@
 package io.fabric8.kubernetes.client.informers;
 
 public interface SharedInformerEventListener {
+
+  /**
+   * @deprecated Use {@link #onException(SharedIndexInformer, Exception)} instead
+   */
+  @Deprecated
   void onException(Exception exception);
+
+  default void onException(SharedIndexInformer<?> informer, Exception e) {
+    onException(e);
+  }
 }

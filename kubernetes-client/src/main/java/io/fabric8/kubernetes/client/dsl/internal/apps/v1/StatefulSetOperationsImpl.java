@@ -178,7 +178,7 @@ public class StatefulSetOperationsImpl extends RollableScalableResourceOperation
   }
 
   private List<PodResource<Pod>> doGetLog(boolean isPretty) {
-    StatefulSet statefulSet = fromServer().get();
+    StatefulSet statefulSet = requireFromServer();
 
     return PodOperationUtil.getPodOperationsForController(context, statefulSet.getMetadata().getUid(),
       getStatefulSetSelectorLabels(statefulSet), isPretty, podLogWaitTimeout);

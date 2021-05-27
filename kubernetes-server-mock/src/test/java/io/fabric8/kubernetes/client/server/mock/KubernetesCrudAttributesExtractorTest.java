@@ -280,7 +280,10 @@ public class KubernetesCrudAttributesExtractorTest {
             .endMetadata()
             .withStatus(new PodStatusBuilder().withHostIP("x").build())
             .build();
-    assertNull(kubernetesClient.pods().inNamespace("test").withName("name").replace(pod));
+    PodResource<Pod> podResource = kubernetesClient.pods().inNamespace("test").withName("name");
+    KubernetesClientException result = assertThrows(KubernetesClientException.class,
+        () -> podResource.replace(pod));
+    assertEquals(HttpURLConnection.HTTP_NOT_FOUND, result.getCode());
   }
 
   @Test

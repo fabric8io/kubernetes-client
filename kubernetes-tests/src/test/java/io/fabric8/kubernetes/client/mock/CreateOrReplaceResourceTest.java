@@ -22,11 +22,13 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.PodResource;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import okhttp3.mockwebserver.RecordedRequest;
@@ -198,6 +200,44 @@ class CreateOrReplaceResourceTest {
   }
 
   @Test
+  void testReplaceWithItemResourceVersion() throws Exception {
+    server.expect().put().withPath("/api/v1/namespaces/test/configmaps/map1")
+      .andReturn(HttpURLConnection.HTTP_OK, new ConfigMapBuilder()
+      .withNewMetadata().withResourceVersion("1001").and().build()).once();
+
+    // when you try to replace with a resource version specified, it will try the existing one first
+    ConfigMap map = client.configMaps().withName("map1").replace(new ConfigMapBuilder()
+      .withNewMetadata().withName("map1").withResourceVersion("1000").and().build());
+    assertNotNull(map);
+    assertEquals("1001", map.getMetadata().getResourceVersion());
+
+    ConfigMap replacedMap = new ObjectMapper().readerFor(ConfigMap.class).readValue(server.getLastRequest().getBody().inputStream());
+    assertEquals("1000", replacedMap.getMetadata().getResourceVersion());
+  }
+
+  @Test
+  void testReplaceWithItemResourceVersionRetry() throws Exception {
+    server.expect().get().withPath("/api/v1/namespaces/test/configmaps/map1").andReturn(HttpURLConnection.HTTP_OK, new ConfigMapBuilder()
+      .withNewMetadata().withResourceVersion("1000").and().build()).always();
+
+    server.expect().put().withPath("/api/v1/namespaces/test/configmaps/map1")
+      .andReturn(HttpURLConnection.HTTP_CONFLICT, new StatusBuilder().withCode(HttpURLConnection.HTTP_CONFLICT).build()).once();
+
+    server.expect().put().withPath("/api/v1/namespaces/test/configmaps/map1")
+      .andReturn(HttpURLConnection.HTTP_OK, new ConfigMapBuilder()
+      .withNewMetadata().withResourceVersion("1001").and().build()).once();
+
+    // when you try to replace with a resource version specified, it will try the existing one first
+    ConfigMap map = client.configMaps().withName("map1").replace(new ConfigMapBuilder()
+      .withNewMetadata().withName("map1").withResourceVersion("999").and().build());
+    assertNotNull(map);
+    assertEquals("1001", map.getMetadata().getResourceVersion());
+
+    ConfigMap replacedMap = new ObjectMapper().readerFor(ConfigMap.class).readValue(server.getLastRequest().getBody().inputStream());
+    assertEquals("1000", replacedMap.getMetadata().getResourceVersion());
+  }
+
+  @Test
   @DisplayName("Should replace an existing ConfigMap without lock")
   void testReplaceWithoutLock() throws Exception {
     server.expect().get().withPath("/api/v1/namespaces/test/configmaps/map1").andReturn(HttpURLConnection.HTTP_OK, new ConfigMapBuilder()
@@ -229,5 +269,23 @@ class CreateOrReplaceResourceTest {
 
     ConfigMap replacedMap = new ObjectMapper().readerFor(ConfigMap.class).readValue(server.getLastRequest().getBody().inputStream());
     assertEquals("900", replacedMap.getMetadata().getResourceVersion());
+  }
+
+  @Test
+  void testReplaceNonExistent() {
+    Resource<ConfigMap> resource = client.configMaps().withName("map1");
+    ConfigMap configMap = new ConfigMapBuilder().withNewMetadata().withName("map1").and().build();
+    final KubernetesClientException result = assertThrows(KubernetesClientException.class,
+        () -> resource.replace(configMap));
+    assertEquals(HttpURLConnection.HTTP_NOT_FOUND, result.getCode());
+  }
+
+  @Test
+  void testPatchNonExistent() {
+    Resource<ConfigMap> resource = client.configMaps().withName("map1");
+    ConfigMap configMap = new ConfigMapBuilder().withNewMetadata().withName("map1").and().build();
+    final KubernetesClientException result = assertThrows(KubernetesClientException.class,
+        () -> resource.patch(configMap));
+    assertEquals(HttpURLConnection.HTTP_NOT_FOUND, result.getCode());
   }
 }

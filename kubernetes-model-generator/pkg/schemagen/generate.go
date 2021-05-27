@@ -653,8 +653,12 @@ func (g *schemaGenerator) isClusterScopedResource(t reflect.Type) bool {
 		"github.com/openshift/api/config/v1/Proxy",
 		"github.com/openshift/api/security/v1/RangeAllocation",
 		"github.com/openshift/api/operator/v1/CSISnapshotController",
+		"github.com/openshift/api/operator/v1/ClusterCSIDriver",
+		"github.com/openshift/api/operator/v1/Config",
+		"github.com/openshift/api/operator/v1/CloudCredential",
 		"github.com/openshift/api/operator/v1/Etcd",
 		"github.com/openshift/api/operator/v1/ServiceCatalogControllerManager",
+		"github.com/openshift/api/operator/v1/Storage",
 		"github.com/openshift/api/operator/v1/KubeStorageVersionMigrator",
 		"github.com/openshift/api/operator/v1/Console",
 		"github.com/openshift/api/operator/v1/KubeAPIServer",
@@ -675,6 +679,15 @@ func (g *schemaGenerator) isClusterScopedResource(t reflect.Type) bool {
 		"github.com/openshift/api/console/v1/ConsoleYAMLSample",
 		"github.com/openshift/api/console/v1/ConsoleExternalLogLink",
                 "github.com/openshift/api/config/v1/Ingress",
+                "github.com/openshift/api/template/v1/BrokerTemplateInstance",
+                "github.com/openshift/api/helm/v1beta1/HelmChartRepository",
+                "github.com/openshift/api/network/v1/HostSubnet",
+                "github.com/openshift/api/user/v1/UserIdentityMapping",
+                "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1/ContainerRuntimeConfig",
+                "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1/ControllerConfig",
+                "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1/KubeletConfig",
+                "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1/MachineConfigPool",
+                "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1/MachineConfig",
 	}
 
 	return Contains(clusterScopedResourcesList, t.PkgPath() + "/" + t.Name())

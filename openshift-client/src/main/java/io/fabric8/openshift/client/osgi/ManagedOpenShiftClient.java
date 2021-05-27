@@ -101,6 +101,8 @@ import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectorBuilder
 import io.fabric8.kubernetes.client.extended.run.RunOperations;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
 import io.fabric8.kubernetes.client.utils.URLUtils;
+import io.fabric8.openshift.api.model.BrokerTemplateInstance;
+import io.fabric8.openshift.api.model.BrokerTemplateInstanceList;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildConfigList;
@@ -117,6 +119,10 @@ import io.fabric8.openshift.api.model.EgressNetworkPolicy;
 import io.fabric8.openshift.api.model.EgressNetworkPolicyList;
 import io.fabric8.openshift.api.model.Group;
 import io.fabric8.openshift.api.model.GroupList;
+import io.fabric8.openshift.api.model.HelmChartRepository;
+import io.fabric8.openshift.api.model.HelmChartRepositoryList;
+import io.fabric8.openshift.api.model.HostSubnet;
+import io.fabric8.openshift.api.model.HostSubnetList;
 import io.fabric8.openshift.api.model.Image;
 import io.fabric8.openshift.api.model.ImageList;
 import io.fabric8.openshift.api.model.ImageStream;
@@ -154,8 +160,11 @@ import io.fabric8.openshift.api.model.SubjectAccessReview;
 import io.fabric8.openshift.api.model.SubjectAccessReviewResponse;
 import io.fabric8.openshift.api.model.SubjectRulesReview;
 import io.fabric8.openshift.api.model.Template;
+import io.fabric8.openshift.api.model.TemplateInstance;
+import io.fabric8.openshift.api.model.TemplateInstanceList;
 import io.fabric8.openshift.api.model.TemplateList;
 import io.fabric8.openshift.api.model.User;
+import io.fabric8.openshift.api.model.UserIdentityMapping;
 import io.fabric8.openshift.api.model.UserList;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.NamespacedOpenShiftClient;
@@ -165,6 +174,7 @@ import io.fabric8.openshift.client.OpenShiftLocalSubjectAccessReviewOperationsIm
 import io.fabric8.openshift.client.dsl.BuildConfigResource;
 import io.fabric8.openshift.client.dsl.BuildResource;
 import io.fabric8.openshift.client.dsl.DeployableScalableResource;
+import io.fabric8.openshift.client.dsl.MachineConfigurationAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftConfigAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftConsoleAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftMonitoringAPIGroupDSL;
@@ -359,6 +369,11 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
+  public NonNamespaceOperation<HelmChartRepository, HelmChartRepositoryList, Resource<HelmChartRepository>> helmChartRepositories() {
+    return delegate.helmChartRepositories();
+  }
+
+  @Override
   public NonNamespaceOperation<Image, ImageList, Resource<Image>> images() {
     return delegate.images();
   }
@@ -427,6 +442,16 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   @Override
   public ParameterMixedOperation<Template, TemplateList, TemplateResource<Template, KubernetesList>> templates() {
     return delegate.templates();
+  }
+
+  @Override
+  public MixedOperation<TemplateInstance, TemplateInstanceList, Resource<TemplateInstance>> templateInstances() {
+    return delegate.templateInstances();
+  }
+
+  @Override
+  public NonNamespaceOperation<BrokerTemplateInstance, BrokerTemplateInstanceList, Resource<BrokerTemplateInstance>> brokerTemplateInstances() {
+    return delegate.brokerTemplateInstances();
   }
 
   @Override
@@ -705,6 +730,11 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
+  public MachineConfigurationAPIGroupDSL machineConfigurations() {
+    return delegate.machineConfigurations();
+  }
+
+  @Override
   public OpenShiftMonitoringAPIGroupDSL monitoring() {
     return delegate.monitoring();
   }
@@ -722,6 +752,11 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   @Override
   public MixedOperation<EgressNetworkPolicy, EgressNetworkPolicyList, Resource<EgressNetworkPolicy>> egressNetworkPolicies() {
     return delegate.egressNetworkPolicies();
+  }
+
+  @Override
+  public NonNamespaceOperation<HostSubnet, HostSubnetList, Resource<HostSubnet>> hostSubnets() {
+    return delegate.hostSubnets();
   }
 
   @Override
@@ -814,6 +849,11 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   @Override
   public User currentUser() {
     return delegate.currentUser();
+  }
+
+  @Override
+  public Createable<UserIdentityMapping> userIdentityMappings() {
+    return null;
   }
 
   @Override

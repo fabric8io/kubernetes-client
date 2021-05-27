@@ -39,10 +39,12 @@ import lombok.ToString;
     "logLevel",
     "minTime",
     "objectStorageConfig",
+    "objectStorageConfigFile",
     "resources",
     "sha",
     "tag",
     "tracingConfig",
+    "tracingConfigFile",
     "version"
 })
 @ToString
@@ -77,6 +79,8 @@ public class ThanosSpec implements KubernetesResource
     private String minTime;
     @JsonProperty("objectStorageConfig")
     private SecretKeySelector objectStorageConfig;
+    @JsonProperty("objectStorageConfigFile")
+    private String objectStorageConfigFile;
     @JsonProperty("resources")
     private io.fabric8.kubernetes.api.model.ResourceRequirements resources;
     @JsonProperty("sha")
@@ -85,6 +89,8 @@ public class ThanosSpec implements KubernetesResource
     private String tag;
     @JsonProperty("tracingConfig")
     private SecretKeySelector tracingConfig;
+    @JsonProperty("tracingConfigFile")
+    private String tracingConfigFile;
     @JsonProperty("version")
     private String version;
     @JsonIgnore
@@ -101,6 +107,7 @@ public class ThanosSpec implements KubernetesResource
      * 
      * @param image
      * @param tracingConfig
+     * @param tracingConfigFile
      * @param baseImage
      * @param resources
      * @param listenLocal
@@ -112,8 +119,9 @@ public class ThanosSpec implements KubernetesResource
      * @param logLevel
      * @param minTime
      * @param tag
+     * @param objectStorageConfigFile
      */
-    public ThanosSpec(String baseImage, TLSConfig grpcServerTlsConfig, String image, Boolean listenLocal, String logFormat, String logLevel, String minTime, SecretKeySelector objectStorageConfig, io.fabric8.kubernetes.api.model.ResourceRequirements resources, String sha, String tag, SecretKeySelector tracingConfig, String version) {
+    public ThanosSpec(String baseImage, TLSConfig grpcServerTlsConfig, String image, Boolean listenLocal, String logFormat, String logLevel, String minTime, SecretKeySelector objectStorageConfig, String objectStorageConfigFile, io.fabric8.kubernetes.api.model.ResourceRequirements resources, String sha, String tag, SecretKeySelector tracingConfig, String tracingConfigFile, String version) {
         super();
         this.baseImage = baseImage;
         this.grpcServerTlsConfig = grpcServerTlsConfig;
@@ -123,10 +131,12 @@ public class ThanosSpec implements KubernetesResource
         this.logLevel = logLevel;
         this.minTime = minTime;
         this.objectStorageConfig = objectStorageConfig;
+        this.objectStorageConfigFile = objectStorageConfigFile;
         this.resources = resources;
         this.sha = sha;
         this.tag = tag;
         this.tracingConfig = tracingConfig;
+        this.tracingConfigFile = tracingConfigFile;
         this.version = version;
     }
 
@@ -210,6 +220,16 @@ public class ThanosSpec implements KubernetesResource
         this.objectStorageConfig = objectStorageConfig;
     }
 
+    @JsonProperty("objectStorageConfigFile")
+    public String getObjectStorageConfigFile() {
+        return objectStorageConfigFile;
+    }
+
+    @JsonProperty("objectStorageConfigFile")
+    public void setObjectStorageConfigFile(String objectStorageConfigFile) {
+        this.objectStorageConfigFile = objectStorageConfigFile;
+    }
+
     @JsonProperty("resources")
     public io.fabric8.kubernetes.api.model.ResourceRequirements getResources() {
         return resources;
@@ -248,6 +268,16 @@ public class ThanosSpec implements KubernetesResource
     @JsonProperty("tracingConfig")
     public void setTracingConfig(SecretKeySelector tracingConfig) {
         this.tracingConfig = tracingConfig;
+    }
+
+    @JsonProperty("tracingConfigFile")
+    public String getTracingConfigFile() {
+        return tracingConfigFile;
+    }
+
+    @JsonProperty("tracingConfigFile")
+    public void setTracingConfigFile(String tracingConfigFile) {
+        this.tracingConfigFile = tracingConfigFile;
     }
 
     @JsonProperty("version")

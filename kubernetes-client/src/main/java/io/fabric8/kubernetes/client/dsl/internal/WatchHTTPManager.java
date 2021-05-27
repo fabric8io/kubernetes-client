@@ -18,9 +18,7 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
-import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -96,7 +94,6 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
   
   private abstract static class HTTPClientRunner<T extends HasMetadata> extends AbstractWatchManager.ClientRunner {
     private final AbstractWatchManager<T> manager;
-    private final AtomicBoolean reconnectPending = new AtomicBoolean(false);
     
     public HTTPClientRunner(OkHttpClient client, AbstractWatchManager<T> manager) {
       super(client);
@@ -155,43 +152,16 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
         return;
       }
       
-      logger.debug("Submitting reconnect task to the executor");
-      
-      // make sure that whichever thread calls this method, the tasks are
-      // performed serially in the executor.
-      manager.submit(() -> {
-        if (!reconnectPending.compareAndSet(false, true)) {
-          logger.debug("Reconnect already scheduled");
-          return;
-        }
+      manager.scheduleReconnect(() -> {
         try {
-          // actual reconnect only after the back-off time has passed, without
-          // blocking the thread
-          logger.debug("Scheduling reconnect task");
-          
-          long delay = shouldBackoff
-            ? manager.nextReconnectInterval()
-            : 0;
-          
-          manager.schedule(() -> {
-            try {
-              manager.runWatch();
-              reconnectPending.set(false);
-            } catch (Exception e) {
-              // An unexpected error occurred and we didn't even get an onFailure callback.
-              logger.error("Exception in reconnect", e);
-              close();
-              manager.onClose(new WatcherException("Unhandled exception in reconnect attempt", e));
-            }
-          }, delay, TimeUnit.MILLISECONDS);
-        } catch (RejectedExecutionException e) {
-          // This is a standard exception if we close the scheduler. We should not print it
-          if (!manager.isForceClosed()) {
-            logger.error("Exception in reconnect", e);
-          }
-          reconnectPending.set(false);
+          manager.runWatch();
+        } catch (Exception e) {
+          // An unexpected error occurred and we didn't even get an onFailure callback.
+          logger.error("Exception in reconnect", e);
+          close();
+          manager.onClose(new WatcherException("Unhandled exception in reconnect attempt", e));
         }
-      });
+      }, shouldBackoff);
     }
     
     public void onMessage(String messageSource) {

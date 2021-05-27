@@ -23,9 +23,11 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.Gettable;
+import io.fabric8.kubernetes.client.ResourceNotFoundException;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.kubernetes.client.utils.Serialization;
+import io.fabric8.kubernetes.client.utils.Utils;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
@@ -49,21 +51,29 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   @Override
   public T edit(UnaryOperator<T> function) {
     T item = getMandatory();
-    T clone = Serialization.clone(item);
+    T clone = clone(item);
     return patch(null, clone, function.apply(item), false);
+  }
+
+  private T clone(T item) {
+    try {
+      return createVisitableBuilder(item).build();
+    } catch (KubernetesClientException e) {
+      return Serialization.clone(item);
+    }
   }
   
   @Override
   public T editStatus(UnaryOperator<T> function) {
     T item = getMandatory();
-    T clone = Serialization.clone(item);
+    T clone = clone(item);
     return patch(null, clone, function.apply(item), true);
   }
 
   @Override
   public T accept(Consumer<T> consumer) {
     T item = getMandatory();
-    T clone = Serialization.clone(item);
+    T clone = clone(item);
     consumer.accept(item);
     return patch(null, clone, item, false);
   }
@@ -75,21 +85,42 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   @Override
   public T edit(Visitor... visitors) {
     T item = getMandatory();
-    T clone = Serialization.clone(item);
+    T clone = clone(item);
     return patch(null, clone, createVisitableBuilder(item).accept(visitors).build(), false);
+  }
+
+  /**
+   * Get the current item from the server
+   * <br>Will always return non-null or throw an exception.
+   */
+  protected T requireFromServer() {
+    return requireFromServer(null);
   }
   
   /**
    * Get the current item from the server, consulting the metadata for the name if needed
+   * <br>Will always return non-null or throw an exception.
    */
-  protected Gettable<T> fromServer(ObjectMeta metadata) {
-    if (getName() != null) {
-      return fromServer();
+  protected T requireFromServer(ObjectMeta metadata) {
+    try {
+      if (Utils.isNotNullOrEmpty(getName())) {
+        return withItem(null).require();
+      }
+      if (getItem() != null) {
+        String name = KubernetesResourceUtil.getName(getItem());
+        if (Utils.isNotNullOrEmpty(name)) {
+          return withItem(null).withName(name).require();
+        } 
+      }
+      if (metadata != null && Utils.isNotNullOrEmpty(metadata.getName())) {
+        return withItem(null).withName(metadata.getName()).require();
+      }
+    } catch (ResourceNotFoundException e) {
+      if (e.getCause() instanceof KubernetesClientException) {
+        throw (KubernetesClientException)e.getCause();
+      }
     }
-    if (metadata != null) {
-      return withName(metadata.getName()).fromServer();
-    }
-    throw new KubernetesClientException("Name not specified. But operation requires name.");
+    throw new KubernetesClientException("name not specified for an operation requiring one.");
   }
   
   @Override
@@ -109,21 +140,18 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
     String fixedResourceVersion = getResourceVersion();
     Exception caught = null;
     int maxTries = 10;
+    String existingResourceVersion = KubernetesResourceUtil.getResourceVersion(item);
     for (int i = 0; i < maxTries; i++) {
       try {
         final String resourceVersion;
         if (fixedResourceVersion != null) {
           resourceVersion = fixedResourceVersion;
+        } else if (i == 0 && existingResourceVersion != null) {
+          // if a resourceVersion is already there, try it first
+          resourceVersion = existingResourceVersion;
         } else {
-          T got = fromServer(item.getMetadata()).get();
-          if (got == null) {
-            return null;
-          }
-          if (got.getMetadata() != null) {
-            resourceVersion = got.getMetadata().getResourceVersion();
-          } else {
-            resourceVersion = null;
-          }
+          T got = requireFromServer(item.getMetadata());
+          resourceVersion = KubernetesResourceUtil.getResourceVersion(got);
         }
 
         final UnaryOperator<T> visitor = resource -> {
@@ -159,10 +187,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   
   protected T patch(PatchContext context, T base, T item, boolean status) {
     if (base == null && context != null && context.getPatchType() == PatchType.JSON) {
-      base = fromServer(item.getMetadata()).get();
-      if (base == null) {
-        return null;
-      }
+      base = requireFromServer(item.getMetadata());
       if (item.getMetadata() == null) {
         item.setMetadata(new ObjectMeta());
       }
@@ -194,10 +219,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   @Override
   public T patch(PatchContext patchContext, String patch) {
     try {
-      final T got = fromServer().get();
-      if (got == null) {
-        return null;
-      }
+      final T got = getMandatory();
       return handlePatch(patchContext, got, convertToJson(patch), getType(), false);
     } catch (InterruptedException interruptedException) {
       Thread.currentThread().interrupt();

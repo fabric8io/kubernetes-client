@@ -74,7 +74,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
    * <br>Starts the watch with a fresh store state.
    * <br>Should be called only at start and when HttpGone is seen.
    */
-  void listSyncAndWatch() {
+  public void listSyncAndWatch() {
     store.isPopulated(false);
     final L list = getList();
     final String latestResourceVersion = list.getMetadata().getResourceVersion();

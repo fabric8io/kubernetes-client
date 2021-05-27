@@ -22,6 +22,8 @@ import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.VersionInfo;
 import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.openshift.api.model.*;
+import io.fabric8.openshift.api.model.HelmChartRepository;
+import io.fabric8.openshift.api.model.HelmChartRepositoryList;
 import io.fabric8.openshift.client.dsl.*;
 
 import java.net.URL;
@@ -84,6 +86,13 @@ public interface OpenShiftClient extends KubernetesClient {
   AutoscalingAPIGroupDSL autoscaling();
 
   /**
+   * API entrypoint for accessing OpenShift Machine Config Operator resources (machineconfiguration.openshift.io)
+   *
+   * @return {@link MachineConfigurationAPIGroupDSL} which contains respective resources in this ApiGroup
+   */
+  MachineConfigurationAPIGroupDSL machineConfigurations();
+
+  /**
    * API entrypoint for accessing OpenShift operator APIGroup resources(monitoring.coreos.com/v1)
    *
    * @return {@link OpenShiftMonitoringAPIGroupDSL} which contains respective resources in this API group
@@ -110,6 +119,13 @@ public interface OpenShiftClient extends KubernetesClient {
    * @return MixedOperation instance for EgressNetworkPolicy object
    */
   MixedOperation<EgressNetworkPolicy, EgressNetworkPolicyList, Resource<EgressNetworkPolicy>> egressNetworkPolicies();
+
+  /**
+   * API entrypoint for HostSubnet (network.openshift.io/v1)
+   *
+   * @return {@link NonNamespaceOperation} for HostSubnet
+   */
+  NonNamespaceOperation<HostSubnet, HostSubnetList, Resource<HostSubnet>> hostSubnets();
 
   /**
    * {@inheritDoc}
@@ -163,6 +179,13 @@ public interface OpenShiftClient extends KubernetesClient {
    * @return NonNamespaceOperation instance for Group object
    */
   NonNamespaceOperation<Group, GroupList, Resource<Group>> groups();
+
+  /**
+   * API entrypoint for handling HelmChartRepository(helm.openshift.io/v1beta1)
+   *
+   * @return {@link NonNamespaceOperation} for HelmChartRepository
+   */
+  NonNamespaceOperation<HelmChartRepository, HelmChartRepositoryList, Resource<HelmChartRepository>> helmChartRepositories();
 
   /**
    * API entrypoint for accessing Image(image.openshift.io/v1)
@@ -262,6 +285,20 @@ public interface OpenShiftClient extends KubernetesClient {
    * @return {@link ParameterMixedOperation} object for Template operations
    */
   ParameterMixedOperation<Template, TemplateList, TemplateResource<Template, KubernetesList>> templates();
+
+  /**
+   * API entrypoint for TemplateInstance(template.openshift.io/v1)
+   *
+   * @return {@link MixedOperation} for TemplateInstance
+   */
+  MixedOperation<TemplateInstance, TemplateInstanceList, Resource<TemplateInstance>> templateInstances();
+
+  /**
+   * API entrypoint for BrokerTemplateInstance(template.openshift.io/v1)
+   *
+   * @return {@link NonNamespaceOperation} for BrokerTemplateInstance
+   */
+  NonNamespaceOperation<BrokerTemplateInstance, BrokerTemplateInstanceList, Resource<BrokerTemplateInstance>> brokerTemplateInstances();
 
   /**
    * API entrypoint for accessing User(user.openshift.io/v1)
@@ -367,6 +404,13 @@ public interface OpenShiftClient extends KubernetesClient {
    */
   User currentUser();
 
+  /**
+   * API entrypoint for UserIdentityMapping(user.openshift.io/v1)
+   * Note: This only works with create operation
+   *
+   * @return {@link Createable} for UserIdentityMapping
+   */
+  Createable<UserIdentityMapping> userIdentityMappings();
   /**
    * Returns true if this cluster is a legacy openshift cluster or supports the given OpenShift API Group defined in {@link OpenShiftAPIGroups}
    *

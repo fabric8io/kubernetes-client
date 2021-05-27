@@ -65,7 +65,8 @@ This document contains common usages of different resources using Fabric8 Kubern
 * [Knative Client](#knative-client)
   * [Initializing Knative Client](#initializing-knative-client)
   * [Knative Client DSL Usage](#knative-client-dsl-usage)
-
+* [Logging](#Logging)
+  
 ### Initializing Kubernetes Client
 Typically, we create Kubernetes Client like this:
 ```
@@ -1701,9 +1702,19 @@ CronTabList cronTabList = cronTabClient.inNamespace("default").list();
 ```java
 Boolean isDeleted = cronTabClient.inNamespace("default").withName("my-third-cron-object").delete();
 ```
-- Update Status of `CustomResource`:
+- Replace Status of `CustomResource`:
 ```java
-cronTabClient.inNamespace("default").updateStatus(updatedCronTab);
+cronTabClient.inNamespace("default").replaceStatus(updatedCronTab);
+```
+- Patch Status of `CustomResource`:
+```java
+// does not require a full instance of the updatedCronTab, will produce a json merge patch based upon what is set in updatedCronTab
+cronTabClient.inNamespace("default").pachStatus(updatedCronTab);
+```
+- Edit Status of `CustomResource`:
+```java
+// generates a json patch between the passed in cronTab and the updated result.  Typically you will use a builder to construct a copy from the current and make modifications
+cronTabClient.inNamespace("default").editStatus(cronTab->updatedCronTab);
 ``` 
 - Watch `CustomResource`, (*note:* You need to register your `CustomResource` to `KubernetesDeserializer` otherwise you won't be able to use watch):
 ```java
