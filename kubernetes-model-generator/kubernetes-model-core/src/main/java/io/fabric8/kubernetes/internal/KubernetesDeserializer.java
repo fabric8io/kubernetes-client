@@ -32,10 +32,10 @@ import java.util.stream.StreamSupport;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import io.fabric8.kubernetes.api.KubernetesResourceMappingProvider;
+import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -82,7 +82,7 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
         if (key != null) {
             Class<? extends KubernetesResource> resourceType = mapping.getForKey(key);
             if (resourceType == null) {
-                throw JsonMappingException.from(jp,"No resource type found for:" + key);
+              return jp.getCodec().treeToValue(node, GenericKubernetesResource.class);
             } else if (KubernetesResource.class.isAssignableFrom(resourceType)){
                 return jp.getCodec().treeToValue(node, resourceType);
             }

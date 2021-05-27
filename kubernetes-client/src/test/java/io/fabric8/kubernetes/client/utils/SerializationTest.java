@@ -20,8 +20,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.node.BooleanNode;
 import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.TextNode;
+import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodSpec;
@@ -46,6 +48,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class SerializationTest {
 
@@ -182,6 +185,66 @@ class SerializationTest {
       .isEqualTo(pod)
       .isNotSameAs(pod)
       .hasFieldOrPropertyWithValue("metadata.name", "pod");
+  }
+
+  @Test
+  @DisplayName("unmarshal, with valid YAML custom resource, should return GenericKubernetesResource instance")
+  void unmarshalWithValidCustomResourceShouldReturnGenericCustomResource() {
+    // When
+    final KubernetesResource result = Serialization.unmarshal(
+      SerializationTest.class.getResourceAsStream("/serialization/custom-resource.yml"));
+    // Then
+    assertThat(result)
+      .isNotNull()
+      .isInstanceOf(GenericKubernetesResource.class)
+      .hasFieldOrPropertyWithValue("apiVersion", "the-cr.example.com/v1")
+      .hasFieldOrPropertyWithValue("Kind", "SomeCustomResource")
+      .hasFieldOrPropertyWithValue("metadata.name", "custom-resource-example")
+      .hasFieldOrPropertyWithValue("additionalProperties.spec.field", "value")
+      .hasFieldOrPropertyWithValue("additionalProperties.status.reconciled", true);
+  }
+
+  @Test
+  @DisplayName("unmarshal, with invalid YAML content, should throw Exception")
+  void unmarshalWithInvalidYamlShouldThrowException() {
+    // Given
+    final InputStream is = SerializationTest.class.getResourceAsStream("/serialization/invalid-yaml.yml");
+    // When
+    final ClassCastException result = assertThrows(ClassCastException.class, () -> Serialization.unmarshal(is));
+    // Then
+    assertThat(result)
+      .hasMessageContainingAll("java.lang.String",  "cannot be cast to", "java.util.Map");
+  }
+
+  @Test
+  @DisplayName("unmarshal, with invalid YAML resource, should return null")
+  void unmarshalWithInvalidResourceShouldReturnNull() {
+    // When
+    final KubernetesResource result = Serialization.unmarshal(
+      SerializationTest.class.getResourceAsStream("/serialization/invalid-resource.yml")
+    );
+    // Then
+    assertThat(result).isNull();
+  }
+
+  @Test
+  @DisplayName("unmarshal, with valid YAML list, should return KubernetesList")
+  void unmarshalWithValidListShouldReturnKubernetesList() {
+    // When
+    final KubernetesResource result = Serialization.unmarshal(
+      SerializationTest.class.getResourceAsStream("/serialization/kubernetes-list.yml")
+    );
+    // Then
+    assertThat(result)
+      .asInstanceOf(InstanceOfAssertFactories.type(KubernetesList.class))
+      .extracting(KubernetesList::getItems).asList()
+      .hasSize(3)
+      .extracting("class", "apiVersion", "kind", "metadata.name")
+      .containsExactlyInAnyOrder(
+        new Tuple(GenericKubernetesResource.class, "custom.resource.example.com/v1", "Example", "a-custom-resource"),
+        new Tuple(Namespace.class, "v1", "Namespace", "a-namespace"),
+        new Tuple(Pod.class, "v1", "Pod", "a-pod")
+      );
   }
 
   @JsonTypeInfo(
