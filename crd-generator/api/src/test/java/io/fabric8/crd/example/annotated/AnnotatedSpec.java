@@ -21,9 +21,17 @@ public class AnnotatedSpec {
   @JsonProperty("from-field")
   private String field;
   private int foo;
+  @JsonProperty
+  private String unnamed;
+  private boolean emptySetter;
 
   @JsonProperty("from-getter")
   public int getFoo() {
     return foo;
+  }
+
+  @JsonProperty
+  public void setEmptySetter(boolean emptySetter) {
+    this.emptySetter = emptySetter;
   }
 }
