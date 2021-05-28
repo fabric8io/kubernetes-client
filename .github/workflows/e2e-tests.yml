@@ -37,7 +37,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2.3.4
       - name: Cache .m2 registry
-        uses: actions/cache@v2.1.5
+        uses: actions/cache@v2.1.6
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}-${{ github.sha }}
@@ -64,7 +64,7 @@ jobs:
           github token: ${{ secrets.GITHUB_TOKEN }}
           start args: '--addons=metrics-server --force'
       - name: Cache .m2 registry
-        uses: actions/cache@v2.1.5
+        uses: actions/cache@v2.1.6
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}-${{ github.sha }}
@@ -94,7 +94,7 @@ jobs:
           oc version: ${{ matrix.openshift }}
           github token: ${{ secrets.GITHUB_TOKEN }}
       - name: Cache .m2 registry
-        uses: actions/cache@v2.1.5
+        uses: actions/cache@v2.1.6
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}-${{ github.sha }}
