@@ -139,7 +139,7 @@ public abstract class AbstractJsonSchema<T, B> {
       final Property[] updated = {property};
 
       if (property.isStatic() || ignores.contains(name)) {
-        System.out.println("\tIgnoring!");
+        LOGGER.debug("Ignoring property {}", name);
         continue;
       }
 
