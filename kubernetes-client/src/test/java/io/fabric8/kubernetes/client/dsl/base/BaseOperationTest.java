@@ -271,7 +271,7 @@ class BaseOperationTest {
     final AtomicInteger httpExecutionCounter = new AtomicInteger(0);
     OkHttpClient mockClient = newHttpClientWithSomeFailures(httpExecutionCounter, 1000);
     BaseOperation<Pod, PodList, Resource<Pod>> baseOp = new BaseOperation(new OperationContext()
-      .withConfig(new ConfigBuilder().withMasterUrl("https://172.17.0.2:8443").withRequestRetryBackoffCount(3).build())
+      .withConfig(new ConfigBuilder().withMasterUrl("https://172.17.0.2:8443").withRequestRetryBackoffLimit(3).build())
       .withPlural("pods")
       .withName("test-pod")
       .withOkhttpClient(mockClient));
@@ -292,7 +292,7 @@ class BaseOperationTest {
     final AtomicInteger httpExecutionCounter = new AtomicInteger(0);
     OkHttpClient mockClient = newHttpClientWithSomeFailures(httpExecutionCounter, 2);
     BaseOperation<Pod, PodList, Resource<Pod>> baseOp = new BaseOperation(new OperationContext()
-      .withConfig(new ConfigBuilder().withMasterUrl("https://172.17.0.2:8443").withRequestRetryBackoffCount(3).build())
+      .withConfig(new ConfigBuilder().withMasterUrl("https://172.17.0.2:8443").withRequestRetryBackoffLimit(3).build())
       .withPlural("pods")
       .withName("test-pod")
       .withOkhttpClient(mockClient));
