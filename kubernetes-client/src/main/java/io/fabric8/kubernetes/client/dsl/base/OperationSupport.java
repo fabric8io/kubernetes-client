@@ -29,6 +29,7 @@ import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.internal.VersionUsageUtils;
+import io.fabric8.kubernetes.client.utils.ExponentialBackoffIntervalCalculator;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -62,6 +63,7 @@ public class OperationSupport {
   protected static final ObjectMapper YAML_MAPPER = Serialization.yamlMapper();
   private static final Logger LOG = LoggerFactory.getLogger(OperationSupport.class);
   private static final String CLIENT_STATUS_FLAG = "CLIENT_STATUS_FLAG";
+  private static final int maxRetryIntervalExponent = 5;
 
   protected OperationContext context;
   protected final OkHttpClient client;
@@ -72,6 +74,8 @@ public class OperationSupport {
   protected String apiGroupName;
   protected String apiGroupVersion;
   protected boolean dryRun;
+  private final ExponentialBackoffIntervalCalculator retryIntervalCalculator;
+  private final int requestRetryBackoffLimit;
 
   public OperationSupport() {
     this (new OperationContext());
@@ -101,6 +105,16 @@ public class OperationSupport {
     } else {
       this.apiGroupVersion = "v1";
     }
+
+    final int requestRetryBackoffInterval;
+    if (ctx.getConfig() != null) {
+      requestRetryBackoffInterval = ctx.getConfig().getRequestRetryBackoffInterval();
+      this.requestRetryBackoffLimit = ctx.getConfig().getRequestRetryBackoffLimit();
+    } else {
+      requestRetryBackoffInterval = Config.DEFAULT_REQUEST_RETRY_BACKOFFINTERVAL;
+      this.requestRetryBackoffLimit = Config.DEFAULT_REQUEST_RETRY_BACKOFFLIMIT;
+    }
+    this.retryIntervalCalculator = new ExponentialBackoffIntervalCalculator(requestRetryBackoffInterval, maxRetryIntervalExponent);
   }
 
   public String getAPIGroup() {
@@ -564,18 +578,17 @@ public class OperationSupport {
   }
 
   protected Response retryWithExponentialBackoff(OkHttpClient client, Request request) throws InterruptedException, IOException {
-    int numRetries = config.getRequestRetryBackoffCount();
     Response response;
-    long currentBackOff = config.getRequestRetryBackoffInitial();
     boolean doRetry;
+    int numRetries = 0;
     do {
       response = client.newCall(request).execute();
-      numRetries--;
-      doRetry = numRetries != -1 && response.code() >= 500;
+      doRetry = numRetries < requestRetryBackoffLimit && response.code() >= 500;
       if (doRetry) {
-        LOG.debug("HTTP operation on url: {} should be retried as the response code was {}, retrying after {} millis", request.url(), response.code(), currentBackOff);
-        Thread.sleep(currentBackOff);
-        currentBackOff *= config.getRequestRetryBackoffMultiplier();
+        long retryInterval= retryIntervalCalculator.getInterval(numRetries);
+        LOG.debug("HTTP operation on url: {} should be retried as the response code was {}, retrying after {} millis", request.url(), response.code(), retryInterval);
+        Thread.sleep(retryInterval);
+        numRetries++;
       }
     } while(doRetry);
     return response;
