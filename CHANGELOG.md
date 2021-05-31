@@ -17,6 +17,7 @@
 * Fix #3143: a new SharedInformerEventListener.onException(SharedIndexInformer, Exception) method is available to determine which informer could not start.
 
 #### Dependency Upgrade
+* Fix #2741: Update Knative Model to v0.23.0
 
 #### New Features
 * Fix #3133: Add DSL Support for `authorization.openshift.io/v1` resources in OpenShiftClient

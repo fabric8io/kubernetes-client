@@ -21,11 +21,10 @@ import (
 	eventing_v1 "knative.dev/eventing/pkg/apis/eventing/v1"
 	eventing_v1beta1 "knative.dev/eventing/pkg/apis/eventing/v1beta1"
 	serving_v1 "knative.dev/serving/pkg/apis/serving/v1"
-	serving_v1beta1 "knative.dev/serving/pkg/apis/serving/v1beta1"
 	"k8s.io/apimachinery/pkg/runtime"
 	flows_v1 "knative.dev/eventing/pkg/apis/flows/v1"
 	messaging_v1 "knative.dev/eventing/pkg/apis/messaging/v1"
-	source_v1beta1 "knative.dev/eventing/pkg/apis/sources/v1beta1"
+	source_v1 "knative.dev/eventing/pkg/apis/sources/v1"
 	kafka_channel "knative.dev/eventing-contrib/kafka/channel/pkg/apis/messaging/v1beta1"
 	kafka_source "knative.dev/eventing-contrib/kafka/source/pkg/apis/sources/v1beta1"
 	kafka_binding "knative.dev/eventing-contrib/kafka/source/pkg/apis/bindings/v1beta1"
@@ -51,12 +50,6 @@ func main() {
 		reflect.TypeOf(serving_v1.RevisionList{}):      schemagen.Namespaced,
 		reflect.TypeOf(serving_v1.ConfigurationList{}): schemagen.Namespaced,
 
-		// serving v1beta1
-		reflect.TypeOf(serving_v1beta1.ServiceList{}):       schemagen.Namespaced,
-		reflect.TypeOf(serving_v1beta1.RouteList{}):         schemagen.Namespaced,
-		reflect.TypeOf(serving_v1beta1.RevisionList{}):      schemagen.Namespaced,
-		reflect.TypeOf(serving_v1beta1.ConfigurationList{}): schemagen.Namespaced,
-
 		// eventing v1
 		reflect.TypeOf(eventing_v1.BrokerList{}):    schemagen.Namespaced,
 		reflect.TypeOf(eventing_v1.TriggerList{}):   schemagen.Namespaced,
@@ -64,11 +57,11 @@ func main() {
 		// eventing v1beta1
 		reflect.TypeOf(eventing_v1beta1.EventTypeList{}): schemagen.Namespaced,
 
-		// eventing source v1beta1
-		reflect.TypeOf(source_v1beta1.PingSourceList{}): schemagen.Namespaced,
-		reflect.TypeOf(source_v1beta1.SinkBindingList{}): schemagen.Namespaced,
-		reflect.TypeOf(source_v1beta1.ContainerSourceList{}): schemagen.Namespaced,
-		reflect.TypeOf(source_v1beta1.ApiServerSourceList{}): schemagen.Namespaced,
+		// eventing source v1
+		reflect.TypeOf(source_v1.PingSourceList{}): schemagen.Namespaced,
+		reflect.TypeOf(source_v1.SinkBindingList{}): schemagen.Namespaced,
+		reflect.TypeOf(source_v1.ContainerSourceList{}): schemagen.Namespaced,
+		reflect.TypeOf(source_v1.ApiServerSourceList{}): schemagen.Namespaced,
 
 		// eventing contrib v1alpha1
 		reflect.TypeOf(kafka_channel.KafkaChannelList{}): schemagen.Namespaced,
@@ -89,6 +82,7 @@ func main() {
 
 		// flows v1
 		reflect.TypeOf(flows_v1.SequenceList{}): schemagen.Namespaced,
+		reflect.TypeOf(flows_v1.ParallelList{}): schemagen.Namespaced,
 	}
 
 	// constraints and patterns for fields
@@ -110,12 +104,11 @@ func main() {
 	// optional ApiGroup and ApiVersion for the go package (which is added to the generated java class)
 	packageMapping := map[string]schemagen.PackageInformation{
 		"knative.dev/serving/pkg/apis/serving/v1":         {JavaPackage: "io.fabric8.knative.serving.v1", ApiGroup: "serving.knative.dev", ApiVersion: "v1"},
-		"knative.dev/serving/pkg/apis/serving/v1beta1":    {JavaPackage: "io.fabric8.knative.serving.v1beta1", ApiGroup: "serving.knative.dev", ApiVersion: "v1beta1"},
 		"knative.dev/eventing/pkg/apis/eventing/v1": {JavaPackage: "io.fabric8.knative.eventing.v1", ApiGroup: "eventing.knative.dev", ApiVersion: "v1"},
 		"knative.dev/eventing/pkg/apis/eventing/v1beta1": {JavaPackage: "io.fabric8.knative.eventing.v1beta1", ApiGroup: "eventing.knative.dev", ApiVersion: "v1beta1"},
 		"knative.dev/eventing/pkg/apis/messaging/v1":       {JavaPackage: "io.fabric8.knative.messaging.v1", ApiGroup: "messaging.knative.dev", ApiVersion: "v1"},
-		"knative.dev/eventing/pkg/apis/flows/v1":           {JavaPackage: "io.fabric8.knative.flows.v1", ApiGroup: "eventing.knative.dev", ApiVersion: "v1"},
-		"knative.dev/eventing/pkg/apis/sources/v1beta1":           {JavaPackage: "io.fabric8.knative.sources.v1beta1", ApiGroup: "sources.knative.dev", ApiVersion: "v1beta1"},
+		"knative.dev/eventing/pkg/apis/flows/v1":           {JavaPackage: "io.fabric8.knative.flows.v1", ApiGroup: "flows.knative.dev", ApiVersion: "v1"},
+		"knative.dev/eventing/pkg/apis/sources/v1":           {JavaPackage: "io.fabric8.knative.sources.v1", ApiGroup: "sources.knative.dev", ApiVersion: "v1"},
 		"knative.dev/eventing-contrib/kafka/channel/pkg/apis/messaging/v1beta1":           {JavaPackage: "io.fabric8.knative.eventing.contrib.kafka.v1beta1", ApiGroup: "messaging.knative.dev", ApiVersion: "v1beta1"},
 		"knative.dev/eventing-contrib/kafka/source/pkg/apis/sources/v1beta1":           {JavaPackage: "io.fabric8.knative.eventing.contrib.kafka.v1beta1", ApiGroup: "sources.knative.dev", ApiVersion: "v1beta1"},
 		"knative.dev/eventing-contrib/kafka/source/pkg/apis/bindings/v1beta1":           {JavaPackage: "io.fabric8.knative.eventing.contrib.kafka.v1beta1", ApiGroup: "bindings.knative.dev", ApiVersion: "v1beta1"},
