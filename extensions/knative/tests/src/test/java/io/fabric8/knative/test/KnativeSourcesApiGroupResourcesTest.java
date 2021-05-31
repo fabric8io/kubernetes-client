@@ -18,14 +18,14 @@ package io.fabric8.knative.test;
 
 import io.fabric8.knative.client.KnativeClient;
 import io.fabric8.knative.mock.KnativeServer;
-import io.fabric8.knative.sources.v1beta1.ApiServerSource;
-import io.fabric8.knative.sources.v1beta1.ApiServerSourceBuilder;
-import io.fabric8.knative.sources.v1beta1.ContainerSource;
-import io.fabric8.knative.sources.v1beta1.ContainerSourceBuilder;
-import io.fabric8.knative.sources.v1beta1.PingSource;
-import io.fabric8.knative.sources.v1beta1.PingSourceBuilder;
-import io.fabric8.knative.sources.v1beta1.SinkBinding;
-import io.fabric8.knative.sources.v1beta1.SinkBindingBuilder;
+import io.fabric8.knative.sources.v1.ApiServerSource;
+import io.fabric8.knative.sources.v1.ApiServerSourceBuilder;
+import io.fabric8.knative.sources.v1.ContainerSource;
+import io.fabric8.knative.sources.v1.ContainerSourceBuilder;
+import io.fabric8.knative.sources.v1.PingSource;
+import io.fabric8.knative.sources.v1.PingSourceBuilder;
+import io.fabric8.knative.sources.v1.SinkBinding;
+import io.fabric8.knative.sources.v1.SinkBindingBuilder;
 import io.fabric8.kubernetes.api.model.LabelSelectorBuilder;
 import io.fabric8.kubernetes.api.model.PodTemplateSpecBuilder;
 import org.junit.Rule;
@@ -49,7 +49,7 @@ class KnativeSourcesApiGroupResourcesTest {
       .withNewMetadata().withName("test-ping-source").endMetadata()
       .withNewSpec()
       .withSchedule("*/1 * * * *")
-      .withJsonData("{\"message\": \"Hello world!\"}")
+      .withData("{\"message\": \"Hello world!\"}")
       .withNewSink()
       .withNewRef()
       .withApiVersion("v1")
@@ -59,7 +59,7 @@ class KnativeSourcesApiGroupResourcesTest {
       .endSink()
       .endSpec()
       .build();
-    server.expect().post().withPath("/apis/sources.knative.dev/v1beta1/namespaces/ns1/pingsources")
+    server.expect().post().withPath("/apis/sources.knative.dev/v1/namespaces/ns1/pingsources")
       .andReturn(HttpURLConnection.HTTP_OK, pingSource)
       .once();
     KnativeClient kn = server.getKnativeClient();
@@ -95,7 +95,7 @@ class KnativeSourcesApiGroupResourcesTest {
       .endSink()
       .endSpec()
       .build();
-    server.expect().post().withPath("/apis/sources.knative.dev/v1beta1/namespaces/ns1/apiserversources")
+    server.expect().post().withPath("/apis/sources.knative.dev/v1/namespaces/ns1/apiserversources")
       .andReturn(HttpURLConnection.HTTP_OK, apiServerSource)
       .once();
     KnativeClient kn = server.getKnativeClient();
@@ -128,7 +128,7 @@ class KnativeSourcesApiGroupResourcesTest {
       .endSink()
       .endSpec()
       .build();
-    server.expect().post().withPath("/apis/sources.knative.dev/v1beta1/namespaces/ns1/sinkbindings")
+    server.expect().post().withPath("/apis/sources.knative.dev/v1/namespaces/ns1/sinkbindings")
       .andReturn(HttpURLConnection.HTTP_OK, sinkBinding)
       .once();
     KnativeClient kn = server.getKnativeClient();
@@ -167,7 +167,7 @@ class KnativeSourcesApiGroupResourcesTest {
       .endSink()
       .endSpec()
       .build();
-    server.expect().post().withPath("/apis/sources.knative.dev/v1beta1/namespaces/ns1/containersources")
+    server.expect().post().withPath("/apis/sources.knative.dev/v1/namespaces/ns1/containersources")
       .andReturn(HttpURLConnection.HTTP_OK, containerSource)
       .once();
     KnativeClient kn = server.getKnativeClient();
