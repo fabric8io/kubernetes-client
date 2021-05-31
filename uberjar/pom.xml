@@ -128,6 +128,10 @@
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
+      <artifactId>openshift-model-clusterautoscaling</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
       <artifactId>openshift-model-console</artifactId>
     </dependency>
     <dependency>
@@ -251,6 +255,7 @@
                   <include>io.fabric8:kubernetes-model-scheduling</include>
                   <include>io.fabric8:kubernetes-model-storageclass</include>
                   <include>io.fabric8:openshift-model</include>
+                  <include>io.fabric8:openshift-model-clusterautoscaling</include>
                   <include>io.fabric8:openshift-model-console</include>
                   <include>io.fabric8:openshift-model-operator</include>
                   <include>io.fabric8:openshift-model-operatorhub</include>
@@ -301,6 +306,7 @@
                   <include>io.fabric8:kubernetes-model-scheduling</include>
                   <include>io.fabric8:kubernetes-model-storageclass</include>
                   <include>io.fabric8:openshift-model</include>
+                  <include>io.fabric8:openshift-model-clusterautoscaling</include>
                   <include>io.fabric8:openshift-model-console</include>
                   <include>io.fabric8:openshift-model-operator</include>
                   <include>io.fabric8:openshift-model-operatorhub</include>

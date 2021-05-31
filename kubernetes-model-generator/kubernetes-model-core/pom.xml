@@ -108,6 +108,8 @@
               io.fabric8.kubernetes.api.model.storage,
               io.fabric8.kubernetes.api.model.storage.v1beta1,
               io.fabric8.openshift.api.model;resolution:=optional,
+              io.fabric8.openshift.api.model.clusterautoscaling.v1;resolution:=optional,
+              io.fabric8.openshift.api.model.clusterautoscaling.v1beta1;resolution:=optional,
               io.fabric8.openshift.api.model.runtime;resolution:=optional,
               io.fabric8.openshift.api.model.console.v1;resolution:=optional,
               io.fabric8.openshift.api.model.monitoring.v1;resolution:=optional,
