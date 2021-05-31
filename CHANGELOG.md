@@ -24,6 +24,7 @@
 * Fix #3142: Add DSL support for missing resources in `operator.openshift.io` and `monitoring.coreos.com` apiGroups
 * Add DSL support for missing resources in `template.openshift.io`, `helm.openshift.io`, `network.openshift.io`, `user.openshift.io` apigroups
 * Fix #3087: Support HTTP operation retry with exponential backoff (for status code >= 500)
+* Add DSL support for `autoscaling.openshift.io` resources in OpenShiftClient
 
 #### _**Note**_: Breaking changes in the API
 ##### DSL Changes:

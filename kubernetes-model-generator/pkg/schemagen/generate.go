@@ -688,6 +688,7 @@ func (g *schemaGenerator) isClusterScopedResource(t reflect.Type) bool {
                 "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1/KubeletConfig",
                 "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1/MachineConfigPool",
                 "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1/MachineConfig",
+                "github.com/openshift/cluster-autoscaler-operator/pkg/apis/autoscaling/v1/ClusterAutoscaler",
 	}
 
 	return Contains(clusterScopedResourcesList, t.PkgPath() + "/" + t.Name())

@@ -52,6 +52,13 @@ public interface OpenShiftClient extends KubernetesClient {
   OpenShiftConsoleAPIGroupDSL console();
 
   /**
+   * API entrypoint for accessing OpenShift Cluster Operator resources (autoscaling.openshift.io)
+   *
+   * @return {@link OpenShiftClusterAutoscalingAPIGroupDSL} which contains respective resources in this API group
+   */
+  OpenShiftClusterAutoscalingAPIGroupDSL clusterAutoscaling();
+
+  /**
    * API entrypoint for accessing OpenShift operator APIGroup resources(operator.openshift.io/v1 and operator.openshift.io/v1alpha1)
    *
    * @return {@link OpenShiftOperatorAPIGroupDSL} which contains respective resources in this API group

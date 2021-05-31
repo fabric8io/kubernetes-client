@@ -26,6 +26,7 @@ import io.sundr.transform.annotations.VelocityTransformations;
                 @VelocityTransformation(value = "/resource-handler-services.vm", gather = true, outputPath = "META-INF/services/io.fabric8.kubernetes.client.ResourceHandler")
         },
         resources = {
+                @ResourceSelector("clusterautoscaling.properties"),
                 @ResourceSelector("openshift.properties"),
                 @ResourceSelector("operator.properties"),
                 @ResourceSelector("operatorhub.properties"),
