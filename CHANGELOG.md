@@ -3,7 +3,9 @@
 ### 5.4.1
 
 #### Bugs
-* Fix #3152 Retry only Non-Restful Create-only resources in OpenShiftOAuthInterceptor
+* Fix #3181: Properly handling of JsonProperty when generating CRDs
+* Fix #3172: Use File.toURI() to create the generated CRD URI
+* Fix #3152: Retry only Non-Restful Create-only resources in OpenShiftOAuthInterceptor
 
 ### 5.4.0 (2021-05-19)
 
