@@ -7,6 +7,7 @@
 * Retry only Non-Restful Create-only resources in OpenShiftOAuthInterceptor
 * Fix #3126: a KubernetesClientException will be thrown from patch/replace rather than a null being returned when the item does not exist
 * Fix #3121: ServiceOperationImpl replace will throw a KubernetesClientException rather than a NPE if the item doesn't exist
+* Fix #3189: VersionInfo contains null data in OpenShift 4.6
 * Fix #3190: Ignore fields with name "-" when using the Go to JSON schema generator
 
 #### Improvements
@@ -26,6 +27,14 @@
 #### _**Note**_: Breaking changes in the API
 ##### DSL Changes:
 - #3127 `StatusUpdatable.updateStatus` deprecated, please use patchStatus, editStatus, or replaceStatus
+
+### 5.4.1 (2021-06-01)
+
+#### Bugs
+* Fix #3181: Properly handling of JsonProperty when generating CRDs
+* Fix #3172: Use File.toURI() to create the generated CRD URI
+* Fix #3152: Retry only Non-Restful Create-only resources in OpenShiftOAuthInterceptor
+* Fix #3189: VersionInfo contains null data in OpenShift 4.6
 
 ### 5.4.0 (2021-05-19)
 

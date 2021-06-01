@@ -23,14 +23,14 @@ import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.Quantity;
 import io.sundr.builder.internal.functions.TypeAs;
 import io.sundr.codegen.functions.ClassTo;
+import io.sundr.model.AnnotationRef;
 import io.sundr.model.ClassRef;
 import io.sundr.model.Method;
 import io.sundr.model.PrimitiveRefBuilder;
 import io.sundr.model.Property;
 import io.sundr.model.TypeDef;
 import io.sundr.model.TypeRef;
-import io.sundr.model.utils.Optionals;
-
+import io.sundr.utils.Strings;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -135,50 +135,55 @@ public abstract class AbstractJsonSchema<T, B> {
 
     for (Property property : definition.getProperties()) {
       final String name = property.getName();
-      final Property[] updated = {property};
+      final Property[] updated = new Property[1];
 
       if (property.isStatic() || ignores.contains(name)) {
+        LOGGER.debug("Ignoring property {}", name);
         continue;
       }
-
+      
       property.getAnnotations().forEach(a -> {
         switch(a.getClassRef().getFullyQualifiedName()) {
           case "javax.validation.constraints.NotNull":
             required.add(name);
             break;
           case ANNOTATION_JSON_PROPERTY:
-            final String fromAnnotation = (String) a.getParameters().get("value");
-            if(!name.equals(fromAnnotation)) {
-              updated[0] = new Property(property.getAnnotations(), property.getTypeRef(), fromAnnotation, property.getComments(),
-                property.getModifiers(), property.getAttributes());
-            }
+            updatePropertyFromAnnotationIfNeeded(property, name, updated, a);
             break;
         }
       });
 
-      // check if accessors are annotated with JsonProperty with a different name
-      methods.stream()
-        .filter(m -> m.getName().matches("(is|get|set)" + property.getNameCapitalized()))
-        .forEach(m -> m.getAnnotations().stream()
-          // check if accessor is annotated with JsonProperty
-          .filter(a -> a.getClassRef().getFullyQualifiedName().equals(ANNOTATION_JSON_PROPERTY))
-          .findAny()
-          // if we found an annotated accessor, override the property's name if needed
-          .ifPresent(a -> {
-            final String fromAnnotation = (String) a.getParameters().get("value");
-            if(!updated[0].getName().equals(fromAnnotation)) {
-              updated[0] = new Property(property.getAnnotations(), property.getTypeRef(),
-                fromAnnotation, property.getComments(),
-                property.getModifiers(), property.getAttributes());
-            }
-          })
-        );
+      // only check accessors if the property itself hasn't already been annotated
+      if (updated[0] == null) {
+        // check if accessors are annotated with JsonProperty with a different name
+        methods.stream()
+          .filter(m -> m.getName().matches("(is|get|set)" + property.getNameCapitalized()))
+          .forEach(m -> m.getAnnotations().stream()
+            // check if accessor is annotated with JsonProperty
+            .filter(a -> a.getClassRef().getFullyQualifiedName().equals(ANNOTATION_JSON_PROPERTY))
+            .findAny()
+            // if we found an annotated accessor, override the property's name if needed
+            .ifPresent(a -> updatePropertyFromAnnotationIfNeeded(property, name, updated, a))
+          );
+      } else {
+        LOGGER.debug("Property {} has already been renamed to {} by field annotation", name, updated[0].getName());
+      }
 
-      final Property possiblyRenamedProperty = updated[0];
+      final Property possiblyRenamedProperty = updated[0] != null ? updated[0] : property;
       addProperty(possiblyRenamedProperty, builder, internalFrom(possiblyRenamedProperty.getName(),
         possiblyRenamedProperty.getTypeRef()));
     }
     return build(builder, required);
+  }
+
+  private void updatePropertyFromAnnotationIfNeeded(Property property, String name, Property[] updated,
+    AnnotationRef a) {
+    final String fromAnnotation = (String) a.getParameters().get("value");
+    if (!Strings.isNullOrEmpty(fromAnnotation) && !name.equals(fromAnnotation)) {
+      updated[0] = new Property(property.getAnnotations(), property.getTypeRef(), fromAnnotation,
+        property.getComments(),
+        property.getModifiers(), property.getAttributes());
+    }
   }
 
   /**

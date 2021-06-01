@@ -75,8 +75,11 @@ class JsonSchemaTest {
     Map<String, JSONSchemaProps> properties = schema.getProperties();
     assertEquals(2, properties.size());
     Map<String, JSONSchemaProps> spec = properties.get("spec").getProperties();
+    assertEquals(4, spec.size());
     assertTrue(spec.containsKey("from-field"));
     assertTrue(spec.containsKey("from-getter"));
+    assertTrue(spec.containsKey("unnamed"));
+    assertTrue(spec.containsKey("emptySetter"));
   }
 
 }
