@@ -186,6 +186,7 @@ import io.fabric8.openshift.client.dsl.OpenShiftMonitoringAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftOperatorAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftOperatorHubAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftQuotaAPIGroupDSL;
+import io.fabric8.openshift.client.dsl.OpenShiftTunedAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.ProjectOperation;
 import io.fabric8.openshift.client.dsl.ProjectRequestOperation;
 import io.fabric8.openshift.client.dsl.TemplateResource;
@@ -472,6 +473,11 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   @Override
   public MixedOperation<TemplateInstance, TemplateInstanceList, Resource<TemplateInstance>> templateInstances() {
     return delegate.templateInstances();
+  }
+
+  @Override
+  public OpenShiftTunedAPIGroupDSL tuned() {
+    return delegate.tuned();
   }
 
   @Override
