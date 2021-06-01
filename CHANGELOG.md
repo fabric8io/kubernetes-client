@@ -7,6 +7,7 @@
 * Retry only Non-Restful Create-only resources in OpenShiftOAuthInterceptor
 * Fix #3126: a KubernetesClientException will be thrown from patch/replace rather than a null being returned when the item does not exist
 * Fix #3121: ServiceOperationImpl replace will throw a KubernetesClientException rather than a NPE if the item doesn't exist
+* Fix #3189: VersionInfo contains null data in OpenShift 4.6
 
 #### Improvements
 * Fix #3149: replace(item) will consult the item's resourceVersion for the first PUT attempt when not specifically locked on a resourceVersion
