@@ -6,6 +6,7 @@
 * Fix #3181: Properly handling of JsonProperty when generating CRDs
 * Fix #3172: Use File.toURI() to create the generated CRD URI
 * Fix #3152: Retry only Non-Restful Create-only resources in OpenShiftOAuthInterceptor
+* Fix #3189: VersionInfo contains null data in OpenShift 4.6
 
 ### 5.4.0 (2021-05-19)
 

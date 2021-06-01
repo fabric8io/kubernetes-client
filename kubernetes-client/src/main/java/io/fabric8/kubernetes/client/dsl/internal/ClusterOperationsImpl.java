@@ -43,7 +43,10 @@ public class ClusterOperationsImpl extends OperationSupport {
 
   public VersionInfo fetchVersion() {
     try {
-      Response response = handleVersionGet(versionEndpoint);
+      Request request = getRequest(versionEndpoint);
+      Response response = handleVersionGet(request);
+      assertResponseCode(request, response);
+
       Map<String, String> myMap = new HashMap<>();
 
       if (response.body() != null) {
@@ -55,11 +58,15 @@ public class ClusterOperationsImpl extends OperationSupport {
     }
   }
 
-  protected Response handleVersionGet(String versionEndpointToBeUsed) throws IOException {
-    Request.Builder requestBuilder = new Request.Builder()
+  protected Response handleVersionGet(Request request) throws IOException {
+    return client.newCall(request).execute();
+  }
+
+  protected Request getRequest(String versionEndpointToBeUsed) {
+    return new Request.Builder()
       .get()
-      .url(URLUtils.join(config.getMasterUrl(), versionEndpointToBeUsed));
-    return client.newCall(requestBuilder.build()).execute();
+      .url(URLUtils.join(config.getMasterUrl(), versionEndpointToBeUsed))
+      .build();
   }
 
   protected static VersionInfo fetchVersionInfoFromResponse(Map<String, String> responseAsMap) throws ParseException {
