@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 5.4.1
+### 5.4.1 (2021-06-01)
 
 #### Bugs
 * Fix #3181: Properly handling of JsonProperty when generating CRDs
