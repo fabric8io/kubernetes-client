@@ -185,6 +185,7 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
                 "io.fabric8.openshift.api.model.operatorhub.v1alpha1.",
                 "io.fabric8.openshift.api.model.operatorhub.lifecyclemanager.v1.",
                 "io.fabric8.openshift.api.model.machineconfig.v1.",
+                "io.fabric8.openshift.api.model.tuned.v1.",
                 "io.fabric8.kubernetes.api.model.extensions."
         };
 

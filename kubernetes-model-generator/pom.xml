@@ -61,6 +61,7 @@
     <module>openshift-model-monitoring</module>
     <module>openshift-model-console</module>
     <module>openshift-model-machineconfig</module>
+    <module>openshift-model-tuned</module>
   </modules>
 
   <properties>
