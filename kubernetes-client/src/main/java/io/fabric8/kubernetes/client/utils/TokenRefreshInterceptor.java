@@ -53,7 +53,7 @@ public class TokenRefreshInterceptor implements Interceptor {
       if (currentAuthInfo != null) {
         response.close();
         String newAccessToken;
-        // Check if AuthProvider is set to oicd
+        // Check if AuthProvider is set to oidc
         if (currentAuthInfo.getAuthProvider() != null && currentAuthInfo.getAuthProvider().getName().equalsIgnoreCase("oidc")) {
           newAccessToken = OpenIDConnectionUtils.resolveOIDCTokenFromAuthConfig(currentAuthInfo.getAuthProvider().getConfig());
         } else {
