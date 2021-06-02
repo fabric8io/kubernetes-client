@@ -92,8 +92,8 @@ System properties are preferred over environment variables. The following system
 | `kubernetes.watch.reconnectLimit` / `KUBERNETES_WATCH_RECONNECTLIMIT` | Number of reconnect attempts (-1 for infinite) | `-1` |
 | `kubernetes.connection.timeout` / `KUBERNETES_CONNECTION_TIMEOUT` | Connection timeout in ms (0 for no timeout) | `10000` |
 | `kubernetes.request.timeout` / `KUBERNETES_REQUEST_TIMEOUT` | Read timeout in ms | `10000` |
-| `kubernetes.request.retry.backoffLimit` / `KUBERNETES_REQUEST_RETRY_BACKOFFLIMIT_SYSTEM_PROPERTY` | Number of retry attempts | `0` |
-| `kubernetes.request.retry.backoffInterval` / `KUBERNETES_REQUEST_RETRY_BACKOFFINTERVAL_SYSTEM_PROPERTY` | Retry initial backoff interval in ms | `1000` |
+| `kubernetes.request.retry.backoffLimit` / `KUBERNETES_REQUEST_RETRY_BACKOFFLIMIT` | Number of retry attempts | `0` |
+| `kubernetes.request.retry.backoffInterval` / `KUBERNETES_REQUEST_RETRY_BACKOFFINTERVAL` | Retry initial backoff interval in ms | `1000` |
 | `kubernetes.rolling.timeout` / `KUBERNETES_ROLLING_TIMEOUT` | Rolling timeout in ms | `900000` |
 | `kubernetes.logging.interval` / `KUBERNETES_LOGGING_INTERVAL` | Logging interval in ms | `20000` |
 | `kubernetes.scale.timeout` / `KUBERNETES_SCALE_TIMEOUT` | Scale timeout in ms | `600000` |
