@@ -194,7 +194,9 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
    * @param objectAsString Object as JSON string
    * @return Object as HashMap
    * @throws IOException in case of problems while reading JSON object
+   * @deprecated Use {@link #inNamespace(String)}.{@link #create(String)} instead.
    */
+  @Deprecated
   public Map<String, Object> create(String namespace, String objectAsString) throws IOException {
     return toMap(delegate.inNamespace(namespace)
       .create(Serialization.unmarshal(objectAsString, GenericKubernetesResource.class)));
@@ -219,7 +221,9 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
    * @param objectAsStream object as file input stream
    * @return Object as HashMap
    * @throws IOException in case of problems while reading file
+   * @deprecated Use {@link #inNamespace(String)}.{@link #create(InputStream)} instead.
    */
+  @Deprecated
   public Map<String, Object> create(String namespace, InputStream objectAsStream) throws IOException {
     return toMap(delegate.inNamespace(namespace)
       .create(Serialization.unmarshal(objectAsStream, GenericKubernetesResource.class)));
@@ -232,7 +236,9 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
    * @param object    object as a HashMap
    * @return Object as HashMap
    * @throws IOException in case of problems faced while serializing HashMap
+   * @deprecated Use {@link #inNamespace(String)}.{@link #create(Map)} instead.
    */
+  @Deprecated
   public Map<String, Object> create(String namespace, Map<String, Object> object) throws IOException {
     return toMap(delegate.inNamespace(namespace)
       .create(Serialization.jsonMapper().convertValue(object, GenericKubernetesResource.class)));
@@ -280,7 +286,9 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
    * @param objectAsString object as JSON String
    * @return Object as HashMap
    * @throws IOException in case of network/serialization failures or failures from Kubernetes API
+   * @deprecated Use {@link #inNamespace(String)}.{@link #createOrReplace(String)} instead.
    */
+  @Deprecated
   public Map<String, Object> createOrReplace(String namespace, String objectAsString) throws IOException {
     return toMap(delegate.inNamespace(namespace)
       .createOrReplace(Serialization.unmarshal(objectAsString, GenericKubernetesResource.class)));
@@ -293,7 +301,9 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
    * @param customResourceObject object as HashMap
    * @return Object as HashMap
    * @throws IOException in case of network/serialization failures or failures from Kubernetes API
+   * @deprecated Use {@link #inNamespace(String)}.{@link #createOrReplace(Map)} instead.
    */
+  @Deprecated
   public Map<String, Object> createOrReplace(String namespace, Map<String, Object> customResourceObject) throws IOException {
     return toMap(delegate.inNamespace(namespace)
       .createOrReplace(Serialization.jsonMapper().convertValue(customResourceObject, GenericKubernetesResource.class)));
@@ -306,7 +316,9 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
    * @param objectAsStream object as file input stream
    * @return Object as HashMap
    * @throws IOException in case of network/serialization failures or failures from Kubernetes API
+   * @deprecated Use {@link #inNamespace(String)}.{@link #createOrReplace(InputStream)} instead.
    */
+  @Deprecated
   public Map<String, Object> createOrReplace(String namespace, InputStream objectAsStream) throws IOException {
     return toMap(delegate.inNamespace(namespace)
       .createOrReplace(Serialization.unmarshal(objectAsStream, GenericKubernetesResource.class)));
@@ -319,7 +331,9 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
    * @param object new object as a HashMap
    * @return Object as HashMap
    * @throws IOException in case of network/serialization failures or failures from Kubernetes API
+   * @deprecated Use {@link #withName(String)}.{@link #edit(Map)} instead.
    */
+  @Deprecated
   public Map<String, Object> edit(String name, Map<String, Object> object) throws IOException {
     return toMap(delegate.withName(name)
       .edit(gkr -> Serialization.jsonMapper().convertValue(object, GenericKubernetesResource.class)));
@@ -332,7 +346,9 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
    * @param objectAsString new object as a JSON String
    * @return Object as HashMap
    * @throws IOException in case of network/serialization failures or failures from Kubernetes API
+   * @deprecated Use {@link #withName(String)}.{@link #edit(String)} instead.
    */
+  @Deprecated
   public Map<String, Object> edit(String name, String objectAsString) throws IOException {
     final GenericKubernetesResource edited = Serialization.jsonMapper()
       .readValue(objectAsString, GenericKubernetesResource.class);
@@ -347,7 +363,9 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
    * @param object    new object as a HashMap
    * @return Object as HashMap
    * @throws IOException in case of network/serialization failures or failures from Kubernetes API
+   * @deprecated Use {@link #inNamespace(String)}.{@link #withName(String)}.{@link #edit(Map)} instead.
    */
+  @Deprecated
   public Map<String, Object> edit(String namespace, String name, Map<String, Object> object) throws IOException {
     return toMap(delegate.inNamespace(namespace).withName(name)
       .edit(gkr -> Serialization.jsonMapper().convertValue(object, GenericKubernetesResource.class)));
@@ -361,7 +379,9 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
    * @param objectAsString new object as a JSON string
    * @return Object as HashMap
    * @throws IOException in case of network/serialization failures or failures from Kubernetes API
+   * @deprecated Use {@link #inNamespace(String)}.{@link #withName(String)}.{@link #edit(String)} instead.
    */
+  @Deprecated
   public Map<String, Object> edit(String namespace, String name, String objectAsString) throws IOException {
     final GenericKubernetesResource edited = Serialization.jsonMapper()
       .readValue(objectAsString, GenericKubernetesResource.class);
@@ -401,7 +421,9 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
    * @param objectAsMap custom resource as a HashMap
    * @return updated CustomResource as HashMap
    * @throws IOException in case any failure to parse Map
+   * @deprecated Use {@link #withName(String)}.{@link #updateStatus(Map)} instead.
    */
+  @Deprecated
   public Map<String, Object> updateStatus(String name, Map<String, Object> objectAsMap) throws IOException {
     return toMap(delegate.withName(name)
       .patchStatus(Serialization.jsonMapper().convertValue(objectAsMap, GenericKubernetesResource.class)));
@@ -415,7 +437,9 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
    * @param objectAsJsonString CustomResource as a JSON string
    * @return updated CustomResource as a HashMap
    * @throws IOException in case any failure to parse Map
+   * @deprecated Use {@link #withName(String)}.{@link #updateStatus(String)} instead.
    */
+  @Deprecated
   public Map<String, Object> updateStatus(String name, String objectAsJsonString) throws IOException {
     return toMap(delegate.withName(name)
       .patchStatus(Serialization.unmarshal(objectAsJsonString, GenericKubernetesResource.class)));
@@ -430,7 +454,9 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
    * @param objectAsMap CustomResource as a HashMap
    * @return updated CustomResource as a HashMap
    * @throws IOException in case any failure to parse Map
+   * @deprecated Use {@link #inNamespace(String)}.{@link #withName(String)}.{@link #updateStatus(Map)} instead.
    */
+  @Deprecated
   public Map<String, Object> updateStatus(String namespace, String name, Map<String, Object> objectAsMap) throws IOException {
     return toMap(delegate.inNamespace(namespace).withName(name)
       .patchStatus(Serialization.jsonMapper().convertValue(objectAsMap, GenericKubernetesResource.class)));
@@ -444,7 +470,9 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
    * @param objectAsStream stream pointing to CustomResource
    * @return updated CustomResource as a HashMap
    * @throws IOException in case any failure to parse Map
+   * @deprecated Use {@link #withName(String)}.{@link #updateStatus(InputStream)} instead.
    */
+  @Deprecated
   public Map<String, Object> updateStatus(String name, InputStream objectAsStream) throws IOException {
     return toMap(delegate.withName(name)
       .patchStatus(Serialization.unmarshal(objectAsStream, GenericKubernetesResource.class)));
@@ -459,7 +487,9 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
    * @param objectAsStream CustomResource object as a stream
    * @return updated CustomResource as a HashMap
    * @throws IOException in case any failure to parse Map
+   * @deprecated Use {@link #inNamespace(String)}.{@link #withName(String)}.{@link #updateStatus(InputStream)} instead.
    */
+  @Deprecated
   public Map<String, Object> updateStatus(String namespace, String name, InputStream objectAsStream) throws IOException {
     return toMap(delegate.inNamespace(namespace).withName(name)
       .patchStatus(Serialization.unmarshal(objectAsStream, GenericKubernetesResource.class)));
@@ -474,7 +504,9 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
    * @param objectAsJsonString CustomResource object as a JSON string
    * @return updated CustomResource as a HashMap
    * @throws IOException in case any failure to parse Map
+   * @deprecated Use {@link #inNamespace(String)}.{@link #withName(String)}.{@link #updateStatus(String)} instead.
    */
+  @Deprecated
   public Map<String, Object> updateStatus(String namespace, String name, String objectAsJsonString) throws IOException {
     return toMap(delegate.inNamespace(namespace).withName(name)
       .patchStatus(Serialization.unmarshal(objectAsJsonString, GenericKubernetesResource.class)));
@@ -529,7 +561,9 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
    *
    * @param name name of custom resource
    * @return Object as HashMap
+   * @deprecated Use {@link #withName(String)}.{@link #get()} instead.
    */
+  @Deprecated
   public Map<String, Object> get(String name) {
     return toMap(delegate.withName(name).get());
   }
@@ -540,7 +574,9 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
    * @param namespace desired namespace
    * @param name      name of custom resource
    * @return Object as HashMap
+   * @deprecated Use {@link #inNamespace(String)}.{@link #withName(String)}.{@link #get()} instead.
    */
+  @Deprecated
   public Map<String, Object> get(String namespace, String name) {
     return toMap(delegate.inNamespace(namespace).withName(name).get());
   }
@@ -603,7 +639,9 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
    *
    * @param namespaceOrName desired namespace(if CRD is Namespaced) or name(If CRD is Cluster)
    * @return deleted objects as HashMap
+   * @deprecated Use {@link #inNamespace(String)}.{@link #delete()} or {@link #withName(String)}.{@link #delete()} instead.
    */
+  @Deprecated
   public boolean delete(String namespaceOrName) {
     if (delegate.isResourceNamespaced()) {
       return delegate.inNamespace(namespaceOrName).delete();
@@ -672,7 +710,9 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
    * @param name      custom resource's name
    * @return a boolean value whether item was deleted or item didn't exist in server
    * @throws IOException in case of any network/object parse problems
+   * @deprecated Use {@link #inNamespace(String)}.{@link #withName(String)}.{@link #delete()} instead.
    */
+  @Deprecated
   public boolean delete(String namespace, String name) throws IOException {
     return delegate.inNamespace(namespace).withName(name).delete();
   }
