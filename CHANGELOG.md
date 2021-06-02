@@ -11,6 +11,7 @@
 * Fix #3190: Ignore fields with name "-" when using the Go to JSON schema generator
 
 #### Improvements
+* Fix #3078: adding javadocs to further clarify patch, edit, replace, etc. and note the possibility of items being modified.
 * Fix #3149: replace(item) will consult the item's resourceVersion for the first PUT attempt when not specifically locked on a resourceVersion
 * Fix #3135: added mock crud support for patch status, and will return exceptions for unsupported patch types
 * Fix #3072: various changes to refine how threads are handled by informers.  Note that the SharedInformer.run call is now blocking when starting the informer.
