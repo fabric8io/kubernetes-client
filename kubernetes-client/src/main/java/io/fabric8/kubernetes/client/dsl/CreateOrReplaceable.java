@@ -20,8 +20,9 @@ public interface CreateOrReplaceable<T> {
   /**
    * Creates a provided resource in a Kubernetes Cluster. If creation
    * fails with a HTTP_CONFLICT, it tries to replace resource.
+   * <br>The resourceVersion and other fields of the item may be modified by this call.
    *
-   * @param item item to create or replace
+   * @param item to create or replace
    * @return created item returned in kubernetes api response
    */
   T createOrReplace(T... item);
