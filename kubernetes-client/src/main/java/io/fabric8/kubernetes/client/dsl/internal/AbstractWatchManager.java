@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.api.model.ListOptions;
+import io.fabric8.kubernetes.client.utils.ExponentialBackoffIntervalCalculator;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
@@ -41,8 +42,7 @@ public abstract class AbstractWatchManager<T> implements Watch {
 
   final AtomicBoolean forceClosed;
   private final int reconnectLimit;
-  private final int reconnectInterval;
-  private final int maxIntervalExponent;
+  private final ExponentialBackoffIntervalCalculator retryIntervalCalculator;
   final AtomicInteger currentReconnectAttempt;
   private ScheduledFuture<?> reconnectAttempt;
   
@@ -56,8 +56,7 @@ public abstract class AbstractWatchManager<T> implements Watch {
   ) {
     this.watcher = watcher;
     this.reconnectLimit = reconnectLimit;
-    this.reconnectInterval = reconnectInterval;
-    this.maxIntervalExponent = maxIntervalExponent;
+    this.retryIntervalCalculator = new ExponentialBackoffIntervalCalculator(reconnectInterval, maxIntervalExponent);
     this.resourceVersion = new AtomicReference<>(listOptions.getResourceVersion());
     this.currentReconnectAttempt = new AtomicInteger(0);
     this.forceClosed = new AtomicBoolean();
@@ -126,9 +125,7 @@ public abstract class AbstractWatchManager<T> implements Watch {
 
   final long nextReconnectInterval() {
     int exponentOfTwo = currentReconnectAttempt.getAndIncrement();
-    if (exponentOfTwo > maxIntervalExponent)
-      exponentOfTwo = maxIntervalExponent;
-    long ret = (long)reconnectInterval * (1 << exponentOfTwo);
+    long ret = retryIntervalCalculator.getInterval(exponentOfTwo);
     logger.debug("Current reconnect backoff is {} milliseconds (T{})", ret, exponentOfTwo);
     return ret;
   }

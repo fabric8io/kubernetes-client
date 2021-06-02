@@ -15,17 +15,25 @@
  */
 package io.fabric8.kubernetes.client.dsl.base;
 
+import static okhttp3.Protocol.HTTP_1_1;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.verify;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,14 +47,19 @@ import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.dsl.EditReplacePatchDeletable;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.URLUtils;
+import okhttp3.Call;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import org.junit.jupiter.api.Assertions;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 import org.junit.jupiter.api.Test;
 
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
-import org.mockito.ArgumentCaptor;
 
 class BaseOperationTest {
 
@@ -208,5 +221,88 @@ class BaseOperationTest {
     // Then
     assertNotNull(result);
     assertEquals("https://172.17.0.2:8443/api/v1/namespaces/ns1/pods/foo", result.toString());
+  }
+
+  private OkHttpClient newHttpClientWithSomeFailures(final AtomicInteger httpExecutionCounter, final int numFailures) {
+    OkHttpClient mockClient = mock(OkHttpClient.class);
+    when(mockClient.newCall(any())).thenAnswer(
+      invocation -> {
+        Call mockCall = mock(Call.class);
+        Request req = invocation.getArgument(0);
+        when(mockCall.execute()).thenAnswer(i -> {
+          int count = httpExecutionCounter.getAndIncrement();
+          if (count < numFailures) {
+            return new Response.Builder().request(req).message("Internal Server Error").protocol(HTTP_1_1).code(500).build();
+          } else {
+            Pod podNoLabels = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
+            ResponseBody body = ResponseBody.create(MediaType.get("application/json"), Serialization.asJson(podNoLabels));
+            return new Response.Builder().request(req).protocol(HTTP_1_1).body(body).message("OK").code(HttpURLConnection.HTTP_OK).build();
+          }
+        });
+        return mockCall;
+      }
+    );
+    return mockClient;
+  }
+
+  @Test
+  void testNoHttpRetryWithDefaultConfig() throws MalformedURLException, IOException {
+    final AtomicInteger httpExecutionCounter = new AtomicInteger(0);
+    OkHttpClient mockClient = newHttpClientWithSomeFailures(httpExecutionCounter, 1000);
+    BaseOperation<Pod, PodList, Resource<Pod>> baseOp = new BaseOperation(new OperationContext()
+      .withConfig(new ConfigBuilder().withMasterUrl("https://172.17.0.2:8443").build())
+      .withPlural("pods")
+      .withName("test-pod")
+      .withOkhttpClient(mockClient));
+    baseOp.setType(Pod.class);
+
+    // When
+    Exception exception = assertThrows(KubernetesClientException.class, () -> {
+      Pod result = baseOp.get();
+    });
+
+    // Then
+    assertTrue(exception.getMessage().contains("Internal Server Error"));
+    assertEquals(1, httpExecutionCounter.get());
+  }
+
+  @Test
+  void testHttpRetryWithMoreFailuresThanRetries() throws MalformedURLException, IOException {
+    final AtomicInteger httpExecutionCounter = new AtomicInteger(0);
+    OkHttpClient mockClient = newHttpClientWithSomeFailures(httpExecutionCounter, 1000);
+    BaseOperation<Pod, PodList, Resource<Pod>> baseOp = new BaseOperation(new OperationContext()
+      .withConfig(new ConfigBuilder().withMasterUrl("https://172.17.0.2:8443").withRequestRetryBackoffLimit(3).build())
+      .withPlural("pods")
+      .withName("test-pod")
+      .withOkhttpClient(mockClient));
+    baseOp.setType(Pod.class);
+
+    // When
+    Exception exception = assertThrows(KubernetesClientException.class, () -> {
+      Pod result = baseOp.get();
+    });
+
+    // Then
+    assertTrue(exception.getMessage().contains("Internal Server Error"));
+    assertEquals("Expected 4 calls: one normal try and 3 backoff retries!", 4, httpExecutionCounter.get());
+  }
+
+  @Test
+  void testHttpRetryWithLessFailuresThanRetries() throws MalformedURLException, IOException {
+    final AtomicInteger httpExecutionCounter = new AtomicInteger(0);
+    OkHttpClient mockClient = newHttpClientWithSomeFailures(httpExecutionCounter, 2);
+    BaseOperation<Pod, PodList, Resource<Pod>> baseOp = new BaseOperation(new OperationContext()
+      .withConfig(new ConfigBuilder().withMasterUrl("https://172.17.0.2:8443").withRequestRetryBackoffLimit(3).build())
+      .withPlural("pods")
+      .withName("test-pod")
+      .withOkhttpClient(mockClient));
+    baseOp.setType(Pod.class);
+
+    // When
+    Pod result = baseOp.get();
+
+    // Then
+    assertNotNull(result);
+    assertEquals("Expected 3 calls: 2 failures and 1 success!", 3, httpExecutionCounter.get());
   }
 }

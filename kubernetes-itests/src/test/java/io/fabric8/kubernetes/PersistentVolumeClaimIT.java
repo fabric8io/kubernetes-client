@@ -20,6 +20,8 @@ import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaimBuilder;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaimList;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.dsl.base.PatchContext;
+import io.fabric8.kubernetes.client.dsl.base.PatchType;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
@@ -63,8 +65,14 @@ public class PersistentVolumeClaimIT {
 
   @Test
   public void update() {
-    PersistentVolumeClaim persistentVolumeClaim = client.persistentVolumeClaims().inNamespace(session.getNamespace()).withName("persistentvolumeclaims-update").edit(c -> new PersistentVolumeClaimBuilder(c)
-      .editMetadata().addToLabels("foo", "bar").endMetadata().build());
+    PersistentVolumeClaim persistentVolumeClaim = client.persistentVolumeClaims()
+        .inNamespace(session.getNamespace())
+        .withName("persistentvolumeclaims-update")
+        .patch(PatchContext.of(PatchType.STRATEGIC_MERGE), new PersistentVolumeClaimBuilder()
+            .withNewMetadata()
+            .addToLabels("foo", "bar")
+            .endMetadata()
+            .build());
 
     assertNotNull(persistentVolumeClaim);
     assertEquals("bar", persistentVolumeClaim.getMetadata().getLabels().get("foo"));
