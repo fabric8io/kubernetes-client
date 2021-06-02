@@ -263,6 +263,7 @@ public class KubernetesCrudAttributesExtractorTest {
       .getItems().get(0);
 
     assertTrue(result.getMetadata().getName().startsWith("prefix"));
+    assertNotNull(result.getMetadata().getNamespace());
     assertNotNull(result.getMetadata().getUid());
     assertNotNull(result.getMetadata().getResourceVersion());
     assertNotNull(result.getMetadata().getCreationTimestamp());
@@ -276,7 +277,6 @@ public class KubernetesCrudAttributesExtractorTest {
     KubernetesClient kubernetesClient = kubernetesServer.getClient();
     Pod pod = new PodBuilder().withNewMetadata()
             .withName("name")
-            .withNamespace("test") // required until https://github.com/fabric8io/mockwebserver/pull/59
             .endMetadata()
             .withStatus(new PodStatusBuilder().withHostIP("x").build())
             .build();
@@ -287,20 +287,19 @@ public class KubernetesCrudAttributesExtractorTest {
   }
 
   @Test
-  public void statusHandling() {
+  void nonSubresourceStatusHandling() {
     KubernetesServer kubernetesServer = new KubernetesServer(false, true);
     kubernetesServer.before();
     KubernetesClient kubernetesClient = kubernetesServer.getClient();
     Pod pod = new PodBuilder().withNewMetadata()
             .withName("name")
-            .withNamespace("test") // required until https://github.com/fabric8io/mockwebserver/pull/59
             .endMetadata()
             .withStatus(new PodStatusBuilder().withHostIP("x").build())
             .build();
     Pod result = kubernetesClient.pods().create(pod);
 
-    // should be null after create
-    assertNull(result.getStatus());
+    // should be non-null after create because it's not a crd marked as a status subresource
+    assertNotNull(result.getStatus());
 
     Map<String, String> labels = new HashMap<>();
     labels.put("app", "core");
@@ -314,28 +313,31 @@ public class KubernetesCrudAttributesExtractorTest {
 
     String originalUid = result.getMetadata().getUid();
 
-    // should be null after replace
-    assertNull(result.getStatus());
+    // should be non-null after replace
+    assertNotNull(result.getStatus());
 
+    // should be a no-op
     assertNotNull(kubernetesClient.pods().updateStatus(pod).getStatus());
 
     labels.put("other", "label");
+    pod.getStatus().setHostIP("y");
     result = kubernetesClient.pods()
         .inNamespace(pod.getMetadata().getNamespace())
         .withName(pod.getMetadata().getName())
         .replace(pod);
 
-    // should retain the existing
-    assertNotNull(result.getStatus());
+    // should replace the existing
+    assertEquals("y", result.getStatus().getHostIP());
 
     labels.put("another", "label");
+    pod.getStatus().setHostIP("z");
     result = kubernetesClient.pods()
         .inNamespace(pod.getMetadata().getNamespace())
         .withName(pod.getMetadata().getName())
         .patch(pod);
 
-    // should retain the existing
-    assertNotNull(result.getStatus());
+    // should replace the existing
+    assertEquals("z", result.getStatus().getHostIP());
 
     assertEquals(originalUid, result.getMetadata().getUid());
   }
@@ -347,7 +349,6 @@ public class KubernetesCrudAttributesExtractorTest {
     KubernetesClient kubernetesClient = kubernetesServer.getClient();
     Pod pod = new PodBuilder().withNewMetadata()
             .withName("name")
-            .withNamespace("test") // required until https://github.com/fabric8io/mockwebserver/pull/59
             .endMetadata()
             .build();
     Pod result = kubernetesClient.pods().create(pod);
@@ -380,7 +381,6 @@ public class KubernetesCrudAttributesExtractorTest {
     KubernetesClient kubernetesClient = kubernetesServer.getClient();
     Pod pod = new PodBuilder().withNewMetadata()
             .withName("name")
-            .withNamespace("test") // required until https://github.com/fabric8io/mockwebserver/pull/59
             .endMetadata()
             .build();
     Pod result = kubernetesClient.pods().create(pod);
@@ -409,7 +409,6 @@ public class KubernetesCrudAttributesExtractorTest {
     KubernetesClient kubernetesClient = kubernetesServer.getClient();
     Pod pod = new PodBuilder().withNewMetadata()
             .withName("name")
-            .withNamespace("test") // required until https://github.com/fabric8io/mockwebserver/pull/59
             .endMetadata()
             .withStatus(new PodStatusBuilder().withHostIP("x").build())
             .build();
@@ -426,7 +425,6 @@ public class KubernetesCrudAttributesExtractorTest {
     KubernetesClient kubernetesClient = kubernetesServer.getClient();
     Pod pod = new PodBuilder().withNewMetadata()
             .withName("name")
-            .withNamespace("test") // required until https://github.com/fabric8io/mockwebserver/pull/59
             .endMetadata()
             .withStatus(new PodStatusBuilder().withHostIP("x").build())
             .build();

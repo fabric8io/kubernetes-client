@@ -15,31 +15,33 @@
  */
 package io.fabric8.kubernetes.client.server.mock;
 
-import static io.fabric8.mockwebserver.crud.AttributeType.EXISTS;
-import static io.fabric8.mockwebserver.crud.AttributeType.NOT_EXISTS;
-import static io.fabric8.mockwebserver.crud.AttributeType.WITHOUT;
-
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.mockwebserver.crud.Attribute;
 import io.fabric8.mockwebserver.crud.AttributeExtractor;
 import io.fabric8.mockwebserver.crud.AttributeSet;
 import okhttp3.HttpUrl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
+import static io.fabric8.mockwebserver.crud.AttributeType.EXISTS;
+import static io.fabric8.mockwebserver.crud.AttributeType.NOT_EXISTS;
+import static io.fabric8.mockwebserver.crud.AttributeType.WITHOUT;
 
 public class KubernetesAttributesExtractor implements AttributeExtractor<HasMetadata> {
 
@@ -77,14 +79,14 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
   // values are not important, HttpUrl expects the scheme to be http or https.
   private static final String SCHEME = "http";
   private static final String HOST = "localhost";
-  private List<CustomResourceDefinitionContext> crdContexts;
+  private Map<String, CustomResourceDefinitionContext> crdContexts;
 
   public KubernetesAttributesExtractor() {
-    this.crdContexts = Collections.emptyList();
+    this(Collections.emptyList());
   }
 
   public KubernetesAttributesExtractor(List<CustomResourceDefinitionContext> crdContexts) {
-    this.crdContexts = crdContexts;
+    this.crdContexts = crdContexts.stream().collect(Collectors.toMap(CustomResourceDefinitionContext::getPlural, Function.identity()));
   }
 
   private HttpUrl parseUrlFromPathAndQuery(String s) {
@@ -92,6 +94,23 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
       s = "/" + s;
     }
     return HttpUrl.parse(String.format("%s://%s%s", SCHEME, HOST, s));
+  }
+
+  /**
+   * Get the name, namespace, and kind from the path
+   */
+  public Map<String, String> fromKubernetesPath(String s) {
+    if (s == null || s.isEmpty()) {
+      return Collections.emptyMap();
+    }
+
+    //Get paths
+    HttpUrl url = parseUrlFromPathAndQuery(s);
+    Matcher m = PATTERN.matcher(url.encodedPath());
+    if (m.matches()) {
+      return extract(m);
+    }
+    return Collections.emptyMap();
   }
 
   @Override
@@ -104,7 +123,10 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
     HttpUrl url = parseUrlFromPathAndQuery(s);
     Matcher m = PATTERN.matcher(url.encodedPath());
     if (m.matches()) {
-      AttributeSet set = extract(m, crdContexts);
+      AttributeSet set = new AttributeSet(extract(m).entrySet()
+          .stream()
+          .map(e -> new Attribute(e.getKey(), e.getValue()))
+          .collect(Collectors.toList()));
       set = AttributeSet.merge(set, extractQueryParameters(url));
       LOGGER.debug("fromPath {} : {}", s, set);
       return set;
@@ -167,24 +189,24 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
     return metadataAttributes;
   }
 
-  private static AttributeSet extract(Matcher m, List<CustomResourceDefinitionContext> crdContexts) {
-    AttributeSet attributes = new AttributeSet();
+  private Map<String, String> extract(Matcher m) {
+    Map<String, String> attributes = new HashMap<>();
     if (m.matches()) {
       String kind = m.group(KIND);
       if (!Utils.isNullOrEmpty(kind)) {
-        kind = resolveKindFromPlural(crdContexts, kind);
-        attributes = attributes.add(new Attribute(KIND, kind));
+        kind = resolveKindFromPlural(kind);
+        attributes.put(KIND, kind);
       }
 
       String namespace = m.group(NAMESPACE);
       if (!Utils.isNullOrEmpty(namespace)) {
-        attributes = attributes.add(new Attribute(NAMESPACE, namespace));
+        attributes.put(NAMESPACE, namespace);
       }
 
       try {
         String name = m.group(NAME);
         if (!Utils.isNullOrEmpty(name)) {
-          attributes = attributes.add(new Attribute(NAME, name));
+          attributes.put(NAME, name);
         }
       } catch (IllegalArgumentException e) {
         //group is missing, which is perfectly valid for create, update etc requests.
@@ -193,9 +215,10 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
     return attributes;
   }
 
-  private static String resolveKindFromPlural(List<CustomResourceDefinitionContext> crdContexts, String kind) {
-    if (isCustomResourceKind(crdContexts, kind)) {
-      return getCustomResourceKindFromPlural(crdContexts, kind);
+  private String resolveKindFromPlural(String kind) {
+    String result = getCustomResourceKindFromPlural(kind);
+    if (result != null) {
+      return result;
     }
     return getKindFromPluralForKubernetesTypes(kind);
   }
@@ -285,16 +308,15 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
     }
   }
 
-  private static boolean isCustomResourceKind(List<CustomResourceDefinitionContext> crdContexts, String kind) {
-    return crdContexts.stream()
-      .anyMatch(c -> c.getPlural().equals(kind));
+  private String getCustomResourceKindFromPlural(String plural) {
+    CustomResourceDefinitionContext crdContext = crdContexts.get(plural);
+    return crdContext != null && crdContext.getKind() != null ? crdContext.getKind().toLowerCase() : null;
   }
 
-  private static String getCustomResourceKindFromPlural(List<CustomResourceDefinitionContext> crdContexts, String kind) {
-    CustomResourceDefinitionContext crdContext = crdContexts.stream()
-      .filter(c -> c.getPlural().equals(kind))
-      .findAny()
-      .orElse(null);
-    return crdContext != null && crdContext.getKind() != null ? crdContext.getKind().toLowerCase() : null;
+  /**
+   * A mapping of plural name to context
+   */
+  public Map<String, CustomResourceDefinitionContext> getCrdContexts() {
+    return crdContexts;
   }
 }

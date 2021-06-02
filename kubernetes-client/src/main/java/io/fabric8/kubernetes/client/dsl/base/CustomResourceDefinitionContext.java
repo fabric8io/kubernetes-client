@@ -34,6 +34,7 @@ public class CustomResourceDefinitionContext {
   private String plural;
   private String version;
   private String kind;
+  private boolean statusSubresource;
 
   public String getName() { return name; }
 
@@ -55,6 +56,10 @@ public class CustomResourceDefinitionContext {
 
   public String getKind() {
     return kind;
+  }
+  
+  public boolean isStatusSubresource() {
+    return statusSubresource;
   }
 
   @SuppressWarnings("rawtypes")
@@ -136,19 +141,26 @@ public class CustomResourceDefinitionContext {
       .withName(crd.getMetadata().getName())
       .withPlural(spec.getNames().getPlural())
       .withKind(spec.getNames().getKind())
+      .withStatusSubresource(spec.getSubresources() != null && spec.getSubresources().getStatus() != null)
       .build();
   }
 
   public static CustomResourceDefinitionContext fromCrd(
     io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition crd
   ) {
+    String version = getVersion(crd.getSpec());
     return new CustomResourceDefinitionContext.Builder()
       .withGroup(crd.getSpec().getGroup())
-      .withVersion(getVersion(crd.getSpec()))
+      .withVersion(version)
       .withScope(crd.getSpec().getScope())
       .withName(crd.getMetadata().getName())
       .withPlural(crd.getSpec().getNames().getPlural())
       .withKind(crd.getSpec().getNames().getKind())
+      .withStatusSubresource(crd.getSpec()
+          .getVersions()
+          .stream()
+          .filter(v -> version.equals(v.getName()))
+          .anyMatch(v -> v.getSubresources() != null && v.getSubresources().getStatus() != null))
       .build();
   }
 
@@ -212,6 +224,11 @@ public class CustomResourceDefinitionContext {
 
     public Builder withKind(String kind) {
       this.customResourceDefinitionContext.kind = kind;
+      return this;
+    }
+    
+    public Builder withStatusSubresource(boolean statusSubresource) {
+      this.customResourceDefinitionContext.statusSubresource = statusSubresource;
       return this;
     }
 
