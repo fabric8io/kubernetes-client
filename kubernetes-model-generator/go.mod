@@ -7,7 +7,8 @@ require (
 	github.com/openshift/cluster-autoscaler-operator v0.0.1-0.20210519002000-fdae5baad94f
 	github.com/openshift/machine-api-operator v0.2.1-0.20210513225032-5644b5803418
 	github.com/openshift/machine-config-operator v0.0.1-0.20210522071823-15494d85812c
-	github.com/operator-framework/api v0.3.12
+	github.com/operator-framework/api v0.9.1
+	github.com/operator-framework/operator-lifecycle-manager v0.18.1
 	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.47.1
 	github.com/prometheus/client_golang v1.10.0 // indirect
 	github.com/prometheus/common v0.20.0 // indirect

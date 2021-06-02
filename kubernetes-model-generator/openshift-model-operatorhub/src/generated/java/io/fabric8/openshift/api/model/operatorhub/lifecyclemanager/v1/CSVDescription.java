@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.operatorhub.v1alpha1;
+package io.fabric8.openshift.api.model.operatorhub.lifecyclemanager.v1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,12 +16,16 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.GroupVersionKind;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.openshift.api.model.operatorhub.v1alpha1.APIServiceDefinitions;
+import io.fabric8.openshift.api.model.operatorhub.v1alpha1.CustomResourceDefinitions;
+import io.fabric8.openshift.api.model.operatorhub.v1alpha1.InstallMode;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -35,33 +39,26 @@ import lombok.ToString;
     "metadata",
     "annotations",
     "apiservicedefinitions",
-    "cleanup",
     "customresourcedefinitions",
     "description",
     "displayName",
     "icon",
-    "install",
     "installModes",
     "keywords",
-    "labels",
     "links",
     "maintainers",
     "maturity",
     "minKubeVersion",
-    "nativeAPIs",
+    "nativeApis",
     "provider",
     "relatedImages",
-    "replaces",
-    "selector",
-    "skips",
-    "version",
-    "webhookdefinitions"
+    "version"
 })
 @ToString
 @EqualsAndHashCode
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
-    @BuildableReference(io.fabric8.kubernetes.api.model.LabelSelector.class),
+    @BuildableReference(LabelSelector.class),
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
@@ -70,15 +67,13 @@ import lombok.ToString;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-public class ClusterServiceVersionSpec implements KubernetesResource
+public class CSVDescription implements KubernetesResource
 {
 
     @JsonProperty("annotations")
     private Map<String, String> annotations;
     @JsonProperty("apiservicedefinitions")
     private APIServiceDefinitions apiservicedefinitions;
-    @JsonProperty("cleanup")
-    private CleanupSpec cleanup;
     @JsonProperty("customresourcedefinitions")
     private CustomResourceDefinitions customresourcedefinitions;
     @JsonProperty("description")
@@ -88,16 +83,12 @@ public class ClusterServiceVersionSpec implements KubernetesResource
     @JsonProperty("icon")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Icon> icon = new ArrayList<Icon>();
-    @JsonProperty("install")
-    private NamedInstallStrategy install;
     @JsonProperty("installModes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<InstallMode> installModes = new ArrayList<InstallMode>();
     @JsonProperty("keywords")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<java.lang.String> keywords = new ArrayList<java.lang.String>();
-    @JsonProperty("labels")
-    private Map<String, String> labels;
     @JsonProperty("links")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<AppLink> links = new ArrayList<AppLink>();
@@ -108,26 +99,16 @@ public class ClusterServiceVersionSpec implements KubernetesResource
     private java.lang.String maturity;
     @JsonProperty("minKubeVersion")
     private java.lang.String minKubeVersion;
-    @JsonProperty("nativeAPIs")
+    @JsonProperty("nativeApis")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<GroupVersionKind> nativeAPIs = new ArrayList<GroupVersionKind>();
+    private List<GroupVersionKind> nativeApis = new ArrayList<GroupVersionKind>();
     @JsonProperty("provider")
     private AppLink provider;
     @JsonProperty("relatedImages")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<RelatedImage> relatedImages = new ArrayList<RelatedImage>();
-    @JsonProperty("replaces")
-    private java.lang.String replaces;
-    @JsonProperty("selector")
-    private io.fabric8.kubernetes.api.model.LabelSelector selector;
-    @JsonProperty("skips")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> skips = new ArrayList<java.lang.String>();
+    private List<java.lang.String> relatedImages = new ArrayList<java.lang.String>();
     @JsonProperty("version")
     private java.lang.String version;
-    @JsonProperty("webhookdefinitions")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<WebhookDescription> webhookdefinitions = new ArrayList<WebhookDescription>();
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
 
@@ -135,7 +116,7 @@ public class ClusterServiceVersionSpec implements KubernetesResource
      * No args constructor for use in serialization
      * 
      */
-    public ClusterServiceVersionSpec() {
+    public CSVDescription() {
     }
 
     /**
@@ -148,47 +129,33 @@ public class ClusterServiceVersionSpec implements KubernetesResource
      * @param maturity
      * @param displayName
      * @param relatedImages
-     * @param replaces
      * @param icon
      * @param annotations
      * @param description
-     * @param nativeAPIs
+     * @param nativeApis
      * @param version
-     * @param labels
-     * @param webhookdefinitions
      * @param minKubeVersion
-     * @param skips
-     * @param cleanup
-     * @param install
      * @param provider
      * @param links
-     * @param selector
      */
-    public ClusterServiceVersionSpec(Map<String, String> annotations, APIServiceDefinitions apiservicedefinitions, CleanupSpec cleanup, CustomResourceDefinitions customresourcedefinitions, java.lang.String description, java.lang.String displayName, List<Icon> icon, NamedInstallStrategy install, List<InstallMode> installModes, List<java.lang.String> keywords, Map<String, String> labels, List<AppLink> links, List<Maintainer> maintainers, java.lang.String maturity, java.lang.String minKubeVersion, List<GroupVersionKind> nativeAPIs, AppLink provider, List<RelatedImage> relatedImages, java.lang.String replaces, io.fabric8.kubernetes.api.model.LabelSelector selector, List<java.lang.String> skips, java.lang.String version, List<WebhookDescription> webhookdefinitions) {
+    public CSVDescription(Map<String, String> annotations, APIServiceDefinitions apiservicedefinitions, CustomResourceDefinitions customresourcedefinitions, java.lang.String description, java.lang.String displayName, List<Icon> icon, List<InstallMode> installModes, List<java.lang.String> keywords, List<AppLink> links, List<Maintainer> maintainers, java.lang.String maturity, java.lang.String minKubeVersion, List<GroupVersionKind> nativeApis, AppLink provider, List<java.lang.String> relatedImages, java.lang.String version) {
         super();
         this.annotations = annotations;
         this.apiservicedefinitions = apiservicedefinitions;
-        this.cleanup = cleanup;
         this.customresourcedefinitions = customresourcedefinitions;
         this.description = description;
         this.displayName = displayName;
         this.icon = icon;
-        this.install = install;
         this.installModes = installModes;
         this.keywords = keywords;
-        this.labels = labels;
         this.links = links;
         this.maintainers = maintainers;
         this.maturity = maturity;
         this.minKubeVersion = minKubeVersion;
-        this.nativeAPIs = nativeAPIs;
+        this.nativeApis = nativeApis;
         this.provider = provider;
         this.relatedImages = relatedImages;
-        this.replaces = replaces;
-        this.selector = selector;
-        this.skips = skips;
         this.version = version;
-        this.webhookdefinitions = webhookdefinitions;
     }
 
     @JsonProperty("annotations")
@@ -209,16 +176,6 @@ public class ClusterServiceVersionSpec implements KubernetesResource
     @JsonProperty("apiservicedefinitions")
     public void setApiservicedefinitions(APIServiceDefinitions apiservicedefinitions) {
         this.apiservicedefinitions = apiservicedefinitions;
-    }
-
-    @JsonProperty("cleanup")
-    public CleanupSpec getCleanup() {
-        return cleanup;
-    }
-
-    @JsonProperty("cleanup")
-    public void setCleanup(CleanupSpec cleanup) {
-        this.cleanup = cleanup;
     }
 
     @JsonProperty("customresourcedefinitions")
@@ -261,16 +218,6 @@ public class ClusterServiceVersionSpec implements KubernetesResource
         this.icon = icon;
     }
 
-    @JsonProperty("install")
-    public NamedInstallStrategy getInstall() {
-        return install;
-    }
-
-    @JsonProperty("install")
-    public void setInstall(NamedInstallStrategy install) {
-        this.install = install;
-    }
-
     @JsonProperty("installModes")
     public List<InstallMode> getInstallModes() {
         return installModes;
@@ -289,16 +236,6 @@ public class ClusterServiceVersionSpec implements KubernetesResource
     @JsonProperty("keywords")
     public void setKeywords(List<java.lang.String> keywords) {
         this.keywords = keywords;
-    }
-
-    @JsonProperty("labels")
-    public Map<String, String> getLabels() {
-        return labels;
-    }
-
-    @JsonProperty("labels")
-    public void setLabels(Map<String, String> labels) {
-        this.labels = labels;
     }
 
     @JsonProperty("links")
@@ -341,14 +278,14 @@ public class ClusterServiceVersionSpec implements KubernetesResource
         this.minKubeVersion = minKubeVersion;
     }
 
-    @JsonProperty("nativeAPIs")
-    public List<GroupVersionKind> getNativeAPIs() {
-        return nativeAPIs;
+    @JsonProperty("nativeApis")
+    public List<GroupVersionKind> getNativeApis() {
+        return nativeApis;
     }
 
-    @JsonProperty("nativeAPIs")
-    public void setNativeAPIs(List<GroupVersionKind> nativeAPIs) {
-        this.nativeAPIs = nativeAPIs;
+    @JsonProperty("nativeApis")
+    public void setNativeApis(List<GroupVersionKind> nativeApis) {
+        this.nativeApis = nativeApis;
     }
 
     @JsonProperty("provider")
@@ -362,43 +299,13 @@ public class ClusterServiceVersionSpec implements KubernetesResource
     }
 
     @JsonProperty("relatedImages")
-    public List<RelatedImage> getRelatedImages() {
+    public List<java.lang.String> getRelatedImages() {
         return relatedImages;
     }
 
     @JsonProperty("relatedImages")
-    public void setRelatedImages(List<RelatedImage> relatedImages) {
+    public void setRelatedImages(List<java.lang.String> relatedImages) {
         this.relatedImages = relatedImages;
-    }
-
-    @JsonProperty("replaces")
-    public java.lang.String getReplaces() {
-        return replaces;
-    }
-
-    @JsonProperty("replaces")
-    public void setReplaces(java.lang.String replaces) {
-        this.replaces = replaces;
-    }
-
-    @JsonProperty("selector")
-    public io.fabric8.kubernetes.api.model.LabelSelector getSelector() {
-        return selector;
-    }
-
-    @JsonProperty("selector")
-    public void setSelector(io.fabric8.kubernetes.api.model.LabelSelector selector) {
-        this.selector = selector;
-    }
-
-    @JsonProperty("skips")
-    public List<java.lang.String> getSkips() {
-        return skips;
-    }
-
-    @JsonProperty("skips")
-    public void setSkips(List<java.lang.String> skips) {
-        this.skips = skips;
     }
 
     @JsonProperty("version")
@@ -409,16 +316,6 @@ public class ClusterServiceVersionSpec implements KubernetesResource
     @JsonProperty("version")
     public void setVersion(java.lang.String version) {
         this.version = version;
-    }
-
-    @JsonProperty("webhookdefinitions")
-    public List<WebhookDescription> getWebhookdefinitions() {
-        return webhookdefinitions;
-    }
-
-    @JsonProperty("webhookdefinitions")
-    public void setWebhookdefinitions(List<WebhookDescription> webhookdefinitions) {
-        this.webhookdefinitions = webhookdefinitions;
     }
 
     @JsonAnyGetter
