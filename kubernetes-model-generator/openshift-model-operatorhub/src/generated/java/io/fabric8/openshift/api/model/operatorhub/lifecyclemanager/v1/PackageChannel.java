@@ -1,9 +1,7 @@
 
-package io.fabric8.openshift.api.model.operatorhub.manifests;
+package io.fabric8.openshift.api.model.operatorhub.lifecyclemanager.v1;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -33,9 +31,9 @@ import lombok.ToString;
     "apiVersion",
     "kind",
     "metadata",
-    "channels",
-    "defaultChannel",
-    "packageName"
+    "currentCSV",
+    "currentCSVDesc",
+    "name"
 })
 @ToString
 @EqualsAndHashCode
@@ -50,15 +48,15 @@ import lombok.ToString;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-public class PackageManifest implements KubernetesResource
+public class PackageChannel implements KubernetesResource
 {
 
-    @JsonProperty("channels")
-    private List<PackageChannel> channels = new ArrayList<PackageChannel>();
-    @JsonProperty("defaultChannel")
-    private String defaultChannel;
-    @JsonProperty("packageName")
-    private String packageName;
+    @JsonProperty("currentCSV")
+    private String currentCSV;
+    @JsonProperty("currentCSVDesc")
+    private CSVDescription currentCSVDesc;
+    @JsonProperty("name")
+    private String name;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -66,50 +64,50 @@ public class PackageManifest implements KubernetesResource
      * No args constructor for use in serialization
      * 
      */
-    public PackageManifest() {
+    public PackageChannel() {
     }
 
     /**
      * 
-     * @param channels
-     * @param packageName
-     * @param defaultChannel
+     * @param name
+     * @param currentCSV
+     * @param currentCSVDesc
      */
-    public PackageManifest(List<PackageChannel> channels, String defaultChannel, String packageName) {
+    public PackageChannel(String currentCSV, CSVDescription currentCSVDesc, String name) {
         super();
-        this.channels = channels;
-        this.defaultChannel = defaultChannel;
-        this.packageName = packageName;
+        this.currentCSV = currentCSV;
+        this.currentCSVDesc = currentCSVDesc;
+        this.name = name;
     }
 
-    @JsonProperty("channels")
-    public List<PackageChannel> getChannels() {
-        return channels;
+    @JsonProperty("currentCSV")
+    public String getCurrentCSV() {
+        return currentCSV;
     }
 
-    @JsonProperty("channels")
-    public void setChannels(List<PackageChannel> channels) {
-        this.channels = channels;
+    @JsonProperty("currentCSV")
+    public void setCurrentCSV(String currentCSV) {
+        this.currentCSV = currentCSV;
     }
 
-    @JsonProperty("defaultChannel")
-    public String getDefaultChannel() {
-        return defaultChannel;
+    @JsonProperty("currentCSVDesc")
+    public CSVDescription getCurrentCSVDesc() {
+        return currentCSVDesc;
     }
 
-    @JsonProperty("defaultChannel")
-    public void setDefaultChannel(String defaultChannel) {
-        this.defaultChannel = defaultChannel;
+    @JsonProperty("currentCSVDesc")
+    public void setCurrentCSVDesc(CSVDescription currentCSVDesc) {
+        this.currentCSVDesc = currentCSVDesc;
     }
 
-    @JsonProperty("packageName")
-    public String getPackageName() {
-        return packageName;
+    @JsonProperty("name")
+    public String getName() {
+        return name;
     }
 
-    @JsonProperty("packageName")
-    public void setPackageName(String packageName) {
-        this.packageName = packageName;
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
     }
 
     @JsonAnyGetter

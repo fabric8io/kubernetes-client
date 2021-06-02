@@ -27,6 +27,7 @@
 * Fix #3087: Support HTTP operation retry with exponential backoff (for status code >= 500)
 * Add DSL support for `autoscaling.openshift.io` resources in OpenShiftClient
 * Add DSL support for PodSecurityPolicySubjectReview, PodSecurityPolicyReview, PodSecurityPolicySelfSubjectReview in `security.openshift.io/v1` apiGroup to OpenShiftClient
+* Add DSL support for OperatorCondition, Operator, PackageManifest in `operators.coreos.com` apiGroup to OpenShiftClient 
 
 #### _**Note**_: Breaking changes in the API
 ##### DSL Changes:
