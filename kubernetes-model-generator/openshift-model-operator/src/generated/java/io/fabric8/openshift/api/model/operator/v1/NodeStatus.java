@@ -34,8 +34,10 @@ import lombok.ToString;
     "kind",
     "metadata",
     "currentRevision",
+    "lastFailedCount",
     "lastFailedRevision",
     "lastFailedRevisionErrors",
+    "lastFailedTime",
     "nodeName",
     "targetRevision"
 })
@@ -57,17 +59,21 @@ public class NodeStatus implements KubernetesResource
 
     @JsonProperty("currentRevision")
     private Integer currentRevision;
+    @JsonProperty("lastFailedCount")
+    private Integer lastFailedCount;
     @JsonProperty("lastFailedRevision")
     private Integer lastFailedRevision;
     @JsonProperty("lastFailedRevisionErrors")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> lastFailedRevisionErrors = new ArrayList<String>();
+    private List<java.lang.String> lastFailedRevisionErrors = new ArrayList<java.lang.String>();
+    @JsonProperty("lastFailedTime")
+    private String lastFailedTime;
     @JsonProperty("nodeName")
-    private String nodeName;
+    private java.lang.String nodeName;
     @JsonProperty("targetRevision")
     private Integer targetRevision;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -82,13 +88,17 @@ public class NodeStatus implements KubernetesResource
      * @param currentRevision
      * @param lastFailedRevisionErrors
      * @param targetRevision
+     * @param lastFailedTime
+     * @param lastFailedCount
      * @param lastFailedRevision
      */
-    public NodeStatus(Integer currentRevision, Integer lastFailedRevision, List<String> lastFailedRevisionErrors, String nodeName, Integer targetRevision) {
+    public NodeStatus(Integer currentRevision, Integer lastFailedCount, Integer lastFailedRevision, List<java.lang.String> lastFailedRevisionErrors, String lastFailedTime, java.lang.String nodeName, Integer targetRevision) {
         super();
         this.currentRevision = currentRevision;
+        this.lastFailedCount = lastFailedCount;
         this.lastFailedRevision = lastFailedRevision;
         this.lastFailedRevisionErrors = lastFailedRevisionErrors;
+        this.lastFailedTime = lastFailedTime;
         this.nodeName = nodeName;
         this.targetRevision = targetRevision;
     }
@@ -103,6 +113,16 @@ public class NodeStatus implements KubernetesResource
         this.currentRevision = currentRevision;
     }
 
+    @JsonProperty("lastFailedCount")
+    public Integer getLastFailedCount() {
+        return lastFailedCount;
+    }
+
+    @JsonProperty("lastFailedCount")
+    public void setLastFailedCount(Integer lastFailedCount) {
+        this.lastFailedCount = lastFailedCount;
+    }
+
     @JsonProperty("lastFailedRevision")
     public Integer getLastFailedRevision() {
         return lastFailedRevision;
@@ -114,22 +134,32 @@ public class NodeStatus implements KubernetesResource
     }
 
     @JsonProperty("lastFailedRevisionErrors")
-    public List<String> getLastFailedRevisionErrors() {
+    public List<java.lang.String> getLastFailedRevisionErrors() {
         return lastFailedRevisionErrors;
     }
 
     @JsonProperty("lastFailedRevisionErrors")
-    public void setLastFailedRevisionErrors(List<String> lastFailedRevisionErrors) {
+    public void setLastFailedRevisionErrors(List<java.lang.String> lastFailedRevisionErrors) {
         this.lastFailedRevisionErrors = lastFailedRevisionErrors;
     }
 
+    @JsonProperty("lastFailedTime")
+    public String getLastFailedTime() {
+        return lastFailedTime;
+    }
+
+    @JsonProperty("lastFailedTime")
+    public void setLastFailedTime(String lastFailedTime) {
+        this.lastFailedTime = lastFailedTime;
+    }
+
     @JsonProperty("nodeName")
-    public String getNodeName() {
+    public java.lang.String getNodeName() {
         return nodeName;
     }
 
     @JsonProperty("nodeName")
-    public void setNodeName(String nodeName) {
+    public void setNodeName(java.lang.String nodeName) {
         this.nodeName = nodeName;
     }
 
@@ -144,12 +174,12 @@ public class NodeStatus implements KubernetesResource
     }
 
     @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<java.lang.String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
+    public void setAdditionalProperty(java.lang.String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

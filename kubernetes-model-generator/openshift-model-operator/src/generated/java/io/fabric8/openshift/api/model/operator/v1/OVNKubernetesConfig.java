@@ -33,7 +33,9 @@ import lombok.ToString;
     "metadata",
     "genevePort",
     "hybridOverlayConfig",
-    "mtu"
+    "ipsecConfig",
+    "mtu",
+    "policyAuditConfig"
 })
 @ToString
 @EqualsAndHashCode
@@ -55,8 +57,12 @@ public class OVNKubernetesConfig implements KubernetesResource
     private Integer genevePort;
     @JsonProperty("hybridOverlayConfig")
     private HybridOverlayConfig hybridOverlayConfig;
+    @JsonProperty("ipsecConfig")
+    private IPsecConfig ipsecConfig;
     @JsonProperty("mtu")
     private Integer mtu;
+    @JsonProperty("policyAuditConfig")
+    private PolicyAuditConfig policyAuditConfig;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -69,15 +75,19 @@ public class OVNKubernetesConfig implements KubernetesResource
 
     /**
      * 
+     * @param policyAuditConfig
      * @param genevePort
      * @param hybridOverlayConfig
+     * @param ipsecConfig
      * @param mtu
      */
-    public OVNKubernetesConfig(Integer genevePort, HybridOverlayConfig hybridOverlayConfig, Integer mtu) {
+    public OVNKubernetesConfig(Integer genevePort, HybridOverlayConfig hybridOverlayConfig, IPsecConfig ipsecConfig, Integer mtu, PolicyAuditConfig policyAuditConfig) {
         super();
         this.genevePort = genevePort;
         this.hybridOverlayConfig = hybridOverlayConfig;
+        this.ipsecConfig = ipsecConfig;
         this.mtu = mtu;
+        this.policyAuditConfig = policyAuditConfig;
     }
 
     @JsonProperty("genevePort")
@@ -100,6 +110,16 @@ public class OVNKubernetesConfig implements KubernetesResource
         this.hybridOverlayConfig = hybridOverlayConfig;
     }
 
+    @JsonProperty("ipsecConfig")
+    public IPsecConfig getIpsecConfig() {
+        return ipsecConfig;
+    }
+
+    @JsonProperty("ipsecConfig")
+    public void setIpsecConfig(IPsecConfig ipsecConfig) {
+        this.ipsecConfig = ipsecConfig;
+    }
+
     @JsonProperty("mtu")
     public Integer getMtu() {
         return mtu;
@@ -108,6 +128,16 @@ public class OVNKubernetesConfig implements KubernetesResource
     @JsonProperty("mtu")
     public void setMtu(Integer mtu) {
         this.mtu = mtu;
+    }
+
+    @JsonProperty("policyAuditConfig")
+    public PolicyAuditConfig getPolicyAuditConfig() {
+        return policyAuditConfig;
+    }
+
+    @JsonProperty("policyAuditConfig")
+    public void setPolicyAuditConfig(PolicyAuditConfig policyAuditConfig) {
+        this.policyAuditConfig = policyAuditConfig;
     }
 
     @JsonAnyGetter

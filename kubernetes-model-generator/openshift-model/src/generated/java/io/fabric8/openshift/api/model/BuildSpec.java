@@ -33,6 +33,7 @@ import lombok.ToString;
     "kind",
     "metadata",
     "completionDeadlineSeconds",
+    "mountTrustedCA",
     "nodeSelector",
     "output",
     "postCommit",
@@ -61,6 +62,8 @@ public class BuildSpec implements KubernetesResource
 
     @JsonProperty("completionDeadlineSeconds")
     private Long completionDeadlineSeconds;
+    @JsonProperty("mountTrustedCA")
+    private Boolean mountTrustedCA;
     @JsonProperty("nodeSelector")
     private Map<String, String> nodeSelector;
     @JsonProperty("output")
@@ -93,6 +96,7 @@ public class BuildSpec implements KubernetesResource
     /**
      * 
      * @param output
+     * @param mountTrustedCA
      * @param completionDeadlineSeconds
      * @param resources
      * @param serviceAccount
@@ -103,9 +107,10 @@ public class BuildSpec implements KubernetesResource
      * @param revision
      * @param triggeredBy
      */
-    public BuildSpec(Long completionDeadlineSeconds, Map<String, String> nodeSelector, BuildOutput output, BuildPostCommitSpec postCommit, io.fabric8.kubernetes.api.model.ResourceRequirements resources, SourceRevision revision, java.lang.String serviceAccount, BuildSource source, BuildStrategy strategy, List<BuildTriggerCause> triggeredBy) {
+    public BuildSpec(Long completionDeadlineSeconds, Boolean mountTrustedCA, Map<String, String> nodeSelector, BuildOutput output, BuildPostCommitSpec postCommit, io.fabric8.kubernetes.api.model.ResourceRequirements resources, SourceRevision revision, java.lang.String serviceAccount, BuildSource source, BuildStrategy strategy, List<BuildTriggerCause> triggeredBy) {
         super();
         this.completionDeadlineSeconds = completionDeadlineSeconds;
+        this.mountTrustedCA = mountTrustedCA;
         this.nodeSelector = nodeSelector;
         this.output = output;
         this.postCommit = postCommit;
@@ -125,6 +130,16 @@ public class BuildSpec implements KubernetesResource
     @JsonProperty("completionDeadlineSeconds")
     public void setCompletionDeadlineSeconds(Long completionDeadlineSeconds) {
         this.completionDeadlineSeconds = completionDeadlineSeconds;
+    }
+
+    @JsonProperty("mountTrustedCA")
+    public Boolean getMountTrustedCA() {
+        return mountTrustedCA;
+    }
+
+    @JsonProperty("mountTrustedCA")
+    public void setMountTrustedCA(Boolean mountTrustedCA) {
+        this.mountTrustedCA = mountTrustedCA;
     }
 
     @JsonProperty("nodeSelector")

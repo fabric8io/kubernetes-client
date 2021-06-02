@@ -32,6 +32,7 @@ import lombok.ToString;
     "kind",
     "metadata",
     "aws",
+    "gcp",
     "type"
 })
 @ToString
@@ -52,6 +53,8 @@ public class ProviderLoadBalancerParameters implements KubernetesResource
 
     @JsonProperty("aws")
     private AWSLoadBalancerParameters aws;
+    @JsonProperty("gcp")
+    private GCPLoadBalancerParameters gcp;
     @JsonProperty("type")
     private String type;
     @JsonIgnore
@@ -66,12 +69,14 @@ public class ProviderLoadBalancerParameters implements KubernetesResource
 
     /**
      * 
+     * @param gcp
      * @param aws
      * @param type
      */
-    public ProviderLoadBalancerParameters(AWSLoadBalancerParameters aws, String type) {
+    public ProviderLoadBalancerParameters(AWSLoadBalancerParameters aws, GCPLoadBalancerParameters gcp, String type) {
         super();
         this.aws = aws;
+        this.gcp = gcp;
         this.type = type;
     }
 
@@ -83,6 +88,16 @@ public class ProviderLoadBalancerParameters implements KubernetesResource
     @JsonProperty("aws")
     public void setAws(AWSLoadBalancerParameters aws) {
         this.aws = aws;
+    }
+
+    @JsonProperty("gcp")
+    public GCPLoadBalancerParameters getGcp() {
+        return gcp;
+    }
+
+    @JsonProperty("gcp")
+    public void setGcp(GCPLoadBalancerParameters gcp) {
+        this.gcp = gcp;
     }
 
     @JsonProperty("type")

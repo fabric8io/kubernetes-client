@@ -32,7 +32,6 @@ import lombok.ToString;
     "apiVersion",
     "kind",
     "metadata",
-    "driverConfig",
     "logLevel",
     "managementState",
     "observedConfig",
@@ -55,8 +54,6 @@ import lombok.ToString;
 public class ClusterCSIDriverSpec implements KubernetesResource
 {
 
-    @JsonProperty("driverConfig")
-    private CSIDriverConfig driverConfig;
     @JsonProperty("logLevel")
     private String logLevel;
     @JsonProperty("managementState")
@@ -79,31 +76,19 @@ public class ClusterCSIDriverSpec implements KubernetesResource
 
     /**
      * 
-     * @param driverConfig
      * @param logLevel
      * @param unsupportedConfigOverrides
      * @param operatorLogLevel
      * @param observedConfig
      * @param managementState
      */
-    public ClusterCSIDriverSpec(CSIDriverConfig driverConfig, String logLevel, String managementState, HasMetadata observedConfig, String operatorLogLevel, HasMetadata unsupportedConfigOverrides) {
+    public ClusterCSIDriverSpec(String logLevel, String managementState, HasMetadata observedConfig, String operatorLogLevel, HasMetadata unsupportedConfigOverrides) {
         super();
-        this.driverConfig = driverConfig;
         this.logLevel = logLevel;
         this.managementState = managementState;
         this.observedConfig = observedConfig;
         this.operatorLogLevel = operatorLogLevel;
         this.unsupportedConfigOverrides = unsupportedConfigOverrides;
-    }
-
-    @JsonProperty("driverConfig")
-    public CSIDriverConfig getDriverConfig() {
-        return driverConfig;
-    }
-
-    @JsonProperty("driverConfig")
-    public void setDriverConfig(CSIDriverConfig driverConfig) {
-        this.driverConfig = driverConfig;
     }
 
     @JsonProperty("logLevel")

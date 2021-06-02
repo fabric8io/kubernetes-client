@@ -1,12 +1,15 @@
 
 package io.fabric8.openshift.api.model.operator.v1;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.Container;
@@ -29,7 +32,12 @@ import lombok.ToString;
 @JsonPropertyOrder({
     "apiVersion",
     "kind",
-    "metadata"
+    "metadata",
+    "conditions",
+    "generations",
+    "observedGeneration",
+    "readyReplicas",
+    "version"
 })
 @ToString
 @EqualsAndHashCode
@@ -47,8 +55,94 @@ import lombok.ToString;
 public class NetworkStatus implements KubernetesResource
 {
 
+    @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<OperatorCondition> conditions = new ArrayList<OperatorCondition>();
+    @JsonProperty("generations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<GenerationStatus> generations = new ArrayList<GenerationStatus>();
+    @JsonProperty("observedGeneration")
+    private Long observedGeneration;
+    @JsonProperty("readyReplicas")
+    private Integer readyReplicas;
+    @JsonProperty("version")
+    private String version;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+
+    /**
+     * No args constructor for use in serialization
+     * 
+     */
+    public NetworkStatus() {
+    }
+
+    /**
+     * 
+     * @param generations
+     * @param readyReplicas
+     * @param conditions
+     * @param version
+     * @param observedGeneration
+     */
+    public NetworkStatus(List<OperatorCondition> conditions, List<GenerationStatus> generations, Long observedGeneration, Integer readyReplicas, String version) {
+        super();
+        this.conditions = conditions;
+        this.generations = generations;
+        this.observedGeneration = observedGeneration;
+        this.readyReplicas = readyReplicas;
+        this.version = version;
+    }
+
+    @JsonProperty("conditions")
+    public List<OperatorCondition> getConditions() {
+        return conditions;
+    }
+
+    @JsonProperty("conditions")
+    public void setConditions(List<OperatorCondition> conditions) {
+        this.conditions = conditions;
+    }
+
+    @JsonProperty("generations")
+    public List<GenerationStatus> getGenerations() {
+        return generations;
+    }
+
+    @JsonProperty("generations")
+    public void setGenerations(List<GenerationStatus> generations) {
+        this.generations = generations;
+    }
+
+    @JsonProperty("observedGeneration")
+    public Long getObservedGeneration() {
+        return observedGeneration;
+    }
+
+    @JsonProperty("observedGeneration")
+    public void setObservedGeneration(Long observedGeneration) {
+        this.observedGeneration = observedGeneration;
+    }
+
+    @JsonProperty("readyReplicas")
+    public Integer getReadyReplicas() {
+        return readyReplicas;
+    }
+
+    @JsonProperty("readyReplicas")
+    public void setReadyReplicas(Integer readyReplicas) {
+        this.readyReplicas = readyReplicas;
+    }
+
+    @JsonProperty("version")
+    public String getVersion() {
+        return version;
+    }
+
+    @JsonProperty("version")
+    public void setVersion(String version) {
+        this.version = version;
+    }
 
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {

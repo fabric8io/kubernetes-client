@@ -40,7 +40,7 @@ require (
 
 replace (
 	bitbucket.org/ww/goautoneg => github.com/munnerz/goautoneg v0.0.0-20120707110453-a547fc61f48d
-	github.com/openshift/api => github.com/openshift/api v0.0.0-20200803131051-87466835fcc0
+	github.com/openshift/api => github.com/openshift/api v0.0.0-20210601190906-e782d76c7bc4
 	k8s.io/client-go => k8s.io/client-go v0.21.0
 	k8s.io/component-helpers => k8s.io/component-helpers v0.21.0
 	k8s.io/controller-manager => k8s.io/controller-manager v0.21.0

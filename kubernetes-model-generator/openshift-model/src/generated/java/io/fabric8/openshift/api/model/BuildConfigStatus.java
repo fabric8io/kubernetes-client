@@ -1,7 +1,9 @@
 
 package io.fabric8.openshift.api.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -31,6 +33,7 @@ import lombok.ToString;
     "apiVersion",
     "kind",
     "metadata",
+    "imageChangeTriggers",
     "lastVersion"
 })
 @ToString
@@ -49,6 +52,9 @@ import lombok.ToString;
 public class BuildConfigStatus implements KubernetesResource
 {
 
+    @JsonProperty("imageChangeTriggers")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<ImageChangeTriggerStatus> imageChangeTriggers = new ArrayList<ImageChangeTriggerStatus>();
     @JsonProperty("lastVersion")
     private Long lastVersion;
     @JsonIgnore
@@ -63,11 +69,23 @@ public class BuildConfigStatus implements KubernetesResource
 
     /**
      * 
+     * @param imageChangeTriggers
      * @param lastVersion
      */
-    public BuildConfigStatus(Long lastVersion) {
+    public BuildConfigStatus(List<ImageChangeTriggerStatus> imageChangeTriggers, Long lastVersion) {
         super();
+        this.imageChangeTriggers = imageChangeTriggers;
         this.lastVersion = lastVersion;
+    }
+
+    @JsonProperty("imageChangeTriggers")
+    public List<ImageChangeTriggerStatus> getImageChangeTriggers() {
+        return imageChangeTriggers;
+    }
+
+    @JsonProperty("imageChangeTriggers")
+    public void setImageChangeTriggers(List<ImageChangeTriggerStatus> imageChangeTriggers) {
+        this.imageChangeTriggers = imageChangeTriggers;
     }
 
     @JsonProperty("lastVersion")

@@ -31,6 +31,7 @@
 * Add DSL support for PodSecurityPolicySubjectReview, PodSecurityPolicyReview, PodSecurityPolicySelfSubjectReview in `security.openshift.io/v1` apiGroup to OpenShiftClient
 * Add DSL support for OperatorCondition, Operator, PackageManifest in `operators.coreos.com` apiGroup to OpenShiftClient 
 * Add support for `tuned.openshift.io` apiGroup in OpenShiftClient DSL
+* Add DSL support for ConsolePlugin and ConsoleQuickStart in `console.openshift.io` apiGroup
 
 #### _**Note**_: Breaking changes in the API
 ##### DSL Changes:

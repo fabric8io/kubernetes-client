@@ -1,7 +1,9 @@
 
 package io.fabric8.openshift.api.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -31,6 +33,8 @@ import lombok.ToString;
     "apiVersion",
     "kind",
     "metadata",
+    "appsDomain",
+    "componentRoutes",
     "domain"
 })
 @ToString
@@ -49,6 +53,11 @@ import lombok.ToString;
 public class IngressSpec implements KubernetesResource
 {
 
+    @JsonProperty("appsDomain")
+    private String appsDomain;
+    @JsonProperty("componentRoutes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<ComponentRouteSpec> componentRoutes = new ArrayList<ComponentRouteSpec>();
     @JsonProperty("domain")
     private String domain;
     @JsonIgnore
@@ -63,11 +72,35 @@ public class IngressSpec implements KubernetesResource
 
     /**
      * 
+     * @param componentRoutes
      * @param domain
+     * @param appsDomain
      */
-    public IngressSpec(String domain) {
+    public IngressSpec(String appsDomain, List<ComponentRouteSpec> componentRoutes, String domain) {
         super();
+        this.appsDomain = appsDomain;
+        this.componentRoutes = componentRoutes;
         this.domain = domain;
+    }
+
+    @JsonProperty("appsDomain")
+    public String getAppsDomain() {
+        return appsDomain;
+    }
+
+    @JsonProperty("appsDomain")
+    public void setAppsDomain(String appsDomain) {
+        this.appsDomain = appsDomain;
+    }
+
+    @JsonProperty("componentRoutes")
+    public List<ComponentRouteSpec> getComponentRoutes() {
+        return componentRoutes;
+    }
+
+    @JsonProperty("componentRoutes")
+    public void setComponentRoutes(List<ComponentRouteSpec> componentRoutes) {
+        this.componentRoutes = componentRoutes;
     }
 
     @JsonProperty("domain")

@@ -41,6 +41,7 @@ import lombok.ToString;
     "keepTagRevisions",
     "keepYoungerThan",
     "keepYoungerThanDuration",
+    "logLevel",
     "nodeSelector",
     "resources",
     "schedule",
@@ -76,6 +77,8 @@ public class ImagePrunerSpec implements KubernetesResource
     private Long keepYoungerThan;
     @JsonProperty("keepYoungerThanDuration")
     private Duration keepYoungerThanDuration;
+    @JsonProperty("logLevel")
+    private java.lang.String logLevel;
     @JsonProperty("nodeSelector")
     private Map<String, String> nodeSelector;
     @JsonProperty("resources")
@@ -102,19 +105,20 @@ public class ImagePrunerSpec implements KubernetesResource
     /**
      * 
      * @param suspend
-     * @param schedule
      * @param ignoreInvalidImageReferences
-     * @param tolerations
      * @param resources
-     * @param failedJobsHistoryLimit
      * @param keepYoungerThan
      * @param keepYoungerThanDuration
      * @param keepTagRevisions
      * @param successfulJobsHistoryLimit
-     * @param affinity
      * @param nodeSelector
+     * @param schedule
+     * @param tolerations
+     * @param logLevel
+     * @param failedJobsHistoryLimit
+     * @param affinity
      */
-    public ImagePrunerSpec(Affinity affinity, Integer failedJobsHistoryLimit, Boolean ignoreInvalidImageReferences, Integer keepTagRevisions, Long keepYoungerThan, Duration keepYoungerThanDuration, Map<String, String> nodeSelector, io.fabric8.kubernetes.api.model.ResourceRequirements resources, java.lang.String schedule, Integer successfulJobsHistoryLimit, Boolean suspend, List<Toleration> tolerations) {
+    public ImagePrunerSpec(Affinity affinity, Integer failedJobsHistoryLimit, Boolean ignoreInvalidImageReferences, Integer keepTagRevisions, Long keepYoungerThan, Duration keepYoungerThanDuration, java.lang.String logLevel, Map<String, String> nodeSelector, io.fabric8.kubernetes.api.model.ResourceRequirements resources, java.lang.String schedule, Integer successfulJobsHistoryLimit, Boolean suspend, List<Toleration> tolerations) {
         super();
         this.affinity = affinity;
         this.failedJobsHistoryLimit = failedJobsHistoryLimit;
@@ -122,6 +126,7 @@ public class ImagePrunerSpec implements KubernetesResource
         this.keepTagRevisions = keepTagRevisions;
         this.keepYoungerThan = keepYoungerThan;
         this.keepYoungerThanDuration = keepYoungerThanDuration;
+        this.logLevel = logLevel;
         this.nodeSelector = nodeSelector;
         this.resources = resources;
         this.schedule = schedule;
@@ -188,6 +193,16 @@ public class ImagePrunerSpec implements KubernetesResource
     @JsonProperty("keepYoungerThanDuration")
     public void setKeepYoungerThanDuration(Duration keepYoungerThanDuration) {
         this.keepYoungerThanDuration = keepYoungerThanDuration;
+    }
+
+    @JsonProperty("logLevel")
+    public java.lang.String getLogLevel() {
+        return logLevel;
+    }
+
+    @JsonProperty("logLevel")
+    public void setLogLevel(java.lang.String logLevel) {
+        this.logLevel = logLevel;
     }
 
     @JsonProperty("nodeSelector")

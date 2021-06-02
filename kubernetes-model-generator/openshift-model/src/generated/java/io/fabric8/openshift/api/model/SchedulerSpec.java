@@ -33,7 +33,8 @@ import lombok.ToString;
     "metadata",
     "defaultNodeSelector",
     "mastersSchedulable",
-    "policy"
+    "policy",
+    "profile"
 })
 @ToString
 @EqualsAndHashCode
@@ -57,6 +58,8 @@ public class SchedulerSpec implements KubernetesResource
     private Boolean mastersSchedulable;
     @JsonProperty("policy")
     private ConfigMapNameReference policy;
+    @JsonProperty("profile")
+    private String profile;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -70,14 +73,16 @@ public class SchedulerSpec implements KubernetesResource
     /**
      * 
      * @param defaultNodeSelector
+     * @param profile
      * @param mastersSchedulable
      * @param policy
      */
-    public SchedulerSpec(String defaultNodeSelector, Boolean mastersSchedulable, ConfigMapNameReference policy) {
+    public SchedulerSpec(String defaultNodeSelector, Boolean mastersSchedulable, ConfigMapNameReference policy, String profile) {
         super();
         this.defaultNodeSelector = defaultNodeSelector;
         this.mastersSchedulable = mastersSchedulable;
         this.policy = policy;
+        this.profile = profile;
     }
 
     @JsonProperty("defaultNodeSelector")
@@ -108,6 +113,16 @@ public class SchedulerSpec implements KubernetesResource
     @JsonProperty("policy")
     public void setPolicy(ConfigMapNameReference policy) {
         this.policy = policy;
+    }
+
+    @JsonProperty("profile")
+    public String getProfile() {
+        return profile;
+    }
+
+    @JsonProperty("profile")
+    public void setProfile(String profile) {
+        this.profile = profile;
     }
 
     @JsonAnyGetter

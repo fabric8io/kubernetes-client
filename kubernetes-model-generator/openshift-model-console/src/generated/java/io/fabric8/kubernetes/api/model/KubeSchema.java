@@ -18,6 +18,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.kubernetes.api.model.authorization.v1.ResourceAttributes;
 import io.fabric8.kubernetes.api.model.version.Info;
 import io.fabric8.openshift.api.model.console.v1.ConsoleCLIDownload;
 import io.fabric8.openshift.api.model.console.v1.ConsoleCLIDownloadList;
@@ -27,8 +28,11 @@ import io.fabric8.openshift.api.model.console.v1.ConsoleLink;
 import io.fabric8.openshift.api.model.console.v1.ConsoleLinkList;
 import io.fabric8.openshift.api.model.console.v1.ConsoleNotification;
 import io.fabric8.openshift.api.model.console.v1.ConsoleNotificationList;
+import io.fabric8.openshift.api.model.console.v1.ConsoleQuickStart;
+import io.fabric8.openshift.api.model.console.v1.ConsoleQuickStartList;
 import io.fabric8.openshift.api.model.console.v1.ConsoleYAMLSample;
 import io.fabric8.openshift.api.model.console.v1.ConsoleYAMLSampleList;
+import io.fabric8.openshift.api.model.console.v1alpha1.ConsolePluginList;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -51,11 +55,16 @@ import lombok.ToString;
     "ConsoleLinkList",
     "ConsoleNotification",
     "ConsoleNotificationList",
+    "ConsolePlugin",
+    "ConsolePluginList",
+    "ConsoleQuickStart",
+    "ConsoleQuickStartList",
     "ConsoleYAMLSample",
     "ConsoleYAMLSampleList",
     "Info",
     "ObjectMeta",
     "Patch",
+    "ResourceAttributes",
     "Status",
     "Time",
     "TypeMeta"
@@ -97,6 +106,14 @@ public class KubeSchema {
     private ConsoleNotification consoleNotification;
     @JsonProperty("ConsoleNotificationList")
     private ConsoleNotificationList consoleNotificationList;
+    @JsonProperty("ConsolePlugin")
+    private ConsolePluginList consolePlugin;
+    @JsonProperty("ConsolePluginList")
+    private ConsolePluginList consolePluginList;
+    @JsonProperty("ConsoleQuickStart")
+    private ConsoleQuickStart consoleQuickStart;
+    @JsonProperty("ConsoleQuickStartList")
+    private ConsoleQuickStartList consoleQuickStartList;
     @JsonProperty("ConsoleYAMLSample")
     private ConsoleYAMLSample consoleYAMLSample;
     @JsonProperty("ConsoleYAMLSampleList")
@@ -107,6 +124,8 @@ public class KubeSchema {
     private io.fabric8.kubernetes.api.model.ObjectMeta objectMeta;
     @JsonProperty("Patch")
     private Patch patch;
+    @JsonProperty("ResourceAttributes")
+    private ResourceAttributes resourceAttributes;
     @JsonProperty("Status")
     private Status status;
     @JsonProperty("Time")
@@ -129,6 +148,9 @@ public class KubeSchema {
      * @param consoleLinkList
      * @param baseKubernetesList
      * @param consoleCLIDownload
+     * @param consolePlugin
+     * @param consoleQuickStartList
+     * @param resourceAttributes
      * @param patch
      * @param aPIGroup
      * @param typeMeta
@@ -137,15 +159,17 @@ public class KubeSchema {
      * @param consoleExternalLogLink
      * @param consoleNotification
      * @param consoleYAMLSample
+     * @param consoleQuickStart
      * @param objectMeta
      * @param consoleExternalLogLinkList
+     * @param consolePluginList
      * @param consoleLink
      * @param consoleYAMLSampleList
      * @param time
      * @param info
      * @param status
      */
-    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, BaseKubernetesList baseKubernetesList, ConsoleCLIDownload consoleCLIDownload, ConsoleCLIDownloadList consoleCLIDownloadList, ConsoleExternalLogLink consoleExternalLogLink, ConsoleExternalLogLinkList consoleExternalLogLinkList, ConsoleLink consoleLink, ConsoleLinkList consoleLinkList, ConsoleNotification consoleNotification, ConsoleNotificationList consoleNotificationList, ConsoleYAMLSample consoleYAMLSample, ConsoleYAMLSampleList consoleYAMLSampleList, Info info, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, Patch patch, Status status, String time, TypeMeta typeMeta) {
+    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, BaseKubernetesList baseKubernetesList, ConsoleCLIDownload consoleCLIDownload, ConsoleCLIDownloadList consoleCLIDownloadList, ConsoleExternalLogLink consoleExternalLogLink, ConsoleExternalLogLinkList consoleExternalLogLinkList, ConsoleLink consoleLink, ConsoleLinkList consoleLinkList, ConsoleNotification consoleNotification, ConsoleNotificationList consoleNotificationList, ConsolePluginList consolePlugin, ConsolePluginList consolePluginList, ConsoleQuickStart consoleQuickStart, ConsoleQuickStartList consoleQuickStartList, ConsoleYAMLSample consoleYAMLSample, ConsoleYAMLSampleList consoleYAMLSampleList, Info info, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, Patch patch, ResourceAttributes resourceAttributes, Status status, String time, TypeMeta typeMeta) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -158,11 +182,16 @@ public class KubeSchema {
         this.consoleLinkList = consoleLinkList;
         this.consoleNotification = consoleNotification;
         this.consoleNotificationList = consoleNotificationList;
+        this.consolePlugin = consolePlugin;
+        this.consolePluginList = consolePluginList;
+        this.consoleQuickStart = consoleQuickStart;
+        this.consoleQuickStartList = consoleQuickStartList;
         this.consoleYAMLSample = consoleYAMLSample;
         this.consoleYAMLSampleList = consoleYAMLSampleList;
         this.info = info;
         this.objectMeta = objectMeta;
         this.patch = patch;
+        this.resourceAttributes = resourceAttributes;
         this.status = status;
         this.time = time;
         this.typeMeta = typeMeta;
@@ -278,6 +307,46 @@ public class KubeSchema {
         this.consoleNotificationList = consoleNotificationList;
     }
 
+    @JsonProperty("ConsolePlugin")
+    public ConsolePluginList getConsolePlugin() {
+        return consolePlugin;
+    }
+
+    @JsonProperty("ConsolePlugin")
+    public void setConsolePlugin(ConsolePluginList consolePlugin) {
+        this.consolePlugin = consolePlugin;
+    }
+
+    @JsonProperty("ConsolePluginList")
+    public ConsolePluginList getConsolePluginList() {
+        return consolePluginList;
+    }
+
+    @JsonProperty("ConsolePluginList")
+    public void setConsolePluginList(ConsolePluginList consolePluginList) {
+        this.consolePluginList = consolePluginList;
+    }
+
+    @JsonProperty("ConsoleQuickStart")
+    public ConsoleQuickStart getConsoleQuickStart() {
+        return consoleQuickStart;
+    }
+
+    @JsonProperty("ConsoleQuickStart")
+    public void setConsoleQuickStart(ConsoleQuickStart consoleQuickStart) {
+        this.consoleQuickStart = consoleQuickStart;
+    }
+
+    @JsonProperty("ConsoleQuickStartList")
+    public ConsoleQuickStartList getConsoleQuickStartList() {
+        return consoleQuickStartList;
+    }
+
+    @JsonProperty("ConsoleQuickStartList")
+    public void setConsoleQuickStartList(ConsoleQuickStartList consoleQuickStartList) {
+        this.consoleQuickStartList = consoleQuickStartList;
+    }
+
     @JsonProperty("ConsoleYAMLSample")
     public ConsoleYAMLSample getConsoleYAMLSample() {
         return consoleYAMLSample;
@@ -326,6 +395,16 @@ public class KubeSchema {
     @JsonProperty("Patch")
     public void setPatch(Patch patch) {
         this.patch = patch;
+    }
+
+    @JsonProperty("ResourceAttributes")
+    public ResourceAttributes getResourceAttributes() {
+        return resourceAttributes;
+    }
+
+    @JsonProperty("ResourceAttributes")
+    public void setResourceAttributes(ResourceAttributes resourceAttributes) {
+        this.resourceAttributes = resourceAttributes;
     }
 
     @JsonProperty("Status")

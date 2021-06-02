@@ -35,7 +35,6 @@ import lombok.ToString;
     "metadata",
     "conditions",
     "generations",
-    "managingOAuthAPIServer",
     "oauthAPIServer",
     "observedGeneration",
     "readyReplicas",
@@ -63,8 +62,6 @@ public class AuthenticationStatus implements KubernetesResource
     @JsonProperty("generations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<GenerationStatus> generations = new ArrayList<GenerationStatus>();
-    @JsonProperty("managingOAuthAPIServer")
-    private Boolean managingOAuthAPIServer;
     @JsonProperty("oauthAPIServer")
     private OAuthAPIServerStatus oauthAPIServer;
     @JsonProperty("observedGeneration")
@@ -85,7 +82,6 @@ public class AuthenticationStatus implements KubernetesResource
 
     /**
      * 
-     * @param managingOAuthAPIServer
      * @param oauthAPIServer
      * @param generations
      * @param readyReplicas
@@ -93,11 +89,10 @@ public class AuthenticationStatus implements KubernetesResource
      * @param version
      * @param observedGeneration
      */
-    public AuthenticationStatus(List<OperatorCondition> conditions, List<GenerationStatus> generations, Boolean managingOAuthAPIServer, OAuthAPIServerStatus oauthAPIServer, Long observedGeneration, Integer readyReplicas, String version) {
+    public AuthenticationStatus(List<OperatorCondition> conditions, List<GenerationStatus> generations, OAuthAPIServerStatus oauthAPIServer, Long observedGeneration, Integer readyReplicas, String version) {
         super();
         this.conditions = conditions;
         this.generations = generations;
-        this.managingOAuthAPIServer = managingOAuthAPIServer;
         this.oauthAPIServer = oauthAPIServer;
         this.observedGeneration = observedGeneration;
         this.readyReplicas = readyReplicas;
@@ -122,16 +117,6 @@ public class AuthenticationStatus implements KubernetesResource
     @JsonProperty("generations")
     public void setGenerations(List<GenerationStatus> generations) {
         this.generations = generations;
-    }
-
-    @JsonProperty("managingOAuthAPIServer")
-    public Boolean getManagingOAuthAPIServer() {
-        return managingOAuthAPIServer;
-    }
-
-    @JsonProperty("managingOAuthAPIServer")
-    public void setManagingOAuthAPIServer(Boolean managingOAuthAPIServer) {
-        this.managingOAuthAPIServer = managingOAuthAPIServer;
     }
 
     @JsonProperty("oauthAPIServer")

@@ -34,8 +34,10 @@ import lombok.ToString;
     "aws",
     "azure",
     "baremetal",
+    "equinixMetal",
     "gcp",
     "ibmcloud",
+    "kubevirt",
     "openstack",
     "ovirt",
     "type",
@@ -63,10 +65,14 @@ public class PlatformSpec implements KubernetesResource
     private AzurePlatformSpec azure;
     @JsonProperty("baremetal")
     private BareMetalPlatformSpec baremetal;
+    @JsonProperty("equinixMetal")
+    private EquinixMetalPlatformSpec equinixMetal;
     @JsonProperty("gcp")
     private GCPPlatformSpec gcp;
     @JsonProperty("ibmcloud")
     private IBMCloudPlatformSpec ibmcloud;
+    @JsonProperty("kubevirt")
+    private KubevirtPlatformSpec kubevirt;
     @JsonProperty("openstack")
     private OpenStackPlatformSpec openstack;
     @JsonProperty("ovirt")
@@ -91,19 +97,23 @@ public class PlatformSpec implements KubernetesResource
      * @param vsphere
      * @param gcp
      * @param ibmcloud
+     * @param equinixMetal
      * @param ovirt
+     * @param kubevirt
      * @param openstack
      * @param aws
      * @param type
      * @param azure
      */
-    public PlatformSpec(AWSPlatformSpec aws, AzurePlatformSpec azure, BareMetalPlatformSpec baremetal, GCPPlatformSpec gcp, IBMCloudPlatformSpec ibmcloud, OpenStackPlatformSpec openstack, OvirtPlatformSpec ovirt, String type, VSpherePlatformSpec vsphere) {
+    public PlatformSpec(AWSPlatformSpec aws, AzurePlatformSpec azure, BareMetalPlatformSpec baremetal, EquinixMetalPlatformSpec equinixMetal, GCPPlatformSpec gcp, IBMCloudPlatformSpec ibmcloud, KubevirtPlatformSpec kubevirt, OpenStackPlatformSpec openstack, OvirtPlatformSpec ovirt, String type, VSpherePlatformSpec vsphere) {
         super();
         this.aws = aws;
         this.azure = azure;
         this.baremetal = baremetal;
+        this.equinixMetal = equinixMetal;
         this.gcp = gcp;
         this.ibmcloud = ibmcloud;
+        this.kubevirt = kubevirt;
         this.openstack = openstack;
         this.ovirt = ovirt;
         this.type = type;
@@ -140,6 +150,16 @@ public class PlatformSpec implements KubernetesResource
         this.baremetal = baremetal;
     }
 
+    @JsonProperty("equinixMetal")
+    public EquinixMetalPlatformSpec getEquinixMetal() {
+        return equinixMetal;
+    }
+
+    @JsonProperty("equinixMetal")
+    public void setEquinixMetal(EquinixMetalPlatformSpec equinixMetal) {
+        this.equinixMetal = equinixMetal;
+    }
+
     @JsonProperty("gcp")
     public GCPPlatformSpec getGcp() {
         return gcp;
@@ -158,6 +178,16 @@ public class PlatformSpec implements KubernetesResource
     @JsonProperty("ibmcloud")
     public void setIbmcloud(IBMCloudPlatformSpec ibmcloud) {
         this.ibmcloud = ibmcloud;
+    }
+
+    @JsonProperty("kubevirt")
+    public KubevirtPlatformSpec getKubevirt() {
+        return kubevirt;
+    }
+
+    @JsonProperty("kubevirt")
+    public void setKubevirt(KubevirtPlatformSpec kubevirt) {
+        this.kubevirt = kubevirt;
     }
 
     @JsonProperty("openstack")
