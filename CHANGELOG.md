@@ -17,6 +17,7 @@
 * Fix #3072: various changes to refine how threads are handled by informers.  Note that the SharedInformer.run call is now blocking when starting the informer.
 * Fix #3143: a new SharedInformerEventListener.onException(SharedIndexInformer, Exception) method is available to determine which informer could not start.
 * Fix #3170: made HttpClientUtils.createHttpClient(Config, Consumer<OkHttpClient.Builder>) public to allow overriding custom http client properties 
+* Fix #3185: Introduce GenericKubernetesResource, used as delegate in RawCustomResourceOperationsImpl
 
 #### Dependency Upgrade
 * Fix #2741: Update Knative Model to v0.23.0
