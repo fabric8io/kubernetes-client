@@ -679,6 +679,8 @@ func (g *schemaGenerator) isClusterScopedResource(t reflect.Type) bool {
 		"github.com/openshift/api/console/v1/ConsoleNotification",
 		"github.com/openshift/api/console/v1/ConsoleYAMLSample",
 		"github.com/openshift/api/console/v1/ConsoleExternalLogLink",
+		"github.com/openshift/api/console/v1/ConsoleQuickStart",
+		"github.com/openshift/api/console/v1alpha1/ConsolePlugin",
                 "github.com/openshift/api/config/v1/Ingress",
                 "github.com/openshift/api/template/v1/BrokerTemplateInstance",
                 "github.com/openshift/api/helm/v1beta1/HelmChartRepository",

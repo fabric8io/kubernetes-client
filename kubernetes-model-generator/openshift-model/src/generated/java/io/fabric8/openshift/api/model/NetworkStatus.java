@@ -35,6 +35,7 @@ import lombok.ToString;
     "metadata",
     "clusterNetwork",
     "clusterNetworkMTU",
+    "migration",
     "networkType",
     "serviceNetwork"
 })
@@ -59,6 +60,8 @@ public class NetworkStatus implements KubernetesResource
     private List<ClusterNetworkEntry> clusterNetwork = new ArrayList<ClusterNetworkEntry>();
     @JsonProperty("clusterNetworkMTU")
     private Integer clusterNetworkMTU;
+    @JsonProperty("migration")
+    private NetworkMigration migration;
     @JsonProperty("networkType")
     private String networkType;
     @JsonProperty("serviceNetwork")
@@ -76,15 +79,17 @@ public class NetworkStatus implements KubernetesResource
 
     /**
      * 
+     * @param migration
      * @param serviceNetwork
      * @param clusterNetworkMTU
      * @param clusterNetwork
      * @param networkType
      */
-    public NetworkStatus(List<ClusterNetworkEntry> clusterNetwork, Integer clusterNetworkMTU, String networkType, List<String> serviceNetwork) {
+    public NetworkStatus(List<ClusterNetworkEntry> clusterNetwork, Integer clusterNetworkMTU, NetworkMigration migration, String networkType, List<String> serviceNetwork) {
         super();
         this.clusterNetwork = clusterNetwork;
         this.clusterNetworkMTU = clusterNetworkMTU;
+        this.migration = migration;
         this.networkType = networkType;
         this.serviceNetwork = serviceNetwork;
     }
@@ -107,6 +112,16 @@ public class NetworkStatus implements KubernetesResource
     @JsonProperty("clusterNetworkMTU")
     public void setClusterNetworkMTU(Integer clusterNetworkMTU) {
         this.clusterNetworkMTU = clusterNetworkMTU;
+    }
+
+    @JsonProperty("migration")
+    public NetworkMigration getMigration() {
+        return migration;
+    }
+
+    @JsonProperty("migration")
+    public void setMigration(NetworkMigration migration) {
+        this.migration = migration;
     }
 
     @JsonProperty("networkType")

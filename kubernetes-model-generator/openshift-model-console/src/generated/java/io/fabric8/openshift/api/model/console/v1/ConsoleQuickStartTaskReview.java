@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.operator.v1;
+package io.fabric8.openshift.api.model.console.v1;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +31,8 @@ import lombok.ToString;
     "apiVersion",
     "kind",
     "metadata",
-    "driverName"
+    "failedTaskHelp",
+    "instructions"
 })
 @ToString
 @EqualsAndHashCode
@@ -46,11 +47,13 @@ import lombok.ToString;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-public class CSIDriverConfig implements KubernetesResource
+public class ConsoleQuickStartTaskReview implements KubernetesResource
 {
 
-    @JsonProperty("driverName")
-    private String driverName;
+    @JsonProperty("failedTaskHelp")
+    private String failedTaskHelp;
+    @JsonProperty("instructions")
+    private String instructions;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -58,26 +61,38 @@ public class CSIDriverConfig implements KubernetesResource
      * No args constructor for use in serialization
      * 
      */
-    public CSIDriverConfig() {
+    public ConsoleQuickStartTaskReview() {
     }
 
     /**
      * 
-     * @param driverName
+     * @param failedTaskHelp
+     * @param instructions
      */
-    public CSIDriverConfig(String driverName) {
+    public ConsoleQuickStartTaskReview(String failedTaskHelp, String instructions) {
         super();
-        this.driverName = driverName;
+        this.failedTaskHelp = failedTaskHelp;
+        this.instructions = instructions;
     }
 
-    @JsonProperty("driverName")
-    public String getDriverName() {
-        return driverName;
+    @JsonProperty("failedTaskHelp")
+    public String getFailedTaskHelp() {
+        return failedTaskHelp;
     }
 
-    @JsonProperty("driverName")
-    public void setDriverName(String driverName) {
-        this.driverName = driverName;
+    @JsonProperty("failedTaskHelp")
+    public void setFailedTaskHelp(String failedTaskHelp) {
+        this.failedTaskHelp = failedTaskHelp;
+    }
+
+    @JsonProperty("instructions")
+    public String getInstructions() {
+        return instructions;
+    }
+
+    @JsonProperty("instructions")
+    public void setInstructions(String instructions) {
+        this.instructions = instructions;
     }
 
     @JsonAnyGetter

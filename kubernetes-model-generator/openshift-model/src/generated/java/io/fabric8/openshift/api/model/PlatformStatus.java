@@ -34,8 +34,10 @@ import lombok.ToString;
     "aws",
     "azure",
     "baremetal",
+    "equinixMetal",
     "gcp",
     "ibmcloud",
+    "kubevirt",
     "openstack",
     "ovirt",
     "type",
@@ -63,10 +65,14 @@ public class PlatformStatus implements KubernetesResource
     private AzurePlatformStatus azure;
     @JsonProperty("baremetal")
     private BareMetalPlatformStatus baremetal;
+    @JsonProperty("equinixMetal")
+    private EquinixMetalPlatformStatus equinixMetal;
     @JsonProperty("gcp")
     private GCPPlatformStatus gcp;
     @JsonProperty("ibmcloud")
     private IBMCloudPlatformStatus ibmcloud;
+    @JsonProperty("kubevirt")
+    private KubevirtPlatformStatus kubevirt;
     @JsonProperty("openstack")
     private OpenStackPlatformStatus openstack;
     @JsonProperty("ovirt")
@@ -91,19 +97,23 @@ public class PlatformStatus implements KubernetesResource
      * @param vsphere
      * @param gcp
      * @param ibmcloud
+     * @param equinixMetal
      * @param ovirt
+     * @param kubevirt
      * @param openstack
      * @param aws
      * @param type
      * @param azure
      */
-    public PlatformStatus(AWSPlatformStatus aws, AzurePlatformStatus azure, BareMetalPlatformStatus baremetal, GCPPlatformStatus gcp, IBMCloudPlatformStatus ibmcloud, OpenStackPlatformStatus openstack, OvirtPlatformStatus ovirt, String type, VSpherePlatformStatus vsphere) {
+    public PlatformStatus(AWSPlatformStatus aws, AzurePlatformStatus azure, BareMetalPlatformStatus baremetal, EquinixMetalPlatformStatus equinixMetal, GCPPlatformStatus gcp, IBMCloudPlatformStatus ibmcloud, KubevirtPlatformStatus kubevirt, OpenStackPlatformStatus openstack, OvirtPlatformStatus ovirt, String type, VSpherePlatformStatus vsphere) {
         super();
         this.aws = aws;
         this.azure = azure;
         this.baremetal = baremetal;
+        this.equinixMetal = equinixMetal;
         this.gcp = gcp;
         this.ibmcloud = ibmcloud;
+        this.kubevirt = kubevirt;
         this.openstack = openstack;
         this.ovirt = ovirt;
         this.type = type;
@@ -140,6 +150,16 @@ public class PlatformStatus implements KubernetesResource
         this.baremetal = baremetal;
     }
 
+    @JsonProperty("equinixMetal")
+    public EquinixMetalPlatformStatus getEquinixMetal() {
+        return equinixMetal;
+    }
+
+    @JsonProperty("equinixMetal")
+    public void setEquinixMetal(EquinixMetalPlatformStatus equinixMetal) {
+        this.equinixMetal = equinixMetal;
+    }
+
     @JsonProperty("gcp")
     public GCPPlatformStatus getGcp() {
         return gcp;
@@ -158,6 +178,16 @@ public class PlatformStatus implements KubernetesResource
     @JsonProperty("ibmcloud")
     public void setIbmcloud(IBMCloudPlatformStatus ibmcloud) {
         this.ibmcloud = ibmcloud;
+    }
+
+    @JsonProperty("kubevirt")
+    public KubevirtPlatformStatus getKubevirt() {
+        return kubevirt;
+    }
+
+    @JsonProperty("kubevirt")
+    public void setKubevirt(KubevirtPlatformStatus kubevirt) {
+        this.kubevirt = kubevirt;
     }
 
     @JsonProperty("openstack")

@@ -629,6 +629,14 @@
         "region": {
           "type": "string"
         },
+        "resourceTags": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_config_v1_AWSResourceTag",
+            "existingJavaType": "io.fabric8.openshift.api.model.AWSResourceTag"
+          }
+        },
         "serviceEndpoints": {
           "type": "array",
           "javaOmitEmpty": true,
@@ -640,6 +648,22 @@
       },
       "additionalProperties": true,
       "existingJavaType": "io.fabric8.openshift.api.model.AWSPlatformStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_config_v1_AWSResourceTag": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.openshift.api.model.AWSResourceTag",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -830,6 +854,30 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "os_config_v1_EquinixMetalPlatformSpec": {
+      "type": "object",
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.openshift.api.model.EquinixMetalPlatformSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_config_v1_EquinixMetalPlatformStatus": {
+      "type": "object",
+      "properties": {
+        "apiServerInternalIP": {
+          "type": "string"
+        },
+        "ingressIP": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.openshift.api.model.EquinixMetalPlatformStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "os_config_v1_GCPPlatformSpec": {
       "type": "object",
       "additionalProperties": true,
@@ -940,10 +988,16 @@
         "apiServerURL": {
           "type": "string"
         },
+        "controlPlaneTopology": {
+          "type": "string"
+        },
         "etcdDiscoveryDomain": {
           "type": "string"
         },
         "infrastructureName": {
+          "type": "string"
+        },
+        "infrastructureTopology": {
           "type": "string"
         },
         "platform": {
@@ -964,6 +1018,30 @@
       "type": "object",
       "additionalProperties": true,
       "existingJavaType": "io.fabric8.openshift.api.model.IntermediateTLSProfile",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_config_v1_KubevirtPlatformSpec": {
+      "type": "object",
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.openshift.api.model.KubevirtPlatformSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_config_v1_KubevirtPlatformStatus": {
+      "type": "object",
+      "properties": {
+        "apiServerInternalIP": {
+          "type": "string"
+        },
+        "ingressIP": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.openshift.api.model.KubevirtPlatformStatus",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1056,6 +1134,10 @@
           "$ref": "#/definitions/os_config_v1_BareMetalPlatformSpec",
           "existingJavaType": "io.fabric8.openshift.api.model.BareMetalPlatformSpec"
         },
+        "equinixMetal": {
+          "$ref": "#/definitions/os_config_v1_EquinixMetalPlatformSpec",
+          "existingJavaType": "io.fabric8.openshift.api.model.EquinixMetalPlatformSpec"
+        },
         "gcp": {
           "$ref": "#/definitions/os_config_v1_GCPPlatformSpec",
           "existingJavaType": "io.fabric8.openshift.api.model.GCPPlatformSpec"
@@ -1063,6 +1145,10 @@
         "ibmcloud": {
           "$ref": "#/definitions/os_config_v1_IBMCloudPlatformSpec",
           "existingJavaType": "io.fabric8.openshift.api.model.IBMCloudPlatformSpec"
+        },
+        "kubevirt": {
+          "$ref": "#/definitions/os_config_v1_KubevirtPlatformSpec",
+          "existingJavaType": "io.fabric8.openshift.api.model.KubevirtPlatformSpec"
         },
         "openstack": {
           "$ref": "#/definitions/os_config_v1_OpenStackPlatformSpec",
@@ -1101,6 +1187,10 @@
           "$ref": "#/definitions/os_config_v1_BareMetalPlatformStatus",
           "existingJavaType": "io.fabric8.openshift.api.model.BareMetalPlatformStatus"
         },
+        "equinixMetal": {
+          "$ref": "#/definitions/os_config_v1_EquinixMetalPlatformStatus",
+          "existingJavaType": "io.fabric8.openshift.api.model.EquinixMetalPlatformStatus"
+        },
         "gcp": {
           "$ref": "#/definitions/os_config_v1_GCPPlatformStatus",
           "existingJavaType": "io.fabric8.openshift.api.model.GCPPlatformStatus"
@@ -1108,6 +1198,10 @@
         "ibmcloud": {
           "$ref": "#/definitions/os_config_v1_IBMCloudPlatformStatus",
           "existingJavaType": "io.fabric8.openshift.api.model.IBMCloudPlatformStatus"
+        },
+        "kubevirt": {
+          "$ref": "#/definitions/os_config_v1_KubevirtPlatformStatus",
+          "existingJavaType": "io.fabric8.openshift.api.model.KubevirtPlatformStatus"
         },
         "openstack": {
           "$ref": "#/definitions/os_config_v1_OpenStackPlatformStatus",
@@ -2154,6 +2248,14 @@
         "region": {
           "type": "string"
         },
+        "resourceTags": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_config_v1_AWSResourceTag",
+            "existingJavaType": "io.fabric8.openshift.api.model.AWSResourceTag"
+          }
+        },
         "serviceEndpoints": {
           "type": "array",
           "javaOmitEmpty": true,
@@ -2161,6 +2263,17 @@
             "$ref": "#/definitions/os_config_v1_AWSServiceEndpoint",
             "existingJavaType": "io.fabric8.openshift.api.model.AWSServiceEndpoint"
           }
+        }
+      },
+      "additionalProperties": true
+    },
+    "awsresourcetag": {
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -2573,6 +2686,20 @@
       },
       "additionalProperties": true
     },
+    "equinixmetalplatformspec": {
+      "additionalProperties": true
+    },
+    "equinixmetalplatformstatus": {
+      "properties": {
+        "apiServerInternalIP": {
+          "type": "string"
+        },
+        "ingressIP": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
     "fieldsv1": {
       "additionalProperties": true
     },
@@ -2701,10 +2828,16 @@
         "apiServerURL": {
           "type": "string"
         },
+        "controlPlaneTopology": {
+          "type": "string"
+        },
         "etcdDiscoveryDomain": {
           "type": "string"
         },
         "infrastructureName": {
+          "type": "string"
+        },
+        "infrastructureTopology": {
           "type": "string"
         },
         "platform": {
@@ -2844,6 +2977,20 @@
         "observedGeneration": {
           "type": "integer",
           "existingJavaType": "Long"
+        }
+      },
+      "additionalProperties": true
+    },
+    "kubevirtplatformspec": {
+      "additionalProperties": true
+    },
+    "kubevirtplatformstatus": {
+      "properties": {
+        "apiServerInternalIP": {
+          "type": "string"
+        },
+        "ingressIP": {
+          "type": "string"
         }
       },
       "additionalProperties": true
@@ -3395,6 +3542,10 @@
           "$ref": "#/definitions/os_config_v1_BareMetalPlatformSpec",
           "existingJavaType": "io.fabric8.openshift.api.model.BareMetalPlatformSpec"
         },
+        "equinixMetal": {
+          "$ref": "#/definitions/os_config_v1_EquinixMetalPlatformSpec",
+          "existingJavaType": "io.fabric8.openshift.api.model.EquinixMetalPlatformSpec"
+        },
         "gcp": {
           "$ref": "#/definitions/os_config_v1_GCPPlatformSpec",
           "existingJavaType": "io.fabric8.openshift.api.model.GCPPlatformSpec"
@@ -3402,6 +3553,10 @@
         "ibmcloud": {
           "$ref": "#/definitions/os_config_v1_IBMCloudPlatformSpec",
           "existingJavaType": "io.fabric8.openshift.api.model.IBMCloudPlatformSpec"
+        },
+        "kubevirt": {
+          "$ref": "#/definitions/os_config_v1_KubevirtPlatformSpec",
+          "existingJavaType": "io.fabric8.openshift.api.model.KubevirtPlatformSpec"
         },
         "openstack": {
           "$ref": "#/definitions/os_config_v1_OpenStackPlatformSpec",
@@ -3435,6 +3590,10 @@
           "$ref": "#/definitions/os_config_v1_BareMetalPlatformStatus",
           "existingJavaType": "io.fabric8.openshift.api.model.BareMetalPlatformStatus"
         },
+        "equinixMetal": {
+          "$ref": "#/definitions/os_config_v1_EquinixMetalPlatformStatus",
+          "existingJavaType": "io.fabric8.openshift.api.model.EquinixMetalPlatformStatus"
+        },
         "gcp": {
           "$ref": "#/definitions/os_config_v1_GCPPlatformStatus",
           "existingJavaType": "io.fabric8.openshift.api.model.GCPPlatformStatus"
@@ -3442,6 +3601,10 @@
         "ibmcloud": {
           "$ref": "#/definitions/os_config_v1_IBMCloudPlatformStatus",
           "existingJavaType": "io.fabric8.openshift.api.model.IBMCloudPlatformStatus"
+        },
+        "kubevirt": {
+          "$ref": "#/definitions/os_config_v1_KubevirtPlatformStatus",
+          "existingJavaType": "io.fabric8.openshift.api.model.KubevirtPlatformStatus"
         },
         "openstack": {
           "$ref": "#/definitions/os_config_v1_OpenStackPlatformStatus",

@@ -27,13 +27,19 @@ import io.fabric8.openshift.api.model.console.v1.ConsoleLink;
 import io.fabric8.openshift.api.model.console.v1.ConsoleLinkList;
 import io.fabric8.openshift.api.model.console.v1.ConsoleNotification;
 import io.fabric8.openshift.api.model.console.v1.ConsoleNotificationList;
+import io.fabric8.openshift.api.model.console.v1.ConsoleQuickStart;
+import io.fabric8.openshift.api.model.console.v1.ConsoleQuickStartList;
 import io.fabric8.openshift.api.model.console.v1.ConsoleYAMLSample;
 import io.fabric8.openshift.api.model.console.v1.ConsoleYAMLSampleList;
+import io.fabric8.openshift.api.model.console.v1alpha1.ConsolePlugin;
+import io.fabric8.openshift.api.model.console.v1alpha1.ConsolePluginList;
 import io.fabric8.openshift.client.dsl.OpenShiftConsoleAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.internal.console.ConsoleCLIDownloadOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.console.ConsoleExternalLogLinkOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.console.ConsoleLinkOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.console.ConsoleNotificationOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.console.ConsolePluginOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.console.ConsoleQuickStartOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.console.ConsoleYAMLSampleOperationsImpl;
 import okhttp3.OkHttpClient;
 
@@ -69,5 +75,15 @@ public class OpenShiftConsoleAPIGroupClient extends BaseClient implements OpenSh
   @Override
   public NonNamespaceOperation<ConsoleYAMLSample, ConsoleYAMLSampleList, Resource<ConsoleYAMLSample>> consoleYAMLSamples() {
     return new ConsoleYAMLSampleOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+  }
+
+  @Override
+  public NonNamespaceOperation<ConsoleQuickStart, ConsoleQuickStartList, Resource<ConsoleQuickStart>> consoleQuickStarts() {
+    return new ConsoleQuickStartOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+  }
+
+  @Override
+  public NonNamespaceOperation<ConsolePlugin, ConsolePluginList, Resource<ConsolePlugin>> consolePlugins() {
+    return new ConsolePluginOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 }

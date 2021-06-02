@@ -34,6 +34,7 @@ import lombok.ToString;
     "controllerProbesPort",
     "daemonProbesPort",
     "enablePortPoolsPrepopulation",
+    "mtu",
     "openStackServiceNetwork",
     "poolBatchPorts",
     "poolMaxPorts",
@@ -61,6 +62,8 @@ public class KuryrConfig implements KubernetesResource
     private Integer daemonProbesPort;
     @JsonProperty("enablePortPoolsPrepopulation")
     private Boolean enablePortPoolsPrepopulation;
+    @JsonProperty("mtu")
+    private Integer mtu;
     @JsonProperty("openStackServiceNetwork")
     private String openStackServiceNetwork;
     @JsonProperty("poolBatchPorts")
@@ -88,12 +91,14 @@ public class KuryrConfig implements KubernetesResource
      * @param poolBatchPorts
      * @param poolMaxPorts
      * @param poolMinPorts
+     * @param mtu
      */
-    public KuryrConfig(Integer controllerProbesPort, Integer daemonProbesPort, Boolean enablePortPoolsPrepopulation, String openStackServiceNetwork, Integer poolBatchPorts, Integer poolMaxPorts, Integer poolMinPorts) {
+    public KuryrConfig(Integer controllerProbesPort, Integer daemonProbesPort, Boolean enablePortPoolsPrepopulation, Integer mtu, String openStackServiceNetwork, Integer poolBatchPorts, Integer poolMaxPorts, Integer poolMinPorts) {
         super();
         this.controllerProbesPort = controllerProbesPort;
         this.daemonProbesPort = daemonProbesPort;
         this.enablePortPoolsPrepopulation = enablePortPoolsPrepopulation;
+        this.mtu = mtu;
         this.openStackServiceNetwork = openStackServiceNetwork;
         this.poolBatchPorts = poolBatchPorts;
         this.poolMaxPorts = poolMaxPorts;
@@ -128,6 +133,16 @@ public class KuryrConfig implements KubernetesResource
     @JsonProperty("enablePortPoolsPrepopulation")
     public void setEnablePortPoolsPrepopulation(Boolean enablePortPoolsPrepopulation) {
         this.enablePortPoolsPrepopulation = enablePortPoolsPrepopulation;
+    }
+
+    @JsonProperty("mtu")
+    public Integer getMtu() {
+        return mtu;
+    }
+
+    @JsonProperty("mtu")
+    public void setMtu(Integer mtu) {
+        this.mtu = mtu;
     }
 
     @JsonProperty("openStackServiceNetwork")

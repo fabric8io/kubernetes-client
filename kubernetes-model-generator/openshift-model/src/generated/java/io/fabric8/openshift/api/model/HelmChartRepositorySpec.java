@@ -33,6 +33,7 @@ import lombok.ToString;
     "metadata",
     "connectionConfig",
     "description",
+    "disabled",
     "name"
 })
 @ToString
@@ -55,6 +56,8 @@ public class HelmChartRepositorySpec implements KubernetesResource
     private ConnectionConfig connectionConfig;
     @JsonProperty("description")
     private String description;
+    @JsonProperty("disabled")
+    private Boolean disabled;
     @JsonProperty("name")
     private String name;
     @JsonIgnore
@@ -72,11 +75,13 @@ public class HelmChartRepositorySpec implements KubernetesResource
      * @param name
      * @param connectionConfig
      * @param description
+     * @param disabled
      */
-    public HelmChartRepositorySpec(ConnectionConfig connectionConfig, String description, String name) {
+    public HelmChartRepositorySpec(ConnectionConfig connectionConfig, String description, Boolean disabled, String name) {
         super();
         this.connectionConfig = connectionConfig;
         this.description = description;
+        this.disabled = disabled;
         this.name = name;
     }
 
@@ -98,6 +103,16 @@ public class HelmChartRepositorySpec implements KubernetesResource
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @JsonProperty("disabled")
+    public Boolean getDisabled() {
+        return disabled;
+    }
+
+    @JsonProperty("disabled")
+    public void setDisabled(Boolean disabled) {
+        this.disabled = disabled;
     }
 
     @JsonProperty("name")

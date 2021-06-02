@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -38,9 +39,17 @@ import lombok.ToString;
     "defaultNetwork",
     "deployKubeProxy",
     "disableMultiNetwork",
+    "disableNetworkDiagnostics",
+    "exportNetworkFlows",
     "kubeProxyConfig",
     "logLevel",
-    "serviceNetwork"
+    "managementState",
+    "migration",
+    "observedConfig",
+    "operatorLogLevel",
+    "serviceNetwork",
+    "unsupportedConfigOverrides",
+    "useMultiNetworkPolicy"
 })
 @ToString
 @EqualsAndHashCode
@@ -69,12 +78,28 @@ public class NetworkSpec implements KubernetesResource
     private Boolean deployKubeProxy;
     @JsonProperty("disableMultiNetwork")
     private Boolean disableMultiNetwork;
+    @JsonProperty("disableNetworkDiagnostics")
+    private Boolean disableNetworkDiagnostics;
+    @JsonProperty("exportNetworkFlows")
+    private ExportNetworkFlows exportNetworkFlows;
     @JsonProperty("kubeProxyConfig")
     private ProxyConfig kubeProxyConfig;
     @JsonProperty("logLevel")
     private String logLevel;
+    @JsonProperty("managementState")
+    private String managementState;
+    @JsonProperty("migration")
+    private NetworkMigration migration;
+    @JsonProperty("observedConfig")
+    private HasMetadata observedConfig;
+    @JsonProperty("operatorLogLevel")
+    private String operatorLogLevel;
     @JsonProperty("serviceNetwork")
     private List<String> serviceNetwork = new ArrayList<String>();
+    @JsonProperty("unsupportedConfigOverrides")
+    private HasMetadata unsupportedConfigOverrides;
+    @JsonProperty("useMultiNetworkPolicy")
+    private Boolean useMultiNetworkPolicy;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -87,25 +112,41 @@ public class NetworkSpec implements KubernetesResource
 
     /**
      * 
+     * @param useMultiNetworkPolicy
+     * @param exportNetworkFlows
+     * @param clusterNetwork
+     * @param operatorLogLevel
+     * @param kubeProxyConfig
+     * @param observedConfig
      * @param deployKubeProxy
      * @param logLevel
      * @param additionalNetworks
      * @param defaultNetwork
+     * @param migration
+     * @param unsupportedConfigOverrides
      * @param serviceNetwork
-     * @param clusterNetwork
+     * @param disableNetworkDiagnostics
      * @param disableMultiNetwork
-     * @param kubeProxyConfig
+     * @param managementState
      */
-    public NetworkSpec(List<AdditionalNetworkDefinition> additionalNetworks, List<ClusterNetworkEntry> clusterNetwork, DefaultNetworkDefinition defaultNetwork, Boolean deployKubeProxy, Boolean disableMultiNetwork, ProxyConfig kubeProxyConfig, String logLevel, List<String> serviceNetwork) {
+    public NetworkSpec(List<AdditionalNetworkDefinition> additionalNetworks, List<ClusterNetworkEntry> clusterNetwork, DefaultNetworkDefinition defaultNetwork, Boolean deployKubeProxy, Boolean disableMultiNetwork, Boolean disableNetworkDiagnostics, ExportNetworkFlows exportNetworkFlows, ProxyConfig kubeProxyConfig, String logLevel, String managementState, NetworkMigration migration, HasMetadata observedConfig, String operatorLogLevel, List<String> serviceNetwork, HasMetadata unsupportedConfigOverrides, Boolean useMultiNetworkPolicy) {
         super();
         this.additionalNetworks = additionalNetworks;
         this.clusterNetwork = clusterNetwork;
         this.defaultNetwork = defaultNetwork;
         this.deployKubeProxy = deployKubeProxy;
         this.disableMultiNetwork = disableMultiNetwork;
+        this.disableNetworkDiagnostics = disableNetworkDiagnostics;
+        this.exportNetworkFlows = exportNetworkFlows;
         this.kubeProxyConfig = kubeProxyConfig;
         this.logLevel = logLevel;
+        this.managementState = managementState;
+        this.migration = migration;
+        this.observedConfig = observedConfig;
+        this.operatorLogLevel = operatorLogLevel;
         this.serviceNetwork = serviceNetwork;
+        this.unsupportedConfigOverrides = unsupportedConfigOverrides;
+        this.useMultiNetworkPolicy = useMultiNetworkPolicy;
     }
 
     @JsonProperty("additionalNetworks")
@@ -158,6 +199,26 @@ public class NetworkSpec implements KubernetesResource
         this.disableMultiNetwork = disableMultiNetwork;
     }
 
+    @JsonProperty("disableNetworkDiagnostics")
+    public Boolean getDisableNetworkDiagnostics() {
+        return disableNetworkDiagnostics;
+    }
+
+    @JsonProperty("disableNetworkDiagnostics")
+    public void setDisableNetworkDiagnostics(Boolean disableNetworkDiagnostics) {
+        this.disableNetworkDiagnostics = disableNetworkDiagnostics;
+    }
+
+    @JsonProperty("exportNetworkFlows")
+    public ExportNetworkFlows getExportNetworkFlows() {
+        return exportNetworkFlows;
+    }
+
+    @JsonProperty("exportNetworkFlows")
+    public void setExportNetworkFlows(ExportNetworkFlows exportNetworkFlows) {
+        this.exportNetworkFlows = exportNetworkFlows;
+    }
+
     @JsonProperty("kubeProxyConfig")
     public ProxyConfig getKubeProxyConfig() {
         return kubeProxyConfig;
@@ -178,6 +239,46 @@ public class NetworkSpec implements KubernetesResource
         this.logLevel = logLevel;
     }
 
+    @JsonProperty("managementState")
+    public String getManagementState() {
+        return managementState;
+    }
+
+    @JsonProperty("managementState")
+    public void setManagementState(String managementState) {
+        this.managementState = managementState;
+    }
+
+    @JsonProperty("migration")
+    public NetworkMigration getMigration() {
+        return migration;
+    }
+
+    @JsonProperty("migration")
+    public void setMigration(NetworkMigration migration) {
+        this.migration = migration;
+    }
+
+    @JsonProperty("observedConfig")
+    public HasMetadata getObservedConfig() {
+        return observedConfig;
+    }
+
+    @JsonProperty("observedConfig")
+    public void setObservedConfig(HasMetadata observedConfig) {
+        this.observedConfig = observedConfig;
+    }
+
+    @JsonProperty("operatorLogLevel")
+    public String getOperatorLogLevel() {
+        return operatorLogLevel;
+    }
+
+    @JsonProperty("operatorLogLevel")
+    public void setOperatorLogLevel(String operatorLogLevel) {
+        this.operatorLogLevel = operatorLogLevel;
+    }
+
     @JsonProperty("serviceNetwork")
     public List<String> getServiceNetwork() {
         return serviceNetwork;
@@ -186,6 +287,26 @@ public class NetworkSpec implements KubernetesResource
     @JsonProperty("serviceNetwork")
     public void setServiceNetwork(List<String> serviceNetwork) {
         this.serviceNetwork = serviceNetwork;
+    }
+
+    @JsonProperty("unsupportedConfigOverrides")
+    public HasMetadata getUnsupportedConfigOverrides() {
+        return unsupportedConfigOverrides;
+    }
+
+    @JsonProperty("unsupportedConfigOverrides")
+    public void setUnsupportedConfigOverrides(HasMetadata unsupportedConfigOverrides) {
+        this.unsupportedConfigOverrides = unsupportedConfigOverrides;
+    }
+
+    @JsonProperty("useMultiNetworkPolicy")
+    public Boolean getUseMultiNetworkPolicy() {
+        return useMultiNetworkPolicy;
+    }
+
+    @JsonProperty("useMultiNetworkPolicy")
+    public void setUseMultiNetworkPolicy(Boolean useMultiNetworkPolicy) {
+        this.useMultiNetworkPolicy = useMultiNetworkPolicy;
     }
 
     @JsonAnyGetter

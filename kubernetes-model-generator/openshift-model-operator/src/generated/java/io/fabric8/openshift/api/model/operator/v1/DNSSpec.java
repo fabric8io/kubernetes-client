@@ -33,6 +33,7 @@ import lombok.ToString;
     "apiVersion",
     "kind",
     "metadata",
+    "nodePlacement",
     "servers"
 })
 @ToString
@@ -51,6 +52,8 @@ import lombok.ToString;
 public class DNSSpec implements KubernetesResource
 {
 
+    @JsonProperty("nodePlacement")
+    private DNSNodePlacement nodePlacement;
     @JsonProperty("servers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Server> servers = new ArrayList<Server>();
@@ -66,11 +69,23 @@ public class DNSSpec implements KubernetesResource
 
     /**
      * 
+     * @param nodePlacement
      * @param servers
      */
-    public DNSSpec(List<Server> servers) {
+    public DNSSpec(DNSNodePlacement nodePlacement, List<Server> servers) {
         super();
+        this.nodePlacement = nodePlacement;
         this.servers = servers;
+    }
+
+    @JsonProperty("nodePlacement")
+    public DNSNodePlacement getNodePlacement() {
+        return nodePlacement;
+    }
+
+    @JsonProperty("nodePlacement")
+    public void setNodePlacement(DNSNodePlacement nodePlacement) {
+        this.nodePlacement = nodePlacement;
     }
 
     @JsonProperty("servers")

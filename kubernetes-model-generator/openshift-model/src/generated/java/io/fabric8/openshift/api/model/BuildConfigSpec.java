@@ -34,6 +34,7 @@ import lombok.ToString;
     "metadata",
     "completionDeadlineSeconds",
     "failedBuildsHistoryLimit",
+    "mountTrustedCA",
     "nodeSelector",
     "output",
     "postCommit",
@@ -66,6 +67,8 @@ public class BuildConfigSpec implements KubernetesResource
     private Long completionDeadlineSeconds;
     @JsonProperty("failedBuildsHistoryLimit")
     private Integer failedBuildsHistoryLimit;
+    @JsonProperty("mountTrustedCA")
+    private Boolean mountTrustedCA;
     @JsonProperty("nodeSelector")
     private Map<String, String> nodeSelector;
     @JsonProperty("output")
@@ -101,6 +104,7 @@ public class BuildConfigSpec implements KubernetesResource
 
     /**
      * 
+     * @param mountTrustedCA
      * @param completionDeadlineSeconds
      * @param resources
      * @param serviceAccount
@@ -115,10 +119,11 @@ public class BuildConfigSpec implements KubernetesResource
      * @param strategy
      * @param runPolicy
      */
-    public BuildConfigSpec(Long completionDeadlineSeconds, Integer failedBuildsHistoryLimit, Map<String, String> nodeSelector, BuildOutput output, BuildPostCommitSpec postCommit, io.fabric8.kubernetes.api.model.ResourceRequirements resources, SourceRevision revision, java.lang.String runPolicy, java.lang.String serviceAccount, BuildSource source, BuildStrategy strategy, Integer successfulBuildsHistoryLimit, List<BuildTriggerPolicy> triggers) {
+    public BuildConfigSpec(Long completionDeadlineSeconds, Integer failedBuildsHistoryLimit, Boolean mountTrustedCA, Map<String, String> nodeSelector, BuildOutput output, BuildPostCommitSpec postCommit, io.fabric8.kubernetes.api.model.ResourceRequirements resources, SourceRevision revision, java.lang.String runPolicy, java.lang.String serviceAccount, BuildSource source, BuildStrategy strategy, Integer successfulBuildsHistoryLimit, List<BuildTriggerPolicy> triggers) {
         super();
         this.completionDeadlineSeconds = completionDeadlineSeconds;
         this.failedBuildsHistoryLimit = failedBuildsHistoryLimit;
+        this.mountTrustedCA = mountTrustedCA;
         this.nodeSelector = nodeSelector;
         this.output = output;
         this.postCommit = postCommit;
@@ -150,6 +155,16 @@ public class BuildConfigSpec implements KubernetesResource
     @JsonProperty("failedBuildsHistoryLimit")
     public void setFailedBuildsHistoryLimit(Integer failedBuildsHistoryLimit) {
         this.failedBuildsHistoryLimit = failedBuildsHistoryLimit;
+    }
+
+    @JsonProperty("mountTrustedCA")
+    public Boolean getMountTrustedCA() {
+        return mountTrustedCA;
+    }
+
+    @JsonProperty("mountTrustedCA")
+    public void setMountTrustedCA(Boolean mountTrustedCA) {
+        this.mountTrustedCA = mountTrustedCA;
     }
 
     @JsonProperty("nodeSelector")
