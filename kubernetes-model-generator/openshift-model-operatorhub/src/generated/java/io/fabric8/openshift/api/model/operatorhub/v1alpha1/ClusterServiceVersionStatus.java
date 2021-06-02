@@ -35,6 +35,7 @@ import lombok.ToString;
     "metadata",
     "certsLastUpdated",
     "certsRotateAt",
+    "cleanup",
     "conditions",
     "lastTransitionTime",
     "lastUpdateTime",
@@ -63,6 +64,8 @@ public class ClusterServiceVersionStatus implements KubernetesResource
     private String certsLastUpdated;
     @JsonProperty("certsRotateAt")
     private String certsRotateAt;
+    @JsonProperty("cleanup")
+    private CleanupStatus cleanup;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ClusterServiceVersionCondition> conditions = new ArrayList<ClusterServiceVersionCondition>();
@@ -93,6 +96,7 @@ public class ClusterServiceVersionStatus implements KubernetesResource
      * 
      * @param phase
      * @param reason
+     * @param cleanup
      * @param certsRotateAt
      * @param conditions
      * @param lastTransitionTime
@@ -101,10 +105,11 @@ public class ClusterServiceVersionStatus implements KubernetesResource
      * @param certsLastUpdated
      * @param lastUpdateTime
      */
-    public ClusterServiceVersionStatus(String certsLastUpdated, String certsRotateAt, List<ClusterServiceVersionCondition> conditions, String lastTransitionTime, String lastUpdateTime, java.lang.String message, java.lang.String phase, java.lang.String reason, List<RequirementStatus> requirementStatus) {
+    public ClusterServiceVersionStatus(String certsLastUpdated, String certsRotateAt, CleanupStatus cleanup, List<ClusterServiceVersionCondition> conditions, String lastTransitionTime, String lastUpdateTime, java.lang.String message, java.lang.String phase, java.lang.String reason, List<RequirementStatus> requirementStatus) {
         super();
         this.certsLastUpdated = certsLastUpdated;
         this.certsRotateAt = certsRotateAt;
+        this.cleanup = cleanup;
         this.conditions = conditions;
         this.lastTransitionTime = lastTransitionTime;
         this.lastUpdateTime = lastUpdateTime;
@@ -132,6 +137,16 @@ public class ClusterServiceVersionStatus implements KubernetesResource
     @JsonProperty("certsRotateAt")
     public void setCertsRotateAt(String certsRotateAt) {
         this.certsRotateAt = certsRotateAt;
+    }
+
+    @JsonProperty("cleanup")
+    public CleanupStatus getCleanup() {
+        return cleanup;
+    }
+
+    @JsonProperty("cleanup")
+    public void setCleanup(CleanupStatus cleanup) {
+        this.cleanup = cleanup;
     }
 
     @JsonProperty("conditions")
