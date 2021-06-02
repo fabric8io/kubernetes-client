@@ -40,23 +40,24 @@ public class Fabric8NameHelper extends NameHelper {
 
   @Override
   public String getGetterName(String propertyName, JType type, JsonNode node) {
-    final Matcher m = SINGLE_LETTER_DASH_NAME.matcher(propertyName);
-    final String getterName = super.getGetterName(propertyName, type, node);
-    if (m.matches()) {
-      // https://github.com/joelittlejohn/jsonschema2pojo/issues/1028 + Sundr.io expecting the opposite (getXKubernetes... instead of getxKubernetes)
-      return "get" + getterName.substring(3, 4).toUpperCase() + getterName.substring(4);
-    }
-    return getterName;
+    return correctCamelCaseMethodNameIfInvalid("get", propertyName, super.getGetterName(propertyName, type, node));
   }
 
   @Override
   public String getSetterName(String propertyName, JsonNode node) {
+    return correctCamelCaseMethodNameIfInvalid("set", propertyName, super.getSetterName(propertyName, node));
+  }
+
+  static String correctCamelCaseMethodNameIfInvalid(String prefix, String propertyName, final String orignalMethodName) {
     final Matcher m = SINGLE_LETTER_DASH_NAME.matcher(propertyName);
-    final String setterName = super.getSetterName(propertyName, node);
-    if (m.matches()) {
-      // https://github.com/joelittlejohn/jsonschema2pojo/issues/1028 + Sundr.io expecting the opposite (setXKubernetes... instead of setxKubernetes)
-      return "set" + setterName.substring(3, 4).toUpperCase() + setterName.substring(4);
+    if (m.matches() || Character.isLowerCase(orignalMethodName.charAt(3))) {
+      return correctCamelCaseWithPrefix(prefix, orignalMethodName);
     }
-    return setterName;
+    return orignalMethodName;
+  }
+
+  static String correctCamelCaseWithPrefix(String prefix, String functionName) {
+    // https://github.com/joelittlejohn/jsonschema2pojo/issues/1028 + Sundr.io expecting the opposite (getXKubernetes... instead of getxKubernetes)
+    return prefix + functionName.substring(3, 4).toUpperCase() + functionName.substring(4);
   }
 }

@@ -1,7 +1,9 @@
 
 package io.fabric8.openshift.api.model.operator.v1;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -37,6 +39,7 @@ import lombok.ToString;
     "managementState",
     "observedConfig",
     "operatorLogLevel",
+    "plugins",
     "providers",
     "route",
     "unsupportedConfigOverrides"
@@ -67,6 +70,9 @@ public class ConsoleSpec implements KubernetesResource
     private HasMetadata observedConfig;
     @JsonProperty("operatorLogLevel")
     private String operatorLogLevel;
+    @JsonProperty("plugins")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> plugins = new ArrayList<String>();
     @JsonProperty("providers")
     private ConsoleProviders providers;
     @JsonProperty("route")
@@ -88,19 +94,21 @@ public class ConsoleSpec implements KubernetesResource
      * @param route
      * @param logLevel
      * @param customization
+     * @param plugins
      * @param unsupportedConfigOverrides
      * @param operatorLogLevel
      * @param observedConfig
      * @param providers
      * @param managementState
      */
-    public ConsoleSpec(ConsoleCustomization customization, String logLevel, String managementState, HasMetadata observedConfig, String operatorLogLevel, ConsoleProviders providers, ConsoleConfigRoute route, HasMetadata unsupportedConfigOverrides) {
+    public ConsoleSpec(ConsoleCustomization customization, String logLevel, String managementState, HasMetadata observedConfig, String operatorLogLevel, List<String> plugins, ConsoleProviders providers, ConsoleConfigRoute route, HasMetadata unsupportedConfigOverrides) {
         super();
         this.customization = customization;
         this.logLevel = logLevel;
         this.managementState = managementState;
         this.observedConfig = observedConfig;
         this.operatorLogLevel = operatorLogLevel;
+        this.plugins = plugins;
         this.providers = providers;
         this.route = route;
         this.unsupportedConfigOverrides = unsupportedConfigOverrides;
@@ -154,6 +162,16 @@ public class ConsoleSpec implements KubernetesResource
     @JsonProperty("operatorLogLevel")
     public void setOperatorLogLevel(String operatorLogLevel) {
         this.operatorLogLevel = operatorLogLevel;
+    }
+
+    @JsonProperty("plugins")
+    public List<String> getPlugins() {
+        return plugins;
+    }
+
+    @JsonProperty("plugins")
+    public void setPlugins(List<String> plugins) {
+        this.plugins = plugins;
     }
 
     @JsonProperty("providers")

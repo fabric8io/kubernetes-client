@@ -1,7 +1,9 @@
 
 package io.fabric8.openshift.api.model.operator.v1;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -32,6 +34,7 @@ import lombok.ToString;
     "kind",
     "metadata",
     "forwardedHeaderPolicy",
+    "headerNameCaseAdjustments",
     "uniqueId"
 })
 @ToString
@@ -52,6 +55,9 @@ public class IngressControllerHTTPHeaders implements KubernetesResource
 
     @JsonProperty("forwardedHeaderPolicy")
     private String forwardedHeaderPolicy;
+    @JsonProperty("headerNameCaseAdjustments")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> headerNameCaseAdjustments = new ArrayList<String>();
     @JsonProperty("uniqueId")
     private IngressControllerHTTPUniqueIdHeaderPolicy uniqueId;
     @JsonIgnore
@@ -67,11 +73,13 @@ public class IngressControllerHTTPHeaders implements KubernetesResource
     /**
      * 
      * @param forwardedHeaderPolicy
+     * @param headerNameCaseAdjustments
      * @param uniqueId
      */
-    public IngressControllerHTTPHeaders(String forwardedHeaderPolicy, IngressControllerHTTPUniqueIdHeaderPolicy uniqueId) {
+    public IngressControllerHTTPHeaders(String forwardedHeaderPolicy, List<String> headerNameCaseAdjustments, IngressControllerHTTPUniqueIdHeaderPolicy uniqueId) {
         super();
         this.forwardedHeaderPolicy = forwardedHeaderPolicy;
+        this.headerNameCaseAdjustments = headerNameCaseAdjustments;
         this.uniqueId = uniqueId;
     }
 
@@ -83,6 +91,16 @@ public class IngressControllerHTTPHeaders implements KubernetesResource
     @JsonProperty("forwardedHeaderPolicy")
     public void setForwardedHeaderPolicy(String forwardedHeaderPolicy) {
         this.forwardedHeaderPolicy = forwardedHeaderPolicy;
+    }
+
+    @JsonProperty("headerNameCaseAdjustments")
+    public List<String> getHeaderNameCaseAdjustments() {
+        return headerNameCaseAdjustments;
+    }
+
+    @JsonProperty("headerNameCaseAdjustments")
+    public void setHeaderNameCaseAdjustments(List<String> headerNameCaseAdjustments) {
+        this.headerNameCaseAdjustments = headerNameCaseAdjustments;
     }
 
     @JsonProperty("uniqueId")

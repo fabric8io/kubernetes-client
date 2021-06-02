@@ -1,12 +1,15 @@
 
 package io.fabric8.openshift.api.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.Container;
@@ -29,7 +32,8 @@ import lombok.ToString;
 @JsonPropertyOrder({
     "apiVersion",
     "kind",
-    "metadata"
+    "metadata",
+    "componentRoutes"
 })
 @ToString
 @EqualsAndHashCode
@@ -47,8 +51,37 @@ import lombok.ToString;
 public class IngressStatus implements KubernetesResource
 {
 
+    @JsonProperty("componentRoutes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<ComponentRouteStatus> componentRoutes = new ArrayList<ComponentRouteStatus>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+
+    /**
+     * No args constructor for use in serialization
+     * 
+     */
+    public IngressStatus() {
+    }
+
+    /**
+     * 
+     * @param componentRoutes
+     */
+    public IngressStatus(List<ComponentRouteStatus> componentRoutes) {
+        super();
+        this.componentRoutes = componentRoutes;
+    }
+
+    @JsonProperty("componentRoutes")
+    public List<ComponentRouteStatus> getComponentRoutes() {
+        return componentRoutes;
+    }
+
+    @JsonProperty("componentRoutes")
+    public void setComponentRoutes(List<ComponentRouteStatus> componentRoutes) {
+        this.componentRoutes = componentRoutes;
+    }
 
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {

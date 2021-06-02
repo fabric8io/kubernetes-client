@@ -34,6 +34,7 @@ import lombok.ToString;
     "kind",
     "metadata",
     "region",
+    "resourceTags",
     "serviceEndpoints"
 })
 @ToString
@@ -54,6 +55,9 @@ public class AWSPlatformStatus implements KubernetesResource
 
     @JsonProperty("region")
     private String region;
+    @JsonProperty("resourceTags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<AWSResourceTag> resourceTags = new ArrayList<AWSResourceTag>();
     @JsonProperty("serviceEndpoints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<AWSServiceEndpoint> serviceEndpoints = new ArrayList<AWSServiceEndpoint>();
@@ -69,12 +73,14 @@ public class AWSPlatformStatus implements KubernetesResource
 
     /**
      * 
+     * @param resourceTags
      * @param region
      * @param serviceEndpoints
      */
-    public AWSPlatformStatus(String region, List<AWSServiceEndpoint> serviceEndpoints) {
+    public AWSPlatformStatus(String region, List<AWSResourceTag> resourceTags, List<AWSServiceEndpoint> serviceEndpoints) {
         super();
         this.region = region;
+        this.resourceTags = resourceTags;
         this.serviceEndpoints = serviceEndpoints;
     }
 
@@ -86,6 +92,16 @@ public class AWSPlatformStatus implements KubernetesResource
     @JsonProperty("region")
     public void setRegion(String region) {
         this.region = region;
+    }
+
+    @JsonProperty("resourceTags")
+    public List<AWSResourceTag> getResourceTags() {
+        return resourceTags;
+    }
+
+    @JsonProperty("resourceTags")
+    public void setResourceTags(List<AWSResourceTag> resourceTags) {
+        this.resourceTags = resourceTags;
     }
 
     @JsonProperty("serviceEndpoints")

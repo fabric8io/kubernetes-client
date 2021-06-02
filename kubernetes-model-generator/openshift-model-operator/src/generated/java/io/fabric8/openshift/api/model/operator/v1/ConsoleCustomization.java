@@ -32,10 +32,14 @@ import lombok.ToString;
     "apiVersion",
     "kind",
     "metadata",
+    "addPage",
     "brand",
     "customLogoFile",
     "customProductName",
-    "documentationBaseURL"
+    "developerCatalog",
+    "documentationBaseURL",
+    "projectAccess",
+    "quickStarts"
 })
 @ToString
 @EqualsAndHashCode
@@ -53,14 +57,22 @@ import lombok.ToString;
 public class ConsoleCustomization implements KubernetesResource
 {
 
+    @JsonProperty("addPage")
+    private AddPage addPage;
     @JsonProperty("brand")
     private String brand;
     @JsonProperty("customLogoFile")
     private ConfigMapFileReference customLogoFile;
     @JsonProperty("customProductName")
     private String customProductName;
+    @JsonProperty("developerCatalog")
+    private DeveloperConsoleCatalogCustomization developerCatalog;
     @JsonProperty("documentationBaseURL")
     private String documentationBaseURL;
+    @JsonProperty("projectAccess")
+    private ProjectAccess projectAccess;
+    @JsonProperty("quickStarts")
+    private QuickStarts quickStarts;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -75,15 +87,33 @@ public class ConsoleCustomization implements KubernetesResource
      * 
      * @param customProductName
      * @param customLogoFile
+     * @param addPage
+     * @param quickStarts
+     * @param projectAccess
      * @param documentationBaseURL
      * @param brand
+     * @param developerCatalog
      */
-    public ConsoleCustomization(String brand, ConfigMapFileReference customLogoFile, String customProductName, String documentationBaseURL) {
+    public ConsoleCustomization(AddPage addPage, String brand, ConfigMapFileReference customLogoFile, String customProductName, DeveloperConsoleCatalogCustomization developerCatalog, String documentationBaseURL, ProjectAccess projectAccess, QuickStarts quickStarts) {
         super();
+        this.addPage = addPage;
         this.brand = brand;
         this.customLogoFile = customLogoFile;
         this.customProductName = customProductName;
+        this.developerCatalog = developerCatalog;
         this.documentationBaseURL = documentationBaseURL;
+        this.projectAccess = projectAccess;
+        this.quickStarts = quickStarts;
+    }
+
+    @JsonProperty("addPage")
+    public AddPage getAddPage() {
+        return addPage;
+    }
+
+    @JsonProperty("addPage")
+    public void setAddPage(AddPage addPage) {
+        this.addPage = addPage;
     }
 
     @JsonProperty("brand")
@@ -116,6 +146,16 @@ public class ConsoleCustomization implements KubernetesResource
         this.customProductName = customProductName;
     }
 
+    @JsonProperty("developerCatalog")
+    public DeveloperConsoleCatalogCustomization getDeveloperCatalog() {
+        return developerCatalog;
+    }
+
+    @JsonProperty("developerCatalog")
+    public void setDeveloperCatalog(DeveloperConsoleCatalogCustomization developerCatalog) {
+        this.developerCatalog = developerCatalog;
+    }
+
     @JsonProperty("documentationBaseURL")
     public String getDocumentationBaseURL() {
         return documentationBaseURL;
@@ -124,6 +164,26 @@ public class ConsoleCustomization implements KubernetesResource
     @JsonProperty("documentationBaseURL")
     public void setDocumentationBaseURL(String documentationBaseURL) {
         this.documentationBaseURL = documentationBaseURL;
+    }
+
+    @JsonProperty("projectAccess")
+    public ProjectAccess getProjectAccess() {
+        return projectAccess;
+    }
+
+    @JsonProperty("projectAccess")
+    public void setProjectAccess(ProjectAccess projectAccess) {
+        this.projectAccess = projectAccess;
+    }
+
+    @JsonProperty("quickStarts")
+    public QuickStarts getQuickStarts() {
+        return quickStarts;
+    }
+
+    @JsonProperty("quickStarts")
+    public void setQuickStarts(QuickStarts quickStarts) {
+        this.quickStarts = quickStarts;
     }
 
     @JsonAnyGetter

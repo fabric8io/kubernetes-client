@@ -76,6 +76,7 @@ public class User implements HasMetadata, Namespaced
     @JsonProperty("groups")
     private List<String> groups = new ArrayList<String>();
     @JsonProperty("identities")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> identities = new ArrayList<String>();
     /**
      * 

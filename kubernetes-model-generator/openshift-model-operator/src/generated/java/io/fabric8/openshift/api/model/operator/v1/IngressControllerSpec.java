@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
@@ -18,6 +19,7 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.openshift.api.model.ConfigMapNameReference;
 import io.fabric8.openshift.api.model.TLSSecurityProfile;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
@@ -33,6 +35,7 @@ import lombok.ToString;
     "defaultCertificate",
     "domain",
     "endpointPublishingStrategy",
+    "httpErrorCodePages",
     "httpHeaders",
     "logging",
     "namespaceSelector",
@@ -40,7 +43,9 @@ import lombok.ToString;
     "replicas",
     "routeAdmission",
     "routeSelector",
-    "tlsSecurityProfile"
+    "tlsSecurityProfile",
+    "tuningOptions",
+    "unsupportedConfigOverrides"
 })
 @ToString
 @EqualsAndHashCode
@@ -64,6 +69,8 @@ public class IngressControllerSpec implements KubernetesResource
     private String domain;
     @JsonProperty("endpointPublishingStrategy")
     private EndpointPublishingStrategy endpointPublishingStrategy;
+    @JsonProperty("httpErrorCodePages")
+    private ConfigMapNameReference httpErrorCodePages;
     @JsonProperty("httpHeaders")
     private IngressControllerHTTPHeaders httpHeaders;
     @JsonProperty("logging")
@@ -80,6 +87,10 @@ public class IngressControllerSpec implements KubernetesResource
     private io.fabric8.kubernetes.api.model.LabelSelector routeSelector;
     @JsonProperty("tlsSecurityProfile")
     private TLSSecurityProfile tlsSecurityProfile;
+    @JsonProperty("tuningOptions")
+    private IngressControllerTuningOptions tuningOptions;
+    @JsonProperty("unsupportedConfigOverrides")
+    private HasMetadata unsupportedConfigOverrides;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -92,23 +103,27 @@ public class IngressControllerSpec implements KubernetesResource
 
     /**
      * 
-     * @param nodePlacement
-     * @param routeAdmission
+     * @param httpErrorCodePages
      * @param routeSelector
      * @param replicas
+     * @param endpointPublishingStrategy
+     * @param namespaceSelector
+     * @param httpHeaders
+     * @param nodePlacement
+     * @param routeAdmission
      * @param domain
      * @param tlsSecurityProfile
      * @param defaultCertificate
-     * @param endpointPublishingStrategy
-     * @param namespaceSelector
+     * @param unsupportedConfigOverrides
      * @param logging
-     * @param httpHeaders
+     * @param tuningOptions
      */
-    public IngressControllerSpec(io.fabric8.kubernetes.api.model.LocalObjectReference defaultCertificate, String domain, EndpointPublishingStrategy endpointPublishingStrategy, IngressControllerHTTPHeaders httpHeaders, IngressControllerLogging logging, io.fabric8.kubernetes.api.model.LabelSelector namespaceSelector, NodePlacement nodePlacement, Integer replicas, RouteAdmissionPolicy routeAdmission, io.fabric8.kubernetes.api.model.LabelSelector routeSelector, TLSSecurityProfile tlsSecurityProfile) {
+    public IngressControllerSpec(io.fabric8.kubernetes.api.model.LocalObjectReference defaultCertificate, String domain, EndpointPublishingStrategy endpointPublishingStrategy, ConfigMapNameReference httpErrorCodePages, IngressControllerHTTPHeaders httpHeaders, IngressControllerLogging logging, io.fabric8.kubernetes.api.model.LabelSelector namespaceSelector, NodePlacement nodePlacement, Integer replicas, RouteAdmissionPolicy routeAdmission, io.fabric8.kubernetes.api.model.LabelSelector routeSelector, TLSSecurityProfile tlsSecurityProfile, IngressControllerTuningOptions tuningOptions, HasMetadata unsupportedConfigOverrides) {
         super();
         this.defaultCertificate = defaultCertificate;
         this.domain = domain;
         this.endpointPublishingStrategy = endpointPublishingStrategy;
+        this.httpErrorCodePages = httpErrorCodePages;
         this.httpHeaders = httpHeaders;
         this.logging = logging;
         this.namespaceSelector = namespaceSelector;
@@ -117,6 +132,8 @@ public class IngressControllerSpec implements KubernetesResource
         this.routeAdmission = routeAdmission;
         this.routeSelector = routeSelector;
         this.tlsSecurityProfile = tlsSecurityProfile;
+        this.tuningOptions = tuningOptions;
+        this.unsupportedConfigOverrides = unsupportedConfigOverrides;
     }
 
     @JsonProperty("defaultCertificate")
@@ -147,6 +164,16 @@ public class IngressControllerSpec implements KubernetesResource
     @JsonProperty("endpointPublishingStrategy")
     public void setEndpointPublishingStrategy(EndpointPublishingStrategy endpointPublishingStrategy) {
         this.endpointPublishingStrategy = endpointPublishingStrategy;
+    }
+
+    @JsonProperty("httpErrorCodePages")
+    public ConfigMapNameReference getHttpErrorCodePages() {
+        return httpErrorCodePages;
+    }
+
+    @JsonProperty("httpErrorCodePages")
+    public void setHttpErrorCodePages(ConfigMapNameReference httpErrorCodePages) {
+        this.httpErrorCodePages = httpErrorCodePages;
     }
 
     @JsonProperty("httpHeaders")
@@ -227,6 +254,26 @@ public class IngressControllerSpec implements KubernetesResource
     @JsonProperty("tlsSecurityProfile")
     public void setTlsSecurityProfile(TLSSecurityProfile tlsSecurityProfile) {
         this.tlsSecurityProfile = tlsSecurityProfile;
+    }
+
+    @JsonProperty("tuningOptions")
+    public IngressControllerTuningOptions getTuningOptions() {
+        return tuningOptions;
+    }
+
+    @JsonProperty("tuningOptions")
+    public void setTuningOptions(IngressControllerTuningOptions tuningOptions) {
+        this.tuningOptions = tuningOptions;
+    }
+
+    @JsonProperty("unsupportedConfigOverrides")
+    public HasMetadata getUnsupportedConfigOverrides() {
+        return unsupportedConfigOverrides;
+    }
+
+    @JsonProperty("unsupportedConfigOverrides")
+    public void setUnsupportedConfigOverrides(HasMetadata unsupportedConfigOverrides) {
+        this.unsupportedConfigOverrides = unsupportedConfigOverrides;
     }
 
     @JsonAnyGetter
