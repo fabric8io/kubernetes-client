@@ -105,7 +105,7 @@ class PodCrudTest {
     Watch watch = client.pods().inNamespace("ns1").withName(pod1.getMetadata().getName()).watch(lw);
 
     pod1 = client.pods().inNamespace("ns1").withName(pod1.getMetadata().getName())
-      .patch(new PodBuilder().withNewMetadataLike(pod1.getMetadata()).endMetadata().build());
+      .edit(p->new PodBuilder(p).editMetadata().withLabels(Collections.singletonMap("x", "y")).endMetadata().build());
 
     pod1.setSpec(new PodSpecBuilder().addNewContainer().withImage("nginx").withName("nginx").endContainer().build());
 
