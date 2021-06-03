@@ -84,6 +84,7 @@ type Schema struct {
   ImageStreamImport                        imageapi.ImageStreamImport
   ImageStreamImage                         imageapi.ImageStreamImage
   ImageStreamMapping                       imageapi.ImageStreamMapping
+  ImageSignature                           imageapi.ImageSignature	
   DeploymentConfig                         appsapi.DeploymentConfig
   DeploymentConfigList                     appsapi.DeploymentConfigList
   Route                                    routeapi.Route

@@ -25,6 +25,8 @@ import io.fabric8.openshift.api.model.*;
 import io.fabric8.openshift.api.model.HelmChartRepository;
 import io.fabric8.openshift.api.model.HelmChartRepositoryList;
 import io.fabric8.openshift.client.dsl.*;
+import io.fabric8.openshift.client.dsl.internal.image.ImageSignatureOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.image.ImageStreamImageOperationsImpl;
 
 import java.net.URL;
 
@@ -229,6 +231,33 @@ public interface OpenShiftClient extends KubernetesClient {
    */
   MixedOperation<ImageStreamTag, ImageStreamTagList, Resource<ImageStreamTag>> imageStreamTags();
 
+  /**
+   * API entrypoint for accessing ImageStreamImport(image.openshift.io/v1)
+   *
+   * @return {@link OpenShiftCreateOnlyResourceOperationsImpl} for ImageStreamImport
+   */
+  OpenShiftCreateOnlyResourceOperationsImpl<ImageStreamImport, ImageStreamImport> imageStreamImports();
+
+  /**
+   * API entrypoint for accessing ImageStreamMapping(image.openshift.io/v1)
+   *
+   * @return {@link OpenShiftCreateOnlyResourceOperationsImpl} for ImageStreamMapping
+   */
+  OpenShiftCreateOnlyResourceOperationsImpl<ImageStreamMapping, ImageStreamMapping> imageStreamMappings();
+
+  /**
+   * API entrypoint for accessing ImageStreamImage(image.openshift.io/v1)
+   *
+   * @return {@link ImageStreamImageOperationsImpl} for ImageStreamImage operations
+   */
+  ImageStreamImageOperationsImpl imageStreamImages();
+
+  /**
+   * API entrypoint for accessing ImageSignature(image.openshift.io/v1)
+   *
+   * @return {@link ImageSignatureOperationsImpl} for ImageSignature operations
+   */
+  ImageSignatureOperationsImpl imageSignatures();
   /**
    * API entrypoint for accessing OAuthAccessToken(oauth.openshift.io/v1)
    *

@@ -128,7 +128,9 @@ import io.fabric8.openshift.api.model.IdentityList;
 import io.fabric8.openshift.api.model.Image;
 import io.fabric8.openshift.api.model.ImageList;
 import io.fabric8.openshift.api.model.ImageStream;
+import io.fabric8.openshift.api.model.ImageStreamImport;
 import io.fabric8.openshift.api.model.ImageStreamList;
+import io.fabric8.openshift.api.model.ImageStreamMapping;
 import io.fabric8.openshift.api.model.ImageStreamTag;
 import io.fabric8.openshift.api.model.ImageStreamTagList;
 import io.fabric8.openshift.api.model.ImageTag;
@@ -193,6 +195,8 @@ import io.fabric8.openshift.client.dsl.OpenShiftWhereaboutsAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.ProjectOperation;
 import io.fabric8.openshift.client.dsl.ProjectRequestOperation;
 import io.fabric8.openshift.client.dsl.TemplateResource;
+import io.fabric8.openshift.client.dsl.internal.image.ImageSignatureOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.image.ImageStreamImageOperationsImpl;
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.ConfigurationPolicy;
@@ -406,6 +410,26 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   @Override
   public MixedOperation<ImageStreamTag, ImageStreamTagList, Resource<ImageStreamTag>> imageStreamTags() {
     return delegate.imageStreamTags();
+  }
+
+  @Override
+  public OpenShiftCreateOnlyResourceOperationsImpl<ImageStreamImport, ImageStreamImport> imageStreamImports() {
+    return delegate.imageStreamImports();
+  }
+
+  @Override
+  public OpenShiftCreateOnlyResourceOperationsImpl<ImageStreamMapping, ImageStreamMapping> imageStreamMappings() {
+    return delegate.imageStreamMappings();
+  }
+
+  @Override
+  public ImageStreamImageOperationsImpl imageStreamImages() {
+    return delegate.imageStreamImages();
+  }
+
+  @Override
+  public ImageSignatureOperationsImpl imageSignatures() {
+    return delegate.imageSignatures();
   }
 
   @Override
