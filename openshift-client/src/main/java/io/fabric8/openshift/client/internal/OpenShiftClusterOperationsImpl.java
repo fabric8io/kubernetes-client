@@ -66,7 +66,7 @@ public class OpenShiftClusterOperationsImpl extends ClusterOperationsImpl {
   private static VersionInfo parseVersionInfoFromClusterVersion(ClusterVersion clusterVersion) throws ParseException {
     String[] versionParts = clusterVersion.getStatus().getDesired().getVersion().split("\\.");
     VersionInfo.Builder versionInfoBuilder = new VersionInfo.Builder();
-    if (versionParts.length == 3) {
+    if (versionParts.length > 2) {
       versionInfoBuilder.withMajor(versionParts[0]);
       versionInfoBuilder.withMinor(versionParts[1] + "." + versionParts[2]);
     }
