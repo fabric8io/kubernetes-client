@@ -35,7 +35,7 @@ import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -53,8 +53,7 @@ public class LogWatchCallback implements LogWatch, Callback, AutoCloseable {
     private final PipedInputStream output;
     private final Set<Closeable> toClose = new LinkedHashSet<>();
 
-    private final AtomicBoolean started = new AtomicBoolean(false);
-    private final ArrayBlockingQueue<Object> queue = new ArrayBlockingQueue<>(1);
+    private final CompletableFuture<Void> startedFuture = new CompletableFuture<>();
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final AtomicBoolean closed = new AtomicBoolean(false);
 
@@ -116,7 +115,7 @@ public class LogWatchCallback implements LogWatch, Callback, AutoCloseable {
     }
 
     public void waitUntilReady() {
-      if (!Utils.waitUntilReady(queue, config.getRequestTimeout(), TimeUnit.MILLISECONDS)) {
+      if (!Utils.waitUntilReady(startedFuture, config.getRequestTimeout(), TimeUnit.MILLISECONDS)) {
         if (LOGGER.isDebugEnabled()) {
           LOGGER.warn("Log watch request has not been opened within: " + config.getRequestTimeout() + " millis.");
         }
@@ -136,10 +135,7 @@ public class LogWatchCallback implements LogWatch, Callback, AutoCloseable {
 
         LOGGER.error("Log Callback Failure.", ioe);
         cleanUp();
-        //We only need to queue startup failures.
-        if (!started.get()) {
-            queue.add(ioe);
-        }
+        startedFuture.completeExceptionally(ioe);
     }
 
     @Override
@@ -157,8 +153,7 @@ public class LogWatchCallback implements LogWatch, Callback, AutoCloseable {
 
       if (!executorService.isShutdown()) {
         executorService.submit(pumper);
-        started.set(true);
-        queue.add(true);
+        startedFuture.complete(null);
       }
 
     }

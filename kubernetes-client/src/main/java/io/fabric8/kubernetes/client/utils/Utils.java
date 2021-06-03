@@ -40,13 +40,15 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
-import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import org.slf4j.Logger;
@@ -142,25 +144,36 @@ public class Utils {
   /**
    * Wait until an other thread signals the completion of a task.
    * If an exception is passed, it will be propagated to the caller.
-   * @param queue     The communication channel.
+   * @param future    The communication channel.
    * @param amount    The amount of time to wait.
    * @param timeUnit  The time unit.
    *
    * @return a boolean value indicating resource is ready or not.
    */
-  public static boolean waitUntilReady(BlockingQueue<Object> queue, long amount, TimeUnit timeUnit) {
+  public static boolean waitUntilReady(Future<?> future, long amount, TimeUnit timeUnit) {
     try {
-      Object obj = queue.poll(amount, timeUnit);
-      if (obj instanceof Boolean) {
-        return (Boolean) obj;
-      } else if (obj instanceof Throwable) {
-        Throwable t = (Throwable) obj;
-        t.addSuppressed(new Throwable("waiting here"));
-        throw t;
-      }
+      future.get(amount, timeUnit);
+      return true;
+    } catch (TimeoutException e) {
       return false;
-    } catch (Throwable t) {
-      throw KubernetesClientException.launderThrowable(t);
+    } catch (ExecutionException e) {
+      Throwable t = e;
+      if (e.getCause() != null) {
+        t = e.getCause();
+      }
+      t.addSuppressed(new Throwable("waiting here"));
+      throw KubernetesClientException.launderThrowable(t);      
+    } catch (Exception e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
+  }
+  
+  /**
+   * Similar to {@link #waitUntilReady(Future, long, TimeUnit)}, but will always throw an exception if not ready
+   */
+  public static void waitUntilReadyOrFail(Future<?> future, long amount, TimeUnit timeUnit) {
+    if (!waitUntilReady(future, amount, timeUnit)) {
+      throw new KubernetesClientException("not ready after " + amount + " " + timeUnit);
     }
   }
 
