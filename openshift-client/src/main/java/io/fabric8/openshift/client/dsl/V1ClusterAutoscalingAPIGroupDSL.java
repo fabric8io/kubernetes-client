@@ -13,19 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.knative.client.serving.v1beta1;
-
+package io.fabric8.openshift.client.dsl;
 
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.knative.serving.v1beta1.*;
+import io.fabric8.openshift.api.model.clusterautoscaling.v1.ClusterAutoscaler;
+import io.fabric8.openshift.api.model.clusterautoscaling.v1.ClusterAutoscalerList;
 
-public interface ServingV1Beta1Client extends Client {
-
-  // Serving
-  MixedOperation<Service, ServiceList, Resource<Service>> services();
-  MixedOperation<Route, RouteList, Resource<Route>> routes();
-  MixedOperation<Revision, RevisionList, Resource<Revision>> revisions();
-  MixedOperation<Configuration, ConfigurationList, Resource<Configuration>> configurations();
+public interface V1ClusterAutoscalingAPIGroupDSL extends Client {
+  /**
+   * DSL entrypoint for ClusterAutoscaler (autoscaling.openshift.io/v1)
+   *
+   * @return {@link NonNamespaceOperation} for ClusterAutoscaler
+   */
+  NonNamespaceOperation<ClusterAutoscaler, ClusterAutoscalerList, Resource<ClusterAutoscaler>> clusterAutoscalers();
 }

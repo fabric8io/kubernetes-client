@@ -13,15 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.knative.client.serving.v1beta1;
+package io.fabric8.openshift.client.dsl;
 
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.dsl.AnyNamespaceable;
-import io.fabric8.kubernetes.client.dsl.Namespaceable;
-import io.fabric8.kubernetes.client.dsl.RequestConfigurable;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.openshift.api.model.clusterautoscaling.v1beta1.MachineAutoscaler;
+import io.fabric8.openshift.api.model.clusterautoscaling.v1beta1.MachineAutoscalerList;
 
-public interface GenericServingV1Beta1Client<C extends Client> extends Client, ServingV1Beta1Client,
-        Namespaceable<C>,
-        AnyNamespaceable<C>,
-        RequestConfigurable<C> {
+public interface V1beta1ClusterAutoscalingAPIGroupDSL extends Client {
+  /**
+   * DSL entrypoint for MachineAutoscaler (autoscaling.openshift.io/v1beta1)
+   *
+   * @return {@link MixedOperation} for MachineAutoscaler
+   */
+  MixedOperation<MachineAutoscaler, MachineAutoscalerList, Resource<MachineAutoscaler>> machineAutoscalers();
 }

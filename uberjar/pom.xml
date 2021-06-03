@@ -124,7 +124,15 @@
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
+      <artifactId>openshift-model-machine</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
       <artifactId>openshift-model-monitoring</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>openshift-model-clusterautoscaling</artifactId>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
@@ -251,11 +259,12 @@
                   <include>io.fabric8:kubernetes-model-scheduling</include>
                   <include>io.fabric8:kubernetes-model-storageclass</include>
                   <include>io.fabric8:openshift-model</include>
+                  <include>io.fabric8:openshift-model-clusterautoscaling</include>
                   <include>io.fabric8:openshift-model-console</include>
                   <include>io.fabric8:openshift-model-operator</include>
                   <include>io.fabric8:openshift-model-operatorhub</include>
                   <include>io.fabric8:openshift-model-machineconfig</include>
-                  <include>io.fabric8:openshift-model-monitoring</include>
+                  <include>io.fabric8:openshift-model-machine</include>
                   <include>io.fabric8:kubernetes-client</include>
                   <include>io.fabric8:kubernetes-server-mock</include>
                   <include>io.fabric8:openshift-client</include>
@@ -301,10 +310,12 @@
                   <include>io.fabric8:kubernetes-model-scheduling</include>
                   <include>io.fabric8:kubernetes-model-storageclass</include>
                   <include>io.fabric8:openshift-model</include>
+                  <include>io.fabric8:openshift-model-clusterautoscaling</include>
                   <include>io.fabric8:openshift-model-console</include>
                   <include>io.fabric8:openshift-model-operator</include>
                   <include>io.fabric8:openshift-model-operatorhub</include>
                   <include>io.fabric8:openshift-model-machineconfig</include>
+                  <include>io.fabric8:openshift-model-machine</include>
                   <include>io.fabric8:openshift-model-monitoring</include>
                   <include>io.fabric8:kubernetes-client</include>
                   <include>io.fabric8:kubernetes-server-mock</include>

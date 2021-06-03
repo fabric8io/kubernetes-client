@@ -140,8 +140,8 @@
     <maven.dependency.plugin.version>3.1.2</maven.dependency.plugin.version>
     <maven.shade.plugin.version>3.2.4</maven.shade.plugin.version>
     <maven.install.plugin.version>3.0.0-M1</maven.install.plugin.version>
-    <jandex.plugin.version>1.0.8</jandex.plugin.version>
-    <jandex.version>2.2.3.Final</jandex.version>
+    <jandex.plugin.version>1.1.0</jandex.plugin.version>
+    <jandex.version>2.3.0.Final</jandex.version>
     <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
     <sonar-maven-plugin.version>3.9.0.2155</sonar-maven-plugin.version>
 
@@ -297,12 +297,22 @@
       </dependency>
       <dependency>
         <groupId>io.fabric8</groupId>
+        <artifactId>openshift-model-clusterautoscaling</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
         <artifactId>openshift-model-operator</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>openshift-model-operatorhub</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>openshift-model-machine</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>

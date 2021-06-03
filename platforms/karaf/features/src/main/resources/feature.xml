@@ -65,7 +65,9 @@
   <feature name="openshift-client" description="Fabric8 Openshift Client" version="${project.version}">
     <feature>kubernetes-client</feature>
     <bundle>mvn:io.fabric8/openshift-client/${project.version}/jar/bundle</bundle>
+    <bundle>mvn:io.fabric8/openshift-model-clusterautoscaling/${project.version}</bundle>
     <bundle>mvn:io.fabric8/openshift-model-console/${project.version}</bundle>
+    <bundle>mvn:io.fabric8/openshift-model-machine/${project.version}</bundle>
     <bundle>mvn:io.fabric8/openshift-model-monitoring/${project.version}</bundle>
     <bundle>mvn:io.fabric8/openshift-model-operator/${project.version}</bundle>
     <bundle>mvn:io.fabric8/openshift-model-operatorhub/${project.version}</bundle>

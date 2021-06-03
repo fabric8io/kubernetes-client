@@ -28,6 +28,7 @@ import io.fabric8.knative.client.eventing.v1beta1.internal.EventTypeOperationsIm
 import io.fabric8.knative.client.eventing.v1beta1.internal.KafkaBindingOperationsImpl;
 import io.fabric8.knative.client.eventing.v1beta1.internal.KafkaChannelOperationsImpl;
 import io.fabric8.knative.client.eventing.v1beta1.internal.KafkaSourceOperationsImpl;
+import io.fabric8.knative.client.flows.v1.internal.ParallelOperationsImpl;
 import io.fabric8.knative.client.flows.v1.internal.SequenceOperationsImpl;
 import io.fabric8.knative.client.messaging.v1.internal.ChannelOperationsImpl;
 import io.fabric8.knative.client.messaging.v1.internal.InMemoryChannelOperationsImpl;
@@ -36,10 +37,10 @@ import io.fabric8.knative.client.serving.v1.internal.ConfigurationOperationsImpl
 import io.fabric8.knative.client.serving.v1.internal.RevisionOperationsImpl;
 import io.fabric8.knative.client.serving.v1.internal.RouteOperationsImpl;
 import io.fabric8.knative.client.serving.v1.internal.ServiceOperationsImpl;
-import io.fabric8.knative.client.sources.v1beta1.internal.ApiServerSourceOperationsImpl;
-import io.fabric8.knative.client.sources.v1beta1.internal.ContainerSourceOperationsImpl;
-import io.fabric8.knative.client.sources.v1beta1.internal.PingSourceOperationsImpl;
-import io.fabric8.knative.client.sources.v1beta1.internal.SinkBindingOperationsImpl;
+import io.fabric8.knative.client.sources.v1.internal.ApiServerSourceOperationsImpl;
+import io.fabric8.knative.client.sources.v1.internal.ContainerSourceOperationsImpl;
+import io.fabric8.knative.client.sources.v1.internal.PingSourceOperationsImpl;
+import io.fabric8.knative.client.sources.v1.internal.SinkBindingOperationsImpl;
 import io.fabric8.knative.eventing.contrib.awssqs.v1alpha1.AwsSqsSource;
 import io.fabric8.knative.eventing.contrib.awssqs.v1alpha1.AwsSqsSourceList;
 import io.fabric8.knative.eventing.contrib.couchdb.v1alpha1.CouchDbSource;
@@ -66,6 +67,8 @@ import io.fabric8.knative.eventing.v1.Trigger;
 import io.fabric8.knative.eventing.v1.TriggerList;
 import io.fabric8.knative.eventing.v1beta1.EventType;
 import io.fabric8.knative.eventing.v1beta1.EventTypeList;
+import io.fabric8.knative.flows.v1.Parallel;
+import io.fabric8.knative.flows.v1.ParallelList;
 import io.fabric8.knative.flows.v1.Sequence;
 import io.fabric8.knative.flows.v1.SequenceList;
 import io.fabric8.knative.messaging.v1.Channel;
@@ -82,14 +85,14 @@ import io.fabric8.knative.serving.v1.Route;
 import io.fabric8.knative.serving.v1.RouteList;
 import io.fabric8.knative.serving.v1.Service;
 import io.fabric8.knative.serving.v1.ServiceList;
-import io.fabric8.knative.sources.v1beta1.ApiServerSource;
-import io.fabric8.knative.sources.v1beta1.ApiServerSourceList;
-import io.fabric8.knative.sources.v1beta1.ContainerSource;
-import io.fabric8.knative.sources.v1beta1.ContainerSourceList;
-import io.fabric8.knative.sources.v1beta1.PingSource;
-import io.fabric8.knative.sources.v1beta1.PingSourceList;
-import io.fabric8.knative.sources.v1beta1.SinkBinding;
-import io.fabric8.knative.sources.v1beta1.SinkBindingList;
+import io.fabric8.knative.sources.v1.ApiServerSource;
+import io.fabric8.knative.sources.v1.ApiServerSourceList;
+import io.fabric8.knative.sources.v1.ContainerSource;
+import io.fabric8.knative.sources.v1.ContainerSourceList;
+import io.fabric8.knative.sources.v1.PingSource;
+import io.fabric8.knative.sources.v1.PingSourceList;
+import io.fabric8.knative.sources.v1.SinkBinding;
+import io.fabric8.knative.sources.v1.SinkBindingList;
 import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
@@ -181,7 +184,12 @@ public class DefaultKnativeClient extends BaseClient implements NamespacedKnativ
         return new SequenceOperationsImpl(this.getHttpClient(), this.getConfiguration());
     }
 
-    @Override
+  @Override
+  public MixedOperation<Parallel, ParallelList, Resource<Parallel>> parallels() {
+    return new ParallelOperationsImpl(this.getHttpClient(), this.getConfiguration());
+  }
+
+  @Override
     public MixedOperation<InMemoryChannel, InMemoryChannelList, Resource<InMemoryChannel>> inMemoryChannels() {
         return new InMemoryChannelOperationsImpl(this.getHttpClient(), this.getConfiguration());
     }

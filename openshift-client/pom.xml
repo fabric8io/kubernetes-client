@@ -62,11 +62,19 @@
    </dependency>
    <dependency>
       <groupId>io.fabric8</groupId>
+      <artifactId>openshift-model-clusterautoscaling</artifactId>
+    </dependency>
+   <dependency>
+      <groupId>io.fabric8</groupId>
       <artifactId>openshift-model-operator</artifactId>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>openshift-model-operatorhub</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>openshift-model-machine</artifactId>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
