@@ -16,17 +16,13 @@
 package io.fabric8.openshift.client;
 
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.InOutCreateable;
 import io.fabric8.kubernetes.client.dsl.Namespaceable;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
+import io.fabric8.openshift.client.dsl.internal.OpenShiftCreateOnlyResourceNonNamespaceOperationsImpl;
 import okhttp3.OkHttpClient;
 
-import java.io.IOException;
-import java.util.concurrent.ExecutionException;
-
-public class OpenShiftCreateOnlyResourceOperationsImpl<I, O> extends OperationSupport implements InOutCreateable<I, O>, Namespaceable<OpenShiftCreateOnlyResourceOperationsImpl<I, O>> {
+public class OpenShiftCreateOnlyResourceOperationsImpl<I, O> extends OpenShiftCreateOnlyResourceNonNamespaceOperationsImpl<I, O> implements InOutCreateable<I, O>, Namespaceable<OpenShiftCreateOnlyResourceOperationsImpl<I, O>> {
   private final String subjectAccessApiGroupName;
   private final String subjectAccessApiGroupVersion;
   private final String plural;
@@ -39,7 +35,7 @@ public class OpenShiftCreateOnlyResourceOperationsImpl<I, O> extends OperationSu
   public OpenShiftCreateOnlyResourceOperationsImpl(OperationContext context, String apiGroupName, String apiGroupVersion, String plural, Class<O> responseClass) {
     super(context.withApiGroupName(apiGroupName)
       .withApiGroupVersion(apiGroupVersion)
-      .withPlural(plural));
+      .withPlural(plural), apiGroupName, apiGroupVersion, plural, responseClass);
     this.subjectAccessApiGroupName = apiGroupName;
     this.subjectAccessApiGroupVersion = apiGroupVersion;
     this.plural = plural;
@@ -47,45 +43,13 @@ public class OpenShiftCreateOnlyResourceOperationsImpl<I, O> extends OperationSu
   }
 
   @Override
-  public O create(I... resources) {
-    try {
-      if (resources.length > 1) {
-        throw new IllegalArgumentException("Too many items to create.");
-      } else if (resources.length == 1) {
-        return handleCreate(resources[0], responseClass);
-      } else if (getItem() == null) {
-        throw new IllegalArgumentException("Nothing to create.");
-      } else {
-        return handleCreate(getItem(), responseClass);
-      }
-    } catch (ExecutionException | IOException e) {
-      throw KubernetesClientException.launderThrowable(e);
-    } catch (InterruptedException ie) {
-      Thread.currentThread().interrupt();
-      throw KubernetesClientException.launderThrowable(ie);
-    }
-  }
-
-  @Override
-  public O create(I item) {
-    try {
-      return handleCreate(item, responseClass);
-    } catch (ExecutionException | IOException e) {
-      throw KubernetesClientException.launderThrowable(e);
-    } catch (InterruptedException ie) {
-      Thread.currentThread().interrupt();
-      throw KubernetesClientException.launderThrowable(ie);
-    }
-  }
-
-  @Override
   public OpenShiftCreateOnlyResourceOperationsImpl<I, O> inNamespace(String namespace) {
-    this.namespace = namespace;
     return new OpenShiftCreateOnlyResourceOperationsImpl<>(context.withNamespace(namespace), subjectAccessApiGroupName, subjectAccessApiGroupVersion, this.plural, responseClass);
   }
 
-  public I getItem() {
-    return (I) context.getItem();
+  @Override
+  public boolean isResourceNamespaced() {
+    return true;
   }
 }
 
