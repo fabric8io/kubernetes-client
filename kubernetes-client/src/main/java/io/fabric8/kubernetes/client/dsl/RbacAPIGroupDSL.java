@@ -31,8 +31,8 @@ public interface RbacAPIGroupDSL extends Client{
 
   MixedOperation<RoleBinding, RoleBindingList, Resource<RoleBinding>> roleBindings();
 
-  MixedOperation<ClusterRole, ClusterRoleList, Resource<ClusterRole>> clusterRoles();
+  NonNamespaceOperation<ClusterRole, ClusterRoleList, Resource<ClusterRole>> clusterRoles();
 
-  MixedOperation<ClusterRoleBinding, ClusterRoleBindingList, Resource<ClusterRoleBinding>> clusterRoleBindings();
+  NonNamespaceOperation<ClusterRoleBinding, ClusterRoleBindingList, Resource<ClusterRoleBinding>> clusterRoleBindings();
 
 }
