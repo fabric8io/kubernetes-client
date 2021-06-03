@@ -27,12 +27,12 @@ import java.util.regex.Pattern;
  * Overrides default provided NameHelper to overcome getter/setter naming convention mismatch between Sundr.io
  * and jsonschema2pojo.
  *
- * There are issues with properties such as x-kubernetes-foo, sundrio expects a getter as getXKubernetesFoo while
- * jsonschema2pojo produces getxKubernetesFoo.
+ * There are issues with properties such as x-kubernetes-foo or xKubernetesFoo, sundrio expects a getter as
+ * getXKubernetesFoo while jsonschema2pojo produces getxKubernetesFoo.
  */
 public class Fabric8NameHelper extends NameHelper {
 
-  private static final Pattern SINGLE_LETTER_DASH_NAME = Pattern.compile("^([a-z])-([a-zA-Z])(.*)$");
+  private static final Pattern SINGLE_LETTER_PREFIX_WORD_PROPERTY = Pattern.compile("^[a-z]((-[a-zA-Z])|[A-Z])(.*)$");
 
   public Fabric8NameHelper(GenerationConfig generationConfig) {
     super(generationConfig);
@@ -40,24 +40,20 @@ public class Fabric8NameHelper extends NameHelper {
 
   @Override
   public String getGetterName(String propertyName, JType type, JsonNode node) {
-    return correctCamelCaseMethodNameIfInvalid("get", propertyName, super.getGetterName(propertyName, type, node));
+    return correctCamelCaseWithPrefix(propertyName, super.getGetterName(propertyName, type, node));
   }
 
   @Override
   public String getSetterName(String propertyName, JsonNode node) {
-    return correctCamelCaseMethodNameIfInvalid("set", propertyName, super.getSetterName(propertyName, node));
+    return correctCamelCaseWithPrefix(propertyName, super.getSetterName(propertyName, node));
   }
 
-  static String correctCamelCaseMethodNameIfInvalid(String prefix, String propertyName, final String orignalMethodName) {
-    final Matcher m = SINGLE_LETTER_DASH_NAME.matcher(propertyName);
-    if (m.matches() || Character.isLowerCase(orignalMethodName.charAt(3))) {
-      return correctCamelCaseWithPrefix(prefix, orignalMethodName);
+  static String correctCamelCaseWithPrefix(String propertyName, String functionName) {
+    final Matcher m = SINGLE_LETTER_PREFIX_WORD_PROPERTY.matcher(propertyName);
+    if (m.matches()) {
+      // https://github.com/joelittlejohn/jsonschema2pojo/issues/1028 + Sundr.io expecting the opposite (setXKubernetes... instead of setxKubernetes)
+      return functionName.substring(0, 3) + functionName.substring(3, 4).toUpperCase() + functionName.substring(4);
     }
-    return orignalMethodName;
-  }
-
-  static String correctCamelCaseWithPrefix(String prefix, String functionName) {
-    // https://github.com/joelittlejohn/jsonschema2pojo/issues/1028 + Sundr.io expecting the opposite (getXKubernetes... instead of getxKubernetes)
-    return prefix + functionName.substring(3, 4).toUpperCase() + functionName.substring(4);
+    return functionName;
   }
 }
