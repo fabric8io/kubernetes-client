@@ -13901,6 +13901,10 @@
       "$ref": "#/definitions/os_image_ImageList",
       "existingJavaType": "io.fabric8.openshift.api.model.ImageList"
     },
+    "ImageSignature": {
+      "$ref": "#/definitions/os_image_ImageSignature",
+      "existingJavaType": "io.fabric8.openshift.api.model.ImageSignature"
+    },
     "ImageStreamImage": {
       "$ref": "#/definitions/os_image_ImageStreamImage",
       "existingJavaType": "io.fabric8.openshift.api.model.ImageStreamImage"

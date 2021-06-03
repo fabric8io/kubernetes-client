@@ -71,8 +71,12 @@ import io.fabric8.openshift.api.model.Identity;
 import io.fabric8.openshift.api.model.IdentityList;
 import io.fabric8.openshift.api.model.Image;
 import io.fabric8.openshift.api.model.ImageList;
+import io.fabric8.openshift.api.model.ImageSignature;
 import io.fabric8.openshift.api.model.ImageStream;
+import io.fabric8.openshift.api.model.ImageStreamImage;
+import io.fabric8.openshift.api.model.ImageStreamImport;
 import io.fabric8.openshift.api.model.ImageStreamList;
+import io.fabric8.openshift.api.model.ImageStreamMapping;
 import io.fabric8.openshift.api.model.ImageStreamTag;
 import io.fabric8.openshift.api.model.ImageStreamTagList;
 import io.fabric8.openshift.api.model.ImageTag;
@@ -144,13 +148,18 @@ import io.fabric8.openshift.client.dsl.internal.build.BuildConfigOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.build.BuildOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.core.TemplateOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.helm.HelmChartRepositoryOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.image.ImageSignatureOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.image.ImageStreamImageOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.network.ClusterNetworkOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.network.EgressNetworkPolicyOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.network.HostSubnetOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.template.BrokerTemplateInstanceOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.template.TemplateInstanceOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.user.GroupOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.image.ImageOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.image.ImageStreamOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.image.ImageStreamTagOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.image.ImageTagOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.network.ClusterNetworkOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.network.EgressNetworkPolicyOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.network.HostSubnetOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.network.NetNamespaceOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.oauth.OAuthAccessTokenOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.oauth.OAuthAuthorizeTokenOperationsImpl;
@@ -159,9 +168,6 @@ import io.fabric8.openshift.client.dsl.internal.project.ProjectOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.route.RouteOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.security.RangeAllocationOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.security.SecurityContextConstraintsOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.template.BrokerTemplateInstanceOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.template.TemplateInstanceOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.user.GroupOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.user.IdentityOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.user.UserOperationsImpl;
 import io.fabric8.openshift.client.internal.OpenShiftClusterOperationsImpl;
@@ -189,6 +195,7 @@ public class DefaultOpenShiftClient extends BaseKubernetesClient<NamespacedOpenS
   public static final String AUTHORIZATION_OPENSHIFT_IO = "authorization.openshift.io";
   public static final String V1_APIVERSION = "v1";
   private static final String SECURITY_OPENSHIFT_APIGROUP = "security.openshift.io";
+  private static final String IMAGE_OPENSHIFT_APIGROUP = "image.openshift.io";
 
   private final URL openShiftUrl;
 
@@ -360,6 +367,26 @@ public class DefaultOpenShiftClient extends BaseKubernetesClient<NamespacedOpenS
   @Override
   public MixedOperation<ImageStreamTag, ImageStreamTagList, Resource<ImageStreamTag>> imageStreamTags() {
     return new ImageStreamTagOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+  }
+
+  @Override
+  public OpenShiftCreateOnlyResourceOperationsImpl<ImageStreamImport, ImageStreamImport> imageStreamImports() {
+    return new OpenShiftCreateOnlyResourceOperationsImpl<>(getHttpClient(), getConfiguration(), IMAGE_OPENSHIFT_APIGROUP, V1_APIVERSION, HasMetadata.getPlural(ImageStreamImport.class), ImageStreamImport.class);
+  }
+
+  @Override
+  public OpenShiftCreateOnlyResourceOperationsImpl<ImageStreamMapping, ImageStreamMapping> imageStreamMappings() {
+    return new OpenShiftCreateOnlyResourceOperationsImpl<>(getHttpClient(), getConfiguration(), IMAGE_OPENSHIFT_APIGROUP, V1_APIVERSION, HasMetadata.getPlural(ImageStreamMapping.class), ImageStreamMapping.class);
+  }
+
+  @Override
+  public ImageStreamImageOperationsImpl imageStreamImages() {
+    return new ImageStreamImageOperationsImpl(getHttpClient(), getConfiguration(), IMAGE_OPENSHIFT_APIGROUP, V1_APIVERSION, HasMetadata.getPlural(ImageStreamImage.class));
+  }
+
+  @Override
+  public ImageSignatureOperationsImpl imageSignatures() {
+    return new ImageSignatureOperationsImpl(getHttpClient(), getConfiguration(), IMAGE_OPENSHIFT_APIGROUP, V1_APIVERSION, HasMetadata.getPlural(ImageSignature.class));
   }
 
   @Override
