@@ -16,12 +16,13 @@
 package io.fabric8.openshift.client.server.mock;
 
 import io.fabric8.kubernetes.client.VersionInfo;
+import io.fabric8.openshift.api.model.ClusterVersionBuilder;
+import io.fabric8.openshift.api.model.ClusterVersionList;
+import io.fabric8.openshift.api.model.ClusterVersionListBuilder;
 import io.fabric8.openshift.client.OpenShiftClient;
-import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import java.net.HttpURLConnection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -29,7 +30,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @EnableOpenShiftMockClient
 class OpenShiftVersionInfoTest {
-
   OpenShiftMockServer server;
   OpenShiftClient client;
 
@@ -50,21 +50,46 @@ class OpenShiftVersionInfoTest {
   }
 
   @Test
-  void testClusterVersioningOpenshift4() throws IOException {
-    server.expect().get().withPath("/apis/config.openshift.io/v1/clusterversions").andReturn(200, IOUtils.resourceToString("/clusterversions-released.json", StandardCharsets.UTF_8)).once();
+  void testClusterVersioningOpenshift4() {
+    // Given
+    server.expect().get().withPath("/apis/config.openshift.io/v1/clusterversions")
+      .andReturn(HttpURLConnection.HTTP_OK, createClusterVersionListWithVersion("4.2.14"))
+      .once();
 
+    // When
     VersionInfo versionInfo = client.getVersion();
+
+    // Then
     assertEquals("4", versionInfo.getMajor());
     assertEquals("2.14", versionInfo.getMinor());
   }
 
   @Test
-  void testClusterVersioningOpenshift4Unreleased() throws IOException {
-    server.expect().get().withPath("/apis/config.openshift.io/v1/clusterversions").andReturn(200, IOUtils.resourceToString("/clusterversions-unreleased.json", StandardCharsets.UTF_8)).once();
+  void testClusterVersioningOpenshift4Unreleased() {
+    // When
+    server.expect().get().withPath("/apis/config.openshift.io/v1/clusterversions")
+      .andReturn(HttpURLConnection.HTTP_OK, createClusterVersionListWithVersion("4.8.0-0.nightly-2021-05-26-071911"))
+      .once();
 
-
+    // When
     VersionInfo versionInfo = client.getVersion();
+
+    // Then
     assertEquals("4", versionInfo.getMajor());
     assertEquals("8.0-0", versionInfo.getMinor());
   }
+
+  private ClusterVersionList createClusterVersionListWithVersion(String openShiftVersion) {
+    return new ClusterVersionListBuilder()
+      .addToItems(new ClusterVersionBuilder()
+        .withNewMetadata().withName("version").endMetadata()
+        .withNewStatus()
+        .withNewDesired()
+        .withVersion(openShiftVersion)
+        .endDesired()
+        .endStatus()
+        .build())
+      .build();
+  }
+
 }
