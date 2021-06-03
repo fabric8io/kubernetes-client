@@ -244,6 +244,27 @@ public interface OpenShiftClient extends KubernetesClient {
   NonNamespaceOperation<OAuthClient, OAuthClientList, Resource<OAuthClient>> oAuthClients();
 
   /**
+   * API entrypoint for accessing PodSecurityPolicyReview (security.openshift.io/v1)
+   *
+   * @return InOutCreateable object for PodSecurityPolicyReview
+   */
+  OpenShiftCreateOnlyResourceOperationsImpl<PodSecurityPolicyReview, PodSecurityPolicyReview> podSecurityPolicyReviews();
+
+  /**
+   * API entrypoint for accessing PodSecurityPolicySelfSubjectReview (security.openshift.io/v1)
+   *
+   * @return InOutCreateable object for PodSecurityPolicySelfSubjectReview
+   */
+  OpenShiftCreateOnlyResourceOperationsImpl<PodSecurityPolicySelfSubjectReview, PodSecurityPolicySelfSubjectReview> podSecurityPolicySelfSubjectReviews();
+
+  /**
+   * API entrypoint for accessing PodSecurityPolicySubjectReview (security.openshift.io/v1)
+   *
+   * @return InOutCreateable object for PodSecurityPolicySubjectReview
+   */
+  OpenShiftCreateOnlyResourceOperationsImpl<PodSecurityPolicySubjectReview, PodSecurityPolicySubjectReview> podSecurityPolicySubjectReviews();
+
+  /**
    * API entrypoint for accessing Project operations(project.openshift.io/v1)
    *
    * @return {@link ProjectOperation} for Project specific operations
@@ -348,33 +369,33 @@ public interface OpenShiftClient extends KubernetesClient {
    * API entrypoint for LocalSubjectAccessReview (authorization.openshift.io/v1)
    * This only supports create operation. SubjectAccessReviewResponse from server is returned as output
    *
-   * @return {@link OpenShiftLocalSubjectAccessReviewOperationsImpl} for LocalSubjectAccessReview
+   * @return {@link OpenShiftCreateOnlyResourceOperationsImpl} for LocalSubjectAccessReview
    */
-  OpenShiftLocalSubjectAccessReviewOperationsImpl<LocalSubjectAccessReview, SubjectAccessReviewResponse> localSubjectAccessReviews();
+  OpenShiftCreateOnlyResourceOperationsImpl<LocalSubjectAccessReview, SubjectAccessReviewResponse> localSubjectAccessReviews();
 
   /**
    * API entrypoint for LocalResourceAccessReview (authorization.openshift.io/v1)
    * This only supports create operation. ResourceAccessReviewResponse from server is returned as output
    *
-   * @return {@link OpenShiftLocalSubjectAccessReviewOperationsImpl} for LocalResourceAccessReview
+   * @return {@link OpenShiftCreateOnlyResourceOperationsImpl} for LocalResourceAccessReview
    */
-  OpenShiftLocalSubjectAccessReviewOperationsImpl<LocalResourceAccessReview, ResourceAccessReviewResponse> localResourceAccessReviews();
+  OpenShiftCreateOnlyResourceOperationsImpl<LocalResourceAccessReview, ResourceAccessReviewResponse> localResourceAccessReviews();
 
   /**
    * API entrypoint for SelfSubjectRulesReview (authorization.openshift.io/v1)
    * This only supports create operation. SelfSubjectRulesReview from server is returned as output
    *
-   * @return {@link OpenShiftLocalSubjectAccessReviewOperationsImpl} for SelfSubjectRulesReview
+   * @return {@link OpenShiftCreateOnlyResourceOperationsImpl} for SelfSubjectRulesReview
    */
-  OpenShiftLocalSubjectAccessReviewOperationsImpl<SelfSubjectRulesReview, SelfSubjectRulesReview> selfSubjectRulesReviews();
+  OpenShiftCreateOnlyResourceOperationsImpl<SelfSubjectRulesReview, SelfSubjectRulesReview> selfSubjectRulesReviews();
 
   /**
    * API entrypoint for SubjectRulesReview (authorization.openshift.io/v1)
    * This only supports create operation. SubjectRulesReview from server is returned as output
    *
-   * @return {@link OpenShiftLocalSubjectAccessReviewOperationsImpl} for SubjectRulesReview
+   * @return {@link OpenShiftCreateOnlyResourceOperationsImpl} for SubjectRulesReview
    */
-  OpenShiftLocalSubjectAccessReviewOperationsImpl<SubjectRulesReview, SubjectRulesReview> subjectRulesReviews();
+  OpenShiftCreateOnlyResourceOperationsImpl<SubjectRulesReview, SubjectRulesReview> subjectRulesReviews();
 
   /**
    * API entrypoint for ClusterRole (authorization.openshift.io/v1)
