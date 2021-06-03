@@ -13,46 +13,50 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.openshift.client.dsl.internal;
+package io.fabric8.openshift.client;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.InOutCreateable;
+import io.fabric8.kubernetes.client.dsl.Namespaceable;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
-import io.fabric8.openshift.api.model.SubjectAccessReview;
 import okhttp3.OkHttpClient;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
+public class OpenShiftCreateOnlyResourceOperationsImpl<I, O> extends OperationSupport implements InOutCreateable<I, O>, Namespaceable<OpenShiftCreateOnlyResourceOperationsImpl<I, O>> {
+  private final String subjectAccessApiGroupName;
+  private final String subjectAccessApiGroupVersion;
+  private final String plural;
+  private final Class<O> responseClass;
 
-public class OpenShiftSubjectAccessReviewOperationsImpl<I, O> extends OperationSupport implements InOutCreateable<I, O> {
-  private final Class<O> responseType;
-
-  public OpenShiftSubjectAccessReviewOperationsImpl(OkHttpClient client, Config config, String apiGroupName, String apiGroupVersion, String plural, Class<O> responseType) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config), apiGroupName, apiGroupVersion, plural, responseType);
+  public OpenShiftCreateOnlyResourceOperationsImpl(OkHttpClient client, Config config, String apiGroupName, String apiGroupVersion, String plural, Class<O> responseClass) {
+    this(new OperationContext().withOkhttpClient(client).withConfig(config), apiGroupName, apiGroupVersion, plural, responseClass);
   }
 
-  public OpenShiftSubjectAccessReviewOperationsImpl(OperationContext context, String apiGroupName, String apiGroupVersion, String plural, Class<O> responseType) {
+  public OpenShiftCreateOnlyResourceOperationsImpl(OperationContext context, String apiGroupName, String apiGroupVersion, String plural, Class<O> responseClass) {
     super(context.withApiGroupName(apiGroupName)
       .withApiGroupVersion(apiGroupVersion)
       .withPlural(plural));
-    this.responseType = responseType;
+    this.subjectAccessApiGroupName = apiGroupName;
+    this.subjectAccessApiGroupVersion = apiGroupVersion;
+    this.plural = plural;
+    this.responseClass = responseClass;
   }
 
-  @SafeVarargs
   @Override
-  public final O create(I... resources) {
+  public O create(I... resources) {
     try {
       if (resources.length > 1) {
         throw new IllegalArgumentException("Too many items to create.");
       } else if (resources.length == 1) {
-        return handleCreate(resources[0], responseType);
+        return handleCreate(resources[0], responseClass);
       } else if (getItem() == null) {
         throw new IllegalArgumentException("Nothing to create.");
       } else {
-        return handleCreate(getItem(), responseType);
+        return handleCreate(getItem(), responseClass);
       }
     } catch (ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(e);
@@ -65,7 +69,7 @@ public class OpenShiftSubjectAccessReviewOperationsImpl<I, O> extends OperationS
   @Override
   public O create(I item) {
     try {
-      return handleCreate(item, responseType);
+      return handleCreate(item, responseClass);
     } catch (ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     } catch (InterruptedException ie) {
@@ -75,11 +79,13 @@ public class OpenShiftSubjectAccessReviewOperationsImpl<I, O> extends OperationS
   }
 
   @Override
-  public boolean isResourceNamespaced() {
-    return false;
+  public OpenShiftCreateOnlyResourceOperationsImpl<I, O> inNamespace(String namespace) {
+    this.namespace = namespace;
+    return new OpenShiftCreateOnlyResourceOperationsImpl<>(context.withNamespace(namespace), subjectAccessApiGroupName, subjectAccessApiGroupVersion, this.plural, responseClass);
   }
 
-  public SubjectAccessReview getItem() {
-    return (SubjectAccessReview) context.getItem();
+  public I getItem() {
+    return (I) context.getItem();
   }
 }
+
