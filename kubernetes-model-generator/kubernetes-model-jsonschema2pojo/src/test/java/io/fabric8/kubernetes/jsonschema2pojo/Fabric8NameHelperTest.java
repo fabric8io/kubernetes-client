@@ -17,29 +17,38 @@ package io.fabric8.kubernetes.jsonschema2pojo;
 
 import org.junit.jupiter.api.Test;
 
-import static io.fabric8.kubernetes.jsonschema2pojo.Fabric8NameHelper.correctCamelCaseMethodNameIfInvalid;
+import static io.fabric8.kubernetes.jsonschema2pojo.Fabric8NameHelper.correctCamelCaseWithPrefix;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class Fabric8NameHelperTest {
+
   @Test
-  void testCorrectCamelCaseMethodNameIfInvalidWithVariableWithSingleLetterDash() {
-    assertEquals("getXField", correctCamelCaseMethodNameIfInvalid("get", "x-field", "getxField"));
-    assertEquals("setXField", correctCamelCaseMethodNameIfInvalid("set", "x-field", "setxField"));
+  void correctCamelCaseWithPrefixWithSingleLetterDash() {
+    assertEquals("getXField", correctCamelCaseWithPrefix("x-field", "getxField"));
+    assertEquals("setXField", correctCamelCaseWithPrefix("x-field", "setxField"));
   }
 
   @Test
-  void testCorrectCamelCaseMethodNameIfInvalidWithFormatSingleLetterCamelCase() {
-    assertEquals("getSFlow", correctCamelCaseMethodNameIfInvalid("get", "sFlow", "getsFlow"));
-    assertEquals("setSFlow", correctCamelCaseMethodNameIfInvalid("set", "sFlow", "setsFlow"));
+  void correctCamelCaseWithPrefixWithSingleLetter() {
+    assertEquals("getSFlow", correctCamelCaseWithPrefix("sFlow", "getsFlow"));
+    assertEquals("setSFlow", correctCamelCaseWithPrefix("sFlow", "setsFlow"));
   }
 
+  @Test
+  void correctCamelCaseWithPrefixWithSingleLetterAndSingleLetter() {
+    assertEquals("getSF", correctCamelCaseWithPrefix("sF", "getsF"));
+    assertEquals("setSF", correctCamelCaseWithPrefix("sF", "setsF"));
+  }
 
   @Test
-  void testCorrectCamelCaseMethodNameIfInvalidWithStandardVariableShouldDoNothing() {
-    assertEquals("getIpfix", correctCamelCaseMethodNameIfInvalid("get", "ipfix", "getIpfix"));
-    assertEquals("setIpfix", correctCamelCaseMethodNameIfInvalid("set", "ipfix", "setIpfix"));
+  void correctCamelCaseWithPrefixWithTwoLetter() {
+    assertEquals("getNetsFlow", correctCamelCaseWithPrefix("netsFlow", "getNetsFlow"));
+    assertEquals("setNetsFlow", correctCamelCaseWithPrefix("netsFlow", "setNetsFlow"));
+  }
 
-    assertEquals("getNetFlow", correctCamelCaseMethodNameIfInvalid("get", "netFlow", "getNetFlow"));
-    assertEquals("setNetFlow", correctCamelCaseMethodNameIfInvalid("set", "netFlow", "setNetFlow"));
+  @Test
+  void correctCamelCaseWithPrefixWithCapitalFirstLetter() {
+    assertEquals("getIpfix", correctCamelCaseWithPrefix("Ipfix", "getIpfix"));
+    assertEquals("setIpfix", correctCamelCaseWithPrefix("Ipfix", "setIpfix"));
   }
 }
