@@ -134,7 +134,7 @@ public class K8sAuthorizationOnOpenShiftIT {
     assertNotNull(clusterRoleBindingCreated);
     assertNotNull(clusterRoleBindingCreated.getMetadata().getUid());
     assertEquals(name, clusterRoleBindingCreated.getMetadata().getName());
-    client.rbac().clusterRoleBindings().inNamespace(session.getNamespace()).withName(name).delete();
+    client.rbac().clusterRoleBindings().withName(name).delete();
   }
 
   @Test
@@ -151,13 +151,13 @@ public class K8sAuthorizationOnOpenShiftIT {
       .build();
 
     // When
-    ClusterRole createdClusterRole = client.rbac().clusterRoles().inNamespace(session.getNamespace()).create(clusterRole);
+    ClusterRole createdClusterRole = client.rbac().clusterRoles().create(clusterRole);
 
     // Then
     assertNotNull(createdClusterRole);
     assertNotNull(createdClusterRole.getMetadata().getUid());
     assertEquals(name, createdClusterRole.getMetadata().getName());
-    client.rbac().clusterRoles().inNamespace(session.getNamespace()).withName(name).delete();
+    client.rbac().clusterRoles().withName(name).delete();
   }
 
   @Test
