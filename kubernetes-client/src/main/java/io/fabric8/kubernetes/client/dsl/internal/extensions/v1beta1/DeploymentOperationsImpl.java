@@ -53,8 +53,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -269,7 +268,7 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
    * Lets wait until there are enough Ready pods of the given Deployment
    */
   private void waitUntilDeploymentIsScaled(final int count) {
-    final BlockingQueue<Object> queue = new ArrayBlockingQueue<>(1);
+    final CompletableFuture<Void> scaledFuture = new CompletableFuture<>();
     final AtomicReference<Integer> replicasRef = new AtomicReference<>(0);
 
     final String name = checkName(getItem());
@@ -281,10 +280,10 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
         //If the deployment is gone, we shouldn't wait.
         if (deployment == null) {
           if (count == 0) {
-            queue.put(true);
+            scaledFuture.complete(null);
             return;
           } else {
-            queue.put(new IllegalStateException("Can't wait for Deployment: " + checkName(getItem()) + " in namespace: " + checkName(getItem()) + " to scale. Resource is no longer available."));
+            scaledFuture.completeExceptionally(new IllegalStateException("Can't wait for Deployment: " + checkName(getItem()) + " in namespace: " + checkName(getItem()) + " to scale. Resource is no longer available."));
             return;
           }
         }
@@ -294,7 +293,7 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
         long generation = deployment.getMetadata().getGeneration() != null ? deployment.getMetadata().getGeneration() : 0;
         long observedGeneration = deployment.getStatus() != null && deployment.getStatus().getObservedGeneration() != null ? deployment.getStatus().getObservedGeneration() : -1;
         if (observedGeneration >= generation && Objects.equals(deployment.getSpec().getReplicas(), currentReplicas)) {
-          queue.put(true);
+          scaledFuture.complete(null);
         } else {
           LOG.debug("Only {}/{} pods scheduled for Deployment: {} in namespace: {} seconds so waiting...",
             deployment.getStatus().getReplicas(), deployment.getSpec().getReplicas(), deployment.getMetadata().getName(), namespace);
@@ -307,7 +306,7 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
     ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
     ScheduledFuture<?> poller = executor.scheduleWithFixedDelay(deploymentPoller, 0, POLL_INTERVAL_MS, TimeUnit.MILLISECONDS);
     try {
-      if (Utils.waitUntilReady(queue, getConfig().getScaleTimeout(), TimeUnit.MILLISECONDS)) {
+      if (Utils.waitUntilReady(scaledFuture, getConfig().getScaleTimeout(), TimeUnit.MILLISECONDS)) {
         LOG.debug("{}/{} pod(s) ready for Deployment: {} in namespace: {}.",
           replicasRef.get(), count, name, namespace);
       } else {
