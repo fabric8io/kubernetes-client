@@ -55,7 +55,7 @@ public class DefaultServingV1Client extends BaseClient implements NamespacedServ
 
   @Override
   public FunctionCallable<NamespacedServingV1Client> withRequestConfig(RequestConfig requestConfig) {
-    return new WithRequestCallable<NamespacedServingV1Client>(this, requestConfig);
+    return new WithRequestCallable<>(this, requestConfig);
   }
 
   @Override

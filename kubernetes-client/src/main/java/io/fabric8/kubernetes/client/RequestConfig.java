@@ -292,7 +292,7 @@ public class RequestConfig {
   }
 
   public void setImpersonateExtras(Map<String, List<String>> impersonateExtras) {
-    this.impersonateExtras = new HashMap<String, List<String>>(impersonateExtras);
+    this.impersonateExtras = new HashMap<>(impersonateExtras);
   }
 
   public Map<String, List<String>> getImpersonateExtras() {

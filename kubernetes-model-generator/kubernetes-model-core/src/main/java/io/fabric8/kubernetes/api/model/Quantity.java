@@ -48,7 +48,7 @@ public class Quantity  implements Serializable {
   private static final String AT_LEAST_ONE_DIGIT_REGEX = ".*\\d+.*";
   private String amount;
   private String format = "";
-  private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+  private Map<String, Object> additionalProperties = new HashMap<>();
 
   /**
    * No args constructor for use in serialization

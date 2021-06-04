@@ -53,7 +53,7 @@ public class CamelKServer extends ExternalResource {
 
   public void before() {
     mock = crudMode
-      ? new CamelKMockServer(new Context(), new MockWebServer(), new HashMap<ServerRequest, Queue<ServerResponse>>(), new KubernetesCrudDispatcher(), true)
+      ? new CamelKMockServer(new Context(), new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(), true)
       : new CamelKMockServer(https);
     mock.init();
     client = mock.createCamelKClient();

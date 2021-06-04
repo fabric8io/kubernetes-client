@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Wraps a {@link Cache} and a {@link SharedProcessor} to distribute events related to changes and syncs 
+ * Wraps a {@link Cache} and a {@link SharedProcessor} to distribute events related to changes and syncs
  */
 public class ProcessorStore<T> implements SyncableStore<T> {
 
@@ -78,7 +78,7 @@ public class ProcessorStore<T> implements SyncableStore<T> {
   @Override
   public void replace(List<T> list) {
     Map<String, T> oldState = cache.replace(list);
-    
+
     // now that the store is up-to-date, process the notifications
     for (T newValue : list) {
       T old = oldState.remove(cache.getKey(newValue));
@@ -96,7 +96,7 @@ public class ProcessorStore<T> implements SyncableStore<T> {
   @Override
   public void resync() {
     this.cache.list()
-        .forEach(i -> this.processor.distribute(new ProcessorListener.UpdateNotification<T>(i, i), true));
+        .forEach(i -> this.processor.distribute(new ProcessorListener.UpdateNotification<>(i, i), true));
   }
 
 }
