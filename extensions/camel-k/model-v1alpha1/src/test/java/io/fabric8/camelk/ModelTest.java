@@ -21,7 +21,7 @@ import io.fabric8.camelk.v1alpha1.Kamelet;
 import io.fabric8.camelk.v1alpha1.KameletBuilder;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsBuilder;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class ModelTest {
 
