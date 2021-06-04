@@ -41,6 +41,8 @@ import io.fabric8.knative.eventing.v1.Trigger;
 import io.fabric8.knative.eventing.v1.TriggerList;
 import io.fabric8.knative.eventing.v1beta1.EventType;
 import io.fabric8.knative.eventing.v1beta1.EventTypeList;
+import io.fabric8.knative.flows.v1.Parallel;
+import io.fabric8.knative.flows.v1.ParallelList;
 import io.fabric8.knative.flows.v1.Sequence;
 import io.fabric8.knative.flows.v1.SequenceList;
 import io.fabric8.knative.messaging.v1.Channel;
@@ -57,14 +59,14 @@ import io.fabric8.knative.serving.v1.Route;
 import io.fabric8.knative.serving.v1.RouteList;
 import io.fabric8.knative.serving.v1.Service;
 import io.fabric8.knative.serving.v1.ServiceList;
-import io.fabric8.knative.sources.v1beta1.ApiServerSource;
-import io.fabric8.knative.sources.v1beta1.ApiServerSourceList;
-import io.fabric8.knative.sources.v1beta1.ContainerSource;
-import io.fabric8.knative.sources.v1beta1.ContainerSourceList;
-import io.fabric8.knative.sources.v1beta1.PingSource;
-import io.fabric8.knative.sources.v1beta1.PingSourceList;
-import io.fabric8.knative.sources.v1beta1.SinkBinding;
-import io.fabric8.knative.sources.v1beta1.SinkBindingList;
+import io.fabric8.knative.sources.v1.ApiServerSource;
+import io.fabric8.knative.sources.v1.ApiServerSourceList;
+import io.fabric8.knative.sources.v1.ContainerSource;
+import io.fabric8.knative.sources.v1.ContainerSourceList;
+import io.fabric8.knative.sources.v1.PingSource;
+import io.fabric8.knative.sources.v1.PingSourceList;
+import io.fabric8.knative.sources.v1.SinkBinding;
+import io.fabric8.knative.sources.v1.SinkBindingList;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
@@ -138,11 +140,18 @@ public interface KnativeClient extends Client {
    */
   MixedOperation<Subscription, SubscriptionList, Resource<Subscription>> subscriptions();
   /**
-   * API entrypoint for Sequence(messaging.knative.dev/v1)
+   * API entrypoint for Sequence(flows.knative.dev/v1)
    *
    * @return MixedOperation for Sequence class
    */
   MixedOperation<Sequence, SequenceList, Resource<Sequence>> sequences();
+
+  /**
+   * API entrypoint for Parallel(flows.knative.dev/v1)
+   *
+   * @return MixedOperation for Parallel class
+   */
+  MixedOperation<Parallel, ParallelList, Resource<Parallel>> parallels();
   /**
    * API entrypoint for InMemoryChannel(messaging.knative.dev/v1)
    *

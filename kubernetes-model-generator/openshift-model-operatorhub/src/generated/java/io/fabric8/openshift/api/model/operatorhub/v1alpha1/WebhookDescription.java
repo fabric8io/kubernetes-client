@@ -13,7 +13,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
@@ -44,6 +43,7 @@ import lombok.ToString;
     "reinvocationPolicy",
     "rules",
     "sideEffects",
+    "targetPort",
     "timeoutSeconds",
     "type",
     "webhookPath"
@@ -56,7 +56,7 @@ import lombok.ToString;
     @BuildableReference(Container.class),
     @BuildableReference(PodTemplateSpec.class),
     @BuildableReference(ResourceRequirements.class),
-    @BuildableReference(IntOrString.class),
+    @BuildableReference(io.fabric8.kubernetes.api.model.IntOrString.class),
     @BuildableReference(ObjectReference.class),
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
@@ -88,6 +88,8 @@ public class WebhookDescription implements KubernetesResource
     private List<RuleWithOperations> rules = new ArrayList<RuleWithOperations>();
     @JsonProperty("sideEffects")
     private String sideEffects;
+    @JsonProperty("targetPort")
+    private io.fabric8.kubernetes.api.model.IntOrString targetPort;
     @JsonProperty("timeoutSeconds")
     private Integer timeoutSeconds;
     @JsonProperty("type")
@@ -112,6 +114,7 @@ public class WebhookDescription implements KubernetesResource
      * @param rules
      * @param generateName
      * @param type
+     * @param targetPort
      * @param admissionReviewVersions
      * @param matchPolicy
      * @param containerPort
@@ -121,7 +124,7 @@ public class WebhookDescription implements KubernetesResource
      * @param failurePolicy
      * @param sideEffects
      */
-    public WebhookDescription(List<String> admissionReviewVersions, Integer containerPort, List<String> conversionCRDs, String deploymentName, String failurePolicy, String generateName, String matchPolicy, io.fabric8.kubernetes.api.model.LabelSelector objectSelector, String reinvocationPolicy, List<RuleWithOperations> rules, String sideEffects, Integer timeoutSeconds, String type, String webhookPath) {
+    public WebhookDescription(List<String> admissionReviewVersions, Integer containerPort, List<String> conversionCRDs, String deploymentName, String failurePolicy, String generateName, String matchPolicy, io.fabric8.kubernetes.api.model.LabelSelector objectSelector, String reinvocationPolicy, List<RuleWithOperations> rules, String sideEffects, io.fabric8.kubernetes.api.model.IntOrString targetPort, Integer timeoutSeconds, String type, String webhookPath) {
         super();
         this.admissionReviewVersions = admissionReviewVersions;
         this.containerPort = containerPort;
@@ -134,6 +137,7 @@ public class WebhookDescription implements KubernetesResource
         this.reinvocationPolicy = reinvocationPolicy;
         this.rules = rules;
         this.sideEffects = sideEffects;
+        this.targetPort = targetPort;
         this.timeoutSeconds = timeoutSeconds;
         this.type = type;
         this.webhookPath = webhookPath;
@@ -247,6 +251,16 @@ public class WebhookDescription implements KubernetesResource
     @JsonProperty("sideEffects")
     public void setSideEffects(String sideEffects) {
         this.sideEffects = sideEffects;
+    }
+
+    @JsonProperty("targetPort")
+    public io.fabric8.kubernetes.api.model.IntOrString getTargetPort() {
+        return targetPort;
+    }
+
+    @JsonProperty("targetPort")
+    public void setTargetPort(io.fabric8.kubernetes.api.model.IntOrString targetPort) {
+        this.targetPort = targetPort;
     }
 
     @JsonProperty("timeoutSeconds")

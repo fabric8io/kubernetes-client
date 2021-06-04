@@ -7,24 +7,42 @@
 * Retry only Non-Restful Create-only resources in OpenShiftOAuthInterceptor
 * Fix #3126: a KubernetesClientException will be thrown from patch/replace rather than a null being returned when the item does not exist
 * Fix #3121: ServiceOperationImpl replace will throw a KubernetesClientException rather than a NPE if the item doesn't exist
+* Fix #3189: VersionInfo contains null data in OpenShift 4.6
+* Fix #3190: Ignore fields with name "-" when using the Go to JSON schema generator
 
 #### Improvements
+* Fix #3078: adding javadocs to further clarify patch, edit, replace, etc. and note the possibility of items being modified.
 * Fix #3149: replace(item) will consult the item's resourceVersion for the first PUT attempt when not specifically locked on a resourceVersion
 * Fix #3135: added mock crud support for patch status, and will return exceptions for unsupported patch types
 * Fix #3072: various changes to refine how threads are handled by informers.  Note that the SharedInformer.run call is now blocking when starting the informer.
 * Fix #3143: a new SharedInformerEventListener.onException(SharedIndexInformer, Exception) method is available to determine which informer could not start.
+* Fix #3170: made HttpClientUtils.createHttpClient(Config, Consumer<OkHttpClient.Builder>) public to allow overriding custom http client properties 
 
 #### Dependency Upgrade
+* Fix #2741: Update Knative Model to v0.23.0
 
 #### New Features
 * Fix #3133: Add DSL Support for `authorization.openshift.io/v1` resources in OpenShiftClient
 * Fix #3166: Add DSL Support for `machineconfiguration.openshift.io/v1` resources in OpenShiftClient
 * Fix #3142: Add DSL support for missing resources in `operator.openshift.io` and `monitoring.coreos.com` apiGroups
 * Add DSL support for missing resources in `template.openshift.io`, `helm.openshift.io`, `network.openshift.io`, `user.openshift.io` apigroups
+* Fix #3087: Support HTTP operation retry with exponential backoff (for status code >= 500)
+* Add DSL support for `autoscaling.openshift.io` resources in OpenShiftClient
+* Add DSL support for PodSecurityPolicySubjectReview, PodSecurityPolicyReview, PodSecurityPolicySelfSubjectReview in `security.openshift.io/v1` apiGroup to OpenShiftClient
+* Add DSL support for OperatorCondition, Operator, PackageManifest in `operators.coreos.com` apiGroup to OpenShiftClient 
+* Add support for `tuned.openshift.io` apiGroup in OpenShiftClient DSL
 
 #### _**Note**_: Breaking changes in the API
 ##### DSL Changes:
 - #3127 `StatusUpdatable.updateStatus` deprecated, please use patchStatus, editStatus, or replaceStatus
+
+### 5.4.1 (2021-06-01)
+
+#### Bugs
+* Fix #3181: Properly handling of JsonProperty when generating CRDs
+* Fix #3172: Use File.toURI() to create the generated CRD URI
+* Fix #3152: Retry only Non-Restful Create-only resources in OpenShiftOAuthInterceptor
+* Fix #3189: VersionInfo contains null data in OpenShift 4.6
 
 ### 5.4.0 (2021-05-19)
 

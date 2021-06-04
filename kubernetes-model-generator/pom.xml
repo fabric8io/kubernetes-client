@@ -54,11 +54,14 @@
     <module>kubernetes-model-scheduling</module>
     <module>kubernetes-model-storageclass</module>
     <module>openshift-model</module>
+    <module>openshift-model-clusterautoscaling</module>
     <module>openshift-model-operator</module>
     <module>openshift-model-operatorhub</module>
+    <module>openshift-model-machine</module>
     <module>openshift-model-monitoring</module>
     <module>openshift-model-console</module>
     <module>openshift-model-machineconfig</module>
+    <module>openshift-model-tuned</module>
   </modules>
 
   <properties>

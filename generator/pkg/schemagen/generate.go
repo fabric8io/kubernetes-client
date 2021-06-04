@@ -364,6 +364,9 @@ func (g *schemaGenerator) getStructProperties(t reflect.Type) map[string]JSONPro
 	fieldList := g.getFields(t)
 	for _, field := range fieldList {
 		jsonName := g.jsonFieldName(field)
+		if jsonName == "-" {
+			continue
+		}
 		result[jsonName] = g.propertyDescriptor(field, t)
 	}
 

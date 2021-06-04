@@ -170,9 +170,12 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
                 "io.fabric8.kubernetes.api.model.node.v1alpha1.",
                 "io.fabric8.kubernetes.api.model.node.v1beta1.",
                 "io.fabric8.openshift.api.model.",
+                "io.fabric8.openshift.api.model.clusterautoscaling.v1.",
+                "io.fabric8.openshift.api.model.clusterautoscaling.v1beta1.",
                 "io.fabric8.openshift.api.model.runtime.",
                 "io.fabric8.openshift.api.model.console.v1.",
                 "io.fabric8.openshift.api.model.monitoring.v1.",
+                "io.fabric8.openshift.api.model.machine.v1beta1.",
                 "io.fabric8.openshift.api.model.operator.",
                 "io.fabric8.openshift.api.model.operator.v1.",
                 "io.fabric8.openshift.api.model.operator.v1alpha1.",
@@ -180,7 +183,9 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
                 "io.fabric8.openshift.api.model.operatorhub.manifests.",
                 "io.fabric8.openshift.api.model.operatorhub.v1.",
                 "io.fabric8.openshift.api.model.operatorhub.v1alpha1.",
+                "io.fabric8.openshift.api.model.operatorhub.lifecyclemanager.v1.",
                 "io.fabric8.openshift.api.model.machineconfig.v1.",
+                "io.fabric8.openshift.api.model.tuned.v1.",
                 "io.fabric8.kubernetes.api.model.extensions."
         };
 

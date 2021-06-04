@@ -92,6 +92,8 @@ System properties are preferred over environment variables. The following system
 | `kubernetes.watch.reconnectLimit` / `KUBERNETES_WATCH_RECONNECTLIMIT` | Number of reconnect attempts (-1 for infinite) | `-1` |
 | `kubernetes.connection.timeout` / `KUBERNETES_CONNECTION_TIMEOUT` | Connection timeout in ms (0 for no timeout) | `10000` |
 | `kubernetes.request.timeout` / `KUBERNETES_REQUEST_TIMEOUT` | Read timeout in ms | `10000` |
+| `kubernetes.request.retry.backoffLimit` / `KUBERNETES_REQUEST_RETRY_BACKOFFLIMIT` | Number of retry attempts | `0` |
+| `kubernetes.request.retry.backoffInterval` / `KUBERNETES_REQUEST_RETRY_BACKOFFINTERVAL` | Retry initial backoff interval in ms | `1000` |
 | `kubernetes.rolling.timeout` / `KUBERNETES_ROLLING_TIMEOUT` | Rolling timeout in ms | `900000` |
 | `kubernetes.logging.interval` / `KUBERNETES_LOGGING_INTERVAL` | Logging interval in ms | `20000` |
 | `kubernetes.scale.timeout` / `KUBERNETES_SCALE_TIMEOUT` | Scale timeout in ms | `600000` |
@@ -393,6 +395,7 @@ class ExampleTest {
 
 |                           | K8s 1.20.2 |K8s 1.19.1 | K8s 1.18.0 | K8s 1.17.0 | K8s 1.16.0 | K8s 1.15.3 | K8s 1.14.2 | K8s 1.12.0 | K8s 1.11.0 | K8s 1.10.0 | K8s 1.9.0 | K8s 1.7.0 | K8s 1.6.0 | K8s 1.4.9 |
 |---------------------------|------------|-----------|------------|------------|------------|------------|------------|------------|------------|------------|-----------|-----------|-----------|-----------|
+| kubernetes-client 5.4.1   | ✓          | ✓         | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         | -         | -         | -         |
 | kubernetes-client 5.4.0   | ✓          | ✓         | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         | -         | -         | -         |
 | kubernetes-client 5.3.1   | ✓          | ✓         | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         | -         | -         | -         |
 | kubernetes-client 5.3.0   | ✓          | ✓         | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         | -         | -         | -         |
@@ -456,6 +459,7 @@ class ExampleTest {
 
 |                           | OCP 4.5.14 | OCP 4.2.0 | OCP 4.1.0 | OCP 3.11.0 | OCP 3.10.0 |  OCP 3.9.0 | OCP 3.7.0 | OCP 3.6.0 |
 |---------------------------|------------|-----------|-----------|------------|------------|------------|-----------|-----------|
+| openshift-client 5.4.1    | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
 | openshift-client 5.4.0    | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
 | openshift-client 5.3.1    | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
 | openshift-client 5.3.0    | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |

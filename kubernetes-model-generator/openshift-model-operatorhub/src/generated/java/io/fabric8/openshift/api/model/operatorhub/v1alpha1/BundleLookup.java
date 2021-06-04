@@ -36,6 +36,7 @@ import lombok.ToString;
     "conditions",
     "identifier",
     "path",
+    "properties",
     "replaces"
 })
 @ToString
@@ -63,6 +64,8 @@ public class BundleLookup implements KubernetesResource
     private String identifier;
     @JsonProperty("path")
     private String path;
+    @JsonProperty("properties")
+    private String properties;
     @JsonProperty("replaces")
     private String replaces;
     @JsonIgnore
@@ -82,13 +85,15 @@ public class BundleLookup implements KubernetesResource
      * @param path
      * @param replaces
      * @param conditions
+     * @param properties
      */
-    public BundleLookup(io.fabric8.kubernetes.api.model.ObjectReference catalogSourceRef, List<BundleLookupCondition> conditions, String identifier, String path, String replaces) {
+    public BundleLookup(io.fabric8.kubernetes.api.model.ObjectReference catalogSourceRef, List<BundleLookupCondition> conditions, String identifier, String path, String properties, String replaces) {
         super();
         this.catalogSourceRef = catalogSourceRef;
         this.conditions = conditions;
         this.identifier = identifier;
         this.path = path;
+        this.properties = properties;
         this.replaces = replaces;
     }
 
@@ -130,6 +135,16 @@ public class BundleLookup implements KubernetesResource
     @JsonProperty("path")
     public void setPath(String path) {
         this.path = path;
+    }
+
+    @JsonProperty("properties")
+    public String getProperties() {
+        return properties;
+    }
+
+    @JsonProperty("properties")
+    public void setProperties(String properties) {
+        this.properties = properties;
     }
 
     @JsonProperty("replaces")

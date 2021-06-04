@@ -26,6 +26,8 @@ import java.util.Map;
 import static io.fabric8.kubernetes.client.Config.DEFAULT_LOGGING_INTERVAL;
 import static io.fabric8.kubernetes.client.Config.DEFAULT_MAX_CONCURRENT_REQUESTS;
 import static io.fabric8.kubernetes.client.Config.DEFAULT_MAX_CONCURRENT_REQUESTS_PER_HOST;
+import static io.fabric8.kubernetes.client.Config.DEFAULT_REQUEST_RETRY_BACKOFFLIMIT;
+import static io.fabric8.kubernetes.client.Config.DEFAULT_REQUEST_RETRY_BACKOFFINTERVAL;
 import static io.fabric8.kubernetes.client.Config.DEFAULT_ROLLING_TIMEOUT;
 import static io.fabric8.kubernetes.client.Config.DEFAULT_SCALE_TIMEOUT;
 import static io.fabric8.kubernetes.client.Config.DEFAULT_WEBSOCKET_PING_INTERVAL;
@@ -45,6 +47,8 @@ public class RequestConfig {
   private int watchReconnectInterval = 1000;
   private int watchReconnectLimit = -1;
   private int connectionTimeout = 10 * 1000;
+  private int requestRetryBackoffLimit = DEFAULT_REQUEST_RETRY_BACKOFFLIMIT;
+  private int requestRetryBackoffInterval = DEFAULT_REQUEST_RETRY_BACKOFFINTERVAL;
   private int requestTimeout = 10 * 1000;
   private long rollingTimeout = DEFAULT_ROLLING_TIMEOUT;
   private long scaleTimeout = DEFAULT_SCALE_TIMEOUT;
@@ -72,8 +76,6 @@ public class RequestConfig {
    * @param scaleTimeout scale timeout
    * @param loggingInterval logging interval
    * @param websocketTimeout web socket timeout
-   * @param websocketPingInterval web socket ping interval
-   * @param maxConcurrentRequests max concurrent requests
    * @param maxConcurrentRequestsPerHost max concurrent requests per host
    */
   @Deprecated
@@ -83,7 +85,7 @@ public class RequestConfig {
                        long websocketTimeout, long websocketPingInterval,
                        int maxConcurrentRequests, int maxConcurrentRequestsPerHost) {
     this(username, password, oauthToken, watchReconnectLimit, watchReconnectInterval, connectionTimeout, rollingTimeout, requestTimeout, scaleTimeout, loggingInterval,
-         websocketTimeout,  websocketPingInterval,maxConcurrentRequests, maxConcurrentRequestsPerHost, null);
+         websocketTimeout,  websocketPingInterval,maxConcurrentRequests, maxConcurrentRequestsPerHost, null, DEFAULT_REQUEST_RETRY_BACKOFFLIMIT, DEFAULT_REQUEST_RETRY_BACKOFFINTERVAL);
   }
 
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false)
@@ -91,7 +93,8 @@ public class RequestConfig {
                        int watchReconnectLimit, int watchReconnectInterval,
                        int connectionTimeout, long rollingTimeout, int requestTimeout, long scaleTimeout, int loggingInterval,
                        long websocketTimeout, long websocketPingInterval,
-                       int maxConcurrentRequests, int maxConcurrentRequestsPerHost, OAuthTokenProvider oauthTokenProvider) {
+                       int maxConcurrentRequests, int maxConcurrentRequestsPerHost, OAuthTokenProvider oauthTokenProvider,
+                       int requestRetryBackoffLimit, int requestRetryBackoffInterval) {
     this.username = username;
     this.oauthToken = oauthToken;
     this.password = password;
@@ -107,6 +110,8 @@ public class RequestConfig {
     this.maxConcurrentRequests = maxConcurrentRequests;
     this.maxConcurrentRequestsPerHost = maxConcurrentRequestsPerHost;
     this.oauthTokenProvider = oauthTokenProvider;
+    this.requestRetryBackoffLimit = requestRetryBackoffLimit;
+    this.requestRetryBackoffInterval = requestRetryBackoffInterval;
   }
 
   public String getUsername() {
@@ -166,6 +171,22 @@ public class RequestConfig {
 
   public void setRequestTimeout(int requestTimeout) {
     this.requestTimeout = requestTimeout;
+  }
+
+  public int getRequestRetryBackoffLimit() {
+    return requestRetryBackoffLimit;
+  }
+
+  public void setRequestRetryBackoffLimit(int requestRetryBackoffLimit) {
+    this.requestRetryBackoffLimit = requestRetryBackoffLimit;
+  }
+
+  public int getRequestRetryBackoffInterval() {
+    return requestRetryBackoffInterval;
+  }
+
+  public void setRequestRetryBackoffInterval(int requestRetryBackoffInterval) {
+    this.requestRetryBackoffInterval = requestRetryBackoffInterval;
   }
 
   public int getConnectionTimeout() {

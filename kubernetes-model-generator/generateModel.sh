@@ -44,6 +44,7 @@ declare -a modules=(
     "openshift-model-operator"
     "openshift-model-operatorhub"
     "openshift-model-console"
+    "openshift-model-clusterautoscaling"
     "openshift-model-machineconfig"
     "openshift-model-monitoring"
 )

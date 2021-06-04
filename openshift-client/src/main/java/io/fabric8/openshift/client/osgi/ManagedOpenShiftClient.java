@@ -141,6 +141,9 @@ import io.fabric8.openshift.api.model.OAuthAuthorizeToken;
 import io.fabric8.openshift.api.model.OAuthAuthorizeTokenList;
 import io.fabric8.openshift.api.model.OAuthClient;
 import io.fabric8.openshift.api.model.OAuthClientList;
+import io.fabric8.openshift.api.model.PodSecurityPolicyReview;
+import io.fabric8.openshift.api.model.PodSecurityPolicySelfSubjectReview;
+import io.fabric8.openshift.api.model.PodSecurityPolicySubjectReview;
 import io.fabric8.openshift.api.model.RangeAllocation;
 import io.fabric8.openshift.api.model.RangeAllocationList;
 import io.fabric8.openshift.api.model.ResourceAccessReview;
@@ -170,17 +173,20 @@ import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.NamespacedOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftConfigBuilder;
-import io.fabric8.openshift.client.OpenShiftLocalSubjectAccessReviewOperationsImpl;
+import io.fabric8.openshift.client.OpenShiftCreateOnlyResourceOperationsImpl;
 import io.fabric8.openshift.client.dsl.BuildConfigResource;
 import io.fabric8.openshift.client.dsl.BuildResource;
 import io.fabric8.openshift.client.dsl.DeployableScalableResource;
 import io.fabric8.openshift.client.dsl.MachineConfigurationAPIGroupDSL;
+import io.fabric8.openshift.client.dsl.OpenShiftClusterAutoscalingAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftConfigAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftConsoleAPIGroupDSL;
+import io.fabric8.openshift.client.dsl.OpenShiftMachineAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftMonitoringAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftOperatorAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftOperatorHubAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftQuotaAPIGroupDSL;
+import io.fabric8.openshift.client.dsl.OpenShiftTunedAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.ProjectOperation;
 import io.fabric8.openshift.client.dsl.ProjectRequestOperation;
 import io.fabric8.openshift.client.dsl.TemplateResource;
@@ -334,6 +340,11 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
+  public OpenShiftClusterAutoscalingAPIGroupDSL clusterAutoscaling() {
+    return delegate.clusterAutoscaling();
+  }
+
+  @Override
   public OpenShiftOperatorAPIGroupDSL operator() {
     return delegate.operator();
   }
@@ -410,6 +421,21 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
+  public OpenShiftCreateOnlyResourceOperationsImpl<PodSecurityPolicyReview, PodSecurityPolicyReview> podSecurityPolicyReviews() {
+    return delegate.podSecurityPolicyReviews();
+  }
+
+  @Override
+  public OpenShiftCreateOnlyResourceOperationsImpl<PodSecurityPolicySelfSubjectReview, PodSecurityPolicySelfSubjectReview> podSecurityPolicySelfSubjectReviews() {
+    return delegate.podSecurityPolicySelfSubjectReviews();
+  }
+
+  @Override
+  public OpenShiftCreateOnlyResourceOperationsImpl<PodSecurityPolicySubjectReview, PodSecurityPolicySubjectReview> podSecurityPolicySubjectReviews() {
+    return delegate.podSecurityPolicySubjectReviews();
+  }
+
+  @Override
   public OpenShiftQuotaAPIGroupDSL quotas() {
     return delegate.quotas();
   }
@@ -447,6 +473,11 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   @Override
   public MixedOperation<TemplateInstance, TemplateInstanceList, Resource<TemplateInstance>> templateInstances() {
     return delegate.templateInstances();
+  }
+
+  @Override
+  public OpenShiftTunedAPIGroupDSL tuned() {
+    return delegate.tuned();
   }
 
   @Override
@@ -735,6 +766,11 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
+  public OpenShiftMachineAPIGroupDSL machine() {
+    return delegate.machine();
+  }
+
+  @Override
   public OpenShiftMonitoringAPIGroupDSL monitoring() {
     return delegate.monitoring();
   }
@@ -791,22 +827,22 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
-  public OpenShiftLocalSubjectAccessReviewOperationsImpl<LocalSubjectAccessReview, SubjectAccessReviewResponse> localSubjectAccessReviews() {
+  public OpenShiftCreateOnlyResourceOperationsImpl<LocalSubjectAccessReview, SubjectAccessReviewResponse> localSubjectAccessReviews() {
     return delegate.localSubjectAccessReviews();
   }
 
   @Override
-  public OpenShiftLocalSubjectAccessReviewOperationsImpl<LocalResourceAccessReview, ResourceAccessReviewResponse> localResourceAccessReviews() {
+  public OpenShiftCreateOnlyResourceOperationsImpl<LocalResourceAccessReview, ResourceAccessReviewResponse> localResourceAccessReviews() {
     return delegate.localResourceAccessReviews();
   }
 
   @Override
-  public OpenShiftLocalSubjectAccessReviewOperationsImpl<SelfSubjectRulesReview, SelfSubjectRulesReview> selfSubjectRulesReviews() {
+  public OpenShiftCreateOnlyResourceOperationsImpl<SelfSubjectRulesReview, SelfSubjectRulesReview> selfSubjectRulesReviews() {
     return delegate.selfSubjectRulesReviews();
   }
 
   @Override
-  public OpenShiftLocalSubjectAccessReviewOperationsImpl<SubjectRulesReview, SubjectRulesReview> subjectRulesReviews() {
+  public OpenShiftCreateOnlyResourceOperationsImpl<SubjectRulesReview, SubjectRulesReview> subjectRulesReviews() {
     return delegate.subjectRulesReviews();
   }
 

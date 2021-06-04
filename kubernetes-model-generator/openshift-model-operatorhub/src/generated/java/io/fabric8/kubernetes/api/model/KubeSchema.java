@@ -22,9 +22,14 @@ import io.fabric8.kubernetes.api.model.admissionregistration.v1.RuleWithOperatio
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.rbac.PolicyRule;
 import io.fabric8.kubernetes.api.model.version.Info;
-import io.fabric8.openshift.api.model.operatorhub.manifests.PackageManifest;
+import io.fabric8.openshift.api.model.operatorhub.lifecyclemanager.v1.PackageManifest;
+import io.fabric8.openshift.api.model.operatorhub.lifecyclemanager.v1.PackageManifestList;
+import io.fabric8.openshift.api.model.operatorhub.v1.Operator;
+import io.fabric8.openshift.api.model.operatorhub.v1.OperatorCondition;
+import io.fabric8.openshift.api.model.operatorhub.v1.OperatorConditionList;
 import io.fabric8.openshift.api.model.operatorhub.v1.OperatorGroup;
 import io.fabric8.openshift.api.model.operatorhub.v1.OperatorGroupList;
+import io.fabric8.openshift.api.model.operatorhub.v1.OperatorList;
 import io.fabric8.openshift.api.model.operatorhub.v1alpha1.CatalogSource;
 import io.fabric8.openshift.api.model.operatorhub.v1alpha1.CatalogSourceList;
 import io.fabric8.openshift.api.model.operatorhub.v1alpha1.ClusterServiceVersion;
@@ -56,9 +61,14 @@ import lombok.ToString;
     "InstallPlan",
     "InstallPlanList",
     "ObjectMeta",
+    "Operator",
+    "OperatorCondition",
+    "OperatorConditionList",
     "OperatorGroup",
     "OperatorGroupList",
+    "OperatorList",
     "PackageManifest",
+    "PackageManifestList",
     "Patch",
     "PolicyRule",
     "Quantity",
@@ -108,12 +118,22 @@ public class KubeSchema {
     private InstallPlanList installPlanList;
     @JsonProperty("ObjectMeta")
     private io.fabric8.kubernetes.api.model.ObjectMeta objectMeta;
+    @JsonProperty("Operator")
+    private Operator operator;
+    @JsonProperty("OperatorCondition")
+    private OperatorCondition operatorCondition;
+    @JsonProperty("OperatorConditionList")
+    private OperatorConditionList operatorConditionList;
     @JsonProperty("OperatorGroup")
     private OperatorGroup operatorGroup;
     @JsonProperty("OperatorGroupList")
     private OperatorGroupList operatorGroupList;
+    @JsonProperty("OperatorList")
+    private OperatorList operatorList;
     @JsonProperty("PackageManifest")
     private PackageManifest packageManifest;
+    @JsonProperty("PackageManifestList")
+    private PackageManifestList packageManifestList;
     @JsonProperty("Patch")
     private Patch patch;
     @JsonProperty("PolicyRule")
@@ -144,32 +164,37 @@ public class KubeSchema {
 
     /**
      * 
-     * @param operatorGroupList
      * @param aPIGroupList
+     * @param packageManifestList
+     * @param operatorConditionList
+     * @param baseKubernetesList
+     * @param subscription
+     * @param clusterServiceVersionList
+     * @param operator
+     * @param patch
+     * @param catalogSourceList
+     * @param catalogSource
+     * @param operatorGroup
+     * @param packageManifest
+     * @param deployment
+     * @param info
+     * @param operatorGroupList
+     * @param operatorList
      * @param quantity
      * @param ruleWithOperations
      * @param installPlan
      * @param subscriptionList
-     * @param baseKubernetesList
-     * @param subscription
-     * @param clusterServiceVersionList
-     * @param patch
      * @param aPIGroup
      * @param typeMeta
      * @param clusterServiceVersion
      * @param policyRule
      * @param objectMeta
-     * @param catalogSourceList
      * @param time
-     * @param catalogSource
-     * @param operatorGroup
      * @param installPlanList
-     * @param packageManifest
-     * @param deployment
-     * @param info
+     * @param operatorCondition
      * @param status
      */
-    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, BaseKubernetesList baseKubernetesList, CatalogSource catalogSource, CatalogSourceList catalogSourceList, ClusterServiceVersion clusterServiceVersion, ClusterServiceVersionList clusterServiceVersionList, Deployment deployment, Info info, InstallPlan installPlan, InstallPlanList installPlanList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, OperatorGroup operatorGroup, OperatorGroupList operatorGroupList, PackageManifest packageManifest, Patch patch, PolicyRule policyRule, Quantity quantity, RuleWithOperations ruleWithOperations, Status status, Subscription subscription, SubscriptionList subscriptionList, String time, TypeMeta typeMeta) {
+    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, BaseKubernetesList baseKubernetesList, CatalogSource catalogSource, CatalogSourceList catalogSourceList, ClusterServiceVersion clusterServiceVersion, ClusterServiceVersionList clusterServiceVersionList, Deployment deployment, Info info, InstallPlan installPlan, InstallPlanList installPlanList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, Operator operator, OperatorCondition operatorCondition, OperatorConditionList operatorConditionList, OperatorGroup operatorGroup, OperatorGroupList operatorGroupList, OperatorList operatorList, PackageManifest packageManifest, PackageManifestList packageManifestList, Patch patch, PolicyRule policyRule, Quantity quantity, RuleWithOperations ruleWithOperations, Status status, Subscription subscription, SubscriptionList subscriptionList, String time, TypeMeta typeMeta) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -183,9 +208,14 @@ public class KubeSchema {
         this.installPlan = installPlan;
         this.installPlanList = installPlanList;
         this.objectMeta = objectMeta;
+        this.operator = operator;
+        this.operatorCondition = operatorCondition;
+        this.operatorConditionList = operatorConditionList;
         this.operatorGroup = operatorGroup;
         this.operatorGroupList = operatorGroupList;
+        this.operatorList = operatorList;
         this.packageManifest = packageManifest;
+        this.packageManifestList = packageManifestList;
         this.patch = patch;
         this.policyRule = policyRule;
         this.quantity = quantity;
@@ -317,6 +347,36 @@ public class KubeSchema {
         this.objectMeta = objectMeta;
     }
 
+    @JsonProperty("Operator")
+    public Operator getOperator() {
+        return operator;
+    }
+
+    @JsonProperty("Operator")
+    public void setOperator(Operator operator) {
+        this.operator = operator;
+    }
+
+    @JsonProperty("OperatorCondition")
+    public OperatorCondition getOperatorCondition() {
+        return operatorCondition;
+    }
+
+    @JsonProperty("OperatorCondition")
+    public void setOperatorCondition(OperatorCondition operatorCondition) {
+        this.operatorCondition = operatorCondition;
+    }
+
+    @JsonProperty("OperatorConditionList")
+    public OperatorConditionList getOperatorConditionList() {
+        return operatorConditionList;
+    }
+
+    @JsonProperty("OperatorConditionList")
+    public void setOperatorConditionList(OperatorConditionList operatorConditionList) {
+        this.operatorConditionList = operatorConditionList;
+    }
+
     @JsonProperty("OperatorGroup")
     public OperatorGroup getOperatorGroup() {
         return operatorGroup;
@@ -337,6 +397,16 @@ public class KubeSchema {
         this.operatorGroupList = operatorGroupList;
     }
 
+    @JsonProperty("OperatorList")
+    public OperatorList getOperatorList() {
+        return operatorList;
+    }
+
+    @JsonProperty("OperatorList")
+    public void setOperatorList(OperatorList operatorList) {
+        this.operatorList = operatorList;
+    }
+
     @JsonProperty("PackageManifest")
     public PackageManifest getPackageManifest() {
         return packageManifest;
@@ -345,6 +415,16 @@ public class KubeSchema {
     @JsonProperty("PackageManifest")
     public void setPackageManifest(PackageManifest packageManifest) {
         this.packageManifest = packageManifest;
+    }
+
+    @JsonProperty("PackageManifestList")
+    public PackageManifestList getPackageManifestList() {
+        return packageManifestList;
+    }
+
+    @JsonProperty("PackageManifestList")
+    public void setPackageManifestList(PackageManifestList packageManifestList) {
+        this.packageManifestList = packageManifestList;
     }
 
     @JsonProperty("Patch")

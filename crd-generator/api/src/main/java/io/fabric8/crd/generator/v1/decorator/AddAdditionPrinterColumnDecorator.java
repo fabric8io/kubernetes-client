@@ -40,12 +40,7 @@ public class AddAdditionPrinterColumnDecorator extends
 
   @Override
   public void andThenVisit(CustomResourceDefinitionVersionFluent<?> spec) {
-    Predicate<CustomResourceColumnDefinitionBuilder> matchingColumn = new Predicate<CustomResourceColumnDefinitionBuilder>() {
-      @Override
-      public boolean test(CustomResourceColumnDefinitionBuilder col) {
-        return col.getName() != null && col.getName().equals(columnName);
-      }
-    };
+    Predicate<CustomResourceColumnDefinitionBuilder> matchingColumn = col -> col.getName() != null && col.getName().equals(columnName);
     spec.removeMatchingFromAdditionalPrinterColumns(matchingColumn);
 
     spec.addNewAdditionalPrinterColumn()

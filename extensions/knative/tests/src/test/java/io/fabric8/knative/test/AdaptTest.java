@@ -25,7 +25,6 @@ import org.junit.jupiter.api.Test;
 
 import io.fabric8.knative.client.KnativeClient;
 import io.fabric8.knative.client.serving.v1.ServingV1Client;
-import io.fabric8.knative.client.serving.v1beta1.ServingV1Beta1Client;
 import io.fabric8.knative.mock.KnativeMockServer;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -40,7 +39,7 @@ class AdaptTest {
   }
 
   @AfterEach
-  void tearDown() throws IOException {
+  void tearDown() {
     mock.destroy();
   }
 
@@ -56,12 +55,5 @@ class AdaptTest {
     KnativeClient sc = mock.createKnative();
     KubernetesClient kc = new DefaultKubernetesClient(sc.getConfiguration());
     assertNotNull(kc.adapt(ServingV1Client.class));
-  }
-
-  @Test
-  void testAdaptServingV1Beta1() {
-    KnativeClient sc = mock.createKnative();
-    KubernetesClient kc = new DefaultKubernetesClient(sc.getConfiguration());
-    assertNotNull(kc.adapt(ServingV1Beta1Client.class));
   }
 }

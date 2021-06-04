@@ -17,6 +17,11 @@ package io.fabric8.kubernetes.client.dsl;
 
 public interface StatusReplaceable<T> {
 
+  /**
+   * Similar to {@link Replaceable#replace(Object)}, but only affects the status subresource
+   * @param item with the status subresource
+   * @return returns deserialized version of api server response
+   */
   T replaceStatus(T item);
 
 }

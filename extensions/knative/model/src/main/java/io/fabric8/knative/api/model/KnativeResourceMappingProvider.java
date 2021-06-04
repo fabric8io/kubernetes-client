@@ -25,11 +25,6 @@ public class KnativeResourceMappingProvider implements KubernetesResourceMapping
   public final Map<String, Class<? extends KubernetesResource>> mappings = new HashMap<>();
 
   public KnativeResourceMappingProvider() {
-    mappings.put("serving.knative.dev/v1beta1#Configuration", io.fabric8.knative.serving.v1beta1.Configuration.class);
-    mappings.put("serving.knative.dev/v1beta1#Revision", io.fabric8.knative.serving.v1beta1.Revision.class);
-    mappings.put("serving.knative.dev/v1beta1#Service", io.fabric8.knative.serving.v1beta1.Service.class);
-    mappings.put("serving.knative.dev/v1beta1#Route", io.fabric8.knative.serving.v1beta1.Route.class);
-
     mappings.put("serving.knative.dev/v1#Configuration", io.fabric8.knative.serving.v1.Configuration.class);
     mappings.put("serving.knative.dev/v1#Revision", io.fabric8.knative.serving.v1.Revision.class);
     mappings.put("serving.knative.dev/v1#Service", io.fabric8.knative.serving.v1.Service.class);
@@ -43,10 +38,10 @@ public class KnativeResourceMappingProvider implements KubernetesResourceMapping
 
     mappings.put("messaging.knative.dev/v1#InMemoryChannel", io.fabric8.knative.messaging.v1.InMemoryChannel.class);
     mappings.put("messaging.knative.dev/v1#Sequence", io.fabric8.knative.flows.v1.Sequence.class);
-    mappings.put("sources.knative.dev/v1beta1#PingSource", io.fabric8.knative.sources.v1beta1.PingSource.class);
-    mappings.put("sources.knative.dev/v1beta1#ContainerSource", io.fabric8.knative.sources.v1beta1.ContainerSource.class);
-    mappings.put("sources.knative.dev/v1beta1#ApiServerSource", io.fabric8.knative.sources.v1beta1.ApiServerSource.class);
-    mappings.put("sources.knative.dev/v1beta1#SinkBinding", io.fabric8.knative.sources.v1beta1.SinkBinding.class);
+    mappings.put("sources.knative.dev/v1#PingSource", io.fabric8.knative.sources.v1.PingSource.class);
+    mappings.put("sources.knative.dev/v1#ContainerSource", io.fabric8.knative.sources.v1.ContainerSource.class);
+    mappings.put("sources.knative.dev/v1#ApiServerSource", io.fabric8.knative.sources.v1.ApiServerSource.class);
+    mappings.put("sources.knative.dev/v1#SinkBinding", io.fabric8.knative.sources.v1.SinkBinding.class);
     mappings.put("sources.knative.dev/v1alpha1#AwsSqsSource", io.fabric8.knative.eventing.contrib.awssqs.v1alpha1.AwsSqsSource.class);
     mappings.put("sources.knative.dev/v1alpha1#CouchDbSource", io.fabric8.knative.eventing.contrib.couchdb.v1alpha1.CouchDbSource.class);
     mappings.put("sources.knative.dev/v1alpha1#GitHubSource", io.fabric8.knative.eventing.contrib.github.v1alpha1.GitHubSource.class);

@@ -224,7 +224,7 @@ func (g *schemaGenerator) resourceListWithGeneric(t reflect.Type) string {
 }
 
 func (g *schemaGenerator) javaInterfaces(t reflect.Type) []string {
-	if _, ok := t.FieldByName("ObjectMeta"); t.Name() != "JobTemplateSpec" && t.Name() != "PodTemplateSpec" && t.Name() != "PersistentVolumeClaimTemplate" && ok {
+	if _, ok := t.FieldByName("ObjectMeta"); t.Name() != "JobTemplateSpec" && t.Name() != "PodTemplateSpec" && t.Name() != "PersistentVolumeClaimTemplate"  && t.Name() != "MachineSpec" && t.Name() != "MachineTemplateSpec" && ok {
 		scope := g.crdScope(t)
 
 		if scope == Namespaced {
@@ -672,6 +672,7 @@ func (g *schemaGenerator) isClusterScopedResource(t reflect.Type) bool {
 		"github.com/openshift/api/operator/v1/Network",
 		"github.com/openshift/api/operator/v1/KubeScheduler",
 		"github.com/openshift/api/operator/v1/Authentication",
+                "github.com/operator-framework/api/pkg/operators/v1/Operator",
 		"github.com/openshift/api/imageregistry/v1/ImagePruner",
 		"github.com/openshift/api/console/v1/ConsoleLink",
 		"github.com/openshift/api/console/v1/ConsoleCLIDownload",
@@ -688,6 +689,7 @@ func (g *schemaGenerator) isClusterScopedResource(t reflect.Type) bool {
                 "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1/KubeletConfig",
                 "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1/MachineConfigPool",
                 "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1/MachineConfig",
+                "github.com/openshift/cluster-autoscaler-operator/pkg/apis/autoscaling/v1/ClusterAutoscaler",
 	}
 
 	return Contains(clusterScopedResourcesList, t.PkgPath() + "/" + t.Name())
