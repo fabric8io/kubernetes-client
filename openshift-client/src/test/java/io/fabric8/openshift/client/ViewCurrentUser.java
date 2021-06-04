@@ -19,7 +19,7 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.openshift.api.model.User;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  */

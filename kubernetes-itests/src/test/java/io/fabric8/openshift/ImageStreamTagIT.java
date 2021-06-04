@@ -33,7 +33,7 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import static org.awaitility.Awaitility.await;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(ArquillianConditionalRunner.class)
 @RequiresOpenshift

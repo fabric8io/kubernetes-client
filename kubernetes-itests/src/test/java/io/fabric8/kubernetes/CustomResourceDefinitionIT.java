@@ -29,7 +29,7 @@ import org.junit.runner.RunWith;
 import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @RunWith(ArquillianConditionalRunner.class)
 @RequiresKubernetes
