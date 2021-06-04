@@ -131,7 +131,7 @@ public class DefaultKnativeClient extends BaseClient implements NamespacedKnativ
 
     @Override
     public FunctionCallable<NamespacedKnativeClient> withRequestConfig(RequestConfig requestConfig) {
-        return new WithRequestCallable<NamespacedKnativeClient>(this, requestConfig);
+        return new WithRequestCallable<>(this, requestConfig);
     }
 
     @Override

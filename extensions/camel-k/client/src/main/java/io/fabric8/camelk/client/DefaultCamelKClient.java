@@ -55,7 +55,7 @@ public class DefaultCamelKClient extends BaseClient implements NamespacedCamelKC
 
   @Override
   public FunctionCallable<NamespacedCamelKClient> withRequestConfig(RequestConfig requestConfig) {
-    return new WithRequestCallable<NamespacedCamelKClient>(this, requestConfig);
+    return new WithRequestCallable<>(this, requestConfig);
   }
 
   @Override

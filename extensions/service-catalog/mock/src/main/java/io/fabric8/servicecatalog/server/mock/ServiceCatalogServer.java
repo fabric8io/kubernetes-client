@@ -53,7 +53,7 @@ public class ServiceCatalogServer extends ExternalResource {
 
   public void before() {
     mock = crudMode
-      ? new ServiceCatalogMockServer(new Context(), new MockWebServer(), new HashMap<ServerRequest, Queue<ServerResponse>>(), new KubernetesCrudDispatcher(), true)
+      ? new ServiceCatalogMockServer(new Context(), new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(), true)
       : new ServiceCatalogMockServer(https);
     mock.init();
     client = mock.createServiceCatalog();

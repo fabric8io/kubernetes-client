@@ -113,7 +113,7 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl ex
     this.explicitNamespace = explicitNamespace;
     this.fromServer = fromServer;
     this.deletingExisting = deletingExisting;
-    this.visitors = visitors != null ? new ArrayList<>(visitors) : new ArrayList<Visitor>();
+    this.visitors = visitors != null ? new ArrayList<>(visitors) : new ArrayList<>();
     this.item = item;
     this.handler = handlerOf(item);
     this.cascading = cascading;

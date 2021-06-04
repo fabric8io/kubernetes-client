@@ -106,7 +106,7 @@ public class PagerDutyConfig implements KubernetesResource
     @JsonProperty("url")
     private String url;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new HashMap<>();
 
     /**
      * No args constructor for use in serialization

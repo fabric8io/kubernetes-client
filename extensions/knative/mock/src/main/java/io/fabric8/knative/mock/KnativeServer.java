@@ -53,7 +53,7 @@ public class KnativeServer extends ExternalResource {
 
   public void before() {
     mock = crudMode
-      ? new KnativeMockServer(new Context(), new MockWebServer(), new HashMap<ServerRequest, Queue<ServerResponse>>(), new KubernetesCrudDispatcher(), true)
+      ? new KnativeMockServer(new Context(), new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(), true)
       : new KnativeMockServer(https);
     mock.init();
     client = mock.createKnative();

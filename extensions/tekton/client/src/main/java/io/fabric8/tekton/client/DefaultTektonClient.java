@@ -55,7 +55,7 @@ public class DefaultTektonClient extends BaseClient implements NamespacedTektonC
 
   @Override
   public FunctionCallable<NamespacedTektonClient> withRequestConfig(RequestConfig requestConfig) {
-    return new WithRequestCallable<NamespacedTektonClient>(this, requestConfig);
+    return new WithRequestCallable<>(this, requestConfig);
   }
 
   @Override

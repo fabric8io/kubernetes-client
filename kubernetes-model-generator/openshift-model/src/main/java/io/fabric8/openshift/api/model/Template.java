@@ -96,16 +96,16 @@ public class Template implements HasMetadata, Namespaced {
      *
      */
     @JsonProperty("objects")
-    private List<HasMetadata> objects = new ArrayList<HasMetadata>();
+    private List<HasMetadata> objects = new ArrayList<>();
     /**
      *
      *
      */
     @JsonProperty("parameters")
-    private List<Parameter> parameters = new ArrayList<Parameter>();
+    private List<Parameter> parameters = new ArrayList<>();
 
     @JsonIgnore
-    private Map<java.lang.String, java.lang.Object> additionalProperties = new HashMap<java.lang.String, java.lang.Object>();
+    private Map<java.lang.String, java.lang.Object> additionalProperties = new HashMap<>();
 
 
     /**

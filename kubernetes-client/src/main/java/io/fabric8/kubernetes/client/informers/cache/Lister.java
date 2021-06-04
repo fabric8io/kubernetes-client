@@ -60,6 +60,6 @@ public class Lister<T> {
   }
 
   public Lister<T> namespace(String namespace) {
-    return new Lister<T>(this.indexer, namespace, Cache.NAMESPACE_INDEX);
+    return new Lister<>(this.indexer, namespace, Cache.NAMESPACE_INDEX);
   }
 }
