@@ -3,11 +3,21 @@ module github.com/fabric8io/kubernetes-client/kubernetes-model-generator
 go 1.14
 
 require (
-	github.com/openshift/api v0.0.0-20210412212256-79bd8cfbbd59
+	github.com/Microsoft/go-winio v0.4.15 // indirect
+	github.com/Microsoft/hcsshim v0.8.10-0.20200715222032-5eafd1556990 // indirect
+	github.com/containerd/containerd v1.4.4 // indirect
+	github.com/containerd/ttrpc v1.0.2 // indirect
+	github.com/containerd/typeurl v1.0.1 // indirect
+	github.com/docker/docker v20.10.2+incompatible // indirect
+	github.com/gorilla/mux v1.8.0 // indirect
+	github.com/opencontainers/runtime-spec v1.0.3-0.20200929063507-e6143ca7d51d // indirect
+	github.com/openshift/api v0.0.0-20210521075222-e273a339932a
 	github.com/openshift/cluster-autoscaler-operator v0.0.1-0.20210519002000-fdae5baad94f
+	github.com/openshift/cluster-node-tuning-operator v0.0.0-20210524233058-db8189430089
 	github.com/openshift/machine-api-operator v0.2.1-0.20210513225032-5644b5803418
 	github.com/openshift/machine-config-operator v0.0.1-0.20210522071823-15494d85812c
-	github.com/operator-framework/api v0.3.12
+	github.com/operator-framework/api v0.9.1
+	github.com/operator-framework/operator-lifecycle-manager v0.18.1
 	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.47.1
 	github.com/prometheus/client_golang v1.10.0 // indirect
 	github.com/prometheus/common v0.20.0 // indirect
@@ -19,11 +29,11 @@ require (
 	golang.org/x/text v0.3.5 // indirect
 	google.golang.org/protobuf v1.26.0 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
-	k8s.io/api v0.21.0
-	k8s.io/apiextensions-apiserver v0.21.0
-	k8s.io/apimachinery v0.21.0
+	k8s.io/api v0.21.1
+	k8s.io/apiextensions-apiserver v0.21.1
+	k8s.io/apimachinery v0.21.1
 	k8s.io/client-go v12.0.0+incompatible
-	k8s.io/kube-aggregator v0.21.0
+	k8s.io/kube-aggregator v0.21.1
 	k8s.io/metrics v0.21.0
 	k8s.io/utils v0.0.0-20210305010621-2afb4311ab10 // indirect
 )

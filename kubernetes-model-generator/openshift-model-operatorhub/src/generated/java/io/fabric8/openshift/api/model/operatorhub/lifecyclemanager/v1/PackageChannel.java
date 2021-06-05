@@ -1,5 +1,5 @@
 
-package io.fabric8.openshift.api.model.operatorhub.manifests;
+package io.fabric8.openshift.api.model.operatorhub.lifecyclemanager.v1;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +32,7 @@ import lombok.ToString;
     "kind",
     "metadata",
     "currentCSV",
+    "currentCSVDesc",
     "name"
 })
 @ToString
@@ -52,6 +53,8 @@ public class PackageChannel implements KubernetesResource
 
     @JsonProperty("currentCSV")
     private String currentCSV;
+    @JsonProperty("currentCSVDesc")
+    private CSVDescription currentCSVDesc;
     @JsonProperty("name")
     private String name;
     @JsonIgnore
@@ -68,10 +71,12 @@ public class PackageChannel implements KubernetesResource
      * 
      * @param name
      * @param currentCSV
+     * @param currentCSVDesc
      */
-    public PackageChannel(String currentCSV, String name) {
+    public PackageChannel(String currentCSV, CSVDescription currentCSVDesc, String name) {
         super();
         this.currentCSV = currentCSV;
+        this.currentCSVDesc = currentCSVDesc;
         this.name = name;
     }
 
@@ -83,6 +88,16 @@ public class PackageChannel implements KubernetesResource
     @JsonProperty("currentCSV")
     public void setCurrentCSV(String currentCSV) {
         this.currentCSV = currentCSV;
+    }
+
+    @JsonProperty("currentCSVDesc")
+    public CSVDescription getCurrentCSVDesc() {
+        return currentCSVDesc;
+    }
+
+    @JsonProperty("currentCSVDesc")
+    public void setCurrentCSVDesc(CSVDescription currentCSVDesc) {
+        this.currentCSVDesc = currentCSVDesc;
     }
 
     @JsonProperty("name")

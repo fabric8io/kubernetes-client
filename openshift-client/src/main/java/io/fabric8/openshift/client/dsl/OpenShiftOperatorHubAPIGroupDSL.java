@@ -17,9 +17,16 @@ package io.fabric8.openshift.client.dsl;
 
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.openshift.api.model.operatorhub.lifecyclemanager.v1.PackageManifest;
+import io.fabric8.openshift.api.model.operatorhub.lifecyclemanager.v1.PackageManifestList;
+import io.fabric8.openshift.api.model.operatorhub.v1.Operator;
+import io.fabric8.openshift.api.model.operatorhub.v1.OperatorCondition;
+import io.fabric8.openshift.api.model.operatorhub.v1.OperatorConditionList;
 import io.fabric8.openshift.api.model.operatorhub.v1.OperatorGroup;
 import io.fabric8.openshift.api.model.operatorhub.v1.OperatorGroupList;
+import io.fabric8.openshift.api.model.operatorhub.v1.OperatorList;
 import io.fabric8.openshift.api.model.operatorhub.v1alpha1.CatalogSource;
 import io.fabric8.openshift.api.model.operatorhub.v1alpha1.CatalogSourceList;
 import io.fabric8.openshift.api.model.operatorhub.v1alpha1.ClusterServiceVersion;
@@ -60,4 +67,25 @@ public interface OpenShiftOperatorHubAPIGroupDSL extends Client {
    * @return MixedOperation object for ClusterServiceVersion type
    */
   MixedOperation<ClusterServiceVersion, ClusterServiceVersionList, Resource<ClusterServiceVersion>> clusterServiceVersions();
+
+  /**
+   * API entrypoint for PackageManifest (packages.operators.coreos.com/v1)
+   *
+   * @return MixedOperation for PackageManifest
+   */
+  MixedOperation<PackageManifest, PackageManifestList, Resource<PackageManifest>> packageManifests();
+
+  /**
+   * API entrypoint for OperatorCondition (operators.coreos.com/v1)
+   *
+   * @return MixedOperation for OperatorCondition
+   */
+  MixedOperation<OperatorCondition, OperatorConditionList, Resource<OperatorCondition>> operatorConditions();
+
+  /**
+   * API entrypoint for Operator (operators.coreos.com/v1)
+   *
+   * @return NonNamespaceOperation for Operator
+   */
+  NonNamespaceOperation<Operator, OperatorList, Resource<Operator>> operators();
 }

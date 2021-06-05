@@ -140,6 +140,9 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
     String fixedResourceVersion = getResourceVersion();
     Exception caught = null;
     int maxTries = 10;
+    if (item.getMetadata() == null) {
+      item.setMetadata(new ObjectMeta());
+    }
     String existingResourceVersion = KubernetesResourceUtil.getResourceVersion(item);
     for (int i = 0; i < maxTries; i++) {
       try {
@@ -188,10 +191,11 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   protected T patch(PatchContext context, T base, T item, boolean status) {
     if (base == null && context != null && context.getPatchType() == PatchType.JSON) {
       base = requireFromServer(item.getMetadata());
-      if (item.getMetadata() == null) {
-        item.setMetadata(new ObjectMeta());
-      }
       if (base.getMetadata() != null) {
+        // prevent the resourceVersion from being modified in the patch
+        if (item.getMetadata() == null) {
+          item.setMetadata(new ObjectMeta());
+        }  
         item.getMetadata().setResourceVersion(base.getMetadata().getResourceVersion());  
       }
     }
@@ -208,7 +212,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   
   @Override
   public T patchStatus(T item) {
-    return patch(new PatchContext.Builder().withPatchType(PatchType.JSON_MERGE).build(), null, item, true);
+    return patch(PatchContext.of(PatchType.JSON_MERGE), null, item, true);
   }
   
   @Override

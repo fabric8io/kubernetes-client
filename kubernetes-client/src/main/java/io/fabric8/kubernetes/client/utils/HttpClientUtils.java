@@ -107,7 +107,13 @@ public class HttpClientUtils {
     return urlBuilder;
   }
 
-  private static OkHttpClient createHttpClient(final Config config, final Consumer<OkHttpClient.Builder> additionalConfig) {
+  /**
+   * Creates an HTTP client configured to access the Kubernetes API.
+   * @param config Kubernetes API client config
+   * @param additionalConfig a consumer that allows overriding HTTP client properties
+   * @return returns an HTTP client
+   */
+  public static OkHttpClient createHttpClient(final Config config, final Consumer<OkHttpClient.Builder> additionalConfig) {
         try {
             OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
 

@@ -30,8 +30,8 @@ import (
   "strings"
   "time"
   operatorhubv1 "github.com/operator-framework/api/pkg/operators/v1"
-  operatormanifest "github.com/operator-framework/api/pkg/manifests"
   operatorhubv1alpha1 "github.com/operator-framework/api/pkg/operators/v1alpha1"
+  operatorlifecyclemanager "github.com/operator-framework/operator-lifecycle-manager/pkg/package-server/apis/operators/v1"
   version "github.com/operator-framework/api/pkg/lib/version"
 
   "os"
@@ -63,7 +63,12 @@ type Schema struct {
   SubscriptionList                         operatorhubv1alpha1.SubscriptionList
   OperatorGroup                            operatorhubv1.OperatorGroup
   OperatorGroupList                        operatorhubv1.OperatorGroupList
-  PackageManifest                          operatormanifest.PackageManifest
+  OperatorCondition                        operatorhubv1.OperatorCondition
+  OperatorConditionList                    operatorhubv1.OperatorConditionList
+  Operator                                 operatorhubv1.Operator
+  OperatorList                             operatorhubv1.OperatorList
+  PackageManifest                          operatorlifecyclemanager.PackageManifest
+  PackageManifestList                      operatorlifecyclemanager.PackageManifestList
 }
 
 func main() {
@@ -82,8 +87,8 @@ func main() {
     {"k8s.io/api/admissionregistration/v1", "admissionregistration.k8s.io", "io.fabric8.kubernetes.api.model.admissionregistration.v1", "kubernetes_admissionregistration_v1_", false},
     {"github.com/operator-framework/api/pkg/operators/v1", "operators.coreos.com", "io.fabric8.openshift.api.model.operatorhub.v1", "os_operatorhub_v1_", true},
     {"github.com/operator-framework/api/pkg/operators/v1alpha1", "operators.coreos.com", "io.fabric8.openshift.api.model.operatorhub.v1alpha1", "os_operatorhub_v1alpha1_", true},
-    {"github.com/operator-framework/api/pkg/manifests", "packages.operators.coreos.com", "io.fabric8.openshift.api.model.operatorhub.manifests", "os_operatorhub_manifests_", true},
     {"github.com/operator-framework/api/pkg/lib/version", "", "io.fabric8.openshift.api.model.operatorhub.v1alpha1", "os_operatorhub_manifests_", true},
+    {"github.com/operator-framework/operator-lifecycle-manager/pkg/package-server/apis/operators/v1", "packages.operators.coreos.com", "io.fabric8.openshift.api.model.operatorhub.lifecyclemanager.v1", "os_operatorhub_lifecyclemanager_", true},
   }
 
   typeMap := map[reflect.Type]reflect.Type{
@@ -91,7 +96,10 @@ func main() {
     reflect.TypeOf(struct{}{}):  reflect.TypeOf(""),
     reflect.TypeOf(version.OperatorVersion{}): reflect.TypeOf(""),
   }
-  schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, map[reflect.Type]string{},"operatorhub")
+  manualTypeMap := map[reflect.Type]string {
+    reflect.TypeOf(operatorhubv1.RichReference{}): "com.fasterxml.jackson.databind.JsonNode",
+  }
+  schema, err := schemagen.GenerateSchema(reflect.TypeOf(Schema{}), packages, typeMap, manualTypeMap,"operatorhub")
   if err != nil {
     fmt.Fprintf(os.Stderr, "An error occurred: %v", err)
     return

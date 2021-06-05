@@ -1,9 +1,7 @@
 
-package io.fabric8.openshift.api.model.operatorhub.manifests;
+package io.fabric8.openshift.api.model.tuned.v1;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -33,9 +31,8 @@ import lombok.ToString;
     "apiVersion",
     "kind",
     "metadata",
-    "channels",
-    "defaultChannel",
-    "packageName"
+    "data",
+    "name"
 })
 @ToString
 @EqualsAndHashCode
@@ -50,15 +47,13 @@ import lombok.ToString;
     @BuildableReference(LocalObjectReference.class),
     @BuildableReference(PersistentVolumeClaim.class)
 })
-public class PackageManifest implements KubernetesResource
+public class TunedProfile implements KubernetesResource
 {
 
-    @JsonProperty("channels")
-    private List<PackageChannel> channels = new ArrayList<PackageChannel>();
-    @JsonProperty("defaultChannel")
-    private String defaultChannel;
-    @JsonProperty("packageName")
-    private String packageName;
+    @JsonProperty("data")
+    private String data;
+    @JsonProperty("name")
+    private String name;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -66,50 +61,38 @@ public class PackageManifest implements KubernetesResource
      * No args constructor for use in serialization
      * 
      */
-    public PackageManifest() {
+    public TunedProfile() {
     }
 
     /**
      * 
-     * @param channels
-     * @param packageName
-     * @param defaultChannel
+     * @param data
+     * @param name
      */
-    public PackageManifest(List<PackageChannel> channels, String defaultChannel, String packageName) {
+    public TunedProfile(String data, String name) {
         super();
-        this.channels = channels;
-        this.defaultChannel = defaultChannel;
-        this.packageName = packageName;
+        this.data = data;
+        this.name = name;
     }
 
-    @JsonProperty("channels")
-    public List<PackageChannel> getChannels() {
-        return channels;
+    @JsonProperty("data")
+    public String getData() {
+        return data;
     }
 
-    @JsonProperty("channels")
-    public void setChannels(List<PackageChannel> channels) {
-        this.channels = channels;
+    @JsonProperty("data")
+    public void setData(String data) {
+        this.data = data;
     }
 
-    @JsonProperty("defaultChannel")
-    public String getDefaultChannel() {
-        return defaultChannel;
+    @JsonProperty("name")
+    public String getName() {
+        return name;
     }
 
-    @JsonProperty("defaultChannel")
-    public void setDefaultChannel(String defaultChannel) {
-        this.defaultChannel = defaultChannel;
-    }
-
-    @JsonProperty("packageName")
-    public String getPackageName() {
-        return packageName;
-    }
-
-    @JsonProperty("packageName")
-    public void setPackageName(String packageName) {
-        this.packageName = packageName;
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
     }
 
     @JsonAnyGetter

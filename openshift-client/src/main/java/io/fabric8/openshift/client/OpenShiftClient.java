@@ -329,6 +329,13 @@ public interface OpenShiftClient extends KubernetesClient {
   MixedOperation<TemplateInstance, TemplateInstanceList, Resource<TemplateInstance>> templateInstances();
 
   /**
+   * API entrypoint for OpenShift Node Tuning operator model(tuned.openshift.io/v1)
+   *
+   * @return {@link OpenShiftTunedAPIGroupDSL} for access to various available resources
+   */
+  OpenShiftTunedAPIGroupDSL tuned();
+
+  /**
    * API entrypoint for BrokerTemplateInstance(template.openshift.io/v1)
    *
    * @return {@link NonNamespaceOperation} for BrokerTemplateInstance

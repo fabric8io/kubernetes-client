@@ -11,10 +11,12 @@
 * Fix #3190: Ignore fields with name "-" when using the Go to JSON schema generator
 
 #### Improvements
+* Fix #3078: adding javadocs to further clarify patch, edit, replace, etc. and note the possibility of items being modified.
 * Fix #3149: replace(item) will consult the item's resourceVersion for the first PUT attempt when not specifically locked on a resourceVersion
 * Fix #3135: added mock crud support for patch status, and will return exceptions for unsupported patch types
 * Fix #3072: various changes to refine how threads are handled by informers.  Note that the SharedInformer.run call is now blocking when starting the informer.
 * Fix #3143: a new SharedInformerEventListener.onException(SharedIndexInformer, Exception) method is available to determine which informer could not start.
+* Fix #3170: made HttpClientUtils.createHttpClient(Config, Consumer<OkHttpClient.Builder>) public to allow overriding custom http client properties 
 
 #### Dependency Upgrade
 * Fix #2741: Update Knative Model to v0.23.0
@@ -27,6 +29,8 @@
 * Fix #3087: Support HTTP operation retry with exponential backoff (for status code >= 500)
 * Add DSL support for `autoscaling.openshift.io` resources in OpenShiftClient
 * Add DSL support for PodSecurityPolicySubjectReview, PodSecurityPolicyReview, PodSecurityPolicySelfSubjectReview in `security.openshift.io/v1` apiGroup to OpenShiftClient
+* Add DSL support for OperatorCondition, Operator, PackageManifest in `operators.coreos.com` apiGroup to OpenShiftClient 
+* Add support for `tuned.openshift.io` apiGroup in OpenShiftClient DSL
 
 #### _**Note**_: Breaking changes in the API
 ##### DSL Changes:

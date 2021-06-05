@@ -36,8 +36,10 @@ import lombok.ToString;
     "bundleLookups",
     "catalogSources",
     "conditions",
+    "message",
     "phase",
-    "plan"
+    "plan",
+    "startTime"
 })
 @ToString
 @EqualsAndHashCode
@@ -61,17 +63,21 @@ public class InstallPlanStatus implements KubernetesResource
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<BundleLookup> bundleLookups = new ArrayList<BundleLookup>();
     @JsonProperty("catalogSources")
-    private List<String> catalogSources = new ArrayList<String>();
+    private List<java.lang.String> catalogSources = new ArrayList<java.lang.String>();
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<InstallPlanCondition> conditions = new ArrayList<InstallPlanCondition>();
+    @JsonProperty("message")
+    private java.lang.String message;
     @JsonProperty("phase")
-    private String phase;
+    private java.lang.String phase;
     @JsonProperty("plan")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Step> plan = new ArrayList<Step>();
+    @JsonProperty("startTime")
+    private String startTime;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
 
     /**
      * No args constructor for use in serialization
@@ -86,17 +92,21 @@ public class InstallPlanStatus implements KubernetesResource
      * @param bundleLookups
      * @param attenuatedServiceAccountRef
      * @param catalogSources
+     * @param startTime
      * @param conditions
+     * @param message
      * @param plan
      */
-    public InstallPlanStatus(io.fabric8.kubernetes.api.model.ObjectReference attenuatedServiceAccountRef, List<BundleLookup> bundleLookups, List<String> catalogSources, List<InstallPlanCondition> conditions, String phase, List<Step> plan) {
+    public InstallPlanStatus(io.fabric8.kubernetes.api.model.ObjectReference attenuatedServiceAccountRef, List<BundleLookup> bundleLookups, List<java.lang.String> catalogSources, List<InstallPlanCondition> conditions, java.lang.String message, java.lang.String phase, List<Step> plan, String startTime) {
         super();
         this.attenuatedServiceAccountRef = attenuatedServiceAccountRef;
         this.bundleLookups = bundleLookups;
         this.catalogSources = catalogSources;
         this.conditions = conditions;
+        this.message = message;
         this.phase = phase;
         this.plan = plan;
+        this.startTime = startTime;
     }
 
     @JsonProperty("attenuatedServiceAccountRef")
@@ -120,12 +130,12 @@ public class InstallPlanStatus implements KubernetesResource
     }
 
     @JsonProperty("catalogSources")
-    public List<String> getCatalogSources() {
+    public List<java.lang.String> getCatalogSources() {
         return catalogSources;
     }
 
     @JsonProperty("catalogSources")
-    public void setCatalogSources(List<String> catalogSources) {
+    public void setCatalogSources(List<java.lang.String> catalogSources) {
         this.catalogSources = catalogSources;
     }
 
@@ -139,13 +149,23 @@ public class InstallPlanStatus implements KubernetesResource
         this.conditions = conditions;
     }
 
+    @JsonProperty("message")
+    public java.lang.String getMessage() {
+        return message;
+    }
+
+    @JsonProperty("message")
+    public void setMessage(java.lang.String message) {
+        this.message = message;
+    }
+
     @JsonProperty("phase")
-    public String getPhase() {
+    public java.lang.String getPhase() {
         return phase;
     }
 
     @JsonProperty("phase")
-    public void setPhase(String phase) {
+    public void setPhase(java.lang.String phase) {
         this.phase = phase;
     }
 
@@ -159,13 +179,23 @@ public class InstallPlanStatus implements KubernetesResource
         this.plan = plan;
     }
 
+    @JsonProperty("startTime")
+    public String getStartTime() {
+        return startTime;
+    }
+
+    @JsonProperty("startTime")
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
     @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<java.lang.String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
+    public void setAdditionalProperty(java.lang.String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 

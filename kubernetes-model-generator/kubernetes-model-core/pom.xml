@@ -121,8 +121,10 @@
               io.fabric8.openshift.api.model.operatorhub.manifests;resolution:=optional,
               io.fabric8.openshift.api.model.operatorhub.v1;resolution:=optional,
               io.fabric8.openshift.api.model.operatorhub.v1alpha1;resolution:=optional,
+              io.fabric8.openshift.api.model.operatorhub.lifecyclemanager.v1;resolution:=optional,
               io.fabric8.openshift.api.model.machineconfig.v1;resolution:=optional,
               io.fabric8.openshift.api.model.machine.v1beta1;resolution:=optional,
+              io.fabric8.openshift.api.model.tuned.v1;resolution:=optional,
             </Import-Package>
             <Private-Package>io.fabric8.kubernetes.internal</Private-Package>
             <Export-Package>
