@@ -37,7 +37,7 @@ import java.util.concurrent.TimeUnit;
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
 import static org.awaitility.Awaitility.await;
 
 @RunWith(ArquillianConditionalRunner.class)

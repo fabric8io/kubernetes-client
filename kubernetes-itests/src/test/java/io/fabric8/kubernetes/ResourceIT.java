@@ -59,9 +59,9 @@ import java.util.stream.Collectors;
 
 import static junit.framework.TestCase.assertNotNull;
 import static org.awaitility.Awaitility.await;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(ArquillianConditionalRunner.class)
 @RequiresKubernetes
