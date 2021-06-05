@@ -29,7 +29,7 @@ import org.ops4j.pax.exam.spi.reactors.PerClass;
 import javax.inject.Inject;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.features;
 
 @RunWith(PaxExam.class)
