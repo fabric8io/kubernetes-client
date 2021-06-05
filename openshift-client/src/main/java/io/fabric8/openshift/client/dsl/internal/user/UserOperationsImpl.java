@@ -15,15 +15,15 @@
  */
 package io.fabric8.openshift.client.dsl.internal.user;
 
-import io.fabric8.kubernetes.api.builder.Visitor;
+import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
-import okhttp3.OkHttpClient;
 import io.fabric8.openshift.api.model.User;
 import io.fabric8.openshift.api.model.UserBuilder;
 import io.fabric8.openshift.api.model.UserList;
 import io.fabric8.openshift.client.OpenShiftConfig;
+import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
+import okhttp3.OkHttpClient;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.USER;
 
@@ -46,8 +46,8 @@ public class UserOperationsImpl extends OpenShiftOperation<User, UserList, Resou
   }
 
   @Override
-  public User edit(Visitor... visitors) {
-    return patch(new UserBuilder(getMandatory()).accept(visitors).build());
+  protected VisitableBuilder<User, ?> createVisitableBuilder(User item) {
+    return new UserBuilder(item);
   }
 
   @Override

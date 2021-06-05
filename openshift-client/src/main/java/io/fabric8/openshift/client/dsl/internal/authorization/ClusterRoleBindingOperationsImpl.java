@@ -15,15 +15,15 @@
  */
 package io.fabric8.openshift.client.dsl.internal.authorization;
 
-import io.fabric8.kubernetes.api.builder.Visitor;
+import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
-import okhttp3.OkHttpClient;
 import io.fabric8.openshift.api.model.ClusterRoleBinding;
 import io.fabric8.openshift.api.model.ClusterRoleBindingBuilder;
 import io.fabric8.openshift.api.model.ClusterRoleBindingList;
 import io.fabric8.openshift.client.OpenShiftConfig;
+import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
+import okhttp3.OkHttpClient;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.AUTHORIZATION;
 
@@ -41,12 +41,12 @@ public class ClusterRoleBindingOperationsImpl extends OpenShiftOperation<Cluster
   }
 
   @Override
-  public ClusterRoleBinding edit(Visitor... visitors) {
-    return patch(new ClusterRoleBindingBuilder(getMandatory()).accept(visitors).build());
+  public ClusterRoleBindingOperationsImpl newInstance(OperationContext context) {
+    return new ClusterRoleBindingOperationsImpl(context);
   }
 
   @Override
-  public ClusterRoleBindingOperationsImpl newInstance(OperationContext context) {
-    return new ClusterRoleBindingOperationsImpl(context);
+  protected VisitableBuilder<ClusterRoleBinding, ?> createVisitableBuilder(ClusterRoleBinding item) {
+    return new ClusterRoleBindingBuilder(item);
   }
 }

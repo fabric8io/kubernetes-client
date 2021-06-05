@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
+import io.fabric8.kubernetes.client.dsl.base.PatchType;
 import io.fabric8.kubernetes.client.dsl.internal.RollingOperationContext;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
@@ -166,7 +167,7 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
 
   @Override
   public T patch(PatchContext patchContext, T item) {
-    if (!rolling) {
+    if (!rolling  || patchContext == null || patchContext.getPatchType() != PatchType.JSON) {
       return super.patch(patchContext, item);
     }
     return getRollingUpdater(rollingTimeout, rollingTimeUnit).rollUpdate(getMandatory(), item);

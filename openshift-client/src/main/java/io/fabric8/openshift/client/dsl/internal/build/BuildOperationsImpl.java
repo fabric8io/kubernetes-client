@@ -15,7 +15,7 @@
  */
 package io.fabric8.openshift.client.dsl.internal.build;
 
-import io.fabric8.kubernetes.api.builder.Visitor;
+import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.BytesLimitTerminateTimeTailPrettyLoggable;
@@ -27,18 +27,18 @@ import io.fabric8.kubernetes.client.dsl.TailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.TimeTailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.LogWatchCallback;
-import io.fabric8.kubernetes.client.utils.PodOperationUtil;
 import io.fabric8.kubernetes.client.internal.PatchUtils;
+import io.fabric8.kubernetes.client.utils.PodOperationUtil;
 import io.fabric8.kubernetes.client.utils.URLUtils;
+import io.fabric8.openshift.api.model.Build;
+import io.fabric8.openshift.api.model.BuildBuilder;
+import io.fabric8.openshift.api.model.BuildList;
+import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.dsl.BuildResource;
 import io.fabric8.openshift.client.dsl.internal.BuildOperationContext;
 import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
 import io.fabric8.openshift.client.internal.patchmixins.BuildMixIn;
 import okhttp3.OkHttpClient;
-import io.fabric8.openshift.api.model.Build;
-import io.fabric8.openshift.api.model.BuildBuilder;
-import io.fabric8.openshift.api.model.BuildList;
-import io.fabric8.openshift.client.OpenShiftConfig;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
@@ -250,8 +250,8 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList,
   }
 
   @Override
-  public Build edit(Visitor... visitors) {
-    return patch(new BuildBuilder(getMandatory()).accept(visitors).build());
+  protected VisitableBuilder<Build, ?> createVisitableBuilder(Build item) {
+    return new BuildBuilder(item);
   }
 
   private void waitUntilBuildPodBecomesReady(Build build) {

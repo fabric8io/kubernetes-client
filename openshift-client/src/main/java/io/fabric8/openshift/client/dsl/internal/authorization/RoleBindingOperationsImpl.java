@@ -15,8 +15,8 @@
  */
 package io.fabric8.openshift.client.dsl.internal.authorization;
 
-import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.builder.TypedVisitor;
+import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.ObjectReferenceBuilder;
 import io.fabric8.kubernetes.client.dsl.Resource;
@@ -31,6 +31,7 @@ import okhttp3.OkHttpClient;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.function.Supplier;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.AUTHORIZATION;
 
@@ -57,22 +58,15 @@ public class RoleBindingOperationsImpl extends OpenShiftOperation<RoleBinding, R
   }
 
   @Override
-  public RoleBinding replace(RoleBinding item) {
-    RoleBinding enriched = enrichRoleBinding(item);
-    return super.replace(enriched);
-  }
-
-  @Override
-  public RoleBinding patch(RoleBinding item) {
-    RoleBinding enriched = enrichRoleBinding(item);
-    return super.patch(enriched);
-  }
-
-  @Override
   protected RoleBinding handleCreate(RoleBinding resource) throws ExecutionException, InterruptedException, IOException {
     return super.handleCreate(enrichRoleBinding(resource));
   }
 
+  @Override
+  protected RoleBinding modifyItemForReplaceOrPatch(Supplier<RoleBinding> current, RoleBinding binding) {
+    return enrichRoleBinding(binding);
+  }
+      
   private RoleBinding enrichRoleBinding(RoleBinding binding) {
     RoleBindingBuilder builder = new RoleBindingBuilder(binding);
 
@@ -99,8 +93,8 @@ public class RoleBindingOperationsImpl extends OpenShiftOperation<RoleBinding, R
   }
 
   @Override
-  public RoleBinding edit(Visitor... visitors) {
-    return patch(new RoleBindingBuilder(getMandatory()).accept(visitors).build());
+  protected VisitableBuilder<RoleBinding, ?> createVisitableBuilder(RoleBinding item) {
+      return new RoleBindingBuilder(item);
   }
 
   private void enrichFromUsersAndGroups(RoleBindingBuilder builder, List<String> userNames, List<String> groupNames) {

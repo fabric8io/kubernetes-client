@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
 import static io.fabric8.kubernetes.client.utils.IOHelpers.convertToJson;
@@ -43,6 +44,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   public static final DeletionPropagation DEFAULT_PROPAGATION_POLICY = DeletionPropagation.BACKGROUND;
   public static final long DEFAULT_GRACE_PERIOD_IN_SECONDS = -1L;
   private static final String PATCH_OPERATION = "patch";
+  private static final String REPLACE_OPERATION = "replace";
 
   public HasMetadataOperation(OperationContext ctx) {
     super(ctx);
@@ -132,6 +134,16 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   public T replaceStatus(T item) {
     return replace(item, true);
   }
+  
+  /**
+   * Modify the item prior to a replace or a JSON patch diff
+   * @param current item from the server
+   * @param item to be modified
+   * @return the modified item
+   */
+  protected T modifyItemForReplaceOrPatch(Supplier<T> current, T item) {
+    return item;
+  }
 
   /**
    * base replace operation, which is effectively a forced update with retries
@@ -142,6 +154,14 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
     int maxTries = 10;
     if (item.getMetadata() == null) {
       item.setMetadata(new ObjectMeta());
+    }
+    if (!status) {
+      try {
+        ObjectMeta metadata = item.getMetadata();
+        item = modifyItemForReplaceOrPatch(() -> requireFromServer(metadata), item);
+      } catch (Exception e) {
+        throw KubernetesClientException.launderThrowable(forOperationType(REPLACE_OPERATION), e);
+      }
     }
     String existingResourceVersion = KubernetesResourceUtil.getResourceVersion(item);
     for (int i = 0; i < maxTries; i++) {
@@ -162,7 +182,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
             resource.getMetadata().setResourceVersion(resourceVersion);
             return handleUpdate(resource, status);
           } catch (Exception e) {
-            throw KubernetesClientException.launderThrowable(forOperationType("replace"), e);
+            throw KubernetesClientException.launderThrowable(forOperationType(REPLACE_OPERATION), e);
           }
         };
         return visitor.apply(item);
@@ -185,7 +205,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
         caught = e;
       }
     }
-    throw KubernetesClientException.launderThrowable(forOperationType("replace"), caught);
+    throw KubernetesClientException.launderThrowable(forOperationType(REPLACE_OPERATION), caught);
   }
   
   protected T patch(PatchContext context, T base, T item, boolean status) {
@@ -196,7 +216,13 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
         if (item.getMetadata() == null) {
           item.setMetadata(new ObjectMeta());
         }  
-        item.getMetadata().setResourceVersion(base.getMetadata().getResourceVersion());  
+        item.getMetadata().setResourceVersion(base.getMetadata().getResourceVersion());
+      }
+      final T current = base;
+      try {
+        item = modifyItemForReplaceOrPatch(() -> current, item);
+      } catch (Exception e) {
+        throw KubernetesClientException.launderThrowable(forOperationType(PATCH_OPERATION), e);
       }
     }
     final T theBase = base;

@@ -19,16 +19,24 @@ import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.Loggable;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.internal.LogWatchCallback;
-import io.fabric8.kubernetes.client.utils.PodOperationUtil;
 import io.fabric8.kubernetes.client.dsl.internal.RollingOperationContext;
+import io.fabric8.kubernetes.client.utils.PodOperationUtil;
 import io.fabric8.kubernetes.client.utils.URLUtils;
+import io.fabric8.kubernetes.client.utils.Utils;
+import io.fabric8.openshift.api.model.DeploymentConfig;
+import io.fabric8.openshift.api.model.DeploymentConfigBuilder;
+import io.fabric8.openshift.api.model.DeploymentConfigList;
+import io.fabric8.openshift.client.dsl.DeployableScalableResource;
 import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
 import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
@@ -43,7 +51,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Consumer;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
@@ -51,15 +58,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
-
-import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.utils.Utils;
-import io.fabric8.openshift.api.model.DeploymentConfig;
-import io.fabric8.openshift.api.model.DeploymentConfigBuilder;
-import io.fabric8.openshift.api.model.DeploymentConfigList;
-import io.fabric8.openshift.client.dsl.DeployableScalableResource;
-import okhttp3.OkHttpClient;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.APPS;
 
@@ -117,11 +117,11 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
   }
 
   @Override
-  public DeploymentConfig patch(DeploymentConfig item) {
+  public DeploymentConfig patch(PatchContext patchContext, DeploymentConfig item) {
     if (isCascading()) {
-      return cascading(false).patch(item);
+      return cascading(false).patch(patchContext, item);
     }
-    return super.patch(item);
+    return super.patch(patchContext, item);
   }
 
   @Override
@@ -221,11 +221,13 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
       }
   }
 
-  public String getLog() {
+  @Override
+public String getLog() {
     return getLog(false);
   }
 
-  public String getLog(Boolean isPretty) {
+  @Override
+public String getLog(Boolean isPretty) {
     try(ResponseBody body = doGetLog(isPretty)) {
       return doGetLog(isPretty).string();
     } catch (IOException e) {
