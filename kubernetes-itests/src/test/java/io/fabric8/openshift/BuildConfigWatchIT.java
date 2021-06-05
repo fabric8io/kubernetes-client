@@ -38,8 +38,8 @@ import static io.fabric8.kubernetes.client.utils.KubernetesResourceUtil.getName;
 import static io.fabric8.kubernetes.client.utils.KubernetesResourceUtil.getOrCreateAnnotations;
 import static junit.framework.TestCase.assertNotNull;
 import static org.awaitility.Awaitility.await;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @RunWith(ArquillianConditionalRunner.class)
 @RequiresOpenshift

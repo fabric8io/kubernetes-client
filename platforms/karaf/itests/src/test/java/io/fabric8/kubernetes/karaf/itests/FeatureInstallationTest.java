@@ -29,7 +29,7 @@ import javax.inject.Inject;
 import java.util.Collections;
 import java.util.stream.Stream;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.editConfigurationFilePut;
 
 

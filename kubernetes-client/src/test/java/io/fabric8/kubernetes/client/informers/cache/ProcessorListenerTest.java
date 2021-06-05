@@ -21,7 +21,7 @@ import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import org.junit.jupiter.api.Test;
 
 import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ProcessorListenerTest {
   private static boolean addNotificationReceived, updateNotificationReceived, deleteNotificationReceived;

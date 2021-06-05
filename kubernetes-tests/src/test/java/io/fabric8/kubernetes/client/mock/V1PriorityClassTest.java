@@ -30,9 +30,9 @@ import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableKubernetesMockClient
 class V1PriorityClassTest {
