@@ -82,6 +82,7 @@ import io.fabric8.kubernetes.client.dsl.EventingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.FlowControlAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
+import io.fabric8.kubernetes.client.dsl.InOutCreateable;
 import io.fabric8.kubernetes.client.dsl.KubernetesListMixedOperation;
 import io.fabric8.kubernetes.client.dsl.MetricAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
@@ -422,7 +423,7 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
   }
 
   @Override
-  public Createable<TokenReview> tokenReviews() {
+  public InOutCreateable<TokenReview, TokenReview> tokenReviews() {
     return delegate.tokenReviews();
   }
 

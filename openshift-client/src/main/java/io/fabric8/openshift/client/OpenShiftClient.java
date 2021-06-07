@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.VersionInfo;
 import io.fabric8.kubernetes.client.dsl.*;
+import io.fabric8.kubernetes.client.dsl.internal.NamespacedCreateOnlyResourceOperationsImpl;
 import io.fabric8.openshift.api.model.*;
 import io.fabric8.openshift.api.model.HelmChartRepository;
 import io.fabric8.openshift.api.model.HelmChartRepositoryList;
@@ -234,16 +235,16 @@ public interface OpenShiftClient extends KubernetesClient {
   /**
    * API entrypoint for accessing ImageStreamImport(image.openshift.io/v1)
    *
-   * @return {@link OpenShiftCreateOnlyResourceOperationsImpl} for ImageStreamImport
+   * @return {@link NamespacedCreateOnlyResourceOperationsImpl} for ImageStreamImport
    */
-  OpenShiftCreateOnlyResourceOperationsImpl<ImageStreamImport, ImageStreamImport> imageStreamImports();
+  NamespacedCreateOnlyResourceOperationsImpl<ImageStreamImport, ImageStreamImport> imageStreamImports();
 
   /**
    * API entrypoint for accessing ImageStreamMapping(image.openshift.io/v1)
    *
-   * @return {@link OpenShiftCreateOnlyResourceOperationsImpl} for ImageStreamMapping
+   * @return {@link NamespacedCreateOnlyResourceOperationsImpl} for ImageStreamMapping
    */
-  OpenShiftCreateOnlyResourceOperationsImpl<ImageStreamMapping, ImageStreamMapping> imageStreamMappings();
+  NamespacedCreateOnlyResourceOperationsImpl<ImageStreamMapping, ImageStreamMapping> imageStreamMappings();
 
   /**
    * API entrypoint for accessing ImageStreamImage(image.openshift.io/v1)
@@ -284,21 +285,21 @@ public interface OpenShiftClient extends KubernetesClient {
    *
    * @return InOutCreateable object for PodSecurityPolicyReview
    */
-  OpenShiftCreateOnlyResourceOperationsImpl<PodSecurityPolicyReview, PodSecurityPolicyReview> podSecurityPolicyReviews();
+  NamespacedCreateOnlyResourceOperationsImpl<PodSecurityPolicyReview, PodSecurityPolicyReview> podSecurityPolicyReviews();
 
   /**
    * API entrypoint for accessing PodSecurityPolicySelfSubjectReview (security.openshift.io/v1)
    *
    * @return InOutCreateable object for PodSecurityPolicySelfSubjectReview
    */
-  OpenShiftCreateOnlyResourceOperationsImpl<PodSecurityPolicySelfSubjectReview, PodSecurityPolicySelfSubjectReview> podSecurityPolicySelfSubjectReviews();
+  NamespacedCreateOnlyResourceOperationsImpl<PodSecurityPolicySelfSubjectReview, PodSecurityPolicySelfSubjectReview> podSecurityPolicySelfSubjectReviews();
 
   /**
    * API entrypoint for accessing PodSecurityPolicySubjectReview (security.openshift.io/v1)
    *
    * @return InOutCreateable object for PodSecurityPolicySubjectReview
    */
-  OpenShiftCreateOnlyResourceOperationsImpl<PodSecurityPolicySubjectReview, PodSecurityPolicySubjectReview> podSecurityPolicySubjectReviews();
+  NamespacedCreateOnlyResourceOperationsImpl<PodSecurityPolicySubjectReview, PodSecurityPolicySubjectReview> podSecurityPolicySubjectReviews();
 
   /**
    * API entrypoint for accessing Project operations(project.openshift.io/v1)
@@ -412,33 +413,33 @@ public interface OpenShiftClient extends KubernetesClient {
    * API entrypoint for LocalSubjectAccessReview (authorization.openshift.io/v1)
    * This only supports create operation. SubjectAccessReviewResponse from server is returned as output
    *
-   * @return {@link OpenShiftCreateOnlyResourceOperationsImpl} for LocalSubjectAccessReview
+   * @return {@link NamespacedCreateOnlyResourceOperationsImpl} for LocalSubjectAccessReview
    */
-  OpenShiftCreateOnlyResourceOperationsImpl<LocalSubjectAccessReview, SubjectAccessReviewResponse> localSubjectAccessReviews();
+  NamespacedCreateOnlyResourceOperationsImpl<LocalSubjectAccessReview, SubjectAccessReviewResponse> localSubjectAccessReviews();
 
   /**
    * API entrypoint for LocalResourceAccessReview (authorization.openshift.io/v1)
    * This only supports create operation. ResourceAccessReviewResponse from server is returned as output
    *
-   * @return {@link OpenShiftCreateOnlyResourceOperationsImpl} for LocalResourceAccessReview
+   * @return {@link NamespacedCreateOnlyResourceOperationsImpl} for LocalResourceAccessReview
    */
-  OpenShiftCreateOnlyResourceOperationsImpl<LocalResourceAccessReview, ResourceAccessReviewResponse> localResourceAccessReviews();
+  NamespacedCreateOnlyResourceOperationsImpl<LocalResourceAccessReview, ResourceAccessReviewResponse> localResourceAccessReviews();
 
   /**
    * API entrypoint for SelfSubjectRulesReview (authorization.openshift.io/v1)
    * This only supports create operation. SelfSubjectRulesReview from server is returned as output
    *
-   * @return {@link OpenShiftCreateOnlyResourceOperationsImpl} for SelfSubjectRulesReview
+   * @return {@link NamespacedCreateOnlyResourceOperationsImpl} for SelfSubjectRulesReview
    */
-  OpenShiftCreateOnlyResourceOperationsImpl<SelfSubjectRulesReview, SelfSubjectRulesReview> selfSubjectRulesReviews();
+  NamespacedCreateOnlyResourceOperationsImpl<SelfSubjectRulesReview, SelfSubjectRulesReview> selfSubjectRulesReviews();
 
   /**
    * API entrypoint for SubjectRulesReview (authorization.openshift.io/v1)
    * This only supports create operation. SubjectRulesReview from server is returned as output
    *
-   * @return {@link OpenShiftCreateOnlyResourceOperationsImpl} for SubjectRulesReview
+   * @return {@link NamespacedCreateOnlyResourceOperationsImpl} for SubjectRulesReview
    */
-  OpenShiftCreateOnlyResourceOperationsImpl<SubjectRulesReview, SubjectRulesReview> subjectRulesReviews();
+  NamespacedCreateOnlyResourceOperationsImpl<SubjectRulesReview, SubjectRulesReview> subjectRulesReviews();
 
   /**
    * API entrypoint for accessing resources in Kube Storage Version Migrator(migration.k8s.io/v1alpha1)
@@ -493,9 +494,9 @@ public interface OpenShiftClient extends KubernetesClient {
    * API entrypoint for UserIdentityMapping(user.openshift.io/v1)
    * Note: This only works with create operation
    *
-   * @return {@link Createable} for UserIdentityMapping
+   * @return {@link UserIdentityMapping} for UserIdentityMapping
    */
-  Createable<UserIdentityMapping> userIdentityMappings();
+  InOutCreateable<UserIdentityMapping, UserIdentityMapping> userIdentityMappings();
 
   /**
    * API entrypoint for OpenShift Whereabouts CNI(Container Network Interface) Plugin model.

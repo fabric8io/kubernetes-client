@@ -463,9 +463,9 @@ public interface KubernetesClient extends Client {
   /**
    * API for creating authentication.k8s.io/v1 TokenReviews
    *
-   * @return CreateOnlyResourceOperations instance for creating TokenReview object
+   * @return InOutCreateable instance for creating TokenReview object
    */
-  Createable<TokenReview> tokenReviews();
+  InOutCreateable<TokenReview, TokenReview> tokenReviews();
 
   /**
    * Get an instance of Kubernetes Client informer factory. It allows you to construct and
