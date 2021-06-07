@@ -28,3 +28,4 @@ io.fabric8.openshift.client.OpenShiftMachineAPIGroupExtensionAdapter
 io.fabric8.openshift.client.OpenShiftMonitoringAPIGroupExtensionAdapter
 io.fabric8.openshift.client.OpenShiftTunedAPIGroupExtensionAdapter
 io.fabric8.openshift.client.OpenShiftQuotaAPIGroupExtensionAdapter
+io.fabric8.openshift.client.OpenShiftWhereaboutsAPIGroupExtensionAdapter

@@ -337,6 +337,11 @@
       </dependency>
       <dependency>
         <groupId>io.fabric8</groupId>
+        <artifactId>openshift-model-whereabouts</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
         <artifactId>openshift-model</artifactId>
         <version>${project.version}</version>
       </dependency>

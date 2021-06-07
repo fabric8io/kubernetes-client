@@ -460,6 +460,13 @@ public interface OpenShiftClient extends KubernetesClient {
    * @return {@link Createable} for UserIdentityMapping
    */
   Createable<UserIdentityMapping> userIdentityMappings();
+
+  /**
+   * API entrypoint for OpenShift Whereabouts CNI(Container Network Interface) Plugin model.
+   *
+   * @return {@link OpenShiftWhereaboutsAPIGroupDSL} which provides DSL methods for available resources.
+   */
+  OpenShiftWhereaboutsAPIGroupDSL whereabouts();
   /**
    * Returns true if this cluster is a legacy openshift cluster or supports the given OpenShift API Group defined in {@link OpenShiftAPIGroups}
    *

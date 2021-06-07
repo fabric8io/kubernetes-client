@@ -128,6 +128,7 @@ import io.fabric8.openshift.client.dsl.OpenShiftOperatorAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftOperatorHubAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftQuotaAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftTunedAPIGroupDSL;
+import io.fabric8.openshift.client.dsl.OpenShiftWhereaboutsAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.ProjectOperation;
 import io.fabric8.openshift.client.dsl.ProjectRequestOperation;
 import io.fabric8.openshift.client.dsl.TemplateResource;
@@ -586,6 +587,11 @@ public class DefaultOpenShiftClient extends BaseKubernetesClient<NamespacedOpenS
   @Override
   public Createable<UserIdentityMapping> userIdentityMappings() {
     return new CreateOnlyResourceOperationsImpl<>(getHttpClient(), getConfiguration(), "user.openshift.io", "v1", HasMetadata.getPlural(UserIdentityMapping.class), UserIdentityMapping.class);
+  }
+
+  @Override
+  public OpenShiftWhereaboutsAPIGroupDSL whereabouts() {
+    return adapt(OpenShiftWhereaboutsAPIGroupClient.class);
   }
 
   @Override

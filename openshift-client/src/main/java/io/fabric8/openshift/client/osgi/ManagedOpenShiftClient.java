@@ -189,6 +189,7 @@ import io.fabric8.openshift.client.dsl.OpenShiftOperatorAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftOperatorHubAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftQuotaAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftTunedAPIGroupDSL;
+import io.fabric8.openshift.client.dsl.OpenShiftWhereaboutsAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.ProjectOperation;
 import io.fabric8.openshift.client.dsl.ProjectRequestOperation;
 import io.fabric8.openshift.client.dsl.TemplateResource;
@@ -897,6 +898,11 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   @Override
   public Createable<UserIdentityMapping> userIdentityMappings() {
     return null;
+  }
+
+  @Override
+  public OpenShiftWhereaboutsAPIGroupDSL whereabouts() {
+    return delegate.whereabouts();
   }
 
   @Override
