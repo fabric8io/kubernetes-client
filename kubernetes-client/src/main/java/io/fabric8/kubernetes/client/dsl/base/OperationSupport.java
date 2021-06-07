@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.dsl.base;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.DeleteOptions;
@@ -45,6 +46,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
@@ -622,30 +624,48 @@ public class OperationSupport {
     }
     return customMessage;
   }
-
+  
+  /**
+   * Checks whether the provided HTTP code corresponds to a WebSocket unsupported error.
+   *
+   * @param httpCode the HTTP code to check
+   * @return {@code true} if the code corresponds to a server not supporting 
+   */
+  public static boolean isWebSocketUnsupportedError(int httpCode) {
+    // We do not expect a 200 in response to the websocket connection. 
+    // Newer Kubernetes might also return 503 Service Unavailable in case WebSockets are not supported
+    return HttpURLConnection.HTTP_UNAVAILABLE == httpCode || HttpURLConnection.HTTP_OK == httpCode;
+  }
 
   public static Status createStatus(Response response) {
-    String statusMessage = "";
-    ResponseBody body = response != null ? response.body() : null;
-    int statusCode = response != null ? response.code() : 0;
-    try {
-      if (response == null) {
-        statusMessage = "No response";
-      } else if (body != null) {
-        statusMessage = body.string();
-      } else if (response.message() != null) {
-        statusMessage = response.message();
-      }
-      Status status = JSON_MAPPER.readValue(statusMessage, Status.class);
-      if (status.getCode() == null) {
-        status = new StatusBuilder(status).withCode(statusCode).build();
-      }
-      return status;
-    } catch (JsonParseException e) {
-      return createStatus(statusCode, statusMessage);
-    } catch (IOException e) {
-      return createStatus(statusCode, statusMessage);
+    if (response == null) {
+      return createStatus(0, "No response");
     }
+    
+    final int statusCode = response.code();
+    String statusMessage = response.message() + " at " + response.request().url().url();
+  
+    // if we have a body attempt to parse it as a JSON Status object
+    final ResponseBody body = response.body();
+    if (body != null) {
+      final String bodyAsString;
+      try {
+        bodyAsString = body.string();
+        try {
+          Status status = JSON_MAPPER.readValue(bodyAsString, Status.class);
+          if (status.getCode() == null) {
+            status = new StatusBuilder(status).withCode(statusCode).build();
+          }
+          return status;
+        } catch (JsonProcessingException e) {
+          // ignore and use body directly as message prefixed by response message
+          statusMessage += ":\n" + bodyAsString;
+        }
+      } catch (IOException e) {
+        // ignore and use default status message
+      }
+    }
+    return createStatus(statusCode, statusMessage);
   }
 
   public static Status createStatus(int statusCode, String message) {

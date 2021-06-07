@@ -47,7 +47,7 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
     initRunner(new WebSocketClientRunner<T>(client) {
       @Override
       WatcherWebSocketListener<T> newListener(BlockingQueue<Object> queue, AtomicReference<WebSocket> webSocketRef) {
-        return new TypedWatcherWebSocketListener<>(WatchConnectionManager.this, queue, webSocketRef);
+        return new TypedWatcherWebSocketListener<>(WatchConnectionManager.this, queue, webSocketRef, baseOperation);
       }
   
       @Override
@@ -65,11 +65,14 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
     this(client, baseOperation, listOptions, watcher, reconnectInterval, reconnectLimit, websocketTimeout, 5);
   }
   
-  private static class TypedWatcherWebSocketListener<T extends HasMetadata> extends WatcherWebSocketListener<T> {
-    public TypedWatcherWebSocketListener(AbstractWatchManager<T> manager, BlockingQueue<Object> queue, AtomicReference<WebSocket> webSocketRef) {
+  private static class TypedWatcherWebSocketListener<T extends HasMetadata, L extends KubernetesResourceList<T>> extends WatcherWebSocketListener<T> {
+    private final BaseOperation<T, L, ?> operation;
+    
+    public TypedWatcherWebSocketListener(AbstractWatchManager<T> manager, BlockingQueue<Object> queue, AtomicReference<WebSocket> webSocketRef, final BaseOperation<T, L, ?> baseOperation) {
       super(manager, queue, webSocketRef);
+      this.operation = baseOperation;
     }
-  
+    
     @Override
     public void onMessage(WebSocket webSocket, String message) {
       try {
@@ -97,10 +100,9 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
         
           // The resource version no longer exists - this has to be handled by the caller.
           if (status.getCode() == HTTP_GONE) {
-            webSocketRef.set(null); // lose the ref: closing in close() would only generate a Broken pipe
-            // exception
+            webSocketRef.set(null); // lose the ref: closing in close() would only generate a Broken pipe exception
             // shut down executor, etc.
-            manager.closeEvent(new WatcherException(status.getMessage(), new KubernetesClientException(status)));
+            manager.closeEvent(new WatcherException(status.getMessage(), exceptionFor(status)));
             manager.close();
             return;
           }
@@ -117,6 +119,11 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
       } catch (Throwable e) {
         logger.error("Unhandled exception encountered in watcher event handler", e);
       }
+    }
+  
+    @Override
+    protected KubernetesClientException exceptionFor(Status status) {
+      return new KubernetesClientException(operation.describe() + " failed: " + status.getMessage(), status.getCode(), status);
     }
   }
 }

@@ -30,9 +30,6 @@ import okio.ByteString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static java.net.HttpURLConnection.HTTP_OK;
-import static java.net.HttpURLConnection.HTTP_UNAVAILABLE;
-
 abstract class WatcherWebSocketListener<T> extends WebSocketListener {
   protected static final Logger logger = LoggerFactory.getLogger(WatcherWebSocketListener.class);
   
@@ -80,10 +77,8 @@ abstract class WatcherWebSocketListener<T> extends WebSocketListener {
   
     if (response != null) {
       final int code = response.code();
-      // We do not expect a 200 in response to the websocket connection. If it occurs, we throw
-      // an exception and try the watch via a persistent HTTP Get.
-      // Newer Kubernetes might also return 503 Service Unavailable in case WebSockets are not supported
-      if (HTTP_OK == code || HTTP_UNAVAILABLE == code) {
+      // If code corresponds to unsupported websockets, we throw an exception and try the watch via a persistent HTTP Get.
+      if (OperationSupport.isWebSocketUnsupportedError(code)) {
         pushException(new KubernetesClientException("Received " + code + " on websocket", code, null));
         closeBody(response);
         return;
@@ -93,7 +88,7 @@ abstract class WatcherWebSocketListener<T> extends WebSocketListener {
         closeBody(response);
         logger.warn("Exec Failure: HTTP {}, Status: {} - {}", code, status.getCode(), status.getMessage(), t);
         if (!started.get()) {
-          pushException(new KubernetesClientException(status));
+          pushException(exceptionFor(status));
         }
       }
     } else {
@@ -109,6 +104,10 @@ abstract class WatcherWebSocketListener<T> extends WebSocketListener {
     }
     
     scheduleReconnect();
+  }
+  
+  protected KubernetesClientException exceptionFor(Status status) {
+    return new KubernetesClientException(status);
   }
   
   private void pushException(KubernetesClientException exception) {

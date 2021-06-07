@@ -141,6 +141,12 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     this.watchRetryInitialBackoffMillis = ctx.getWatchRetryInitialBackoffMillis();
     this.watchRetryBackoffMultiplier = ctx.getWatchRetryBackoffMultiplier();
   }
+  
+  public String describe() {
+      StringBuilder sb = new StringBuilder(OperationInfo.super.describe());
+      sb.append(" with API version: [").append(getAPIGroup()).append('/').append(getAPIVersion()).append("]");
+    return sb.toString();
+  }
 
   public BaseOperation<T, L, R> newInstance(OperationContext context) {
     return new BaseOperation<>(context);
@@ -823,8 +829,8 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     } catch (MalformedURLException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("watch"), e);
     } catch (KubernetesClientException ke) {
-      List<Integer> furtherProcessedCodes = Arrays.asList(200, 503);
-      if (! furtherProcessedCodes.contains(ke.getCode())) {
+      // if the error doesn't correspond to websockets being unsupported, close the watch and throw
+      if (!OperationSupport.isWebSocketUnsupportedError(ke.getCode())) {
         if (watch != null) {
           //release the watch
           watch.close();
