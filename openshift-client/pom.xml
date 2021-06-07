@@ -78,6 +78,10 @@
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
+      <artifactId>openshift-model-whereabouts</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
       <artifactId>openshift-model-monitoring</artifactId>
     </dependency>
     <dependency>
