@@ -44,7 +44,7 @@ import java.util.Map;
 
 import static okhttp3.TlsVersion.TLS_1_1;
 import static okhttp3.TlsVersion.TLS_1_2;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
