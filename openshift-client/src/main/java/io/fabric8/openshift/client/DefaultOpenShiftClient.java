@@ -131,6 +131,7 @@ import io.fabric8.openshift.client.dsl.OpenShiftMonitoringAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftOperatorAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftOperatorHubAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftQuotaAPIGroupDSL;
+import io.fabric8.openshift.client.dsl.OpenShiftStorageVersionMigratorApiGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftTunedAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftWhereaboutsAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.ProjectOperation;
@@ -581,6 +582,11 @@ public class DefaultOpenShiftClient extends BaseKubernetesClient<NamespacedOpenS
   @Override
   public OpenShiftCreateOnlyResourceOperationsImpl<SubjectRulesReview, SubjectRulesReview> subjectRulesReviews() {
     return new OpenShiftCreateOnlyResourceOperationsImpl<>(httpClient, getConfiguration(), AUTHORIZATION_OPENSHIFT_IO, V1_APIVERSION, HasMetadata.getPlural(SubjectRulesReview.class), SubjectRulesReview.class);
+  }
+
+  @Override
+  public OpenShiftStorageVersionMigratorApiGroupDSL kubeStorageVersionMigrator() {
+    return adapt(OpenShiftStorageVersionMigratorApiGroupClient.class);
   }
 
   @Override

@@ -34,6 +34,7 @@
 * Add DSL support for ConsolePlugin and ConsoleQuickStart in `console.openshift.io` apiGroup
 * Add DSL support for `user.openshift.io/v1` Identity in OpenShiftClient DSL
 * Add DSL support for OpenShift Whereabouts CNI Model `whereabouts.cni.cncf.io` to OpenShiftClient DSL
+* Add DSL support for OpenShift Kube Storage Version Migrator resources in OpenShiftClient DSL
 
 #### _**Note**_: Breaking changes in the API
 ##### DSL Changes:

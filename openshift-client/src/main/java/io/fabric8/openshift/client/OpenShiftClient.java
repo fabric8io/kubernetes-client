@@ -441,6 +441,13 @@ public interface OpenShiftClient extends KubernetesClient {
   OpenShiftCreateOnlyResourceOperationsImpl<SubjectRulesReview, SubjectRulesReview> subjectRulesReviews();
 
   /**
+   * API entrypoint for accessing resources in Kube Storage Version Migrator(migration.k8s.io/v1alpha1)
+   *
+   * @return {@link OpenShiftStorageVersionMigratorApiGroupDSL} for accessing resources available in apiGroup
+   */
+  OpenShiftStorageVersionMigratorApiGroupDSL kubeStorageVersionMigrator();
+
+  /**
    * API entrypoint for ClusterRole (authorization.openshift.io/v1)
    *
    * @return {@link NonNamespaceOperation} for ClusterRole
