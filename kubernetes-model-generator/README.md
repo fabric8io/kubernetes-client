@@ -52,6 +52,10 @@
 [![javadoc](https://javadoc.io/badge2/io.fabric8/openshift-model-clusterautoscaling/javadoc.svg)](https://javadoc.io/doc/io.fabric8/openshift-model-clusterautoscaling)
 * openshift-model-machine: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/openshift-model-machine.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Aopenshift-model-machine)
 [![javadoc](https://javadoc.io/badge2/io.fabric8/openshift-model-machine/javadoc.svg)](https://javadoc.io/doc/io.fabric8/openshift-model-machine)
+* openshift-model-tuned: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/openshift-model-tuned.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Aopenshift-model-tuned)
+[![javadoc](https://javadoc.io/badge2/io.fabric8/openshift-model-tuned/javadoc.svg)](https://javadoc.io/doc/io.fabric8/openshift-model-tuned)
+* openshift-model-whereabouts: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/openshift-model-whereabouts.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Aopenshift-model-whereabouts)
+[![javadoc](https://javadoc.io/badge2/io.fabric8/openshift-model-whereabouts/javadoc.svg)](https://javadoc.io/doc/io.fabric8/openshift-model-whereabouts)
 
 Uses [Go reflection](https://blog.golang.org/laws-of-reflection) to generate a JSON schema that describes one or more
 API resources in Kubernetes and OpenShift.
