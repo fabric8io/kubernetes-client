@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.api.model.rbac.*;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.RbacAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.internal.rbac.v1.ClusterRoleBindingOperationsImpl;
@@ -46,12 +47,12 @@ public class RbacAPIGroupClient extends BaseClient implements RbacAPIGroupDSL {
   }
 
   @Override
-  public MixedOperation<ClusterRole, ClusterRoleList, Resource<ClusterRole>> clusterRoles() {
+  public NonNamespaceOperation<ClusterRole, ClusterRoleList, Resource<ClusterRole>> clusterRoles() {
     return new ClusterRoleOperationsImpl(httpClient, getConfiguration());
   }
 
   @Override
-  public MixedOperation<ClusterRoleBinding, ClusterRoleBindingList, Resource<ClusterRoleBinding>> clusterRoleBindings() {
+  public NonNamespaceOperation<ClusterRoleBinding, ClusterRoleBindingList, Resource<ClusterRoleBinding>> clusterRoleBindings() {
     return new ClusterRoleBindingOperationsImpl(httpClient, getConfiguration());
   }
 }

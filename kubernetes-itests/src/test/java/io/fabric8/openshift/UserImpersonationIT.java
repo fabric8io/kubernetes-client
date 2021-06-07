@@ -81,7 +81,7 @@ public class UserImpersonationIT {
         .build()
       )
       .build();
-    client.rbac().clusterRoles().inNamespace(currentNamespace).createOrReplace(impersonatorRole);
+    client.rbac().clusterRoles().createOrReplace(impersonatorRole);
 
     // Create Service Account
     serviceAccount1 = new ServiceAccountBuilder()
@@ -109,7 +109,7 @@ public class UserImpersonationIT {
       )
       .build();
 
-    client.rbac().clusterRoleBindings().inNamespace(currentNamespace).createOrReplace(impersonatorRoleBinding);
+    client.rbac().clusterRoleBindings().createOrReplace(impersonatorRoleBinding);
   }
 
 
@@ -153,11 +153,11 @@ public class UserImpersonationIT {
     requestConfig.setImpersonateGroups((String) null);
 
     // DeleteEntity Cluster Role
-    client.rbac().clusterRoles().inNamespace(currentNamespace).delete(impersonatorRole);
+    client.rbac().clusterRoles().delete(impersonatorRole);
     await().atMost(30, TimeUnit.SECONDS).until(kubernetesClusterRoleIsDeleted());
 
     // DeleteEntity Cluster Role binding
-    client.rbac().clusterRoleBindings().inNamespace(currentNamespace).delete(impersonatorRoleBinding);
+    client.rbac().clusterRoleBindings().delete(impersonatorRoleBinding);
     await().atMost(30, TimeUnit.SECONDS).until(kubernetesClusterRoleBindingIsDeleted());
 
     // DeleteEntity project
@@ -178,11 +178,11 @@ public class UserImpersonationIT {
   }
 
   private Callable<Boolean> kubernetesClusterRoleBindingIsDeleted() {
-    return () -> client.rbac().clusterRoleBindings().inNamespace(currentNamespace).withName("impersonator-role").get() == null;
+    return () -> client.rbac().clusterRoleBindings().withName("impersonator-role").get() == null;
   }
 
   private Callable<Boolean> kubernetesClusterRoleIsDeleted() {
-    return () -> client.rbac().clusterRoles().inNamespace(currentNamespace).withName("impersonator").get() == null;
+    return () -> client.rbac().clusterRoles().withName("impersonator").get() == null;
   }
 
 
