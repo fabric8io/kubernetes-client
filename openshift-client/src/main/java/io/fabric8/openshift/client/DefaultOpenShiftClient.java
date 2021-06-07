@@ -67,6 +67,8 @@ import io.fabric8.openshift.api.model.HelmChartRepository;
 import io.fabric8.openshift.api.model.HelmChartRepositoryList;
 import io.fabric8.openshift.api.model.HostSubnet;
 import io.fabric8.openshift.api.model.HostSubnetList;
+import io.fabric8.openshift.api.model.Identity;
+import io.fabric8.openshift.api.model.IdentityList;
 import io.fabric8.openshift.api.model.Image;
 import io.fabric8.openshift.api.model.ImageList;
 import io.fabric8.openshift.api.model.ImageStream;
@@ -159,6 +161,7 @@ import io.fabric8.openshift.client.dsl.internal.security.SecurityContextConstrai
 import io.fabric8.openshift.client.dsl.internal.template.BrokerTemplateInstanceOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.template.TemplateInstanceOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.user.GroupOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.user.IdentityOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.user.UserOperationsImpl;
 import io.fabric8.openshift.client.internal.OpenShiftClusterOperationsImpl;
 import io.fabric8.openshift.client.internal.OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl;
@@ -573,6 +576,11 @@ public class DefaultOpenShiftClient extends BaseKubernetesClient<NamespacedOpenS
   @Override
   public User currentUser() {
     return users().withName("~").get();
+  }
+
+  @Override
+  public NonNamespaceOperation<Identity, IdentityList, Resource<Identity>> identities() {
+    return new IdentityOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
