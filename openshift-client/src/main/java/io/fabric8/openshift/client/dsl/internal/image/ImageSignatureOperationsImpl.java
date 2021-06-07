@@ -19,14 +19,14 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.Deletable;
 import io.fabric8.kubernetes.client.dsl.Nameable;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.dsl.internal.CreateOnlyResourceOperationsImpl;
 import io.fabric8.openshift.api.model.ImageSignature;
-import io.fabric8.openshift.client.dsl.internal.OpenShiftCreateOnlyResourceNonNamespaceOperationsImpl;
 import okhttp3.OkHttpClient;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
-public class ImageSignatureOperationsImpl extends OpenShiftCreateOnlyResourceNonNamespaceOperationsImpl<ImageSignature, ImageSignature> implements Deletable, Nameable<ImageSignatureOperationsImpl> {
+public class ImageSignatureOperationsImpl extends CreateOnlyResourceOperationsImpl<ImageSignature, ImageSignature> implements Deletable, Nameable<ImageSignatureOperationsImpl> {
 
   public ImageSignatureOperationsImpl(OkHttpClient client, Config config, String apiGroupName, String apiGroupVersion, String plural) {
     this(new OperationContext().withOkhttpClient(client).withConfig(config), apiGroupName, apiGroupVersion, plural);
