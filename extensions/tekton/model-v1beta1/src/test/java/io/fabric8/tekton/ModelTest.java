@@ -19,7 +19,7 @@ import org.junit.jupiter.api.Test;
 
 import io.fabric8.tekton.pipeline.v1beta1.*;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class ModelTest {
 
