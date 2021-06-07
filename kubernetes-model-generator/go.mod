@@ -47,6 +47,7 @@ replace (
 	k8s.io/mount-utils => k8s.io/mount-utils v0.21.0
 	sigs.k8s.io/cluster-api-provider-aws => github.com/openshift/cluster-api-provider-aws v0.2.1-0.20201125052318-b85a18cbf338
 	sigs.k8s.io/cluster-api-provider-azure => github.com/openshift/cluster-api-provider-azure v0.0.0-20210209143830-3442c7a36c1e
+        github.com/mikefarah/yaml/v2 => gopkg.in/yaml.v2 v2.4.0
 )
 
 exclude (

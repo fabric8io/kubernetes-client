@@ -32,6 +32,7 @@
 * Add DSL support for OperatorCondition, Operator, PackageManifest in `operators.coreos.com` apiGroup to OpenShiftClient 
 * Add support for `tuned.openshift.io` apiGroup in OpenShiftClient DSL
 * Add DSL support for ConsolePlugin and ConsoleQuickStart in `console.openshift.io` apiGroup
+* Add DSL support for `user.openshift.io/v1` Identity in OpenShiftClient DSL
 
 #### _**Note**_: Breaking changes in the API
 ##### DSL Changes:
