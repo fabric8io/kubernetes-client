@@ -132,6 +132,7 @@
               io.fabric8.openshift.api.model.machine.v1beta1;resolution:=optional,
               io.fabric8.openshift.api.model.tuned.v1;resolution:=optional,
               io.fabric8.openshift.api.model.whereabouts.v1alpha1;resolution:=optional,
+              io.fabric8.openshift.api.model.storageversionmigrator.v1alpha1;resolution:=optional,
             </Import-Package>
             <Private-Package>io.fabric8.kubernetes.internal</Private-Package>
             <Export-Package>

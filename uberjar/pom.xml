@@ -136,6 +136,10 @@
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
+      <artifactId>openshift-model-storageversionmigrator</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
       <artifactId>openshift-model-tuned</artifactId>
     </dependency>
     <dependency>
@@ -274,6 +278,7 @@
                   <include>io.fabric8:openshift-model-machineconfig</include>
                   <include>io.fabric8:openshift-model-machine</include>
                   <include>io.fabric8:openshift-model-monitoring</include>
+                  <include>io.fabric8:openshift-model-storageversionmigrator</include>
                   <include>io.fabric8:openshift-model-tuned</include>
                   <include>io.fabric8:openshift-model-whereabouts</include>
                   <include>io.fabric8:kubernetes-client</include>
@@ -328,6 +333,7 @@
                   <include>io.fabric8:openshift-model-machineconfig</include>
                   <include>io.fabric8:openshift-model-machine</include>
                   <include>io.fabric8:openshift-model-monitoring</include>
+                  <include>io.fabric8:openshift-model-storageversionmigrator</include>
                   <include>io.fabric8:openshift-model-tuned</include>
                   <include>io.fabric8:openshift-model-whereabouts</include>
                   <include>io.fabric8:kubernetes-client</include>

@@ -693,6 +693,8 @@ func (g *schemaGenerator) isClusterScopedResource(t reflect.Type) bool {
                 "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1/MachineConfigPool",
                 "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1/MachineConfig",
                 "github.com/openshift/cluster-autoscaler-operator/pkg/apis/autoscaling/v1/ClusterAutoscaler",
+                "sigs.k8s.io/kube-storage-version-migrator/pkg/apis/migration/v1alpha1/StorageState",
+                "sigs.k8s.io/kube-storage-version-migrator/pkg/apis/migration/v1alpha1/StorageVersionMigration",
 	}
 
 	return Contains(clusterScopedResourcesList, t.PkgPath() + "/" + t.Name())
