@@ -447,6 +447,13 @@ public interface OpenShiftClient extends KubernetesClient {
   User currentUser();
 
   /**
+   * API entrypoint for Identity(user.openshift.io/v1)
+   *
+   * @return {@link NonNamespaceOperation} for Identity
+   */
+  NonNamespaceOperation<Identity, IdentityList, Resource<Identity>> identities();
+
+  /**
    * API entrypoint for UserIdentityMapping(user.openshift.io/v1)
    * Note: This only works with create operation
    *

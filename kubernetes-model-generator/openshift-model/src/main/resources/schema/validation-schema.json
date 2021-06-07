@@ -13566,8 +13566,7 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.Identity",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata",
-        "io.fabric8.kubernetes.api.model.Namespaced"
+        "io.fabric8.kubernetes.api.model.HasMetadata"
       ]
     },
     "os_user_IdentityList": {
@@ -21058,7 +21057,13 @@
     },
     "objectreference": {
       "properties": {
-        "group": {
+        "apiVersion": {
+          "type": "string"
+        },
+        "fieldPath": {
+          "type": "string"
+        },
+        "kind": {
           "type": "string"
         },
         "name": {
@@ -21067,7 +21072,10 @@
         "namespace": {
           "type": "string"
         },
-        "resource": {
+        "resourceVersion": {
+          "type": "string"
+        },
+        "uid": {
           "type": "string"
         }
       },

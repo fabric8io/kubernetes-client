@@ -123,6 +123,8 @@ import io.fabric8.openshift.api.model.HelmChartRepository;
 import io.fabric8.openshift.api.model.HelmChartRepositoryList;
 import io.fabric8.openshift.api.model.HostSubnet;
 import io.fabric8.openshift.api.model.HostSubnetList;
+import io.fabric8.openshift.api.model.Identity;
+import io.fabric8.openshift.api.model.IdentityList;
 import io.fabric8.openshift.api.model.Image;
 import io.fabric8.openshift.api.model.ImageList;
 import io.fabric8.openshift.api.model.ImageStream;
@@ -885,6 +887,11 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   @Override
   public User currentUser() {
     return delegate.currentUser();
+  }
+
+  @Override
+  public NonNamespaceOperation<Identity, IdentityList, Resource<Identity>> identities() {
+    return delegate.identities();
   }
 
   @Override
