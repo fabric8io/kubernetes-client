@@ -36,6 +36,7 @@ import io.sundr.transform.annotations.VelocityTransformations;
                 @ResourceSelector("machineconfig.properties"),
                 @ResourceSelector("tuned.properties"),
                 @ResourceSelector("whereabouts.properties"),
+                @ResourceSelector("storageversionmigrator.properties"),
         }
 
 )
