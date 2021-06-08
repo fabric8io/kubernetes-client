@@ -51,8 +51,6 @@ import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 public class PodUpload {
 
   private static final int DEFAULT_BUFFER_SIZE = 8192;
-  private static final int DEFAULT_CONNECTION_TIMEOUT_SECONDS = 10;
-  private static final int DEFAULT_COMPLETE_REQUEST_TIMEOUT_SECONDS = 120;
   private static final String TAR_PATH_DELIMITER = "/";
 
   private PodUpload() {
@@ -84,9 +82,9 @@ public class PodUpload {
       final FileInputStream fis = new FileInputStream(pathToUpload.toFile());
       final Base64InputStream b64In = new Base64InputStream(fis, true, 0, new byte[]{'\r', '\n'})
     ) {
-      podUploadWebSocketListener.waitUntilReady(DEFAULT_CONNECTION_TIMEOUT_SECONDS);
+      podUploadWebSocketListener.waitUntilReady(context.getConfig().getRequestConfig().getUploadConnectionTimeout());
       copy(b64In, podUploadWebSocketListener::send);
-      podUploadWebSocketListener.waitUntilComplete(DEFAULT_COMPLETE_REQUEST_TIMEOUT_SECONDS);
+      podUploadWebSocketListener.waitUntilComplete(context.getConfig().getRequestConfig().getUploadRequestTimeout());
       return true;
     }
   }
@@ -106,7 +104,7 @@ public class PodUpload {
       final GZIPOutputStream gzip = new GZIPOutputStream(b64Out)
 
     ) {
-      podUploadWebSocketListener.waitUntilReady(DEFAULT_CONNECTION_TIMEOUT_SECONDS);
+      podUploadWebSocketListener.waitUntilReady(context.getConfig().getRequestConfig().getUploadConnectionTimeout());
       final Callable<?> readFiles = () -> {
         try (final TarArchiveOutputStream tar = new TarArchiveOutputStream(gzip)) {
           tar.setLongFileMode(TarArchiveOutputStream.LONGFILE_POSIX);
@@ -120,7 +118,7 @@ public class PodUpload {
       final ExecutorService es = Executors.newSingleThreadExecutor();
       Future<?> readFilesFuture = es.submit(readFiles);
       copy(pis, podUploadWebSocketListener::send);
-      podUploadWebSocketListener.waitUntilComplete(DEFAULT_COMPLETE_REQUEST_TIMEOUT_SECONDS);
+      podUploadWebSocketListener.waitUntilComplete(context.getConfig().getRequestConfig().getUploadRequestTimeout());
       try {
         readFilesFuture.get(100, TimeUnit.SECONDS);
         return true;
