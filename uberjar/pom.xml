@@ -152,6 +152,10 @@
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
+      <artifactId>openshift-model-miscellaneous</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
       <artifactId>openshift-model-whereabouts</artifactId>
     </dependency>
 
@@ -277,6 +281,7 @@
                   <include>io.fabric8:openshift-model-operatorhub</include>
                   <include>io.fabric8:openshift-model-machineconfig</include>
                   <include>io.fabric8:openshift-model-machine</include>
+                  <include>io.fabric8:openshift-model-miscellaneous</include>
                   <include>io.fabric8:openshift-model-monitoring</include>
                   <include>io.fabric8:openshift-model-storageversionmigrator</include>
                   <include>io.fabric8:openshift-model-tuned</include>
@@ -331,6 +336,7 @@
                   <include>io.fabric8:openshift-model-operator</include>
                   <include>io.fabric8:openshift-model-operatorhub</include>
                   <include>io.fabric8:openshift-model-machineconfig</include>
+                  <include>io.fabric8:openshift-model-miscellaneous</include>
                   <include>io.fabric8:openshift-model-machine</include>
                   <include>io.fabric8:openshift-model-monitoring</include>
                   <include>io.fabric8:openshift-model-storageversionmigrator</include>
