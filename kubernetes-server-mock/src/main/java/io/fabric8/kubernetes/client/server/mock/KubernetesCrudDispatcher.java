@@ -28,7 +28,6 @@ import io.fabric8.kubernetes.api.model.StatusCauseBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
-import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.mockwebserver.Context;
@@ -88,10 +87,10 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
   }
 
   public KubernetesCrudDispatcher(List<CustomResourceDefinitionContext> crdContexts) {
-    this(new KubernetesCrudAttributesExtractor(crdContexts), new KubernetesResponseComposer());
+    this(new KubernetesAttributesExtractor(crdContexts), new KubernetesResponseComposer());
   }
 
-  public KubernetesCrudDispatcher(KubernetesCrudAttributesExtractor attributeExtractor, ResponseComposer responseComposer) {
+  public KubernetesCrudDispatcher(KubernetesAttributesExtractor attributeExtractor, ResponseComposer responseComposer) {
     super(new Context(Serialization.jsonMapper()), attributeExtractor, responseComposer);
     this.kubernetesAttributesExtractor = attributeExtractor;
     crdProcessor = new CustomResourceDefinitionProcessor(kubernetesAttributesExtractor);
@@ -513,7 +512,10 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
   }
 
   private String getStatusBody(HasMetadata h, int code, Exception ex) {
-    String kind = Utils.getNonNullOrElse(KubernetesResourceUtil.getKind(h), "Unknown");
+    String kind = "Unknown";
+    if (h != null && Utils.isNotNullOrEmpty(h.getKind())) {
+      kind = h.getKind();
+    }
     Status status = new StatusBuilder().withStatus("Failure")
       .withReason("Invalid")
       .withMessage(kind + " is invalid")

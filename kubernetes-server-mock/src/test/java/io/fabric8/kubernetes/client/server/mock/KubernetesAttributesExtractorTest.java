@@ -26,11 +26,12 @@ import java.util.Map;
 
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import org.junit.jupiter.api.Test;
-
+import io.fabric8.kubernetes.api.model.EndpointsBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
+import io.fabric8.kubernetes.api.model.extensions.IngressBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.mockwebserver.crud.Attribute;
 import io.fabric8.mockwebserver.crud.AttributeSet;
@@ -146,6 +147,7 @@ public class KubernetesAttributesExtractorTest {
 	@Test
 	public void shouldHandleIngress() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+		extractor.extract(new IngressBuilder().withNewMetadata().endMetadata().build());
 		AttributeSet attributes = extractor.fromPath("/apis/extensions/v1beta1/namespaces/myns/ingresses/myingress");
 
 		AttributeSet expected = new AttributeSet();
@@ -158,6 +160,7 @@ public class KubernetesAttributesExtractorTest {
 	@Test
 	public void shouldHandleEndpoints() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+		extractor.extract(new EndpointsBuilder().withNewMetadata().endMetadata().build());
 		AttributeSet attributes = extractor.fromPath("/api/v1/namespaces/myns/endpoints");
 
 		AttributeSet expected = new AttributeSet();
@@ -169,6 +172,7 @@ public class KubernetesAttributesExtractorTest {
 	@Test
 	public void shouldHandleIngresses() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+		extractor.extract(new IngressBuilder().withNewMetadata().endMetadata().build());
 		AttributeSet attributes = extractor.fromPath("/apis/extensions/v1beta1/namespaces/myns/ingresses");
 
 		AttributeSet expected = new AttributeSet();

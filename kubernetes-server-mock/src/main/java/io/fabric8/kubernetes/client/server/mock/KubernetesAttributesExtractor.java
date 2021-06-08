@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.server.mock;
 
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -36,6 +37,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -82,6 +84,7 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
   private static final String SCHEME = "http";
   private static final String HOST = "localhost";
   private Map<String, CustomResourceDefinitionContext> crdContexts;
+  private Map<String, String> pluralToKind = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
   public KubernetesAttributesExtractor() {
     this(Collections.emptyList());
@@ -165,27 +168,28 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
   }
 
   @Override
-  public AttributeSet extract(HasMetadata o) {
-    AttributeSet attributes = extractMetadataAttributes(o);
-    if (!Utils.isNullOrEmpty(o.getKind())) {
-        attributes = attributes.add(new Attribute(KIND, o.getKind().toLowerCase(Locale.ROOT)));
+  public AttributeSet extract(HasMetadata hasMetadata) {
+    AttributeSet metadataAttributes = new AttributeSet();
+    if (!Utils.isNullOrEmpty(hasMetadata.getMetadata().getName())) {
+      metadataAttributes = metadataAttributes.add(new Attribute(NAME, hasMetadata.getMetadata().getName()));
     }
-    return attributes;
-  }
 
-  protected AttributeSet extractMetadataAttributes(HasMetadata hasMetadata) {
-      AttributeSet metadataAttributes = new AttributeSet();
-      if (!Utils.isNullOrEmpty(hasMetadata.getMetadata().getName())) {
-        metadataAttributes = metadataAttributes.add(new Attribute(NAME, hasMetadata.getMetadata().getName()));
-      }
-
-      if (!Utils.isNullOrEmpty(hasMetadata.getMetadata().getNamespace())) {
-          metadataAttributes = metadataAttributes.add(new Attribute(NAMESPACE, hasMetadata.getMetadata().getNamespace()));
-      }
+    if (!Utils.isNullOrEmpty(hasMetadata.getMetadata().getNamespace())) {
+      metadataAttributes = metadataAttributes.add(new Attribute(NAMESPACE, hasMetadata.getMetadata().getNamespace()));
+    }
 
     if (hasMetadata.getMetadata().getLabels() != null) {
       for (Map.Entry<String, String> label : hasMetadata.getMetadata().getLabels().entrySet()) {
         metadataAttributes = metadataAttributes.add(new Attribute(LABEL_KEY_PREFIX + label.getKey(), label.getValue()));
+      }
+    }
+    if (!Utils.isNullOrEmpty(hasMetadata.getKind())) {
+      String kind = hasMetadata.getKind().toLowerCase(Locale.ROOT);
+      metadataAttributes = metadataAttributes.add(new Attribute(KIND, kind));
+      if (hasMetadata instanceof GenericKubernetesResource) {
+        pluralToKind.put(getPluralForKind(hasMetadata.getKind(), hasMetadata.getApiVersion()), kind);
+      } else {
+        pluralToKind.put(hasMetadata.getPlural(), kind);
       }
     }
     return metadataAttributes;
@@ -217,37 +221,29 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
     return attributes;
   }
 
-  private String resolveKindFromPlural(String kind) {
-    String result = getCustomResourceKindFromPlural(kind);
+  private String resolveKindFromPlural(String plural) {
+    String result = getCustomResourceKindFromPlural(plural);
     if (result != null) {
       return result;
     }
-    return getKindFromPluralForKubernetesTypes(kind);
+    return pluralToKind.getOrDefault(plural, plural.substring(0, plural.length() - 1));
   }
 
-  private static String getKindFromPluralForKubernetesTypes(String kind) {
-    //Poor mans to singular.
-    //Special Case for PodSecurityPolicies and NetworkPolicies because
-    //we need to return PodSecurityPolicy and NetworkPolicy respectively
-    //because it is returning PodSecurityPolicie and NetworkPolicie now
-    //Right now not adding generalised case of "ies" because it may break other resource not sure
-
-    if (kind.endsWith("ses")) {
-      kind = kind.substring(0, kind.length() - 2);
+  /**
+   * Find the plural for standard types by consulting the deserializer
+   */
+  private static String getPluralForKind(String kind, String apiVersion) {
+    GenericKubernetesResource gkr = new GenericKubernetesResource();
+    gkr.setApiVersion(apiVersion);
+    gkr.setKind(kind);
+    try {
+      HasMetadata result = Serialization.unmarshal(new ByteArrayInputStream(Serialization.asJson(gkr).getBytes(StandardCharsets.UTF_8)));
+      if (result != null) {
+        return result.getPlural();
+      }
+    } catch (KubernetesClientException e) {
     }
-    else if (kind.equalsIgnoreCase("PodSecurityPolicies") ||
-      kind.equalsIgnoreCase("NetworkPolicies")){
-      kind = kind.substring(0, kind.length() - 3) + "y";
-    } else if (kind.equalsIgnoreCase("securityContextConstraints") ||
-      kind.equalsIgnoreCase("endpoints")){
-      // do nothing
-      // because its a case which is ending with s but its name is
-      // like that, it is not plural
-    }
-    else if (kind.endsWith("s")) {
-      kind = kind.substring(0, kind.length() - 1);
-    }
-    return kind;
+    return kind + "s";
   }
 
   private static AttributeSet extractQueryParameters(HttpUrl url) {
@@ -301,7 +297,7 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
 
   private String getCustomResourceKindFromPlural(String plural) {
     CustomResourceDefinitionContext crdContext = crdContexts.get(plural);
-    return crdContext != null && crdContext.getKind() != null ? crdContext.getKind().toLowerCase() : null;
+    return crdContext != null && crdContext.getKind() != null ? crdContext.getKind().toLowerCase(Locale.ROOT) : null;
   }
 
   /**
