@@ -92,19 +92,20 @@ public class PodUploadWebSocketListener extends WebSocketListener {
     }
   }
 
-  final void waitUntilReady(int timeoutSeconds) throws IOException, InterruptedException {
-    if (!readyLatch.await(timeoutSeconds, TimeUnit.SECONDS)) {
+  final void waitUntilReady(int timeoutMilliseconds) throws IOException, InterruptedException {
+    if (!readyLatch.await(timeoutMilliseconds, TimeUnit.MILLISECONDS)) {
+      checkError();
       throw new IOException("Connection to server timed out");
     }
   }
 
-  final void waitUntilComplete(int timeoutSeconds) throws IOException, InterruptedException {
+  final void waitUntilComplete(int timeoutMilliseconds) throws IOException, InterruptedException {
     while (webSocketRef.get().queueSize() > 0 && completeLatch.getCount() > 0) {
       checkError();
       Thread.sleep(50);
     }
     webSocketRef.get().close(1000, "Operation completed");
-    if (!completeLatch.await(timeoutSeconds, TimeUnit.SECONDS)) {
+    if (!completeLatch.await(timeoutMilliseconds, TimeUnit.MILLISECONDS)) {
       throw new IOException("Upload operation timed out before completing");
     }
     checkError();

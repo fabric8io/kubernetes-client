@@ -141,6 +141,9 @@ public class ConfigTest {
     System.setProperty(Config.KUBERNETES_KEYSTORE_FILE_PROPERTY, "/path/to/keystore");
     System.setProperty(Config.KUBERNETES_KEYSTORE_PASSPHRASE_PROPERTY, "keystorePassphrase");
 
+    System.setProperty(Config.KUBERNETES_UPLOAD_CONNECTION_TIMEOUT_SYSTEM_PROPERTY, "60000");
+    System.setProperty(Config.KUBERNETES_UPLOAD_REQUEST_TIMEOUT_SYSTEM_PROPERTY, "600000");
+
     Config config = new Config();
     assertConfig(config);
 
@@ -172,6 +175,8 @@ public class ConfigTest {
       .withWatchReconnectInterval(5000)
       .withWatchReconnectLimit(5)
       .withRequestTimeout(5000)
+      .withUploadConnectionTimeout(60000)
+      .withUploadRequestTimeout(600000)
       .withHttpProxy("httpProxy")
       .withTlsVersions(TLS_1_2, TLS_1_1)
       .withTrustStoreFile("/path/to/truststore")
@@ -216,6 +221,9 @@ public class ConfigTest {
     System.setProperty(Config.KUBERNETES_TRUSTSTORE_PASSPHRASE_PROPERTY, "truststorePassphrase");
     System.setProperty(Config.KUBERNETES_KEYSTORE_FILE_PROPERTY, "/path/to/keystore");
     System.setProperty(Config.KUBERNETES_KEYSTORE_PASSPHRASE_PROPERTY, "keystorePassphrase");
+
+    System.setProperty(Config.KUBERNETES_UPLOAD_CONNECTION_TIMEOUT_SYSTEM_PROPERTY, "60000");
+    System.setProperty(Config.KUBERNETES_UPLOAD_REQUEST_TIMEOUT_SYSTEM_PROPERTY, "600000");
 
     Config config = new ConfigBuilder()
       .withMasterUrl("http://somehost:80")
@@ -560,6 +568,8 @@ public class ConfigTest {
     assertEquals(20000, emptyConfig.getLoggingInterval());
     assertEquals(5000, emptyConfig.getWebsocketTimeout());
     assertEquals(30000, emptyConfig.getWebsocketPingInterval());
+    assertEquals(10000, emptyConfig.getUploadConnectionTimeout());
+    assertEquals(120000, emptyConfig.getUploadRequestTimeout());
     assertTrue(emptyConfig.getImpersonateExtras().isEmpty());
     assertEquals(0, emptyConfig.getImpersonateGroups().length);
     assertFalse(emptyConfig.isHttp2Disable());
@@ -591,6 +601,8 @@ public class ConfigTest {
     assertEquals(5000, config.getWatchReconnectInterval());
     assertEquals(5, config.getWatchReconnectLimit());
     assertEquals(5000, config.getRequestTimeout());
+    assertEquals(60000, config.getRequestConfig().getUploadConnectionTimeout());
+    assertEquals(600000, config.getRequestConfig().getUploadRequestTimeout());
 
     assertArrayEquals(new TlsVersion[]{TLS_1_2, TLS_1_1}, config.getTlsVersions());
 
