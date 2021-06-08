@@ -25,6 +25,15 @@ import io.fabric8.kubernetes.client.dsl.internal.NamespacedCreateOnlyResourceOpe
 import io.fabric8.openshift.api.model.*;
 import io.fabric8.openshift.api.model.HelmChartRepository;
 import io.fabric8.openshift.api.model.HelmChartRepositoryList;
+import io.fabric8.openshift.api.model.miscellaneous.cloudcredential.v1.CredentialsRequest;
+import io.fabric8.openshift.api.model.miscellaneous.cloudcredential.v1.CredentialsRequestList;
+import io.fabric8.openshift.api.model.miscellaneous.cncf.cni.v1.NetworkAttachmentDefinition;
+import io.fabric8.openshift.api.model.miscellaneous.cncf.cni.v1.NetworkAttachmentDefinitionList;
+import io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.Config;
+import io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.BareMetalHost;
+import io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.BareMetalHostList;
+import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.OperatorPKI;
+import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.OperatorPKIList;
 import io.fabric8.openshift.client.dsl.*;
 import io.fabric8.openshift.client.dsl.internal.image.ImageSignatureOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.image.ImageStreamImageOperationsImpl;
@@ -170,6 +179,13 @@ public interface OpenShiftClient extends KubernetesClient {
   SchedulingAPIGroupDSL scheduling();
 
   /**
+   * API entrypoint for BareMetalHost(metal3.io/v1alpha1)
+   *
+   * @return {@link MixedOperation} for BareMetalHost
+   */
+  MixedOperation<BareMetalHost, BareMetalHostList, Resource<BareMetalHost>> bareMetalHosts();
+
+  /**
    * API entrypoint for handling Build(build.openshift.io/v1)
    *
    * @return MixedOperation instance for Build object
@@ -182,6 +198,13 @@ public interface OpenShiftClient extends KubernetesClient {
    * @return MixedOperation instance for BuildConfig object
    */
   MixedOperation<BuildConfig, BuildConfigList, BuildConfigResource<BuildConfig, Void, Build>> buildConfigs();
+
+  /**
+   * API entrypoint for CredentialsRequest (cloudcredential.openshift.io/v1)
+   *
+   * @return {@link MixedOperation} for CredentialsRequest
+   */
+  MixedOperation<CredentialsRequest, CredentialsRequestList, Resource<CredentialsRequest>> credentialsRequests();
 
   /**
    * API entrypoint for handling DeploymentConfig(apps.openshift.io/v1)
@@ -259,6 +282,21 @@ public interface OpenShiftClient extends KubernetesClient {
    * @return {@link ImageSignatureOperationsImpl} for ImageSignature operations
    */
   ImageSignatureOperationsImpl imageSignatures();
+
+  /**
+   * API entrypoint for Config(imageregistry.operator.openshift.io/v1)
+   *
+   * @return {@link NonNamespaceOperation} for Config
+   */
+  NonNamespaceOperation<io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.Config, io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.ConfigList, Resource<io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.Config>> imageRegistryOperatorConfigs();
+
+  /**
+   * API entrypoint for accessing NetworkAttachmentDefinition(k8s.cni.cncf.io/v1)
+   *
+   * @return {@link MixedOperation} for NetworkAttachmentDefinition
+   */
+  MixedOperation<NetworkAttachmentDefinition, NetworkAttachmentDefinitionList, Resource<NetworkAttachmentDefinition>> networkAttachmentDefinitions();
+
   /**
    * API entrypoint for accessing OAuthAccessToken(oauth.openshift.io/v1)
    *
@@ -279,6 +317,20 @@ public interface OpenShiftClient extends KubernetesClient {
    * @return NonNamespaceOperation object for OAuthClient
    */
   NonNamespaceOperation<OAuthClient, OAuthClientList, Resource<OAuthClient>> oAuthClients();
+
+  /**
+   * API entrypoint for accessing OAuthClientAuthorization(oauth.openshift.io/v1)
+   *
+   * @return NonNamespaceOperation for OAuthClientAuthorization
+   */
+  NonNamespaceOperation<OAuthClientAuthorization, OAuthClientAuthorizationList, Resource<OAuthClientAuthorization>> oAuthClientAuthorizations();
+
+  /**
+   * API entrypoint for OperatorPKI(network.operator.openshift.io/v1)
+   *
+   * @return {@link MixedOperation} for OperatorPKI
+   */
+  MixedOperation<OperatorPKI, OperatorPKIList, Resource<OperatorPKI>> operatorPKIs();
 
   /**
    * API entrypoint for accessing PodSecurityPolicyReview (security.openshift.io/v1)
@@ -497,6 +549,16 @@ public interface OpenShiftClient extends KubernetesClient {
    * @return {@link UserIdentityMapping} for UserIdentityMapping
    */
   InOutCreateable<UserIdentityMapping, UserIdentityMapping> userIdentityMappings();
+
+  /**
+   * API entrypoint for UserOAuthAccessToken(oauth.openshift.io/v1)
+   * <p>
+   *   Note: Only GET and DELETE operations are supported by APIServer for this resource.
+   * </p>
+   *
+   * @return {@link NonNamespaceOperation} for UserOAuthAccessToken
+   */
+  NonNamespaceOperation<UserOAuthAccessToken, UserOAuthAccessTokenList, Resource<UserOAuthAccessToken>> userOAuthAccessTokens();
 
   /**
    * API entrypoint for OpenShift Whereabouts CNI(Container Network Interface) Plugin model.

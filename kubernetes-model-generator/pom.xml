@@ -64,6 +64,7 @@
     <module>openshift-model-tuned</module>
     <module>openshift-model-whereabouts</module>
     <module>openshift-model-storageversionmigrator</module>
+    <module>openshift-model-miscellaneous</module>
   </modules>
 
   <properties>
