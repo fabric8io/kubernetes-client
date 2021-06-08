@@ -590,7 +590,7 @@ public class KubernetesCrudAttributesExtractorTest {
   @Test
   public void shouldExtractRawMetadata() {
     KubernetesCrudAttributesExtractor extractor = new KubernetesCrudAttributesExtractor();
-    AttributeSet attributes = extractor.fromResource("{\"metadata\":{\"name\":\"foo\",\"uid\":\"1b089078-51c7-4ff8-a3c9-a8a54246b94c\",\"resourceVersion\":\"1\",\"generation\":1,\"creationTimestamp\":\"2021-05-13T12:06:41.191989Z\"},\"spec\":\"initial\"}");
+    AttributeSet attributes = extractor.fromResource("{\"apiVersion\":1, \"kind\":\"mykind\", \"metadata\":{\"name\":\"foo\",\"uid\":\"1b089078-51c7-4ff8-a3c9-a8a54246b94c\",\"resourceVersion\":\"1\",\"generation\":1,\"creationTimestamp\":\"2021-05-13T12:06:41.191989Z\"},\"spec\":\"initial\"}");
 
     AttributeSet expected = new AttributeSet();
     expected = expected.add(new Attribute("name", "foo"));

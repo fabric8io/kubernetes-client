@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.server.mock;
 
+import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.utils.Serialization;
@@ -289,20 +290,9 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
     return null;
   }
 
-  static HasMetadata toKubernetesResource(String s) {
+  static GenericKubernetesResource toKubernetesResource(String s) {
     try (InputStream stream = new ByteArrayInputStream(s.getBytes(StandardCharsets.UTF_8.name()))) {
-      HasMetadata result = Serialization.unmarshal(stream);
-      if (result != null) {
-        return result;
-      }
-    } catch (Exception e) {
-    }
-    return toRawHasMetadata(s);
-  }
-
-  private static HasMetadata toRawHasMetadata(String s) {
-    try (InputStream stream = new ByteArrayInputStream(s.getBytes(StandardCharsets.UTF_8.name()))) {
-      return Serialization.jsonMapper().readValue(stream, FallbackHasMetadata.class);
+      return Serialization.unmarshal(stream, GenericKubernetesResource.class);
     } catch (Exception e) {
       return null;
     }

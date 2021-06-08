@@ -34,13 +34,14 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -103,19 +104,21 @@ class CustomResourceCrudTest {
     Map<String, Object> metadata = new HashMap<>();
     metadata.put("name", "foo");
 
+    object.put("apiVersion", "stable.example.com/v1");
+    object.put("kind", "CronTab");
     object.put("metadata", metadata);
-    object.put("spec", "initial");
+    object.put("spec", new HashMap<>());
 
     Map<String, Object> created = raw.createOrReplace(object);
 
-    assertEquals("initial", created.get("spec"));
+    assertEquals(Collections.emptyMap(), created.get("spec"));
     assertTrue(((Map)created.get("metadata")).entrySet().containsAll(metadata.entrySet()));
 
-    object.put("spec", "updated");
+    object.put("spec", Collections.singletonMap("image", "value"));
 
     Map<String, Object> updated = raw.createOrReplace(object);
     assertNotEquals(created, updated);
-    assertEquals("updated", updated.get("spec"));
+    assertEquals(Collections.singletonMap("image", "value"), updated.get("spec"));
   }
 
   @Test
