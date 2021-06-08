@@ -53,7 +53,7 @@ public class KubernetesCrudAttributesExtractorTest {
   @Test
   public void shouldHandleNamespacedPathWithResource() {
     KubernetesCrudAttributesExtractor extractor = new KubernetesCrudAttributesExtractor();
-    AttributeSet attributes = extractor.extract("/api/v1/namespaces/myns/pods/mypod");
+    AttributeSet attributes = extractor.fromPath("/api/v1/namespaces/myns/pods/mypod");
 
     AttributeSet expected = new AttributeSet();
     expected = expected.add(new Attribute("kind", "pod"));
@@ -65,7 +65,7 @@ public class KubernetesCrudAttributesExtractorTest {
   @Test
   public void shouldHandleNamespacedPath() {
     KubernetesCrudAttributesExtractor extractor = new KubernetesCrudAttributesExtractor();
-    AttributeSet attributes = extractor.extract("/api/v1/namespaces/myns/pods");
+    AttributeSet attributes = extractor.fromPath("/api/v1/namespaces/myns/pods");
 
     AttributeSet expected = new AttributeSet();
     expected = expected.add(new Attribute("kind", "pod"));
@@ -76,7 +76,7 @@ public class KubernetesCrudAttributesExtractorTest {
   @Test
   public void shouldHandleNonNamespacedPath() {
     KubernetesCrudAttributesExtractor extractor = new KubernetesCrudAttributesExtractor();
-    AttributeSet attributes = extractor.extract("/api/v1/nodes/mynode");
+    AttributeSet attributes = extractor.fromPath("/api/v1/nodes/mynode");
 
     AttributeSet expected = new AttributeSet();
     expected = expected.add(new Attribute("kind", "node"));
@@ -87,7 +87,7 @@ public class KubernetesCrudAttributesExtractorTest {
   @Test
   public void shouldHandlePathWithParameters() {
     KubernetesCrudAttributesExtractor extractor = new KubernetesCrudAttributesExtractor();
-    AttributeSet attributes = extractor.extract("/api/v1/pods?labelSelector=testKey%3DtestValue");
+    AttributeSet attributes = extractor.fromPath("/api/v1/pods?labelSelector=testKey%3DtestValue");
 
     AttributeSet expected = new AttributeSet();
     expected = expected.add(new Attribute("kind", "pod"));
@@ -130,7 +130,7 @@ public class KubernetesCrudAttributesExtractorTest {
   @Test
   public void shouldHandleKindWithoutVersion() {
     KubernetesCrudAttributesExtractor extractor = new KubernetesCrudAttributesExtractor();
-    AttributeSet attributes = extractor.extract("/api/pods");
+    AttributeSet attributes = extractor.fromPath("/api/pods");
 
     AttributeSet expected = new AttributeSet();
     expected = expected.add(new Attribute("kind", "pod"));
@@ -140,7 +140,7 @@ public class KubernetesCrudAttributesExtractorTest {
   @Test
   public void shouldHandleExtensions() {
     KubernetesCrudAttributesExtractor extractor = new KubernetesCrudAttributesExtractor();
-    AttributeSet attributes = extractor.extract("/apis/apps/v1/deployments");
+    AttributeSet attributes = extractor.fromPath("/apis/apps/v1/deployments");
 
     AttributeSet expected = new AttributeSet();
     expected = expected.add(new Attribute("kind", "deployment"));
@@ -150,7 +150,7 @@ public class KubernetesCrudAttributesExtractorTest {
   @Test
   public void shouldHandleIngress() {
     KubernetesCrudAttributesExtractor extractor = new KubernetesCrudAttributesExtractor();
-    AttributeSet attributes = extractor.extract("/apis/extensions/v1beta1/namespaces/myns/ingresses/myingress");
+    AttributeSet attributes = extractor.fromPath("/apis/extensions/v1beta1/namespaces/myns/ingresses/myingress");
 
     AttributeSet expected = new AttributeSet();
     expected = expected.add(new Attribute("kind", "ingress"));
@@ -162,7 +162,7 @@ public class KubernetesCrudAttributesExtractorTest {
   @Test
   public void shouldHandleEndpoints() {
     KubernetesCrudAttributesExtractor extractor = new KubernetesCrudAttributesExtractor();
-    AttributeSet attributes = extractor.extract("/api/v1/namespaces/myns/endpoints");
+    AttributeSet attributes = extractor.fromPath("/api/v1/namespaces/myns/endpoints");
 
     AttributeSet expected = new AttributeSet();
     expected = expected.add(new Attribute("kind", "endpoints"));
@@ -173,7 +173,7 @@ public class KubernetesCrudAttributesExtractorTest {
   @Test
   public void shouldHandleIngresses() {
     KubernetesCrudAttributesExtractor extractor = new KubernetesCrudAttributesExtractor();
-    AttributeSet attributes = extractor.extract("/apis/extensions/v1beta1/namespaces/myns/ingresses");
+    AttributeSet attributes = extractor.fromPath("/apis/extensions/v1beta1/namespaces/myns/ingresses");
 
     AttributeSet expected = new AttributeSet();
     expected = expected.add(new Attribute("kind", "ingress"));
@@ -185,7 +185,7 @@ public class KubernetesCrudAttributesExtractorTest {
   public void shouldHandleApiGroups() {
     KubernetesCrudAttributesExtractor extractor = new KubernetesCrudAttributesExtractor();
     AttributeSet attributes = extractor
-      .extract("/apis/autoscaling/v1/namespaces/myns/horizontalpodautoscalers/myhpa");
+      .fromPath("/apis/autoscaling/v1/namespaces/myns/horizontalpodautoscalers/myhpa");
 
     AttributeSet expected = new AttributeSet();
     expected = expected.add(new Attribute("kind", "horizontalpodautoscaler"));
@@ -197,7 +197,7 @@ public class KubernetesCrudAttributesExtractorTest {
   @Test
   public void shouldHandleCrds() {
     KubernetesCrudAttributesExtractor extractor = new KubernetesCrudAttributesExtractor();
-    AttributeSet attributes = extractor.extract("/apis/test.com/v1/namespaces/myns/crds/mycrd");
+    AttributeSet attributes = extractor.fromPath("/apis/test.com/v1/namespaces/myns/crds/mycrd");
 
     AttributeSet expected = new AttributeSet();
     expected = expected.add(new Attribute("kind", "crd"));
@@ -209,7 +209,7 @@ public class KubernetesCrudAttributesExtractorTest {
   @Test
   public void shouldHandleLabelSelectorsWithOneLabel() {
     KubernetesCrudAttributesExtractor extractor = new KubernetesCrudAttributesExtractor();
-    AttributeSet attributes = extractor.extract("/api/v1/namespaces/myns/pods/mypod?labelSelector=name%3Dmyname");
+    AttributeSet attributes = extractor.fromPath("/api/v1/namespaces/myns/pods/mypod?labelSelector=name%3Dmyname");
 
     AttributeSet expected = new AttributeSet();
     expected = expected.add(new Attribute("labels:name", "myname"));
@@ -220,7 +220,7 @@ public class KubernetesCrudAttributesExtractorTest {
   public void shouldHandleLabelSelectorsWithDoubleEquals() {
     KubernetesCrudAttributesExtractor extractor = new KubernetesCrudAttributesExtractor();
     AttributeSet attributes = extractor
-      .extract("/api/v1/namespaces/myns/pods/mypod?labelSelector=name%3D%3Dmyname");
+      .fromPath("/api/v1/namespaces/myns/pods/mypod?labelSelector=name%3D%3Dmyname");
 
     AttributeSet expected = new AttributeSet();
     expected = expected.add(new Attribute("labels:name", "myname"));
@@ -231,7 +231,7 @@ public class KubernetesCrudAttributesExtractorTest {
   public void shouldHandleLabelSelectorsWithTwoLabels() {
     KubernetesCrudAttributesExtractor extractor = new KubernetesCrudAttributesExtractor();
     AttributeSet attributes = extractor
-      .extract("/api/v1/namespaces/myns/pods/mypod?labelSelector=name%3Dmyname,age%3D37");
+      .fromPath("/api/v1/namespaces/myns/pods/mypod?labelSelector=name%3Dmyname,age%3D37");
 
     AttributeSet expected = new AttributeSet();
     expected = expected.add(new Attribute("labels:name", "myname"));
@@ -243,7 +243,7 @@ public class KubernetesCrudAttributesExtractorTest {
   public void shouldHandleLabelSelectorsWithADomain() {
     KubernetesCrudAttributesExtractor extractor = new KubernetesCrudAttributesExtractor();
     AttributeSet attributes = extractor
-      .extract("/api/v1/namespaces/myns/pods/mypod?labelSelector=example.com/name%3Dmyname");
+      .fromPath("/api/v1/namespaces/myns/pods/mypod?labelSelector=example.com/name%3Dmyname");
 
     AttributeSet expected = new AttributeSet();
     expected = expected.add(new Attribute("labels:example.com/name", "myname"));
@@ -317,7 +317,7 @@ public class KubernetesCrudAttributesExtractorTest {
     assertNotNull(result.getStatus());
 
     // should be a no-op
-    assertNotNull(kubernetesClient.pods().updateStatus(pod).getStatus());
+    assertNotNull(kubernetesClient.pods().replaceStatus(pod).getStatus());
 
     labels.put("other", "label");
     pod.getStatus().setHostIP("y");

@@ -30,7 +30,6 @@ import junit.framework.AssertionFailedError;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -164,7 +163,7 @@ class PodCrudTest {
 
     client.pods().inNamespace("ns1").create(pod1);
     Watch watch = client.pods().inNamespace("ns1")
-      .withLabels(new HashMap<String, String>() {{ put("test", "watch");}})
+      .withLabels(Collections.singletonMap("test", "watch"))
       .watch(lw);
 
     Map<String, String> m = pod1.getMetadata().getLabels();

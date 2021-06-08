@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
@@ -291,10 +292,10 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
   }
 
   static GenericKubernetesResource toKubernetesResource(String s) {
-    try (InputStream stream = new ByteArrayInputStream(s.getBytes(StandardCharsets.UTF_8.name()))) {
+    try (InputStream stream = new ByteArrayInputStream(s.getBytes(StandardCharsets.UTF_8))) {
       return Serialization.unmarshal(stream, GenericKubernetesResource.class);
-    } catch (Exception e) {
-      return null;
+    } catch (IOException e) {
+      throw new RuntimeException(e); // unexpected
     }
   }
 

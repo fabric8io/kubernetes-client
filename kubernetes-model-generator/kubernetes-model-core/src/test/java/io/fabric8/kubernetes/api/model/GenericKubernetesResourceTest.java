@@ -94,6 +94,28 @@ class GenericKubernetesResourceTest {
       .hasFieldOrPropertyWithValue("spec.field", "value");
   }
 
+  @Test
+  @DisplayName("equality should look at all fields")
+  void equality() {
+    // Given
+    final GenericKubernetesResource gkr = new GenericKubernetesResource();
+    gkr.setApiVersion("the-cr.example.com/v1");
+    gkr.setKind("SomeCustomResource");
+    gkr.setMetadata(new ObjectMetaBuilder().withName("custom-resource-example").build());
+    gkr.setAdditionalProperties(Collections.singletonMap("spec", Collections.singletonMap("field", "value")));
+
+    // clone
+    final GenericKubernetesResource gkr1 = objectMapper.convertValue(gkr, GenericKubernetesResource.class);
+    // Then
+    assertThat(gkr)
+      .isEqualTo(gkr1);
+
+    gkr1.getAdditionalProperties().put("key", "value");
+
+    assertThat(gkr)
+      .isNotEqualTo(gkr1);
+  }
+
   private static InputStream load(String resource) {
     return GenericKubernetesResource.class.getResourceAsStream("/generic-kubernetes-resource/" + resource);
   }

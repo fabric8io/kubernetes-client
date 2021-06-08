@@ -40,7 +40,7 @@ public class KubernetesAttributesExtractorTest {
   @Test
 	public void shouldHandleNamespacedPathWithResource() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
-		AttributeSet attributes = extractor.extract("/api/v1/namespaces/myns/pods/mypod");
+		AttributeSet attributes = extractor.fromPath("/api/v1/namespaces/myns/pods/mypod");
 
 		AttributeSet expected = new AttributeSet();
 		expected = expected.add(new Attribute("kind", "pod"));
@@ -52,7 +52,7 @@ public class KubernetesAttributesExtractorTest {
 	@Test
 	public void shouldHandleNamespacedPath() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
-		AttributeSet attributes = extractor.extract("/api/v1/namespaces/myns/pods");
+		AttributeSet attributes = extractor.fromPath("/api/v1/namespaces/myns/pods");
 
 		AttributeSet expected = new AttributeSet();
 		expected = expected.add(new Attribute("kind", "pod"));
@@ -63,7 +63,7 @@ public class KubernetesAttributesExtractorTest {
 	@Test
 	public void shouldHandleNonNamespacedPath() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
-		AttributeSet attributes = extractor.extract("/api/v1/nodes/mynode");
+		AttributeSet attributes = extractor.fromPath("/api/v1/nodes/mynode");
 
 		AttributeSet expected = new AttributeSet();
 		expected = expected.add(new Attribute("kind", "node"));
@@ -74,7 +74,7 @@ public class KubernetesAttributesExtractorTest {
 	@Test
 	public void shouldHandlePathWithParameters() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
-		AttributeSet attributes = extractor.extract("/api/v1/pods?labelSelector=testKey%3DtestValue");
+		AttributeSet attributes = extractor.fromPath("/api/v1/pods?labelSelector=testKey%3DtestValue");
 
 		AttributeSet expected = new AttributeSet();
 		expected = expected.add(new Attribute("kind", "pod"));
@@ -126,7 +126,7 @@ public class KubernetesAttributesExtractorTest {
 	@Test
 	public void shouldHandleKindWithoutVersion() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
-		AttributeSet attributes = extractor.extract("/api/pods");
+		AttributeSet attributes = extractor.fromPath("/api/pods");
 
 		AttributeSet expected = new AttributeSet();
 		expected = expected.add(new Attribute("kind", "pod"));
@@ -136,7 +136,7 @@ public class KubernetesAttributesExtractorTest {
 	@Test
 	public void shouldHandleExtensions() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
-		AttributeSet attributes = extractor.extract("/apis/apps/v1/deployments");
+		AttributeSet attributes = extractor.fromPath("/apis/apps/v1/deployments");
 
 		AttributeSet expected = new AttributeSet();
 		expected = expected.add(new Attribute("kind", "deployment"));
@@ -146,7 +146,7 @@ public class KubernetesAttributesExtractorTest {
 	@Test
 	public void shouldHandleIngress() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
-		AttributeSet attributes = extractor.extract("/apis/extensions/v1beta1/namespaces/myns/ingresses/myingress");
+		AttributeSet attributes = extractor.fromPath("/apis/extensions/v1beta1/namespaces/myns/ingresses/myingress");
 
 		AttributeSet expected = new AttributeSet();
 		expected = expected.add(new Attribute("kind", "ingress"));
@@ -158,7 +158,7 @@ public class KubernetesAttributesExtractorTest {
 	@Test
 	public void shouldHandleEndpoints() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
-		AttributeSet attributes = extractor.extract("/api/v1/namespaces/myns/endpoints");
+		AttributeSet attributes = extractor.fromPath("/api/v1/namespaces/myns/endpoints");
 
 		AttributeSet expected = new AttributeSet();
 		expected = expected.add(new Attribute("kind", "endpoints"));
@@ -169,7 +169,7 @@ public class KubernetesAttributesExtractorTest {
 	@Test
 	public void shouldHandleIngresses() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
-		AttributeSet attributes = extractor.extract("/apis/extensions/v1beta1/namespaces/myns/ingresses");
+		AttributeSet attributes = extractor.fromPath("/apis/extensions/v1beta1/namespaces/myns/ingresses");
 
 		AttributeSet expected = new AttributeSet();
 		expected = expected.add(new Attribute("kind", "ingress"));
@@ -181,7 +181,7 @@ public class KubernetesAttributesExtractorTest {
 	public void shouldHandleApiGroups() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
 		AttributeSet attributes = extractor
-				.extract("/apis/autoscaling/v1/namespaces/myns/horizontalpodautoscalers/myhpa");
+				.fromPath("/apis/autoscaling/v1/namespaces/myns/horizontalpodautoscalers/myhpa");
 
 		AttributeSet expected = new AttributeSet();
 		expected = expected.add(new Attribute("kind", "horizontalpodautoscaler"));
@@ -193,7 +193,7 @@ public class KubernetesAttributesExtractorTest {
 	@Test
 	public void shouldHandleCrds() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
-		AttributeSet attributes = extractor.extract("/apis/test.com/v1/namespaces/myns/crds/mycrd");
+		AttributeSet attributes = extractor.fromPath("/apis/test.com/v1/namespaces/myns/crds/mycrd");
 
 		AttributeSet expected = new AttributeSet();
 		expected = expected.add(new Attribute("kind", "crd"));
@@ -209,7 +209,7 @@ public class KubernetesAttributesExtractorTest {
 
     String basePath = "/apis/test.com/v1/namespaces/myns/crds/mycrd/";
     for (String subresource : subresources) {
-      AttributeSet attributes = extractor.extract(basePath + subresource);
+      AttributeSet attributes = extractor.fromPath(basePath + subresource);
 
       AttributeSet expected = new AttributeSet();
       expected = expected.add(new Attribute("kind", "crd"));
@@ -219,7 +219,7 @@ public class KubernetesAttributesExtractorTest {
         "extracted attributes match for " + subresource + " expectation: " + expected);
     }
 
-    AttributeSet attributes = extractor.extract(basePath + "somethingRandom");
+    AttributeSet attributes = extractor.fromPath(basePath + "somethingRandom");
     assertTrue(attributes.matches(new AttributeSet()),
       "should extract nothing from an unsupported crd subresource");
   }
@@ -227,7 +227,7 @@ public class KubernetesAttributesExtractorTest {
 	@Test
 	public void shouldHandleLabelSelectorsWithOneLabel() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
-		AttributeSet attributes = extractor.extract("/api/v1/namespaces/myns/pods/mypod?labelSelector=name%3Dmyname");
+		AttributeSet attributes = extractor.fromPath("/api/v1/namespaces/myns/pods/mypod?labelSelector=name%3Dmyname");
 
 		AttributeSet expected = new AttributeSet();
 		expected = expected.add(new Attribute("labels:name", "myname"));
@@ -238,7 +238,7 @@ public class KubernetesAttributesExtractorTest {
 	public void shouldHandleLabelSelectorsWithDoubleEquals() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
 		AttributeSet attributes = extractor
-				.extract("/api/v1/namespaces/myns/pods/mypod?labelSelector=name%3D%3Dmyname");
+				.fromPath("/api/v1/namespaces/myns/pods/mypod?labelSelector=name%3D%3Dmyname");
 
 		AttributeSet expected = new AttributeSet();
 		expected = expected.add(new Attribute("labels:name", "myname"));
@@ -249,7 +249,7 @@ public class KubernetesAttributesExtractorTest {
 	public void shouldHandleLabelSelectorsWithTwoLabels() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
 		AttributeSet attributes = extractor
-				.extract("/api/v1/namespaces/myns/pods/mypod?labelSelector=name%3Dmyname,age%3D37");
+				.fromPath("/api/v1/namespaces/myns/pods/mypod?labelSelector=name%3Dmyname,age%3D37");
 
 		AttributeSet expected = new AttributeSet();
 		expected = expected.add(new Attribute("labels:name", "myname"));
@@ -261,7 +261,7 @@ public class KubernetesAttributesExtractorTest {
 	public void shouldHandleLabelSelectorsWithADomain() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
 		AttributeSet attributes = extractor
-				.extract("/api/v1/namespaces/myns/pods/mypod?labelSelector=example.com/name%3Dmyname");
+				.fromPath("/api/v1/namespaces/myns/pods/mypod?labelSelector=example.com/name%3Dmyname");
 
 		AttributeSet expected = new AttributeSet();
 		expected = expected.add(new Attribute("labels:example.com/name", "myname"));
@@ -407,7 +407,7 @@ public class KubernetesAttributesExtractorTest {
 
     // When
     AttributeSet attributes = extractor
-      .extract("/apis/demo.fabric8.io/v1alpha1/namespaces/ns1/customdatabases");
+      .fromPath("/apis/demo.fabric8.io/v1alpha1/namespaces/ns1/customdatabases");
 
     // Then
     AttributeSet expected = new AttributeSet();
