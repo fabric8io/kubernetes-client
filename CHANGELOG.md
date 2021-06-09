@@ -20,6 +20,8 @@
 * Fix #3143: a new SharedInformerEventListener.onException(SharedIndexInformer, Exception) method is available to determine which informer could not start.
 * Fix #3170: made HttpClientUtils.createHttpClient(Config, Consumer<OkHttpClient.Builder>) public to allow overriding custom http client properties 
 * Fix #3185: Introduce GenericKubernetesResource, used as delegate in RawCustomResourceOperationsImpl
+* Fix #3001: WatchConnectionManager logs that provide little information are now logged at a lower level
+* Fix #3186: WebSockets and HTTP connections are closed as soon as possible for Watches.
 
 #### Dependency Upgrade
 * Fix #2741: Update Knative Model to v0.23.0
@@ -42,6 +44,9 @@
 #### _**Note**_: Breaking changes in the API
 ##### DSL Changes:
 - #3127 `StatusUpdatable.updateStatus` deprecated, please use patchStatus, editStatus, or replaceStatus
+
+##### Util Changes:
+- #3197 `Utils.waitUntilReady` now accepts a Future, rather than a BlockingQueue
 
 ### 5.4.1 (2021-06-01)
 
