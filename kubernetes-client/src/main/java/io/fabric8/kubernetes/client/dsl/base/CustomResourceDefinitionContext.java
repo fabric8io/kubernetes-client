@@ -22,6 +22,8 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefin
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.utils.KubernetesVersionPriority;
+import io.fabric8.kubernetes.model.Scope;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Optional;
@@ -60,6 +62,13 @@ public class CustomResourceDefinitionContext {
   
   public boolean isStatusSubresource() {
     return statusSubresource;
+  }
+
+  public boolean isNamespaceScoped() {
+    if (scope != null) {
+      return Scope.NAMESPACED.value().equals(scope);
+    }
+    return false;
   }
 
   @SuppressWarnings("rawtypes")

@@ -138,4 +138,15 @@ class CustomResourceDefinitionContextTest {
       .hasFieldOrPropertyWithValue("plural", "foobars")
       .hasFieldOrPropertyWithValue("kind", "Foobar");
   }
+
+  @Test
+  void isNamespaceScoped() {
+    // Given
+    CustomResourceDefinitionContext crdc1 = new CustomResourceDefinitionContext.Builder().withScope("Namespaced").build();
+    CustomResourceDefinitionContext crdc2 = new CustomResourceDefinitionContext.Builder().withScope("Cluster").build();
+
+    // When + Then
+    assertThat(crdc1.isNamespaceScoped()).isTrue();
+    assertThat(crdc2.isNamespaceScoped()).isFalse();
+  }
 }

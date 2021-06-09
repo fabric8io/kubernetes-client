@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
@@ -37,6 +38,7 @@ import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBinding;
 import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBindingBuilder;
 import io.fabric8.kubernetes.client.CustomResourceList;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
@@ -85,6 +87,13 @@ class DefaultSharedIndexInformerTest {
   static final Long OUTDATED_WATCH_EVENT_EMIT_TIME = 1L;
   static final long RESYNC_PERIOD = 5L;
   static final int LATCH_AWAIT_PERIOD_IN_SECONDS = 10;
+  private static final CustomResourceDefinitionContext animalContext = new CustomResourceDefinitionContext.Builder()
+    .withGroup("jungle.example.com")
+    .withVersion("v1")
+    .withPlural("animals")
+    .withKind("Animal")
+    .withScope("Namespaced")
+    .build();
   private KubernetesClient client;
   private SharedInformerFactory factory;
 
@@ -860,6 +869,39 @@ class DefaultSharedIndexInformerTest {
     // Then
     assertThat(result)
       .hasMessage("Cannot restart a stopped informer");
+  }
+
+  @Test
+  void testGenericKubernetesResourceSharedIndexInformerAllNamespaces() throws InterruptedException {
+    // Given
+    setupMockServerExpectations(Animal.class, null, this::getList, r -> new WatchEvent(getAnimal("red-panda", "Carnivora", r), "ADDED"), null, null);
+
+    // When
+    SharedIndexInformer<GenericKubernetesResource> animalSharedIndexInformer = factory.sharedIndexInformerForCustomResource(animalContext, 60 * WATCH_EVENT_EMIT_TIME);
+    CountDownLatch foundExistingAnimal = new CountDownLatch(1);
+    animalSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingAnimal, "red-panda"));
+    factory.startAllRegisteredInformers();
+    foundExistingAnimal.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
+
+    // Then
+    assertEquals("test", client.getConfiguration().getNamespace());
+    assertEquals(0, foundExistingAnimal.getCount());
+  }
+
+  @Test
+  void testGenericKubernetesResourceSharedIndexInformerWithNamespaceConfigured() throws InterruptedException {
+    // Given
+    setupMockServerExpectations(Animal.class, "ns1", this::getList, r -> new WatchEvent(getAnimal("red-panda", "Carnivora", r), "ADDED"), null, null);
+
+    // When
+    SharedIndexInformer<GenericKubernetesResource> animalSharedIndexInformer = factory.inNamespace("ns1").sharedIndexInformerForCustomResource(animalContext, 60 * WATCH_EVENT_EMIT_TIME);
+    CountDownLatch foundExistingAnimal = new CountDownLatch(1);
+    animalSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingAnimal, "red-panda"));
+    factory.startAllRegisteredInformers();
+    foundExistingAnimal.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
+
+    // Then
+    assertEquals(0, foundExistingAnimal.getCount());
   }
 
   private KubernetesResource getAnimal(String name, String order, String resourceVersion) {
