@@ -11,6 +11,7 @@
 * Fix #3190: Ignore fields with name "-" when using the Go to JSON schema generator
 * Fix #3144: walking back the assumption that resource/status should be a subresource for the crud mock server, now it will be only if a registered crd indicates that it should be
 * Fix #3194: the mock server will now infer the namespace from the path
+* Fix #3076: the MetadataObject for CustomResource is now seen as Buildable
 
 #### Improvements
 * Fix #3078: adding javadocs to further clarify patch, edit, replace, etc. and note the possibility of items being modified.
