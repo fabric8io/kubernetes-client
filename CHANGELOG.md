@@ -25,6 +25,7 @@
 * Fix #3185: Introduce GenericKubernetesResource, used as delegate in RawCustomResourceOperationsImpl
 * Fix #3001: WatchConnectionManager logs that provide little information are now logged at a lower level
 * Fix #3186: WebSockets and HTTP connections are closed as soon as possible for Watches.
+* Fix #2937: Add `SharedInformerFactory#getExistingSharedIndexInformers` method to return list of registered informers
 
 #### Dependency Upgrade
 * Fix #2741: Update Knative Model to v0.23.0
