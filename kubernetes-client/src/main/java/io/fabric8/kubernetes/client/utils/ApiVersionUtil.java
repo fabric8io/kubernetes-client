@@ -94,4 +94,18 @@ public class ApiVersionUtil {
     }
     return null;
   }
+
+  /**
+   * Join group and version strings to form apiVersion key in Kubernetes objects
+   *
+   * @param group ApiGroup for resource
+   * @param version ApiVersion for resource
+   * @return version if group is null or empty, joined string otherwise.
+   */
+  public static String joinApiGroupAndVersion(String group, String version) {
+    if (Utils.isNullOrEmpty(group)) {
+      return version;
+    }
+    return group + "/" + version;
+  }
 }

@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.CustomResource;
+import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Kind;
@@ -33,6 +34,8 @@ import java.util.concurrent.ExecutorService;
 
 import static io.fabric8.kubernetes.client.informers.SharedInformerFactory.getInformerKey;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class SharedInformerFactoryTest {
   private OkHttpClient mockClient;
@@ -96,6 +99,44 @@ class SharedInformerFactoryTest {
     // Then
     assertThat(sharedInformerFactory.getInformers())
       .hasSize(2);
+  }
+
+  @Test
+  void testSharedIndexInformerForCustomResourceNoType() {
+    // Given
+    SharedInformerFactory sharedInformerFactory = new SharedInformerFactory(executorService, mockClient, config);
+    CustomResourceDefinitionContext context = new CustomResourceDefinitionContext.Builder()
+      .withKind("Dummy")
+      .withScope("Namespaced")
+      .withVersion("v1")
+      .withGroup("demos.fabric8.io")
+      .withPlural("dummies")
+      .build();
+
+    // When
+    sharedInformerFactory.inNamespace("ns1").sharedIndexInformerForCustomResource(context, 10 * 1000L);
+
+    // Then
+    assertThat(sharedInformerFactory.getInformers())
+      .hasSize(1)
+      .containsKey("demos.fabric8.io/v1/dummies/ns1");
+  }
+
+  @Test
+  void testSharedIndexInformerForCustomResourceThrowsIllegalArgumentExceptionOnCoreType() {
+    // Given
+    SharedInformerFactory sharedInformerFactory = new SharedInformerFactory(executorService, mockClient, config);
+    CustomResourceDefinitionContext context = new CustomResourceDefinitionContext.Builder()
+      .withKind("Service")
+      .withScope("Namespaced")
+      .withVersion("v1")
+      .withGroup("")
+      .withPlural("services")
+      .build();
+
+    // When + Then
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> sharedInformerFactory.sharedIndexInformerForCustomResource(context, 10 * 1000L));
+    assertEquals("Using sharedIndexInformerDynamicResource for core type. Please use sharedIndexInformerFor(Class<T>, long) instead.", exception.getMessage());
   }
 
   @Test
