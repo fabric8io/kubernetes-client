@@ -50,10 +50,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArraySet;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -125,7 +126,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
    */
   @Override
   public MockResponse handleCreate(String path, String s) {
-    return validateRequestBodyAndHandleRequest(s, (g) -> doCreateOrModify(path, g, ADDED));
+    return validateRequestBodyAndHandleRequest(s, g -> doCreateOrModify(path, g, ADDED));
   }
 
   /**
@@ -135,7 +136,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
    * @return The {@link MockResponse}
    */
   public MockResponse handleReplace(String path, String s) {
-    return validateRequestBodyAndHandleRequest(s, (g) -> doCreateOrModify(path, g, MODIFIED));
+    return validateRequestBodyAndHandleRequest(s, g -> doCreateOrModify(path, g, MODIFIED));
   }
 
   /**
@@ -180,10 +181,17 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
    */
   public MockResponse handlePatch(String path, String s, String contentType) {
     MockResponse response = new MockResponse();
-    String body = fetchResource(path);
-    if (body == null) {
+
+    AttributeSet query = attributeExtractor.fromPath(path);
+
+    Optional<Map.Entry<AttributeSet, String>> bodyEntry = map.entrySet().stream()
+        .filter(entry -> entry.getKey().matches(query))
+        .findFirst();
+
+    if (!bodyEntry.isPresent()) {
       response.setResponseCode(HttpURLConnection.HTTP_NOT_FOUND);
     } else {
+      String body = bodyEntry.get().getValue();
       try {
         JsonNode patch = context.getMapper().readTree(s);
         JsonNode source = context.getMapper().readTree(body);
@@ -221,39 +229,11 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
         }
 
         String updatedAsString = context.getMapper().writeValueAsString(updated);
+        GenericKubernetesResource resource = toKubernetesResource(updatedAsString);
+        GenericKubernetesResource existingResource = toKubernetesResource(body);
+        setDefaultMetadata(resource, pathValues, existingResource.getMetadata());
 
-        AttributeSet attributeSet;
-
-        AttributeSet query = attributeExtractor.fromPath(path);
-
-        attributeSet = map.entrySet().stream()
-          .filter(entry -> entry.getKey().matches(query))
-          .findFirst().orElseThrow(IllegalStateException::new).getKey();
-
-        if (body.equals(updatedAsString)) {
-          response.setResponseCode(HttpURLConnection.HTTP_ACCEPTED);
-          response.setBody(updatedAsString);
-          return response;
-        }
-        map.remove(attributeSet);
-        AttributeSet newAttributeSet = AttributeSet.merge(attributeSet, attributeExtractor.fromResource(updatedAsString));
-        map.put(newAttributeSet, updatedAsString);
-        crdProcessor.process(path, updatedAsString, false);
-
-        final AtomicBoolean flag = new AtomicBoolean(false);
-        AttributeSet finalAttributeSet = attributeSet;
-        watchEventListeners.stream()
-          .filter(watchEventsListener -> watchEventsListener.attributeMatches(finalAttributeSet))
-          .forEach(watchEventsListener -> {
-              flag.set(true);
-              watchEventsListener.sendWebSocketResponse(updatedAsString, MODIFIED);
-          });
-
-        if (!flag.get()) {
-          watchEventListeners.stream()
-            .filter(watchEventsListener -> watchEventsListener.attributeMatches(newAttributeSet))
-            .forEach(watchEventsListener -> watchEventsListener.sendWebSocketResponse(updatedAsString, ADDED));
-        }
+        processEvent(path, bodyEntry.get().getKey(), Serialization.asJson(resource));
 
         response.setResponseCode(HttpURLConnection.HTTP_ACCEPTED);
         response.setBody(updatedAsString);
@@ -272,7 +252,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
    */
   @Override
   public MockResponse handleDelete(String path) {
-    return new MockResponse().setResponseCode(doDelete(path, "DELETED"));
+    return new MockResponse().setResponseCode(doDelete(path));
   }
 
   /**
@@ -336,39 +316,39 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
     return name.isEmpty()? null: name;
   }
 
-  private String fetchResource(String path) {
-    List<String> items = new ArrayList<>();
-    AttributeSet query = attributeExtractor.fromPath(path);
-
-    map.entrySet().stream()
-      .filter(entry -> entry.getKey().matches(query))
-      .forEach(entry -> items.add(entry.getValue()));
-
-    if (items.isEmpty()) {
-      return null;
-    } else if (items.size() == 1) {
-      return items.get(0);
-    } else {
-      return responseComposer.compose(items);
-    }
-  }
-
-  private int doDelete(String path, String event) {
+  private int doDelete(String path) {
     List<AttributeSet> items = findItems(attributeExtractor.fromPath(path));
 
     if (items.isEmpty()) return HttpURLConnection.HTTP_NOT_FOUND;
 
-
-    items.forEach(item -> {
-      if (event != null && !event.isEmpty()) {
-        watchEventListeners.stream()
-          .filter(listener -> listener.attributeMatches(item))
-          .forEach(listener -> listener.sendWebSocketResponse(map.get(item), event));
-      }
-      String existing = map.remove(item);
-      crdProcessor.process(path, existing, true);
-    });
+    items.forEach(item -> processEvent(path, item, null));
     return HttpURLConnection.HTTP_OK;
+  }
+
+  private void processEvent(String path, AttributeSet oldAttributes, String newState) {
+    String existing = map.remove(oldAttributes);
+    AttributeSet newAttributes = null;
+    if (newState != null) {
+      newAttributes = kubernetesAttributesExtractor.fromResource(newState);
+      map.put(newAttributes, newState);
+    }
+    if (!Objects.equals(existing, newState)) {
+      AttributeSet finalAttributeSet = newAttributes;
+      watchEventListeners.stream()
+        .forEach(listener -> {
+          boolean matchesOld = oldAttributes != null && listener.attributeMatches(oldAttributes);
+          boolean matchesNew = finalAttributeSet != null && listener.attributeMatches(finalAttributeSet);
+          if (matchesOld && matchesNew) {
+            listener.sendWebSocketResponse(newState, MODIFIED);
+          } else if (matchesOld) {
+            listener.sendWebSocketResponse(existing, "DELETED");
+          } else if (matchesNew) {
+            listener.sendWebSocketResponse(newState, ADDED);
+          }
+        });
+
+      crdProcessor.process(path, Utils.getNonNullOrElse(newState, existing), newState == null);
+    }
   }
 
   private List<AttributeSet> findItems(AttributeSet query) {
@@ -393,6 +373,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
       boolean statusSubresource = crdProcessor.isStatusSubresource(pathValues.get(KubernetesAttributesExtractor.KIND));
 
       GenericKubernetesResource updated = Serialization.clone(value);
+      AttributeSet existingAttributes = null;
 
       List<AttributeSet> items = findItems(attributes);
       if (items.isEmpty()) {
@@ -407,7 +388,8 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
       } else if (ADDED.equals(event)) {
         responseCode = HttpURLConnection.HTTP_CONFLICT;
       } else if (MODIFIED.equals(event)) {
-        String existing = map.remove(items.get(0));
+        existingAttributes = items.get(0);
+        String existing = map.get(existingAttributes);
         GenericKubernetesResource existingResource = toKubernetesResource(existing);
         Object status = null;
         if (isStatusPath(path)) {
@@ -428,23 +410,11 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
             updated.getAdditionalProperties().remove(STATUS);
           }
         }
-        if (existingResource.equals(updated)) {
-          event = null; // no change
-        }
       }
 
       if (responseCode == HttpURLConnection.HTTP_OK) {
         String s = context.getMapper().writeValueAsString(updated);
-        AttributeSet features = AttributeSet.merge(attributes, kubernetesAttributesExtractor.extract(updated));
-        map.put(features, s); // always add back as it was proactively removed
-        if (event != null && !event.isEmpty()) {
-          crdProcessor.process(path, s, false);
-          final String response = s;
-          final String finalEvent = event;
-          watchEventListeners.stream()
-              .filter(listener -> listener.attributeMatches(features))
-              .forEach(listener -> listener.sendWebSocketResponse(response, finalEvent));
-        }
+        processEvent(path, existingAttributes, s);
         mockResponse.setBody(s);
       }
       mockResponse.setResponseCode(responseCode);

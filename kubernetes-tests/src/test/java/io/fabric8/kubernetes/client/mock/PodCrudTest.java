@@ -30,7 +30,6 @@ import junit.framework.AssertionFailedError;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
-import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -158,29 +157,33 @@ class PodCrudTest {
   void testPodWatchOnLabels() throws InterruptedException {
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").addToLabels("test", "watch").endMetadata().build();
 
-    //there are two adds - one when the watch is registered, another later
-    final LatchedWatcher lw = new LatchedWatcher(3, 1, 1, 1, 1);
+    //there are three adds - one when the watch is registered, another later
+    final LatchedWatcher lw = new LatchedWatcher(3, 1, 2, 1, 1);
 
+    // create 1
     client.pods().inNamespace("ns1").create(pod1);
     Watch watch = client.pods().inNamespace("ns1")
       .withLabels(Collections.singletonMap("test", "watch"))
       .watch(lw);
 
-    Map<String, String> m = pod1.getMetadata().getLabels();
-    m.put("foo", "bar");
-    client.pods().inNamespace("ns1").withName(pod1.getMetadata().getName())
-      .patch(new PodBuilder().withNewMetadataLike(pod1.getMetadata()).endMetadata().build());
+    // edit 1
+    client.pods()
+        .inNamespace("ns1")
+        .withName(pod1.getMetadata().getName())
+        .accept(p -> p.getMetadata().getLabels().put("foo", "bar"));
 
+    // delete 1
     client.pods().inNamespace("ns1").withName(pod1.getMetadata().getName()).delete();
 
+    // create 2
     client.pods().inNamespace("ns1").create(new PodBuilder()
       .withNewMetadata().withName("pod-new").addToLabels("test", "watch").endMetadata()
       .build());
 
     assertEquals(1, client.pods().inNamespace("ns1").list().getItems().size());
-    assertTrue(lw.deleteLatch.await(1, TimeUnit.MINUTES));
     assertTrue(lw.editLatch.await(1, TimeUnit.MINUTES));
 
+    // not seen by watch
     Pod pod2 = client.pods().inNamespace("ns1").create(new PodBuilder()
       .withNewMetadata().withName("pod2").addToLabels("foo", "bar").endMetadata()
       .build());
@@ -188,15 +191,24 @@ class PodCrudTest {
     assertEquals(2, client.pods().inNamespace("ns1").list().getItems().size());
     assertEquals(1, client.pods().inNamespace("ns1").withLabel("test", "watch").list().getItems().size());
 
-    Map<String, String> m1 = pod2.getMetadata().getLabels();
-    m1.put("test", "watch");
+    // "create" 3
+    client.pods()
+        .inNamespace("ns1")
+        .withName(pod2.getMetadata().getName())
+        .accept(p -> p.getMetadata().getLabels().put("test", "watch"));
 
-    client.pods().inNamespace("ns1").withName(pod2.getMetadata().getName())
-      .patch(new PodBuilder().withNewMetadataLike(pod2.getMetadata()).endMetadata().build());
+    assertTrue(lw.addLatch.await(1, TimeUnit.MINUTES));
 
     assertEquals(2, client.pods().inNamespace("ns1").list().getItems().size());
     assertEquals(2, client.pods().inNamespace("ns1").withLabel("test", "watch").list().getItems().size());
-    assertTrue(lw.addLatch.await(1, TimeUnit.MINUTES));
+
+    // "delete" 2
+    client.pods()
+        .inNamespace("ns1")
+        .withName(pod2.getMetadata().getName())
+        .accept(p -> p.getMetadata().getLabels().clear());
+
+    assertTrue(lw.deleteLatch.await(1, TimeUnit.MINUTES));
 
     watch.close();
     assertTrue(lw.closeLatch.await(1, TimeUnit.MINUTES));
@@ -214,7 +226,7 @@ class PodCrudTest {
       Watch watch = client.pods().inNamespace("ns1").withName(pod1.getMetadata().getName()).watch(lw)
     ) {
       client.pods().inNamespace("ns1").withName(pod1.getMetadata().getName())
-        .patch(new PodBuilder().withNewMetadataLike(pod1.getMetadata()).endMetadata().build());
+        .edit(p -> new PodBuilder(p).editMetadata().withLabels(Collections.emptyMap()).endMetadata().build());
 
       client.pods().inNamespace("ns1").withName(pod1.getMetadata().getName()).delete();
 
