@@ -39,8 +39,11 @@ import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.internal.KubernetesDeserializer;
 
+import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -60,6 +63,7 @@ import org.slf4j.LoggerFactory;
 public class SharedInformerFactory extends BaseOperation {
   private static final Logger log = LoggerFactory.getLogger(SharedInformerFactory.class);
   private final Map<String, SharedIndexInformer> informers = new HashMap<>();
+  private final List<Map.Entry<OperationContext, SharedIndexInformer>> existingSharedIndexInformers = new ArrayList<>();
 
   private final Map<String, Future> startedInformers = new HashMap<>();
 
@@ -270,6 +274,7 @@ public class SharedInformerFactory extends BaseOperation {
       }
     }
     SharedIndexInformer<T> informer = new DefaultSharedIndexInformer<>(apiTypeClass, listerWatcher, resyncPeriodInMillis, context, informerExecutor);
+    this.existingSharedIndexInformers.add(new AbstractMap.SimpleEntry<>(context, informer));
     this.informers.put(getInformerKey(context), informer);
     return informer;
   }
@@ -310,6 +315,16 @@ public class SharedInformerFactory extends BaseOperation {
       }
     }
     return foundSharedIndexInformer;
+  }
+
+  /**
+   * Gets a list of entries of ({@link OperationContext}, {@link SharedIndexInformer}) registered
+   * by the user.
+   *
+   * @return a list of entries of {@link OperationContext} and {@link SharedIndexInformer}
+   */
+  public List<Map.Entry<OperationContext, SharedIndexInformer>> getExistingSharedIndexInformers() {
+    return this.existingSharedIndexInformers;
   }
 
   /**
