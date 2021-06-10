@@ -36,7 +36,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
-import static io.fabric8.kubernetes.client.informers.SharedInformerFactory.getInformerKey;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -72,29 +71,6 @@ class SharedInformerFactoryTest {
   }
 
   @Test
-  void testGetInformerKey() {
-    assertThat(getInformerKey(new OperationContext()
-      .withApiGroupVersion("v1")
-      .withPlural("pods"))).isEqualTo("v1/pods");
-    assertThat(getInformerKey(new OperationContext()
-      .withApiGroupVersion("v1")
-      .withNamespace("ns1")
-      .withPlural("pods"))).isEqualTo("v1/pods/ns1");
-    assertThat(getInformerKey(new OperationContext()
-      .withApiGroupVersion("v1")
-      .withApiGroupName("io.fabric8")
-      .withPlural("testcustomresources"))).isEqualTo("io.fabric8/v1/testcustomresources");
-    assertThat(getInformerKey(new OperationContext()
-      .withApiGroupVersion("v1beta1")
-      .withApiGroupName("io.fabric8")
-      .withPlural("testcustomresources"))).isEqualTo("io.fabric8/v1beta1/testcustomresources");
-    assertThat(getInformerKey(new OperationContext()
-      .withApiGroupVersion("v1beta1")
-      .withApiGroupName("extensions")
-      .withPlural("deployments"))).isEqualTo("extensions/v1beta1/deployments");
-  }
-
-  @Test
   void testInformersCreatedWithSameNameButDifferentCRDContext() {
     // Given
     SharedInformerFactory sharedInformerFactory = new SharedInformerFactory(executorService, mockClient, config);
@@ -108,7 +84,7 @@ class SharedInformerFactoryTest {
       .withPlural("testcustomresources"), RESYNC_PERIOD);
 
     // Then
-    assertThat(sharedInformerFactory.getInformers())
+    assertThat(sharedInformerFactory.getExistingSharedIndexInformers())
       .hasSize(2);
   }
 
@@ -189,8 +165,6 @@ class SharedInformerFactoryTest {
 
     // When
     List<Map.Entry<OperationContext, SharedIndexInformer>> existingInformers = sharedInformerFactory.getExistingSharedIndexInformers();
-
-    SharedIndexInformer<MyAppCustomResource> in1 = existingInformers.get(0).getValue();
 
     // Then
     assertThat(existingInformers)
