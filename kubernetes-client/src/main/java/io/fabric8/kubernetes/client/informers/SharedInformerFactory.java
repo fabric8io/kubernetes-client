@@ -62,10 +62,9 @@ import org.slf4j.LoggerFactory;
  */
 public class SharedInformerFactory extends BaseOperation {
   private static final Logger log = LoggerFactory.getLogger(SharedInformerFactory.class);
-  private final Map<String, SharedIndexInformer> informers = new HashMap<>();
-  private final List<Map.Entry<OperationContext, SharedIndexInformer>> existingSharedIndexInformers = new ArrayList<>();
+  private final List<Map.Entry<OperationContext, SharedIndexInformer>> informers = new ArrayList<>();
 
-  private final Map<String, Future> startedInformers = new HashMap<>();
+  private final List<Map.Entry<OperationContext, SharedIndexInformer>> startedInformers = new ArrayList<>();
 
   private final ExecutorService informerExecutor;
 
@@ -274,8 +273,7 @@ public class SharedInformerFactory extends BaseOperation {
       }
     }
     SharedIndexInformer<T> informer = new DefaultSharedIndexInformer<>(apiTypeClass, listerWatcher, resyncPeriodInMillis, context, informerExecutor);
-    this.existingSharedIndexInformers.add(new AbstractMap.SimpleEntry<>(context, informer));
-    this.informers.put(getInformerKey(context), informer);
+    this.informers.add(new AbstractMap.SimpleEntry<>(context, informer));
     return informer;
   }
 
@@ -308,13 +306,12 @@ public class SharedInformerFactory extends BaseOperation {
    * @return SharedIndexInformer object
    */
   public synchronized <T> SharedIndexInformer<T> getExistingSharedIndexInformer(Class<T> apiTypeClass) {
-    SharedIndexInformer<T> foundSharedIndexInformer = null;
-    for (Map.Entry<String, SharedIndexInformer> entry : this.informers.entrySet()) {
-      if (isKeyOfType(entry.getKey(), apiTypeClass)) {
-        foundSharedIndexInformer = (SharedIndexInformer<T>) entry.getValue();
+    for (Map.Entry<OperationContext, SharedIndexInformer> entry : this.informers) {
+      if (entry.getValue().getApiTypeClass().equals(apiTypeClass)) {
+        return (SharedIndexInformer<T>) entry.getValue();
       }
     }
-    return foundSharedIndexInformer;
+    return null;
   }
 
   /**
@@ -324,7 +321,7 @@ public class SharedInformerFactory extends BaseOperation {
    * @return a list of entries of {@link OperationContext} and {@link SharedIndexInformer}
    */
   public List<Map.Entry<OperationContext, SharedIndexInformer>> getExistingSharedIndexInformers() {
-    return this.existingSharedIndexInformers;
+    return this.informers;
   }
 
   /**
@@ -337,16 +334,12 @@ public class SharedInformerFactory extends BaseOperation {
     }
 
     if (!informerExecutor.isShutdown()) {
-      informers.forEach(
-          (informerType, informer) -> startedInformers.computeIfAbsent(informerType,
-              key -> informerExecutor.submit(() -> {
-                try {
-                  informer.run();
-                } catch (RuntimeException e) {
-                  this.eventListeners.forEach(listener -> listener.onException(informer, e));
-                  log.warn("Informer start did not complete", e);
-                }
-              })));
+      for (Map.Entry<OperationContext, SharedIndexInformer> entry : informers) {
+        boolean wasStarted = startInformer(entry.getValue());
+        if (wasStarted) {
+          startedInformers.add(entry);
+        }
+      }
     }
   }
 
@@ -366,12 +359,7 @@ public class SharedInformerFactory extends BaseOperation {
     if (informers.isEmpty()) {
       return;
     }
-    informers.forEach(
-      (informerType, informer) -> {
-        if (startedInformers.remove(informerType) != null) {
-          informer.stop();
-        }
-      });
+    informers.forEach(e -> stopInformer(e.getValue()));
     if (shutDownThreadPool && allowShutdown) {
       informerExecutor.shutdown();
     }
@@ -381,36 +369,29 @@ public class SharedInformerFactory extends BaseOperation {
     this.eventListeners.add(event);
   }
 
-  Map<String, SharedIndexInformer> getInformers() {
-    return this.informers;
-  }
-
-  static String getInformerKey(OperationContext operationContext) {
-    StringBuilder keyBuilder = new StringBuilder();
-    if (operationContext.getApiGroupName() == null) {
-      keyBuilder.append(operationContext.getApiGroupVersion());
-    } else {
-      keyBuilder.append(operationContext.getApiGroupName()).append("/").append(operationContext.getApiGroupVersion());
+  private synchronized boolean startInformer(SharedIndexInformer informer) {
+    try {
+      informer.run();
+      return true;
+    } catch (RuntimeException e) {
+      this.eventListeners.forEach(listener -> listener.onException(informer, e));
+      log.warn("Informer start did not complete", e);
+      return false;
     }
-    keyBuilder.append(getKeyStrForField(operationContext.getPlural()));
-    keyBuilder.append(getKeyStrForField(operationContext.getNamespace()));
-    keyBuilder.append(getKeyStrForField(operationContext.getName()));
-
-    return keyBuilder.toString();
   }
 
-  private static String getKeyStrForField(String str) {
-    StringBuilder keyBuilder = new StringBuilder();
-    if (Utils.isNotNullOrEmpty(str)) {
-      keyBuilder.append("/");
-      keyBuilder.append(str);
+  private synchronized void stopInformer(SharedIndexInformer sharedIndexInformer) {
+    int foundInformerIndex = -1;
+    for (int index = 0; index < startedInformers.size(); index++) {
+      if (startedInformers.get(index).getValue().getApiTypeClass().equals(sharedIndexInformer.getApiTypeClass())) {
+        foundInformerIndex = index;
+        break;
+      }
     }
-    return keyBuilder.toString();
-  }
 
-  private static <T> boolean isKeyOfType(String key, Class<T> apiTypeClass) {
-    String plural = HasMetadata.getPlural(apiTypeClass);
-    return key.contains(plural);
+    if (foundInformerIndex >= 0) {
+      startedInformers.remove(foundInformerIndex);
+    }
   }
 
   private <T extends HasMetadata, L extends KubernetesResourceList<T>> BaseOperation<T, L, ?> getConfiguredBaseOperation(String namespace, OperationContext context, Class<T> apiTypeClass, Class<L> apiListTypeClass, boolean isNamespacedScoped) {
