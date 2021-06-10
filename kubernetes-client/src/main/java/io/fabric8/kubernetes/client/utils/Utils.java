@@ -178,49 +178,6 @@ public class Utils {
   }
 
   /**
-   * Closes the specified {@link ExecutorService}.
-   * @param executorService   The executorService.
-   * @return True if shutdown is complete.
-   */
-  public static boolean shutdownExecutorService(ExecutorService executorService) {
-    if (executorService == null) {
-      return false;
-    }
-    //If it hasn't already shutdown, do shutdown.
-    if (!executorService.isShutdown()) {
-      executorService.shutdown();
-    }
-
-    try {
-      //Wait for clean termination
-      if (executorService.awaitTermination(5, TimeUnit.SECONDS)) {
-        return true;
-      }
-
-      //If not already terminated (via shutdownNow) do shutdownNow.
-      if (!executorService.isTerminated()) {
-        executorService.shutdownNow();
-      }
-
-      if (executorService.awaitTermination(5, TimeUnit.SECONDS)) {
-        return true;
-      }
-
-      if (LOGGER.isDebugEnabled()) {
-        List<Runnable> tasks = executorService.shutdownNow();
-        if (!tasks.isEmpty()) {
-          LOGGER.debug("ExecutorService was not cleanly shutdown, after waiting for 10 seconds. Number of remaining tasks: {}", tasks.size());
-        }
-      }
-    } catch (InterruptedException e) {
-      executorService.shutdownNow();
-      //Preserve interrupted status
-      Thread.currentThread().interrupt();
-    }
-    return false;
-  }
-
-  /**
    * Closes and flushes the specified {@link Closeable} items.
    * @param closeables  An {@link Iterable} of {@link Closeable} items.
    */

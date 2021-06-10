@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.examples;
 
-import io.fabric8.kubernetes.client.Callback;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
@@ -23,6 +22,7 @@ import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import io.fabric8.kubernetes.client.utils.InputStreamPumper;
 import okhttp3.Response;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -52,7 +52,7 @@ public class ExecLoopExample {
     try (KubernetesClient client = new DefaultKubernetesClient()) {
       for (int i = 0; i < 10; System.out.println("i=" + i), i++) {
         ExecWatch watch = null;
-        InputStreamPumper pump = null;
+        CompletableFuture<?> pump = null;
         final CountDownLatch latch = new CountDownLatch(1);
         watch = client.pods().inNamespace(namespace).withName(podName).redirectingOutput().usingListener(new ExecListener() {
           @Override
@@ -69,14 +69,13 @@ public class ExecLoopExample {
             latch.countDown();
           }
         }).exec("date");
-        pump = new InputStreamPumper(watch.getOutput(), new SystemOutCallback());
-        executorService.submit(pump);
-        Future<String> outPumpFuture = executorService.submit(pump, "Done");
-        executorService.scheduleAtFixedRate(new FutureChecker("Pump " + (i + 1), outPumpFuture), 0, 2, TimeUnit.SECONDS);
+        pump = InputStreamPumper.pump(watch.getOutput(), (b, o, l) -> System.out.print(new String(b, o, l)),
+                executorService);
+        executorService.scheduleAtFixedRate(new FutureChecker("Pump " + (i + 1), pump), 0, 2, TimeUnit.SECONDS);
 
         latch.await(5, TimeUnit.SECONDS);
         watch.close();
-        pump.close();
+        pump.cancel(true);
 
       }
     }
@@ -84,18 +83,11 @@ public class ExecLoopExample {
     System.out.println("Done.");
   }
 
-  private static class SystemOutCallback implements Callback<byte[]> {
-    @Override
-    public void call(byte[] data) {
-      System.out.print(new String(data));
-    }
-  }
-
   private static class FutureChecker implements Runnable {
     private final String name;
-    private final Future<String> future;
+    private final Future<?> future;
 
-    private FutureChecker(String name, Future<String> future) {
+    private FutureChecker(String name, Future<?> future) {
       this.name = name;
       this.future = future;
     }

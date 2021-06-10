@@ -18,7 +18,6 @@ package io.fabric8.kubernetes.client.dsl.internal.core.v1;
 import static io.fabric8.kubernetes.client.utils.OptionalDependencyWrapper.wrapRunWithOptionalDependency;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -29,7 +28,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.Collections;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -41,7 +42,6 @@ import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.Eviction;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.EvictionBuilder;
-import io.fabric8.kubernetes.client.Callback;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.LocalPortForward;
@@ -71,7 +71,6 @@ import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
 import io.fabric8.kubernetes.client.utils.PodOperationUtil;
 import io.fabric8.kubernetes.client.dsl.internal.PortForwarderWebsocket;
 import io.fabric8.kubernetes.client.dsl.internal.uploadable.PodUpload;
-import io.fabric8.kubernetes.client.utils.BlockingInputStreamPumper;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
@@ -474,22 +473,8 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
             String filename = parts[parts.length - 1];
             destination = destination.toPath().resolve(filename).toFile();
         }
-        try (InputStream is = readFile(source);
-             OutputStream os = new FileOutputStream(destination)) {
-          BlockingInputStreamPumper pumper = new BlockingInputStreamPumper(is, input -> {
-            try {
-              os.write(input);
-            } catch (IOException e) {
-              throw KubernetesClientException.launderThrowable(e);
-            }
-          }, () -> {
-            try {
-              os.flush();
-            } catch (Exception e) {
-              throw KubernetesClientException.launderThrowable(e);
-            }
-          });
-          pumper.run();
+        try (InputStream is = readFile(source);) {
+          Files.copy(is, destination.toPath(), StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception e) {
           throw KubernetesClientException.launderThrowable(e);
         }
@@ -575,25 +560,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
                 if (!parent.isDirectory() && !parent.mkdirs()) {
                   throw new IOException("Failed to create directory: " + f);
                 }
-                try (OutputStream fs = new FileOutputStream(f)) {
-                  BlockingInputStreamPumper pumper = new BlockingInputStreamPumper(tis, new Callback<byte[]>() {
-                    @Override
-                    public void call(byte[] input) {
-                      try {
-                        fs.write(input);
-                      } catch (IOException e) {
-                        throw KubernetesClientException.launderThrowable(e);
-                      }
-                    }
-                  }, () -> {
-                    try {
-                      fs.close();
-                    } catch (IOException e) {
-                      throw KubernetesClientException.launderThrowable(e);
-                    }
-                  });
-                  pumper.run();
-                }
+                Files.copy(tis, f.toPath(), StandardCopyOption.REPLACE_EXISTING);
               }
             }
           }

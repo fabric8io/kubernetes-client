@@ -15,76 +15,84 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
-import io.fabric8.kubernetes.client.Callback;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
-@Deprecated
-// This is going to be an abstract class in the future.
-// Use NonBlockingInputStreamPumper or BlockingInputStreamPumper instead.
-public class InputStreamPumper implements Runnable, Closeable {
+public class InputStreamPumper {
+  
+  private InputStreamPumper() {
+  }
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(InputStreamReader.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(InputStreamPumper.class);
 
-    final InputStream in;
-    final Callback<byte[]> callback;
-    final Runnable onClose;
-    final AtomicBoolean closed = new AtomicBoolean(false);
+  public interface Writable {
 
-    volatile boolean keepReading = true;
-    Thread thread;
+    void write(byte[] b, int off, int len) throws IOException;
 
-    public InputStreamPumper(InputStream in, Callback<byte[]> callback) {
-      this(in, callback, null);
-    }
+  }
 
-    public InputStreamPumper(InputStream in, Callback<byte[]> callback, Runnable onClose) {
-        this.in = in;
-        this.callback = callback;
-        this.onClose = onClose;
-    }
+  /**
+   * Relies on {@link InputStream#available()} and a Thread sleep to ensure that the reads are interruptible.
+   */
+  public static InputStream asInterruptible(InputStream is) {
+    return new InputStream() {
 
-    @Override
-    public void run() {
-        synchronized (this) {
-          thread = Thread.currentThread();
-        }
-        byte[] buffer = new byte[1024];
-        try {
-          int length;
-          while (keepReading && !Thread.currentThread().isInterrupted() && (length = in.read(buffer)) != -1) {
-                byte[] actual = new byte[length];
-                System.arraycopy(buffer, 0, actual, 0, length);
-                callback.call(actual);
-              }
-        } catch (IOException e) {
-          if (!keepReading) {
-            return;
+      @Override
+      public int read() throws IOException {
+        throw new UnsupportedOperationException();
+      }
+      
+      @Override
+      public int read(byte[] b, int off, int len) throws IOException {
+        while (!Thread.currentThread().isInterrupted()) {
+          if (is.available() > 0) {
+            return is.read(b, off, len);
           }
-          if (!thread.isInterrupted()) {
-            LOGGER.error("Error while pumping stream.", e);
-          } else {
-            LOGGER.debug("Interrupted while pumping stream.");
+          try {
+            Thread.sleep(50);
+          } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new IOException(e);
           }
-        } finally {
-          close();
         }
-    }
+        throw new IOException();
+      }
+    };
+  }
 
-    public synchronized void close() {
-        keepReading = false;
-        if (thread != null && !thread.isInterrupted()) {
-            thread.interrupt();
-        }
-
-        if (closed.compareAndSet(false, true) && onClose != null) {
-          onClose.run();
-        }
+  /**
+   * See InputStream.transferTo(java.io.OutputStream) in Java 9 or later
+   */
+  public static void transferTo(InputStream in, Writable out) throws IOException {
+    byte[] buffer = new byte[8192];
+    int length;
+    while ((length = in.read(buffer, 0, buffer.length)) != -1) {
+      out.write(buffer, 0, length);
     }
+  }
+
+  /**
+   * Pumps the given {@link InputStream} into the {@link Writable} target via a task started in the given {@link Executor}.
+   * <br>The input is not closed by this call.
+   * <br>If the {@link InputStream} is not interruptible, such as System.in, use {@link #asInterruptible(InputStream)} to decorate the stream for this call.
+   */
+  public static CompletableFuture<?> pump(InputStream in, Writable out, Executor executor) {
+    return CompletableFuture.runAsync(() -> {
+      try {
+        InputStreamPumper.transferTo(in, out);
+      } catch (Exception e) {
+        if (!Thread.currentThread().isInterrupted()) {
+          LOGGER.error("Error while pumping stream.", e);
+        } else {
+          LOGGER.debug("Interrupted while pumping stream.");
+        }
+      }
+    }, executor);
+  }
+  
 }
