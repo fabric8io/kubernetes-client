@@ -82,7 +82,9 @@ public abstract class BaseClient implements Client, HttpClientAware {
       connectionPool.evictAll();
     }
 
-    Utils.shutdownExecutorService(executorService);
+    if (executorService != null) {
+      executorService.shutdownNow();
+    }
   }
 
   @Override

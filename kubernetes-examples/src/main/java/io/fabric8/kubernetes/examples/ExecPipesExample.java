@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.examples;
 
-import io.fabric8.kubernetes.client.Callback;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
@@ -50,24 +49,16 @@ public class ExecPipesExample {
                         .redirectingOutput()
                         .redirectingError()
                         .redirectingErrorChannel()
-                        .exec();
-                InputStreamPumper pump = new InputStreamPumper(watch.getOutput(), new SystemOutCallback()))
+                        .exec();)
         {
-
-            executorService.submit(pump);
+            InputStreamPumper.pump(watch.getOutput(), (b, o, l) -> System.out.print(new String(b, o, l)),
+                    executorService);
             watch.getInput().write("ls -al\n".getBytes());
             Thread.sleep(5 * 1000L);
         } catch (Exception e) {
             throw KubernetesClientException.launderThrowable(e);
         } finally {
             executorService.shutdownNow();
-        }
-    }
-
-    private static class SystemOutCallback implements Callback<byte[]> {
-        @Override
-        public void call(byte[] data) {
-            System.out.print(new String(data));
         }
     }
 }
