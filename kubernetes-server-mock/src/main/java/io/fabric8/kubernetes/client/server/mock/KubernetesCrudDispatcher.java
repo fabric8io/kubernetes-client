@@ -18,9 +18,7 @@ package io.fabric8.kubernetes.client.server.mock;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.api.model.StatusCause;
@@ -28,6 +26,7 @@ import io.fabric8.kubernetes.api.model.StatusCauseBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
+import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.mockwebserver.Context;
@@ -126,7 +125,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
    */
   @Override
   public MockResponse handleCreate(String path, String s) {
-    return validateRequestBodyAndHandleRequest(s, g -> doCreateOrModify(path, g, ADDED));
+    return validateRequestBodyAndHandleRequest(s, h -> doCreateOrModify(path, s, h, ADDED));
   }
 
   /**
@@ -136,7 +135,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
    * @return The {@link MockResponse}
    */
   public MockResponse handleReplace(String path, String s) {
-    return validateRequestBodyAndHandleRequest(s, g -> doCreateOrModify(path, g, MODIFIED));
+    return validateRequestBodyAndHandleRequest(s, h -> doCreateOrModify(path, s, h, MODIFIED));
   }
 
   /**
@@ -199,7 +198,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
 
         Map<String, String> pathValues = kubernetesAttributesExtractor.fromKubernetesPath(path);
         boolean statusSubresource =
-            crdProcessor.isStatusSubresource(pathValues.get(KubernetesAttributesExtractor.KIND));
+            crdProcessor.isStatusSubresource(pathValues);
 
         if (statusSubresource && !isStatusPath(path)) {
           status = removeStatus(source);
@@ -228,15 +227,17 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
           }
         }
 
-        String updatedAsString = context.getMapper().writeValueAsString(updated);
-        GenericKubernetesResource resource = toKubernetesResource(updatedAsString);
-        GenericKubernetesResource existingResource = toKubernetesResource(body);
-        setDefaultMetadata(resource, pathValues, existingResource.getMetadata());
+        setDefaultMetadata(updated, pathValues, source);
 
-        processEvent(path, bodyEntry.get().getKey(), Serialization.asJson(resource));
+        String updatedAsString = Serialization.asJson(updated);
 
-        response.setResponseCode(HttpURLConnection.HTTP_ACCEPTED);
-        response.setBody(updatedAsString);
+        return validateRequestBodyAndHandleRequest(updatedAsString, h -> {
+          processEvent(path, query, bodyEntry.get().getKey(), updatedAsString);
+
+          response.setResponseCode(HttpURLConnection.HTTP_ACCEPTED);
+          response.setBody(updatedAsString);
+          return response;
+        });
       } catch (JsonProcessingException e) {
         response.setResponseCode(HTTP_UNPROCESSABLE_ENTITY);
       }
@@ -317,19 +318,24 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
   }
 
   private int doDelete(String path) {
-    List<AttributeSet> items = findItems(attributeExtractor.fromPath(path));
+    AttributeSet fromPath = attributeExtractor.fromPath(path);
+    List<AttributeSet> items = findItems(fromPath);
 
     if (items.isEmpty()) return HttpURLConnection.HTTP_NOT_FOUND;
 
-    items.forEach(item -> processEvent(path, item, null));
+    items.forEach(item -> processEvent(path, fromPath, item, null));
     return HttpURLConnection.HTTP_OK;
   }
 
-  private void processEvent(String path, AttributeSet oldAttributes, String newState) {
+  private void processEvent(String path, AttributeSet pathAttributes, AttributeSet oldAttributes, String newState) {
     String existing = map.remove(oldAttributes);
     AttributeSet newAttributes = null;
     if (newState != null) {
       newAttributes = kubernetesAttributesExtractor.fromResource(newState);
+      // corner case - we need to get the plural from the path
+      if (!newAttributes.containsKey(KubernetesAttributesExtractor.PLURAL)) {
+        newAttributes = AttributeSet.merge(pathAttributes, newAttributes);
+      }
       map.put(newAttributes, newState);
     }
     if (!Objects.equals(existing, newState)) {
@@ -357,7 +363,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
       .collect(Collectors.toList());
   }
 
-  private MockResponse doCreateOrModify(String path, GenericKubernetesResource value, String event) {
+  private MockResponse doCreateOrModify(String path, String initial, HasMetadata value, String event) {
     MockResponse mockResponse = new MockResponse();
     // workaround for mockserver https://github.com/fabric8io/mockwebserver/pull/59
     Map<String, String> pathValues = kubernetesAttributesExtractor.fromKubernetesPath(path);
@@ -366,13 +372,13 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
     try {
       int responseCode = HttpURLConnection.HTTP_OK;
 
-      if (ADDED.equals(event) && value.getMetadata() != null && value.getMetadata().getName() != null) {
-        attributes = AttributeSet.merge(attributes, new AttributeSet(new Attribute(KubernetesAttributesExtractor.NAME, value.getMetadata().getName())));
+      if (ADDED.equals(event)) {
+        attributes = AttributeSet.merge(attributes, new AttributeSet(new Attribute(KubernetesAttributesExtractor.NAME, KubernetesResourceUtil.getName(value))));
       }
 
-      boolean statusSubresource = crdProcessor.isStatusSubresource(pathValues.get(KubernetesAttributesExtractor.KIND));
+      boolean statusSubresource = crdProcessor.isStatusSubresource(pathValues);
 
-      GenericKubernetesResource updated = Serialization.clone(value);
+      JsonNode updated = context.getMapper().readTree(initial);
       AttributeSet existingAttributes = null;
 
       List<AttributeSet> items = findItems(attributes);
@@ -381,7 +387,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
           responseCode = HttpURLConnection.HTTP_NOT_FOUND;
         } else {
           if (statusSubresource) {
-            updated.getAdditionalProperties().remove(STATUS);
+            removeStatus(updated);
           }
           setDefaultMetadata(updated, pathValues, null);
         }
@@ -390,31 +396,31 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
       } else if (MODIFIED.equals(event)) {
         existingAttributes = items.get(0);
         String existing = map.get(existingAttributes);
-        GenericKubernetesResource existingResource = toKubernetesResource(existing);
-        Object status = null;
+        JsonNode existingNode = context.getMapper().readTree(existing);
+        JsonNode status = null;
         if (isStatusPath(path)) {
-          status = updated.getAdditionalProperties().remove(STATUS);
+          status = removeStatus(updated);
           // set the status on the existing node
-          updated = Serialization.clone(existingResource);
+          updated = existingNode;
         } else {
           // preserve status and generated fields
           if (statusSubresource) {
-            status = existingResource.getAdditionalProperties().remove(STATUS);
+            status = removeStatus(existingNode);
           }
-          setDefaultMetadata(updated, pathValues, existingResource.getMetadata());
+          setDefaultMetadata(updated, pathValues, existingNode);
         }
         if (statusSubresource || isStatusPath(path)) {
           if (status != null) {
-            updated.getAdditionalProperties().put(STATUS, status);
+            ((ObjectNode) updated).set(STATUS, status);
           } else {
-            updated.getAdditionalProperties().remove(STATUS);
+            ((ObjectNode) updated).remove(STATUS);
           }
         }
       }
 
       if (responseCode == HttpURLConnection.HTTP_OK) {
         String s = context.getMapper().writeValueAsString(updated);
-        processEvent(path, existingAttributes, s);
+        processEvent(path, attributes, existingAttributes, s);
         mockResponse.setBody(s);
       }
       mockResponse.setResponseCode(responseCode);
@@ -428,31 +434,31 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
     return path.endsWith("/" + STATUS);
   }
 
-  private void setDefaultMetadata(GenericKubernetesResource source, Map<String, String> pathValues, ObjectMeta exitingMetadata) {
-    ObjectMeta metadata = source.getMetadata();
-    if (metadata == null) {
-      metadata = new ObjectMeta();
-      source.setMetadata(metadata);
+  private void setDefaultMetadata(JsonNode source, Map<String, String> pathValues, JsonNode existing) {
+    ObjectNode metadata = (ObjectNode)source.findValue("metadata");
+    ObjectNode existingMetadata = null;
+    if (existing != null) {
+      existingMetadata = (ObjectNode)existing.findValue("metadata");
     }
     UUID uuid = UUID.randomUUID();
-    if (metadata.getName() == null) {
-      metadata.setName(metadata.getGenerateName() + "-" + uuid.toString());
+    if (metadata.get("name") == null) {
+      metadata.put("name", metadata.get("generateName").asText() + "-" + uuid.toString());
     }
-    if (metadata.getNamespace() == null) {
-      metadata.setNamespace(pathValues.get(KubernetesAttributesExtractor.NAMESPACE));
+    if (metadata.get("namespace") == null) {
+      metadata.put("namespace", pathValues.get(KubernetesAttributesExtractor.NAMESPACE));
     }
-    metadata.setUid(getOrDefault(exitingMetadata, ObjectMeta::getUid, uuid.toString()));
+    metadata.put("uid", getOrDefault(existingMetadata, "uid", uuid.toString()));
     // resourceVersion is not yet handled appropriately
-    metadata.setResourceVersion("1");
-    metadata.setGeneration(1l);
-    metadata.setCreationTimestamp(getOrDefault(exitingMetadata, ObjectMeta::getCreationTimestamp, ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT)));
+    metadata.put("resourceVersion", "1");
+    metadata.put("generation", 1);
+    metadata.put("creationTimestamp", getOrDefault(existingMetadata, "creationTimestamp", ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT)));
   }
 
-  private String getOrDefault(ObjectMeta metadata, Function<ObjectMeta, String> extractor, String defaultValue) {
-    if (metadata != null) {
-      String result = extractor.apply(metadata);
-      if (result != null) {
-        return result;
+  private String getOrDefault(JsonNode node, String name, String defaultValue) {
+    if (node != null) {
+      JsonNode field = node.get(name);
+      if (field != null) {
+        return field.asText();
       }
     }
     return defaultValue;
@@ -462,14 +468,15 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
     return ((ObjectNode)source).remove(STATUS);
   }
 
-  private MockResponse validateRequestBodyAndHandleRequest(String s, Function<GenericKubernetesResource, MockResponse> mockResponseFunction) {
-    GenericKubernetesResource g = null;
+  // eventually this should validate against the path
+  private MockResponse validateRequestBodyAndHandleRequest(String s, Function<HasMetadata, MockResponse> mockResponseFunction) {
+    HasMetadata h = null;
     try {
-      g = toKubernetesResource(s);
-      validateResource(g);
-      return mockResponseFunction.apply(g);
+      h = toKubernetesResource(s);
+      validateResource(h);
+      return mockResponseFunction.apply(h);
     } catch (IllegalArgumentException | KubernetesClientException e) {
-      return getUnprocessableEntityMockResponse(s, g, e);
+      return getUnprocessableEntityMockResponse(s, h, e);
     }
   }
 
@@ -518,6 +525,12 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
     }
     if (Utils.isNullOrEmpty(item.getMetadata().getName()) && Utils.isNullOrEmpty(item.getMetadata().getGenerateName())) {
       throw new IllegalArgumentException("Required value: name or generateName is required");
+    }
+    if (Utils.isNullOrEmpty(item.getKind())) {
+      throw new IllegalArgumentException("Required value: kind is required");
+    }
+    if (Utils.isNullOrEmpty(item.getApiVersion())) {
+      throw new IllegalArgumentException("Required value: apiVersion is required");
     }
   }
 }

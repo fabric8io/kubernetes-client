@@ -20,7 +20,7 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.utils.Serialization;
 
-import java.util.Optional;
+import java.util.Map;
 
 /**
  * Holds state related to crds by manipulating the crds known to the attributes extractor
@@ -49,23 +49,19 @@ public class CustomResourceDefinitionProcessor {
       return;
     }
     if (delete) {
-      extractor.getCrdContexts().remove(context.getPlural());
+      extractor.removeCrdContext(context);
     } else {
-      extractor.getCrdContexts().put(context.getPlural(), context);
+      extractor.addCrdContext(context);
     }
   }
 
-  public boolean isStatusSubresource(String kind) {
-    if (kind == null) {
+  public boolean isStatusSubresource(Map<String, String> pathValues) {
+    CustomResourceDefinitionContext context = extractor.getCrdContext(pathValues.get(KubernetesAttributesExtractor.API),
+        pathValues.get(KubernetesAttributesExtractor.VERSION), pathValues.get(KubernetesAttributesExtractor.PLURAL));
+    if (context == null) {
       return false;
     }
-    // we are only holding by plural, lookup now by kind
-    Optional<CustomResourceDefinitionContext> context =
-        extractor.getCrdContexts().values().stream().filter(c -> kind.equalsIgnoreCase(c.getKind())).findFirst();
-    if (!context.isPresent()) {
-      return false;
-    }
-    return context.get().isStatusSubresource();
+    return context.isStatusSubresource();
   }
 
 }

@@ -144,6 +144,20 @@ public class Serialization {
       throw KubernetesClientException.launderThrowable(e);
     }
   }
+  
+  /**
+   * Unmarshals a {@link String}
+   * @param str   The {@link String}.
+   * @param <T>   template argument denoting type
+   * @return returns de-serialized object
+   */
+  public static<T> T unmarshal(String str) {
+    try (InputStream is = new ByteArrayInputStream(str.getBytes(StandardCharsets.UTF_8))) {
+      return unmarshal(is);
+    } catch (IOException e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
+  }
 
   /**
    * Unmarshals a {@link String}

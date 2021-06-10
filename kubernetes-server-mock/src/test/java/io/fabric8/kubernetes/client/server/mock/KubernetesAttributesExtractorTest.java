@@ -19,14 +19,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import org.junit.jupiter.api.Test;
-import io.fabric8.kubernetes.api.model.EndpointsBuilder;
+import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
+import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
@@ -44,10 +48,12 @@ public class KubernetesAttributesExtractorTest {
 		AttributeSet attributes = extractor.fromPath("/api/v1/namespaces/myns/pods/mypod");
 
 		AttributeSet expected = new AttributeSet();
-		expected = expected.add(new Attribute("kind", "pod"));
+		expected = expected.add(new Attribute("plural", "pods"));
 		expected = expected.add(new Attribute("namespace", "myns"));
 		expected = expected.add(new Attribute("name", "mypod"));
+		expected = expected.add(new Attribute("version", "v1"));
 		assertTrue(attributes.matches(expected));
+		assertFalse(attributes.containsKey(KubernetesAttributesExtractor.API));
 	}
 
 	@Test
@@ -56,7 +62,7 @@ public class KubernetesAttributesExtractorTest {
 		AttributeSet attributes = extractor.fromPath("/api/v1/namespaces/myns/pods");
 
 		AttributeSet expected = new AttributeSet();
-		expected = expected.add(new Attribute("kind", "pod"));
+		expected = expected.add(new Attribute("plural", "pods"));
 		expected = expected.add(new Attribute("namespace", "myns"));
 		assertTrue(attributes.matches(expected));
 	}
@@ -67,19 +73,19 @@ public class KubernetesAttributesExtractorTest {
 		AttributeSet attributes = extractor.fromPath("/api/v1/nodes/mynode");
 
 		AttributeSet expected = new AttributeSet();
-		expected = expected.add(new Attribute("kind", "node"));
+		expected = expected.add(new Attribute("plural", "nodes"));
 		expected = expected.add(new Attribute("name", "mynode"));
 		assertTrue(attributes.matches(expected));
 	}
 
 	@Test
 	public void shouldHandlePathWithParameters() {
-		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
-		AttributeSet attributes = extractor.fromPath("/api/v1/pods?labelSelector=testKey%3DtestValue");
+	  KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+	  AttributeSet attributes = extractor.fromPath("/api/v1/pods?labelSelector=testKey%3DtestValue");
 
-		AttributeSet expected = new AttributeSet();
-		expected = expected.add(new Attribute("kind", "pod"));
-		assertTrue(attributes.matches(expected));
+	  AttributeSet expected = new AttributeSet();
+	  expected = expected.add(new Attribute("plural", "pods"));
+	  assertTrue(attributes.matches(expected));
 	}
 
 	@Test
@@ -90,10 +96,12 @@ public class KubernetesAttributesExtractorTest {
 		AttributeSet attributes = extractor.extract(pod);
 
 		AttributeSet expected = new AttributeSet();
-		expected = expected.add(new Attribute("kind", "pod"));
+		expected = expected.add(new Attribute("plural", "pods"));
 		expected = expected.add(new Attribute("namespace", "myns"));
 		expected = expected.add(new Attribute("name", "mypod"));
+		expected = expected.add(new Attribute("version", "v1"));
 		assertTrue(attributes.matches(expected));
+		assertFalse(attributes.containsKey(KubernetesAttributesExtractor.API));
 	}
 
   @Test
@@ -104,10 +112,11 @@ public class KubernetesAttributesExtractorTest {
     AttributeSet attributes = extractor.extract(resource);
 
     AttributeSet expected = new AttributeSet();
-    expected = expected.add(new Attribute("kind", "raw"));
     expected = expected.add(new Attribute("namespace", "myns"));
     expected = expected.add(new Attribute("name", "myresource"));
+    expected = expected.add(new Attribute("version", "v1"));
     assertTrue(attributes.matches(expected));
+    assertFalse(attributes.containsKey(KubernetesAttributesExtractor.API));
   }
 
   @Test
@@ -124,13 +133,16 @@ public class KubernetesAttributesExtractorTest {
 		assertTrue(attributes.matches(expected));
 	}
 
+  /**
+   * Default versions are not yet understood
+   */
 	@Test
 	public void shouldHandleKindWithoutVersion() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
 		AttributeSet attributes = extractor.fromPath("/api/pods");
 
 		AttributeSet expected = new AttributeSet();
-		expected = expected.add(new Attribute("kind", "pod"));
+		expected = expected.add(new Attribute("plural", "pods"));
 		assertTrue(attributes.matches(expected));
 	}
 
@@ -140,7 +152,9 @@ public class KubernetesAttributesExtractorTest {
 		AttributeSet attributes = extractor.fromPath("/apis/apps/v1/deployments");
 
 		AttributeSet expected = new AttributeSet();
-		expected = expected.add(new Attribute("kind", "deployment"));
+		expected = expected.add(new Attribute("plural", "deployments"));
+		expected = expected.add(new Attribute("api", "apps"));
+		expected = expected.add(new Attribute("version", "v1"));
 		assertTrue(attributes.matches(expected));
 	}
 
@@ -151,7 +165,7 @@ public class KubernetesAttributesExtractorTest {
 		AttributeSet attributes = extractor.fromPath("/apis/extensions/v1beta1/namespaces/myns/ingresses/myingress");
 
 		AttributeSet expected = new AttributeSet();
-		expected = expected.add(new Attribute("kind", "ingress"));
+		expected = expected.add(new Attribute("plural", "ingresses"));
 		expected = expected.add(new Attribute("namespace", "myns"));
 		expected = expected.add(new Attribute("name", "myingress"));
 		assertTrue(attributes.matches(expected));
@@ -160,11 +174,10 @@ public class KubernetesAttributesExtractorTest {
 	@Test
 	public void shouldHandleEndpoints() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
-		extractor.extract(new EndpointsBuilder().withNewMetadata().endMetadata().build());
 		AttributeSet attributes = extractor.fromPath("/api/v1/namespaces/myns/endpoints");
 
 		AttributeSet expected = new AttributeSet();
-		expected = expected.add(new Attribute("kind", "endpoints"));
+		expected = expected.add(new Attribute("plural", "endpoints"));
 		expected = expected.add(new Attribute("namespace", "myns"));
 		assertTrue(attributes.matches(expected));
 	}
@@ -172,11 +185,10 @@ public class KubernetesAttributesExtractorTest {
 	@Test
 	public void shouldHandleIngresses() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
-		extractor.extract(new IngressBuilder().withNewMetadata().endMetadata().build());
 		AttributeSet attributes = extractor.fromPath("/apis/extensions/v1beta1/namespaces/myns/ingresses");
 
 		AttributeSet expected = new AttributeSet();
-		expected = expected.add(new Attribute("kind", "ingress"));
+		expected = expected.add(new Attribute("plural", "ingresses"));
 		expected = expected.add(new Attribute("namespace", "myns"));
 		assertTrue(attributes.matches(expected));
 	}
@@ -188,27 +200,59 @@ public class KubernetesAttributesExtractorTest {
 				.fromPath("/apis/autoscaling/v1/namespaces/myns/horizontalpodautoscalers/myhpa");
 
 		AttributeSet expected = new AttributeSet();
-		expected = expected.add(new Attribute("kind", "horizontalpodautoscaler"));
+		expected = expected.add(new Attribute("plural", "horizontalpodautoscalers"));
 		expected = expected.add(new Attribute("namespace", "myns"));
 		expected = expected.add(new Attribute("name", "myhpa"));
 		assertTrue(attributes.matches(expected));
 	}
 
 	@Test
-	public void shouldHandleCrds() {
+	public void shouldHandleCrdsTypeUnknown() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
 		AttributeSet attributes = extractor.fromPath("/apis/test.com/v1/namespaces/myns/crds/mycrd");
 
 		AttributeSet expected = new AttributeSet();
-		expected = expected.add(new Attribute("kind", "crd"));
+		expected = expected.add(new Attribute("plural", "crds"));
 		expected = expected.add(new Attribute("namespace", "myns"));
 		expected = expected.add(new Attribute("name", "mycrd"));
+		expected = expected.add(new Attribute("version", "v1"));
+		expected = expected.add(new Attribute("api", "test.com"));
 		assertTrue(attributes.matches(expected));
 	}
 
   @Test
+	public void shouldHandleCrds() {
+    CustomResourceDefinitionContext crdContext = new CustomResourceDefinitionContext.Builder()
+        .withScope("Namespaced")
+        .withPlural("crds")
+        .withVersion("v1")
+        .withGroup("test.com")
+        .withKind("crd")
+        .build();
+
+	  KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor(Arrays.asList(crdContext));
+	  AttributeSet attributes = extractor.fromPath("/apis/test.com/v1/namespaces/myns/crds/mycrd");
+
+	  AttributeSet expected = new AttributeSet();
+	  expected = expected.add(new Attribute("plural", "crds"));
+	  expected = expected.add(new Attribute("namespace", "myns"));
+	  expected = expected.add(new Attribute("name", "mycrd"));
+	  expected = expected.add(new Attribute("api", "test.com"));
+	  expected = expected.add(new Attribute("version", "v1"));
+	  assertTrue(attributes.matches(expected));
+	}
+
+  @Test
   void shouldHandleCrdSubresources() {
-    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+    CustomResourceDefinitionContext crdContext = new CustomResourceDefinitionContext.Builder()
+        .withScope("Namespaced")
+        .withPlural("crds")
+        .withVersion("v1")
+        .withGroup("test.com")
+        .withKind("crd")
+        .build();
+
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor(Arrays.asList(crdContext));
     String[] subresources = new String[]{"status", "scale"};
 
     String basePath = "/apis/test.com/v1/namespaces/myns/crds/mycrd/";
@@ -216,7 +260,7 @@ public class KubernetesAttributesExtractorTest {
       AttributeSet attributes = extractor.fromPath(basePath + subresource);
 
       AttributeSet expected = new AttributeSet();
-      expected = expected.add(new Attribute("kind", "crd"));
+      expected = expected.add(new Attribute("plural", "crds"));
       expected = expected.add(new Attribute("namespace", "myns"));
       expected = expected.add(new Attribute("name", "mycrd"));
       assertTrue(attributes.matches(expected),
@@ -416,7 +460,63 @@ public class KubernetesAttributesExtractorTest {
     // Then
     AttributeSet expected = new AttributeSet();
     expected = expected.add(new Attribute("namespace", "ns1"));
-    expected = expected.add(new Attribute("kind", "customdatabase"));
+    expected = expected.add(new Attribute("plural", "customdatabases"));
+    expected = expected.add(new Attribute("api", "demo.fabric8.io"));
+    expected = expected.add(new Attribute("version", "v1alpha1"));
     assertTrue(attributes.matches(expected));
+  }
+
+  @Test
+  public void kubernetesPathIngresses() {
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+    Map<String, String> attributes = extractor.fromKubernetesPath("/apis/extensions/v1beta1/namespaces/myns/ingresses/myingress");
+
+    assertEquals("ingresses", attributes.get(KubernetesAttributesExtractor.PLURAL));
+  }
+
+  @Test
+  public void testMultipleCrdVersions() throws IOException {
+    helpTestMultipleCrdVersions(true);
+  }
+
+  @Test
+  public void testMultipleCrdVersionsUnregistered() throws IOException {
+    helpTestMultipleCrdVersions(false);
+  }
+
+  private void helpTestMultipleCrdVersions(boolean registered) throws IOException {
+    CustomResourceDefinitionContext crdContextV1 = new CustomResourceDefinitionContext.Builder()
+        .withScope("Namespaced")
+        .withPlural("customdatabases")
+        .withVersion("v1")
+        .withGroup("demo.fabric8.io")
+        .withKind("CustomDatabase")
+        .build();
+
+    CustomResourceDefinitionContext crdContextV1Alpha1 = new CustomResourceDefinitionContext.Builder()
+        .withScope("Namespaced")
+        .withPlural("customdatabases")
+        .withVersion("v1alpha1")
+        .withGroup("demo.fabric8.io")
+        .withKind("CustomDatabase")
+        .build();
+
+    KubernetesServer kubernetesServer = new KubernetesServer(false, true,
+        registered ? Arrays.asList(crdContextV1, crdContextV1Alpha1) : Collections.emptyList());
+    kubernetesServer.before();
+    KubernetesClient kubernetesClient = kubernetesServer.getClient();
+
+    GenericKubernetesResource gkr = new GenericKubernetesResource();
+    gkr.setMetadata(new ObjectMetaBuilder().withName("v1").build());
+    gkr.setKind("CustomDatabase");
+    gkr.setApiVersion("demo.fabric8.io/v1");
+
+    kubernetesClient.customResource(crdContextV1).create(Serialization.asJson(gkr));
+
+    gkr.setApiVersion("demo.fabric8.io/v1alpha1");
+    kubernetesClient.customResource(crdContextV1Alpha1).create(Serialization.asJson(gkr));
+
+    assertEquals(1, (((List)kubernetesClient.customResource(crdContextV1).list().get("items")).size()));
+    assertEquals(1, (((List)kubernetesClient.customResource(crdContextV1Alpha1).list().get("items")).size()));
   }
 }
