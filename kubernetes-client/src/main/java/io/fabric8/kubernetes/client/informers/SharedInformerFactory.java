@@ -42,14 +42,12 @@ import io.fabric8.kubernetes.internal.KubernetesDeserializer;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
 import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,8 +61,6 @@ import org.slf4j.LoggerFactory;
 public class SharedInformerFactory extends BaseOperation {
   private static final Logger log = LoggerFactory.getLogger(SharedInformerFactory.class);
   private final List<Map.Entry<OperationContext, SharedIndexInformer>> informers = new ArrayList<>();
-
-  private final List<Map.Entry<OperationContext, SharedIndexInformer>> startedInformers = new ArrayList<>();
 
   private final ExecutorService informerExecutor;
 
@@ -335,10 +331,7 @@ public class SharedInformerFactory extends BaseOperation {
 
     if (!informerExecutor.isShutdown()) {
       for (Map.Entry<OperationContext, SharedIndexInformer> entry : informers) {
-        boolean wasStarted = startInformer(entry.getValue());
-        if (wasStarted) {
-          startedInformers.add(entry);
-        }
+        startInformer(entry.getValue());
       }
     }
   }
@@ -359,7 +352,7 @@ public class SharedInformerFactory extends BaseOperation {
     if (informers.isEmpty()) {
       return;
     }
-    informers.forEach(e -> stopInformer(e.getValue()));
+    informers.forEach(e -> e.getValue().stop());
     if (shutDownThreadPool && allowShutdown) {
       informerExecutor.shutdown();
     }
@@ -369,28 +362,12 @@ public class SharedInformerFactory extends BaseOperation {
     this.eventListeners.add(event);
   }
 
-  private synchronized boolean startInformer(SharedIndexInformer informer) {
+  private synchronized void startInformer(SharedIndexInformer informer) {
     try {
       informer.run();
-      return true;
     } catch (RuntimeException e) {
       this.eventListeners.forEach(listener -> listener.onException(informer, e));
       log.warn("Informer start did not complete", e);
-      return false;
-    }
-  }
-
-  private synchronized void stopInformer(SharedIndexInformer sharedIndexInformer) {
-    int foundInformerIndex = -1;
-    for (int index = 0; index < startedInformers.size(); index++) {
-      if (startedInformers.get(index).getValue().getApiTypeClass().equals(sharedIndexInformer.getApiTypeClass())) {
-        foundInformerIndex = index;
-        break;
-      }
-    }
-
-    if (foundInformerIndex >= 0) {
-      startedInformers.remove(foundInformerIndex);
     }
   }
 

@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.informers;
 
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.Secret;
+import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
@@ -62,6 +63,10 @@ class SharedInformerFactoryTest {
   @Kind("MyApp")
   @Plural("myapps")
   public static class MyAppCustomResourceCopy extends CustomResource<Void, Void> { }
+
+  @Group("networking.istio.io")
+  @Version("v1alpha3")
+  public static class VirtualService extends CustomResource<Void, Void> { }
 
   @BeforeEach
   void init() {
@@ -153,6 +158,22 @@ class SharedInformerFactoryTest {
     assertThat(createdInformer).isNotNull();
     assertThat(existingInformer).isNotNull();
     assertThat(createdInformer).isEqualTo(existingInformer);
+  }
+
+  @Test
+  void testGetExistingSharedIndexInformerWithTwoClassesSimilarNames() {
+    // Given
+    SharedInformerFactory sharedInformerFactory = new SharedInformerFactory(executorService, mockClient, config);
+    sharedInformerFactory.sharedIndexInformerFor(VirtualService.class, RESYNC_PERIOD);
+    sharedInformerFactory.sharedIndexInformerFor(Service.class, RESYNC_PERIOD);
+
+    // When
+    SharedIndexInformer<Service> sharedIndexInformerSvc = sharedInformerFactory.getExistingSharedIndexInformer(Service.class);
+    SharedIndexInformer<VirtualService> sharedIndexInformerVSvc = sharedInformerFactory.getExistingSharedIndexInformer(VirtualService.class);
+
+    // Then
+    assertThat(sharedIndexInformerSvc.getApiTypeClass()).isEqualTo(Service.class);
+    assertThat(sharedIndexInformerVSvc.getApiTypeClass()).isEqualTo(VirtualService.class);
   }
 
   @Test
