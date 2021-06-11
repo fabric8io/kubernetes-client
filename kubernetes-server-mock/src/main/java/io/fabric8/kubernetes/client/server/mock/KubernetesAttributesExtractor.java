@@ -15,8 +15,10 @@
  */
 package io.fabric8.kubernetes.client.server.mock;
 
+import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
+import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.mockwebserver.crud.Attribute;
@@ -26,14 +28,13 @@ import okhttp3.HttpUrl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -49,9 +50,14 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
 
   public static final String KEY = "key";
   public static final String KIND = "kind";
+  public static final String API = "api";
+  public static final String VERSION = "version";
   public static final String NAME = "name";
   public static final String NAMESPACE = "namespace";
   public static final String VALUE = "value";
+  public static final String PLURAL = "plural";
+
+  public static final String UNKNOWN_KIND = "%unknown";
 
   private static final String API_GROUP = "/o?api(s/[a-zA-Z0-9-_.]+)?";
   private static final String VERSION_GROUP = "(/(?<version>[a-zA-Z0-9-_]+))?";
@@ -79,14 +85,23 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
   // values are not important, HttpUrl expects the scheme to be http or https.
   private static final String SCHEME = "http";
   private static final String HOST = "localhost";
-  private Map<String, CustomResourceDefinitionContext> crdContexts;
+
+  private Map<List<String>, CustomResourceDefinitionContext> crdContexts;
 
   public KubernetesAttributesExtractor() {
     this(Collections.emptyList());
   }
 
   public KubernetesAttributesExtractor(List<CustomResourceDefinitionContext> crdContexts) {
-    this.crdContexts = crdContexts.stream().collect(Collectors.toMap(CustomResourceDefinitionContext::getPlural, Function.identity()));
+    this.crdContexts = crdContexts.stream().collect(Collectors.toMap(KubernetesAttributesExtractor::pluralKey, Function.identity()));
+  }
+
+  private static List<String> pluralKey(CustomResourceDefinitionContext c) {
+    return pluralKey(c.getGroup(), c.getVersion(), c.getPlural());
+  }
+
+  private static List<String> pluralKey(String api, String version, String plural) {
+    return Arrays.asList(api, version, plural);
   }
 
   private HttpUrl parseUrlFromPathAndQuery(String s) {
@@ -97,7 +112,7 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
   }
 
   /**
-   * Get the name, namespace, and kind from the path
+   * Get the name, namespace, api, version, plural, and kind from the path
    */
   public Map<String, String> fromKubernetesPath(String s) {
     if (s == null || s.isEmpty()) {
@@ -136,66 +151,83 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
 
   @Override
   public AttributeSet fromResource(String s) {
-    if (s == null || s.isEmpty()) {
-      return new AttributeSet();
-    }
-
     HasMetadata h = toKubernetesResource(s);
     if (h != null) {
       return extract(h);
     }
-
     return new AttributeSet();
   }
 
   @Override
   public AttributeSet extract(String s) {
-    if (s == null || s.isEmpty()) {
-      return new AttributeSet();
-    }
-
-    HasMetadata h = toKubernetesResource(s);
-    if (h != null) {
-      return extract(h);
-    }
-
     return fromPath(s);
   }
 
   @Override
-  public AttributeSet extract(HasMetadata o) {
-    AttributeSet attributes = extractMetadataAttributes(o);
-    if (!Utils.isNullOrEmpty(o.getKind())) {
-        attributes = attributes.add(new Attribute(KIND, o.getKind().toLowerCase(Locale.ROOT)));
+  public AttributeSet extract(HasMetadata hasMetadata) {
+    AttributeSet metadataAttributes = new AttributeSet();
+    String apiVersion = hasMetadata.getApiVersion();
+    String api = null;
+    String version = null;
+    if (!Utils.isNullOrEmpty(apiVersion)) {
+      api = ApiVersionUtil.trimGroup(apiVersion);
+      version = ApiVersionUtil.trimVersion(apiVersion);
+      if (!api.equals(apiVersion)) {
+        metadataAttributes = metadataAttributes.add(new Attribute(API, api));
+      } else {
+        api = null;
+      }
+      metadataAttributes = metadataAttributes.add(new Attribute(VERSION, version));
     }
-    return attributes;
-  }
+    if (!Utils.isNullOrEmpty(hasMetadata.getMetadata().getName())) {
+      metadataAttributes = metadataAttributes.add(new Attribute(NAME, hasMetadata.getMetadata().getName()));
+    }
 
-  protected AttributeSet extractMetadataAttributes(HasMetadata hasMetadata) {
-      AttributeSet metadataAttributes = new AttributeSet();
-      if (!Utils.isNullOrEmpty(hasMetadata.getMetadata().getName())) {
-        metadataAttributes = metadataAttributes.add(new Attribute(NAME, hasMetadata.getMetadata().getName()));
-      }
-
-      if (!Utils.isNullOrEmpty(hasMetadata.getMetadata().getNamespace())) {
-          metadataAttributes = metadataAttributes.add(new Attribute(NAMESPACE, hasMetadata.getMetadata().getNamespace()));
-      }
+    if (!Utils.isNullOrEmpty(hasMetadata.getMetadata().getNamespace())) {
+      metadataAttributes = metadataAttributes.add(new Attribute(NAMESPACE, hasMetadata.getMetadata().getNamespace()));
+    }
 
     if (hasMetadata.getMetadata().getLabels() != null) {
       for (Map.Entry<String, String> label : hasMetadata.getMetadata().getLabels().entrySet()) {
         metadataAttributes = metadataAttributes.add(new Attribute(LABEL_KEY_PREFIX + label.getKey(), label.getValue()));
       }
     }
+    if (!(hasMetadata instanceof GenericKubernetesResource)) {
+      metadataAttributes = metadataAttributes.add(new Attribute(PLURAL, hasMetadata.getPlural()));
+    } else {
+      Optional<CustomResourceDefinitionContext> context = findCrd(api, version);
+      if (context.isPresent()) {
+        metadataAttributes = metadataAttributes.add(new Attribute(PLURAL, context.get().getPlural()));
+      } // else we shouldn't infer the plural without a crd registered - it will come from the path instead
+    }
     return metadataAttributes;
+  }
+
+  private Optional<CustomResourceDefinitionContext> findCrd(String api, String version) {
+    return crdContexts.values()
+        .stream()
+        .filter(c -> Objects.equals(api, c.getGroup()) && Objects.equals(version, c.getVersion()))
+        .findFirst();
   }
 
   private Map<String, String> extract(Matcher m) {
     Map<String, String> attributes = new HashMap<>();
     if (m.matches()) {
+
+      String api = m.group(1);
+      if (api != null) {
+        api = api.substring(2);
+        attributes.put(API, api);
+      }
+
+      String version = m.group(VERSION);
+      if (!Utils.isNullOrEmpty(version)) {
+        attributes.put(VERSION, version);
+      }
+
       String kind = m.group(KIND);
       if (!Utils.isNullOrEmpty(kind)) {
-        kind = resolveKindFromPlural(kind);
-        attributes.put(KIND, kind);
+        attributes.put(PLURAL, kind);
       }
 
       String namespace = m.group(NAMESPACE);
@@ -213,39 +245,6 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
       }
     }
     return attributes;
-  }
-
-  private String resolveKindFromPlural(String kind) {
-    String result = getCustomResourceKindFromPlural(kind);
-    if (result != null) {
-      return result;
-    }
-    return getKindFromPluralForKubernetesTypes(kind);
-  }
-
-  private static String getKindFromPluralForKubernetesTypes(String kind) {
-    //Poor mans to singular.
-    //Special Case for PodSecurityPolicies and NetworkPolicies because
-    //we need to return PodSecurityPolicy and NetworkPolicy respectively
-    //because it is returning PodSecurityPolicie and NetworkPolicie now
-    //Right now not adding generalised case of "ies" because it may break other resource not sure
-
-    if (kind.endsWith("ses")) {
-      kind = kind.substring(0, kind.length() - 2);
-    }
-    else if (kind.equalsIgnoreCase("PodSecurityPolicies") ||
-      kind.equalsIgnoreCase("NetworkPolicies")){
-      kind = kind.substring(0, kind.length() - 3) + "y";
-    } else if (kind.equalsIgnoreCase("securityContextConstraints") ||
-      kind.equalsIgnoreCase("endpoints")){
-      // do nothing
-      // because its a case which is ending with s but its name is
-      // like that, it is not plural
-    }
-    else if (kind.endsWith("s")) {
-      kind = kind.substring(0, kind.length() - 1);
-    }
-    return kind;
   }
 
   private static AttributeSet extractQueryParameters(HttpUrl url) {
@@ -290,33 +289,25 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
   }
 
   static HasMetadata toKubernetesResource(String s) {
-    try (InputStream stream = new ByteArrayInputStream(s.getBytes(StandardCharsets.UTF_8.name()))) {
-      HasMetadata result = Serialization.unmarshal(stream);
-      if (result != null) {
-        return result;
-      }
-    } catch (Exception e) {
-    }
-    return toRawHasMetadata(s);
-  }
-
-  private static HasMetadata toRawHasMetadata(String s) {
-    try (InputStream stream = new ByteArrayInputStream(s.getBytes(StandardCharsets.UTF_8.name()))) {
-      return Serialization.jsonMapper().readValue(stream, FallbackHasMetadata.class);
-    } catch (Exception e) {
+    if (Utils.isNullOrEmpty(s)) {
       return null;
     }
+    HasMetadata result = Serialization.unmarshal(s);
+    if (result == null) {
+      throw new IllegalArgumentException("Required value: kind is required");
+    }
+    return result;
   }
 
-  private String getCustomResourceKindFromPlural(String plural) {
-    CustomResourceDefinitionContext crdContext = crdContexts.get(plural);
-    return crdContext != null && crdContext.getKind() != null ? crdContext.getKind().toLowerCase() : null;
+  public CustomResourceDefinitionContext getCrdContext(String api, String version, String plural) {
+    return this.crdContexts.get(pluralKey(api, version, plural));
   }
 
-  /**
-   * A mapping of plural name to context
-   */
-  public Map<String, CustomResourceDefinitionContext> getCrdContexts() {
-    return crdContexts;
+  public void removeCrdContext(CustomResourceDefinitionContext context) {
+    this.crdContexts.remove(pluralKey(context));
+  }
+
+  public void addCrdContext(CustomResourceDefinitionContext context) {
+    this.crdContexts.put(pluralKey(context), context);
   }
 }

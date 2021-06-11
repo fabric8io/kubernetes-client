@@ -51,7 +51,7 @@ public class GenericKubernetesResource implements HasMetadata {
   @JsonProperty("metadata")
   private ObjectMeta metadata;
   @JsonIgnore
-  private transient Map<String, Object> additionalProperties = new LinkedHashMap<>();
+  private Map<String, Object> additionalProperties = new LinkedHashMap<>();
 
   @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() {
