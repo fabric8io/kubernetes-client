@@ -93,7 +93,7 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
   }
 
   public KubernetesAttributesExtractor(List<CustomResourceDefinitionContext> crdContexts) {
-    this.crdContexts = crdContexts.stream().collect(Collectors.toMap(c -> pluralKey(c), Function.identity()));
+    this.crdContexts = crdContexts.stream().collect(Collectors.toMap(KubernetesAttributesExtractor::pluralKey, Function.identity()));
   }
 
   private static List<String> pluralKey(CustomResourceDefinitionContext c) {
@@ -151,29 +151,15 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
 
   @Override
   public AttributeSet fromResource(String s) {
-    if (s == null || s.isEmpty()) {
-      return new AttributeSet();
-    }
-
     HasMetadata h = toKubernetesResource(s);
     if (h != null) {
       return extract(h);
     }
-
     return new AttributeSet();
   }
 
   @Override
   public AttributeSet extract(String s) {
-    if (s == null || s.isEmpty()) {
-      return new AttributeSet();
-    }
-
-    HasMetadata h = toKubernetesResource(s);
-    if (h != null) {
-      return extract(h);
-    }
-
     return fromPath(s);
   }
 
@@ -303,9 +289,12 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
   }
 
   static HasMetadata toKubernetesResource(String s) {
+    if (Utils.isNullOrEmpty(s)) {
+      return null;
+    }
     HasMetadata result = Serialization.unmarshal(s);
     if (result == null) {
-      throw new IllegalArgumentException("Required value: kind and apiVersion are required");
+      throw new IllegalArgumentException("Required value: kind is required");
     }
     return result;
   }

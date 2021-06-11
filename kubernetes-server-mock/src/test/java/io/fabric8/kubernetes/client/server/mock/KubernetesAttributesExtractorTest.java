@@ -43,7 +43,7 @@ import io.fabric8.mockwebserver.crud.AttributeSet;
 public class KubernetesAttributesExtractorTest {
 
   @Test
-	public void shouldHandleNamespacedPathWithResource() {
+	void shouldHandleNamespacedPathWithResource() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
 		AttributeSet attributes = extractor.fromPath("/api/v1/namespaces/myns/pods/mypod");
 
@@ -57,7 +57,7 @@ public class KubernetesAttributesExtractorTest {
 	}
 
 	@Test
-	public void shouldHandleNamespacedPath() {
+	void shouldHandleNamespacedPath() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
 		AttributeSet attributes = extractor.fromPath("/api/v1/namespaces/myns/pods");
 
@@ -68,7 +68,7 @@ public class KubernetesAttributesExtractorTest {
 	}
 
 	@Test
-	public void shouldHandleNonNamespacedPath() {
+	void shouldHandleNonNamespacedPath() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
 		AttributeSet attributes = extractor.fromPath("/api/v1/nodes/mynode");
 
@@ -79,7 +79,7 @@ public class KubernetesAttributesExtractorTest {
 	}
 
 	@Test
-	public void shouldHandlePathWithParameters() {
+	void shouldHandlePathWithParameters() {
 	  KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
 	  AttributeSet attributes = extractor.fromPath("/api/v1/pods?labelSelector=testKey%3DtestValue");
 
@@ -89,7 +89,7 @@ public class KubernetesAttributesExtractorTest {
 	}
 
 	@Test
-	public void shouldHandleResource() {
+	void shouldHandleResource() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
 		Pod pod = new PodBuilder().withNewMetadata().withName("mypod").withNamespace("myns").endMetadata().build();
 
@@ -109,7 +109,7 @@ public class KubernetesAttributesExtractorTest {
     KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
     String resource = "{\"metadata\":{\"name\":\"myresource\",\"namespace\":\"myns\"}, \"kind\":\"raw\", \"apiVersion\":\"v1\"}";
 
-    AttributeSet attributes = extractor.extract(resource);
+    AttributeSet attributes = extractor.fromResource(resource);
 
     AttributeSet expected = new AttributeSet();
     expected = expected.add(new Attribute("namespace", "myns"));
@@ -120,7 +120,7 @@ public class KubernetesAttributesExtractorTest {
   }
 
   @Test
-	public void shouldHandleResourceWithLabel() {
+	void shouldHandleResourceWithLabel() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
 		Map<String, String> labels = new HashMap<>();
 		labels.put("name", "myname");
@@ -137,7 +137,7 @@ public class KubernetesAttributesExtractorTest {
    * Default versions are not yet understood
    */
 	@Test
-	public void shouldHandleKindWithoutVersion() {
+	void shouldHandleKindWithoutVersion() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
 		AttributeSet attributes = extractor.fromPath("/api/pods");
 
@@ -147,7 +147,7 @@ public class KubernetesAttributesExtractorTest {
 	}
 
 	@Test
-	public void shouldHandleExtensions() {
+	void shouldHandleExtensions() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
 		AttributeSet attributes = extractor.fromPath("/apis/apps/v1/deployments");
 
@@ -159,7 +159,7 @@ public class KubernetesAttributesExtractorTest {
 	}
 
 	@Test
-	public void shouldHandleIngress() {
+	void shouldHandleIngress() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
 		extractor.extract(new IngressBuilder().withNewMetadata().endMetadata().build());
 		AttributeSet attributes = extractor.fromPath("/apis/extensions/v1beta1/namespaces/myns/ingresses/myingress");
@@ -172,7 +172,7 @@ public class KubernetesAttributesExtractorTest {
 	}
 
 	@Test
-	public void shouldHandleEndpoints() {
+	void shouldHandleEndpoints() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
 		AttributeSet attributes = extractor.fromPath("/api/v1/namespaces/myns/endpoints");
 
@@ -183,7 +183,7 @@ public class KubernetesAttributesExtractorTest {
 	}
 
 	@Test
-	public void shouldHandleIngresses() {
+	void shouldHandleIngresses() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
 		AttributeSet attributes = extractor.fromPath("/apis/extensions/v1beta1/namespaces/myns/ingresses");
 
@@ -194,7 +194,7 @@ public class KubernetesAttributesExtractorTest {
 	}
 
 	@Test
-	public void shouldHandleApiGroups() {
+	void shouldHandleApiGroups() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
 		AttributeSet attributes = extractor
 				.fromPath("/apis/autoscaling/v1/namespaces/myns/horizontalpodautoscalers/myhpa");
@@ -207,7 +207,7 @@ public class KubernetesAttributesExtractorTest {
 	}
 
 	@Test
-	public void shouldHandleCrdsTypeUnknown() {
+	void shouldHandleCrdsTypeUnknown() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
 		AttributeSet attributes = extractor.fromPath("/apis/test.com/v1/namespaces/myns/crds/mycrd");
 
@@ -221,7 +221,7 @@ public class KubernetesAttributesExtractorTest {
 	}
 
   @Test
-	public void shouldHandleCrds() {
+	void shouldHandleCrds() {
     CustomResourceDefinitionContext crdContext = new CustomResourceDefinitionContext.Builder()
         .withScope("Namespaced")
         .withPlural("crds")
@@ -273,7 +273,7 @@ public class KubernetesAttributesExtractorTest {
   }
 
 	@Test
-	public void shouldHandleLabelSelectorsWithOneLabel() {
+	void shouldHandleLabelSelectorsWithOneLabel() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
 		AttributeSet attributes = extractor.fromPath("/api/v1/namespaces/myns/pods/mypod?labelSelector=name%3Dmyname");
 
@@ -283,7 +283,7 @@ public class KubernetesAttributesExtractorTest {
 	}
 
 	@Test
-	public void shouldHandleLabelSelectorsWithDoubleEquals() {
+	void shouldHandleLabelSelectorsWithDoubleEquals() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
 		AttributeSet attributes = extractor
 				.fromPath("/api/v1/namespaces/myns/pods/mypod?labelSelector=name%3D%3Dmyname");
@@ -294,7 +294,7 @@ public class KubernetesAttributesExtractorTest {
 	}
 
 	@Test
-	public void shouldHandleLabelSelectorsWithTwoLabels() {
+	void shouldHandleLabelSelectorsWithTwoLabels() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
 		AttributeSet attributes = extractor
 				.fromPath("/api/v1/namespaces/myns/pods/mypod?labelSelector=name%3Dmyname,age%3D37");
@@ -306,7 +306,7 @@ public class KubernetesAttributesExtractorTest {
 	}
 
 	@Test
-	public void shouldHandleLabelSelectorsWithADomain() {
+	void shouldHandleLabelSelectorsWithADomain() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
 		AttributeSet attributes = extractor
 				.fromPath("/api/v1/namespaces/myns/pods/mypod?labelSelector=example.com/name%3Dmyname");
@@ -319,7 +319,7 @@ public class KubernetesAttributesExtractorTest {
 	// https://github.com/fabric8io/kubernetes-client/issues/1688
 
 	@Test
-	public void getDeploymentsWithLabels() {
+	void getDeploymentsWithLabels() {
 		KubernetesServer kubernetesServer = new KubernetesServer(false, true);
 		kubernetesServer.before();
 		KubernetesClient kubernetesClient = kubernetesServer.getClient();
@@ -344,7 +344,7 @@ public class KubernetesAttributesExtractorTest {
 	}
 
 	@Test
-	public void getDeploymentsWithoutLabels() {
+	void getDeploymentsWithoutLabels() {
 		KubernetesServer kubernetesServer = new KubernetesServer(false, true);
 		kubernetesServer.before();
 		KubernetesClient kubernetesClient = kubernetesServer.getClient();
@@ -370,7 +370,7 @@ public class KubernetesAttributesExtractorTest {
 	}
 
 	@Test
-	public void getDeploymentsWithAndWithoutLabels() {
+	void getDeploymentsWithAndWithoutLabels() {
 		KubernetesServer kubernetesServer = new KubernetesServer(false, true);
 		kubernetesServer.before();
 		KubernetesClient kubernetesClient = kubernetesServer.getClient();
@@ -396,7 +396,7 @@ public class KubernetesAttributesExtractorTest {
 	}
 
   @Test
-  public void shouldFilterBasedOnLabelExists() {
+  void shouldFilterBasedOnLabelExists() {
     KubernetesServer kubernetesServer = new KubernetesServer(false, true);
     kubernetesServer.before();
     KubernetesClient kubernetesClient = kubernetesServer.getClient();
@@ -419,7 +419,7 @@ public class KubernetesAttributesExtractorTest {
   }
 
   @Test
-  public void shouldFilterBasedOnLabelNotExists() {
+  void shouldFilterBasedOnLabelNotExists() {
     KubernetesServer kubernetesServer = new KubernetesServer(false, true);
     kubernetesServer.before();
     KubernetesClient kubernetesClient = kubernetesServer.getClient();
@@ -467,7 +467,7 @@ public class KubernetesAttributesExtractorTest {
   }
 
   @Test
-  public void kubernetesPathIngresses() {
+  void kubernetesPathIngresses() {
     KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
     Map<String, String> attributes = extractor.fromKubernetesPath("/apis/extensions/v1beta1/namespaces/myns/ingresses/myingress");
 
@@ -475,12 +475,12 @@ public class KubernetesAttributesExtractorTest {
   }
 
   @Test
-  public void testMultipleCrdVersions() throws IOException {
+  void testMultipleCrdVersions() throws IOException {
     helpTestMultipleCrdVersions(true);
   }
 
   @Test
-  public void testMultipleCrdVersionsUnregistered() throws IOException {
+  void testMultipleCrdVersionsUnregistered() throws IOException {
     helpTestMultipleCrdVersions(false);
   }
 
