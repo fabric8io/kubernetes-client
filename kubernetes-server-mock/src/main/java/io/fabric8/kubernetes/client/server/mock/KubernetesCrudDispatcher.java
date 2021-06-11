@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.api.model.StatusCause;
 import io.fabric8.kubernetes.api.model.StatusCauseBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.Watcher.Action;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
@@ -72,8 +73,6 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
   private static final String GET = "GET";
   private static final String DELETE = "DELETE";
 
-  private static final String ADDED = "ADDED";
-  private static final String MODIFIED = "MODIFIED";
   private static final String STATUS = "status";
 
   private static final Logger LOGGER = LoggerFactory.getLogger(KubernetesCrudDispatcher.class);
@@ -125,7 +124,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
    */
   @Override
   public MockResponse handleCreate(String path, String s) {
-    return validateRequestBodyAndHandleRequest(s, h -> doCreateOrModify(path, s, h, ADDED));
+    return validateRequestBodyAndHandleRequest(s, h -> doCreateOrModify(path, s, h, Action.ADDED));
   }
 
   /**
@@ -135,7 +134,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
    * @return The {@link MockResponse}
    */
   public MockResponse handleReplace(String path, String s) {
-    return validateRequestBodyAndHandleRequest(s, h -> doCreateOrModify(path, s, h, MODIFIED));
+    return validateRequestBodyAndHandleRequest(s, h -> doCreateOrModify(path, s, h, Action.MODIFIED));
   }
 
   /**
@@ -273,7 +272,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
       watch -> {
         map.entrySet().stream()
           .filter(entry -> watch.attributeMatches(entry.getKey()))
-          .forEach(entry -> watch.sendWebSocketResponse(entry.getValue(), ADDED));
+          .forEach(entry -> watch.sendWebSocketResponse(entry.getValue(), Action.ADDED));
       });
     watchEventListeners.add(watchEventListener);
     mockResponse.setSocketPolicy(SocketPolicy.KEEP_OPEN);
@@ -345,11 +344,11 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
           boolean matchesOld = oldAttributes != null && listener.attributeMatches(oldAttributes);
           boolean matchesNew = finalAttributeSet != null && listener.attributeMatches(finalAttributeSet);
           if (matchesOld && matchesNew) {
-            listener.sendWebSocketResponse(newState, MODIFIED);
+            listener.sendWebSocketResponse(newState, Action.MODIFIED);
           } else if (matchesOld) {
-            listener.sendWebSocketResponse(existing, "DELETED");
+            listener.sendWebSocketResponse(existing, Action.DELETED);
           } else if (matchesNew) {
-            listener.sendWebSocketResponse(newState, ADDED);
+            listener.sendWebSocketResponse(newState, Action.ADDED);
           }
         });
 
@@ -363,7 +362,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
       .collect(Collectors.toList());
   }
 
-  private MockResponse doCreateOrModify(String path, String initial, HasMetadata value, String event) {
+  private MockResponse doCreateOrModify(String path, String initial, HasMetadata value, Action event) {
     MockResponse mockResponse = new MockResponse();
     // workaround for mockserver https://github.com/fabric8io/mockwebserver/pull/59
     Map<String, String> pathValues = kubernetesAttributesExtractor.fromKubernetesPath(path);
@@ -372,48 +371,41 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
     try {
       int responseCode = HttpURLConnection.HTTP_OK;
 
-      if (ADDED.equals(event)) {
-        attributes = AttributeSet.merge(attributes, new AttributeSet(new Attribute(KubernetesAttributesExtractor.NAME, KubernetesResourceUtil.getName(value))));
-      }
-
       boolean statusSubresource = crdProcessor.isStatusSubresource(pathValues);
 
       JsonNode updated = context.getMapper().readTree(initial);
       AttributeSet existingAttributes = null;
 
-      List<AttributeSet> items = findItems(attributes);
-      if (items.isEmpty()) {
-        if (MODIFIED.equals(event)) {
-          responseCode = HttpURLConnection.HTTP_NOT_FOUND;
-        } else {
+      if (event == Action.ADDED) {
+        attributes = attributes.add(new Attribute(KubernetesAttributesExtractor.NAME, KubernetesResourceUtil.getName(value)));
+        List<AttributeSet> items = findItems(attributes);
+        if (items.isEmpty()) {
           if (statusSubresource) {
             removeStatus(updated);
           }
           setDefaultMetadata(updated, pathValues, null);
-        }
-      } else if (ADDED.equals(event)) {
-        responseCode = HttpURLConnection.HTTP_CONFLICT;
-      } else if (MODIFIED.equals(event)) {
-        existingAttributes = items.get(0);
-        String existing = map.get(existingAttributes);
-        JsonNode existingNode = context.getMapper().readTree(existing);
-        JsonNode status = null;
-        if (isStatusPath(path)) {
-          status = removeStatus(updated);
-          // set the status on the existing node
-          updated = existingNode;
         } else {
-          // preserve status and generated fields
-          if (statusSubresource) {
-            status = removeStatus(existingNode);
-          }
-          setDefaultMetadata(updated, pathValues, existingNode);
+          responseCode = HttpURLConnection.HTTP_CONFLICT;
         }
-        if (statusSubresource || isStatusPath(path)) {
-          if (status != null) {
-            ((ObjectNode) updated).set(STATUS, status);
+      } else {
+        List<AttributeSet> items = findItems(attributes);
+        if (items.isEmpty()) {
+          responseCode = HttpURLConnection.HTTP_NOT_FOUND;
+        } else {
+          existingAttributes = items.get(0);
+          String existing = map.get(existingAttributes);
+          JsonNode existingNode = context.getMapper().readTree(existing);
+          if (isStatusPath(path)) {
+            JsonNode status = removeStatus(updated);
+            // set the status on the existing node
+            updated = existingNode;
+            setStatus(updated, status);
           } else {
-            ((ObjectNode) updated).remove(STATUS);
+            // preserve status and generated fields
+            if (statusSubresource) {
+              setStatus(updated, removeStatus(existingNode));
+            }
+            setDefaultMetadata(updated, pathValues, existingNode);
           }
         }
       }
@@ -466,6 +458,14 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
 
   private JsonNode removeStatus(JsonNode source) {
     return ((ObjectNode)source).remove(STATUS);
+  }
+
+  private void setStatus(JsonNode source, JsonNode status) {
+    if (status != null) {
+      ((ObjectNode) source).set(STATUS, status);
+    } else {
+      ((ObjectNode) source).remove(STATUS);
+    }
   }
 
   // eventually this should validate against the path
