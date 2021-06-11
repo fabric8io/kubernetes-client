@@ -17,12 +17,13 @@ package io.fabric8.camelk.test.crud;
 
 import io.fabric8.camelk.client.CamelKClient;
 import io.fabric8.camelk.mock.CamelKServer;
+import io.fabric8.camelk.mock.EnableCamelKMockClient;
 import io.fabric8.camelk.v1.Integration;
 import io.fabric8.camelk.v1.IntegrationBuilder;
 import io.fabric8.camelk.v1.IntegrationList;
 import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
+
 
 import java.io.ByteArrayInputStream;
 import java.util.Arrays;
@@ -30,15 +31,17 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@EnableRuleMigrationSupport
+@EnableCamelKMockClient(crud = true)
 class IntegrationCrudTest {
 
-  @Rule
-  public CamelKServer server = new CamelKServer(true, true);
+
+  CamelKClient client;
+//  @Rule
+//  public CamelKServer server = new CamelKServer(true, true);
 
   @Test
   void shouldReturnEmptyList() {
-    CamelKClient client = server.getCamelKClient();
+
     IntegrationList list = client.v1().integrations().inNamespace("ns1").list();
     assertNotNull(list);
     assertTrue(list.getItems().isEmpty());
@@ -46,7 +49,7 @@ class IntegrationCrudTest {
 
   @Test
   void shouldListAndGetIntegration() {
-    CamelKClient client = server.getCamelKClient();
+
     Integration integration2 = new IntegrationBuilder().withNewMetadata().withName("integration2").endMetadata().build();
 
     client.v1().integrations().inNamespace("ns2").create(integration2);
@@ -60,7 +63,7 @@ class IntegrationCrudTest {
 
   @Test
   void shouldDeleteAIntegration() {
-    CamelKClient client = server.getCamelKClient();
+
     Integration integration3 = new IntegrationBuilder().withNewMetadata().withName("integration3").endMetadata().build();
 
     client.v1().integrations().inNamespace("ns3").create(integration3);
@@ -70,7 +73,7 @@ class IntegrationCrudTest {
 
   @Test
   void shouldLoadAIntegrationWithParams() {
-    CamelKClient client = server.getCamelKClient();
+
 
     String definition = String.join("\n", Arrays.asList(
       "apiVersion: camel.apache.org/v1alpha1",
