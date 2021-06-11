@@ -47,7 +47,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+
 import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -330,9 +333,11 @@ public class SharedInformerFactory extends BaseOperation {
     }
 
     if (!informerExecutor.isShutdown()) {
+      List<Map.Entry<SharedIndexInformer, Future<Boolean>>> startInformerTasks = new ArrayList<>();
       for (Map.Entry<OperationContext, SharedIndexInformer> entry : informers) {
-        startInformer(entry.getValue());
+        startInformerTasks.add(new AbstractMap.SimpleEntry<>(entry.getValue(), startInformerAsync(entry.getValue())));
       }
+      waitForAllInformersToStart(startInformerTasks);
     }
   }
 
@@ -362,11 +367,26 @@ public class SharedInformerFactory extends BaseOperation {
     this.eventListeners.add(event);
   }
 
-  private synchronized void startInformer(SharedIndexInformer informer) {
-    try {
+  private synchronized Future<Boolean> startInformerAsync(SharedIndexInformer informer) {
+    return informerExecutor.submit(() -> {
       informer.run();
-    } catch (RuntimeException e) {
-      this.eventListeners.forEach(listener -> listener.onException(informer, e));
+      return true;
+    });
+  }
+
+  private void waitForAllInformersToStart(List<Map.Entry<SharedIndexInformer, Future<Boolean>>> startInformerTasks) {
+    for (Map.Entry<SharedIndexInformer, Future<Boolean>> startedInformerTask : startInformerTasks) {
+      waitUntilInformerStartedAndHandleFailure(startedInformerTask);
+    }
+  }
+
+  private void waitUntilInformerStartedAndHandleFailure(Map.Entry<SharedIndexInformer, Future<Boolean>> startedInformerTask) {
+    try {
+      startedInformerTask.getValue().get();
+    } catch (InterruptedException interruptedException) {
+      Thread.currentThread().interrupt();
+    } catch (ExecutionException e) {
+      this.eventListeners.forEach(listener -> listener.onException(startedInformerTask.getKey(), e));
       log.warn("Informer start did not complete", e);
     }
   }
