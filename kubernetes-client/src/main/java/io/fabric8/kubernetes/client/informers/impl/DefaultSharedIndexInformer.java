@@ -28,6 +28,7 @@ import io.fabric8.kubernetes.client.informers.cache.ProcessorListener;
 import io.fabric8.kubernetes.client.informers.cache.ProcessorStore;
 import io.fabric8.kubernetes.client.informers.cache.Reflector;
 import io.fabric8.kubernetes.client.informers.cache.SharedProcessor;
+import io.fabric8.kubernetes.client.informers.cache.Store;
 import io.fabric8.kubernetes.client.utils.SerialExecutor;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
@@ -183,6 +184,11 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
 
   @Override
   public Indexer<T> getIndexer() {
+    return this.indexer;
+  }
+  
+  @Override
+  public Store<T> getStore() {
     return this.indexer;
   }
 
