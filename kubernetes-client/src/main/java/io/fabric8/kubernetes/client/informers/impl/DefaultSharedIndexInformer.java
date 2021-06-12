@@ -24,7 +24,6 @@ import io.fabric8.kubernetes.client.informers.ResyncRunnable;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 import io.fabric8.kubernetes.client.informers.cache.Cache;
 import io.fabric8.kubernetes.client.informers.cache.Indexer;
-import io.fabric8.kubernetes.client.informers.cache.ProcessorListener;
 import io.fabric8.kubernetes.client.informers.cache.ProcessorStore;
 import io.fabric8.kubernetes.client.informers.cache.Reflector;
 import io.fabric8.kubernetes.client.informers.cache.SharedProcessor;
@@ -123,16 +122,8 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
       }
     }
 
-    ProcessorListener<T> listener = this.processor.addProcessorListener(handler, determineResyncPeriod(resyncPeriodMillis, this.resyncCheckPeriodMillis));
-
-    if (!started.get()) {
-      return;
-    }
-
-    List<T> objectList = this.indexer.list();
-    for (T item : objectList) {
-      listener.add(new ProcessorListener.AddNotification<>(item));
-    }
+    this.processor.addProcessorListener(handler,
+        determineResyncPeriod(resyncPeriodMillis, this.resyncCheckPeriodMillis), () -> this.indexer.list());
   }
 
   @Override

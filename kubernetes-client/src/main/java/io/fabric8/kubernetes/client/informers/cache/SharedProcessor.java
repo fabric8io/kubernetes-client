@@ -19,10 +19,12 @@ import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.function.Supplier;
 
 /**
  * SharedProcessor class manages all the registered ProcessListener and distributes
@@ -120,10 +122,19 @@ public class SharedProcessor<T> {
     }
   }
 
-  public ProcessorListener<T> addProcessorListener(ResourceEventHandler<T> handler, long resyncPeriodMillis) {
+  /**
+   * Adds a new listener.  When running this will pause event distribution until
+   * the new listener has received an initial set of add events
+   */
+  public ProcessorListener<T> addProcessorListener(ResourceEventHandler<T> handler, long resyncPeriodMillis, Supplier<Collection<T>> initialItems) {
     lock.writeLock().lock();
     try {
       ProcessorListener<T> listener = new ProcessorListener<>(handler, resyncPeriodMillis);
+      
+      for (T item : initialItems.get()) {
+        listener.add(new ProcessorListener.AddNotification<>(item));
+      }
+      
       addListener(listener);
       return listener;
     } finally {

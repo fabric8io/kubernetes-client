@@ -45,6 +45,7 @@ import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.EditReplacePatchDeletable;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
 import io.fabric8.kubernetes.client.dsl.Gettable;
+import io.fabric8.kubernetes.client.dsl.Informable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Replaceable;
@@ -54,7 +55,7 @@ import io.fabric8.kubernetes.client.dsl.internal.WatchConnectionManager;
 import io.fabric8.kubernetes.client.dsl.internal.WatchHTTPManager;
 import io.fabric8.kubernetes.client.informers.ListerWatcher;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
-import io.fabric8.kubernetes.client.informers.SharedInformer;
+import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 import io.fabric8.kubernetes.client.informers.impl.DefaultSharedIndexInformer;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
@@ -79,6 +80,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
@@ -127,6 +129,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   protected Class<T> type;
   protected Class<L> listType;
+  private Map<String, Function<T, List<String>>> indexers;
 
   protected BaseOperation(OperationContext ctx) {
     super(ctx);
@@ -1193,9 +1196,16 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   public WritableOperation<T> dryRun(boolean isDryRun) {
     return newInstance(context.withDryRun(isDryRun));
   }
-
+  
   @Override
-  public SharedInformer<T> inform(ResourceEventHandler<T> handler, long resync) {
+  public Informable<T> withIndexers(Map<String, Function<T, List<String>>> indexers) {
+    BaseOperation<T, L, R> result = newInstance(context);
+    result.indexers = indexers;
+    return result;
+  }
+  
+  @Override
+  public SharedIndexInformer<T> inform(ResourceEventHandler<T> handler, long resync) {
     // create an informer that will consume no additional threads beyond the underlying Watch
     DefaultSharedIndexInformer<T, L> informer = new DefaultSharedIndexInformer<>(getType(), new ListerWatcher<T, L>() {
       @Override
@@ -1205,10 +1215,15 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       
       @Override
       public Watch watch(ListOptions params, String namespace, OperationContext context, Watcher<T> watcher) {
-        return BaseOperation.this.watch(watcher);
+        return BaseOperation.this.watch(params, watcher);
       }
     }, resync, context, Runnable::run); // just run the event notification in the websocket thread
-    informer.addEventHandler(handler);
+    if (handler != null) {
+      informer.addEventHandler(handler);
+    }
+    if (indexers != null) {
+      informer.addIndexers(indexers);
+    }
     informer.run();
     return informer;
   }

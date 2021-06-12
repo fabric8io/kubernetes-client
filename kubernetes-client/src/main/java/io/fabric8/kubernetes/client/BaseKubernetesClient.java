@@ -400,11 +400,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public <T extends CustomResource, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(Class<T> resourceType, Class<L> listClass) {
-    return new CustomResourceOperationsImpl<>(new CustomResourceOperationContext().withOkhttpClient(httpClient).withConfig(getConfiguration())
-      .withCrdContext(CustomResourceDefinitionContext.fromCustomResourceType(resourceType))
-      .withType(resourceType)
-      .withListType(listClass)
-      .withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
+    return customResources(CustomResourceDefinitionContext.fromCustomResourceType(resourceType), resourceType, listClass);
   }
 
   /**

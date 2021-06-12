@@ -27,6 +27,8 @@ import io.fabric8.kubernetes.api.model.ComponentStatus;
 import io.fabric8.kubernetes.api.model.ComponentStatusList;
 import io.fabric8.kubernetes.api.model.Endpoints;
 import io.fabric8.kubernetes.api.model.EndpointsList;
+import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
+import io.fabric8.kubernetes.api.model.GenericKubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LimitRange;
 import io.fabric8.kubernetes.api.model.LimitRangeList;
 import io.fabric8.kubernetes.api.model.Namespace;
@@ -157,6 +159,17 @@ public interface KubernetesClient extends Client {
    */
   @Deprecated
   <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(CustomResourceDefinitionContext crdContext, Class<T> resourceType, Class<L> listClass);
+  
+  /**
+   * Semi-Typed API for managing CustomResources.
+   *
+   * @param crdContext CustomResourceDefinitionContext describes the core fields used to search for CustomResources
+   * @return returns a MixedOperation object with which you can do basic CustomResource operations
+   */
+  default MixedOperation<GenericKubernetesResource, GenericKubernetesResourceList, Resource<GenericKubernetesResource>> genericCustomResources(
+      CustomResourceDefinitionContext crdContext) {
+    return customResources(crdContext, GenericKubernetesResource.class, GenericKubernetesResourceList.class);
+  }
 
   /**
    * Discovery API entrypoint for APIGroup discovery.k8s.io

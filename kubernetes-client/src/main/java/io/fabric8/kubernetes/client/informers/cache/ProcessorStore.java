@@ -39,11 +39,11 @@ public class ProcessorStore<T> implements SyncableStore<T> {
 
   @Override
   public void update(T obj) {
-    Object oldObj = this.cache.put(obj);
+    T oldObj = this.cache.put(obj);
     if (oldObj != null) {
-      this.processor.distribute(new ProcessorListener.UpdateNotification(oldObj, obj), false);
+      this.processor.distribute(new ProcessorListener.UpdateNotification<>(oldObj, obj), false);
     } else {
-      this.processor.distribute(new ProcessorListener.AddNotification(obj), false);
+      this.processor.distribute(new ProcessorListener.AddNotification<>(obj), false);
     }
   }
 
@@ -51,7 +51,7 @@ public class ProcessorStore<T> implements SyncableStore<T> {
   public void delete(T obj) {
     Object oldObj = this.cache.remove(obj);
     if (oldObj != null) {
-      this.processor.distribute(new ProcessorListener.DeleteNotification(obj, false), false);
+      this.processor.distribute(new ProcessorListener.DeleteNotification<>(obj, false), false);
     }
   }
 
@@ -83,14 +83,14 @@ public class ProcessorStore<T> implements SyncableStore<T> {
     for (T newValue : list) {
       T old = oldState.remove(cache.getKey(newValue));
       if (old == null) {
-        this.processor.distribute(new ProcessorListener.AddNotification(newValue), true);
+        this.processor.distribute(new ProcessorListener.AddNotification<>(newValue), true);
       } else {
-        this.processor.distribute(new ProcessorListener.UpdateNotification(old, newValue), true);
+        this.processor.distribute(new ProcessorListener.UpdateNotification<>(old, newValue), true);
       }
     }
     // deletes are not marked as sync=true in keeping with the old code
     oldState.values()
-        .forEach(old -> this.processor.distribute(new ProcessorListener.DeleteNotification(old, true), false));
+        .forEach(old -> this.processor.distribute(new ProcessorListener.DeleteNotification<>(old, true), false));
   }
 
   @Override
