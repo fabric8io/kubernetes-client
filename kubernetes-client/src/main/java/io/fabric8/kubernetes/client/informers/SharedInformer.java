@@ -15,6 +15,8 @@
  */
 package io.fabric8.kubernetes.client.informers;
 
+import io.fabric8.kubernetes.client.informers.cache.Store;
+
 /**
  * SharedInformer defines basic methods of an informer.
  *
@@ -84,4 +86,10 @@ public interface SharedInformer<T> {
    * <br>Will return false when {@link #isRunning()} is true when the watch needs to be re-established.
    */
   boolean isWatching();
+  
+  /**
+   * Return the Store associated with this informer
+   * @return the store
+   */
+  Store<T> getStore();
 }

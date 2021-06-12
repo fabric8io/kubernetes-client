@@ -52,6 +52,10 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.internal.DefaultOperationInfo;
 import io.fabric8.kubernetes.client.dsl.internal.WatchConnectionManager;
 import io.fabric8.kubernetes.client.dsl.internal.WatchHTTPManager;
+import io.fabric8.kubernetes.client.informers.ListerWatcher;
+import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
+import io.fabric8.kubernetes.client.informers.SharedInformer;
+import io.fabric8.kubernetes.client.informers.impl.DefaultSharedIndexInformer;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.URLUtils;
@@ -1188,6 +1192,25 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   @Override
   public WritableOperation<T> dryRun(boolean isDryRun) {
     return newInstance(context.withDryRun(isDryRun));
+  }
+
+  @Override
+  public SharedInformer<T> inform(ResourceEventHandler<T> handler, long resync) {
+    // create an informer that will consume no additional threads beyond the underlying Watch
+    DefaultSharedIndexInformer<T, L> informer = new DefaultSharedIndexInformer<>(getType(), new ListerWatcher<T, L>() {
+      @Override
+      public L list(ListOptions params, String namespace, OperationContext context) {
+        return BaseOperation.this.list();
+      }
+      
+      @Override
+      public Watch watch(ListOptions params, String namespace, OperationContext context, Watcher<T> watcher) {
+        return BaseOperation.this.watch(watcher);
+      }
+    }, resync, context, Runnable::run); // just run the event notification in the websocket thread
+    informer.addEventHandler(handler);
+    informer.run();
+    return informer;
   }
 }
 
