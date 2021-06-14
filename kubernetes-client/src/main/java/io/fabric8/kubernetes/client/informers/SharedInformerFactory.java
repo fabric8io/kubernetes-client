@@ -46,14 +46,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
 import okhttp3.OkHttpClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * SharedInformerFactory class constructs and caches informers for api types.
@@ -62,7 +60,6 @@ import org.slf4j.LoggerFactory;
  * which is ported from offical go client https://github.com/kubernetes/client-go/blob/master/informers/factory.go
  */
 public class SharedInformerFactory extends BaseOperation {
-  private static final Logger log = LoggerFactory.getLogger(SharedInformerFactory.class);
   private final List<Map.Entry<OperationContext, SharedIndexInformer>> informers = new ArrayList<>();
 
   private final ExecutorService informerExecutor;
@@ -320,25 +317,23 @@ public class SharedInformerFactory extends BaseOperation {
    * @return a list of entries of {@link OperationContext} and {@link SharedIndexInformer}
    */
   public List<Map.Entry<OperationContext, SharedIndexInformer>> getExistingSharedIndexInformers() {
-    return this.informers;
+    return Collections.unmodifiableList(this.informers);
   }
 
   /**
    * Starts all registered informers in an asynchronous fashion.
-   * <br>use {@link #addSharedInformerEventListener(SharedInformerEventListener)} to receive startup errors. 
+   *
+   * @return {@link Future} for status of all started informer tasks.
    */
-  public synchronized void startAllRegisteredInformers() {
-    if (informers.isEmpty()) {
-      return;
-    }
+  public synchronized Future<Void> startAllRegisteredInformers() {
+    List<CompletableFuture<Boolean>> startInformerTasks = new ArrayList<>();
 
-    if (!informerExecutor.isShutdown()) {
-      List<Map.Entry<SharedIndexInformer, Future<Boolean>>> startInformerTasks = new ArrayList<>();
+    if (!informers.isEmpty() && !informerExecutor.isShutdown()) {
       for (Map.Entry<OperationContext, SharedIndexInformer> entry : informers) {
-        startInformerTasks.add(new AbstractMap.SimpleEntry<>(entry.getValue(), startInformerAsync(entry.getValue())));
+        startInformerTasks.add(startInformerAsync(entry.getValue()));
       }
-      waitForAllInformersToStart(startInformerTasks);
     }
+    return CompletableFuture.allOf(startInformerTasks.toArray(new CompletableFuture[] {}));
   }
 
   /**
@@ -367,28 +362,18 @@ public class SharedInformerFactory extends BaseOperation {
     this.eventListeners.add(event);
   }
 
-  private synchronized Future<Boolean> startInformerAsync(SharedIndexInformer informer) {
-    return informerExecutor.submit(() -> {
-      informer.run();
-      return true;
+  private synchronized CompletableFuture<Boolean> startInformerAsync(SharedIndexInformer informer) {
+    CompletableFuture<Boolean> completableFuture = new CompletableFuture<>();
+    informerExecutor.submit(() -> {
+      try {
+        informer.run();
+        completableFuture.complete(true);
+      } catch (RuntimeException e) {
+        this.eventListeners.forEach(listener -> listener.onException(informer, e));
+        completableFuture.completeExceptionally(e);
+      }
     });
-  }
-
-  private void waitForAllInformersToStart(List<Map.Entry<SharedIndexInformer, Future<Boolean>>> startInformerTasks) {
-    for (Map.Entry<SharedIndexInformer, Future<Boolean>> startedInformerTask : startInformerTasks) {
-      waitUntilInformerStartedAndHandleFailure(startedInformerTask);
-    }
-  }
-
-  private void waitUntilInformerStartedAndHandleFailure(Map.Entry<SharedIndexInformer, Future<Boolean>> startedInformerTask) {
-    try {
-      startedInformerTask.getValue().get();
-    } catch (InterruptedException interruptedException) {
-      Thread.currentThread().interrupt();
-    } catch (ExecutionException e) {
-      this.eventListeners.forEach(listener -> listener.onException(startedInformerTask.getKey(), e));
-      log.warn("Informer start did not complete", e);
-    }
+    return completableFuture;
   }
 
   private <T extends HasMetadata, L extends KubernetesResourceList<T>> BaseOperation<T, L, ?> getConfiguredBaseOperation(String namespace, OperationContext context, Class<T> apiTypeClass, Class<L> apiListTypeClass, boolean isNamespacedScoped) {

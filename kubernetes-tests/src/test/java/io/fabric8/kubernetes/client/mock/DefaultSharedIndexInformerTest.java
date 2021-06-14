@@ -62,7 +62,10 @@ import org.junit.jupiter.api.Test;
 import java.net.HttpURLConnection;
 import java.util.Collections;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -372,6 +375,27 @@ class DefaultSharedIndexInformerTest {
 
     // Then
     assertFalse(podInformer.hasSynced());
+  }
+
+  @Test
+  void testExceptionThrownOnInformerStartupFailure() {
+    // Given
+    SharedIndexInformer<Pod> podInformer = factory.sharedIndexInformerFor(Pod.class, 1000L);
+    podInformer.addEventHandler(
+      new ResourceEventHandler<Pod>() {
+        @Override
+        public void onAdd(Pod obj) { }
+
+        @Override
+        public void onUpdate(Pod oldObj, Pod newObj) { }
+
+        @Override
+        public void onDelete(Pod oldObj, boolean deletedFinalStateUnknown) { }
+      });
+
+    // When
+    Future<Void> informerStartFutures = factory.startAllRegisteredInformers();
+    assertThrows(ExecutionException.class, () -> informerStartFutures.get(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS));
   }
 
   @Test
