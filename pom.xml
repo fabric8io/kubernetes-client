@@ -137,7 +137,7 @@
     <maven.deploy.plugin.version>3.0.0-M1</maven.deploy.plugin.version>
     <maven.gpg.plugin.version>3.0.1</maven.gpg.plugin.version>
     <maven.antrun.plugin.version>3.0.0</maven.antrun.plugin.version>
-    <maven.dependency.plugin.version>3.1.2</maven.dependency.plugin.version>
+    <maven.dependency.plugin.version>3.2.0</maven.dependency.plugin.version>
     <maven.shade.plugin.version>3.2.4</maven.shade.plugin.version>
     <maven.install.plugin.version>3.0.0-M1</maven.install.plugin.version>
     <jandex.plugin.version>1.1.0</jandex.plugin.version>
