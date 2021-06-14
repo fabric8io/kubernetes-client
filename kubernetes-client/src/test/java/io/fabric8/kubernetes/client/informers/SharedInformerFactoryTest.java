@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.informers;
 
+import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.api.model.Service;
@@ -106,12 +107,11 @@ class SharedInformerFactoryTest {
       .build();
 
     // When
-    sharedInformerFactory.inNamespace("ns1").sharedIndexInformerForCustomResource(context, 10 * 1000L);
+    SharedIndexInformer<GenericKubernetesResource> informer = sharedInformerFactory.inNamespace("ns1").sharedIndexInformerForCustomResource(context, 10 * 1000L);
 
     // Then
-    assertThat(sharedInformerFactory.getInformers())
-      .hasSize(1)
-      .containsKey("demos.fabric8.io/v1/dummies/ns1");
+    assertThat(informer).isNotNull();
+    assertThat(sharedInformerFactory.getExistingSharedIndexInformers()).hasSize(1);
   }
 
   @Test
