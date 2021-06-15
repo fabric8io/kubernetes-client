@@ -455,7 +455,17 @@ class PodTest {
       ByteBuffer buffer = ByteBuffer.allocate(1024);
       int read;
       do {
-        read = channel.read(buffer);
+        try {
+          read = channel.read(buffer);
+        } catch (IOException io) {
+          // On windows an exception is thrown when connection is reset during read
+          // It can only be distinguished via message, and that message is localized
+          // So let's at least handle English
+          if (!io.getMessage().startsWith("An existing connection was forcibly closed")) {
+            throw io;
+          }
+          read = -1;
+        }
       } while(read >= 0);
       buffer.flip();
       channel.socket().close();
