@@ -321,7 +321,6 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
             return stream;
         } else if (out != null) {
             PipedInputStream pis = bufferSize == null ? new PipedInputStream() : new PipedInputStream(bufferSize.intValue());
-            toClose.add(out);
             toClose.add(pis);
             return pis;
         } else {
@@ -334,7 +333,6 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
             return stream;
         } else if (in != null) {
             PipedOutputStream pos = new PipedOutputStream();
-            toClose.add(in);
             toClose.add(pos);
             return pos;
         } else {
