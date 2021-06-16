@@ -54,6 +54,8 @@ public class InputStreamPumper {
             return is.read(b, off, len);
           }
           try {
+            // The default sleep interval of 50 milliseconds came from the previous
+            // incarnation of this code.  If this needs tweaked, it can be changed to a parameter.
             Thread.sleep(50);
           } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
