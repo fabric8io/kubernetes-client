@@ -17,7 +17,6 @@ package io.fabric8.kubernetes.client.utils;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.HasMetadataVisitiableBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import okhttp3.OkHttpClient;
@@ -72,7 +71,7 @@ public class CreateOrReplaceHelper<T extends HasMetadata> {
     return future.join();
   }
 
-  public static HasMetadata createOrReplaceItem(OkHttpClient client, Config config, HasMetadata meta, ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h, String namespaceToUse, boolean dryRun) {
+  public static HasMetadata createOrReplaceItem(OkHttpClient client, Config config, HasMetadata meta, ResourceHandler<HasMetadata, ?> h, String namespaceToUse, boolean dryRun) {
     CreateOrReplaceHelper<HasMetadata> createOrReplaceHelper = new CreateOrReplaceHelper<>(
       m -> h.create(client, config, namespaceToUse, m, dryRun),
       m -> h.replace(client, config, namespaceToUse, m, dryRun),

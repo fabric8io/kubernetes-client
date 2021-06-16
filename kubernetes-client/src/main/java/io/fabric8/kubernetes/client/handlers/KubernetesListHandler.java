@@ -26,7 +26,6 @@ import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.Handlers;
-import io.fabric8.kubernetes.client.HasMetadataVisitiableBuilder;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.dsl.internal.KubernetesListOperationsImpl;
 import org.apache.felix.scr.annotations.Component;
@@ -68,7 +67,7 @@ public class KubernetesListHandler implements ResourceHandler<KubernetesList, Ku
     List<HasMetadata> replacedItems = new ArrayList<>();
 
     for (HasMetadata metadata : item.getItems()) {
-      ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> handler = Handlers.get(item.getKind(), item.getApiVersion());
+      ResourceHandler<HasMetadata, ?> handler = Handlers.get(item.getKind(), item.getApiVersion());
       if (handler == null) {
         LOGGER.warn("No handler found for:" + item.getKind() + ". Ignoring");
       } else {
@@ -83,7 +82,7 @@ public class KubernetesListHandler implements ResourceHandler<KubernetesList, Ku
     List<HasMetadata> replacedItems = new ArrayList<>();
 
     for (HasMetadata metadata : item.getItems()) {
-      ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> handler = Handlers.get(item.getKind(), item.getApiVersion());
+      ResourceHandler<HasMetadata, ?> handler = Handlers.get(item.getKind(), item.getApiVersion());
       if (handler == null) {
         LOGGER.warn("No handler found for:" + item.getKind() + ". Ignoring");
       } else {
