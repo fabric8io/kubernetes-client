@@ -119,7 +119,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     }
     
     if (isForceClosed()) {
-      logger.warn("Ignoring error for already closed/closing connection");
+      logger.debug("Ignoring error for already closed/closing connection");
       return;
     }
     
