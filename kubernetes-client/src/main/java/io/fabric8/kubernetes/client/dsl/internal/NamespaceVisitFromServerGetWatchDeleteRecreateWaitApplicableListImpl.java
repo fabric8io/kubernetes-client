@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import io.fabric8.kubernetes.api.builder.TypedVisitor;
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.builder.Visitor;
@@ -25,14 +26,11 @@ import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.Handlers;
-import io.fabric8.kubernetes.client.HasMetadataVisitiableBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
-import io.fabric8.kubernetes.client.handlers.KubernetesListHandler;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -62,6 +60,7 @@ import java.util.function.Predicate;
 
 import static io.fabric8.kubernetes.client.utils.CreateOrReplaceHelper.createOrReplaceItem;
 import static io.fabric8.kubernetes.client.utils.DeleteAndCreateHelper.deleteAndCreateItem;
+import static io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl.handlerOf;
 
 public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl extends OperationSupport implements ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata>,
 Waitable<List<HasMetadata>, HasMetadata>, Readiable {
@@ -100,7 +99,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
     try {
       final CountDownLatch latch = new CountDownLatch(size);
       for (final HasMetadata meta : items) {
-        final ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
+        final ResourceHandler<HasMetadata, ?> h = handlerOf(meta);
         if (!executor.isShutdown()) {
           executor.submit(() -> {
             try {
@@ -142,7 +141,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
 
     final List<CompletableFuture<HasMetadata>> futures = new ArrayList<>(items.size());
     for (final HasMetadata meta : items) {
-      final ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
+      final ResourceHandler<HasMetadata, ?> h = handlerOf(meta);
       futures.add(CompletableFuture.supplyAsync(() -> {
         try {
           return h.waitUntilCondition(client, config, meta.getMetadata().getNamespace(), meta, condition, amount, timeUnit);
@@ -291,7 +290,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
   public List<HasMetadata> createOrReplace() {
     List<HasMetadata> result = new ArrayList<>();
     for (HasMetadata meta : acceptVisitors(asHasMetadata(item, true), visitors)) {
-      ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
+      ResourceHandler<HasMetadata, ?> h = handlerOf(meta);
       String namespaceToUse = meta.getMetadata().getNamespace();
 
       HasMetadata createdItem = createOrReplaceOrDeleteExisting(meta, h, namespaceToUse, dryRun);
@@ -318,7 +317,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
 
         //Second pass do delete
         for (HasMetadata meta :  acceptVisitors(asHasMetadata(item, true), visitors)) {
-            ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(meta);
+            ResourceHandler<HasMetadata, ?> h = handlerOf(meta);
             if (!h.delete(client, config, meta.getMetadata().getNamespace(), propagationPolicy, gracePeriodSeconds, meta, dryRun)) {
                 return false;
             }
@@ -331,7 +330,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
         if (fromServer) {
             List<HasMetadata> result = new ArrayList<>();
             for (HasMetadata meta : acceptVisitors(asHasMetadata(item, true), visitors)) {
-                ResourceHandler<HasMetadata, ? extends VisitableBuilder> h = handlerOf(meta);
+                ResourceHandler<HasMetadata, ?> h = handlerOf(meta);
                 HasMetadata reloaded = h.reload(client, config, meta.getMetadata().getNamespace(), meta);
                 if (reloaded != null) {
                     HasMetadata edited = reloaded;
@@ -351,7 +350,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
     private static List<HasMetadata> acceptVisitors(List<HasMetadata> list, List<Visitor> visitors) {
         List<HasMetadata> result = new ArrayList<>();
         for (HasMetadata item : list) {
-            ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h = handlerOf(item);
+            ResourceHandler<HasMetadata, ?> h = handlerOf(item);
             VisitableBuilder<HasMetadata, ?> builder = h.edit(item);
 
             //Let's apply any visitor that might have been specified.
@@ -437,17 +436,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
     return result;
   }
 
-  private static <T> ResourceHandler handlerOf(T item) {
-    if (item instanceof HasMetadata) {
-      return Handlers.<HasMetadata, HasMetadataVisitiableBuilder>get(((HasMetadata) item).getKind(), ((HasMetadata) item).getApiVersion());
-    } else if (item instanceof KubernetesList) {
-      return new KubernetesListHandler();
-    }  else {
-      throw new IllegalArgumentException("Could not find a registered handler for item: [" + item + "].");
-    }
-  }
-
-  private HasMetadata createOrReplaceOrDeleteExisting(HasMetadata meta, ResourceHandler<HasMetadata, HasMetadataVisitiableBuilder> h, String namespaceToUse, boolean dryRun) {
+  private HasMetadata createOrReplaceOrDeleteExisting(HasMetadata meta, ResourceHandler<HasMetadata, ?> h, String namespaceToUse, boolean dryRun) {
       if (Boolean.TRUE.equals(deletingExisting)) {
         return deleteAndCreateItem(client, config, meta, h, namespaceToUse, propagationPolicy, gracePeriodSeconds, dryRun);
       }
