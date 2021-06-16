@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ListerTest {
   @Test
@@ -38,7 +38,7 @@ class ListerTest {
         new PodBuilder().withNewMetadata().withName("foo1").withNamespace("default").endMetadata().build(),
         new PodBuilder().withNewMetadata().withName("foo2").withNamespace("default").endMetadata().build(),
         new PodBuilder().withNewMetadata().withName("foo3").withNamespace("default").endMetadata().build()
-      ), "0");
+      ));
 
     List<Pod> namespacedPodList = namespacedPodLister.list();
     assertEquals(3, namespacedPodList.size());

@@ -65,11 +65,11 @@ import io.fabric8.kubernetes.client.dsl.AuthorizationAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.AutoscalingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.BatchAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.CertificatesAPIGroupDSL;
-import io.fabric8.kubernetes.client.dsl.Createable;
 import io.fabric8.kubernetes.client.dsl.DiscoveryAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.EventingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.FlowControlAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.InOutCreateable;
 import io.fabric8.kubernetes.client.dsl.KubernetesListMixedOperation;
 import io.fabric8.kubernetes.client.dsl.MetricAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
@@ -382,7 +382,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    * {@inheritDoc}
    */
   @Override
-  public Createable<TokenReview> tokenReviews() {
+  public InOutCreateable<TokenReview, TokenReview> tokenReviews() {
     return new CreateOnlyResourceOperationsImpl<>(httpClient, getConfiguration(), "authentication.k8s.io", "v1", HasMetadata.getPlural(TokenReview.class), TokenReview.class);
   }
 

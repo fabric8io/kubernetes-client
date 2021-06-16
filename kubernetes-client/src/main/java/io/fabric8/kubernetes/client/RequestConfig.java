@@ -30,6 +30,8 @@ import static io.fabric8.kubernetes.client.Config.DEFAULT_REQUEST_RETRY_BACKOFFL
 import static io.fabric8.kubernetes.client.Config.DEFAULT_REQUEST_RETRY_BACKOFFINTERVAL;
 import static io.fabric8.kubernetes.client.Config.DEFAULT_ROLLING_TIMEOUT;
 import static io.fabric8.kubernetes.client.Config.DEFAULT_SCALE_TIMEOUT;
+import static io.fabric8.kubernetes.client.Config.DEFAULT_UPLOAD_CONNECTION_TIMEOUT;
+import static io.fabric8.kubernetes.client.Config.DEFAULT_UPLOAD_REQUEST_TIMEOUT;
 import static io.fabric8.kubernetes.client.Config.DEFAULT_WEBSOCKET_PING_INTERVAL;
 import static io.fabric8.kubernetes.client.Config.DEFAULT_WEBSOCKET_TIMEOUT;
 
@@ -47,6 +49,8 @@ public class RequestConfig {
   private int watchReconnectInterval = 1000;
   private int watchReconnectLimit = -1;
   private int connectionTimeout = 10 * 1000;
+  private int uploadConnectionTimeout = DEFAULT_UPLOAD_CONNECTION_TIMEOUT;
+  private int uploadRequestTimeout = DEFAULT_UPLOAD_REQUEST_TIMEOUT;
   private int requestRetryBackoffLimit = DEFAULT_REQUEST_RETRY_BACKOFFLIMIT;
   private int requestRetryBackoffInterval = DEFAULT_REQUEST_RETRY_BACKOFFINTERVAL;
   private int requestTimeout = 10 * 1000;
@@ -85,7 +89,8 @@ public class RequestConfig {
                        long websocketTimeout, long websocketPingInterval,
                        int maxConcurrentRequests, int maxConcurrentRequestsPerHost) {
     this(username, password, oauthToken, watchReconnectLimit, watchReconnectInterval, connectionTimeout, rollingTimeout, requestTimeout, scaleTimeout, loggingInterval,
-         websocketTimeout,  websocketPingInterval,maxConcurrentRequests, maxConcurrentRequestsPerHost, null, DEFAULT_REQUEST_RETRY_BACKOFFLIMIT, DEFAULT_REQUEST_RETRY_BACKOFFINTERVAL);
+         websocketTimeout,  websocketPingInterval,maxConcurrentRequests, maxConcurrentRequestsPerHost, null, DEFAULT_REQUEST_RETRY_BACKOFFLIMIT, DEFAULT_REQUEST_RETRY_BACKOFFINTERVAL,
+         DEFAULT_UPLOAD_CONNECTION_TIMEOUT, DEFAULT_UPLOAD_REQUEST_TIMEOUT);
   }
 
   @Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false)
@@ -94,7 +99,7 @@ public class RequestConfig {
                        int connectionTimeout, long rollingTimeout, int requestTimeout, long scaleTimeout, int loggingInterval,
                        long websocketTimeout, long websocketPingInterval,
                        int maxConcurrentRequests, int maxConcurrentRequestsPerHost, OAuthTokenProvider oauthTokenProvider,
-                       int requestRetryBackoffLimit, int requestRetryBackoffInterval) {
+                       int requestRetryBackoffLimit, int requestRetryBackoffInterval, int uploadConnectionTimeout, int uploadRequestTimeout) {
     this.username = username;
     this.oauthToken = oauthToken;
     this.password = password;
@@ -112,6 +117,8 @@ public class RequestConfig {
     this.oauthTokenProvider = oauthTokenProvider;
     this.requestRetryBackoffLimit = requestRetryBackoffLimit;
     this.requestRetryBackoffInterval = requestRetryBackoffInterval;
+    this.uploadConnectionTimeout = uploadConnectionTimeout;
+    this.uploadRequestTimeout = uploadRequestTimeout;
   }
 
   public String getUsername() {
@@ -195,6 +202,22 @@ public class RequestConfig {
 
   public void setConnectionTimeout(int connectionTimeout) {
     this.connectionTimeout = connectionTimeout;
+  }
+
+  public int getUploadConnectionTimeout() {
+    return uploadConnectionTimeout;
+  }
+
+  public void setUploadConnectionTimeout(int uploadConnectionTimeout) {
+    this.uploadConnectionTimeout = uploadConnectionTimeout;
+  }
+
+  public int getUploadRequestTimeout() {
+    return uploadRequestTimeout;
+  }
+
+  public void setUploadRequestTimeout(int uploadRequestTimeout) {
+    this.uploadRequestTimeout = uploadRequestTimeout;
   }
 
   public long getRollingTimeout() {
@@ -292,7 +315,7 @@ public class RequestConfig {
   }
 
   public void setImpersonateExtras(Map<String, List<String>> impersonateExtras) {
-    this.impersonateExtras = new HashMap<String, List<String>>(impersonateExtras);
+    this.impersonateExtras = new HashMap<>(impersonateExtras);
   }
 
   public Map<String, List<String>> getImpersonateExtras() {

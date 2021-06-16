@@ -111,10 +111,10 @@
     <zjsonpatch.version>0.3.0</zjsonpatch.version>
     <arquillian.cube.version>1.18.2</arquillian.cube.version>
     <slf4j.version>1.7.30</slf4j.version>
-    <mockito.version>3.10.0</mockito.version>
+    <mockito.version>3.11.1</mockito.version>
     <lombok.version>1.18.20</lombok.version>
     <snakeyaml.version>1.26</snakeyaml.version>
-    <bouncycastle.version>1.68</bouncycastle.version>
+    <bouncycastle.version>1.69</bouncycastle.version>
     <commons-codec.version>1.15</commons-codec.version>
     <commons-compress.version>1.20</commons-compress.version>
     <scr.annotations.version>1.12.0</scr.annotations.version>
@@ -137,7 +137,7 @@
     <maven.deploy.plugin.version>3.0.0-M1</maven.deploy.plugin.version>
     <maven.gpg.plugin.version>3.0.1</maven.gpg.plugin.version>
     <maven.antrun.plugin.version>3.0.0</maven.antrun.plugin.version>
-    <maven.dependency.plugin.version>3.1.2</maven.dependency.plugin.version>
+    <maven.dependency.plugin.version>3.2.0</maven.dependency.plugin.version>
     <maven.shade.plugin.version>3.2.4</maven.shade.plugin.version>
     <maven.install.plugin.version>3.0.0-M1</maven.install.plugin.version>
     <jandex.plugin.version>1.1.0</jandex.plugin.version>
@@ -322,6 +322,11 @@
       </dependency>
       <dependency>
         <groupId>io.fabric8</groupId>
+        <artifactId>openshift-model-storageversionmigrator</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
         <artifactId>openshift-model-tuned</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -333,6 +338,16 @@
       <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>openshift-model-machineconfig</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>openshift-model-miscellaneous</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>openshift-model-whereabouts</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -701,7 +716,7 @@
             <exclude>extensions/**/vendor/**/*</exclude>
             <exclude>**/go.mod</exclude>
             <exclude>**/go.sum</exclude>
-            <exclude>kubernetes-client/src/test/resources/*</exclude>
+            <exclude>kubernetes-client/src/test/resources/**/*</exclude>
             <exclude>kubernetes-client/src/test/resources/mockito-extensions/*</exclude>
             <exclude>**/src/test/resources/ssl/*</exclude>
             <exclude>Jenkinsfile</exclude>

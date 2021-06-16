@@ -78,7 +78,15 @@
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
+      <artifactId>openshift-model-whereabouts</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
       <artifactId>openshift-model-monitoring</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>openshift-model-storageversionmigrator</artifactId>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
@@ -91,6 +99,10 @@
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>openshift-model-machineconfig</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>openshift-model-miscellaneous</artifactId>
     </dependency>
 
     <!-- Compile Only Dependencies -->

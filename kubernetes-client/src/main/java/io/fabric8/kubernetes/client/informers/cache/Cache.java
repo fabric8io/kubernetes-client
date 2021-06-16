@@ -27,6 +27,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BooleanSupplier;
 import java.util.function.Function;
 
@@ -46,7 +47,7 @@ public class Cache<T> implements Indexer<T> {
   private Map<String, Function<T, List<String>>> indexers = new HashMap<>();
 
   // items stores object instances
-  private Map<String, T> items = new HashMap<>();
+  private volatile ConcurrentHashMap<String, T> items = new ConcurrentHashMap<>();
 
   // indices stores objects' key by their indices
   private Map<String, Map<String, Set<String>>> indices = new HashMap<>();
@@ -54,7 +55,7 @@ public class Cache<T> implements Indexer<T> {
   private BooleanSupplier isRunning = () -> false;
 
   public Cache() {
-    this(NAMESPACE_INDEX, Cache::metaNamespaceIndexFunc, Cache::deletionHandlingMetaNamespaceKeyFunc);
+    this(NAMESPACE_INDEX, Cache::metaNamespaceIndexFunc, Cache::metaNamespaceKeyFunc);
   }
 
   public Cache(String indexName, Function<T, List<String>> indexFunc, Function<T, String> keyFunc) {
@@ -65,19 +66,6 @@ public class Cache<T> implements Indexer<T> {
   
   public void setIsRunning(BooleanSupplier isRunning) {
     this.isRunning = isRunning;
-  }
-
-  /**
-   * Add objects
-   *
-   * @param obj object
-   */
-  @Override
-  public synchronized void add(T obj) {
-    String key = keyFunc.apply(obj);
-    T oldObj = this.items.get(key);
-    this.items.put(key, obj);
-    this.updateIndices(oldObj, obj, key);
   }
 
   /**
@@ -114,43 +102,48 @@ public class Cache<T> implements Indexer<T> {
    * Update the object.
    *
    * @param obj the object
+   * @return the old object
    */
-  @Override
-  public synchronized void update(T obj) {
-    String key = keyFunc.apply(obj);
-    T oldObj = this.items.get(key);
-    this.items.put(key, obj);
+  public synchronized T put(T obj) {
+    if (obj == null) {
+      return null;
+    }
+    String key = getKey(obj);
+    T oldObj = this.items.put(key, obj);
     this.updateIndices(oldObj, obj, key);
+    return oldObj;
   }
 
   /**
    * Delete the object.
    *
    * @param obj object
+   * @return the old object
    */
-  @Override
-  public synchronized void delete(T obj) {
-    String key = keyFunc.apply(obj);
-    boolean exists = this.items.containsKey(key);
-    if (exists) {
-      this.deleteFromIndices(this.items.get(key), key);
-      this.items.remove(key);
+  public synchronized T remove(T obj) {
+    String key = getKey(obj);
+    T old = this.items.remove(key);
+    if (old != null) {
+      this.deleteFromIndices(old, key);
     }
+    return old;
   }
 
   /**
    * Replace the content in the cache completely.
+   * 
+   * Return a copy of the old cache contents
    *
    * @param list list of objects
-   * @param resourceVersion resource version
+   * @return the old contents
    */
-  @Override
-  public synchronized void replace(List<T> list, String resourceVersion) {
-    Map<String, T> newItems = new HashMap<>();
+  public synchronized Map<String, T> replace(List<T> list) {
+    ConcurrentHashMap<String, T> newItems = new ConcurrentHashMap<>();
     for (T item : list) {
-      String key = keyFunc.apply(item);
+      String key = getKey(item);
       newItems.put(key, item);
     }
+    Map<String, T> result = new HashMap<>(items);
     this.items = newItems;
 
     // rebuild any index
@@ -158,14 +151,7 @@ public class Cache<T> implements Indexer<T> {
     for (Map.Entry<String, T> itemEntry : items.entrySet()) {
       this.updateIndices(null, itemEntry.getValue(), itemEntry.getKey());
     }
-  }
-
-  /**
-   * Resync
-   */
-  @Override
-  public void resync() {
-    // Do nothing
+    return result;
   }
 
   /**
@@ -174,12 +160,8 @@ public class Cache<T> implements Indexer<T> {
    * @return the list of keys
    */
   @Override
-  public synchronized List<String> listKeys() {
-    List<String> keys = new ArrayList<>(this.items.size());
-    for (Map.Entry<String, T> entry : this.items.entrySet()) {
-      keys.add(entry.getKey());
-    }
-    return keys;
+  public List<String> listKeys() {
+    return new ArrayList<>(this.items.keySet());
   }
 
   /**
@@ -189,9 +171,17 @@ public class Cache<T> implements Indexer<T> {
    * @return the object
    */
   @Override
-  public synchronized T get(T obj) {
-    String key = this.keyFunc.apply(obj);
+  public T get(T obj) {
+    String key = getKey(obj);
     return this.getByKey(key);
+  }
+
+  /**
+   * Get the key for the given object
+   */
+  public String getKey(T obj) {
+    String result = this.keyFunc.apply(obj);
+    return result == null ? "" : result;
   }
 
   /**
@@ -200,12 +190,8 @@ public class Cache<T> implements Indexer<T> {
    * @return the list
    */
   @Override
-  public synchronized List<T> list() {
-    List<T> itemList = new ArrayList<>(this.items.size());
-    for (Map.Entry<String, T> entry : this.items.entrySet()) {
-      itemList.add(entry.getValue());
-    }
-    return itemList;
+  public List<T> list() {
+    return new ArrayList<>(this.items.values());
   }
 
   /**
@@ -215,7 +201,7 @@ public class Cache<T> implements Indexer<T> {
    * @return the get by key
    */
   @Override
-  public synchronized T getByKey(String key) {
+  public T getByKey(String key) {
       return this.items.get(key);
   }
 
@@ -227,12 +213,12 @@ public class Cache<T> implements Indexer<T> {
    * @return the list
    */
   @Override
-  public synchronized List<T> index(String indexName, Object obj) {
+  public synchronized List<T> index(String indexName, T obj) {
     if (!this.indexers.containsKey(indexName)) {
       throw new IllegalArgumentException(String.format("index %s doesn't exist!", indexName));
     }
     Function<T, List<String>> indexFunc = this.indexers.get(indexName);
-    List<String> indexKeys = indexFunc.apply((T) obj);
+    List<String> indexKeys = indexFunc.apply(obj);
     Map<String, Set<String>> index = this.indices.get(indexName);
     if (index.isEmpty()) {
       return new ArrayList<>();
@@ -297,11 +283,6 @@ public class Cache<T> implements Indexer<T> {
       items.add(this.items.get(key));
     }
     return items;
-  }
-
-  @Override
-  public void isPopulated(boolean isPopulated) {
-    // Do nothing
   }
 
   /**
@@ -373,18 +354,6 @@ public class Cache<T> implements Indexer<T> {
     this.indices.put(indexName, new HashMap<>());
     this.indexers.put(indexName, indexFunc);
   }
-
-  /**
-   * Checks for DeletedFinalStateUnknown objects before calling metaNamespaceKeyFunc
-   *
-   * @param object the specific object
-   * @param <T> object type
-   * @return the key
-   */
-  public static <T> String deletionHandlingMetaNamespaceKeyFunc(T object) {
-    return metaNamespaceKeyFunc(object);
-  }
-
 
   /**
    * It's is a convenient default KeyFunc which know show to make keys for API

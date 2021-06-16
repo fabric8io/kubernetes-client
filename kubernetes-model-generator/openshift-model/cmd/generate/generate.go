@@ -84,6 +84,7 @@ type Schema struct {
   ImageStreamImport                        imageapi.ImageStreamImport
   ImageStreamImage                         imageapi.ImageStreamImage
   ImageStreamMapping                       imageapi.ImageStreamMapping
+  ImageSignature                           imageapi.ImageSignature
   DeploymentConfig                         appsapi.DeploymentConfig
   DeploymentConfigList                     appsapi.DeploymentConfigList
   Route                                    routeapi.Route
@@ -104,6 +105,8 @@ type Schema struct {
   OAuthClientList                          oauthapi.OAuthClientList
   OAuthClientAuthorizationList             oauthapi.OAuthClientAuthorizationList
   OpenshiftClusterRoleScopeRestriction     oauthapi.ClusterRoleScopeRestriction
+  UserOAuthAccessToken                     oauthapi.UserOAuthAccessToken
+  UserOAuthAccessTokenList                 oauthapi.UserOAuthAccessTokenList
   TokenReview                              authenticationapi.TokenReview
   OpenshiftRole                            authapi.Role
   OpenshiftRoleList                        authapi.RoleList

@@ -62,6 +62,9 @@
     <module>openshift-model-console</module>
     <module>openshift-model-machineconfig</module>
     <module>openshift-model-tuned</module>
+    <module>openshift-model-whereabouts</module>
+    <module>openshift-model-storageversionmigrator</module>
+    <module>openshift-model-miscellaneous</module>
   </modules>
 
   <properties>
@@ -78,7 +81,7 @@
       <artifactId>jackson-annotations</artifactId>
     </dependency>
 
-    <!-- CompileOnly (provided) depdendencies -->
+    <!-- CompileOnly (provided) dependencies -->
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>

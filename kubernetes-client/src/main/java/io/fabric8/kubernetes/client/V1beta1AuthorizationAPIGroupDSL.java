@@ -19,12 +19,12 @@ import io.fabric8.kubernetes.api.model.authorization.v1beta1.LocalSubjectAccessR
 import io.fabric8.kubernetes.api.model.authorization.v1beta1.SelfSubjectAccessReview;
 import io.fabric8.kubernetes.api.model.authorization.v1beta1.SelfSubjectRulesReview;
 import io.fabric8.kubernetes.api.model.authorization.v1beta1.SubjectAccessReview;
-import io.fabric8.kubernetes.client.dsl.Createable;
-import io.fabric8.kubernetes.client.dsl.internal.LocalCreateOnlyResourceReviewOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.InOutCreateable;
+import io.fabric8.kubernetes.client.dsl.internal.NamespacedCreateOnlyResourceOperationsImpl;
 
 public interface V1beta1AuthorizationAPIGroupDSL extends Client {
-  Createable<SelfSubjectAccessReview> selfSubjectAccessReview();
-  Createable<SubjectAccessReview> subjectAccessReview();
-  LocalCreateOnlyResourceReviewOperationsImpl<LocalSubjectAccessReview> localSubjectAccessReview();
-  Createable<SelfSubjectRulesReview> selfSubjectRulesReview();
+  InOutCreateable<SelfSubjectAccessReview, SelfSubjectAccessReview> selfSubjectAccessReview();
+  InOutCreateable<SubjectAccessReview, SubjectAccessReview> subjectAccessReview();
+  NamespacedCreateOnlyResourceOperationsImpl<LocalSubjectAccessReview, LocalSubjectAccessReview> localSubjectAccessReview();
+  InOutCreateable<SelfSubjectRulesReview, SelfSubjectRulesReview> selfSubjectRulesReview();
 }

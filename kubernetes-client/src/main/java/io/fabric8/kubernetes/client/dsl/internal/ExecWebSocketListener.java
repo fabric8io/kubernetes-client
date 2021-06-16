@@ -38,7 +38,7 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -81,8 +81,7 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final InputStreamPumper pumper;
 
-    private final AtomicBoolean started = new AtomicBoolean(false);
-    private final ArrayBlockingQueue<Object> queue = new ArrayBlockingQueue<>(1);
+    private final CompletableFuture<Void> startedFuture = new CompletableFuture<>();
     private final ExecListener listener;
 
     private final AtomicBoolean explicitlyClosed = new AtomicBoolean(false);
@@ -185,7 +184,7 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
     }
 
     public void waitUntilReady() {
-      Utils.waitUntilReady(queue, config.getWebsocketTimeout(), TimeUnit.MILLISECONDS);
+      Utils.waitUntilReadyOrFail(startedFuture, config.getWebsocketTimeout(), TimeUnit.MILLISECONDS);
     }
 
     @Override
@@ -207,11 +206,10 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
             webSocketRef.set(webSocket);
             if (!executorService.isShutdown()) {
               executorService.submit(pumper);
-              started.set(true);
-              queue.add(true);
+              startedFuture.complete(null);
             }
         } catch (IOException e) {
-          queue.add(new KubernetesClientException(OperationSupport.createStatus(response)));
+          startedFuture.completeExceptionally(new KubernetesClientException(OperationSupport.createStatus(response)));
         } finally {
             if (listener != null) {
                 listener.onOpen(response);
@@ -234,10 +232,7 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
       try {
         Status status = OperationSupport.createStatus(response);
         LOGGER.error("Exec Failure: HTTP:" + status.getCode() + ". Message:" + status.getMessage(), t);
-        //We only need to queue startup failures.
-        if (!started.get()) {
-          queue.add(new KubernetesClientException(status));
-        }
+        startedFuture.completeExceptionally(new KubernetesClientException(status));
 
         cleanUpOnce();
       } finally {

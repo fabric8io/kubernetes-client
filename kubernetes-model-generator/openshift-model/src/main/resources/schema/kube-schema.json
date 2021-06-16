@@ -11860,8 +11860,7 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.OAuthClientAuthorization",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata",
-        "io.fabric8.kubernetes.api.model.Namespaced"
+        "io.fabric8.kubernetes.api.model.HasMetadata"
       ]
     },
     "os_oauth_OAuthClientAuthorizationList": {
@@ -11947,6 +11946,94 @@
       "javaType": "io.fabric8.openshift.api.model.ScopeRestriction",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_oauth_UserOAuthAccessToken": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "oauth.openshift.io/v1",
+          "required": true
+        },
+        "authorizeToken": {
+          "type": "string"
+        },
+        "clientName": {
+          "type": "string"
+        },
+        "expiresIn": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "inactivityTimeoutSeconds": {
+          "type": "integer"
+        },
+        "kind": {
+          "type": "string",
+          "default": "UserOAuthAccessToken",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "redirectURI": {
+          "type": "string"
+        },
+        "refreshToken": {
+          "type": "string"
+        },
+        "scopes": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "userName": {
+          "type": "string"
+        },
+        "userUID": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.UserOAuthAccessToken",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "os_oauth_UserOAuthAccessTokenList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "oauth.openshift.io/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/os_oauth_UserOAuthAccessToken",
+            "existingJavaType": "io.fabric8.openshift.api.model.UserOAuthAccessToken"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "UserOAuthAccessTokenList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.UserOAuthAccessTokenList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openshift.api.model.UserOAuthAccessToken\u003e"
       ]
     },
     "os_project_Project": {
@@ -13566,8 +13653,7 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.Identity",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata",
-        "io.fabric8.kubernetes.api.model.Namespaced"
+        "io.fabric8.kubernetes.api.model.HasMetadata"
       ]
     },
     "os_user_IdentityList": {
@@ -13901,6 +13987,10 @@
     "ImageList": {
       "$ref": "#/definitions/os_image_ImageList",
       "existingJavaType": "io.fabric8.openshift.api.model.ImageList"
+    },
+    "ImageSignature": {
+      "$ref": "#/definitions/os_image_ImageSignature",
+      "existingJavaType": "io.fabric8.openshift.api.model.ImageSignature"
     },
     "ImageStreamImage": {
       "$ref": "#/definitions/os_image_ImageStreamImage",
@@ -14241,6 +14331,14 @@
     "UserList": {
       "$ref": "#/definitions/os_user_UserList",
       "existingJavaType": "io.fabric8.openshift.api.model.UserList"
+    },
+    "UserOAuthAccessToken": {
+      "$ref": "#/definitions/os_oauth_UserOAuthAccessToken",
+      "existingJavaType": "io.fabric8.openshift.api.model.UserOAuthAccessToken"
+    },
+    "UserOAuthAccessTokenList": {
+      "$ref": "#/definitions/os_oauth_UserOAuthAccessTokenList",
+      "existingJavaType": "io.fabric8.openshift.api.model.UserOAuthAccessTokenList"
     }
   },
   "additionalProperties": true

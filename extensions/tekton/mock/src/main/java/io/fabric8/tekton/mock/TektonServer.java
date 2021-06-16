@@ -53,7 +53,7 @@ public class TektonServer extends ExternalResource {
 
   public void before() {
     mock = crudMode
-      ? new TektonMockServer(new Context(), new MockWebServer(), new HashMap<ServerRequest, Queue<ServerResponse>>(), new KubernetesCrudDispatcher(), true)
+      ? new TektonMockServer(new Context(), new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(), true)
       : new TektonMockServer(https);
     mock.init();
     client = mock.createTekton();

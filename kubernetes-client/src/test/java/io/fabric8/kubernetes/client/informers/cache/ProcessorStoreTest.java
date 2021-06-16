@@ -30,7 +30,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ProcessorStoreTest {
 
@@ -38,11 +38,11 @@ public class ProcessorStoreTest {
   public void testEvents() {
     ArgumentCaptor<Notification<Pod>> notificationCaptor = ArgumentCaptor.forClass(Notification.class);
     ArgumentCaptor<Boolean> syncCaptor = ArgumentCaptor.forClass(Boolean.class);
-    Store<Pod> podStore = Mockito.mock(Store.class);
+    Cache<Pod> podCache = Mockito.mock(Cache.class);
     SharedProcessor<Pod> processor = Mockito.mock(SharedProcessor.class);
 
-    ProcessorStore<Pod> processorStore = new ProcessorStore<>(podStore, processor);
-    Pod pod = new Pod();
+    ProcessorStore<Pod> processorStore = new ProcessorStore<>(podCache, processor);
+    Pod pod = new PodBuilder().withNewMetadata().withName("pod").endMetadata().build();
     
     // add notification
     processorStore.add(pod);
@@ -54,10 +54,11 @@ public class ProcessorStoreTest {
     processorStore.delete(pod);
     
     // update notification
-    Mockito.when(podStore.get(pod)).thenReturn(pod);
+    Mockito.when(podCache.put(pod)).thenReturn(pod);
     processorStore.update(pod);
     
     // delete notification
+    Mockito.when(podCache.remove(pod)).thenReturn(pod);
     processorStore.delete(pod);
 
     Mockito.verify(processor, Mockito.times(4)).distribute(notificationCaptor.capture(), syncCaptor.capture());
@@ -76,23 +77,22 @@ public class ProcessorStoreTest {
   public void testSyncEvents() {
     ArgumentCaptor<Notification<Pod>> notificationCaptor = ArgumentCaptor.forClass(Notification.class);
     ArgumentCaptor<Boolean> syncCaptor = ArgumentCaptor.forClass(Boolean.class);
-    Store<Pod> podStore = Mockito.mock(Store.class);
+    Cache<Pod> podCache = new Cache<>();
     SharedProcessor<Pod> processor = Mockito.mock(SharedProcessor.class);
 
-    ProcessorStore<Pod> processorStore = new ProcessorStore<>(podStore, processor);
+    ProcessorStore<Pod> processorStore = new ProcessorStore<>(podCache, processor);
     
     Pod pod = new PodBuilder().withNewMetadata().endMetadata().build();
     Pod pod2 = new PodBuilder().withNewMetadata().withName("pod2").endMetadata().build();
     
     // replace two values with an empty store
-    processorStore.replace(Arrays.asList(pod, pod2), null);
+    processorStore.replace(Arrays.asList(pod, pod2));
 
     // resync two values
-    Mockito.when(podStore.list()).thenReturn(Arrays.asList(pod, pod2));
     processorStore.resync();
     
     // relist with deletes
-    processorStore.replace(Collections.emptyList(), null);
+    processorStore.replace(Collections.emptyList());
     
     Mockito.verify(processor, Mockito.times(6)).distribute(notificationCaptor.capture(), syncCaptor.capture());
     

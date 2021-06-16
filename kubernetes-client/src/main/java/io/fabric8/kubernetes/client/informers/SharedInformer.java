@@ -40,18 +40,25 @@ public interface SharedInformer<T> {
   void addEventHandlerWithResyncPeriod(ResourceEventHandler<T> handle, long resyncPeriod);
 
   /**
-   * Starts the shared informer, which will be stopped until stop() is called.
+   * Starts the shared informer, which will be stopped when {@link #stop()} is called.
+   * 
+   * <br>Only one start attempt is made - subsequent calls will not re-start the informer.
    * 
    * <br>If the informer is not already running, this is a blocking call
    */
   void run();
 
   /**
-   * Stops the shared informer.
+   * Stops the shared informer.  The informer cannot be started again.
    */
   void stop();
 
-  boolean hasSynced();
+  /**
+   * Return true if the informer has ever synced
+   */
+  default boolean hasSynced() {
+    return lastSyncResourceVersion() != null;
+  }
 
   /**
    * The resource version observed when last synced with the underlying store.
@@ -71,4 +78,10 @@ public interface SharedInformer<T> {
    * Return the class this informer is watching
    */
   Class<T> getApiTypeClass();
+  
+  /**
+   * Return true if the informer is actively watching
+   * <br>Will return false when {@link #isRunning()} is true when the watch needs to be re-established.
+   */
+  boolean isWatching();
 }

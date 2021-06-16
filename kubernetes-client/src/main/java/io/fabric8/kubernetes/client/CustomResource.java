@@ -33,6 +33,8 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.ShortNames;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
+import io.sundr.builder.annotations.BuildableReference;
+
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,8 +68,10 @@ import org.slf4j.LoggerFactory;
   "spec",
   "status"
 })
-@Buildable(builderPackage = "io.fabric8.kubernetes.api.builder", editableEnabled = false)
 @JsonInclude(Include.NON_NULL)
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
+  @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
+})
 public abstract class CustomResource<S, T> implements HasMetadata {
   private static final Logger LOG = LoggerFactory.getLogger(CustomResource.class);
 

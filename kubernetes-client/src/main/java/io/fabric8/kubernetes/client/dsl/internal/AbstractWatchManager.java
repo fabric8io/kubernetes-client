@@ -15,26 +15,42 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.client.utils.ExponentialBackoffIntervalCalculator;
+import io.fabric8.kubernetes.api.model.Status;
+import io.fabric8.kubernetes.api.model.WatchEvent;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
+import io.fabric8.kubernetes.client.Watcher.Action;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.WebSocket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 
-public abstract class AbstractWatchManager<T> implements Watch {
+import static java.net.HttpURLConnection.HTTP_GONE;
 
+public abstract class AbstractWatchManager<T extends HasMetadata> implements Watch {
+
+  @FunctionalInterface
+  interface RequestBuilder {
+    Request build(final String resourceVersion);
+  }
+  
   private static final Logger logger = LoggerFactory.getLogger(AbstractWatchManager.class);
 
   final Watcher<T> watcher;
@@ -47,12 +63,12 @@ public abstract class AbstractWatchManager<T> implements Watch {
   private ScheduledFuture<?> reconnectAttempt;
   
   private final RequestBuilder requestBuilder;
-  protected ClientRunner runner;
+  protected final OkHttpClient client;
 
   private final AtomicBoolean reconnectPending = new AtomicBoolean(false);
 
   AbstractWatchManager(
-    Watcher<T> watcher, ListOptions listOptions, int reconnectLimit, int reconnectInterval, int maxIntervalExponent, RequestBuilder requestBuilder
+    Watcher<T> watcher, ListOptions listOptions, int reconnectLimit, int reconnectInterval, int maxIntervalExponent, RequestBuilder requestBuilder, Supplier<OkHttpClient> clientSupplier
   ) {
     this.watcher = watcher;
     this.reconnectLimit = reconnectLimit;
@@ -60,23 +76,26 @@ public abstract class AbstractWatchManager<T> implements Watch {
     this.resourceVersion = new AtomicReference<>(listOptions.getResourceVersion());
     this.currentReconnectAttempt = new AtomicInteger(0);
     this.forceClosed = new AtomicBoolean();
-    
     this.requestBuilder = requestBuilder;
+    this.client = clientSupplier.get();
+    
+    runWatch();
   }
   
-  protected void initRunner(ClientRunner runner) {
-    if (this.runner != null) {
-      throw new IllegalStateException("ClientRunner has already been initialized");
-    }
-    this.runner = runner;
-  }
-
-  final void closeEvent(WatcherException cause) {
+  protected abstract void run(Request request);
+  
+  protected abstract void closeRequest();
+  
+  final void close(WatcherException cause) {
+    // proactively close the request (it will be called again in close)
+    // for reconnecting watchers, we may not complete onClose for a while
+    closeRequest();  
     if (!watcher.reconnecting() && forceClosed.getAndSet(true)) {
       logger.debug("Ignoring duplicate firing of onClose event");
-      return;
+    } else {
+      watcher.onClose(cause);
     }
-    watcher.onClose(cause);
+    close();
   }
 
   final void closeEvent() {
@@ -93,27 +112,42 @@ public abstract class AbstractWatchManager<T> implements Watch {
     }
   }
   
-  void scheduleReconnect(Runnable command, boolean shouldBackoff) {
+  void scheduleReconnect() {
     if (!reconnectPending.compareAndSet(false, true)) {
       logger.debug("Reconnect already scheduled");
       return;
     }
     
+    if (isForceClosed()) {
+      logger.warn("Ignoring error for already closed/closing connection");
+      return;
+    }
+    
+    if (cannotReconnect()) {
+      close(new WatcherException("Exhausted reconnects"));
+      return;
+    }
+    
     logger.debug("Scheduling reconnect task");
     
-    long delay = shouldBackoff
-        ? nextReconnectInterval()
-        : 0;
+    long delay = nextReconnectInterval();
     
     synchronized (this) {
       reconnectAttempt = Utils.schedule(Utils.getCommonExecutorSerive(), () -> {
         try {
-          command.run();
+          runWatch();
+          if (isForceClosed()) {
+            closeRequest();
+          }
+        } catch (Exception e) {
+          // An unexpected error occurred and we didn't even get an onFailure callback.
+          logger.error("Exception in reconnect", e);
+          close(new WatcherException("Unhandled exception in reconnect attempt", e));
         } finally {
           reconnectPending.set(false);
         }
       }, delay, TimeUnit.MILLISECONDS);
-      if (forceClosed.get()) {
+      if (isForceClosed()) {
         cancelReconnect();
       }
     }
@@ -142,10 +176,6 @@ public abstract class AbstractWatchManager<T> implements Watch {
     watcher.eventReceived(action, resource);
   }
   
-  void onClose(WatcherException cause) {
-    watcher.onClose(cause);
-  }
-  
   void updateResourceVersion(final String newResourceVersion) {
     resourceVersion.set(newResourceVersion);
   }
@@ -154,52 +184,89 @@ public abstract class AbstractWatchManager<T> implements Watch {
     final Request request = requestBuilder.build(resourceVersion.get());
     logger.debug("Watching {}...", request.url());
   
-    runner.run(request);
-  }
-  
-  public void waitUntilReady() {
-    runner.waitUntilReady();
-  }
-
-  static void closeWebSocket(WebSocket webSocket) {
-    if (webSocket != null) {
-      logger.debug("Closing websocket {}", webSocket);
-      try {
-        if (!webSocket.close(1000, null)) {
-          logger.warn("Failed to close websocket");
-        }
-      } catch (IllegalStateException e) {
-        logger.error("Called close on already closed websocket: {} {}", e.getClass(), e.getMessage());
-      }
-    }
+    closeRequest(); // only one can be active at a time
+    run(request);
   }
   
   @Override
   public void close() {
     logger.debug("Force closing the watch {}", this);
     closeEvent();
-    runner.close();
+    closeRequest();
     cancelReconnect();
   }
   
-  @FunctionalInterface
-  interface RequestBuilder {
-    Request build(final String resourceVersion);
+  protected WatchEvent readWatchEvent(String messageSource) {
+    WatchEvent event = Serialization.unmarshal(messageSource, WatchEvent.class);
+    KubernetesResource object = null;
+    if (event != null) {
+      object = event.getObject();
+    }
+    // when watching API Groups we don't get a WatchEvent resource
+    // so the object will be null
+    // so lets try parse the message as a KubernetesResource
+    // as it will probably be a list of resources like a BuildList
+    if (object == null) {
+      object = Serialization.unmarshal(messageSource, KubernetesResource.class);
+      if (event == null) {
+        event = new WatchEvent(object, "MODIFIED");
+      } else {
+        event.setObject(object);
+      }
+    }
+    if (event.getType() == null) {
+      event.setType("MODIFIED");
+    }
+    return event;
   }
   
-  abstract static class ClientRunner {
-    private final OkHttpClient client;
-  
-    protected ClientRunner(OkHttpClient client) {
-      this.client = cloneAndCustomize(client);
-    }
-  
-    abstract void run(Request request);
-    void close() {}
-    void waitUntilReady() {}
-    abstract OkHttpClient cloneAndCustomize(OkHttpClient client);
-    OkHttpClient client() {
-      return client;
+  protected void onMessage(String message) {
+    try {
+      WatchEvent event = readWatchEvent(message);
+      Object object = event.getObject();
+      if (object instanceof HasMetadata) {
+        @SuppressWarnings("unchecked")
+        T obj = (T) object;
+        updateResourceVersion(obj.getMetadata().getResourceVersion());
+        Action action = Action.valueOf(event.getType());
+        eventReceived(action, obj);
+      } else if (object instanceof KubernetesResourceList) {
+        // Dirty cast - should always be valid though
+        KubernetesResourceList list = (KubernetesResourceList) object;
+        updateResourceVersion(list.getMetadata().getResourceVersion());
+        Action action = Action.valueOf(event.getType());
+        List<HasMetadata> items = list.getItems();
+        if (items != null) {
+          for (HasMetadata item : items) {
+            eventReceived(action, (T) item);
+          }
+        }
+      } else if (object instanceof Status) {
+        Status status = (Status) object;
+      
+        onStatus(status);
+      } else {
+        logger.error("Unknown message received: {}", message);
+      }
+    } catch (ClassCastException e) {
+      logger.error("Received wrong type of object for watch", e);
+    } catch (IllegalArgumentException e) {
+      logger.error("Invalid event type", e);
+    } catch (Exception e) {
+      logger.error("Unhandled exception encountered in watcher event handler", e);
     }
   }
+  
+  protected boolean onStatus(Status status) {
+    // The resource version no longer exists - this has to be handled by the caller.
+    if (status.getCode() == HTTP_GONE) {
+      close(new WatcherException(status.getMessage(), new KubernetesClientException(status)));
+      return true;
+    }
+
+    eventReceived(Action.ERROR, null);
+    logger.error("Error received: {}", status);
+    return false;
+  }
+
 }

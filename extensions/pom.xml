@@ -35,6 +35,7 @@
     <module>volumesnapshot</module>
     <module>chaosmesh</module>
     <module>camel-k</module>
+    <module>certmanager</module>
   </modules>
 
 </project>

@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.InOutCreateable;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import okhttp3.OkHttpClient;
@@ -24,18 +25,18 @@ import okhttp3.OkHttpClient;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
-public class CreateOnlyResourceOperationsImpl<T> extends OperationSupport implements io.fabric8.kubernetes.client.dsl.Createable<T> {
-  private final Class<T> subjectAccessRequestClass;
+public class CreateOnlyResourceOperationsImpl<I, O> extends OperationSupport implements InOutCreateable<I, O> {
+  private final Class<O> outputClassType;
 
-  public CreateOnlyResourceOperationsImpl(OkHttpClient client, Config config, String apiGroupName, String apiGroupVersion, String plural, Class<T> subjectAccessRequestClass) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config), apiGroupName, apiGroupVersion, plural, subjectAccessRequestClass);
+  public CreateOnlyResourceOperationsImpl(OkHttpClient client, Config config, String apiGroupName, String apiGroupVersion, String plural, Class<O> outputClassType) {
+    this(new OperationContext().withOkhttpClient(client).withConfig(config), apiGroupName, apiGroupVersion, plural, outputClassType);
   }
 
-  public CreateOnlyResourceOperationsImpl(OperationContext context, String apiGroupName, String apiGroupVersion, String plural, Class<T> subjectAccessRequestClass) {
+  public CreateOnlyResourceOperationsImpl(OperationContext context, String apiGroupName, String apiGroupVersion, String plural, Class<O> outputClassType) {
     super(context.withApiGroupName(apiGroupName)
       .withApiGroupVersion(apiGroupVersion)
       .withPlural(plural));
-    this.subjectAccessRequestClass = subjectAccessRequestClass;
+    this.outputClassType = outputClassType;
   }
 
   @Override
@@ -44,14 +45,14 @@ public class CreateOnlyResourceOperationsImpl<T> extends OperationSupport implem
   }
 
   @Override
-  public T create(T... resources) {
+  public O create(I... resources) {
     try {
       if (resources.length > 1) {
         throw new IllegalArgumentException("Too many items to create.");
       } else if (resources.length == 1) {
-        return handleCreate(resources[0], subjectAccessRequestClass);
+        return handleCreate(resources[0], outputClassType);
       } else {
-        return handleCreate(getItem(), subjectAccessRequestClass);
+        return handleCreate(getItem(), outputClassType);
       }
     } catch (ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(e);
@@ -62,9 +63,9 @@ public class CreateOnlyResourceOperationsImpl<T> extends OperationSupport implem
   }
 
   @Override
-  public T create(T item) {
+  public O create(I item) {
     try {
-      return handleCreate(item, subjectAccessRequestClass);
+      return handleCreate(item, outputClassType);
     } catch (ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     } catch (InterruptedException ie) {
@@ -73,7 +74,7 @@ public class CreateOnlyResourceOperationsImpl<T> extends OperationSupport implem
     }
   }
 
-  public T getItem() {
-    return (T) context.getItem();
+  public I getItem() {
+    return (I) context.getItem();
   }
 }

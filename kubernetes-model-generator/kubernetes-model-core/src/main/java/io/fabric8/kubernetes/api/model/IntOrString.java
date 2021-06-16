@@ -61,7 +61,7 @@ public class IntOrString implements Serializable {
     @JsonProperty("StrVal")
     private String StrVal;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new HashMap<>();
 
     public IntOrString() {
     }
@@ -75,11 +75,11 @@ public class IntOrString implements Serializable {
     }
 
     public IntOrString(Integer intVal) {
-        this(intVal, 0, null, new HashMap<String, Object>());
+        this(intVal, 0, null, new HashMap<>());
     }
 
     public IntOrString(String strVal) {
-        this(null, 1, strVal, new HashMap<String, Object>());
+        this(null, 1, strVal, new HashMap<>());
     }
 
 

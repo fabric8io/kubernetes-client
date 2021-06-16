@@ -20,23 +20,29 @@ import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.RawCustomResourceOperationsImpl;
 import io.fabric8.kubernetes.client.mock.crd.CronTab;
 import io.fabric8.kubernetes.client.mock.crd.CronTabSpec;
+import io.fabric8.kubernetes.client.mock.crd.CronTabStatus;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.internal.KubernetesDeserializer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableKubernetesMockClient(crud = true)
@@ -98,19 +104,21 @@ class CustomResourceCrudTest {
     Map<String, Object> metadata = new HashMap<>();
     metadata.put("name", "foo");
 
+    object.put("apiVersion", "stable.example.com/v1");
+    object.put("kind", "CronTab");
     object.put("metadata", metadata);
-    object.put("spec", "initial");
+    object.put("spec", new HashMap<>());
 
     Map<String, Object> created = raw.createOrReplace(object);
 
-    assertEquals("initial", created.get("spec"));
+    assertEquals(Collections.emptyMap(), created.get("spec"));
     assertTrue(((Map)created.get("metadata")).entrySet().containsAll(metadata.entrySet()));
 
-    object.put("spec", "updated");
+    object.put("spec", Collections.singletonMap("image", "value"));
 
     Map<String, Object> updated = raw.createOrReplace(object);
     assertNotEquals(created, updated);
-    assertEquals("updated", updated.get("spec"));
+    assertEquals(Collections.singletonMap("image", "value"), updated.get("spec"));
   }
 
   @Test
@@ -145,6 +153,54 @@ class CustomResourceCrudTest {
     cronTabClient.inNamespace("test-ns").withName("my-third-cron-object").delete();
     cronTabList = cronTabClient.inNamespace("test-ns").list();
     assertEquals(2, cronTabList.getItems().size());
+  }
+
+  @Test
+  void testStatusSubresourceHandling() {
+    CronTab cronTab = createCronTab("my-new-cron-object", "* * * * */5", 3, "my-awesome-cron-image");
+    CronTabStatus status = new CronTabStatus();
+    status.setReplicas(1);
+    cronTab.setStatus(status);
+
+    NonNamespaceOperation<CronTab, KubernetesResourceList<CronTab>, Resource<CronTab>> cronTabClient = client
+        .customResources(CronTab.class).inNamespace("test-ns");
+
+    CronTab result = cronTabClient.create(cronTab);
+
+    // should be null after create
+    assertNull(result.getStatus());
+
+    Map<String, String> labels = new HashMap<>();
+    labels.put("app", "core");
+
+    cronTab.getMetadata().setLabels(labels);
+
+    result = cronTabClient.replace(cronTab);
+
+    String originalUid = result.getMetadata().getUid();
+
+    // should be null after replace
+    assertNull(result.getStatus());
+
+    assertNotNull(cronTabClient.updateStatus(cronTab).getStatus());
+
+    labels.put("other", "label");
+    cronTab.setStatus(null);
+
+    result = cronTabClient.replace(cronTab);
+
+    // should retain the existing
+    assertNotNull(result.getStatus());
+
+    labels.put("another", "label");
+    result = cronTabClient.patch(cronTab);
+
+    // should retain the existing
+    assertNotNull(result.getStatus());
+    // should have accumulated all labels
+    assertEquals(new HashSet<String>(Arrays.asList("app", "other", "another")), result.getMetadata().getLabels().keySet());
+
+    assertEquals(originalUid, result.getMetadata().getUid());
   }
 
   void assertCronTab(CronTab cronTab, String name, String cronTabSpec, int replicas, String image) {

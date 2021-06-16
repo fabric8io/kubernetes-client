@@ -51,8 +51,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -173,7 +172,7 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
    * Lets wait until there are enough Ready pods of the given Deployment
    */
   private void waitUntilDeploymentConfigIsScaled(final int count) {
-    final BlockingQueue<Object> queue = new ArrayBlockingQueue<>(1);
+    final CompletableFuture<Void> scaledFuture = new CompletableFuture<>();
     final AtomicReference<Integer> replicasRef = new AtomicReference<>(0);
 
     final String name = checkName(getItem());
@@ -185,17 +184,17 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
         //If the rs is gone, we shouldn't wait.
         if (deploymentConfig == null) {
           if (count == 0) {
-            queue.put(true);
+            scaledFuture.complete(null);
             return;
           } else {
-            queue.put(new IllegalStateException("Can't wait for DeploymentConfig: " + checkName(getItem()) + " in namespace: " + checkName(getItem()) + " to scale. Resource is no longer available."));
+            scaledFuture.completeExceptionally(new IllegalStateException("Can't wait for DeploymentConfig: " + checkName(getItem()) + " in namespace: " + checkName(getItem()) + " to scale. Resource is no longer available."));
             return;
           }
         }
         replicasRef.set(deploymentConfig.getStatus().getReplicas());
         int currentReplicas = deploymentConfig.getStatus().getReplicas() != null ? deploymentConfig.getStatus().getReplicas() : 0;
         if (deploymentConfig.getStatus().getObservedGeneration() >= deploymentConfig.getMetadata().getGeneration() && Objects.equals(deploymentConfig.getSpec().getReplicas(), currentReplicas)) {
-          queue.put(true);
+          scaledFuture.complete(null);
         } else {
           LOG.debug("Only {}/{} pods scheduled for DeploymentConfig: {} in namespace: {} seconds so waiting...",
             deploymentConfig.getStatus().getReplicas(), deploymentConfig.getSpec().getReplicas(), deploymentConfig.getMetadata().getName(), namespace);
@@ -208,7 +207,7 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
       ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
       ScheduledFuture poller = executor.scheduleWithFixedDelay(deploymentPoller, 0, POLL_INTERVAL_MS, TimeUnit.MILLISECONDS);
       try {
-        if (Utils.waitUntilReady(queue, getConfig().getScaleTimeout(), TimeUnit.MILLISECONDS)) {
+        if (Utils.waitUntilReady(scaledFuture, getConfig().getScaleTimeout(), TimeUnit.MILLISECONDS)) {
           LOG.debug("{}/{} pod(s) ready for DeploymentConfig: {} in namespace: {}.",
             replicasRef.get(), count, name, namespace);
         } else {
@@ -222,12 +221,12 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
   }
 
   @Override
-public String getLog() {
+  public String getLog() {
     return getLog(false);
   }
 
   @Override
-public String getLog(Boolean isPretty) {
+  public String getLog(Boolean isPretty) {
     try(ResponseBody body = doGetLog(isPretty)) {
       return doGetLog(isPretty).string();
     } catch (IOException e) {

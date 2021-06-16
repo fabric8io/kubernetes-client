@@ -46,7 +46,12 @@ declare -a modules=(
     "openshift-model-console"
     "openshift-model-clusterautoscaling"
     "openshift-model-machineconfig"
+    "openshift-model-machine"
+    "openshift-model-miscellaneous"
     "openshift-model-monitoring"
+    "openshift-model-tuned"
+    "openshift-model-whereabouts"
+    "openshift-model-storageversionmigrator"
 )
 generateAll() {
   for module in ${modules[*]}

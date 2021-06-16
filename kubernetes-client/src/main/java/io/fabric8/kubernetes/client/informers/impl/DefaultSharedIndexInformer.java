@@ -177,11 +177,6 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
   }
 
   @Override
-  public boolean hasSynced() {
-    return this.processorStore.hasSynced();
-  }
-
-  @Override
   public void addIndexers(Map<String, Function<T, List<String>>> indexers) {
     indexer.addIndexers(indexers);
   }
@@ -206,7 +201,12 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
   public boolean isRunning() {
     return !stopped && started.get() && reflector.isRunning();
   }
-
+  
+  @Override
+  public boolean isWatching() {
+    return reflector.isWatching();
+  }
+  
   synchronized void scheduleResync(Supplier<Boolean> resyncFunc) {
     // schedule the resync runnable
     if (resyncCheckPeriodMillis > 0) {

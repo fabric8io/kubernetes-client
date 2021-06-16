@@ -45,7 +45,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.Collections;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @EnableKubernetesMockClient

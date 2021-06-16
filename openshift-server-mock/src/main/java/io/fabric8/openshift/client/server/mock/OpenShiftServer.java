@@ -57,7 +57,7 @@ public class OpenShiftServer extends ExternalResource {
 
   public void before() {
     mock = crudMode
-      ? new OpenShiftMockServer(new Context(), new MockWebServer(), new HashMap<ServerRequest, Queue<ServerResponse>>(), new KubernetesCrudDispatcher(), true)
+      ? new OpenShiftMockServer(new Context(), new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(), true)
       : new OpenShiftMockServer(https);
     mock.init();
     client = mock.createOpenShiftClient();

@@ -15,10 +15,12 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.utils.Utils;
+import okhttp3.Request;
 import okhttp3.WebSocket;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -43,8 +45,8 @@ class AbstractWatchManagerTest {
   @DisplayName("closeEvent, is idempotent, multiple calls only close watcher once")
   void closeEventIsIdempotent() {
     // Given
-    final WatcherAdapter<Object> watcher = new WatcherAdapter<>();
-    final WatchManager<Object> awm = withDefaultWatchManager(watcher);
+    final WatcherAdapter<HasMetadata> watcher = new WatcherAdapter<>();
+    final WatchManager<HasMetadata> awm = withDefaultWatchManager(watcher);
     // When
     for (int it = 0; it < 10; it++) {
       awm.closeEvent();
@@ -57,11 +59,11 @@ class AbstractWatchManagerTest {
   @DisplayName("closeEvent, with Exception, is idempotent, multiple calls only close watcher once")
   void closeEventWithExceptionIsIdempotent() {
     // Given
-    final WatcherAdapter<Object> watcher = new WatcherAdapter<>();
-    final WatchManager<Object> awm = withDefaultWatchManager(watcher);
+    final WatcherAdapter<HasMetadata> watcher = new WatcherAdapter<>();
+    final WatchManager<HasMetadata> awm = withDefaultWatchManager(watcher);
     // When
     for (int it = 0; it < 10; it++) {
-      awm.closeEvent(new WatcherException("Mock"));
+      awm.close(new WatcherException("Mock"));
     }
     // Then
     assertThat(watcher.closeCount.get()).isEqualTo(1);
@@ -73,7 +75,7 @@ class AbstractWatchManagerTest {
     // Given
     final WebSocket webSocket = mock(WebSocket.class);
     // When
-    AbstractWatchManager.closeWebSocket(webSocket);
+    WatchConnectionManager.closeWebSocket(webSocket);
     // Then
     verify(webSocket, times(1)).close(1000, null);
   }
@@ -82,7 +84,7 @@ class AbstractWatchManagerTest {
   @DisplayName("nextReconnectInterval, returns exponential interval values up to the provided limit")
   void nextReconnectInterval() {
     // Given
-    final WatchManager<Object> awm = new WatchManager<>(
+    final WatchManager<HasMetadata> awm = new WatchManager<>(
       null, mock(ListOptions.class), 0, 10, 5);
     // When-Then
     assertThat(awm.nextReconnectInterval()).isEqualTo(10);
@@ -99,8 +101,8 @@ class AbstractWatchManagerTest {
   void cancelReconnectNullAttempt() {
     // Given
     final ScheduledFuture<?> sf = spy(ScheduledFuture.class);
-    final WatcherAdapter<Object> watcher = new WatcherAdapter<>();
-    final WatchManager<Object> awm = withDefaultWatchManager(watcher);
+    final WatcherAdapter<HasMetadata> watcher = new WatcherAdapter<>();
+    final WatchManager<HasMetadata> awm = withDefaultWatchManager(watcher);
     // When
     awm.cancelReconnect();
     // Then
@@ -114,9 +116,9 @@ class AbstractWatchManagerTest {
     final ScheduledFuture<?> sf = mock(ScheduledFuture.class);
     final MockedStatic<Utils> utils = mockStatic(Utils.class);
     utils.when(() -> Utils.schedule(any(), any(), anyLong(), any())).thenReturn(sf);
-    final WatcherAdapter<Object> watcher = new WatcherAdapter<>();
-    final WatchManager<Object> awm = withDefaultWatchManager(watcher);
-    awm.scheduleReconnect(null, false);
+    final WatcherAdapter<HasMetadata> watcher = new WatcherAdapter<>();
+    final WatchManager<HasMetadata> awm = withDefaultWatchManager(watcher);
+    awm.scheduleReconnect();
     // When
     awm.cancelReconnect();
     // Then
@@ -127,9 +129,8 @@ class AbstractWatchManagerTest {
   @DisplayName("isClosed, after close invocation, should return true")
   void isForceClosedWhenClosed() {
     // Given
-    final WatcherAdapter<Object> watcher = new WatcherAdapter<>();
-    final WatchManager<Object> awm = withDefaultWatchManager(watcher);
-    awm.initRunner(mock(AbstractWatchManager.ClientRunner.class));
+    final WatcherAdapter<HasMetadata> watcher = new WatcherAdapter<>();
+    final WatchManager<HasMetadata> awm = withDefaultWatchManager(watcher);
     // When
     awm.close();
     // Then
@@ -140,19 +141,17 @@ class AbstractWatchManagerTest {
   @DisplayName("close, after close invocation, should return true")
   void closeWithNonNullRunnerShouldCancelRunner() {
     // Given
-    final AbstractWatchManager.ClientRunner clientRunner = mock(AbstractWatchManager.ClientRunner.class);
-    final WatcherAdapter<Object> watcher = new WatcherAdapter<>();
-    final WatchManager<Object> awm = withDefaultWatchManager(watcher);
-    awm.initRunner(clientRunner);
+    final WatcherAdapter<HasMetadata> watcher = new WatcherAdapter<>();
+    final WatchManager<HasMetadata> awm = withDefaultWatchManager(watcher);
     // When
     awm.close();
     // Then
-    verify(clientRunner, times(1)).close();
+    assertThat(awm.closeCount.get()).isEqualTo(1);
   }
 
-  private static <T> WatchManager<T> withDefaultWatchManager(Watcher<T> watcher) {
+  private static <T extends HasMetadata> WatchManager<T> withDefaultWatchManager(Watcher<T> watcher) {
     return new WatchManager<>(
-      watcher, mock(ListOptions.class, RETURNS_DEEP_STUBS), 0, 0, 0);
+      watcher, mock(ListOptions.class, RETURNS_DEEP_STUBS), 1, 0, 0);
   }
 
   private static class WatcherAdapter<T> implements Watcher<T> {
@@ -172,10 +171,26 @@ class AbstractWatchManagerTest {
     }
   }
 
-  private static final class WatchManager<T> extends AbstractWatchManager<T> {
+  private static final class WatchManager<T extends HasMetadata> extends AbstractWatchManager<T> {
+    
+    private final AtomicInteger closeCount = new AtomicInteger(0);
 
     public WatchManager(Watcher<T> watcher, ListOptions listOptions, int reconnectLimit, int reconnectInterval, int maxIntervalExponent) {
-      super(watcher, listOptions, reconnectLimit, reconnectInterval, maxIntervalExponent, resourceVersion -> null);
+      super(watcher, listOptions, reconnectLimit, reconnectInterval, maxIntervalExponent, resourceVersion -> null, ()->null);
+    }
+
+    @Override
+    protected void run(Request request) {
+      
+    }
+
+    @Override
+    protected void closeRequest() {
+     closeCount.addAndGet(1); 
+    }
+    
+    @Override
+    protected void runWatch() {
     }
   }
 }

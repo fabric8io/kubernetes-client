@@ -18,7 +18,6 @@ package io.fabric8.kubernetes.client;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
-import io.fabric8.kubernetes.client.utils.SerializationTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -32,14 +31,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author wangyushuai2@jd.com
- * @date 2020/1/13
  */
-public class DefaultKubernetesClientTest {
+class DefaultKubernetesClientTest {
 
   private DefaultKubernetesClient defaultKubernetesClient;
 
@@ -55,7 +52,7 @@ public class DefaultKubernetesClientTest {
   }
 
   @Test
-  public void testInitClientWithCustomHeaderConfiguration() {
+  void testInitClientWithCustomHeaderConfiguration() {
     final Map<String, String> customHeaders = new HashMap<>();
     customHeaders.put("user-id", "test-user");
     customHeaders.put("cluster-id", "test-cluster");
@@ -63,31 +60,32 @@ public class DefaultKubernetesClientTest {
 
     final DefaultKubernetesClient customHeaderConfigClient = new DefaultKubernetesClient(configWithCustomerHeaders);
 
-    assertEquals(1, customHeaderConfigClient.getHttpClient().networkInterceptors().size());
+    assertThat(customHeaderConfigClient.getHttpClient().networkInterceptors()).hasSize(1);
   }
 
   @Test
-  public void testInitClientWithDefaultConfiguration() {
+  void testInitClientWithDefaultConfiguration() {
     final Config defaultEmptyConfig =  new ConfigBuilder().build();
 
     DefaultKubernetesClient defaultConfigClient = new DefaultKubernetesClient(defaultEmptyConfig);
 
-    assertTrue(defaultConfigClient.getHttpClient().networkInterceptors().isEmpty());
+    assertThat(defaultConfigClient.getHttpClient().networkInterceptors()).isEmpty();
   }
 
   @Test
   @DisplayName("load, InputStream containing List with windows like line-ends (CRLF), all list items should be available")
-  public void loadWithWindowsLineSeparatorsString() throws Exception {
+  void loadWithWindowsLineSeparatorsString() throws Exception {
     // Given
     final List<String> fileLines = Files.readAllLines(
-      new File(SerializationTest.class.getResource("/test-list.yml").getFile()).toPath(), StandardCharsets.UTF_8);
+      new File(DefaultKubernetesClientTest.class.getResource("/test-list.yml").getFile()).toPath(), StandardCharsets.UTF_8);
     final String crlfFile = String.join(" \r\n", fileLines);
     // When
     final List<HasMetadata> result = new DefaultKubernetesClient()
       .load(new ByteArrayInputStream(crlfFile.getBytes(StandardCharsets.UTF_8))).get();
     // Then
-    assertEquals(2, result.size());
-    assertTrue(result.get(0) instanceof Service);
-    assertTrue(result.get(1) instanceof Deployment);
+    assertThat(result)
+      .hasSize(2)
+      .hasAtLeastOneElementOfType(Service.class)
+      .hasAtLeastOneElementOfType(Deployment.class);
   }
 }

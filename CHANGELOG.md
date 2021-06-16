@@ -9,6 +9,10 @@
 * Fix #3121: ServiceOperationImpl replace will throw a KubernetesClientException rather than a NPE if the item doesn't exist
 * Fix #3189: VersionInfo contains null data in OpenShift 4.6
 * Fix #3190: Ignore fields with name "-" when using the Go to JSON schema generator
+* Fix #3144: walking back the assumption that resource/status should be a subresource for the crud mock server, now it will be only if a registered crd indicates that it should be
+* Fix #3194: the mock server will now infer the namespace from the path
+* Fix #3076: the MetadataObject for CustomResource is now seen as Buildable
+* Fix #3216: made the mock server aware of apiVersions
 
 #### Improvements
 * Fix #3078: adding javadocs to further clarify patch, edit, replace, etc. and note the possibility of items being modified.
@@ -17,6 +21,10 @@
 * Fix #3072: various changes to refine how threads are handled by informers.  Note that the SharedInformer.run call is now blocking when starting the informer.
 * Fix #3143: a new SharedInformerEventListener.onException(SharedIndexInformer, Exception) method is available to determine which informer could not start.
 * Fix #3170: made HttpClientUtils.createHttpClient(Config, Consumer<OkHttpClient.Builder>) public to allow overriding custom http client properties 
+* Fix #3202: make pod upload connection and request timeouts configurable
+* Fix #3185: Introduce GenericKubernetesResource, used as delegate in RawCustomResourceOperationsImpl
+* Fix #3001: WatchConnectionManager logs that provide little information are now logged at a lower level
+* Fix #3186: WebSockets and HTTP connections are closed as soon as possible for Watches.
 
 #### Dependency Upgrade
 * Fix #2741: Update Knative Model to v0.23.0
@@ -25,6 +33,7 @@
 * Fix #3133: Add DSL Support for `authorization.openshift.io/v1` resources in OpenShiftClient
 * Fix #3166: Add DSL Support for `machineconfiguration.openshift.io/v1` resources in OpenShiftClient
 * Fix #3142: Add DSL support for missing resources in `operator.openshift.io` and `monitoring.coreos.com` apiGroups
+* Fix #2565: Add support for CertManager extension
 * Add DSL support for missing resources in `template.openshift.io`, `helm.openshift.io`, `network.openshift.io`, `user.openshift.io` apigroups
 * Fix #3087: Support HTTP operation retry with exponential backoff (for status code >= 500)
 * Add DSL support for `autoscaling.openshift.io` resources in OpenShiftClient
@@ -32,10 +41,17 @@
 * Add DSL support for OperatorCondition, Operator, PackageManifest in `operators.coreos.com` apiGroup to OpenShiftClient 
 * Add support for `tuned.openshift.io` apiGroup in OpenShiftClient DSL
 * Add DSL support for ConsolePlugin and ConsoleQuickStart in `console.openshift.io` apiGroup
+* Add DSL support for `user.openshift.io/v1` Identity in OpenShiftClient DSL
+* Add DSL support for OpenShift Whereabouts CNI Model `whereabouts.cni.cncf.io` to OpenShiftClient DSL
+* Add DSL support for OpenShift Kube Storage Version Migrator resources in OpenShiftClient DSL
+* Fix #3228: Add support for Dynamic informers for custom resources in KubernetesClient
 
 #### _**Note**_: Breaking changes in the API
 ##### DSL Changes:
 - #3127 `StatusUpdatable.updateStatus` deprecated, please use patchStatus, editStatus, or replaceStatus
+
+##### Util Changes:
+- #3197 `Utils.waitUntilReady` now accepts a Future, rather than a BlockingQueue
 
 ### 5.4.1 (2021-06-01)
 

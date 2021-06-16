@@ -15,66 +15,8 @@
  */
 package io.fabric8.kubernetes.client;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.model.DefaultKubernetesResourceList;
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.api.model.KubernetesResource;
-import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.api.model.ListMeta;
-import lombok.ToString;
 
-import java.util.ArrayList;
-import java.util.List;
-
-/**
- */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
-@ToString
-public class CustomResourceList<T extends HasMetadata> implements KubernetesResource, KubernetesResourceList<T> {
-
-  @JsonProperty("apiVersion")
-  private String apiVersion;
-
-  @JsonProperty("items")
-  private List<T> items = new ArrayList<>();
-
-  @JsonProperty("kind")
-  private String kind;
-
-  @JsonProperty("metadata")
-  private ListMeta metadata;
-
-  public String getApiVersion() {
-    return apiVersion;
-  }
-
-  public void setApiVersion(String apiVersion) {
-    this.apiVersion = apiVersion;
-  }
-
-  @Override
-  public List<T> getItems() {
-    return items;
-  }
-
-  public void setItems(List<T> items) {
-    this.items = items;
-  }
-
-  public String getKind() {
-    return kind;
-  }
-
-  public void setKind(String kind) {
-    this.kind = kind;
-  }
-
-  @Override
-  public ListMeta getMetadata() {
-    return metadata;
-  }
-
-  public void setMetadata(ListMeta metadata) {
-    this.metadata = metadata;
-  }
+public class CustomResourceList<T extends HasMetadata> extends DefaultKubernetesResourceList<T> {
 }

@@ -64,3 +64,6 @@ spec:
     kind: CronTab
     shortNames:
       - ct
+  subresources:
+    status: {}
+
