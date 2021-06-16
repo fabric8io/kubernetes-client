@@ -15,7 +15,7 @@
  */
 package io.fabric8.openshift.client.dsl.internal.build;
 
-import io.fabric8.kubernetes.api.builder.Visitor;
+import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.model.Event;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -309,8 +309,8 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
   }
 
   @Override
-  public BuildConfig edit(Visitor... visitors) {
-    return patch(new BuildConfigBuilder(getMandatory()).accept(visitors).build());
+  protected VisitableBuilder<BuildConfig, ?> createVisitableBuilder(BuildConfig item) {
+      return new BuildConfigBuilder(item);
   }
 
   protected Build submitToApiServerWithRequestBody(RequestBody requestBody) {

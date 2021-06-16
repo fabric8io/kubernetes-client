@@ -32,6 +32,7 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 
 public class ServiceOperationsImpl extends HasMetadataOperation<Service, ServiceList, ServiceResource<Service>> implements ServiceResource<Service> {
 
@@ -54,16 +55,6 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
   @Override
   public ServiceOperationsImpl newInstance(OperationContext context) {
     return new ServiceOperationsImpl(context);
-  }
-
-  @Override
-  public Service replace(Service item) {
-    return super.replace(handleClusterIp(item, "replace"));
-  }
-
-  @Override
-  public Service patch(Service item) {
-    return super.patch(handleClusterIp(item, "patch"));
   }
 
   @Override
@@ -156,19 +147,16 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
       return first.getPriority() - second.getPriority();
     }
   }
-
-  private Service handleClusterIp(Service item, String opType) {
+  
+  @Override
+  protected Service modifyItemForReplaceOrPatch(Supplier<Service> currentSupplier, Service item) {
     if (!isExternalNameService(item)) {
-      try {
-        Service old = requireFromServer(item.getMetadata());
-        return new ServiceBuilder(item)
-          .editSpec()
-          .withClusterIP(old.getSpec().getClusterIP())
-          .endSpec()
-          .build();
-      } catch (Exception e) {
-        throw KubernetesClientException.launderThrowable(forOperationType(opType), e);
-      }
+      Service old = currentSupplier.get();
+      return new ServiceBuilder(item)
+        .editSpec()
+        .withClusterIP(old.getSpec().getClusterIP())
+        .endSpec()
+        .build();
     }
     return item;
   }

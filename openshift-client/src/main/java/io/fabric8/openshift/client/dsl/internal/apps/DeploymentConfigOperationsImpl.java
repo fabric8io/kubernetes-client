@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.Loggable;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.internal.LogWatchCallback;
 import io.fabric8.kubernetes.client.dsl.internal.RollingOperationContext;
 import io.fabric8.kubernetes.client.utils.PodOperationUtil;
@@ -115,11 +116,11 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
   }
 
   @Override
-  public DeploymentConfig patch(DeploymentConfig item) {
+  public DeploymentConfig patch(PatchContext patchContext, DeploymentConfig item) {
     if (isCascading()) {
-      return cascading(false).patch(item);
+      return cascading(false).patch(patchContext, item);
     }
-    return super.patch(item);
+    return super.patch(patchContext, item);
   }
 
   @Override

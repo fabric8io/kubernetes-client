@@ -32,7 +32,7 @@ public interface Patchable<T> {
    * @return returns deserialized version of api server response
    */
   default T patch(T item) {
-    return patch(new PatchContext.Builder().withPatchType(PatchType.JSON).build(), item);
+    return patch(PatchContext.of(PatchType.JSON), item);
   }
 
   /**

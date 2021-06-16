@@ -15,12 +15,12 @@
  */
 package io.fabric8.openshift.client.dsl.internal.security;
 
-import io.fabric8.kubernetes.api.builder.Visitor;
+import io.fabric8.kubernetes.api.builder.VisitableBuilder;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.openshift.api.model.SecurityContextConstraints;
 import io.fabric8.openshift.api.model.SecurityContextConstraintsBuilder;
 import io.fabric8.openshift.api.model.SecurityContextConstraintsList;
-import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
 import okhttp3.OkHttpClient;
@@ -46,8 +46,8 @@ public class SecurityContextConstraintsOperationsImpl  extends OpenShiftOperatio
   }
 
   @Override
-  public SecurityContextConstraints edit(Visitor... visitors) {
-    return patch(new SecurityContextConstraintsBuilder(getMandatory()).accept(visitors).build());
+  protected VisitableBuilder<SecurityContextConstraints, ?> createVisitableBuilder(SecurityContextConstraints item) {
+    return new SecurityContextConstraintsBuilder(item);
   }
 
   @Override

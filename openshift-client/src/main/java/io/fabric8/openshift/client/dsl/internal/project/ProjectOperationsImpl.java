@@ -15,7 +15,7 @@
  */
 package io.fabric8.openshift.client.dsl.internal.project;
 
-import io.fabric8.kubernetes.api.builder.Visitor;
+import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.rbac.RoleBinding;
@@ -23,13 +23,13 @@ import io.fabric8.kubernetes.api.model.rbac.RoleBindingBuilder;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl;
+import io.fabric8.openshift.api.model.Project;
 import io.fabric8.openshift.api.model.ProjectBuilder;
+import io.fabric8.openshift.api.model.ProjectList;
+import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.dsl.ProjectOperation;
 import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
 import okhttp3.OkHttpClient;
-import io.fabric8.openshift.api.model.Project;
-import io.fabric8.openshift.api.model.ProjectList;
-import io.fabric8.openshift.client.OpenShiftConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -175,8 +175,8 @@ public class ProjectOperationsImpl extends OpenShiftOperation<Project, ProjectLi
   }
 
   @Override
-  public Project edit(Visitor... visitors) {
-    return patch(new ProjectBuilder(getMandatory()).accept(visitors).build());
+  protected VisitableBuilder<Project, ?> createVisitableBuilder(Project item) {
+    return new ProjectBuilder(item);
   }
 
 }
