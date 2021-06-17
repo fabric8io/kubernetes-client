@@ -18,49 +18,41 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import io.fabric8.kubernetes.api.model.metrics.v1beta1.PodMetrics;
 import io.fabric8.kubernetes.api.model.metrics.v1beta1.PodMetricsList;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
-import io.fabric8.kubernetes.client.utils.URLUtils;
-import io.fabric8.kubernetes.client.utils.Utils;
+import io.fabric8.kubernetes.client.dsl.Namespaceable;
 import okhttp3.OkHttpClient;
 
-public class PodMetricOperationsImpl extends OperationSupport {
-  private static String METRIC_ENDPOINT_URL = "apis/metrics.k8s.io/v1beta1";
-
+public class PodMetricOperationsImpl extends MetricOperationsImpl<PodMetrics, PodMetricsList> implements Namespaceable<PodMetricOperationsImpl> {
   public PodMetricOperationsImpl(OkHttpClient client, Config config) {
-    super(new OperationContext().withOkhttpClient(client).withConfig(config));
+    super(client, config, null, null, "pods", null, PodMetrics.class, PodMetricsList.class);
   }
 
+  private PodMetricOperationsImpl(OkHttpClient client, Config config, String name, String namespace) {
+    super(client, config, name, namespace, "pods", null, PodMetrics.class, PodMetricsList.class);
+  }
+
+  /**
+   * Get PodMetrics in a namespace with a name.
+   *
+   * @param namespace namespace of pod
+   * @param podName name of pod
+   * @return PodMetric corresponding to specified Pod
+   */
   public PodMetrics metrics(String namespace, String podName) {
-    try {
-      Utils.checkNotNull(namespace, "Namespace not provided");
-      Utils.checkNotNull(podName, "Name not provided");
-
-      String resourceUrl = URLUtils.join(config.getMasterUrl(), METRIC_ENDPOINT_URL,
-        "namespaces", namespace, "pods", podName);
-      return handleMetric(resourceUrl, PodMetrics.class);
-    } catch(Exception e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
+    return inNamespace(namespace).withName(podName).metric();
   }
 
-  public PodMetricsList metrics() {
-    try {
-      String resourceUrl = URLUtils.join(config.getMasterUrl(), METRIC_ENDPOINT_URL, "pods");
-      return handleMetric(resourceUrl, PodMetricsList.class);
-    } catch(Exception e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
-  }
-
+  /**
+   * Get PodMetricsList for a namespace.
+   *
+   * @param namespace namespace for which PodMetrics are queries
+   * @return PodMetricsList for all pods in specified namespace
+   */
   public PodMetricsList metrics(String namespace) {
-    try {
-      String resourceUrl = URLUtils.join(config.getMasterUrl(), METRIC_ENDPOINT_URL,
-        "namespaces", namespace, "pods");
-      return handleMetric(resourceUrl, PodMetricsList.class);
-    } catch(Exception e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
+    return inNamespace(namespace).metrics();
+  }
+
+  @Override
+  public PodMetricOperationsImpl inNamespace(String namespace) {
+    return new PodMetricOperationsImpl(client, config, null, namespace);
   }
 }
