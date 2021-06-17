@@ -13,6 +13,7 @@
 * Fix #3194: the mock server will now infer the namespace from the path
 * Fix #3076: the MetadataObject for CustomResource is now seen as Buildable
 * Fix #3216: made the mock server aware of apiVersions
+* Fix #3225: Pod metric does not have corresponding label selector variant
 
 #### Improvements
 * Fix #3078: adding javadocs to further clarify patch, edit, replace, etc. and note the possibility of items being modified.

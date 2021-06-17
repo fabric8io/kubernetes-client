@@ -1526,23 +1526,23 @@ try (KubernetesClient client = new DefaultKubernetesClient()) {
 ### Fetching Metrics
 Kubernetes Client also supports fetching metrics from API server if metrics are enabled on it. You can access metrics via `client.top()`. Here are some examples of its usage:
 - Get `NodeMetrics` for all nodes:
-```
+```java
 NodeMetricsList nodeMetricList = client.top().nodes().metrics();
 ```
 - Get `NodeMetrics` for some specific nodes:
-```
-NodeMetrics nodeMetric = client.top().nodes().metrics("minikube");
+```java
+NodeMetrics nodeMetric = client.top().nodes().withName("minikube").metric();
 ```
 - Get `PodMetrics` for all pods in all namespaces:
-```
+```java
 PodMetricsList podMetricsList = client.top().pods().metrics();
 ```
 - Get `PodMetrics` for all pods in some specific namespace:
-```
-PodMetricsList podMetricsList = client.top().pods().metrics("default");
+```java
+PodMetricsList podMetricsList = client.top().pods().inNamespace("default").metrics();
 ```
 - Get `PodMetrics` for a particular pod:
-```
+```java
 PodMetrics podMetrics = client.top().pods().metrics("default", "nginx-pod");
 ```
 
@@ -1606,18 +1606,17 @@ Boolean deleted = client.resourceList(new PodListBuilder().withItems(pod1, pod2,
 ```
 
 ### CustomResourceDefinition
-`CustomResourceDefinition` which are like templates for `CustomResource` objects in Kubernetes API are available in Kubernetes Client API via `client.customResourceDefinitions()`. Here are some examples of it's common usage:
+`CustomResourceDefinition` which are like templates for `CustomResource` objects in Kubernetes API are available in Kubernetes Client API via `client.apiextensions().v1beta1().customResourceDefinitions()` or `client.apiextensions().v1().customResourceDefinitions()`. Here are some examples of it's common usage:
 - Load a `CustomResourceDefinition` from yaml:
-```
-CustomResourceDefinition customResourceDefinition = client.customResourceDefinitions().load(new FileInputStream("/sparkapplication-crd.yml")).get();
+```java
+CustomResourceDefinition customResourceDefinition = client.apiextensions().v1beta1().customResourceDefinitions().load(new FileInputStream("/sparkapplication-crd.yml")).get();
 ```
 - Get a `CustomResourceDefinition` from Kubernetes APIServer
-```
-CustomResourceDefinition crd = client.customResourceDefinitions().withName("sparkclusters.radanalytics.io").get();
+```java
+CustomResourceDefinition crd = client.apiextensions().v1beta1().customResourceDefinitions().withName("sparkclusters.radanalytics.io").get();
 ```
 - Create `CustomResourceDefinition`:
-```
-
+```java
 CustomResourceDefinition customResourceDefinition = new CustomResourceDefinitionBuilder()
       .withApiVersion("apiextensions.k8s.io/v1beta1")
       .withNewMetadata().withName("sparkclusters.radanalytics.io")
@@ -1637,19 +1636,19 @@ CustomResourceDefinition customResourceDefinition = new CustomResourceDefinition
       .endSpec()
       .build();
 
-CustomResourceDefinition crd = client.customResourceDefinitions().createOrReplace(customResourceDefinition);
+CustomResourceDefinition crd = client.apiextensions().v1beta1().customResourceDefinitions().createOrReplace(customResourceDefinition);
 ```
 - Create or Replace some `CustomResourceDefinition`:
-```
-CustomResourceDefinition crd = client.customResourceDefinitions().createOrReplace(customResourceDefinition);
+```java
+CustomResourceDefinition crd = client.apiextensions().v1beta1().customResourceDefinitions().createOrReplace(customResourceDefinition);
 ```
 - List `CustomResourceDefinition`:
-```
-CustomResourceDefinitionList crdList = client.customResourceDefinitions().list();
+```java
+CustomResourceDefinitionList crdList = client.apiextensions().v1beta1().customResourceDefinitions().list();
 ```
 - Delete `CustomResourceDefinition`:
-```
-Boolean deleted = client.customResourceDefinitions().withName("sparkclusters.radanalytics.io").delete();
+```java
+Boolean deleted = client.apiextensions().v1beta1().customResourceDefinitions().withName("sparkclusters.radanalytics.io").delete();
 ```
 
 ### CustomResource Typed API

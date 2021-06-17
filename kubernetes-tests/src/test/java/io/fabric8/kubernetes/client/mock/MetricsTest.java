@@ -31,10 +31,12 @@ import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.jupiter.api.Test;
 
+import java.net.HttpURLConnection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @EnableKubernetesMockClient
@@ -76,6 +78,57 @@ class MetricsTest {
   }
 
   @Test
+  void testPodMetricsInNamespace() throws Exception {
+    // Given
+    server.expect().get().withPath("/apis/metrics.k8s.io/v1beta1/namespaces/test/pods")
+      .andReturn(HttpURLConnection.HTTP_OK, new PodMetricsListBuilder().withItems(getPodMetric()).build())
+      .once();
+
+    // When
+    PodMetricsList podMetricsList = client.top().pods().inNamespace("test").metrics();
+
+    // Then
+    assertEquals(1, podMetricsList.getItems().size());
+    assertEquals("foo", podMetricsList.getItems().get(0).getMetadata().getName());
+  }
+
+  @Test
+  void testPodMetricWithLabels() throws Exception {
+    // Given
+    server.expect().get().withPath("/apis/metrics.k8s.io/v1beta1/namespaces/ns1/pods?labelSelector=foo%3Dbar")
+      .andReturn(HttpURLConnection.HTTP_OK, new PodMetricsListBuilder().withItems(getPodMetric()).build())
+      .once();
+
+    // When
+    PodMetricsList podMetricsList = client.top().pods().inNamespace("ns1")
+      .withLabels(Collections.singletonMap("foo", "bar"))
+      .metrics();
+
+    // Then
+    assertThat(podMetricsList)
+      .isNotNull()
+      .extracting(PodMetricsList::getItems).asList().hasSize(1);
+  }
+
+  @Test
+  void testPodMetricWithLabelsAllNamespaces() throws Exception {
+    // Given
+    server.expect().get().withPath("/apis/metrics.k8s.io/v1beta1/pods?labelSelector=foo%3Dbar")
+      .andReturn(HttpURLConnection.HTTP_OK, new PodMetricsListBuilder().withItems(getPodMetric()).build())
+      .once();
+
+    // When
+    PodMetricsList podMetricsList = client.top().pods()
+      .withLabels(Collections.singletonMap("foo", "bar"))
+      .metrics();
+
+    // Then
+    assertThat(podMetricsList)
+      .isNotNull()
+      .extracting(PodMetricsList::getItems).asList().hasSize(1);
+  }
+
+  @Test
   void testAllNodeMetrics() {
     server.expect().get().withPath("/apis/metrics.k8s.io/v1beta1/nodes")
       .andReturn(200, new NodeMetricsListBuilder().withItems(getNodeMetric()).build()).once();
@@ -100,7 +153,7 @@ class MetricsTest {
     server.expect().get().withPath("/apis/metrics.k8s.io/v1beta1/nodes?labelSelector=" + Utils.toUrlEncoded("ss=true,cs=true"))
       .andReturn(200, new NodeMetricsListBuilder().withItems(getNodeMetric()).build()).once();
 
-    Map<String,Object> lablesMap = new HashMap();
+    Map<String,Object> lablesMap = new HashMap<>();
     lablesMap.put("ss", "true");
     lablesMap.put("cs", "true");
 
