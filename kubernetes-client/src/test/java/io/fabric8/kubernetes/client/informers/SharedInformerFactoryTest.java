@@ -39,8 +39,6 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class SharedInformerFactoryTest {
   public static final long RESYNC_PERIOD = 10 * 1000L;
@@ -112,23 +110,6 @@ class SharedInformerFactoryTest {
     // Then
     assertThat(informer).isNotNull();
     assertThat(sharedInformerFactory.getExistingSharedIndexInformers()).hasSize(1);
-  }
-
-  @Test
-  void testSharedIndexInformerForCustomResourceThrowsIllegalArgumentExceptionOnCoreType() {
-    // Given
-    SharedInformerFactory sharedInformerFactory = new SharedInformerFactory(executorService, mockClient, config);
-    CustomResourceDefinitionContext context = new CustomResourceDefinitionContext.Builder()
-      .withKind("Service")
-      .withScope("Namespaced")
-      .withVersion("v1")
-      .withGroup("")
-      .withPlural("services")
-      .build();
-
-    // When + Then
-    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> sharedInformerFactory.sharedIndexInformerForCustomResource(context, 10 * 1000L));
-    assertEquals("Using sharedIndexInformerDynamicResource for core type. Please use sharedIndexInformerFor(Class<T>, long) instead.", exception.getMessage());
   }
 
   @Test
