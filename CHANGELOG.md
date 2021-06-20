@@ -28,6 +28,7 @@
 * Fix #3001: WatchConnectionManager logs that provide little information are now logged at a lower level
 * Fix #3186: WebSockets and HTTP connections are closed as soon as possible for Watches.
 * Fix #2937: Add `SharedInformerFactory#getExistingSharedIndexInformers` method to return list of registered informers
+* Fix #3239: Add the `Informable` interface for context specific dsl methods to create `SharedIndexInformer`s.
 
 #### Dependency Upgrade
 * Fix #2741: Update Knative Model to v0.23.0
@@ -52,6 +53,7 @@
 #### _**Note**_: Breaking changes in the API
 ##### DSL Changes:
 - #3127 `StatusUpdatable.updateStatus` deprecated, please use patchStatus, editStatus, or replaceStatus
+- #3239 deprecated methods on SharedInformerFactory directly dealing with the OperationContext, withName, and withNamespace - the Informable interface should be used instead.
 
 ##### Util Changes:
 - #3197 `Utils.waitUntilReady` now accepts a Future, rather than a BlockingQueue

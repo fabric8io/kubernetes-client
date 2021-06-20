@@ -165,4 +165,67 @@ class InformTest {
     informer.stop();
   }
 
+  /**
+   * Checks that even if there is a registered deserializer for the type, that it will still be treated as a generic
+   */
+  @Test
+  void testGenericWithKnownType() throws InterruptedException {
+    // Given
+    Pod pod1 = new PodBuilder().withNewMetadata().withNamespace("test").withName("pod1")
+        .withResourceVersion("1").endMetadata().build();
+
+    server.expect()
+        .withPath("/apis/demos.fabric8.io/v1/namespaces/test/dummies?labelSelector=my-label")
+        .andReturn(HttpURLConnection.HTTP_OK,
+            new PodListBuilder().withNewMetadata().withResourceVersion("1").endMetadata().withItems(pod1).build())
+        .once();
+
+    server.expect()
+        .withPath("/apis/demos.fabric8.io/v1/namespaces/test/dummies?labelSelector=my-label&resourceVersion=1&watch=true")
+        .andUpgradeToWebSocket()
+        .open()
+        .waitFor(EVENT_WAIT_PERIOD_MS)
+        .andEmit(new WatchEvent(pod1, "DELETED"))
+        .done()
+        .once();
+
+    final CountDownLatch deleteLatch = new CountDownLatch(1);
+    final CountDownLatch addLatch = new CountDownLatch(1);
+    final ResourceEventHandler<GenericKubernetesResource> handler = new ResourceEventHandler<GenericKubernetesResource>() {
+
+      @Override
+      public void onAdd(GenericKubernetesResource obj) {
+        addLatch.countDown();
+      }
+
+      @Override
+      public void onDelete(GenericKubernetesResource obj, boolean deletedFinalStateUnknown) {
+        deleteLatch.countDown();
+      }
+
+      @Override
+      public void onUpdate(GenericKubernetesResource oldObj, GenericKubernetesResource newObj) {
+
+      }
+
+    };
+
+    // When
+    CustomResourceDefinitionContext context = new CustomResourceDefinitionContext.Builder()
+        .withKind("Dummy")
+        .withScope("Namespaced")
+        .withVersion("v1")
+        .withGroup("demos.fabric8.io")
+        .withPlural("dummies")
+        .build();
+
+    SharedIndexInformer<GenericKubernetesResource> informer =
+        client.genericCustomResources(context).withLabel("my-label").inform(handler);
+
+    assertTrue(deleteLatch.await(1000, TimeUnit.SECONDS));
+    assertTrue(addLatch.await(1000, TimeUnit.SECONDS));
+
+    informer.stop();
+  }
+
 }

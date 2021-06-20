@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.informers.ListerWatcher;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -127,6 +128,11 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
       }
       if (resource == null) {
         throw new KubernetesClientException("Unrecognized resource");  
+      }
+      // the WatchEvent deserialization is not specifically typed
+      // modify the type here if needed
+      if (!apiTypeClass.isAssignableFrom(resource.getClass())) {
+        resource = Serialization.jsonMapper().convertValue(resource, apiTypeClass);
       }
       if (log.isDebugEnabled()) {
         log.debug("Event received {} {}# resourceVersion {}", action.name(), resource.getKind(), resource.getMetadata().getResourceVersion());
