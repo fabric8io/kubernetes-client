@@ -16,14 +16,12 @@
 package io.fabric8.tekton.test.crud;
 
 import io.fabric8.tekton.client.TektonClient;
-import io.fabric8.tekton.mock.TektonServer;
+import io.fabric8.tekton.mock.EnableTektonMockClient;
 import io.fabric8.tekton.pipeline.v1beta1.Param;
 import io.fabric8.tekton.pipeline.v1beta1.Pipeline;
 import io.fabric8.tekton.pipeline.v1beta1.PipelineBuilder;
 import io.fabric8.tekton.pipeline.v1beta1.PipelineList;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.io.ByteArrayInputStream;
 import java.util.Arrays;
@@ -31,15 +29,13 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@EnableRuleMigrationSupport
+@EnableTektonMockClient(crud=true)
 class PipelineCrudTest {
 
-  @Rule
-  public TektonServer server = new TektonServer(true, true);
-
+  TektonClient client;
   @Test
   void shouldReturnEmptyList() {
-    TektonClient client = server.getTektonClient();
+
     PipelineList pipelineList = client.v1beta1().pipelines().inNamespace("ns1").list();
     assertNotNull(pipelineList);
     assertTrue(pipelineList.getItems().isEmpty());
@@ -47,7 +43,7 @@ class PipelineCrudTest {
 
   @Test
   void shouldListAndGetPipeline() {
-    TektonClient client = server.getTektonClient();
+
     Pipeline pipeline2 = new PipelineBuilder().withNewMetadata().withName("pipeline2").endMetadata().build();
 
     client.v1beta1().pipelines().inNamespace("ns2").create(pipeline2);
@@ -61,7 +57,7 @@ class PipelineCrudTest {
 
   @Test
   void shouldDeleteAPipeline() {
-    TektonClient client = server.getTektonClient();
+
     Pipeline pipeline3 = new PipelineBuilder().withNewMetadata().withName("pipeline3").endMetadata().build();
 
     client.v1beta1().pipelines().inNamespace("ns3").create(pipeline3);
@@ -71,7 +67,7 @@ class PipelineCrudTest {
 
   @Test
   void shouldLoadAPipelineWithParams() {
-    TektonClient client = server.getTektonClient();
+
 
     String pipelineDefinition = String.join("\n", Arrays.asList(
       "apiVersion: tekton.dev/v1alpha1",

@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-package io.fabric8.camelk.mock;
+
+package io.fabric8.tekton.mock;
 
 
 import io.fabric8.kubernetes.client.server.mock.KubernetesCrudDispatcher;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServerExtension;
 import io.fabric8.mockwebserver.Context;
-import io.fabric8.camelk.client.NamespacedCamelKClient;
-import io.fabric8.camelk.client.CamelKClient;
+import io.fabric8.tekton.client.NamespacedTektonClient;
+import io.fabric8.tekton.client.TektonClient;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
@@ -31,42 +32,44 @@ import java.util.HashMap;
 
 /**
  * The class that implements JUnit5 extension mechanism. You can use it directly in your JUnit test
- * by annotating it with <code>@ExtendWith(CamelKMockServerExtension.class)</code> or through
- * <code>@EnableCamelKMockClient</code> annotation
+ * by annotating it with <code>@ExtendWith(TektonMockServerExtension.class)</code> or through
+ * <code>@EnableTektonMockClient</code> annotation
  */
-public class CamelKMockServerExtension extends KubernetesMockServerExtension {
-  private CamelKMockServer camelKMockServer;
-  private NamespacedCamelKClient camelKClient;
+public class TektonMockServerExtension extends KubernetesMockServerExtension {
+  private TektonMockServer tektonMockServer;
+  private NamespacedTektonClient tektonClient;
 
   @Override
   protected void destroy() {
-   camelKMockServer.destroy();
-   camelKClient.close();
+    tektonMockServer.destroy();
+    tektonClient.close();
   }
 
   @Override
   protected Class<?> getClientType() {
-    return CamelKClient.class;
+    return TektonClient.class;
   }
 
   @Override
   protected Class<?> getKubernetesMockServerType() {
-    return CamelKMockServer.class;
+    return TektonMockServer.class;
   }
 
   @Override
   protected void initializeKubernetesClientAndMockServer(Class<?> testClass) {
-    EnableCamelKMockClient a = testClass.getAnnotation(EnableCamelKMockClient.class);
-    camelKMockServer = a.crud()
-      ? new CamelKMockServer(new Context(), new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(Collections.emptyList()), a.https())
-      : new CamelKMockServer(a.https());
-    camelKMockServer.init();
-    camelKClient = camelKMockServer.createCamelKClient();
+    EnableTektonMockClient a = testClass.getAnnotation(EnableTektonMockClient.class);
+    tektonMockServer = a.crud()
+      ? new TektonMockServer(new Context(), new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(Collections.emptyList()), a.https())
+      : new TektonMockServer(a.https());
+    tektonMockServer.init();
+    tektonClient = tektonMockServer.createTekton();
   }
 
   @Override
   protected void setFieldIfKubernetesClientOrMockServer(ExtensionContext context, boolean isStatic, Field field) throws IllegalAccessException {
-    setFieldIfEqualsToProvidedType(context, isStatic, field, getClientType(), (i, f) -> f.set(i, camelKClient));
-    setFieldIfEqualsToProvidedType(context, isStatic, field, getKubernetesMockServerType(), (i, f) -> f.set(i, camelKMockServer));
+    setFieldIfEqualsToProvidedType(context, isStatic, field, getClientType(), (i, f) -> f.set(i, tektonClient));
+    setFieldIfEqualsToProvidedType(context, isStatic, field, getKubernetesMockServerType(), (i, f) -> f.set(i, tektonMockServer));
   }
 }
+
+

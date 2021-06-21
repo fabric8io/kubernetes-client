@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-package io.fabric8.camelk.mock;
+
+package io.fabric8.servicecatalog.server.mock;
 
 
+import io.fabric8.servicecatalog.client.ServiceCatalogClient;
+import io.fabric8.servicecatalog.client.NamespacedServiceCatalogClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesCrudDispatcher;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServerExtension;
 import io.fabric8.mockwebserver.Context;
-import io.fabric8.camelk.client.NamespacedCamelKClient;
-import io.fabric8.camelk.client.CamelKClient;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
@@ -31,42 +32,42 @@ import java.util.HashMap;
 
 /**
  * The class that implements JUnit5 extension mechanism. You can use it directly in your JUnit test
- * by annotating it with <code>@ExtendWith(CamelKMockServerExtension.class)</code> or through
- * <code>@EnableCamelKMockClient</code> annotation
+ * by annotating it with <code>@ExtendWith(ServiceCatalogMockServerExtension.class)</code> or through
+ * <code>@EnableServiceCatalogMockClient</code> annotation
  */
-public class CamelKMockServerExtension extends KubernetesMockServerExtension {
-  private CamelKMockServer camelKMockServer;
-  private NamespacedCamelKClient camelKClient;
+public class ServiceCatalogMockServerExtension extends KubernetesMockServerExtension {
+  private ServiceCatalogMockServer serviceCatalogMockServer;
+  private NamespacedServiceCatalogClient serviceCatalogClient;
 
   @Override
   protected void destroy() {
-   camelKMockServer.destroy();
-   camelKClient.close();
+    serviceCatalogMockServer.destroy();
+    serviceCatalogClient.close();
   }
 
   @Override
   protected Class<?> getClientType() {
-    return CamelKClient.class;
+    return ServiceCatalogClient.class;
   }
 
   @Override
   protected Class<?> getKubernetesMockServerType() {
-    return CamelKMockServer.class;
+    return ServiceCatalogMockServer.class;
   }
 
   @Override
   protected void initializeKubernetesClientAndMockServer(Class<?> testClass) {
-    EnableCamelKMockClient a = testClass.getAnnotation(EnableCamelKMockClient.class);
-    camelKMockServer = a.crud()
-      ? new CamelKMockServer(new Context(), new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(Collections.emptyList()), a.https())
-      : new CamelKMockServer(a.https());
-    camelKMockServer.init();
-    camelKClient = camelKMockServer.createCamelKClient();
+    EnableServiceCatalogMockClient a = testClass.getAnnotation(EnableServiceCatalogMockClient.class);
+    serviceCatalogMockServer = a.crud()
+      ? new ServiceCatalogMockServer(new Context(), new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(Collections.emptyList()), a.https())
+      : new ServiceCatalogMockServer(a.https());
+    serviceCatalogMockServer.init();
+    serviceCatalogClient = serviceCatalogMockServer.createServiceCatalog();
   }
 
   @Override
   protected void setFieldIfKubernetesClientOrMockServer(ExtensionContext context, boolean isStatic, Field field) throws IllegalAccessException {
-    setFieldIfEqualsToProvidedType(context, isStatic, field, getClientType(), (i, f) -> f.set(i, camelKClient));
-    setFieldIfEqualsToProvidedType(context, isStatic, field, getKubernetesMockServerType(), (i, f) -> f.set(i, camelKMockServer));
+    setFieldIfEqualsToProvidedType(context, isStatic, field, getClientType(), (i, f) -> f.set(i, serviceCatalogClient));
+    setFieldIfEqualsToProvidedType(context, isStatic, field, getKubernetesMockServerType(), (i, f) -> f.set(i, serviceCatalogMockServer));
   }
 }

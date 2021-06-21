@@ -22,11 +22,9 @@ import io.fabric8.volumesnapshot.server.mock.VolumeSnapshotMockServer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableRuleMigrationSupport
 class AdaptTest {
 
   private final VolumeSnapshotMockServer mock = new VolumeSnapshotMockServer();

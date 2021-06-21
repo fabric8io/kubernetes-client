@@ -16,28 +16,23 @@
 package io.fabric8.camelk.test.crud;
 
 import io.fabric8.camelk.client.CamelKClient;
-import io.fabric8.camelk.mock.CamelKServer;
 import io.fabric8.camelk.mock.EnableCamelKMockClient;
 import io.fabric8.camelk.v1.Integration;
 import io.fabric8.camelk.v1.IntegrationBuilder;
 import io.fabric8.camelk.v1.IntegrationList;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-
 
 import java.io.ByteArrayInputStream;
 import java.util.Arrays;
-import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableCamelKMockClient(crud = true)
 class IntegrationCrudTest {
 
 
   CamelKClient client;
-//  @Rule
-//  public CamelKServer server = new CamelKServer(true, true);
 
   @Test
   void shouldReturnEmptyList() {

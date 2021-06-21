@@ -20,25 +20,26 @@ import io.fabric8.volumesnapshot.api.model.VolumeSnapshot;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotBuilder;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotList;
 import io.fabric8.volumesnapshot.client.VolumeSnapshotClient;
-import io.fabric8.volumesnapshot.server.mock.VolumeSnapshotServer;
-import org.junit.Rule;
+import io.fabric8.volumesnapshot.server.mock.EnableVolumeSnapshotMockClient;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
+<<<<<<< HEAD
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+=======
+import static org.junit.Assert.assertTrue;
+>>>>>>> a7294ebc6 (Updated all files in extensions to use Junit5 implementation)
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-@EnableRuleMigrationSupport
+@EnableVolumeSnapshotMockClient(crud = true)
 class VolumeSnapshotTest {
 
-  @Rule
-  public VolumeSnapshotServer server = new VolumeSnapshotServer(true, true);
+  VolumeSnapshotClient client;
 
   @Test
   void testCrud() {
-    VolumeSnapshotClient client = server.get();
+
     VolumeSnapshot vs1 = new VolumeSnapshotBuilder()
       .withNewMetadata()
       .withName("my-snapshot1")

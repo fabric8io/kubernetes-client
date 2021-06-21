@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.camelk.mock;
+package io.fabric8.tekton.mock;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -24,13 +24,13 @@ import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Annotation that is used for enabling CamelKMockServerExtension JUnit5 extension.
- * You may set here two parameters of `CamelKServer`: crudMode and https
+ * Annotation that is used for enabling TektonMockServerExtension JUnit5 extension.
+ * You may set here two parameters of `TektonServer`: crudMode and https
  */
 @Target({ TYPE, METHOD, ANNOTATION_TYPE })
 @Retention(RUNTIME)
-@ExtendWith(CamelKMockServerExtension.class)
-public @interface EnableCamelKMockClient {
+@ExtendWith(TektonMockServerExtension.class)
+public @interface EnableTektonMockClient {
 
   boolean https() default true;
 

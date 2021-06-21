@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-package io.fabric8.camelk.mock;
+
+package io.fabric8.chaosmesh.server.mock;
 
 
 import io.fabric8.kubernetes.client.server.mock.KubernetesCrudDispatcher;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServerExtension;
 import io.fabric8.mockwebserver.Context;
-import io.fabric8.camelk.client.NamespacedCamelKClient;
-import io.fabric8.camelk.client.CamelKClient;
+import io.fabric8.chaosmesh.client.NamespacedChaosMeshClient;
+import io.fabric8.chaosmesh.client.ChaosMeshClient;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
@@ -31,42 +32,43 @@ import java.util.HashMap;
 
 /**
  * The class that implements JUnit5 extension mechanism. You can use it directly in your JUnit test
- * by annotating it with <code>@ExtendWith(CamelKMockServerExtension.class)</code> or through
- * <code>@EnableCamelKMockClient</code> annotation
+ * by annotating it with <code>@ExtendWith(OpenShiftMockServerExtension.class)</code> or through
+ * <code>@EnableOpenShiftMockClient</code> annotation
  */
-public class CamelKMockServerExtension extends KubernetesMockServerExtension {
-  private CamelKMockServer camelKMockServer;
-  private NamespacedCamelKClient camelKClient;
+public class ChaosMeshMockServerExtension extends KubernetesMockServerExtension {
+  private ChaosMeshMockServer chaosMeshMockServer;
+  private NamespacedChaosMeshClient chaosMeshClient;
 
   @Override
   protected void destroy() {
-   camelKMockServer.destroy();
-   camelKClient.close();
+    chaosMeshMockServer.destroy();
+    chaosMeshClient.close();
   }
 
   @Override
   protected Class<?> getClientType() {
-    return CamelKClient.class;
+    return ChaosMeshClient.class;
   }
 
   @Override
   protected Class<?> getKubernetesMockServerType() {
-    return CamelKMockServer.class;
+    return ChaosMeshMockServer.class;
   }
 
   @Override
   protected void initializeKubernetesClientAndMockServer(Class<?> testClass) {
-    EnableCamelKMockClient a = testClass.getAnnotation(EnableCamelKMockClient.class);
-    camelKMockServer = a.crud()
-      ? new CamelKMockServer(new Context(), new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(Collections.emptyList()), a.https())
-      : new CamelKMockServer(a.https());
-    camelKMockServer.init();
-    camelKClient = camelKMockServer.createCamelKClient();
+    EnableChaosMeshMockClient a = testClass.getAnnotation(EnableChaosMeshMockClient.class);
+    chaosMeshMockServer = a.crud()
+      ? new ChaosMeshMockServer(new Context(), new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(Collections.emptyList()), a.https())
+      : new ChaosMeshMockServer(a.https());
+    chaosMeshMockServer.init();
+    chaosMeshClient = chaosMeshMockServer.createChaosMeshClient();
   }
 
   @Override
   protected void setFieldIfKubernetesClientOrMockServer(ExtensionContext context, boolean isStatic, Field field) throws IllegalAccessException {
-    setFieldIfEqualsToProvidedType(context, isStatic, field, getClientType(), (i, f) -> f.set(i, camelKClient));
-    setFieldIfEqualsToProvidedType(context, isStatic, field, getKubernetesMockServerType(), (i, f) -> f.set(i, camelKMockServer));
+    setFieldIfEqualsToProvidedType(context, isStatic, field, getClientType(), (i, f) -> f.set(i, chaosMeshClient));
+    setFieldIfEqualsToProvidedType(context, isStatic, field, getKubernetesMockServerType(), (i, f) -> f.set(i, chaosMeshMockServer));
   }
 }
+

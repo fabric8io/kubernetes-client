@@ -19,25 +19,19 @@ import io.fabric8.servicecatalog.api.model.ClusterServiceClass;
 import io.fabric8.servicecatalog.api.model.ClusterServiceClassBuilder;
 import io.fabric8.servicecatalog.api.model.ClusterServiceClassList;
 import io.fabric8.servicecatalog.client.ServiceCatalogClient;
-import io.fabric8.servicecatalog.server.mock.ServiceCatalogServer;
+import io.fabric8.servicecatalog.server.mock.EnableServiceCatalogMockClient;
 import org.junit.jupiter.api.Test;
-import org.junit.Rule;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
-@EnableRuleMigrationSupport
+@EnableServiceCatalogMockClient(crud = true)
 class ClusterServiceClassTest {
 
-    @Rule
-    public ServiceCatalogServer server = new ServiceCatalogServer(true, true);
+    ServiceCatalogClient client;
 
     @Test
     void testCrud() {
-        ServiceCatalogClient client = server.getServiceCatalogClient();
+
         ClusterServiceClass class1 = new ClusterServiceClassBuilder()
                 .withNewMetadata()
                 .withName("class1")

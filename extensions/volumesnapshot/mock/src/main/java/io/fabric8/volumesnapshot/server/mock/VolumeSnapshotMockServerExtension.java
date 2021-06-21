@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package io.fabric8.camelk.mock;
+package io.fabric8.volumesnapshot.server.mock;
 
 
 import io.fabric8.kubernetes.client.server.mock.KubernetesCrudDispatcher;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServerExtension;
 import io.fabric8.mockwebserver.Context;
-import io.fabric8.camelk.client.NamespacedCamelKClient;
-import io.fabric8.camelk.client.CamelKClient;
+import io.fabric8.volumesnapshot.client.NamespacedVolumeSnapshotClient;
+import io.fabric8.volumesnapshot.client.VolumeSnapshotClient;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
@@ -31,42 +31,44 @@ import java.util.HashMap;
 
 /**
  * The class that implements JUnit5 extension mechanism. You can use it directly in your JUnit test
- * by annotating it with <code>@ExtendWith(CamelKMockServerExtension.class)</code> or through
- * <code>@EnableCamelKMockClient</code> annotation
+ * by annotating it with <code>@ExtendWith(VolumeSnapshotServerExtension.class)</code> or through
+ * <code>@EnableVolumeSnapshotMockClient</code> annotation
  */
-public class CamelKMockServerExtension extends KubernetesMockServerExtension {
-  private CamelKMockServer camelKMockServer;
-  private NamespacedCamelKClient camelKClient;
+public class VolumeSnapshotMockServerExtension extends KubernetesMockServerExtension {
+  private VolumeSnapshotMockServer volumeSnapshotMockServer;
+  private NamespacedVolumeSnapshotClient volumeSnapshotClient;
 
   @Override
   protected void destroy() {
-   camelKMockServer.destroy();
-   camelKClient.close();
+    volumeSnapshotMockServer.destroy();
+    volumeSnapshotClient.close();
   }
 
   @Override
   protected Class<?> getClientType() {
-    return CamelKClient.class;
+    return VolumeSnapshotClient.class;
   }
 
   @Override
   protected Class<?> getKubernetesMockServerType() {
-    return CamelKMockServer.class;
+    return VolumeSnapshotMockServer.class;
   }
 
   @Override
   protected void initializeKubernetesClientAndMockServer(Class<?> testClass) {
-    EnableCamelKMockClient a = testClass.getAnnotation(EnableCamelKMockClient.class);
-    camelKMockServer = a.crud()
-      ? new CamelKMockServer(new Context(), new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(Collections.emptyList()), a.https())
-      : new CamelKMockServer(a.https());
-    camelKMockServer.init();
-    camelKClient = camelKMockServer.createCamelKClient();
+    EnableVolumeSnapshotMockClient a = testClass.getAnnotation(EnableVolumeSnapshotMockClient.class);
+    volumeSnapshotMockServer= a.crud()
+      ? new VolumeSnapshotMockServer(new Context(), new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(Collections.emptyList()), a.https())
+      : new VolumeSnapshotMockServer(a.https());
+    volumeSnapshotMockServer.init();
+    volumeSnapshotClient = volumeSnapshotMockServer.createVolumeSnapshot();
   }
 
   @Override
   protected void setFieldIfKubernetesClientOrMockServer(ExtensionContext context, boolean isStatic, Field field) throws IllegalAccessException {
-    setFieldIfEqualsToProvidedType(context, isStatic, field, getClientType(), (i, f) -> f.set(i, camelKClient));
-    setFieldIfEqualsToProvidedType(context, isStatic, field, getKubernetesMockServerType(), (i, f) -> f.set(i, camelKMockServer));
+    setFieldIfEqualsToProvidedType(context, isStatic, field, getClientType(), (i, f) -> f.set(i, volumeSnapshotClient));
+    setFieldIfEqualsToProvidedType(context, isStatic, field, getKubernetesMockServerType(), (i, f) -> f.set(i, volumeSnapshotMockServer));
   }
 }
+
+
