@@ -52,12 +52,11 @@ class WatchTest {
   private static final Long EVENT_WAIT_PERIOD_MS = 10L;
 
   KubernetesMockServer server;
-  private KubernetesClient client;
+  KubernetesClient client;
   private Pod pod1;
 
   @BeforeEach
   void setUp() {
-    client = server.createClient().inNamespace("test");
     pod1 = new PodBuilder().withNewMetadata().withNamespace("test").withName("pod1")
       .withResourceVersion("1").endMetadata().build();
   }

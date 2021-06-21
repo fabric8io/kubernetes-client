@@ -30,7 +30,6 @@ import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
@@ -46,12 +45,7 @@ class InformTest {
   private static final Long EVENT_WAIT_PERIOD_MS = 10L;
 
   KubernetesMockServer server;
-  private KubernetesClient client;
-
-  @BeforeEach
-  void setUp() {
-    client = server.createClient().inNamespace("test");
-  }
+  KubernetesClient client;
 
   @Test
   void testInformPodWithLabel() throws InterruptedException {
