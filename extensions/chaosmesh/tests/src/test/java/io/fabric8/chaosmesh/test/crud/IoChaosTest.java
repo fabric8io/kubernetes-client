@@ -16,29 +16,22 @@
 package io.fabric8.chaosmesh.test.crud;
 
 
+import io.fabric8.chaosmesh.client.ChaosMeshClient;
+import io.fabric8.chaosmesh.server.mock.EnableChaosMeshMockClient;
 import io.fabric8.chaosmesh.v1alpha1.IoChaos;
 import io.fabric8.chaosmesh.v1alpha1.IoChaosBuilder;
 import io.fabric8.chaosmesh.v1alpha1.IoChaosList;
-import io.fabric8.chaosmesh.client.ChaosMeshClient;
-import io.fabric8.chaosmesh.server.mock.ChaosMeshServer;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
-@EnableRuleMigrationSupport
+@EnableChaosMeshMockClient(crud = true)
 class IoChaosTest {
 
-  @Rule
-  public ChaosMeshServer server = new ChaosMeshServer(true, true);
-
+  ChaosMeshClient client;
   @Test
   void testCrud() {
-    ChaosMeshClient client = server.get();
+
     IoChaos ioc1 = new IoChaosBuilder()
       .withNewMetadata()
       .withName("partition")

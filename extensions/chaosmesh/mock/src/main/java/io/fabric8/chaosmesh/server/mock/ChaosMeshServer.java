@@ -51,7 +51,7 @@ public class ChaosMeshServer extends ExternalResource {
       ? new ChaosMeshMockServer(new Context(), new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(), true)
       : new ChaosMeshMockServer(https);
     mock.init();
-    client = mock.createChaosMesh();
+    client = mock.createChaosMeshClient();
   }
 
   @Override

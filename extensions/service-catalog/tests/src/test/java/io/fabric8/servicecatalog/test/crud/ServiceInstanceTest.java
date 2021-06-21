@@ -19,26 +19,19 @@ import io.fabric8.servicecatalog.api.model.ServiceInstance;
 import io.fabric8.servicecatalog.api.model.ServiceInstanceBuilder;
 import io.fabric8.servicecatalog.api.model.ServiceInstanceList;
 import io.fabric8.servicecatalog.client.ServiceCatalogClient;
-import io.fabric8.servicecatalog.server.mock.ServiceCatalogServer;
-
+import io.fabric8.servicecatalog.server.mock.EnableServiceCatalogMockClient;
 import org.junit.jupiter.api.Test;
-import org.junit.Rule;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
-@EnableRuleMigrationSupport
+@EnableServiceCatalogMockClient(crud=true)
 class ServiceInstanceTest {
 
-    @Rule
-    public ServiceCatalogServer server = new ServiceCatalogServer(true, true);
-
+//
+ServiceCatalogClient client;
     @Test
     void testCrud() {
-        ServiceCatalogClient client = server.getServiceCatalogClient();
+
         ServiceInstance instance1 = new ServiceInstanceBuilder()
                 .withNewMetadata()
                 .withName("instance1")
