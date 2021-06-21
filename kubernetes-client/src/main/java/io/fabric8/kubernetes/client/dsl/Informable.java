@@ -32,7 +32,7 @@ public interface Informable<T> {
    * @param indexers to customize the indexing
    * @return the current {@link Informable}
    */
-  public Informable<T> withIndexers(Map<String, Function<T, List<String>>> indexers);
+  Informable<T> withIndexers(Map<String, Function<T, List<String>>> indexers);
   
   /**
    * Similar to a {@link Watch}, but will attempt to handle failures after successfully started.
@@ -62,6 +62,6 @@ public interface Informable<T> {
    * @param resync the resync period or 0 for no resync
    * @return a running {@link SharedIndexInformer}
    */
-  public SharedIndexInformer<T> inform(ResourceEventHandler<T> handler, long resync);
+  SharedIndexInformer<T> inform(ResourceEventHandler<T> handler, long resync);
 
 }

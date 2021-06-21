@@ -123,7 +123,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
     }
 
     this.processor.addProcessorListener(handler,
-        determineResyncPeriod(resyncPeriodMillis, this.resyncCheckPeriodMillis), () -> this.indexer.list());
+        determineResyncPeriod(resyncPeriodMillis, this.resyncCheckPeriodMillis), this.indexer::list);
   }
 
   @Override
