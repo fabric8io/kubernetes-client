@@ -94,7 +94,6 @@
     <assertj.core.version>3.20.2</assertj.core.version>
     <arquillian.core.version>1.2.0.Final</arquillian.core.version>
     <awaitility.version>4.1.0</awaitility.version>
-    <jsonassert.version>1.5.0</jsonassert.version>
 
     <retrofit.bundle.version>2.5.0_1</retrofit.bundle.version>
     <conscrypt-openjdk-uber.version>1.4.2</conscrypt-openjdk-uber.version>
@@ -477,13 +476,6 @@
         <groupId>io.dekorate</groupId>
         <artifactId>mockwebserver</artifactId>
         <version>${mockwebserver.version}</version>
-        <scope>test</scope>
-      </dependency>
-
-      <dependency>
-        <groupId>org.skyscreamer</groupId>
-        <artifactId>jsonassert</artifactId>
-        <version>${jsonassert.version}</version>
         <scope>test</scope>
       </dependency>
 

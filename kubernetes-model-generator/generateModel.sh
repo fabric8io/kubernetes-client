@@ -41,21 +41,53 @@ declare -a modules=(
     "kubernetes-model-policy"
     "kubernetes-model-scheduling"
     "kubernetes-model-storageclass"
-    "openshift-model"
-    "openshift-model-operator"
-    "openshift-model-operatorhub"
-    "openshift-model-console"
-    "openshift-model-clusterautoscaling"
-    "openshift-model-machineconfig"
-    "openshift-model-machine"
-    "openshift-model-miscellaneous"
-    "openshift-model-monitoring"
-    "openshift-model-tuned"
-    "openshift-model-whereabouts"
-    "openshift-model-storageversionmigrator"
+    #"openshift-model"
+    #"openshift-model-operator"
+    #"openshift-model-operatorhub"
+    #"openshift-model-console"
+    #"openshift-model-clusterautoscaling"
+    #"openshift-model-machineconfig"
+    #"openshift-model-machine"
+    #"openshift-model-miscellaneous"
+    #"openshift-model-monitoring"
+    #"openshift-model-tuned"
+    #"openshift-model-whereabouts"
+    #"openshift-model-storageversionmigrator"
 )
+
+declare -a extensionModuleParents=(
+    "../extensions/knative/pom.xml"
+    "../extensions/camel-k/pom.xml"
+    "../extensions/camel-k/pom.xml"
+    "../extensions/chaosmesh/pom.xml"
+    "../extensions/service-catalog/pom.xml"
+    "../extensions/tekton/pom.xml"
+    "../extensions/tekton/pom.xml"
+    "../extensions/volumesnapshot/pom.xml"
+)
+
+declare -a extensionModules=(
+    "../extensions/knative/generator"
+    "../extensions/camel-k/generator-v1"
+    "../extensions/camel-k/generator-v1alpha1"
+    "../extensions/chaosmesh/generator"
+    "../extensions/service-catalog/generator"
+    "../extensions/tekton/generator-v1alpha1"
+    "../extensions/tekton/generator-v1beta1"
+    "../extensions/volumesnapshot/generator"
+)
+
 generateAll() {
-  for module in ${modules[*]}
+  echo "Compiling core modules"
+  generateSetOfModules "${modules[@]}"
+  echo "Compiling extensions"
+  extensionInstallCommonModules
+  generateSetOfModules "${extensionModules[@]}"
+}
+
+generateSetOfModules() {
+  moduleList=("$@")
+  for module in "${moduleList[@]}"
   do
     generateSingleModule "$module"
   done
@@ -66,9 +98,28 @@ generateSingleModule() {
   cd "$ABSOLUTE_BASEDIR/$1" || exit 1
   make "build"
   if test -n "${LOCAL_USER-}"; then
-    chown -R "$LOCAL_USER" ./src/main/resources/schema
+    SCHEMA_FILE=./src/main/resources/schema
+    EXTENSION_SCHEMA_FILE=../model/src/main/resources/schema
+    if test -f $SCHEMA_FILE; then
+        chown -R "$LOCAL_USER" ./src/main/resources/schema
+    elif test -f $EXTENSION_SCHEMA_FILE; then
+        chown -R "$LOCAL_USER" ../model/src/main/resources/schema
+    fi
   fi
   cd "$ABSOLUTE_BASEDIR" || exit 1
+}
+
+extensionInstallCommonModules() {
+    mvn clean install -f ../model-annotator/pom.xml
+    #mvn clean install -DskipTests -f ../kubernetes-client/pom.xml
+    #mvn clean install -DskipTests -f ../kubernetes-server-mock/pom.xml
+    mvn clean install -N -f ../extensions/pom.xml
+    for parent in ${extensionModuleParents[*]}
+    do
+        mvn clean install -N -f "$parent"
+    done
+    #mvn clean install -N -f ../extensions/knative/pom.xml
+    #mvn clean install -N -f ../extensions/knative/model/pom.xml
 }
 
 echo "Installing required common modules"
