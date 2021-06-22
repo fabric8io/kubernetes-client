@@ -54,7 +54,7 @@ class InformTest {
         .withResourceVersion("1").endMetadata().build();
 
     server.expect()
-        .withPath("/api/v1/namespaces/test/pods?labelSelector=my-label")
+        .withPath("/api/v1/namespaces/test/pods?watch=false&labelSelector=my-label")
         .andReturn(HttpURLConnection.HTTP_OK,
             new PodListBuilder().withNewMetadata().withResourceVersion("1").endMetadata().withItems(pod1).build())
         .once();
@@ -108,7 +108,7 @@ class InformTest {
     list.setItems(Arrays.asList(dummy));
 
     server.expect()
-        .withPath("/apis/demos.fabric8.io/v1/namespaces/test/dummies?labelSelector=my-label")
+        .withPath("/apis/demos.fabric8.io/v1/namespaces/test/dummies?watch=false&labelSelector=my-label")
         .andReturn(HttpURLConnection.HTTP_OK, list)
         .once();
 
@@ -151,7 +151,7 @@ class InformTest {
         .build();
 
     SharedIndexInformer<GenericKubernetesResource> informer =
-        client.genericCustomResources(context).withLabel("my-label").inform(handler);
+        client.genericKubernetesResources(context).withLabel("my-label").inform(handler);
 
     assertTrue(deleteLatch.await(10, TimeUnit.SECONDS));
     assertTrue(addLatch.await(10, TimeUnit.SECONDS));
@@ -169,13 +169,13 @@ class InformTest {
         .withResourceVersion("1").endMetadata().build();
 
     server.expect()
-        .withPath("/apis/demos.fabric8.io/v1/namespaces/test/dummies?labelSelector=my-label")
+        .withPath("/api/v1/namespaces/test/pods?watch=false&fieldSelector=metadata.name%3Dpod1")
         .andReturn(HttpURLConnection.HTTP_OK,
             new PodListBuilder().withNewMetadata().withResourceVersion("1").endMetadata().withItems(pod1).build())
         .once();
 
     server.expect()
-        .withPath("/apis/demos.fabric8.io/v1/namespaces/test/dummies?labelSelector=my-label&resourceVersion=1&watch=true")
+        .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1%2Cmetadata.name%3Dpod1&resourceVersion=1&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .waitFor(EVENT_WAIT_PERIOD_MS)
@@ -206,15 +206,14 @@ class InformTest {
 
     // When
     CustomResourceDefinitionContext context = new CustomResourceDefinitionContext.Builder()
-        .withKind("Dummy")
+        .withKind("Pod")
         .withScope("Namespaced")
         .withVersion("v1")
-        .withGroup("demos.fabric8.io")
-        .withPlural("dummies")
+        .withPlural("pods")
         .build();
 
     SharedIndexInformer<GenericKubernetesResource> informer =
-        client.genericCustomResources(context).withLabel("my-label").inform(handler);
+        client.genericKubernetesResources(context).withName("pod1").inform(handler);
 
     assertTrue(deleteLatch.await(1000, TimeUnit.SECONDS));
     assertTrue(addLatch.await(1000, TimeUnit.SECONDS));
