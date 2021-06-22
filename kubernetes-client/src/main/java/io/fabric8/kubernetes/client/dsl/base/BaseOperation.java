@@ -72,6 +72,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -1206,16 +1207,20 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   
   @Override
   public SharedIndexInformer<T> inform(ResourceEventHandler<T> handler, long resync) {
-    // create an informer that will consume no additional threads beyond the underlying Watch
+    // convert the name into something listable
+    FilterWatchListDeletable<T, L> baseOperation =
+        getName() == null ? this : withFields(Collections.singletonMap("metadata.name", getName()));
+
+    // use the local context / namespace
     DefaultSharedIndexInformer<T, L> informer = new DefaultSharedIndexInformer<>(getType(), new ListerWatcher<T, L>() {
       @Override
       public L list(ListOptions params, String namespace, OperationContext context) {
-        return BaseOperation.this.list();
+        return baseOperation.list(params);
       }
       
       @Override
       public Watch watch(ListOptions params, String namespace, OperationContext context, Watcher<T> watcher) {
-        return BaseOperation.this.watch(params, watcher);
+        return baseOperation.watch(params, watcher);
       }
     }, resync, context, Runnable::run); // just run the event notification in the websocket thread
     if (handler != null) {
@@ -1224,6 +1229,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     if (indexers != null) {
       informer.addIndexers(indexers);
     }
+    // synchronous start list/watch must succeed in the calling thread
     informer.run();
     return informer;
   }

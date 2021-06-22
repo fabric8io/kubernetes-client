@@ -161,12 +161,12 @@ public interface KubernetesClient extends Client {
   <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(CustomResourceDefinitionContext crdContext, Class<T> resourceType, Class<L> listClass);
   
   /**
-   * Semi-Typed API for managing CustomResources.
+   * Semi-Typed API for managing {@link GenericKubernetesResource}s which can represent any resource.
    *
-   * @param crdContext CustomResourceDefinitionContext describes the core fields used to search for CustomResources
-   * @return returns a MixedOperation object with which you can do basic CustomResource operations
+   * @param crdContext CustomResourceDefinitionContext describes the core fields
+   * @return returns a MixedOperation object with which you can do basic operations
    */
-  default MixedOperation<GenericKubernetesResource, GenericKubernetesResourceList, Resource<GenericKubernetesResource>> genericCustomResources(
+  default MixedOperation<GenericKubernetesResource, GenericKubernetesResourceList, Resource<GenericKubernetesResource>> genericKubernetesResources(
       CustomResourceDefinitionContext crdContext) {
     return customResources(crdContext, GenericKubernetesResource.class, GenericKubernetesResourceList.class);
   }
