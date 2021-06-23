@@ -35,11 +35,11 @@ jobs:
       - name: Check No Schema file modified
         run: |
           git add .
-          MODIFIED_KUBE_SCHEMA=`git status | grep -v 'validation-schema.json' | grep -E '*-schema.json|src/generated/java' | wc -l`
+          MODIFIED_KUBE_SCHEMA=`git status | grep -v 'validation-schema.json' | grep 'kube-schema.json\|src/generated/java' | wc -l`
           if [ $MODIFIED_KUBE_SCHEMA -eq "0" ]; then
             echo "No Schema files modified. Build Success.";
           else
-            git status
+            git status | grep -v 'validation-schema.json' | grep 'kube-schema.json\|src/generated/java'
             echo "Schema files modified. Build Failure";
             exit 1;
           fi;
