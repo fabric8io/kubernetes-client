@@ -41,18 +41,18 @@ declare -a modules=(
     "kubernetes-model-policy"
     "kubernetes-model-scheduling"
     "kubernetes-model-storageclass"
-    #"openshift-model"
-    #"openshift-model-operator"
-    #"openshift-model-operatorhub"
-    #"openshift-model-console"
-    #"openshift-model-clusterautoscaling"
-    #"openshift-model-machineconfig"
-    #"openshift-model-machine"
-    #"openshift-model-miscellaneous"
-    #"openshift-model-monitoring"
-    #"openshift-model-tuned"
-    #"openshift-model-whereabouts"
-    #"openshift-model-storageversionmigrator"
+    "openshift-model"
+    "openshift-model-operator"
+    "openshift-model-operatorhub"
+    "openshift-model-console"
+    "openshift-model-clusterautoscaling"
+    "openshift-model-machineconfig"
+    "openshift-model-machine"
+    "openshift-model-miscellaneous"
+    "openshift-model-monitoring"
+    "openshift-model-tuned"
+    "openshift-model-whereabouts"
+    "openshift-model-storageversionmigrator"
 )
 
 declare -a extensionModuleParents=(
@@ -111,15 +111,11 @@ generateSingleModule() {
 
 extensionInstallCommonModules() {
     mvn clean install -f ../model-annotator/pom.xml
-    #mvn clean install -DskipTests -f ../kubernetes-client/pom.xml
-    #mvn clean install -DskipTests -f ../kubernetes-server-mock/pom.xml
     mvn clean install -N -f ../extensions/pom.xml
     for parent in ${extensionModuleParents[*]}
     do
         mvn clean install -N -f "$parent"
     done
-    #mvn clean install -N -f ../extensions/knative/pom.xml
-    #mvn clean install -N -f ../extensions/knative/model/pom.xml
 }
 
 echo "Installing required common modules"
