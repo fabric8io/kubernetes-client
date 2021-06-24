@@ -28,6 +28,7 @@ import okhttp3.ResponseBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.InetAddress;
 import java.util.concurrent.TimeUnit;
 
 public class PortForwardExample {
@@ -52,7 +53,8 @@ public class PortForwardExample {
       int containerPort =  pod.getSpec().getContainers().get(0).getPorts().get(0).getContainerPort();
       client.pods().inNamespace(namespace).withName(podName).waitUntilReady(10, TimeUnit.SECONDS);
 
-      LocalPortForward portForward = client.pods().inNamespace("default").withName("testpod").portForward(containerPort, 8080);
+      InetAddress inetAddress = InetAddress.getByAddress(new byte[]{127,0,0,1});
+      LocalPortForward portForward = client.pods().inNamespace("default").withName("testpod").portForward(containerPort, inetAddress, 8080);
       logger.info("Port forwarded for 60 seconds at http://127.0.0.1:{}", portForward.getLocalPort());
 
       logger.info("Checking forwarded port:-");

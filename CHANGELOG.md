@@ -23,6 +23,7 @@
 
 #### New Features
 * Fix #3721: Add support for uploading file via InputStream
+* Fix #3234: Allow specifying specific localhost while port-forwarding
 
 #### _**Note**_: Breaking changes in the API
 
