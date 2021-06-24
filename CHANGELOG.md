@@ -30,6 +30,7 @@
 * Fix #3186: WebSockets and HTTP connections are closed as soon as possible for Watches.
 * Fix #2937: Add `SharedInformerFactory#getExistingSharedIndexInformers` method to return list of registered informers
 * Fix #3239: Add the `Informable` interface for context specific dsl methods to create `SharedIndexInformer`s.
+* Fix #3101: making isWatching a health check for the informer
 
 #### Dependency Upgrade
 * Fix #2741: Update Knative Model to v0.23.0
