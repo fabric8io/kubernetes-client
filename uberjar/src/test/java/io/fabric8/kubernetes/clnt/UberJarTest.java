@@ -159,7 +159,8 @@ class UberJarTest {
   }
 
   private File getFileInDirectory(File parentFile, String pathToFile) {
-    pathToFile = pathToFile.replaceAll("/", File.separator);
+    String toReplaceChar = File.separator.equals("/") ? File.separator : "\\\\";
+    pathToFile = pathToFile.replaceAll("/", toReplaceChar);
     return new File(parentFile, pathToFile);
   }
 
