@@ -57,6 +57,124 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_ClientConfig": {
+      "type": "object",
+      "properties": {
+        "service": {
+          "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_ServiceReference",
+          "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.ServiceReference"
+        },
+        "url": {
+          "existingJavaType": "java.lang.String"
+        }
+      },
+      "javaType": "io.fabric8.tekton.triggers.v1alpha1.ClientConfig",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_ClusterInterceptor": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "triggers.tekton.dev/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "ClusterInterceptor",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_ClusterInterceptorSpec",
+          "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.ClusterInterceptorSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_ClusterInterceptorStatus",
+          "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.ClusterInterceptorStatus"
+        }
+      },
+      "javaType": "io.fabric8.tekton.triggers.v1alpha1.ClusterInterceptor",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_ClusterInterceptorList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "triggers.tekton.dev/v1alpha1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_ClusterInterceptor",
+            "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.ClusterInterceptor"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "ClusterInterceptorList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.tekton.triggers.v1alpha1.ClusterInterceptorList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.tekton.triggers.v1alpha1.ClusterInterceptor\u003e"
+      ]
+    },
+    "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_ClusterInterceptorSpec": {
+      "type": "object",
+      "properties": {
+        "clientConfig": {
+          "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_ClientConfig",
+          "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.ClientConfig"
+        }
+      },
+      "javaType": "io.fabric8.tekton.triggers.v1alpha1.ClusterInterceptorSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_ClusterInterceptorStatus": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Addressable",
+          "existingJavaType": "io.fabric8.tekton.triggers.internal.knative.pkg.apis.duck.v1.Addressable"
+        },
+        "annotations": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
+            "existingJavaType": "io.fabric8.tekton.triggers.internal.knative.pkg.apis.Condition"
+          }
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        }
+      },
+      "javaType": "io.fabric8.tekton.triggers.v1alpha1.ClusterInterceptorStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_ClusterTriggerBinding": {
       "type": "object",
       "properties": {
@@ -496,6 +614,28 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_ServiceReference": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer",
+          "existingJavaType": "Integer"
+        }
+      },
+      "javaType": "io.fabric8.tekton.triggers.v1alpha1.ServiceReference",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_Trigger": {
       "type": "object",
       "properties": {
@@ -908,6 +1048,18 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "knative_dev_pkg_apis_duck_v1_Addressable": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "existingJavaType": "java.lang.String"
+        }
+      },
+      "javaType": "io.fabric8.tekton.triggers.internal.knative.pkg.apis.duck.v1.Addressable",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "knative_dev_pkg_apis_duck_v1_PodSpecable": {
       "type": "object",
       "properties": {
@@ -965,6 +1117,26 @@
     "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_CELOverlay": {
       "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_CELOverlay",
       "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.CELOverlay"
+    },
+    "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_ClientConfig": {
+      "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_ClientConfig",
+      "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.ClientConfig"
+    },
+    "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_ClusterInterceptor": {
+      "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_ClusterInterceptor",
+      "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.ClusterInterceptor"
+    },
+    "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_ClusterInterceptorList": {
+      "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_ClusterInterceptorList",
+      "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.ClusterInterceptorList"
+    },
+    "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_ClusterInterceptorSpec": {
+      "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_ClusterInterceptorSpec",
+      "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.ClusterInterceptorSpec"
+    },
+    "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_ClusterInterceptorStatus": {
+      "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_ClusterInterceptorStatus",
+      "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.ClusterInterceptorStatus"
     },
     "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_ClusterTriggerBinding": {
       "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_ClusterTriggerBinding",
@@ -1042,6 +1214,10 @@
       "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_SecretRef",
       "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.SecretRef"
     },
+    "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_ServiceReference": {
+      "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_ServiceReference",
+      "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.ServiceReference"
+    },
     "github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_Trigger": {
       "$ref": "#/definitions/github_com_tektoncd_triggers_pkg_apis_triggers_v1alpha1_Trigger",
       "existingJavaType": "io.fabric8.tekton.triggers.v1alpha1.Trigger"
@@ -1105,6 +1281,10 @@
     "knative_dev_pkg_apis_Condition": {
       "$ref": "#/definitions/knative_dev_pkg_apis_Condition",
       "existingJavaType": "io.fabric8.tekton.triggers.internal.knative.pkg.apis.Condition"
+    },
+    "knative_dev_pkg_apis_duck_v1_Addressable": {
+      "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_Addressable",
+      "existingJavaType": "io.fabric8.tekton.triggers.internal.knative.pkg.apis.duck.v1.Addressable"
     },
     "knative_dev_pkg_apis_duck_v1_PodSpecable": {
       "$ref": "#/definitions/knative_dev_pkg_apis_duck_v1_PodSpecable",

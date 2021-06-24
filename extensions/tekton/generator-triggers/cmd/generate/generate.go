@@ -35,6 +35,7 @@ func main() {
 		reflect.TypeOf(triggers.TriggerBindingList{}):        schemagen.Namespaced,
 		reflect.TypeOf(triggers.EventListenerList{}):         schemagen.Namespaced,
 		reflect.TypeOf(triggers.ClusterTriggerBindingList{}): schemagen.Cluster,
+		reflect.TypeOf(triggers.ClusterInterceptorList{}):    schemagen.Cluster,
 	}
 
 	// constraints and patterns for fields
