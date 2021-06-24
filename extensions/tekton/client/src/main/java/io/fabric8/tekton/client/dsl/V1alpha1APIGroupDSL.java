@@ -119,4 +119,11 @@ public interface V1alpha1APIGroupDSL extends Client {
    * @return MixedOperation for ClusterTriggerBinding class
    */
   NonNamespaceOperation<ClusterTriggerBinding, ClusterTriggerBindingList, Resource<ClusterTriggerBinding>> clusterTriggerBindings();
+
+  /**
+   * API entrypoint for ClusterInterceptor(triggers.tekton.dev/v1alpha1)
+   *
+   * @return MixedOperation for ClusterInterceptor class
+   */
+  NonNamespaceOperation<ClusterInterceptor, ClusterInterceptorList, Resource<ClusterInterceptor>> clusterInterceptors();
 }

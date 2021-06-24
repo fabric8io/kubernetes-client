@@ -49,6 +49,8 @@
 * Add DSL support for OpenShift Whereabouts CNI Model `whereabouts.cni.cncf.io` to OpenShiftClient DSL
 * Add DSL support for OpenShift Kube Storage Version Migrator resources in OpenShiftClient DSL
 * Fix #3228: Add support for Dynamic informers for custom resources in KubernetesClient
+* Add DSL support for ClusterInterceptors to TektonClient
+
 
 #### _**Note**_: Breaking changes in the API
 ##### DSL Changes:

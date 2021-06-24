@@ -22,18 +22,7 @@ import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.tekton.client.dsl.V1alpha1APIGroupDSL;
 import io.fabric8.tekton.client.internal.v1alpha1.*;
-import io.fabric8.tekton.pipeline.v1alpha1.ClusterTask;
-import io.fabric8.tekton.pipeline.v1alpha1.ClusterTaskList;
-import io.fabric8.tekton.pipeline.v1alpha1.Condition;
-import io.fabric8.tekton.pipeline.v1alpha1.ConditionList;
-import io.fabric8.tekton.pipeline.v1alpha1.Pipeline;
-import io.fabric8.tekton.pipeline.v1alpha1.PipelineList;
-import io.fabric8.tekton.pipeline.v1alpha1.PipelineRun;
-import io.fabric8.tekton.pipeline.v1alpha1.PipelineRunList;
-import io.fabric8.tekton.pipeline.v1alpha1.Task;
-import io.fabric8.tekton.pipeline.v1alpha1.TaskList;
-import io.fabric8.tekton.pipeline.v1alpha1.TaskRun;
-import io.fabric8.tekton.pipeline.v1alpha1.TaskRunList;
+import io.fabric8.tekton.pipeline.v1alpha1.*;
 import io.fabric8.tekton.resource.v1alpha1.PipelineResource;
 import io.fabric8.tekton.resource.v1alpha1.PipelineResourceList;
 import io.fabric8.tekton.triggers.v1alpha1.*;
@@ -106,5 +95,10 @@ public class V1alpha1APIGroupClient extends BaseClient implements V1alpha1APIGro
   @Override
   public NonNamespaceOperation<ClusterTriggerBinding, ClusterTriggerBindingList, Resource<ClusterTriggerBinding>> clusterTriggerBindings() {
     return new ClusterTriggerBindingOperationsImpl(this.getHttpClient(),this.getConfiguration());
+  }
+
+  @Override
+  public NonNamespaceOperation<ClusterInterceptor, ClusterInterceptorList, Resource<ClusterInterceptor>> clusterInterceptors() {
+    return new ClusterInterceptorOperationsImpl(this.getHttpClient(), this.getConfiguration());
   }
 }
