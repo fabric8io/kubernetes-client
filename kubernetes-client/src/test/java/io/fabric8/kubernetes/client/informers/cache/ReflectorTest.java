@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.informers.ListerWatcher;
 import org.junit.jupiter.api.Test;
@@ -29,7 +30,6 @@ import org.mockito.Mockito;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.fail;
 
 class ReflectorTest {
 
@@ -62,6 +62,26 @@ class ReflectorTest {
     assertTrue(reflector.isRunning());
 
     reflector.stop();
+
+    assertFalse(reflector.isWatching());
+    assertFalse(reflector.isRunning());
+  }
+  
+  @Test
+  void testNonHttpGone() {
+    ListerWatcher<Pod, PodList> mock = Mockito.mock(ListerWatcher.class);
+    PodList list = new PodListBuilder().withNewMetadata().withResourceVersion("1").endMetadata().build();
+    Mockito.when(mock.list(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(list);
+
+    Reflector<Pod, PodList> reflector =
+        new Reflector<>(Pod.class, mock, Mockito.mock(SyncableStore.class), new OperationContext());
+
+    reflector.listSyncAndWatch();
+
+    assertTrue(reflector.isWatching());
+    assertTrue(reflector.isRunning());
+
+    reflector.getWatcher().onClose(new WatcherException(null));
 
     assertFalse(reflector.isWatching());
     assertFalse(reflector.isRunning());
