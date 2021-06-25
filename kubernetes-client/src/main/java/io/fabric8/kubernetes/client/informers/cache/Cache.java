@@ -44,13 +44,13 @@ public class Cache<T> implements Indexer<T> {
   public static final String NAMESPACE_INDEX = "namespace";
 
   // indexers stores index functions by their names
-  private Map<String, Function<T, List<String>>> indexers = new HashMap<>();
+  private final Map<String, Function<T, List<String>>> indexers = new HashMap<>();
 
   // items stores object instances
   private volatile ConcurrentHashMap<String, T> items = new ConcurrentHashMap<>();
 
   // indices stores objects' key by their indices
-  private Map<String, Map<String, Set<String>>> indices = new HashMap<>();
+  private final Map<String, Map<String, Set<String>>> indices = new HashMap<>();
   
   private BooleanSupplier isRunning = () -> false;
 
@@ -74,12 +74,12 @@ public class Cache<T> implements Indexer<T> {
    * @return registered indexers
    */
   @Override
-  public Map<String, Function<T, List<String>>> getIndexers() {
-    return indexers;
+  public synchronized Map<String, Function<T, List<String>>> getIndexers() {
+    return Collections.unmodifiableMap(indexers);
   }
 
   @Override
-  public void addIndexers(Map<String, Function<T, List<String>>> indexersNew) {
+  public synchronized void addIndexers(Map<String, Function<T, List<String>>> indexersNew) {
     if (isRunning.getAsBoolean()) {
       throw new IllegalStateException("Cannot add indexers to a running informer.");
     }  
@@ -147,7 +147,7 @@ public class Cache<T> implements Indexer<T> {
     this.items = newItems;
 
     // rebuild any index
-    this.indices = new HashMap<>();
+    this.indices.values().stream().forEach(Map::clear);
     for (Map.Entry<String, T> itemEntry : items.entrySet()) {
       this.updateIndices(null, itemEntry.getValue(), itemEntry.getKey());
     }
@@ -294,7 +294,7 @@ public class Cache<T> implements Indexer<T> {
    * @param newObj new object
    * @param key the key
    */
-  public void updateIndices(T oldObj, T newObj, String key) {
+  void updateIndices(T oldObj, T newObj, String key) {
     if (oldObj != null) {
       deleteFromIndices(oldObj, key);
     }
@@ -307,7 +307,7 @@ public class Cache<T> implements Indexer<T> {
         continue;
       }
 
-      Map<String, Set<String>> index = this.indices.computeIfAbsent(indexName, k -> new HashMap<>());
+      Map<String, Set<String>> index = this.indices.get(indexName);
       for (String indexValue : indexValues) {
         Set<String> indexSet = index.computeIfAbsent(indexValue, k -> new HashSet<>());
         indexSet.add(key);
@@ -350,7 +350,7 @@ public class Cache<T> implements Indexer<T> {
    * @param indexName the index name
    * @param indexFunc the index func
    */
-  public void addIndexFunc(String indexName, Function<T, List<String>> indexFunc) {
+  public synchronized void addIndexFunc(String indexName, Function<T, List<String>> indexFunc) {
     this.indices.put(indexName, new HashMap<>());
     this.indexers.put(indexName, indexFunc);
   }

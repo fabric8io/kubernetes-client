@@ -20,12 +20,14 @@ import io.fabric8.kubernetes.api.model.PodBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class CacheTest {
   private static Cache cache = new Cache("mock", CacheTest::mockIndexFunction, CacheTest::mockKeyFunction);
@@ -49,6 +51,9 @@ class CacheTest {
     List<String> allExistingKeys = cache.listKeys();
     assertEquals(1, allExistingKeys.size());
     assertEquals(key, allExistingKeys.get(0));
+    
+    cache.replace(Collections.emptyList());
+    assertEquals(0, cache.byIndex("mock", "y").size());
   }
 
   @Test
