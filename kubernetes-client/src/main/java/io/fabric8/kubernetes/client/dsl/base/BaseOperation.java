@@ -59,6 +59,7 @@ import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 import io.fabric8.kubernetes.client.informers.impl.DefaultSharedIndexInformer;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
+import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.client.utils.WatcherToggle;
@@ -107,8 +108,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   private final boolean reloadingFromServer;
   private final long gracePeriodSeconds;
   private final DeletionPropagation propagationPolicy;
-  private final long watchRetryInitialBackoffMillis;
-  private final double watchRetryBackoffMultiplier;
 
   protected String apiVersion;
 
@@ -124,8 +123,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     this.resourceVersion = ctx.getResourceVersion();
     this.gracePeriodSeconds = ctx.getGracePeriodSeconds();
     this.propagationPolicy = ctx.getPropagationPolicy();
-    this.watchRetryInitialBackoffMillis = ctx.getWatchRetryInitialBackoffMillis();
-    this.watchRetryBackoffMultiplier = ctx.getWatchRetryBackoffMultiplier();
   }
 
   public BaseOperation<T, L, R> newInstance(OperationContext context) {
@@ -234,7 +231,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   public T edit(UnaryOperator<T> function) {
     throw new KubernetesClientException(READ_ONLY_EDIT_EXCEPTION_MESSAGE);
   }
-  
+
   @Override
   public T editStatus(UnaryOperator<T> function) {
     throw new KubernetesClientException(READ_ONLY_EDIT_EXCEPTION_MESSAGE);
@@ -423,7 +420,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   public FilterWatchListDeletable<T, L> withLabelIn(String key, String... values) {
     return withNewFilter().withLabelIn(key, values).endFilter();
   }
-  
+
   @Override
   public FilterWatchListDeletable<T, L> withLabelNotIn(String key, String... values) {
     return withNewFilter().withLabelNotIn(key, values).endFilter();
@@ -446,7 +443,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public FilterWatchListDeletable<T, L> withField(String key, String value) {
-    return withNewFilter().withField(key, value).endFilter(); 
+    return withNewFilter().withField(key, value).endFilter();
   }
 
   @Override
@@ -461,7 +458,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   public FilterNested<FilterWatchListDeletable<T, L>> withNewFilter() {
     return new FilterNestedImpl<>(this);
   }
-  
+
   @Override
   public FilterWatchListDeletable<T, L> withoutFields(Map<String, String> fields) {
     return withNewFilter().withoutFields(fields).endFilter();
@@ -474,7 +471,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   public String getLabelQueryParam() {
     StringBuilder sb = new StringBuilder();
-    
+
     Map<String, String> labels = context.getLabels();
     if (labels != null && !labels.isEmpty()) {
       for (Iterator<Map.Entry<String, String>> iter = labels.entrySet().iterator(); iter.hasNext(); ) {
@@ -656,7 +653,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     }
 
   }
-  
+
   @Override
   public T patchStatus(T item) {
     throw new KubernetesClientException(READ_ONLY_UPDATE_EXCEPTION_MESSAGE);
@@ -760,7 +757,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   public T replace(T item) {
     throw new KubernetesClientException(READ_ONLY_UPDATE_EXCEPTION_MESSAGE);
   }
-  
+
   @Override
   public T replaceStatus(T item) {
     throw new KubernetesClientException(READ_ONLY_UPDATE_EXCEPTION_MESSAGE);
@@ -770,7 +767,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   public T patch(PatchContext patchContext, String patch) {
     throw new KubernetesClientException(READ_ONLY_UPDATE_EXCEPTION_MESSAGE);
   }
-  
+
   @Override
   public T patch(PatchContext patchContext, T item) {
     throw new KubernetesClientException(READ_ONLY_UPDATE_EXCEPTION_MESSAGE);
@@ -992,42 +989,27 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   @Override
   public T waitUntilCondition(Predicate<T> condition, long amount, TimeUnit timeUnit)
     throws InterruptedException {
-    return waitUntilConditionWithRetries(condition, timeUnit.toNanos(amount), watchRetryInitialBackoffMillis);
-  }
 
-  private T waitUntilConditionWithRetries(Predicate<T> condition, long timeoutNanos, long backoffMillis)
-    throws InterruptedException {
-    ListOptions options = null;
-
-    if (resourceVersion != null) {
-      options = createListOptions(resourceVersion);
-    }
-
-    long currentBackOff = backoffMillis;
-    long remainingNanosToWait = timeoutNanos;
+    long remainingNanosToWait = timeUnit.toNanos(amount);
     while (remainingNanosToWait > 0) {
 
       T item = fromServer().get();
       if (condition.test(item)) {
         return item;
-      } else if (options == null) {
-        options = createListOptions(getResourceVersion(item));
       }
 
       final WaitForConditionWatcher<T> watcher = new WaitForConditionWatcher<>(condition);
       final long startTime = System.nanoTime();
-      try (Watch ignored = watch(options, watcher)) {
+      try (Watch ignored = watch(KubernetesResourceUtil.getResourceVersion(item), watcher)) {
         return watcher.getFuture().get(remainingNanosToWait, NANOSECONDS);
       } catch (ExecutionException e) {
         Throwable cause = e.getCause();
-        if (cause instanceof WatcherException && ((WatcherException) cause).isShouldRetry()) {
-          LOG.debug("retryable watch exception encountered, retrying after {} millis", currentBackOff, cause);
-          Thread.sleep(currentBackOff);
-          currentBackOff *= watchRetryBackoffMultiplier;
+        if (cause instanceof WatcherException && ((WatcherException)cause).isHttpGone()) {
+          LOG.debug("Restarting the watch due to http gone");
           remainingNanosToWait -= (System.nanoTime() - startTime);
-        } else {
-          throw KubernetesClientException.launderThrowable(cause);
+          continue;
         }
+        throw KubernetesClientException.launderThrowable(cause);
       } catch (TimeoutException e) {
         break;
       }
@@ -1035,16 +1017,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
     LOG.debug("ran out of time waiting for watcher, wait condition not met");
     throw new IllegalArgumentException(type.getSimpleName() + " with name:[" + name + "] in namespace:[" + namespace + "] matching condition not found!");
-  }
-
-  private static String getResourceVersion(HasMetadata item) {
-    return (item == null) ? null : item.getMetadata().getResourceVersion();
-  }
-
-  private static ListOptions createListOptions(String resourceVersion) {
-    return new ListOptionsBuilder()
-      .withResourceVersion(resourceVersion)
-      .build();
   }
 
   public void setType(Class<T> type) {
@@ -1063,14 +1035,14 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   public WritableOperation<T> dryRun(boolean isDryRun) {
     return newInstance(context.withDryRun(isDryRun));
   }
-  
+
   @Override
   public Informable<T> withIndexers(Map<String, Function<T, List<String>>> indexers) {
     BaseOperation<T, L, R> result = newInstance(context);
     result.indexers = indexers;
     return result;
   }
-  
+
   @Override
   public SharedIndexInformer<T> inform(ResourceEventHandler<T> handler, long resync) {
     // convert the name into something listable
@@ -1083,7 +1055,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       public L list(ListOptions params, String namespace, OperationContext context) {
         return baseOperation.list(params);
       }
-      
+
       @Override
       public Watch watch(ListOptions params, String namespace, OperationContext context, Watcher<T> watcher) {
         return baseOperation.watch(params, watcher);

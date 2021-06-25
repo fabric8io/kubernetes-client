@@ -33,6 +33,8 @@ public interface Waitable<T, P> {
    * @param backoffUnit the TimeUnit for the initial backoff value
    * @param backoffMultiplier what to multiply the backoff by on each subsequent error
    * @return the waitable
+   * @deprecated no longer used
    */
+  @Deprecated
   Waitable<T, P> withWaitRetryBackoff(long initialBackoff, TimeUnit backoffUnit, double backoffMultiplier);
 }
