@@ -256,7 +256,7 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList,
 
   private void waitUntilBuildPodBecomesReady(Build build) {
     List<PodResource<Pod>> podOps = PodOperationUtil.getPodOperationsForController(context, build.getMetadata().getUid(),
-      getBuildPodLabels(build), withPrettyOutput, podLogWaitTimeout);
+      getBuildPodLabels(build), withPrettyOutput, podLogWaitTimeout, null);
 
     waitForBuildPodToBecomeReady(podOps, podLogWaitTimeout != null ? podLogWaitTimeout : DEFAULT_POD_LOG_WAIT_TIMEOUT);
   }

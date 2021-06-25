@@ -260,9 +260,9 @@ public class StatefulSetTest {
     // Given
     String imageToUpdate = "nginx:latest";
     server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/statefulsets/statefulset1")
-      .andReturn(HttpURLConnection.HTTP_OK, getStatefulSetBuilder().build()).times(3);
+      .andReturn(HttpURLConnection.HTTP_OK, createStatefulSetBuilder().build()).times(3);
     server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/statefulsets/statefulset1")
-      .andReturn(HttpURLConnection.HTTP_OK, getStatefulSetBuilder()
+      .andReturn(HttpURLConnection.HTTP_OK, createStatefulSetBuilder()
         .editSpec().editTemplate().editSpec().editContainer(0)
         .withImage(imageToUpdate)
         .endContainer().endSpec().endTemplate().endSpec()
@@ -286,9 +286,9 @@ public class StatefulSetTest {
     // Given
     Map<String, String> containerToImageMap = Collections.singletonMap("nginx", "nginx:latest");
     server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/statefulsets/statefulset1")
-      .andReturn(HttpURLConnection.HTTP_OK, getStatefulSetBuilder().build()).times(3);
+      .andReturn(HttpURLConnection.HTTP_OK, createStatefulSetBuilder().build()).times(3);
     server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/statefulsets/statefulset1")
-      .andReturn(HttpURLConnection.HTTP_OK, getStatefulSetBuilder()
+      .andReturn(HttpURLConnection.HTTP_OK, createStatefulSetBuilder()
         .editSpec().editTemplate().editSpec().editContainer(0)
         .withImage(containerToImageMap.get("nginx"))
         .endContainer().endSpec().endTemplate().endSpec()
@@ -309,9 +309,9 @@ public class StatefulSetTest {
   void testRolloutPause() throws InterruptedException {
     // Given
     server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/statefulsets/statefulset1")
-      .andReturn(HttpURLConnection.HTTP_OK, getStatefulSetBuilder().build()).times(3);
+      .andReturn(HttpURLConnection.HTTP_OK, createStatefulSetBuilder().build()).times(3);
     server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/statefulsets/statefulset1")
-      .andReturn(HttpURLConnection.HTTP_OK, getStatefulSetBuilder().build()).once();
+      .andReturn(HttpURLConnection.HTTP_OK, createStatefulSetBuilder().build()).once();
 
     // When
     StatefulSet deployment = client.apps().statefulSets().inNamespace("ns1").withName("statefulset1")
@@ -328,9 +328,9 @@ public class StatefulSetTest {
   void testRolloutResume() throws InterruptedException {
     // Given
     server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/statefulsets/statefulset1")
-      .andReturn(HttpURLConnection.HTTP_OK, getStatefulSetBuilder().build()).times(3);
+      .andReturn(HttpURLConnection.HTTP_OK, createStatefulSetBuilder().build()).times(3);
     server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/statefulsets/statefulset1")
-      .andReturn(HttpURLConnection.HTTP_OK, getStatefulSetBuilder().build()).once();
+      .andReturn(HttpURLConnection.HTTP_OK, createStatefulSetBuilder().build()).once();
 
     // When
     StatefulSet deployment = client.apps().statefulSets().inNamespace("ns1").withName("statefulset1")
@@ -347,9 +347,9 @@ public class StatefulSetTest {
   void testRolloutRestart() throws InterruptedException {
     // Given
     server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/statefulsets/statefulset1")
-      .andReturn(HttpURLConnection.HTTP_OK, getStatefulSetBuilder().build()).times(3);
+      .andReturn(HttpURLConnection.HTTP_OK, createStatefulSetBuilder().build()).times(3);
     server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/statefulsets/statefulset1")
-      .andReturn(HttpURLConnection.HTTP_OK, getStatefulSetBuilder().build()).once();
+      .andReturn(HttpURLConnection.HTTP_OK, createStatefulSetBuilder().build()).once();
 
     // When
     StatefulSet deployment = client.apps().statefulSets().inNamespace("ns1").withName("statefulset1")
@@ -424,9 +424,9 @@ public class StatefulSetTest {
     server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/controllerrevisions?labelSelector=" + Utils.toUrlEncoded("app=nginx"))
       .andReturn(HttpURLConnection.HTTP_OK, new ControllerRevisionListBuilder().withItems(controllerRevision1, controllerRevision2).build()).once();
     server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/statefulsets/statefulset1")
-      .andReturn(HttpURLConnection.HTTP_OK, getStatefulSetBuilder().build()).times(3);
+      .andReturn(HttpURLConnection.HTTP_OK, createStatefulSetBuilder().build()).times(3);
     server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/statefulsets/statefulset1")
-      .andReturn(HttpURLConnection.HTTP_OK, getStatefulSetBuilder().build()).once();
+      .andReturn(HttpURLConnection.HTTP_OK, createStatefulSetBuilder().build()).once();
 
     // When
     StatefulSet deployment = client.apps().statefulSets().inNamespace("ns1").withName("statefulset1")
@@ -442,21 +442,10 @@ public class StatefulSetTest {
   @DisplayName("Should test get logs from statefulset")
   void testGetLogStatefulSet() {
     // Given
-    Pod jobPod = new PodBuilder()
-      .withNewMetadata()
-      .withOwnerReferences(new OwnerReferenceBuilder().withApiVersion("apps/v1")
-        .withBlockOwnerDeletion(true)
-        .withController(true)
-        .withKind("StatefulSet")
-        .withName("pi")
-        .withUid("3Dc4c8746c-94fd-47a7-ac01-11047c0323b4")
-        .build())
-      .withName("ss-hk9nf").addToLabels("controller-uid", "3Dc4c8746c-94fd-47a7-ac01-11047c0323b4")
-      .endMetadata()
-      .build();
+    Pod jobPod = createPod();
 
     server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/statefulsets/statefulset1")
-      .andReturn(HttpURLConnection.HTTP_OK, getStatefulSetBuilder().build())
+      .andReturn(HttpURLConnection.HTTP_OK, createStatefulSetBuilder().build())
       .always();
 
     server.expect().get().withPath("/api/v1/namespaces/ns1/pods?labelSelector=app%3Dnginx")
@@ -474,7 +463,47 @@ public class StatefulSetTest {
     assertEquals("hello", log);
   }
 
-  private StatefulSetBuilder getStatefulSetBuilder() {
+  @Test
+  @DisplayName("Should test get logs from multi-container statefulset")
+  void testGetLogStatefulSetMultiContainer() {
+    // Given
+    Pod jobPod = createPod();
+
+    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/statefulsets/statefulset1")
+      .andReturn(HttpURLConnection.HTTP_OK, createStatefulSetBuilder().build())
+      .always();
+
+    server.expect().get().withPath("/api/v1/namespaces/ns1/pods?labelSelector=app%3Dnginx")
+      .andReturn(HttpURLConnection.HTTP_OK, new PodListBuilder().withItems(jobPod).build())
+      .once();
+    server.expect().get().withPath("/api/v1/namespaces/ns1/pods/ss-hk9nf/log?pretty=false&container=c1")
+      .andReturn(HttpURLConnection.HTTP_OK, "hello")
+      .once();
+
+    // When
+    String log = client.apps().statefulSets().inNamespace("ns1").withName("statefulset1").inContainer("c1").getLog();
+
+    // Then
+    assertNotNull(log);
+    assertEquals("hello", log);
+  }
+
+  private Pod createPod() {
+    return new PodBuilder()
+      .withNewMetadata()
+      .withOwnerReferences(new OwnerReferenceBuilder().withApiVersion("apps/v1")
+        .withBlockOwnerDeletion(true)
+        .withController(true)
+        .withKind("StatefulSet")
+        .withName("pi")
+        .withUid("3Dc4c8746c-94fd-47a7-ac01-11047c0323b4")
+        .build())
+      .withName("ss-hk9nf").addToLabels("controller-uid", "3Dc4c8746c-94fd-47a7-ac01-11047c0323b4")
+      .endMetadata()
+      .build();
+  }
+
+  private StatefulSetBuilder createStatefulSetBuilder() {
     return new StatefulSetBuilder()
       .withNewMetadata()
       .withName("statefulset1")

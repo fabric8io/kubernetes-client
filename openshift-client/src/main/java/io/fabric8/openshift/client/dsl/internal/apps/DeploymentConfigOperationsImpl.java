@@ -227,7 +227,7 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
 
   @Override
   public String getLog(Boolean isPretty) {
-    try(ResponseBody body = doGetLog(isPretty)) {
+    try {
       return doGetLog(isPretty).string();
     } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("getLog"), e);
@@ -301,7 +301,7 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
 
   private void waitUntilDeploymentConfigPodBecomesReady(DeploymentConfig deploymentConfig) {
     List<PodResource<Pod>> podOps = PodOperationUtil.getPodOperationsForController(context, deploymentConfig.getMetadata().getUid(),
-      getDeploymentConfigPodLabels(deploymentConfig), false, podLogWaitTimeout);
+      getDeploymentConfigPodLabels(deploymentConfig), false, podLogWaitTimeout, ((RollingOperationContext)context).getContainerId());
 
     waitForBuildPodToBecomeReady(podOps, podLogWaitTimeout != null ? podLogWaitTimeout : DEFAULT_POD_LOG_WAIT_TIMEOUT);
   }
@@ -318,5 +318,10 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
       labels.put(OPENSHIFT_IO_DEPLOYMENT_CONFIG_NAME, deploymentConfig.getMetadata().getName());
     }
     return labels;
+  }
+
+  @Override
+  public Loggable<LogWatch> inContainer(String id) {
+    return newInstance(((RollingOperationContext) context).withContainerId(id));
   }
 }
