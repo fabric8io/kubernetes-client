@@ -244,7 +244,7 @@ public class JobTest {
   @DisplayName("Should append Selector and MatchLabels from exiting job instance while patching a Job")
   public void testCreateOrReplaceWithExistingJob() {
     // Given
-    Job jobExistingInServer = getJobBuilder()
+    Job jobExistingInServer = createJobBuilder()
       .editSpec()
       .editOrNewTemplate().editOrNewMetadata()
       .addToLabels("controller-uid", "df842342-33bb-4f6c-9707-f76a86748ee6")
@@ -260,7 +260,7 @@ public class JobTest {
     server.expect().post().withPath("/apis/batch/v1/namespaces/test/jobs")
       .andReturn(HttpURLConnection.HTTP_CONFLICT, jobExistingInServer).once();
     server.expect().put().withPath("/apis/batch/v1/namespaces/test/jobs/job1")
-      .andReturn(HttpURLConnection.HTTP_OK, getJobBuilder()
+      .andReturn(HttpURLConnection.HTTP_OK, createJobBuilder()
         .editOrNewMetadata().addToLabels("foo", "bar").addToLabels("foo1", "bar1").endMetadata()
         .editSpec()
         .editOrNewTemplate().editOrNewMetadata()
@@ -272,7 +272,7 @@ public class JobTest {
         .endSpec()
         .build()).once();
 
-    Job job = getJobBuilder()
+    Job job = createJobBuilder()
       .editOrNewMetadata().addToLabels("foo", "bar").addToLabels("foo1", "bar1").endMetadata()
       .build();
 
@@ -293,21 +293,10 @@ public class JobTest {
   @DisplayName("Should get logs for a job")
   void testJobGetLog() {
     // Given
-    Pod jobPod = new PodBuilder()
-      .withNewMetadata()
-      .withOwnerReferences(new OwnerReferenceBuilder().withApiVersion("batch/v1")
-        .withBlockOwnerDeletion(true)
-        .withController(true)
-        .withKind("Job")
-        .withName("pi")
-        .withUid("3Dc4c8746c-94fd-47a7-ac01-11047c0323b4")
-      .build())
-      .withName("job1-hk9nf").addToLabels("controller-uid", "3Dc4c8746c-94fd-47a7-ac01-11047c0323b4")
-      .endMetadata()
-      .build();
+    Pod jobPod = createJobPod();
 
     server.expect().get().withPath("/apis/batch/v1/namespaces/ns1/jobs/job1")
-      .andReturn(HttpURLConnection.HTTP_OK, getJobBuilder().build())
+      .andReturn(HttpURLConnection.HTTP_OK, createJobBuilder().build())
       .always();
 
     server.expect().get().withPath("/api/v1/namespaces/ns1/pods?labelSelector=controller-uid%3D3Dc4c8746c-94fd-47a7-ac01-11047c0323b4")
@@ -325,7 +314,47 @@ public class JobTest {
     assertEquals("hello", log);
   }
 
-  private JobBuilder getJobBuilder() {
+  @Test
+  @DisplayName("Should get logs for a multi-container job")
+  void testJobGetLogMultiContainer() {
+    // Given
+    Pod jobPod = createJobPod();
+
+    server.expect().get().withPath("/apis/batch/v1/namespaces/ns1/jobs/job1")
+      .andReturn(HttpURLConnection.HTTP_OK, createJobBuilder().build())
+      .always();
+
+    server.expect().get().withPath("/api/v1/namespaces/ns1/pods?labelSelector=controller-uid%3D3Dc4c8746c-94fd-47a7-ac01-11047c0323b4")
+      .andReturn(HttpURLConnection.HTTP_OK, new PodListBuilder().withItems(jobPod).build())
+      .once();
+    server.expect().get().withPath("/api/v1/namespaces/ns1/pods/job1-hk9nf/log?pretty=false&container=c1")
+      .andReturn(HttpURLConnection.HTTP_OK, "hello")
+      .once();
+
+    // When
+    String log = client.batch().v1().jobs().inNamespace("ns1").withName("job1").inContainer("c1").getLog();
+
+    // Then
+    assertNotNull(log);
+    assertEquals("hello", log);
+  }
+
+  private Pod createJobPod() {
+    return new PodBuilder()
+      .withNewMetadata()
+      .withOwnerReferences(new OwnerReferenceBuilder().withApiVersion("batch/v1")
+        .withBlockOwnerDeletion(true)
+        .withController(true)
+        .withKind("Job")
+        .withName("pi")
+        .withUid("3Dc4c8746c-94fd-47a7-ac01-11047c0323b4")
+        .build())
+      .withName("job1-hk9nf").addToLabels("controller-uid", "3Dc4c8746c-94fd-47a7-ac01-11047c0323b4")
+      .endMetadata()
+      .build();
+  }
+
+  private JobBuilder createJobBuilder() {
     return new JobBuilder()
       .withApiVersion("batch/v1")
       .withNewMetadata()

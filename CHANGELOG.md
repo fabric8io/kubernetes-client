@@ -10,6 +10,7 @@
 
 #### New Features
 * Fix #3291: Retrying the HTTP operation in case of IOException too
+* Fix #2712: Add support for watching logs in multi-container Controller resources (Deployments, StatefulSets, ReplicaSet etc)
 
 ### 5.5.0 (2021-06-30)
 

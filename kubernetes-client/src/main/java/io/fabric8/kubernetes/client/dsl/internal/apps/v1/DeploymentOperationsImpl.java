@@ -27,6 +27,7 @@ import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.internal.RollingOperationContext;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
+import io.fabric8.kubernetes.client.utils.PodOperationUtil;
 import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
@@ -333,7 +334,7 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
 
     ReplicaSetOperationsImpl rsOperations = new ReplicaSetOperationsImpl(
       new RollingOperationContext(context.getClient(), context.getConfig(), context.getPlural(), context.getNamespace(),
-        null, context.getApiGroupName(), context.getApiGroupVersion(), context.getCascading(), null, context.getLabels(),
+        null, ((RollingOperationContext)context).getContainerId(), context.getApiGroupName(), context.getApiGroupVersion(), context.getCascading(), null, context.getLabels(),
         context.getLabelsNot(), context.getLabelsIn(), context.getLabelsNotIn(), context.getFields(), context.getFieldsNot(),
         context.getResourceVersion(), context.isReloadingFromServer(), context.getGracePeriodSeconds(), context.getPropagationPolicy(),
         context.getWatchRetryInitialBackoffMillis(), context.getWatchRetryBackoffMultiplier(), false, 0, null,
@@ -356,9 +357,10 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
   @Override
   public Reader getLogReader() {
     List<RollableScalableResource<ReplicaSet>> podResources = doGetLog();
-    if (podResources.size() > 1) {
-      throw new KubernetesClientException("Reading logs is not supported for multicontainer jobs");
-    } else if (podResources.size() == 1) {
+    if (!podResources.isEmpty()) {
+      if (podResources.size() > 1) {
+        LOG.debug("Found {} pods, Using first one to get log reader", podResources.size());
+      }
       return podResources.get(0).getLogReader();
     }
     return null;
@@ -371,11 +373,12 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
 
   @Override
   public LogWatch watchLog(OutputStream out) {
-    List<RollableScalableResource<ReplicaSet>> podResources = doGetLog();
-    if (podResources.size() > 1) {
-      throw new KubernetesClientException("Watching logs is not supported for multicontainer jobs");
-    } else if (podResources.size() == 1) {
-      return podResources.get(0).watchLog(out);
+    List<RollableScalableResource<ReplicaSet>> replicaSetResources = doGetLog();
+    if (!replicaSetResources.isEmpty()) {
+      if (replicaSetResources.size() > 1) {
+        LOG.debug("Found {} pods, Using first one to get logs", replicaSetResources.size());
+      }
+      return replicaSetResources.get(0).watchLog(out);
     }
     return null;
   }
@@ -414,5 +417,10 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
       labels.putAll(deployment.getSpec().getTemplate().getMetadata().getLabels());
     }
     return labels;
+  }
+
+  @Override
+  public Loggable<LogWatch> inContainer(String id) {
+    return new DeploymentOperationsImpl(((RollingOperationContext) context).withContainerId(id));
   }
 }

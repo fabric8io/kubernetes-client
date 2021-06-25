@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.Loggable;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.dsl.internal.PodControllerOperationContext;
 import io.fabric8.kubernetes.client.utils.PodOperationUtil;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.batch.v1.Job;
@@ -59,10 +60,10 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
   }
 
   public JobOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
+    this(new PodControllerOperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
 
-  public JobOperationsImpl(OperationContext context) {
+  public JobOperationsImpl(PodControllerOperationContext context) {
     super(context.withApiGroupName("batch")
       .withApiGroupVersion("v1")
       .withPlural("jobs"));
@@ -71,21 +72,21 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
     this.listType = JobList.class;
   }
 
-  private JobOperationsImpl(OperationContext context, Integer podLogWaitTimeout) {
+  private JobOperationsImpl(PodControllerOperationContext context, Integer podLogWaitTimeout) {
     this(context);
     this.podLogWaitTimeout = podLogWaitTimeout;
   }
 
   @Override
   public JobOperationsImpl newInstance(OperationContext context) {
-    return new JobOperationsImpl(context);
+    return new JobOperationsImpl(((PodControllerOperationContext)context));
   }
 
   @Override
   public ScalableResource<Job> load(InputStream is) {
     try {
       Job item = unmarshal(is, Job.class);
-      return new JobOperationsImpl(context.withItem(item));
+      return newInstance(context.withItem(item));
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -93,7 +94,7 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
 
   @Override
   public ScalableResource<Job> fromServer() {
-    return new JobOperationsImpl(context.withReloadingFromServer(true));
+    return newInstance(context.withReloadingFromServer(true));
   }
 
   @Override
@@ -179,7 +180,7 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
     Job job = requireFromServer();
 
     return PodOperationUtil.getPodOperationsForController(context, job.getMetadata().getUid(),
-      getJobPodLabels(job), isPretty, podLogWaitTimeout);
+      getJobPodLabels(job), isPretty, podLogWaitTimeout, ((PodControllerOperationContext)context).getContainerId());
   }
 
   /**
@@ -188,13 +189,7 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
    */
   @Override
   public Reader getLogReader() {
-    List<PodResource<Pod>> podResources = doGetLog(false);
-    if (podResources.size() > 1) {
-      throw new KubernetesClientException("Reading logs is not supported for multicontainer jobs");
-    } else if (podResources.size() == 1) {
-      return podResources.get(0).getLogReader();
-    }
-    return null;
+    return PodOperationUtil.getLogReader(doGetLog(false));
   }
 
   @Override
@@ -204,18 +199,12 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
 
   @Override
   public LogWatch watchLog(OutputStream out) {
-    List<PodResource<Pod>> podResources = doGetLog(false);
-    if (podResources.size() > 1) {
-      throw new KubernetesClientException("Watching logs is not supported for multicontainer jobs");
-    } else if (podResources.size() == 1) {
-      return podResources.get(0).watchLog(out);
-    }
-    return null;
+    return PodOperationUtil.watchLog(doGetLog(false), out);
   }
 
   @Override
   public Loggable<LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
-    return new JobOperationsImpl(context, logWaitTimeout);
+    return new JobOperationsImpl(((PodControllerOperationContext) context), logWaitTimeout);
   }
 
   @Override
@@ -249,5 +238,10 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
       labels.put("controller-uid", job.getMetadata().getUid());
     }
     return labels;
+  }
+
+  @Override
+  public Loggable<LogWatch> inContainer(String id) {
+    return new JobOperationsImpl(((PodControllerOperationContext) context).withContainerId(id));
   }
 }
