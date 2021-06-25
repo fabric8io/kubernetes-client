@@ -93,19 +93,11 @@ class WaitForConditionWatcherTest {
   }
 
   @Test
-  void itCompletesExceptionallyOnUnexpectedDeletion() throws Exception {
+  void itNotDeleted() throws Exception {
     TrackingPredicate condition = condition(Objects::nonNull);
     WaitForConditionWatcher<ConfigMap> watcher = new WaitForConditionWatcher<>(condition);
     watcher.eventReceived(Action.DELETED, configMap);
-    assertTrue(watcher.getFuture().isDone());
-    try {
-      watcher.getFuture().get();
-      fail("should have thrown exception");
-    } catch (ExecutionException e) {
-      assertEquals(WatcherException.class, e.getCause().getClass());
-      assertEquals("Unexpected deletion of watched resource, will never satisfy condition", e.getCause().getMessage());
-    }
-    assertTrue(condition.isCalledWith(null));
+    assertFalse(watcher.getFuture().isDone());
   }
 
   @Test
@@ -136,7 +128,6 @@ class WaitForConditionWatcherTest {
     } catch (ExecutionException e) {
       assertEquals(WatcherException.class, e.getCause().getClass());
       assertEquals("Watcher closed", e.getCause().getMessage());
-      assertTrue(((WatcherException) e.getCause()).isShouldRetry());
     }
     assertFalse(condition.isCalled());
   }
@@ -153,7 +144,6 @@ class WaitForConditionWatcherTest {
     } catch (ExecutionException e) {
       assertEquals(WatcherException.class, e.getCause().getClass());
       assertEquals("Watcher closed", e.getCause().getMessage());
-      assertFalse(((WatcherException) e.getCause()).isShouldRetry());
     }
     assertFalse(condition.isCalled());
   }
@@ -170,7 +160,6 @@ class WaitForConditionWatcherTest {
     } catch (ExecutionException e) {
       assertEquals(WatcherException.class, e.getCause().getClass());
       assertEquals("Watcher closed", e.getCause().getMessage());
-      assertTrue(((WatcherException) e.getCause()).isShouldRetry());
     }
     assertFalse(condition.isCalled());
   }

@@ -39,7 +39,4 @@ public class WatcherException extends Exception {
       || (cause.getStatus() != null && cause.getStatus().getCode() == HttpURLConnection.HTTP_GONE);
   }
 
-  public boolean isShouldRetry() {
-    return getCause() == null || !isHttpGone();
-  }
 }

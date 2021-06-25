@@ -48,8 +48,6 @@ public class WaitForConditionWatcher<T extends HasMetadata> implements Watcher<T
       case DELETED:
         if (condition.test(null)) {
           future.complete(null);
-        } else {
-          future.completeExceptionally(new WatcherException("Unexpected deletion of watched resource, will never satisfy condition"));
         }
         break;
       case ERROR:
