@@ -17,6 +17,7 @@
 * Fix #3243: pipes provided to exec command are no longer closed on connection close, so that client can fully read the buffer after the command finishes.
 * Fix #3272: prevent index npe after informer sees an empty list
 * Fix #3275: filter related dsl methods withLabel, withField, etc. should not modify the current context.  If you need similar behavior to the previous use `Filterable.withNewFilter`.
+* Fix #3271: waitUntilReady and waitUntilCondition should handle resource too old
 
 #### Improvements
 * Fix #3078: adding javadocs to further clarify patch, edit, replace, etc. and note the possibility of items being modified.
@@ -59,6 +60,7 @@
 ##### DSL Changes:
 - #3127 `StatusUpdatable.updateStatus` deprecated, please use patchStatus, editStatus, or replaceStatus
 - #3239 deprecated methods on SharedInformerFactory directly dealing with the OperationContext, withName, and withNamespace - the Informable interface should be used instead.
+- #3271 waitUntilReady and waitUntilCondition with throw a KubernetesClientTimeoutException instead of an IllegalArgumentException on timeout
 
 ##### Util Changes:
 - #3197 `Utils.waitUntilReady` now accepts a Future, rather than a BlockingQueue

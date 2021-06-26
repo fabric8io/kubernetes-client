@@ -185,8 +185,8 @@ public class ResourceListTest {
       .anyMatch(c -> "True".equals(c.getStatus()));
 
     // The pods are never ready if you request them directly.
-    server.expect().get().withPath("/api/v1/namespaces/ns1/pods/pod1").andReturn(HTTP_OK, noReady1).once();
-    server.expect().get().withPath("/api/v1/namespaces/ns1/pods/pod2").andReturn(HTTP_OK, noReady2).once();
+    server.expect().get().withPath("/api/v1/namespaces/ns1/pods?fieldSelector=metadata.name%3Dpod1&watch=false").andReturn(HTTP_OK, noReady1).once();
+    server.expect().get().withPath("/api/v1/namespaces/ns1/pods?fieldSelector=metadata.name%3Dpod2&watch=false").andReturn(HTTP_OK, noReady2).once();
 
     server.expect().get().withPath("/api/v1/namespaces/ns1/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true").andUpgradeToWebSocket()
       .open()
@@ -226,8 +226,8 @@ public class ResourceListTest {
       .anyMatch(c -> "True".equals(c.getStatus()));
 
     // The pods are never ready if you request them directly.
-    server.expect().get().withPath("/api/v1/namespaces/ns1/pods/pod1").andReturn(HTTP_OK, noReady1).once();
-    server.expect().get().withPath("/api/v1/namespaces/ns1/pods/pod2").andReturn(HTTP_OK, noReady2).once();
+    server.expect().get().withPath("/api/v1/namespaces/ns1/pods?fieldSelector=metadata.name%3Dpod1&watch=false").andReturn(HTTP_OK, noReady1).once();
+    server.expect().get().withPath("/api/v1/namespaces/ns1/pods?fieldSelector=metadata.name%3Dpod2&watch=false").andReturn(HTTP_OK, noReady2).once();
 
     Status gone = new StatusBuilder()
       .withCode(HTTP_GONE)
