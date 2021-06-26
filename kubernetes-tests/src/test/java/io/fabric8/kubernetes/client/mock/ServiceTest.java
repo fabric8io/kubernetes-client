@@ -18,10 +18,13 @@ package io.fabric8.kubernetes.client.mock;
 import io.fabric8.kubernetes.api.model.EndpointAddressBuilder;
 import io.fabric8.kubernetes.api.model.EndpointPortBuilder;
 import io.fabric8.kubernetes.api.model.EndpointSubsetBuilder;
+import io.fabric8.kubernetes.api.model.Endpoints;
 import io.fabric8.kubernetes.api.model.EndpointsBuilder;
+import io.fabric8.kubernetes.api.model.EndpointsListBuilder;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
+import io.fabric8.kubernetes.api.model.ServiceListBuilder;
 import io.fabric8.kubernetes.api.model.extensions.IngressListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
@@ -184,18 +187,22 @@ class ServiceTest {
   void testWaitUntilReady() throws InterruptedException {
     // Given
     Service svc1 = new ServiceBuilder().withNewMetadata().withName("svc1").endMetadata().build();
-    server.expect().get().withPath("/api/v1/namespaces/ns1/endpoints/svc1")
-      .andReturn(HttpURLConnection.HTTP_OK, new EndpointsBuilder()
-        .withNewMetadata().withName("svc1").endMetadata()
-        .addToSubsets(new EndpointSubsetBuilder()
-          .addToAddresses(new EndpointAddressBuilder().withIp("192.168.64.13").build())
-          .addToPorts(new EndpointPortBuilder().withPort(8443).build())
-          .build())
+    Endpoints endpoint = new EndpointsBuilder()
+      .withNewMetadata().withName("svc1").endMetadata()
+      .addToSubsets(new EndpointSubsetBuilder()
+        .addToAddresses(new EndpointAddressBuilder().withIp("192.168.64.13").build())
+        .addToPorts(new EndpointPortBuilder().withPort(8443).build())
         .build())
+      .build();
+    server.expect().get().withPath("/api/v1/namespaces/ns1/endpoints?fieldSelector=metadata.name%3Dsvc1&watch=false")
+      .andReturn(HttpURLConnection.HTTP_OK, new EndpointsListBuilder().withItems(endpoint).withNewMetadata().withResourceVersion("1").endMetadata().build())
+      .once();
+    server.expect().get().withPath("/api/v1/namespaces/ns1/services?fieldSelector=metadata.name%3Dsvc1&watch=false")
+      .andReturn(HttpURLConnection.HTTP_OK, new ServiceListBuilder().withItems(svc1).withNewMetadata().withResourceVersion("1").endMetadata().build())
       .once();
     server.expect().get().withPath("/api/v1/namespaces/ns1/services/svc1")
       .andReturn(HttpURLConnection.HTTP_OK, svc1)
-      .times(2);
+      .once();
 
     // When
     Service service = client.services()

@@ -140,7 +140,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
       return;
     }
 
-    log.info("informer#Controller: ready to run resync and reflector for {} with resync {}", apiTypeClass, resyncCheckPeriodMillis);
+    log.debug("informer: ready to run resync and reflector for {} with resync {}", apiTypeClass, resyncCheckPeriodMillis);
 
     scheduleResync(processor::shouldResync);
 

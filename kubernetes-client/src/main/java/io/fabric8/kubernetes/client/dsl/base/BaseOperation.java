@@ -16,7 +16,6 @@
 package io.fabric8.kubernetes.client.dsl.base;
 
 import io.fabric8.kubernetes.api.model.ObjectReference;
-import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.WritableOperation;
 import io.fabric8.kubernetes.client.utils.CreateOrReplaceHelper;
 import org.slf4j.Logger;
@@ -37,6 +36,7 @@ import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
 import io.fabric8.kubernetes.client.OperationInfo;
 import io.fabric8.kubernetes.client.ResourceNotFoundException;
 import io.fabric8.kubernetes.client.Watch;
@@ -59,7 +59,6 @@ import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 import io.fabric8.kubernetes.client.informers.impl.DefaultSharedIndexInformer;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
-import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.client.utils.WatcherToggle;
@@ -72,11 +71,11 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -87,8 +86,6 @@ import java.util.function.UnaryOperator;
 
 import okhttp3.HttpUrl;
 import okhttp3.Request;
-
-import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
 public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>>
   extends OperationSupport
@@ -989,34 +986,53 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   @Override
   public T waitUntilCondition(Predicate<T> condition, long amount, TimeUnit timeUnit)
     throws InterruptedException {
-
-    long remainingNanosToWait = timeUnit.toNanos(amount);
-    while (remainingNanosToWait > 0) {
-
-      T item = fromServer().get();
-      if (condition.test(item)) {
-        return item;
-      }
-
-      final WaitForConditionWatcher<T> watcher = new WaitForConditionWatcher<>(condition);
-      final long startTime = System.nanoTime();
-      try (Watch ignored = watch(KubernetesResourceUtil.getResourceVersion(item), watcher)) {
-        return watcher.getFuture().get(remainingNanosToWait, NANOSECONDS);
-      } catch (ExecutionException e) {
-        Throwable cause = e.getCause();
-        if (cause instanceof WatcherException && ((WatcherException)cause).isHttpGone()) {
-          LOG.debug("Restarting the watch due to http gone");
-          remainingNanosToWait -= (System.nanoTime() - startTime);
-          continue;
+    
+    CompletableFuture<T> future = new CompletableFuture<>();
+    // tests the condition, trapping any exceptions
+    Consumer<T> tester = obj -> {
+      try {
+        if (condition.test(obj)) {
+          future.complete(obj);
         }
-        throw KubernetesClientException.launderThrowable(cause);
-      } catch (TimeoutException e) {
-        break;
+      } catch (Exception e) {
+        future.completeExceptionally(e);
       }
-    }
+    };
+    // start an informer that supplies the tester with events and empty list handling
+    try (SharedIndexInformer<T> informer = this.createInformer(0, l -> {
+      if (l.getItems().isEmpty()) {
+        tester.accept(null);
+      }
+    }, new ResourceEventHandler<T>() {
+      
+      @Override
+      public void onAdd(T obj) {
+        tester.accept(obj);
+      }
 
-    LOG.debug("ran out of time waiting for watcher, wait condition not met");
-    throw new IllegalArgumentException(type.getSimpleName() + " with name:[" + name + "] in namespace:[" + namespace + "] matching condition not found!");
+      @Override
+      public void onUpdate(T oldObj, T newObj) {
+        tester.accept(newObj);
+      }
+
+      @Override
+      public void onDelete(T obj, boolean deletedFinalStateUnknown) {
+        tester.accept(null);
+      }
+    })) {
+      // prevent unnecessary watches
+      future.whenComplete((r,t) -> informer.stop());
+      informer.run();
+      return future.get(amount, timeUnit);
+    } catch (ExecutionException e) {
+      throw KubernetesClientException.launderThrowable(e.getCause());
+    } catch (TimeoutException e) {
+      T item = getItem();
+      if (item != null) {
+        throw new KubernetesClientTimeoutException(item, amount, timeUnit);
+      }
+      throw new KubernetesClientTimeoutException(getKind(), getName(), getNamespace(), amount, timeUnit);
+    }
   }
 
   public void setType(Class<T> type) {
@@ -1045,30 +1061,41 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public SharedIndexInformer<T> inform(ResourceEventHandler<T> handler, long resync) {
-    // convert the name into something listable
-    FilterWatchListDeletable<T, L> baseOperation =
-        getName() == null ? this : withFields(Collections.singletonMap("metadata.name", getName()));
+    DefaultSharedIndexInformer<T, L> result = createInformer(resync, null, handler);
+    result.run();
+    return result;
+  }
 
+  private DefaultSharedIndexInformer<T, L> createInformer(long resync, Consumer<L> onList, ResourceEventHandler<T> handler) {
+    T item = getItem();
+    String name = (Utils.isNotNullOrEmpty(getName()) || item != null) ? checkName(item) : null;
+    
     // use the local context / namespace
     DefaultSharedIndexInformer<T, L> informer = new DefaultSharedIndexInformer<>(getType(), new ListerWatcher<T, L>() {
       @Override
       public L list(ListOptions params, String namespace, OperationContext context) {
-        return baseOperation.list(params);
+        // convert the name into something listable
+        if (name != null) {
+          params.setFieldSelector("metadata.name="+name);
+        }
+        L result = BaseOperation.this.list(params);
+        if (onList != null) {
+          onList.accept(result);
+        }
+        return result;
       }
 
       @Override
       public Watch watch(ListOptions params, String namespace, OperationContext context, Watcher<T> watcher) {
-        return baseOperation.watch(params, watcher);
+        return BaseOperation.this.watch(params, watcher);
       }
     }, resync, context, Runnable::run); // just run the event notification in the websocket thread
-    if (handler != null) {
-      informer.addEventHandler(handler);
-    }
     if (indexers != null) {
       informer.addIndexers(indexers);
     }
-    // synchronous start list/watch must succeed in the calling thread
-    informer.run();
+    if (handler != null) {
+      informer.addEventHandler(handler);
+    }
     return informer;
   }
 }

@@ -169,13 +169,13 @@ class InformTest {
         .withResourceVersion("1").endMetadata().build();
 
     server.expect()
-        .withPath("/api/v1/namespaces/test/pods?watch=false&fieldSelector=metadata.name%3Dpod1")
+        .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&watch=false")
         .andReturn(HttpURLConnection.HTTP_OK,
             new PodListBuilder().withNewMetadata().withResourceVersion("1").endMetadata().withItems(pod1).build())
         .once();
 
     server.expect()
-        .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1%2Cmetadata.name%3Dpod1&resourceVersion=1&watch=true")
+        .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .waitFor(EVENT_WAIT_PERIOD_MS)

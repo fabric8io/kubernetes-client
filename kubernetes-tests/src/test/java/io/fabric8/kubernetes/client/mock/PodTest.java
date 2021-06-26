@@ -414,14 +414,7 @@ class PodTest {
       .endStatus()
       .build();
 
-    server.expect().get().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, notReady).once();
-    server.expect().get().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, ready).once();
-
-    server.expect().get().withPath("/api/v1/namespaces/test/pods").andReturn(200, new PodListBuilder()
-      .withNewMetadata()
-      .withResourceVersion("1")
-      .endMetadata()
-      .withItems(notReady).build()).once();
+    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&watch=false").andReturn(200, notReady).once();
 
     server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true").andUpgradeToWebSocket()
       .open()
