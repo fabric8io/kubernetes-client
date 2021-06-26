@@ -237,9 +237,13 @@ class ResourceTest {
   }
 
   private void list(Pod pod) {
+    list(server, pod);
+  }
+
+  static void list(KubernetesMockServer server, Pod pod) {
     server.expect()
         .get()
-        .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3D"+pod.getMetadata().getName()+"&watch=false")
+        .withPath("/api/v1/namespaces/"+pod.getMetadata().getNamespace()+"/pods?fieldSelector=metadata.name%3D"+pod.getMetadata().getName()+"&watch=false")
         .andReturn(200,
             new PodListBuilder().withItems(pod).withNewMetadata().withResourceVersion("1").endMetadata().build())
         .once();

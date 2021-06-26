@@ -1027,9 +1027,9 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     } catch (ExecutionException e) {
       throw KubernetesClientException.launderThrowable(e.getCause());
     } catch (TimeoutException e) {
-      T item = getItem();
-      if (item != null) {
-        throw new KubernetesClientTimeoutException(item, amount, timeUnit);
+      T i = getItem();
+      if (i != null) {
+        throw new KubernetesClientTimeoutException(i, amount, timeUnit);
       }
       throw new KubernetesClientTimeoutException(getKind(), getName(), getNamespace(), amount, timeUnit);
     }
@@ -1062,13 +1062,15 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   @Override
   public SharedIndexInformer<T> inform(ResourceEventHandler<T> handler, long resync) {
     DefaultSharedIndexInformer<T, L> result = createInformer(resync, null, handler);
+    // synchronous start list/watch must succeed in the calling thread
+    // initial add events will be processed in the calling thread as well
     result.run();
     return result;
   }
 
   private DefaultSharedIndexInformer<T, L> createInformer(long resync, Consumer<L> onList, ResourceEventHandler<T> handler) {
-    T item = getItem();
-    String name = (Utils.isNotNullOrEmpty(getName()) || item != null) ? checkName(item) : null;
+    T i = getItem();
+    String name = (Utils.isNotNullOrEmpty(getName()) || i != null) ? checkName(i) : null;
     
     // use the local context / namespace
     DefaultSharedIndexInformer<T, L> informer = new DefaultSharedIndexInformer<>(getType(), new ListerWatcher<T, L>() {
