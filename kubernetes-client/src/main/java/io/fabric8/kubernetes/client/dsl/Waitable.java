@@ -20,8 +20,14 @@ import java.util.function.Predicate;
 
 public interface Waitable<T, P> {
 
+  /**
+   * @deprecated no longer used
+   */
   @Deprecated
   long DEFAULT_INITIAL_BACKOFF_MILLIS = 5L;
+  /**
+   * @deprecated no longer used
+   */
   @Deprecated
   double DEFAULT_BACKOFF_MULTIPLIER = 2d;
 

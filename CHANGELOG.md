@@ -60,7 +60,8 @@
 ##### DSL Changes:
 - #3127 `StatusUpdatable.updateStatus` deprecated, please use patchStatus, editStatus, or replaceStatus
 - #3239 deprecated methods on SharedInformerFactory directly dealing with the OperationContext, withName, and withNamespace - the Informable interface should be used instead.
-- #3271 waitUntilReady and waitUntilCondition with throw a KubernetesClientTimeoutException instead of an IllegalArgumentException on timeout
+- #3271 `Waitable.waitUntilReady` and `Waitable.waitUntilCondition` with throw a KubernetesClientTimeoutException instead of an IllegalArgumentException on timeout.  
+  `Waitable.withWaitRetryBackoff` and the associated constants are now deprecated.
 
 ##### Util Changes:
 - #3197 `Utils.waitUntilReady` now accepts a Future, rather than a BlockingQueue
