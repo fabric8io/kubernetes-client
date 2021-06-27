@@ -28,7 +28,6 @@ import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.LabelSelectorRequirement;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
 import io.fabric8.kubernetes.api.model.RootPaths;
@@ -43,6 +42,7 @@ import io.fabric8.kubernetes.client.ResourceNotFoundException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.EditReplacePatchDeletable;
+import io.fabric8.kubernetes.client.dsl.FilterBuilder;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
 import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.Informable;
@@ -67,7 +67,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -98,26 +97,11 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   Resource<T> {
 
   private static final Logger LOG = LoggerFactory.getLogger(BaseOperation.class);
-  private static final String INVOLVED_OBJECT_NAME = "involvedObject.name";
-  private static final String INVOLVED_OBJECT_NAMESPACE = "involvedObject.namespace";
-  private static final String INVOLVED_OBJECT_KIND = "involvedObject.kind";
-  private static final String INVOLVED_OBJECT_UID = "involvedObject.uid";
-  private static final String INVOLVED_OBJECT_RESOURCE_VERSION = "involvedObject.resourceVersion";
-  private static final String INVOLVED_OBJECT_API_VERSION = "involvedObject.apiVersion";
-  private static final String INVOLVED_OBJECT_FIELD_PATH = "involvedObject.fieldPath";
   private static final String READ_ONLY_UPDATE_EXCEPTION_MESSAGE = "Cannot update read-only resources";
   private static final String READ_ONLY_EDIT_EXCEPTION_MESSAGE = "Cannot edit read-only resources";
 
   private final boolean cascading;
   private final T item;
-
-  private final Map<String, String> labels;
-  private final Map<String, String[]> labelsNot;
-  private final Map<String, String[]> labelsIn;
-  private final Map<String, String[]> labelsNotIn;
-  private final Map<String, String> fields;
-  // Use a multi-value map as its possible to define keyA != foo && keyA != bar
-  private final Map<String, String[]> fieldsNot;
 
   private final String resourceVersion;
   private final boolean reloadingFromServer;
@@ -140,12 +124,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     this.resourceVersion = ctx.getResourceVersion();
     this.gracePeriodSeconds = ctx.getGracePeriodSeconds();
     this.propagationPolicy = ctx.getPropagationPolicy();
-    this.labels = ctx.getLabels();
-    this.labelsNot = ctx.getLabelsNot();
-    this.labelsIn = ctx.getLabelsIn();
-    this.labelsNotIn = ctx.getLabelsNotIn();
-    this.fields = ctx.getFields();
-    this.fieldsNot = ctx.getFieldsNot();
     this.watchRetryInitialBackoffMillis = ctx.getWatchRetryInitialBackoffMillis();
     this.watchRetryBackoffMultiplier = ctx.getWatchRetryBackoffMultiplier();
   }
@@ -428,169 +406,76 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public FilterWatchListDeletable<T, L> withLabels(Map<String, String> labels) {
-    this.labels.putAll(labels);
-    return this;
+    return withFilter().withLabels(labels).build();
   }
 
   @Override
   public FilterWatchListDeletable<T, L> withLabelSelector(LabelSelector selector) {
-    Map<String, String> matchLabels = selector.getMatchLabels();
-    if (matchLabels != null) {
-      this.labels.putAll(matchLabels);
-    }
-    List<LabelSelectorRequirement> matchExpressions = selector.getMatchExpressions();
-    if (matchExpressions != null) {
-      for (LabelSelectorRequirement req : matchExpressions) {
-        String operator = req.getOperator();
-        String key = req.getKey();
-        switch (operator) {
-          case "In":
-            withLabelIn(key, req.getValues().toArray(new String[]{}));
-            break;
-          case "NotIn":
-            withLabelNotIn(key, req.getValues().toArray(new String[]{}));
-            break;
-          case "DoesNotExist":
-            withoutLabel(key);
-            break;
-          case "Exists":
-            withLabel(key);
-            break;
-          default:
-            throw new IllegalArgumentException("Unsupported operator: " + operator);
-        }
-      }
-    }
-    return this;
+    return withFilter().withLabelSelector(selector).build();
   }
 
-  /**
-   * @deprecated as the underlying implementation does not align with the arguments anymore.
-   *    It is possible to negate multiple values with the same key, e.g.:
-   *    foo != bar , foo != baz
-   *    To support this a multi-value map is needed, as a regular map would override the key with the new value.
-   */
   @Override
-  @Deprecated
   public FilterWatchListDeletable<T, L> withoutLabels(Map<String, String> labels) {
-    // Re-use "withoutLabel" to convert values from String to String[]
-    labels.forEach(this::withoutLabel);
-    return this;
+    return withFilter().withoutLabels(labels).build();
   }
 
   @Override
   public FilterWatchListDeletable<T, L> withLabelIn(String key, String... values) {
-    labelsIn.put(key, values);
-    return this;
+    return withFilter().withLabelIn(key, values).build();
   }
-
+  
   @Override
   public FilterWatchListDeletable<T, L> withLabelNotIn(String key, String... values) {
-    labelsNotIn.put(key, values);
-    return this;
+    return withFilter().withLabelNotIn(key, values).build();
   }
 
   @Override
   public FilterWatchListDeletable<T, L> withLabel(String key, String value) {
-    labels.put(key, value);
-    return this;
-  }
-
-  @Override
-  public FilterWatchListDeletable<T, L> withLabel(String key) {
-    return withLabel(key, null);
+    return withFilter().withLabel(key, value).build();
   }
 
   @Override
   public FilterWatchListDeletable<T, L> withoutLabel(String key, String value) {
-    labelsNot.merge(key, new String[]{value}, (oldList, newList) -> {
-      final String[] concatList = (String[]) Array.newInstance(String.class, oldList.length + newList.length);
-      System.arraycopy(oldList, 0, concatList, 0, oldList.length);
-      System.arraycopy(newList, 0, concatList, oldList.length, newList.length);
-      return concatList;
-    });
-    return this;
-  }
-
-  @Override
-  public FilterWatchListDeletable<T, L> withoutLabel(String key) {
-    return withoutLabel(key, null);
+    return withFilter().withoutLabel(key, value).build();
   }
 
   @Override
   public FilterWatchListDeletable<T, L> withFields(Map<String, String> fields) {
-    this.fields.putAll(fields);
-    return this;
+    return withFilter().withFields(fields).build();
   }
 
   @Override
   public FilterWatchListDeletable<T, L> withField(String key, String value) {
-    fields.put(key, value);
-    return this;
+    return withFilter().withField(key, value).build(); 
   }
 
   @Override
   public FilterWatchListDeletable<T, L> withInvolvedObject(ObjectReference objectReference) {
     if (objectReference != null) {
-      if (objectReference.getName() != null) {
-        fields.put(INVOLVED_OBJECT_NAME, objectReference.getName());
-      }
-      if (objectReference.getNamespace() != null) {
-        fields.put(INVOLVED_OBJECT_NAMESPACE, objectReference.getNamespace());
-      }
-      if (objectReference.getKind() != null) {
-        fields.put(INVOLVED_OBJECT_KIND, objectReference.getKind());
-      }
-      if (objectReference.getUid() != null) {
-        fields.put(INVOLVED_OBJECT_UID, objectReference.getUid());
-      }
-      if (objectReference.getResourceVersion() != null) {
-        fields.put(INVOLVED_OBJECT_RESOURCE_VERSION, objectReference.getResourceVersion());
-      }
-      if (objectReference.getApiVersion() != null) {
-        fields.put(INVOLVED_OBJECT_API_VERSION, objectReference.getApiVersion());
-      }
-      if (objectReference.getFieldPath() != null) {
-        fields.put(INVOLVED_OBJECT_FIELD_PATH, objectReference.getFieldPath());
-      }
+      return withFilter().withInvolvedObject(objectReference).build();
     }
     return this;
   }
 
-
-  /**
-   * @deprecated as the underlying implementation does not align with the arguments fully.
-   *    Method is created to have a similar API as `withoutLabels`, but should eventually be replaced
-   *    with something better for the same reasons.
-   *    It is possible to negate multiple values with the same key, e.g.:
-   *    foo != bar , foo != baz
-   *    To support this a multi-value map is needed, as a regular map would override the key with the new value.
-   */
   @Override
-  @Deprecated
+  public FilterBuilder<FilterWatchListDeletable<T, L>> withFilter() {
+    return new FilterBuilderImpl<>(this);
+  }
+  
+  @Override
   public FilterWatchListDeletable<T, L> withoutFields(Map<String, String> fields) {
-    // Re-use "withoutField" to convert values from String to String[]
-    labels.forEach(this::withoutField);
-    return this;
+    return withFilter().withoutFields(fields).build();
   }
 
   @Override
   public FilterWatchListDeletable<T, L> withoutField(String key, String value) {
-    fieldsNot.merge(key, new String[]{value}, (oldList, newList) -> {
-      if (Utils.isNotNullOrEmpty(newList[0])) { // Only add new values when not null
-        final String[] concatList = (String[]) Array.newInstance(String.class, oldList.length + newList.length);
-        System.arraycopy(oldList, 0, concatList, 0, oldList.length);
-        System.arraycopy(newList, 0, concatList, oldList.length, newList.length);
-        return concatList;
-      } else {
-        return oldList;
-      }
-    });
-    return this;
+    return withFilter().withoutField(key, value).build();
   }
 
   public String getLabelQueryParam() {
     StringBuilder sb = new StringBuilder();
+    
+    Map<String, String> labels = context.getLabels();
     if (labels != null && !labels.isEmpty()) {
       for (Iterator<Map.Entry<String, String>> iter = labels.entrySet().iterator(); iter.hasNext(); ) {
         if (sb.length() > 0) {
@@ -605,6 +490,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       }
     }
 
+    Map<String, String[]> labelsNot = context.getLabelsNot();
     if (labelsNot != null && !labelsNot.isEmpty()) {
       for (Iterator<Map.Entry<String, String[]>> iter = labelsNot.entrySet().iterator(); iter.hasNext(); ) {
         if (sb.length() > 0) {
@@ -624,6 +510,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       }
     }
 
+    Map<String, String[]> labelsIn = context.getLabelsIn();
     if (labelsIn != null && !labelsIn.isEmpty()) {
       for (Iterator<Map.Entry<String, String[]>> iter = labelsIn.entrySet().iterator(); iter.hasNext(); ) {
         if (sb.length() > 0) {
@@ -634,6 +521,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       }
     }
 
+    Map<String, String[]> labelsNotIn = context.getLabelsNotIn();
     if (labelsNotIn != null && !labelsNotIn.isEmpty()) {
       for (Iterator<Map.Entry<String, String[]>> iter = labelsNotIn.entrySet().iterator(); iter.hasNext(); ) {
         if (sb.length() > 0) {
@@ -648,6 +536,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   public String getFieldQueryParam() {
     StringBuilder sb = new StringBuilder();
+    Map<String, String> fields = context.getFields();
     if (fields != null && !fields.isEmpty()) {
       for (Iterator<Map.Entry<String, String>> iter = fields.entrySet().iterator(); iter.hasNext(); ) {
         if (sb.length() > 0) {
@@ -657,6 +546,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
         sb.append(entry.getKey()).append("=").append(entry.getValue());
       }
     }
+    Map<String, String[]> fieldsNot = context.getFieldsNot();
     if (fieldsNot != null && !fieldsNot.isEmpty()) {
       for (Iterator<Map.Entry<String, String[]>> iter = fieldsNot.entrySet().iterator(); iter.hasNext(); ) {
         if (sb.length() > 0) {
@@ -1005,30 +895,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   public Class<L> getListType() {
     return listType;
-  }
-
-  protected Map<String, String> getLabels() {
-    return labels;
-  }
-
-  protected Map<String, String[]> getLabelsNot() {
-    return labelsNot;
-  }
-
-  protected Map<String, String[]> getLabelsIn() {
-    return labelsIn;
-  }
-
-  protected Map<String, String[]> getLabelsNotIn() {
-    return labelsNotIn;
-  }
-
-  protected Map<String, String> getFields() {
-    return fields;
-  }
-
-  protected Map<String, String[]> getFieldsNot() {
-    return fieldsNot;
   }
 
   @Override

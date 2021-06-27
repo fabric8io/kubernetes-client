@@ -20,10 +20,21 @@ import io.fabric8.kubernetes.api.model.ObjectReference;
 
 import java.util.Map;
 
+/**
+ * Each filter method applies in an additive way to the previous filter state.
+ * @param <T>
+ */
 public interface Filterable<T> {
 
   T withLabels(Map<String, String> labels);
 
+  /**
+   * @deprecated as the underlying implementation does not align with the arguments anymore.
+   *    It is possible to negate multiple values with the same key, e.g.:
+   *    foo != bar , foo != baz
+   *    To support this a multi-value map is needed, as a regular map would override the key with the new value.
+   */
+  @Deprecated
   T withoutLabels(Map<String, String> labels);
 
   T withLabelIn(String key, String ... values);
@@ -32,16 +43,29 @@ public interface Filterable<T> {
 
   T withLabel(String key, String value);
 
-  T withLabel(String key);
+  default T withLabel(String key) {
+    return withLabel(key, null);
+  }
 
   T withoutLabel(String key, String value);
 
-  T withoutLabel(String key);
+  default T withoutLabel(String key) {
+    return withoutLabel(key, null);
+  }
 
-  T withFields(Map<String, String> labels);
+  T withFields(Map<String, String> fields);
 
   T withField(String key, String value);
 
+  /**
+   * @deprecated as the underlying implementation does not align with the arguments fully.
+   *    Method is created to have a similar API as `withoutLabels`, but should eventually be replaced
+   *    with something better for the same reasons.
+   *    It is possible to negate multiple values with the same key, e.g.:
+   *    foo != bar , foo != baz
+   *    To support this a multi-value map is needed, as a regular map would override the key with the new value.
+   */
+  @Deprecated
   T withoutFields(Map<String, String> fields);
 
   T withoutField(String key, String value);

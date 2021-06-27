@@ -13,14 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.fabric8.kubernetes.client.dsl;
 
-public interface FilterWatchListDeletable<T, L> extends Filterable<FilterWatchListDeletable<T, L>>, WatchListDeletable<T, L> {
-  
-  /**
-   * Accumulate a filter on the context, when done {@link FilterBuilder#build()} must be called
-   * @return a filter builder
-   */
-  FilterBuilder<FilterWatchListDeletable<T, L>> withFilter(); 
+import io.fabric8.kubernetes.api.builder.Builder;
 
+public interface FilterBuilder<T> extends Filterable<FilterBuilder<T>>, Builder<T> {
+  
 }
