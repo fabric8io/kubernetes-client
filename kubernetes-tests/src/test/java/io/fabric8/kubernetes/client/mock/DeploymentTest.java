@@ -662,6 +662,11 @@ class DeploymentTest {
       .addToLabels("app", "nginx")
       .withUid("3Dc4c8746c-94fd-47a7-ac01-11047c0323b4")
       .endMetadata()
+      .withNewSpec()
+      .withNewSelector()
+      .addToMatchLabels("app", "nginx")
+      .endSelector()
+      .endSpec()
       .build();
 
     Pod deployPod = new PodBuilder()

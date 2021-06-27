@@ -19,6 +19,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodCondition;
@@ -289,6 +290,10 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
 
   protected Operation<Pod, PodList, PodResource<Pod>> pods() {
     return new PodOperationsImpl(client, config);
+  }
+  
+  protected PodList listSelectedPods(LabelSelector selector) {
+    return pods().inNamespace(namespace).withLabelSelector(selector).list();
   }
 
 }
