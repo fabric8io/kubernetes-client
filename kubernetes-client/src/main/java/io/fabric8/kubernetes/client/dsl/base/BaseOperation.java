@@ -383,15 +383,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     CreateOrReplaceHelper<T> createOrReplaceHelper = new CreateOrReplaceHelper<>(
       this::create,
       this::replace,
-      m -> {
-        try {
-          return waitUntilCondition(Objects::nonNull, 1, TimeUnit.SECONDS);
-        } catch (InterruptedException interruptedException) {
-          LOG.warn("Interrupted while waiting for the resource to be created or replaced. Gracefully assuming the resource has not been created and doesn't exist. ({})", interruptedException.getMessage());
-          Thread.currentThread().interrupt();
-        }
-        return null;
-      },
+      m -> waitUntilCondition(Objects::nonNull, 1, TimeUnit.SECONDS),
       m -> fromServer().get()
     );
 
@@ -979,14 +971,12 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public T waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException {
+  public T waitUntilReady(long amount, TimeUnit timeUnit) {
     return waitUntilCondition(resource -> Objects.nonNull(resource) && getReadiness().isReady(resource), amount, timeUnit);
   }
 
   @Override
-  public T waitUntilCondition(Predicate<T> condition, long amount, TimeUnit timeUnit)
-    throws InterruptedException {
-    
+  public T waitUntilCondition(Predicate<T> condition, long amount, TimeUnit timeUnit) {
     CompletableFuture<T> future = new CompletableFuture<>();
     // tests the condition, trapping any exceptions
     Consumer<T> tester = obj -> {
@@ -1004,7 +994,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
         tester.accept(null);
       }
     }, new ResourceEventHandler<T>() {
-      
+
       @Override
       public void onAdd(T obj) {
         tester.accept(obj);
@@ -1024,6 +1014,9 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       future.whenComplete((r,t) -> informer.stop());
       informer.run();
       return future.get(amount, timeUnit);
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw KubernetesClientException.launderThrowable(e.getCause());
     } catch (ExecutionException e) {
       throw KubernetesClientException.launderThrowable(e.getCause());
     } catch (TimeoutException e) {
@@ -1071,7 +1064,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   private DefaultSharedIndexInformer<T, L> createInformer(long resync, Consumer<L> onList, ResourceEventHandler<T> handler) {
     T i = getItem();
     String name = (Utils.isNotNullOrEmpty(getName()) || i != null) ? checkName(i) : null;
-    
+
     // use the local context / namespace
     DefaultSharedIndexInformer<T, L> informer = new DefaultSharedIndexInformer<>(getType(), new ListerWatcher<T, L>() {
       @Override

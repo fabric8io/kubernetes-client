@@ -250,10 +250,15 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl ex
   }
 
   @Override
-  public HasMetadata waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException {
+  public HasMetadata waitUntilReady(long amount, TimeUnit timeUnit) {
     HasMetadata meta = acceptVisitors(asHasMetadata(get()), visitors);
     ResourceHandler<HasMetadata, ?> h = handlerOf(meta);
-    return h.waitUntilReady(client, config, meta.getMetadata().getNamespace(), meta, amount, timeUnit);
+    try {
+      return h.waitUntilReady(client, config, meta.getMetadata().getNamespace(), meta, amount, timeUnit);
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw KubernetesClientException.launderThrowable(e);
+    }
   }
 
   @Override
@@ -263,10 +268,15 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl ex
 
   @Override
   public HasMetadata waitUntilCondition(Predicate<HasMetadata> condition, long amount,
-    TimeUnit timeUnit) throws InterruptedException {
+    TimeUnit timeUnit) {
     HasMetadata meta = acceptVisitors(asHasMetadata(get()), visitors);
     ResourceHandler<HasMetadata, ?> h = handlerOf(meta);
-    return h.waitUntilCondition(client, config, meta.getMetadata().getNamespace(), meta, condition, amount, timeUnit);
+    try {
+      return h.waitUntilCondition(client, config, meta.getMetadata().getNamespace(), meta, condition, amount, timeUnit);
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw KubernetesClientException.launderThrowable(e);
+    }
   }
 
 

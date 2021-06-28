@@ -58,7 +58,7 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
   }
 
   @Override
-  public Service waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException {
+  public Service waitUntilReady(long amount, TimeUnit timeUnit) {
     long started = System.nanoTime();
     super.waitUntilReady(amount, timeUnit);
     long alreadySpent = System.nanoTime() - started;

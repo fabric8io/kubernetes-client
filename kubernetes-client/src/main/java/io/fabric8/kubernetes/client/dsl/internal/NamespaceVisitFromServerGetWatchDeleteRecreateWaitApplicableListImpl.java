@@ -83,14 +83,14 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
     private final Boolean cascading;
 
   @Override
-  public List<HasMetadata> waitUntilReady(final long amount, final TimeUnit timeUnit) throws InterruptedException {
+  public List<HasMetadata> waitUntilReady(final long amount, final TimeUnit timeUnit) {
     return waitUntilCondition(resource -> Objects.nonNull(resource) && getReadiness().isReady(resource), amount, timeUnit);
   }
 
   @Override
   public List<HasMetadata> waitUntilCondition(Predicate<HasMetadata> condition,
                                               long amount,
-                                              TimeUnit timeUnit) throws InterruptedException {
+                                              TimeUnit timeUnit) {
     List<HasMetadata> items = acceptVisitors(asHasMetadata(item, true), visitors);
     if (items.isEmpty()) {
       return Collections.emptyList();
@@ -126,6 +126,9 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
         } catch (ExecutionException e) {
           itemsWithConditionNotMatched.add(meta);
           logAsNotReady(e.getCause(), meta);
+        } catch (InterruptedException e) {
+          Thread.currentThread().interrupt();
+          throw KubernetesClientException.launderThrowable(e);
         }
         ++i;
       }

@@ -81,9 +81,6 @@ public class PodOperationUtil {
       if (pod != null && pod.getStatus() != null && pod.getStatus().getPhase().equals("Pending")) {
         podOperation.waitUntilReady(logWaitTimeout, TimeUnit.SECONDS);
       }
-    } catch (InterruptedException interruptedException) {
-      Thread.currentThread().interrupt();
-      LOG.debug("Interrupted while waiting for Pod to become Ready: {}", interruptedException.getMessage());
     } catch (Exception otherException) {
       LOG.debug("Error while waiting for Pod to become Ready: {}", otherException.getMessage());
     }
