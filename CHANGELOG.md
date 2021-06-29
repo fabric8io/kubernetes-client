@@ -18,6 +18,7 @@
 * Fix #3272: prevent index npe after informer sees an empty list
 * Fix #3275: filter related dsl methods withLabel, withField, etc. should not modify the current context.  If you need similar behavior to the previous use `Filterable.withNewFilter`.
 * Fix #3271: waitUntilReady and waitUntilCondition should handle resource too old
+* Fix #3278: `Waitable` methods should not be available at a list context
 
 #### Improvements
 * Fix #3078: adding javadocs to further clarify patch, edit, replace, etc. and note the possibility of items being modified.
