@@ -16,6 +16,7 @@
 * Fix #3225: Pod metric does not have corresponding label selector variant
 * Fix #3243: pipes provided to exec command are no longer closed on connection close, so that client can fully read the buffer after the command finishes.
 * Fix #3272: prevent index npe after informer sees an empty list
+* Fix #3275: filter related dsl methods withLabel, withField, etc. should not modify the current context.  If you need similar behavior to the previous use `Filterable.withNewFilter`.
 
 #### Improvements
 * Fix #3078: adding javadocs to further clarify patch, edit, replace, etc. and note the possibility of items being modified.

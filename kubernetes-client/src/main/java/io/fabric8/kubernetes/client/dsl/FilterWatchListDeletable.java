@@ -18,9 +18,9 @@ package io.fabric8.kubernetes.client.dsl;
 public interface FilterWatchListDeletable<T, L> extends Filterable<FilterWatchListDeletable<T, L>>, WatchListDeletable<T, L> {
   
   /**
-   * Accumulate a filter on the context, when done {@link FilterBuilder#build()} must be called
-   * @return a filter builder
+   * Accumulate a filter on the context, when done {@link FilterNested#endFilter()} or and must be called
+   * @return a {@link FilterNested}
    */
-  FilterBuilder<FilterWatchListDeletable<T, L>> withFilter(); 
+  FilterNested<FilterWatchListDeletable<T, L>> withNewFilter(); 
 
 }
