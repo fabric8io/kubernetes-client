@@ -42,7 +42,7 @@ import io.fabric8.kubernetes.client.ResourceNotFoundException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.EditReplacePatchDeletable;
-import io.fabric8.kubernetes.client.dsl.FilterBuilder;
+import io.fabric8.kubernetes.client.dsl.FilterNested;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
 import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.Informable;
@@ -406,70 +406,70 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public FilterWatchListDeletable<T, L> withLabels(Map<String, String> labels) {
-    return withFilter().withLabels(labels).build();
+    return withNewFilter().withLabels(labels).endFilter();
   }
 
   @Override
   public FilterWatchListDeletable<T, L> withLabelSelector(LabelSelector selector) {
-    return withFilter().withLabelSelector(selector).build();
+    return withNewFilter().withLabelSelector(selector).endFilter();
   }
 
   @Override
   public FilterWatchListDeletable<T, L> withoutLabels(Map<String, String> labels) {
-    return withFilter().withoutLabels(labels).build();
+    return withNewFilter().withoutLabels(labels).endFilter();
   }
 
   @Override
   public FilterWatchListDeletable<T, L> withLabelIn(String key, String... values) {
-    return withFilter().withLabelIn(key, values).build();
+    return withNewFilter().withLabelIn(key, values).endFilter();
   }
   
   @Override
   public FilterWatchListDeletable<T, L> withLabelNotIn(String key, String... values) {
-    return withFilter().withLabelNotIn(key, values).build();
+    return withNewFilter().withLabelNotIn(key, values).endFilter();
   }
 
   @Override
   public FilterWatchListDeletable<T, L> withLabel(String key, String value) {
-    return withFilter().withLabel(key, value).build();
+    return withNewFilter().withLabel(key, value).endFilter();
   }
 
   @Override
   public FilterWatchListDeletable<T, L> withoutLabel(String key, String value) {
-    return withFilter().withoutLabel(key, value).build();
+    return withNewFilter().withoutLabel(key, value).endFilter();
   }
 
   @Override
   public FilterWatchListDeletable<T, L> withFields(Map<String, String> fields) {
-    return withFilter().withFields(fields).build();
+    return withNewFilter().withFields(fields).endFilter();
   }
 
   @Override
   public FilterWatchListDeletable<T, L> withField(String key, String value) {
-    return withFilter().withField(key, value).build(); 
+    return withNewFilter().withField(key, value).endFilter(); 
   }
 
   @Override
   public FilterWatchListDeletable<T, L> withInvolvedObject(ObjectReference objectReference) {
     if (objectReference != null) {
-      return withFilter().withInvolvedObject(objectReference).build();
+      return withNewFilter().withInvolvedObject(objectReference).endFilter();
     }
     return this;
   }
 
   @Override
-  public FilterBuilder<FilterWatchListDeletable<T, L>> withFilter() {
-    return new FilterBuilderImpl<>(this);
+  public FilterNested<FilterWatchListDeletable<T, L>> withNewFilter() {
+    return new FilterNestedImpl<>(this);
   }
   
   @Override
   public FilterWatchListDeletable<T, L> withoutFields(Map<String, String> fields) {
-    return withFilter().withoutFields(fields).build();
+    return withNewFilter().withoutFields(fields).endFilter();
   }
 
   @Override
   public FilterWatchListDeletable<T, L> withoutField(String key, String value) {
-    return withFilter().withoutField(key, value).build();
+    return withNewFilter().withoutField(key, value).endFilter();
   }
 
   public String getLabelQueryParam() {

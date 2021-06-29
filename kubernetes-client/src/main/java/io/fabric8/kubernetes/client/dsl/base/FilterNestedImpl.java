@@ -21,7 +21,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LabelSelectorRequirement;
 import io.fabric8.kubernetes.api.model.ObjectReference;
-import io.fabric8.kubernetes.client.dsl.FilterBuilder;
+import io.fabric8.kubernetes.client.dsl.FilterNested;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -31,7 +31,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-final class FilterBuilderImpl<T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>> implements FilterBuilder<FilterWatchListDeletable<T, L>> {
+final class FilterNestedImpl<T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>> implements FilterNested<FilterWatchListDeletable<T, L>> {
   
   private static final String INVOLVED_OBJECT_NAME = "involvedObject.name";
   private static final String INVOLVED_OBJECT_NAMESPACE = "involvedObject.namespace";
@@ -44,10 +44,7 @@ final class FilterBuilderImpl<T extends HasMetadata, L extends KubernetesResourc
   private final BaseOperation<T, L, R> baseOperation;
   private OperationContext context;
 
-  /**
-   * @param baseOperation
-   */
-  FilterBuilderImpl(BaseOperation<T, L, R> baseOperation) {
+  FilterNestedImpl(BaseOperation<T, L, R> baseOperation) {
     this.baseOperation = baseOperation;
     // create a context copy
     context = this.baseOperation.context;
@@ -63,38 +60,38 @@ final class FilterBuilderImpl<T extends HasMetadata, L extends KubernetesResourc
   }
 
   @Override
-  public FilterBuilder<FilterWatchListDeletable<T, L>> withLabels(Map<String, String> labels) {
+  public FilterNested<FilterWatchListDeletable<T, L>> withLabels(Map<String, String> labels) {
     this.context.labels.putAll(labels);
     return this;
   }
 
   @Override
-  public FilterBuilder<FilterWatchListDeletable<T, L>> withoutLabels(Map<String, String> labels) {
+  public FilterNested<FilterWatchListDeletable<T, L>> withoutLabels(Map<String, String> labels) {
     // Re-use "withoutLabel" to convert values from String to String[]
     labels.forEach(this::withoutLabel);
     return this;
   }
 
   @Override
-  public FilterBuilder<FilterWatchListDeletable<T, L>> withLabelIn(String key, String... values) {
+  public FilterNested<FilterWatchListDeletable<T, L>> withLabelIn(String key, String... values) {
     context.labelsIn.put(key, values);
     return this;
   }
 
   @Override
-  public FilterBuilder<FilterWatchListDeletable<T, L>> withLabelNotIn(String key, String... values) {
+  public FilterNested<FilterWatchListDeletable<T, L>> withLabelNotIn(String key, String... values) {
     context.labelsNotIn.put(key, values);
     return this;
   }
 
   @Override
-  public FilterBuilder<FilterWatchListDeletable<T, L>> withLabel(String key, String value) {
+  public FilterNested<FilterWatchListDeletable<T, L>> withLabel(String key, String value) {
     context.labels.put(key, value);
     return this;
   }
 
   @Override
-  public FilterBuilder<FilterWatchListDeletable<T, L>> withoutLabel(String key, String value) {
+  public FilterNested<FilterWatchListDeletable<T, L>> withoutLabel(String key, String value) {
     context.labelsNot.merge(key, new String[]{value}, (oldList, newList) -> {
       final String[] concatList = (String[]) Array.newInstance(String.class, oldList.length + newList.length);
       System.arraycopy(oldList, 0, concatList, 0, oldList.length);
@@ -105,26 +102,26 @@ final class FilterBuilderImpl<T extends HasMetadata, L extends KubernetesResourc
   }
 
   @Override
-  public FilterBuilder<FilterWatchListDeletable<T, L>> withFields(Map<String, String> fields) {
+  public FilterNested<FilterWatchListDeletable<T, L>> withFields(Map<String, String> fields) {
     this.context.fields.putAll(fields);
     return this;
   }
 
   @Override
-  public FilterBuilder<FilterWatchListDeletable<T, L>> withField(String key, String value) {
+  public FilterNested<FilterWatchListDeletable<T, L>> withField(String key, String value) {
     this.context.fields.put(key, value);
     return this;
   }
 
   @Override
-  public FilterBuilder<FilterWatchListDeletable<T, L>> withoutFields(Map<String, String> fields) {
+  public FilterNested<FilterWatchListDeletable<T, L>> withoutFields(Map<String, String> fields) {
     // Re-use "withoutField" to convert values from String to String[]
     fields.forEach(this::withoutField);
     return this;
   }
 
   @Override
-  public FilterBuilder<FilterWatchListDeletable<T, L>> withoutField(String key, String value) {
+  public FilterNested<FilterWatchListDeletable<T, L>> withoutField(String key, String value) {
     context.fieldsNot.merge(key, new String[]{value}, (oldList, newList) -> {
       if (Utils.isNotNullOrEmpty(newList[0])) { // Only add new values when not null
         final String[] concatList = (String[]) Array.newInstance(String.class, oldList.length + newList.length);
@@ -139,7 +136,7 @@ final class FilterBuilderImpl<T extends HasMetadata, L extends KubernetesResourc
   }
 
   @Override
-  public FilterBuilder<FilterWatchListDeletable<T, L>> withLabelSelector(LabelSelector selector) {
+  public FilterNested<FilterWatchListDeletable<T, L>> withLabelSelector(LabelSelector selector) {
     Map<String, String> matchLabels = selector.getMatchLabels();
     if (matchLabels != null) {
       withLabels(matchLabels);
@@ -171,7 +168,7 @@ final class FilterBuilderImpl<T extends HasMetadata, L extends KubernetesResourc
   }
 
   @Override
-  public FilterBuilder<FilterWatchListDeletable<T, L>> withInvolvedObject(ObjectReference objectReference) {
+  public FilterNested<FilterWatchListDeletable<T, L>> withInvolvedObject(ObjectReference objectReference) {
     if (objectReference.getName() != null) {
       context.fields.put(INVOLVED_OBJECT_NAME, objectReference.getName());
     }
@@ -197,7 +194,7 @@ final class FilterBuilderImpl<T extends HasMetadata, L extends KubernetesResourc
   }
 
   @Override
-  public FilterWatchListDeletable<T, L> build() {
+  public FilterWatchListDeletable<T, L> and() {
     return this.baseOperation.newInstance(context);
   }
 }
