@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 5.5-SNAPSHOT
+### 5.5.0 (2021-06-30)
 
 #### Bugs
 * Fix #3064: KubernetesMockServer should not read local `.kube/config` while initializing client
