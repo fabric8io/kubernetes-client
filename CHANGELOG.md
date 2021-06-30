@@ -3,8 +3,7 @@
 ### 5.5-SNAPSHOT
 
 #### Bugs
-* KubernetesMockServer should not read local `.kube/config` while initializing client
-* Retry only Non-Restful Create-only resources in OpenShiftOAuthInterceptor
+* Fix #3064: KubernetesMockServer should not read local `.kube/config` while initializing client
 * Fix #3126: a KubernetesClientException will be thrown from patch/replace rather than a null being returned when the item does not exist
 * Fix #3121: ServiceOperationImpl replace will throw a KubernetesClientException rather than a NPE if the item doesn't exist
 * Fix #3189: VersionInfo contains null data in OpenShift 4.6
@@ -43,19 +42,18 @@
 * Fix #3166: Add DSL Support for `machineconfiguration.openshift.io/v1` resources in OpenShiftClient
 * Fix #3142: Add DSL support for missing resources in `operator.openshift.io` and `monitoring.coreos.com` apiGroups
 * Fix #2565: Add support for CertManager extension
-* Add DSL support for missing resources in `template.openshift.io`, `helm.openshift.io`, `network.openshift.io`, `user.openshift.io` apigroups
+* Fix #3150: Add DSL support for missing resources in `template.openshift.io`, `helm.openshift.io`, `network.openshift.io`, `user.openshift.io` apigroups
 * Fix #3087: Support HTTP operation retry with exponential backoff (for status code >= 500)
-* Add DSL support for `autoscaling.openshift.io` resources in OpenShiftClient
-* Add DSL support for PodSecurityPolicySubjectReview, PodSecurityPolicyReview, PodSecurityPolicySelfSubjectReview in `security.openshift.io/v1` apiGroup to OpenShiftClient
-* Add DSL support for OperatorCondition, Operator, PackageManifest in `operators.coreos.com` apiGroup to OpenShiftClient 
-* Add support for `tuned.openshift.io` apiGroup in OpenShiftClient DSL
-* Add DSL support for ConsolePlugin and ConsoleQuickStart in `console.openshift.io` apiGroup
-* Add DSL support for `user.openshift.io/v1` Identity in OpenShiftClient DSL
-* Add DSL support for OpenShift Whereabouts CNI Model `whereabouts.cni.cncf.io` to OpenShiftClient DSL
-* Add DSL support for OpenShift Kube Storage Version Migrator resources in OpenShiftClient DSL
+* Fix #3193:Add DSL support for `autoscaling.openshift.io` resources in OpenShiftClient
+* Fix #3209: Add DSL support for PodSecurityPolicySubjectReview, PodSecurityPolicyReview, PodSecurityPolicySelfSubjectReview in `security.openshift.io/v1` apiGroup to OpenShiftClient
+* Fix #3207: Add DSL support for OperatorCondition, Operator, PackageManifest in `operators.coreos.com` apiGroup to OpenShiftClient 
+* Fix #3201: Add support for `tuned.openshift.io` apiGroup in OpenShiftClient DSL
+* Fix #3205: Add DSL support for ConsolePlugin and ConsoleQuickStart in `console.openshift.io` apiGroup
+* Fix #3222: Add DSL support for `user.openshift.io/v1` Identity in OpenShiftClient DSL
+* Fix #3222: Add DSL support for OpenShift Whereabouts CNI Model `whereabouts.cni.cncf.io` to OpenShiftClient DSL
+* Fix #3224: Add DSL support for OpenShift Kube Storage Version Migrator resources in OpenShiftClient DSL
 * Fix #3228: Add support for Dynamic informers for custom resources in KubernetesClient
-* Add DSL support for ClusterInterceptors to TektonClient
-
+* Fix #3270: Add DSL support for ClusterInterceptors to TektonClient
 
 #### _**Note**_: Breaking changes in the API
 ##### DSL Changes:
