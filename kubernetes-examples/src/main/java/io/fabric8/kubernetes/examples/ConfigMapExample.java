@@ -26,7 +26,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
-
+/**
+ * This is an example of updating ConfigMap.
+ */
 public class ConfigMapExample {
   private static final Logger logger = LoggerFactory.getLogger(ConfigMapExample.class);
 
