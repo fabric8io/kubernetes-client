@@ -7,6 +7,7 @@
 #### Improvements
 
 #### Dependency Upgrade
+* Update Tekton Pipeline Model to v0.25.0
 
 #### New Features
 
