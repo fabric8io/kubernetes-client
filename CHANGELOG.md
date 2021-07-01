@@ -8,6 +8,7 @@
 #### Improvements
 
 #### Dependency Upgrade
+* Update Tekton Pipeline Model to v0.25.0
 
 #### New Features
 * Fix #3291: Retrying the HTTP operation in case of IOException too

@@ -210,7 +210,13 @@
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_EmbeddedTask": {
       "type": "object",
       "properties": {
+        "apiVersion": {
+          "type": "string"
+        },
         "description": {
+          "type": "string"
+        },
+        "kind": {
           "type": "string"
         },
         "metadata": {
@@ -244,6 +250,9 @@
             "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_Sidecar",
             "existingJavaType": "io.fabric8.tekton.pipeline.v1beta1.Sidecar"
           }
+        },
+        "spec": {
+          "existingJavaType": "java.util.Map\u003cString, Object\u003e"
         },
         "stepTemplate": {
           "existingJavaType": "io.fabric8.kubernetes.api.model.Container"
@@ -657,6 +666,10 @@
         "timeout": {
           "existingJavaType": "io.fabric8.kubernetes.api.model.Duration"
         },
+        "timeouts": {
+          "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TimeoutFields",
+          "existingJavaType": "io.fabric8.tekton.pipeline.v1beta1.TimeoutFields"
+        },
         "workspaces": {
           "type": "array",
           "javaOmitEmpty": true,
@@ -1048,13 +1061,6 @@
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_Sidecar": {
       "type": "object",
       "properties": {
-        "Workspaces": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_WorkspaceUsage",
-            "existingJavaType": "io.fabric8.tekton.pipeline.v1beta1.WorkspaceUsage"
-          }
-        },
         "args": {
           "type": "array",
           "javaOmitEmpty": true,
@@ -1151,6 +1157,14 @@
         },
         "workingDir": {
           "type": "string"
+        },
+        "workspaces": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_WorkspaceUsage",
+            "existingJavaType": "io.fabric8.tekton.pipeline.v1beta1.WorkspaceUsage"
+          }
         }
       },
       "javaType": "io.fabric8.tekton.pipeline.v1beta1.Sidecar",
@@ -1822,6 +1836,24 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TimeoutFields": {
+      "type": "object",
+      "properties": {
+        "finally": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.Duration"
+        },
+        "pipeline": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.Duration"
+        },
+        "tasks": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.Duration"
+        }
+      },
+      "javaType": "io.fabric8.tekton.pipeline.v1beta1.TimeoutFields",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_WhenExpression": {
       "type": "object",
       "properties": {
@@ -2267,6 +2299,10 @@
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskSpec": {
       "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TaskSpec",
       "existingJavaType": "io.fabric8.tekton.pipeline.v1beta1.TaskSpec"
+    },
+    "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TimeoutFields": {
+      "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_TimeoutFields",
+      "existingJavaType": "io.fabric8.tekton.pipeline.v1beta1.TimeoutFields"
     },
     "github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_WhenExpression": {
       "$ref": "#/definitions/github_com_tektoncd_pipeline_pkg_apis_pipeline_v1beta1_WhenExpression",
