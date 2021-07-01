@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal.apps.v1;
 
-import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
@@ -23,7 +22,6 @@ import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.apps.ControllerRevision;
 import io.fabric8.kubernetes.api.model.apps.ControllerRevisionList;
 import io.fabric8.kubernetes.api.model.apps.StatefulSet;
-import io.fabric8.kubernetes.api.model.apps.StatefulSetBuilder;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetList;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.client.Config;
@@ -244,11 +242,6 @@ public class StatefulSetOperationsImpl extends RollableScalableResourceOperation
     ControllerRevision previousControllerRevision = controllerRevisions.get(1);
 
     return sendPatchedStatefulSetData(previousControllerRevision.getData());
-  }
-
-  @Override
-  protected VisitableBuilder<StatefulSet, ?> createVisitableBuilder(StatefulSet item) {
-    return new StatefulSetBuilder(item);
   }
 
   private StatefulSet sendPatchedStatefulSet(Map<String, Object> patchedUpdate) {

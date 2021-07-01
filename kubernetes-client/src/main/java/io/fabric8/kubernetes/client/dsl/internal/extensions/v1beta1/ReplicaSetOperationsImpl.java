@@ -15,13 +15,11 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal.extensions.v1beta1;
 
-import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSet;
-import io.fabric8.kubernetes.api.model.extensions.ReplicaSetBuilder;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSetList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -222,11 +220,6 @@ public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<
   @Override
   public Loggable<LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
     return new ReplicaSetOperationsImpl(((RollingOperationContext) context), logWaitTimeout);
-  }
-
-  @Override
-  protected VisitableBuilder<ReplicaSet, ?> createVisitableBuilder(ReplicaSet item) {
-    return new ReplicaSetBuilder(item);
   }
 
   static Map<String, String> getReplicaSetSelectorLabels(ReplicaSet replicaSet) {

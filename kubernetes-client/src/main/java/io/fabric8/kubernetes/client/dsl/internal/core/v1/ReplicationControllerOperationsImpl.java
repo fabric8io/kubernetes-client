@@ -15,11 +15,9 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal.core.v1;
 
-import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.ReplicationController;
-import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
 import io.fabric8.kubernetes.api.model.ReplicationControllerList;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
@@ -222,11 +220,6 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
   @Override
   public ReplicationController undo() {
     throw new UnsupportedOperationException("no rollbacker has been implemented for \"" + get().getKind() +"\"");
-  }
-
-  @Override
-  protected VisitableBuilder<ReplicationController, ?> createVisitableBuilder(ReplicationController item) {
-    return new ReplicationControllerBuilder(item);
   }
 
   static Map<String, String> getReplicationControllerPodLabels(ReplicationController replicationController) {

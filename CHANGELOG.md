@@ -6,6 +6,7 @@
 * Fix #3083: CertificateException due to PEM being decoded in CertUtils
 
 #### Improvements
+* Fix #3284: refined how builders are obtained / used by HasMetadataOperation
 
 #### Dependency Upgrade
 * Update Tekton Pipeline Model to v0.25.0

@@ -22,9 +22,12 @@ import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.ResourceNotFoundException;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -58,11 +61,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   }
 
   private T clone(T item) {
-    try {
-      return createVisitableBuilder(item).build();
-    } catch (KubernetesClientException e) {
-      return Serialization.clone(item);
-    }
+    return Serialization.clone(item);
   }
   
   @Override
@@ -80,7 +79,11 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
     return patch(null, clone, item, false);
   }
   
-  protected VisitableBuilder<T, ?> createVisitableBuilder(T item) {
+  protected <V extends VisitableBuilder<T, V>> VisitableBuilder<T, V> createVisitableBuilder(T item) {
+    ResourceHandler<T, V> handler = Handlers.get(getKind(), ApiVersionUtil.joinApiGroupAndVersion(getAPIGroupName(), getAPIGroupVersion()));
+    if (handler != null) {
+      return handler.edit(item);
+    }
     throw new KubernetesClientException(NO_BUILDER);
   }
   
