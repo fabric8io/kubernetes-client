@@ -16,6 +16,7 @@
 
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
@@ -91,6 +92,17 @@ class PodCrudTest {
     Pod pod = client.pods().inNamespace("ns1").withName("pod2").get();
     assertNotNull(pod);
     assertEquals(2, pod.getMetadata().getLabels().size());
+
+    pod2 = client.pods().inNamespace("ns1").withName("pod2").edit(new Visitor<PodBuilder>() {
+
+      @Override
+      public void visit(PodBuilder buidler) {
+        buidler.editMetadata().addToLabels("another", "one").endMetadata();
+      }
+
+    });
+    assertNotNull(pod2);
+    assertEquals("one", pod2.getMetadata().getLabels().get("another"));
   }
 
   @Test

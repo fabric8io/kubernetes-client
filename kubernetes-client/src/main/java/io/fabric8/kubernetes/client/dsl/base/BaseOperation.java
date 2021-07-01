@@ -924,7 +924,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
    * @param list Kubernetes resource list
    */
   protected void updateApiVersion(KubernetesResourceList<T> list) {
-    String version = getApiVersion();
+    String version = apiVersion;
     if (list != null && version != null && version.length() > 0 && list.getItems() != null) {
       list.getItems().forEach(this::updateApiVersion);
     }
@@ -937,7 +937,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
    * @param hasMetadata object whose api version needs to be updated
    */
   protected void updateApiVersion(HasMetadata hasMetadata) {
-    String version = getApiVersion();
+    String version = apiVersion;
     if (hasMetadata != null && version != null && version.length() > 0) {
       String current = hasMetadata.getApiVersion();
       // lets overwrite the api version if its currently missing, the resource uses an API Group with '/'
@@ -946,19 +946,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
         hasMetadata.setApiVersion(version);
       }
     }
-  }
-
-  public String getApiVersion() {
-    return apiVersion;
-  }
-
-  /**
-   * Return true if this is an API Group where the versions include a slash in them
-   *
-   * @return boolean value indicating whether API group or not
-   */
-  public boolean isApiGroup() {
-    return apiVersion != null && apiVersion.indexOf('/') > 0;
   }
 
   public Readiness getReadiness() {

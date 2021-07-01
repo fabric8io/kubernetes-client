@@ -117,11 +117,11 @@ public class OperationSupport {
     this.retryIntervalCalculator = new ExponentialBackoffIntervalCalculator(requestRetryBackoffInterval, maxRetryIntervalExponent);
   }
 
-  public String getAPIGroup() {
+  public String getAPIGroupName() {
     return apiGroupName;
   }
 
-  public String getAPIVersion() {
+  public String getAPIGroupVersion() {
     return apiGroupVersion;
   }
 

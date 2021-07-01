@@ -26,6 +26,7 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.internal.KubernetesDeserializer;
 import okhttp3.OkHttpClient;
 
@@ -48,7 +49,7 @@ public class CustomResourceOperationsImpl<T extends HasMetadata, L extends Kuber
     this.listType = context.getListType() != null ? context.getListType() : (Class) inferListType(this.type);
 
     this.resourceNamespaced = resourceNamespaced(context.getCrdContext());
-    this.apiVersion = getAPIGroup() + "/" + getAPIVersion();
+    this.apiVersion = ApiVersionUtil.joinApiGroupAndVersion(getAPIGroupName(), getAPIGroupVersion());
 
     KubernetesDeserializer.registerCustomKind(apiVersion, kind(context.getCrdContext()), type);
     if (KubernetesResource.class.isAssignableFrom(listType)) {

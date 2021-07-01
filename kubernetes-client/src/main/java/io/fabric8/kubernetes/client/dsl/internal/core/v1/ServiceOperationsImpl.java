@@ -18,7 +18,6 @@ package io.fabric8.kubernetes.client.dsl.internal.core.v1;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.api.model.ServiceList;
-import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.client.*;
 import io.fabric8.kubernetes.client.Config;
@@ -135,11 +134,6 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
         .inNamespace(m.getMetadata().getNamespace())
         .withName(m.getMetadata().getName())
         .portForward(port);
-  }
-
-  @Override
-  protected VisitableBuilder<Service, ?> createVisitableBuilder(Service item) {
-    return new ServiceBuilder(item);
   }
 
   public class ServiceToUrlSortComparator implements Comparator<ServiceToURLProvider> {

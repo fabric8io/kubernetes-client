@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal.apps.v1;
 
-import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.OwnerReference;
 import io.fabric8.kubernetes.api.model.Status;
@@ -30,7 +29,6 @@ import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
-import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.apps.DeploymentList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -383,11 +381,6 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
   @Override
   public Loggable<LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
     return new DeploymentOperationsImpl(((RollingOperationContext)context), logWaitTimeout);
-  }
-
-  @Override
-  protected VisitableBuilder<Deployment, ?> createVisitableBuilder(Deployment item) {
-    return new DeploymentBuilder(item);
   }
 
   private Deployment sendPatchedDeployment(Map<String, Object> patchedUpdate) {

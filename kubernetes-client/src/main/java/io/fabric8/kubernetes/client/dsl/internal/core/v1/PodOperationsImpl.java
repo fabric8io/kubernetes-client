@@ -38,7 +38,6 @@ import java.util.concurrent.TimeUnit;
 
 import io.fabric8.kubernetes.api.model.DeleteOptions;
 import io.fabric8.kubernetes.api.model.Pod;
-import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.Eviction;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.EvictionBuilder;
@@ -73,7 +72,6 @@ import io.fabric8.kubernetes.client.dsl.internal.PortForwarderWebsocket;
 import io.fabric8.kubernetes.client.dsl.internal.uploadable.PodUpload;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
-import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -687,9 +685,5 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
     return new PodOperationsImpl(getContext().withTimestamps(true));
   }
 
-  @Override
-  protected VisitableBuilder<Pod, ?> createVisitableBuilder(Pod item) {
-    return new PodBuilder(item);
-  }
 }
 

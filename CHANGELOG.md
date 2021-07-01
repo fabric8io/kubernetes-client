@@ -5,6 +5,7 @@
 #### Bugs
 
 #### Improvements
+* Fix #3284: refined how builders are obtained / used by HasMetadataOperation
 
 #### Dependency Upgrade
 
