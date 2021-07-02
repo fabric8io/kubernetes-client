@@ -578,20 +578,28 @@ public class OperationSupport {
   }
 
   protected Response retryWithExponentialBackoff(OkHttpClient client, Request request) throws InterruptedException, IOException {
-    Response response;
-    boolean doRetry;
     int numRetries = 0;
-    do {
-      response = client.newCall(request).execute();
-      doRetry = numRetries < requestRetryBackoffLimit && response.code() >= 500;
-      if (doRetry) {
-        long retryInterval= retryIntervalCalculator.getInterval(numRetries);
-        LOG.debug("HTTP operation on url: {} should be retried as the response code was {}, retrying after {} millis", request.url(), response.code(), retryInterval);
-        Thread.sleep(retryInterval);
-        numRetries++;
+    long retryInterval;
+    while (true) {
+      try {
+        Response response = client.newCall(request).execute();
+        if (numRetries < requestRetryBackoffLimit && response.code() >= 500) {
+          retryInterval = retryIntervalCalculator.getInterval(numRetries);
+          LOG.debug("HTTP operation on url: {} should be retried as the response code was {}, retrying after {} millis", request.url(), response.code(), retryInterval);
+        } else {
+          return response;
+        }
+      } catch (IOException ie) {
+        if (numRetries < requestRetryBackoffLimit) {
+          retryInterval = retryIntervalCalculator.getInterval(numRetries);
+          LOG.debug(String.format("HTTP operation on url: %s should be retried after %d millis because of IOException", request.url(), retryInterval), ie);
+        } else {
+          throw ie;
+        }
       }
-    } while(doRetry);
-    return response;
+      Thread.sleep(retryInterval);
+      numRetries++;
+    }
   }
 
   /**
