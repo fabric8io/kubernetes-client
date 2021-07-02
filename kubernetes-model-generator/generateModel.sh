@@ -53,20 +53,6 @@ declare -a modules=(
     "openshift-model-tuned"
     "openshift-model-whereabouts"
     "openshift-model-storageversionmigrator"
-)
-
-declare -a extensionModuleParents=(
-    "../extensions/knative/pom.xml"
-    "../extensions/camel-k/pom.xml"
-    "../extensions/camel-k/pom.xml"
-    "../extensions/chaosmesh/pom.xml"
-    "../extensions/service-catalog/pom.xml"
-    "../extensions/tekton/pom.xml"
-    "../extensions/tekton/pom.xml"
-    "../extensions/volumesnapshot/pom.xml"
-)
-
-declare -a extensionModules=(
     "../extensions/knative/generator"
     "../extensions/camel-k/generator-v1"
     "../extensions/camel-k/generator-v1alpha1"
@@ -77,12 +63,17 @@ declare -a extensionModules=(
     "../extensions/volumesnapshot/generator"
 )
 
+declare -a extensionModuleParents=(
+    "../extensions/knative/pom.xml"
+    "../extensions/camel-k/pom.xml"
+    "../extensions/chaosmesh/pom.xml"
+    "../extensions/service-catalog/pom.xml"
+    "../extensions/tekton/pom.xml"
+    "../extensions/volumesnapshot/pom.xml"
+)
+
 generateAll() {
-  echo "Compiling core modules"
   generateSetOfModules "${modules[@]}"
-  echo "Compiling extensions"
-  extensionInstallCommonModules
-  generateSetOfModules "${extensionModules[@]}"
 }
 
 generateSetOfModules() {
@@ -122,6 +113,7 @@ echo "Installing required common modules"
 mvn clean install -f ../pom.xml -N
 mvn clean install -N
 mvn clean install -pl kubernetes-model-common -pl kubernetes-model-jsonschema2pojo
+extensionInstallCommonModules
 
 if [ -z "$1" ]; then
   generateAll
