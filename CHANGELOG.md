@@ -9,6 +9,7 @@
 #### Dependency Upgrade
 
 #### New Features
+* Fix #3291: Retrying the HTTP operation in case of IOException too
 
 ### 5.5.0 (2021-06-30)
 

@@ -239,7 +239,13 @@ class BaseOperationTest {
         when(mockCall.execute()).thenAnswer(i -> {
           int count = httpExecutionCounter.getAndIncrement();
           if (count < numFailures) {
-            return new Response.Builder().request(req).message("Internal Server Error").protocol(HTTP_1_1).code(500).build();
+            // Altering the type of the error for each call:
+            // even numbered calls (including the first call) fail with an IOException and odd numbered calls fail with HTTP response 500
+            if (count % 2 == 0) {
+              throw new IOException("For example java.net.ConnectException");
+            } else {
+              return new Response.Builder().request(req).message("Internal Server Error").protocol(HTTP_1_1).code(500).build();
+            }
           } else {
             Pod podNoLabels = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
             ResponseBody body = ResponseBody.create(MediaType.get("application/json"), Serialization.asJson(podNoLabels));
@@ -269,7 +275,8 @@ class BaseOperationTest {
     });
 
     // Then
-    assertTrue(exception.getMessage().contains("Internal Server Error"));
+    assertTrue("As the first failure is an IOException the message of the causedBy expected to contain the given text: 'For example java.net.ConnectException'!",
+      exception.getCause().getMessage().contains("For example java.net.ConnectException"));
     assertEquals(1, httpExecutionCounter.get());
   }
 
@@ -290,7 +297,8 @@ class BaseOperationTest {
     });
 
     // Then
-    assertTrue(exception.getMessage().contains("Internal Server Error"));
+    assertTrue("As the last failure, the 3rd one, is not an IOException the message expected to contain: 'Internal Server Error'!",
+        exception.getMessage().contains("Internal Server Error"));
     assertEquals("Expected 4 calls: one normal try and 3 backoff retries!", 4, httpExecutionCounter.get());
   }
 
