@@ -20,7 +20,9 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import okhttp3.Response;
-
+/**
+ * This is Java equivalent of kubectl exec
+ */
 @SuppressWarnings("java:S106")
 public class ExecExample {
 

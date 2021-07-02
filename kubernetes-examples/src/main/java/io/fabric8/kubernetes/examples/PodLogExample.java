@@ -21,6 +21,9 @@ import io.fabric8.kubernetes.client.dsl.LogWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * This is Java equivalent of kubectl logs
+ */
 @SuppressWarnings("java:S106")
 public class PodLogExample {
 
