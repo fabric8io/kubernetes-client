@@ -93,11 +93,13 @@ class PodCrudTest {
     assertNotNull(pod);
     assertEquals(2, pod.getMetadata().getLabels().size());
 
-    pod2 = client.pods().inNamespace("ns1").withName("pod2").edit(new Visitor<PodBuilder>() {
+    pod2 = client.pods().inNamespace("ns1").withName("pod2").edit(new Visitor<Object>() {
 
       @Override
-      public void visit(PodBuilder buidler) {
-        buidler.editMetadata().addToLabels("another", "one").endMetadata();
+      public void visit(Object builder) {
+        if (builder instanceof PodBuilder) {
+          ((PodBuilder)builder).editMetadata().addToLabels("another", "one").endMetadata();
+        }
       }
 
     });

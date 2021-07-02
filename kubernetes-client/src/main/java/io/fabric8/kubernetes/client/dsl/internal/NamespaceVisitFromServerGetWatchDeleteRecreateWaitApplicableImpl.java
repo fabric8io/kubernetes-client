@@ -35,7 +35,6 @@ import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
-import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.Handlers;
@@ -52,7 +51,6 @@ import io.fabric8.kubernetes.client.dsl.Readiable;
 import io.fabric8.kubernetes.client.dsl.VisitFromServerGetWatchDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.Waitable;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
-import io.fabric8.kubernetes.client.handlers.KubernetesListHandler;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import okhttp3.OkHttpClient;
 
@@ -304,12 +302,12 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl ex
     throw new IllegalArgumentException("Item needs to be an instance of HasMetadata or String.");
   }
 
-  static <T> ResourceHandler<? extends KubernetesResource, ?> checkForHandlerOf(T item) {
+  static <T> void checkForHandlerOf(T item) {
     if (item instanceof HasMetadata) {
-      return handlerOf((HasMetadata)item);
-    } else if (item instanceof KubernetesList) {
-      return new KubernetesListHandler();
-    } else {
+      if (handlerOf((HasMetadata)item) == null) {
+        throw new KubernetesClientException("No handler found for object:" + item);
+      }
+    } else if (!(item instanceof KubernetesList)) {
       throw new IllegalArgumentException("Could not find a registered handler for item: [" + item + "].");
     }
   }
