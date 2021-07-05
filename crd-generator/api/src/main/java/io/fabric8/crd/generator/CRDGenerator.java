@@ -205,7 +205,7 @@ public class CRDGenerator {
   public interface CRDOutput<T extends OutputStream> extends Closeable {
     T outputFor(String crdName) throws IOException;
     default URI crdURI(String crdName) {
-      return URI.create(crdName);
+      return URI.create("file:///" + crdName);
     }
   }
 
