@@ -18,21 +18,26 @@ package io.fabric8.kubernetes.client.internal;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.utils.IOHelpers;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Base64;
+import java.util.Objects;
 import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -150,6 +155,33 @@ public class CertUtilsTest {
     verifyFabric8InStore(trustStore);
   }
 
+  @Test
+  void testGetInputStreamFromDataOrFileShouldNotDecodedPEMAgain() throws IOException {
+    // Given
+    File certFile = new File(Objects.requireNonNull(getClass().getResource("/ssl/valid-non-base64-encoded-cert.pem")).getFile());
+    String certData = new String(Files.readAllBytes(certFile.toPath()));
+
+    // When
+    InputStream inputStream = CertUtils.getInputStreamFromDataOrFile(certData, null);
+    String certDataReadFromInputStream = IOHelpers.readFully(inputStream);
+
+    // Then
+    assertEquals(certData, certDataReadFromInputStream);
+  }
+
+  @Test
+  void testGetInputStreamFromDataOrFileShouldDecodeBase64EncodedString() throws IOException {
+    // Given
+    String inputStr = "this is a test";
+    String base64EncodedStr = Base64.getEncoder().encodeToString(inputStr.getBytes());
+
+    // When
+    InputStream inputStream = CertUtils.getInputStreamFromDataOrFile(base64EncodedStr, null);
+    String certDataReadFromInputStream = IOHelpers.readFully(inputStream);
+
+    // Then
+    assertEquals(inputStr, certDataReadFromInputStream);
+  }
 
   private void verifyFabric8InStore(KeyStore trustStore)
     throws KeyStoreException, CertificateException, NoSuchAlgorithmException, IOException {
