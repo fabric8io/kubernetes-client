@@ -3,6 +3,7 @@
 ### 5.6-SNAPSHOT
 
 #### Bugs
+* Fix #3083: CertificateException due to PEM being decoded in CertUtils
 
 #### Improvements
 
