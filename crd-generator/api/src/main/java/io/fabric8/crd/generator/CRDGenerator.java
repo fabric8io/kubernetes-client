@@ -1,12 +1,12 @@
 /**
  * Copyright (C) 2015 Red Hat, Inc.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,7 +21,6 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator.Feature;
 import io.fabric8.crd.generator.v1.CustomResourceHandler;
-import io.fabric8.crd.generator.visitor.ClassDependenciesVisitor;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
@@ -134,7 +133,7 @@ public class CRDGenerator {
     if (output == null) {
       LOGGER.warn(
         "No output option was selected either using 'inOutputDir' or 'withOutput' methods. Skipping generation.");
-      return CRDGenerationInfo.EMPTY ;
+      return CRDGenerationInfo.EMPTY;
     }
 
     // if no CRD version is specified, generate for all supported versions
@@ -184,51 +183,6 @@ public class CRDGenerator {
     return crdGenerationInfo;
   }
 
-  public static class CRDInfo {
-    private final String version;
-    private final String filePath;
-    private final Set<String> dependentClassNames;
-
-    public CRDInfo(String version, String filePath, Set<String> dependentClassNames) {
-      this.version = version;
-      this.filePath = filePath;
-      this.dependentClassNames = dependentClassNames;
-    }
-
-    public String getVersion() {
-      return version;
-    }
-
-    public String getFilePath() {
-      return filePath;
-    }
-
-    public Set<String> getDependentClassNames() {
-      return dependentClassNames;
-    }
-  }
-
-  public static class CRDGenerationInfo {
-
-    static final CRDGenerationInfo EMPTY = new CRDGenerationInfo();
-    private final Map<String, Map<String, CRDInfo>> crdNameToVersionToCRDInfoMap = new HashMap<>();
-
-     public Map<String, CRDInfo> getCRDInfos(String crdName) {
-       return crdNameToVersionToCRDInfoMap.get(crdName);
-     }
-
-    void add(String crdName, String version, URI fileURI) {
-       crdNameToVersionToCRDInfoMap.computeIfAbsent(crdName, k -> new HashMap<>())
-         .put(version, new CRDInfo(version, new File(fileURI).getAbsolutePath(), ClassDependenciesVisitor.getDependentClassesFromCRDName(crdName)));
-    }
-
-    public int numberOfGeneratedCRDs() {
-       final int[] result = new int[1];
-      crdNameToVersionToCRDInfoMap.forEach((k, v) -> result[0] += v.size());
-      return result[0];
-    }
-  }
-
   private void createInfoMessage(Map<String, String> messages, CustomResourceInfo info) {
     String name = info.crdName();
     String msg = String
@@ -245,6 +199,7 @@ public class CRDGenerator {
 
   public interface CRDOutput<T extends OutputStream> extends Closeable {
     T outputFor(String crdName) throws IOException;
+
     default URI crdURI(String crdName) {
       return URI.create("file:///" + crdName);
     }
