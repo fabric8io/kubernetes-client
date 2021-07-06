@@ -610,7 +610,9 @@
       "javaType": "io.fabric8.kubernetes.api.model.MicroTime",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
-      ]
+      ],
+      "serializer": "io.fabric8.kubernetes.api.model.MicroTimeSerDes.Serializer.class",
+      "deserializer": "io.fabric8.kubernetes.api.model.MicroTimeSerDes.Deserializer.class"
     },
     "kubernetes_apimachinery_pkg_apis_ObjectMeta": {
       "type": "object",

@@ -18,7 +18,7 @@ package io.fabric8.kubernetes;
 import io.fabric8.kubernetes.api.model.Event;
 import io.fabric8.kubernetes.api.model.EventBuilder;
 import io.fabric8.kubernetes.api.model.EventList;
-import io.fabric8.kubernetes.api.model.ObjectReference;
+import io.fabric8.kubernetes.api.model.MicroTimeBuilder;
 import io.fabric8.kubernetes.api.model.ObjectReferenceBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.arquillian.cube.kubernetes.api.Session;
@@ -27,6 +27,9 @@ import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -89,6 +92,9 @@ public class EventsIT {
         .withNamespace(session.getNamespace())
         .build())
       .withReason("Custom Event")
+      .withEventTime(new MicroTimeBuilder().withTime("2021-07-06T16:38:47.986439Z").build())
+      .withReportingComponent("foo")
+      .withReportingInstance("foo")
       .build();
   }
 }

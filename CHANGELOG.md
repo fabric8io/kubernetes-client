@@ -8,6 +8,7 @@
 * Fix #3295: Fix wrong kind getting registered in KubernetesDeserializer in SharedInformerFactory
 * Fix #3318: Informer relist add/update should not always be sync events
 * Fix #3328: Allow for generic watches of known types
+* Fix #3240: MicroTime serialises incorrectly; add custom serializer/deserializer for MicroTime
 
 #### Improvements
 * Fix #3285: adding waiting for list contexts `Informable.informOnCondition`
