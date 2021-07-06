@@ -168,7 +168,8 @@ class CRDGeneratorTest {
       assertNotNull(version.getSubresources());
       final Map<String, JSONSchemaProps> specProps = version.getSchema().getOpenAPIV3Schema()
         .getProperties().get("spec").getProperties();
-      assertEquals(3, specProps.size());
+      assertEquals(4, specProps.size());
+      assertEquals("integer", specProps.get("baseInt").getType());
       checkMapProp(specProps, "unsupported");
       checkMapProp(specProps, "unsupported2");
       checkMapProp(specProps, "supported");
