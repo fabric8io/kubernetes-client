@@ -102,14 +102,8 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
       final List<CompletableFuture<HasMetadata>> futures = new ArrayList<>(items.size());
       for (final HasMetadata meta : items) {
         final ResourceHandler<HasMetadata, ?> h = handlerOf(meta);
-        futures.add(CompletableFuture.supplyAsync(() -> {
-          try {
-            return h.waitUntilCondition(client, config, meta.getMetadata().getNamespace(), meta, condition, amount, timeUnit);
-          } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new RuntimeException(e);
-          }
-        }, executor));
+        futures.add(CompletableFuture.supplyAsync(() -> h.waitUntilCondition(client, config,
+            meta.getMetadata().getNamespace(), meta, condition, amount, timeUnit), executor));
       }
   
       final List<HasMetadata> results = new ArrayList<>();

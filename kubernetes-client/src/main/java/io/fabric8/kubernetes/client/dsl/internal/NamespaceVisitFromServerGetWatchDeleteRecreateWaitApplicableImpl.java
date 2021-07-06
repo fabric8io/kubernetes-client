@@ -251,12 +251,7 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl ex
   public HasMetadata waitUntilReady(long amount, TimeUnit timeUnit) {
     HasMetadata meta = acceptVisitors(asHasMetadata(get()), visitors);
     ResourceHandler<HasMetadata, ?> h = handlerOf(meta);
-    try {
-      return h.waitUntilReady(client, config, meta.getMetadata().getNamespace(), meta, amount, timeUnit);
-    } catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-      throw KubernetesClientException.launderThrowable(e);
-    }
+    return h.waitUntilReady(client, config, meta.getMetadata().getNamespace(), meta, amount, timeUnit);
   }
 
   @Override
@@ -269,12 +264,7 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl ex
     TimeUnit timeUnit) {
     HasMetadata meta = acceptVisitors(asHasMetadata(get()), visitors);
     ResourceHandler<HasMetadata, ?> h = handlerOf(meta);
-    try {
-      return h.waitUntilCondition(client, config, meta.getMetadata().getNamespace(), meta, condition, amount, timeUnit);
-    } catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-      throw KubernetesClientException.launderThrowable(e);
-    }
+    return h.waitUntilCondition(client, config, meta.getMetadata().getNamespace(), meta, condition, amount, timeUnit);
   }
 
 
@@ -311,8 +301,9 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl ex
       throw new IllegalArgumentException("Could not find a registered handler for item: [" + item + "].");
     }
   }
-  
+
   static <T extends HasMetadata> ResourceHandler<HasMetadata, ?> handlerOf(T item) {
     return Handlers.get(item.getKind(), item.getApiVersion());
   }
+
 }
