@@ -30,8 +30,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @EnableCertManagerMockClient(crud = true)
 class V1alpha2CertificateCrudTest {
 
-//  @Rule
-//  public CertManagerServer server = new CertManagerServer(true, true);
   CertManagerClient client;
   @Test
   void shouldReturnEmptyList() {
