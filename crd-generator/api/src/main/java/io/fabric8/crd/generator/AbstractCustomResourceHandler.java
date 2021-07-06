@@ -48,7 +48,7 @@ public abstract class AbstractCustomResourceHandler {
     LabelSelectorPathDetector labelSelectorPathDetector = new LabelSelectorPathDetector();
     AdditionalPrinterColumnDetector additionalPrinterColumnDetector = new AdditionalPrinterColumnDetector();
 
-    ClassPropertyVisitor traversedClassesVisitor = new ClassPropertyVisitor(config.crClassName(), name);
+    ClassDependenciesVisitor traversedClassesVisitor = new ClassDependenciesVisitor(config.crClassName(), name);
 
     TypeDefBuilder builder = new TypeDefBuilder(def);
     if (config.specClassName().isPresent()) {
@@ -89,7 +89,7 @@ public abstract class AbstractCustomResourceHandler {
   }
 
   public Map<String, Set<String>> visitedClassesPerCustomResource() {
-    return ClassPropertyVisitor.getTraversedClasses();
+    return ClassDependenciesVisitor.getTraversedClasses();
   }
 
   /**

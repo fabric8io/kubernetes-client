@@ -272,7 +272,7 @@ class CRDGeneratorTest {
   }
 
   private CustomResourceDefinitionSpec checkSpec(
-    Class<? extends CustomResource<?, ?>> customResource, Scope scope, Class<?>... traversedClasses) {
+    Class<? extends CustomResource<?, ?>> customResource, Scope scope, Class<?>... mustContainTraversedClasses) {
     CRDGenerator generator = new CRDGenerator();
 
     // record info to be able to output it if the test fails
@@ -289,11 +289,10 @@ class CRDGeneratorTest {
     final CRDGenerator.CRDInfo crdInfo = crdInfos.get("v1");
     assertEquals("v1", crdInfo.getVersion());
     assertEquals("/" + CRDGenerator.getOutputName(info.crdName(), "v1"), crdInfo.getFilePath()); // test output uses the CRD name as URI
-    if(traversedClasses != null && traversedClasses.length > 0) {
+    if(mustContainTraversedClasses != null && mustContainTraversedClasses.length > 0) {
       final Set<String> dependentClassNames = crdInfo.getDependentClassNames();
       System.out.println(dependentClassNames);
-      assertEquals(traversedClasses.length, dependentClassNames.size());
-      Arrays.stream(traversedClasses).map(Class::getCanonicalName).forEach(c -> assertTrue(dependentClassNames.contains(c), "should contain " + c));
+      Arrays.stream(mustContainTraversedClasses).map(Class::getCanonicalName).forEach(c -> assertTrue(dependentClassNames.contains(c), "should contain " + c));
     }
 
     CustomResourceDefinition definition = output.definition(outputName);

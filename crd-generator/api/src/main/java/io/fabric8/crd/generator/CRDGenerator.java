@@ -21,7 +21,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator.Feature;
 import io.fabric8.crd.generator.v1.CustomResourceHandler;
-import io.fabric8.crd.generator.visitor.ClassPropertyVisitor;
+import io.fabric8.crd.generator.visitor.ClassDependenciesVisitor;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
@@ -219,7 +219,7 @@ public class CRDGenerator {
 
     void add(String crdName, String version, URI fileURI) {
        crdNameToVersionToCRDInfoMap.computeIfAbsent(crdName, k -> new HashMap<>())
-         .put(version, new CRDInfo(version, new File(fileURI).getAbsolutePath(), ClassPropertyVisitor.getDependentClassesFromCRDName(crdName)));
+         .put(version, new CRDInfo(version, new File(fileURI).getAbsolutePath(), ClassDependenciesVisitor.getDependentClassesFromCRDName(crdName)));
     }
 
     public int numberOfGeneratedCRDs() {
