@@ -1,0 +1,23 @@
+{
+  "action": "test",
+  "apiVersion": "v1",
+  "eventTime": "2021-07-06T08:55:29.000000Z",
+  "involvedObject": {
+    "name": "spring-boot-55f686b994-6xn5b",
+    "namespace": "default"
+  },
+  "kind": "Event",
+  "metadata": {
+    "creationTimestamp": "2021-07-06T11:27:51Z",
+    "generateName": "fabric8-client-restart-event2",
+    "name": "fabric8-client-restart-event22mlmc",
+    "namespace": "default",
+    "resourceVersion": "80681",
+    "uid": "08342bf0-e80a-4759-a029-06876ab04307"
+  },
+  "reason": "TODO",
+  "reportingComponent": "foo",
+  "reportingInstance": "foo-123",
+  "source": {},
+  "type": "Normal"
+}
