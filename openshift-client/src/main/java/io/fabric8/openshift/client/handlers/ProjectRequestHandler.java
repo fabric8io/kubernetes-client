@@ -18,21 +18,21 @@ package io.fabric8.openshift.client.handlers;
 
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.ListOptions;
-import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.Watcher;
-import java.util.function.Predicate;
-
-import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ResourceHandler;
+import io.fabric8.kubernetes.client.Watch;
+import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.openshift.api.model.ProjectRequest;
 import io.fabric8.openshift.api.model.ProjectRequestBuilder;
 import io.fabric8.openshift.client.dsl.internal.ProjectRequestsOperationImpl;
+import okhttp3.OkHttpClient;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
 import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
 
 @Component
 @Service
@@ -88,12 +88,18 @@ public class ProjectRequestHandler implements ResourceHandler<ProjectRequest, Pr
   }
 
   @Override
-  public ProjectRequest waitUntilReady(OkHttpClient client, Config config, String namespace, ProjectRequest item, long amount, TimeUnit timeUnit) throws InterruptedException {
+  public ProjectRequest waitUntilReady(OkHttpClient client, Config config, String namespace, ProjectRequest item, long amount, TimeUnit timeUnit) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public ProjectRequest waitUntilCondition(OkHttpClient client, Config config, String namespace, ProjectRequest item, Predicate<ProjectRequest> condition, long amount, TimeUnit timeUnit) throws InterruptedException {
+  public ProjectRequest waitUntilCondition(OkHttpClient client, Config config, String namespace, ProjectRequest item, Predicate<ProjectRequest> condition, long amount, TimeUnit timeUnit) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public Resource<ProjectRequest> resource(OkHttpClient client, Config config, String namespace,
+            ProjectRequest item) {
     throw new UnsupportedOperationException();
   }
 }

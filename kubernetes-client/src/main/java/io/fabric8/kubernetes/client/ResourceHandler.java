@@ -22,6 +22,7 @@ import java.util.function.Predicate;
 
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.ListOptions;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 
@@ -86,7 +87,9 @@ public interface ResourceHandler<T, V extends VisitableBuilder<T, V>> {
    * @param dryRun        Enable dry run
    * @return              The created resource.
    */
-  T create(OkHttpClient client, Config config, String namespace, T item, boolean dryRun);
+  default T create(OkHttpClient client, Config config, String namespace, T item, boolean dryRun) {
+    return resource(client, config, namespace, item).dryRun(dryRun).create(item);
+  }
 
   /**
    * Replace the specified resource
@@ -97,7 +100,9 @@ public interface ResourceHandler<T, V extends VisitableBuilder<T, V>> {
    * @param dryRun        Enable dry run
    * @return              The replaced resource.
    */
-  T replace(OkHttpClient client, Config config, String namespace, T item, boolean dryRun);
+  default T replace(OkHttpClient client, Config config, String namespace, T item, boolean dryRun) {
+    return resource(client, config, namespace, item).dryRun(dryRun).replace(item);
+  }
 
   /**
    * Reload the specified resource (if exists).
@@ -107,7 +112,9 @@ public interface ResourceHandler<T, V extends VisitableBuilder<T, V>> {
    * @param item          The resource to reload.
    * @return              The reloaded resource.
    */
-  T reload(OkHttpClient client, Config config, String namespace, T item);
+  default T reload(OkHttpClient client, Config config, String namespace, T item) {
+    return resource(client, config, namespace, item).fromServer().get();
+  }
 
   /**
    * Edit the specified resource.
@@ -127,7 +134,9 @@ public interface ResourceHandler<T, V extends VisitableBuilder<T, V>> {
    * @param dryRun        enable dry run
    * @return              The true if the resource was successfully deleted.
    */
-  Boolean delete(OkHttpClient client, Config config, String namespace, DeletionPropagation propagationPolicy, long gracePeriodSeconds, T item, boolean dryRun);
+  default Boolean delete(OkHttpClient client, Config config, String namespace, DeletionPropagation propagationPolicy, long gracePeriodSeconds, T item, boolean dryRun) {
+    return resource(client, config, namespace, item).dryRun(dryRun).withPropagationPolicy(propagationPolicy).withGracePeriod(gracePeriodSeconds).delete();
+  }
 
 
     /**
@@ -139,8 +148,9 @@ public interface ResourceHandler<T, V extends VisitableBuilder<T, V>> {
      * @param watcher       The {@link Watcher} to use.
      * @return              The {@link Watch}
      */
-  Watch watch(OkHttpClient client, Config config, String namespace, T item, Watcher<T> watcher);
-
+  default Watch watch(OkHttpClient client, Config config, String namespace, T item, Watcher<T> watcher) {
+    return resource(client, config, namespace, item).watch(watcher);
+  }
 
   /**
    * Watches the specified resource for changes.
@@ -152,7 +162,9 @@ public interface ResourceHandler<T, V extends VisitableBuilder<T, V>> {
    * @param watcher         The {@link Watcher} to use.
    * @return                The {@link Watch}
    */
-  Watch watch(OkHttpClient client, Config config, String namespace, T item, String resourceVersion, Watcher<T> watcher);
+  default Watch watch(OkHttpClient client, Config config, String namespace, T item, String resourceVersion, Watcher<T> watcher) {
+    return resource(client, config, namespace, item).watch(resourceVersion, watcher);
+  }
 
   /**
    * Watches the specified resource for changes
@@ -165,7 +177,9 @@ public interface ResourceHandler<T, V extends VisitableBuilder<T, V>> {
    * @param watcher        The {@link Watcher} to use.
    * @return               The {@link Watch}
    */
-  Watch watch(OkHttpClient client, Config config, String namespace, T item, ListOptions listOptions, Watcher<T> watcher);
+  default Watch watch(OkHttpClient client, Config config, String namespace, T item, ListOptions listOptions, Watcher<T> watcher) {
+    return resource(client, config, namespace, item).watch(listOptions, watcher);
+  }
 
   /**
    * Waits until the specified resource is Ready.
@@ -177,9 +191,33 @@ public interface ResourceHandler<T, V extends VisitableBuilder<T, V>> {
    * @param amount        The amount of time to wait
    * @param timeUnit      The wait {@link TimeUnit}.
    * @return              The true if the resource was successfully deleted.
-   * @throws              InterruptedException Interrupted Exception
    */
-  T waitUntilReady(OkHttpClient client, Config config, String namespace, T item, long amount, TimeUnit timeUnit) throws InterruptedException;
+  default T waitUntilReady(OkHttpClient client, Config config, String namespace, T item, long amount, TimeUnit timeUnit) {
+    return resource(client, config, namespace, item).waitUntilReady(amount, timeUnit);
+  }
 
-  T waitUntilCondition(OkHttpClient client, Config config, String namespace, T item, Predicate<T> condition, long amount, TimeUnit timeUnit) throws InterruptedException;
+  /**
+   * Waits until the specified condition is true.
+   * @param client        An instance of the http client.
+   * @param config        The client config.
+   * @param namespace     The target namespace.
+   * @param item          The resource to wait.
+   * @param amount        The amount of time to wait
+   * @param timeUnit      The wait {@link TimeUnit}.
+   * @param condition     The condition to wait for
+   * @return              The true if the resource was successfully deleted.
+   */
+  default T waitUntilCondition(OkHttpClient client, Config config, String namespace, T item, Predicate<T> condition, long amount, TimeUnit timeUnit) {
+    return resource(client, config, namespace, item).waitUntilCondition(condition, amount, timeUnit);
+  }
+
+  /**
+   * Gets the Resource for the given item
+   * @param client        An instance of the http client.
+   * @param config        The client config.
+   * @param namespace     The target namespace.
+   * @param item          The resource to wait.
+   * @return              The true if the resource was successfully deleted.
+   */
+  Resource<T> resource(OkHttpClient client, Config config, String namespace, T item);
 }

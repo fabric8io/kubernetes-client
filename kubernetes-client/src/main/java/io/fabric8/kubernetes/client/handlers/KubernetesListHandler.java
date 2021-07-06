@@ -27,6 +27,7 @@ import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.ResourceHandler;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.internal.KubernetesListOperationsImpl;
 import org.apache.felix.scr.annotations.Component;
 import org.slf4j.Logger;
@@ -118,12 +119,17 @@ public class KubernetesListHandler implements ResourceHandler<KubernetesList, Ku
   }
 
   @Override
-  public KubernetesList waitUntilReady(OkHttpClient client, Config config, String namespace, KubernetesList item, long amount, TimeUnit timeUnit) throws InterruptedException {
+  public KubernetesList waitUntilReady(OkHttpClient client, Config config, String namespace, KubernetesList item, long amount, TimeUnit timeUnit) {
     throw new UnsupportedOperationException("Watch is not supported on KubernetesList.");
   }
 
   @Override
-  public KubernetesList waitUntilCondition(OkHttpClient client, Config config, String namespace, KubernetesList item, Predicate<KubernetesList> condition, long amount, TimeUnit timeUnit) throws InterruptedException {
+  public KubernetesList waitUntilCondition(OkHttpClient client, Config config, String namespace, KubernetesList item, Predicate<KubernetesList> condition, long amount, TimeUnit timeUnit) {
     throw new UnsupportedOperationException("Watch is not supported on KubernetesList.");
+  }
+  
+  @Override
+  public Resource<KubernetesList> resource(OkHttpClient client, Config config, String namespace, KubernetesList item) {
+    throw new UnsupportedOperationException("Resource is not supported on KubernetesList.");
   }
 }

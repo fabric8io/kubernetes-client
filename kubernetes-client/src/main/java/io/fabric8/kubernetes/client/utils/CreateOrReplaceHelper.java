@@ -30,7 +30,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.UnaryOperator;
 
 public class CreateOrReplaceHelper<T extends HasMetadata> {
-  private static final Logger LOG = LoggerFactory.getLogger(CreateOrReplaceHelper.class);
   public static final int CREATE_OR_REPLACE_RETRIES = 3;
   private final UnaryOperator<T> createTask;
   private final UnaryOperator<T> replaceTask;
@@ -75,15 +74,7 @@ public class CreateOrReplaceHelper<T extends HasMetadata> {
     CreateOrReplaceHelper<HasMetadata> createOrReplaceHelper = new CreateOrReplaceHelper<>(
       m -> h.create(client, config, namespaceToUse, m, dryRun),
       m -> h.replace(client, config, namespaceToUse, m, dryRun),
-      m -> {
-        try {
-          return h.waitUntilCondition(client, config, namespaceToUse, m, Objects::nonNull, 1, TimeUnit.SECONDS);
-        } catch (InterruptedException interruptedException) {
-          Thread.currentThread().interrupt();
-          LOG.warn("Interrupted waiting for item to be created or replaced. Gracefully assuming the resource hasn't been created and doesn't exist. ({})", interruptedException.getMessage());
-        }
-        return null;
-      },
+      m -> h.waitUntilCondition(client, config, namespaceToUse, m, Objects::nonNull, 1, TimeUnit.SECONDS),
       m -> h.reload(client, config, namespaceToUse, m)
     );
 
