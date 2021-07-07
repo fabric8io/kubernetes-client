@@ -35,10 +35,10 @@ import java.util.function.Supplier;
  * <br>Modified to simplify threading
  */
 public class SharedProcessor<T> {
-  private ReadWriteLock lock = new ReentrantReadWriteLock();
+  private final ReadWriteLock lock = new ReentrantReadWriteLock();
 
-  private List<ProcessorListener<T>> listeners;
-  private List<ProcessorListener<T>> syncingListeners;
+  private final List<ProcessorListener<T>> listeners = new ArrayList<>();
+  private final List<ProcessorListener<T>> syncingListeners = new ArrayList<>();
   private final Executor executor;
   
   public SharedProcessor() {
@@ -46,8 +46,6 @@ public class SharedProcessor<T> {
   }
 
   public SharedProcessor(Executor executor) {
-    this.listeners = new ArrayList<>();
-    this.syncingListeners = new ArrayList<>();
     this.executor = executor;
   }
 
@@ -96,7 +94,7 @@ public class SharedProcessor<T> {
     lock.writeLock().lock();
     boolean resyncNeeded = false;
     try {
-      this.syncingListeners = new ArrayList<>();
+      this.syncingListeners.clear();
 
       ZonedDateTime now = ZonedDateTime.now();
       for (ProcessorListener<T> listener : this.listeners) {
@@ -115,8 +113,8 @@ public class SharedProcessor<T> {
   public void stop() {
     lock.writeLock().lock();
     try {
-      syncingListeners = null;
-      listeners = null;
+      syncingListeners.clear();
+      listeners.clear();
     } finally {
       lock.writeLock().unlock();
     }
