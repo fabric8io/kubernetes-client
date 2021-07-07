@@ -30,6 +30,11 @@ public class KubernetesClientTimeoutException extends KubernetesClientException 
   private static final String KNOWS_RESOURCES_FORMAT = "Timed out waiting for [%d] milliseconds for multiple resources. %s";
 
   private final List<HasMetadata> resourcesNotReady;
+  
+  public KubernetesClientTimeoutException(String kind, String name, String namespace, long amount, TimeUnit timeUnit) {
+    super(String.format(RESOURCE_FORMAT, timeUnit.toMillis(amount), kind, name, namespace));
+    this.resourcesNotReady = Collections.emptyList();
+  }
 
   public KubernetesClientTimeoutException(HasMetadata resource, long amount, TimeUnit timeUnit) {
     super(String.format(RESOURCE_FORMAT, timeUnit.toMillis(amount), resource.getKind(), resource.getMetadata().getName(), resource.getMetadata().getNamespace()));

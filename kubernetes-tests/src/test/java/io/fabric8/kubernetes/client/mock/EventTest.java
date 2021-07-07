@@ -85,9 +85,9 @@ class EventTest {
     // Given
     server.expect().get().withPath("/api/v1/namespaces/ns1/events?fieldSelector="
       + Utils.toUrlEncoded("involvedObject.name=foo," +
-      "involvedObject.uid=6d71451a-f8df-11ea-a8ac-0e13a02d8ebd," +
       "involvedObject.namespace=ns1," +
-      "involvedObject.kind=Deployment"))
+      "involvedObject.kind=Deployment," +
+      "involvedObject.uid=6d71451a-f8df-11ea-a8ac-0e13a02d8ebd"))
       .andReturn(HttpURLConnection.HTTP_OK, new EventListBuilder().withItems(new EventBuilder()
         .withNewMetadata().withName("foo-event").endMetadata()
         .build())

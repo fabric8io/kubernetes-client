@@ -159,7 +159,7 @@ class UberJarTest {
   }
 
   private File getFileInDirectory(File parentFile, String pathToFile) {
-    pathToFile = pathToFile.replaceAll("/", File.separator);
+    pathToFile = pathToFile.replace('/', File.separatorChar);
     return new File(parentFile, pathToFile);
   }
 

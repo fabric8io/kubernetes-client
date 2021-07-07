@@ -466,9 +466,9 @@ class DeploymentTest {
     // Given
     String imageToUpdate = "nginx:latest";
     server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
-      .andReturn(HttpURLConnection.HTTP_OK, getDeploymentBuilder().build()).times(3);
+      .andReturn(HttpURLConnection.HTTP_OK, createDeploymentBuilder().build()).times(3);
     server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
-      .andReturn(HttpURLConnection.HTTP_OK, getDeploymentBuilder()
+      .andReturn(HttpURLConnection.HTTP_OK, createDeploymentBuilder()
         .editSpec().editTemplate().editSpec().editContainer(0)
           .withImage(imageToUpdate)
         .endContainer().endSpec().endTemplate().endSpec()
@@ -492,9 +492,9 @@ class DeploymentTest {
     // Given
     Map<String, String> containerToImageMap = Collections.singletonMap("nginx", "nginx:latest");
     server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
-      .andReturn(HttpURLConnection.HTTP_OK, getDeploymentBuilder().build()).times(3);
+      .andReturn(HttpURLConnection.HTTP_OK, createDeploymentBuilder().build()).times(3);
     server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
-      .andReturn(HttpURLConnection.HTTP_OK, getDeploymentBuilder()
+      .andReturn(HttpURLConnection.HTTP_OK, createDeploymentBuilder()
         .editSpec().editTemplate().editSpec().editContainer(0)
         .withImage(containerToImageMap.get("nginx"))
         .endContainer().endSpec().endTemplate().endSpec()
@@ -517,9 +517,9 @@ class DeploymentTest {
   void testRolloutPause() throws InterruptedException {
     // Given
     server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
-      .andReturn(HttpURLConnection.HTTP_OK, getDeploymentBuilder().build()).times(3);
+      .andReturn(HttpURLConnection.HTTP_OK, createDeploymentBuilder().build()).times(3);
     server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
-      .andReturn(HttpURLConnection.HTTP_OK, getDeploymentBuilder().build()).once();
+      .andReturn(HttpURLConnection.HTTP_OK, createDeploymentBuilder().build()).once();
 
     // When
     Deployment deployment = client.apps().deployments().inNamespace("ns1").withName("deploy1")
@@ -536,9 +536,9 @@ class DeploymentTest {
   void testRolloutResume() throws InterruptedException {
     // Given
     server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
-      .andReturn(HttpURLConnection.HTTP_OK, getDeploymentBuilder().build()).times(3);
+      .andReturn(HttpURLConnection.HTTP_OK, createDeploymentBuilder().build()).times(3);
     server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
-      .andReturn(HttpURLConnection.HTTP_OK, getDeploymentBuilder().build()).once();
+      .andReturn(HttpURLConnection.HTTP_OK, createDeploymentBuilder().build()).once();
 
     // When
     Deployment deployment = client.apps().deployments().inNamespace("ns1").withName("deploy1")
@@ -556,9 +556,9 @@ class DeploymentTest {
   void testRolloutRestart() throws InterruptedException {
     // Given
     server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
-      .andReturn(HttpURLConnection.HTTP_OK, getDeploymentBuilder().build()).times(3);
+      .andReturn(HttpURLConnection.HTTP_OK, createDeploymentBuilder().build()).times(3);
     server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
-      .andReturn(HttpURLConnection.HTTP_OK, getDeploymentBuilder().build()).once();
+      .andReturn(HttpURLConnection.HTTP_OK, createDeploymentBuilder().build()).once();
 
     // When
     Deployment deployment = client.apps().deployments().inNamespace("ns1").withName("deploy1")
@@ -627,9 +627,9 @@ class DeploymentTest {
     server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/replicasets?labelSelector=" + Utils.toUrlEncoded("app=nginx"))
       .andReturn(HttpURLConnection.HTTP_OK, new ReplicaSetListBuilder().withItems(replicaSetRevision1, replicaSetRevision2).build()).once();
     server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
-      .andReturn(HttpURLConnection.HTTP_OK, getDeploymentBuilder().build()).times(3);
+      .andReturn(HttpURLConnection.HTTP_OK, createDeploymentBuilder().build()).times(3);
     server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
-      .andReturn(HttpURLConnection.HTTP_OK, getDeploymentBuilder().build()).once();
+      .andReturn(HttpURLConnection.HTTP_OK, createDeploymentBuilder().build()).once();
 
     // When
     Deployment deployment = client.apps().deployments().inNamespace("ns1").withName("deploy1")
@@ -646,39 +646,10 @@ class DeploymentTest {
   @DisplayName("Should get logs for a Deployment")
   void testDeploymentGetLog() {
     // Given
-    ReplicaSet replicaSet = new ReplicaSetBuilder()
-      .withNewMetadata()
-      .withOwnerReferences(
-        new OwnerReferenceBuilder()
-        .withApiVersion("apps/v1")
-        .withBlockOwnerDeletion(true)
-        .withController(true)
-        .withKind("Deployment")
-        .withName("deploy1")
-        .withUid("136581bf-82c2-4675-af05-63c55500b378")
-        .build()
-      )
-      .withName("deploy1-hk9nf")
-      .addToLabels("app", "nginx")
-      .withUid("3Dc4c8746c-94fd-47a7-ac01-11047c0323b4")
-      .endMetadata()
-      .build();
-
-    Pod deployPod = new PodBuilder()
-      .withNewMetadata()
-      .withOwnerReferences(new OwnerReferenceBuilder().withApiVersion("apps/v1")
-        .withBlockOwnerDeletion(true)
-        .withController(true)
-        .withKind("ReplicaSet")
-        .withName("1")
-        .withUid("3Dc4c8746c-94fd-47a7-ac01-11047c0323b4")
-        .build())
-      .withName("deploy1-hk9nf").addToLabels("controller-uid", "3Dc4c8746c-94fd-47a7-ac01-11047c0323b4")
-      .endMetadata()
-      .build();
-
+    ReplicaSet replicaSet = createMockReplicaSet("deploy1", "136581bf-82c2-4675-af05-63c55500b378", "deploy1-hk9nf", Collections.singletonMap("app", "nginx"), "3Dc4c8746c-94fd-47a7-ac01-11047c0323b4");
+    Pod deployPod = createMockPod("1", "3Dc4c8746c-94fd-47a7-ac01-11047c0323b4", "deploy1-hk9nf", Collections.singletonMap("controller-uid", "3Dc4c8746c-94fd-47a7-ac01-11047c0323b4"));
     server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy1")
-      .andReturn(HttpURLConnection.HTTP_OK, getDeploymentBuilder().build())
+      .andReturn(HttpURLConnection.HTTP_OK, createDeploymentBuilder().build())
       .always();
 
     server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/replicasets?labelSelector=app%3Dnginx")
@@ -702,7 +673,56 @@ class DeploymentTest {
     assertEquals("hello", log);
   }
 
-  private DeploymentBuilder getDeploymentBuilder() {
+  @Test
+  void testDeploymentGetLogMultiContainer() {
+    // Given
+    ReplicaSet replicaSet = createMockReplicaSet("deploy-multi1", "93b8b619-731a-435a-bcb0-4b0c19f07f2f", "multi-container-deploy-5dfdf5ddfc", Collections.singletonMap("app", "nginx"), "f9ed6d37-9256-44aa-93b0-4af70e046348");
+    Pod deployPod = createMockPod("multi-container-deploy-5dfdf5ddfc", "f9ed6d37-9256-44aa-93b0-4af70e046348", "multi-container-deploy-5dfdf5ddfc-r6q4j", Collections.singletonMap("controller-uid", "f9ed6d37-9256-44aa-93b0-4af70e046348"));
+
+    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/deployments/deploy-multi1")
+      .andReturn(HttpURLConnection.HTTP_OK, createDeploymentBuilder().editMetadata()
+        .withName("deploy-multi1")
+        .withUid("93b8b619-731a-435a-bcb0-4b0c19f07f2f")
+        .endMetadata().build())
+      .always();
+
+    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/replicasets?labelSelector=app%3Dnginx")
+      .andReturn(HttpURLConnection.HTTP_OK, new ReplicaSetListBuilder().withItems(replicaSet).build())
+      .once();
+    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/replicasets/multi-container-deploy-5dfdf5ddfc")
+      .andReturn(HttpURLConnection.HTTP_OK, replicaSet)
+      .once();
+    server.expect().get().withPath("/api/v1/namespaces/ns1/pods?labelSelector=app%3Dnginx")
+      .andReturn(HttpURLConnection.HTTP_OK, new PodListBuilder().withItems(deployPod).build())
+      .once();
+    server.expect().get().withPath("/api/v1/namespaces/ns1/pods/multi-container-deploy-5dfdf5ddfc-r6q4j/log?pretty=false&container=container1")
+      .andReturn(HttpURLConnection.HTTP_OK, "hello")
+      .once();
+
+    // When
+    String log = client.apps().deployments().inNamespace("ns1").withName("deploy-multi1").inContainer("container1").getLog();
+
+    // Then
+    assertNotNull(log);
+    assertEquals("hello", log);
+  }
+
+  @Test
+  void testDeploymentLoadWithoutApiVersion() {
+    // Given
+
+    // When
+    List<HasMetadata> list = client.load(getClass().getResourceAsStream("/valid-deployment-without-apiversion.json")).get();
+    Deployment deployment = (Deployment) list.get(0);
+
+    // Then
+    assertNotNull(deployment);
+    assertEquals("test", deployment.getMetadata().getName());
+    assertEquals(1, deployment.getSpec().getReplicas());
+    assertEquals(1, deployment.getSpec().getTemplate().getSpec().getContainers().size());
+  }
+
+  private DeploymentBuilder createDeploymentBuilder() {
     return new DeploymentBuilder()
       .withNewMetadata()
       .withName("deploy1")
@@ -728,19 +748,44 @@ class DeploymentTest {
       .endSpec();
   }
 
-  @Test
-  void testDeploymentLoadWithoutApiVersion() {
-    // Given
+  private ReplicaSet createMockReplicaSet(String ownerDeploymentName, String deploymentUid, String name, Map<String, String> labels, String uid) {
+    return new ReplicaSetBuilder()
+      .withNewMetadata()
+      .withOwnerReferences(
+        new OwnerReferenceBuilder()
+          .withApiVersion("apps/v1")
+          .withBlockOwnerDeletion(true)
+          .withController(true)
+          .withKind("Deployment")
+          .withName(ownerDeploymentName)
+          .withUid(deploymentUid)
+          .build()
+      )
+      .withName(name)
+      .addToLabels(labels)
+      .withUid(uid)
+      .endMetadata()
+      .withNewSpec()
+      .withNewSelector()
+      .withMatchLabels(labels)
+      .endSelector()
+      .endSpec()
+      .build();
+  }
 
-    // When
-    List<HasMetadata> list = client.load(getClass().getResourceAsStream("/valid-deployment-without-apiversion.json")).get();
-    Deployment deployment = (Deployment) list.get(0);
-
-    // Then
-    assertNotNull(deployment);
-    assertEquals("test", deployment.getMetadata().getName());
-    assertEquals(1, deployment.getSpec().getReplicas());
-    assertEquals(1, deployment.getSpec().getTemplate().getSpec().getContainers().size());
+  private Pod createMockPod(String replicaSetName, String replicaSetUid, String name, Map<String, String> labels) {
+    return new PodBuilder()
+      .withNewMetadata()
+      .withOwnerReferences(new OwnerReferenceBuilder().withApiVersion("apps/v1")
+        .withBlockOwnerDeletion(true)
+        .withController(true)
+        .withKind("ReplicaSet")
+        .withName(replicaSetName)
+        .withUid(replicaSetUid)
+        .build())
+      .withName(name).addToLabels(labels)
+      .endMetadata()
+      .build();
   }
 
 }

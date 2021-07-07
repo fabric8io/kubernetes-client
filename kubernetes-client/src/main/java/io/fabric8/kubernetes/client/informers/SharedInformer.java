@@ -22,7 +22,7 @@ import io.fabric8.kubernetes.client.informers.cache.Store;
  *
  * This has been ported from official go client: https://github.com/kubernetes/client-go/blob/master/tools/cache/shared_informer.go
  */
-public interface SharedInformer<T> {
+public interface SharedInformer<T> extends AutoCloseable {
 
   /**
    * Add event handler
@@ -54,6 +54,11 @@ public interface SharedInformer<T> {
    * Stops the shared informer.  The informer cannot be started again.
    */
   void stop();
+  
+  @Override
+  default void close() {
+    stop();
+  }
 
   /**
    * Return true if the informer has ever synced

@@ -48,14 +48,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionException;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.function.Predicate;
 
 import static io.fabric8.kubernetes.client.utils.CreateOrReplaceHelper.createOrReplaceItem;
@@ -85,116 +83,64 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
     private final Boolean cascading;
 
   @Override
-  public List<HasMetadata> waitUntilReady(final long amount, final TimeUnit timeUnit) throws InterruptedException {
-    List<HasMetadata> items = acceptVisitors(asHasMetadata(item, true), visitors);
-    if (items.isEmpty()) {
-      return Collections.emptyList();
-    }
-
-    final List<HasMetadata> result = new ArrayList<>();
-    final List<HasMetadata> itemsWithConditionNotMatched = new ArrayList<>(items);
-    final int size = items.size();
-    final ExecutorService executor = Executors.newFixedThreadPool(size);
-
-    try {
-      final CountDownLatch latch = new CountDownLatch(size);
-      for (final HasMetadata meta : items) {
-        final ResourceHandler<HasMetadata, ?> h = handlerOf(meta);
-        if (!executor.isShutdown()) {
-          executor.submit(() -> {
-            try {
-              result.add(h.waitUntilReady(client, config, meta.getMetadata().getNamespace(), meta, amount, timeUnit));
-            } catch (InterruptedException | IllegalArgumentException interruptedException) {
-              // We may get here if waiting is interrupted or resource doesn't support concept of readiness.
-              // We don't want to wait for items that will never become ready
-              // Skip that resource then.
-              LOGGER.info("{} {} does not support readiness. skipping..", meta.getKind(), meta.getMetadata().getName());
-              latch.countDown();
-            } catch (IllegalStateException t) {
-              logAsNotReady(t, meta);
-            } finally {
-              // Resource got ready and was returned properly
-              latch.countDown();
-            }
-          });
-        }
-      }
-      latch.await(amount, timeUnit);
-      if (latch.getCount() == 0) {
-        return result;
-      } else {
-        throw new KubernetesClientTimeoutException(itemsWithConditionNotMatched, amount, timeUnit);
-      }
-    } finally {
-      executor.shutdown();
-    }
+  public List<HasMetadata> waitUntilReady(final long amount, final TimeUnit timeUnit) {
+    return waitUntilCondition(resource -> Objects.nonNull(resource) && getReadiness().isReady(resource), amount, timeUnit);
   }
 
   @Override
   public List<HasMetadata> waitUntilCondition(Predicate<HasMetadata> condition,
                                               long amount,
-                                              TimeUnit timeUnit) throws InterruptedException {
+                                              TimeUnit timeUnit) {
     List<HasMetadata> items = acceptVisitors(asHasMetadata(item, true), visitors);
     if (items.isEmpty()) {
       return Collections.emptyList();
     }
-
-    final List<CompletableFuture<HasMetadata>> futures = new ArrayList<>(items.size());
-    for (final HasMetadata meta : items) {
-      final ResourceHandler<HasMetadata, ?> h = handlerOf(meta);
-      futures.add(CompletableFuture.supplyAsync(() -> {
-        try {
-          return h.waitUntilCondition(client, config, meta.getMetadata().getNamespace(), meta, condition, amount, timeUnit);
-        } catch (Exception e) {
-          //consider all errors as not ready.
-          logAsNotReady(e, meta);
-          return null;
-        }
-      }));
-    }
-
+    // this strategy is very costly in terms of threads - by not exposing the underlying futures
+    // we have to create a thread for each item that mostly waits
+    final ExecutorService executor = Executors.newFixedThreadPool(items.size(), Utils.daemonThreadFactory(this));
     try {
-      // All of the individual futures have the same timeout period,
-      // but they may not all necessarily start executing together.
-      CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).get(amount, timeUnit);
-    } catch (TimeoutException | ExecutionException e) {
-      // We don't allow individual futures to complete with an exception,
-      // which means we should never catch ExecutionException here.
-      LOGGER.debug("Global timeout reached", e);
-    }
-
-    final List<HasMetadata> results = new ArrayList<>();
-    final List<HasMetadata> itemsWithConditionNotMatched = new ArrayList<>();
-
-    // Iterate over the items because we don't know what kind of List it is.
-    // But the futures use an ArrayList, so accessing by index is efficient.
-    int i = 0;
-    for (final HasMetadata meta : items) {
-      try {
-        CompletableFuture<HasMetadata> future = futures.get(i);
-        HasMetadata result = future.getNow(null);
-        if (result != null) {
-          results.add(result);
-        } else {
-          // Cancel this future, just in case it never had
-          // an opportunity to execute in the first place.
-          future.cancel(true);
-          itemsWithConditionNotMatched.add(meta);
-        }
-      } catch (CompletionException e) {
-        // We should never reach here, because individual futures
-        // aren't allowed to complete with an exception.
-        itemsWithConditionNotMatched.add(meta);
-        logAsNotReady(e.getCause(), meta);
+      final List<CompletableFuture<HasMetadata>> futures = new ArrayList<>(items.size());
+      for (final HasMetadata meta : items) {
+        final ResourceHandler<HasMetadata, ?> h = handlerOf(meta);
+        futures.add(CompletableFuture.supplyAsync(() -> {
+          try {
+            return h.waitUntilCondition(client, config, meta.getMetadata().getNamespace(), meta, condition, amount, timeUnit);
+          } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException(e);
+          }
+        }, executor));
       }
-      ++i;
+  
+      final List<HasMetadata> results = new ArrayList<>();
+      final List<HasMetadata> itemsWithConditionNotMatched = new ArrayList<>();
+  
+      // Iterate over the items because we don't know what kind of List it is.
+      // But the futures use an ArrayList, so accessing by index is efficient.
+      int i = 0;
+      for (final HasMetadata meta : items) {
+        try {
+          CompletableFuture<HasMetadata> future = futures.get(i);
+          // just get each result as the timeout is enforced below
+          results.add(future.get());
+        } catch (ExecutionException e) {
+          itemsWithConditionNotMatched.add(meta);
+          logAsNotReady(e.getCause(), meta);
+        } catch (InterruptedException e) {
+          Thread.currentThread().interrupt();
+          throw KubernetesClientException.launderThrowable(e);
+        }
+        ++i;
+      }
+  
+      if (!itemsWithConditionNotMatched.isEmpty()) {
+        throw new KubernetesClientTimeoutException(itemsWithConditionNotMatched, amount, timeUnit);
+      }
+  
+      return results;
+    } finally {
+      executor.shutdownNow();
     }
-
-    if (!itemsWithConditionNotMatched.isEmpty()) {
-      throw new KubernetesClientTimeoutException(itemsWithConditionNotMatched, amount, timeUnit);
-    }
-
-    return results;
   }
 
   private static void logAsNotReady(Throwable t, HasMetadata meta) {

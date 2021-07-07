@@ -1,10 +1,23 @@
 ## CHANGELOG
 
-### 5.5-SNAPSHOT
+### 5.6-SNAPSHOT
 
 #### Bugs
-* KubernetesMockServer should not read local `.kube/config` while initializing client
-* Retry only Non-Restful Create-only resources in OpenShiftOAuthInterceptor
+* Fix #3083: CertificateException due to PEM being decoded in CertUtils
+
+#### Improvements
+
+#### Dependency Upgrade
+* Update Tekton Pipeline Model to v0.25.0
+
+#### New Features
+* Fix #3291: Retrying the HTTP operation in case of IOException too
+* Fix #2712: Add support for watching logs in multi-container Controller resources (Deployments, StatefulSets, ReplicaSet etc)
+
+### 5.5.0 (2021-06-30)
+
+#### Bugs
+* Fix #3064: KubernetesMockServer should not read local `.kube/config` while initializing client
 * Fix #3126: a KubernetesClientException will be thrown from patch/replace rather than a null being returned when the item does not exist
 * Fix #3121: ServiceOperationImpl replace will throw a KubernetesClientException rather than a NPE if the item doesn't exist
 * Fix #3189: VersionInfo contains null data in OpenShift 4.6
@@ -16,6 +29,9 @@
 * Fix #3225: Pod metric does not have corresponding label selector variant
 * Fix #3243: pipes provided to exec command are no longer closed on connection close, so that client can fully read the buffer after the command finishes.
 * Fix #3272: prevent index npe after informer sees an empty list
+* Fix #3275: filter related dsl methods withLabel, withField, etc. should not modify the current context.  If you need similar behavior to the previous use `Filterable.withNewFilter`.
+* Fix #3271: waitUntilReady and waitUntilCondition should handle resource too old
+* Fix #3278: `Waitable` methods should not be available at a list context
 
 #### Improvements
 * Fix #3078: adding javadocs to further clarify patch, edit, replace, etc. and note the possibility of items being modified.
@@ -30,6 +46,7 @@
 * Fix #3186: WebSockets and HTTP connections are closed as soon as possible for Watches.
 * Fix #2937: Add `SharedInformerFactory#getExistingSharedIndexInformers` method to return list of registered informers
 * Fix #3239: Add the `Informable` interface for context specific dsl methods to create `SharedIndexInformer`s.
+* Fix #3101: making isWatching a health check for the informer
 
 #### Dependency Upgrade
 * Fix #2741: Update Knative Model to v0.23.0
@@ -39,24 +56,25 @@
 * Fix #3166: Add DSL Support for `machineconfiguration.openshift.io/v1` resources in OpenShiftClient
 * Fix #3142: Add DSL support for missing resources in `operator.openshift.io` and `monitoring.coreos.com` apiGroups
 * Fix #2565: Add support for CertManager extension
-* Add DSL support for missing resources in `template.openshift.io`, `helm.openshift.io`, `network.openshift.io`, `user.openshift.io` apigroups
+* Fix #3150: Add DSL support for missing resources in `template.openshift.io`, `helm.openshift.io`, `network.openshift.io`, `user.openshift.io` apigroups
 * Fix #3087: Support HTTP operation retry with exponential backoff (for status code >= 500)
-* Add DSL support for `autoscaling.openshift.io` resources in OpenShiftClient
-* Add DSL support for PodSecurityPolicySubjectReview, PodSecurityPolicyReview, PodSecurityPolicySelfSubjectReview in `security.openshift.io/v1` apiGroup to OpenShiftClient
-* Add DSL support for OperatorCondition, Operator, PackageManifest in `operators.coreos.com` apiGroup to OpenShiftClient 
-* Add support for `tuned.openshift.io` apiGroup in OpenShiftClient DSL
-* Add DSL support for ConsolePlugin and ConsoleQuickStart in `console.openshift.io` apiGroup
-* Add DSL support for `user.openshift.io/v1` Identity in OpenShiftClient DSL
-* Add DSL support for OpenShift Whereabouts CNI Model `whereabouts.cni.cncf.io` to OpenShiftClient DSL
-* Add DSL support for OpenShift Kube Storage Version Migrator resources in OpenShiftClient DSL
+* Fix #3193:Add DSL support for `autoscaling.openshift.io` resources in OpenShiftClient
+* Fix #3209: Add DSL support for PodSecurityPolicySubjectReview, PodSecurityPolicyReview, PodSecurityPolicySelfSubjectReview in `security.openshift.io/v1` apiGroup to OpenShiftClient
+* Fix #3207: Add DSL support for OperatorCondition, Operator, PackageManifest in `operators.coreos.com` apiGroup to OpenShiftClient 
+* Fix #3201: Add support for `tuned.openshift.io` apiGroup in OpenShiftClient DSL
+* Fix #3205: Add DSL support for ConsolePlugin and ConsoleQuickStart in `console.openshift.io` apiGroup
+* Fix #3222: Add DSL support for `user.openshift.io/v1` Identity in OpenShiftClient DSL
+* Fix #3222: Add DSL support for OpenShift Whereabouts CNI Model `whereabouts.cni.cncf.io` to OpenShiftClient DSL
+* Fix #3224: Add DSL support for OpenShift Kube Storage Version Migrator resources in OpenShiftClient DSL
 * Fix #3228: Add support for Dynamic informers for custom resources in KubernetesClient
-* Add DSL support for ClusterInterceptors to TektonClient
-
+* Fix #3270: Add DSL support for ClusterInterceptors to TektonClient
 
 #### _**Note**_: Breaking changes in the API
 ##### DSL Changes:
 - #3127 `StatusUpdatable.updateStatus` deprecated, please use patchStatus, editStatus, or replaceStatus
 - #3239 deprecated methods on SharedInformerFactory directly dealing with the OperationContext, withName, and withNamespace - the Informable interface should be used instead.
+- #3271 `Waitable.waitUntilReady` and `Waitable.waitUntilCondition` with throw a KubernetesClientTimeoutException instead of an IllegalArgumentException on timeout.  The methods will also no longer throw an interrupted exception.
+  `Waitable.withWaitRetryBackoff` and the associated constants are now deprecated.
 
 ##### Util Changes:
 - #3197 `Utils.waitUntilReady` now accepts a Future, rather than a BlockingQueue

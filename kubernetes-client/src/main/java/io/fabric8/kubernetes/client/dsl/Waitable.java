@@ -20,12 +20,20 @@ import java.util.function.Predicate;
 
 public interface Waitable<T, P> {
 
+  /**
+   * @deprecated no longer used
+   */
+  @Deprecated
   long DEFAULT_INITIAL_BACKOFF_MILLIS = 5L;
+  /**
+   * @deprecated no longer used
+   */
+  @Deprecated
   double DEFAULT_BACKOFF_MULTIPLIER = 2d;
 
-  T waitUntilReady(long amount, TimeUnit timeUnit) throws InterruptedException;
+  T waitUntilReady(long amount, TimeUnit timeUnit);
 
-  T waitUntilCondition(Predicate<P> condition, long amount, TimeUnit timeUnit) throws InterruptedException;
+  T waitUntilCondition(Predicate<P> condition, long amount, TimeUnit timeUnit);
 
   /**
    * Configure the backoff strategy to use when waiting for conditions, in case the watcher encounters a retryable error.
@@ -33,6 +41,8 @@ public interface Waitable<T, P> {
    * @param backoffUnit the TimeUnit for the initial backoff value
    * @param backoffMultiplier what to multiply the backoff by on each subsequent error
    * @return the waitable
+   * @deprecated no longer used
    */
+  @Deprecated
   Waitable<T, P> withWaitRetryBackoff(long initialBackoff, TimeUnit backoffUnit, double backoffMultiplier);
 }

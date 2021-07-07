@@ -81,7 +81,6 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
    */
   public void listSyncAndWatch() {
     running = true;
-    watching = false;
     final L list = getList();
     final String latestResourceVersion = list.getMetadata().getResourceVersion();
     lastSyncResourceVersion = latestResourceVersion;
@@ -155,12 +154,22 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
 
     @Override
     public void onClose(WatcherException exception) {
-      watchStopped();
       // this close was triggered by an exception,
       // not the user, it is expected that the watch retry will handle this
-      log.warn("Watch closing with exception", exception);
-      if (exception.isHttpGone()) {
+      boolean restarted = false;
+      try {
+        if (exception.isHttpGone()) {
+          log.debug("Watch restarting due to http gone");
           listSyncAndWatch();
+          restarted = true;
+        } else {
+          log.warn("Watch closing with exception", exception);
+          running = false; // shouldn't happen, but it means the watch won't restart
+        }
+      } finally {
+        if (!restarted) {
+          watchStopped(); // report the watch as stopped after a problem
+        }
       }
     }
 
@@ -175,6 +184,10 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
       return true;
     }
     
+  }
+  
+  public ReflectorWatcher getWatcher() {
+    return watcher;
   }
 
 }

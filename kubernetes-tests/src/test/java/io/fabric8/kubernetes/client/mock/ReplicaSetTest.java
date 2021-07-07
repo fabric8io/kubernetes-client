@@ -28,7 +28,6 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.Utils;
-import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -272,9 +271,9 @@ class ReplicaSetTest {
     // Given
     String imageToUpdate = "nginx:latest";
     server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/replicasets/replicaset1")
-      .andReturn(HttpURLConnection.HTTP_OK, getReplicaSetBuilder().build()).times(3);
+      .andReturn(HttpURLConnection.HTTP_OK, createReplicaSetBuilder().build()).times(3);
     server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/replicasets/replicaset1")
-      .andReturn(HttpURLConnection.HTTP_OK, getReplicaSetBuilder()
+      .andReturn(HttpURLConnection.HTTP_OK, createReplicaSetBuilder()
         .editSpec().editTemplate().editSpec().editContainer(0)
         .withImage(imageToUpdate)
         .endContainer().endSpec().endTemplate().endSpec()
@@ -297,9 +296,9 @@ class ReplicaSetTest {
     // Given
     Map<String, String> containerToImageMap = Collections.singletonMap("nginx", "nginx:latest");
     server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/replicasets/replicaset1")
-      .andReturn(HttpURLConnection.HTTP_OK, getReplicaSetBuilder().build()).times(3);
+      .andReturn(HttpURLConnection.HTTP_OK, createReplicaSetBuilder().build()).times(3);
     server.expect().patch().withPath("/apis/apps/v1/namespaces/ns1/replicasets/replicaset1")
-      .andReturn(HttpURLConnection.HTTP_OK, getReplicaSetBuilder()
+      .andReturn(HttpURLConnection.HTTP_OK, createReplicaSetBuilder()
         .editSpec().editTemplate().editSpec().editContainer(0)
         .withImage(containerToImageMap.get("nginx"))
         .endContainer().endSpec().endTemplate().endSpec()
@@ -317,7 +316,7 @@ class ReplicaSetTest {
 
   @Test
   void testGetLog() {
-    ReplicaSet replicaSet = getReplicaSetBuilder().build();
+    ReplicaSet replicaSet = createReplicaSetBuilder().build();
     server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/replicasets/replicaset1")
       .andReturn(HttpURLConnection.HTTP_OK, replicaSet).times(3);
     server.expect().get().withPath("/api/v1/namespaces/ns1/pods?labelSelector=" + Utils.toUrlEncoded("app=nginx"))
@@ -333,7 +332,25 @@ class ReplicaSetTest {
     assertEquals("testlog", log);
   }
 
-  private ReplicaSetBuilder getReplicaSetBuilder() {
+  @Test
+  void testGetLogMultiContainer() {
+    ReplicaSet replicaSet = createReplicaSetBuilder().build();
+    server.expect().get().withPath("/apis/apps/v1/namespaces/ns1/replicasets/replicaset1")
+      .andReturn(HttpURLConnection.HTTP_OK, replicaSet).times(3);
+    server.expect().get().withPath("/api/v1/namespaces/ns1/pods?labelSelector=" + Utils.toUrlEncoded("app=nginx"))
+      .andReturn(HttpURLConnection.HTTP_OK, getReplicaSetPodList(replicaSet)).once();
+    server.expect().get().withPath("/api/v1/namespaces/ns1/pods/pod1/log?pretty=true&container=c1")
+      .andReturn(HttpURLConnection.HTTP_OK, "testlog").once();
+
+    // When
+    String log = client.apps().replicaSets().inNamespace("ns1").withName("replicaset1").inContainer("c1").getLog(true);
+
+    // Then
+    assertNotNull(log);
+    assertEquals("testlog", log);
+  }
+
+  private ReplicaSetBuilder createReplicaSetBuilder() {
     return new ReplicaSetBuilder()
       .withNewMetadata()
       .withName("replicaset1")

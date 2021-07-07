@@ -15,16 +15,11 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal.extensions.v1beta1;
 
-import io.fabric8.kubernetes.api.model.LabelSelectorRequirement;
-import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.extensions.Deployment;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentList;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.Watcher;
-import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
 import io.fabric8.kubernetes.client.dsl.Operation;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.RollingUpdater;
@@ -57,29 +52,7 @@ class DeploymentRollingUpdater extends RollingUpdater<Deployment, DeploymentList
 
   @Override
   protected PodList listSelectedPods(Deployment obj) {
-    FilterWatchListDeletable<Pod, PodList>  podLister = pods().inNamespace(namespace);
-    if (obj.getSpec().getSelector().getMatchLabels() != null) {
-      podLister.withLabels(obj.getSpec().getSelector().getMatchLabels());
-    }
-    if (obj.getSpec().getSelector().getMatchExpressions() != null) {
-      for (LabelSelectorRequirement req : obj.getSpec().getSelector().getMatchExpressions()) {
-        switch (req.getOperator()) {
-          case "In":
-            podLister.withLabelIn(req.getKey(), req.getValues().toArray(new String[]{}));
-            break;
-          case "NotIn":
-            podLister.withLabelNotIn(req.getKey(), req.getValues().toArray(new String[]{}));
-            break;
-          case "DoesNotExist":
-            podLister.withoutLabel(req.getKey());
-            break;
-          case "Exists":
-            podLister.withLabel(req.getKey());
-            break;
-        }
-      }
-    }
-    return podLister.list();
+    return listSelectedPods(obj.getSpec().getSelector());
   }
   @Override
   protected Deployment updateDeploymentKey(String name, String hash) {

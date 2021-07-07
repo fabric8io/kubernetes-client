@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
+import io.fabric8.kubernetes.api.model.PodListBuilder;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.api.model.WatchEvent;
@@ -38,7 +39,6 @@ import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import okhttp3.mockwebserver.RecordedRequest;
-import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -47,13 +47,11 @@ import org.junit.jupiter.api.Test;
 import java.net.HttpURLConnection;
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
-import java.util.function.Predicate;
 
 import static java.net.HttpURLConnection.HTTP_GONE;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
 import static org.assertj.core.api.Assertions.tuple;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -85,7 +83,7 @@ class ResourceTest {
     // Given
     Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
     server.expect().post().withPath("/api/v1/namespaces/test/pods").andReturn(HttpURLConnection.HTTP_BAD_REQUEST, pod1).once();
-    
+
     NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<Pod> podOperation = client.resource(pod1);
 
     // When
@@ -225,7 +223,7 @@ class ResourceTest {
     Pod noReady = createReadyFrom(pod1, "False");
     Pod ready = createReadyFrom(pod1, "True");
 
-    server.expect().get().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, noReady).once();
+    list(noReady);
 
     server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true").andUpgradeToWebSocket()
       .open()
@@ -233,9 +231,22 @@ class ResourceTest {
       .done()
       .always();
 
-    
+
     Pod p = client.resource(noReady).waitUntilReady(5, SECONDS);
     Assert.assertTrue(Readiness.isPodReady(p));
+  }
+
+  private void list(Pod pod) {
+    list(server, pod);
+  }
+
+  static void list(KubernetesMockServer server, Pod pod) {
+    server.expect()
+        .get()
+        .withPath("/api/v1/namespaces/"+pod.getMetadata().getNamespace()+"/pods?fieldSelector=metadata.name%3D"+pod.getMetadata().getName()+"&watch=false")
+        .andReturn(200,
+            new PodListBuilder().withItems(pod).withNewMetadata().withResourceVersion("1").endMetadata().build())
+        .once();
   }
 
   @Test
@@ -248,19 +259,16 @@ class ResourceTest {
     Pod noReady = createReadyFrom(pod1, "False");
     Pod ready = createReadyFrom(pod1, "True");
 
-    // so that "waitUntilExists" actually has some waiting to do
-    server.expect().get().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(404, "").times(2);
-    // once so that "waitUntilExists" successfully ends
     // and again so that "periodicWatchUntilReady" successfully begins
-    server.expect().get().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, noReady).times(2);
+    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&watch=false").andReturn(200, noReady).times(2);
 
-    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&watch=true").andUpgradeToWebSocket()
+    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true").andUpgradeToWebSocket()
       .open()
       .waitFor(100).andEmit(new WatchEvent(ready, "MODIFIED"))
       .done()
       .always();
 
-    
+
     Pod p = client.pods().withName("pod1").waitUntilReady(5, SECONDS);
     Assert.assertTrue(Readiness.isPodReady(p));
   }
@@ -300,7 +308,7 @@ class ResourceTest {
       .build();
 
     // at first the pod is non-ready
-    server.expect().get().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, noReady).times(2);
+    list(noReady);
 
     server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true").andUpgradeToWebSocket()
       .open()
@@ -310,7 +318,7 @@ class ResourceTest {
       .done()
       .always();
 
-    
+
     Pod p = client.pods().withName("pod1").waitUntilCondition(
       r -> r.getStatus().getConditions()
             .stream()
@@ -324,63 +332,7 @@ class ResourceTest {
   }
 
   @Test
-  void testWaitUntilConditionWhenResourceVersionTooOld() throws InterruptedException {
-    Pod pod1 = new PodBuilder().withNewMetadata()
-      .withName("pod1")
-      .withResourceVersion("1")
-      .withNamespace("test").and().build();
-
-    Pod noReady = createReadyFrom(pod1, "False");
-    Pod ready = createReadyFrom(pod1, "True");
-
-    // The pod is never ready if you request it directly.
-    server.expect().get().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, noReady).always();
-
-    Status gone = new StatusBuilder()
-      .withCode(HTTP_GONE)
-      .build();
-
-    // Watches with the pod's own resource version fail with 410 "GONE".
-    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true")
-      .andUpgradeToWebSocket()
-      .open()
-      .waitFor(500).andEmit(new WatchEvent(gone, "ERROR"))
-      .done()
-      .once();
-
-    // Watches with a later resource version will return the "ready" pod.
-    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=2&watch=true")
-      .andUpgradeToWebSocket()
-      .open()
-      .waitFor(500).andEmit(new WatchEvent(ready, "MODIFIED"))
-      .done()
-      .once();
-
-    Predicate<Pod> isReady = p -> p.getStatus().getConditions().stream()
-      .anyMatch(c -> "True".equals(c.getStatus()));
-
-    final PodResource<Pod> ops = client.pods().withName("pod1");
-    KubernetesClientException ex = assertThrows(KubernetesClientException.class, () ->
-      ops.waitUntilCondition(isReady, 4, SECONDS)
-    );
-    assertThat(ex)
-      .hasCauseExactlyInstanceOf(WatcherException.class)
-      .extracting(Throwable::getCause)
-      .asInstanceOf(InstanceOfAssertFactories.type(WatcherException.class))
-      .extracting(WatcherException::isHttpGone)
-      .isEqualTo(true);
-
-    Pod pod = client.pods()
-      .withName("pod1")
-      .withResourceVersion("2")
-      .waitUntilCondition(isReady, 4, SECONDS);
-    assertThat(pod.getMetadata().getName()).isEqualTo("pod1");
-    assertThat(pod.getMetadata().getResourceVersion()).isEqualTo("1");
-    assertTrue(isReady.test(pod));
-  }
-
-  @Test
-  void testRetryOnErrorEventDuringWaitReturnFromAPIIfMatch() throws InterruptedException {
+  void tesErrorEventDuringWaitReturnFromAPIIfMatch() throws InterruptedException {
     Pod pod1 = new PodBuilder().withNewMetadata()
       .withName("pod1")
       .withResourceVersion("1")
@@ -394,17 +346,15 @@ class ResourceTest {
       .build();
 
     // once not ready, to begin watch
-    server.expect().get().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, noReady).once();
-    // once ready, after watch fails
-    server.expect().get().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, ready).once();
+    list(noReady);
 
     server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true").andUpgradeToWebSocket()
       .open()
       .waitFor(500).andEmit(new WatchEvent(status, "ERROR"))
+      .waitFor(500).andEmit(new WatchEvent(ready, "MODIFIED"))
       .done()
       .once();
 
-    
     Pod p = client.resource(noReady).waitUntilReady(5, SECONDS);
     Assert.assertTrue(Readiness.isPodReady(p));
   }
@@ -424,7 +374,7 @@ class ResourceTest {
       .build();
 
     // once not ready, to begin watch
-    server.expect().get().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, noReady).times(2);
+    list(noReady);
 
     server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true").andUpgradeToWebSocket()
       .open()
@@ -438,7 +388,7 @@ class ResourceTest {
       .done()
       .once();
 
-    
+
     Pod p = client.resource(noReady).waitUntilReady(5, SECONDS);
     Assert.assertTrue(Readiness.isPodReady(p));
   }
@@ -454,32 +404,28 @@ class ResourceTest {
     Pod ready = createReadyFrom(pod1, "True");
 
     // once not ready, to begin watch
-    server.expect().get().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, ready).once();
+    list(ready);
 
-    
     Pod p = client.resource(noReady).waitUntilReady(5, SECONDS);
     Assert.assertTrue(Readiness.isPodReady(p));
   }
 
   @Test
-  void testDontRetryWatchOnHttpGone() throws InterruptedException {
-    Pod noReady = new PodBuilder().withNewMetadata()
-      .withName("pod1")
-      .withResourceVersion("1")
-      .withNamespace("test").and().withNewStatus()
-      .addNewCondition()
-      .withType("Ready")
-      .withStatus("False")
-      .endCondition()
-      .endStatus()
-      .build();
+  void testRetryWatchOnHttpGone() throws InterruptedException {
+    Pod pod1 = new PodBuilder().withNewMetadata()
+        .withName("pod1")
+        .withResourceVersion("1")
+        .withNamespace("test").and().build();
+
+    Pod noReady = createReadyFrom(pod1, "False");
+    Pod ready = createReadyFrom(pod1, "True");
 
     Status status = new StatusBuilder()
       .withCode(HTTP_GONE)
       .build();
 
     // once not ready, to begin watch
-    server.expect().get().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, noReady).once();
+    list(noReady);
 
     server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true").andUpgradeToWebSocket()
       .open()
@@ -487,13 +433,9 @@ class ResourceTest {
       .done()
       .once();
 
-    
-    try {
-      client.resource(noReady).waitUntilReady(5, SECONDS);
-      fail("should have thrown KubernetesClientException");
-    } catch (KubernetesClientException e) {
-      assertTrue(e.getCause() instanceof WatcherException);
-    }
+    list(ready);
+
+    client.resource(noReady).waitUntilReady(5, SECONDS);
   }
 
   @Test
@@ -509,7 +451,7 @@ class ResourceTest {
       .endStatus()
       .build();
 
-    server.expect().get().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, ready).once();
+    list(ready);
 
     server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true").andUpgradeToWebSocket()
       .open()
@@ -517,7 +459,7 @@ class ResourceTest {
       .done()
       .once();
 
-    
+
     Pod p = client.pods().withName("pod1").waitUntilCondition(Objects::isNull,8, SECONDS);
     assertNull(p);
   }
@@ -532,9 +474,7 @@ class ResourceTest {
     Pod noReady = createReadyFrom(pod1, "False");
     Pod ready = createReadyFrom(pod1, "True");
 
-    // once so that "waitUntilExists" successfully ends
-    // and again so that "periodicWatchUntilReady" successfully begins
-    server.expect().get().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, noReady).times(2);
+    list(noReady);
     server.expect().post().withPath("/api/v1/namespaces/test/pods").andReturn(201, noReady).once();
 
     server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true").andUpgradeToWebSocket()
@@ -543,7 +483,7 @@ class ResourceTest {
       .done()
       .always();
 
-    
+
     Pod p = client.resource(noReady).createOrReplaceAnd().waitUntilReady(10, SECONDS);
     Assert.assertTrue(Readiness.isPodReady(p));
   }
@@ -559,7 +499,7 @@ class ResourceTest {
 
     server.expect().get().withPath("/api/v1/namespaces/test/pods/pod1").andReturn(200, pod).once();
 
-    
+
     HasMetadata response = client.resource(pod).fromServer().get();
     assertEquals(pod, response);
   }
@@ -580,8 +520,8 @@ class ResourceTest {
       .addToLabels("CONDITION", "MET")
       .endMetadata()
       .build();
-    server.expect().get().withPath("/api/v1/namespaces/test/pods/pod").andReturn(200, conditionNotMetPod).once();
-    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod&watch=true")
+    list(conditionNotMetPod);
+    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod&resourceVersion=1&watch=true")
       .andUpgradeToWebSocket().open()
       .immediately().andEmit(new WatchEvent(conditionNotMetPod, "MODIFIED"))
       .waitFor(10).andEmit(new WatchEvent(conditionMetPod, "MODIFIED"))
@@ -594,6 +534,19 @@ class ResourceTest {
     // Then
     assertEquals(conditionMetPod, response);
     assertEquals(2, server.getRequestCount());
+  }
+
+  @Test
+  void testWaitNullDoesntExist() throws InterruptedException {
+    server.expect()
+      .get()
+      .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&watch=false")
+      .andReturn(200,
+        new PodListBuilder().withNewMetadata().withResourceVersion("1").endMetadata().build())
+      .once();
+
+    Pod p = client.pods().withName("pod1").waitUntilCondition(Objects::isNull, 1, SECONDS);
+    assertNull(p);
   }
 
   private static Pod createReadyFrom(Pod pod, String status) {

@@ -28,7 +28,6 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.Utils;
-import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -245,9 +244,9 @@ class ReplicationControllerTest {
     // Given
     String imageToUpdate = "nginx:latest";
     server.expect().get().withPath("/api/v1/namespaces/ns1/replicationcontrollers/replicationcontroller1")
-      .andReturn(HttpURLConnection.HTTP_OK, getReplicationControllerBuilder().build()).times(3);
+      .andReturn(HttpURLConnection.HTTP_OK, createReplicationControllerBuilder().build()).times(3);
     server.expect().patch().withPath("/api/v1/namespaces/ns1/replicationcontrollers/replicationcontroller1")
-      .andReturn(HttpURLConnection.HTTP_OK, getReplicationControllerBuilder()
+      .andReturn(HttpURLConnection.HTTP_OK, createReplicationControllerBuilder()
         .editSpec().editTemplate().editSpec().editContainer(0)
         .withImage(imageToUpdate)
         .endContainer().endSpec().endTemplate().endSpec()
@@ -269,9 +268,9 @@ class ReplicationControllerTest {
     // Given
     Map<String, String> containerToImageMap = Collections.singletonMap("nginx", "nginx:latest");
     server.expect().get().withPath("/api/v1/namespaces/ns1/replicationcontrollers/replicationcontroller1")
-      .andReturn(HttpURLConnection.HTTP_OK, getReplicationControllerBuilder().build()).times(3);
+      .andReturn(HttpURLConnection.HTTP_OK, createReplicationControllerBuilder().build()).times(3);
     server.expect().patch().withPath("/api/v1/namespaces/ns1/replicationcontrollers/replicationcontroller1")
-      .andReturn(HttpURLConnection.HTTP_OK, getReplicationControllerBuilder()
+      .andReturn(HttpURLConnection.HTTP_OK, createReplicationControllerBuilder()
         .editSpec().editTemplate().editSpec().editContainer(0)
         .withImage(containerToImageMap.get("nginx"))
         .endContainer().endSpec().endTemplate().endSpec()
@@ -290,7 +289,7 @@ class ReplicationControllerTest {
   @Test
   void testGetLog() {
     // Given
-    ReplicationController replicationController = getReplicationControllerBuilder().build();
+    ReplicationController replicationController = createReplicationControllerBuilder().build();
     server.expect().get().withPath("/api/v1/namespaces/ns1/replicationcontrollers/replicationcontroller1")
       .andReturn(HttpURLConnection.HTTP_OK, replicationController).times(3);
     server.expect().get().withPath("/api/v1/namespaces/ns1/pods?labelSelector=" + Utils.toUrlEncoded("app=nginx"))
@@ -306,7 +305,26 @@ class ReplicationControllerTest {
     assertEquals("testlog", log);
   }
 
-  private ReplicationControllerBuilder getReplicationControllerBuilder() {
+  @Test
+  void testGetLogMultiContainer() {
+    // Given
+    ReplicationController replicationController = createReplicationControllerBuilder().build();
+    server.expect().get().withPath("/api/v1/namespaces/ns1/replicationcontrollers/replicationcontroller1")
+      .andReturn(HttpURLConnection.HTTP_OK, replicationController).times(3);
+    server.expect().get().withPath("/api/v1/namespaces/ns1/pods?labelSelector=" + Utils.toUrlEncoded("app=nginx"))
+      .andReturn(HttpURLConnection.HTTP_OK, getReplicationControllerPodList(replicationController)).once();
+    server.expect().get().withPath("/api/v1/namespaces/ns1/pods/pod1/log?pretty=false&container=c1")
+      .andReturn(HttpURLConnection.HTTP_OK, "testlog").once();
+
+    // When
+    String log = client.replicationControllers().inNamespace("ns1").withName("replicationcontroller1").inContainer("c1").getLog();
+
+    // Then
+    assertNotNull(log);
+    assertEquals("testlog", log);
+  }
+
+  private ReplicationControllerBuilder createReplicationControllerBuilder() {
     return new ReplicationControllerBuilder()
       .withNewMetadata()
       .withName("replicationcontroller1")

@@ -18,7 +18,10 @@ package io.fabric8.kubernetes.examples;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.batch.v1.Job;
 import io.fabric8.kubernetes.api.model.batch.v1.JobBuilder;
-import io.fabric8.kubernetes.client.*;
+import io.fabric8.kubernetes.client.ConfigBuilder;
+import io.fabric8.kubernetes.client.DefaultKubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -74,9 +77,6 @@ public class JobExample {
 
         } catch (KubernetesClientException e) {
             logger.error("Unable to create job", e);
-        } catch (InterruptedException interruptedException) {
-          logger.warn("Interrupted while waiting for the job to be ready: {}", interruptedException.getMessage());
-          Thread.currentThread().interrupt();
         }
     }
 }

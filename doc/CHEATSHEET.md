@@ -1831,7 +1831,7 @@ Kubernetes Client also provides `SharedInformer` support in order to stay update
 ```java
 SharedInformerFactory sharedInformerFactory = client.informers();
 ```
-- Create `SharedIndexInformer` for some Kubernetes Resource(requires resource's class and resync period(when to check with server again while watching something).  By default it watches in all namespaces.:
+- Create `SharedIndexInformer` for some Kubernetes Resource(requires resource's class and resync period (emits a dummy update event on that interval so that the handler can act again).  By default it watches in all namespaces.:
 ```java
 SharedIndexInformer<Pod> podInformer = sharedInformerFactory.sharedIndexInformerFor(Pod.class, 30 * 1000L);
 podInformer.addEventHandler(new ResourceEventHandler<Pod>() {
@@ -1871,15 +1871,20 @@ dummyInformer.addEventHandler(new ResourceEventHandler<Dummy>() {
   }
 });
 ```
+- Start all registered informers:
+```java
+sharedInformerFactory.startAllRegisteredInformers();
+```
+- Stop all registered informers:
+```java
+sharedInformerFactory.stopAllRegisteredInformers();
+```
+
+You are not limited to just creating cluster wide informers, if you want to be informed about a particular context then use the Informable interface and inform methods.
+
 - Create namespaced `SharedIndexInformer` (informers specific to a particular `Namespace`):
 ```java
-SharedInformerFactory sharedInformerFactory = client.informers();
-SharedIndexInformer<Pod> podInformer = sharedInformerFactory.inNamespace("default").sharedIndexInformerFor(
-        Pod.class,
-        30 * 1000L);
-logger.info("Informer factory initialized.");
-
-podInformer.addEventHandler(new ResourceEventHandler<Pod>() {
+SharedIndexInformer<Pod> podInformer = client.pods().inNamespace("default").inform(new ResourceEventHandler<Pod>() {
     @Override
     public void onAdd(Pod pod) {
         logger.info("Pod " + pod.getMetadata().getName() + " got added");
@@ -1894,8 +1899,9 @@ podInformer.addEventHandler(new ResourceEventHandler<Pod>() {
     public void onDelete(Pod pod, boolean deletedFinalStateUnknown) {
         logger.info("Pod " + pod.getMetadata().getName() + " got deleted");
     }
-});
-}
+},  30 * 1000L);
+
+logger.info("Informer initialized.");
 ```
 - Create Namespaced Informer for a Custom Resource(**Note:** Your CustomResource POJO must implement `Namespaced` interface like the one used in this example: [Dummy.java](https://github.com/fabric8io/kubernetes-client/blob/master/kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/crds/Dummy.java))
 You should have your CustomResource type POJO annotated with group, version fields with respect to your CRD:
@@ -1913,33 +1919,24 @@ public class Dummy extends CustomResource<DummySpec, KubernetesResource> impleme
 ```
 Then you should be able to use it like this:
 ```java
-SharedIndexInformer<Dummy> dummyInformer = sharedInformerFactory.inNamespace("default").sharedIndexInformerForCustomResource(Dummy.class, 60 * 1000L);
-dummyInformer.addEventHandler(new ResourceEventHandler<Dummy>() {
-  @Override
-  public void onAdd(Dummy dummy) {
-    System.out.printf("%s dummy added\n", dummy.getMetadata().getName());
-  }
+SharedIndexInformer<Dummy> dummyInformer = client.customResources(Dummy.class).inNamespace("default").inform(new ResourceEventHandler<Dummy>() {
+    @Override
+    public void onAdd(Dummy dummy) {
+        System.out.printf("%s dummy added\n", dummy.getMetadata().getName());
+    }
 
-  @Override
-  public void onUpdate(Dummy oldDummy, Dummy newDummy) {
-    System.out.printf("%s dummy updated\n", oldDummy.getMetadata().getName());
-  }
+    @Override
+    public void onUpdate(Dummy oldDummy, Dummy newDummy) {
+        System.out.printf("%s dummy updated\n", oldDummy.getMetadata().getName());
+    }
 
-  @Override
-  public void onDelete(Dummy dummy, boolean deletedFinalStateUnknown) {
-    System.out.printf("%s dummy deleted \n", dummy.getMetadata().getName());
-  }
-});
+    @Override
+    public void onDelete(Dummy dummy, boolean deletedFinalStateUnknown) {
+        System.out.printf("%s dummy deleted \n", dummy.getMetadata().getName());
+    }
+},  60 * 1000L);
 ```
-
-- Start all registered informers:
-```java
-sharedInformerFactory.startAllRegisteredInformers();
-```
-- Stop all registered informers:
-```java
-sharedInformerFactory.stopAllRegisteredInformers();
-```
+When using the inform methods the informers will already be started/running.
 
 ### List Options
 There are various options provided by Kubernetes Client API when it comes to listing resources. Here are some of the common examples provided:

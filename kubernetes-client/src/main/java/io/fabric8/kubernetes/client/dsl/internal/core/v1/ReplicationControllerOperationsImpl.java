@@ -170,19 +170,14 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
   }
 
   public String getLog(Boolean isPretty) {
-    StringBuilder stringBuilder = new StringBuilder();
-    List<PodResource<Pod>> podOperationList = doGetLog(isPretty);
-    for (PodResource<Pod> podOperation : podOperationList) {
-      stringBuilder.append(podOperation.getLog(isPretty));
-    }
-    return stringBuilder.toString();
+    return PodOperationUtil.getLog(doGetLog(isPretty), isPretty);
   }
 
   private List<PodResource<Pod>> doGetLog(boolean isPretty) {
     ReplicationController rc = requireFromServer();
 
     return PodOperationUtil.getPodOperationsForController(context, rc.getMetadata().getUid(),
-      getReplicationControllerPodLabels(rc), isPretty, podLogWaitTimeout);
+      getReplicationControllerPodLabels(rc), isPretty, podLogWaitTimeout, ((RollingOperationContext)context).getContainerId());
   }
 
   /**
@@ -191,13 +186,7 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
    */
   @Override
   public Reader getLogReader() {
-    List<PodResource<Pod>> podResources = doGetLog(false);
-    if (podResources.size() > 1) {
-      throw new KubernetesClientException("Reading logs is not supported for multicontainer jobs");
-    } else if (podResources.size() == 1) {
-      return podResources.get(0).getLogReader();
-    }
-    return null;
+    return PodOperationUtil.getLogReader(doGetLog(false));
   }
 
   @Override
@@ -207,13 +196,7 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
 
   @Override
   public LogWatch watchLog(OutputStream out) {
-    List<PodResource<Pod>> podResources = doGetLog(false);
-    if (podResources.size() > 1) {
-      throw new KubernetesClientException("Watching logs is not supported for multicontainer jobs");
-    } else if (podResources.size() == 1) {
-      return podResources.get(0).watchLog(out);
-    }
-    return null;
+    return PodOperationUtil.watchLog(doGetLog(false), out);
   }
 
   @Override
@@ -252,5 +235,10 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
       labels.putAll(replicationController.getSpec().getSelector());
     }
     return labels;
+  }
+
+  @Override
+  public Loggable<LogWatch> inContainer(String id) {
+    return newInstance(((RollingOperationContext) context).withContainerId(id));
   }
 }

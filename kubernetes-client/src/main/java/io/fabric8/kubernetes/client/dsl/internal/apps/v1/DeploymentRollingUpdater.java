@@ -16,16 +16,13 @@
 package io.fabric8.kubernetes.client.dsl.internal.apps.v1;
 
 import okhttp3.OkHttpClient;
-import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
-import io.fabric8.kubernetes.api.model.LabelSelectorRequirement;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.apps.DeploymentList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.Operation;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
-import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
 
 class DeploymentRollingUpdater extends RollingUpdater<Deployment, DeploymentList> {
 
@@ -54,29 +51,7 @@ class DeploymentRollingUpdater extends RollingUpdater<Deployment, DeploymentList
 
   @Override
   protected PodList listSelectedPods(Deployment obj) {
-    FilterWatchListDeletable<Pod, PodList> podLister = pods().inNamespace(namespace);
-    if (obj.getSpec().getSelector().getMatchLabels() != null) {
-      podLister.withLabels(obj.getSpec().getSelector().getMatchLabels());
-    }
-    if (obj.getSpec().getSelector().getMatchExpressions() != null) {
-      for (LabelSelectorRequirement req : obj.getSpec().getSelector().getMatchExpressions()) {
-        switch (req.getOperator()) {
-          case "In":
-            podLister.withLabelIn(req.getKey(), req.getValues().toArray(new String[]{}));
-            break;
-          case "NotIn":
-            podLister.withLabelNotIn(req.getKey(), req.getValues().toArray(new String[]{}));
-            break;
-          case "DoesNotExist":
-            podLister.withoutLabel(req.getKey());
-            break;
-          case "Exists":
-            podLister.withLabel(req.getKey());
-            break;
-        }
-      }
-    }
-    return podLister.list();
+    return listSelectedPods(obj.getSpec().getSelector());
   }
 
   @Override

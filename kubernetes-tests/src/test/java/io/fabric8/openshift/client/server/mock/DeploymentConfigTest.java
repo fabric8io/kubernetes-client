@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.builder.TypedVisitor;
 import io.fabric8.kubernetes.api.model.APIGroupListBuilder;
 import io.fabric8.kubernetes.api.model.ContainerFluent;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
+import io.fabric8.kubernetes.api.model.ListMeta;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
@@ -30,7 +31,6 @@ import io.fabric8.openshift.api.model.DeploymentConfigList;
 import io.fabric8.openshift.api.model.DeploymentConfigListBuilder;
 import io.fabric8.openshift.api.model.DeploymentConfigSpecFluent;
 import io.fabric8.openshift.client.OpenShiftClient;
-import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -299,8 +299,8 @@ class DeploymentConfigTest {
       .endCondition()
       .withReplicas(1).withAvailableReplicas(1)
       .endStatus().build();
-    server.expect().get().withPath("/apis/apps.openshift.io/v1/namespaces/ns1/deploymentconfigs/dc1")
-      .andReturn(HttpURLConnection.HTTP_OK, deploymentConfig)
+    server.expect().get().withPath("/apis/apps.openshift.io/v1/namespaces/ns1/deploymentconfigs?fieldSelector=metadata.name%3Ddc1&watch=false")
+      .andReturn(HttpURLConnection.HTTP_OK, new DeploymentConfigListBuilder().withItems(deploymentConfig).withMetadata(new ListMeta()).build())
       .always();
 
     // When
