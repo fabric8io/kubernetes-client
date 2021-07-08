@@ -25,15 +25,18 @@ import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Kind;
 import io.fabric8.kubernetes.model.annotation.Plural;
+import io.fabric8.kubernetes.model.annotation.ShortNames;
 import io.fabric8.kubernetes.model.annotation.Version;
 import okhttp3.OkHttpClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -66,6 +69,28 @@ class SharedInformerFactoryTest {
   @Group("networking.istio.io")
   @Version("v1alpha3")
   public static class VirtualService extends CustomResource<Void, Void> { }
+
+  @Group("com.acme")
+  @Version("v1")
+  @Kind("FlinkJob")
+  @Plural("flinkjobs")
+  @ShortNames("fj")
+  private static class FlinkJobCustomResource extends CustomResource<FlinkJobSpec, Void> {
+    @Override
+    protected FlinkJobSpec initSpec() {
+      return new FlinkJobSpec();
+    }
+  }
+
+  private static class FlinkJobSpec {
+    private String flinkJobSpec;
+    public String getFlinkJobSpec() { return flinkJobSpec; }
+
+    public void setFlinkJobSpec(String flinkJobSpec) { this.flinkJobSpec = flinkJobSpec; }
+
+    @Override
+    public String toString() { return "FlinkJobSpec{flinkJobSpec='" + flinkJobSpec + "'}"; }
+  }
 
   @BeforeEach
   void init() {
@@ -178,6 +203,25 @@ class SharedInformerFactoryTest {
       .isEqualTo("secrets");
     assertThat(existingInformers.get(2).getKey().getPlural())
       .isEqualTo("myapps");
+  }
+
+  @Test
+  void testRegisterKindToKubernetesDeserializer() throws IOException {
+    // Given
+    SharedInformerFactory sharedInformerFactory = new SharedInformerFactory(executorService, mockClient, config);
+    String flinkJobJson = "{\n" +
+      "    \"apiVersion\": \"com.acme/v1\",\n" +
+      "    \"kind\": \"FlinkJob\",\n" +
+      "    \"spec\": { \"flinkJobSpec\":\"xyz\" }}";
+
+    // When
+    sharedInformerFactory.registerKindToKubernetesDeserializer(FlinkJobCustomResource.class);
+
+    // Then
+    FlinkJobCustomResource flinkJobCustomResource = Serialization.unmarshal(flinkJobJson);
+    assertThat(flinkJobCustomResource)
+      .isNotNull()
+      .hasFieldOrPropertyWithValue("spec.flinkJobSpec", "xyz");
   }
 
 }
