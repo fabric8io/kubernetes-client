@@ -21,13 +21,14 @@ import io.fabric8.servicecatalog.api.model.ServiceInstanceList;
 import io.fabric8.servicecatalog.client.ServiceCatalogClient;
 import io.fabric8.servicecatalog.server.mock.EnableServiceCatalogMockClient;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableServiceCatalogMockClient(crud=true)
 class ServiceInstanceTest {
 
-//
 ServiceCatalogClient client;
     @Test
     void testCrud() {
