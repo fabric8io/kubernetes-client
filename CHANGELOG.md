@@ -4,6 +4,7 @@
 
 #### Bugs
 * Fix #3083: CertificateException due to PEM being decoded in CertUtils
+* Fix #3295: Fix wrong kind getting registered in KubernetesDeserializer in SharedInformerFactory
 
 #### Improvements
 

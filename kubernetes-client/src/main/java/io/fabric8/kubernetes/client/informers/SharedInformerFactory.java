@@ -425,9 +425,9 @@ public class SharedInformerFactory {
     }
   }
 
-  private <T extends HasMetadata> void registerKindToKubernetesDeserializer(Class<T> apiTypeClass) {
+  <T extends HasMetadata> void registerKindToKubernetesDeserializer(Class<T> apiTypeClass) {
     if (CustomResource.class.isAssignableFrom(apiTypeClass)) {
-      KubernetesDeserializer.registerCustomKind(HasMetadata.getApiVersion(apiTypeClass), apiTypeClass.getSimpleName(), apiTypeClass);
+      KubernetesDeserializer.registerCustomKind(HasMetadata.getApiVersion(apiTypeClass), HasMetadata.getKind(apiTypeClass), apiTypeClass);
     }
   }
 
