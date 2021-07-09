@@ -22,7 +22,10 @@ import io.sundr.model.Property;
 import io.sundr.model.TypeDef;
 import io.sundr.model.TypeDefBuilder;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -87,11 +90,7 @@ public abstract class AbstractCustomResourceHandler {
         getPrinterColumnDecorator(name, version, path, type, column, description, format));
     });
   }
-
-  public Map<String, Set<String>> visitedClassesPerCustomResource() {
-    return ClassDependenciesVisitor.getTraversedClasses();
-  }
-
+  
   /**
    * Provides the decorator implementation associated with the CRD generation version.
    *
