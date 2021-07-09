@@ -280,18 +280,19 @@ class CRDGeneratorTest {
     final String outputName = keyFor(customResource);
     final CustomResourceInfo info = CustomResourceInfo.fromClass(customResource);
     output.put(outputName, info);
+    final String v1 = "v1";
     final CRDGenerationInfo generatedInfo = generator.withOutput(output)
-      .forCRDVersions("v1")
+      .forCRDVersions(v1)
       .customResources(info)
       .detailedGenerate();
     assertEquals(1, generatedInfo.numberOfGeneratedCRDs());
     final String crdName = info.crdName();
     final Map<String, CRDInfo> crdInfos = generatedInfo.getCRDInfos(crdName);
     assertEquals(1, crdInfos.size());
-    final CRDInfo crdInfo = crdInfos.get("v1");
+    final CRDInfo crdInfo = crdInfos.get(v1);
     assertEquals(crdName, crdInfo.getCrdName());
-    assertEquals("v1", crdInfo.getVersion());
-    assertEquals("/" + CRDGenerator.getOutputName(crdName, "v1"), crdInfo.getFilePath()); // test output uses the CRD name as URI
+    assertEquals(v1, crdInfo.getVersion());
+    assertTrue(crdInfo.getFilePath().endsWith(CRDGenerator.getOutputName(crdName, v1))); // test output uses the CRD name as URI
     if(mustContainTraversedClasses != null && mustContainTraversedClasses.length > 0) {
       final Set<String> dependentClassNames = crdInfo.getDependentClassNames();
       System.out.println(dependentClassNames);
