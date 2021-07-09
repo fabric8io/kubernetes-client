@@ -22,7 +22,7 @@ import io.fabric8.mockwebserver.Context;
 import io.fabric8.mockwebserver.ServerRequest;
 import io.fabric8.mockwebserver.ServerResponse;
 import io.fabric8.volumesnapshot.client.DefaultVolumeSnapshotClient;
-import io.fabric8.volumesnapshot.client.VolumeSnapshotClient;
+import io.fabric8.volumesnapshot.client.NamespacedVolumeSnapshotClient;
 import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockWebServer;
 
@@ -49,7 +49,7 @@ public class VolumeSnapshotMockServer extends KubernetesMockServer {
     return new String[]{"/api", "/apis/snapshot.storage.k8s.io"};
   }
 
-  public VolumeSnapshotClient createVolumeSnapshot() {
+  public NamespacedVolumeSnapshotClient createVolumeSnapshot() {
     // FIXME
     Config config = new ConfigBuilder()
       .withMasterUrl(url("/"))

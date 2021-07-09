@@ -19,11 +19,10 @@ import io.fabric8.certmanager.api.model.meta.v1.ObjectReferenceBuilder;
 import io.fabric8.certmanager.api.model.v1.CertificateRequest;
 import io.fabric8.certmanager.api.model.v1.CertificateRequestBuilder;
 import io.fabric8.certmanager.client.CertManagerClient;
-import io.fabric8.certmanager.server.mock.CertManagerServer;
+import io.fabric8.certmanager.server.mock.CertManagerMockServer;
+import io.fabric8.certmanager.server.mock.EnableCertManagerMockClient;
 import io.fabric8.kubernetes.api.model.Duration;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 import java.text.ParseException;
@@ -31,10 +30,11 @@ import java.text.ParseException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableRuleMigrationSupport
+@EnableCertManagerMockClient
 class V1CertificateRequestTest {
-  @Rule
-  public CertManagerServer server = new CertManagerServer();
+  
+  CertManagerClient client;
+  CertManagerMockServer server;
 
   @Test
   void testCreate() throws Exception {
@@ -43,10 +43,9 @@ class V1CertificateRequestTest {
     server.expect().post().withPath("/apis/cert-manager.io/v1/namespaces/ns1/certificaterequests")
       .andReturn(HttpURLConnection.HTTP_CREATED, certificateRequest)
       .once();
-    CertManagerClient certManagerClient = server.getCertManagerClient();
 
     // When
-    CertificateRequest createdRequest = certManagerClient.v1().certificateRequests().inNamespace("ns1").create(certificateRequest);
+    CertificateRequest createdRequest = client.v1().certificateRequests().inNamespace("ns1").create(certificateRequest);
 
     // Then
     assertNotNull(createdRequest);

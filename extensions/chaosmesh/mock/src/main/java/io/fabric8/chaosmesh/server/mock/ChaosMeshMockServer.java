@@ -17,6 +17,7 @@ package io.fabric8.chaosmesh.server.mock;
 
 import io.fabric8.chaosmesh.client.ChaosMeshClient;
 import io.fabric8.chaosmesh.client.DefaultChaosMeshClient;
+import io.fabric8.chaosmesh.client.NamespacedChaosMeshClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
@@ -49,7 +50,7 @@ public class ChaosMeshMockServer extends KubernetesMockServer {
     return new String[]{"/api", "/apis/chaos-mesh.org"};
   }
 
-  public ChaosMeshClient createChaosMesh() {
+  public NamespacedChaosMeshClient createChaosMeshClient() {
     Config config = new ConfigBuilder()
       .withMasterUrl(url("/"))
       .withNamespace("test")

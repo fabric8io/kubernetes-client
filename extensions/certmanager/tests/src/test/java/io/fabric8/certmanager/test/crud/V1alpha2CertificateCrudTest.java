@@ -19,25 +19,21 @@ import io.fabric8.certmanager.api.model.v1alpha2.Certificate;
 import io.fabric8.certmanager.api.model.v1alpha2.CertificateBuilder;
 import io.fabric8.certmanager.api.model.v1alpha2.CertificateList;
 import io.fabric8.certmanager.client.CertManagerClient;
-import io.fabric8.certmanager.server.mock.CertManagerServer;
-import org.junit.Rule;
+import io.fabric8.certmanager.server.mock.EnableCertManagerMockClient;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.io.ByteArrayInputStream;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@EnableRuleMigrationSupport
+@EnableCertManagerMockClient(crud = true)
 class V1alpha2CertificateCrudTest {
 
-  @Rule
-  public CertManagerServer server = new CertManagerServer(true, true);
-
+  CertManagerClient client;
   @Test
   void shouldReturnEmptyList() {
-    CertManagerClient client = server.getCertManagerClient();
+
     CertificateList certificateList = client.v1alpha2().certificates().inNamespace("ns1").list();
     assertNotNull(certificateList);
     assertTrue(certificateList.getItems().isEmpty());
@@ -45,7 +41,7 @@ class V1alpha2CertificateCrudTest {
 
   @Test
   void shouldListAndGetCertificate() {
-    CertManagerClient client = server.getCertManagerClient();
+
     Certificate certificate2 = new CertificateBuilder().withNewMetadata().withName("cert2").endMetadata().build();
     client.v1alpha2().certificates().inNamespace("ns2").create(certificate2);
     CertificateList certificateList = client.v1alpha2().certificates().inNamespace("ns2").list();
@@ -55,7 +51,7 @@ class V1alpha2CertificateCrudTest {
 
   @Test
   void shouldDeleteACertificate() {
-    CertManagerClient client = server.getCertManagerClient();
+
     Certificate certificate3 = new CertificateBuilder().withNewMetadata().withName("cert3").endMetadata().build();
     client.v1alpha2().certificates().inNamespace("ns3").create(certificate3);
     Boolean deleted = client.v1alpha2().certificates().inNamespace("ns3").withName("cert3").delete();
@@ -64,7 +60,7 @@ class V1alpha2CertificateCrudTest {
 
   @Test
   void shouldLoadCertificate() {
-    CertManagerClient client = server.getCertManagerClient();
+
     String certificateDefinition = String.join("\n", Arrays.asList(
       "apiVersion: cert-manager.io/v1beta1",
       "kind: Certificate",

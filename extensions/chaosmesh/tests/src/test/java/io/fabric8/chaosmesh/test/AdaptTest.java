@@ -22,11 +22,10 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableRuleMigrationSupport
+
 class AdaptTest {
 
   private final ChaosMeshMockServer mock = new ChaosMeshMockServer();
@@ -43,7 +42,7 @@ class AdaptTest {
 
   @Test
   void testAdapt() {
-    ChaosMeshClient sc = mock.createChaosMesh();
+    ChaosMeshClient sc = mock.createChaosMeshClient();
     KubernetesClient kc = new DefaultKubernetesClient(sc.getConfiguration());
     assertNotNull(kc.adapt(ChaosMeshClient.class));
   }
