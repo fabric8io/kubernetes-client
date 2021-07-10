@@ -153,22 +153,15 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl ex
 
   @Override
   public HasMetadata get() {
+    HasMetadata meta = acceptVisitors(asHasMetadata(item), visitors);
     if (fromServer) {
-      HasMetadata meta = acceptVisitors(asHasMetadata(item), visitors);
       ResourceHandler<HasMetadata, ?> h = handlerOf(meta);
-      HasMetadata reloaded = h.reload(client, config, meta.getMetadata().getNamespace(), meta);
-      if (reloaded != null) {
-        HasMetadata edited = reloaded;
-        //Let's apply any visitor that might have been specified.
-        for (Visitor v : visitors) {
-          edited = h.edit(edited).accept(v).build();
-        }
-        return edited;
+      meta = h.reload(client, config, meta.getMetadata().getNamespace(), meta);
+      if (meta != null) {
+        return acceptVisitors(meta, visitors);
       }
-      return null;
-    } else {
-      return acceptVisitors(asHasMetadata(item), visitors);
     }
+    return meta;
   }
 
   @Override
@@ -243,13 +236,17 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl ex
   }
 
   @Override
-  public final Boolean isReady() {
-    return getReadiness().isReady(get());
+  public final boolean isReady() {
+    HasMetadata meta = fromServer().get();
+    if (meta == null) {
+      return false;
+    }
+    return getReadiness().isReady(meta);
   }
 
   @Override
   public HasMetadata waitUntilReady(long amount, TimeUnit timeUnit) {
-    HasMetadata meta = acceptVisitors(asHasMetadata(get()), visitors);
+    HasMetadata meta = get();
     ResourceHandler<HasMetadata, ?> h = handlerOf(meta);
     return h.waitUntilReady(client, config, meta.getMetadata().getNamespace(), meta, amount, timeUnit);
   }
@@ -262,11 +259,10 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl ex
   @Override
   public HasMetadata waitUntilCondition(Predicate<HasMetadata> condition, long amount,
     TimeUnit timeUnit) {
-    HasMetadata meta = acceptVisitors(asHasMetadata(get()), visitors);
+    HasMetadata meta = get();
     ResourceHandler<HasMetadata, ?> h = handlerOf(meta);
     return h.waitUntilCondition(client, config, meta.getMetadata().getNamespace(), meta, condition, amount, timeUnit);
   }
-
 
   private static HasMetadata acceptVisitors(HasMetadata item, List<Visitor> visitors) {
     ResourceHandler<HasMetadata, ?> h = handlerOf(item);

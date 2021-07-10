@@ -950,8 +950,12 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public final Boolean isReady() {
-    return getReadiness().isReady(get());
+  public final boolean isReady() {
+    T item = fromServer().get();
+    if (item == null) {
+      return false;
+    }
+    return getReadiness().isReady(item);
   }
 
   @Override

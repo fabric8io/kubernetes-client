@@ -140,7 +140,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
   }
 
   @Override
-  public Boolean isReady() {
+  public boolean isReady() {
     for (final HasMetadata meta : acceptVisitors(get(), visitors)) {
       if (!getReadiness().isReady(meta)) {
         return false;

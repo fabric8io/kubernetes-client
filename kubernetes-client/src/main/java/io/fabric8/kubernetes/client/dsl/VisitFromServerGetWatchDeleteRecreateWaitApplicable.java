@@ -25,5 +25,6 @@ public interface VisitFromServerGetWatchDeleteRecreateWaitApplicable<T> extends 
   Watchable<Watcher<T>>,
   Waitable<T, T>,
   VisitFromServerWritable<T>,
-  DryRunable<VisitFromServerWritable<T>> {
+  DryRunable<VisitFromServerWritable<T>>,
+  Readiable {
 }
