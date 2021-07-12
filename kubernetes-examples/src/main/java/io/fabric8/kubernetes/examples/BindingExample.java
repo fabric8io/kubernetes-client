@@ -24,7 +24,9 @@ import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 
 import java.util.UUID;
-
+/**
+ *  This is an example of pod binding node.
+ */
 public class BindingExample {
 
   @SuppressWarnings("java:S106")
