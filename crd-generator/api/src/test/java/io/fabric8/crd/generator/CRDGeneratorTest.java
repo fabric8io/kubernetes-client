@@ -124,6 +124,31 @@ class CRDGeneratorTest {
     assertTrue(infos.contains(jr));
   }
 
+  @Test
+  void shouldProperlyRecordNumberOfGeneratedCRDs() {
+    CRDGenerator generator = new CRDGenerator();
+    assertEquals(0, generator.generate());
+    assertEquals(0, generator.detailedGenerate().numberOfGeneratedCRDs());
+
+    final CRDGenerationInfo info = generator
+      .customResourceClasses(Simplest.class, Child.class, Joke.class, JokeRequest.class)
+      .forCRDVersions("v1", "v1beta1")
+      .withOutput(output).detailedGenerate();
+
+    assertEquals(4 * 2, info.numberOfGeneratedCRDs());
+    final Map<String, Map<String, CRDInfo>> details = info.getCRDDetailsPerNameAndVersion();
+    assertEquals(4, details.size());
+    assertTrue(details.containsKey(CustomResource.getCRDName(Simplest.class)));
+    assertTrue(details.containsKey(CustomResource.getCRDName(Child.class)));
+    assertTrue(details.containsKey(CustomResource.getCRDName(Joke.class)));
+    final String crdName = CustomResource.getCRDName(JokeRequest.class);
+    assertTrue(details.containsKey(crdName));
+    final Map<String, CRDInfo> jokeRequestInfos = info.getCRDInfos(crdName);
+    assertEquals(2, jokeRequestInfos.size());
+    assertTrue(jokeRequestInfos.containsKey("v1"));
+    assertTrue(jokeRequestInfos.containsKey("v1beta1"));
+  }
+
   @Test void notDefiningOutputShouldNotGenerateAnything() {
     CRDGenerator generator = new CRDGenerator();
     assertEquals(0, generator.generate());

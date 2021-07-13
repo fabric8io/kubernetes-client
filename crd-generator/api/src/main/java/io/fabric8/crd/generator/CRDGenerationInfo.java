@@ -41,8 +41,6 @@ public class CRDGenerationInfo {
   }
 
   public int numberOfGeneratedCRDs() {
-    final int[] result = new int[1];
-    crdNameToVersionToCRDInfoMap.forEach((k, v) -> result[0] += v.size());
-    return result[0];
+    return crdNameToVersionToCRDInfoMap.values().stream().map(Map::size).reduce(Integer::sum).orElse(0);
   }
 }
