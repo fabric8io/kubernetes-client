@@ -733,7 +733,7 @@ final Job job = new JobBuilder()
     .endSpec()
     .build();
 
-client.batch().v1().inNamespace("default").create(job);
+client.batch().v1().jobs().inNamespace("default").create(job);
 ```
 - Create or Replace an existing `Job`:
 ```
