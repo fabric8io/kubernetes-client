@@ -222,7 +222,7 @@ The kubernetes API defines a bunch of extensions like `daemonSets`, `jobs`, `ing
 e.g. to list the jobs...
 
 ```
-jobs = client.batch().jobs().list();
+jobs = client.batch().v1().jobs().list();
 ```
 
 ### Loading resources from external sources

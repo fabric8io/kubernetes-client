@@ -62,7 +62,7 @@ public class JobTest {
       .and().build()).once();
 
 
-    JobList jobList = client.batch().jobs().list();
+    JobList jobList = client.batch().v1().jobs().list();
     assertNotNull(jobList);
     assertEquals(0, jobList.getItems().size());
 
@@ -84,7 +84,7 @@ public class JobTest {
       .addNewItem().and()
       .build()).once();
 
-    JobList jobList = client.batch().jobs()
+    JobList jobList = client.batch().v1().jobs()
       .withLabel("key1", "value1")
       .withLabel("key2","value2")
       .withLabel("key3","value3")

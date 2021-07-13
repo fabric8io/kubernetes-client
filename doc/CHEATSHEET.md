@@ -701,14 +701,14 @@ Boolean isDeleted = client.secrets().inNamespace("default").withName("secret1").
 ```
 
 ### Job
-`Job` resource is available in Kubernetes Client API via `client.batch().jobs()`. Here are some of the examples of common usage:
+`Job` resource is available in Kubernetes Client API via `client.batch().v1().jobs()`. Here are some of the examples of common usage:
 - Loading a `Job` from yaml:
 ```
-Job job = client.batch().jobs().load(new FileInputStream("sample-job.yml")).get();
+Job job = client.batch().v1().jobs().load(new FileInputStream("sample-job.yml")).get();
 ```
 - Get a `Job` resource with some name from API server:
 ```
-Job job = client.batch().jobs().inNamespace("default").withName("pi").get();
+Job job = client.batch().v1().jobs().inNamespace("default").withName("pi").get();
 ```
 - Create `Job`:
 ```
@@ -733,31 +733,31 @@ final Job job = new JobBuilder()
     .endSpec()
     .build();
 
-client.batch().jobs().inNamespace("default").create(job);
+client.batch().v1().inNamespace("default").create(job);
 ```
 - Create or Replace an existing `Job`:
 ```
-Job job = client.batch().jobs().inNamespace("default").createOrReplace(job);
+Job job = client.batch().v1().jobs().inNamespace("default").createOrReplace(job);
 ```
 - List `Job` in some namespace:
 ```
-JobList jobList = client.batch().jobs().inNamespace("default").list();
+JobList jobList = client.batch().v1().jobs().inNamespace("default").list();
 ```
 - List `Job` in any namespace:
 ```
-JobList jobList = client.batch().jobs().inAnyNamespace().list();
+JobList jobList = client.batch().v1().jobs().inAnyNamespace().list();
 ```
 - List `Job` resources in some namespace with some labels:
 ```
-JobList jobList = client.batch().jobs().inNamespace("default").withLabel("foo", "bar").list();
+JobList jobList = client.batch().v1().jobs().inNamespace("default").withLabel("foo", "bar").list();
 ```
 - Delete `Job`:
 ```
-Boolean isDeleted = client.batch().jobs().inNamespace("default").withName("pi").delete();
+Boolean isDeleted = client.batch().v1().jobs().inNamespace("default").withName("pi").delete();
 ```
 - Watch `Job`:
 ```
-  client.batch().jobs().inNamespace("default").watch(new Watcher<Job>() {
+  client.batch().v1().jobs().inNamespace("default").watch(new Watcher<Job>() {
     @Override
     public void eventReceived(Action action, Job resource) {
       // Do something depending upon action 
