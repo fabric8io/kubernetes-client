@@ -101,35 +101,35 @@ class CronJobCrudTest {
       .endSpec()
       .build();
 
-    client.batch().cronjobs().inNamespace("ns1").create(cronJob1);
-    client.batch().cronjobs().inNamespace("ns2").create(cronJob2);
+    client.batch().v1().cronjobs().inNamespace("ns1").create(cronJob1);
+    client.batch().v1().cronjobs().inNamespace("ns2").create(cronJob2);
 
-    CronJobList cronJobList = client.batch().cronjobs().list();
+    CronJobList cronJobList = client.batch().v1().cronjobs().list();
     assertNotNull(cronJobList);
     assertEquals(0, cronJobList.getItems().size());
 
-    cronJobList = client.batch().cronjobs().inAnyNamespace().list();
+    cronJobList = client.batch().v1().cronjobs().inAnyNamespace().list();
     assertNotNull(cronJobList);
     assertEquals(2, cronJobList.getItems().size());
 
-    cronJobList = client.batch().cronjobs().inNamespace("ns1").list();
+    cronJobList = client.batch().v1().cronjobs().inNamespace("ns1").list();
     assertNotNull(cronJobList);
     assertEquals(1, cronJobList.getItems().size());
 
-    cronJobList = client.batch().cronjobs().inNamespace("ns2").list();
+    cronJobList = client.batch().v1().cronjobs().inNamespace("ns2").list();
     assertNotNull(cronJobList);
     assertEquals(1, cronJobList.getItems().size());
 
-    cronJobList = client.batch().cronjobs().inNamespace("ns1").withLabels(Collections.singletonMap("foo", "bar")).list();
+    cronJobList = client.batch().v1().cronjobs().inNamespace("ns1").withLabels(Collections.singletonMap("foo", "bar")).list();
     assertNotNull(cronJobList);
     assertEquals(1, cronJobList.getItems().size());
 
-    boolean bDeleted = client.batch().cronjobs().inNamespace("ns1").withName("cronJob1").delete();
-    cronJobList = client.batch().cronjobs().inNamespace("ns1").list();
+    boolean bDeleted = client.batch().v1().cronjobs().inNamespace("ns1").withName("cronJob1").delete();
+    cronJobList = client.batch().v1().cronjobs().inNamespace("ns1").list();
     assertTrue(bDeleted);
     assertEquals(0, cronJobList.getItems().size());
 
-    cronJob2 = client.batch().cronjobs().inNamespace("ns2").withName("cronJob2").edit(c -> new CronJobBuilder(c).editSpec().withSchedule("*/1 * * * *").and().build());
+    cronJob2 = client.batch().v1().cronjobs().inNamespace("ns2").withName("cronJob2").edit(c -> new CronJobBuilder(c).editSpec().withSchedule("*/1 * * * *").and().build());
     assertNotNull(cronJob2);
     assertEquals("*/1 * * * *", cronJob2.getSpec().getSchedule());
   }

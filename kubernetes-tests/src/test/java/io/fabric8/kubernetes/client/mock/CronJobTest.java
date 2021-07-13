@@ -56,15 +56,15 @@ class CronJobTest {
       .addNewItem()
       .and().build()).once();
 
-    CronJobList cronJobList = client.batch().cronjobs().list();
+    CronJobList cronJobList = client.batch().v1().cronjobs().list();
     assertNotNull(cronJobList);
     assertEquals(0, cronJobList.getItems().size());
 
-    cronJobList = client.batch().cronjobs().inNamespace("ns1").list();
+    cronJobList = client.batch().v1().cronjobs().inNamespace("ns1").list();
     assertNotNull(cronJobList);
     assertEquals(2, cronJobList.getItems().size());
 
-    cronJobList = client.batch().cronjobs().inAnyNamespace().list();
+    cronJobList = client.batch().v1().cronjobs().inAnyNamespace().list();
     assertNotNull(cronJobList);
     assertEquals(3, cronJobList.getItems().size());
   }
@@ -78,7 +78,7 @@ class CronJobTest {
       .addNewItem().and()
       .build()).once();
 
-    CronJobList cronJobList = client.batch().cronjobs()
+    CronJobList cronJobList = client.batch().v1().cronjobs()
       .withLabel("key1", "value1")
       .withLabel("key2","value2")
       .withLabel("key3","value3")
@@ -88,7 +88,7 @@ class CronJobTest {
     assertNotNull(cronJobList);
     assertEquals(0, cronJobList.getItems().size());
 
-    cronJobList = client.batch().cronjobs()
+    cronJobList = client.batch().v1().cronjobs()
       .withLabel("key1", "value1")
       .withLabel("key2","value2")
       .list();
@@ -102,13 +102,13 @@ class CronJobTest {
     server.expect().withPath("/apis/batch/v1beta1/namespaces/ns1/cronjobs/cronjob2").andReturn(200, new CronJobBuilder().build()).once();
 
 
-    CronJob cronjob = client.batch().cronjobs().withName("cronjob1").get();
+    CronJob cronjob = client.batch().v1().cronjobs().withName("cronjob1").get();
     assertNotNull(cronjob);
 
-    cronjob = client.batch().cronjobs().withName("cronjob2").get();
+    cronjob = client.batch().v1().cronjobs().withName("cronjob2").get();
     assertNull(cronjob);
 
-    cronjob = client.batch().cronjobs().inNamespace("ns1").withName("cronjob2").get();
+    cronjob = client.batch().v1().cronjobs().inNamespace("ns1").withName("cronjob2").get();
     assertNotNull(cronjob);
   }
 
@@ -178,11 +178,11 @@ class CronJobTest {
       .build()).once();
 
 
-    Boolean deleted = client.batch().cronjobs().withName("cronJob1").delete();
+    Boolean deleted = client.batch().v1().cronjobs().withName("cronJob1").delete();
     assertNotNull(deleted);
     assertTrue(deleted);
 
-    deleted = client.batch().cronjobs().withName("cronJob2").delete();
+    deleted = client.batch().v1().cronjobs().withName("cronJob2").delete();
     assertTrue(deleted);
   }
 
@@ -218,10 +218,10 @@ class CronJobTest {
       .editStatus().endStatus().build()).times(5);
 
 
-    Boolean deleted = client.batch().cronjobs().inAnyNamespace().delete(cronjob1, cronjob2);
+    Boolean deleted = client.batch().v1().cronjobs().inAnyNamespace().delete(cronjob1, cronjob2);
     assertTrue(deleted);
 
-    deleted = client.batch().cronjobs().inAnyNamespace().delete(cronjob3);
+    deleted = client.batch().v1().cronjobs().inAnyNamespace().delete(cronjob3);
     assertFalse(deleted);
   }
 
@@ -230,7 +230,7 @@ class CronJobTest {
     Assertions.assertThrows(KubernetesClientException.class, () -> {
       CronJob cronjob1 = new CronJobBuilder().withNewMetadata().withName("cronjob1").withNamespace("test").and().build();
 
-      Boolean deleted = client.batch().cronjobs().inNamespace("test1").delete(cronjob1);
+      Boolean deleted = client.batch().v1().cronjobs().inNamespace("test1").delete(cronjob1);
       assertFalse(deleted);
     });
   }
@@ -240,13 +240,13 @@ class CronJobTest {
     Assertions.assertThrows(KubernetesClientException.class, () -> {
       CronJob cronjob1 = new CronJobBuilder().withNewMetadata().withName("cronjob1").withNamespace("test").and().build();
 
-      client.batch().cronjobs().inNamespace("test1").withName("mycronjob1").create(cronjob1);
+      client.batch().v1().cronjobs().inNamespace("test1").withName("mycronjob1").create(cronjob1);
     });
   }
 
   @Test
   void testLoadFromFile() {
-    assertNotNull(client.batch().cronjobs().load(getClass().getResourceAsStream("/test-cronjob.yml")).get());
+    assertNotNull(client.batch().v1().cronjobs().load(getClass().getResourceAsStream("/test-cronjob.yml")).get());
   }
 
   @Test

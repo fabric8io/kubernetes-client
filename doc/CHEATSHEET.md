@@ -771,14 +771,14 @@ Boolean isDeleted = client.batch().v1().jobs().inNamespace("default").withName("
 ```
 
 ### CronJob
-`CronJob` resource is available in Kubernetes Client api via `client.batch().cronjobs()`. Here are some of the examples of its usages:
+`CronJob` resource is available in Kubernetes Client api via `client.batch().v1().cronjobs()`. Here are some of the examples of its usages:
 - Load `CronJob` from yaml:
 ```
-CronJob cronJob = client.batch().cronjobs().load(new FileInputStream("cronjob.yml")).get();
+CronJob cronJob = client.batch().v1().cronjobs().load(new FileInputStream("cronjob.yml")).get();
 ```
 - Get a `CronJob` from Kubernetes API server:
 ```
-CronJob aCronJob = client.batch().cronjobs().inNamespace("default").withName("some-cj").get();
+CronJob aCronJob = client.batch().v1().cronjobs().inNamespace("default").withName("some-cj").get();
 ```
 - Create `CronJob`:
 ```
@@ -807,33 +807,33 @@ CronJob cronJob1 = new CronJobBuilder()
     .endSpec()
     .build();
 
-cronJob1 = client.batch().cronjobs().inNamespace("default").create(cronJob1);
+cronJob1 = client.batch().v1().cronjobs().inNamespace("default").create(cronJob1);
 ```
 - Create or Replace an existing `CronJob`:
 ```
-CronJob cronJob = client.batch().cronjobs().inNamespace("default").createOrReplace(cronJob1);
+CronJob cronJob = client.batch().v1().cronjobs().inNamespace("default").createOrReplace(cronJob1);
 ```
 - List some `CronJob` objects in some namespace:
 ```
-CronJobList cronJobList = client.batch().cronjobs().inNamespace("default").list()
+CronJobList cronJobList = client.batch().v1().cronjobs().inNamespace("default").list()
 ```
 - List some `CronJob` objects in any namespace:
 ```
-CronJobList cronJobList = client.batch().cronjobs().inAnyNamespace().list();
+CronJobList cronJobList = client.batch().v1().cronjobs().inAnyNamespace().list();
 ```
 - List some `CronJob` objects in some namespace with some label:
 ```
-CronJobList cronJobList = client.batch().cronjobs().inNamespace("default").withLabel("foo", "bar").list();
+CronJobList cronJobList = client.batch().v1().cronjobs().inNamespace("default").withLabel("foo", "bar").list();
 ```
 - Edit/Update `CronJob`:
 ```java
-CronJob cronJob1 = client.batch().cronjobs().inNamespace("default").withName(cronJob1.getMetadata().getName()).edit(
+CronJob cronJob1 = client.batch().v1().cronjobs().inNamespace("default").withName(cronJob1.getMetadata().getName()).edit(
   cj -> new CronJobBuilder(cj).editSpec().withSchedule("*/1 * * * *").endSpec().build()
 );
 ```
 - Delete `CronJob`:
 ```
-Boolean isDeleted = client.batch().cronjobs().inNamespace("default").withName("pi").delete();
+Boolean isDeleted = client.batch().v1().cronjobs().inNamespace("default").withName("pi").delete();
 ```
 
 ### Namespace
@@ -1398,14 +1398,14 @@ Boolean deleted = client.network().networkPolicies().withName("np-test").delete(
 ```
 
 ### PodDisruptionBudget
-`PodDisruptionBudget` is available in Kubernetes Client API via `client.policy().podDisruptionBudget()`. Here are some of the examples of its usage:
+`PodDisruptionBudget` is available in Kubernetes Client API via `client.policy().v1().podDisruptionBudget()`. Here are some of the examples of its usage:
 - Load `PodDisruptionBudget` from yaml:
 ```
-PodDisruptionBudget pdb = client.policy().podDisruptionBudget().load(new FileInputStream("/test-pdb.yml")).get();
+PodDisruptionBudget pdb = client.policy().v1().podDisruptionBudget().load(new FileInputStream("/test-pdb.yml")).get();
 ```
 - Get `PodDisruptionBudget` from Kubernetes API server:
 ```
-PodDisruptionBudget podDisruptionBudget = client.policy().podDisruptionBudget().inNamespace("default").withName("poddisruptionbudget1").get();
+PodDisruptionBudget podDisruptionBudget = client.policy().v1().podDisruptionBudget().inNamespace("default").withName("poddisruptionbudget1").get();
 ```
 - Create `PodDisruptionBudget`:
 ```
@@ -1419,27 +1419,27 @@ PodDisruptionBudget podDisruptionBudget = new PodDisruptionBudgetBuilder()
     .endSpec()
     .build();
 
-client.policy().podDisruptionBudget().inNamespace("default").create(podDisruptionBudget);
+client.policy().v1().podDisruptionBudget().inNamespace("default").create(podDisruptionBudget);
 ```
 - Create or Replace `PodDisruptionBudget`:
 ```
-PodDisruptionBudget pdb = client.policy().podDisruptionBudget().inNamespace("default").createOrReplace(podDisruptionBudgetObj);
+PodDisruptionBudget pdb = client.policy().v1().podDisruptionBudget().inNamespace("default").createOrReplace(podDisruptionBudgetObj);
 ```
 - List `PodDisruptionBudget` in some namespace:
 ```
-PodDisruptionBudgetList podDisruptionBudgetList = client.policy().podDisruptionBudget().inNamespace("default").list();
+PodDisruptionBudgetList podDisruptionBudgetList = client.policy().v1().podDisruptionBudget().inNamespace("default").list();
 ```
 - List `PodDisruptionBudget` in any namespace:
 ```
-PodDisruptionBudgetList pdbList = client.policy().podDisruptionBudget().inAnyNamespace().list();
+PodDisruptionBudgetList pdbList = client.policy().v1().podDisruptionBudget().inAnyNamespace().list();
 ```
 - List `PodDisruptionBudget` with labels:
 ```
-PodDisruptionBudgetList pdbList = client.policy().podDisruptionBudget().inNamespace("default").withLabel("foo", "bar").list();
+PodDisruptionBudgetList pdbList = client.policy().v1().podDisruptionBudget().inNamespace("default").withLabel("foo", "bar").list();
 ```
 - Delete `PodDisruptionBudget`:
 ```
-Boolean deleted = client.policy().podDisruptionBudget().inNamespace("default").withName("poddisruptionbudget1").delete();
+Boolean deleted = client.policy().v1().podDisruptionBudget().inNamespace("default").withName("poddisruptionbudget1").delete();
 ```
 
 ### SelfSubjectAccessReview
