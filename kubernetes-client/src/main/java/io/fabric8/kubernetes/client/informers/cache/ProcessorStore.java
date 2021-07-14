@@ -82,6 +82,10 @@ public class ProcessorStore<T extends HasMetadata> implements SyncableStore<T> {
   @Override
   public void replace(List<T> list) {
     Map<String, T> oldState = cache.replace(list);
+    
+    if (list.isEmpty() && oldState.isEmpty()) {
+      this.processor.distribute(l -> l.getHandler().onNothing(), false);      
+    }
 
     // now that the store is up-to-date, process the notifications
     for (T newValue : list) {

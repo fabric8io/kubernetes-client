@@ -18,8 +18,6 @@ package io.fabric8.kubernetes.client.dsl.base;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.client.dsl.WritableOperation;
 import io.fabric8.kubernetes.client.utils.CreateOrReplaceHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import io.fabric8.kubernetes.api.builder.TypedVisitor;
 import io.fabric8.kubernetes.api.builder.Visitor;
@@ -78,7 +76,7 @@ import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -94,7 +92,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   MixedOperation<T, L, R>,
   Resource<T> {
 
-  private static final Logger LOG = LoggerFactory.getLogger(BaseOperation.class);
   private static final String READ_ONLY_UPDATE_EXCEPTION_MESSAGE = "Cannot update read-only resources";
   private static final String READ_ONLY_EDIT_EXCEPTION_MESSAGE = "Cannot edit read-only resources";
 
@@ -964,56 +961,70 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public T waitUntilCondition(Predicate<T> condition, long amount, TimeUnit timeUnit) {
-    CompletableFuture<T> future = new CompletableFuture<>();
-    // tests the condition, trapping any exceptions
-    Consumer<T> tester = obj -> {
-      try {
-        if (condition.test(obj)) {
-          future.complete(obj);
-        }
-      } catch (Exception e) {
-        future.completeExceptionally(e);
+    CompletableFuture<T> futureCondition = informOnCondition(l -> {
+      if (l.isEmpty()) {
+        return condition.test(null);
       }
-    };
-    // start an informer that supplies the tester with events and empty list handling
-    try (SharedIndexInformer<T> informer = this.createInformer(0, l -> {
-      if (l.getItems().isEmpty()) {
-        tester.accept(null);
-      }
-    }, new ResourceEventHandler<T>() {
-
-      @Override
-      public void onAdd(T obj) {
-        tester.accept(obj);
-      }
-
-      @Override
-      public void onUpdate(T oldObj, T newObj) {
-        tester.accept(newObj);
-      }
-
-      @Override
-      public void onDelete(T obj, boolean deletedFinalStateUnknown) {
-        tester.accept(null);
-      }
-    })) {
-      // prevent unnecessary watches
-      future.whenComplete((r,t) -> informer.stop());
-      informer.run();
-      return future.get(amount, timeUnit);
-    } catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-      throw KubernetesClientException.launderThrowable(e.getCause());
-    } catch (ExecutionException e) {
-      throw KubernetesClientException.launderThrowable(e.getCause());
-    } catch (TimeoutException e) {
+      return condition.test(l.get(0));
+    }).thenApply(l -> l.isEmpty() ? null : l.get(0));
+    
+    if (!Utils.waitUntilReady(futureCondition, amount, timeUnit)) {
+      futureCondition.cancel(true);
       T i = getItem();
       if (i != null) {
         throw new KubernetesClientTimeoutException(i, amount, timeUnit);
       }
       throw new KubernetesClientTimeoutException(getKind(), getName(), getNamespace(), amount, timeUnit);
     }
+    return futureCondition.getNow(null);
   }
+  
+  @Override
+  public CompletableFuture<List<T>> informOnCondition(Predicate<List<T>> condition) {
+    CompletableFuture<List<T>> future = new CompletableFuture<>();
+    AtomicReference<Runnable> tester = new AtomicReference<>();
+    
+    // create an informer that supplies the tester with events and empty list handling
+    SharedIndexInformer<T> informer = this.createInformer(0);
+    
+    // prevent unnecessary watches and handle closure
+    future.whenComplete((r, t) -> informer.stop());
+    
+    // use the cache to evaluate the list predicate, trapping any exceptions
+    Runnable test = () -> {
+      try {
+        // could skip if lastResourceVersion has not changed
+        List<T> list = informer.getStore().list();
+        if (condition.test(list)) {
+          future.complete(list);
+        }
+      } catch (Exception e) {
+        future.completeExceptionally(e);
+      }
+    };
+    tester.set(test);
+    
+    informer.addEventHandler(new ResourceEventHandler<T>() {
+      @Override
+      public void onAdd(T obj) {
+        test.run();
+      }
+      @Override
+      public void onDelete(T obj, boolean deletedFinalStateUnknown) {
+        test.run();
+      }
+      @Override
+      public void onUpdate(T oldObj, T newObj) {
+        test.run();
+      }
+      @Override
+      public void onNothing() {
+        test.run();
+      }
+    });
+    informer.run();
+    return future;
+  }  
 
   public void setType(Class<T> type) {
     this.type = type;
@@ -1041,14 +1052,17 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public SharedIndexInformer<T> inform(ResourceEventHandler<T> handler, long resync) {
-    DefaultSharedIndexInformer<T, L> result = createInformer(resync, null, handler);
+    DefaultSharedIndexInformer<T, L> result = createInformer(resync);
+    if (handler != null) {
+      result.addEventHandler(handler);
+    }
     // synchronous start list/watch must succeed in the calling thread
     // initial add events will be processed in the calling thread as well
     result.run();
     return result;
   }
 
-  private DefaultSharedIndexInformer<T, L> createInformer(long resync, Consumer<L> onList, ResourceEventHandler<T> handler) {
+  private DefaultSharedIndexInformer<T, L> createInformer(long resync) {
     T i = getItem();
     String name = (Utils.isNotNullOrEmpty(getName()) || i != null) ? checkName(i) : null;
 
@@ -1060,11 +1074,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
         if (name != null) {
           params.setFieldSelector("metadata.name="+name);
         }
-        L result = BaseOperation.this.list(params);
-        if (onList != null) {
-          onList.accept(result);
-        }
-        return result;
+        return BaseOperation.this.list(params);
       }
 
       @Override
@@ -1074,9 +1084,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     }, resync, context, Runnable::run); // just run the event notification in the websocket thread
     if (indexers != null) {
       informer.addIndexers(indexers);
-    }
-    if (handler != null) {
-      informer.addEventHandler(handler);
     }
     return informer;
   }

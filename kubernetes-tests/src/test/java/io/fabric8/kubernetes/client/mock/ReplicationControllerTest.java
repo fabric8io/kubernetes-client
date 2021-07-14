@@ -17,6 +17,7 @@
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
+import io.fabric8.kubernetes.api.model.ListMetaBuilder;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
@@ -183,18 +184,26 @@ class ReplicationControllerTest {
       .endStatus()
       .build()).once();
 
-    server.expect().withPath("/api/v1/namespaces/test/replicationcontrollers/repl1").andReturn(200, new ReplicationControllerBuilder()
-        .withNewMetadata()
-        .withName("repl1")
-        .withResourceVersion("1")
-        .endMetadata()
-        .withNewSpec()
-        .withReplicas(5)
-        .endSpec()
-        .withNewStatus()
-        .withReplicas(5)
-        .endStatus()
-        .build()).always();
+    ReplicationController scaled = new ReplicationControllerBuilder()
+      .withNewMetadata()
+      .withName("repl1")
+      .withResourceVersion("1")
+      .endMetadata()
+      .withNewSpec()
+      .withReplicas(5)
+      .endSpec()
+      .withNewStatus()
+      .withReplicas(5)
+      .endStatus()
+      .build();
+    server.expect().withPath("/api/v1/namespaces/test/replicationcontrollers/repl1").andReturn(200, scaled).once();
+
+    // list for waiting
+    server.expect()
+      .withPath("/api/v1/namespaces/test/replicationcontrollers?fieldSelector=metadata.name%3Drepl1&watch=false")
+      .andReturn(200,
+        new ReplicationControllerListBuilder().withItems(scaled).withMetadata(new ListMetaBuilder().build()).build())
+      .always();
 
     ReplicationController repl = client.replicationControllers().withName("repl1").scale(5, true);
     assertNotNull(repl);

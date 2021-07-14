@@ -23,7 +23,10 @@ import io.fabric8.kubernetes.client.informers.SharedInformer;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 public interface Informable<T> {
   
@@ -33,6 +36,21 @@ public interface Informable<T> {
    * @return the current {@link Informable}
    */
   Informable<T> withIndexers(Map<String, Function<T, List<String>>> indexers);
+  
+  /**
+   * Similar to a {@link Watch}, but will attempt to handle failures after successfully started.
+   * and provides a store of all the current resources.
+   * <p>This returned informer will not support resync.
+   * <p>This call will be blocking for the initial list and watch.
+   * <p>You are expected to call stop to terminate the underlying Watch.
+   * <p>Additional handlers can be added, but processing of the events will be in the websocket thread, 
+   * so consider non-blocking handler operations for more than one handler.
+   * 
+   * @return a running {@link SharedIndexInformer}
+   */
+  default SharedIndexInformer<T> inform() {
+    return inform(null, 0);
+  }
   
   /**
    * Similar to a {@link Watch}, but will attempt to handle failures after successfully started.
@@ -56,12 +74,21 @@ public interface Informable<T> {
    * <p>This call will be blocking for the initial list and watch.
    * <p>You are expected to call stop to terminate the underlying Watch.
    * <p>Additional handlers can be added, but processing of the events will be in the websocket thread, 
-   * so consider non-blocking handleroperations for more than one handler.
+   * so consider non-blocking handler operations for more than one handler.
    * 
    * @param handler to notify
    * @param resync the resync period or 0 for no resync
    * @return a running {@link SharedIndexInformer}
    */
   SharedIndexInformer<T> inform(ResourceEventHandler<T> handler, long resync);
+  
+  /**
+   * Return a {@link Future} when the list at this context satisfies the given {@link Predicate}.
+   * The predicate will be tested against the state of the underlying informer store on every event.
+   * The returned future should be cancelled by the caller if not waiting for completion to close the underlying informer
+   * @param condition the {@link Predicate} to test
+   * @return a {@link CompletableFuture} of the list of items after the condition is met
+   */
+  CompletableFuture<List<T>> informOnCondition(Predicate<List<T>> condition);
 
 }

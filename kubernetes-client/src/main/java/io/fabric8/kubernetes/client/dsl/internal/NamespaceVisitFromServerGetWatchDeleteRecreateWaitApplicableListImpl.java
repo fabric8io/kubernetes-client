@@ -91,7 +91,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
   public List<HasMetadata> waitUntilCondition(Predicate<HasMetadata> condition,
                                               long amount,
                                               TimeUnit timeUnit) {
-    List<HasMetadata> items = acceptVisitors(asHasMetadata(item, true), visitors);
+    ArrayList<HasMetadata> items = acceptVisitors(asHasMetadata(item, true), visitors);
     if (items.isEmpty()) {
       return Collections.emptyList();
     }
@@ -109,10 +109,8 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
       final List<HasMetadata> results = new ArrayList<>();
       final List<HasMetadata> itemsWithConditionNotMatched = new ArrayList<>();
   
-      // Iterate over the items because we don't know what kind of List it is.
-      // But the futures use an ArrayList, so accessing by index is efficient.
-      int i = 0;
-      for (final HasMetadata meta : items) {
+      for (int i = 0; i < items.size(); i++) {
+        final HasMetadata meta = items.get(i);
         try {
           CompletableFuture<HasMetadata> future = futures.get(i);
           // just get each result as the timeout is enforced below
@@ -124,7 +122,6 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
           Thread.currentThread().interrupt();
           throw KubernetesClientException.launderThrowable(e);
         }
-        ++i;
       }
   
       if (!itemsWithConditionNotMatched.isEmpty()) {
@@ -287,8 +284,8 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
         }
     }
 
-    private static List<HasMetadata> acceptVisitors(List<HasMetadata> list, List<Visitor> visitors) {
-        List<HasMetadata> result = new ArrayList<>();
+    private static ArrayList<HasMetadata> acceptVisitors(List<HasMetadata> list, List<Visitor> visitors) {
+        ArrayList<HasMetadata> result = new ArrayList<>();
         for (HasMetadata item : list) {
             ResourceHandler<HasMetadata, ?> h = handlerOf(item);
             VisitableBuilder<HasMetadata, ?> builder = h.edit(item);

@@ -26,13 +26,12 @@ import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.internal.RollingOperationContext;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
-import io.fabric8.kubernetes.client.utils.PodOperationUtil;
-import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DeploymentList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,11 +45,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.UnaryOperator;
@@ -261,24 +256,18 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
    * Lets wait until there are enough Ready pods of the given Deployment
    */
   private void waitUntilDeploymentIsScaled(final int count) {
-    final CompletableFuture<Void> scaledFuture = new CompletableFuture<>();
     final AtomicReference<Integer> replicasRef = new AtomicReference<>(0);
 
     final String name = checkName(getItem());
     final String namespace = checkNamespace(getItem());
 
-    final Runnable deploymentPoller = () -> {
-      try {
-        Deployment deployment = get();
-        //If the deployment is gone, we shouldn't wait.
+    try {
+      waitUntilCondition(deployment -> {
         if (deployment == null) {
           if (count == 0) {
-            scaledFuture.complete(null);
-            return;
-          } else {
-            scaledFuture.completeExceptionally(new IllegalStateException("Can't wait for Deployment: " + checkName(getItem()) + " in namespace: " + checkName(getItem()) + " to scale. Resource is no longer available."));
-            return;
+            return true;
           }
+          throw new IllegalStateException("Can't wait for Deployment: " + checkName(getItem()) + " in namespace: " + checkName(getItem()) + " to scale. Resource is no longer available.");
         }
 
         replicasRef.set(deployment.getStatus().getReplicas());
@@ -286,29 +275,18 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
         long generation = deployment.getMetadata().getGeneration() != null ? deployment.getMetadata().getGeneration() : 0;
         long observedGeneration = deployment.getStatus() != null && deployment.getStatus().getObservedGeneration() != null ? deployment.getStatus().getObservedGeneration() : -1;
         if (observedGeneration >= generation && Objects.equals(deployment.getSpec().getReplicas(), currentReplicas)) {
-          scaledFuture.complete(null);
-        } else {
-          LOG.debug("Only {}/{} pods scheduled for Deployment: {} in namespace: {} seconds so waiting...",
-            deployment.getStatus().getReplicas(), deployment.getSpec().getReplicas(), deployment.getMetadata().getName(), namespace);
-        }
-      } catch (Throwable t) {
-        LOG.error("Error while waiting for Deployment to be scaled.", t);
-      }
-    };
+          return true;
+        } 
+        LOG.debug("Only {}/{} pods scheduled for Deployment: {} in namespace: {} seconds so waiting...",
+          deployment.getStatus().getReplicas(), deployment.getSpec().getReplicas(), deployment.getMetadata().getName(), namespace);
+        return false;
 
-    ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-    ScheduledFuture poller = executor.scheduleWithFixedDelay(deploymentPoller, 0, POLL_INTERVAL_MS, TimeUnit.MILLISECONDS);
-    try {
-      if (Utils.waitUntilReady(scaledFuture, getConfig().getScaleTimeout(), TimeUnit.MILLISECONDS)) {
-        LOG.debug("{}/{} pod(s) ready for Deployment: {} in namespace: {}.",
+      }, getConfig().getScaleTimeout(), TimeUnit.MILLISECONDS);
+      LOG.debug("{}/{} pod(s) ready for Deployment: {} in namespace: {}.",
           replicasRef.get(), count, name, namespace);
-      } else {
-        LOG.error("{}/{} pod(s) ready for Deployment: {} in namespace: {}  after waiting for {} seconds so giving up",
+    } catch (KubernetesClientTimeoutException e) {
+      LOG.error("{}/{} pod(s) ready for Deployment: {} in namespace: {}  after waiting for {} seconds so giving up",
           replicasRef.get(), count, name, namespace, TimeUnit.MILLISECONDS.toSeconds(getConfig().getScaleTimeout()));
-      }
-    } finally {
-      poller.cancel(true);
-      executor.shutdown();
     }
   }
 

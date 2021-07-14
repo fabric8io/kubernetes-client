@@ -17,6 +17,7 @@
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
+import io.fabric8.kubernetes.api.model.ListMetaBuilder;
 import io.fabric8.kubernetes.api.model.OwnerReferenceBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
@@ -199,18 +200,26 @@ public class StatefulSetTest {
       .endStatus()
       .build()).once();
 
-    server.expect().withPath("/apis/apps/v1/namespaces/test/statefulsets/repl1").andReturn(200, new StatefulSetBuilder()
-        .withNewMetadata()
-        .withName("repl1")
-        .withResourceVersion("1")
-        .endMetadata()
-        .withNewSpec()
-        .withReplicas(5)
-        .endSpec()
-        .withNewStatus()
-        .withReplicas(5)
-        .endStatus()
-        .build()).always();
+    StatefulSet scaled = new StatefulSetBuilder()
+      .withNewMetadata()
+      .withName("repl1")
+      .withResourceVersion("1")
+      .endMetadata()
+      .withNewSpec()
+      .withReplicas(5)
+      .endSpec()
+      .withNewStatus()
+      .withReplicas(5)
+      .endStatus()
+      .build();
+    server.expect().withPath("/apis/apps/v1/namespaces/test/statefulsets/repl1").andReturn(200, scaled).once();
+
+    // list for waiting
+    server.expect()
+      .withPath("/apis/apps/v1/namespaces/test/statefulsets?fieldSelector=metadata.name%3Drepl1&watch=false")
+      .andReturn(200,
+        new StatefulSetListBuilder().withItems(scaled).withMetadata(new ListMetaBuilder().build()).build())
+      .always();
 
     StatefulSet repl = client.apps().statefulSets().withName("repl1").scale(5, true);
     assertNotNull(repl);
