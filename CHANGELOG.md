@@ -5,6 +5,7 @@
 #### Bugs
 
 #### Improvements
+* Fix #3316: allow locking deletion to resource version
 
 #### Dependency Upgrade
 

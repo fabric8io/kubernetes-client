@@ -21,7 +21,7 @@ import io.fabric8.kubernetes.api.model.ConfigMapList;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
-import io.fabric8.kubernetes.client.dsl.Replaceable;
+import io.fabric8.kubernetes.client.dsl.ReplaceDeletable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -133,7 +133,7 @@ class ConfigMapLockTest {
   void updateWithValidLeaderElectionRecordShouldSendPutRequest() throws Exception {
     // Given
     final Resource<ConfigMap> configMapResource = configMaps.withName("name");
-    final Replaceable<ConfigMap> replaceable = mock(Replaceable.class, Answers.RETURNS_DEEP_STUBS);
+    final ReplaceDeletable<ConfigMap> replaceable = mock(ReplaceDeletable.class, Answers.RETURNS_DEEP_STUBS);
     when(configMapResource.lockResourceVersion(any())).thenReturn(replaceable);
     final ConfigMap configMapInTheCluster = new ConfigMap();
     configMapInTheCluster.setMetadata(new ObjectMetaBuilder().withAnnotations(new HashMap<>()).build());

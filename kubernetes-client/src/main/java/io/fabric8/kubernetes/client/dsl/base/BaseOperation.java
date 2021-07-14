@@ -46,6 +46,7 @@ import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.Informable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
+import io.fabric8.kubernetes.client.dsl.ReplaceDeletable;
 import io.fabric8.kubernetes.client.dsl.Replaceable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.internal.DefaultOperationInfo;
@@ -265,7 +266,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public Replaceable<T> lockResourceVersion(String resourceVersion) {
+  public ReplaceDeletable<T> lockResourceVersion(String resourceVersion) {
     return newInstance(context.withResourceVersion(resourceVersion));
   }
 
@@ -653,9 +654,9 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     try {
       if (item != null) {
         updateApiVersion(item);
-        handleDelete(item, gracePeriodSeconds, propagationPolicy, cascading);
+        handleDelete(item, gracePeriodSeconds, propagationPolicy, resourceVersion, cascading);
       } else {
-        handleDelete(getResourceURLForWriteOperation(getResourceUrl()), gracePeriodSeconds, propagationPolicy, cascading);
+        handleDelete(getResourceURLForWriteOperation(getResourceUrl()), gracePeriodSeconds, propagationPolicy, resourceVersion, cascading);
       }
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(forOperationType("delete"), e);
