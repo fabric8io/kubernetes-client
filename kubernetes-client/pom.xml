@@ -224,6 +224,12 @@
 
     <!-- Testing Dependencies -->
     <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20180130</version>
+    </dependency>
+
+    <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>mockwebserver</artifactId>
       <version>${mockwebserver.version}</version>
@@ -259,6 +265,37 @@
       <groupId>org.awaitility</groupId>
       <artifactId>awaitility</artifactId>
     </dependency>
+      <dependency>
+          <groupId>io.fabric8</groupId>
+          <artifactId>kubernetes-model-core</artifactId>
+          <version>5.1.1</version>
+      </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-model-apps</artifactId>
+      <version>5.1.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-client</artifactId>
+      <version>5.1.1</version>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-model-apps</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-model-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.5</version>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
 
   <build>

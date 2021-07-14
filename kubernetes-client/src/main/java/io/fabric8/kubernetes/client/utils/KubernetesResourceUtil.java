@@ -16,24 +16,13 @@
 
 package io.fabric8.kubernetes.client.utils;
 
-import io.fabric8.kubernetes.api.model.EnvVar;
-import io.fabric8.kubernetes.api.model.EnvVarBuilder;
-import io.fabric8.kubernetes.api.model.Event;
-import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.api.model.KubernetesList;
-import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.api.model.OwnerReference;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.client.CustomResourceList;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class KubernetesResourceUtil {
@@ -371,7 +360,34 @@ public class KubernetesResourceUtil {
       Class<?> listTypeClass = Thread.currentThread().getContextClassLoader().loadClass(type.getName() + "List");
       return (Class<KubernetesResourceList<T>>) listTypeClass;
     } catch (ClassNotFoundException | ClassCastException e) {
-      return CustomResourceList.class;
+      return (Class<? extends KubernetesResourceList>) CustomResourceList.class;
     }
+  }
+
+  /**
+   * Create Secret by using username and password.
+   * @param dockerServer
+   * @param username
+   * @param password
+   * @return an object of Secret
+   */
+  public static Secret createDockerRegistrySecret(String dockerServer, String username, String password) throws JsonProcessingException {
+    Map<String, Object> dockerConfigMap = new HashMap<>();
+    Map<String, Object> auths = new HashMap<>();
+    Map<String, Object> credentials = new HashMap<>();
+    credentials.put("username", username);
+    credentials.put("password", password);
+    String usernameAndPasswordAuth = username + ":" + password;
+    credentials.put("auth", Base64.getEncoder().encodeToString(usernameAndPasswordAuth.getBytes()));
+    auths.put(dockerServer, credentials);
+    dockerConfigMap.put("auths", auths);
+
+    String dockerConfigAsStr = Serialization.jsonMapper().writeValueAsString(dockerConfigMap);
+
+    return new SecretBuilder()
+      .withNewMetadata().withName("harbor-secret").endMetadata()
+      .withType("kubernetes.io/dockerconfigjson")
+      .addToData(".dockerconfigjson", Base64.getEncoder().encodeToString(dockerConfigAsStr.getBytes()))
+      .build();
   }
 }
