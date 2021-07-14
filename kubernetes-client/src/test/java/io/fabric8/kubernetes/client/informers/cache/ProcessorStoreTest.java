@@ -85,7 +85,7 @@ public class ProcessorStoreTest {
     Pod pod = new PodBuilder().withNewMetadata().endMetadata().build();
     Pod pod2 = new PodBuilder().withNewMetadata().withName("pod2").endMetadata().build();
     
-    // replace two values with an empty store
+    // replace empty store with two values
     processorStore.replace(Arrays.asList(pod, pod2));
 
     // resync two values
@@ -102,7 +102,8 @@ public class ProcessorStoreTest {
     assertThat(notifications.get(1)).isInstanceOf(AddNotification.class);
     assertThat(notifications.get(2)).isInstanceOf(UpdateNotification.class);
     assertThat(notifications.get(3)).isInstanceOf(UpdateNotification.class);
-    assertTrue(syncCaptor.getAllValues().subList(0, 4).stream().allMatch(s->s.booleanValue()));
+    assertTrue(syncCaptor.getAllValues().subList(0, 2).stream().allMatch(s->!s.booleanValue()));
+    assertTrue(syncCaptor.getAllValues().subList(2, 4).stream().allMatch(s->s.booleanValue()));
     
     assertThat(notifications.get(4)).isInstanceOf(DeleteNotification.class);
     assertThat(notifications.get(5)).isInstanceOf(DeleteNotification.class);
