@@ -16,5 +16,13 @@
 package io.fabric8.crd.example.inherited;
 
 public class BaseSpec {
+  private int baseInt;
 
+  public int getBaseInt() {
+    return baseInt;
+  }
+
+  public void setBaseInt(int baseInt) {
+    this.baseInt = baseInt;
+  }
 }

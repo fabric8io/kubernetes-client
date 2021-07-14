@@ -16,14 +16,12 @@
 package io.fabric8.crd.generator;
 
 import io.fabric8.crd.generator.decorator.Decorator;
-import io.fabric8.crd.generator.visitor.AdditionalPrinterColumnDetector;
-import io.fabric8.crd.generator.visitor.LabelSelectorPathDetector;
-import io.fabric8.crd.generator.visitor.SpecReplicasPathDetector;
-import io.fabric8.crd.generator.visitor.StatusReplicasPathDetector;
+import io.fabric8.crd.generator.visitor.*;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.sundr.model.Property;
 import io.sundr.model.TypeDef;
 import io.sundr.model.TypeDefBuilder;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -53,6 +51,8 @@ public abstract class AbstractCustomResourceHandler {
     LabelSelectorPathDetector labelSelectorPathDetector = new LabelSelectorPathDetector();
     AdditionalPrinterColumnDetector additionalPrinterColumnDetector = new AdditionalPrinterColumnDetector();
 
+    ClassDependenciesVisitor traversedClassesVisitor = new ClassDependenciesVisitor(config.crClassName(), name);
+
     TypeDefBuilder builder = new TypeDefBuilder(def);
     if (config.specClassName().isPresent()) {
       builder.accept(specReplicasPathDetector);
@@ -65,6 +65,7 @@ public abstract class AbstractCustomResourceHandler {
     def = builder
       .accept(labelSelectorPathDetector)
       .accept(additionalPrinterColumnDetector)
+      .accept(traversedClassesVisitor)
       .build();
 
     addDecorators(config, def, specReplicasPathDetector.getPath(),
@@ -89,7 +90,7 @@ public abstract class AbstractCustomResourceHandler {
         getPrinterColumnDecorator(name, version, path, type, column, description, format));
     });
   }
-
+  
   /**
    * Provides the decorator implementation associated with the CRD generation version.
    *
