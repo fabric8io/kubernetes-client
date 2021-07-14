@@ -377,15 +377,15 @@ public class KubernetesResourceUtil {
       Class<?> listTypeClass = Thread.currentThread().getContextClassLoader().loadClass(type.getName() + "List");
       return (Class<KubernetesResourceList<T>>) listTypeClass;
     } catch (ClassNotFoundException | ClassCastException e) {
-      return (Class<? extends KubernetesResourceList>) CustomResourceList.class;
+      return CustomResourceList.class;
     }
   }
 
   /**
    * Create Secret by using username and password.
-   * @param dockerServer
-   * @param username
-   * @param password
+   * @param dockerServer User to store key value pair for auths map
+   * @param username username that needs to be used during secret creation
+   * @param password password that needs to be used during secret creation
    * @return an object of Secret
    */
   public static Secret createDockerRegistrySecret(String dockerServer, String username, String password) throws JsonProcessingException {
