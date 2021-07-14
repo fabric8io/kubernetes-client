@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal.extensions.v1beta1;
 
+import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.extensions.Deployment;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentBuilder;
@@ -22,6 +23,7 @@ import io.fabric8.kubernetes.api.model.extensions.DeploymentList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.Operation;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
+import io.fabric8.kubernetes.client.dsl.WatchListDeletable;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.RollingUpdater;
 import okhttp3.OkHttpClient;
 
@@ -51,9 +53,10 @@ class DeploymentRollingUpdater extends RollingUpdater<Deployment, DeploymentList
   }
 
   @Override
-  protected PodList listSelectedPods(Deployment obj) {
-    return listSelectedPods(obj.getSpec().getSelector());
+  protected WatchListDeletable<Pod, PodList> selectedPodLister(Deployment obj) {
+    return selectedPodLister(obj.getSpec().getSelector());
   }
+
   @Override
   protected Deployment updateDeploymentKey(String name, String hash) {
      Deployment old = resources().inNamespace(namespace).withName(name).get();

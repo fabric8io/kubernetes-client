@@ -15,6 +15,8 @@
  */
 package io.fabric8.kubernetes.client.informers;
 
+import io.fabric8.kubernetes.client.informers.cache.Store;
+
 /**
  * ResourceEventHandler can handle notifications for events that
  * happen to a resource. The events are information only, so you can't
@@ -23,7 +25,14 @@ package io.fabric8.kubernetes.client.informers;
  * @param <T> resource
  */
 public interface ResourceEventHandler<T> {
-
+  
+  /**
+   * Called after an empty list is retrieved on start or after an HTTP GONE when the {@link Store} is empty 
+   */
+  default void onNothing() {
+    
+  }
+  
   /**
    * Called when an object is added.
    *

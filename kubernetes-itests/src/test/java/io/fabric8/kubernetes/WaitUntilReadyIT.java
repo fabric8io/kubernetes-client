@@ -28,8 +28,13 @@ import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import static org.junit.Assert.assertTrue;
 
@@ -43,7 +48,7 @@ public class WaitUntilReadyIT {
   Session session;
 
   private final Pod pod = new PodBuilder()
-    .withNewMetadata().withName("p2").withLabels(Collections.singletonMap("app", "p2")).endMetadata()
+    .withNewMetadata().withName("p2").withLabels(Collections.singletonMap("test", "WaitUntilReadyIT")).endMetadata()
     .withNewSpec()
     .addNewContainer()
     .withName("myapp-container")
@@ -59,7 +64,7 @@ public class WaitUntilReadyIT {
     .build();
 
   private final Pod secondPod = new PodBuilder()
-    .withNewMetadata().withName("p1").endMetadata()
+    .withNewMetadata().withName("p1").withLabels(Collections.singletonMap("test", "WaitUntilReadyIT")).endMetadata()
     .withNewSpec()
     .addNewContainer()
     .withName("myapp2-container")
@@ -82,7 +87,7 @@ public class WaitUntilReadyIT {
     .build();
 
   @Test
-  public void testBatchWaitUntilReady() throws InterruptedException {
+  public void testBatchWaitUntilReady() throws InterruptedException, ExecutionException, TimeoutException {
 
     String namespace = session.getNamespace();
     Pod podCreated = client.pods().inNamespace(namespace).create(pod);
@@ -96,5 +101,16 @@ public class WaitUntilReadyIT {
     assertTrue(client.pods().inNamespace(namespace).withName("p2").delete());
     assertTrue(client.pods().inNamespace(namespace).withName("p1").delete());
     assertTrue(client.secrets().inNamespace(namespace).withName("mysecret").delete());
+
+    // wait for all pods to be deleted
+    CompletableFuture<List<Pod>> pods = client.pods()
+        .inNamespace(namespace)
+        .withLabel("test", "WaitUntilReadyIT")
+        .informOnCondition(Collection::isEmpty);
+    try {
+      pods.get(60, TimeUnit.SECONDS);
+    } finally {
+      pods.cancel(true);
+    }
   }
 }
