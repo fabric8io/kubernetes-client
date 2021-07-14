@@ -36,7 +36,7 @@ Note: Make sure to first check the prerequisites that can be found in the main R
 
 `$ Mention kubernetes-client/fabric8 version from pom.xml file`
 
-<!-- Verify pom.xml file and insert the java-operator-sdk version here. -->
+<!-- Verify pom.xml file and insert the kubernetes-client/fabric8 version here. -->
 
 `$ java -version`
 
