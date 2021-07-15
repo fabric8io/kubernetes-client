@@ -30,6 +30,7 @@ import io.fabric8.kubernetes.api.model.SecretBuilder;
 import io.fabric8.kubernetes.client.CustomResourceList;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -395,7 +396,7 @@ public class KubernetesResourceUtil {
     credentials.put("username", username);
     credentials.put("password", password);
     String usernameAndPasswordAuth = username + ":" + password;
-    credentials.put("auth", Base64.getEncoder().encodeToString(usernameAndPasswordAuth.getBytes()));
+    credentials.put("auth", Base64.getEncoder().encodeToString(usernameAndPasswordAuth.getBytes(StandardCharsets.UTF_8)));
     auths.put(dockerServer, credentials);
     dockerConfigMap.put("auths", auths);
 
@@ -404,7 +405,7 @@ public class KubernetesResourceUtil {
     return new SecretBuilder()
       .withNewMetadata().withName("harbor-secret").endMetadata()
       .withType("kubernetes.io/dockerconfigjson")
-      .addToData(".dockerconfigjson", Base64.getEncoder().encodeToString(dockerConfigAsStr.getBytes()))
+      .addToData(".dockerconfigjson", Base64.getEncoder().encodeToString(dockerConfigAsStr.getBytes(StandardCharsets.UTF_8)))
       .build();
   }
 }
