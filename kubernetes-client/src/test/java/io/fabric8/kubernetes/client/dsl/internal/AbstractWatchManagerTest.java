@@ -19,13 +19,16 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
+import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.Request;
 import okhttp3.WebSocket;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 
+import java.net.MalformedURLException;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -43,7 +46,7 @@ class AbstractWatchManagerTest {
 
   @Test
   @DisplayName("closeEvent, is idempotent, multiple calls only close watcher once")
-  void closeEventIsIdempotent() {
+  void closeEventIsIdempotent() throws MalformedURLException {
     // Given
     final WatcherAdapter<HasMetadata> watcher = new WatcherAdapter<>();
     final WatchManager<HasMetadata> awm = withDefaultWatchManager(watcher);
@@ -57,7 +60,7 @@ class AbstractWatchManagerTest {
 
   @Test
   @DisplayName("closeEvent, with Exception, is idempotent, multiple calls only close watcher once")
-  void closeEventWithExceptionIsIdempotent() {
+  void closeEventWithExceptionIsIdempotent() throws MalformedURLException {
     // Given
     final WatcherAdapter<HasMetadata> watcher = new WatcherAdapter<>();
     final WatchManager<HasMetadata> awm = withDefaultWatchManager(watcher);
@@ -82,7 +85,7 @@ class AbstractWatchManagerTest {
 
   @Test
   @DisplayName("nextReconnectInterval, returns exponential interval values up to the provided limit")
-  void nextReconnectInterval() {
+  void nextReconnectInterval() throws MalformedURLException {
     // Given
     final WatchManager<HasMetadata> awm = new WatchManager<>(
       null, mock(ListOptions.class), 0, 10, 5);
@@ -98,7 +101,7 @@ class AbstractWatchManagerTest {
 
   @Test
   @DisplayName("cancelReconnect, with null attempt, should do nothing")
-  void cancelReconnectNullAttempt() {
+  void cancelReconnectNullAttempt() throws MalformedURLException {
     // Given
     final ScheduledFuture<?> sf = spy(ScheduledFuture.class);
     final WatcherAdapter<HasMetadata> watcher = new WatcherAdapter<>();
@@ -111,7 +114,7 @@ class AbstractWatchManagerTest {
 
   @Test
   @DisplayName("cancelReconnect, with non-null attempt, should cancel")
-  void cancelReconnectNonNullAttempt() {
+  void cancelReconnectNonNullAttempt() throws MalformedURLException {
     // Given
     final ScheduledFuture<?> sf = mock(ScheduledFuture.class);
     final MockedStatic<Utils> utils = mockStatic(Utils.class);
@@ -127,7 +130,7 @@ class AbstractWatchManagerTest {
 
   @Test
   @DisplayName("isClosed, after close invocation, should return true")
-  void isForceClosedWhenClosed() {
+  void isForceClosedWhenClosed() throws MalformedURLException {
     // Given
     final WatcherAdapter<HasMetadata> watcher = new WatcherAdapter<>();
     final WatchManager<HasMetadata> awm = withDefaultWatchManager(watcher);
@@ -139,7 +142,7 @@ class AbstractWatchManagerTest {
 
   @Test
   @DisplayName("close, after close invocation, should return true")
-  void closeWithNonNullRunnerShouldCancelRunner() {
+  void closeWithNonNullRunnerShouldCancelRunner() throws MalformedURLException {
     // Given
     final WatcherAdapter<HasMetadata> watcher = new WatcherAdapter<>();
     final WatchManager<HasMetadata> awm = withDefaultWatchManager(watcher);
@@ -149,7 +152,7 @@ class AbstractWatchManagerTest {
     assertThat(awm.closeCount.get()).isEqualTo(1);
   }
 
-  private static <T extends HasMetadata> WatchManager<T> withDefaultWatchManager(Watcher<T> watcher) {
+  private static <T extends HasMetadata> WatchManager<T> withDefaultWatchManager(Watcher<T> watcher) throws MalformedURLException {
     return new WatchManager<>(
       watcher, mock(ListOptions.class, RETURNS_DEEP_STUBS), 1, 0, 0);
   }
@@ -175,8 +178,8 @@ class AbstractWatchManagerTest {
     
     private final AtomicInteger closeCount = new AtomicInteger(0);
 
-    public WatchManager(Watcher<T> watcher, ListOptions listOptions, int reconnectLimit, int reconnectInterval, int maxIntervalExponent) {
-      super(watcher, listOptions, reconnectLimit, reconnectInterval, maxIntervalExponent, resourceVersion -> null, ()->null);
+    public WatchManager(Watcher<T> watcher, ListOptions listOptions, int reconnectLimit, int reconnectInterval, int maxIntervalExponent) throws MalformedURLException {
+      super(watcher, Mockito.mock(BaseOperation.class), listOptions, reconnectLimit, reconnectInterval, maxIntervalExponent, () -> null);
     }
 
     @Override

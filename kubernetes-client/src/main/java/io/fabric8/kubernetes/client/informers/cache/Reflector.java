@@ -128,11 +128,6 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
       if (resource == null) {
         throw new KubernetesClientException("Unrecognized resource");  
       }
-      // the WatchEvent deserialization is not specifically typed
-      // modify the type here if needed
-      if (!apiTypeClass.isAssignableFrom(resource.getClass())) {
-        resource = Serialization.jsonMapper().convertValue(resource, apiTypeClass);
-      }
       if (log.isDebugEnabled()) {
         log.debug("Event received {} {}# resourceVersion {}", action.name(), resource.getKind(), resource.getMetadata().getResourceVersion());
       }

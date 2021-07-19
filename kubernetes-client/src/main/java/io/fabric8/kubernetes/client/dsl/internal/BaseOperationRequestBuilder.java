@@ -30,7 +30,7 @@ import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 
-class BaseOperationRequestBuilder<T extends HasMetadata, L extends KubernetesResourceList<T>> implements AbstractWatchManager.RequestBuilder {
+class BaseOperationRequestBuilder<T extends HasMetadata, L extends KubernetesResourceList<T>> {
   private final URL requestUrl;
   private final BaseOperation<T, L, ?> baseOperation;
   private final ListOptions listOptions;
@@ -40,8 +40,11 @@ class BaseOperationRequestBuilder<T extends HasMetadata, L extends KubernetesRes
     this.requestUrl = baseOperation.getNamespacedUrl();
     this.listOptions = listOptions;
   }
-
-  @Override
+  
+  public BaseOperation<T, L, ?> getBaseOperation() {
+    return baseOperation;
+  }
+  
   public Request build(final String resourceVersion) {
     HttpUrl.Builder httpUrlBuilder = HttpUrl.get(requestUrl).newBuilder();
 
