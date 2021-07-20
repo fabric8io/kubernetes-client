@@ -77,6 +77,19 @@ class ResourceTest {
     // Then
     assertEquals(pod1, response);
   }
+  
+  @Test
+  void testCreateOrReplaceString() {
+    // Given
+    Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
+    server.expect().post().withPath("/api/v1/namespaces/test/pods").andReturn(HttpURLConnection.HTTP_CREATED, pod1).once();
+
+    // When
+    HasMetadata response = client.resource(Serialization.asYaml(pod1)).createOrReplace();
+
+    // Then
+    assertEquals(pod1, response);
+  }
 
   @Test
   void testCreateOrReplaceWhenCreateFails() {

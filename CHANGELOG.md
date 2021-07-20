@@ -7,6 +7,8 @@
 * Fix #3083: CertificateException due to PEM being decoded in CertUtils
 * Fix #3295: Fix wrong kind getting registered in KubernetesDeserializer in SharedInformerFactory
 * Fix #3318: Informer relist add/update should not always be sync events
+* Fix #3329: Moved the parsing of resource(String) to the common base client
+* Fix #3330: Added usage of the openshift specific handlers for resource(String/HasMetadata) to pickup the right Readiness
 
 #### Improvements
 * Fix #3284: refined how builders are obtained / used by HasMetadataOperation
