@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 5.6-SNAPSHOT
+### 5.6.0 (2021-07-21)
 
 #### Bugs
 * Fix #3304: Prevent NPE in after informer stop
