@@ -36,6 +36,7 @@ This client provides access to the full [Kubernetes](http://kubernetes.io/) &
 - [Kubernetes and Red Hat OpenShift Compatibility Matrix](#compatibility-matrix)
 - [Kubernetes Client CHEAT SHEET](https://github.com/fabric8io/kubernetes-client/blob/master/doc/CHEATSHEET.md)
 - [Kubectl Java Equivalents](#kubectl-java-equivalents)
+- [FAQs](doc/FAQ.md)
 
 ## Usage
 
