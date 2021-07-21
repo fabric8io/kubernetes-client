@@ -29,9 +29,7 @@ public class ListServiceClassesByBroker {
         System.out.println("Listing Cluster Service Classes" + broker + ":");
         ClusterServiceClassList list = client.clusterServiceBrokers().withName(broker).listClasses();
         list.getItems().stream()
-                .forEach(b -> {
-                    System.out.println(b.getSpec().getExternalName() + "\t\t\t\t" + b.getMetadata().getName());
-                });
+                .forEach(b -> System.out.println(b.getSpec().getExternalName() + "\t\t\t\t" + b.getMetadata().getName()));
         System.out.println("Done");
     }
 }

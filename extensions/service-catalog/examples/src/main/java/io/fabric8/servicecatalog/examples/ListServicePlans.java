@@ -27,9 +27,7 @@ public class ListServicePlans {
       ClusterServicePlan c;
       System.out.println("Listing Cluster Service Plans:");
       list.getItems().stream()
-          .forEach(b -> {
-                  System.out.println(b.getSpec().getClusterServiceBrokerName() + "\t\t\t" + b.getSpec().getClusterServiceClassRef() + "\t\t\t" + b.getSpec().getExternalName());
-              });
+          .forEach(b -> System.out.println(b.getSpec().getClusterServiceBrokerName() + "\t\t\t" + b.getSpec().getClusterServiceClassRef() + "\t\t\t" + b.getSpec().getExternalName()));
       System.out.println("Done");
   }
 }
