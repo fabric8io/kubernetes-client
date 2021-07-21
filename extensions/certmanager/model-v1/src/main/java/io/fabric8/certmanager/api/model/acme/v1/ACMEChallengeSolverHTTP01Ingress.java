@@ -72,7 +72,6 @@ public class ACMEChallengeSolverHTTP01Ingress implements KubernetesResource
   private java.lang.String serviceType;
   @JsonIgnore
   private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
-
   /**
    * No args constructor for use in serialization
    *
