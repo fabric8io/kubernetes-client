@@ -22,10 +22,7 @@ import io.fabric8.kubernetes.client.utils.Utils;
 
 import java.util.function.Predicate;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -68,7 +65,7 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl ex
   private final Boolean fromServer;
   private final Boolean deletingExisting;
   private final List<Visitor> visitors;
-  private final Object item;
+  private final HasMetadata item;
   private final long gracePeriodSeconds;
   private final DeletionPropagation propagationPolicy;
   private final Boolean cascading;
@@ -104,7 +101,7 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl ex
     this(client, config, namespace, explicitNamespace, fromServer, deletingExisting, visitors, unmarshal(is), -1, null, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, dryRun);
   }
 
-  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, Object item, long gracePeriodSeconds, DeletionPropagation propagationPolicy, Boolean cascading, long watchRetryInitialBackoffMillis, double watchRetryBackoffMultiplier, boolean dryRun) {
+  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, HasMetadata item, long gracePeriodSeconds, DeletionPropagation propagationPolicy, Boolean cascading, long watchRetryInitialBackoffMillis, double watchRetryBackoffMultiplier, boolean dryRun) {
     super(client, config);
     this.fallbackNamespace = namespace;
     this.explicitNamespace = explicitNamespace;
@@ -129,7 +126,7 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl ex
 
   @Override
   public HasMetadata createOrReplace() {
-    HasMetadata meta = acceptVisitors(asHasMetadata(item), visitors);
+    HasMetadata meta = get();
     ResourceHandler<HasMetadata, ?> h = handlerOf(meta);
     String namespaceToUse = meta.getMetadata().getNamespace();
     if (Boolean.TRUE.equals(deletingExisting)) {
@@ -146,14 +143,14 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl ex
   @Override
   public Boolean delete() {
     //First pass check before deleting
-    HasMetadata meta = acceptVisitors(asHasMetadata(item), visitors);
+    HasMetadata meta = get();
     ResourceHandler<HasMetadata, ?> h = handlerOf(meta);
     return h.delete(client, config, meta.getMetadata().getNamespace(), propagationPolicy, gracePeriodSeconds, meta, dryRun);
   }
 
   @Override
   public HasMetadata get() {
-    HasMetadata meta = acceptVisitors(asHasMetadata(item), visitors);
+    HasMetadata meta = acceptVisitors(item, visitors);
     if (fromServer) {
       ResourceHandler<HasMetadata, ?> h = handlerOf(meta);
       meta = h.reload(client, config, meta.getMetadata().getNamespace(), meta);
@@ -212,21 +209,21 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl ex
 
   @Override
   public Watch watch(Watcher<HasMetadata> watcher) {
-    HasMetadata meta = acceptVisitors(asHasMetadata(item), visitors);
+    HasMetadata meta = get();
     ResourceHandler<HasMetadata, ?> h = handlerOf(meta);
     return h.watch(client, config, meta.getMetadata().getNamespace(), meta, watcher);
   }
 
   @Override
   public Watch watch(String resourceVersion, Watcher<HasMetadata> watcher) {
-    HasMetadata meta = acceptVisitors(asHasMetadata(item), visitors);
+    HasMetadata meta = get();
     ResourceHandler<HasMetadata, ?> h = handlerOf(meta);
     return h.watch(client, config, meta.getMetadata().getNamespace(), meta, resourceVersion, watcher);
   }
 
   @Override
   public Watch watch(ListOptions options, Watcher<HasMetadata> watcher) {
-    HasMetadata meta = acceptVisitors(asHasMetadata(item), visitors);
+    HasMetadata meta = get();
     ResourceHandler<HasMetadata, ?> h = handlerOf(meta);
     return h.watch(client, config, meta.getMetadata().getNamespace(), meta, options, watcher);
   }
@@ -273,19 +270,6 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl ex
       builder.accept(v);
     }
     return builder.build();
-  }
-
-  private static <T> HasMetadata asHasMetadata(T item) {
-    if (item instanceof HasMetadata) {
-      return (HasMetadata) item;
-    } else if (item instanceof String) {
-      try (InputStream is = new ByteArrayInputStream(((String) item).getBytes(StandardCharsets.UTF_8))) {
-        return asHasMetadata(unmarshal(is));
-      } catch (IOException e) {
-        throw KubernetesClientException.launderThrowable(e);
-      }
-    }
-    throw new IllegalArgumentException("Item needs to be an instance of HasMetadata or String.");
   }
 
   static <T> void checkForHandlerOf(T item) {

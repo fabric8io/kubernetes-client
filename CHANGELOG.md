@@ -9,6 +9,8 @@
 * Fix #3318: Informer relist add/update should not always be sync events
 * Fix #3328: Allow for generic watches of known types
 * Fix #3240: MicroTime serialises incorrectly; add custom serializer/deserializer for MicroTime
+* Fix #3329: Moved the parsing of resource(String) to the common base client
+* Fix #3330: Added usage of the openshift specific handlers for resource(String/HasMetadata) to pickup the right Readiness
 
 #### Improvements
 * Fix #3285: adding waiting for list contexts `Informable.informOnCondition`

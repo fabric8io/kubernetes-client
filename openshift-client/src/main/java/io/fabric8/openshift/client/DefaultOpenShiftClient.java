@@ -34,10 +34,12 @@ import io.fabric8.kubernetes.client.dsl.InOutCreateable;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
+import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ParameterMixedOperation;
 import io.fabric8.kubernetes.client.dsl.ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.Waitable;
 import io.fabric8.kubernetes.client.dsl.internal.CreateOnlyResourceOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.NamespacedCreateOnlyResourceOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.ComponentStatusOperationsImpl;
@@ -190,6 +192,7 @@ import io.fabric8.openshift.client.dsl.internal.security.SecurityContextConstrai
 import io.fabric8.openshift.client.dsl.internal.user.IdentityOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.user.UserOperationsImpl;
 import io.fabric8.openshift.client.internal.OpenShiftClusterOperationsImpl;
+import io.fabric8.openshift.client.internal.OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl;
 import io.fabric8.openshift.client.internal.OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl;
 import io.fabric8.openshift.client.internal.OpenShiftOAuthInterceptor;
 import okhttp3.Authenticator;
@@ -696,4 +699,10 @@ public class DefaultOpenShiftClient extends BaseKubernetesClient<NamespacedOpenS
     }
     return false;
   }
+
+  @Override
+  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata> resource(HasMetadata item) {
+    return new OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, new ArrayList<>(), item, -1, DeletionPropagation.BACKGROUND, true, Waitable.DEFAULT_INITIAL_BACKOFF_MILLIS, Waitable.DEFAULT_BACKOFF_MULTIPLIER, false);
+  }
+
 }

@@ -119,6 +119,7 @@ import io.fabric8.kubernetes.client.dsl.internal.node.v1beta1.RuntimeClassOperat
 import io.fabric8.kubernetes.client.extended.run.RunConfigBuilder;
 import io.fabric8.kubernetes.client.extended.run.RunOperations;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
+import io.fabric8.kubernetes.client.utils.Serialization;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -213,7 +214,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata> resource(String s) {
-    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(httpClient, getConfiguration(), getNamespace(), null, false, false, new ArrayList<>(), s, -1, DeletionPropagation.BACKGROUND, true, Waitable.DEFAULT_INITIAL_BACKOFF_MILLIS, Waitable.DEFAULT_BACKOFF_MULTIPLIER, false);
+    return resource((HasMetadata)Serialization.unmarshal(s));
   }
 
   /**
