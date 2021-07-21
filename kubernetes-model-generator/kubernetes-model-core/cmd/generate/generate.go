@@ -126,6 +126,20 @@ func main() {
 		return
 	}
 
+	serdes := map[string]*schemagen.JavaSerDeDescriptor{
+		"kubernetes_apimachinery_pkg_apis_MicroTime": &schemagen.JavaSerDeDescriptor{
+			Serializer: "io.fabric8.kubernetes.api.model.MicroTimeSerDes.Serializer.class",
+			Deserializer: "io.fabric8.kubernetes.api.model.MicroTimeSerDes.Deserializer.class",
+		},
+	}
+
+	for definitionKey, descriptor := range serdes {
+		val := schema.Definitions[definitionKey]
+		val.JavaSerDeDescriptor = descriptor
+		schema.Definitions[definitionKey] = val
+	}
+
+
 	args := os.Args[1:]
 	if len(args) < 1 || args[0] != "validation" {
 		schema.Resources = nil

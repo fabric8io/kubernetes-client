@@ -40,10 +40,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -124,41 +120,21 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
    * Lets wait until there are enough Ready pods of the given Job
    */
   private void waitUntilJobIsScaled() {
-    final CountDownLatch countDownLatch = new CountDownLatch(1);
-
     final AtomicReference<Job> atomicJob = new AtomicReference<>();
 
-    final Runnable jobPoller = () -> {
-      try {
-        Job job = getMandatory();
-        atomicJob.set(job);
-        Integer activeJobs = job.getStatus().getActive();
-        if (activeJobs == null) {
-          activeJobs = 0;
-        }
-        if (Objects.equals(job.getSpec().getParallelism(), activeJobs)) {
-          countDownLatch.countDown();
-        } else {
-          LOG.debug("Only {}/{} pods scheduled for Job: {} in namespace: {} seconds so waiting...",
-            job.getStatus().getActive(), job.getSpec().getParallelism(), job.getMetadata().getName(), namespace);
-        }
-      } catch (Throwable t) {
-        LOG.error("Error while waiting for Job to be scaled.", t);
+    waitUntilCondition(job -> {
+      atomicJob.set(job);
+      Integer activeJobs = job.getStatus().getActive();
+      if (activeJobs == null) {
+        activeJobs = 0;
       }
-    };
-
-    ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-    ScheduledFuture poller = executor.scheduleWithFixedDelay(jobPoller, 0, POLL_INTERVAL_MS, TimeUnit.MILLISECONDS);
-    try {
-      countDownLatch.await(getConfig().getScaleTimeout(), TimeUnit.MILLISECONDS);
-      executor.shutdown();
-    } catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-      poller.cancel(true);
-      executor.shutdown();
-      LOG.error("Only {}/{} pod(s) ready for Job: {} in namespace: {} - giving up",
-        atomicJob.get().getStatus().getActive(), atomicJob.get().getSpec().getParallelism(), atomicJob.get().getMetadata().getName(), namespace);
-    }
+      if (Objects.equals(job.getSpec().getParallelism(), activeJobs)) {
+        return true;
+      }
+      LOG.debug("Only {}/{} pods scheduled for Job: {} in namespace: {} seconds so waiting...",
+          job.getStatus().getActive(), job.getSpec().getParallelism(), job.getMetadata().getName(), namespace);
+      return false;
+    }, getConfig().getScaleTimeout(), TimeUnit.MILLISECONDS);
   }
 
   public String getLog() {

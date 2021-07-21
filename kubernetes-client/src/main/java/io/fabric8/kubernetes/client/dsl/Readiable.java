@@ -17,5 +17,9 @@ package io.fabric8.kubernetes.client.dsl;
 
 public interface Readiable {
 
-  Boolean isReady();
+  /**
+   * Check if the resource is ready.  If no readiness check exists, this is just an existence check.
+   * @return true if the resource exists and is ready.
+   */
+  boolean isReady();
 }

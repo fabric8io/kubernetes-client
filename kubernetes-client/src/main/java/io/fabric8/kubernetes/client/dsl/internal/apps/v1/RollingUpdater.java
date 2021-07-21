@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.dsl.internal.apps.v1;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
+import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -26,9 +27,11 @@ import io.fabric8.kubernetes.api.model.PodCondition;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
 import io.fabric8.kubernetes.client.dsl.Operation;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
+import io.fabric8.kubernetes.client.dsl.WatchListDeletable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,9 +45,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -80,7 +81,7 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
 
   protected abstract T createClone(T obj, String newName, String newDeploymentHash);
 
-  protected abstract PodList listSelectedPods(T obj);
+  protected abstract WatchListDeletable<Pod, PodList> selectedPodLister(T obj);
 
   protected abstract T updateDeploymentKey(String name, String hash);
 
@@ -101,7 +102,7 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
       String oldDeploymentHash = md5sum(oldObj);
 
       //Before we update the resource though we need to add the labels to the existing managed pods
-      PodList oldPods = listSelectedPods(oldObj);
+      PodList oldPods = selectedPodLister(oldObj).list();
 
       for (Pod pod : oldPods.getItems()) {
         try {
@@ -207,13 +208,10 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
    * Lets wait until there are enough Ready pods of the given RC
    */
   private void waitUntilPodsAreReady(final T obj, final String namespace, final int requiredPodCount) {
-    final CountDownLatch countDownLatch = new CountDownLatch(1);
     final AtomicInteger podCount = new AtomicInteger(0);
-
-    final Runnable readyPodsPoller = () -> {
-      PodList podList = listSelectedPods(obj);
+    
+    CompletableFuture<List<Pod>> future = selectedPodLister(obj).informOnCondition(items -> {
       int count = 0;
-      List<Pod> items = podList.getItems();
       for (Pod item : items) {
         for (PodCondition c : item.getStatus().getConditions()) {
           if (c.getType().equals("Ready") && c.getStatus().equals("True")) {
@@ -222,25 +220,22 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
         }
       }
       podCount.set(count);
-      if (count == requiredPodCount) {
-        countDownLatch.countDown();
-      }
-    };
+      return count == requiredPodCount;
+    });
 
-    ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-    ScheduledFuture poller = executor.scheduleWithFixedDelay(readyPodsPoller, 0, 1, TimeUnit.SECONDS);
-    ScheduledFuture logger = executor.scheduleWithFixedDelay(() -> LOG.debug("Only {}/{} pod(s) ready for {}: {} in namespace: {} seconds so waiting...",
-        podCount.get(), requiredPodCount, obj.getKind(), obj.getMetadata().getName(), namespace), 0, loggingIntervalMillis, TimeUnit.MILLISECONDS);
+    ScheduledFuture<?> logger = Utils.scheduleAtFixedRate(Utils.getCommonExecutorSerive(),
+        () -> LOG.debug("Only {}/{} pod(s) ready for {}: {} in namespace: {} seconds so waiting...",
+            podCount.get(), requiredPodCount, obj.getKind(), obj.getMetadata().getName(), namespace),
+        0, loggingIntervalMillis, TimeUnit.MILLISECONDS);
+    
     try {
-      countDownLatch.await(rollingTimeoutMillis, TimeUnit.MILLISECONDS);
-      executor.shutdown();
-    } catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-      poller.cancel(true);
+      if (!Utils.waitUntilReady(future, rollingTimeoutMillis, TimeUnit.MILLISECONDS)) {
+          LOG.warn("Only {}/{} pod(s) ready for {}: {} in namespace: {}  after waiting for {} seconds so giving up",
+                  podCount.get(), requiredPodCount, obj.getKind(), obj.getMetadata().getName(), namespace, TimeUnit.MILLISECONDS.toSeconds(rollingTimeoutMillis));
+      }
+    } finally {
+      future.cancel(true);
       logger.cancel(true);
-      executor.shutdown();
-      LOG.warn("Only {}/{} pod(s) ready for {}: {} in namespace: {}  after waiting for {} seconds so giving up",
-          podCount.get(), requiredPodCount, obj.getKind(), obj.getMetadata().getName(), namespace, TimeUnit.MILLISECONDS.toSeconds(rollingTimeoutMillis));
     }
   }
 
@@ -249,34 +244,15 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
    * Lets wait until the resource is actually deleted in the server
    */
   private void waitUntilDeleted(final String namespace, final String name) {
-    final CountDownLatch countDownLatch = new CountDownLatch(1);
-
-    final Runnable waitTillDeletedPoller = () -> {
-      try {
-        T res = resources().inNamespace(namespace).withName(name).get();
-        if (res == null) {
-          countDownLatch.countDown();
-        }
-      } catch (KubernetesClientException e) {
-        if (e.getCode() == 404) {
-          countDownLatch.countDown();
-        }
-      }
-    };
-
-    ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-    ScheduledFuture poller = executor.scheduleWithFixedDelay(waitTillDeletedPoller, 0, 5, TimeUnit.SECONDS);
-    ScheduledFuture logger = executor.scheduleWithFixedDelay(() -> LOG.debug("Found resource {}/{} not yet deleted on server, so waiting...", namespace, name), 0, loggingIntervalMillis, TimeUnit.MILLISECONDS);
+    ScheduledFuture<?> logger = Utils.scheduleAtFixedRate(Utils.getCommonExecutorSerive(),
+        () -> LOG.debug("Found resource {}/{} not yet deleted on server, so waiting...", namespace, name),
+        0, loggingIntervalMillis, TimeUnit.MILLISECONDS);
     try {
-      countDownLatch.await(DEFAULT_SERVER_GC_WAIT_TIMEOUT, TimeUnit.MILLISECONDS);
-      executor.shutdown();
-    } catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-      poller.cancel(true);
-      logger.cancel(true);
-      executor.shutdown();
-      LOG.warn("Still found deleted resource {} in namespace: {}  after waiting for {} seconds so giving up",
-               name, namespace, TimeUnit.MILLISECONDS.toSeconds(DEFAULT_SERVER_GC_WAIT_TIMEOUT));
+      resources().inNamespace(namespace)
+          .withName(name)
+          .waitUntilCondition(Objects::isNull, DEFAULT_SERVER_GC_WAIT_TIMEOUT, TimeUnit.MILLISECONDS);
+    } finally {
+      logger.cancel(true); // since we're using the common pool, we must shutdown manually
     }
   }
 
@@ -292,8 +268,8 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
     return new PodOperationsImpl(client, config);
   }
   
-  protected PodList listSelectedPods(LabelSelector selector) {
-    return pods().inNamespace(namespace).withLabelSelector(selector).list();
+  protected FilterWatchListDeletable<Pod, PodList> selectedPodLister(LabelSelector selector) {
+    return pods().inNamespace(namespace).withLabelSelector(selector);
   }
 
 }
