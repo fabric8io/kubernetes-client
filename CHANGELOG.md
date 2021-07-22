@@ -1,9 +1,10 @@
 ## CHANGELOG
 
-### 5.6-SNAPSHOT
+### 5.7-SNAPSHOT
 
 #### Bugs
-Fix : https configuration ignored for OpenShiftServer in CRUD mode
+* Fix #3346: https configuration ignored for OpenShiftServer in CRUD mode
+* Fix #3347: OpenShiftConfig missing some configurations from provided Config
 
 #### Improvements
 
