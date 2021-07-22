@@ -15,6 +15,7 @@
  */
 package io.fabric8.openshift.client.server.mock;
 
+import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesCrudDispatcher;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServerExtension;
 import io.fabric8.mockwebserver.Context;
@@ -22,6 +23,7 @@ import io.fabric8.openshift.client.NamespacedOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.platform.commons.util.AnnotationUtils;
 
 import java.lang.reflect.Field;
 import java.util.Collections;
@@ -53,13 +55,17 @@ public class OpenShiftMockServerExtension extends KubernetesMockServerExtension 
   }
 
   @Override
-  protected void initializeKubernetesClientAndMockServer(Class<?> testClass) {
+  protected boolean initializeKubernetesClientAndMockServer(Class<?> testClass, boolean isStatic) {
     EnableOpenShiftMockClient a = testClass.getAnnotation(EnableOpenShiftMockClient.class);
+    if(!isStatic && !testClass.getAnnotation(EnableOpenShiftMockClient.class).instanceMock()) {
+      return false;
+    }
     openShiftMockServer = a.crud()
       ? new OpenShiftMockServer(new Context(), new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(Collections.emptyList()), a.https())
       : new OpenShiftMockServer(a.https());
     openShiftMockServer.init();
     openShiftClient = openShiftMockServer.createOpenShiftClient();
+    return true;
   }
 
   @Override
