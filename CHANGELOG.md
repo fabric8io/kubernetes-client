@@ -3,6 +3,7 @@
 ### 5.6-SNAPSHOT
 
 #### Bugs
+Fix : https configuration ignored for OpenShiftServer in CRUD mode
 
 #### Improvements
 
