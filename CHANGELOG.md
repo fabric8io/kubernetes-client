@@ -702,6 +702,7 @@ like the delete of a custom resource.
 
 #### New Features
 * Fix #1820: Override Createable.create(T) to avoid generic array creation
+* KUDO extension suport KUDO v0.10.0
 
 ### 4.8.0 (14-02-2020)
 #### Bugs

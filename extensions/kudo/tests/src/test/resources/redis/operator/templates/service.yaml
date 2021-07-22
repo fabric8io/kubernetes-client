@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ .Namespace }}
+  name: {{ .Name }}-{{ .OperatorName }}-svc
+  labels:
+    app: redis
+    redis: {{ .OperatorName }}
+    instance: {{ .Name }}
+spec:
+  type: ClusterIP
+  ports:
+  - port: {{ .Params.client_port }}
+    targetPort: {{ .Params.client_port }}
+    name: client
+  - port: {{ .Params.gossip_port }}
+    targetPort: {{ .Params.gossip_port }}
+    name: gossip
+  selector:
+    app: redis
+    redis: {{ .OperatorName }}
+    instance: {{ .Name }}

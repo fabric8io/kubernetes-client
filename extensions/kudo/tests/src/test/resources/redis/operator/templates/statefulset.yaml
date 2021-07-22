@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: {{ .Namespace }}
+  name: {{ .Name }}-{{ .OperatorName }}
+  labels:
+    app: redis
+    redis: {{ .OperatorName }}
+    instance: {{ .Name }}
+spec:
+  serviceName: {{ .Name }}-{{ .OperatorName }}-svc
+  replicas: {{ .Params.masters | mul 2 }}
+  selector:
+    matchLabels:
+      app: redis
+      redis: {{ .OperatorName }}
+      instance: {{ .Name }}
+  template:
+    metadata:
+      labels:
+        app: redis
+        redis: {{ .OperatorName }}
+        instance: {{ .Name }}
+    spec:
+      containers:
+      - name: redis
+        image: redis:5.0.1-alpine
+        ports:
+        - containerPort: {{ .Params.client_port }}
+          name: client
+        - containerPort: {{ .Params.gossip_port }}
+          name: gossip
+        command: ["/conf/update-node.sh", "redis-server", "/conf/redis.conf"]
+        env:
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        volumeMounts:
+        - name: conf
+          mountPath: /conf
+          readOnly: false
+        - name: data
+          mountPath: /data
+          readOnly: false
+      volumes:
+      - name: conf
+        configMap:
+          name: {{ .Name }}-{{ .OperatorName }}
+          defaultMode: 0755
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: storage-ceph
+      resources:
+        requests:
+          storage: 1Gi

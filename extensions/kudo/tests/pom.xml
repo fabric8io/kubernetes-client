@@ -19,24 +19,41 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <artifactId>kubernetes-client-project</artifactId>
     <groupId>io.fabric8</groupId>
-    <version>5.7-SNAPSHOT</version>
+    <artifactId>kudo-extension-pom</artifactId>
+    <version>4.12-SNAPSHOT</version>
   </parent>
 
-  <artifactId>kubernetes-extensions</artifactId>
-  <packaging>pom</packaging>
-  <name>Fabric8 :: Kubernetes :: Extensions</name>
+  <artifactId>kudo-tests</artifactId>
+  <packaging>jar</packaging>
+  <name>Fabric8 :: Kudo :: Tests</name>
 
-  <modules>
-    <module>knative</module>
-    <module>tekton</module>
-    <module>service-catalog</module>
-    <module>kudo</module>
-    <module>volumesnapshot</module>
-    <module>chaosmesh</module>
-    <module>camel-k</module>
-    <module>certmanager</module>
-  </modules>
+  <dependencies>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kudo-client</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kudo-mock</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>${slf4j.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 
 </project>
