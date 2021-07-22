@@ -50,9 +50,9 @@ public class JobIT {
     Job job = getJobBuilder().build();
 
     // When
-    client.batch().jobs().inNamespace(session.getNamespace()).createOrReplace(job);
+    client.batch().v1().jobs().inNamespace(session.getNamespace()).createOrReplace(job);
     ByteArrayOutputStream baos = new ByteArrayOutputStream(1024);
-    LogWatch logWatch = client.batch().jobs().inNamespace(session.getNamespace())
+    LogWatch logWatch = client.batch().v1().jobs().inNamespace(session.getNamespace())
       .withName(job.getMetadata().getName())
       .withLogWaitTimeout(30)
       .watchLog(baos);
@@ -73,7 +73,7 @@ public class JobIT {
       .endMetadata().build();
 
     // When
-    Job jobCreated = client.batch().jobs().inNamespace(session.getNamespace()).create(job);
+    Job jobCreated = client.batch().v1().jobs().inNamespace(session.getNamespace()).create(job);
 
     // Then
     assertNotNull(jobCreated);
@@ -81,7 +81,7 @@ public class JobIT {
     assertEquals("test-job-", jobCreated.getMetadata().getGenerateName());
     assertNotNull(jobCreated.getMetadata().getName());
     assertNotEquals("test-job-", jobCreated.getMetadata().getName());
-    assertTrue(client.batch().jobs().inNamespace(session.getNamespace()).withName(jobCreated.getMetadata().getName()).delete());
+    assertTrue(client.batch().v1().jobs().inNamespace(session.getNamespace()).withName(jobCreated.getMetadata().getName()).delete());
   }
 
   private JobBuilder getJobBuilder() {
