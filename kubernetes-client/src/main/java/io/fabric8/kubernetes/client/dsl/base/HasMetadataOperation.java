@@ -27,7 +27,6 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.ResourceNotFoundException;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -49,8 +48,17 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   private static final String PATCH_OPERATION = "patch";
   private static final String REPLACE_OPERATION = "replace";
 
-  public HasMetadataOperation(OperationContext ctx) {
+  public HasMetadataOperation(OperationContext ctx, Class<T> type, Class<L> listType) {
     super(ctx);
+    this.type = type;
+    this.listType = listType;
+    validateOperation(type);
+  }
+  
+  protected void validateOperation(Class<T> type) {
+    if (Handlers.hasDefaultOperation(type)) {
+      throw new AssertionError(String.format("%s needs registered with Handlers", getClass().getName()));
+    }
   }
 
   @Override
@@ -80,7 +88,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   }
   
   protected <V extends VisitableBuilder<T, V>> VisitableBuilder<T, V> createVisitableBuilder(T item) {
-    ResourceHandler<T, V> handler = Handlers.get(getKind(), ApiVersionUtil.joinApiGroupAndVersion(getAPIGroupName(), getAPIGroupVersion()));
+    ResourceHandler<T, V> handler = Handlers.get(item);
     if (handler != null) {
       return handler.edit(item);
     }

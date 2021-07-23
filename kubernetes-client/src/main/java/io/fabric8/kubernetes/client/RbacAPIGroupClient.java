@@ -20,10 +20,6 @@ import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.RbacAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.internal.rbac.v1.ClusterRoleBindingOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.rbac.v1.ClusterRoleOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.rbac.v1.RoleBindingOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.rbac.v1.RoleOperationsImpl;
 import okhttp3.OkHttpClient;
 
 public class RbacAPIGroupClient extends BaseClient implements RbacAPIGroupDSL {
@@ -38,21 +34,21 @@ public class RbacAPIGroupClient extends BaseClient implements RbacAPIGroupDSL {
 
   @Override
   public MixedOperation<Role, RoleList, Resource<Role>> roles() {
-    return new RoleOperationsImpl(httpClient, getConfiguration());
+    return Handlers.getOperation(Role.class, RoleList.class, httpClient, getConfiguration());
   }
 
   @Override
   public MixedOperation<RoleBinding, RoleBindingList, Resource<RoleBinding>> roleBindings() {
-    return new RoleBindingOperationsImpl(httpClient, getConfiguration());
+    return Handlers.getOperation(RoleBinding.class, RoleBindingList.class, httpClient, getConfiguration());
   }
 
   @Override
   public NonNamespaceOperation<ClusterRole, ClusterRoleList, Resource<ClusterRole>> clusterRoles() {
-    return new ClusterRoleOperationsImpl(httpClient, getConfiguration());
+    return Handlers.getOperation(ClusterRole.class, ClusterRoleList.class, httpClient, getConfiguration());
   }
 
   @Override
   public NonNamespaceOperation<ClusterRoleBinding, ClusterRoleBindingList, Resource<ClusterRoleBinding>> clusterRoleBindings() {
-    return new ClusterRoleBindingOperationsImpl(httpClient, getConfiguration());
+    return Handlers.getOperation(ClusterRoleBinding.class, ClusterRoleBindingList.class, httpClient, getConfiguration());
   }
 }

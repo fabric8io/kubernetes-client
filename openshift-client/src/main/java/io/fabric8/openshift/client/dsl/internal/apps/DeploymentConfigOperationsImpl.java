@@ -71,9 +71,8 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
   }
 
   public DeploymentConfigOperationsImpl(RollingOperationContext context) {
-    super(context.withApiGroupName(APPS).withPlural("deploymentconfigs"));
-    this.type = DeploymentConfig.class;
-    this.listType = DeploymentConfigList.class;
+    super(context.withApiGroupName(APPS).withPlural("deploymentconfigs"),
+        DeploymentConfig.class, DeploymentConfigList.class);
   }
 
   private DeploymentConfigOperationsImpl(RollingOperationContext context, Integer podLogWaitTimeout) {

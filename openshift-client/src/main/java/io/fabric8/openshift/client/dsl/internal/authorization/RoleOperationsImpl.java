@@ -34,9 +34,8 @@ public class RoleOperationsImpl extends OpenShiftOperation<Role, RoleList, Resou
   }
 
   public RoleOperationsImpl(OperationContext context) {
-    super(context.withApiGroupName(AUTHORIZATION).withApiGroupVersion("v1").withPlural("roles"));
-    this.type = Role.class;
-    this.listType = RoleList.class;
+    super(context.withApiGroupName(AUTHORIZATION).withApiGroupVersion("v1").withPlural("roles"),
+        Role.class, RoleList.class);
   }
 
   @Override

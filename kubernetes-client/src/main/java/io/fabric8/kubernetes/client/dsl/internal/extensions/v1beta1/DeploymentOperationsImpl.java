@@ -77,9 +77,7 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
   public DeploymentOperationsImpl(RollingOperationContext context) {
     super(context.withApiGroupName("extensions")
       .withApiGroupVersion("v1beta1")
-      .withPlural("deployments"));
-    this.type = Deployment.class;
-    this.listType = DeploymentList.class;
+      .withPlural("deployments"), Deployment.class, DeploymentList.class);
   }
 
   private DeploymentOperationsImpl(RollingOperationContext context, Integer podLogWaitTimeout) {

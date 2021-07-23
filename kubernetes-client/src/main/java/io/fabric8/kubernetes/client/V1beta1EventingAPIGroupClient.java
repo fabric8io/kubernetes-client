@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.api.model.events.v1beta1.EventList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.V1beta1EventingAPIGroupDSL;
-import io.fabric8.kubernetes.client.dsl.internal.events.v1beta1.EventOperationsImpl;
 import okhttp3.OkHttpClient;
 
 public class V1beta1EventingAPIGroupClient extends BaseClient implements V1beta1EventingAPIGroupDSL {
@@ -34,6 +33,6 @@ public class V1beta1EventingAPIGroupClient extends BaseClient implements V1beta1
 
   @Override
   public MixedOperation<Event, EventList, Resource<Event>> events() {
-    return new EventOperationsImpl(httpClient, getConfiguration());
+    return Handlers.getOperation(Event.class, EventList.class, httpClient, getConfiguration());
   }
 }

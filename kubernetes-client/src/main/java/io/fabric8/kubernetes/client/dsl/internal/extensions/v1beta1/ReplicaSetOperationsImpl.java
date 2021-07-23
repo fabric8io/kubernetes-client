@@ -60,9 +60,7 @@ public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<
   public ReplicaSetOperationsImpl(RollingOperationContext context) {
     super(context.withApiGroupName("extensions")
       .withApiGroupVersion("v1beta1")
-      .withPlural("replicasets"));
-    this.type = ReplicaSet.class;
-    this.listType = ReplicaSetList.class;
+      .withPlural("replicasets"), ReplicaSet.class, ReplicaSetList.class);
   }
 
   public ReplicaSetOperationsImpl(RollingOperationContext context, Integer podLogWaitTimeout) {

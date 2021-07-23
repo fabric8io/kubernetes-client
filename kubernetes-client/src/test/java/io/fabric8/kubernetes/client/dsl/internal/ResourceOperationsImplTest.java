@@ -23,7 +23,9 @@ import static org.junit.Assert.assertThat;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.MappingJsonFactory;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.CustomResourceList;
@@ -31,13 +33,15 @@ import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
 import io.fabric8.kubernetes.internal.KubernetesDeserializer;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
 
-public class CustomResourceOperationsImplTest {
+class ResourceOperationsImplTest {
 
   @Group(MyCustomResource.GROUP)
   @Version(MyCustomResource.VERSION)
@@ -62,38 +66,29 @@ public class CustomResourceOperationsImplTest {
   }
   
   @Test
-  public void shouldRegisterWithKubernetesDeserializer() throws IOException {
-    assertForContext(new CustomResourceOperationContext()
-      .withCrd(crd)
-      .withType(MyCustomResource.class)
-      .withListType(MyCustomResourceList.class));
+  void shouldRegisterWithKubernetesDeserializer() throws IOException {
+    assertForContext(new OperationContext(), CustomResourceDefinitionContext.fromCrd(crd), MyCustomResource.class, MyCustomResourceList.class);
   }
   
   @Test
-  public void shouldWorkWithPlainCustomResourceList() throws IOException {
-    assertForContext(new CustomResourceOperationContext()
-      .withCrd(crd)
-      .withType(MyCustomResource.class)
-      .withListType(CustomResourceList.class));
+  void shouldWorkWithPlainCustomResourceList() throws IOException {
+    assertForContext(new OperationContext(), CustomResourceDefinitionContext.fromCrd(crd), MyCustomResource.class, CustomResourceList.class);
   }
 
   @Test
   void itFallsBackOnTypeKindIfNoKindSpecifiedInContext() throws IOException {
-    assertForContext(new CustomResourceOperationContext()
-      .withCrdContext(new CustomResourceDefinitionContext.Builder()
-      .withGroup(crd.getSpec().getGroup())
-      .withVersion(crd.getSpec().getVersion())
-      .withScope(crd.getSpec().getScope())
-      .withName(crd.getMetadata().getName())
-      .withPlural(crd.getSpec().getNames().getPlural())
-      .build())
-      .withType(MyCustomResource.class)
-      .withListType(MyCustomResourceList.class));
+    ResourceDefinitionContext rdc = new ResourceDefinitionContext.Builder()
+        .withGroup(crd.getSpec().getGroup())
+        .withVersion(crd.getSpec().getVersion())
+        .withPlural(crd.getSpec().getNames().getPlural())
+        .build();
+
+    assertForContext(new OperationContext(), rdc, MyCustomResource.class, MyCustomResourceList.class);
   }
   
-  private void assertForContext(CustomResourceOperationContext context) throws IOException {
-    // CustomResourceOperationsImpl constructor invokes KubernetesDeserializer::registerCustomKind
-    new CustomResourceOperationsImpl<>(context);
+  private <T extends HasMetadata, L extends KubernetesResourceList<T>> void assertForContext(OperationContext context, ResourceDefinitionContext rdc, Class<T> type, Class<L> listType) throws IOException {
+    // ResourceOperationsImpl constructor invokes KubernetesDeserializer::registerCustomKind
+    new ResourceOperationsImpl<>(context, rdc, type, listType);
 
     JsonFactory factory = new MappingJsonFactory();
     JsonParser parser = factory.createParser("{\n" +

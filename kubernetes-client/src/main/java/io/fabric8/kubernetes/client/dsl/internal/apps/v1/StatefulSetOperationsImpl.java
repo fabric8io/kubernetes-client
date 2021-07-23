@@ -25,6 +25,7 @@ import io.fabric8.kubernetes.api.model.apps.StatefulSet;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetList;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
@@ -36,8 +37,6 @@ import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.utils.PodOperationUtil;
 import io.fabric8.kubernetes.client.dsl.internal.RollingOperationContext;
 import okhttp3.OkHttpClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -64,9 +63,7 @@ public class StatefulSetOperationsImpl extends RollableScalableResourceOperation
   public StatefulSetOperationsImpl(RollingOperationContext context) {
     super(context.withApiGroupName("apps")
       .withApiGroupVersion("v1")
-      .withPlural("statefulsets"));
-    this.type = StatefulSet.class;
-    this.listType = StatefulSetList.class;
+      .withPlural("statefulsets"), StatefulSet.class, StatefulSetList.class);
   }
 
   private StatefulSetOperationsImpl(RollingOperationContext context, Integer podLogWaitTimeout) {
@@ -261,7 +258,7 @@ public class StatefulSetOperationsImpl extends RollableScalableResourceOperation
   }
 
   private ControllerRevisionList getControllerRevisionListForStatefulSet(StatefulSet statefulSet) {
-    return new ControllerRevisionOperationsImpl(client, config, getNamespace()).withLabels(statefulSet.getSpec().getSelector().getMatchLabels()).list();
+    return Handlers.getOperation(ControllerRevision.class, ControllerRevisionList.class, client, config).inNamespace(namespace).withLabels(statefulSet.getSpec().getSelector().getMatchLabels()).list();
   }
 
   static Map<String, String> getStatefulSetSelectorLabels(StatefulSet statefulSet) {

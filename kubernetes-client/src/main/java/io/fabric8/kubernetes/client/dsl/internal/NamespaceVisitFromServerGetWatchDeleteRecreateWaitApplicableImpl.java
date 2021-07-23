@@ -283,7 +283,7 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl ex
   }
 
   static <T extends HasMetadata> ResourceHandler<HasMetadata, ?> handlerOf(T item) {
-    return Handlers.get(item.getKind(), item.getApiVersion());
+    return Handlers.get(item);
   }
 
 }

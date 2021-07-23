@@ -116,9 +116,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   }
 
   public PodOperationsImpl(PodOperationContext context) {
-    super(context.withPlural("pods"));
-    this.type = Pod.class;
-    this.listType = PodList.class;
+    super(context.withPlural("pods"), Pod.class, PodList.class);
 
     this.containerId = context.getContainerId();
     this.in = context.getIn();

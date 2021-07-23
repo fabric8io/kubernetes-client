@@ -16,6 +16,7 @@
 
 package io.fabric8.kubernetes.client.utils;
 
+import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.EnvVarBuilder;
@@ -374,11 +375,22 @@ public class KubernetesResourceUtil {
   }
 
   public static <T extends HasMetadata> Class<? extends KubernetesResourceList> inferListType(Class<T> type) {
+    return (Class<? extends KubernetesResourceList>) loadRelated(type, "List", CustomResourceList.class);
+  }
+  
+  public static <T extends HasMetadata, V extends VisitableBuilder<T, V>> Class<V> inferBuilderType(Class<T> type) {
+    return (Class<V>) loadRelated(type, "Builder", null);
+  }
+
+  private static Class<?> loadRelated(Class<?> type, String suffix, Class<?> defaultClass) {
     try {
-      Class<?> listTypeClass = Thread.currentThread().getContextClassLoader().loadClass(type.getName() + "List");
-      return (Class<KubernetesResourceList<T>>) listTypeClass;
+      return Thread.currentThread().getContextClassLoader().loadClass(type.getName() + suffix);
     } catch (ClassNotFoundException | ClassCastException e) {
-      return CustomResourceList.class;
+      try {
+        return type.getClassLoader().loadClass(type.getName() + suffix);
+      } catch (ClassNotFoundException | ClassCastException ex) {
+        return defaultClass;
+      }
     }
   }
 

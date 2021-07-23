@@ -24,8 +24,6 @@ import io.fabric8.openshift.api.model.whereabouts.v1alpha1.IPPoolList;
 import io.fabric8.openshift.api.model.whereabouts.v1alpha1.OverlappingRangeIPReservation;
 import io.fabric8.openshift.api.model.whereabouts.v1alpha1.OverlappingRangeIPReservationList;
 import io.fabric8.openshift.client.dsl.OpenShiftWhereaboutsAPIGroupDSL;
-import io.fabric8.openshift.client.dsl.internal.core.IPPoolOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.core.OverlappingRangeIPReservationOperationsImpl;
 import okhttp3.OkHttpClient;
 
 public class OpenShiftWhereaboutsAPIGroupClient  extends BaseClient implements OpenShiftWhereaboutsAPIGroupDSL {
@@ -39,11 +37,11 @@ public class OpenShiftWhereaboutsAPIGroupClient  extends BaseClient implements O
 
   @Override
   public MixedOperation<IPPool, IPPoolList, Resource<IPPool>> ippools() {
-    return new IPPoolOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(IPPool.class, IPPoolList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public MixedOperation<OverlappingRangeIPReservation, OverlappingRangeIPReservationList, Resource<OverlappingRangeIPReservation>> overlappingRangeIpReservations() {
-    return new OverlappingRangeIPReservationOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(OverlappingRangeIPReservation.class, OverlappingRangeIPReservationList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 }
