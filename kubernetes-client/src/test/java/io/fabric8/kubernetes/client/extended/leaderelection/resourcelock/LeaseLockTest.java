@@ -22,7 +22,7 @@ import io.fabric8.kubernetes.api.model.coordination.v1.LeaseList;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseSpec;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
-import io.fabric8.kubernetes.client.dsl.Replaceable;
+import io.fabric8.kubernetes.client.dsl.ReplaceDeletable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -126,7 +126,7 @@ class LeaseLockTest {
   void updateWithValidLeaderElectionRecordShouldSendPutRequest() throws Exception {
     // Given
     final Resource<Lease> leaseResource = leases.withName("name");
-    final Replaceable<Lease> replaceable = mock(Replaceable.class, Answers.RETURNS_DEEP_STUBS);
+    final ReplaceDeletable<Lease> replaceable = mock(ReplaceDeletable.class, Answers.RETURNS_DEEP_STUBS);
     when(leaseResource.lockResourceVersion(any())).thenReturn(replaceable);
     final Lease leaseInTheCluster = new Lease();
     leaseInTheCluster.setSpec(new LeaseSpec());

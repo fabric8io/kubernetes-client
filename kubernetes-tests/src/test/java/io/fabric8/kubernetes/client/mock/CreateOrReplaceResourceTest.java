@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.mock;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
+import io.fabric8.kubernetes.api.model.DeleteOptions;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
@@ -36,11 +37,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
+import java.nio.charset.Charset;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableKubernetesMockClient
 class CreateOrReplaceResourceTest {
@@ -269,6 +272,23 @@ class CreateOrReplaceResourceTest {
 
     ConfigMap replacedMap = new ObjectMapper().readerFor(ConfigMap.class).readValue(server.getLastRequest().getBody().inputStream());
     assertEquals("900", replacedMap.getMetadata().getResourceVersion());
+  }
+
+  @Test
+  @DisplayName("Should delete an existing resource with lock")
+  void testDeleteWithLock() throws Exception {
+    server.expect().delete()
+      .withPath("/api/v1/namespaces/test/configmaps/map1")
+      .andReturn(HttpURLConnection.HTTP_OK, null)
+      .once();
+
+    Boolean deleted = client.configMaps().withName("map1")
+      .lockResourceVersion("800")
+      .delete();
+    assertTrue(deleted);
+
+    DeleteOptions options = new ObjectMapper().readerFor(DeleteOptions.class).readValue(server.getLastRequest().getBody().inputStream());
+    assertEquals("800", options.getPreconditions().getResourceVersion());
   }
 
   @Test
