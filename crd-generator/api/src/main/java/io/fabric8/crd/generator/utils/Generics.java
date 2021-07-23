@@ -36,6 +36,9 @@ public class Generics {
    * @param type the type
    * @return the underlying class
    */
+  private Generics() {
+    throw new IllegalStateException("Utility class");
+  }
   public static Class<?> getClass(Type type) {
     if (type instanceof Class) {
       return (Class) type;

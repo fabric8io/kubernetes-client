@@ -25,7 +25,9 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class Helper {
-
+  private Helper() {
+    throw new IllegalStateException("Utility class");
+  }
     public static String loadJson(String path) {
         try (InputStream resourceAsStream = Helper.class.getResourceAsStream(path)) {
             final Scanner scanner = new Scanner(resourceAsStream).useDelimiter("\\A");

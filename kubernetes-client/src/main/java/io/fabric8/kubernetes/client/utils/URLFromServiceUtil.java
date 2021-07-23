@@ -33,7 +33,9 @@ public class URLFromServiceUtil {
   private static final String HOST_SUFFIX = "_SERVICE_HOST";
   private static final String PORT_SUFFIX = "_SERVICE_PORT";
   private static final String PROTO_SUFFIX = "_TCP_PROTO";
-
+  private URLFromServiceUtil() {
+    throw new IllegalStateException("Utility class");
+  }
   public static String resolveHostFromEnvVarOrSystemProperty(String serviceName) {
     return getEnvVarOrSystemProperty(toServiceHostEnvironmentVariable(serviceName), "");
   }

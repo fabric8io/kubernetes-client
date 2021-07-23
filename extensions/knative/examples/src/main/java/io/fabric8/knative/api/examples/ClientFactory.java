@@ -20,7 +20,9 @@ import io.fabric8.knative.client.DefaultKnativeClient;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 
 public class ClientFactory {
-
+  private ClientFactory() {
+    throw new IllegalStateException("Utility class");
+  }
   public static KnativeClient newClient(String[] args) {
       ConfigBuilder config = new ConfigBuilder();
       for (int i = 0; i < args.length - 1; i++) {

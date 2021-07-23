@@ -50,7 +50,9 @@ import org.slf4j.LoggerFactory;
 
 
 public class Types {
-
+  private Types() {
+    throw new IllegalStateException("Utility class");
+  }
   private static final Logger LOGGER = LoggerFactory.getLogger(Types.class);
   private static final String NAMESPACED = Namespaced.class.getName();
   public static final String JAVA_LANG_VOID = "java.lang.Void";

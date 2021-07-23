@@ -25,7 +25,9 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 public class ReflectUtils {
-
+  private ReflectUtils() {
+    throw new IllegalStateException("Utility class");
+  }
   public static ObjectMeta objectMetadata(Object obj) throws ReflectiveOperationException {
     if( obj == null ) {
       return null;

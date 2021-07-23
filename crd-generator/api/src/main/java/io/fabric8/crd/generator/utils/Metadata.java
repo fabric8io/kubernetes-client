@@ -26,7 +26,9 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 public class Metadata {
-
+  private Metadata() {
+    throw new IllegalStateException("Utility class");
+  }
   public static Optional<String> getKind(Builder builder) {
     try {
       Method method = builder.getClass().getMethod("getKind");

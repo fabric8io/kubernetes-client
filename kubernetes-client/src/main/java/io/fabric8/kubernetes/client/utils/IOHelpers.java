@@ -29,7 +29,9 @@ import java.io.Writer;
 /**
  */
 public class IOHelpers {
-
+  private IOHelpers() {
+    throw new IllegalStateException("Utility class");
+  }
     public static String readFully(InputStream in) throws IOException {
         Reader r = new BufferedReader(new InputStreamReader(in));
         return readFully(r);

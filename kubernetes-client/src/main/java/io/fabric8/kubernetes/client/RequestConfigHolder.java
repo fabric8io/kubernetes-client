@@ -16,7 +16,9 @@
 package io.fabric8.kubernetes.client;
 
 class RequestConfigHolder {
-
+  private RequestConfigHolder() {
+    throw new IllegalStateException("Utility class");
+  }
   private static final ThreadLocal<RequestConfig> REQUEST_CONFIG = new ThreadLocal<>();
 
   static RequestConfig get() {

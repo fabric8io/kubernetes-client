@@ -20,7 +20,9 @@ import io.fabric8.servicecatalog.client.ServiceCatalogClient;
 
 
 public class ClientFactory {
-
+  private ClientFactory() {
+    throw new IllegalStateException("Utility class");
+  }
   public static ServiceCatalogClient newClient(String[] args) {
       ConfigBuilder config = new ConfigBuilder();
       for (int i = 0; i < args.length - 1; i++) {
