@@ -146,7 +146,7 @@ public class AutoAdaptableKubernetesClient extends DefaultKubernetesClient {
   public RbacAPIGroupDSL rbac() { return delegate.rbac(); }
 
   @Override
-  public MixedOperation<ComponentStatus, ComponentStatusList, Resource<ComponentStatus>> componentstatuses() {
+  public NonNamespaceOperation<ComponentStatus, ComponentStatusList, Resource<ComponentStatus>> componentstatuses() {
     return delegate.componentstatuses();
   }
 

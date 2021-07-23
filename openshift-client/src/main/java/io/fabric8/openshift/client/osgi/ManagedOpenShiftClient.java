@@ -661,7 +661,7 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
-  public MixedOperation<APIService, APIServiceList, Resource<APIService>> apiServices() {
+  public NonNamespaceOperation<APIService, APIServiceList, Resource<APIService>> apiServices() {
     return delegate.apiServices();
   }
 
