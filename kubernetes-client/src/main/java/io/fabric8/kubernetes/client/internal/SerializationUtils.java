@@ -25,7 +25,9 @@ import io.fabric8.kubernetes.client.internal.serializationmixins.ObjectMetaMixIn
 import io.fabric8.kubernetes.client.internal.serializationmixins.ReplicationControllerMixIn;
 
 public class SerializationUtils {
-
+  private SerializationUtils() {
+    throw new IllegalStateException("Utility class");
+  }
   private static ObjectMapper mapper;
 
   private static ObjectMapper statelessMapper;

@@ -22,7 +22,9 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
 public class URLUtils {
-
+  private URLUtils() {
+    throw new IllegalStateException("Utility class");
+  }
   public static String join(String... parts) {
         StringBuilder sb = new StringBuilder();
 
