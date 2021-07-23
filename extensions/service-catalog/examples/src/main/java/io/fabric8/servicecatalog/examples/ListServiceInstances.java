@@ -26,9 +26,7 @@ public class ListServiceInstances {
 
       System.out.println("Listing Service Instances:");
       list.getItems().stream()
-          .forEach(b -> {
-                  System.out.println(b);
-              });
+          .forEach(b -> System.out.println(b));
 
       System.out.println("Done");
   }
