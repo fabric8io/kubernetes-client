@@ -39,7 +39,7 @@ public class ImageSignatureOperationsImpl extends CreateOnlyResourceOperationsIm
   @Override
   public Boolean delete() {
     try {
-      handleDelete(getResourceUrl(), context.getGracePeriodSeconds(), context.getPropagationPolicy(), null, context.getCascading());
+      handleDelete(getResourceUrl(), context.getGracePeriodSeconds(), context.getPropagationPolicy(), context.getResourceVersion(), context.getCascading());
       return true;
     } catch (IOException | ExecutionException exception) {
       return false;
