@@ -28,10 +28,13 @@ public class GenericKubernetesResourceOperationsImpl
   private final boolean resourceNamespaced;
 
   public GenericKubernetesResourceOperationsImpl(OperationContext context, boolean resourceNamespaced) {
-    super(context);
+    super(context, GenericKubernetesResource.class, GenericKubernetesResourceList.class);
     this.resourceNamespaced = resourceNamespaced;
-    this.type = GenericKubernetesResource.class;
-    this.listType = GenericKubernetesResourceList.class;
+  }
+  
+  @Override
+  protected void validateOperation(Class<GenericKubernetesResource> type) {
+    // don't validate generic
   }
 
   @Override

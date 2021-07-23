@@ -17,15 +17,11 @@ package io.fabric8.camelk.client;
 
 import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.camelk.client.dsl.V1APIGroupDSL;
-import io.fabric8.camelk.client.internal.v1.BuildOperationsImpl;
-import io.fabric8.camelk.client.internal.v1.CamelCatalogOperationsImpl;
-import io.fabric8.camelk.client.internal.v1.IntegrationKitOperationsImpl;
-import io.fabric8.camelk.client.internal.v1.IntegrationOperationsImpl;
-import io.fabric8.camelk.client.internal.v1.IntegrationPlatformOperationsImpl;
 import io.fabric8.camelk.v1.Build;
 import io.fabric8.camelk.v1.BuildList;
 import io.fabric8.camelk.v1.CamelCatalog;
@@ -49,27 +45,27 @@ public class V1APIGroupClient extends BaseClient implements V1APIGroupDSL {
 
 @Override
 public MixedOperation<Build, BuildList, Resource<Build>> builds() {
-	return new BuildOperationsImpl(httpClient, getConfiguration());
+	return Handlers.getOperation(Build.class, BuildList.class, httpClient,  getConfiguration());
 }
 
 @Override
 public MixedOperation<CamelCatalog, CamelCatalogList, Resource<CamelCatalog>> camelCatalogs() {
-	return new CamelCatalogOperationsImpl(httpClient, getConfiguration());
+	return Handlers.getOperation(CamelCatalog.class, CamelCatalogList.class, httpClient,  getConfiguration());
 }
 
 @Override
 public MixedOperation<Integration, IntegrationList, Resource<Integration>> integrations() {
-	return new IntegrationOperationsImpl(httpClient, getConfiguration());
+	return Handlers.getOperation(Integration.class, IntegrationList.class, httpClient,  getConfiguration());
 }
 
 @Override
 public MixedOperation<IntegrationKit, IntegrationKitList, Resource<IntegrationKit>> integrationKits() {
-	return new IntegrationKitOperationsImpl(httpClient, getConfiguration());
+	return Handlers.getOperation(IntegrationKit.class, IntegrationKitList.class, httpClient,  getConfiguration());
 }
 
 @Override
 public MixedOperation<IntegrationPlatform, IntegrationPlatformList, Resource<IntegrationPlatform>> integrationPlatforms() {
-  return new IntegrationPlatformOperationsImpl(httpClient, getConfiguration());
+  return Handlers.getOperation(IntegrationPlatform.class, IntegrationPlatformList.class, httpClient,  getConfiguration());
 }
 
 }

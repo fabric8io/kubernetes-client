@@ -60,10 +60,7 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
   public JobOperationsImpl(PodControllerOperationContext context) {
     super(context.withApiGroupName("batch")
       .withApiGroupVersion("v1")
-      .withPlural("jobs"));
-
-    this.type = Job.class;
-    this.listType = JobList.class;
+      .withPlural("jobs"), Job.class, JobList.class);
   }
 
   private JobOperationsImpl(PodControllerOperationContext context, Integer podLogWaitTimeout) {

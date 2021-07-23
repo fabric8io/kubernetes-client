@@ -36,9 +36,7 @@ public class ComponentStatusOperationsImpl extends HasMetadataOperation<Componen
   }
 
   public ComponentStatusOperationsImpl(OperationContext context) {
-    super(context.withPlural("componentstatuses"));
-    this.type = ComponentStatus.class;
-    this.listType = ComponentStatusList.class;
+    super(context.withPlural("componentstatuses"), ComponentStatus.class, ComponentStatusList.class);
   }
 
   @Override

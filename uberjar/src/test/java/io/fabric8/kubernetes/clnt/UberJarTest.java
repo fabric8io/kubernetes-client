@@ -26,18 +26,17 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathFactory;
+
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableRuleMigrationSupport
 class UberJarTest {
@@ -82,10 +81,6 @@ class UberJarTest {
     assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/api/model/storage").exists());
     assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/api/model/authorization").exists());
     assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/client/dsl").exists());
-    assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/client/handlers").exists());
-    File resourceHandlerServiceFile = getFileInDirectory(jarExtractedDir, "META-INF/services/io.fabric8.kubernetes.client.ResourceHandler");
-    assertTrue(resourceHandlerServiceFile.exists());
-    assertTrue(containsOpenShiftKubernetesResources(resourceHandlerServiceFile, null, null));
     assertTrue(getFileInDirectory(jarExtractedDir, "META-INF/services/io.fabric8.kubernetes.client.ExtensionAdapter").exists());
     assertTrue(getFileInDirectory(jarExtractedDir, "META-INF/services/io.fabric8.kubernetes.client.ServiceToURLProvider").exists());
   }
@@ -123,25 +118,8 @@ class UberJarTest {
     assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/api/model/v" + majorVersion + "_" + minorVersion + "/storage").exists());
     assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/api/model/v" + majorVersion + "_" + minorVersion + "/authorization").exists());
     assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/clnt/v" + majorVersion + "_" + minorVersion + "/dsl").exists());
-    assertTrue(getFileInDirectory(jarExtractedDir, "io/fabric8/kubernetes/clnt/v" + majorVersion + "_" + minorVersion + "/handlers").exists());
-    File resourceHandlerServiceFile = getFileInDirectory(jarExtractedDir, "META-INF/services/io.fabric8.kubernetes.clnt.v" + majorVersion + "_" + minorVersion + ".ResourceHandler");
-    assertTrue(resourceHandlerServiceFile.exists());
-    assertTrue(containsOpenShiftKubernetesResources(resourceHandlerServiceFile, majorVersion, minorVersion));
     assertTrue(getFileInDirectory(jarExtractedDir, "META-INF/services/io.fabric8.kubernetes.clnt.v" + majorVersion + "_" + minorVersion + ".ExtensionAdapter").exists());
     assertTrue(getFileInDirectory(jarExtractedDir, "META-INF/services/io.fabric8.kubernetes.clnt.v" + majorVersion + "_" + minorVersion + ".ServiceToURLProvider").exists());
-  }
-
-  private boolean containsOpenShiftKubernetesResources(File resourceHandlerServiceFile, String majorVersion, String minorVersion) throws IOException {
-    List<String> lines = Files.readAllLines(resourceHandlerServiceFile.toPath());
-    final String deploymentConfigOpenShiftHandler = (majorVersion != null && minorVersion != null) ?
-      "io.fabric8.openshift.clnt.v" + majorVersion + "_" + minorVersion + ".handlers.apps.DeploymentConfigHandler" :
-      "io.fabric8.openshift.client.handlers.apps.DeploymentConfigHandler";
-    final String deploymentKubernetesHandler = (majorVersion != null && minorVersion != null) ?
-      "io.fabric8.kubernetes.clnt.v" + majorVersion + "_" + minorVersion + ".handlers.apps.v1.DeploymentHandler" :
-      "io.fabric8.kubernetes.client.handlers.apps.v1.DeploymentHandler";
-
-    return lines.stream().anyMatch(line -> line.contains(deploymentConfigOpenShiftHandler)) &&
-      lines.stream().anyMatch(line -> line.contains(deploymentKubernetesHandler));
   }
 
   private String getMajorVersion(String projectVersion) {
@@ -171,10 +149,6 @@ class UberJarTest {
       final XPath xPath = XPathFactory.newInstance().newXPath();
       return xPath.compile("/project/parent/version").evaluate(pom);
     }
-  }
-
-  private List<String> readPomLines() throws IOException {
-    return Files.readAllLines(pomFile.toPath());
   }
 
   void unzip(String zipFilePath, String destDirectory) throws IOException {

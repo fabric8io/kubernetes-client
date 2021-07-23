@@ -15,9 +15,20 @@
  */
 package io.fabric8.servicecatalog.client;
 
-import io.fabric8.kubernetes.client.ExtensionAdapterSupport;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.ExtensionAdapter;
+import io.fabric8.kubernetes.client.ExtensionAdapterSupport;
+import io.fabric8.kubernetes.client.Handlers;
+import io.fabric8.servicecatalog.api.model.ClusterServiceBroker;
+import io.fabric8.servicecatalog.api.model.ClusterServiceClass;
+import io.fabric8.servicecatalog.api.model.ClusterServicePlan;
+import io.fabric8.servicecatalog.api.model.ServiceBinding;
+import io.fabric8.servicecatalog.api.model.ServiceInstance;
+import io.fabric8.servicecatalog.client.internal.ClusterServiceBrokerOperationsImpl;
+import io.fabric8.servicecatalog.client.internal.ClusterServiceClassOperationsImpl;
+import io.fabric8.servicecatalog.client.internal.ClusterServicePlanOperationsImpl;
+import io.fabric8.servicecatalog.client.internal.ServiceBindingOperationsImpl;
+import io.fabric8.servicecatalog.client.internal.ServiceInstanceOperationsImpl;
 import okhttp3.OkHttpClient;
 
 import java.net.URL;
@@ -28,6 +39,14 @@ public class ServiceCatalogExtensionAdapter extends ExtensionAdapterSupport impl
 
     static final ConcurrentMap<URL, Boolean> IS_SERVICE_CATALOG = new ConcurrentHashMap<>();
     static final ConcurrentMap<URL, Boolean> USES_SERVICE_CATALOG_APIGROUPS = new ConcurrentHashMap<>();
+
+    static {
+        Handlers.register(ClusterServiceBroker.class, ClusterServiceBrokerOperationsImpl::new);
+        Handlers.register(ClusterServiceClass.class, ClusterServiceClassOperationsImpl::new);
+        Handlers.register(ClusterServicePlan.class, ClusterServicePlanOperationsImpl::new);
+        Handlers.register(ServiceBinding.class, ServiceBindingOperationsImpl::new);
+        Handlers.register(ServiceInstance.class, ServiceInstanceOperationsImpl::new);
+    }
 
 	@Override
 	public Class<ServiceCatalogClient> getExtensionType() {

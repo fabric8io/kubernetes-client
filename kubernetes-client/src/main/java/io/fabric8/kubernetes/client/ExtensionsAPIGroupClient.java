@@ -34,12 +34,8 @@ import io.fabric8.kubernetes.client.dsl.ScalableResource;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
-import io.fabric8.kubernetes.client.dsl.internal.extensions.v1beta1.DaemonSetOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.extensions.v1beta1.DeploymentOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.extensions.v1beta1.IngressOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.batch.v1.JobOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.extensions.v1beta1.NetworkPolicyOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.policy.v1beta1.PodSecurityPolicyOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.extensions.v1beta1.ReplicaSetOperationsImpl;
 import okhttp3.OkHttpClient;
 
@@ -56,7 +52,7 @@ public class ExtensionsAPIGroupClient extends BaseClient implements ExtensionsAP
   @Override
   @Deprecated
   public MixedOperation<DaemonSet, DaemonSetList, Resource<DaemonSet>> daemonSets() {
-    return new DaemonSetOperationsImpl(httpClient, getConfiguration());
+    return Handlers.getOperation(DaemonSet.class, DaemonSetList.class, httpClient, getConfiguration());
   }
 
   @Override
@@ -73,7 +69,7 @@ public class ExtensionsAPIGroupClient extends BaseClient implements ExtensionsAP
 
   @Override
   public MixedOperation<Ingress, IngressList, Resource<Ingress>> ingresses() {
-    return new IngressOperationsImpl(httpClient, getConfiguration());
+    return Handlers.getOperation(Ingress.class, IngressList.class, httpClient, getConfiguration());
   }
 
   @Override
@@ -85,7 +81,7 @@ public class ExtensionsAPIGroupClient extends BaseClient implements ExtensionsAP
   @Override
   @Deprecated
   public MixedOperation<NetworkPolicy, NetworkPolicyList, Resource<NetworkPolicy>> networkPolicies() {
-    return new NetworkPolicyOperationsImpl(httpClient, getConfiguration());
+    return Handlers.getOperation(NetworkPolicy.class, NetworkPolicyList.class, httpClient, getConfiguration());
   }
 
   @Override
@@ -94,7 +90,7 @@ public class ExtensionsAPIGroupClient extends BaseClient implements ExtensionsAP
    * @deprecated Replaced by {@link PolicyAPIGroupClient#podSecurityPolicies()}
    */
   public MixedOperation<PodSecurityPolicy, PodSecurityPolicyList, Resource<PodSecurityPolicy>> podSecurityPolicies() {
-    return new PodSecurityPolicyOperationsImpl(httpClient, getConfiguration());
+    return Handlers.getOperation(PodSecurityPolicy.class, PodSecurityPolicyList.class, httpClient, getConfiguration());
   }
 
   @Override

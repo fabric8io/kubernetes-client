@@ -35,9 +35,7 @@ public class UserOperationsImpl extends OpenShiftOperation<User, UserList, Resou
 
   public UserOperationsImpl(OperationContext context) {
     super(context.withApiGroupName(USER)
-      .withPlural("users"));
-    this.type = User.class;
-    this.listType = UserList.class;
+      .withPlural("users"), User.class, UserList.class);
   }
 
   @Override

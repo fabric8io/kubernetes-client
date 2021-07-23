@@ -15,12 +15,10 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal.core.v1;
 
-import io.fabric8.kubernetes.api.model.Service;
-import io.fabric8.kubernetes.api.model.ServiceBuilder;
-import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.client.*;
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.ServiceResource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
@@ -46,9 +44,7 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
   }
 
   public ServiceOperationsImpl(OperationContext context) {
-    super(context.withPlural("services"));
-    this.type = Service.class;
-    this.listType = ServiceList.class;
+    super(context.withPlural("services"), Service.class, ServiceList.class);
   }
 
   @Override
@@ -65,7 +61,10 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
     // if awaiting existence took very long, let's give at least 10 seconds to awaiting readiness
     long remaining = Math.max(10_000, timeUnit.toNanos(amount) - alreadySpent);
 
-    EndpointsOperationsImpl endpointsOperation = new EndpointsOperationsImpl(context);
+    HasMetadataOperation<Endpoints, EndpointsList, Resource<Endpoints>> endpointsOperation =
+        (HasMetadataOperation<Endpoints, EndpointsList, Resource<Endpoints>>) Handlers
+            .getOperation(Endpoints.class, EndpointsList.class, client, config)
+            .newInstance(context);
     endpointsOperation.waitUntilReady(remaining, TimeUnit.MILLISECONDS);
 
     return get();

@@ -34,9 +34,7 @@ public class NetworkAttachmentDefinitionOperationsImpl extends OpenShiftOperatio
   public NetworkAttachmentDefinitionOperationsImpl(OperationContext context) {
     super(context.withApiGroupName("k8s.cni.cncf.io")
       .withApiGroupVersion("v1")
-      .withPlural("network-attachment-definitions"));
-    this.type = NetworkAttachmentDefinition.class;
-    this.listType = NetworkAttachmentDefinitionList.class;
+      .withPlural("network-attachment-definitions"), NetworkAttachmentDefinition.class, NetworkAttachmentDefinitionList.class);
   }
 
   @Override

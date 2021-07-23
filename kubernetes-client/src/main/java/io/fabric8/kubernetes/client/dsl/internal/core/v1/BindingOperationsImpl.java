@@ -37,9 +37,7 @@ public class BindingOperationsImpl extends HasMetadataOperation<Binding, Kuberne
   public BindingOperationsImpl(OperationContext context) {
     super(context
       .withApiGroupVersion("v1")
-      .withPlural("bindings"));
-    this.type = Binding.class;
-    this.listType = (Class<KubernetesResourceList<Binding>>) TypeFactory.rawClass(new TypeReference<KubernetesResourceList<Binding>>(){}.getType());
+      .withPlural("bindings"), Binding.class, (Class<KubernetesResourceList<Binding>>) TypeFactory.rawClass(new TypeReference<KubernetesResourceList<Binding>>(){}.getType()));
   }
 
   public BindingOperationsImpl newInstance(OperationContext context) {

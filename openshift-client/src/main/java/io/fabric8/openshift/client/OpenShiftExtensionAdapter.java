@@ -16,9 +16,39 @@
 
 package io.fabric8.openshift.client;
 
-import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.ExtensionAdapter;
+import io.fabric8.openshift.api.model.Build;
+import io.fabric8.openshift.api.model.BuildConfig;
+import io.fabric8.openshift.api.model.ClusterRoleBinding;
+import io.fabric8.openshift.api.model.DNS;
+import io.fabric8.openshift.api.model.DeploymentConfig;
+import io.fabric8.openshift.api.model.Group;
+import io.fabric8.openshift.api.model.OAuthAccessToken;
+import io.fabric8.openshift.api.model.OAuthAuthorizeToken;
+import io.fabric8.openshift.api.model.OAuthClient;
+import io.fabric8.openshift.api.model.Role;
+import io.fabric8.openshift.api.model.RoleBinding;
+import io.fabric8.openshift.api.model.SecurityContextConstraints;
+import io.fabric8.openshift.api.model.Template;
+import io.fabric8.openshift.api.model.User;
+import io.fabric8.openshift.api.model.miscellaneous.cncf.cni.v1.NetworkAttachmentDefinition;
+import io.fabric8.openshift.client.dsl.internal.apps.DeploymentConfigOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.authorization.ClusterRoleBindingOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.authorization.RoleBindingOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.authorization.RoleOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.build.BuildConfigOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.build.BuildOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.config.DNSOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.core.NetworkAttachmentDefinitionOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.core.TemplateOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.oauth.OAuthAccessTokenOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.oauth.OAuthAuthorizeTokenOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.oauth.OAuthClientOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.security.SecurityContextConstraintsOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.user.GroupOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.user.UserOperationsImpl;
+import okhttp3.OkHttpClient;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
@@ -26,6 +56,24 @@ import org.apache.felix.scr.annotations.Service;
 @Component
 @Service
 public class OpenShiftExtensionAdapter extends OpenshiftAdapterSupport implements ExtensionAdapter<OpenShiftClient> {
+
+  static {
+    OpenShiftHandlers.register(BuildConfig.class, BuildConfigOperationsImpl::new);
+    OpenShiftHandlers.register(Build.class, BuildOperationsImpl::new);
+    OpenShiftHandlers.register(ClusterRoleBinding.class, ClusterRoleBindingOperationsImpl::new);
+    OpenShiftHandlers.register(DeploymentConfig.class, DeploymentConfigOperationsImpl::new);
+    OpenShiftHandlers.register(DNS.class, DNSOperationsImpl::new);
+    OpenShiftHandlers.register(Group.class, GroupOperationsImpl::new);
+    OpenShiftHandlers.register(NetworkAttachmentDefinition.class, NetworkAttachmentDefinitionOperationsImpl::new);
+    OpenShiftHandlers.register(OAuthAccessToken.class, OAuthAccessTokenOperationsImpl::new);
+    OpenShiftHandlers.register(OAuthAuthorizeToken.class, OAuthAuthorizeTokenOperationsImpl::new);
+    OpenShiftHandlers.register(OAuthClient.class, OAuthClientOperationsImpl::new);
+    OpenShiftHandlers.register(RoleBinding.class, RoleBindingOperationsImpl::new);
+    OpenShiftHandlers.register(Role.class, RoleOperationsImpl::new);
+    OpenShiftHandlers.register(SecurityContextConstraints.class, SecurityContextConstraintsOperationsImpl::new);
+    OpenShiftHandlers.register(Template.class, TemplateOperationsImpl::new);
+    OpenShiftHandlers.register(User.class, UserOperationsImpl::new);
+  }
 
   @Override
   public Class<OpenShiftClient> getExtensionType() {

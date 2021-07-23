@@ -47,9 +47,7 @@ public class RoleBindingOperationsImpl extends OpenShiftOperation<RoleBinding, R
 
   public RoleBindingOperationsImpl(OperationContext context) {
     super(context.withApiGroupName(AUTHORIZATION)
-      .withPlural("rolebindings"));
-    this.type = RoleBinding.class;
-    this.listType = RoleBindingList.class;
+      .withPlural("rolebindings"), RoleBinding.class, RoleBindingList.class);
   }
 
   @Override
@@ -66,7 +64,7 @@ public class RoleBindingOperationsImpl extends OpenShiftOperation<RoleBinding, R
   protected RoleBinding modifyItemForReplaceOrPatch(Supplier<RoleBinding> current, RoleBinding binding) {
     return enrichRoleBinding(binding);
   }
-      
+
   private RoleBinding enrichRoleBinding(RoleBinding binding) {
     RoleBindingBuilder builder = new RoleBindingBuilder(binding);
 

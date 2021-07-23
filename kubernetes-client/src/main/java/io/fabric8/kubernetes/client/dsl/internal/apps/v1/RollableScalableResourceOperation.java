@@ -46,8 +46,8 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
   final long rollingTimeout;
   final TimeUnit rollingTimeUnit;
 
-  public RollableScalableResourceOperation(RollingOperationContext context) {
-    super(context);
+  public RollableScalableResourceOperation(RollingOperationContext context, Class<T> type, Class<L> listType) {
+    super(context, type, listType);
     this.rolling = context.getRolling();
     this.rollingTimeout = context.getRollingTimeout();
     this.rollingTimeUnit = context.getRollingTimeUnit();

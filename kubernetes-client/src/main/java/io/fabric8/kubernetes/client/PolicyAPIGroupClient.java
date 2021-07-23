@@ -24,8 +24,6 @@ import io.fabric8.kubernetes.client.dsl.PolicyAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.V1PolicyAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1beta1PolicyAPIGroupDSL;
-import io.fabric8.kubernetes.client.dsl.internal.policy.v1beta1.PodDisruptionBudgetOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.policy.v1beta1.PodSecurityPolicyOperationsImpl;
 import okhttp3.OkHttpClient;
 
 public class PolicyAPIGroupClient extends BaseClient implements PolicyAPIGroupDSL {
@@ -36,12 +34,12 @@ public class PolicyAPIGroupClient extends BaseClient implements PolicyAPIGroupDS
 
   @Override
   public MixedOperation<PodDisruptionBudget, PodDisruptionBudgetList, Resource<PodDisruptionBudget>> podDisruptionBudget() {
-    return new PodDisruptionBudgetOperationsImpl(httpClient, getConfiguration());
+    return Handlers.getOperation(PodDisruptionBudget.class, PodDisruptionBudgetList.class, httpClient, getConfiguration());
   }
 
   @Override
   public MixedOperation<PodSecurityPolicy, PodSecurityPolicyList, Resource<PodSecurityPolicy>> podSecurityPolicies() {
-    return new PodSecurityPolicyOperationsImpl(httpClient, getConfiguration());
+    return Handlers.getOperation(PodSecurityPolicy.class, PodSecurityPolicyList.class, httpClient, getConfiguration());
   }
 
   @Override

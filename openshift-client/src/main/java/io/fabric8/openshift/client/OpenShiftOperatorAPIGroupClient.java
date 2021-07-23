@@ -68,30 +68,6 @@ import io.fabric8.openshift.api.model.operator.v1.StorageList;
 import io.fabric8.openshift.api.model.operator.v1alpha1.ImageContentSourcePolicy;
 import io.fabric8.openshift.api.model.operator.v1alpha1.ImageContentSourcePolicyList;
 import io.fabric8.openshift.client.dsl.OpenShiftOperatorAPIGroupDSL;
-import io.fabric8.openshift.client.dsl.internal.controlplane.operator.PodNetworkConnectivityCheckOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.operator.AuthenticationOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.operator.CSISnapshotControllerOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.operator.CloudCredentialOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.operator.ClusterCSIDriverOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.operator.ConfigOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.operator.ConsoleOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.operator.DNSOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.ingress.operator.DNSRecordOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.operator.EtcdOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.operator.ImageContentSourcePolicyOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.imageregistry.operator.ImagePrunerOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.operator.IngressControllerOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.operator.KubeAPIServerOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.operator.KubeControllerManagerOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.operator.KubeSchedulerOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.operator.KubeStorageVersionMigratorOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.operator.NetworkOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.operator.OpenShiftAPIServerOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.operator.OpenShiftControllerManagerOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.operator.ServiceCAOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.operator.ServiceCatalogAPIServerOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.operator.ServiceCatalogControllerManagerOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.operator.StorageOperationsImpl;
 import okhttp3.OkHttpClient;
 
 public class OpenShiftOperatorAPIGroupClient extends BaseClient implements OpenShiftOperatorAPIGroupDSL {
@@ -105,121 +81,121 @@ public class OpenShiftOperatorAPIGroupClient extends BaseClient implements OpenS
 
   @Override
   public NonNamespaceOperation<Etcd, EtcdList, Resource<Etcd>> etcds() {
-    return new EtcdOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(Etcd.class, EtcdList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public NonNamespaceOperation<KubeStorageVersionMigrator, KubeStorageVersionMigratorList, Resource<KubeStorageVersionMigrator>> kubeStorageVersionMigrators() {
-    return new KubeStorageVersionMigratorOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(KubeStorageVersionMigrator.class, KubeStorageVersionMigratorList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public NonNamespaceOperation<KubeControllerManager, KubeControllerManagerList, Resource<KubeControllerManager>> kubeControllerManagers() {
-    return new KubeControllerManagerOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(KubeControllerManager.class, KubeControllerManagerList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public NonNamespaceOperation<CSISnapshotController, CSISnapshotControllerList, Resource<CSISnapshotController>> csiSnapshotControllers() {
-    return new CSISnapshotControllerOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(CSISnapshotController.class, CSISnapshotControllerList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public NonNamespaceOperation<Network, NetworkList, Resource<Network>> networks() {
-    return new NetworkOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(Network.class, NetworkList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public NonNamespaceOperation<KubeScheduler, KubeSchedulerList, Resource<KubeScheduler>> kubeSchedulers() {
-    return new KubeSchedulerOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(KubeScheduler.class, KubeSchedulerList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public NonNamespaceOperation<Console, ConsoleList, Resource<Console>> consoles() {
-    return new ConsoleOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(Console.class, ConsoleList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public NonNamespaceOperation<ServiceCatalogControllerManager, ServiceCatalogControllerManagerList, Resource<ServiceCatalogControllerManager>> serviceCatalogControllerManagers() {
-    return new ServiceCatalogControllerManagerOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(ServiceCatalogControllerManager.class, ServiceCatalogControllerManagerList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public NonNamespaceOperation<ServiceCA, ServiceCAList, Resource<ServiceCA>> serviceCAs() {
-    return new ServiceCAOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(ServiceCA.class, ServiceCAList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public NonNamespaceOperation<ImageContentSourcePolicy, ImageContentSourcePolicyList, Resource<ImageContentSourcePolicy>> imageContentSourcePolicies() {
-    return new ImageContentSourcePolicyOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(ImageContentSourcePolicy.class, ImageContentSourcePolicyList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public NonNamespaceOperation<DNS, DNSList, Resource<DNS>> dnses() {
-    return new DNSOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(DNS.class, DNSList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public MixedOperation<DNSRecord, DNSRecordList, Resource<DNSRecord>> dnsRecords() {
-    return new DNSRecordOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(DNSRecord.class, DNSRecordList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public NonNamespaceOperation<OpenShiftControllerManager, OpenShiftControllerManagerList, Resource<OpenShiftControllerManager>> openShiftControllerManagers() {
-    return new OpenShiftControllerManagerOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(OpenShiftControllerManager.class, OpenShiftControllerManagerList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public NonNamespaceOperation<OpenShiftAPIServer, OpenShiftAPIServerList, Resource<OpenShiftAPIServer>> openShiftAPIServers() {
-    return new OpenShiftAPIServerOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(OpenShiftAPIServer.class, OpenShiftAPIServerList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public NonNamespaceOperation<KubeAPIServer, KubeAPIServerList, Resource<KubeAPIServer>> kubeAPIServers() {
-    return new KubeAPIServerOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(KubeAPIServer.class, KubeAPIServerList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public MixedOperation<IngressController, IngressControllerList, Resource<IngressController>> ingressControllers() {
-    return new IngressControllerOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(IngressController.class, IngressControllerList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public NonNamespaceOperation<ImagePruner, ImagePrunerList, Resource<ImagePruner>> imagePruners() {
-    return new ImagePrunerOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(ImagePruner.class, ImagePrunerList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public MixedOperation<PodNetworkConnectivityCheck, PodNetworkConnectivityCheckList, Resource<PodNetworkConnectivityCheck>> podNetworkConnectivityChecks() {
-    return new PodNetworkConnectivityCheckOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(PodNetworkConnectivityCheck.class, PodNetworkConnectivityCheckList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public NonNamespaceOperation<ServiceCatalogAPIServer, ServiceCatalogAPIServerList, Resource<ServiceCatalogAPIServer>> serviceCatalogAPIServers() {
-    return new ServiceCatalogAPIServerOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(ServiceCatalogAPIServer.class, ServiceCatalogAPIServerList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public NonNamespaceOperation<Storage, StorageList, Resource<Storage>> storages() {
-    return new StorageOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(Storage.class, StorageList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public NonNamespaceOperation<Authentication, AuthenticationList, Resource<Authentication>> authentications() {
-    return new AuthenticationOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(Authentication.class, AuthenticationList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public NonNamespaceOperation<CloudCredential, CloudCredentialList, Resource<CloudCredential>> cloudCredentials() {
-    return new CloudCredentialOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(CloudCredential.class, CloudCredentialList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public NonNamespaceOperation<ClusterCSIDriver, ClusterCSIDriverList, Resource<ClusterCSIDriver>> clusterCSIDrivers() {
-    return new ClusterCSIDriverOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(ClusterCSIDriver.class, ClusterCSIDriverList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public NonNamespaceOperation<io.fabric8.openshift.api.model.operator.v1.Config, ConfigList, Resource<io.fabric8.openshift.api.model.operator.v1.Config>> configs() {
-    return new ConfigOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(io.fabric8.openshift.api.model.operator.v1.Config.class, ConfigList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 }

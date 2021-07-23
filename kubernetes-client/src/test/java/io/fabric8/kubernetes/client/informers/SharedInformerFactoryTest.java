@@ -15,17 +15,19 @@
  */
 package io.fabric8.kubernetes.client.informers;
 
+import com.fasterxml.jackson.databind.jsontype.DefaultBaseTypeLimitingValidator;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
+import io.fabric8.kubernetes.client.BaseKubernetesClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.CustomResource;
+import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Kind;
 import io.fabric8.kubernetes.model.annotation.Plural;
@@ -36,7 +38,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -45,9 +46,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class SharedInformerFactoryTest {
   public static final long RESYNC_PERIOD = 10 * 1000L;
-  private OkHttpClient mockClient;
-  private Config config;
   private ExecutorService executorService;
+  private BaseKubernetesClient<?> mockBaseClient;
   private static class TestCustomResourceSpec { }
   private static class TestCustomResourceStatus { }
 
@@ -94,15 +94,14 @@ class SharedInformerFactoryTest {
 
   @BeforeEach
   void init() {
-    this.mockClient = Mockito.mock(OkHttpClient.class, Mockito.RETURNS_DEEP_STUBS);
-    this.config = new ConfigBuilder().withMasterUrl("https://localhost:8443/").build();
+    this.mockBaseClient = new DefaultKubernetesClient();
     this.executorService = Mockito.mock(ExecutorService.class, Mockito.RETURNS_DEEP_STUBS);
   }
 
   @Test
   void testInformersCreatedWithSameNameButDifferentCRDContext() {
     // Given
-    SharedInformerFactory sharedInformerFactory = new SharedInformerFactory(executorService, mockClient, config);
+    SharedInformerFactory sharedInformerFactory = new SharedInformerFactory(mockBaseClient, executorService);
 
     // When
     sharedInformerFactory.sharedIndexInformerForCustomResource(TestCustomResource.class, new OperationContext()
@@ -120,7 +119,7 @@ class SharedInformerFactoryTest {
   @Test
   void testSharedIndexInformerForCustomResourceNoType() {
     // Given
-    SharedInformerFactory sharedInformerFactory = new SharedInformerFactory(executorService, mockClient, config);
+    SharedInformerFactory sharedInformerFactory = new SharedInformerFactory(mockBaseClient, executorService);
     CustomResourceDefinitionContext context = new CustomResourceDefinitionContext.Builder()
       .withKind("Dummy")
       .withScope("Namespaced")
@@ -140,7 +139,7 @@ class SharedInformerFactoryTest {
   @Test
   void testGetExistingSharedIndexInformer() {
     // Given
-    SharedInformerFactory sharedInformerFactory = new SharedInformerFactory(executorService, mockClient, config);
+    SharedInformerFactory sharedInformerFactory = new SharedInformerFactory(mockBaseClient, executorService);
 
     // When
     sharedInformerFactory.sharedIndexInformerFor(Deployment.class, RESYNC_PERIOD);
@@ -154,7 +153,7 @@ class SharedInformerFactoryTest {
   @Test
   void testGetExistingSharedIndexInformerWithKindDifferentFromClassName() {
     // Given
-    SharedInformerFactory sharedInformerFactory = new SharedInformerFactory(executorService, mockClient, config);
+    SharedInformerFactory sharedInformerFactory = new SharedInformerFactory(mockBaseClient, executorService);
 
     // When
     SharedIndexInformer<MyAppCustomResource> createdInformer = sharedInformerFactory.sharedIndexInformerFor(MyAppCustomResource.class, RESYNC_PERIOD);
@@ -169,7 +168,7 @@ class SharedInformerFactoryTest {
   @Test
   void testGetExistingSharedIndexInformerWithTwoClassesSimilarNames() {
     // Given
-    SharedInformerFactory sharedInformerFactory = new SharedInformerFactory(executorService, mockClient, config);
+    SharedInformerFactory sharedInformerFactory = new SharedInformerFactory(mockBaseClient, executorService);
     sharedInformerFactory.sharedIndexInformerFor(VirtualService.class, RESYNC_PERIOD);
     sharedInformerFactory.sharedIndexInformerFor(Service.class, RESYNC_PERIOD);
 
@@ -185,7 +184,7 @@ class SharedInformerFactoryTest {
   @Test
   void testGetExistingSharedIndexInformersReturnsListOfOperationContextAndSharedIndexInformerEntries() {
     // Given
-    SharedInformerFactory sharedInformerFactory = new SharedInformerFactory(executorService, mockClient, config);
+    SharedInformerFactory sharedInformerFactory = new SharedInformerFactory(mockBaseClient, executorService);
     sharedInformerFactory.sharedIndexInformerFor(MyAppCustomResource.class, RESYNC_PERIOD);
     sharedInformerFactory.sharedIndexInformerFor(Secret.class, RESYNC_PERIOD);
     sharedInformerFactory.sharedIndexInformerFor(MyAppCustomResourceCopy.class, RESYNC_PERIOD);
@@ -203,25 +202,6 @@ class SharedInformerFactoryTest {
       .isEqualTo("secrets");
     assertThat(existingInformers.get(2).getKey().getPlural())
       .isEqualTo("myapps");
-  }
-
-  @Test
-  void testRegisterKindToKubernetesDeserializer() throws IOException {
-    // Given
-    SharedInformerFactory sharedInformerFactory = new SharedInformerFactory(executorService, mockClient, config);
-    String flinkJobJson = "{\n" +
-      "    \"apiVersion\": \"com.acme/v1\",\n" +
-      "    \"kind\": \"FlinkJob\",\n" +
-      "    \"spec\": { \"flinkJobSpec\":\"xyz\" }}";
-
-    // When
-    sharedInformerFactory.registerKindToKubernetesDeserializer(FlinkJobCustomResource.class);
-
-    // Then
-    FlinkJobCustomResource flinkJobCustomResource = Serialization.unmarshal(flinkJobJson);
-    assertThat(flinkJobCustomResource)
-      .isNotNull()
-      .hasFieldOrPropertyWithValue("spec.flinkJobSpec", "xyz");
   }
 
 }

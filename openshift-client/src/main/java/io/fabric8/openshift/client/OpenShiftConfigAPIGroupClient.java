@@ -17,6 +17,7 @@ package io.fabric8.openshift.client;
 
 import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.openshift.api.model.APIServer;
@@ -48,20 +49,7 @@ import io.fabric8.openshift.api.model.ProxyList;
 import io.fabric8.openshift.api.model.Scheduler;
 import io.fabric8.openshift.api.model.SchedulerList;
 import io.fabric8.openshift.client.dsl.OpenShiftConfigAPIGroupDSL;
-import io.fabric8.openshift.client.dsl.internal.config.APIServerOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.config.AuthenticationOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.config.ClusterOperatorOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.config.ClusterVersionOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.config.ConsoleOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.config.DNSOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.config.FeatureGateOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.config.InfrastructureOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.config.NetworkOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.config.OAuthOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.config.OperatorHubOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.config.ProxyOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.config.IngressOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.config.SchedulerOperationsImpl;
 import okhttp3.OkHttpClient;
 
 public class OpenShiftConfigAPIGroupClient extends BaseClient implements OpenShiftConfigAPIGroupDSL {
@@ -75,27 +63,27 @@ public class OpenShiftConfigAPIGroupClient extends BaseClient implements OpenShi
 
   @Override
   public NonNamespaceOperation<APIServer, APIServerList, Resource<APIServer>> apiServers() {
-    return new APIServerOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(APIServer.class, APIServerList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public NonNamespaceOperation<Authentication, AuthenticationList, Resource<Authentication>> authentications() {
-    return new AuthenticationOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(Authentication.class, AuthenticationList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public NonNamespaceOperation<ClusterOperator, ClusterOperatorList, Resource<ClusterOperator>> clusterOperators() {
-    return new ClusterOperatorOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(ClusterOperator.class, ClusterOperatorList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public NonNamespaceOperation<Console, ConsoleList, Resource<Console>> consoles() {
-    return new ConsoleOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(Console.class, ConsoleList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public NonNamespaceOperation<ClusterVersion, ClusterVersionList, Resource<ClusterVersion>> clusterVersions() {
-    return new ClusterVersionOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(ClusterVersion.class, ClusterVersionList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
@@ -105,41 +93,41 @@ public class OpenShiftConfigAPIGroupClient extends BaseClient implements OpenShi
 
   @Override
   public NonNamespaceOperation<FeatureGate, FeatureGateList, Resource<FeatureGate>> featureGates() {
-    return new FeatureGateOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(FeatureGate.class, FeatureGateList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public NonNamespaceOperation<Infrastructure, InfrastructureList, Resource<Infrastructure>> infrastructures() {
-    return new InfrastructureOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(Infrastructure.class, InfrastructureList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public NonNamespaceOperation<Ingress, IngressList, Resource<Ingress>> ingresses() {
-    return new IngressOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(Ingress.class, IngressList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public NonNamespaceOperation<Network, NetworkList, Resource<Network>> networks() {
-    return new NetworkOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(Network.class, NetworkList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public NonNamespaceOperation<OAuth, OAuthList, Resource<OAuth>> oAuths() {
-    return new OAuthOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(OAuth.class, OAuthList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public NonNamespaceOperation<OperatorHub, OperatorHubList, Resource<OperatorHub>> operatorHubs() {
-    return new OperatorHubOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(OperatorHub.class, OperatorHubList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public NonNamespaceOperation<Proxy, ProxyList, Resource<Proxy>> proxies() {
-    return new ProxyOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(Proxy.class, ProxyList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public NonNamespaceOperation<Scheduler, SchedulerList, Resource<Scheduler>> schedulers() {
-    return new SchedulerOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(Scheduler.class, SchedulerList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 }

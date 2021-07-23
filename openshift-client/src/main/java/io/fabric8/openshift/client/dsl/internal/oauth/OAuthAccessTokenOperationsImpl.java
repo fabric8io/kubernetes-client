@@ -23,7 +23,6 @@ import io.fabric8.openshift.api.model.OAuthAccessToken;
 import io.fabric8.openshift.api.model.OAuthAccessTokenList;
 import io.fabric8.openshift.client.OpenShiftConfig;
 
-
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.OAUTH;
 
 public class OAuthAccessTokenOperationsImpl extends OpenShiftOperation<OAuthAccessToken, OAuthAccessTokenList,
@@ -35,9 +34,7 @@ public class OAuthAccessTokenOperationsImpl extends OpenShiftOperation<OAuthAcce
 
   public OAuthAccessTokenOperationsImpl(OperationContext context) {
     super(context.withApiGroupName(OAUTH)
-      .withPlural("oauthaccesstokens"));
-    this.type = OAuthAccessToken.class;
-    this.listType = OAuthAccessTokenList.class;
+      .withPlural("oauthaccesstokens"), OAuthAccessToken.class, OAuthAccessTokenList.class);
   }
 
   @Override

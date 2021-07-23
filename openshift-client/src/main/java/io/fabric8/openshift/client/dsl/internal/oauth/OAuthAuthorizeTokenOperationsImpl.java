@@ -36,9 +36,7 @@ public class OAuthAuthorizeTokenOperationsImpl extends OpenShiftOperation<OAuthA
 
   public OAuthAuthorizeTokenOperationsImpl(OperationContext context) {
     super(context.withApiGroupName(OAUTH)
-      .withPlural("oauthauthorizetokens"));
-    this.type = OAuthAuthorizeToken.class;
-    this.listType = OAuthAuthorizeTokenList.class;
+      .withPlural("oauthauthorizetokens"), OAuthAuthorizeToken.class, OAuthAuthorizeTokenList.class);
   }
 
   @Override

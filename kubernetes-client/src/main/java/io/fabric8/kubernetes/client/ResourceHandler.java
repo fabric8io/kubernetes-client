@@ -16,67 +16,19 @@
 
 package io.fabric8.kubernetes.client;
 
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
+import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 
-public interface ResourceHandler<T, V extends VisitableBuilder<T, V>> {
-
-  class Key {
-    private final String kind;
-    private final String apiVersion;
-    private final String repr;
-
-    public Key(String kind, String apiVersion) {
-      this.kind = kind;
-      this.apiVersion = apiVersion;
-      this.repr = String.format("Key[kind=`%s`, apiVersion=`%s`]", this.kind, this.apiVersion);
-    }
-
-    public String getKind() {
-      return kind;
-    }
-
-    public String getApiVersion() {
-      return apiVersion;
-    }
-
-    @Override
-    public String toString() {
-      return this.repr;
-    }
-
-    @Override
-    public int hashCode() {
-      return Objects.hash(this.kind, this.apiVersion);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-      if (obj == null) {
-        return false;
-      }
-
-      if (!(obj instanceof Key)) {
-        return false;
-      }
-
-      Key other = (Key) obj;
-
-      return this.getKind().equals(other.getKind())
-        && this.getApiVersion().equals(other.getApiVersion());
-    }
-  }
-
-  String getKind();
-
-  String getApiVersion();
+public interface ResourceHandler<T extends HasMetadata, V extends VisitableBuilder<T, V>> {
 
   /**
    * Create the specified resource
@@ -220,4 +172,19 @@ public interface ResourceHandler<T, V extends VisitableBuilder<T, V>> {
    * @return              The true if the resource was successfully deleted.
    */
   Resource<T> resource(OkHttpClient client, Config config, String namespace, T item);
+  
+  /**
+   * Create the operation support for the current resource
+   * @param client        An instance of the http client.
+   * @param config        The client config.
+   * @param listType      The list type
+   * @return              The {@link HasMetadataOperation}
+   */
+  <L extends KubernetesResourceList<T>> HasMetadataOperation<T, L, Resource<T>> operation(OkHttpClient client, Config config, Class<L> listType);
+
+  /**
+   * @return true if there is a specialized operation associated with this handler
+   */
+  boolean hasOperation();
+
 }

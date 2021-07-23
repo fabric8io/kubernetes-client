@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.api.model.scheduling.v1beta1.PriorityClassList;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.V1beta1SchedulingAPIGroupDSL;
-import io.fabric8.kubernetes.client.dsl.internal.scheduling.v1beta1.PriorityClassOperationsImpl;
 import okhttp3.OkHttpClient;
 
 public class V1beta1SchedulingAPIGroupClient extends BaseClient implements V1beta1SchedulingAPIGroupDSL {
@@ -34,6 +33,6 @@ public class V1beta1SchedulingAPIGroupClient extends BaseClient implements V1bet
   }
 
   public NonNamespaceOperation<PriorityClass, PriorityClassList, Resource<PriorityClass>> priorityClasses() {
-    return new PriorityClassOperationsImpl(httpClient, getConfiguration());
+    return Handlers.getOperation(PriorityClass.class, PriorityClassList.class, httpClient, getConfiguration());
   }
 }

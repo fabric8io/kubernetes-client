@@ -36,14 +36,6 @@ import io.fabric8.openshift.api.model.monitoring.v1.ThanosRulerList;
 import io.fabric8.openshift.api.model.monitoring.v1alpha1.AlertmanagerConfig;
 import io.fabric8.openshift.api.model.monitoring.v1alpha1.AlertmanagerConfigList;
 import io.fabric8.openshift.client.dsl.OpenShiftMonitoringAPIGroupDSL;
-import io.fabric8.openshift.client.dsl.internal.monitoring.coreos.AlertmanagerConfigOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.monitoring.coreos.AlertmanagerOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.monitoring.coreos.PodMonitorOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.monitoring.coreos.ProbeOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.monitoring.coreos.PrometheusOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.monitoring.coreos.PrometheusRuleOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.monitoring.coreos.ServiceMonitorOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.monitoring.coreos.ThanosRulerOperationsImpl;
 import okhttp3.OkHttpClient;
 
 public class OpenShiftMonitoringAPIGroupClient extends BaseClient implements OpenShiftMonitoringAPIGroupDSL {
@@ -57,41 +49,41 @@ public class OpenShiftMonitoringAPIGroupClient extends BaseClient implements Ope
 
   @Override
   public MixedOperation<AlertmanagerConfig, AlertmanagerConfigList, Resource<AlertmanagerConfig>> alertmanagerConfigs() {
-    return new AlertmanagerConfigOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(AlertmanagerConfig.class, AlertmanagerConfigList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public MixedOperation<Prometheus, PrometheusList, Resource<Prometheus>> prometheuses() {
-    return new PrometheusOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(Prometheus.class, PrometheusList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public MixedOperation<PodMonitor, PodMonitorList, Resource<PodMonitor>> podMonitors() {
-    return new PodMonitorOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(PodMonitor.class, PodMonitorList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public MixedOperation<Probe, ProbeList, Resource<Probe>> probes() {
-    return new ProbeOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(Probe.class, ProbeList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public MixedOperation<Alertmanager, AlertmanagerList, Resource<Alertmanager>> alertmanagers() {
-    return new AlertmanagerOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(Alertmanager.class, AlertmanagerList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public MixedOperation<PrometheusRule, PrometheusRuleList, Resource<PrometheusRule>> prometheusRules() {
-    return new PrometheusRuleOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(PrometheusRule.class, PrometheusRuleList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public MixedOperation<ServiceMonitor, ServiceMonitorList, Resource<ServiceMonitor>> serviceMonitors() {
-    return new ServiceMonitorOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(ServiceMonitor.class, ServiceMonitorList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public MixedOperation<ThanosRuler, ThanosRulerList, Resource<ThanosRuler>> thanosRulers() {
-    return new ThanosRulerOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(ThanosRuler.class, ThanosRulerList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 }

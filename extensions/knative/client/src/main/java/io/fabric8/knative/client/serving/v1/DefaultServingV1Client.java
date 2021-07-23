@@ -15,17 +15,17 @@
  */
 package io.fabric8.knative.client.serving.v1;
 
+import io.fabric8.kubernetes.client.BaseClient;
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
+import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
-import io.fabric8.knative.serving.v1.*;
-import io.fabric8.knative.client.serving.v1.internal.*;
-import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
-import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.knative.serving.v1.*;
+import okhttp3.OkHttpClient;
 
 public class DefaultServingV1Client extends BaseClient implements NamespacedServingV1Client {
 
@@ -60,22 +60,22 @@ public class DefaultServingV1Client extends BaseClient implements NamespacedServ
 
   @Override
   public MixedOperation<Service, ServiceList, Resource<Service>> services() {
-    return new ServiceOperationsImpl(this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(Service.class, ServiceList.class, this.getHttpClient(), this.getConfiguration());
   }
 
   @Override
   public MixedOperation<Route, RouteList, Resource<Route>> routes() {
-    return new RouteOperationsImpl(this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(Route.class, RouteList.class, this.getHttpClient(), this.getConfiguration());
   }
 
   @Override
   public MixedOperation<Revision, RevisionList, Resource<Revision>> revisions() {
-    return new RevisionOperationsImpl(this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(Revision.class, RevisionList.class, this.getHttpClient(), this.getConfiguration());
   }
 
   @Override
   public MixedOperation<Configuration, ConfigurationList, Resource<Configuration>> configurations() {
-    return new ConfigurationOperationsImpl(this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(Configuration.class, ConfigurationList.class, this.getHttpClient(), this.getConfiguration());
   }
 
 }

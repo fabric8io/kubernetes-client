@@ -17,12 +17,12 @@ package io.fabric8.openshift.client;
 
 import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.openshift.api.model.clusterautoscaling.v1.ClusterAutoscaler;
 import io.fabric8.openshift.api.model.clusterautoscaling.v1.ClusterAutoscalerList;
 import io.fabric8.openshift.client.dsl.V1ClusterAutoscalingAPIGroupDSL;
-import io.fabric8.openshift.client.dsl.internal.autoscaling.ClusterAutoscalerOperationsImpl;
 import okhttp3.OkHttpClient;
 
 public class V1OpenShiftClusterAutoscalingAPIGroupClient extends BaseClient implements V1ClusterAutoscalingAPIGroupDSL {
@@ -36,6 +36,6 @@ public class V1OpenShiftClusterAutoscalingAPIGroupClient extends BaseClient impl
 
   @Override
   public NonNamespaceOperation<ClusterAutoscaler, ClusterAutoscalerList, Resource<ClusterAutoscaler>> clusterAutoscalers() {
-    return new ClusterAutoscalerOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(ClusterAutoscaler.class, ClusterAutoscalerList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 }

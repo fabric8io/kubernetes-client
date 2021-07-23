@@ -17,12 +17,12 @@ package io.fabric8.openshift.client;
 
 import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.openshift.api.model.clusterautoscaling.v1beta1.MachineAutoscaler;
 import io.fabric8.openshift.api.model.clusterautoscaling.v1beta1.MachineAutoscalerList;
 import io.fabric8.openshift.client.dsl.V1beta1ClusterAutoscalingAPIGroupDSL;
-import io.fabric8.openshift.client.dsl.internal.autoscaling.MachineAutoscalerOperationsImpl;
 import okhttp3.OkHttpClient;
 
 public class V1beta1OpenShiftClusterAutoscalingAPIGroupClient extends BaseClient implements V1beta1ClusterAutoscalingAPIGroupDSL {
@@ -36,6 +36,6 @@ public class V1beta1OpenShiftClusterAutoscalingAPIGroupClient extends BaseClient
 
   @Override
   public MixedOperation<MachineAutoscaler, MachineAutoscalerList, Resource<MachineAutoscaler>> machineAutoscalers() {
-    return new MachineAutoscalerOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(MachineAutoscaler.class, MachineAutoscalerList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 }

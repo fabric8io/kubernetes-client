@@ -15,9 +15,16 @@
  */
 package io.fabric8.volumesnapshot.client;
 
-import io.fabric8.kubernetes.client.ExtensionAdapterSupport;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.ExtensionAdapter;
+import io.fabric8.kubernetes.client.ExtensionAdapterSupport;
+import io.fabric8.kubernetes.client.Handlers;
+import io.fabric8.volumesnapshot.api.model.VolumeSnapshot;
+import io.fabric8.volumesnapshot.api.model.VolumeSnapshotClass;
+import io.fabric8.volumesnapshot.api.model.VolumeSnapshotContent;
+import io.fabric8.volumesnapshot.client.internal.VolumeSnapshotClassOperationsImpl;
+import io.fabric8.volumesnapshot.client.internal.VolumeSnapshotContentOperationsImpl;
+import io.fabric8.volumesnapshot.client.internal.VolumeSnapshotOperationsImpl;
 import okhttp3.OkHttpClient;
 
 import java.net.URL;
@@ -25,6 +32,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 public class VolumeSnapshotExtensionAdapter extends ExtensionAdapterSupport implements ExtensionAdapter<VolumeSnapshotClient> {
+
+  static {
+    Handlers.register(VolumeSnapshotClass.class, VolumeSnapshotClassOperationsImpl::new);
+    Handlers.register(VolumeSnapshotContent.class, VolumeSnapshotContentOperationsImpl::new);
+    Handlers.register(VolumeSnapshot.class, VolumeSnapshotOperationsImpl::new);
+  }
 
   static final ConcurrentMap<URL, Boolean> IS_VOLUME_SNAPSHOT = new ConcurrentHashMap<>();
   static final ConcurrentMap<URL, Boolean> USES_VOLUME_SNAPSHOT_APIGROUPS = new ConcurrentHashMap<>();

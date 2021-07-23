@@ -29,7 +29,6 @@ import io.fabric8.openshift.api.model.miscellaneous.cloudcredential.v1.Credentia
 import io.fabric8.openshift.api.model.miscellaneous.cloudcredential.v1.CredentialsRequestList;
 import io.fabric8.openshift.api.model.miscellaneous.cncf.cni.v1.NetworkAttachmentDefinition;
 import io.fabric8.openshift.api.model.miscellaneous.cncf.cni.v1.NetworkAttachmentDefinitionList;
-import io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.Config;
 import io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.BareMetalHost;
 import io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.BareMetalHostList;
 import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.OperatorPKI;
@@ -87,21 +86,25 @@ public interface OpenShiftClient extends KubernetesClient {
   /**
    * {@inheritDoc}
    */
+  @Override
   ExtensionsAPIGroupDSL extensions();
 
   /**
    * {@inheritDoc}
    */
+  @Override
   VersionInfo getVersion();
 
   /**
    * {@inheritDoc}
    */
+  @Override
   AppsAPIGroupDSL apps();
 
   /**
    * {@inheritDoc}
    */
+  @Override
   AutoscalingAPIGroupDSL autoscaling();
 
   /**
@@ -156,26 +159,31 @@ public interface OpenShiftClient extends KubernetesClient {
   /**
    * {@inheritDoc}
    */
+  @Override
   NetworkAPIGroupDSL network();
 
   /**
    * {@inheritDoc}
    */
+  @Override
   StorageAPIGroupDSL storage();
 
   /**
    * {@inheritDoc}
    */
+  @Override
   BatchAPIGroupDSL batch();
 
   /**
    * {@inheritDoc}
    */
+  @Override
   RbacAPIGroupDSL rbac();
 
   /**
    * {@inheritDoc}
    */
+  @Override
   SchedulingAPIGroupDSL scheduling();
 
   /**

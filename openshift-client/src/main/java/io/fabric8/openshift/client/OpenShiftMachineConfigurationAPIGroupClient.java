@@ -30,11 +30,6 @@ import io.fabric8.openshift.api.model.machineconfig.v1.MachineConfigList;
 import io.fabric8.openshift.api.model.machineconfig.v1.MachineConfigPool;
 import io.fabric8.openshift.api.model.machineconfig.v1.MachineConfigPoolList;
 import io.fabric8.openshift.client.dsl.MachineConfigurationAPIGroupDSL;
-import io.fabric8.openshift.client.dsl.internal.machineconfiguration.ContainerRuntimeConfigOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.machineconfiguration.ControllerConfigOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.machineconfiguration.KubeletConfigOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.machineconfiguration.MachineConfigOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.machineconfiguration.MachineConfigPoolOperationsImpl;
 import okhttp3.OkHttpClient;
 
 public class OpenShiftMachineConfigurationAPIGroupClient extends BaseClient implements MachineConfigurationAPIGroupDSL {
@@ -49,26 +44,26 @@ public class OpenShiftMachineConfigurationAPIGroupClient extends BaseClient impl
 
   @Override
   public NonNamespaceOperation<ContainerRuntimeConfig, ContainerRuntimeConfigList, Resource<ContainerRuntimeConfig>> containerRuntimeConfigs() {
-    return new ContainerRuntimeConfigOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(ContainerRuntimeConfig.class, ContainerRuntimeConfigList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public NonNamespaceOperation<ControllerConfig, ControllerConfigList, Resource<ControllerConfig>> controllerConfigs() {
-    return new ControllerConfigOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(ControllerConfig.class, ControllerConfigList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public NonNamespaceOperation<KubeletConfig, KubeletConfigList, Resource<KubeletConfig>> kubeletConfigs() {
-    return new KubeletConfigOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(KubeletConfig.class, KubeletConfigList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public NonNamespaceOperation<MachineConfigPool, MachineConfigPoolList, Resource<MachineConfigPool>> machineConfigPools() {
-    return new MachineConfigPoolOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(MachineConfigPool.class, MachineConfigPoolList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public NonNamespaceOperation<MachineConfig, MachineConfigList, Resource<MachineConfig>> machineConfigs() {
-    return new MachineConfigOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(MachineConfig.class, MachineConfigList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 }

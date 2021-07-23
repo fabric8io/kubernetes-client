@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.DeleteOptions;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
+import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
@@ -89,6 +90,14 @@ class ResourceTest {
 
     // Then
     assertEquals(pod1, response);
+  }
+
+  @Test
+  void testGenericResourceFails() {
+    assertThrows(KubernetesClientException.class, () -> client.resource(Serialization.unmarshal("apiVersion: example.io/v1\n"
+        + "kind: GenericThatFails\n"
+        + "metadata:\n"
+        + "  name: failure\n", GenericKubernetesResource.class)));
   }
 
   @Test

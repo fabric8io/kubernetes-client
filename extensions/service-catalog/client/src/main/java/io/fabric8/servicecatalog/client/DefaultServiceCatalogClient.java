@@ -38,39 +38,44 @@ public class DefaultServiceCatalogClient extends BaseClient implements Namespace
     super(httpClient, configuration);
   }
 
-  public NonNamespaceOperation<ClusterServiceBroker, ClusterServiceBrokerList, ClusterServiceBrokerResource> clusterServiceBrokers() {
+  @Override
+public NonNamespaceOperation<ClusterServiceBroker, ClusterServiceBrokerList, ClusterServiceBrokerResource> clusterServiceBrokers() {
     return new ClusterServiceBrokerOperationsImpl(this.getHttpClient(), this.getConfiguration());
   }
 
-  public NonNamespaceOperation<ClusterServiceClass, ClusterServiceClassList, ClusterServiceClassResource> clusterServiceClasses() {
+  @Override
+public NonNamespaceOperation<ClusterServiceClass, ClusterServiceClassList, ClusterServiceClassResource> clusterServiceClasses() {
     return new ClusterServiceClassOperationsImpl(this.getHttpClient(), this.getConfiguration());
   }
 
-  public NonNamespaceOperation<ClusterServicePlan, ClusterServicePlanList, ClusterServicePlanResource> clusterServicePlans() {
+  @Override
+public NonNamespaceOperation<ClusterServicePlan, ClusterServicePlanList, ClusterServicePlanResource> clusterServicePlans() {
     return new ClusterServicePlanOperationsImpl(this.getHttpClient(), this.getConfiguration());
   }
 
-  public MixedOperation<ServiceInstance, ServiceInstanceList, ServiceInstanceResource> serviceInstances() {
+  @Override
+public MixedOperation<ServiceInstance, ServiceInstanceList, ServiceInstanceResource> serviceInstances() {
     return new ServiceInstanceOperationsImpl(this.getHttpClient(), this.getConfiguration());
   }
 
-  public MixedOperation<ServiceBinding, ServiceBindingList, ServiceBindingResource> serviceBindings() {
+  @Override
+public MixedOperation<ServiceBinding, ServiceBindingList, ServiceBindingResource> serviceBindings() {
     return new ServiceBindingOperationsImpl(this.getHttpClient(), this.getConfiguration());
   }
 
   @Override
   public MixedOperation<ServiceBroker, ServiceBrokerList, Resource<ServiceBroker>> serviceBrokers() {
-    return new ServiceBrokerOperationsImpl(this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(ServiceBroker.class, ServiceBrokerList.class, httpClient, getConfiguration());
   }
 
   @Override
   public MixedOperation<ServiceClass, ServiceClassList, Resource<ServiceClass>> serviceClasses() {
-    return new ServiceClassOperationsImpl(this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(ServiceClass.class, ServiceClassList.class, httpClient, getConfiguration());
   }
 
   @Override
   public MixedOperation<ServicePlan, ServicePlanList, Resource<ServicePlan>> servicePlans() {
-    return new ServicePlanOperationsImpl(this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(ServicePlan.class, ServicePlanList.class, httpClient, getConfiguration());
   }
 
   @Override

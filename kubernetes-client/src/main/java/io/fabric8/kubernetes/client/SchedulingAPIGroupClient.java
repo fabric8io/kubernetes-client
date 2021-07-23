@@ -22,7 +22,6 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.SchedulingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1SchedulingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1beta1SchedulingAPIGroupDSL;
-import io.fabric8.kubernetes.client.dsl.internal.scheduling.v1beta1.PriorityClassOperationsImpl;
 import okhttp3.OkHttpClient;
 
 public class SchedulingAPIGroupClient extends BaseClient implements SchedulingAPIGroupDSL {
@@ -32,7 +31,7 @@ public class SchedulingAPIGroupClient extends BaseClient implements SchedulingAP
 
   @Override
   public MixedOperation<PriorityClass, PriorityClassList, Resource<PriorityClass>> priorityClass() {
-    return new PriorityClassOperationsImpl(httpClient, getConfiguration());
+    return Handlers.getOperation(PriorityClass.class, PriorityClassList.class, httpClient, getConfiguration());
   }
 
   @Override

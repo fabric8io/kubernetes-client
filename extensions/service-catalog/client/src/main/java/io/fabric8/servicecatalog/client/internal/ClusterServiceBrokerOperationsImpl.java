@@ -15,7 +15,6 @@
  */
 package io.fabric8.servicecatalog.client.internal;
 
-import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
@@ -35,9 +34,8 @@ public class ClusterServiceBrokerOperationsImpl extends HasMetadataOperation<Clu
   }
 
   public ClusterServiceBrokerOperationsImpl(OperationContext context) {
-      super(context.withApiGroupName("servicecatalog.k8s.io").withApiGroupVersion("v1beta1").withPlural("clusterservicebrokers"));
-        this.type=ClusterServiceBroker.class;
-        this.listType= ClusterServiceBrokerList.class;
+      super(context.withApiGroupName("servicecatalog.k8s.io").withApiGroupVersion("v1beta1").withPlural("clusterservicebrokers"),
+              ClusterServiceBroker.class, ClusterServiceBrokerList.class);
   }
 
     @Override
@@ -67,6 +65,7 @@ public class ClusterServiceBrokerOperationsImpl extends HasMetadataOperation<Clu
     }
 
 
+    @Override
     public ClusterServiceClassResource useServiceClass(String externalName) {
         ClusterServiceBroker item = get();
         Map<String, String> fields = new HashMap<>();
@@ -81,10 +80,5 @@ public class ClusterServiceBrokerOperationsImpl extends HasMetadataOperation<Clu
         ClusterServiceClass c = list.get(0);
         return new ClusterServiceClassOperationsImpl(context);
     }
-
-  @Override
-  public ClusterServiceBroker edit(Visitor... visitors) {
-    return patch(new ClusterServiceBrokerBuilder(getMandatory()).accept(visitors).build());
-  }
 
 }
