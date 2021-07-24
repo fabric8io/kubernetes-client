@@ -17,17 +17,20 @@ package io.fabric8.servicecatalog.examples; /**
 
 import io.fabric8.servicecatalog.api.model.ServiceInstanceList;
 import io.fabric8.servicecatalog.client.ServiceCatalogClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ListServiceInstances {
+  private static final Logger logger = LoggerFactory.getLogger(ListServiceInstances.class.getSimpleName());
 
   public static void main(String[] args) {
       ServiceCatalogClient client = ClientFactory.newClient(args);
       ServiceInstanceList list = client.serviceInstances().inNamespace("iocanel").list();
 
-      System.out.println("Listing Service Instances:");
-      list.getItems().stream()
-          .forEach(b -> System.out.println(b));
+      logger.info("Listing Service Instances:");
+      list.getItems()
+          .forEach(b -> logger.info(b));
 
-      System.out.println("Done");
+      logger.info("Done");
   }
 }

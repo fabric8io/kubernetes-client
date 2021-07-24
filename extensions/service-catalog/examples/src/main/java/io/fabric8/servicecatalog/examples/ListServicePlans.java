@@ -18,16 +18,19 @@ package io.fabric8.servicecatalog.examples; /**
 import io.fabric8.servicecatalog.api.model.ClusterServicePlan;
 import io.fabric8.servicecatalog.api.model.ClusterServicePlanList;
 import io.fabric8.servicecatalog.client.ServiceCatalogClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ListServicePlans {
+  private static final Logger logger = LoggerFactory.getLogger(ListServicePlans.class.getSimpleName());
 
   public static void main(String[] args) {
       ServiceCatalogClient client = ClientFactory.newClient(args);
       ClusterServicePlanList list = client.clusterServicePlans().list();
       ClusterServicePlan c;
-      System.out.println("Listing Cluster Service Plans:");
-      list.getItems().stream()
-          .forEach(b -> System.out.println(b.getSpec().getClusterServiceBrokerName() + "\t\t\t" + b.getSpec().getClusterServiceClassRef() + "\t\t\t" + b.getSpec().getExternalName()));
-      System.out.println("Done");
+      logger.info("Listing Cluster Service Plans:");
+      list.getItems()
+          .forEach(b -> logger.info(b.getSpec().getClusterServiceBrokerName() + "\t\t\t" + b.getSpec().getClusterServiceClassRef() + "\t\t\t" + b.getSpec().getExternalName()));
+      logger.info("Done");
   }
 }
