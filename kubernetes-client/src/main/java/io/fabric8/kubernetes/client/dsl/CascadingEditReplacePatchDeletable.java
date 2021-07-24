@@ -22,5 +22,5 @@ public interface CascadingEditReplacePatchDeletable<T> extends
   EditReplacePatchDeletable<T>,
   Cascading<EditReplacePatchDeletable<T>>,
   PropagationPolicyConfigurable<EditReplacePatchDeletable<T>>,
-  Lockable<Replaceable<T>> {
+  Lockable<ReplaceDeletable<T>> {
 }
