@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.admissionregistration.v1.MutatingWebhookC
 import io.fabric8.kubernetes.api.model.admissionregistration.v1.ValidatingWebhookConfiguration;
 import io.fabric8.kubernetes.api.model.admissionregistration.v1.ValidatingWebhookConfigurationList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import okhttp3.OkHttpClient;
 
@@ -33,8 +34,8 @@ public class V1AdmissionRegistrationAPIGroupClient extends BaseClient implements
   }
 
   @Override
-  public MixedOperation<ValidatingWebhookConfiguration, ValidatingWebhookConfigurationList, Resource<ValidatingWebhookConfiguration>> validatingWebhookConfigurations() {
-    return Handlers.getOperation(ValidatingWebhookConfiguration.class, ValidatingWebhookConfigurationList.class, httpClient, getConfiguration());
+  public NonNamespaceOperation<ValidatingWebhookConfiguration, ValidatingWebhookConfigurationList, Resource<ValidatingWebhookConfiguration>> validatingWebhookConfigurations() {
+      return Handlers.getOperation(ValidatingWebhookConfiguration.class, ValidatingWebhookConfigurationList.class, httpClient, getConfiguration());
   }
 
   @Override

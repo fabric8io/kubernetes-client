@@ -34,5 +34,5 @@ public interface V1beta1PolicyAPIGroupDSL extends Client {
    *
    * @return {@link MixedOperation} for PodSecurityPolicy resource
    */
-  MixedOperation<PodSecurityPolicy, PodSecurityPolicyList, Resource<PodSecurityPolicy>> podSecurityPolicies();
+  NonNamespaceOperation<PodSecurityPolicy, PodSecurityPolicyList, Resource<PodSecurityPolicy>> podSecurityPolicies();
 }

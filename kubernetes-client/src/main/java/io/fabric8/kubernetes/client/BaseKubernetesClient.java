@@ -15,8 +15,6 @@
  */
 package io.fabric8.kubernetes.client;
 
-import static io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation.DEFAULT_PROPAGATION_POLICY;
-
 import io.fabric8.kubernetes.api.model.APIService;
 import io.fabric8.kubernetes.api.model.APIServiceList;
 import io.fabric8.kubernetes.api.model.Binding;
@@ -116,13 +114,12 @@ import io.fabric8.kubernetes.client.extended.run.RunConfigBuilder;
 import io.fabric8.kubernetes.client.extended.run.RunOperations;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
 import io.fabric8.kubernetes.client.utils.Serialization;
+import okhttp3.OkHttpClient;
 
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.ExecutorService;
-
-import okhttp3.OkHttpClient;
 
 /**
  * Base class for all Kubernetes Clients implementing KubernetesClient interface.
@@ -167,7 +164,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    * {@inheritDoc}
    */
   @Override
-  public MixedOperation<ComponentStatus, ComponentStatusList, Resource<ComponentStatus>> componentstatuses() {
+  public NonNamespaceOperation<ComponentStatus, ComponentStatusList, Resource<ComponentStatus>> componentstatuses() {
     return new ComponentStatusOperationsImpl(httpClient, getConfiguration());
   }
 
@@ -335,8 +332,8 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    * {@inheritDoc}
    */
   @Override
-  public MixedOperation<APIService, APIServiceList, Resource<APIService>> apiServices() {
-    return Handlers.getOperation(APIService.class, APIServiceList.class, httpClient, getConfiguration());
+  public NonNamespaceOperation<APIService, APIServiceList, Resource<APIService>> apiServices() {
+      return Handlers.getOperation(APIService.class, APIServiceList.class, httpClient, getConfiguration());
   }
 
   /**

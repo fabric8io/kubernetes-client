@@ -233,7 +233,7 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
     delegate.close();
   }
 
-  public MixedOperation<ComponentStatus, ComponentStatusList, Resource<ComponentStatus>> componentstatuses() {
+  public NonNamespaceOperation<ComponentStatus, ComponentStatusList, Resource<ComponentStatus>> componentstatuses() {
 	return delegate.componentstatuses();
   }
 
@@ -298,7 +298,7 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
   }
 
   @Override
-  public MixedOperation<APIService, APIServiceList, Resource<APIService>> apiServices() {
+  public NonNamespaceOperation<APIService, APIServiceList, Resource<APIService>> apiServices() {
     return delegate.apiServices();
   }
 

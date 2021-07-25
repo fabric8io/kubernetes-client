@@ -334,7 +334,7 @@ public interface KubernetesClient extends Client {
    *
    * @return MixedOperation object with which you can do basic operations for ComponentStatus
    */
-  MixedOperation<ComponentStatus, ComponentStatusList, Resource<ComponentStatus>> componentstatuses();
+  NonNamespaceOperation<ComponentStatus, ComponentStatusList, Resource<ComponentStatus>> componentstatuses();
 
   /**
    * Load a Kubernetes resource object from file InputStream
@@ -484,7 +484,7 @@ public interface KubernetesClient extends Client {
    *
    * @return MixedOperation object for APIService related operations
    */
-  MixedOperation<APIService, APIServiceList, Resource<APIService>> apiServices();
+  NonNamespaceOperation<APIService, APIServiceList, Resource<APIService>> apiServices();
 
   /**
    * List related operations.
