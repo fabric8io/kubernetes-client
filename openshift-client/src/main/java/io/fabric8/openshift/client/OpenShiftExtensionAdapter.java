@@ -27,6 +27,7 @@ import io.fabric8.openshift.api.model.Group;
 import io.fabric8.openshift.api.model.OAuthAccessToken;
 import io.fabric8.openshift.api.model.OAuthAuthorizeToken;
 import io.fabric8.openshift.api.model.OAuthClient;
+import io.fabric8.openshift.api.model.Project;
 import io.fabric8.openshift.api.model.Role;
 import io.fabric8.openshift.api.model.RoleBinding;
 import io.fabric8.openshift.api.model.SecurityContextConstraints;
@@ -45,6 +46,7 @@ import io.fabric8.openshift.client.dsl.internal.core.TemplateOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.oauth.OAuthAccessTokenOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.oauth.OAuthAuthorizeTokenOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.oauth.OAuthClientOperationsImpl;
+import io.fabric8.openshift.client.dsl.internal.project.ProjectOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.security.SecurityContextConstraintsOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.user.GroupOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.user.UserOperationsImpl;
@@ -73,6 +75,7 @@ public class OpenShiftExtensionAdapter extends OpenshiftAdapterSupport implement
     OpenShiftHandlers.register(SecurityContextConstraints.class, SecurityContextConstraintsOperationsImpl::new);
     OpenShiftHandlers.register(Template.class, TemplateOperationsImpl::new);
     OpenShiftHandlers.register(User.class, UserOperationsImpl::new);
+    OpenShiftHandlers.register(Project.class, ProjectOperationsImpl::new);
   }
 
   @Override

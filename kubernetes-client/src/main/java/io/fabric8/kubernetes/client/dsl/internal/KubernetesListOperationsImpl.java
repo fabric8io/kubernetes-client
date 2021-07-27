@@ -126,7 +126,7 @@ public class KubernetesListOperationsImpl
   }
 
   private <T extends HasMetadata, V extends VisitableBuilder<T, V>> T create(T resource) {
-    ResourceHandler<T, ?> handler = Handlers.get(resource);
+    ResourceHandler<T, V> handler = Handlers.get(resource);
     if (handler != null) {
       return handler.create(client, config, namespace, resource, dryRun);
     }

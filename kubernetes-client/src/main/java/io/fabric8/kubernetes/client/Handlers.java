@@ -63,12 +63,9 @@ public final class Handlers {
     return (HasMetadataOperation<T, L, R>) resourceHandler.operation(client, config, listType);
   }
   
-  public static <T extends HasMetadata> boolean hasDefaultOperation(Class<T> type) {
-    ResourceHandler handler = RESOURCE_HANDLER_MAP.get(type);
-    if (handler != null) {
-      return !handler.hasOperation();
-    }
-    return false;
+  public static <T extends HasMetadata> boolean shouldRegister(Class<T> type) {
+    ResourceHandler<?, ?> handler = RESOURCE_HANDLER_MAP.get(type);
+    return !RESOURCE_HANDLER_MAP.isEmpty() && (handler == null || !handler.hasOperation());
   }
 
 }

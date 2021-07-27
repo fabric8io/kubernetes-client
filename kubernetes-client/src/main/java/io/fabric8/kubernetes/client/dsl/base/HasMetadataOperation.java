@@ -56,7 +56,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   }
   
   protected void validateOperation(Class<T> type) {
-    if (Handlers.hasDefaultOperation(type)) {
+    if (Handlers.shouldRegister(type)) {
       throw new AssertionError(String.format("%s needs registered with Handlers", getClass().getName()));
     }
   }
