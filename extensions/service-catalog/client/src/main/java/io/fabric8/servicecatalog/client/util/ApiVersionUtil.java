@@ -23,6 +23,10 @@ import io.fabric8.kubernetes.client.utils.Utils;
  */
 public class ApiVersionUtil {
 
+  private ApiVersionUtil() {
+    throw new IllegalStateException("Utility class");
+  }
+  
     /**
    * Extracts apiGroupName from apiGroupVersion when in resource for apiGroupName/apiGroupVersion combination
    * @param item      resource which is being used
