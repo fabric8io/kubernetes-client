@@ -18,7 +18,10 @@ package io.fabric8.kubernetes.client.utils;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 
 public class ApiVersionUtil {
-
+  
+  private ApiVersionUtil() {
+    throw new IllegalStateException("Utility class");
+  }
   /**
    * Extracts apiGroupName from apiGroupVersion when in resource for apiGroupName/apiGroupVersion combination
    * @param <T>       Template argument provided
@@ -26,6 +29,7 @@ public class ApiVersionUtil {
    * @param apiGroup  apiGroupName present if any
    * @return          Just the apiGroupName part without apiGroupVersion
    */
+  
   public static <T> String apiGroup(T item, String apiGroup) {
         if (item instanceof HasMetadata && Utils.isNotNullOrEmpty(((HasMetadata) item).getApiVersion())) {
       return trimGroupOrNull(((HasMetadata) item).getApiVersion());

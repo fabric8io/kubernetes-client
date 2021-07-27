@@ -40,7 +40,7 @@ import java.util.stream.Stream;
 
 @SuppressWarnings("java:S106")
 public class LeaderElectionExamples {
-
+ 
   private static final String NAMESPACE = "default";
   private static final String NAME = "leaders-of-the-future";
 
