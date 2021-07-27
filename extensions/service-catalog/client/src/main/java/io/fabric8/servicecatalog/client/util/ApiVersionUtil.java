@@ -33,9 +33,7 @@ public class ApiVersionUtil {
    * @param apiGroup  apiGroupName present if any
    * @return          Just the apiGroupName part without apiGroupVersion
    */
-  private ApiVersionUtil() {
-    throw new IllegalStateException("Utility class");
-  }
+
   public static <T> String apiGroup(T item, String apiGroup) {
         if (item instanceof HasMetadata && Utils.isNotNullOrEmpty(((HasMetadata) item).getApiVersion())) {
       return trimGroupOrNull(((HasMetadata) item).getApiVersion());
