@@ -22,9 +22,7 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
-import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.informers.ListerWatcher;
-import io.fabric8.kubernetes.client.utils.Serialization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,26 +36,21 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   private final Class<T> apiTypeClass;
   private final ListerWatcher<T, L> listerWatcher;
   private final SyncableStore<T> store;
-  private final OperationContext operationContext;
   private final ReflectorWatcher watcher;
   private volatile boolean running;
   private volatile boolean watching;
   private final AtomicReference<Watch> watch;
 
-  public Reflector(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, SyncableStore<T> store, OperationContext operationContext) {
+  public Reflector(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, SyncableStore<T> store) {
     this.apiTypeClass = apiTypeClass;
     this.listerWatcher = listerWatcher;
     this.store = store;
-    this.operationContext = operationContext;
     this.watcher = new ReflectorWatcher();
     this.watch = new AtomicReference<>(null);
   }
 
   protected L getList() {
-    return listerWatcher.list(new ListOptionsBuilder()
-      .withWatch(Boolean.FALSE)
-      .withResourceVersion(null)
-      .withTimeoutSeconds(null).build(), operationContext.getNamespace(), operationContext);
+    return listerWatcher.list(new ListOptionsBuilder().build());
   }
 
   public void stop() {
@@ -68,7 +61,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   private synchronized void stopWatcher() {
     Watch theWatch = watch.getAndSet(null);
     if (theWatch != null) {
-      String ns = operationContext.getNamespace();
+      String ns = listerWatcher.getNamespace();
       log.debug("Stopping watcher for resource {} v{} in namespace {}", apiTypeClass, lastSyncResourceVersion, ns);
       theWatch.close();
       watchStopped(); // proactively report as stopped
@@ -97,8 +90,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
     // there's no need to stop the old watch, that will happen automatically when this call completes
     watch.set(
       listerWatcher.watch(new ListOptionsBuilder()
-        .withWatch(Boolean.TRUE).withResourceVersion(latestResourceVersion).withTimeoutSeconds(null).build(),
-      operationContext.getNamespace(), operationContext, watcher));
+        .withWatch(Boolean.TRUE).withResourceVersion(latestResourceVersion).withTimeoutSeconds(null).build(), watcher));
     watching = true;
   }
   

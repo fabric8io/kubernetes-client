@@ -38,8 +38,8 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
 
   public static final String OPENSHIFT_APIGROUP_SUFFIX = "openshift.io";
 
-  public OpenShiftOperation(OperationContext ctx) {
-    super(wrap(ctx));
+  public OpenShiftOperation(OperationContext ctx, Class<T> type, Class<L> listType) {
+    super(wrap(ctx), type, listType);
     updateApiVersion();
   }
 

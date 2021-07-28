@@ -26,9 +26,6 @@ import io.fabric8.openshift.api.model.machine.v1beta1.MachineList;
 import io.fabric8.openshift.api.model.machine.v1beta1.MachineSet;
 import io.fabric8.openshift.api.model.machine.v1beta1.MachineSetList;
 import io.fabric8.openshift.client.dsl.OpenShiftMachineAPIGroupDSL;
-import io.fabric8.openshift.client.dsl.internal.machine.MachineHealthCheckOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.machine.MachineOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.machine.MachineSetOperationsImpl;
 import okhttp3.OkHttpClient;
 
 public class OpenShiftMachineAPIGroupClient extends BaseClient implements OpenShiftMachineAPIGroupDSL {
@@ -42,16 +39,16 @@ public class OpenShiftMachineAPIGroupClient extends BaseClient implements OpenSh
 
   @Override
   public MixedOperation<Machine, MachineList, Resource<Machine>> machines() {
-    return new MachineOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(Machine.class, MachineList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public MixedOperation<MachineSet, MachineSetList, Resource<MachineSet>> machineSets() {
-    return new MachineSetOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(MachineSet.class, MachineSetList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public MixedOperation<MachineHealthCheck, MachineHealthCheckList, Resource<MachineHealthCheck>> machineHealthChecks() {
-    return new MachineHealthCheckOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(MachineHealthCheck.class, MachineHealthCheckList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 }

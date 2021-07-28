@@ -33,9 +33,8 @@ public class VolumeSnapshotContentOperationsImpl extends HasMetadataOperation<Vo
   }
 
   public VolumeSnapshotContentOperationsImpl(OperationContext context) {
-    super(context.withApiGroupName("snapshot.storage.k8s.io").withApiGroupVersion("v1").withPlural("volumesnapshotcontents"));
-    this.type = VolumeSnapshotContent.class;
-    this.listType = VolumeSnapshotContentList.class;
+    super(context.withApiGroupName("snapshot.storage.k8s.io").withApiGroupVersion("v1").withPlural("volumesnapshotcontents"),
+            VolumeSnapshotContent.class, VolumeSnapshotContentList.class);
   }
 
   @Override

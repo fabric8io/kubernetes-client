@@ -126,7 +126,7 @@ public class KubernetesListOperationsImpl
   }
 
   private <T extends HasMetadata, V extends VisitableBuilder<T, V>> T create(T resource) {
-    ResourceHandler<T, V> handler = Handlers.get(resource.getKind(), resource.getApiVersion());
+    ResourceHandler<T, V> handler = Handlers.get(resource);
     if (handler != null) {
       return handler.create(client, config, namespace, resource, dryRun);
     }
@@ -142,7 +142,7 @@ public class KubernetesListOperationsImpl
   public Boolean delete(List<KubernetesList> lists) {
     for (KubernetesList list : lists) {
       for (HasMetadata item : list.getItems()) {
-        ResourceHandler<HasMetadata, ?> handler = Handlers.get(item.getKind(), item.getApiVersion());
+        ResourceHandler<HasMetadata, ?> handler = Handlers.get(item);
         if (!handler.delete(client, config, namespace, context.getPropagationPolicy(), context.getGracePeriodSeconds(), item, dryRun)) {
           return false;
         }

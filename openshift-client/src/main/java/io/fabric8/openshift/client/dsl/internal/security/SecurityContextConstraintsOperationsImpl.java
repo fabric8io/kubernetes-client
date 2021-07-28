@@ -35,9 +35,7 @@ public class SecurityContextConstraintsOperationsImpl  extends OpenShiftOperatio
 
   public SecurityContextConstraintsOperationsImpl(OperationContext context) {
     super(context.withApiGroupName(SECURITY)
-      .withPlural("securitycontextconstraints"));
-    this.type = SecurityContextConstraints.class;
-    this.listType = SecurityContextConstraintsList.class;
+      .withPlural("securitycontextconstraints"), SecurityContextConstraints.class, SecurityContextConstraintsList.class);
   }
 
   @Override

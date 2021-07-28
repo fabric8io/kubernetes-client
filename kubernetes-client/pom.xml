@@ -32,14 +32,7 @@
     <osgi.require-capability>
       osgi.extender;
       filter:="(osgi.extender=osgi.serviceloader.processor)",
-      osgi.serviceloader;
-      filter:="(osgi.serviceloader=io.fabric8.kubernetes.client.ResourceHandler)";
-      cardinality:=multiple
     </osgi.require-capability>
-    <osgi.provide-capability>
-      osgi.serviceloader;
-      osgi.serviceloader=io.fabric8.kubernetes.client.ResourceHandler
-    </osgi.provide-capability>
     <osgi.import>
       !android.util*,
       *,
@@ -353,7 +346,6 @@
                 <Bundle-Activator>${osgi.activator}</Bundle-Activator>
                 <Export-Service>${osgi.export.service}</Export-Service>
                 <Include-Resource>
-                  /META-INF/services/io.fabric8.kubernetes.client.ResourceHandler=target/classes/META-INF/services/io.fabric8.kubernetes.client.ResourceHandler,
                   /META-INF/services/io.fabric8.kubernetes.client.ServiceToURLProvider=target/classes/META-INF/services/io.fabric8.kubernetes.client.ServiceToURLProvider,
                   /META-INF/services/io.fabric8.kubernetes.client.ExtensionAdapter=target/classes/META-INF/services/io.fabric8.kubernetes.client.ExtensionAdapter
                 </Include-Resource>

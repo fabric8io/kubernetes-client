@@ -8,10 +8,15 @@
 
 #### Improvements
 * Fix #3316: allow locking deletion to resource version
+* Fix #3327: Removed generated ResourceHandlers
 
 #### Dependency Upgrade
 
 #### New Features
+
+#### _**Note**_: Breaking changes in the API
+##### DSL Changes:
+- #3327 DSL methods mentioning customResources have been deprecated: `KubernetesClient.customResources`, `SharedIndexInformerFactory.sharedIndexInformerForCustomResource`.  See replacement resources and sharedIndexInformerFor methods instead.  Also `CustomeResourceDefinitionContext` has been replaced by `ResourceDefinitionContext` - for example in `KubernetesClient.genericKubernetesResources`.
 
 ### 5.6.0 (2021-07-21)
 

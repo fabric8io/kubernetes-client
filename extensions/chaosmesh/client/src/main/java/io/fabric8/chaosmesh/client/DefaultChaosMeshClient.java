@@ -15,10 +15,6 @@
  */
 package io.fabric8.chaosmesh.client;
 
-import io.fabric8.chaosmesh.client.internal.DNSChaosOperationsImpl;
-import io.fabric8.chaosmesh.client.internal.HTTPChaosOperationsImpl;
-import io.fabric8.chaosmesh.client.internal.JVMChaosOperationsImpl;
-import io.fabric8.chaosmesh.client.internal.PodIoChaosOperationsImpl;
 import io.fabric8.chaosmesh.v1alpha1.DNSChaos;
 import io.fabric8.chaosmesh.v1alpha1.DNSChaosList;
 import io.fabric8.chaosmesh.v1alpha1.HTTPChaos;
@@ -41,16 +37,10 @@ import io.fabric8.chaosmesh.v1alpha1.StressChaos;
 import io.fabric8.chaosmesh.v1alpha1.StressChaosList;
 import io.fabric8.chaosmesh.v1alpha1.TimeChaos;
 import io.fabric8.chaosmesh.v1alpha1.TimeChaosList;
-import io.fabric8.chaosmesh.client.internal.IoChaosOperationsImpl;
-import io.fabric8.chaosmesh.client.internal.KernelChaosOperationsImpl;
-import io.fabric8.chaosmesh.client.internal.NetworkChaosOperationsImpl;
-import io.fabric8.chaosmesh.client.internal.PodChaosOperationsImpl;
-import io.fabric8.chaosmesh.client.internal.PodNetworkChaosOperationsImpl;
-import io.fabric8.chaosmesh.client.internal.StressChaosOperationsImpl;
-import io.fabric8.chaosmesh.client.internal.TimeChaosOperationsImpl;
 import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
+import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
@@ -92,58 +82,58 @@ public class DefaultChaosMeshClient extends BaseClient implements NamespacedChao
 
   @Override
   public MixedOperation<IoChaos, IoChaosList, Resource<IoChaos>> ioChaos() {
-    return new IoChaosOperationsImpl(this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(IoChaos.class, IoChaosList.class, this.getHttpClient(),  this.getConfiguration());
   }
 
   @Override
   public MixedOperation<KernelChaos, KernelChaosList,
     Resource<KernelChaos>> kernelChaos() {
-    return new KernelChaosOperationsImpl(this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(KernelChaos.class, KernelChaosList.class, httpClient, getConfiguration());
   }
 
   @Override
   public MixedOperation<NetworkChaos, NetworkChaosList, Resource<NetworkChaos>> networkChaos() {
-    return new NetworkChaosOperationsImpl(this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(NetworkChaos.class, NetworkChaosList.class, this.getHttpClient(),  this.getConfiguration());
   }
 
   @Override
   public MixedOperation<PodChaos, PodChaosList, Resource<PodChaos>> podChaos() {
-    return new PodChaosOperationsImpl(this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(PodChaos.class, PodChaosList.class, this.getHttpClient(),  this.getConfiguration());
   }
 
   @Override
   public MixedOperation<PodIoChaos, PodIoChaosList, Resource<PodIoChaos>> podIoChaos() {
-    return new PodIoChaosOperationsImpl(this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(PodIoChaos.class, PodIoChaosList.class, this.getHttpClient(),  this.getConfiguration());
   }
 
   @Override
   public MixedOperation<PodNetworkChaos, PodNetworkChaosList, Resource<PodNetworkChaos>> podNetworkChaos() {
-    return new PodNetworkChaosOperationsImpl(this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(PodNetworkChaos.class, PodNetworkChaosList.class, this.getHttpClient(),  this.getConfiguration());
   }
 
   @Override
   public MixedOperation<StressChaos, StressChaosList,
     Resource<StressChaos>> stressChaos() {
-    return new StressChaosOperationsImpl(this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(StressChaos.class, StressChaosList.class, this.getHttpClient(), this.getConfiguration());
   }
 
   @Override
   public MixedOperation<TimeChaos, TimeChaosList, Resource<TimeChaos>> timeChaos() {
-    return new TimeChaosOperationsImpl(this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(TimeChaos.class, TimeChaosList.class, this.getHttpClient(),  this.getConfiguration());
   }
 
   @Override
   public MixedOperation<JVMChaos, JVMChaosList, Resource<JVMChaos>> jvmChaos() {
-    return new JVMChaosOperationsImpl(this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(JVMChaos.class, JVMChaosList.class, this.getHttpClient(),  this.getConfiguration());
   }
 
   @Override
   public MixedOperation<HTTPChaos, HTTPChaosList, Resource<HTTPChaos>> httpChaos() {
-    return new HTTPChaosOperationsImpl(this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(HTTPChaos.class, HTTPChaosList.class, this.getHttpClient(),  this.getConfiguration());
   }
 
   @Override
   public MixedOperation<DNSChaos, DNSChaosList, Resource<DNSChaos>> dnsChaos() {
-    return new DNSChaosOperationsImpl(this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(DNSChaos.class, DNSChaosList.class, this.getHttpClient(),  this.getConfiguration());
   }
 }

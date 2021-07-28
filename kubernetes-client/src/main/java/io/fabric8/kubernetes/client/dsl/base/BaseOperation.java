@@ -1074,7 +1074,8 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     // use the local context / namespace
     DefaultSharedIndexInformer<T, L> informer = new DefaultSharedIndexInformer<>(getType(), new ListerWatcher<T, L>() {
       @Override
-      public L list(ListOptions params, String namespace, OperationContext context) {
+      public L list(ListOptions params) {
+        params.setWatch(Boolean.FALSE); // for test compatibility
         // convert the name into something listable
         if (name != null) {
           params.setFieldSelector("metadata.name="+name);
@@ -1083,10 +1084,15 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       }
 
       @Override
-      public Watch watch(ListOptions params, String namespace, OperationContext context, Watcher<T> watcher) {
+      public Watch watch(ListOptions params, Watcher<T> watcher) {
         return BaseOperation.this.watch(params, watcher);
       }
-    }, resync, context, Runnable::run); // just run the event notification in the websocket thread
+      
+      @Override
+      public String getNamespace() {
+        return context.getNamespace();
+      }
+    }, resync, Runnable::run); // just run the event notification in the websocket thread
     if (indexers != null) {
       informer.addIndexers(indexers);
     }

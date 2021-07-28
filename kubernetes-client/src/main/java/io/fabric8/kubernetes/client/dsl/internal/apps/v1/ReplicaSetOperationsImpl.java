@@ -33,8 +33,6 @@ import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.utils.PodOperationUtil;
 import io.fabric8.kubernetes.client.dsl.internal.RollingOperationContext;
 import okhttp3.OkHttpClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.OutputStream;
 import java.io.Reader;
@@ -59,9 +57,7 @@ public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<
   public ReplicaSetOperationsImpl(RollingOperationContext context) {
     super(context.withApiGroupName("apps")
       .withApiGroupVersion("v1")
-      .withPlural("replicasets"));
-    this.type = ReplicaSet.class;
-    this.listType = ReplicaSetList.class;
+      .withPlural("replicasets"), ReplicaSet.class, ReplicaSetList.class);
   }
 
   public ReplicaSetOperationsImpl(RollingOperationContext context, Integer podLogWaitTimeout) {

@@ -37,14 +37,6 @@ import io.fabric8.openshift.api.model.operatorhub.v1alpha1.InstallPlanList;
 import io.fabric8.openshift.api.model.operatorhub.v1alpha1.Subscription;
 import io.fabric8.openshift.api.model.operatorhub.v1alpha1.SubscriptionList;
 import io.fabric8.openshift.client.dsl.OpenShiftOperatorHubAPIGroupDSL;
-import io.fabric8.openshift.client.dsl.internal.operators.coreos.CatalogSourceOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.operators.coreos.ClusterServiceVersionOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.operators.coreos.InstallPlanOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.operators.coreos.OperatorConditionOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.operators.coreos.OperatorGroupOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.operators.coreos.OperatorOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.operators.coreos.SubscriptionOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.packages.operators.coreos.PackageManifestOperationsImpl;
 import okhttp3.OkHttpClient;
 
 public class OpenShiftOperatorHubAPIGroupClient extends BaseClient implements OpenShiftOperatorHubAPIGroupDSL {
@@ -58,41 +50,41 @@ public class OpenShiftOperatorHubAPIGroupClient extends BaseClient implements Op
 
   @Override
   public MixedOperation<CatalogSource, CatalogSourceList, Resource<CatalogSource>> catalogSources() {
-    return new CatalogSourceOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(CatalogSource.class, CatalogSourceList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public MixedOperation<OperatorGroup, OperatorGroupList, Resource<OperatorGroup>> operatorGroups() {
-    return new OperatorGroupOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(OperatorGroup.class, OperatorGroupList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public MixedOperation<Subscription, SubscriptionList, Resource<Subscription>> subscriptions() {
-    return new SubscriptionOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(Subscription.class, SubscriptionList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public MixedOperation<InstallPlan, InstallPlanList, Resource<InstallPlan>> installPlans() {
-    return new InstallPlanOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(InstallPlan.class, InstallPlanList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public MixedOperation<ClusterServiceVersion, ClusterServiceVersionList, Resource<ClusterServiceVersion>> clusterServiceVersions() {
-    return new ClusterServiceVersionOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(ClusterServiceVersion.class, ClusterServiceVersionList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public MixedOperation<PackageManifest, PackageManifestList, Resource<PackageManifest>> packageManifests() {
-    return new PackageManifestOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(PackageManifest.class, PackageManifestList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public MixedOperation<OperatorCondition, OperatorConditionList, Resource<OperatorCondition>> operatorConditions() {
-    return new OperatorConditionOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(OperatorCondition.class, OperatorConditionList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public NonNamespaceOperation<Operator, OperatorList, Resource<Operator>> operators() {
-    return new OperatorOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(Operator.class, OperatorList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 }

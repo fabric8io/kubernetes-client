@@ -17,13 +17,14 @@ package io.fabric8.openshift.client.dsl.internal.build;
 
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.model.Event;
+import io.fabric8.kubernetes.api.model.EventList;
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Triggerable;
 import io.fabric8.kubernetes.client.dsl.Typeable;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
-import io.fabric8.kubernetes.client.dsl.internal.core.v1.EventOperationsImpl;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -96,10 +97,7 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
 
   public BuildConfigOperationsImpl(BuildConfigOperationContext context) {
     super(context.withApiGroupName(BUILD)
-      .withPlural("buildconfigs"));
-
-    this.type = BuildConfig.class;
-    this.listType = BuildConfigList.class;
+      .withPlural("buildconfigs"), BuildConfig.class, BuildConfigList.class);
 
     this.triggerType = context.getTriggerType();
     this.secret = context.getSecret();
@@ -377,7 +375,7 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
 
     protected String getRecentEvents() {
       StringBuilder eventsAsStrBuilder = new StringBuilder();
-      List<Event> recentEventList = new EventOperationsImpl(okHttpClient, clientConfig).inNamespace(namespace).list().getItems();
+      List<Event> recentEventList = Handlers.getOperation(Event.class, EventList.class, okHttpClient, clientConfig).inNamespace(namespace).list().getItems();
       KubernetesResourceUtil.sortEventListBasedOnTimestamp(recentEventList);
       for (int i = 0; i < 10 && i < recentEventList.size(); i++) {
         Event event = recentEventList.get(i);

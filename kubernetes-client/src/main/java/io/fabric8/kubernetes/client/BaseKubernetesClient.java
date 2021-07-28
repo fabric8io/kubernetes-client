@@ -50,7 +50,12 @@ import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.api.model.ServiceList;
+import io.fabric8.kubernetes.api.model.apps.Deployment;
+import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
+import io.fabric8.kubernetes.api.model.apps.StatefulSet;
 import io.fabric8.kubernetes.api.model.authentication.TokenReview;
+import io.fabric8.kubernetes.api.model.batch.v1.Job;
+import io.fabric8.kubernetes.api.model.batch.v1beta1.CronJob;
 import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequest;
 import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestList;
 import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
@@ -87,33 +92,24 @@ import io.fabric8.kubernetes.client.dsl.StorageAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1APIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.Waitable;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
+import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.ClusterOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.CreateOnlyResourceOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.CustomResourceOperationContext;
-import io.fabric8.kubernetes.client.dsl.internal.CustomResourceOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.ResourceOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.apps.v1.DeploymentOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.apps.v1.ReplicaSetOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.apps.v1.StatefulSetOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.batch.v1.JobOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.batch.v1beta1.CronJobOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.KubernetesListOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl;
 import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl;
 import io.fabric8.kubernetes.client.dsl.internal.RawCustomResourceOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.certificates.v1beta1.CertificateSigningRequestOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.coordination.v1.LeaseOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.core.v1.APIServiceOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.BindingOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.ComponentStatusOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.core.v1.ConfigMapOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.core.v1.EndpointsOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.core.v1.LimitRangeOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.core.v1.NamespaceOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.core.v1.NodeOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.core.v1.PersistentVolumeClaimOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.core.v1.PersistentVolumeOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.ReplicationControllerOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.core.v1.ResourceQuotaOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.core.v1.SecretOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.core.v1.ServiceAccountOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.ServiceOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.node.v1beta1.RuntimeClassOperationsImpl;
 import io.fabric8.kubernetes.client.extended.run.RunConfigBuilder;
 import io.fabric8.kubernetes.client.extended.run.RunOperations;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
@@ -125,13 +121,28 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.ExecutorService;
 
-import static io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation.DEFAULT_PROPAGATION_POLICY;
-
 /**
  * Base class for all Kubernetes Clients implementing KubernetesClient interface.
  * It is thread safe.
  */
 public abstract class BaseKubernetesClient<C extends Client> extends BaseClient implements GenericKubernetesClient<C> {
+  
+  static {
+    Handlers.register(Pod.class, PodOperationsImpl::new);
+    Handlers.register(Job.class, JobOperationsImpl::new);
+    Handlers.register(CronJob.class, CronJobOperationsImpl::new);
+    Handlers.register(Binding.class, BindingOperationsImpl::new);
+    Handlers.register(ComponentStatus.class, ComponentStatusOperationsImpl::new);
+    Handlers.register(Service.class, ServiceOperationsImpl::new);
+    Handlers.register(Deployment.class, DeploymentOperationsImpl::new);
+    Handlers.register(io.fabric8.kubernetes.api.model.extensions.Deployment.class, io.fabric8.kubernetes.client.dsl.internal.extensions.v1beta1.DeploymentOperationsImpl::new);
+    Handlers.register(ReplicaSet.class, ReplicaSetOperationsImpl::new);
+    Handlers.register(io.fabric8.kubernetes.api.model.extensions.ReplicaSet.class, io.fabric8.kubernetes.client.dsl.internal.extensions.v1beta1.ReplicaSetOperationsImpl::new);
+    Handlers.register(ReplicationController.class, ReplicationControllerOperationsImpl::new);
+    Handlers.register(StatefulSet.class, StatefulSetOperationsImpl::new);
+    // trigger a load of the other client handlers
+    Adapters.list(Client.class);
+  }
 
   protected BaseKubernetesClient() {
     super();
@@ -229,7 +240,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public MixedOperation<Endpoints, EndpointsList, Resource<Endpoints>> endpoints() {
-    return new EndpointsOperationsImpl(httpClient, getConfiguration());
+    return Handlers.getOperation(Endpoints.class, EndpointsList.class, httpClient, getConfiguration());
   }
 
   /**
@@ -237,7 +248,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public NonNamespaceOperation<Namespace, NamespaceList, Resource<Namespace>> namespaces() {
-    return new NamespaceOperationsImpl(httpClient, getConfiguration());
+    return Handlers.getOperation(Namespace.class, NamespaceList.class, httpClient, getConfiguration());
   }
 
   /**
@@ -245,7 +256,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public NonNamespaceOperation<Node, NodeList, Resource<Node>> nodes() {
-    return new NodeOperationsImpl(httpClient, getConfiguration());
+    return Handlers.getOperation(Node.class, NodeList.class, httpClient, getConfiguration());
   }
 
   /**
@@ -253,7 +264,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public NonNamespaceOperation<PersistentVolume, PersistentVolumeList, Resource<PersistentVolume>> persistentVolumes() {
-    return new PersistentVolumeOperationsImpl(httpClient, getConfiguration());
+    return Handlers.getOperation(PersistentVolume.class, PersistentVolumeList.class, httpClient, getConfiguration());
   }
 
   /**
@@ -261,7 +272,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public MixedOperation<PersistentVolumeClaim, PersistentVolumeClaimList, Resource<PersistentVolumeClaim>> persistentVolumeClaims() {
-    return new PersistentVolumeClaimOperationsImpl(httpClient, getConfiguration());
+    return Handlers.getOperation(PersistentVolumeClaim.class, PersistentVolumeClaimList.class, httpClient, getConfiguration());
   }
 
   /**
@@ -285,7 +296,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public MixedOperation<ResourceQuota, ResourceQuotaList, Resource<ResourceQuota>> resourceQuotas() {
-    return new ResourceQuotaOperationsImpl(httpClient, getConfiguration());
+    return Handlers.getOperation(ResourceQuota.class, ResourceQuotaList.class, httpClient, getConfiguration());
   }
 
   /**
@@ -298,7 +309,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
 
   @Override
   public MixedOperation<Secret, SecretList, Resource<Secret>> secrets() {
-    return new SecretOperationsImpl(httpClient, getConfiguration());
+    return Handlers.getOperation(Secret.class, SecretList.class, httpClient, getConfiguration());
   }
 
   /**
@@ -314,7 +325,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public MixedOperation<ServiceAccount, ServiceAccountList, Resource<ServiceAccount>> serviceAccounts() {
-    return new ServiceAccountOperationsImpl(httpClient, getConfiguration());
+    return Handlers.getOperation(ServiceAccount.class, ServiceAccountList.class, httpClient, getConfiguration());
   }
 
   /**
@@ -322,7 +333,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public NonNamespaceOperation<APIService, APIServiceList, Resource<APIService>> apiServices() {
-    return new APIServiceOperationsImpl(httpClient, getConfiguration());
+      return Handlers.getOperation(APIService.class, APIServiceList.class, httpClient, getConfiguration());
   }
 
   /**
@@ -338,7 +349,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public MixedOperation<ConfigMap, ConfigMapList, Resource<ConfigMap>> configMaps() {
-    return new ConfigMapOperationsImpl(httpClient, getConfiguration());
+    return Handlers.getOperation(ConfigMap.class, ConfigMapList.class, httpClient, getConfiguration());
   }
 
   /**
@@ -346,7 +357,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public MixedOperation<LimitRange, LimitRangeList, Resource<LimitRange>> limitRanges() {
-    return new LimitRangeOperationsImpl(httpClient, getConfiguration());
+    return Handlers.getOperation(LimitRange.class, LimitRangeList.class, httpClient, getConfiguration());
   }
 
   /**
@@ -362,7 +373,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public NonNamespaceOperation<CertificateSigningRequest, CertificateSigningRequestList, Resource<CertificateSigningRequest>> certificateSigningRequests() {
-    return new CertificateSigningRequestOperationsImpl(httpClient, getConfiguration());
+    return Handlers.getOperation(CertificateSigningRequest.class, CertificateSigningRequestList.class, httpClient, getConfiguration());
   }
 
   @Override
@@ -402,17 +413,19 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
   public <T extends CustomResource, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(Class<T> resourceType, Class<L> listClass) {
     return customResources(CustomResourceDefinitionContext.fromCustomResourceType(resourceType), resourceType, listClass);
   }
+  
+  @Override
+  public <T extends HasMetadata, L extends KubernetesResourceList<T>> ResourceOperationsImpl<T, L> resources(
+      Class<T> resourceType, Class<L> listClass) {
+    return customResources(ResourceDefinitionContext.fromResourceType(resourceType), resourceType, listClass);
+  }
 
   /**
    * {@inheritDoc}
    */
   @Override
-  public <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(CustomResourceDefinitionContext crdContext, Class<T> resourceType, Class<L> listClass) {
-    return new CustomResourceOperationsImpl<>(new CustomResourceOperationContext().withOkhttpClient(httpClient).withConfig(getConfiguration())
-      .withCrdContext(crdContext)
-      .withType(resourceType)
-      .withListType(listClass)
-      .withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
+  public <T extends HasMetadata, L extends KubernetesResourceList<T>> ResourceOperationsImpl<T, L> customResources(ResourceDefinitionContext rdContext, Class<T> resourceType, Class<L> listClass) {
+    return new ResourceOperationsImpl<>(httpClient, getConfiguration(), rdContext, resourceType, listClass);
   }
 
   /**
@@ -540,7 +553,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public SharedInformerFactory informers() {
-    return new SharedInformerFactory(httpClient, getConfiguration());
+    return new SharedInformerFactory(this);
   }
 
   /**
@@ -548,7 +561,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public SharedInformerFactory informers(ExecutorService executorService) {
-    return new SharedInformerFactory(executorService, httpClient, getConfiguration());
+    return new SharedInformerFactory(this, executorService);
   }
 
   /**
@@ -556,7 +569,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public MixedOperation<Lease, LeaseList, Resource<Lease>> leases() {
-    return new LeaseOperationsImpl(httpClient, getConfiguration());
+    return Handlers.getOperation(Lease.class, LeaseList.class, httpClient, getConfiguration());
   }
 
   /**
@@ -572,7 +585,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public NonNamespaceOperation<RuntimeClass, RuntimeClassList, Resource<RuntimeClass>> runtimeClasses() {
-    return new RuntimeClassOperationsImpl(httpClient, getConfiguration());
+    return Handlers.getOperation(RuntimeClass.class, RuntimeClassList.class, httpClient, getConfiguration());
   }
   
 }

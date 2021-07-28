@@ -30,9 +30,8 @@ public class VolumeSnapshotOperationsImpl extends HasMetadataOperation<VolumeSna
   }
 
   public VolumeSnapshotOperationsImpl(OperationContext ctx) {
-    super(ctx.withApiGroupName("snapshot.storage.k8s.io").withApiGroupVersion("v1").withPlural("volumesnapshots"));
-    this.type = VolumeSnapshot.class;
-    this.listType = VolumeSnapshotList.class;
+    super(ctx.withApiGroupName("snapshot.storage.k8s.io").withApiGroupVersion("v1").withPlural("volumesnapshots"),
+            VolumeSnapshot.class, VolumeSnapshotList.class);
   }
 
   @Override
