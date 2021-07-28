@@ -16,11 +16,11 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.dsl.Namespaceable;
+import io.fabric8.kubernetes.client.dsl.NamespacedInOutCreateable;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import okhttp3.OkHttpClient;
 
-public class NamespacedCreateOnlyResourceOperationsImpl<I, O> extends CreateOnlyResourceOperationsImpl<I, O> implements Namespaceable<NamespacedCreateOnlyResourceOperationsImpl<I, O>> {
+public class NamespacedCreateOnlyResourceOperationsImpl<I, O> extends CreateOnlyResourceOperationsImpl<I, O> implements NamespacedInOutCreateable<I, O> {
   private final Class<O> outputClass;
   private final String resourceApiGroupName;
   private final String resourceApiGroupVersion;
