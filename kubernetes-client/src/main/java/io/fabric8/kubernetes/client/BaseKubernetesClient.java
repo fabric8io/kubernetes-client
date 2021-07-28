@@ -94,7 +94,6 @@ import io.fabric8.kubernetes.client.dsl.Waitable;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.ClusterOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.CreateOnlyResourceOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.ResourceOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.DeploymentOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.ReplicaSetOperationsImpl;
@@ -394,7 +393,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public InOutCreateable<TokenReview, TokenReview> tokenReviews() {
-    return new CreateOnlyResourceOperationsImpl<>(httpClient, getConfiguration(), "authentication.k8s.io", "v1", HasMetadata.getPlural(TokenReview.class), TokenReview.class);
+    return Handlers.getOperation(TokenReview.class, httpClient, getConfiguration());
   }
 
   /**

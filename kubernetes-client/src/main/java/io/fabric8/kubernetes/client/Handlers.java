@@ -20,8 +20,10 @@ import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
+import io.fabric8.kubernetes.client.dsl.NamespacedInOutCreateable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
+import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import okhttp3.OkHttpClient;
 
 import java.util.Map;
@@ -63,9 +65,18 @@ public final class Handlers {
     return (HasMetadataOperation<T, L, R>) resourceHandler.operation(client, config, listType);
   }
   
+  public static <T extends HasMetadata> HasMetadataOperation<T, ?, Resource<T>> getOperation(Class<T> type, OkHttpClient client, Config config) {
+    return getOperation(type, KubernetesResourceUtil.inferListType(type), client, config);
+  }
+  
   public static <T extends HasMetadata> boolean shouldRegister(Class<T> type) {
     ResourceHandler<?, ?> handler = RESOURCE_HANDLER_MAP.get(type);
     return !RESOURCE_HANDLER_MAP.isEmpty() && (handler == null || !handler.hasOperation());
   }
 
+  public static <T extends HasMetadata> NamespacedInOutCreateable<T, T> getNamespacedHasMetadataCreateOnlyOperation(Class<T> type, OkHttpClient client, Config config) {
+    HasMetadataOperation<T, ?, Resource<T>> operation = getOperation(type, client, config);
+    return (name) -> operation.inNamespace(name);
+  }
+  
 }
