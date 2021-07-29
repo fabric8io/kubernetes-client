@@ -45,15 +45,14 @@ public class ErrorMessageTest {
     server.expect().withPath("/api/v1/namespaces/test/events/event1").andReturn(403, Boolean.FALSE).once();
 
 
-    try{
-      client.v1().events().inNamespace("test").delete();
-      fail();
-    } catch (Exception e){
-      System.out.println("exception: "+e);
-      Assertions.assertThat(e.getMessage().startsWith("Failure executing: DELETE"));
-      Assertions.assertThat(e.getMessage().contains("Message: MSG"));
-      Assertions.assertThat(not(e.getMessage().contains("Received status")));
-    }
+    NonNamespaceOperation<Event, EventList, Resource<Event>> eventOp = client.v1().events().inNamespace("test");
+    KubernetesClientException k8sException = assertThrows(KubernetesClientException.class, eventOp::delete);
+  
+  
+    assertThat(k8sException.getMessage())
+      .contains("Message: MSG")
+      .startsWith("Failure executing: DELETE")
+      .doesNotContain("Received status");
   }
 
   private void fail() {
