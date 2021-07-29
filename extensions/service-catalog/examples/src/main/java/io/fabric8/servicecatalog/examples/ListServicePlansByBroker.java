@@ -30,7 +30,7 @@ public class ListServicePlansByBroker {
             logger.info("Missing --broker option!");
             System.exit(1);
         }
-        logger.info("Listing Cluster Service Plans" + broker + ":");
+        logger.info("Listing Cluster Service Plans {} :", broker);
         ClusterServicePlanList list = client.clusterServiceBrokers().withName(broker).listPlans();
         list.getItems()
                 .forEach(b -> logger.info(b.getSpec().getClusterServiceClassRef()+ "\t\t\t" + b.getSpec().getExternalName() + "\t\t\t\t" + b.getMetadata().getName()));

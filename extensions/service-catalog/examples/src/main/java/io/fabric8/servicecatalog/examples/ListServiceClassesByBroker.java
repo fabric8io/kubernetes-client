@@ -29,7 +29,7 @@ public class ListServiceClassesByBroker {
             logger.info("Missing --broker option!");
             System.exit(1);
         }
-        logger.info("Listing Cluster Service Classes" + broker + ":");
+        logger.info("Listing Cluster Service Classes {} :", broker);
         ClusterServiceClassList list = client.clusterServiceBrokers().withName(broker).listClasses();
         list.getItems()
                 .forEach(b -> logger.info(b.getSpec().getExternalName() + "\t\t\t\t" + b.getMetadata().getName()));
