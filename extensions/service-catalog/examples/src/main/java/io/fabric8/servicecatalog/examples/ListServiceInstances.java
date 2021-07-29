@@ -29,7 +29,7 @@ public class ListServiceInstances {
 
       logger.info("Listing Service Instances:");
       list.getItems()
-          .forEach(b -> logger.info(b));
+          .forEach(b -> logger.info(b.getMetadata().getName()));
 
       logger.info("Done");
   }
