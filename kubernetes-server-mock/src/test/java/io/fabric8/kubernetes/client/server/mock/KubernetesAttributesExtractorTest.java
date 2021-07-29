@@ -79,16 +79,29 @@ public class KubernetesAttributesExtractorTest {
 	}
 
 	@Test
-	void shouldHandlePathWithParameters() {
+	void shouldHandlePathWithLabelSelectorParam() {
 	  KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
 	  AttributeSet attributes = extractor.fromPath("/api/v1/pods?labelSelector=testKey%3DtestValue");
 
 	  AttributeSet expected = new AttributeSet();
 	  expected = expected.add(new Attribute("plural", "pods"));
+	  expected = expected.add(new Attribute("labels:testKey", "testValue"));
 	  assertTrue(attributes.matches(expected));
 	}
 
-	@Test
+  @Test
+  void shouldHandlePathWithFieldSelectorParam() {
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+    AttributeSet attributes = extractor.fromPath("/api/v1/pods?fieldSelector=testKey%3DtestValue");
+
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("plural", "pods"));
+    expected = expected.add(new Attribute("testKey", "testValue"));
+    assertTrue(attributes.matches(expected));
+  }
+
+
+  @Test
 	void shouldHandleResource() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
 		Pod pod = new PodBuilder().withNewMetadata().withName("mypod").withNamespace("myns").endMetadata().build();

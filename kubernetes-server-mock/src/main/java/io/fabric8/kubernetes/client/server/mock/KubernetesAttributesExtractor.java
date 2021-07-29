@@ -53,7 +53,9 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
   public static final String API = "api";
   public static final String VERSION = "version";
   public static final String NAME = "name";
+  public static final String METADATA_NAME = "metadata.name";
   public static final String NAMESPACE = "namespace";
+  public static final String METADATA_NAMESPACE = "metadata.namespace";
   public static final String VALUE = "value";
   public static final String PLURAL = "plural";
 
@@ -181,10 +183,12 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
     }
     if (!Utils.isNullOrEmpty(hasMetadata.getMetadata().getName())) {
       metadataAttributes = metadataAttributes.add(new Attribute(NAME, hasMetadata.getMetadata().getName()));
+      metadataAttributes = metadataAttributes.add(new Attribute(METADATA_NAME, hasMetadata.getMetadata().getName()));
     }
 
     if (!Utils.isNullOrEmpty(hasMetadata.getMetadata().getNamespace())) {
       metadataAttributes = metadataAttributes.add(new Attribute(NAMESPACE, hasMetadata.getMetadata().getNamespace()));
+      metadataAttributes = metadataAttributes.add(new Attribute(METADATA_NAMESPACE, hasMetadata.getMetadata().getNamespace()));
     }
 
     if (hasMetadata.getMetadata().getLabels() != null) {
@@ -248,6 +252,10 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
   }
 
   private static AttributeSet extractQueryParameters(HttpUrl url) {
+    return AttributeSet.merge(extractLabelSelector(url),extractFieldSelector(url));
+  }
+
+  private static AttributeSet extractLabelSelector(HttpUrl url) {
     AttributeSet attributes = new AttributeSet();
     String labelSelector = url.queryParameter("labelSelector");
     if (labelSelector != null) {
@@ -258,6 +266,22 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
           attributes = attributes.add(label);
         } else {
           LOGGER.warn("Ignoring unsupported label requirement: {}", requirement);
+        }
+      }
+    }
+    return attributes;
+  }
+
+  private static AttributeSet extractFieldSelector(HttpUrl url) {
+    AttributeSet attributes = new AttributeSet();
+    String fieldSelector = url.queryParameter("fieldSelector");
+    if (fieldSelector != null) {
+      for (String requirement : fieldSelector.split(",")) {
+        Attribute field = parseField(requirement);
+        if (field != null) {
+          attributes = attributes.add(field);
+        } else {
+          LOGGER.warn("Ignoring unsupported field requirement: {}", requirement);
         }
       }
     }
@@ -283,6 +307,30 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
     m = LABEL_REQUIREMENT_NOT_EXISTS.matcher(label);
     if (m.matches()) {
       return new Attribute(LABEL_KEY_PREFIX + m.group(KEY), "", NOT_EXISTS);
+    }
+
+    return null;
+  }
+
+  private static Attribute parseField(String label) {
+    Matcher m = LABEL_REQUIREMENT_EQUALITY.matcher(label);
+    if (m.matches()) {
+      return new Attribute(m.group(KEY), m.group(VALUE));
+    }
+
+    m = LABEL_REQUIREMENT_NOT_EQUALITY.matcher(label);
+    if (m.matches()) {
+      return new Attribute(m.group(KEY), m.group(VALUE), WITHOUT);
+    }
+
+    m = LABEL_REQUIREMENT_EXISTS.matcher(label);
+    if (m.matches()) {
+      return new Attribute(m.group(KEY), "", EXISTS);
+    }
+
+    m = LABEL_REQUIREMENT_NOT_EXISTS.matcher(label);
+    if (m.matches()) {
+      return new Attribute(m.group(KEY), "", NOT_EXISTS);
     }
 
     return null;
