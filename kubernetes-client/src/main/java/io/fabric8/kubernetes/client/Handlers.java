@@ -65,7 +65,7 @@ public final class Handlers {
     return (HasMetadataOperation<T, L, R>) resourceHandler.operation(client, config, listType);
   }
   
-  public static <T extends HasMetadata> HasMetadataOperation<T, ?, Resource<T>> getOperation(Class<T> type, OkHttpClient client, Config config) {
+  public static <T extends HasMetadata> HasMetadataOperation<T, ?, Resource<T>> getNonListingOperation(Class<T> type, OkHttpClient client, Config config) {
     return getOperation(type, KubernetesResourceUtil.inferListType(type), client, config);
   }
   
@@ -75,8 +75,8 @@ public final class Handlers {
   }
 
   public static <T extends HasMetadata> NamespacedInOutCreateable<T, T> getNamespacedHasMetadataCreateOnlyOperation(Class<T> type, OkHttpClient client, Config config) {
-    HasMetadataOperation<T, ?, Resource<T>> operation = getOperation(type, client, config);
-    return (name) -> operation.inNamespace(name);
+    HasMetadataOperation<T, ?, Resource<T>> operation = getNonListingOperation(type, client, config);
+    return operation::inNamespace;
   }
   
 }

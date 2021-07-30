@@ -37,12 +37,12 @@ public class V1AuthorizationAPIGroupClient extends BaseClient implements V1Autho
 
   @Override
   public InOutCreateable<SelfSubjectAccessReview, SelfSubjectAccessReview> selfSubjectAccessReview() {
-    return Handlers.getOperation(SelfSubjectAccessReview.class, httpClient, getConfiguration());
+    return Handlers.getNonListingOperation(SelfSubjectAccessReview.class, httpClient, getConfiguration());
   }
 
   @Override
   public InOutCreateable<SubjectAccessReview, SubjectAccessReview> subjectAccessReview() {
-    return Handlers.getOperation(SubjectAccessReview.class, httpClient, getConfiguration());
+    return Handlers.getNonListingOperation(SubjectAccessReview.class, httpClient, getConfiguration());
   }
 
   @Override
@@ -52,6 +52,6 @@ public class V1AuthorizationAPIGroupClient extends BaseClient implements V1Autho
 
   @Override
   public InOutCreateable<SelfSubjectRulesReview, SelfSubjectRulesReview> selfSubjectRulesReview() {
-    return Handlers.getOperation(SelfSubjectRulesReview.class, httpClient, getConfiguration());
+    return Handlers.getNonListingOperation(SelfSubjectRulesReview.class, httpClient, getConfiguration());
   }
 }

@@ -22,7 +22,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
-import io.fabric8.kubernetes.client.dsl.internal.ResourceOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.OkHttpClient;
@@ -72,7 +72,7 @@ class ResourceHandlerImpl<T extends HasMetadata, V extends VisitableBuilder<T, V
       }
       return (HasMetadataOperation<T, L, Resource<T>>) operationConstructor.apply(client, config);
     }
-    return new ResourceOperationsImpl<>(client, config, context, type, (Class)Utils.getNonNullOrElse(listType, defaultListClass));
+    return new HasMetadataOperationsImpl<>(client, config, context, type, (Class)Utils.getNonNullOrElse(listType, defaultListClass));
   }
   
   @Override

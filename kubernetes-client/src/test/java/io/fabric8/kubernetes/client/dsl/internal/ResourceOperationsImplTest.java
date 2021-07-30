@@ -88,7 +88,7 @@ class ResourceOperationsImplTest {
   
   private <T extends HasMetadata, L extends KubernetesResourceList<T>> void assertForContext(OperationContext context, ResourceDefinitionContext rdc, Class<T> type, Class<L> listType) throws IOException {
     // ResourceOperationsImpl constructor invokes KubernetesDeserializer::registerCustomKind
-    new ResourceOperationsImpl<>(context, rdc, type, listType);
+    new HasMetadataOperationsImpl<>(context, rdc, type, listType);
 
     JsonFactory factory = new MappingJsonFactory();
     JsonParser parser = factory.createParser("{\n" +
