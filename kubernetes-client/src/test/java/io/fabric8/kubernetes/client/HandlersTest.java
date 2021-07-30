@@ -20,7 +20,7 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.kubernetes.client.dsl.internal.ResourceOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import okhttp3.OkHttpClient;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -49,6 +49,6 @@ public class HandlersTest {
     
     Handlers.unregister(MyPod.class);
     
-    assertThat(Handlers.get(new MyPod()).operation(null, null, null), Matchers.instanceOf(ResourceOperationsImpl.class));
+    assertThat(Handlers.get(new MyPod()).operation(null, null, null), Matchers.instanceOf(HasMetadataOperationsImpl.class));
   }
 }

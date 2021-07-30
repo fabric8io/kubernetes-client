@@ -25,7 +25,7 @@ import io.fabric8.kubernetes.client.dsl.Informable;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
-import io.fabric8.kubernetes.client.dsl.internal.ResourceOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.informers.impl.DefaultSharedIndexInformer;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
@@ -49,7 +49,7 @@ import java.util.concurrent.Future;
  */
 public class SharedInformerFactory {
   private static final Logger log = LoggerFactory.getLogger(SharedInformerFactory.class);
-  
+
   private final List<Map.Entry<OperationContext, SharedIndexInformer>> informers = new ArrayList<>();
 
   private final ExecutorService informerExecutor;
@@ -57,15 +57,15 @@ public class SharedInformerFactory {
   private final ConcurrentLinkedQueue<SharedInformerEventListener> eventListeners = new ConcurrentLinkedQueue<>();
 
   private boolean allowShutdown = true;
-  
+
   private String name;
   private String namespace;
-  
+
   private BaseKubernetesClient<?> client;
-  
+
   public SharedInformerFactory(BaseKubernetesClient<?> client) {
     // ideally this should be bounded.  The current implication is that there
-    // can be 1 thread used (not dedicated to) per informer - which 
+    // can be 1 thread used (not dedicated to) per informer - which
     // could be problematic for a large number of informers.  however
     // there is already a superceding issue there of thread utilization by okhttp
     this(client, Utils.getCommonExecutorSerive());
@@ -238,19 +238,20 @@ public class SharedInformerFactory {
    * @return the shared index informer
    */
   private synchronized <T extends HasMetadata, L extends KubernetesResourceList<T>> SharedIndexInformer<T> sharedIndexInformerFor(Class<T> apiTypeClass, Class<L> apiListTypeClass, OperationContext operationContext, long resyncPeriodInMillis, ResourceDefinitionContext rdc) {
-    ResourceOperationsImpl<T, L> resources = getResourceOperation(apiTypeClass, apiListTypeClass, operationContext, rdc);
-    
+
+    HasMetadataOperationsImpl<T, L> resources = getResourceOperation(apiTypeClass, apiListTypeClass, operationContext, rdc);
+
     // we want the resources to no longer reference a resourceVersion
     SharedIndexInformer<T> informer = new DefaultSharedIndexInformer<>(apiTypeClass, resources.withResourceVersion(null), resyncPeriodInMillis, informerExecutor);
     this.informers.add(new AbstractMap.SimpleEntry<>(resources.getOperationContext(), informer));
     return informer;
   }
-  
-  private <T extends HasMetadata, L extends KubernetesResourceList<T>> ResourceOperationsImpl<T, L> getResourceOperation(
+
+  private <T extends HasMetadata, L extends KubernetesResourceList<T>> HasMetadataOperationsImpl<T, L> getResourceOperation(
       Class<T> apiTypeClass, Class<L> apiListTypeClass, OperationContext operationContext, ResourceDefinitionContext rdc) {
-    
+
     if (operationContext != null) {
-      // the operationcontext takes precedence over the resource context 
+      // the operationcontext takes precedence over the resource context
       rdc = new ResourceDefinitionContext.Builder()
           .withGroup(Utils.coalesce(operationContext.getApiGroupName(), rdc.getGroup()))
           .withVersion(Utils.coalesce(operationContext.getApiGroupVersion(), rdc.getVersion()))
@@ -259,18 +260,18 @@ public class SharedInformerFactory {
           .withKind(rdc.getKind())
           .build();
     }
-    
-    ResourceOperationsImpl<T, L> resources = client.customResources(rdc, apiTypeClass, apiListTypeClass);
-    
+
+    HasMetadataOperationsImpl<T, L> resources = client.customResources(rdc, apiTypeClass, apiListTypeClass);
+
     if (namespace != null) {
-      resources = (ResourceOperationsImpl<T, L>) resources.inNamespace(namespace);
+      resources = (HasMetadataOperationsImpl<T, L>) resources.inNamespace(namespace);
     } else {
-      resources = (ResourceOperationsImpl<T, L>) resources.inAnyNamespace();
+      resources = (HasMetadataOperationsImpl<T, L>) resources.inAnyNamespace();
     }
     if (name != null) {
-      resources = (ResourceOperationsImpl<T, L>) resources.withName(name);
+      resources = (HasMetadataOperationsImpl<T, L>) resources.withName(name);
     }
-    
+
     if (operationContext != null) {
       OperationContext context = resources.getOperationContext().withOperationContext(operationContext);
       // If OperationContext contains namespace, ignore global watch

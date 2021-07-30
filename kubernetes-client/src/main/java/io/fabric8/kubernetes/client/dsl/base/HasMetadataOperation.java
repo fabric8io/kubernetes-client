@@ -51,6 +51,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   public HasMetadataOperation(OperationContext ctx, Class<T> type, Class<L> listType) {
     super(ctx);
     this.type = type;
+    this.outputClassType = type;
     this.listType = listType;
     validateOperation(type);
   }
@@ -268,5 +269,10 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
     } catch (IOException | ExecutionException e) {
       throw KubernetesClientException.launderThrowable(forOperationType(PATCH_OPERATION), e);
     }
+  }
+  
+  @Override
+  public BaseOperation<T, L, R> newInstance(OperationContext context) {
+    return new HasMetadataOperation<>(context, type, listType);
   }
 }

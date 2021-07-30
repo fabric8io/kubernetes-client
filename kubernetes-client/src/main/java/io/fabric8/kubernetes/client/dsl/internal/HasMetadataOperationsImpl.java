@@ -31,11 +31,11 @@ import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.internal.KubernetesDeserializer;
 import okhttp3.OkHttpClient;
 
-public class ResourceOperationsImpl<T extends HasMetadata, L extends KubernetesResourceList<T>> extends HasMetadataOperation<T, L, Resource<T>> implements MixedOperation<T, L, Resource<T>> {
+public class HasMetadataOperationsImpl<T extends HasMetadata, L extends KubernetesResourceList<T>> extends HasMetadataOperation<T, L, Resource<T>> implements MixedOperation<T, L, Resource<T>> {
 
   private final ResourceDefinitionContext rdc;
   
-  public ResourceOperationsImpl(OkHttpClient client, Config config, ResourceDefinitionContext rdc, Class<T> type, Class<L> listType) {
+  public HasMetadataOperationsImpl(OkHttpClient client, Config config, ResourceDefinitionContext rdc, Class<T> type, Class<L> listType) {
     this(defaultContext(new OperationContext(), client, config), rdc, type, listType);
   }
 
@@ -43,7 +43,7 @@ public class ResourceOperationsImpl<T extends HasMetadata, L extends KubernetesR
     return context.withOkhttpClient(client).withConfig(config).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY);
   }
   
-  public ResourceOperationsImpl(OperationContext context, ResourceDefinitionContext rdc, Class<T> type, Class<L> listType) {
+  public HasMetadataOperationsImpl(OperationContext context, ResourceDefinitionContext rdc, Class<T> type, Class<L> listType) {
     super(context.withApiGroupName(rdc.getGroup())
       .withApiGroupVersion(rdc.getVersion())
       .withPlural(rdc.getPlural()), type, listType != null ? listType : (Class) inferListType(type));
@@ -72,8 +72,8 @@ public class ResourceOperationsImpl<T extends HasMetadata, L extends KubernetesR
   }
 
   @Override
-  public ResourceOperationsImpl<T, L> newInstance(OperationContext context) {
-    return new ResourceOperationsImpl<>(context, rdc, type, listType);
+  public HasMetadataOperationsImpl<T, L> newInstance(OperationContext context) {
+    return new HasMetadataOperationsImpl<>(context, rdc, type, listType);
   }
 
   private String kind(ResourceDefinitionContext context) {

@@ -94,7 +94,7 @@ import io.fabric8.kubernetes.client.dsl.Waitable;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.ClusterOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.ResourceOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.DeploymentOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.ReplicaSetOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.StatefulSetOperationsImpl;
@@ -393,7 +393,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public InOutCreateable<TokenReview, TokenReview> tokenReviews() {
-    return Handlers.getOperation(TokenReview.class, httpClient, getConfiguration());
+    return Handlers.getNonListingOperation(TokenReview.class, httpClient, getConfiguration());
   }
 
   /**
@@ -414,7 +414,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
   }
   
   @Override
-  public <T extends HasMetadata, L extends KubernetesResourceList<T>> ResourceOperationsImpl<T, L> resources(
+  public <T extends HasMetadata, L extends KubernetesResourceList<T>> HasMetadataOperationsImpl<T, L> resources(
       Class<T> resourceType, Class<L> listClass) {
     return customResources(ResourceDefinitionContext.fromResourceType(resourceType), resourceType, listClass);
   }
@@ -423,8 +423,8 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    * {@inheritDoc}
    */
   @Override
-  public <T extends HasMetadata, L extends KubernetesResourceList<T>> ResourceOperationsImpl<T, L> customResources(ResourceDefinitionContext rdContext, Class<T> resourceType, Class<L> listClass) {
-    return new ResourceOperationsImpl<>(httpClient, getConfiguration(), rdContext, resourceType, listClass);
+  public <T extends HasMetadata, L extends KubernetesResourceList<T>> HasMetadataOperationsImpl<T, L> customResources(ResourceDefinitionContext rdContext, Class<T> resourceType, Class<L> listClass) {
+    return new HasMetadataOperationsImpl<>(httpClient, getConfiguration(), rdContext, resourceType, listClass);
   }
 
   /**
