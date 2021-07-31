@@ -17,25 +17,23 @@ package io.fabric8.kubernetes.client.dsl.base;
 
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.InOutCreateable;
-import io.fabric8.kubernetes.client.utils.Utils;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 public class CreateOnlyResourceOperation<I, O> extends OperationSupport implements InOutCreateable<I, O> {
-  protected Class<I> type;
-  protected Class<O> outputClassType;
+  protected Class<O> type;
   
   protected CreateOnlyResourceOperation(OperationContext ctx) {
     super(ctx);
   }
 
-  public Class<I> getType() {
+  public Class<O> getType() {
     return type;
   }
   
-  public boolean isResourceNamespaced() {
-    return Utils.isResourceNamespaced(getType());
+  protected O handleCreate(I resource) throws ExecutionException, InterruptedException, IOException {
+    return handleCreate(resource, getType());
   }
 
   @SafeVarargs
@@ -45,9 +43,9 @@ public class CreateOnlyResourceOperation<I, O> extends OperationSupport implemen
       if (resources.length > 1) {
         throw new IllegalArgumentException("Too many items to create.");
       } else if (resources.length == 1) {
-        return handleCreate(resources[0], outputClassType);
+        return handleCreate(resources[0]);
       } else {
-        return handleCreate(getItem(), outputClassType);
+        return handleCreate(getItem());
       }
     } catch (ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(e);
@@ -60,7 +58,7 @@ public class CreateOnlyResourceOperation<I, O> extends OperationSupport implemen
   @Override
   public O create(I item) {
     try {
-      return handleCreate(item, outputClassType);
+      return handleCreate(item);
     } catch (ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     } catch (InterruptedException ie) {

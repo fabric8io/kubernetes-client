@@ -23,27 +23,27 @@ import (
 )
 
 type PackageDescriptor struct {
-	GoPackage       string
-	ApiGroup        string
-	JavaPackage     string
-	Prefix          string
-	Generate        bool
+	GoPackage   string
+	ApiGroup    string
+	JavaPackage string
+	Prefix      string
+	Generate    bool
 }
 
 type schemaGenerator struct {
-	types           map[reflect.Type]*JSONObjectDescriptor
-	typeNames       map[reflect.Type]string
-	manualTypeMap   map[reflect.Type]string
-	packages        map[string]PackageDescriptor
-	typeMap         map[reflect.Type]reflect.Type
+	types         map[reflect.Type]*JSONObjectDescriptor
+	typeNames     map[reflect.Type]string
+	manualTypeMap map[reflect.Type]string
+	packages      map[string]PackageDescriptor
+	typeMap       map[reflect.Type]reflect.Type
 }
 
 type CrdScope int32
 
 const (
-	Namespaced CrdScope = iota
-	Cluster    CrdScope = iota
-	BasePackage string = "io.fabric8.kubernetes.api.model"
+	Namespaced  CrdScope = iota
+	Cluster     CrdScope = iota
+	BasePackage string   = "io.fabric8.kubernetes.api.model"
 )
 
 func GenerateSchema(t reflect.Type, packages []PackageDescriptor, typeMap map[reflect.Type]reflect.Type, manualTypeMapping map[reflect.Type]string, moduleName string) (*JSONSchema, error) {
@@ -57,11 +57,11 @@ func newSchemaGenerator(packages []PackageDescriptor, typeMap map[reflect.Type]r
 		pkgMap[p.GoPackage] = p
 	}
 	g := schemaGenerator{
-		types:           make(map[reflect.Type]*JSONObjectDescriptor),
-		typeNames:       make(map[reflect.Type]string),
-		manualTypeMap:   manualTypeMap,
-		packages:        pkgMap,
-		typeMap:         typeMap,
+		types:         make(map[reflect.Type]*JSONObjectDescriptor),
+		typeNames:     make(map[reflect.Type]string),
+		manualTypeMap: manualTypeMap,
+		packages:      pkgMap,
+		typeMap:       typeMap,
 	}
 	return &g
 }
@@ -163,7 +163,7 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 	}
 	pkgDesc, ok := g.packages[pkgPath(t)]
 
-	manualType, isFound := g.manualTypeMap[t];
+	manualType, isFound := g.manualTypeMap[t]
 	if isFound {
 		return manualType
 	}
@@ -224,7 +224,9 @@ func (g *schemaGenerator) resourceListWithGeneric(t reflect.Type) string {
 }
 
 func (g *schemaGenerator) javaInterfaces(t reflect.Type) []string {
-	if _, ok := t.FieldByName("ObjectMeta"); t.Name() != "JobTemplateSpec" && t.Name() != "PodTemplateSpec" && t.Name() != "PersistentVolumeClaimTemplate"  && t.Name() != "MachineSpec" && t.Name() != "MachineTemplateSpec" && ok {
+	_, hasMeta := t.FieldByName("ObjectMeta")
+
+	if t.Name() != "JobTemplateSpec" && t.Name() != "PodTemplateSpec" && t.Name() != "PersistentVolumeClaimTemplate" && t.Name() != "MachineSpec" && t.Name() != "MachineTemplateSpec" && hasMeta {
 		scope := g.crdScope(t)
 
 		if scope == Namespaced {
@@ -238,6 +240,11 @@ func (g *schemaGenerator) javaInterfaces(t reflect.Type) []string {
 	if hasItems && hasListMeta {
 		return []string{BasePackage + ".KubernetesResource", g.resourceListWithGeneric(itemsField.Type)}
 	}
+
+	if !hasMeta && g.isNamespaceScopedResource(t) {
+		return []string{BasePackage + ".KubernetesResource", BasePackage + ".Namespaced"}
+	}
+
 	return []string{BasePackage + ".KubernetesResource"}
 }
 
@@ -281,11 +288,11 @@ func (g *schemaGenerator) generate(t reflect.Type, moduleName string) (*JSONSche
 			}
 			javaType := g.javaType(k)
 			if g.generateJavaType(k) && strings.HasPrefix(javaType, "io.fabric8.") {
-				value.JavaTypeDescriptor = &JavaTypeDescriptor {
+				value.JavaTypeDescriptor = &JavaTypeDescriptor{
 					JavaType: javaType,
 				}
 			} else {
-				value.ExistingJavaTypeDescriptor = &ExistingJavaTypeDescriptor {
+				value.ExistingJavaTypeDescriptor = &ExistingJavaTypeDescriptor{
 					ExistingJavaType: javaType,
 				}
 			}
@@ -500,12 +507,12 @@ func (g *schemaGenerator) getStructProperties(t reflect.Type) map[string]JSONPro
 					if ok && pkgDesc.ApiGroup != "" {
 						apiGroup = pkgDesc.ApiGroup
 					}
-                                        /*
-                                         * ApiGroup for apiextensions is apiextensions.k8s.io
-                                         */
-                                        if apiGroup == "apiextensions" {
-                                            apiGroup = "apiextensions.k8s.io"
-                                        }
+					/*
+					 * ApiGroup for apiextensions is apiextensions.k8s.io
+					 */
+					if apiGroup == "apiextensions" {
+						apiGroup = "apiextensions.k8s.io"
+					}
 
 					/*
 					 * Skip appending apiGroup in apiVersion for case of core and meta resources since
@@ -584,8 +591,22 @@ func (g *schemaGenerator) crdScope(t reflect.Type) CrdScope {
 	return Namespaced
 }
 
+func (g *schemaGenerator) isNamespaceScopedResource(t reflect.Type) bool {
+	namespaceScopedResourcesList := []string{
+		"github.com/openshift/api/authorization/v1/LocalResourceAccessReview",
+		"github.com/openshift/api/authorization/v1/LocalSubjectAccessReview",
+		"github.com/openshift/api/authorization/v1/SelfSubjectRulesReview",
+		"github.com/openshift/api/authorization/v1/SubjectRulesReview",
+		"github.com/openshift/api/security/v1/PodSecurityPolicyReview",
+		"github.com/openshift/api/security/v1/PodSecurityPolicySelfSubjectReview",
+		"github.com/openshift/api/security/v1/PodSecurityPolicySubjectReview",
+	}
+
+	return Contains(namespaceScopedResourcesList, t.PkgPath()+"/"+t.Name())
+}
+
 func (g *schemaGenerator) isClusterScopedResource(t reflect.Type) bool {
-	clusterScopedResourcesList := []string {
+	clusterScopedResourcesList := []string{
 		"k8s.io/api/core/v1/Namespace",
 		"k8s.io/api/core/v1/Node",
 		"k8s.io/api/core/v1/ComponentStatus",
@@ -609,12 +630,6 @@ func (g *schemaGenerator) isClusterScopedResource(t reflect.Type) bool {
 		"k8s.io/api/rbac/v1/ClusterRoleBinding",
 		"k8s.io/api/scheduling/v1/PriorityClass",
 		"k8s.io/api/scheduling/v1beta1/PriorityClass",
-		"k8s.io/api/authorization/v1beta1/SelfSubjectAccessReview",
-		"k8s.io/api/authorization/v1beta1/SelfSubjectRulesReview",
-		"k8s.io/api/authorization/v1/SelfSubjectRulesReview",
-		"k8s.io/api/authorization/v1beta1/SubjectAccessReview",
-		"k8s.io/api/authorization/v1/SelfSubjectAccessReview",
-		"k8s.io/api/authorization/v1/SubjectAccessReview",
 		"k8s.io/api/certificates/v1beta1/CertificateSigningRequest",
 		"k8s.io/api/certificates/v1/CertificateSigningRequest",
 		"k8s.io/api/storage/v1beta1/CSIDriver",
@@ -627,16 +642,16 @@ func (g *schemaGenerator) isClusterScopedResource(t reflect.Type) bool {
 		"k8s.io/api/node/v1alpha1/RuntimeClass",
 		"k8s.io/api/networking/v1beta1/IngressClass",
 		"k8s.io/api/networking/v1/IngressClass",
-                "k8s.io/api/storage/v1/StorageClass",
-                "k8s.io/api/storage/v1beta1/StorageClass",
-                "k8s.io/api/flowcontrol/v1beta1/FlowSchema",
-                "k8s.io/api/flowcontrol/v1beta1/PriorityLevelConfiguration",
-                "github.com/openshift/api/authorization/v1/ClusterRole",
-                "github.com/openshift/api/authorization/v1/ClusterRoleBinding",
-                "github.com/openshift/api/authorization/v1/ResourceAccessReview",
-                "github.com/openshift/api/authorization/v1/SubjectAccessReview",
-                "github.com/openshift/api/oauth/v1/UserOAuthAccessToken",
-                "github.com/openshift/api/oauth/v1/OAuthClientAuthorization",
+		"k8s.io/api/storage/v1/StorageClass",
+		"k8s.io/api/storage/v1beta1/StorageClass",
+		"k8s.io/api/flowcontrol/v1beta1/FlowSchema",
+		"k8s.io/api/flowcontrol/v1beta1/PriorityLevelConfiguration",
+		"github.com/openshift/api/authorization/v1/ClusterRole",
+		"github.com/openshift/api/authorization/v1/ClusterRoleBinding",
+		"github.com/openshift/api/authorization/v1/ResourceAccessReview",
+		"github.com/openshift/api/authorization/v1/SubjectAccessReview",
+		"github.com/openshift/api/oauth/v1/UserOAuthAccessToken",
+		"github.com/openshift/api/oauth/v1/OAuthClientAuthorization",
 		"github.com/openshift/api/config/v1/Authentication",
 		"github.com/openshift/api/config/v1/Console",
 		"github.com/openshift/api/config/v1/DNS",
@@ -654,6 +669,8 @@ func (g *schemaGenerator) isClusterScopedResource(t reflect.Type) bool {
 		"github.com/openshift/api/network/v1/NetNamespace",
 		"github.com/openshift/api/config/v1/Proxy",
 		"github.com/openshift/api/security/v1/RangeAllocation",
+		"github.com/openshift/api/image/v1/Image",
+		"github.com/openshift/api/image/v1/ImageSignature",
 		"github.com/openshift/api/operator/v1/CSISnapshotController",
 		"github.com/openshift/api/operator/v1/ClusterCSIDriver",
 		"github.com/openshift/api/operator/v1/Config",
@@ -674,7 +691,7 @@ func (g *schemaGenerator) isClusterScopedResource(t reflect.Type) bool {
 		"github.com/openshift/api/operator/v1/Network",
 		"github.com/openshift/api/operator/v1/KubeScheduler",
 		"github.com/openshift/api/operator/v1/Authentication",
-                "github.com/operator-framework/api/pkg/operators/v1/Operator",
+		"github.com/operator-framework/api/pkg/operators/v1/Operator",
 		"github.com/openshift/api/imageregistry/v1/ImagePruner",
 		"github.com/openshift/api/imageregistry/v1/Config",
 		"github.com/openshift/api/console/v1/ConsoleLink",
@@ -684,23 +701,23 @@ func (g *schemaGenerator) isClusterScopedResource(t reflect.Type) bool {
 		"github.com/openshift/api/console/v1/ConsoleExternalLogLink",
 		"github.com/openshift/api/console/v1/ConsoleQuickStart",
 		"github.com/openshift/api/console/v1alpha1/ConsolePlugin",
-                "github.com/openshift/api/config/v1/Ingress",
-                "github.com/openshift/api/template/v1/BrokerTemplateInstance",
-                "github.com/openshift/api/helm/v1beta1/HelmChartRepository",
-                "github.com/openshift/api/network/v1/HostSubnet",
-                "github.com/openshift/api/user/v1/UserIdentityMapping",
-                "github.com/openshift/api/user/v1/Identity",
-                "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1/ContainerRuntimeConfig",
-                "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1/ControllerConfig",
-                "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1/KubeletConfig",
-                "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1/MachineConfigPool",
-                "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1/MachineConfig",
-                "github.com/openshift/cluster-autoscaler-operator/pkg/apis/autoscaling/v1/ClusterAutoscaler",
-                "sigs.k8s.io/kube-storage-version-migrator/pkg/apis/migration/v1alpha1/StorageState",
-                "sigs.k8s.io/kube-storage-version-migrator/pkg/apis/migration/v1alpha1/StorageVersionMigration",
+		"github.com/openshift/api/config/v1/Ingress",
+		"github.com/openshift/api/template/v1/BrokerTemplateInstance",
+		"github.com/openshift/api/helm/v1beta1/HelmChartRepository",
+		"github.com/openshift/api/network/v1/HostSubnet",
+		"github.com/openshift/api/user/v1/UserIdentityMapping",
+		"github.com/openshift/api/user/v1/Identity",
+		"github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1/ContainerRuntimeConfig",
+		"github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1/ControllerConfig",
+		"github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1/KubeletConfig",
+		"github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1/MachineConfigPool",
+		"github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1/MachineConfig",
+		"github.com/openshift/cluster-autoscaler-operator/pkg/apis/autoscaling/v1/ClusterAutoscaler",
+		"sigs.k8s.io/kube-storage-version-migrator/pkg/apis/migration/v1alpha1/StorageState",
+		"sigs.k8s.io/kube-storage-version-migrator/pkg/apis/migration/v1alpha1/StorageVersionMigration",
 	}
 
-	return Contains(clusterScopedResourcesList, t.PkgPath() + "/" + t.Name())
+	return Contains(clusterScopedResourcesList, t.PkgPath()+"/"+t.Name())
 }
 
 func Contains(a []string, x string) bool {

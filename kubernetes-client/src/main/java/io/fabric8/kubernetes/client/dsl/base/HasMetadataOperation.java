@@ -51,7 +51,6 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   public HasMetadataOperation(OperationContext ctx, Class<T> type, Class<L> listType) {
     super(ctx);
     this.type = type;
-    this.outputClassType = type;
     this.listType = listType;
     validateOperation(type);
   }

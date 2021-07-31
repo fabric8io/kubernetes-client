@@ -27,8 +27,8 @@ import com.sun.codemodel.JExpressionImpl;
 import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JFormatter;
 import io.fabric8.kubernetes.model.annotation.Group;
-import io.fabric8.kubernetes.model.annotation.Version;
 import io.fabric8.kubernetes.model.annotation.PackageSuffix;
+import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.transform.annotations.VelocityTransformation;
 import io.sundr.transform.annotations.VelocityTransformations;
@@ -47,6 +47,7 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
   protected static final String API_VERSION = "apiVersion";
   protected static final String METADATA = "metadata";
   protected static final String KIND = "kind";
+  protected static final String DEFAULT = "default";
   public static final String CORE_PACKAGE = "core";
   public static final String OPENSHIFT_PACKAGE = "openshift";
   protected final Map<String, JDefinedClass> pendingResources = new HashMap<>();
@@ -74,43 +75,47 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
     clazz.annotate(ToString.class);
     clazz.annotate(EqualsAndHashCode.class);
     processBuildable(clazz);
-  
-    final Map<String, JFieldVar> fields = clazz.fields();
-    if (fields.containsKey(KIND) && fields.containsKey(METADATA)) {
-      String resourceName = clazz.name();
-      final int listIndex = resourceName.lastIndexOf("List");
-      if (listIndex > 0 ) {
-        resourceName = resourceName.substring(0, listIndex);
-        pendingLists.put(resourceName, clazz);
-      } else {
-        pendingResources.put(resourceName, clazz);
-      }
-      
-      final JDefinedClass resourceClass = pendingResources.get(resourceName);
-      final JDefinedClass resourceListClass = pendingLists.get(resourceName);
-      if (resourceClass != null && resourceListClass != null) {
-        String apiVersion = propertiesNode.get(API_VERSION).get("default").toString().replace('"', ' ').trim();
-        String apiGroup = "";
-        final int lastSlash = apiVersion.lastIndexOf('/');
-        if (lastSlash > 0) {
-          apiGroup = apiVersion.substring(0, lastSlash);
-          apiVersion = apiVersion.substring(apiGroup.length() + 1);
-        }
-        String packageSuffix = getPackageSuffix(apiVersion);
 
-        resourceClass.annotate(Version.class).param(ANNOTATION_VALUE, apiVersion);
-        resourceClass.annotate(Group.class).param(ANNOTATION_VALUE, apiGroup);
-        resourceClass.annotate(PackageSuffix.class).param(ANNOTATION_VALUE, packageSuffix);
-        resourceListClass.annotate(Version.class).param(ANNOTATION_VALUE, apiVersion);
-        resourceListClass.annotate(Group.class).param(ANNOTATION_VALUE, apiGroup);
-        resourceListClass.annotate(PackageSuffix.class).param(ANNOTATION_VALUE, packageSuffix);
-        pendingLists.remove(resourceName);
-        pendingResources.remove(resourceName);
-        addClassesToPropertyFiles(resourceClass);
+    final Map<String, JFieldVar> fields = clazz.fields();
+    if (fields.containsKey(KIND) && propertiesNode.has(API_VERSION) && propertiesNode.get(API_VERSION).has(DEFAULT)) {
+      String apiVersion = propertiesNode.get(API_VERSION).get(DEFAULT).toString().replace('"', ' ').trim();
+      String apiGroup = "";
+      final int lastSlash = apiVersion.lastIndexOf('/');
+      if (lastSlash > 0) {
+        apiGroup = apiVersion.substring(0, lastSlash);
+        apiVersion = apiVersion.substring(apiGroup.length() + 1);
+      }
+      String packageSuffix = getPackageSuffix(apiVersion);
+
+      String resourceName = clazz.fullName();
+      if (resourceName.endsWith("List")) {
+          resourceName = resourceName.substring(0, resourceName.length() - 4);
+          final JDefinedClass resourceClass = pendingResources.remove(resourceName);
+          if (resourceClass != null) {
+              annotate(clazz, apiVersion, apiGroup, packageSuffix);
+              addClassesToPropertyFiles(resourceClass);
+          } else {
+              pendingLists.put(resourceName, clazz);
+          }
+      } else {
+          final JDefinedClass resourceListClass = pendingLists.remove(resourceName);
+          if (resourceListClass != null) {
+              annotate(resourceListClass, apiVersion, apiGroup, packageSuffix);
+              addClassesToPropertyFiles(clazz);
+          } else {
+              annotate(clazz, apiVersion, apiGroup, packageSuffix);
+              pendingResources.put(resourceName, clazz);
+          }
       }
     }
   }
-  
+
+  private void annotate(JDefinedClass clazz, String apiVersion, String apiGroup, String packageSuffix) {
+    clazz.annotate(Version.class).param(ANNOTATION_VALUE, apiVersion);
+    clazz.annotate(Group.class).param(ANNOTATION_VALUE, apiGroup);
+    clazz.annotate(PackageSuffix.class).param(ANNOTATION_VALUE, packageSuffix);
+  }
+
   @Override
   public void propertyInclusion(JDefinedClass clazz, JsonNode schema) {
     if (moduleName == null) {

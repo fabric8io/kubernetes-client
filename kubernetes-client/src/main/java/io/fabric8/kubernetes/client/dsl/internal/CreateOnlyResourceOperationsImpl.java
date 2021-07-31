@@ -26,6 +26,7 @@ import okhttp3.OkHttpClient;
 public class CreateOnlyResourceOperationsImpl<I extends KubernetesResource, O extends KubernetesResource> extends CreateOnlyResourceOperation<I, O> implements NamespacedInOutCreateable<I, O> {
   
   private final ResourceDefinitionContext rdc;
+  private Class<I> inputType;
   
   public CreateOnlyResourceOperationsImpl(OkHttpClient client, Config config, ResourceDefinitionContext rdc, Class<I> inputType, Class<O> outputType) {
     this(HasMetadataOperationsImpl.defaultContext(new OperationContext(), client, config), rdc, inputType, outputType);
@@ -35,8 +36,8 @@ public class CreateOnlyResourceOperationsImpl<I extends KubernetesResource, O ex
     super(context.withApiGroupName(rdc.getGroup())
       .withApiGroupVersion(rdc.getVersion())
       .withPlural(rdc.getPlural()));
-    this.type = inputType;
-    this.outputClassType = outputType;
+    this.inputType = inputType;
+    this.type = outputType;
 
     this.rdc = rdc;
 
@@ -53,7 +54,7 @@ public class CreateOnlyResourceOperationsImpl<I extends KubernetesResource, O ex
   
   @Override
   public CreateOnlyResourceOperationsImpl<I, O> inNamespace(String name) {
-    return new CreateOnlyResourceOperationsImpl<>(context.withNamespace(name), rdc, type, outputClassType);
+    return new CreateOnlyResourceOperationsImpl<>(context.withNamespace(name), rdc, inputType, type);
   }
 
 }

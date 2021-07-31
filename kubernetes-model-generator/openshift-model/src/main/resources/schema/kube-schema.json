@@ -4474,7 +4474,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.LocalResourceAccessReview",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "os_authorization_LocalSubjectAccessReview": {
@@ -4537,7 +4538,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.LocalSubjectAccessReview",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "os_authorization_PolicyRule": {
@@ -4925,7 +4927,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.SelfSubjectRulesReview",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "os_authorization_SelfSubjectRulesReviewSpec": {
@@ -5103,7 +5106,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.SubjectRulesReview",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "os_authorization_SubjectRulesReviewSpec": {
@@ -10328,8 +10332,7 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.Image",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata",
-        "io.fabric8.kubernetes.api.model.Namespaced"
+        "io.fabric8.kubernetes.api.model.HasMetadata"
       ]
     },
     "os_image_ImageImportSpec": {
@@ -10504,8 +10507,7 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.ImageSignature",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata",
-        "io.fabric8.kubernetes.api.model.Namespaced"
+        "io.fabric8.kubernetes.api.model.HasMetadata"
       ]
     },
     "os_image_ImageStream": {
@@ -12695,7 +12697,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.PodSecurityPolicyReview",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "os_security_PodSecurityPolicyReviewSpec": {
@@ -12761,7 +12764,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.PodSecurityPolicySelfSubjectReview",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "os_security_PodSecurityPolicySelfSubjectReviewSpec": {
@@ -12803,7 +12807,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.PodSecurityPolicySubjectReview",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "os_security_PodSecurityPolicySubjectReviewSpec": {

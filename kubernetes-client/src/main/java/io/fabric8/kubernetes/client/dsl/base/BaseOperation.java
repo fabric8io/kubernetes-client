@@ -738,6 +738,11 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     throw new KubernetesClientException(READ_ONLY_UPDATE_EXCEPTION_MESSAGE);
   }
 
+  @Override
+  public boolean isResourceNamespaced() {
+    return Utils.isResourceNamespaced(getType());
+  }
+
   protected T handleResponse(Request.Builder requestBuilder) throws ExecutionException, InterruptedException, IOException {
     return handleResponse(requestBuilder, getType());
   }
