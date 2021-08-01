@@ -13,6 +13,7 @@
 * Fix #3349: ensuring that dsl context values always are applied over user ListOptions
 * Fix #3372: Add generatePackageSuffix option to Model Generator to allow flexible package names for generated model
 * Fix #3336: Added ConversionReview to Kubernetes APIExtensions Model
+* Fix #3349: ensuring that dsl context values always are applied over user ListOptions
 
 #### Dependency Upgrade
 
