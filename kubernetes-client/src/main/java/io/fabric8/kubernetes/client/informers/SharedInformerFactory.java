@@ -19,11 +19,8 @@ import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResourceList;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.client.BaseKubernetesClient;
 import io.fabric8.kubernetes.client.CustomResource;
-import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.Informable;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
@@ -241,27 +238,10 @@ public class SharedInformerFactory {
    * @return the shared index informer
    */
   private synchronized <T extends HasMetadata, L extends KubernetesResourceList<T>> SharedIndexInformer<T> sharedIndexInformerFor(Class<T> apiTypeClass, Class<L> apiListTypeClass, OperationContext operationContext, long resyncPeriodInMillis, ResourceDefinitionContext rdc) {
-    
     ResourceOperationsImpl<T, L> resources = getResourceOperation(apiTypeClass, apiListTypeClass, operationContext, rdc);
     
-    // TODO should be combined with the logic in BaseOperation
-    SharedIndexInformer<T> informer = new DefaultSharedIndexInformer<>(apiTypeClass, new ListerWatcher<T, L>() {
-      @Override
-      public L list(ListOptions params) {
-        if (resources.getName() != null) {
-          params.setFieldSelector("metadata.name="+resources.getName());
-        }
-        return resources.list(params);
-      }
-      @Override
-      public Watch watch(ListOptions params, Watcher<T> watcher) {
-        return resources.watch(params, watcher);
-      }
-      @Override
-      public String getNamespace() {
-        return resources.getNamespace();
-      }
-    }, resyncPeriodInMillis, informerExecutor);
+    // we want the resources to no longer reference a resourceVersion
+    SharedIndexInformer<T> informer = new DefaultSharedIndexInformer<>(apiTypeClass, resources.withResourceVersion(null), resyncPeriodInMillis, informerExecutor);
     this.informers.add(new AbstractMap.SimpleEntry<>(resources.getOperationContext(), informer));
     return informer;
   }
@@ -314,7 +294,7 @@ public class SharedInformerFactory {
   public synchronized <T> SharedIndexInformer<T> getExistingSharedIndexInformer(Class<T> apiTypeClass) {
     for (Map.Entry<OperationContext, SharedIndexInformer> entry : this.informers) {
       if (entry.getValue().getApiTypeClass().equals(apiTypeClass)) {
-        return (SharedIndexInformer<T>) entry.getValue();
+        return entry.getValue();
       }
     }
     return null;

@@ -32,7 +32,6 @@ import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.BuildConfigBuilder;
 import io.fabric8.openshift.api.model.BuildConfigList;
-import io.fabric8.openshift.api.model.BuildList;
 import io.fabric8.openshift.api.model.BuildRequest;
 import io.fabric8.openshift.api.model.WebHookTrigger;
 import io.fabric8.openshift.client.OpenShiftConfig;
@@ -160,40 +159,6 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
   @Override
   public Triggerable<WebHookTrigger, Void> withType(String triggerType) {
     return new BuildConfigOperationsImpl(getContext().withTriggerType(triggerType));
-  }
-
-  @Override
-  public BuildConfigResource<BuildConfig, Void, Build> withResourceVersion(String resourceVersion) {
-    return new BuildConfigOperationsImpl(getContext().withResourceVersion(resourceVersion));
-  }
-
-  /*
-   * Labels are limited to 63 chars so need to first truncate the build config name (if required), retrieve builds with matching label,
-   * then check the build config name against the builds' build config annotation which have no such length restriction (but
-   * aren't usable for searching). Would be better if referenced build config was available via fields but it currently isn't...
-   */
-  private void deleteBuilds() {
-    if (getName() == null) {
-        return;
-    }
-    String buildConfigLabelValue = getName().substring(0, Math.min(getName().length(), 63));
-    BuildList matchingBuilds = new BuildOperationsImpl(client, (OpenShiftConfig) config).inNamespace(namespace).withLabel(BUILD_CONFIG_LABEL, buildConfigLabelValue).list();
-
-    if (matchingBuilds.getItems() != null) {
-
-      for (Build matchingBuild : matchingBuilds.getItems()) {
-
-        if (matchingBuild.getMetadata() != null &&
-          matchingBuild.getMetadata().getAnnotations() != null &&
-          getName().equals(matchingBuild.getMetadata().getAnnotations().get(BUILD_CONFIG_ANNOTATION))) {
-
-          new BuildOperationsImpl(client, (OpenShiftConfig) config).inNamespace(matchingBuild.getMetadata().getNamespace()).withName(matchingBuild.getMetadata().getName()).delete();
-
-        }
-
-      }
-
-    }
   }
 
   @Override

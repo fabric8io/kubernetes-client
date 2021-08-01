@@ -265,7 +265,7 @@ class ResourceTest {
   static void list(KubernetesMockServer server, Pod pod) {
     server.expect()
         .get()
-        .withPath("/api/v1/namespaces/"+pod.getMetadata().getNamespace()+"/pods?fieldSelector=metadata.name%3D"+pod.getMetadata().getName()+"&watch=false")
+        .withPath("/api/v1/namespaces/"+pod.getMetadata().getNamespace()+"/pods?fieldSelector=metadata.name%3D"+pod.getMetadata().getName())
         .andReturn(200,
             new PodListBuilder().withItems(pod).withNewMetadata().withResourceVersion("1").endMetadata().build())
         .once();
@@ -282,7 +282,7 @@ class ResourceTest {
     Pod ready = createReadyFrom(pod1, "True");
 
     // and again so that "periodicWatchUntilReady" successfully begins
-    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&watch=false").andReturn(200, noReady).times(2);
+    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1").andReturn(200, noReady).times(2);
 
     server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true").andUpgradeToWebSocket()
       .open()
@@ -562,7 +562,7 @@ class ResourceTest {
   void testWaitNullDoesntExist() throws InterruptedException {
     server.expect()
       .get()
-      .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&watch=false")
+      .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1")
       .andReturn(200,
         new PodListBuilder().withNewMetadata().withResourceVersion("1").endMetadata().build())
       .once();

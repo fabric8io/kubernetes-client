@@ -200,7 +200,7 @@ class ReplicationControllerTest {
 
     // list for waiting
     server.expect()
-      .withPath("/api/v1/namespaces/test/replicationcontrollers?fieldSelector=metadata.name%3Drepl1&watch=false")
+      .withPath("/api/v1/namespaces/test/replicationcontrollers?fieldSelector=metadata.name%3Drepl1")
       .andReturn(200,
         new ReplicationControllerListBuilder().withItems(scaled).withMetadata(new ListMetaBuilder().build()).build())
       .always();

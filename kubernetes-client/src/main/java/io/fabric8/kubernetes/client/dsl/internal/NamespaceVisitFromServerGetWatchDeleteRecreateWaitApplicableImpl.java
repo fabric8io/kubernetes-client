@@ -21,7 +21,6 @@ import io.fabric8.kubernetes.client.dsl.VisitFromServerWritable;
 import io.fabric8.kubernetes.client.utils.Utils;
 
 import java.util.function.Predicate;
-
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +44,7 @@ import io.fabric8.kubernetes.client.dsl.Deletable;
 import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.Readiable;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.VisitFromServerGetWatchDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.Waitable;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
@@ -209,23 +209,23 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl ex
 
   @Override
   public Watch watch(Watcher<HasMetadata> watcher) {
-    HasMetadata meta = get();
-    ResourceHandler<HasMetadata, ?> h = handlerOf(meta);
-    return h.watch(client, config, meta.getMetadata().getNamespace(), meta, watcher);
+    return getResource().watch(watcher);
   }
 
   @Override
   public Watch watch(String resourceVersion, Watcher<HasMetadata> watcher) {
-    HasMetadata meta = get();
-    ResourceHandler<HasMetadata, ?> h = handlerOf(meta);
-    return h.watch(client, config, meta.getMetadata().getNamespace(), meta, resourceVersion, watcher);
+    return getResource().watch(resourceVersion, watcher);
   }
 
   @Override
   public Watch watch(ListOptions options, Watcher<HasMetadata> watcher) {
+    return getResource().watch(options, watcher);
+  }
+  
+  Resource<HasMetadata> getResource() {
     HasMetadata meta = get();
     ResourceHandler<HasMetadata, ?> h = handlerOf(meta);
-    return h.watch(client, config, meta.getMetadata().getNamespace(), meta, options, watcher);
+    return h.resource(client, config, meta.getMetadata().getNamespace(), meta);
   }
 
   protected Readiness getReadiness() {

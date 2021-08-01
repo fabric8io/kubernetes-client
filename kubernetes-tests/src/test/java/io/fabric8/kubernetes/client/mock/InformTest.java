@@ -54,7 +54,7 @@ class InformTest {
         .withResourceVersion("1").endMetadata().build();
 
     server.expect()
-        .withPath("/api/v1/namespaces/test/pods?watch=false&labelSelector=my-label")
+        .withPath("/api/v1/namespaces/test/pods?labelSelector=my-label")
         .andReturn(HttpURLConnection.HTTP_OK,
             new PodListBuilder().withNewMetadata().withResourceVersion("1").endMetadata().withItems(pod1).build())
         .once();
@@ -108,7 +108,7 @@ class InformTest {
     list.setItems(Arrays.asList(dummy));
 
     server.expect()
-        .withPath("/apis/demos.fabric8.io/v1/namespaces/test/dummies?watch=false&labelSelector=my-label")
+        .withPath("/apis/demos.fabric8.io/v1/namespaces/test/dummies?labelSelector=my-label")
         .andReturn(HttpURLConnection.HTTP_OK, list)
         .once();
 
@@ -169,7 +169,7 @@ class InformTest {
         .withResourceVersion("1").endMetadata().build();
 
     server.expect()
-        .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&watch=false")
+        .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1")
         .andReturn(HttpURLConnection.HTTP_OK,
             new PodListBuilder().withNewMetadata().withResourceVersion("1").endMetadata().withItems(pod1).build())
         .once();
