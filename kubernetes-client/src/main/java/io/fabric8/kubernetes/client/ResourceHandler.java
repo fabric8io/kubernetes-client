@@ -22,7 +22,6 @@ import java.util.function.Predicate;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import okhttp3.OkHttpClient;
@@ -88,49 +87,6 @@ public interface ResourceHandler<T extends HasMetadata, V extends VisitableBuild
    */
   default Boolean delete(OkHttpClient client, Config config, String namespace, DeletionPropagation propagationPolicy, long gracePeriodSeconds, T item, boolean dryRun) {
     return resource(client, config, namespace, item).dryRun(dryRun).withPropagationPolicy(propagationPolicy).withGracePeriod(gracePeriodSeconds).delete();
-  }
-
-
-    /**
-     * Watches the specified resource for changes.
-     * @param client        An instance of the http client.
-     * @param config        The client config.
-     * @param namespace     The target namespace.
-     * @param item          The resource to delete.
-     * @param watcher       The {@link Watcher} to use.
-     * @return              The {@link Watch}
-     */
-  default Watch watch(OkHttpClient client, Config config, String namespace, T item, Watcher<T> watcher) {
-    return resource(client, config, namespace, item).watch(watcher);
-  }
-
-  /**
-   * Watches the specified resource for changes.
-   * @param client          An instance of the http client.
-   * @param config          The client config.
-   * @param namespace       The target namespace.
-   * @param item            The resource to delete.
-   * @param resourceVersion The resourceVersion of object
-   * @param watcher         The {@link Watcher} to use.
-   * @return                The {@link Watch}
-   */
-  default Watch watch(OkHttpClient client, Config config, String namespace, T item, String resourceVersion, Watcher<T> watcher) {
-    return resource(client, config, namespace, item).watch(resourceVersion, watcher);
-  }
-
-  /**
-   * Watches the specified resource for changes
-   *
-   * @param client         An instance of http client.
-   * @param config         The client config.
-   * @param namespace      The target namespace.
-   * @param item           The resource to delete.
-   * @param listOptions    The {@link io.fabric8.kubernetes.api.model.ListOptions} for available options
-   * @param watcher        The {@link Watcher} to use.
-   * @return               The {@link Watch}
-   */
-  default Watch watch(OkHttpClient client, Config config, String namespace, T item, ListOptions listOptions, Watcher<T> watcher) {
-    return resource(client, config, namespace, item).watch(listOptions, watcher);
   }
 
   /**

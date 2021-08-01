@@ -30,6 +30,9 @@ public interface Watchable<W> {
 
   /**
    * Watch returns {@link Watch} interface that watches requested resource
+   * <p>The passed in options may be modified as a side-effect of this call.
+   * <br>Values that already exist at this context, such as the labels, fields, 
+   * and resourceVersion will be overridden on the passed in options regardless of initial values.
    *
    * @param options options available for watch operation
    * @param watcher Watcher interface of Kubernetes resource

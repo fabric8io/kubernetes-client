@@ -24,7 +24,6 @@ public interface Listable<T> {
    * List resources from APIServer.
    * @deprecated : Please use {@link #list(ListOptions)} instead
    *
-   *
    * @param limitVal number of resources to list
    * @param continueVal an offset to pick listing from
    * @return resource list
@@ -34,6 +33,9 @@ public interface Listable<T> {
 
   /**
    * List resource from Kubernetes API server.
+   * <p>The passed in options may be modified as a side-effect of this call.
+   * <br>Values that already exist at this context, such as the labels and fields will be overridden
+   *  on the passed in options regardless of initial values.
    *
    * @param listOptions ListOptions is the query options to a standard REST list call.
    * @return list of resource type

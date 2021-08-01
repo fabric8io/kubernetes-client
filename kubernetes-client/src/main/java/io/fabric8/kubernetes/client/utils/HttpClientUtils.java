@@ -81,16 +81,16 @@ public class HttpClientUtils {
       urlBuilder.addQueryParameter("continue", listOptions.getContinue());
     }
 
-    if (listOptions.getResourceVersion() != null) {
-      urlBuilder.addQueryParameter("resourceVersion", listOptions.getResourceVersion());
-    }
-
     if (listOptions.getFieldSelector() != null) {
       urlBuilder.addQueryParameter("fieldSelector", listOptions.getFieldSelector());
     }
 
     if (listOptions.getLabelSelector() != null) {
       urlBuilder.addQueryParameter("labelSelector", listOptions.getLabelSelector());
+    }
+    
+    if (listOptions.getResourceVersion() != null) {
+      urlBuilder.addQueryParameter("resourceVersion", listOptions.getResourceVersion());
     }
 
     if (listOptions.getTimeoutSeconds() != null) {

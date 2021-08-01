@@ -50,7 +50,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   }
 
   protected L getList() {
-    return listerWatcher.list(new ListOptionsBuilder().build());
+    return listerWatcher.list();
   }
 
   public void stop() {
@@ -89,8 +89,9 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
     log.debug("Starting watcher for resource {} v{}", apiTypeClass, latestResourceVersion);
     // there's no need to stop the old watch, that will happen automatically when this call completes
     watch.set(
-      listerWatcher.watch(new ListOptionsBuilder()
-        .withWatch(Boolean.TRUE).withResourceVersion(latestResourceVersion).withTimeoutSeconds(null).build(), watcher));
+        listerWatcher.watch(new ListOptionsBuilder().withResourceVersion(latestResourceVersion)
+            .withTimeoutSeconds(null)
+            .build(), watcher));
     watching = true;
   }
   
