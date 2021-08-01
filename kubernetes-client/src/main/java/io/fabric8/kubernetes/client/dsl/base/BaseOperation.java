@@ -47,7 +47,6 @@ import io.fabric8.kubernetes.client.dsl.Informable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ReplaceDeletable;
-import io.fabric8.kubernetes.client.dsl.Replaceable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.internal.DefaultOperationInfo;
 import io.fabric8.kubernetes.client.dsl.internal.WatchConnectionManager;
@@ -91,7 +90,8 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   implements
   OperationInfo,
   MixedOperation<T, L, R>,
-  Resource<T> {
+  Resource<T>,
+  ListerWatcher<T, L> {
 
   private static final String READ_ONLY_UPDATE_EXCEPTION_MESSAGE = "Cannot update read-only resources";
   private static final String READ_ONLY_EDIT_EXCEPTION_MESSAGE = "Cannot edit read-only resources";
@@ -134,9 +134,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     try {
       HttpUrl.Builder requestUrlBuilder = HttpUrl.get(url).newBuilder();
 
-      addQueryStringParam(requestUrlBuilder, "labelSelector", getLabelQueryParam());
-      addQueryStringParam(requestUrlBuilder, "fieldSelector", getFieldQueryParam());
-
       Request.Builder requestBuilder = new Request.Builder().get().url(requestUrlBuilder.build());
       L answer = handleResponse(requestBuilder, listType);
       updateApiVersion(answer);
@@ -151,12 +148,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   protected URL fetchListUrl(URL url, ListOptions listOptions) throws MalformedURLException {
     return new URL(HttpClientUtils.appendListOptionParams(HttpUrl.get(url.toString()).newBuilder(), listOptions).toString());
-  }
-
-  private void addQueryStringParam(HttpUrl.Builder requestUrlBuilder, String name, String value) {
-    if (Utils.isNotNullOrEmpty(value)) {
-      requestUrlBuilder.addQueryParameter(name, value);
-    }
   }
 
   @Override
@@ -515,11 +506,17 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
         sb.append(entry.getKey()).append(" notin ").append("(").append(Utils.join(entry.getValue())).append(")");
       }
     }
-    return sb.toString();
+    if (sb.length() > 0) {
+      return sb.toString();
+    }
+    return null;
   }
 
   public String getFieldQueryParam() {
     StringBuilder sb = new StringBuilder();
+    if (Utils.isNotNullOrEmpty(context.getName())) {
+      sb.append("metadata.name").append("=").append(context.getName());
+    }
     Map<String, String> fields = context.getFields();
     if (fields != null && !fields.isEmpty()) {
       for (Iterator<Map.Entry<String, String>> iter = fields.entrySet().iterator(); iter.hasNext(); ) {
@@ -545,27 +542,49 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
         }
       }
     }
-    return sb.toString();
-  }
-
-  public L list() {
-    try {
-      return listRequestHelper(getResourceUrl(namespace, name));
-    } catch (IOException e) {
-      throw KubernetesClientException.launderThrowable(forOperationType("list"), e);
+    if (sb.length() > 0) {
+      return sb.toString();
     }
+    return null;
   }
 
+  @Override
+  public L list() {
+    return list(new ListOptions());
+  }
+
+  @Override
   public L list(Integer limitVal, String continueVal) {
     return list(new ListOptionsBuilder().withLimit(Long.parseLong(limitVal.toString())).withContinue(continueVal).build());
   }
 
+  @Override
   public L list(ListOptions listOptions) {
     try {
-      return listRequestHelper(fetchListUrl(getNamespacedUrl(), listOptions));
+      return listRequestHelper(
+          fetchListUrl(getNamespacedUrl(), defaultListOptions(listOptions, null)));
     } catch (MalformedURLException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("list"), e);
     }
+  }
+
+  /**
+   * Override the options based upon the context / call
+   */
+  private ListOptions defaultListOptions(ListOptions options, Boolean watch) {
+    options.setWatch(watch);
+    String fieldQueryParam = getFieldQueryParam();
+    if (fieldQueryParam != null) {
+      options.setFieldSelector(fieldQueryParam);
+    }
+    String lableQueryParam = getLabelQueryParam();
+    if (lableQueryParam != null) {
+      options.setLabelSelector(lableQueryParam);
+    }
+    if (resourceVersion != null) {
+      options.setResourceVersion(resourceVersion);
+    }
+    return options;
   }
 
   @Override
@@ -668,14 +687,13 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public R withResourceVersion(String resourceVersion) {
-    return (R) newInstance(context.withResourceVersion(resourceVersion));
+  public BaseOperation<T, L, R> withResourceVersion(String resourceVersion) {
+    return newInstance(context.withResourceVersion(resourceVersion));
   }
 
+  @Override
   public Watch watch(final Watcher<T> watcher) {
-    return watch(new ListOptionsBuilder()
-      .withResourceVersion(resourceVersion)
-      .build(), watcher);
+    return watch(new ListOptions(), watcher); 
   }
 
   @Override
@@ -688,7 +706,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   @Override
   public Watch watch(ListOptions options, final Watcher<T> watcher) {
     WatcherToggle<T> watcherToggle = new WatcherToggle<>(watcher, true);
-    options.setWatch(Boolean.TRUE);
+    options = defaultListOptions(options, true);
     WatchConnectionManager<T, L> watch = null;
     try {
       watch = new WatchConnectionManager<>(
@@ -869,6 +887,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     return propagationPolicy;
   }
 
+  @Override
   public String getResourceT() {
     return resourceT;
   }
@@ -1069,30 +1088,12 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   private DefaultSharedIndexInformer<T, L> createInformer(long resync) {
     T i = getItem();
-    String name = (Utils.isNotNullOrEmpty(getName()) || i != null) ? checkName(i) : null;
+    if (Utils.isNotNullOrEmpty(getName()) && i != null) {
+      checkName(i);
+    }
 
-    // use the local context / namespace
-    DefaultSharedIndexInformer<T, L> informer = new DefaultSharedIndexInformer<>(getType(), new ListerWatcher<T, L>() {
-      @Override
-      public L list(ListOptions params) {
-        params.setWatch(Boolean.FALSE); // for test compatibility
-        // convert the name into something listable
-        if (name != null) {
-          params.setFieldSelector("metadata.name="+name);
-        }
-        return BaseOperation.this.list(params);
-      }
-
-      @Override
-      public Watch watch(ListOptions params, Watcher<T> watcher) {
-        return BaseOperation.this.watch(params, watcher);
-      }
-      
-      @Override
-      public String getNamespace() {
-        return context.getNamespace();
-      }
-    }, resync, Runnable::run); // just run the event notification in the websocket thread
+    // use the local context / namespace but without a resourceVersion
+    DefaultSharedIndexInformer<T, L> informer = new DefaultSharedIndexInformer<>(getType(), this.withResourceVersion(null), resync, Runnable::run); // just run the event notification in the websocket thread
     if (indexers != null) {
       informer.addIndexers(indexers);
     }

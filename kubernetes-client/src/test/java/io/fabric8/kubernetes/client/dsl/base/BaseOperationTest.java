@@ -143,21 +143,21 @@ class BaseOperationTest {
         .withContinue("eyJ2IjoibWV0YS5rOHMuaW8vdjEiLCJydiI6MjE0NDUzLCJzdGFydCI6ImV0Y2QtbWluaWt1YmVcdTAwMDAifQ")
         .withFieldSelector("status.phase=Running")
         .build()).toString());
-    assertEquals(URLUtils.join(url.toString(), "?limit=5&continue=eyJ2IjoibWV0YS5rOHMuaW8vdjEiLCJydiI6MjE0NDUzLCJzdGFydCI6ImV0Y2QtbWluaWt1YmVcdTAwMDAifQ&resourceVersion=210448&fieldSelector=status.phase%3DRunning"),
+    assertEquals(URLUtils.join(url.toString(), "?limit=5&continue=eyJ2IjoibWV0YS5rOHMuaW8vdjEiLCJydiI6MjE0NDUzLCJzdGFydCI6ImV0Y2QtbWluaWt1YmVcdTAwMDAifQ&fieldSelector=status.phase%3DRunning&resourceVersion=210448"),
       operation.fetchListUrl(url, new ListOptionsBuilder()
         .withLimit(5L)
         .withContinue("eyJ2IjoibWV0YS5rOHMuaW8vdjEiLCJydiI6MjE0NDUzLCJzdGFydCI6ImV0Y2QtbWluaWt1YmVcdTAwMDAifQ")
         .withFieldSelector("status.phase=Running")
         .withResourceVersion("210448")
         .build()).toString());
-    assertEquals(URLUtils.join(url.toString(), "?limit=5&continue=eyJ2IjoibWV0YS5rOHMuaW8vdjEiLCJydiI6MjE0NDUzLCJzdGFydCI6ImV0Y2QtbWluaWt1YmVcdTAwMDAifQ&resourceVersion=210448&labelSelector=%21node-role.kubernetes.io%2Fmaster"),
+    assertEquals(URLUtils.join(url.toString(), "?limit=5&continue=eyJ2IjoibWV0YS5rOHMuaW8vdjEiLCJydiI6MjE0NDUzLCJzdGFydCI6ImV0Y2QtbWluaWt1YmVcdTAwMDAifQ&labelSelector=%21node-role.kubernetes.io%2Fmaster&resourceVersion=210448"),
       operation.fetchListUrl(url, new ListOptionsBuilder()
         .withLimit(5L)
         .withContinue("eyJ2IjoibWV0YS5rOHMuaW8vdjEiLCJydiI6MjE0NDUzLCJzdGFydCI6ImV0Y2QtbWluaWt1YmVcdTAwMDAifQ")
         .withLabelSelector("!node-role.kubernetes.io/master")
         .withResourceVersion("210448")
         .build()).toString());
-    assertEquals(URLUtils.join(url.toString(), "?limit=5&continue=eyJ2IjoibWV0YS5rOHMuaW8vdjEiLCJydiI6MjE0NDUzLCJzdGFydCI6ImV0Y2QtbWluaWt1YmVcdTAwMDAifQ&resourceVersion=210448&labelSelector=%21node-role.kubernetes.io%2Fmaster&timeoutSeconds=10"),
+    assertEquals(URLUtils.join(url.toString(), "?limit=5&continue=eyJ2IjoibWV0YS5rOHMuaW8vdjEiLCJydiI6MjE0NDUzLCJzdGFydCI6ImV0Y2QtbWluaWt1YmVcdTAwMDAifQ&labelSelector=%21node-role.kubernetes.io%2Fmaster&resourceVersion=210448&timeoutSeconds=10"),
       operation.fetchListUrl(url, new ListOptionsBuilder()
         .withLimit(5L)
         .withContinue("eyJ2IjoibWV0YS5rOHMuaW8vdjEiLCJydiI6MjE0NDUzLCJzdGFydCI6ImV0Y2QtbWluaWt1YmVcdTAwMDAifQ")
@@ -165,7 +165,7 @@ class BaseOperationTest {
         .withResourceVersion("210448")
         .withTimeoutSeconds(10L)
         .build()).toString());
-    assertEquals(URLUtils.join(url.toString(), "?limit=5&continue=eyJ2IjoibWV0YS5rOHMuaW8vdjEiLCJydiI6MjE0NDUzLCJzdGFydCI6ImV0Y2QtbWluaWt1YmVcdTAwMDAifQ&resourceVersion=210448&labelSelector=%21node-role.kubernetes.io%2Fmaster&timeoutSeconds=10&allowWatchBookmarks=true"),
+    assertEquals(URLUtils.join(url.toString(), "?limit=5&continue=eyJ2IjoibWV0YS5rOHMuaW8vdjEiLCJydiI6MjE0NDUzLCJzdGFydCI6ImV0Y2QtbWluaWt1YmVcdTAwMDAifQ&labelSelector=%21node-role.kubernetes.io%2Fmaster&resourceVersion=210448&timeoutSeconds=10&allowWatchBookmarks=true"),
       operation.fetchListUrl(url, new ListOptionsBuilder()
         .withLimit(5L)
         .withContinue("eyJ2IjoibWV0YS5rOHMuaW8vdjEiLCJydiI6MjE0NDUzLCJzdGFydCI6ImV0Y2QtbWluaWt1YmVcdTAwMDAifQ")
@@ -174,7 +174,7 @@ class BaseOperationTest {
         .withTimeoutSeconds(10L)
         .withAllowWatchBookmarks(true)
         .build()).toString());
-    assertEquals(URLUtils.join(url.toString(), "?limit=5&continue=eyJ2IjoibWV0YS5rOHMuaW8vdjEiLCJydiI6MjE0NDUzLCJzdGFydCI6ImV0Y2QtbWluaWt1YmVcdTAwMDAifQ&resourceVersion=210448&labelSelector=%21node-role.kubernetes.io%2Fmaster&timeoutSeconds=10&allowWatchBookmarks=true&watch=true"),
+    assertEquals(URLUtils.join(url.toString(), "?limit=5&continue=eyJ2IjoibWV0YS5rOHMuaW8vdjEiLCJydiI6MjE0NDUzLCJzdGFydCI6ImV0Y2QtbWluaWt1YmVcdTAwMDAifQ&labelSelector=%21node-role.kubernetes.io%2Fmaster&resourceVersion=210448&timeoutSeconds=10&allowWatchBookmarks=true&watch=true"),
       operation.fetchListUrl(url, new ListOptionsBuilder()
         .withLimit(5L)
         .withContinue("eyJ2IjoibWV0YS5rOHMuaW8vdjEiLCJydiI6MjE0NDUzLCJzdGFydCI6ImV0Y2QtbWluaWt1YmVcdTAwMDAifQ")
