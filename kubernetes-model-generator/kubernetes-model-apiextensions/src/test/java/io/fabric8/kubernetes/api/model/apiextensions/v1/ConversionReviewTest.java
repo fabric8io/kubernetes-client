@@ -24,7 +24,7 @@ import static net.javacrumbs.jsonunit.core.Option.IGNORING_EXTRA_FIELDS;
 import static net.javacrumbs.jsonunit.core.Option.TREATING_NULL_AS_ABSENT;
 import static net.javacrumbs.jsonunit.fluent.JsonFluentAssert.assertThatJson;
 
-public class ConversionReviewTest {
+class ConversionReviewTest {
 
   private final ObjectMapper objectMapper = new ObjectMapper();
 
