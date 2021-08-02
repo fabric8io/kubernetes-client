@@ -23,6 +23,8 @@ import io.fabric8.crd.example.joke.Joke;
 import io.fabric8.crd.example.joke.JokeRequest;
 import io.fabric8.crd.example.joke.JokeRequestSpec;
 import io.fabric8.crd.example.joke.JokeRequestStatus;
+import io.fabric8.crd.example.multiple.v1.Multiple;
+import io.fabric8.crd.example.multiple.v1.MultipleSpec;
 import io.fabric8.crd.example.simplest.Simplest;
 import io.fabric8.crd.example.simplest.SimplestSpec;
 import io.fabric8.crd.example.simplest.SimplestStatus;
@@ -147,6 +149,42 @@ class CRDGeneratorTest {
     assertEquals(2, jokeRequestInfos.size());
     assertTrue(jokeRequestInfos.containsKey("v1"));
     assertTrue(jokeRequestInfos.containsKey("v1beta1"));
+  }
+
+  @Test
+  void shouldProperlyGenerateMultipleVersionsOfCRDs() {
+    CRDGenerator generator = new CRDGenerator();
+    final String specVersion = "v1beta1";
+    final CRDGenerationInfo info = generator
+      .customResourceClasses(Multiple.class, io.fabric8.crd.example.multiple.v2.Multiple.class)
+      .forCRDVersions(specVersion)
+      .withOutput(output).detailedGenerate();
+
+    assertEquals(1, info.numberOfGeneratedCRDs());
+    final Map<String, Map<String, CRDInfo>> details = info.getCRDDetailsPerNameAndVersion();
+    assertEquals(1, details.size());
+    // check multiple versions for same CR
+    final String crdName = CustomResource.getCRDName(Multiple.class);
+    assertTrue(details.containsKey(crdName));
+    final Map<String, CRDInfo> infos = info.getCRDInfos(crdName);
+    assertEquals(1, infos.size());
+    assertTrue(infos.containsKey(specVersion));
+
+    final String outputName = CRDGenerator.getOutputName(crdName, specVersion);
+    CustomResourceDefinition definition = output.definition(outputName);
+    assertNotNull(definition);
+    assertEquals("apiextensions.k8s.io/" + specVersion, definition.getApiVersion());
+
+    CustomResourceDefinitionSpec spec = definition.getSpec();
+    final List<CustomResourceDefinitionVersion> versions = spec.getVersions();
+    assertEquals(2, versions.size());
+    assertTrue(versions.stream().filter(v -> v.getName().equals("v1")).count() == 1);
+    assertTrue(versions.stream().filter(v -> v.getName().equals("v2")).count() == 1);
+
+
+    Class<?>[] mustContainTraversedClasses = {Multiple.class, MultipleSpec.class, io.fabric8.crd.example.multiple.v2.Multiple.class, io.fabric8.crd.example.multiple.v2.MultipleSpec.class};
+    final Set<String> dependentClassNames = infos.get(specVersion).getDependentClassNames();
+    Arrays.stream(mustContainTraversedClasses).map(Class::getCanonicalName).forEach(c -> assertTrue(dependentClassNames.contains(c), "should contain " + c));
   }
 
   @Test void notDefiningOutputShouldNotGenerateAnything() {
@@ -320,7 +358,6 @@ class CRDGeneratorTest {
     assertTrue(crdInfo.getFilePath().endsWith(CRDGenerator.getOutputName(crdName, v1))); // test output uses the CRD name as URI
     if(mustContainTraversedClasses != null && mustContainTraversedClasses.length > 0) {
       final Set<String> dependentClassNames = crdInfo.getDependentClassNames();
-      System.out.println(dependentClassNames);
       Arrays.stream(mustContainTraversedClasses).map(Class::getCanonicalName).forEach(c -> assertTrue(dependentClassNames.contains(c), "should contain " + c));
     }
 
