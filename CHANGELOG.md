@@ -9,7 +9,7 @@
 #### Improvements
 * Fix #3316: allow locking deletion to resource version
 * Fix #3327: Removed generated ResourceHandlers
-
+* Fix #3336: Added ConversionReview to Kubernetes APIExtensions Model
 #### Dependency Upgrade
 
 #### New Features
