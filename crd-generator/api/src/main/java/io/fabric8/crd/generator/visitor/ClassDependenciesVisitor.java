@@ -27,15 +27,17 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ClassDependenciesVisitor extends TypedVisitor<TypeDefBuilder> {
   private final static Map<String, Set<String>> traversedClasses = new HashMap<>();
-  private final static Map<String, String> crdNameToCrClass = new HashMap<>();
+  private final static Map<String, Set<String>> crdNameToCrClass = new HashMap<>();
   private final Set<String> classesForCR;
   private final Set<String> processed = new HashSet<>();
 
   public ClassDependenciesVisitor(String crClassName, String crdName) {
-    crdNameToCrClass.put(crdName, crClassName);
+    // need to record all classes associated with the different versions of the CR (not the CRD spec)
+    crdNameToCrClass.computeIfAbsent(crdName, k -> new HashSet<>()).add(crClassName);
     classesForCR = traversedClasses.computeIfAbsent(crClassName, k -> new HashSet<>());
   }
 
@@ -97,6 +99,9 @@ public class ClassDependenciesVisitor extends TypedVisitor<TypeDefBuilder> {
   }
 
   public static Set<String> getDependentClassesFromCRDName(String crdName) {
-    return traversedClasses.get(crdNameToCrClass.get(crdName));
+    // retrieve all dependent classes that might affect any of the CR versions
+    return crdNameToCrClass.get(crdName).stream()
+      .flatMap(crClassName -> traversedClasses.get(crClassName).stream())
+      .collect(Collectors.toSet());
   }
 }

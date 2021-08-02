@@ -22,30 +22,12 @@ public class CRDInfo {
   private final String crdSpecVersion;
   private final String filePath;
   private final Set<String> dependentClassNames;
-  private final String crClassName;
-  private final String specClassName;
-  private final String statusClassName;
 
-  public CRDInfo(String crdName, String crdSpecVersion, String crClassName, String specClassName, String statusClassName, String filePath, Set<String> dependentClassNames) {
+  public CRDInfo(String crdName, String crdSpecVersion, String filePath, Set<String> dependentClassNames) {
     this.crdName = crdName;
     this.crdSpecVersion = crdSpecVersion;
-    this.crClassName = crClassName;
-    this.specClassName = specClassName;
-    this.statusClassName = statusClassName;
     this.filePath = filePath;
     this.dependentClassNames = dependentClassNames;
-  }
-
-  public String getCrClassName() {
-    return crClassName;
-  }
-
-  public String getSpecClassName() {
-    return specClassName;
-  }
-
-  public String getStatusClassName() {
-    return statusClassName;
   }
 
   public String getCrdName() {
@@ -70,11 +52,5 @@ public class CRDInfo {
 
   public Set<String> getDependentClassNames() {
     return dependentClassNames;
-  }
-
-  @Override
-  public String toString() {
-    return String
-      .format("'%s' %s CRD with %s (spec: %s / status %s)", crdName, crdSpecVersion, crClassName, specClassName, statusClassName);
   }
 }

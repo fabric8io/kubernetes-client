@@ -35,9 +35,9 @@ public class CRDGenerationInfo {
     return crdNameToVersionToCRDInfoMap;
   }
 
-  void add(String crdName, String version, URI fileURI, String crClassName, String specClassName, String statusClassName) {
+  void add(String crdName, String version, URI fileURI) {
     crdNameToVersionToCRDInfoMap.computeIfAbsent(crdName, k -> new HashMap<>())
-      .put(version, new CRDInfo(crdName, version, crClassName, specClassName, statusClassName, new File(fileURI).getAbsolutePath(), ClassDependenciesVisitor.getDependentClassesFromCRDName(crdName)));
+      .put(version, new CRDInfo(crdName, version, new File(fileURI).getAbsolutePath(), ClassDependenciesVisitor.getDependentClassesFromCRDName(crdName)));
   }
 
   public int numberOfGeneratedCRDs() {
