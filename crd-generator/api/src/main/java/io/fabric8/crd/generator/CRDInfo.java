@@ -19,23 +19,49 @@ import java.util.Set;
 
 public class CRDInfo {
   private final String crdName;
-  private final String version;
+  private final String crdSpecVersion;
   private final String filePath;
   private final Set<String> dependentClassNames;
+  private final String crClassName;
+  private final String specClassName;
+  private final String statusClassName;
 
-  public CRDInfo(String crdName, String version, String filePath, Set<String> dependentClassNames) {
+  public CRDInfo(String crdName, String crdSpecVersion, String crClassName, String specClassName, String statusClassName, String filePath, Set<String> dependentClassNames) {
     this.crdName = crdName;
-    this.version = version;
+    this.crdSpecVersion = crdSpecVersion;
+    this.crClassName = crClassName;
+    this.specClassName = specClassName;
+    this.statusClassName = statusClassName;
     this.filePath = filePath;
     this.dependentClassNames = dependentClassNames;
+  }
+
+  public String getCrClassName() {
+    return crClassName;
+  }
+
+  public String getSpecClassName() {
+    return specClassName;
+  }
+
+  public String getStatusClassName() {
+    return statusClassName;
   }
 
   public String getCrdName() {
     return crdName;
   }
 
+  /**
+   * @deprecated Use {@link #getCrdSpecVersion()} instead
+   * @return the CRD spec version
+   */
   public String getVersion() {
-    return version;
+    return getCrdSpecVersion();
+  }
+
+  public String getCrdSpecVersion() {
+    return crdSpecVersion;
   }
 
   public String getFilePath() {
@@ -44,5 +70,11 @@ public class CRDInfo {
 
   public Set<String> getDependentClassNames() {
     return dependentClassNames;
+  }
+
+  @Override
+  public String toString() {
+    return String
+      .format("'%s' %s CRD with %s (spec: %s / status %s)", crdName, crdSpecVersion, crClassName, specClassName, statusClassName);
   }
 }

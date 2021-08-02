@@ -316,7 +316,7 @@ class CRDGeneratorTest {
     assertEquals(1, crdInfos.size());
     final CRDInfo crdInfo = crdInfos.get(v1);
     assertEquals(crdName, crdInfo.getCrdName());
-    assertEquals(v1, crdInfo.getVersion());
+    assertEquals(v1, crdInfo.getCrdSpecVersion());
     assertTrue(crdInfo.getFilePath().endsWith(CRDGenerator.getOutputName(crdName, v1))); // test output uses the CRD name as URI
     if(mustContainTraversedClasses != null && mustContainTraversedClasses.length > 0) {
       final Set<String> dependentClassNames = crdInfo.getDependentClassNames();
