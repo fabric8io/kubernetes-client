@@ -30,7 +30,6 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.net.URI;
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class CRDGenerator {
@@ -39,7 +38,7 @@ public class CRDGenerator {
   private final Resources resources;
   private final Map<String, AbstractCustomResourceHandler> handlers = new HashMap<>(2);
   private CRDOutput<? extends OutputStream> output;
-  private Set<CustomResourceInfo> infos;
+  private Map<String, CustomResourceInfo> infos;
 
   private static final ObjectMapper YAML_MAPPER = new ObjectMapper(
     new YAMLFactory()
@@ -104,20 +103,19 @@ public class CRDGenerator {
   }
 
   public CRDGenerator customResources(CustomResourceInfo... infos) {
-    if (infos != null) {
-      List<CustomResourceInfo> infoList = Arrays.stream(infos).filter(Objects::nonNull)
-        .collect(Collectors.toList());
+    if (infos != null && infos.length > 0) {
       if (this.infos == null) {
-        this.infos = new HashSet<>(infoList);
-      } else {
-        this.infos.addAll(infoList);
+        this.infos = new HashMap<>(infos.length);
       }
+      Arrays.stream(infos)
+        .filter(Objects::nonNull)
+        .forEach(info -> this.infos.put(info.key(), info));
     }
     return this;
   }
 
   Set<CustomResourceInfo> getCustomResourceInfos() {
-    return this.infos == null ? Collections.emptySet() : this.infos;
+    return this.infos == null ? Collections.emptySet() : new HashSet<>(infos.values());
   }
 
   public int generate() {
@@ -142,25 +140,16 @@ public class CRDGenerator {
         io.fabric8.crd.generator.v1beta1.CustomResourceHandler.VERSION);
     }
 
-    Map<String, String> messages = new HashMap<>(infos.size());
-    for (CustomResourceInfo info : infos) {
+    for (CustomResourceInfo info : infos.values()) {
       if (info != null) {
-        handlers.values().forEach(h -> {
-          createInfoMessage(messages, info);
-          h.handle(info);
-        });
+        handlers.values().forEach(h -> h.handle(info));
       }
     }
 
     final CRDGenerationInfo crdGenerationInfo = new CRDGenerationInfo();
-    String lastGenerated = null;
-    StringBuilder builder = new StringBuilder();
     for (HasMetadata crd : resources.generate().getItems()) {
       final String version = ApiVersionUtil.trimVersion(crd.getApiVersion());
       final String crdName = crd.getMetadata().getName();
-      if (!crdName.equals(lastGenerated)) {
-        builder.append(messages.get(crdName)).append("\n");
-      }
       try {
         String outputName = getOutputName(crdName, version);
         try (final OutputStream outputStream = output.outputFor(outputName)) {
@@ -169,30 +158,18 @@ public class CRDGenerator {
               .getBytes());
           YAML_MAPPER.writeValue(outputStream, crd);
           final URI fileURI = output.crdURI(outputName);
-          builder.append("\t- ").append(version).append(" CRD -> ").append(fileURI).append("\n");
-          crdGenerationInfo.add(crdName, version, fileURI);
+          final CustomResourceInfo info = infos.get(crdName);
+          crdGenerationInfo.add(crdName, version, fileURI, info.crClassName(),
+            info.specClassName().orElse("undetermined"),
+            info.statusClassName().orElse("undetermined"));
         }
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
-      lastGenerated = crdName;
     }
-
-    LOGGER.info(builder.toString());
-
     return crdGenerationInfo;
   }
-
-  private void createInfoMessage(Map<String, String> messages, CustomResourceInfo info) {
-    String name = info.crdName();
-    String msg = String
-      .format("Created '%s' version '%s' with %s (spec: %s / status %s):",
-        name, info.version(), info.crClassName(),
-        info.specClassName().orElse("undetermined"),
-        info.statusClassName().orElse("undetermined"));
-    messages.put(name, msg);
-  }
-
+  
   public static String getOutputName(String crdName, String crdSpecVersion) {
     return crdName + "-" + crdSpecVersion;
   }
