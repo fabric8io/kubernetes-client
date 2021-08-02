@@ -29,7 +29,7 @@ class ConversionReviewTest {
   private final ObjectMapper objectMapper = new ObjectMapper();
 
   @Test
-  public void conversionReviewTest() throws Exception {
+  void testDeserializationAndSerialization() throws Exception {
     // Given
     final String originalJson = Helper.loadJson("/valid-ConversionReview.json");
 
