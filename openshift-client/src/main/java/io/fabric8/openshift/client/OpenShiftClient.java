@@ -282,9 +282,9 @@ public interface OpenShiftClient extends KubernetesClient {
   /**
    * API entrypoint for accessing ImageSignature(image.openshift.io/v1)
    *
-   * @return {@link ImageSignatureOperation} for ImageSignature operations
+   * @return {@link NameableCreateOrDeleteable} for ImageSignature operations
    */
-  ImageSignatureOperation imageSignatures();
+  NameableCreateOrDeleteable imageSignatures();
 
   /**
    * API entrypoint for Config(imageregistry.operator.openshift.io/v1)

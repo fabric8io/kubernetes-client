@@ -198,7 +198,7 @@ import io.fabric8.openshift.client.OpenShiftConfigBuilder;
 import io.fabric8.openshift.client.dsl.BuildConfigResource;
 import io.fabric8.openshift.client.dsl.BuildResource;
 import io.fabric8.openshift.client.dsl.DeployableScalableResource;
-import io.fabric8.openshift.client.dsl.ImageSignatureOperation;
+import io.fabric8.openshift.client.dsl.NameableCreateOrDeleteable;
 import io.fabric8.openshift.client.dsl.MachineConfigurationAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftClusterAutoscalingAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftConfigAPIGroupDSL;
@@ -450,7 +450,7 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
-  public ImageSignatureOperation imageSignatures() {
+  public NameableCreateOrDeleteable imageSignatures() {
     return delegate.imageSignatures();
   }
 

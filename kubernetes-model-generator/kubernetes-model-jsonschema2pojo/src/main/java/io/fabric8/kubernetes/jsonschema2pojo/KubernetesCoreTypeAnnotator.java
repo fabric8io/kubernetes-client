@@ -27,7 +27,6 @@ import com.sun.codemodel.JExpressionImpl;
 import com.sun.codemodel.JFieldVar;
 import com.sun.codemodel.JFormatter;
 import io.fabric8.kubernetes.model.annotation.Group;
-import io.fabric8.kubernetes.model.annotation.PackageSuffix;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.transform.annotations.VelocityTransformation;
@@ -85,14 +84,13 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
         apiGroup = apiVersion.substring(0, lastSlash);
         apiVersion = apiVersion.substring(apiGroup.length() + 1);
       }
-      String packageSuffix = getPackageSuffix(apiVersion);
 
       String resourceName = clazz.fullName();
       if (resourceName.endsWith("List")) {
           resourceName = resourceName.substring(0, resourceName.length() - 4);
           final JDefinedClass resourceClass = pendingResources.remove(resourceName);
           if (resourceClass != null) {
-              annotate(clazz, apiVersion, apiGroup, packageSuffix);
+              annotate(clazz, apiVersion, apiGroup);
               addClassesToPropertyFiles(resourceClass);
           } else {
               pendingLists.put(resourceName, clazz);
@@ -100,20 +98,19 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
       } else {
           final JDefinedClass resourceListClass = pendingLists.remove(resourceName);
           if (resourceListClass != null) {
-              annotate(resourceListClass, apiVersion, apiGroup, packageSuffix);
+              annotate(resourceListClass, apiVersion, apiGroup);
               addClassesToPropertyFiles(clazz);
           } else {
-              annotate(clazz, apiVersion, apiGroup, packageSuffix);
+              annotate(clazz, apiVersion, apiGroup);
               pendingResources.put(resourceName, clazz);
           }
       }
     }
   }
 
-  private void annotate(JDefinedClass clazz, String apiVersion, String apiGroup, String packageSuffix) {
+  private void annotate(JDefinedClass clazz, String apiVersion, String apiGroup) {
     clazz.annotate(Version.class).param(ANNOTATION_VALUE, apiVersion);
     clazz.annotate(Group.class).param(ANNOTATION_VALUE, apiGroup);
-    clazz.annotate(PackageSuffix.class).param(ANNOTATION_VALUE, packageSuffix);
   }
 
   @Override
@@ -199,10 +196,4 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
     return parts[5];
   }
 
-  private String getPackageSuffix(String apiVersion) {
-    return "." +
-      moduleName +
-      "." +
-      apiVersion;
-  }
 }

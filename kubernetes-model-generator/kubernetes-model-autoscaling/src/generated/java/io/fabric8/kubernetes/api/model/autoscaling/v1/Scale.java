@@ -21,7 +21,6 @@ import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.model.annotation.Group;
-import io.fabric8.kubernetes.model.annotation.PackageSuffix;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
@@ -52,7 +51,6 @@ import lombok.ToString;
 })
 @Version("v1")
 @Group("autoscaling")
-@PackageSuffix(".autoscaling.v1")
 public class Scale implements HasMetadata, Namespaced
 {
 
