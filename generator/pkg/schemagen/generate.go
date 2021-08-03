@@ -43,6 +43,7 @@ type schemaGenerator struct {
 	mappingSchema    map[string]string
 	providedTypes    []ProvidedType
 	constraints      map[reflect.Type]map[string]*Constraint // type -> field name -> constraint
+	generatedTypesPrefix string
 }
 
 type Constraint struct {
@@ -58,8 +59,8 @@ const (
 	BasePackage string   = "io.fabric8.kubernetes.api.model"
 )
 
-func GenerateSchema(schemaId string, crdLists map[reflect.Type]CrdScope, providedPackages map[string]string, manualTypeMap map[reflect.Type]string, packageMapping map[string]PackageInformation, mappingSchema map[string]string, providedTypes []ProvidedType, constraints map[reflect.Type]map[string]*Constraint) string {
-	g := newSchemaGenerator(crdLists, providedPackages, manualTypeMap, packageMapping, mappingSchema, providedTypes, constraints)
+func GenerateSchema(schemaId string, crdLists map[reflect.Type]CrdScope, providedPackages map[string]string, manualTypeMap map[reflect.Type]string, packageMapping map[string]PackageInformation, mappingSchema map[string]string, providedTypes []ProvidedType, constraints map[reflect.Type]map[string]*Constraint, generatedTypesPrefix string) string {
+	g := newSchemaGenerator(crdLists, providedPackages, manualTypeMap, packageMapping, mappingSchema, providedTypes, constraints, generatedTypesPrefix)
 	schema, err := g.generate(schemaId, crdLists)
 
 	if err != nil {
@@ -80,7 +81,7 @@ func GenerateSchema(schemaId string, crdLists map[reflect.Type]CrdScope, provide
 	return out.String()
 }
 
-func newSchemaGenerator(crdLists map[reflect.Type]CrdScope, providedPackages map[string]string, manualTypeMap map[reflect.Type]string, packageMapping map[string]PackageInformation, mappingSchema map[string]string, providedTypes []ProvidedType, constraints map[reflect.Type]map[string]*Constraint) *schemaGenerator {
+func newSchemaGenerator(crdLists map[reflect.Type]CrdScope, providedPackages map[string]string, manualTypeMap map[reflect.Type]string, packageMapping map[string]PackageInformation, mappingSchema map[string]string, providedTypes []ProvidedType, constraints map[reflect.Type]map[string]*Constraint, generatedTypesPrefix string) *schemaGenerator {
 	g := schemaGenerator{
 		crdLists:         crdLists,
 		types:            make(map[reflect.Type]*JSONObjectDescriptor),
@@ -90,6 +91,7 @@ func newSchemaGenerator(crdLists map[reflect.Type]CrdScope, providedPackages map
 		mappingSchema:    mappingSchema,
 		providedTypes:    providedTypes,
 		constraints:      constraints,
+		generatedTypesPrefix: generatedTypesPrefix,
 	}
 	return &g
 }
@@ -288,7 +290,7 @@ func (g *schemaGenerator) generate(schemaId string, crdLists map[reflect.Type]Cr
 			},
 		}
 		javaType := g.javaType(k)
-		if strings.HasPrefix(javaType, "io.fabric8.") {
+		if strings.HasPrefix(javaType, g.generatedTypesPrefix) {
 			value.JavaTypeDescriptor = &JavaTypeDescriptor{
 				JavaType: javaType,
 			}
