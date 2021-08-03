@@ -55,9 +55,7 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
       final CRDGenerationInfo allCRDs = generator.withOutput(new FileObjectCRDOutput(processingEnv)).detailedGenerate();
       allCRDs.getCRDDetailsPerNameAndVersion().forEach((crdName, versionToInfo) -> {
         messager.printMessage(Diagnostic.Kind.NOTE, "Generating CRD " + crdName + ":\n");
-        versionToInfo.forEach((version, info) -> {
-          messager.printMessage(Diagnostic.Kind.NOTE, "  - " + version + " -> " + info.getFilePath());
-        });
+        versionToInfo.forEach((version, info) -> messager.printMessage(Diagnostic.Kind.NOTE, "  - " + version + " -> " + info.getFilePath()));
       });
       return true;
     }
