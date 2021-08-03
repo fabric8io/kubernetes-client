@@ -31,7 +31,7 @@ class ConversionReviewTest {
   @Test
   void testDeserializationAndSerialization() throws Exception {
     // Given
-    final String originalJson = Helper.loadJson("/valid-ConversionReview.json");
+    final String originalJson = Helper.loadJson("/valid-conversionreview.json");
 
     // when
     final ConversionReview conversionReview = objectMapper.readValue(originalJson, ConversionReview.class);
