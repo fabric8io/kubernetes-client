@@ -142,7 +142,7 @@ import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.Operator
 import io.fabric8.openshift.client.dsl.BuildConfigResource;
 import io.fabric8.openshift.client.dsl.BuildResource;
 import io.fabric8.openshift.client.dsl.DeployableScalableResource;
-import io.fabric8.openshift.client.dsl.ImageSignatureOperation;
+import io.fabric8.openshift.client.dsl.NameableCreateOrDeleteable;
 import io.fabric8.openshift.client.dsl.MachineConfigurationAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftClusterAutoscalingAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftConfigAPIGroupDSL;
@@ -399,9 +399,9 @@ public class DefaultOpenShiftClient extends BaseKubernetesClient<NamespacedOpenS
   }
 
   @Override
-  public ImageSignatureOperation imageSignatures() {
+  public NameableCreateOrDeleteable imageSignatures() {
     HasMetadataOperation<ImageSignature, ?, Resource<ImageSignature>> operation = Handlers.getNonListingOperation(ImageSignature.class, httpClient, getConfiguration());
-    return new ImageSignatureOperation() {
+    return new NameableCreateOrDeleteable() {
 
       @Override
       public Boolean delete() {

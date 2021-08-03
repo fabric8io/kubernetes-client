@@ -13,8 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.model.annotation;
+package io.fabric8.openshift.client.dsl;
 
-public @interface PackageSuffix {
-  String value();
+import io.fabric8.kubernetes.client.dsl.CreateOrDeleteable;
+import io.fabric8.kubernetes.client.dsl.Nameable;
+import io.fabric8.openshift.api.model.ImageSignature;
+
+public interface NameableCreateOrDeleteable extends Nameable<CreateOrDeleteable<ImageSignature>>, CreateOrDeleteable<ImageSignature> {
+
 }

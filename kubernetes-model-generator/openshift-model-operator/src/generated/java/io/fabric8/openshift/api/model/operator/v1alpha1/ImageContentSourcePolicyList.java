@@ -25,7 +25,6 @@ import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.model.annotation.Group;
-import io.fabric8.kubernetes.model.annotation.PackageSuffix;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
@@ -55,7 +54,6 @@ import lombok.ToString;
 })
 @Version("v1alpha1")
 @Group("operator.openshift.io")
-@PackageSuffix(".operator.v1alpha1")
 public class ImageContentSourcePolicyList implements KubernetesResource, KubernetesResourceList<io.fabric8.openshift.api.model.operator.v1alpha1.ImageContentSourcePolicy>
 {
 
