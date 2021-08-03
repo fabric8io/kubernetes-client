@@ -143,10 +143,12 @@ public class CRDGenerator {
 
     for (CustomResourceInfo info : infos.values()) {
       if (info != null) {
-        LOGGER.info("Generating '{}' version '{}' with {} (spec: {} / status {})…",
-          info.crdName(), info.version(), info.crClassName(),
-          info.specClassName().orElse("undetermined"),
-          info.statusClassName().orElse("undetermined"));
+        if (LOGGER.isInfoEnabled()) {
+          LOGGER.info("Generating '{}' version '{}' with {} (spec: {} / status {})...",
+            info.crdName(), info.version(), info.crClassName(),
+            info.specClassName().orElse("undetermined"),
+            info.statusClassName().orElse("undetermined"));
+        }
         handlers.values().forEach(h -> h.handle(info));
       }
     }

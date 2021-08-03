@@ -38,6 +38,7 @@ public class CRDInfo {
    * @deprecated Use {@link #getCrdSpecVersion()} instead
    * @return the CRD spec version
    */
+  @Deprecated
   public String getVersion() {
     return getCrdSpecVersion();
   }

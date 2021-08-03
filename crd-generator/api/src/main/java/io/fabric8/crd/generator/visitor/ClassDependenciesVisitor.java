@@ -30,8 +30,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ClassDependenciesVisitor extends TypedVisitor<TypeDefBuilder> {
-  private final static Map<String, Set<String>> traversedClasses = new HashMap<>();
-  private final static Map<String, Set<String>> crdNameToCrClass = new HashMap<>();
+  private static final Map<String, Set<String>> traversedClasses = new HashMap<>();
+  private static final Map<String, Set<String>> crdNameToCrClass = new HashMap<>();
   private final Set<String> classesForCR;
   private final Set<String> processed = new HashSet<>();
 
