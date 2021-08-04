@@ -85,7 +85,7 @@ public class ServiceCrudTest {
   }
 
   @Test
-  public void shouldFindServiceBy() {
+  public void shouldFindServiceByName() {
     Service service1 = new ServiceBuilder().withNewMetadata().withName("svc1").addToLabels("foo", "bar").and().withNewSpec().and().build();
 
     client.services().inNamespace("ns1").create(service1);

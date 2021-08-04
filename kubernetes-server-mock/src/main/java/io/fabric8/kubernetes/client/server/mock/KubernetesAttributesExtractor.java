@@ -312,23 +312,23 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
     return null;
   }
 
-  private static Attribute parseField(String label) {
-    Matcher m = LABEL_REQUIREMENT_EQUALITY.matcher(label);
+  private static Attribute parseField(String field) {
+    Matcher m = LABEL_REQUIREMENT_EQUALITY.matcher(field);
     if (m.matches()) {
       return new Attribute(m.group(KEY), m.group(VALUE));
     }
 
-    m = LABEL_REQUIREMENT_NOT_EQUALITY.matcher(label);
+    m = LABEL_REQUIREMENT_NOT_EQUALITY.matcher(field);
     if (m.matches()) {
       return new Attribute(m.group(KEY), m.group(VALUE), WITHOUT);
     }
 
-    m = LABEL_REQUIREMENT_EXISTS.matcher(label);
+    m = LABEL_REQUIREMENT_EXISTS.matcher(field);
     if (m.matches()) {
       return new Attribute(m.group(KEY), "", EXISTS);
     }
 
-    m = LABEL_REQUIREMENT_NOT_EXISTS.matcher(label);
+    m = LABEL_REQUIREMENT_NOT_EXISTS.matcher(field);
     if (m.matches()) {
       return new Attribute(m.group(KEY), "", NOT_EXISTS);
     }
