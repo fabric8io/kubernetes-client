@@ -15,6 +15,8 @@
  */
 package io.fabric8.chaosmesh.client;
 
+import io.fabric8.chaosmesh.v1alpha1.AwsChaos;
+import io.fabric8.chaosmesh.v1alpha1.AwsChaosList;
 import io.fabric8.chaosmesh.v1alpha1.DNSChaos;
 import io.fabric8.chaosmesh.v1alpha1.DNSChaosList;
 import io.fabric8.chaosmesh.v1alpha1.HTTPChaos;
@@ -124,4 +126,10 @@ public interface ChaosMeshClient extends Client {
    */
   MixedOperation<DNSChaos, DNSChaosList, Resource<DNSChaos>> dnsChaos();
 
+  /**
+   * API entrypoint for AwsChaos(chaos-mesh.org/v1alpha1)
+   *
+   * @return MixedOperation for AwsChaos class
+   */
+  MixedOperation<AwsChaos, AwsChaosList, Resource<AwsChaos>> awsChaos();
 }

@@ -16,6 +16,7 @@
 #### Dependency Upgrade
 
 #### New Features
+* Update chaos-mesh extension to v1.2.3. Add AwsChaos.
 
 #### _**Note**_: Breaking changes in the API
 ##### DSL Changes:

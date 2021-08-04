@@ -15,6 +15,8 @@
  */
 package io.fabric8.chaosmesh.client;
 
+import io.fabric8.chaosmesh.v1alpha1.AwsChaos;
+import io.fabric8.chaosmesh.v1alpha1.AwsChaosList;
 import io.fabric8.chaosmesh.v1alpha1.DNSChaos;
 import io.fabric8.chaosmesh.v1alpha1.DNSChaosList;
 import io.fabric8.chaosmesh.v1alpha1.HTTPChaos;
@@ -135,5 +137,10 @@ public class DefaultChaosMeshClient extends BaseClient implements NamespacedChao
   @Override
   public MixedOperation<DNSChaos, DNSChaosList, Resource<DNSChaos>> dnsChaos() {
     return Handlers.getOperation(DNSChaos.class, DNSChaosList.class, this.getHttpClient(),  this.getConfiguration());
+  }
+
+  @Override
+  public MixedOperation<AwsChaos, AwsChaosList, Resource<AwsChaos>> awsChaos() {
+    return Handlers.getOperation(AwsChaos.class, AwsChaosList.class, this.getHttpClient(),  this.getConfiguration());
   }
 }

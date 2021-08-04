@@ -40,6 +40,7 @@ func main() {
 		reflect.TypeOf(chaosmesh.JVMChaosList{}): schemagen.Namespaced,
 		reflect.TypeOf(chaosmesh.HTTPChaosList{}): schemagen.Namespaced,
 		reflect.TypeOf(chaosmesh.DNSChaosList{}): schemagen.Namespaced,
+		reflect.TypeOf(chaosmesh.AwsChaosList{}): schemagen.Namespaced,
 	}
 
 	// constraints and patterns for fields
