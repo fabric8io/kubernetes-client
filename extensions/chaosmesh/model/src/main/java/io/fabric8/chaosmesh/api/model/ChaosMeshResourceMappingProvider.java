@@ -37,6 +37,7 @@ public class ChaosMeshResourceMappingProvider implements KubernetesResourceMappi
     mappings.put("chaos-mesh.org/v1alpha1#JVMChaos", io.fabric8.chaosmesh.v1alpha1.JVMChaos.class);
     mappings.put("chaos-mesh.org/v1alpha1#HTTPChaos", io.fabric8.chaosmesh.v1alpha1.HTTPChaos.class);
     mappings.put("chaos-mesh.org/v1alpha1#DNSChaos", io.fabric8.chaosmesh.v1alpha1.DNSChaos.class);
+    mappings.put("chaos-mesh.org/v1alpha1#AwsChaos", io.fabric8.chaosmesh.v1alpha1.AwsChaos.class);
   }
 
   public Map<String, Class<? extends KubernetesResource>> getMappings() {
