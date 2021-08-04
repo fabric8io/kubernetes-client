@@ -22,7 +22,7 @@
     {
       "kind": "CronTab",
       "apiVersion": "example.com/v1beta1",
-      "metadata": {
+      "metadata":  {
         "creationTimestamp": "2021-07-30T13:02:01Z",
         "name": "remote-crontab",
         "resourceVersion": "12893",
