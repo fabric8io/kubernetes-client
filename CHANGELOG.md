@@ -9,7 +9,6 @@
 #### Improvements
 * Fix #3316: allow locking deletion to resource version
 * Fix #3327: Removed generated ResourceHandlers
-* Fix #3336: Added ConversionReview to Kubernetes APIExtensions Model
 * Fix #3349: ensuring that dsl context values always are applied over user ListOptions
 * Fix #3336: Added ConversionReview to Kubernetes APIExtensions Model
 
