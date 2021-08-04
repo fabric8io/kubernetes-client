@@ -92,7 +92,7 @@ public class ServiceCrudTest {
 
     Service serviceByName = client.services().inNamespace("ns1").withName("svc1").get();
     assertNotNull(serviceByName);
-    assertEquals(serviceByName.getMetadata().getName(),"svc1");
+    assertEquals("svc1", serviceByName.getMetadata().getName());
 
     ServiceList servicesByLabel = client.services().inNamespace("ns1").withLabel("foo", "bar").list();
     assertNotNull(servicesByLabel);
