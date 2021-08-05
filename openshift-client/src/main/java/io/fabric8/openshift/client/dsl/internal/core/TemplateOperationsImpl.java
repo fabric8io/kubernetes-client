@@ -37,7 +37,6 @@ import io.fabric8.openshift.client.ParameterValue;
 import io.fabric8.openshift.client.dsl.TemplateOperation;
 import io.fabric8.openshift.client.dsl.TemplateResource;
 import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
-import io.fabric8.openshift.client.dsl.internal.TemplateOperationContext;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -54,6 +53,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -72,21 +72,22 @@ public class TemplateOperationsImpl
   private final Map<String, String> parameters;
 
   public TemplateOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
-    this(new TemplateOperationContext().withOkhttpClient(client).withConfig(config));
+    this(new OperationContext().withOkhttpClient(client).withConfig(config), null);
   }
 
-  public TemplateOperationsImpl(TemplateOperationContext context) {
+  public TemplateOperationsImpl(OperationContext context, Map<String, String> parameters) {
     super(context.withApiGroupName(TEMPLATE)
       .withPlural("templates"), Template.class, TemplateList.class);
-    this.parameters = context.getParameters();
-  }
-  @Override
-  public TemplateOperationsImpl newInstance(OperationContext context) {
-    return new TemplateOperationsImpl((TemplateOperationContext) context);
+    this.parameters = parameters;
   }
 
-  public TemplateOperationContext getContext() {
-    return (TemplateOperationContext) context;
+  @Override
+  public TemplateOperationsImpl newInstance(OperationContext context) {
+    return new TemplateOperationsImpl(context, parameters);
+  }
+
+  public TemplateOperationsImpl newInstance(OperationContext context, Map<String, String> parameters) {
+    return new TemplateOperationsImpl(context, parameters == null ? null : new LinkedHashMap<>(parameters));
   }
 
   @Override
@@ -164,7 +165,7 @@ public class TemplateOperationsImpl
 
   @Override
   public MixedOperation<Template, TemplateList, TemplateResource<Template, KubernetesList>> withParameters(Map<String, String> parameters) {
-    return new TemplateOperationsImpl(getContext().withParameters(parameters));
+    return newInstance(context, parameters);
   }
 
   @Override
@@ -274,7 +275,7 @@ public class TemplateOperationsImpl
         .withObjects(items.toArray(new HasMetadata[items.size()])).build();
     }
 
-    return new TemplateOperationsImpl(getContext().withItem(template));
+    return newInstance(context.withItem(template));
   }
 
   @Override

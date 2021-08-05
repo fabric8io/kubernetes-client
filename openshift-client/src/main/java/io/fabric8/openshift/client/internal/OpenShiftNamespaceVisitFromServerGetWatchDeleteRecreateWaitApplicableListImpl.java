@@ -16,42 +16,34 @@
 package io.fabric8.openshift.client.internal;
 
 import com.mifmif.common.regex.Generex;
-import io.fabric8.kubernetes.api.builder.Visitor;
-import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
-import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl;
+import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitOperationContext;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.api.model.Parameter;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.client.internal.readiness.OpenShiftReadiness;
 import okhttp3.OkHttpClient;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 public class OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl extends NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl {
-  public OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, InputStream is, Map<String, String> parameters, Boolean cascading, DeletionPropagation propagationPolicy, boolean dryRun) {
-    super(client, config, namespace, explicitNamespace, fromServer, deletingExisting, visitors, is, parameters, cascading, propagationPolicy, dryRun);
+
+  public OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(OkHttpClient client,
+      Config config, Object item) {
+    super(client, config, item);
   }
 
-  public OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, Object item, Map<String, String> parameters, DeletionPropagation propagationPolicy, Boolean cascading, boolean dryRun) {
-    super(client, config, namespace, explicitNamespace, fromServer, deletingExisting, visitors, item, parameters, propagationPolicy, cascading, dryRun);
-  }
-
-  public OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, Object item, InputStream inputStream, Map<String, String> parameters, long gracePeriodSeconds, DeletionPropagation propagationPolicy, Boolean cascading, long watchRetryInitialBackoffMillis, double watchRetryBackoffMultiplier, boolean dryRun) {
-    super(client, config, namespace, explicitNamespace, fromServer, deletingExisting, visitors, item, inputStream, parameters, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, dryRun);
+  public OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(OperationContext context, NamespaceVisitOperationContext namespaceVisitOperationContext) {
+    super(context, namespaceVisitOperationContext);
   }
 
   @Override
@@ -60,30 +52,11 @@ public class OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicab
   }
 
   @Override
-  protected <T> List<HasMetadata> asHasMetadata(T item, Boolean enableProccessing) {
-    List<HasMetadata> result = new ArrayList<>();
-    if (item instanceof KubernetesList) {
-      result.addAll(((KubernetesList) item).getItems());
-    } else if (item instanceof Template) {
-      result.addAll(processTemplateList((Template)item, enableProccessing));
-    } else if (item instanceof KubernetesResourceList) {
-      result.addAll(((KubernetesResourceList) item).getItems());
-    } else if (item instanceof HasMetadata) {
-      result.add((HasMetadata) item);
-    } else if (item instanceof String) {
-      try (InputStream is = new ByteArrayInputStream(((String) item).getBytes(StandardCharsets.UTF_8))) {
-        return asHasMetadata(unmarshal(is), enableProccessing);
-      } catch (IOException e) {
-        throw KubernetesClientException.launderThrowable(e);
-      }
-    } else if (item instanceof Collection) {
-      for (Object o : (Collection) item) {
-        if (o instanceof HasMetadata) {
-          result.add((HasMetadata) o);
-        }
-      }
+  protected List<HasMetadata> asHasMetadata(Object item) {
+    if (item instanceof Template) {
+      return processTemplateList((Template)item, true);
     }
-    return result;
+    return super.asHasMetadata(item);
   }
 
   private static List<HasMetadata> processTemplate(Template template, Boolean failOnMissing) {
@@ -132,5 +105,11 @@ public class OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicab
       result.addAll(processTemplate(item, false));
     }
     return result;
+  }
+
+  @Override
+  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl newInstance(OperationContext context,
+      NamespaceVisitOperationContext namespaceVisitOperationContext) {
+    return new OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(context, namespaceVisitOperationContext);
   }
 }

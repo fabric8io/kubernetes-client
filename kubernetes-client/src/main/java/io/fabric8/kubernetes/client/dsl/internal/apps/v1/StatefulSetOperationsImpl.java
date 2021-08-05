@@ -27,9 +27,7 @@ import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.ImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
-import io.fabric8.kubernetes.client.dsl.Loggable;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplacePatchable;
@@ -51,29 +49,28 @@ import java.util.concurrent.TimeUnit;
 public class StatefulSetOperationsImpl extends RollableScalableResourceOperation<StatefulSet, StatefulSetList, RollableScalableResource<StatefulSet>>
   implements TimeoutImageEditReplacePatchable<StatefulSet>
 {
-  private Integer podLogWaitTimeout;
   public StatefulSetOperationsImpl(OkHttpClient client, Config config) {
     this(client, config, null);
   }
 
   public StatefulSetOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(new RollingOperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
+    this(new RollingOperationContext(), new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
 
-  public StatefulSetOperationsImpl(RollingOperationContext context) {
-    super(context.withApiGroupName("apps")
+  public StatefulSetOperationsImpl(RollingOperationContext context, OperationContext superContext) {
+    super(context, superContext.withApiGroupName("apps")
       .withApiGroupVersion("v1")
       .withPlural("statefulsets"), StatefulSet.class, StatefulSetList.class);
   }
 
-  private StatefulSetOperationsImpl(RollingOperationContext context, Integer podLogWaitTimeout) {
-    this(context);
-    this.podLogWaitTimeout = podLogWaitTimeout;
+  @Override
+  public StatefulSetOperationsImpl newInstance(OperationContext context) {
+    return new StatefulSetOperationsImpl(rollingOperationContext, context);
   }
 
-    @Override
-  public StatefulSetOperationsImpl newInstance(OperationContext context) {
-    return new StatefulSetOperationsImpl((RollingOperationContext) context);
+  @Override
+  public StatefulSetOperationsImpl newInstance(RollingOperationContext context) {
+    return new StatefulSetOperationsImpl(context, this.context);
   }
 
   @Override
@@ -100,12 +97,6 @@ public class StatefulSetOperationsImpl extends RollableScalableResourceOperation
   public long getObservedGeneration(StatefulSet current) {
     return (current != null && current.getStatus() != null && current.getStatus().getObservedGeneration() != null)
       ? current.getStatus().getObservedGeneration() : -1;
-  }
-
-
-  @Override
-  public StatefulSetOperationsImpl rolling() {
-    return new StatefulSetOperationsImpl(((RollingOperationContext)context).withRolling(true));
   }
 
   @Override
@@ -147,24 +138,11 @@ public class StatefulSetOperationsImpl extends RollableScalableResourceOperation
   }
 
   @Override
-  public ImageEditReplacePatchable<StatefulSet> withTimeout(long timeout, TimeUnit unit) {
-    return new StatefulSetOperationsImpl(((RollingOperationContext)context).withRollingTimeout(unit.toMillis(timeout)).withRollingTimeUnit(TimeUnit.MILLISECONDS));
-  }
-
-  @Override
-  public ImageEditReplacePatchable<StatefulSet> withTimeoutInMillis(long timeoutInMillis) {
-    return new StatefulSetOperationsImpl(((RollingOperationContext)context).withRollingTimeout(timeoutInMillis));
-  }
-
-  @Override
   public Status rollback(DeploymentRollback deploymentRollback) {
     throw new KubernetesClientException("rollback not supported in case of StatefulSets");
   }
 
-  public String getLog() {
-    return getLog(false);
-  }
-
+  @Override
   public String getLog(Boolean isPretty) {
     return PodOperationUtil.getLog(doGetLog(isPretty), isPretty);
   }
@@ -173,7 +151,7 @@ public class StatefulSetOperationsImpl extends RollableScalableResourceOperation
     StatefulSet statefulSet = requireFromServer();
 
     return PodOperationUtil.getPodOperationsForController(context, statefulSet.getMetadata().getUid(),
-      getStatefulSetSelectorLabels(statefulSet), isPretty, podLogWaitTimeout, ((RollingOperationContext)context).getContainerId());
+      getStatefulSetSelectorLabels(statefulSet), isPretty, rollingOperationContext.getLogWaitTimeout(), rollingOperationContext.getContainerId());
   }
 
   /**
@@ -186,18 +164,8 @@ public class StatefulSetOperationsImpl extends RollableScalableResourceOperation
   }
 
   @Override
-  public LogWatch watchLog() {
-    return watchLog(null);
-  }
-
-  @Override
   public LogWatch watchLog(OutputStream out) {
     return PodOperationUtil.watchLog(doGetLog(false), out);
-  }
-
-  @Override
-  public Loggable<LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
-    return new StatefulSetOperationsImpl(((RollingOperationContext)context), logWaitTimeout);
   }
 
   @Override
@@ -271,8 +239,4 @@ public class StatefulSetOperationsImpl extends RollableScalableResourceOperation
     return labels;
   }
 
-  @Override
-  public Loggable<LogWatch> inContainer(String id) {
-    return newInstance(((RollingOperationContext) context).withContainerId(id));
-  }
 }

@@ -15,12 +15,9 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
-import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.ResourceHandler;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.dsl.Resource;
 
 import java.net.HttpURLConnection;
 import java.util.Objects;
@@ -73,17 +70,17 @@ public class DeleteAndCreateHelper<T extends HasMetadata> {
     }
   }
 
-  public static HasMetadata deleteAndCreateItem(OkHttpClient client, Config config, HasMetadata meta, ResourceHandler<HasMetadata, ?> h, String namespaceToUse, DeletionPropagation propagationPolicy, long gracePeriodSeconds, boolean dryRun) {
+  public static HasMetadata deleteAndCreateItem(HasMetadata meta, Resource<HasMetadata> resource) {
     DeleteAndCreateHelper<HasMetadata> deleteAndCreateHelper = new DeleteAndCreateHelper<>(
-      m -> h.create(client, config, namespaceToUse, m, dryRun),
-      m -> h.delete(client, config, namespaceToUse, propagationPolicy, gracePeriodSeconds, m, dryRun),
-      waitUntilDeletedOrInterrupted(client, config, h, namespaceToUse)
+      m -> resource.create(m),
+      m -> resource.delete(),
+      waitUntilDeletedOrInterrupted(resource)
     );
 
     return deleteAndCreateHelper.deleteAndCreate(meta);
   }
 
-  private static <T extends HasMetadata> Function<T, Boolean> waitUntilDeletedOrInterrupted(OkHttpClient client, Config config, ResourceHandler<HasMetadata, ?> h, String namespaceToUse) {
-    return m -> h.waitUntilCondition(client, config, namespaceToUse, m, Objects::isNull, MAX_WAIT_SECONDS , TimeUnit.SECONDS) == null;
+  private static <T extends HasMetadata> Function<T, Boolean> waitUntilDeletedOrInterrupted(Resource<HasMetadata> resource) {
+    return m -> resource.waitUntilCondition(Objects::isNull, MAX_WAIT_SECONDS , TimeUnit.SECONDS) == null;
   }
 }

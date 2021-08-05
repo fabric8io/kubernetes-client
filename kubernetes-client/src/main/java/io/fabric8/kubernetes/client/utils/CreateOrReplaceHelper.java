@@ -16,17 +16,10 @@
 package io.fabric8.kubernetes.client.utils;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.ResourceHandler;
-import okhttp3.OkHttpClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.net.HttpURLConnection;
-import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
 import java.util.function.UnaryOperator;
 
 public class CreateOrReplaceHelper<T extends HasMetadata> {
@@ -68,17 +61,6 @@ public class CreateOrReplaceHelper<T extends HasMetadata> {
       }
     }
     return future.join();
-  }
-
-  public static HasMetadata createOrReplaceItem(OkHttpClient client, Config config, HasMetadata meta, ResourceHandler<HasMetadata, ?> h, String namespaceToUse, boolean dryRun) {
-    CreateOrReplaceHelper<HasMetadata> createOrReplaceHelper = new CreateOrReplaceHelper<>(
-      m -> h.create(client, config, namespaceToUse, m, dryRun),
-      m -> h.replace(client, config, namespaceToUse, m, dryRun),
-      m -> h.waitUntilCondition(client, config, namespaceToUse, m, Objects::nonNull, 1, TimeUnit.SECONDS),
-      m -> h.reload(client, config, namespaceToUse, m)
-    );
-
-    return createOrReplaceHelper.createOrReplace(meta);
   }
 
   private T replace(T item, String resourceVersion) {

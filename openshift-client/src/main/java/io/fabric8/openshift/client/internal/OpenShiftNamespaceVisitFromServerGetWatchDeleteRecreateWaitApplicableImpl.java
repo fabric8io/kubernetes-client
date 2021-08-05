@@ -15,29 +15,33 @@
  */
 package io.fabric8.openshift.client.internal;
 
-import io.fabric8.kubernetes.api.builder.Visitor;
-import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl;
+import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitOperationContext;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import io.fabric8.openshift.client.internal.readiness.OpenShiftReadiness;
 import okhttp3.OkHttpClient;
 
-import java.io.InputStream;
-import java.util.List;
-
 public class OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl extends NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl {
-  public OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, InputStream is, Boolean cascading, long watchRetryInitialBackoffMillis, double watchRetryBackoffMultiplier, boolean dryRun) {
-    super(client, config, namespace, explicitNamespace, fromServer, deletingExisting, visitors, is, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, dryRun);
+
+  OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(OperationContext context, NamespaceVisitOperationContext namespaceVisitOperationContext) {
+    super(context, namespaceVisitOperationContext);
   }
 
-  public OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(OkHttpClient client, Config config, String namespace, String explicitNamespace, Boolean fromServer, Boolean deletingExisting, List<Visitor> visitors, HasMetadata item, long gracePeriodSeconds, DeletionPropagation propagationPolicy, Boolean cascading, long watchRetryInitialBackoffMillis, double watchRetryBackoffMultiplier, boolean dryRun) {
-    super(client, config, namespace, explicitNamespace, fromServer, deletingExisting, visitors, item, gracePeriodSeconds, propagationPolicy, cascading, watchRetryInitialBackoffMillis, watchRetryBackoffMultiplier, dryRun);
+  public OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(OkHttpClient httpClient, Config configuration, HasMetadata item) {
+    super(httpClient, configuration, item);
   }
 
   @Override
   protected Readiness getReadiness() {
     return OpenShiftReadiness.getInstance();
+  }
+
+  @Override
+  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl newInstance(OperationContext context,
+      NamespaceVisitOperationContext namespaceVisitOperationContext) {
+    return new OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(context, namespaceVisitOperationContext);
   }
 }

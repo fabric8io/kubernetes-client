@@ -20,9 +20,14 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
+import io.fabric8.kubernetes.client.dsl.ImageEditReplacePatchable;
+import io.fabric8.kubernetes.client.dsl.LogWatch;
+import io.fabric8.kubernetes.client.dsl.Loggable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
+import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchType;
 import io.fabric8.kubernetes.client.dsl.internal.RollingOperationContext;
@@ -38,16 +43,18 @@ import java.util.function.UnaryOperator;
  * Operations for resources that represent scalable, rolling-updatable sets of Pods.
  */
 public abstract class RollableScalableResourceOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>>
-  extends HasMetadataOperation<T, L, R> implements RollableScalableResource<T> {
+  extends HasMetadataOperation<T, L, R> implements RollableScalableResource<T>, TimeoutImageEditReplacePatchable<T> {
 
   private static final Logger Log = LoggerFactory.getLogger(RollableScalableResourceOperation.class);
 
+  protected final RollingOperationContext rollingOperationContext;
   final boolean rolling;
   final long rollingTimeout;
   final TimeUnit rollingTimeUnit;
 
-  public RollableScalableResourceOperation(RollingOperationContext context, Class<T> type, Class<L> listType) {
-    super(context, type, listType);
+  protected RollableScalableResourceOperation(RollingOperationContext context, OperationContext superContext, Class<T> type, Class<L> listType) {
+    super(superContext, type, listType);
+    this.rollingOperationContext = context;
     this.rolling = context.getRolling();
     this.rollingTimeout = context.getRollingTimeout();
     this.rollingTimeUnit = context.getRollingTimeUnit();
@@ -154,5 +161,42 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
     }
     return getRollingUpdater(rollingTimeout, rollingTimeUnit).rollUpdate(getMandatory(), item);
   }
+  
+  public abstract RollableScalableResourceOperation<T, L, R> newInstance(RollingOperationContext context);
+  
+  @Override
+  public Loggable<LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
+    return newInstance(rollingOperationContext.withLogWaitTimout(logWaitTimeout));
+  }
+  
+  @Override
+  public Loggable<LogWatch> inContainer(String id) {
+    return newInstance(rollingOperationContext.withContainerId(id));
+  }
 
+  @Override
+  public TimeoutImageEditReplacePatchable<T> rolling() {
+    return newInstance(rollingOperationContext.withRolling(true));
+  }
+  
+  @Override
+  public ImageEditReplacePatchable<T> withTimeoutInMillis(long timeoutInMillis) {
+    return newInstance(rollingOperationContext.withRollingTimeout(timeoutInMillis).withRollingTimeUnit(TimeUnit.MILLISECONDS));
+  }
+  
+  @Override
+  public ImageEditReplacePatchable<T> withTimeout(long timeout, TimeUnit unit) {
+    return newInstance(rollingOperationContext.withRollingTimeout(timeout).withRollingTimeUnit(unit));
+  }
+  
+  @Override
+  public String getLog() {
+    return getLog(false);
+  }
+  
+  @Override
+  public LogWatch watchLog() {
+    return watchLog(null);
+  }
+  
 }

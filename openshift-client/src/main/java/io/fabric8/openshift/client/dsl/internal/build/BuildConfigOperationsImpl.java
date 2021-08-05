@@ -76,6 +76,7 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
   public static final String BUILD_CONFIG_LABEL = "openshift.io/build-config.name";
   public static final String BUILD_CONFIG_ANNOTATION = "openshift.io/build-config.name";
 
+  private final BuildConfigOperationContext buildConfigOperationContext;
   private final String secret;
   private final String triggerType;
 
@@ -91,13 +92,13 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
   private final TimeUnit timeoutUnit;
 
   public BuildConfigOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
-    this(new BuildConfigOperationContext().withOkhttpClient(client).withConfig(config));
+    this(new BuildConfigOperationContext(), new OperationContext().withOkhttpClient(client).withConfig(config));
   }
 
-  public BuildConfigOperationsImpl(BuildConfigOperationContext context) {
-    super(context.withApiGroupName(BUILD)
+  public BuildConfigOperationsImpl(BuildConfigOperationContext context, OperationContext superContext) {
+    super(superContext.withApiGroupName(BUILD)
       .withPlural("buildconfigs"), BuildConfig.class, BuildConfigList.class);
-
+    this.buildConfigOperationContext = context;
     this.triggerType = context.getTriggerType();
     this.secret = context.getSecret();
     this.authorName = context.getAuthorName();
@@ -113,11 +114,11 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
 
   @Override
   public BuildConfigOperationsImpl newInstance(OperationContext context) {
-    return new BuildConfigOperationsImpl((BuildConfigOperationContext) context);
+    return new BuildConfigOperationsImpl(buildConfigOperationContext, context);
   }
 
   public  BuildConfigOperationContext getContext() {
-    return (BuildConfigOperationContext) context;
+    return buildConfigOperationContext;
   }
 
   @Override
@@ -135,7 +136,7 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
 
   @Override
   public CommitterAuthorMessageAsFileTimeoutInputStreamable<Build> instantiateBinary() {
-    return new BuildConfigOperationsImpl(getContext());
+    return this;
   }
 
 
@@ -158,7 +159,7 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
 
   @Override
   public Triggerable<WebHookTrigger, Void> withType(String triggerType) {
-    return new BuildConfigOperationsImpl(getContext().withTriggerType(triggerType));
+    return new BuildConfigOperationsImpl(getContext().withTriggerType(triggerType), context);
   }
 
   @Override
@@ -228,37 +229,37 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
 
   @Override
   public TimeoutInputStreamable<Build> asFile(String fileName) {
-    return new BuildConfigOperationsImpl(getContext().withAsFile(fileName));
+    return new BuildConfigOperationsImpl(getContext().withAsFile(fileName), context);
   }
 
   @Override
   public MessageAsFileTimeoutInputStreamable<Build> withAuthorEmail(String email) {
-    return new BuildConfigOperationsImpl(getContext().withAuthorEmail(email));
+    return new BuildConfigOperationsImpl(getContext().withAuthorEmail(email), context);
   }
 
   @Override
   public AuthorMessageAsFileTimeoutInputStreamable<Build> withCommitterEmail(String committerEmail) {
-    return new BuildConfigOperationsImpl(getContext().withCommitterEmail(committerEmail));
+    return new BuildConfigOperationsImpl(getContext().withCommitterEmail(committerEmail), context);
   }
 
   @Override
   public AsFileTimeoutInputStreamable<Build> withMessage(String message) {
-    return new BuildConfigOperationsImpl(getContext().withMessage(message));
+    return new BuildConfigOperationsImpl(getContext().withMessage(message), context);
   }
 
   @Override
   public AuthorEmailable<MessageAsFileTimeoutInputStreamable<Build>> withAuthorName(String authorName) {
-    return new BuildConfigOperationsImpl(getContext().withAuthorName(authorName));
+    return new BuildConfigOperationsImpl(getContext().withAuthorName(authorName), context);
   }
 
   @Override
   public CommitterEmailable<AuthorMessageAsFileTimeoutInputStreamable<Build>> withCommitterName(String committerName) {
-    return new BuildConfigOperationsImpl(getContext().withCommitterName(committerName));
+    return new BuildConfigOperationsImpl(getContext().withCommitterName(committerName), context);
   }
 
   @Override
   public InputStreamable<Build> withTimeout(long timeout, TimeUnit unit) {
-    return new BuildConfigOperationsImpl(getContext().withTimeout(timeout).withTimeoutUnit(unit));
+    return new BuildConfigOperationsImpl(getContext().withTimeout(timeout).withTimeoutUnit(unit), context);
   }
 
   @Override
@@ -268,7 +269,7 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
 
   @Override
   public Typeable<Triggerable<WebHookTrigger, Void>> withSecret(String secret) {
-    return new BuildConfigOperationsImpl(getContext().withSecret(secret));
+    return new BuildConfigOperationsImpl(getContext().withSecret(secret), context);
   }
 
   @Override

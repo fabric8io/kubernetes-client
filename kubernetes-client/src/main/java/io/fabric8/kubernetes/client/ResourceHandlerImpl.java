@@ -60,11 +60,6 @@ class ResourceHandlerImpl<T extends HasMetadata, V extends VisitableBuilder<T, V
   }
 
   @Override
-  public Resource<T> resource(OkHttpClient client, Config config, String namespace, T item) {
-    return operation(client, config, defaultListClass).withItem(item).inNamespace(namespace).withName(item.getMetadata().getName());
-  }
-  
-  @Override
   public <L extends KubernetesResourceList<T>> HasMetadataOperation<T, L, Resource<T>> operation(OkHttpClient client, Config config, Class<L> listType) {
     if (operationConstructor != null) {
       if (listType != null && !listType.isAssignableFrom(defaultListClass)) {

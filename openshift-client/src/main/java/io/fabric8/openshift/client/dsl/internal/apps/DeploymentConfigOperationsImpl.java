@@ -15,7 +15,6 @@
  */
 package io.fabric8.openshift.client.dsl.internal.apps;
 
-import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.client.Config;
@@ -31,7 +30,6 @@ import io.fabric8.kubernetes.client.dsl.internal.RollingOperationContext;
 import io.fabric8.kubernetes.client.utils.PodOperationUtil;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.openshift.api.model.DeploymentConfig;
-import io.fabric8.openshift.api.model.DeploymentConfigBuilder;
 import io.fabric8.openshift.api.model.DeploymentConfigList;
 import io.fabric8.openshift.client.dsl.DeployableScalableResource;
 import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
@@ -64,25 +62,21 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
   private static final Logger LOG = LoggerFactory.getLogger(DeploymentConfigOperationsImpl.class);
   private static final Integer DEFAULT_POD_LOG_WAIT_TIMEOUT = 5;
   public static final String OPENSHIFT_IO_DEPLOYMENT_CONFIG_NAME = "openshift.io/deployment-config.name";
-  private Integer podLogWaitTimeout;
+  private final RollingOperationContext rollingOperationContext;
 
   public DeploymentConfigOperationsImpl(OkHttpClient client, Config config) {
-    this(new RollingOperationContext().withOkhttpClient(client).withConfig(config).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
+    this(new RollingOperationContext(), new OperationContext().withOkhttpClient(client).withConfig(config).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
 
-  public DeploymentConfigOperationsImpl(RollingOperationContext context) {
-    super(context.withApiGroupName(APPS).withPlural("deploymentconfigs"),
+  public DeploymentConfigOperationsImpl(RollingOperationContext context, OperationContext superContext) {
+    super(superContext.withApiGroupName(APPS).withPlural("deploymentconfigs"),
         DeploymentConfig.class, DeploymentConfigList.class);
-  }
-
-  private DeploymentConfigOperationsImpl(RollingOperationContext context, Integer podLogWaitTimeout) {
-    this(context);
-    this.podLogWaitTimeout = podLogWaitTimeout;
+    this.rollingOperationContext = context;
   }
 
   @Override
   public DeploymentConfigOperationsImpl newInstance(OperationContext context) {
-    return new DeploymentConfigOperationsImpl((RollingOperationContext) context);
+    return new DeploymentConfigOperationsImpl(rollingOperationContext, context);
   }
 
   @Override
@@ -272,18 +266,13 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
 
   @Override
   public Loggable<LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
-    return new DeploymentConfigOperationsImpl((RollingOperationContext)context, podLogWaitTimeout);
+    return new DeploymentConfigOperationsImpl(rollingOperationContext.withLogWaitTimout(logWaitTimeout), context);
   }
-
-  @Override
-  public DeploymentConfig edit(Visitor... visitors) {
-    return patch(new DeploymentConfigBuilder(getMandatory()).accept(visitors).build());
-  }
-
 
   private void waitUntilDeploymentConfigPodBecomesReady(DeploymentConfig deploymentConfig) {
+    Integer podLogWaitTimeout = rollingOperationContext.getLogWaitTimeout();
     List<PodResource<Pod>> podOps = PodOperationUtil.getPodOperationsForController(context, deploymentConfig.getMetadata().getUid(),
-      getDeploymentConfigPodLabels(deploymentConfig), false, podLogWaitTimeout, ((RollingOperationContext)context).getContainerId());
+      getDeploymentConfigPodLabels(deploymentConfig), false, podLogWaitTimeout, rollingOperationContext.getContainerId());
 
     waitForBuildPodToBecomeReady(podOps, podLogWaitTimeout != null ? podLogWaitTimeout : DEFAULT_POD_LOG_WAIT_TIMEOUT);
   }
@@ -304,6 +293,6 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
 
   @Override
   public Loggable<LogWatch> inContainer(String id) {
-    return newInstance(((RollingOperationContext) context).withContainerId(id));
+    return new DeploymentConfigOperationsImpl(rollingOperationContext.withContainerId(id), context);
   }
 }

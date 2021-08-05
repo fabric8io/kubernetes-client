@@ -188,6 +188,14 @@ public class OperationContext {
   public boolean getDryRun() {
     return dryRun;
   }
+  
+  public OperationContext copy() {
+    return new OperationContext(client, this.config, this.plural, this.namespace, this.name, this.apiGroupName,
+        this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
+        this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
+        this.propagationPolicy, this.watchRetryInitialBackoffMillis, this.watchRetryBackoffMultiplier,
+        this.namespaceFromGlobalConfig, this.dryRun);
+  }
 
   public OperationContext withOkhttpClient(OkHttpClient client) {
     if (this.client == client) {

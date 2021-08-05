@@ -47,30 +47,26 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
   implements ScalableResource<Job> {
 
   static final transient Logger LOG = LoggerFactory.getLogger(JobOperationsImpl.class);
-  private Integer podLogWaitTimeout;
+  private final PodControllerOperationContext podControllerOperationContext;
 
   public JobOperationsImpl(OkHttpClient client, Config config) {
     this(client, config, null);
   }
 
   public JobOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(new PodControllerOperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
+    this(new PodControllerOperationContext(), new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
 
-  public JobOperationsImpl(PodControllerOperationContext context) {
-    super(context.withApiGroupName("batch")
+  public JobOperationsImpl(PodControllerOperationContext context, OperationContext superContext) {
+    super(superContext.withApiGroupName("batch")
       .withApiGroupVersion("v1")
       .withPlural("jobs"), Job.class, JobList.class);
-  }
-
-  private JobOperationsImpl(PodControllerOperationContext context, Integer podLogWaitTimeout) {
-    this(context);
-    this.podLogWaitTimeout = podLogWaitTimeout;
+    this.podControllerOperationContext = context;
   }
 
   @Override
   public JobOperationsImpl newInstance(OperationContext context) {
-    return new JobOperationsImpl(((PodControllerOperationContext)context));
+    return new JobOperationsImpl(podControllerOperationContext, context);
   }
 
   @Override
@@ -134,10 +130,12 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
     }, getConfig().getScaleTimeout(), TimeUnit.MILLISECONDS);
   }
 
+  @Override
   public String getLog() {
     return getLog(false);
   }
 
+  @Override
   public String getLog(Boolean isPretty) {
     StringBuilder stringBuilder = new StringBuilder();
     List<PodResource<Pod>> podOperationList = doGetLog(false);
@@ -151,7 +149,7 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
     Job job = requireFromServer();
 
     return PodOperationUtil.getPodOperationsForController(context, job.getMetadata().getUid(),
-      getJobPodLabels(job), isPretty, podLogWaitTimeout, ((PodControllerOperationContext)context).getContainerId());
+      getJobPodLabels(job), isPretty, podControllerOperationContext.getLogWaitTimeout(), podControllerOperationContext.getContainerId());
   }
 
   /**
@@ -175,7 +173,7 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
 
   @Override
   public Loggable<LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
-    return new JobOperationsImpl(((PodControllerOperationContext) context), logWaitTimeout);
+    return new JobOperationsImpl(podControllerOperationContext.withLogWaitTimout(logWaitTimeout), context);
   }
 
   @Override
@@ -208,6 +206,6 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
 
   @Override
   public Loggable<LogWatch> inContainer(String id) {
-    return new JobOperationsImpl(((PodControllerOperationContext) context).withContainerId(id));
+    return new JobOperationsImpl(podControllerOperationContext.withContainerId(id), context);
   }
 }

@@ -57,14 +57,12 @@ public class PodOperationUtil {
   }
 
   public static PodOperationsImpl getGenericPodOperations(OperationContext context, boolean isPretty, Integer podLogWaitTimeout, String containerId) {
-    return new PodOperationsImpl(new PodOperationContext(context.getClient(),
-      context.getConfig(), context.getPlural(), context.getNamespace(), null, null,
-      "v1", context.getCascading(), context.getItem(), context.getLabels(), context.getLabelsNot(),
-      context.getLabelsIn(), context.getLabelsNotIn(), context.getFields(), context.getFieldsNot(), context.getResourceVersion(),
-      context.isReloadingFromServer(), context.getGracePeriodSeconds(), context.getPropagationPolicy(),
-      context.getWatchRetryInitialBackoffMillis(), context.getWatchRetryBackoffMultiplier(), context.isNamespaceFromGlobalConfig(), context.getDryRun(), containerId, null, null, null, null,
-      null, null, null, null, false, false, false, null, null,
-      null, isPretty, null, null, null, null, null, podLogWaitTimeout));
+    return new PodOperationsImpl(new PodOperationContext(containerId,
+      null, null, null, null, null,
+      null, null, null, false, false,
+      false, null, null, null, isPretty,
+      null, null, null,
+      null, null, podLogWaitTimeout), context.withName(null).withApiGroupName(null).withApiGroupVersion("v1"));
   }
 
   public static List<PodResource<Pod>> getPodOperationsForController(OperationContext context, String controllerUid, Map<String, String> selectorLabels, boolean isPretty, Integer podLogWaitTimeout, String containerId) {

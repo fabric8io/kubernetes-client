@@ -55,33 +55,25 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
 
   static final transient Logger LOG = LoggerFactory.getLogger(DeploymentOperationsImpl.class);
   public static final String DEPLOYMENT_KUBERNETES_IO_REVISION = "deployment.kubernetes.io/revision";
-  private Integer podLogWaitTimeout;
 
   public DeploymentOperationsImpl(OkHttpClient client, Config config) {
-    this(client, config, null);
+    this(new RollingOperationContext(), new OperationContext().withOkhttpClient(client).withConfig(config).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
 
-  public DeploymentOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(new RollingOperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
-    if (config.getNamespace() != null) {
-      this.namespace = config.getNamespace();
-    }
-  }
-
-  public DeploymentOperationsImpl(RollingOperationContext context) {
-    super(context.withApiGroupName("apps")
+  public DeploymentOperationsImpl(RollingOperationContext context, OperationContext superContext) {
+    super(context, superContext.withApiGroupName("apps")
       .withApiGroupVersion("v1")
       .withPlural("deployments"), Deployment.class, DeploymentList.class);
   }
 
-  private DeploymentOperationsImpl(RollingOperationContext context, Integer podLogWaitTimeout) {
-    this(context);
-    this.podLogWaitTimeout = podLogWaitTimeout;
-  }
-
   @Override
   public DeploymentOperationsImpl newInstance(OperationContext context) {
-    return new DeploymentOperationsImpl((RollingOperationContext) context);
+    return new DeploymentOperationsImpl(rollingOperationContext, context);
+  }
+  
+  @Override
+  public DeploymentOperationsImpl newInstance(RollingOperationContext context) {
+    return new DeploymentOperationsImpl(context, this.context);
   }
 
   @Override
@@ -91,7 +83,7 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
 
   @Override
   public Deployment scale(int count, boolean wait) {
-      Deployment res = cascading(false).accept(d -> d.getSpec().setReplicas(count));
+    Deployment res = cascading(false).accept(d -> d.getSpec().setReplicas(count));
     if (wait) {
       waitUntilDeploymentIsScaled(count);
       res = getMandatory();
@@ -132,11 +124,6 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
   }
 
   @Override
-  public DeploymentOperationsImpl rolling() {
-    return new DeploymentOperationsImpl(((RollingOperationContext)context).withRolling(true));
-  }
-
-  @Override
   public Status rollback(DeploymentRollback rollback) {
     return handleDeploymentRollback(rollback);
   }
@@ -164,7 +151,7 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
   @Override
   public long getObservedGeneration(Deployment current) {
     return (current != null && current.getStatus() != null
-      && current.getStatus().getObservedGeneration() != null)? current.getStatus().getObservedGeneration() : -1;
+      && current.getStatus().getObservedGeneration() != null) ? current.getStatus().getObservedGeneration() : -1;
   }
 
   @Override
@@ -240,16 +227,6 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
     return sendPatchedObject(get(), deployment);
   }
 
-  @Override
-  public ImageEditReplacePatchable<Deployment> withTimeoutInMillis(long timeoutInMillis) {
-    return new DeploymentOperationsImpl(((RollingOperationContext)context).withRollingTimeout(timeoutInMillis));
-  }
-
-  @Override
-  public ImageEditReplacePatchable<Deployment> withTimeout(long timeout, TimeUnit unit) {
-    return new DeploymentOperationsImpl(((RollingOperationContext)context).withRollingTimeUnit(unit));
-  }
-
   /**
    * Lets wait until there are enough Ready pods of the given Deployment
    */
@@ -261,6 +238,7 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
 
     try {
       waitUntilCondition(deployment -> {
+        // If the deployment is gone, we shouldn't wait.
         if (deployment == null) {
           if (count == 0) {
             return true;
@@ -274,11 +252,10 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
         long observedGeneration = deployment.getStatus() != null && deployment.getStatus().getObservedGeneration() != null ? deployment.getStatus().getObservedGeneration() : -1;
         if (observedGeneration >= generation && Objects.equals(deployment.getSpec().getReplicas(), currentReplicas)) {
           return true;
-        } 
+        }
         LOG.debug("Only {}/{} pods scheduled for Deployment: {} in namespace: {} seconds so waiting...",
           deployment.getStatus().getReplicas(), deployment.getSpec().getReplicas(), deployment.getMetadata().getName(), namespace);
         return false;
-
       }, getConfig().getScaleTimeout(), TimeUnit.MILLISECONDS);
       LOG.debug("{}/{} pod(s) ready for Deployment: {} in namespace: {}.",
           replicasRef.get(), count, name, namespace);
@@ -288,10 +265,7 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
     }
   }
 
-  public String getLog() {
-    return getLog(false);
-  }
-
+  @Override
   public String getLog(Boolean isPretty) {
     StringBuilder stringBuilder = new StringBuilder();
     List<RollableScalableResource<ReplicaSet>> rcList = doGetLog();
@@ -307,12 +281,7 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
     String rcUid = deployment.getMetadata().getUid();
 
     ReplicaSetOperationsImpl rsOperations = new ReplicaSetOperationsImpl(
-      new RollingOperationContext(context.getClient(), context.getConfig(), context.getPlural(), context.getNamespace(),
-        null, ((RollingOperationContext)context).getContainerId(), context.getApiGroupName(), context.getApiGroupVersion(), context.getCascading(), null, context.getLabels(),
-        context.getLabelsNot(), context.getLabelsIn(), context.getLabelsNotIn(), context.getFields(), context.getFieldsNot(),
-        context.getResourceVersion(), context.isReloadingFromServer(), context.getGracePeriodSeconds(), context.getPropagationPolicy(),
-        context.getWatchRetryInitialBackoffMillis(), context.getWatchRetryBackoffMultiplier(), false, 0, null,
-        context.isNamespaceFromGlobalConfig(), context.getDryRun()), podLogWaitTimeout);
+      new RollingOperationContext(rollingOperationContext.getContainerId(), false, 0, null, rollingOperationContext.getLogWaitTimeout()), context.withName(null));
     ReplicaSetList rcList = rsOperations.withLabels(getDeploymentSelectorLabels(deployment)).list();
 
     for (ReplicaSet rs : rcList.getItems()) {
@@ -341,11 +310,6 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
   }
 
   @Override
-  public LogWatch watchLog() {
-    return watchLog(null);
-  }
-
-  @Override
   public LogWatch watchLog(OutputStream out) {
     List<RollableScalableResource<ReplicaSet>> replicaSetResources = doGetLog();
     if (!replicaSetResources.isEmpty()) {
@@ -355,11 +319,6 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
       return replicaSetResources.get(0).watchLog(out);
     }
     return null;
-  }
-
-  @Override
-  public Loggable<LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
-    return new DeploymentOperationsImpl(((RollingOperationContext)context), logWaitTimeout);
   }
 
   private Deployment sendPatchedDeployment(Map<String, Object> patchedUpdate) {
@@ -388,8 +347,4 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
     return labels;
   }
 
-  @Override
-  public Loggable<LogWatch> inContainer(String id) {
-    return new DeploymentOperationsImpl(((RollingOperationContext) context).withContainerId(id));
-  }
 }
