@@ -167,7 +167,7 @@ class DryRunTest {
     kubernetesClient.resource(getPod("pod1")).inNamespace("ns1").dryRun().createOrReplace();
 
     // Then
-    verify(mockClient, times(2)).newCall(captor.capture());
+    verify(mockClient, times(1)).newCall(captor.capture());
     assertRequest(captor.getValue(), "POST", "/api/v1/namespaces/ns1/pods", "dryRun=All");
   }
 

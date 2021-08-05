@@ -23,9 +23,7 @@ import io.fabric8.kubernetes.api.model.apps.ReplicaSetList;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.ImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
-import io.fabric8.kubernetes.client.dsl.Loggable;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplacePatchable;
@@ -44,30 +42,29 @@ import java.util.concurrent.TimeUnit;
 
 public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<ReplicaSet, ReplicaSetList, RollableScalableResource<ReplicaSet>>
   implements TimeoutImageEditReplacePatchable<ReplicaSet> {
-  private Integer podLogWaitTimeout;
 
   public ReplicaSetOperationsImpl(OkHttpClient client, Config config) {
     this(client, config, null);
   }
 
   public ReplicaSetOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(new RollingOperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
+    this(new RollingOperationContext(), new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
 
-  public ReplicaSetOperationsImpl(RollingOperationContext context) {
-    super(context.withApiGroupName("apps")
+  public ReplicaSetOperationsImpl(RollingOperationContext context, OperationContext superContext) {
+    super(context, superContext.withApiGroupName("apps")
       .withApiGroupVersion("v1")
       .withPlural("replicasets"), ReplicaSet.class, ReplicaSetList.class);
   }
 
-  public ReplicaSetOperationsImpl(RollingOperationContext context, Integer podLogWaitTimeout) {
-    this(context);
-    this.podLogWaitTimeout = podLogWaitTimeout;
-  }
-
   @Override
   public ReplicaSetOperationsImpl newInstance(OperationContext context) {
-    return new ReplicaSetOperationsImpl((RollingOperationContext) context);
+    return new ReplicaSetOperationsImpl(rollingOperationContext, context);
+  }
+  
+  @Override
+  public ReplicaSetOperationsImpl newInstance(RollingOperationContext context) {
+    return new ReplicaSetOperationsImpl(context, this.context);
   }
 
   @Override
@@ -125,7 +122,7 @@ public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<
 
   @Override
   public ReplicaSet undo() {
-    throw new UnsupportedOperationException("no rollbacker has been implemented for \"" + get().getKind() +"\"");
+    throw new UnsupportedOperationException("no rollbacker has been implemented for \"" + get().getKind() + "\"");
   }
 
   @Override
@@ -151,12 +148,7 @@ public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<
   @Override
   public long getObservedGeneration(ReplicaSet current) {
     return (current != null && current.getStatus() != null
-      && current.getStatus().getObservedGeneration() != null)? current.getStatus().getObservedGeneration() : -1;
-  }
-
-  @Override
-  public TimeoutImageEditReplacePatchable rolling() {
-    return new ReplicaSetOperationsImpl(((RollingOperationContext)context).withRolling(true));
+      && current.getStatus().getObservedGeneration() != null) ? current.getStatus().getObservedGeneration() : -1;
   }
 
   @Override
@@ -165,19 +157,6 @@ public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<
   }
 
   @Override
-  public ImageEditReplacePatchable<ReplicaSet> withTimeout(long timeout, TimeUnit unit) {
-    return new ReplicaSetOperationsImpl(((RollingOperationContext)context).withRollingTimeout(unit.toMillis(timeout)).withRollingTimeUnit(TimeUnit.MILLISECONDS));
-  }
-
-  @Override
-  public ImageEditReplacePatchable<ReplicaSet> withTimeoutInMillis(long timeoutInMillis) {
-    return new ReplicaSetOperationsImpl(((RollingOperationContext)context).withRollingTimeout(timeoutInMillis));
-  }
-
-  public String getLog() {
-    return getLog(false);
-  }
-
   public String getLog(Boolean isPretty) {
     return PodOperationUtil.getLog(doGetLog(isPretty), isPretty);
   }
@@ -185,7 +164,7 @@ public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<
   private List<PodResource<Pod>> doGetLog(boolean isPretty) {
     ReplicaSet replicaSet = requireFromServer();
     return PodOperationUtil.getPodOperationsForController(context, replicaSet.getMetadata().getUid(),
-      getReplicaSetSelectorLabels(replicaSet), isPretty, podLogWaitTimeout, ((RollingOperationContext) context).getContainerId());
+      getReplicaSetSelectorLabels(replicaSet), isPretty, rollingOperationContext.getLogWaitTimeout(), rollingOperationContext.getContainerId());
   }
 
   /**
@@ -198,18 +177,8 @@ public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<
   }
 
   @Override
-  public LogWatch watchLog() {
-    return watchLog(null);
-  }
-
-  @Override
   public LogWatch watchLog(OutputStream out) {
     return PodOperationUtil.watchLog(doGetLog(false), out);
-  }
-
-  @Override
-  public Loggable<LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
-    return new ReplicaSetOperationsImpl(((RollingOperationContext)context), logWaitTimeout);
   }
 
   static Map<String, String> getReplicaSetSelectorLabels(ReplicaSet replicaSet) {
@@ -219,10 +188,5 @@ public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<
       labels.putAll(replicaSet.getSpec().getSelector().getMatchLabels());
     }
     return labels;
-  }
-
-  @Override
-  public Loggable<LogWatch> inContainer(String id) {
-    return newInstance(((RollingOperationContext) context).withContainerId(id));
   }
 }

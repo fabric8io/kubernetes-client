@@ -82,9 +82,9 @@ public class PodUpload {
       final FileInputStream fis = new FileInputStream(pathToUpload.toFile());
       final Base64InputStream b64In = new Base64InputStream(fis, true, 0, new byte[]{'\r', '\n'})
     ) {
-      podUploadWebSocketListener.waitUntilReady(context.getConfig().getRequestConfig().getUploadConnectionTimeout());
+      podUploadWebSocketListener.waitUntilReady(operationSupport.getConfig().getRequestConfig().getUploadConnectionTimeout());
       copy(b64In, podUploadWebSocketListener::send);
-      podUploadWebSocketListener.waitUntilComplete(context.getConfig().getRequestConfig().getUploadRequestTimeout());
+      podUploadWebSocketListener.waitUntilComplete(operationSupport.getConfig().getRequestConfig().getUploadRequestTimeout());
       return true;
     }
   }
@@ -104,7 +104,7 @@ public class PodUpload {
       final GZIPOutputStream gzip = new GZIPOutputStream(b64Out)
 
     ) {
-      podUploadWebSocketListener.waitUntilReady(context.getConfig().getRequestConfig().getUploadConnectionTimeout());
+      podUploadWebSocketListener.waitUntilReady(operationSupport.getConfig().getRequestConfig().getUploadConnectionTimeout());
       final Callable<?> readFiles = () -> {
         try (final TarArchiveOutputStream tar = new TarArchiveOutputStream(gzip)) {
           tar.setLongFileMode(TarArchiveOutputStream.LONGFILE_POSIX);
@@ -118,7 +118,7 @@ public class PodUpload {
       final ExecutorService es = Executors.newSingleThreadExecutor();
       Future<?> readFilesFuture = es.submit(readFiles);
       copy(pis, podUploadWebSocketListener::send);
-      podUploadWebSocketListener.waitUntilComplete(context.getConfig().getRequestConfig().getUploadRequestTimeout());
+      podUploadWebSocketListener.waitUntilComplete(operationSupport.getConfig().getRequestConfig().getUploadRequestTimeout());
       try {
         readFilesFuture.get(100, TimeUnit.SECONDS);
         return true;

@@ -48,7 +48,7 @@ final class FilterNestedImpl<T extends HasMetadata, L extends KubernetesResource
     this.baseOperation = baseOperation;
     // create a context copy
     context = this.baseOperation.context;
-    context = this.context.withConfig(context.config);
+    context = this.context.copy();
     // create map copies - this could be done lazily if needed
     context.labels = new LinkedHashMap<>(this.baseOperation.context.getLabels());
     context.labelsNot = new LinkedHashMap<>(this.baseOperation.context.getLabelsNot());

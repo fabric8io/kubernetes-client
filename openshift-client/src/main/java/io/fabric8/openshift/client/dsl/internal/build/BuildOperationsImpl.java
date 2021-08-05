@@ -44,10 +44,7 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
 import java.io.Reader;
 import java.net.URL;
 import java.util.HashMap;
@@ -62,14 +59,6 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList,
   BuildResource<Build, LogWatch> {
 
   public static final String OPENSHIFT_IO_BUILD_NAME = "openshift.io/build.name";
-  private final InputStream in;
-  private final OutputStream out;
-  private final OutputStream err;
-
-  private final PipedOutputStream inPipe;
-  private final PipedInputStream outPipe;
-  private final PipedInputStream errPipe;
-  private final boolean withTTY;
   private final boolean withTerminatedStatus;
   private final boolean withTimestamps;
   private final String sinceTimestamp;
@@ -80,23 +69,16 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList,
   private final Integer limitBytes;
   private static final Integer DEFAULT_POD_LOG_WAIT_TIMEOUT = 5;
   private Integer podLogWaitTimeout;
-
+  private final BuildOperationContext buildOperationContext;
 
   public BuildOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
-    this(new BuildOperationContext().withOkhttpClient(client).withConfig(config));
+    this(new BuildOperationContext(), new OperationContext().withOkhttpClient(client).withConfig(config));
   }
 
-  public BuildOperationsImpl(BuildOperationContext context) {
-    super(context.withApiGroupName(BUILD)
+  public BuildOperationsImpl(BuildOperationContext context, OperationContext superContext) {
+    super(superContext.withApiGroupName(BUILD)
       .withPlural("builds"), Build.class, BuildList.class);
-
-    this.in = context.getIn();
-    this.out = context.getOut();
-    this.err = context.getErr();
-    this.inPipe = context.getInPipe();
-    this.outPipe = context.getOutPipe();
-    this.errPipe = context.getErrPipe();
-    this.withTTY = context.isTty();
+    this.buildOperationContext = context;
     this.withTerminatedStatus = context.isTerminatedStatus();
     this.withTimestamps = context.isTimestamps();
     this.sinceTimestamp = context.getSinceTimestamp();
@@ -108,18 +90,13 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList,
     PatchUtils.addMixInToMapper(Build.class, BuildMixIn.class);
   }
 
-  private BuildOperationsImpl(BuildOperationContext context, Integer podLogWaitTimeout) {
-    this(context);
-    this.podLogWaitTimeout = podLogWaitTimeout;
-  }
-
   @Override
   public BuildOperationsImpl newInstance(OperationContext context) {
-    return new BuildOperationsImpl((BuildOperationContext) context);
+    return new BuildOperationsImpl(buildOperationContext, context);
   }
 
   BuildOperationContext getContext() {
-    return (BuildOperationContext) context;
+    return buildOperationContext;
   }
 
   protected String getLogParameters() {
@@ -173,7 +150,7 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList,
 
   @Override
   public String getLog(Boolean isPretty) {
-    return new BuildOperationsImpl(getContext().withPrettyOutput(isPretty)).getLog();
+    return new BuildOperationsImpl(getContext().withPrettyOutput(isPretty), context).getLog();
   }
 
   /**
@@ -209,42 +186,44 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList,
 
   @Override
   public Loggable<LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
-    return new BuildOperationsImpl((BuildOperationContext)context, logWaitTimeout);
+    BuildOperationsImpl result = newInstance(context);
+    result.podLogWaitTimeout = logWaitTimeout;
+    return result;
   }
 
   @Override
   public Loggable<LogWatch> withPrettyOutput() {
-    return new BuildOperationsImpl(getContext().withPrettyOutput(true));
+    return new BuildOperationsImpl(getContext().withPrettyOutput(true), context);
   }
 
   @Override
   public PrettyLoggable<LogWatch> tailingLines(int tailingLines) {
-    return new BuildOperationsImpl(getContext().withTailingLines(tailingLines));
+    return new BuildOperationsImpl(getContext().withTailingLines(tailingLines), context);
   }
 
   @Override
   public TimeTailPrettyLoggable<LogWatch> terminated() {
-    return new BuildOperationsImpl(getContext().withTerminatedStatus(true));
+    return new BuildOperationsImpl(getContext().withTerminatedStatus(true), context);
   }
 
   @Override
   public TailPrettyLoggable<LogWatch> sinceTime(String sinceTimestamp) {
-    return new BuildOperationsImpl(getContext().withSinceTimestamp(sinceTimestamp));
+    return new BuildOperationsImpl(getContext().withSinceTimestamp(sinceTimestamp), context);
   }
 
   @Override
   public TailPrettyLoggable<LogWatch> sinceSeconds(int sinceSeconds) {
-    return new BuildOperationsImpl(getContext().withSinceSeconds(sinceSeconds));
+    return new BuildOperationsImpl(getContext().withSinceSeconds(sinceSeconds), context);
   }
 
   @Override
   public BytesLimitTerminateTimeTailPrettyLoggable<LogWatch> limitBytes(int limitBytes) {
-    return new BuildOperationsImpl(getContext().withLimitBytes(limitBytes));
+    return new BuildOperationsImpl(getContext().withLimitBytes(limitBytes), context);
   }
 
   @Override
   public BytesLimitTerminateTimeTailPrettyLoggable<LogWatch> usingTimestamps() {
-    return new BuildOperationsImpl(getContext().withTimestamps(true));
+    return new BuildOperationsImpl(getContext().withTimestamps(true), context);
   }
 
   @Override

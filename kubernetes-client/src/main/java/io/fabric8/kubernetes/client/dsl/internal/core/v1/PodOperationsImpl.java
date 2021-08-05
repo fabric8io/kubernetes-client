@@ -106,18 +106,19 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
     private final ExecListener execListener;
     private final Integer limitBytes;
     private final Integer bufferSize;
+    private final PodOperationContext podOperationContext;
 
   public PodOperationsImpl(OkHttpClient client, Config config) {
     this(client, config, null);
   }
 
   public PodOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(new PodOperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
+    this(new PodOperationContext(), new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
 
-  public PodOperationsImpl(PodOperationContext context) {
-    super(context.withPlural("pods"), Pod.class, PodList.class);
-
+  public PodOperationsImpl(PodOperationContext context, OperationContext superContext) {
+    super(superContext.withPlural("pods"), Pod.class, PodList.class);
+    this.podOperationContext = context;
     this.containerId = context.getContainerId();
     this.in = context.getIn();
     this.inPipe = context.getInPipe();
@@ -141,11 +142,11 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
 
   @Override
   public PodOperationsImpl newInstance(OperationContext context) {
-    return new PodOperationsImpl((PodOperationContext) context);
+    return new PodOperationsImpl(podOperationContext, context);
   }
 
   public PodOperationContext getContext() {
-    return (PodOperationContext) context;
+    return podOperationContext;
   }
   protected String getLogParameters() {
     StringBuilder sb = new StringBuilder();
@@ -208,7 +209,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
 
   @Override
   public String getLog(Boolean isPretty) {
-    return new PodOperationsImpl(getContext().withPrettyOutput(isPretty)).getLog();
+    return new PodOperationsImpl(getContext().withPrettyOutput(isPretty), context).getLog();
   }
 
   @Override
@@ -236,7 +237,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
 
   @Override
   public Loggable<LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
-    return new PodOperationsImpl(getContext().withLogWaitTimeout(logWaitTimeout));
+    return new PodOperationsImpl(getContext().withLogWaitTimeout(logWaitTimeout), context);
   }
 
   @Override
@@ -311,7 +312,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
 
   @Override
     public ContainerResource<LogWatch, InputStream, PipedOutputStream, OutputStream, PipedInputStream, String, ExecWatch, Boolean, InputStream, Boolean> inContainer(String containerId) {
-        return new PodOperationsImpl(getContext().withContainerId(containerId));
+        return new PodOperationsImpl(getContext().withContainerId(containerId), context);
     }
 
     @Override
@@ -357,12 +358,12 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
 
     @Override
     public CopyOrReadable<Boolean, InputStream, Boolean> file(String file) {
-      return new PodOperationsImpl(getContext().withFile(file));
+      return new PodOperationsImpl(getContext().withFile(file), context);
     }
 
     @Override
     public CopyOrReadable<Boolean, InputStream, Boolean> dir(String dir) {
-      return new PodOperationsImpl(getContext().withDir(dir));
+      return new PodOperationsImpl(getContext().withDir(dir), context);
     }
 
    @Override
@@ -528,6 +529,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
     //Let's wrap the code to a runnable inner class to avoid NoClassDef on Option classes.
     try {
     new Runnable() {
+      @Override
       public void  run() {
         File destination = target;
         if (!destination.isDirectory() && !destination.mkdirs())
@@ -572,12 +574,12 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
 
   @Override
     public TtyExecOutputErrorable<String, OutputStream, PipedInputStream, ExecWatch> readingInput(InputStream in) {
-        return new PodOperationsImpl(getContext().withIn(in));
+        return new PodOperationsImpl(getContext().withIn(in), context);
     }
 
     @Override
     public TtyExecOutputErrorable<String, OutputStream, PipedInputStream, ExecWatch> writingInput(PipedOutputStream inPipe) {
-        return new PodOperationsImpl(getContext().withInPipe(inPipe));
+        return new PodOperationsImpl(getContext().withInPipe(inPipe), context);
     }
 
     @Override
@@ -587,17 +589,17 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
 
     @Override
     public TtyExecOutputErrorable<String, OutputStream, PipedInputStream, ExecWatch> redirectingInput(Integer bufferSize) {
-        return new PodOperationsImpl(getContext().withInPipe(new PipedOutputStream()).withBufferSize(bufferSize));
+        return new PodOperationsImpl(getContext().withInPipe(new PipedOutputStream()).withBufferSize(bufferSize), context);
     }
 
     @Override
     public TtyExecErrorable<String, OutputStream, PipedInputStream, ExecWatch> writingOutput(OutputStream out) {
-        return new PodOperationsImpl(getContext().withOut(out));
+        return new PodOperationsImpl(getContext().withOut(out), context);
     }
 
     @Override
     public TtyExecErrorable<String, OutputStream, PipedInputStream, ExecWatch> readingOutput(PipedInputStream outPipe) {
-        return new PodOperationsImpl(getContext().withOutPipe(outPipe));
+        return new PodOperationsImpl(getContext().withOutPipe(outPipe), context);
     }
 
     @Override
@@ -607,12 +609,12 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
 
     @Override
     public TtyExecErrorChannelable<String, OutputStream, PipedInputStream, ExecWatch> writingError(OutputStream err) {
-        return new PodOperationsImpl(getContext().withErr(err));
+        return new PodOperationsImpl(getContext().withErr(err), context);
     }
 
     @Override
     public TtyExecErrorChannelable<String, OutputStream, PipedInputStream, ExecWatch> readingError(PipedInputStream errPipe) {
-        return new PodOperationsImpl(getContext().withErrPipe(errPipe));
+        return new PodOperationsImpl(getContext().withErrPipe(errPipe), context);
     }
 
     @Override
@@ -622,12 +624,12 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
 
     @Override
     public TtyExecable<String, ExecWatch> writingErrorChannel(OutputStream errChannel) {
-        return new PodOperationsImpl(getContext().withErrChannel(errChannel));
+        return new PodOperationsImpl(getContext().withErrChannel(errChannel), context);
     }
 
     @Override
     public TtyExecable<String, ExecWatch> readingErrorChannel(PipedInputStream errChannelPipe) {
-        return new PodOperationsImpl(getContext().withErrChannelPipe(errChannelPipe));
+        return new PodOperationsImpl(getContext().withErrChannelPipe(errChannelPipe), context);
     }
 
     @Override
@@ -639,48 +641,48 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
 
     @Override
     public ExecListenable<String, ExecWatch> withTTY() {
-        return new PodOperationsImpl(getContext().withTty(true));
+        return new PodOperationsImpl(getContext().withTty(true), context);
     }
 
     @Override
     public Loggable<LogWatch> withPrettyOutput() {
-        return new PodOperationsImpl(getContext().withPrettyOutput(true));
+        return new PodOperationsImpl(getContext().withPrettyOutput(true), context);
     }
 
 
     @Override
     public PrettyLoggable<LogWatch> tailingLines(int withTailingLines) {
-        return new PodOperationsImpl(getContext().withTailingLines(withTailingLines));
+        return new PodOperationsImpl(getContext().withTailingLines(withTailingLines), context);
     }
 
     @Override
     public TailPrettyLoggable<LogWatch> sinceTime(String sinceTimestamp) {
-        return new PodOperationsImpl(getContext().withSinceTimestamp(sinceTimestamp));
+        return new PodOperationsImpl(getContext().withSinceTimestamp(sinceTimestamp), context);
     }
 
     @Override
     public TailPrettyLoggable<LogWatch> sinceSeconds(int sinceSeconds) {
-        return new PodOperationsImpl(getContext().withSinceSeconds(sinceSeconds));
+        return new PodOperationsImpl(getContext().withSinceSeconds(sinceSeconds), context);
     }
 
     @Override
     public TimeTailPrettyLoggable<LogWatch> terminated() {
-        return new PodOperationsImpl(getContext().withTerminatedStatus(true));
+        return new PodOperationsImpl(getContext().withTerminatedStatus(true), context);
     }
 
     @Override
     public Execable<String, ExecWatch> usingListener(ExecListener execListener) {
-        return new PodOperationsImpl(getContext().withExecListener(execListener));
+        return new PodOperationsImpl(getContext().withExecListener(execListener), context);
     }
 
     @Override
     public BytesLimitTerminateTimeTailPrettyLoggable<LogWatch> limitBytes(int limitBytes) {
-        return new PodOperationsImpl(getContext().withLimitBytes(limitBytes));
+        return new PodOperationsImpl(getContext().withLimitBytes(limitBytes), context);
     }
 
   @Override
   public BytesLimitTerminateTimeTailPrettyLoggable<LogWatch> usingTimestamps() {
-    return new PodOperationsImpl(getContext().withTimestamps(true));
+    return new PodOperationsImpl(getContext().withTimestamps(true), context);
   }
 
 }

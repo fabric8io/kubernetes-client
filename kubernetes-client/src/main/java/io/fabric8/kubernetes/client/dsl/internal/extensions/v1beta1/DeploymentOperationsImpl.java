@@ -26,9 +26,7 @@ import io.fabric8.kubernetes.api.model.extensions.ReplicaSetList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
-import io.fabric8.kubernetes.client.dsl.ImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
-import io.fabric8.kubernetes.client.dsl.Loggable;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
@@ -57,42 +55,29 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.UnaryOperator;
 
 public class DeploymentOperationsImpl extends RollableScalableResourceOperation<Deployment, DeploymentList, RollableScalableResource<Deployment>>
-  implements TimeoutImageEditReplacePatchable<Deployment > {
+  implements TimeoutImageEditReplacePatchable<Deployment>  {
 
   static final transient Logger LOG = LoggerFactory.getLogger(DeploymentOperationsImpl.class);
   public static final String DEPLOYMENT_KUBERNETES_IO_REVISION = "deployment.kubernetes.io/revision";
-  private Integer podLogWaitTimeout;
 
   public DeploymentOperationsImpl(OkHttpClient client, Config config) {
-    this(client, config, null);
+    this(new RollingOperationContext(), new OperationContext().withOkhttpClient(client).withConfig(config).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
 
-  public DeploymentOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(new RollingOperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
-    if (config.getNamespace() != null) {
-      this.namespace = config.getNamespace();
-    }
-  }
-
-  public DeploymentOperationsImpl(RollingOperationContext context) {
-    super(context.withApiGroupName("extensions")
+  public DeploymentOperationsImpl(RollingOperationContext context, OperationContext superContext) {
+    super(context, superContext.withApiGroupName("extensions")
       .withApiGroupVersion("v1beta1")
       .withPlural("deployments"), Deployment.class, DeploymentList.class);
   }
 
-  private DeploymentOperationsImpl(RollingOperationContext context, Integer podLogWaitTimeout) {
-    this(context);
-    this.podLogWaitTimeout = podLogWaitTimeout;
-  }
-
   @Override
   public DeploymentOperationsImpl newInstance(OperationContext context) {
-    return new DeploymentOperationsImpl((RollingOperationContext) context);
+    return new DeploymentOperationsImpl(rollingOperationContext, context);
   }
-
+  
   @Override
-  public Deployment scale(int count) {
-    return scale(count, false);
+  public DeploymentOperationsImpl newInstance(RollingOperationContext context) {
+    return new DeploymentOperationsImpl(context, this.context);
   }
 
   @Override
@@ -135,11 +120,6 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
       return cascading(false).patch(patchContext, item);
     }
     return super.patch(patchContext, item);
-  }
-
-  @Override
-  public DeploymentOperationsImpl rolling() {
-    return new DeploymentOperationsImpl(((RollingOperationContext) context).withRolling(true));
   }
 
   @Override
@@ -246,16 +226,6 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
     return sendPatchedObject(get(), deployment);
   }
 
-  @Override
-  public ImageEditReplacePatchable<Deployment> withTimeoutInMillis(long timeoutInMillis) {
-    return new DeploymentOperationsImpl(((RollingOperationContext) context).withRollingTimeout(timeoutInMillis));
-  }
-
-  @Override
-  public ImageEditReplacePatchable<Deployment> withTimeout(long timeout, TimeUnit unit) {
-    return new DeploymentOperationsImpl(((RollingOperationContext) context).withRollingTimeUnit(unit));
-  }
-
   /**
    * Lets wait until there are enough Ready pods of the given Deployment
    */
@@ -271,7 +241,7 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
         if (deployment == null) {
           if (count == 0) {
             return true;
-          } 
+          }
           throw new IllegalStateException("Can't wait for Deployment: " + checkName(getItem()) + " in namespace: " + checkName(getItem()) + " to scale. Resource is no longer available.");
         }
 
@@ -294,10 +264,7 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
     }
   }
 
-  public String getLog() {
-    return getLog(false);
-  }
-
+  @Override
   public String getLog(Boolean isPretty) {
     StringBuilder stringBuilder = new StringBuilder();
     List<RollableScalableResource<ReplicaSet>> rcList = doGetLog();
@@ -313,14 +280,8 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
     String rcUid = deployment.getMetadata().getUid();
 
     ReplicaSetOperationsImpl rsOperations = new ReplicaSetOperationsImpl(
-      new RollingOperationContext(context.getClient(), context.getConfig(), context.getPlural(), context.getNamespace(),
-        null, null, context.getApiGroupName(), context.getApiGroupVersion(), context.getCascading(), null, context.getLabels(),
-        context.getLabelsNot(), context.getLabelsIn(), context.getLabelsNotIn(), context.getFields(), context.getFieldsNot(),
-        context.getResourceVersion(), context.isReloadingFromServer(), context.getGracePeriodSeconds(), context.getPropagationPolicy(),
-        context.getWatchRetryInitialBackoffMillis(), context.getWatchRetryBackoffMultiplier(), false, 0, null,
-      context.isNamespaceFromGlobalConfig(), context.getDryRun()), podLogWaitTimeout);
+      new RollingOperationContext(rollingOperationContext.getContainerId(), false, 0, null, rollingOperationContext.getLogWaitTimeout()), context.withName(null));
     ReplicaSetList rcList = rsOperations.withLabels(getDeploymentSelectorLabels(deployment)).list();
-
 
     for (ReplicaSet rs : rcList.getItems()) {
       OwnerReference ownerReference = KubernetesResourceUtil.getControllerUid(rs);
@@ -348,25 +309,15 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
   }
 
   @Override
-  public LogWatch watchLog() {
-    return watchLog(null);
-  }
-
-  @Override
   public LogWatch watchLog(OutputStream out) {
-    List<RollableScalableResource<ReplicaSet>> podResources = doGetLog();
-    if (!podResources.isEmpty()) {
-      if (podResources.size() > 1) {
-        LOG.debug("Found {} pods, Using first one to get logs", podResources.size());
+    List<RollableScalableResource<ReplicaSet>> replicaSetResources = doGetLog();
+    if (!replicaSetResources.isEmpty()) {
+      if (replicaSetResources.size() > 1) {
+        LOG.debug("Found {} pods, Using first one to get logs", replicaSetResources.size());
       }
-      return podResources.get(0).watchLog(out);
+      return replicaSetResources.get(0).watchLog(out);
     }
     return null;
-  }
-
-  @Override
-  public Loggable<LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
-    return new DeploymentOperationsImpl(((RollingOperationContext) context), logWaitTimeout);
   }
 
   private Deployment sendPatchedDeployment(Map<String, Object> patchedUpdate) {
@@ -395,8 +346,4 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
     return labels;
   }
 
-  @Override
-  public Loggable<LogWatch> inContainer(String id) {
-    return newInstance(((RollingOperationContext)context).withContainerId(id));
-  }
 }

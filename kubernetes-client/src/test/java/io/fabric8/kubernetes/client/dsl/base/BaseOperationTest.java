@@ -68,7 +68,7 @@ class BaseOperationTest {
     fieldsMap.put("yesKey1", "yesValue1");
     fieldsMap.put("yesKey2", "yesValue2");
 
-    PodOperationsImpl operation = new PodOperationsImpl(new PodOperationContext());
+    PodOperationsImpl operation = new PodOperationsImpl(new PodOperationContext(), new OperationContext());
     operation = (PodOperationsImpl) operation
       .withFields(fieldsMap)
       .withField("yesKey2", "overrideValue2")
@@ -85,7 +85,7 @@ class BaseOperationTest {
 
   @Test
   void testSkippingFieldNotMatchingNullValues() {
-    PodOperationsImpl operation = new PodOperationsImpl(new PodOperationContext());
+    PodOperationsImpl operation = new PodOperationsImpl(new PodOperationContext(), new OperationContext());
     operation = (PodOperationsImpl) operation
       .withField("key1", "value1")
       .withoutField("key2", "value2")
@@ -100,7 +100,7 @@ class BaseOperationTest {
   
   @Test
   void testFilterContextModification() {
-    PodOperationsImpl operation = new PodOperationsImpl(new PodOperationContext());
+    PodOperationsImpl operation = new PodOperationsImpl(new PodOperationContext(), new OperationContext());
     operation.withField("x", "y");
     // should not modify the existing context
     assertTrue(Utils.isNullOrEmpty(operation.getFieldQueryParam()));
