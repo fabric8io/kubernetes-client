@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.dsl.base;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.client.utils.Utils;
 
 public class ResourceDefinitionContext {
@@ -45,7 +46,7 @@ public class ResourceDefinitionContext {
     return namespaced;
   }
 
-  public static ResourceDefinitionContext fromResourceType(Class<? extends HasMetadata> resource) {
+  public static ResourceDefinitionContext fromResourceType(Class<? extends KubernetesResource> resource) {
     return new Builder()
       .withGroup(HasMetadata.getGroup(resource))
       .withVersion(HasMetadata.getVersion(resource))

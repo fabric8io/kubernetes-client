@@ -15,66 +15,46 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
+import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.dsl.InOutCreateable;
+import io.fabric8.kubernetes.client.dsl.NamespacedInOutCreateable;
+import io.fabric8.kubernetes.client.dsl.base.CreateOnlyResourceOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
+import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
 import okhttp3.OkHttpClient;
 
-import java.io.IOException;
-import java.util.concurrent.ExecutionException;
-
-public class CreateOnlyResourceOperationsImpl<I, O> extends OperationSupport implements InOutCreateable<I, O> {
-  private final Class<O> outputClassType;
-
-  public CreateOnlyResourceOperationsImpl(OkHttpClient client, Config config, String apiGroupName, String apiGroupVersion, String plural, Class<O> outputClassType) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config), apiGroupName, apiGroupVersion, plural, outputClassType);
+public class CreateOnlyResourceOperationsImpl<I extends KubernetesResource, O extends KubernetesResource> extends CreateOnlyResourceOperation<I, O> implements NamespacedInOutCreateable<I, O> {
+  
+  private final ResourceDefinitionContext rdc;
+  private Class<I> inputType;
+  
+  public CreateOnlyResourceOperationsImpl(OkHttpClient client, Config config, ResourceDefinitionContext rdc, Class<I> inputType, Class<O> outputType) {
+    this(HasMetadataOperationsImpl.defaultContext(new OperationContext(), client, config), rdc, inputType, outputType);
   }
+  
+  public CreateOnlyResourceOperationsImpl(OperationContext context, ResourceDefinitionContext rdc, Class<I> inputType, Class<O> outputType) {
+    super(context.withApiGroupName(rdc.getGroup())
+      .withApiGroupVersion(rdc.getVersion())
+      .withPlural(rdc.getPlural()));
+    this.inputType = inputType;
+    this.type = outputType;
 
-  public CreateOnlyResourceOperationsImpl(OperationContext context, String apiGroupName, String apiGroupVersion, String plural, Class<O> outputClassType) {
-    super(context.withApiGroupName(apiGroupName)
-      .withApiGroupVersion(apiGroupVersion)
-      .withPlural(plural));
-    this.outputClassType = outputClassType;
+    this.rdc = rdc;
+
+    // use the group / version from the context, not from the item
+    // the item is allowed to differ as long as it can be parsed as the current type
+    this.apiGroupName = rdc.getGroup();
+    this.apiGroupVersion = rdc.getVersion();
   }
-
+  
   @Override
   public boolean isResourceNamespaced() {
-    return false;
+    return rdc.isNamespaceScoped();
   }
-
+  
   @Override
-  public O create(I... resources) {
-    try {
-      if (resources.length > 1) {
-        throw new IllegalArgumentException("Too many items to create.");
-      } else if (resources.length == 1) {
-        return handleCreate(resources[0], outputClassType);
-      } else {
-        return handleCreate(getItem(), outputClassType);
-      }
-    } catch (ExecutionException | IOException e) {
-      throw KubernetesClientException.launderThrowable(e);
-    } catch (InterruptedException ie) {
-      Thread.currentThread().interrupt();
-      throw KubernetesClientException.launderThrowable(ie);
-    }
+  public CreateOnlyResourceOperationsImpl<I, O> inNamespace(String name) {
+    return new CreateOnlyResourceOperationsImpl<>(context.withNamespace(name), rdc, inputType, type);
   }
 
-  @Override
-  public O create(I item) {
-    try {
-      return handleCreate(item, outputClassType);
-    } catch (ExecutionException | IOException e) {
-      throw KubernetesClientException.launderThrowable(e);
-    } catch (InterruptedException ie) {
-      Thread.currentThread().interrupt();
-      throw KubernetesClientException.launderThrowable(ie);
-    }
-  }
-
-  public I getItem() {
-    return (I) context.getItem();
-  }
 }

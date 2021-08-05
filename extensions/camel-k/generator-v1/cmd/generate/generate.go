@@ -82,7 +82,7 @@ func main() {
 		reflect.TypeOf(runtime.RawExtension{}): "java.util.Map<String, Object>",
 	}
 
-	json := schemagen.GenerateSchema("http://fabric8.io/camel-k/v1/CamelKSchema#", crdLists, providedPackages, manualTypeMap, packageMapping, mappingSchema, providedTypes, constraints)
+	json := schemagen.GenerateSchema("http://fabric8.io/camel-k/v1/CamelKSchema#", crdLists, providedPackages, manualTypeMap, packageMapping, mappingSchema, providedTypes, constraints, "io.fabric8")
 
 	fmt.Println(json)
 }

@@ -15,6 +15,7 @@
  */
 package io.fabric8.crd.generator.apt;
 
+import io.fabric8.crd.generator.CRDGenerationInfo;
 import io.fabric8.crd.generator.CRDGenerator;
 import io.fabric8.crd.generator.CRDGenerator.AbstractCRDOutput;
 import io.fabric8.crd.generator.CustomResourceInfo;
@@ -22,33 +23,26 @@ import io.fabric8.crd.generator.utils.Types;
 import io.fabric8.crd.generator.utils.Types.SpecAndStatus;
 import io.fabric8.kubernetes.api.Pluralize;
 import io.fabric8.kubernetes.model.Scope;
-import io.fabric8.kubernetes.model.annotation.Group;
-import io.fabric8.kubernetes.model.annotation.Kind;
-import io.fabric8.kubernetes.model.annotation.Plural;
-import io.fabric8.kubernetes.model.annotation.ShortNames;
-import io.fabric8.kubernetes.model.annotation.Singular;
-import io.fabric8.kubernetes.model.annotation.Version;
+import io.fabric8.kubernetes.model.annotation.*;
 import io.sundr.adapter.api.Adapters;
 import io.sundr.adapter.apt.AptContext;
 import io.sundr.codegen.CodegenContext;
 import io.sundr.model.TypeDef;
 import io.sundr.model.repo.DefinitionRepository;
 
+import javax.annotation.processing.*;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.Name;
+import javax.lang.model.element.TypeElement;
+import javax.tools.Diagnostic;
+import javax.tools.FileObject;
+import javax.tools.StandardLocation;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
-import javax.annotation.processing.AbstractProcessor;
-import javax.annotation.processing.ProcessingEnvironment;
-import javax.annotation.processing.RoundEnvironment;
-import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.Name;
-import javax.lang.model.element.TypeElement;
-import javax.tools.FileObject;
-import javax.tools.StandardLocation;
 
 @SupportedAnnotationTypes({"io.fabric8.kubernetes.model.annotation.Version"})
 public class CustomResourceAnnotationProcessor extends AbstractProcessor {
@@ -57,11 +51,17 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
 
   public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
     if (roundEnv.processingOver()) {
-      generator.withOutput(new FileObjectCRDOutput(processingEnv)).generate();
+      final Messager messager = processingEnv.getMessager();
+      final CRDGenerationInfo allCRDs = generator.withOutput(new FileObjectCRDOutput(processingEnv)).detailedGenerate();
+      allCRDs.getCRDDetailsPerNameAndVersion().forEach((crdName, versionToInfo) -> {
+        messager.printMessage(Diagnostic.Kind.NOTE, "Generating CRD " + crdName + ":\n");
+        versionToInfo.forEach((version, info) -> messager.printMessage(Diagnostic.Kind.NOTE, "  - " + version + " -> " + info.getFilePath()));
+      });
       return true;
     }
 
-    AptContext aptContext = AptContext.create(processingEnv.getElementUtils(), processingEnv.getTypeUtils(), DefinitionRepository.getRepository());
+    // make sure we create the context before using it
+    AptContext.create(processingEnv.getElementUtils(), processingEnv.getTypeUtils(), DefinitionRepository.getRepository());
     CodegenContext.create(processingEnv.getElementUtils(), processingEnv.getTypeUtils());
 
     //Collect all annotated types.

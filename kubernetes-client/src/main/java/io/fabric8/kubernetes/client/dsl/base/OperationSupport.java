@@ -31,6 +31,7 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.internal.VersionUsageUtils;
 import io.fabric8.kubernetes.client.utils.ExponentialBackoffIntervalCalculator;
+import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -222,7 +223,7 @@ public class OperationSupport {
 
   protected <T> String checkNamespace(T item) {
     String operationNs = getNamespace();
-    String itemNs = (item instanceof HasMetadata && ((HasMetadata)item).getMetadata() != null) ? ((HasMetadata) item).getMetadata().getNamespace() : null;
+    String itemNs = (item instanceof HasMetadata) ? KubernetesResourceUtil.getNamespace((HasMetadata)item) : null;
     if (Utils.isNullOrEmpty(operationNs) && Utils.isNullOrEmpty(itemNs)) {
       if (!isResourceNamespaced()) {
         return null;

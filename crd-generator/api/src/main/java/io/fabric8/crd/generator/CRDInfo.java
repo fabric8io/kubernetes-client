@@ -19,13 +19,13 @@ import java.util.Set;
 
 public class CRDInfo {
   private final String crdName;
-  private final String version;
+  private final String crdSpecVersion;
   private final String filePath;
   private final Set<String> dependentClassNames;
 
-  public CRDInfo(String crdName, String version, String filePath, Set<String> dependentClassNames) {
+  public CRDInfo(String crdName, String crdSpecVersion, String filePath, Set<String> dependentClassNames) {
     this.crdName = crdName;
-    this.version = version;
+    this.crdSpecVersion = crdSpecVersion;
     this.filePath = filePath;
     this.dependentClassNames = dependentClassNames;
   }
@@ -34,8 +34,17 @@ public class CRDInfo {
     return crdName;
   }
 
+  /**
+   * @deprecated Use {@link #getCrdSpecVersion()} instead
+   * @return the CRD spec version
+   */
+  @Deprecated
   public String getVersion() {
-    return version;
+    return getCrdSpecVersion();
+  }
+
+  public String getCrdSpecVersion() {
+    return crdSpecVersion;
   }
 
   public String getFilePath() {

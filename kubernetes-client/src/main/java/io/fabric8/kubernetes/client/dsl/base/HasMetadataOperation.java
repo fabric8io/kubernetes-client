@@ -269,4 +269,9 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
       throw KubernetesClientException.launderThrowable(forOperationType(PATCH_OPERATION), e);
     }
   }
+  
+  @Override
+  public BaseOperation<T, L, R> newInstance(OperationContext context) {
+    return new HasMetadataOperation<>(context, type, listType);
+  }
 }

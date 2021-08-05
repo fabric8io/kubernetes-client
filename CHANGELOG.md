@@ -8,9 +8,12 @@
 
 #### Improvements
 * Fix #3316: allow locking deletion to resource version
+* Fix #3350: Replace references to impls with interfaces in several places in the the dsl
 * Fix #3327: Removed generated ResourceHandlers
 * Fix #3349: ensuring that dsl context values always are applied over user ListOptions
+* Fix #3372: Add generatePackageSuffix option to Model Generator to allow flexible package names for generated model
 * Fix #3336: Added ConversionReview to Kubernetes APIExtensions Model
+
 
 #### Dependency Upgrade
 
@@ -19,6 +22,7 @@
 #### _**Note**_: Breaking changes in the API
 ##### DSL Changes:
 - #3327 DSL methods mentioning customResources have been deprecated: `KubernetesClient.customResources`, `SharedIndexInformerFactory.sharedIndexInformerForCustomResource`.  See replacement resources and sharedIndexInformerFor methods instead.  Also `CustomeResourceDefinitionContext` has been replaced by `ResourceDefinitionContext` - for example in `KubernetesClient.genericKubernetesResources`.
+- #3358 DSL return type replacements - `NamespacedCreateOnlyResourceOperationsImpl` has been replaced by `NamespacedInOutCreateable`, `ImageSignatureOperationsImpl` has been replaced by `NameableCreateOrDeleteable`
 
 ### 5.6.0 (2021-07-21)
 

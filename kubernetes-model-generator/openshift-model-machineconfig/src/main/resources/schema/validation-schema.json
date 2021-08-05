@@ -2051,7 +2051,8 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.machineconfig.v1.MachineConfigPoolStatusConfiguration",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource"
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "os_machineconfig_v1_MachineConfigSpec": {

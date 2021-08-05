@@ -86,7 +86,7 @@ import okhttp3.HttpUrl;
 import okhttp3.Request;
 
 public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>>
-  extends OperationSupport
+  extends CreateOnlyResourceOperation<T, T>
   implements
   OperationInfo,
   MixedOperation<T, L, R>,
@@ -106,7 +106,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   protected String apiVersion;
 
-  protected Class<T> type;
   protected Class<L> listType;
   private Map<String, Function<T, List<String>>> indexers;
 
@@ -309,45 +308,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   @Override
   public Gettable<T> fromServer() {
     return newInstance(context.withReloadingFromServer(true));
-  }
-
-  @SafeVarargs
-  @Override
-  public final T create(T... resources) {
-    try {
-      if (resources.length > 1) {
-        throw new IllegalArgumentException("Too many items to create.");
-      } else if (resources.length == 1) {
-        return withItem(resources[0]).create();
-      } else if (getItem() == null) {
-        throw new IllegalArgumentException("Nothing to create.");
-      } else {
-        return handleCreate(getItem());
-      }
-    }  catch (InterruptedException ie) {
-      Thread.currentThread().interrupt();
-      throw KubernetesClientException.launderThrowable(forOperationType("create"), ie);
-    } catch (ExecutionException | IOException e) {
-      throw KubernetesClientException.launderThrowable(forOperationType("create"), e);
-    }
-
-  }
-
-  @Override
-  public T create(T resource) {
-    try {
-      if (resource != null) {
-        return handleCreate(resource);
-      } else {
-        throw new IllegalArgumentException("Nothing to create.");
-      }
-    }  catch (InterruptedException ie) {
-      Thread.currentThread().interrupt();
-      throw KubernetesClientException.launderThrowable(forOperationType("create"), ie);
-    } catch (ExecutionException | IOException e) {
-      throw KubernetesClientException.launderThrowable(forOperationType("create"), e);
-    }
-
   }
 
   @SafeVarargs
@@ -787,6 +747,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     return handleResponse(requestBuilder, getType());
   }
 
+  @Override
   protected T handleCreate(T resource) throws ExecutionException, InterruptedException, IOException {
     updateApiVersion(resource);
     return handleCreate(resource, getType());
@@ -867,6 +828,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     return cascading;
   }
 
+  @Override
   public T getItem() {
     return item;
   }
@@ -890,10 +852,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   @Override
   public String getResourceT() {
     return resourceT;
-  }
-
-  public Class<T> getType() {
-    return type;
   }
 
   public Class<L> getListType() {

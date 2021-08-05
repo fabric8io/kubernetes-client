@@ -74,7 +74,7 @@ func main() {
 		reflect.TypeOf([]byte{}):               "java.lang.String",
 	}
 
-	json := schemagen.GenerateSchema("http://fabric8.io/csi/ChaosMeshSchema#", crdLists, providedPackages, manualTypeMap, packageMapping, mappingSchema, providedTypes, constraints)
+	json := schemagen.GenerateSchema("http://fabric8.io/csi/ChaosMeshSchema#", crdLists, providedPackages, manualTypeMap, packageMapping, mappingSchema, providedTypes, constraints, "io.fabric8")
 
 	fmt.Println(json)
 }
