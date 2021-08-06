@@ -3,6 +3,7 @@
 ### 5.7-SNAPSHOT
 
 #### Bugs
+* Fix #3383: Make mock server to work again with updateStatus by handling JSON_MERGE_PATCH in path
 * Fix #3346: https configuration ignored for OpenShiftServer in CRUD mode
 * Fix #3347: OpenShiftConfig missing some configurations from provided Config
 
@@ -78,7 +79,7 @@
 * Fix #3135: added mock crud support for patch status, and will return exceptions for unsupported patch types
 * Fix #3072: various changes to refine how threads are handled by informers.  Note that the SharedInformer.run call is now blocking when starting the informer.
 * Fix #3143: a new SharedInformerEventListener.onException(SharedIndexInformer, Exception) method is available to determine which informer could not start.
-* Fix #3170: made HttpClientUtils.createHttpClient(Config, Consumer<OkHttpClient.Builder>) public to allow overriding custom http client properties 
+* Fix #3170: made HttpClientUtils.createHttpClient(Config, Consumer<OkHttpClient.Builder>) public to allow overriding custom http client properties
 * Fix #3202: make pod upload connection and request timeouts configurable
 * Fix #3185: Introduce GenericKubernetesResource, used as delegate in RawCustomResourceOperationsImpl
 * Fix #3001: WatchConnectionManager logs that provide little information are now logged at a lower level
@@ -99,7 +100,7 @@
 * Fix #3087: Support HTTP operation retry with exponential backoff (for status code >= 500)
 * Fix #3193:Add DSL support for `autoscaling.openshift.io` resources in OpenShiftClient
 * Fix #3209: Add DSL support for PodSecurityPolicySubjectReview, PodSecurityPolicyReview, PodSecurityPolicySelfSubjectReview in `security.openshift.io/v1` apiGroup to OpenShiftClient
-* Fix #3207: Add DSL support for OperatorCondition, Operator, PackageManifest in `operators.coreos.com` apiGroup to OpenShiftClient 
+* Fix #3207: Add DSL support for OperatorCondition, Operator, PackageManifest in `operators.coreos.com` apiGroup to OpenShiftClient
 * Fix #3201: Add support for `tuned.openshift.io` apiGroup in OpenShiftClient DSL
 * Fix #3205: Add DSL support for ConsolePlugin and ConsoleQuickStart in `console.openshift.io` apiGroup
 * Fix #3222: Add DSL support for `user.openshift.io/v1` Identity in OpenShiftClient DSL
@@ -117,7 +118,7 @@
 
 ##### Util Changes:
 - #3197 `Utils.waitUntilReady` now accepts a Future, rather than a BlockingQueue
-- #3169 `Utils.shutdownExecutorService` removed in favor of direct usage of shutdownNow where appropriate.  
+- #3169 `Utils.shutdownExecutorService` removed in favor of direct usage of shutdownNow where appropriate.
   The stream pumper related classes were also simplified to utility methods on InputStreamPumper.
 
 ### 5.4.1 (2021-06-01)
@@ -181,7 +182,7 @@
 * Fix #2701: Better support for patching in KuberntesClient
 * Fix #3034: Added a SharedInformer.isRunning method
 * Fix #3088: mock server will assume /status is a subresource, and other refinements to match kube behavior
-* Fix #3111: Add DSL Support for `config.openshift.io/v1` resources in OpenShiftClient 
+* Fix #3111: Add DSL Support for `config.openshift.io/v1` resources in OpenShiftClient
 
 #### _**Note**_: Breaking changes in the API
 ##### DSL Changes:
@@ -255,7 +256,7 @@
 * Fix #2871: Change longFileMode to LONGFILE\_POSIX for creating tar in PodUpload, improve exception handling in PodUpload.
 * Fix #2746: SharedInformerFactory should use key formed from OperationContext
 * Fix #2736: Move CRD annotations to kubernetes-model-common module for greater coherence
-* Fix #2836: Make CRD generation usable at runtime, split the generator into api and apt modules, 
+* Fix #2836: Make CRD generation usable at runtime, split the generator into api and apt modules,
   the `crd-generator-apt` artifact corresponding to the previous `crd-generator` artifact, while the
   `crd-generator-api` artifact can be consumed directly to generate the CRDs at runtime.
 
@@ -285,7 +286,7 @@
 * Fix #2672: WaitUntilReady for Service resource throws IllegalArgumentException
 
 #### Improvements
-* Fix #2662: Allow option to containerize Go Model Schema generation builds 
+* Fix #2662: Allow option to containerize Go Model Schema generation builds
 * Fix #2717: Remove edit() methods from RawCustomResourceOperationsImpl taking InputStream arguments
 * Fix #2757: add `storage` and `served` to `Version` annotation
 * Fix #2759: add `ShortNames` annotation to specify short names for CRD generation
@@ -356,9 +357,9 @@
 #### Improvements
 
 * Fix #2723: Dependency cleanup
- - Remove javax.annotation-api 
- - Remove jaxb-api
- - Remove jackson-module-jaxb-annotations
+- Remove javax.annotation-api
+- Remove jaxb-api
+- Remove jackson-module-jaxb-annotations
 * Fix #2744: Automatically instantiates spec and status fields on `CustomResource` when possible.
   `initSpec` and `initStatus` methods are also provided to allow for overriding of the default implementation.
 
@@ -396,21 +397,21 @@
 * Fix #2611: Support for Custom Resource and Custom Resource Definitions has been improved
   - New annotations have been introduced for users to specify group, version, singular and plural
     properties for `CustomResource` instances
-  - `CustomResource` instances must now be annotated with `@Version` and `@Group` so that the 
+  - `CustomResource` instances must now be annotated with `@Version` and `@Group` so that the
     associated information can be automatically computed
-  - `HasMetadata` provides default implementations for `getApiVersion` and `getKind` based on the 
+  - `HasMetadata` provides default implementations for `getApiVersion` and `getKind` based on the
     presence (or not) of annotations on the target class
-  - Static methods have been introduced on `HasMetadata` and `CustomResource` to encapsulate the 
+  - Static methods have been introduced on `HasMetadata` and `CustomResource` to encapsulate the
     logic used to resolve `Kind`, `ApiVersion`, `Group`, `Version`, `Plural`, `Singular` and `CRD Name`
     properties
-  - New `v1CRDFromCustomResourceType` and `v1beta1CRDFromCustomResourceType` methods have been 
+  - New `v1CRDFromCustomResourceType` and `v1beta1CRDFromCustomResourceType` methods have been
     introduced on `CustomResourceDefinitionContext` to initialize a `CustomResourceDefinitionBuilder`
-    with the information provided by a specific `CustomResource` implementation, making it much 
+    with the information provided by a specific `CustomResource` implementation, making it much
     easier to create CRDs if you already have defined your custom resource type
-  - `CustomResource` is now parameterized by the spec and status types that it uses which further 
+  - `CustomResource` is now parameterized by the spec and status types that it uses which further
     removes boiler plate
 * Rename `@ApiVersion` and `@ApiGroup` to simply `@Version` and `@Group`, respectively. This was done
-  to unify annotations and also remove potential confusion between values provided to `@ApiVersion` 
+  to unify annotations and also remove potential confusion between values provided to `@ApiVersion`
   and what is returned by `HasMetadata#getApiVersion`
 
 ### 5.0.0-alpha-3 (2020-12-10)
@@ -492,10 +493,10 @@ _**Note**_: Breaking changes in the API
 * Fix #2452: Make Readiness.isReady publicly available from a wrapper method in KubernetesResourceUtil
 
 #### Dependency Upgrade
-* Bump Knative Serving to v0.17.2 & Knative Eventing to v0.17.3 
+* Bump Knative Serving to v0.17.2 & Knative Eventing to v0.17.3
 
 #### New Features
-* Fix #2340: Adding support for Knative Eventing Contrib 
+* Fix #2340: Adding support for Knative Eventing Contrib
 * Fix #2111: Support automatic refreshing for expired OIDC tokens
 * Fix #2146: Add Support for specifying CustomResourceDefinitionContext while initializing KubernetesServer
 * Fix #2314: Fetch logs should wait for the job's associated pod to be ready
@@ -531,7 +532,7 @@ _**Note**_ Minor breaking changes:
 
 #### Dependency Upgrade
 * Fix #2360: bump mockito-core from 3.4.0 to 3.4.2
-* Fix #2355: bump jandex from 2.1.3.Final to 2.2.0.Final 
+* Fix #2355: bump jandex from 2.1.3.Final to 2.2.0.Final
 * Fix #2353: chore: bump workflow action-setup versions + kubernetes to 1.18.6
 * Fix #2292: Update createOrReplace to do replace when create fails with conflict
 * Fix: Bump SnakeYaml to version 1.26 (as required for OSGi bundle for jackson-dataformat-yaml)
@@ -559,7 +560,7 @@ _**Note**_: Some classes have been moved to other packages:
 * Fix #2297: Resuscitate ProjectRequestHandler in openshift-client
 * Fix #2328: Failure in deserialization while watching events
 * Fix #2299: Improve error handling of RejectedExecutionException from ExecutorService
-* Fix KubernetesAttributesExctractor to extract metadata from unregistered custom resources, such when using Raw CustomResource API 
+* Fix KubernetesAttributesExctractor to extract metadata from unregistered custom resources, such when using Raw CustomResource API
 * Fix #2296: No adapter available for type:interface io.fabric8.kubernetes.client.dsl.V1APIGroupDSL
 * Fix #2269: Setting a grace period when deleting resource using `withPropagationPolicy()`
 * Fix #2342: watchLogs for deployment is broken
@@ -588,7 +589,7 @@ _**Note**_: Some classes have been moved to other packages:
 
 ### 4.10.2 (2020-06-02)
 #### Bugs
-* Fix #2251: Modify KubernetesDeserializer for handling classes with same name but different apiVersions 
+* Fix #2251: Modify KubernetesDeserializer for handling classes with same name but different apiVersions
 * Fix #2205: Event model classes from core v1 have been lost
 * Fix #2226: SharedIndexInformer for non-namespaced resources not working
 * Fix #2201: Uberjar doesn't contain model classes anymore
@@ -611,7 +612,7 @@ _**Note**_: Some classes have been moved to other packages:
 
 _**Note**_:
 - Some classes have been renamed:
-   - `io.fabric8.tekton.pipeline.v1beta1.WorkspacePipelineDeclaration` is now `io.fabric8.tekton.pipeline.v1beta1.PipelineWorkspaceDeclaration`
+  - `io.fabric8.tekton.pipeline.v1beta1.WorkspacePipelineDeclaration` is now `io.fabric8.tekton.pipeline.v1beta1.PipelineWorkspaceDeclaration`
 - Breaking changes in `KubernetesClient` `customResource()` typed API:
   - We've introduced a major breaking change in customResource(...) typed API. We have introduced a new interface `io.fabric8.kubernetes.api.model.Namespaced` which needs to
     be added to your Custom Types using typed API. For example, for a custom resource named `Animals` which is a [Namespaced](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) resource; It should be declared like this:
@@ -651,7 +652,7 @@ _**Note**_:
 
 #### New Features
 * Fix #2115: Keep tekton v1alpha1 api
-* Fix #2002: DSL Support for PodTemplate 
+* Fix #2002: DSL Support for PodTemplate
 * Fix #2015: Add Support for v1, v2beta1, and v2beta2 apiVersions in case of HorizontalPodAutoscaler
 
 ### 4.9.2 (2020-05-19)
@@ -697,9 +698,9 @@ _**Note**_:
 * Fix #2047: Readiness#isReady is unreliable for StatefulSet
 * Fix #1247: URL parameters are not escaped.
 * Fix #1961: Two SharedInformer issues related to kube-apiserver unavailable and relisting
-* Fix #2023: Class RawCustomResourceOperationsImpl can't handle HTTP responses with empty body coming from the k8s 
-cluster (Jackson deserialization error was throwed). This kind of response can be returned after executing operations 
-like the delete of a custom resource.
+* Fix #2023: Class RawCustomResourceOperationsImpl can't handle HTTP responses with empty body coming from the k8s
+  cluster (Jackson deserialization error was throwed). This kind of response can be returned after executing operations
+  like the delete of a custom resource.
 * Fix #2017: Incorrect plural form for Endpoints kind
 * Fix #2053: Fixed parsing of exponential values. Added multiplication to the amount during parsing exponential values.
 * Fix #2058: NullPointerException with upload() websocket failures
@@ -880,53 +881,53 @@ like the delete of a custom resource.
 ### 4.5.1 (11-09-2019)
 
 #### Improvements
-  * Removed Bean Validation integration
+* Removed Bean Validation integration
 
 ### 4.5.0 (10-09-2019)
 
 #### Bugs
-  * Fix #1745: Calling getInputStreamFromDataOrFile function with correct parameter order
-  * Fix #1730: Fix failing build on jdk11
-  * Fix #1634: Cascade delete can't be overriden
-  * Fixed Knative model so that it recognizes Container and Volume types as Buildable.
-  * Remove lexicographic resource version check in WatchHTTPManager
+* Fix #1745: Calling getInputStreamFromDataOrFile function with correct parameter order
+* Fix #1730: Fix failing build on jdk11
+* Fix #1634: Cascade delete can't be overriden
+* Fixed Knative model so that it recognizes Container and Volume types as Buildable.
+* Remove lexicographic resource version check in WatchHTTPManager
 
 #### Improvements
-  * Added in kubernetes-server-mock (CRUD) the withoutLabel filter and respective tests
-  * Removed @Valid annotation from all model class fields (improves quarkus integration).
+* Added in kubernetes-server-mock (CRUD) the withoutLabel filter and respective tests
+* Removed @Valid annotation from all model class fields (improves quarkus integration).
 
 #### New Feature
-  * Allow user to set a propagation policy on deletion
+* Allow user to set a propagation policy on deletion
 
 
 ### 4.4.2 (23-08-2019)
 #### Bugs
-  * Fix #1706: admissionregistration resources are now parsed correctly
-  * Fix #1722: Service port forward are now done in the correct namespace
-  * Fixed deserialize of `IntOrString` with correct `Kind` instead of `null`
+* Fix #1706: admissionregistration resources are now parsed correctly
+* Fix #1722: Service port forward are now done in the correct namespace
+* Fixed deserialize of `IntOrString` with correct `Kind` instead of `null`
 
 #### Improvements
-  * Test coverage for HorizontalPodAutoscaler
-  * Added example for PersistentVolumeClaim
-  * Added test coverage for ResourceQuota
+* Test coverage for HorizontalPodAutoscaler
+* Added example for PersistentVolumeClaim
+* Added test coverage for ResourceQuota
 
 #### Dependency Upgrade
-  * Fix #1331: Migrated from JUnit 4 to JUnit 5
+* Fix #1331: Migrated from JUnit 4 to JUnit 5
 
 #### New Feature
-  * Service Catalog extension
+* Service Catalog extension
 
 
 ### 4.4.1 (08-08-2019)
 ####  Bugs
-  * Fix #1690: Endpoints is always pluralized
-  * Fix #1684: Fixed URL resolution algorithm for OpenShift resources without API Group name
+* Fix #1690: Endpoints is always pluralized
+* Fix #1684: Fixed URL resolution algorithm for OpenShift resources without API Group name
 
 #### Improvements
-  * Fix #1650: Introduced `kubernetes.disable.autoConfig` system property to disable auto configuration in Config
-  * Fix #1661: Remove generic parameter from KubernetesResource
-  * Improved OpenShiftOperation.wrap method performance
-  * RawCustomResourceOperationsImpl#makeCall now closes the created Response object
+* Fix #1650: Introduced `kubernetes.disable.autoConfig` system property to disable auto configuration in Config
+* Fix #1661: Remove generic parameter from KubernetesResource
+* Improved OpenShiftOperation.wrap method performance
+* RawCustomResourceOperationsImpl#makeCall now closes the created Response object
 
 #### Dependency Upgrade
 
@@ -934,75 +935,75 @@ like the delete of a custom resource.
 
 ### 4.4.0 (05-08-2019)
 #### Bugs
-  * Fix #1592: Corrected type returned by Config.builder()
-  * Fix #1565: CRD's Enums are prefixed with Raw keyword
-  * Fixed user/password authentication bug in OpenShift 4
-  * Fix #1667: Origin header for watch requests had a port of -1 when no port specified
+* Fix #1592: Corrected type returned by Config.builder()
+* Fix #1565: CRD's Enums are prefixed with Raw keyword
+* Fixed user/password authentication bug in OpenShift 4
+* Fix #1667: Origin header for watch requests had a port of -1 when no port specified
 
 #### Improvements
-   * Test coverage for PersistentVolumeClaim
-   * Fix #1589: Move HorizontalPodAutoscaler to autoscaling/v1
-   * Fix #1553: Allow to explicitly set non-matching field selectors using `withoutField`
-   * Cleaned up kubernetes-model pom.xml
-   * Removed deprecated KubernetesKind enum
+* Test coverage for PersistentVolumeClaim
+* Fix #1589: Move HorizontalPodAutoscaler to autoscaling/v1
+* Fix #1553: Allow to explicitly set non-matching field selectors using `withoutField`
+* Cleaned up kubernetes-model pom.xml
+* Removed deprecated KubernetesKind enum
 
 #### Dependency Upgrade
 
 #### New Feature
-  * Knative extension
-  * Tekton extension
-  * Increased OpenShift 4.x compatibility
+* Knative extension
+* Tekton extension
+* Increased OpenShift 4.x compatibility
 
 ### 4.3.1 (19-07-2019)
 #### Bugs
-  * Fix #1592: Corrected type returned by Config.builder()
-  * Set cascade deletion to true in case of list operations
-  * Fix #1617: Multiple CA certificates with non-unique Subject DN not loaded
-  * Fix #1634: Make map backing KubernetesDeserializer thread-safe
+* Fix #1592: Corrected type returned by Config.builder()
+* Set cascade deletion to true in case of list operations
+* Fix #1617: Multiple CA certificates with non-unique Subject DN not loaded
+* Fix #1634: Make map backing KubernetesDeserializer thread-safe
 
 #### Improvements
-  * Test coverage for Namespace.
-  * Example added for NamespaceQuota
-  * Example added for Endpoints.
-  * Test coverage for Endpoints.
-  * Fix #1589: Move HorizontalPodAutoscaler to autoscaling/v1
-  * Fix #1553: Allow to explicitly set non-matching field selectors using withoutField
-  * assertNotNull replaced with assertTrue for boolean statements in unit tests
-  * Test coverage for PodPreset
-  * Added test coverage for PersistentVolume
-  * Fix #1290: Added github stale bot.
-  * Add type parameter to make CustomResourceList.getItems() return a typed List.
+* Test coverage for Namespace.
+* Example added for NamespaceQuota
+* Example added for Endpoints.
+* Test coverage for Endpoints.
+* Fix #1589: Move HorizontalPodAutoscaler to autoscaling/v1
+* Fix #1553: Allow to explicitly set non-matching field selectors using withoutField
+* assertNotNull replaced with assertTrue for boolean statements in unit tests
+* Test coverage for PodPreset
+* Added test coverage for PersistentVolume
+* Fix #1290: Added github stale bot.
+* Add type parameter to make CustomResourceList.getItems() return a typed List.
 
 #### Dependency Upgrade
-  * Upgrade Jackson to version 2.9.9
+* Upgrade Jackson to version 2.9.9
 
 #### New Feature
-  * Fixes #973: added support for service catalog client
-  * Added support for SelfSubjectAccessReview
-  * Added support for SelfSubjectRulesReview
+* Fixes #973: added support for service catalog client
+* Added support for SelfSubjectAccessReview
+* Added support for SelfSubjectRulesReview
 
 ### 4.3.0 (10-06-2019)
 #### Bugs
-  * Fix #1500: exec `redirectingInput` was not correctly setting the input pipe (since 4.2.0).
-  * Fix #1507: remove unnecessary OutputStream copying a directory and return the directory object instead the file object when a directory is copied or read
-  * Fix #758: Deleting Deployments with `.cascading(true)` creates a new Replica Set
-  * Fix #1515: HasMetadataOperation.periodicWatchUntilReady is broken
-  * Fix #1550: MutatingWebhookConfigurationOperationsImpl should be a NonNamespaceOperation
-  
+* Fix #1500: exec `redirectingInput` was not correctly setting the input pipe (since 4.2.0).
+* Fix #1507: remove unnecessary OutputStream copying a directory and return the directory object instead the file object when a directory is copied or read
+* Fix #758: Deleting Deployments with `.cascading(true)` creates a new Replica Set
+* Fix #1515: HasMetadataOperation.periodicWatchUntilReady is broken
+* Fix #1550: MutatingWebhookConfigurationOperationsImpl should be a NonNamespaceOperation
+
 #### Improvements
-  * Added example for raw custom resources.
+* Added example for raw custom resources.
 
 #### Dependency Upgrade
 
 #### New Feature
-  * Fix #1523: Added createOrReplace() method to RawCustomResourceOperations dsl
-  * Feature #1374 Add support for resizeChannel in ExecWebSocketListener
+* Fix #1523: Added createOrReplace() method to RawCustomResourceOperations dsl
+* Feature #1374 Add support for resizeChannel in ExecWebSocketListener
 
 ### 4.2.2 (17-04-2019)
 #### Bugs
-  * Fix #1297: wrong result produced when exec in used and params contains '&'. Url string not encoded properly.
-  * Fix #1449: System.currentTimeMillis() replaced with System.nanoTime()
-  * Fix #1495: avoid runtime dependency on Commons Collections
+* Fix #1297: wrong result produced when exec in used and params contains '&'. Url string not encoded properly.
+* Fix #1449: System.currentTimeMillis() replaced with System.nanoTime()
+* Fix #1495: avoid runtime dependency on Commons Collections
 
 #### Improvements
 
@@ -1012,60 +1013,60 @@ like the delete of a custom resource.
 
 ### 4.2.1 (15-04-2019)
 #### Bugs
-  * Fix #1297: wrong result produced when exec in used and params contains '&'. Url string not encoded properly.
-  * Fix #1473: Use correct plural form in OpenshiftRole
-  * Fix #1480: The kubernetes-client is not optionally depending on bouncycastle.
-  * Fix #1490: Resource could not be loaded
-  * Fix #1468: Taking labels into consideration when comparing resources for equality.
+* Fix #1297: wrong result produced when exec in used and params contains '&'. Url string not encoded properly.
+* Fix #1473: Use correct plural form in OpenshiftRole
+* Fix #1480: The kubernetes-client is not optionally depending on bouncycastle.
+* Fix #1490: Resource could not be loaded
+* Fix #1468: Taking labels into consideration when comparing resources for equality.
 
 #### Improvements
-  * Fix #1455: Use SubjectAccessReview and LocalSubjectAccessReview in kubernetes client using subjectAccessReviewAuth()
+* Fix #1455: Use SubjectAccessReview and LocalSubjectAccessReview in kubernetes client using subjectAccessReviewAuth()
 
 #### Dependency Upgrade
 
 #### New Feature
-  * First Draft of Custom Resource Improvements (#1472)
+* First Draft of Custom Resource Improvements (#1472)
 
 ### 4.2.0 (29-03-2019)
 #### Bugs
-  * Fix #1387: ValidatingWebhookConfigurationOperationsImpl should be a NonNamespaceOperation
-  * Fix #1429: Fixes JsonMappingException: No resource type found for:v1#List when reading a Kubernetes List YAML
-  * Fix #760: Api get pod from yaml issue
-  * Fix #807: Loading a deployment from server with a config file throws exception
+* Fix #1387: ValidatingWebhookConfigurationOperationsImpl should be a NonNamespaceOperation
+* Fix #1429: Fixes JsonMappingException: No resource type found for:v1#List when reading a Kubernetes List YAML
+* Fix #760: Api get pod from yaml issue
+* Fix #807: Loading a deployment from server with a config file throws exception
 
 #### Improvements
-  * Fix #1425: Preserve labels and fields when using CRD's withResourceVersion()
-  * Service DSL now includes methods for port forwarding
-  * Introduce file and dir read / copy from pods
+* Fix #1425: Preserve labels and fields when using CRD's withResourceVersion()
+* Service DSL now includes methods for port forwarding
+* Introduce file and dir read / copy from pods
 
 #### Dependency Upgrade
-  * Upgrade Sundrio to 0.17.2
-  * Upgrade to Bean Validation 2.0
+* Upgrade Sundrio to 0.17.2
+* Upgrade to Bean Validation 2.0
 
 #### New Feature
 
 ### 4.1.3 (02-03-2019)
 #### Bugs
-  * Fix nanosecond conversion using waitUntilReady
-  * Fix #1008: Use a reasonable buffer size for exec stdin
-  * Fix #1005: Loading a template from file and processing it locally by passing parameters map is broken
+* Fix nanosecond conversion using waitUntilReady
+* Fix #1008: Use a reasonable buffer size for exec stdin
+* Fix #1005: Loading a template from file and processing it locally by passing parameters map is broken
 
 #### Improvements
-  * Fix #1362: store exceptions thrown in port forwarder websocket
-  * Generate Jandex index file for faster lookup performance
-  * Fix #1361: Relax restrictions on environment variable names
-  * Refactor: Use lambdas wherever possible across project
-  * Fix #1371: Add an example for Job Controller
+* Fix #1362: store exceptions thrown in port forwarder websocket
+* Generate Jandex index file for faster lookup performance
+* Fix #1361: Relax restrictions on environment variable names
+* Refactor: Use lambdas wherever possible across project
+* Fix #1371: Add an example for Job Controller
 
 #### Dependency Upgrade
-  * Bump Snakeyaml to version 1.24
+* Bump Snakeyaml to version 1.24
 
 #### New Feature
-  * Feature 213: Added require( ) method to Resource object class.
-  * Fix #1064: Make Deployments rollable
+* Feature 213: Added require( ) method to Resource object class.
+* Fix #1064: Make Deployments rollable
 
 ### 4.1.2
-  Bugs
+Bugs
 
     * Fix #1271: Issue deploying ReplicaSet to extensions/v1beta1
 
@@ -1079,7 +1080,7 @@ like the delete of a custom resource.
 
     * Fix #1351: NPE IpAddressMatcherTest
 
-  Improvements
+Improvements
 
     * Updated compatability matrix after model upgrade in README.md
 
@@ -1094,13 +1095,13 @@ like the delete of a custom resource.
     * Fix #1354: suppress log warnings that `CustomResourceDefinition`s are still in beta
 
 
-  Dependency Upgrade
+Dependency Upgrade
 
     * Updated jackson to 2.9.8
 
     * Upgrade okhttp to 3.12.0
 
-  New Feature
+New Feature
 
     * Fix #1286: Pod Preset Support
 
@@ -1108,13 +1109,13 @@ like the delete of a custom resource.
 
     * Fix #1314: Support for EC Private Keys
 
-  Misc
+Misc
 
     * Appended some files to licence check exclusion list.
 
 #### 4.1.1
 
-  Bugs
+Bugs
 
     * Fix #1239: Fix one case of OkHttp connection leaks
 
@@ -1132,7 +1133,7 @@ like the delete of a custom resource.
 
     * Fix #1280: Fix ExecCredential deserialization in kubeconfig auth
 
-  Improvements
+Improvements
 
     * Fix #1226 : Extend and move integrations tests
 
@@ -1140,7 +1141,7 @@ like the delete of a custom resource.
 
     * Fix #1293 : OpenShiftOAuthInterceptor.authorize() should only throw IOException
 
-  Dependency Upgrade
+Dependency Upgrade
 
     * Fix #1223: jackson-dataformat-yaml dependency (2.7.7) ageing
 
@@ -1151,8 +1152,8 @@ like the delete of a custom resource.
     * Fix #1235: Upgrade kubernetes-model to latest kubernetes/Openshift versions
 
 
-  New Feature
-    * Fix #1142: Pagination Support
+New Feature
+* Fix #1142: Pagination Support
 
     * Fix #1234: VolumeNodeAffinity support
 
@@ -1161,11 +1162,11 @@ like the delete of a custom resource.
     * Fix #1186: Added Support for creating HPA based on custom metrics
 
 #### 4.0.7
-  Bugs
+Bugs
 
     * Fix #1214 : Watch resource versions not correctly tracked resulting in 410 errors on reconnect
 
-  Improvements
+Improvements
 
     * Fix #1179 : Impersonate-Extra keys may be specified multiple times
     * Fix #1182 : Fixes flaky integration tests.
@@ -1174,12 +1175,12 @@ like the delete of a custom resource.
     * Chore #1168 : Upgrade to Java 8
     * fix #1197 : Broken withName() method  for CustomResourceDefinition.
 
-  Dependency Upgrade
+Dependency Upgrade
 
-  New Feature
+New Feature
 
 #### 4.0.4
-  Bugs
+Bugs
 
     * Fix #1180 : DeploymentExamples requires the definition of a selector with match labels
 
@@ -1203,17 +1204,17 @@ like the delete of a custom resource.
 
     * Fix #1158: Add support for label selectors in the mock server
 
-  Improvements
+Improvements
 
     * Added Kubernetes/Openshift examples for client.getVersion()
     * Fix #1126 : Add new option `kubernetes.disable.hostname.verification` / `KUBERNETES_DISABLE_HOSTNAME_VERIFICATION` to disable hostname verification
     * Fix #1178 : Impersonate-Group may be specified multiple times
 
-  Dependency Upgrade
+Dependency Upgrade
 
     * Fix #924 : Include kubernetes-model in client BOM with dependencies.
 
-  New Feature
+New Feature
 
     * Fix #1066 : Add support for Kubernetes RBAC Role and Role Binding
     * Fix #1150: Add support for Kubernetes RBAC Cluster Role and Cluster Role Binding
@@ -1222,7 +1223,7 @@ like the delete of a custom resource.
     * Fix #1139 : Make it easy to get the URL of a service.
 
 #### 4.0.0
-  Bugs
+Bugs
 
     * Fix #1098 : Unable to create LimitRange from yaml
     * Fix #1089 : Query parameters are not correctly processed if set in `masterUrl`
@@ -1230,15 +1231,15 @@ like the delete of a custom resource.
     * Fix #1085 : Impersonate parameters are not configurable for DefaultOpenShiftClient
     * Fix #1106 : Fix typo in crud mode in mockserver
 
-  New Feature
+New Feature
 
     * Fix #1020 : Support for Kubernetes/Openshift v1.9/v3.9 respectively
 
-  Improvements
+Improvements
 
     * Fix #1119 : Regression Test are more stable and takes less time to execute
 
-  Dependency Upgrade
+Dependency Upgrade
 
     * Kubernetes Model upgraded to 3.0.0 with support for Kubernetes/Openshift v1.9/v3.9 respectively
       Features and Fixes Available
@@ -1247,7 +1248,7 @@ like the delete of a custom resource.
        * KubernetesDeserializer shouldn't pickup mappings from incompatible providers
        * Add all packages in KubernetesDeserializer
 
-  Major Movements and Changes
+Major Movements and Changes
 
     * SecurityContextConstraints has been moved to OpenShift client from Kubernetes Client
     * Job dsl is in both `batch` and `extensions`(Extensions is deprecated)
@@ -1260,53 +1261,53 @@ like the delete of a custom resource.
     * ThirdPartyResource has been removed.
 
 #### 3.2.0
-  Bugs
-   * Fix #1083 : Mock Kubernetes server only handles core and extensions API groups
-   * Fix #1087 : Mock server can't list custom resources
-   * Fix #1055 : Unable to log in to cluster when using username and password
+Bugs
+* Fix #1083 : Mock Kubernetes server only handles core and extensions API groups
+* Fix #1087 : Mock server can't list custom resources
+* Fix #1055 : Unable to log in to cluster when using username and password
 
-  New Feature
-   * Support `error` websocket channel - https://github.com/fabric8io/kubernetes-client/pull/1045
+New Feature
+* Support `error` websocket channel - https://github.com/fabric8io/kubernetes-client/pull/1045
 
-  Improvements
-   * Do not repeatedly create Config instance in exec - https://github.com/fabric8io/kubernetes-client/pull/1081
-   * Determine kubernetes service host and port from environment if available - https://github.com/fabric8io/kubernetes-client/pull/1086
-   * Upgraded Kuberneted Model version to 2.1.1
-     Features and Fixes Available
-      * KubernetesDeserializer can now lookup for resource mappings via ServiceLoader - https://github.com/fabric8io/kubernetes-model/pull/307
-      * Add new package to OSGi exports - https://github.com/fabric8io/kubernetes-model/pull/310
-      * Add additional types that are needed to support extensions - https://github.com/fabric8io/kubernetes-model/pull/305
+Improvements
+* Do not repeatedly create Config instance in exec - https://github.com/fabric8io/kubernetes-client/pull/1081
+* Determine kubernetes service host and port from environment if available - https://github.com/fabric8io/kubernetes-client/pull/1086
+* Upgraded Kuberneted Model version to 2.1.1
+  Features and Fixes Available
+  * KubernetesDeserializer can now lookup for resource mappings via ServiceLoader - https://github.com/fabric8io/kubernetes-model/pull/307
+  * Add new package to OSGi exports - https://github.com/fabric8io/kubernetes-model/pull/310
+  * Add additional types that are needed to support extensions - https://github.com/fabric8io/kubernetes-model/pull/305
 
 #### 3.1.12
-  Bugs
-   * Fix #1070 : Error parsing openshift json template with the latest version
+Bugs
+* Fix #1070 : Error parsing openshift json template with the latest version
 
-  New Feature
-   * Fix #1048 : Add support for the k8s/openshift version
+New Feature
+* Fix #1048 : Add support for the k8s/openshift version
 
-  Improvements
-   * Fixes premature call to watcher onClose
+Improvements
+* Fixes premature call to watcher onClose
 
 #### 3.1.11
-  Bugs
-   * Fix #1013 : Kubernetes connection is not getting closed.
-   * Fix #1004 : Multiple document handling breaks if "---" found anywhere in the document
-   * Fix #1035 : RejectedExecutionException in WatchHTTPManager
-   * Impersonation parameters not set in withRequestConfig - https://github.com/fabric8io/kubernetes-client/pull/1037
+Bugs
+* Fix #1013 : Kubernetes connection is not getting closed.
+* Fix #1004 : Multiple document handling breaks if "---" found anywhere in the document
+* Fix #1035 : RejectedExecutionException in WatchHTTPManager
+* Impersonation parameters not set in withRequestConfig - https://github.com/fabric8io/kubernetes-client/pull/1037
 
-  Improvements
-   * NO_PROXY setting now supports IP ranges so you can specify whole subnet to be excluded from proxy traffic eg. 192.168.0.1/8
+Improvements
+* NO_PROXY setting now supports IP ranges so you can specify whole subnet to be excluded from proxy traffic eg. 192.168.0.1/8
 
 #### 3.1.10
-  Bugs
+Bugs
 
-  New Feature
-   * Added support for StorageClass - https://github.com/fabric8io/kubernetes-client/pull/978
-   * Added support for PodSecurityPolicy - https://github.com/fabric8io/kubernetes-client/pull/992
-   * The client now warns when using Kubernetes alpha or beta resources - https://github.com/fabric8io/kubernetes-client/pull/1010
-   * A Config can now be built from `Config.fromKubeconfig(kubeconfigFileContents)`: https://github.com/fabric8io/kubernetes-client/pull/1029
+New Feature
+* Added support for StorageClass - https://github.com/fabric8io/kubernetes-client/pull/978
+* Added support for PodSecurityPolicy - https://github.com/fabric8io/kubernetes-client/pull/992
+* The client now warns when using Kubernetes alpha or beta resources - https://github.com/fabric8io/kubernetes-client/pull/1010
+* A Config can now be built from `Config.fromKubeconfig(kubeconfigFileContents)`: https://github.com/fabric8io/kubernetes-client/pull/1029
 
-  Improvements
-   * Fixed issue of SecurityContextConstraints not working - https://github.com/fabric8io/kubernetes-client/pull/982
-	Note :- This got fixed by fixing model - https://github.com/fabric8io/kubernetes-model/pull/274
+Improvements
+* Fixed issue of SecurityContextConstraints not working - https://github.com/fabric8io/kubernetes-client/pull/982
+  Note :- This got fixed by fixing model - https://github.com/fabric8io/kubernetes-model/pull/274
   Dependencies Upgrade
