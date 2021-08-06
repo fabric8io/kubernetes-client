@@ -119,9 +119,7 @@ public interface KubernetesClient extends Client {
   <T extends CustomResource> MixedOperation<T, KubernetesResourceList<T>, Resource<T>> customResources(Class<T> resourceType);
   
   /**
-   * Typed API for managing resources. You would need to provide POJOs for
-   * into this and with it you would be able to instantiate a client
-   * specific to CustomResource.
+   * Typed API for managing resources. Any properly annotated POJO can be utilized as a resource.
    *
    * <p>
    *   Note: your resource POJO (T in this context) must implement
@@ -131,16 +129,14 @@ public interface KubernetesClient extends Client {
    * @param resourceType Class for resource
    * @param <T> T type represents resource type. If it's a namespaced resource, it must implement
    *           {@link io.fabric8.kubernetes.api.model.Namespaced}
-   * @return returns a MixedOperation object with which you can do basic resource operations
+   * @return returns a MixedOperation object with which you can do basic resource operations.  If the class is a known type the dsl operation logic will be used.
    */
   default <T extends HasMetadata> MixedOperation<T, KubernetesResourceList<T>, Resource<T>> resources(Class<T> resourceType) {
     return resources(resourceType, null);
   }
   
   /**
-   * Typed API for managing resources. You would need to provide POJOs for
-   * into this and with it you would be able to instantiate a client
-   * specific to CustomResource.
+   * Typed API for managing resources. Any properly annotated POJO can be utilized as a resource.
    *
    * <p>
    *   Note: your resource POJO (T in this context) must implement
@@ -151,7 +147,7 @@ public interface KubernetesClient extends Client {
    * @param <T> T type represents resource type. If it's a namespaced resource, it must implement
    *           {@link io.fabric8.kubernetes.api.model.Namespaced}
    * @param <L> L type represents resource list type
-   * @return returns a MixedOperation object with which you can do basic resource operations
+   * @return returns a MixedOperation object with which you can do basic resource operations.  If the class is a known type the dsl operation logic will be used.
    */
   <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> resources(Class<T> resourceType, Class<L> listClass);
 

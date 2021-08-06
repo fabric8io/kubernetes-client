@@ -90,6 +90,7 @@ import io.fabric8.kubernetes.client.dsl.ServiceResource;
 import io.fabric8.kubernetes.client.dsl.StorageAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1APIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
+import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.ClusterOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
@@ -413,9 +414,14 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
   }
   
   @Override
-  public <T extends HasMetadata, L extends KubernetesResourceList<T>> HasMetadataOperationsImpl<T, L> resources(
+  public <T extends HasMetadata, L extends KubernetesResourceList<T>> HasMetadataOperation<T, L, Resource<T>> resources(
       Class<T> resourceType, Class<L> listClass) {
-    return customResources(ResourceDefinitionContext.fromResourceType(resourceType), resourceType, listClass);
+    try {
+      return Handlers.getOperation(resourceType, listClass, httpClient, getConfiguration());
+    } catch (Exception e) {
+      //may be the wrong list type, try more general
+      return customResources(ResourceDefinitionContext.fromResourceType(resourceType), resourceType, listClass);
+    }
   }
 
   /**
