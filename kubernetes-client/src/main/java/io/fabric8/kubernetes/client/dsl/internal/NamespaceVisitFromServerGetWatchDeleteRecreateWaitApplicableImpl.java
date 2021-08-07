@@ -21,7 +21,9 @@ import io.fabric8.kubernetes.client.dsl.VisitFromServerWritable;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import okhttp3.OkHttpClient;
 
+import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -218,7 +220,27 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl im
   public HasMetadata waitUntilCondition(Predicate<HasMetadata> condition, long amount, TimeUnit timeUnit) {
     return getResource().waitUntilCondition(condition, amount, timeUnit);
   }
-
+  
+  @Override
+  public <V> HasMetadata edit(Class<V> visitorType, Visitor<V> visitor) {
+    return getResource().edit(visitorType, visitor);
+  }
+  
+  @Override
+  public HasMetadata edit(UnaryOperator<HasMetadata> function) {
+    return getResource().edit(function);
+  }
+  
+  @Override
+  public HasMetadata edit(Visitor... visitors) {
+    return getResource().edit(visitors);
+  }
+  
+  @Override
+  public HasMetadata accept(Consumer<HasMetadata> function) {
+    return getResource().accept(function);
+  }
+  
   static HasMetadata acceptVisitors(HasMetadata item, List<Visitor> visitors, String explicitNamespace) {
     ResourceHandler<HasMetadata, ?> h = handlerOf(item);
     VisitableBuilder<HasMetadata, ?> builder = h.edit(item);

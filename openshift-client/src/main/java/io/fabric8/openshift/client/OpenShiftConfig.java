@@ -25,8 +25,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.OAuthTokenProvider;
+import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
+import io.fabric8.openshift.client.internal.readiness.OpenShiftReadiness;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import okhttp3.TlsVersion;
@@ -188,5 +190,10 @@ public class OpenShiftConfig extends Config {
 
   public void setOpenshiftApiGroupsEnabled(boolean openshiftApiGroupsEnabled) {
     this.openshiftApiGroupsEnabled = openshiftApiGroupsEnabled;
+  }
+
+  @Override
+  public Readiness getReadiness() {
+    return OpenShiftReadiness.getInstance();
   }
 }
