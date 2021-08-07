@@ -885,7 +885,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public BaseOperation<T, L, R> withWaitRetryBackoff(long initialBackoff, TimeUnit backoffUnit, double backoffMultiplier) {
-    return newInstance(context.withWatchRetryInitialBackoffMillis(backoffUnit.toMillis(initialBackoff)).withWatchRetryBackoffMultiplier(backoffMultiplier));
+    return this;
   }
 
   protected Class<? extends Config> getConfigType() {

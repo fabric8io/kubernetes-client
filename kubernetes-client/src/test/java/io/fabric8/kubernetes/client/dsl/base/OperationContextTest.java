@@ -84,9 +84,7 @@ class OperationContextTest {
       .withResourceVersion("234343")
       .withReloadingFromServer(false)
       .withGracePeriodSeconds(0)
-      .withPropagationPolicy(DeletionPropagation.BACKGROUND)
-      .withWatchRetryInitialBackoffMillis(0)
-      .withWatchRetryBackoffMultiplier(1.0F);
+      .withPropagationPolicy(DeletionPropagation.BACKGROUND);
 
     // Then
     assertNotNull(operationContext);
@@ -108,7 +106,5 @@ class OperationContextTest {
     assertFalse(operationContext.isReloadingFromServer());
     assertEquals(0, operationContext.getGracePeriodSeconds());
     assertEquals(DeletionPropagation.BACKGROUND, operationContext.getPropagationPolicy());
-    assertEquals(0, operationContext.getWatchRetryInitialBackoffMillis());
-    assertEquals(1.0F, operationContext.getWatchRetryBackoffMultiplier());
   }
 }
