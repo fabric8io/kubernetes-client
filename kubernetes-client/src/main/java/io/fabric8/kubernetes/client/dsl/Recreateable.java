@@ -16,7 +16,15 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
+/**
+ * @deprecated create an intermediate variable to perform the delete and subsequent operation 
+ */
+@Deprecated
 public interface Recreateable<T> {
 
+    /**
+     * @deprecated create an intermediate variable to perform the delete and subsequent operation
+     */
+    @Deprecated
     T deletingExisting();
 }

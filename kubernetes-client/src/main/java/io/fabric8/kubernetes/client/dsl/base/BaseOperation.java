@@ -924,7 +924,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   public Readiness getReadiness() {
-    return Readiness.getInstance();
+    return config.getReadiness();
   }
 
   @Override

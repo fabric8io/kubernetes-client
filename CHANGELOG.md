@@ -20,6 +20,7 @@
 ##### DSL Changes:
 - #3327 DSL methods mentioning customResources have been deprecated: `KubernetesClient.customResources`, `SharedIndexInformerFactory.sharedIndexInformerForCustomResource`.  See replacement resources and sharedIndexInformerFor methods instead.  Also `CustomeResourceDefinitionContext` has been replaced by `ResourceDefinitionContext` - for example in `KubernetesClient.genericKubernetesResources`.
 - #3358 DSL return type replacements - `NamespacedCreateOnlyResourceOperationsImpl` has been replaced by `NamespacedInOutCreateable`, `ImageSignatureOperationsImpl` has been replaced by `NameableCreateOrDeleteable`
+- #3364 `VisitFromServerGetWatchDeleteRecreateWaitApplicable` now implements `Editable` to replace the `Visitable` methods.  `ApplicableAnd` and `Recreatable` have also been deprecated.
 
 ### 5.6.0 (2021-07-21)
 

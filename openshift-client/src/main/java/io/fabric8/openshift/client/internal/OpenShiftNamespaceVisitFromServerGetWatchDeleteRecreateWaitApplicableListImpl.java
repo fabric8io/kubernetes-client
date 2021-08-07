@@ -27,7 +27,6 @@ import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitOperationContext;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.api.model.Parameter;
 import io.fabric8.openshift.api.model.Template;
-import io.fabric8.openshift.client.internal.readiness.OpenShiftReadiness;
 import okhttp3.OkHttpClient;
 
 import java.io.IOException;
@@ -44,11 +43,6 @@ public class OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicab
 
   public OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(OperationContext context, NamespaceVisitOperationContext namespaceVisitOperationContext) {
     super(context, namespaceVisitOperationContext);
-  }
-
-  @Override
-  protected OpenShiftReadiness getReadiness() {
-    return OpenShiftReadiness.getInstance();
   }
 
   @Override

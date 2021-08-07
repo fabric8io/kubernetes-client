@@ -22,13 +22,11 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.OpenShiftConfigBuilder;
-import io.fabric8.openshift.client.internal.readiness.OpenShiftReadiness;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -99,11 +97,6 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
     } else {
       return super.getRootUrl();
     }
-  }
-
-  @Override
-  public Readiness getReadiness() {
-    return OpenShiftReadiness.getInstance();
   }
 
   private void updateApiVersion() {

@@ -16,7 +16,15 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
+/**
+ * @deprecated create an intermediate variable to perform the createOrReplace and subsequent operation
+ */
+@Deprecated
 public interface ApplicableAnd<T> {
 
+    /**
+     * @deprecated create an intermediate variable to perform the createOrReplace and subsequent operation
+     */
+    @Deprecated
     T createOrReplaceAnd();
 }
