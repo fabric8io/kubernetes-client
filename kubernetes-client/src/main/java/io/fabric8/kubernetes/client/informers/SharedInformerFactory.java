@@ -238,14 +238,8 @@ public class SharedInformerFactory {
    * @return the shared index informer
    */
   private synchronized <T extends HasMetadata, L extends KubernetesResourceList<T>> SharedIndexInformer<T> sharedIndexInformerFor(Class<T> apiTypeClass, Class<L> apiListTypeClass, OperationContext operationContext, long resyncPeriodInMillis, ResourceDefinitionContext rdc) {
-<<<<<<< HEAD
-
-    HasMetadataOperationsImpl<T, L> resources = getResourceOperation(apiTypeClass, apiListTypeClass, operationContext, rdc);
-
-=======
     ResourceOperationsImpl<T, L> resources = getResourceOperation(apiTypeClass, apiListTypeClass, operationContext, rdc);
     
->>>>>>> 29056cf8e (fix #3349: adding consistency to the handling of option values)
     // we want the resources to no longer reference a resourceVersion
     SharedIndexInformer<T> informer = new DefaultSharedIndexInformer<>(apiTypeClass, resources.withResourceVersion(null), resyncPeriodInMillis, informerExecutor);
     this.informers.add(new AbstractMap.SimpleEntry<>(resources.getOperationContext(), informer));
