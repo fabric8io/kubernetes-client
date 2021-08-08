@@ -78,6 +78,7 @@ type Schema struct {
   // Added JSONSchemaPropsorStringArray here because of
   // https://github.com/joelittlejohn/jsonschema2pojo/issues/866
   V1JSONSchemaPropsOrStringArray             v1apiextensions.JSONSchemaPropsOrStringArray
+  V1ConversionReview                         v1apiextensions.ConversionReview
 }
 
 func main() {
