@@ -17,6 +17,7 @@ import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.ConversionReview;
 import io.fabric8.kubernetes.api.model.version.Info;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
@@ -54,6 +55,7 @@ import lombok.ToString;
     "Time",
     "TypeMeta",
     "UpdateOptions",
+    "V1ConversionReview",
     "V1CustomResourceDefinition",
     "V1CustomResourceDefinitionCondition",
     "V1CustomResourceDefinitionList",
@@ -127,6 +129,8 @@ public class KubeSchema {
     private TypeMeta typeMeta;
     @JsonProperty("UpdateOptions")
     private UpdateOptions updateOptions;
+    @JsonProperty("V1ConversionReview")
+    private ConversionReview v1ConversionReview;
     @JsonProperty("V1CustomResourceDefinition")
     private io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition v1CustomResourceDefinition;
     @JsonProperty("V1CustomResourceDefinitionCondition")
@@ -173,6 +177,7 @@ public class KubeSchema {
      * @param objectReference
      * @param jSONSchemaPropsOrStringArray
      * @param v1CustomResourceDefinitionStatus
+     * @param v1ConversionReview
      * @param v1CustomResourceDefinitionSpec
      * @param createOptions
      * @param aPIGroup
@@ -186,7 +191,7 @@ public class KubeSchema {
      * @param time
      * @param status
      */
-    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, BaseKubernetesList baseKubernetesList, CreateOptions createOptions, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition customResourceDefinition, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionCondition customResourceDefinitionCondition, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionList customResourceDefinitionList, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionNames customResourceDefinitionNames, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionSpec customResourceDefinitionSpec, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionStatus customResourceDefinitionStatus, DeleteOptions deleteOptions, GetOptions getOptions, Info info, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrStringArray jSONSchemaPropsOrStringArray, ListOptions listOptions, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, io.fabric8.kubernetes.api.model.ObjectReference objectReference, Patch patch, PatchOptions patchOptions, Quantity quantity, RootPaths rootPaths, Status status, String time, TypeMeta typeMeta, UpdateOptions updateOptions, io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition v1CustomResourceDefinition, io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionCondition v1CustomResourceDefinitionCondition, io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionList v1CustomResourceDefinitionList, io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionNames v1CustomResourceDefinitionNames, io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionSpec v1CustomResourceDefinitionSpec, io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionStatus v1CustomResourceDefinitionStatus, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrStringArray v1JSONSchemaPropsOrStringArray) {
+    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, BaseKubernetesList baseKubernetesList, CreateOptions createOptions, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition customResourceDefinition, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionCondition customResourceDefinitionCondition, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionList customResourceDefinitionList, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionNames customResourceDefinitionNames, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionSpec customResourceDefinitionSpec, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionStatus customResourceDefinitionStatus, DeleteOptions deleteOptions, GetOptions getOptions, Info info, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaPropsOrStringArray jSONSchemaPropsOrStringArray, ListOptions listOptions, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, io.fabric8.kubernetes.api.model.ObjectReference objectReference, Patch patch, PatchOptions patchOptions, Quantity quantity, RootPaths rootPaths, Status status, String time, TypeMeta typeMeta, UpdateOptions updateOptions, ConversionReview v1ConversionReview, io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition v1CustomResourceDefinition, io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionCondition v1CustomResourceDefinitionCondition, io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionList v1CustomResourceDefinitionList, io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionNames v1CustomResourceDefinitionNames, io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionSpec v1CustomResourceDefinitionSpec, io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionStatus v1CustomResourceDefinitionStatus, io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrStringArray v1JSONSchemaPropsOrStringArray) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -213,6 +218,7 @@ public class KubeSchema {
         this.time = time;
         this.typeMeta = typeMeta;
         this.updateOptions = updateOptions;
+        this.v1ConversionReview = v1ConversionReview;
         this.v1CustomResourceDefinition = v1CustomResourceDefinition;
         this.v1CustomResourceDefinitionCondition = v1CustomResourceDefinitionCondition;
         this.v1CustomResourceDefinitionList = v1CustomResourceDefinitionList;
@@ -470,6 +476,16 @@ public class KubeSchema {
     @JsonProperty("UpdateOptions")
     public void setUpdateOptions(UpdateOptions updateOptions) {
         this.updateOptions = updateOptions;
+    }
+
+    @JsonProperty("V1ConversionReview")
+    public ConversionReview getV1ConversionReview() {
+        return v1ConversionReview;
+    }
+
+    @JsonProperty("V1ConversionReview")
+    public void setV1ConversionReview(ConversionReview v1ConversionReview) {
+        this.v1ConversionReview = v1ConversionReview;
     }
 
     @JsonProperty("V1CustomResourceDefinition")
