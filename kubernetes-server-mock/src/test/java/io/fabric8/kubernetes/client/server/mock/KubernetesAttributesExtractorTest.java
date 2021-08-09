@@ -79,16 +79,29 @@ public class KubernetesAttributesExtractorTest {
 	}
 
 	@Test
-	void shouldHandlePathWithParameters() {
+	void shouldHandlePathWithLabelSelectorParam() {
 	  KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
 	  AttributeSet attributes = extractor.fromPath("/api/v1/pods?labelSelector=testKey%3DtestValue");
 
 	  AttributeSet expected = new AttributeSet();
 	  expected = expected.add(new Attribute("plural", "pods"));
+	  expected = expected.add(new Attribute("labels:testKey", "testValue"));
 	  assertTrue(attributes.matches(expected));
 	}
 
-	@Test
+  @Test
+  void shouldHandlePathWithFieldSelectorParam() {
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+    AttributeSet attributes = extractor.fromPath("/api/v1/pods?fieldSelector=testKey%3DtestValue");
+
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("plural", "pods"));
+    expected = expected.add(new Attribute("testKey", "testValue"));
+    assertTrue(attributes.matches(expected));
+  }
+
+
+  @Test
 	void shouldHandleResource() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
 		Pod pod = new PodBuilder().withNewMetadata().withName("mypod").withNamespace("myns").endMetadata().build();
@@ -98,7 +111,9 @@ public class KubernetesAttributesExtractorTest {
 		AttributeSet expected = new AttributeSet();
 		expected = expected.add(new Attribute("plural", "pods"));
 		expected = expected.add(new Attribute("namespace", "myns"));
+		expected = expected.add(new Attribute("metadata.namespace", "myns"));
 		expected = expected.add(new Attribute("name", "mypod"));
+		expected = expected.add(new Attribute("metadata.name", "mypod"));
 		expected = expected.add(new Attribute("version", "v1"));
 		assertTrue(attributes.matches(expected));
 		assertFalse(attributes.containsKey(KubernetesAttributesExtractor.API));
@@ -113,7 +128,9 @@ public class KubernetesAttributesExtractorTest {
 
     AttributeSet expected = new AttributeSet();
     expected = expected.add(new Attribute("namespace", "myns"));
+    expected = expected.add(new Attribute("metadata.namespace", "myns"));
     expected = expected.add(new Attribute("name", "myresource"));
+    expected = expected.add(new Attribute("metadata.name", "myresource"));
     expected = expected.add(new Attribute("version", "v1"));
     assertTrue(attributes.matches(expected));
     assertFalse(attributes.containsKey(KubernetesAttributesExtractor.API));
@@ -273,7 +290,7 @@ public class KubernetesAttributesExtractorTest {
   }
 
 	@Test
-	void shouldHandleLabelSelectorsWithOneLabel() {
+	void shouldHandleNamespacedResourceLabelSelectorsWithOneLabel() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
 		AttributeSet attributes = extractor.fromPath("/api/v1/namespaces/myns/pods/mypod?labelSelector=name%3Dmyname");
 
@@ -282,7 +299,8 @@ public class KubernetesAttributesExtractorTest {
 		assertTrue(attributes.matches(expected));
 	}
 
-	@Test
+
+  @Test
 	void shouldHandleLabelSelectorsWithDoubleEquals() {
 		KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
 		AttributeSet attributes = extractor
@@ -304,6 +322,43 @@ public class KubernetesAttributesExtractorTest {
 		expected = expected.add(new Attribute("labels:age", "37"));
 		assertTrue(attributes.matches(expected));
 	}
+
+  @Test
+  void shouldHandleNamespacedResourceFieldSelectorsWithOneField() {
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+    AttributeSet attributes = extractor.fromPath("/api/v1/namespaces/myns/pods/mypod?fieldSelector=testKey%3DtestValue");
+
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("plural", "pods"));
+    expected = expected.add(new Attribute("testKey", "testValue"));
+    assertTrue(attributes.matches(expected));
+  }
+
+
+  @Test
+  void shouldHandleFieldSelectorsWithDoubleEquals() {
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+    AttributeSet attributes = extractor
+      .fromPath("/api/v1/namespaces/myns/pods/mypod?fieldSelector=testKey%3D%3DtestValue");
+
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("plural", "pods"));
+    expected = expected.add(new Attribute("testKey", "testValue"));
+    assertTrue(attributes.matches(expected));
+  }
+
+  @Test
+  void shouldHandleFieldSelectorsWithTwoLabels() {
+    KubernetesAttributesExtractor extractor = new KubernetesAttributesExtractor();
+    AttributeSet attributes = extractor
+      .fromPath("/api/v1/namespaces/myns/pods/mypod?fieldSelector=keyOne%3DvalueOne,keyTwo%3DvalueTwo");
+
+    AttributeSet expected = new AttributeSet();
+    expected = expected.add(new Attribute("plural", "pods"));
+    expected = expected.add(new Attribute("keyOne", "valueOne"));
+    expected = expected.add(new Attribute("keyTwo", "valueTwo"));
+    assertTrue(attributes.matches(expected));
+  }
 
 	@Test
 	void shouldHandleLabelSelectorsWithADomain() {
