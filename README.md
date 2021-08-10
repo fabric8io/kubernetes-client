@@ -548,6 +548,7 @@ All the resource objects used here will be according to OpenShift 3.9.0  and Kub
   Frameworks/Libraries/Tools:
   - [Arquillian Cube](http://arquillian.org/arquillian-cube/)
   - [Apache Camel](https://github.com/apache/camel/blob/master/README.md)
+  - [Apache Flink](https://github.com/apache/flink/tree/master/flink-kubernetes)
   - [Apache Spark](https://github.com/apache/spark/tree/master/resource-managers/kubernetes)
   - [Jaeger Kubernetes](https://github.com/jaegertracing/jaeger-kubernetes)
   - [Loom](https://github.com/datawire/loom)
