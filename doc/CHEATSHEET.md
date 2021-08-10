@@ -1651,8 +1651,9 @@ CustomResourceDefinitionList crdList = client.apiextensions().v1beta1().customRe
 Boolean deleted = client.apiextensions().v1beta1().customResourceDefinitions().withName("sparkclusters.radanalytics.io").delete();
 ```
 
-### CustomResource Typed API
-CustomResources are available in Kubernetes API via the `client.customResources(...)`. In order to use typed API, you need to provide POJOs for your Custom Resource which client can use for serialization/deserialization. `client.customResources(...)` take things like `CustomResourceDefinitionContext` for locating the CustomResources, `CustomResource` class, it's list class etc. It returns an instance of a client which you can use for your `CustomResource` related operations. In order to get some idea of how POJOs should look like. Here's an example of POJO for `CronTab` CustomResource specified in [Kubernetes CustomResource docs](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/)
+### Resource Typed API
+Any resource, custom or built-in, is available in Kubernetes API via the `client.resources(Class)` method. In order to use typed API, you need to provide POJOs for your custom resource which client can use for serialization/deserialization. The base class `CustomResource` class, it's list class, etc. provide a good starting point for your custom resource.  The resources method returns an instance of a client which you can use for your operations. In order to get some idea of how POJOs should look like. Here's an example of POJO for `CronTab` CustomResource specified in [Kubernetes CustomResource docs](https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/)
+
 *my-crontab.yml*
 ```
 apiVersion: "stable.example.com/v1"
@@ -1683,7 +1684,7 @@ You can find other helper classes related to `CronTab` in our [tests](https://gi
 
 - Get Instance of client for our `CustomResource`:
 ```java
-MixedOperation<CronTab, KubernetesResourceList<CronTab>, Resource<CronTab>> cronTabClient = client.customResources(CronTab.class);
+MixedOperation<CronTab, KubernetesResourceList<CronTab>, Resource<CronTab>> cronTabClient = client.resources(CronTab.class);
 ```
 - Get `CustomResource` from Kubernetes APIServer:
 ```java
@@ -1730,68 +1731,70 @@ cronTabClient.inNamespace("default").watch(new Watcher<CronTab>() {
 });
 ```
 
-### CustomResource Typeless API
-Although, you should be using Typed API since it's type-safe. But it can get a bit complicated to maintain your `CustomResource` POJOs and sometimes people don't even have them. Kubernetes Client also provides a typeless/raw API to handle your `CustomResource` objects in form of HashMaps. In order to use it, you need to provide it with a `CustomResourceDefinitionContext`, which carries necessary information about `CustomResource`. Here is an example on how to create one:
-- Create `CustomResourceDefinitionContext`:
+### Resource Typeless API
+If you don't need or want to use a strongly typed client, the Kubernetes Client also provides a typeless/raw API to handle your resources in form of GenericKubernetesResource, which implements HasMetadata and provides the rest of its fields via a map. In order to use it, you need to provide a `ResourceDefinitionContext`, which carries necessary information about the resource.  Here is an example on how to create one:
+- Create `ResourceDefinitionContext`:
 ```java
-CustomResourceDefinitionContext customResourceDefinitionContext = new CustomResourceDefinitionContext.Builder()
+ResourceDefinitionContext resourceDefinitionContext = new ResourceDefinitionContext.Builder()
       .withName("animals.jungle.example.com")
       .withGroup("jungle.example.com")
       .withVersion("v1")
       .withPlural("animals")
-      .withScope("Namespaced")
+      .withNamespaced(true)
       .build();
 ```
-Once you have built it, you can pass it to typeless DSL as argument `client.customResource(customResourceDefinitionContext)`. With this in place, you can do your standard `CustomResource` operations, but you would have to deal with Serialization/Deserialization part yourself. You can convert HashMap to some `JSON` object using JSON parsing libraries available on internet.
-- Load a `CustomResource` from yaml:
+Once you have built it, you can pass it to typeless DSL as argument `client.genericKubernetesResources(resourceDefinitionContext)`. With this in place, you can do your standard operations.
+
+- Load a resource from yaml:
 ```java
-Map<String, Object> customResource = client.customResource(crdContext).load(new FileInputStream("cr.yaml"));
+GenericKubernetesResource customResource = client.genericKubernetesResources(context).load(new FileInputStream("cr.yaml"));
 ```
-- Get a `CustomResource` from Kubernetes API server:
+- Get a resource from Kubernetes API server:
 ```java
-Map<String, Object> customResourceObject = client.customResource(customResourceDefinitionContext).inNamespace(currentNamespace).withName("otter").get();
+GenericKubernetesResource customResourceObject = client.genericKubernetesResources(resourceDefinitionContext).inNamespace(currentNamespace).withName("otter").get();
 ```
-- Create a `CustomResource`:
+- Create a resource:
 ```java
 // Create via file
-Map<String, Object> object = client.customResource(customResourceDefinitionContext).inNamespace(currentNamespace).create(new FileInputStream("test-rawcustomresource.yml"));
+GenericKubernetesResource object = client.genericKubernetesResources(resourceDefinitionContext).inNamespace(currentNamespace).load(new FileInputStream("test-rawcustomresource.yml")).create();
 
 // Create via raw JSON string
 
 String rawJsonCustomResourceObj = "{\"apiVersion\":\"jungle.example.com/v1\"," +
   "\"kind\":\"Animal\",\"metadata\": {\"name\": \"walrus\"}," +
   "\"spec\": {\"image\": \"my-awesome-walrus-image\"}}";
-Map<String, Object> object = client.customResource(customResourceDefinitionContext).inNamespace(currentNamespace).create(rawJsonCustomResourceObj);
+GenericKubernetesResource object = client.genericKubernetesResources(resourceDefinitionContext).inNamespace(currentNamespace).load(rawJsonCustomResourceObj).create();
 ```
 - List `CustomResource`:
 ```java
-Map<String, Object> list = client.customResource(customResourceDefinitionContext).inNamespace(currentNamespace).list();
+GenericKubernetesResourceList list = client.genericKubernetesResources(resourceDefinitionContext).inNamespace(currentNamespace).list();
 ```
 - List `CustomResource` with labels:
 ```java
-Map<String, Object> list = client.customResource(customResourceDefinitionContext).list(currentNamespace, Collections.singletonMap("foo", "bar"));
+Map<String, Object> list = client.genericKubernetesResources(resourceDefinitionContext).inNamespace(currentNamespace).withLabels(Collections.singletonMap("foo", "bar")).list();
 ```
 - Update `CustomResource`:
 ```java
-Map<String, Object> object = client.customResource(customResourceDefinitionContext).get(currentNamespace, "walrus");
-((HashMap<String, Object>)object.get("spec")).put("image", "my-updated-awesome-walrus-image");
-object = client.customResource(customResourceDefinitionContext).edit(currentNamespace, "walrus", new ObjectMapper().writeValueAsString(object));
+GenericKubernetesResource object = client.genericKubernetesResources(resourceDefinitionContext).inNamespace(currentNamespace).withName("walrus").edit(object -> {
+   ((Map<String, Object>)object.getAdditionalProperties("spec")).put("image", "my-updated-awesome-walrus-image");
+   return object;
+});
 ```
 - Delete `CustomResource`:
 ```java
-client.customResource(customResourceDefinitionContext).inNamespace(currentNamespace).withName("otter").delete();
+client.genericKubernetesResources(resourceDefinitionContext).inNamespace(currentNamespace).withName("otter").delete();
 ```
-- Update Status of `CustomResource`:
+- Replace Status of `CustomResource`:
 ```java
-Map<String, Object> result = client.customResource(customResourceDefinitionContext).inNamespace("ns1").withName("example-hello").updateStatus(objectAsJsonString);
+GenericKubernetesResource result = client.genericKubernetesResources(resourceDefinitionContext).inNamespace("ns1").withName("example-hello").replaceStatus(objectAsGenericKubernetesResource);
 ```
 - Watch `CustomResource`:
 ```java
 
 final CountDownLatch closeLatch = new CountDownLatch(1);
-client.customResource(crdContext).inNamespace(namespace).watch(new Watcher<String>() {
+client.customResource(crdContext).inNamespace(namespace).watch(new Watcher<GenericKubernetesResource>() {
     @Override
-    public void eventReceived(Action action, String resource) {
+    public void eventReceived(Action action, GenericKubernetesResource resource) {
         logger.info("{}: {}", action, resource);
     }
 
@@ -1919,7 +1922,7 @@ public class Dummy extends CustomResource<DummySpec, KubernetesResource> impleme
 ```
 Then you should be able to use it like this:
 ```java
-SharedIndexInformer<Dummy> dummyInformer = client.customResources(Dummy.class).inNamespace("default").inform(new ResourceEventHandler<Dummy>() {
+SharedIndexInformer<Dummy> dummyInformer = client.resources(Dummy.class).inNamespace("default").inform(new ResourceEventHandler<Dummy>() {
     @Override
     public void onAdd(Dummy dummy) {
         System.out.printf("%s dummy added\n", dummy.getMetadata().getName());

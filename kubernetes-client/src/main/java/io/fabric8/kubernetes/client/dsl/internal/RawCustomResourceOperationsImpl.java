@@ -426,7 +426,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
   @Deprecated
   public Map<String, Object> updateStatus(String name, Map<String, Object> objectAsMap) throws IOException {
     return toMap(delegate.withName(name)
-      .patchStatus(Serialization.jsonMapper().convertValue(objectAsMap, GenericKubernetesResource.class)));
+      .updateStatus(Serialization.jsonMapper().convertValue(objectAsMap, GenericKubernetesResource.class)));
   }
 
   /**
@@ -442,7 +442,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
   @Deprecated
   public Map<String, Object> updateStatus(String name, String objectAsJsonString) throws IOException {
     return toMap(delegate.withName(name)
-      .patchStatus(Serialization.unmarshal(objectAsJsonString, GenericKubernetesResource.class)));
+      .updateStatus(Serialization.unmarshal(objectAsJsonString, GenericKubernetesResource.class)));
   }
 
   /**
@@ -459,7 +459,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
   @Deprecated
   public Map<String, Object> updateStatus(String namespace, String name, Map<String, Object> objectAsMap) throws IOException {
     return toMap(delegate.inNamespace(namespace).withName(name)
-      .patchStatus(Serialization.jsonMapper().convertValue(objectAsMap, GenericKubernetesResource.class)));
+      .updateStatus(Serialization.jsonMapper().convertValue(objectAsMap, GenericKubernetesResource.class)));
   }
 
   /**
@@ -475,7 +475,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
   @Deprecated
   public Map<String, Object> updateStatus(String name, InputStream objectAsStream) throws IOException {
     return toMap(delegate.withName(name)
-      .patchStatus(Serialization.unmarshal(objectAsStream, GenericKubernetesResource.class)));
+      .updateStatus(Serialization.unmarshal(objectAsStream, GenericKubernetesResource.class)));
   }
 
   /**
@@ -492,7 +492,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
   @Deprecated
   public Map<String, Object> updateStatus(String namespace, String name, InputStream objectAsStream) throws IOException {
     return toMap(delegate.inNamespace(namespace).withName(name)
-      .patchStatus(Serialization.unmarshal(objectAsStream, GenericKubernetesResource.class)));
+      .updateStatus(Serialization.unmarshal(objectAsStream, GenericKubernetesResource.class)));
   }
 
   /**
@@ -509,7 +509,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
   @Deprecated
   public Map<String, Object> updateStatus(String namespace, String name, String objectAsJsonString) throws IOException {
     return toMap(delegate.inNamespace(namespace).withName(name)
-      .patchStatus(Serialization.unmarshal(objectAsJsonString, GenericKubernetesResource.class)));
+      .updateStatus(Serialization.unmarshal(objectAsJsonString, GenericKubernetesResource.class)));
   }
 
   /**
@@ -522,7 +522,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
    */
   public Map<String, Object> updateStatus(String objectAsJsonString) throws IOException {
     return toMap(delegate
-      .patchStatus(Serialization.unmarshal(objectAsJsonString, GenericKubernetesResource.class)));
+      .updateStatus(Serialization.unmarshal(objectAsJsonString, GenericKubernetesResource.class)));
   }
 
   /**
@@ -535,7 +535,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
    */
   public Map<String, Object> updateStatus(Map<String, Object> objectAsMap) throws IOException {
     return toMap(delegate
-      .patchStatus(Serialization.jsonMapper().convertValue(objectAsMap, GenericKubernetesResource.class)));
+      .updateStatus(Serialization.jsonMapper().convertValue(objectAsMap, GenericKubernetesResource.class)));
   }
 
   /**
@@ -548,7 +548,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
    */
   public Map<String, Object> updateStatus(InputStream objectAsInputStream) throws IOException {
     return toMap(delegate
-      .patchStatus(Serialization.unmarshal(objectAsInputStream, GenericKubernetesResource.class)));
+      .updateStatus(Serialization.unmarshal(objectAsInputStream, GenericKubernetesResource.class)));
   }
 
   @Override
@@ -586,6 +586,7 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
    *
    * @return list of custom resources as HashMap
    */
+  @Override
   public Map<String, Object> list() {
     return toMap(delegate.list());
   }
