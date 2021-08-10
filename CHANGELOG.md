@@ -5,6 +5,7 @@
 #### Bugs
 * Fix #3346: https configuration ignored for OpenShiftServer in CRUD mode
 * Fix #3347: OpenShiftConfig missing some configurations from provided Config
+* Fix #3379: using updateStatus rather than patchStatus in the Raw logic
 
 #### Improvements
 * Fix #3316: allow locking deletion to resource version
@@ -24,6 +25,7 @@
 - #3327 DSL methods mentioning customResources have been deprecated: `KubernetesClient.customResources`, `SharedIndexInformerFactory.sharedIndexInformerForCustomResource`.  See replacement resources and sharedIndexInformerFor methods instead.  Also `CustomeResourceDefinitionContext` has been replaced by `ResourceDefinitionContext` - for example in `KubernetesClient.genericKubernetesResources`.
 - #3358 DSL return type replacements - `NamespacedCreateOnlyResourceOperationsImpl` has been replaced by `NamespacedInOutCreateable`, `ImageSignatureOperationsImpl` has been replaced by `NameableCreateOrDeleteable`
 - #3364 `VisitFromServerGetWatchDeleteRecreateWaitApplicable` now implements `Editable` to replace the `Visitable` methods.  `ApplicableAnd` and `Recreatable` have also been deprecated.
+- #3386 `KubernetesClient.customResource(CustomResourceDefinitionContext)` has been deprecated.  Please use the GenericKubernetesResource via `KubernetesClient.genericKubernetesResource(ResourceDefinitionContext)`
 
 ### 5.6.0 (2021-07-21)
 

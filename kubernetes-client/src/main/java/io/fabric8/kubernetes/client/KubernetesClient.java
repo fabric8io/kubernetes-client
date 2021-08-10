@@ -252,7 +252,9 @@ public interface KubernetesClient extends Client {
    *
    * @param customResourceDefinition CustomResourceDefinitionContext - information about CustomResource like versioning, namespaced or not and group etc
    * @return a RawCustomResourceOperations object which offers several functions for creating, deleting, updating, watching CustomResources.
+   * @deprecated Use {@link #genericKubernetesResources(ResourceDefinitionContext)} instead
    */
+  @Deprecated
   RawCustomResourceOperationsImpl customResource(CustomResourceDefinitionContext customResourceDefinition);
 
   /**
