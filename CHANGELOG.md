@@ -1,8 +1,9 @@
 ## CHANGELOG
 
-### 5.7-SNAPSHOT
+### 5.7.0 (2021-08-12)
 
 #### Bugs
+* Fix #3325: All Cluster Scoped Kubernetes resources should use NonNamespacedOperation
 * Fix #3346: https configuration ignored for OpenShiftServer in CRUD mode
 * Fix #3347: OpenShiftConfig missing some configurations from provided Config
 * Fix #3379: using updateStatus rather than patchStatus in the Raw logic
@@ -14,11 +15,12 @@
 * Fix #3349: ensuring that dsl context values always are applied over user ListOptions
 * Fix #3372: Add generatePackageSuffix option to Model Generator to allow flexible package names for generated model
 * Fix #3336: Add ConversionReview in Kubernetes API Extensions model
+* Fix #3367: Let CRDGenerator clients handle output (#3366, #3371)
 
 #### Dependency Upgrade
 
 #### New Features
-* Update chaos-mesh extension to v1.2.3. Add AwsChaos.
+* Fix #3380: Update chaos-mesh extension to v1.2.3. Add AwsChaos.
 
 #### _**Note**_: Breaking changes in the API
 ##### DSL Changes:
