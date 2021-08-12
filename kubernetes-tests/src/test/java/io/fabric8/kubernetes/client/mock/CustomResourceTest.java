@@ -302,7 +302,7 @@ class CustomResourceTest {
   @Test
   void testStatusUpdate() throws IOException {
     String objectAsJsonString = "{\"metadata\":{},\"apiVersion\":\"v1\",\"kind\":\"Status\",\"details\":{\"name\":\"prometheus-example-rules\",\"group\":\"monitoring.coreos.com\",\"kind\":\"prometheusrules\",\"uid\":\"b3d085bd-6a5c-11e9-8787-525400b18c1d\"},\"status\":\"Success\"}";
-    server.expect().patch().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/example-hello/status").andReturn(HttpURLConnection.HTTP_OK, objectAsJsonString).once();
+    server.expect().put().withPath("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/example-hello/status").andReturn(HttpURLConnection.HTTP_OK, objectAsJsonString).once();
 
     Map<String, Object> result = client.customResource(customResourceDefinitionContext).updateStatus("ns1", "example-hello", objectAsJsonString);
     assertEquals("Success", result.get("status"));
