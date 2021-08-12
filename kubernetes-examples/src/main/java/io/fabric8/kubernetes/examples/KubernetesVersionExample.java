@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 public class KubernetesVersionExample {
   private static final Logger logger = LoggerFactory.getLogger(KubernetesVersionExample.class);
 
-  public static void main(String args[]) {
+  public static void main(String[] args) {
     final ConfigBuilder configBuilder = new ConfigBuilder();
     if (args.length > 0) {
       configBuilder.withMasterUrl(args[0]);
