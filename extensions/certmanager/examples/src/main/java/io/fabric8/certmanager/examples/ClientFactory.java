@@ -52,7 +52,7 @@ public class ClientFactory {
     return new DefaultCertManagerClient(config.build());
   }
 
-  public static String getOptions(String args[], String name, String defaultValue) {
+  public static String getOptions(String[] args, String name, String defaultValue) {
     for (int i = 0; i < args.length - 1; i++) {
       String key = args[i];
       String value = args[i + 1];
