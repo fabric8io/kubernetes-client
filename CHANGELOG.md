@@ -1,5 +1,17 @@
 ## CHANGELOG
 
+### 5.8-SNAPSHOT
+
+#### Bugs
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
+#### _**Note**_: Breaking changes in the API
+
 ### 5.7.0 (2021-08-12)
 
 #### Bugs
@@ -16,8 +28,6 @@
 * Fix #3372: Add generatePackageSuffix option to Model Generator to allow flexible package names for generated model
 * Fix #3336: Add ConversionReview in Kubernetes API Extensions model
 * Fix #3367: Let CRDGenerator clients handle output (#3366, #3371)
-
-#### Dependency Upgrade
 
 #### New Features
 * Fix #3380: Update chaos-mesh extension to v1.2.3. Add AwsChaos.
