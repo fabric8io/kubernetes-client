@@ -110,7 +110,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
 
       if (resyncPeriodMillis < this.resyncCheckPeriodMillis) {
         if (started.get()) {
-          log.warn("DefaultSharedIndexInformer#resyncPeriod {} is smaller than resyncCheckPeriod {} and the informer has already started. Changing it to {}", resyncPeriodMillis, resyncCheckPeriodMillis);
+          log.warn("DefaultSharedIndexInformer#resyncPeriod {} is smaller than resyncCheckPeriod {} and the informer has already started. Changing it to {}", resyncPeriodMillis, resyncCheckPeriodMillis,resyncCheckPeriodMillis);
           resyncPeriodMillis = resyncCheckPeriodMillis;
         } else {
           // if the event handler's resyncPeriod is smaller than the current resyncCheckPeriod

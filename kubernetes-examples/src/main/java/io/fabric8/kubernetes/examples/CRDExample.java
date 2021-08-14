@@ -154,7 +154,7 @@ public class CRDExample {
         public void eventReceived(Action action, Dummy resource) {
           System.out.println("==> " + action + " for " + resource);
           if (resource.getSpec() == null) {
-            logger.error("No Spec for resource " + resource);
+            logger.error("No Spec for resource {}", resource);
           }
         }
 
