@@ -197,7 +197,6 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
         //We are not going to notify the listener, sicne we've already called onClose(), so let's log a debug/warning.
         if (LOGGER.isDebugEnabled()) {
           LOGGER.warn("Received [{}], with message:[{}] after ExecWebSocketListener is closed, Ignoring.",t.getClass().getCanonicalName(),t.getMessage());
-
         }
         return;
       }
