@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class URLFromServiceUtil {
-  public static Logger logger = LoggerFactory.getLogger(URLFromServiceUtil.class);
+  public static final Logger logger = LoggerFactory.getLogger(URLFromServiceUtil.class);
   public static final String DEFAULT_PROTO = "tcp";
   private static final String HOST_SUFFIX = "_SERVICE_HOST";
   private static final String PORT_SUFFIX = "_SERVICE_PORT";
