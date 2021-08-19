@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class URLFromNodePortImpl implements ServiceToURLProvider {
-  public static Logger logger = LoggerFactory.getLogger(URLFromNodePortImpl.class);
+  public static final Logger logger = LoggerFactory.getLogger(URLFromNodePortImpl.class);
 
   public String getURL(Service service, String portName, String namespace, KubernetesClient client) {
     ServicePort port = URLFromServiceUtil.getServicePortByName(service, portName);
