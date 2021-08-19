@@ -16,4 +16,4 @@ Please give it a try and report any issue you might find.
 - CRDs are generated for both `v1beta1` and `v1` versions of the specification at this point
 - One CRD manifest is generated per CRD using the CRD name (e.g. `mycrplural.group.example.com`)
   suffixed with the specification version, e.g. `mycrplural.group.example.com-v1.yml`
-- The CRD files are generated in the `target/META-INF/fabric8` directory of your project
+- The CRD files are generated in the `target/classes/META-INF/fabric8` directory of your project
