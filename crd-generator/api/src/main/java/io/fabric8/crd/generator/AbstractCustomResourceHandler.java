@@ -105,7 +105,6 @@ public abstract class AbstractCustomResourceHandler {
    */
   protected abstract Decorator getPrinterColumnDecorator(String name, String version, String path,
     String type, String column, String description, String format);
-
   /**
    * Adds all the necessary decorators to build the specific CRD version. For optional paths, see
    * https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#customresourcesubresourcescale-v1-apiextensions-k8s-io
