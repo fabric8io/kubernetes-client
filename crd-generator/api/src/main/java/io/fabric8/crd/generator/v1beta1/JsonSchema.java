@@ -105,4 +105,11 @@ public class JsonSchema extends AbstractJsonSchema<JSONSchemaProps, JSONSchemaPr
   protected JSONSchemaProps enumProperty(JsonNode... enumValues) {
     return new JSONSchemaPropsBuilder().withType("string").withEnum(enumValues).build();
   }
+
+  @Override
+  protected JSONSchemaProps addDescription(JSONSchemaProps schema, String description) {
+    return new JSONSchemaPropsBuilder(schema)
+      .withDescription(description)
+      .build();
+  }
 }

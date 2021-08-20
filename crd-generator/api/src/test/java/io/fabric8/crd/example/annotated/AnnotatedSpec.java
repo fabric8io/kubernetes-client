@@ -16,9 +16,11 @@
 package io.fabric8.crd.example.annotated;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 
 public class AnnotatedSpec {
   @JsonProperty("from-field")
+  @JsonPropertyDescription("from-field-description")
   private String field;
   private int foo;
   @JsonProperty
@@ -26,6 +28,7 @@ public class AnnotatedSpec {
   private boolean emptySetter;
 
   @JsonProperty("from-getter")
+  @JsonPropertyDescription("from-getter-description")
   public int getFoo() {
     return foo;
   }

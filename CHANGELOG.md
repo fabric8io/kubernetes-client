@@ -6,6 +6,7 @@
 
 #### Improvements
 * Fix #3414: Add equals and hashCode implementations for CustomResource
+* Fix #3287: Add support for field descriptions in CRD Generator
 
 #### Dependency Upgrade
 

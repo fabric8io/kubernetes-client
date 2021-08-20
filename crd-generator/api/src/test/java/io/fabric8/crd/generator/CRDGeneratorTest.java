@@ -289,6 +289,7 @@ class CRDGeneratorTest {
       JSONSchemaProps category = specProps.get("category");
       assertEquals("string", category.getType());
       assertEquals(7, category.getEnum().size());
+      assertEquals("category-description", category.getDescription());
       JSONSchemaProps excluded = specProps.get("excluded");
       assertEquals("array", excluded.getType());
       assertEquals("string", excluded.getItems().getSchema().getType());

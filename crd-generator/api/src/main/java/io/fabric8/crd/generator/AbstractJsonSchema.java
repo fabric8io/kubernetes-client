@@ -89,6 +89,7 @@ public abstract class AbstractJsonSchema<T, B> {
 
   private static final Map<TypeRef, String> COMMON_MAPPINGS = new HashMap<>();
   public static final String ANNOTATION_JSON_PROPERTY = "com.fasterxml.jackson.annotation.JsonProperty";
+  public static final String ANNOTATION_JSON_PROPERTY_DESCRIPTION = "com.fasterxml.jackson.annotation.JsonPropertyDescription";
 
   static {
     COMMON_MAPPINGS.put(STRING_REF, STRING_MARKER);
@@ -136,6 +137,7 @@ public abstract class AbstractJsonSchema<T, B> {
     for (Property property : definition.getProperties()) {
       final String name = property.getName();
       final Property[] updated = new Property[1];
+      final String[] description = new String[1];
 
       if (property.isStatic() || ignores.contains(name)) {
         LOGGER.debug("Ignoring property {}", name);
@@ -150,14 +152,18 @@ public abstract class AbstractJsonSchema<T, B> {
           case ANNOTATION_JSON_PROPERTY:
             updatePropertyFromAnnotationIfNeeded(property, name, updated, a);
             break;
+          case ANNOTATION_JSON_PROPERTY_DESCRIPTION:
+            updateDescriptionFromAnnotation(name, description, a);
+            break;
         }
       });
 
       // only check accessors if the property itself hasn't already been annotated
+      final String accessorMatcher = "(is|get|set)" + property.getNameCapitalized();
       if (updated[0] == null) {
         // check if accessors are annotated with JsonProperty with a different name
         methods.stream()
-          .filter(m -> m.getName().matches("(is|get|set)" + property.getNameCapitalized()))
+          .filter(m -> m.getName().matches(accessorMatcher))
           .forEach(m -> m.getAnnotations().stream()
             // check if accessor is annotated with JsonProperty
             .filter(a -> a.getClassRef().getFullyQualifiedName().equals(ANNOTATION_JSON_PROPERTY))
@@ -170,8 +176,28 @@ public abstract class AbstractJsonSchema<T, B> {
       }
 
       final Property possiblyRenamedProperty = updated[0] != null ? updated[0] : property;
-      addProperty(possiblyRenamedProperty, builder, internalFrom(possiblyRenamedProperty.getName(),
-        possiblyRenamedProperty.getTypeRef()));
+      final T schema = internalFrom(possiblyRenamedProperty.getName(), possiblyRenamedProperty.getTypeRef());
+      // only check accessors for description if the property itself hasn't already been annotated
+      if (description[0] == null) {
+        // check if accessors are annotated with JsonPropertyDescription
+        methods.stream()
+          .filter(m -> m.getName().matches(accessorMatcher))
+          .forEach(m -> m.getAnnotations().stream()
+            // check if accessor is annotated with JsonPropertyDescription
+            .filter(a -> a.getClassRef().getFullyQualifiedName().equals(ANNOTATION_JSON_PROPERTY_DESCRIPTION))
+            .findAny()
+            // if we found an annotated accessor, override the property's description if needed
+            .ifPresent(a -> updateDescriptionFromAnnotation(name, description, a))
+          );
+      }
+      // if we got a description from the field or an accessor, use it
+      final T possiblyUpdatedSchema;
+      if (description[0] == null) {
+        possiblyUpdatedSchema = schema;
+      } else {
+        possiblyUpdatedSchema = addDescription(schema, description[0]);
+      }
+      addProperty(possiblyRenamedProperty, builder, possiblyUpdatedSchema);
     }
     return build(builder, required);
   }
@@ -183,6 +209,17 @@ public abstract class AbstractJsonSchema<T, B> {
       updated[0] = new Property(property.getAnnotations(), property.getTypeRef(), fromAnnotation,
         property.getComments(),
         property.getModifiers(), property.getAttributes());
+    }
+  }
+
+  private void updateDescriptionFromAnnotation(String name, String[] description, AnnotationRef a) {
+    if (description[0] != null) {
+      LOGGER.debug("Property {} already has a description in the field annotation", name);
+      return;
+    }
+    final String fromAnnotation = (String) a.getParameters().get("value");
+    if (!Strings.isNullOrEmpty(fromAnnotation)) {
+      description[0] = fromAnnotation;
     }
   }
 
@@ -314,4 +351,6 @@ public abstract class AbstractJsonSchema<T, B> {
   protected abstract T singleProperty(String typeName);
 
   protected abstract T enumProperty(JsonNode... enumValues);
+
+  protected abstract T addDescription(T schema, String description);
 }
