@@ -51,7 +51,7 @@ public class PodOperationContext {
   public PodOperationContext() {
   }
 
-  public PodOperationContext(String containerId, InputStream in, OutputStream out, OutputStream err, OutputStream errChannel, PipedOutputStream inPipe, PipedInputStream outPipe, PipedInputStream errPipe, PipedInputStream errChannelPipe, Boolean tty, Boolean terminatedStatus, Boolean timestampes, String sinceTimestamp, Integer sinceSeconds, Integer tailingLines, Boolean prettyOutput, Integer limitBytes, Integer bufferSize, ExecListener execListener, String file, String dir, Integer logWaitTimeout) {
+  public PodOperationContext(String containerId, InputStream in, OutputStream out, OutputStream err, OutputStream errChannel, PipedOutputStream inPipe, PipedInputStream outPipe, PipedInputStream errPipe, PipedInputStream errChannelPipe, Boolean tty, Boolean terminatedStatus, Boolean timestamps, String sinceTimestamp, Integer sinceSeconds, Integer tailingLines, Boolean prettyOutput, Integer limitBytes, Integer bufferSize, ExecListener execListener, String file, String dir, Integer logWaitTimeout) {
     this.containerId = containerId;
     this.in = in;
     this.out = out;
@@ -63,7 +63,7 @@ public class PodOperationContext {
     this.errChannelPipe = errChannelPipe;
     this.tty = tty;
     this.terminatedStatus = terminatedStatus;
-    this.timestamps = timestampes;
+    this.timestamps = timestamps;
     this.sinceTimestamp = sinceTimestamp;
     this.sinceSeconds = sinceSeconds;
     this.tailingLines = tailingLines;
@@ -165,91 +165,113 @@ public class PodOperationContext {
   }
 
   public PodOperationContext withContainerId(String containerId) {
-    return new PodOperationContext(containerId, in, out, err, errChannel, inPipe, outPipe, errPipe,errChannelPipe, tty, terminatedStatus, timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput, limitBytes, bufferSize, execListener, file, dir, logWaitTimeout);
+    this.containerId = containerId;
+    return this;
   }
 
   public PodOperationContext withIn(InputStream in) {
-    return new PodOperationContext(containerId, in, out, err, errChannel, inPipe, outPipe, errPipe,errChannelPipe, tty, terminatedStatus, timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput, limitBytes, bufferSize, execListener, file, dir, logWaitTimeout);
+    this.in = in;
+    return this;
   }
 
   public PodOperationContext withOut(OutputStream out) {
-    return new PodOperationContext(containerId, in, out, err, errChannel, inPipe, outPipe, errPipe,errChannelPipe, tty, terminatedStatus, timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput, limitBytes, bufferSize, execListener, file, dir, logWaitTimeout);
+    this.out = out;
+    return this;
   }
 
   public PodOperationContext withErr(OutputStream err) {
-    return new PodOperationContext(containerId, in, out, err, errChannel, inPipe, outPipe, errPipe,errChannelPipe, tty, terminatedStatus, timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput, limitBytes, bufferSize, execListener, file, dir, logWaitTimeout);
+    this.err = err;
+    return this;
   }
 
   public PodOperationContext withErrChannel(OutputStream errChannel) {
-    return new PodOperationContext(containerId, in, out, err, errChannel, inPipe, outPipe, errPipe,errChannelPipe, tty, terminatedStatus, timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput, limitBytes, bufferSize, execListener, file, dir, logWaitTimeout);
+    this.errChannel = errChannel;
+    return this;
   }
 
   public PodOperationContext withInPipe(PipedOutputStream inPipe) {
-    return new PodOperationContext(containerId, in, out, err, errChannel, inPipe, outPipe, errPipe,errChannelPipe, tty, terminatedStatus, timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput, limitBytes, bufferSize, execListener, file, dir, logWaitTimeout);
+    this.inPipe = inPipe;
+    return this;
   }
 
   public PodOperationContext withOutPipe(PipedInputStream outPipe) {
-    return new PodOperationContext(containerId, in, out, err, errChannel, inPipe, outPipe, errPipe,errChannelPipe, tty, terminatedStatus, timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput, limitBytes, bufferSize, execListener, file, dir, logWaitTimeout);
+    this.outPipe = outPipe;
+    return this;
   }
 
   public PodOperationContext withErrPipe(PipedInputStream errPipe) {
-    return new PodOperationContext(containerId, in, out, err, errChannel, inPipe, outPipe, errPipe,errChannelPipe, tty, terminatedStatus, timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput, limitBytes, bufferSize, execListener, file, dir, logWaitTimeout);
+    this.errPipe = errPipe;
+    return this;
   }
 
   public PodOperationContext withErrChannelPipe(PipedInputStream errChannelPipe) {
-    return new PodOperationContext(containerId, in, out, err, errChannel, inPipe, outPipe, errPipe,errChannelPipe, tty, terminatedStatus, timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput, limitBytes, bufferSize, execListener, file, dir, logWaitTimeout);
+    this.errChannelPipe = errChannelPipe;
+    return this;
   }
 
   public PodOperationContext withTty(boolean tty) {
-    return new PodOperationContext(containerId, in, out, err, errChannel, inPipe, outPipe, errPipe,errChannelPipe, tty, terminatedStatus, timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput, limitBytes, bufferSize, execListener, file, dir, logWaitTimeout);
+    this.tty = tty;
+    return this;
   }
 
   public PodOperationContext withTerminatedStatus(boolean terminatedStatus) {
-    return new PodOperationContext(containerId, in, out, err, errChannel, inPipe, outPipe, errPipe,errChannelPipe, tty, terminatedStatus, timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput, limitBytes, bufferSize, execListener, file, dir, logWaitTimeout);
+    this.terminatedStatus = terminatedStatus;
+    return this;
   }
 
   public PodOperationContext withTimestamps(boolean timestamps) {
-    return new PodOperationContext(containerId, in, out, err, errChannel, inPipe, outPipe, errPipe,errChannelPipe, tty, terminatedStatus, timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput, limitBytes, bufferSize, execListener, file, dir, logWaitTimeout);
+    this.timestamps = timestamps;
+    return this;
   }
 
   public PodOperationContext withSinceTimestamp(String sinceTimestamp) {
-    return new PodOperationContext(containerId, in, out, err, errChannel, inPipe, outPipe, errPipe,errChannelPipe, tty, terminatedStatus, timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput, limitBytes, bufferSize, execListener, file, dir, logWaitTimeout);
+    this.sinceTimestamp = sinceTimestamp;
+    return this;
   }
 
   public PodOperationContext withSinceSeconds(Integer sinceSeconds) {
-    return new PodOperationContext(containerId, in, out, err, errChannel, inPipe, outPipe, errPipe,errChannelPipe, tty, terminatedStatus, timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput, limitBytes, bufferSize, execListener, file, dir, logWaitTimeout);
+    this.sinceSeconds = sinceSeconds;
+    return this;
   }
 
   public PodOperationContext withTailingLines(Integer tailingLines) {
-    return new PodOperationContext(containerId, in, out, err, errChannel, inPipe, outPipe, errPipe,errChannelPipe, tty, terminatedStatus, timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput, limitBytes, bufferSize, execListener, file, dir, logWaitTimeout);
+    this.tailingLines = tailingLines;
+    return this;
   }
 
   public PodOperationContext withPrettyOutput(boolean prettyOutput) {
-    return new PodOperationContext(containerId, in, out, err, errChannel, inPipe, outPipe, errPipe,errChannelPipe, tty, terminatedStatus, timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput, limitBytes, bufferSize, execListener, file, dir, logWaitTimeout);
+    this.prettyOutput = prettyOutput;
+    return this;
   }
 
   public PodOperationContext withExecListener(ExecListener execListener) {
-    return new PodOperationContext(containerId, in, out, err, errChannel, inPipe, outPipe, errPipe,errChannelPipe, tty, terminatedStatus, timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput, limitBytes, bufferSize, execListener, file, dir, logWaitTimeout);
+    this.execListener = execListener;
+    return this;
   }
 
   public PodOperationContext withLimitBytes(Integer limitBytes) {
-    return new PodOperationContext(containerId, in, out, err, errChannel, inPipe, outPipe, errPipe,errChannelPipe, tty, terminatedStatus, timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput, limitBytes, bufferSize, execListener, file, dir, logWaitTimeout);
+    this.limitBytes = limitBytes;
+    return this;
   }
 
   public PodOperationContext withBufferSize(Integer bufferSize) {
-    return new PodOperationContext(containerId, in, out, err, errChannel, inPipe, outPipe, errPipe,errChannelPipe, tty, terminatedStatus, timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput, limitBytes, bufferSize, execListener, file, dir, logWaitTimeout);
+    this.bufferSize = bufferSize;
+    return this;
   }
 
   public PodOperationContext withFile(String file) {
-    return new PodOperationContext(containerId, in, out, err, errChannel, inPipe, outPipe, errPipe,errChannelPipe, tty, terminatedStatus, timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput, limitBytes, bufferSize, execListener, file, dir, logWaitTimeout);
+    this.file = file;
+    return this;
   }
 
   public PodOperationContext withDir(String dir) {
-    return new PodOperationContext(containerId, in, out, err, errChannel, inPipe, outPipe, errPipe,errChannelPipe, tty, terminatedStatus, timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput, limitBytes, bufferSize, execListener, file, dir, logWaitTimeout);
+    this.dir = dir;
+    return this;
   }
 
   public PodOperationContext withLogWaitTimeout(Integer logWaitTimeout) {
-    return new PodOperationContext(containerId, in, out, err, errChannel, inPipe, outPipe, errPipe,errChannelPipe, tty, terminatedStatus, timestamps, sinceTimestamp, sinceSeconds, tailingLines, prettyOutput, limitBytes, bufferSize, execListener, file, dir, logWaitTimeout);
+    this.logWaitTimeout = logWaitTimeout;
+    return this;
   }
 
 }
