@@ -158,38 +158,22 @@ public abstract class AbstractJsonSchema<T, B> {
         }
       });
 
-      // only check accessors if the property itself hasn't already been annotated
       final String accessorMatcher = "(is|get|set)" + property.getNameCapitalized();
-      if (updated[0] == null) {
-        // check if accessors are annotated with JsonProperty with a different name
-        methods.stream()
-          .filter(m -> m.getName().matches(accessorMatcher))
-          .forEach(m -> m.getAnnotations().stream()
-            // check if accessor is annotated with JsonProperty
-            .filter(a -> a.getClassRef().getFullyQualifiedName().equals(ANNOTATION_JSON_PROPERTY))
-            .findAny()
-            // if we found an annotated accessor, override the property's name if needed
-            .ifPresent(a -> updatePropertyFromAnnotationIfNeeded(property, name, updated, a))
-          );
-      } else {
-        LOGGER.debug("Property {} has already been renamed to {} by field annotation", name, updated[0].getName());
-      }
+      methods.stream()
+        .filter(m -> m.getName().matches(accessorMatcher))
+        .forEach(m -> m.getAnnotations().forEach(a -> {
+          switch(a.getClassRef().getFullyQualifiedName()) {
+            case ANNOTATION_JSON_PROPERTY:
+              updatePropertyFromAnnotationIfNeeded(property, name, updated, a);
+              break;
+            case ANNOTATION_JSON_PROPERTY_DESCRIPTION:
+              updateDescriptionFromAnnotation(name, description, a);
+              break;
+          }
+        }));
 
       final Property possiblyRenamedProperty = updated[0] != null ? updated[0] : property;
       final T schema = internalFrom(possiblyRenamedProperty.getName(), possiblyRenamedProperty.getTypeRef());
-      // only check accessors for description if the property itself hasn't already been annotated
-      if (description[0] == null) {
-        // check if accessors are annotated with JsonPropertyDescription
-        methods.stream()
-          .filter(m -> m.getName().matches(accessorMatcher))
-          .forEach(m -> m.getAnnotations().stream()
-            // check if accessor is annotated with JsonPropertyDescription
-            .filter(a -> a.getClassRef().getFullyQualifiedName().equals(ANNOTATION_JSON_PROPERTY_DESCRIPTION))
-            .findAny()
-            // if we found an annotated accessor, override the property's description if needed
-            .ifPresent(a -> updateDescriptionFromAnnotation(name, description, a))
-          );
-      }
       // if we got a description from the field or an accessor, use it
       final T possiblyUpdatedSchema;
       if (description[0] == null) {
@@ -204,6 +188,10 @@ public abstract class AbstractJsonSchema<T, B> {
 
   private void updatePropertyFromAnnotationIfNeeded(Property property, String name, Property[] updated,
     AnnotationRef a) {
+    if (updated[0] != null) {
+      LOGGER.debug("Property {} has already been renamed to {}", name, updated[0].getName());
+      return;
+    }
     final String fromAnnotation = (String) a.getParameters().get("value");
     if (!Strings.isNullOrEmpty(fromAnnotation) && !name.equals(fromAnnotation)) {
       updated[0] = new Property(property.getAnnotations(), property.getTypeRef(), fromAnnotation,
