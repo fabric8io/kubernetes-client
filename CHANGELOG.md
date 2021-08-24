@@ -5,6 +5,7 @@
 #### Bugs
 
 #### Improvements
+* Fix #3414: Add equals and hashCode implementations for CustomResource
 
 #### Dependency Upgrade
 
