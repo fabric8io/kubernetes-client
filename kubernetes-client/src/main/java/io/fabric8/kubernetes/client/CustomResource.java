@@ -15,8 +15,6 @@
  */
 package io.fabric8.kubernetes.client;
 
-import static io.fabric8.kubernetes.client.utils.Utils.isNullOrEmpty;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -34,10 +32,13 @@ import io.fabric8.kubernetes.model.annotation.ShortNames;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-
-import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Objects;
+import java.util.Optional;
+
+import static io.fabric8.kubernetes.client.utils.Utils.isNullOrEmpty;
 
 /**
  * A base class for implementing a custom resource kind. Implementations must be annotated with
@@ -279,5 +280,41 @@ public abstract class CustomResource<S, T> implements HasMetadata {
 
   public void setStatus(T status) {
     this.status = status;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof CustomResource)) return false;
+
+    CustomResource<?, ?> that = (CustomResource<?, ?>) o;
+
+    if (served != that.served) return false;
+    if (storage != that.storage) return false;
+    if (!metadata.equals(that.metadata)) return false;
+    if (!Objects.equals(spec, that.spec)) return false;
+    if (!Objects.equals(status, that.status)) return false;
+    if (!singular.equals(that.singular)) return false;
+    if (!crdName.equals(that.crdName)) return false;
+    if (!kind.equals(that.kind)) return false;
+    if (!apiVersion.equals(that.apiVersion)) return false;
+    if (!scope.equals(that.scope)) return false;
+    return plural.equals(that.plural);
+  }
+
+  @Override
+  public int hashCode() {
+    int result = metadata.hashCode();
+    result = 31 * result + (spec != null ? spec.hashCode() : 0);
+    result = 31 * result + (status != null ? status.hashCode() : 0);
+    result = 31 * result + singular.hashCode();
+    result = 31 * result + crdName.hashCode();
+    result = 31 * result + kind.hashCode();
+    result = 31 * result + apiVersion.hashCode();
+    result = 31 * result + scope.hashCode();
+    result = 31 * result + plural.hashCode();
+    result = 31 * result + (served ? 1 : 0);
+    result = 31 * result + (storage ? 1 : 0);
+    return result;
   }
 }
