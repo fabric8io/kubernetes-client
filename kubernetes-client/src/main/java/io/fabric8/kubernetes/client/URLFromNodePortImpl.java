@@ -44,7 +44,7 @@ public class URLFromNodePortImpl implements ServiceToURLProvider {
           }
         }
       } catch (KubernetesClientException exception) {
-        logger.warn("Could not find a node! " + exception);
+        logger.warn("Could not find a node!", exception);
       }
     }
 

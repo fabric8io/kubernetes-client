@@ -109,7 +109,7 @@ public class LogWatchCallback implements LogWatch, Callback, AutoCloseable {
     public void waitUntilReady() {
       if (!Utils.waitUntilReady(startedFuture, config.getRequestTimeout(), TimeUnit.MILLISECONDS)) {
         if (LOGGER.isDebugEnabled()) {
-          LOGGER.warn("Log watch request has not been opened within: " + config.getRequestTimeout() + " millis.");
+          LOGGER.warn("Log watch request has not been opened within: {} millis.",config.getRequestTimeout());
         }
       }
     }

@@ -59,7 +59,7 @@ public class LeaderElectionExamples {
               .withLeaderCallbacks(new LeaderCallbacks(
                 () -> System.out.println("STARTED LEADERSHIP"),
                 () -> System.out.println("STOPPED LEADERSHIP"),
-                newLeader -> System.out.printf("New leader elected %s\n", newLeader)
+                newLeader -> System.out.printf("New leader elected %s%n", newLeader)
               ))
               .build())
           .build().run();
