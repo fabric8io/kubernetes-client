@@ -15,11 +15,6 @@
  */
 package io.fabric8.crd.generator.v1;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.crd.example.annotated.Annotated;
 import io.fabric8.crd.example.basic.Basic;
@@ -27,10 +22,13 @@ import io.fabric8.crd.example.person.Person;
 import io.fabric8.crd.generator.utils.Types;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 import io.sundr.model.TypeDef;
+import org.junit.jupiter.api.Test;
+
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class JsonSchemaTest {
 
@@ -69,45 +67,41 @@ class JsonSchemaTest {
   }
 
   @Test
-  void shouldOverridePropertyNameIfJacksonAnnotated() {
+  void shouldAugmentPropertiesSchemaFromAnnotations() {
     TypeDef annotated = Types.typeDefFrom(Annotated.class);
     JSONSchemaProps schema = JsonSchema.from(annotated);
     assertNotNull(schema);
     Map<String, JSONSchemaProps> properties = schema.getProperties();
     assertEquals(2, properties.size());
-    Map<String, JSONSchemaProps> spec = properties.get("spec").getProperties();
-    assertEquals(4, spec.size());
-    assertTrue(spec.containsKey("from-field"));
-    assertTrue(spec.containsKey("from-getter"));
-    assertTrue(spec.containsKey("unnamed"));
-    assertTrue(spec.containsKey("emptySetter"));
-  }
+    final JSONSchemaProps specSchema = properties.get("spec");
+    Map<String, JSONSchemaProps> spec = specSchema.getProperties();
+    assertEquals(5, spec.size());
 
-  @Test
-  void shouldHaveDescriptionIfJacksonAnnotated() {
-    // Given
-    TypeDef annotated = Types.typeDefFrom(Annotated.class);
-    // When
-    JSONSchemaProps schema = JsonSchema.from(annotated);
-    // Then
-    assertNotNull(schema);
-    Map<String, JSONSchemaProps> properties = schema.getProperties();
-    assertEquals(2, properties.size());
-    Map<String, JSONSchemaProps> spec = properties.get("spec").getProperties();
-    // should have description
+    // check descriptions are present
     assertTrue(spec.containsKey("from-field"));
-    JSONSchemaProps fromField = spec.get("from-field");
-    assertNotNull(fromField.getDescription(), "description cannot be null");
-    assertEquals("from-field-description", fromField.getDescription());
+    JSONSchemaProps prop = spec.get("from-field");
+    assertEquals("from-field-description", prop.getDescription());
     assertTrue(spec.containsKey("from-getter"));
-    JSONSchemaProps fromGetter = spec.get("from-getter");
-    assertNotNull(fromGetter.getDescription(), "description cannot be null");
-    assertEquals("from-getter-description", fromGetter.getDescription());
-    // should not have description
+    prop = spec.get("from-getter");
+    assertEquals("from-getter-description", prop.getDescription());
+
+    // fields without description annotation shouldn't have them
     assertTrue(spec.containsKey("unnamed"));
     assertNull(spec.get("unnamed").getDescription());
     assertTrue(spec.containsKey("emptySetter"));
     assertNull(spec.get("emptySetter").getDescription());
-  }
+    assertTrue(spec.containsKey("anEnum"));
 
+    // check required list, should register properties with their modified name if needed
+    final List<String> required = specSchema.getRequired();
+    assertEquals(2, required.size());
+    assertTrue(required.contains("emptySetter"));
+    assertTrue(required.contains("from-getter"));
+
+    // check the enum values
+    final JSONSchemaProps anEnum = spec.get("anEnum");
+    final List<JsonNode> enumValues = anEnum.getEnum();
+    assertEquals(2, enumValues.size());
+    enumValues.stream().map(JsonNode::textValue).forEach(s -> assertTrue("oui".equals(s) || "non".equals(s)));
+  }
 }
