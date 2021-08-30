@@ -18,6 +18,8 @@ package io.fabric8.crd.example.annotated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 
+import javax.validation.constraints.NotNull;
+
 public class AnnotatedSpec {
   @JsonProperty("from-field")
   @JsonPropertyDescription("from-field-description")
@@ -25,10 +27,13 @@ public class AnnotatedSpec {
   private int foo;
   @JsonProperty
   private String unnamed;
+  @NotNull
   private boolean emptySetter;
+  private AnnotatedEnum anEnum;
 
   @JsonProperty("from-getter")
   @JsonPropertyDescription("from-getter-description")
+  @NotNull
   public int getFoo() {
     return foo;
   }
@@ -37,4 +42,8 @@ public class AnnotatedSpec {
   public void setEmptySetter(boolean emptySetter) {
     this.emptySetter = emptySetter;
   }
+
+  public enum AnnotatedEnum {
+    non, @JsonProperty("oui") Yes
+  } 
 }

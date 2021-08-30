@@ -3,6 +3,8 @@
 ### 5.8-SNAPSHOT
 
 #### Bugs
+* Fix #3411: enum values should honor JsonProperty annotations during CRD generation
+* Fix #3431: required list properly uses renamed properties during CRD generation
 
 #### Improvements
 * Fix #3414: Add equals and hashCode implementations for CustomResource
