@@ -5,6 +5,7 @@
 #### Bugs
 * Fix #3411: enum values should honor JsonProperty annotations during CRD generation
 * Fix #3431: required list properly uses renamed properties during CRD generation
+* Fix #3429: KubernetesCrudDispatcher throw ConcurrentModificationException when using WatchEventsListener
 
 #### Improvements
 * Fix #3414: Add equals and hashCode implementations for CustomResource
