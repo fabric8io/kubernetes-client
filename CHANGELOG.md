@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 5.8-SNAPSHOT
+### 5.7.1 (2021-09-01)
 
 #### Bugs
 * Fix #3411: enum values should honor JsonProperty annotations during CRD generation
