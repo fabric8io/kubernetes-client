@@ -6,6 +6,7 @@
 #### Improvements
 #### Dependency Upgrade
 #### New Features
+#### _**Note**_: Breaking changes in the API
 
 ### 5.7.1 (2021-09-01)
 
@@ -17,12 +18,6 @@
 #### Improvements
 * Fix #3414: Add equals and hashCode implementations for CustomResource
 * Fix #3287: Add support for field descriptions in CRD Generator
-
-#### Dependency Upgrade
-
-#### New Features
-
-#### _**Note**_: Breaking changes in the API
 
 ### 5.7.0 (2021-08-12)
 
