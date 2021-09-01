@@ -195,10 +195,18 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
  }
 
   public RootPaths getRootPaths() {
+    return restCall(RootPaths.class);
+  }
+  
+  public <Res> Res restCall(Class<Res> result, String... path) {
     try {
       URL requestUrl = new URL(config.getMasterUrl());
-      Request.Builder req = new Request.Builder().get().url(requestUrl);
-      return handleResponse(req, RootPaths.class);
+      String url = requestUrl.toString();
+      if (path != null && path.length > 0) {
+        url = URLUtils.join(url, URLUtils.pathJoin(path));
+      }
+      Request.Builder req = new Request.Builder().get().url(url);
+      return handleResponse(req, result);
     } catch (KubernetesClientException e) {
       if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
         throw e;

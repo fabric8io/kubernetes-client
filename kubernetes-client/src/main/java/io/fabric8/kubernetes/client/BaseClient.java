@@ -21,6 +21,9 @@ import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import okhttp3.ConnectionPool;
 import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.api.model.APIGroup;
+import io.fabric8.kubernetes.api.model.APIGroupList;
+import io.fabric8.kubernetes.api.model.APIResourceList;
 import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
@@ -32,6 +35,8 @@ import java.util.concurrent.ExecutorService;
 
 
 public abstract class BaseClient implements Client, HttpClientAware {
+  
+  public static final String APIS = "/apis";
 
   protected OkHttpClient httpClient;
   private URL masterUrl;
@@ -53,7 +58,7 @@ public abstract class BaseClient implements Client, HttpClientAware {
 
   public BaseClient(final OkHttpClient httpClient, Config config) {
     try {
-      this.httpClient = httpClient;
+      this.httpClient = config.adaptClient(httpClient);
       this.namespace = config.getNamespace();
       this.configuration = config;
       this.apiVersion = config.getApiVersion();
@@ -134,8 +139,11 @@ public abstract class BaseClient implements Client, HttpClientAware {
 
   @Override
   public RootPaths rootPaths() {
-    return new BaseOperation(new OperationContext().withOkhttpClient(httpClient).withConfig(configuration)) {
-    }.getRootPaths();
+    return newBaseOperation(httpClient, configuration).getRootPaths();
+  }
+
+  static BaseOperation<?, ?, ?> newBaseOperation(OkHttpClient httpClient, Config configuration) {
+    return new BaseOperation(new OperationContext().withOkhttpClient(httpClient).withConfig(configuration)) {};
   }
 
   @Override
@@ -152,5 +160,20 @@ public abstract class BaseClient implements Client, HttpClientAware {
       }
     }
     return false;
+  }
+  
+  @Override
+  public APIGroupList getApiGroups() {
+    return newBaseOperation(httpClient, configuration).restCall(APIGroupList.class, APIS);
+  }
+  
+  @Override
+  public APIGroup getApiGroup(String name) {
+    return newBaseOperation(httpClient, configuration).restCall(APIGroup.class, APIS, name);
+  }
+  
+  @Override
+  public APIResourceList getApiResources(String groupVersion) {
+    return newBaseOperation(httpClient, configuration).restCall(APIResourceList.class, APIS, groupVersion);
   }
 }

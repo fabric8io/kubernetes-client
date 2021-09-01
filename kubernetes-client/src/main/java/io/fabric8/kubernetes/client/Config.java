@@ -55,6 +55,7 @@ import io.fabric8.kubernetes.client.utils.IOHelpers;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.sundr.builder.annotations.Buildable;
+import okhttp3.OkHttpClient;
 import okhttp3.TlsVersion;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -1341,4 +1342,8 @@ public class Config {
     return Readiness.getInstance();
   }
 
+  public OkHttpClient adaptClient(OkHttpClient httpClient) {
+    return httpClient;
+  }
+  
 }

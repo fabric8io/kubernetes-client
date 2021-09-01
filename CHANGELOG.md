@@ -6,6 +6,9 @@
 #### Improvements
 #### Dependency Upgrade
 #### New Features
+* Fix #3294: Support fetching APIGroupList
+* Fix #3303: Support fetching APIResourceList
+
 #### _**Note**_: Breaking changes in the API
 
 ### 5.7.3 (2021-09-09)
