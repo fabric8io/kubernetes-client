@@ -16,9 +16,7 @@
 
 package io.fabric8.kubernetes.client.mock;
 
-import io.fabric8.kubernetes.api.model.Service;
-import io.fabric8.kubernetes.api.model.ServiceBuilder;
-import io.fabric8.kubernetes.api.model.ServiceList;
+import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ServiceResource;
@@ -27,6 +25,7 @@ import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
 import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -83,5 +82,28 @@ public class ServiceCrudTest {
 
     assertNotNull(service2);
     assertEquals("value1", service2.getMetadata().getLabels().get("key1"));
+  }
+
+  @Test
+  public void shouldFindServiceByName() {
+    Service service1 = new ServiceBuilder().withNewMetadata().withName("svc1").addToLabels("foo", "bar").and().withNewSpec().and().build();
+
+    client.services().inNamespace("ns1").create(service1);
+
+    Service serviceByName = client.services().inNamespace("ns1").withName("svc1").get();
+    assertNotNull(serviceByName);
+    assertEquals("svc1", serviceByName.getMetadata().getName());
+
+    ServiceList servicesByLabel = client.services().inNamespace("ns1").withLabel("foo", "bar").list();
+    assertNotNull(servicesByLabel);
+    assertEquals(1, servicesByLabel.getItems().size());
+
+    ServiceList serviceByField = client.services().inNamespace("ns1").withField("metadata.name", "svc1").list();
+    assertNotNull(serviceByField);
+    assertEquals(1, serviceByField.getItems().size());
+
+    ServiceList serviceByNamespace = client.services().inNamespace("ns1").withField("metadata.namespace", "ns1").list();
+    assertNotNull(serviceByNamespace);
+    assertEquals(1, serviceByNamespace.getItems().size());
   }
 }

@@ -100,6 +100,7 @@ import io.fabric8.kubernetes.client.dsl.ServiceResource;
 import io.fabric8.kubernetes.client.dsl.StorageAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1APIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
+import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.RawCustomResourceOperationsImpl;
 import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectorBuilder;
 import io.fabric8.kubernetes.client.extended.run.RunConfigBuilder;
@@ -232,7 +233,7 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
     delegate.close();
   }
 
-  public MixedOperation<ComponentStatus, ComponentStatusList, Resource<ComponentStatus>> componentstatuses() {
+  public NonNamespaceOperation<ComponentStatus, ComponentStatusList, Resource<ComponentStatus>> componentstatuses() {
 	return delegate.componentstatuses();
   }
 
@@ -297,7 +298,7 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
   }
 
   @Override
-  public MixedOperation<APIService, APIServiceList, Resource<APIService>> apiServices() {
+  public NonNamespaceOperation<APIService, APIServiceList, Resource<APIService>> apiServices() {
     return delegate.apiServices();
   }
 
@@ -437,10 +438,16 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
   }
 
   @Override
-  public <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(CustomResourceDefinitionContext crdContext, Class<T> resourceType, Class<L> listClass) {
+  public <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(ResourceDefinitionContext crdContext, Class<T> resourceType, Class<L> listClass) {
     return delegate.customResources(crdContext, resourceType, listClass);
   }
-
+  
+  @Override
+  public <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> resources(
+      Class<T> resourceType, Class<L> listClass) {
+    return delegate.resources(resourceType, listClass);
+  }
+  
   @Override
   public DiscoveryAPIGroupDSL discovery() {
     return delegate.discovery();
@@ -506,12 +513,20 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
     return delegate.getConfiguration();
   }
 
+  /**
+   * @deprecated ResourceHandlers to not need bound
+   */
+  @Deprecated
   public void bindResourceHandler(ResourceHandler resourceHandler) {
-    Handlers.register(resourceHandler);
+    // not used
   }
 
+  /**
+   * @deprecated ResourceHandlers to not need bound
+   */
+  @Deprecated
   public void unbindResourceHandler(ResourceHandler resourceHandler) {
-    Handlers.unregister(resourceHandler);
+    // not used
   }
 
   public void bindExtensionAdapter(ExtensionAdapter adapter) {

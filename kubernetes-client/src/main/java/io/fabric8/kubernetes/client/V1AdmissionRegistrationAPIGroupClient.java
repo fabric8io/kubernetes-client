@@ -20,9 +20,8 @@ import io.fabric8.kubernetes.api.model.admissionregistration.v1.MutatingWebhookC
 import io.fabric8.kubernetes.api.model.admissionregistration.v1.ValidatingWebhookConfiguration;
 import io.fabric8.kubernetes.api.model.admissionregistration.v1.ValidatingWebhookConfigurationList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.internal.admissionregistration.v1.ValidatingWebhookConfigurationOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.admissionregistration.v1.MutatingWebhookConfigurationOperationsImpl;
 import okhttp3.OkHttpClient;
 
 public class V1AdmissionRegistrationAPIGroupClient extends BaseClient implements V1AdmissionRegistrationAPIGroupDSL {
@@ -35,12 +34,12 @@ public class V1AdmissionRegistrationAPIGroupClient extends BaseClient implements
   }
 
   @Override
-  public MixedOperation<ValidatingWebhookConfiguration, ValidatingWebhookConfigurationList, Resource<ValidatingWebhookConfiguration>> validatingWebhookConfigurations() {
-    return new ValidatingWebhookConfigurationOperationsImpl(httpClient, getConfiguration());
+  public NonNamespaceOperation<ValidatingWebhookConfiguration, ValidatingWebhookConfigurationList, Resource<ValidatingWebhookConfiguration>> validatingWebhookConfigurations() {
+      return Handlers.getOperation(ValidatingWebhookConfiguration.class, ValidatingWebhookConfigurationList.class, httpClient, getConfiguration());
   }
 
   @Override
   public MixedOperation<MutatingWebhookConfiguration, MutatingWebhookConfigurationList, Resource<MutatingWebhookConfiguration>> mutatingWebhookConfigurations() {
-    return new MutatingWebhookConfigurationOperationsImpl(httpClient, getConfiguration());
+    return Handlers.getOperation(MutatingWebhookConfiguration.class, MutatingWebhookConfigurationList.class, httpClient, getConfiguration());
   }
 }

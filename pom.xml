@@ -23,7 +23,7 @@
 
   <groupId>io.fabric8</groupId>
   <artifactId>kubernetes-client-project</artifactId>
-  <version>5.5-SNAPSHOT</version>
+  <version>5.8-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Fabric8 :: Kubernetes :: Project</name>
@@ -94,7 +94,6 @@
     <assertj.core.version>3.20.2</assertj.core.version>
     <arquillian.core.version>1.2.0.Final</arquillian.core.version>
     <awaitility.version>4.1.0</awaitility.version>
-    <jsonassert.version>1.5.0</jsonassert.version>
 
     <retrofit.bundle.version>2.5.0_1</retrofit.bundle.version>
     <conscrypt-openjdk-uber.version>1.4.2</conscrypt-openjdk-uber.version>
@@ -110,13 +109,13 @@
     <junit.compatible-with-arquillian.version>4.13.2</junit.compatible-with-arquillian.version>
     <zjsonpatch.version>0.3.0</zjsonpatch.version>
     <arquillian.cube.version>1.18.2</arquillian.cube.version>
-    <slf4j.version>1.7.31</slf4j.version>
-    <mockito.version>3.11.2</mockito.version>
+    <slf4j.version>1.7.32</slf4j.version>
+    <mockito.version>3.12.4</mockito.version>
     <lombok.version>1.18.20</lombok.version>
     <snakeyaml.version>1.26</snakeyaml.version>
     <bouncycastle.version>1.69</bouncycastle.version>
     <commons-codec.version>1.15</commons-codec.version>
-    <commons-compress.version>1.20</commons-compress.version>
+    <commons-compress.version>1.21</commons-compress.version>
     <scr.annotations.version>1.12.0</scr.annotations.version>
     <jsonschema2pojo.version>1.1.0</jsonschema2pojo.version>
     <properties.maven.plugin.version>1.0.0</properties.maven.plugin.version>
@@ -133,15 +132,15 @@
     <maven.release.plugin.version>3.0.0-M4</maven.release.plugin.version>
     <maven.javadoc.plugin.version>3.3.0</maven.javadoc.plugin.version>
     <maven.source.plugin.version>3.2.1</maven.source.plugin.version>
-    <maven.enforcer.plugin.version>3.0.0-M3</maven.enforcer.plugin.version>
+    <maven.enforcer.plugin.version>3.0.0</maven.enforcer.plugin.version>
     <maven.deploy.plugin.version>3.0.0-M1</maven.deploy.plugin.version>
     <maven.gpg.plugin.version>3.0.1</maven.gpg.plugin.version>
     <maven.antrun.plugin.version>3.0.0</maven.antrun.plugin.version>
     <maven.dependency.plugin.version>3.2.0</maven.dependency.plugin.version>
     <maven.shade.plugin.version>3.2.4</maven.shade.plugin.version>
     <maven.install.plugin.version>3.0.0-M1</maven.install.plugin.version>
-    <jandex.plugin.version>1.1.0</jandex.plugin.version>
-    <jandex.version>2.3.0.Final</jandex.version>
+    <jandex.plugin.version>1.1.1</jandex.plugin.version>
+    <jandex.version>2.4.0.Final</jandex.version>
     <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
     <sonar-maven-plugin.version>3.9.0.2155</sonar-maven-plugin.version>
 
@@ -477,13 +476,6 @@
         <groupId>io.dekorate</groupId>
         <artifactId>mockwebserver</artifactId>
         <version>${mockwebserver.version}</version>
-        <scope>test</scope>
-      </dependency>
-
-      <dependency>
-        <groupId>org.skyscreamer</groupId>
-        <artifactId>jsonassert</artifactId>
-        <version>${jsonassert.version}</version>
         <scope>test</scope>
       </dependency>
 

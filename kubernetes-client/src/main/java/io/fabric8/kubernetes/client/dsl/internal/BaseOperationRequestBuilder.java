@@ -26,11 +26,10 @@ import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
-import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 
-class BaseOperationRequestBuilder<T extends HasMetadata, L extends KubernetesResourceList<T>> implements AbstractWatchManager.RequestBuilder {
+class BaseOperationRequestBuilder<T extends HasMetadata, L extends KubernetesResourceList<T>> {
   private final URL requestUrl;
   private final BaseOperation<T, L, ?> baseOperation;
   private final ListOptions listOptions;
@@ -40,28 +39,13 @@ class BaseOperationRequestBuilder<T extends HasMetadata, L extends KubernetesRes
     this.requestUrl = baseOperation.getNamespacedUrl();
     this.listOptions = listOptions;
   }
-
-  @Override
+  
+  public BaseOperation<T, L, ?> getBaseOperation() {
+    return baseOperation;
+  }
+  
   public Request build(final String resourceVersion) {
     HttpUrl.Builder httpUrlBuilder = HttpUrl.get(requestUrl).newBuilder();
-
-    String labelQueryParam = baseOperation.getLabelQueryParam();
-    if (Utils.isNotNullOrEmpty(labelQueryParam)) {
-      httpUrlBuilder.addQueryParameter("labelSelector", labelQueryParam);
-    }
-
-    String fieldQueryString = baseOperation.getFieldQueryParam();
-    String name = baseOperation.getName();
-
-    if (name != null && name.length() > 0) {
-      if (fieldQueryString.length() > 0) {
-        fieldQueryString += ",";
-      }
-      fieldQueryString += "metadata.name=" + name;
-    }
-    if (Utils.isNotNullOrEmpty(fieldQueryString)) {
-      httpUrlBuilder.addQueryParameter("fieldSelector", fieldQueryString);
-    }
 
     listOptions.setResourceVersion(resourceVersion);
     HttpClientUtils.appendListOptionParams(httpUrlBuilder, listOptions);

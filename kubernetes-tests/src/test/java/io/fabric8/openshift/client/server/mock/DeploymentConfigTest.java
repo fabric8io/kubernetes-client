@@ -299,7 +299,7 @@ class DeploymentConfigTest {
       .endCondition()
       .withReplicas(1).withAvailableReplicas(1)
       .endStatus().build();
-    server.expect().get().withPath("/apis/apps.openshift.io/v1/namespaces/ns1/deploymentconfigs?fieldSelector=metadata.name%3Ddc1&watch=false")
+    server.expect().get().withPath("/apis/apps.openshift.io/v1/namespaces/ns1/deploymentconfigs?fieldSelector=metadata.name%3Ddc1")
       .andReturn(HttpURLConnection.HTTP_OK, new DeploymentConfigListBuilder().withItems(deploymentConfig).withMetadata(new ListMeta()).build())
       .always();
 
@@ -321,15 +321,28 @@ class DeploymentConfigTest {
       .endCondition()
       .withReplicas(1).withAvailableReplicas(1)
       .endStatus().build();
+
+    // When using a resource, it should still consult the server
+    boolean result =  client.resource(deploymentConfig).isReady();
+
+    // Then
+    assertFalse(result);
+
     server.expect().get().withPath("/apis/apps.openshift.io/v1/namespaces/ns1/deploymentconfigs/dc1")
       .andReturn(HttpURLConnection.HTTP_OK, deploymentConfig)
       .always();
 
     // When
-    boolean result =  client.deploymentConfigs().inNamespace("ns1").withName("dc1").isReady();
+    result =  client.deploymentConfigs().inNamespace("ns1").withName("dc1").isReady();
 
     // Then
     assertTrue(result);
+
+    // When missing
+    result =  client.deploymentConfigs().inNamespace("ns1").withName("dc2").isReady();
+
+    // Then
+    assertFalse(result);
   }
 
   private DeploymentConfigBuilder getDeploymentConfig() {

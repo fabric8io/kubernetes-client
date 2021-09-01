@@ -35,9 +35,7 @@ public class ClusterRoleBindingOperationsImpl extends OpenShiftOperation<Cluster
 
   public ClusterRoleBindingOperationsImpl(OperationContext context) {
     super(context.withApiGroupName(AUTHORIZATION)
-      .withPlural("clusterrolebindings"));
-    this.type = ClusterRoleBinding.class;
-    this.listType = ClusterRoleBindingList.class;
+      .withPlural("clusterrolebindings"), ClusterRoleBinding.class, ClusterRoleBindingList.class);
   }
 
   @Override

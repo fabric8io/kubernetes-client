@@ -22,7 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class URLFromEnvVarsImpl implements ServiceToURLProvider {
-  public static Logger logger = LoggerFactory.getLogger(URLFromEnvVarsImpl.class);
+  public static final Logger logger = LoggerFactory.getLogger(URLFromEnvVarsImpl.class);
 
   public static final String ANNOTATION_EXPOSE_URL = "fabric8.io/exposeUrl";
 

@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.api.model.DeleteOptions;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.Preconditions;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
@@ -30,6 +31,7 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.internal.VersionUsageUtils;
 import io.fabric8.kubernetes.client.utils.ExponentialBackoffIntervalCalculator;
+import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -117,11 +119,11 @@ public class OperationSupport {
     this.retryIntervalCalculator = new ExponentialBackoffIntervalCalculator(requestRetryBackoffInterval, maxRetryIntervalExponent);
   }
 
-  public String getAPIGroup() {
+  public String getAPIGroupName() {
     return apiGroupName;
   }
 
-  public String getAPIVersion() {
+  public String getAPIGroupVersion() {
     return apiGroupVersion;
   }
 
@@ -221,7 +223,7 @@ public class OperationSupport {
 
   protected <T> String checkNamespace(T item) {
     String operationNs = getNamespace();
-    String itemNs = (item instanceof HasMetadata && ((HasMetadata)item).getMetadata() != null) ? ((HasMetadata) item).getMetadata().getNamespace() : null;
+    String itemNs = (item instanceof HasMetadata) ? KubernetesResourceUtil.getNamespace((HasMetadata)item) : null;
     if (Utils.isNullOrEmpty(operationNs) && Utils.isNullOrEmpty(itemNs)) {
       if (!isResourceNamespaced()) {
         return null;
@@ -261,15 +263,18 @@ public class OperationSupport {
       return handleResponse(requestBuilder, type);
   }
 
-  protected <T> void handleDelete(T resource, long gracePeriodSeconds, DeletionPropagation propagationPolicy, boolean cascading) throws ExecutionException, InterruptedException, IOException {
-    handleDelete(getResourceURLForWriteOperation(getResourceUrl(checkNamespace(resource), checkName(resource))), gracePeriodSeconds, propagationPolicy, cascading);
+  protected <T> void handleDelete(T resource, long gracePeriodSeconds, DeletionPropagation propagationPolicy, String resourceVersion, boolean cascading) throws ExecutionException, InterruptedException, IOException {
+    handleDelete(getResourceURLForWriteOperation(getResourceUrl(checkNamespace(resource), checkName(resource))), gracePeriodSeconds, propagationPolicy, resourceVersion, cascading);
   }
 
-  protected void handleDelete(URL requestUrl, long gracePeriodSeconds, DeletionPropagation propagationPolicy, boolean cascading) throws ExecutionException, InterruptedException, IOException {
+  protected void handleDelete(URL requestUrl, long gracePeriodSeconds, DeletionPropagation propagationPolicy, String resourceVersion, boolean cascading) throws ExecutionException, InterruptedException, IOException {
     RequestBody requestBody = null;
     DeleteOptions deleteOptions = new DeleteOptions();
     if (gracePeriodSeconds >= 0) {
       deleteOptions.setGracePeriodSeconds(gracePeriodSeconds);
+    }
+    if (resourceVersion != null) {
+      deleteOptions.setPreconditions(new Preconditions(resourceVersion, null));
     }
     /*
      * Either the propagation policy or the orphan dependent (deprecated) property must be set, but not both.
@@ -578,20 +583,28 @@ public class OperationSupport {
   }
 
   protected Response retryWithExponentialBackoff(OkHttpClient client, Request request) throws InterruptedException, IOException {
-    Response response;
-    boolean doRetry;
     int numRetries = 0;
-    do {
-      response = client.newCall(request).execute();
-      doRetry = numRetries < requestRetryBackoffLimit && response.code() >= 500;
-      if (doRetry) {
-        long retryInterval= retryIntervalCalculator.getInterval(numRetries);
-        LOG.debug("HTTP operation on url: {} should be retried as the response code was {}, retrying after {} millis", request.url(), response.code(), retryInterval);
-        Thread.sleep(retryInterval);
-        numRetries++;
+    long retryInterval;
+    while (true) {
+      try {
+        Response response = client.newCall(request).execute();
+        if (numRetries < requestRetryBackoffLimit && response.code() >= 500) {
+          retryInterval = retryIntervalCalculator.getInterval(numRetries);
+          LOG.debug("HTTP operation on url: {} should be retried as the response code was {}, retrying after {} millis", request.url(), response.code(), retryInterval);
+        } else {
+          return response;
+        }
+      } catch (IOException ie) {
+        if (numRetries < requestRetryBackoffLimit) {
+          retryInterval = retryIntervalCalculator.getInterval(numRetries);
+          LOG.debug(String.format("HTTP operation on url: %s should be retried after %d millis because of IOException", request.url(), retryInterval), ie);
+        } else {
+          throw ie;
+        }
       }
-    } while(doRetry);
-    return response;
+      Thread.sleep(retryInterval);
+      numRetries++;
+    }
   }
 
   /**

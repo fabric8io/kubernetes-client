@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.DeleteOptions;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
+import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
@@ -76,6 +77,27 @@ class ResourceTest {
 
     // Then
     assertEquals(pod1, response);
+  }
+  
+  @Test
+  void testCreateOrReplaceString() {
+    // Given
+    Pod pod1 = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
+    server.expect().post().withPath("/api/v1/namespaces/test/pods").andReturn(HttpURLConnection.HTTP_CREATED, pod1).once();
+
+    // When
+    HasMetadata response = client.resource(Serialization.asYaml(pod1)).createOrReplace();
+
+    // Then
+    assertEquals(pod1, response);
+  }
+
+  @Test
+  void testGenericResourceFails() {
+    assertThrows(KubernetesClientException.class, () -> client.resource(Serialization.unmarshal("apiVersion: example.io/v1\n"
+        + "kind: GenericThatFails\n"
+        + "metadata:\n"
+        + "  name: failure\n", GenericKubernetesResource.class)));
   }
 
   @Test
@@ -243,7 +265,7 @@ class ResourceTest {
   static void list(KubernetesMockServer server, Pod pod) {
     server.expect()
         .get()
-        .withPath("/api/v1/namespaces/"+pod.getMetadata().getNamespace()+"/pods?fieldSelector=metadata.name%3D"+pod.getMetadata().getName()+"&watch=false")
+        .withPath("/api/v1/namespaces/"+pod.getMetadata().getNamespace()+"/pods?fieldSelector=metadata.name%3D"+pod.getMetadata().getName())
         .andReturn(200,
             new PodListBuilder().withItems(pod).withNewMetadata().withResourceVersion("1").endMetadata().build())
         .once();
@@ -260,7 +282,7 @@ class ResourceTest {
     Pod ready = createReadyFrom(pod1, "True");
 
     // and again so that "periodicWatchUntilReady" successfully begins
-    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&watch=false").andReturn(200, noReady).times(2);
+    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1").andReturn(200, noReady).times(2);
 
     server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true").andUpgradeToWebSocket()
       .open()
@@ -540,7 +562,7 @@ class ResourceTest {
   void testWaitNullDoesntExist() throws InterruptedException {
     server.expect()
       .get()
-      .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&watch=false")
+      .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1")
       .andReturn(200,
         new PodListBuilder().withNewMetadata().withResourceVersion("1").endMetadata().build())
       .once();

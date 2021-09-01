@@ -36,6 +36,7 @@ This client provides access to the full [Kubernetes](http://kubernetes.io/) &
 - [Kubernetes and Red Hat OpenShift Compatibility Matrix](#compatibility-matrix)
 - [Kubernetes Client CHEAT SHEET](https://github.com/fabric8io/kubernetes-client/blob/master/doc/CHEATSHEET.md)
 - [Kubectl Java Equivalents](#kubectl-java-equivalents)
+- [FAQs](doc/FAQ.md)
 
 ## Usage
 
@@ -396,7 +397,10 @@ class ExampleTest {
 ### Kubernetes Compatibility Matrix:
 
 |                           | K8s 1.21.1 | K8s 1.20.2 |K8s 1.19.1 | K8s 1.18.0 | K8s 1.17.0 | K8s 1.16.0 | K8s 1.15.3 | K8s 1.14.2 | K8s 1.12.0 | K8s 1.11.0 | K8s 1.10.0 | K8s 1.9.0 | K8s 1.7.0 | K8s 1.6.0 | K8s 1.4.9 |
-|---------------------------|-----------|------------|-----------|------------|------------|------------|------------|------------|------------|------------|------------|-----------|-----------|-----------|-----------|
+|---------------------------|------------|------------|-----------|------------|------------|------------|------------|------------|------------|------------|------------|-----------|-----------|-----------|-----------|
+| kubernetes-client 5.7.0   | ✓          | ✓          | ✓         | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         | -         | -         | -         |
+| kubernetes-client 5.6.0   | ✓          | ✓          | ✓         | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         | -         | -         | -         |
+| kubernetes-client 5.5.0   | ✓          | ✓          | ✓         | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         | -         | -         | -         |
 | kubernetes-client 5.4.1   | ✓          | ✓          | ✓         | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         | -         | -         | -         |
 | kubernetes-client 5.4.0   | ✓          | ✓          | ✓         | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         | -         | -         | -         |
 | kubernetes-client 5.3.1   | -          | ✓          | ✓         | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓         | -         | -         | -         |
@@ -461,6 +465,9 @@ class ExampleTest {
 
 |                           | OCP 4.5.14 | OCP 4.2.0 | OCP 4.1.0 | OCP 3.11.0 | OCP 3.10.0 |  OCP 3.9.0 | OCP 3.7.0 | OCP 3.6.0 |
 |---------------------------|------------|-----------|-----------|------------|------------|------------|-----------|-----------|
+| openshift-client 5.7.0    | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 5.6.0    | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 5.5.0    | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
 | openshift-client 5.4.1    | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
 | openshift-client 5.4.0    | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
 | openshift-client 5.3.1    | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
@@ -543,6 +550,7 @@ All the resource objects used here will be according to OpenShift 3.9.0  and Kub
   Frameworks/Libraries/Tools:
   - [Arquillian Cube](http://arquillian.org/arquillian-cube/)
   - [Apache Camel](https://github.com/apache/camel/blob/master/README.md)
+  - [Apache Flink](https://github.com/apache/flink/tree/master/flink-kubernetes)
   - [Apache Spark](https://github.com/apache/spark/tree/master/resource-managers/kubernetes)
   - [Jaeger Kubernetes](https://github.com/jaegertracing/jaeger-kubernetes)
   - [Loom](https://github.com/datawire/loom)
@@ -574,6 +582,7 @@ All the resource objects used here will be according to OpenShift 3.9.0  and Kub
   - [Strimzi](https://github.com/strimzi/)
   - [Syndesis](https://syndesis.io/)
   - [StackGres](https://stackgres.io/)
+  - [Boomerang Flow](https://github.com/boomerang-io)
 
   Proprietary Platforms:
   - [vCommander](https://www.embotics.com/hybrid-cloud-management-platform)

@@ -15,30 +15,40 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.client.handlers.apps.v1.DeploymentHandler;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
+import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
+import okhttp3.OkHttpClient;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.Assert.assertThat;
 
 public class HandlersTest {
-  @Test
-  public void testUnregister() {
-    DeploymentHandler h = new DeploymentHandler();
-
-    Handlers.unregister(h);
-
-    // Pass class loader because we dont need load handler by ServiceLoader
-    assertNull(Handlers.get(h.getKind(), h.getApiVersion(), ClassLoader.getSystemClassLoader().getParent()));
+  
+  static class MyPod extends Pod {
+    
   }
+  
+  static class MyPodOperationsImpl extends HasMetadataOperation<MyPod, KubernetesResourceList<MyPod>, Resource<MyPod>> {
 
+    public MyPodOperationsImpl(OkHttpClient client, Config config) {
+      super(new OperationContext(), MyPod.class, null);
+    }
+    
+  }
+  
   @Test
   public void testRegister() {
-    DeploymentHandler h = new DeploymentHandler();
+    Handlers.register(MyPod.class, MyPodOperationsImpl::new);
 
-    Handlers.unregister(h);
-    Handlers.register(h);
-
-    assertSame(h, Handlers.get(h.getKind(), h.getApiVersion()));
+    assertThat(Handlers.get(new MyPod()).operation(null, null, null), Matchers.instanceOf(MyPodOperationsImpl.class));
+    
+    Handlers.unregister(MyPod.class);
+    
+    assertThat(Handlers.get(new MyPod()).operation(null, null, null), Matchers.instanceOf(HasMetadataOperationsImpl.class));
   }
 }

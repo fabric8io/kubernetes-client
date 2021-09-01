@@ -24,7 +24,6 @@ import io.fabric8.servicecatalog.api.model.ClusterServiceBrokerBuilder;
 import io.fabric8.servicecatalog.api.model.ClusterServiceBrokerList;
 import io.fabric8.servicecatalog.client.ServiceCatalogClient;
 import io.fabric8.servicecatalog.server.mock.ServiceCatalogMockServer;
-
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.*;
 
@@ -41,7 +40,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  */
 
 class ServiceCatalogCrudTest {
-
 
   public ServiceCatalogMockServer server = null;
   public ServiceCatalogClient client = null;

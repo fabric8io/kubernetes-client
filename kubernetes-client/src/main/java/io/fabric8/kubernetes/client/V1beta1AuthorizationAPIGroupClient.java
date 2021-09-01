@@ -15,14 +15,12 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.authorization.v1beta1.LocalSubjectAccessReview;
 import io.fabric8.kubernetes.api.model.authorization.v1beta1.SelfSubjectAccessReview;
 import io.fabric8.kubernetes.api.model.authorization.v1beta1.SelfSubjectRulesReview;
 import io.fabric8.kubernetes.api.model.authorization.v1beta1.SubjectAccessReview;
 import io.fabric8.kubernetes.client.dsl.InOutCreateable;
-import io.fabric8.kubernetes.client.dsl.internal.CreateOnlyResourceOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.NamespacedCreateOnlyResourceOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.NamespacedInOutCreateable;
 import okhttp3.OkHttpClient;
 
 public class V1beta1AuthorizationAPIGroupClient extends BaseClient implements V1beta1AuthorizationAPIGroupDSL {
@@ -40,21 +38,21 @@ public class V1beta1AuthorizationAPIGroupClient extends BaseClient implements V1
 
   @Override
   public InOutCreateable<SelfSubjectAccessReview, SelfSubjectAccessReview> selfSubjectAccessReview() {
-    return new CreateOnlyResourceOperationsImpl<>(getHttpClient(), getConfiguration(), AUTHORIZATION_APIGROUP, AUTHORIZATION_APIVERSION, HasMetadata.getPlural(SelfSubjectAccessReview.class), SelfSubjectAccessReview.class);
+    return Handlers.getNonListingOperation(SelfSubjectAccessReview.class, getHttpClient(), getConfiguration());
   }
 
   @Override
   public InOutCreateable<SubjectAccessReview, SubjectAccessReview> subjectAccessReview() {
-    return new CreateOnlyResourceOperationsImpl<>(getHttpClient(), getConfiguration(), AUTHORIZATION_APIGROUP, AUTHORIZATION_APIVERSION, HasMetadata.getPlural(SubjectAccessReview.class), SubjectAccessReview.class);
+    return Handlers.getNonListingOperation(SubjectAccessReview.class, getHttpClient(), getConfiguration());
   }
 
   @Override
-  public NamespacedCreateOnlyResourceOperationsImpl<LocalSubjectAccessReview, LocalSubjectAccessReview> localSubjectAccessReview() {
-    return new NamespacedCreateOnlyResourceOperationsImpl<>(getHttpClient(), getConfiguration(), AUTHORIZATION_APIGROUP, AUTHORIZATION_APIVERSION, HasMetadata.getPlural(LocalSubjectAccessReview.class), LocalSubjectAccessReview.class);
+  public NamespacedInOutCreateable<LocalSubjectAccessReview, LocalSubjectAccessReview> localSubjectAccessReview() {
+    return Handlers.getNamespacedHasMetadataCreateOnlyOperation(LocalSubjectAccessReview.class, getHttpClient(), getConfiguration());
   }
 
   @Override
   public InOutCreateable<SelfSubjectRulesReview, SelfSubjectRulesReview> selfSubjectRulesReview() {
-    return new CreateOnlyResourceOperationsImpl<>(getHttpClient(), getConfiguration(), AUTHORIZATION_APIGROUP, AUTHORIZATION_APIVERSION, HasMetadata.getPlural(SelfSubjectRulesReview.class), SelfSubjectRulesReview.class);
+    return Handlers.getNonListingOperation(SelfSubjectRulesReview.class, getHttpClient(), getConfiguration());
   }
 }

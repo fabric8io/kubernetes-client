@@ -56,8 +56,7 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
     throws MalformedURLException {
     
     super(
-        watcher, listOptions, reconnectLimit, reconnectInterval, maxIntervalExponent,
-        new BaseOperationRequestBuilder<>(baseOperation, listOptions), () -> {
+        watcher, baseOperation, listOptions, reconnectLimit, reconnectInterval, maxIntervalExponent, () -> {
           final OkHttpClient clonedClient = client.newBuilder()
               .connectTimeout(connectTimeout, TimeUnit.MILLISECONDS)
               .readTimeout(0, TimeUnit.MILLISECONDS)

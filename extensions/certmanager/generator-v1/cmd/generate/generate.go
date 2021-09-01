@@ -73,7 +73,7 @@ func main() {
 		reflect.TypeOf(apiextensions.JSON{}): "com.fasterxml.jackson.databind.JsonNode",
 	}
 
-	json := schemagen.GenerateSchema("http://fabric8.io/jetstack/CertManagerSchema#", crdLists, providedPackages, manualTypeMap, packageMapping, mappingSchema, providedTypes, constraints)
+	json := schemagen.GenerateSchema("http://fabric8.io/jetstack/CertManagerSchema#", crdLists, providedPackages, manualTypeMap, packageMapping, mappingSchema, providedTypes, constraints, "io.fabric8")
 
 	fmt.Println(json)
 }

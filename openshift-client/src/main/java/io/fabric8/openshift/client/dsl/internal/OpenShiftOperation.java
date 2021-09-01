@@ -22,12 +22,11 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.kubernetes.client.internal.readiness.Readiness;
+import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.OpenShiftConfigBuilder;
-import io.fabric8.openshift.client.internal.readiness.OpenShiftReadiness;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -37,8 +36,8 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
 
   public static final String OPENSHIFT_APIGROUP_SUFFIX = "openshift.io";
 
-  public OpenShiftOperation(OperationContext ctx) {
-    super(wrap(ctx));
+  public OpenShiftOperation(OperationContext ctx, Class<T> type, Class<L> listType) {
+    super(wrap(ctx), type, listType);
     updateApiVersion();
   }
 
@@ -100,19 +99,11 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
     }
   }
 
-  @Override
-  public Readiness getReadiness() {
-    return OpenShiftReadiness.getInstance();
-  }
-
   private void updateApiVersion() {
-    if (apiGroupName != null && apiGroupVersion != null) {
-      this.apiVersion = apiGroupName + "/" + apiGroupVersion;
-    } else if (apiGroupVersion != null) {
-      this.apiVersion = apiGroupVersion;
-    }
+    this.apiVersion = ApiVersionUtil.joinApiGroupAndVersion(apiGroupName, apiGroupVersion);
   }
 
+  @Override
   protected Class<? extends Config> getConfigType() {
     return OpenShiftConfig.class;
   }

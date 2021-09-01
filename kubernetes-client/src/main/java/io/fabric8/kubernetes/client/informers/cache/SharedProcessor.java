@@ -16,6 +16,8 @@
 package io.fabric8.kubernetes.client.informers.cache;
 
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
@@ -35,10 +38,12 @@ import java.util.function.Supplier;
  * <br>Modified to simplify threading
  */
 public class SharedProcessor<T> {
-  private ReadWriteLock lock = new ReentrantReadWriteLock();
+  private static final Logger log = LoggerFactory.getLogger(SharedProcessor.class);
+    
+  private final ReadWriteLock lock = new ReentrantReadWriteLock();
 
-  private List<ProcessorListener<T>> listeners;
-  private List<ProcessorListener<T>> syncingListeners;
+  private final List<ProcessorListener<T>> listeners = new ArrayList<>();
+  private final List<ProcessorListener<T>> syncingListeners = new ArrayList<>();
   private final Executor executor;
   
   public SharedProcessor() {
@@ -46,8 +51,6 @@ public class SharedProcessor<T> {
   }
 
   public SharedProcessor(Executor executor) {
-    this.listeners = new ArrayList<>();
-    this.syncingListeners = new ArrayList<>();
     this.executor = executor;
   }
 
@@ -73,6 +76,13 @@ public class SharedProcessor<T> {
    * @param isSync whether in sync or not
    */
   public void distribute(ProcessorListener.Notification<T> obj, boolean isSync) {
+    distribute(l -> l.add(obj), isSync);
+  }
+  
+  /**
+   * Distribute the operation to the respective listeners
+   */
+  public void distribute(Consumer<ProcessorListener<T>> operation, boolean isSync) {
     // obtain the list to call outside before submitting
     lock.readLock().lock();
     List<ProcessorListener<T>> toCall;
@@ -87,7 +97,11 @@ public class SharedProcessor<T> {
     }
     executor.execute(() -> {
       for (ProcessorListener<T> listener : toCall) {
-        listener.add(obj);
+        try {
+          operation.accept(listener);
+        } catch (Exception ex) {
+          log.error("Failed invoking {} event handler: {}", listener.getHandler(), ex.getMessage(), ex);
+        }
       }
     });
   }
@@ -96,7 +110,7 @@ public class SharedProcessor<T> {
     lock.writeLock().lock();
     boolean resyncNeeded = false;
     try {
-      this.syncingListeners = new ArrayList<>();
+      this.syncingListeners.clear();
 
       ZonedDateTime now = ZonedDateTime.now();
       for (ProcessorListener<T> listener : this.listeners) {
@@ -115,8 +129,8 @@ public class SharedProcessor<T> {
   public void stop() {
     lock.writeLock().lock();
     try {
-      syncingListeners = null;
-      listeners = null;
+      syncingListeners.clear();
+      listeners.clear();
     } finally {
       lock.writeLock().unlock();
     }

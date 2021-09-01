@@ -17,74 +17,66 @@
 package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
+import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
+import io.fabric8.kubernetes.client.dsl.NamespacedInOutCreateable;
+import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
+import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
+import okhttp3.OkHttpClient;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Locale;
 import java.util.Map;
-import java.util.ServiceLoader;
-import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiFunction;
 
 public final class Handlers {
 
-  private static final Set<ClassLoader> CLASS_LOADERS = new HashSet<>();
-  private static final Map<ResourceHandler.Key, ResourceHandler> RESOURCE_HANDLER_MAP = new HashMap<>();
-
+  private static final Map<Class<?>, ResourceHandler<?, ?>> RESOURCE_HANDLER_MAP = new ConcurrentHashMap<>();
+  
   private Handlers() {
     //Utility
   }
 
-  static {
-    //Register handlers
-    discoverHandlers(ResourceHandler.class.getClassLoader());
+  public static <T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>> void register(Class<T> type, BiFunction<OkHttpClient, Config, HasMetadataOperation<T, L, R>> operationConstructor) {
+    if (RESOURCE_HANDLER_MAP.put(type, new ResourceHandlerImpl(type, operationConstructor)) != null) {
+      throw new AssertionError(String.format("%s already registered", type.getName()));
+    }
+  }
+  
+  public static <T extends HasMetadata> void unregister(Class<T> type) {
+    RESOURCE_HANDLER_MAP.remove(type);
   }
 
-  public static <T extends HasMetadata, V extends VisitableBuilder<T, V>> void register(ResourceHandler<T,V> handler) {
-    RESOURCE_HANDLER_MAP.put(new ResourceHandler.Key(handler.getKind().toLowerCase(Locale.ROOT), handler.getApiVersion()), handler);
+  public static <T extends HasMetadata, V extends VisitableBuilder<T, V>> ResourceHandler<T, V> get(T meta) {
+    // could try to return something here in the generic case, but there is no generic builder
+    return get((Class<T>)meta.getClass());
   }
 
-  public static <T extends HasMetadata, V extends VisitableBuilder<T, V>> void unregister(ResourceHandler<T,V> handler) {
-    RESOURCE_HANDLER_MAP.remove(new ResourceHandler.Key(handler.getKind().toLowerCase(Locale.ROOT), handler.getApiVersion()));
-  }
-
-  public static <T extends HasMetadata, V extends VisitableBuilder<T, V>> ResourceHandler<T, V> get(String kind, String apiVersion) {
-    return get(kind, apiVersion, Thread.currentThread().getContextClassLoader());
-  }
-
-  public static <T extends HasMetadata, V extends VisitableBuilder<T, V>> ResourceHandler<T, V> get(String kind, String apiVersion, ClassLoader classLoader) {
-   return get(new ResourceHandler.Key(kind.toLowerCase(Locale.ROOT), apiVersion), classLoader);
-  }
-
-  public static <T extends HasMetadata, V extends VisitableBuilder<T, V>> ResourceHandler<T, V> get(ResourceHandler.Key key) {
-    return get(key, Thread.currentThread().getContextClassLoader());
-  }
-
-  public static <T extends HasMetadata, V extends VisitableBuilder<T, V>> ResourceHandler<T, V> get(ResourceHandler.Key key, ClassLoader classLoader) {
-    if (RESOURCE_HANDLER_MAP.containsKey(key)) {
-      return RESOURCE_HANDLER_MAP.get(key);
-    } else {
-      //1st pass: match kind and apiVersion
-      for (ResourceHandler handler : ServiceLoader.load(ResourceHandler.class, classLoader)) {
-        if (handler.getKind().toLowerCase(Locale.ROOT).equals(key.getKind()) && handler.getApiVersion().equals(key.getApiVersion())) {
-          return handler;
-        }
-      }
-      //2nd pass: match kind.
-      for (ResourceHandler handler : ServiceLoader.load(ResourceHandler.class, classLoader)) {
-        if (handler.getKind().toLowerCase(Locale.ROOT).equals(key.getKind())) {
-          return handler;
-        }
-      }
+  public static <T extends HasMetadata, V extends VisitableBuilder<T, V>> ResourceHandler<T, V> get(Class<T> type) {
+    if (type.equals(GenericKubernetesResource.class)) {
       return null;
     }
+    return (ResourceHandler<T, V>) RESOURCE_HANDLER_MAP.computeIfAbsent(type, k -> new ResourceHandlerImpl<>(type, null));
+  }
+  
+  public static <T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>> HasMetadataOperation<T, L, R> getOperation(Class<T> type, Class<L> listType, OkHttpClient client, Config config) {
+    ResourceHandler<T, ?> resourceHandler = get(type);
+    return (HasMetadataOperation<T, L, R>) resourceHandler.operation(client, config, listType);
+  }
+  
+  public static <T extends HasMetadata> HasMetadataOperation<T, ?, Resource<T>> getNonListingOperation(Class<T> type, OkHttpClient client, Config config) {
+    return getOperation(type, KubernetesResourceUtil.inferListType(type), client, config);
+  }
+  
+  public static <T extends HasMetadata> boolean shouldRegister(Class<T> type) {
+    ResourceHandler<?, ?> handler = RESOURCE_HANDLER_MAP.get(type);
+    return !RESOURCE_HANDLER_MAP.isEmpty() && (handler == null || !handler.hasOperation());
   }
 
-  private static void discoverHandlers(ClassLoader classLoader) {
-    if (classLoader != null && CLASS_LOADERS.add(classLoader)) {
-      for (ResourceHandler handler : ServiceLoader.load(ResourceHandler.class, classLoader)) {
-        register(handler);
-      }
-    }
+  public static <T extends HasMetadata> NamespacedInOutCreateable<T, T> getNamespacedHasMetadataCreateOnlyOperation(Class<T> type, OkHttpClient client, Config config) {
+    HasMetadataOperation<T, ?, Resource<T>> operation = getNonListingOperation(type, client, config);
+    return operation::inNamespace;
   }
+  
 }

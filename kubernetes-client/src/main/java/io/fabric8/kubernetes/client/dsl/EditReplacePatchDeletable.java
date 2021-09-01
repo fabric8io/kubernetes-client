@@ -18,7 +18,7 @@ package io.fabric8.kubernetes.client.dsl;
 
 import io.fabric8.kubernetes.client.GracePeriodConfigurable;
 
-public interface EditReplacePatchDeletable<T> extends EditReplacePatchable<T>, Deletable,
+public interface EditReplacePatchDeletable<T> extends EditReplacePatchable<T>, ReplaceDeletable<T>,
                                                           GracePeriodConfigurable<Deletable>
 
 {

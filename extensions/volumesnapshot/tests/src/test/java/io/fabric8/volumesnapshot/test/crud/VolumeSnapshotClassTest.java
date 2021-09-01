@@ -21,25 +21,21 @@ import io.fabric8.volumesnapshot.api.model.VolumeSnapshotClassBuilder;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotClassList;
 import io.fabric8.volumesnapshot.client.VolumeSnapshotClient;
 import io.fabric8.volumesnapshot.client.internal.VolumeSnapshotClassResource;
-import io.fabric8.volumesnapshot.server.mock.VolumeSnapshotServer;
-import org.junit.Rule;
+import io.fabric8.volumesnapshot.server.mock.EnableVolumeSnapshotMockClient;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-@EnableRuleMigrationSupport
+
+@EnableVolumeSnapshotMockClient(crud = true)
 class VolumeSnapshotClassTest {
-
-  @Rule
-  public VolumeSnapshotServer server = new VolumeSnapshotServer(true, true);
-
+  VolumeSnapshotClient client;
   @Test
   void testCrud() {
-    VolumeSnapshotClient client = server.get();
+
     VolumeSnapshotClass vsc1 = new VolumeSnapshotClassBuilder()
       .withNewMetadata()
       .withName("csi-snapclass1")

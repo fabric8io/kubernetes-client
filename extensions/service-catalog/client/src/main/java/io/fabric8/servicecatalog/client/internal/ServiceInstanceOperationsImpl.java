@@ -15,7 +15,6 @@
  */
 package io.fabric8.servicecatalog.client.internal;
 
-import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
@@ -30,9 +29,8 @@ public class ServiceInstanceOperationsImpl extends HasMetadataOperation<ServiceI
     }
 
     public ServiceInstanceOperationsImpl(OperationContext ctx) {
-        super(ctx.withApiGroupName("servicecatalog.k8s.io").withApiGroupVersion("v1beta1").withPlural("serviceinstances"));
-        this.type=ServiceInstance.class;
-        this.listType=ServiceInstanceList.class;
+        super(ctx.withApiGroupName("servicecatalog.k8s.io").withApiGroupVersion("v1beta1").withPlural("serviceinstances"),
+                ServiceInstance.class, ServiceInstanceList.class);
     }
 
     @Override
@@ -59,10 +57,5 @@ public class ServiceInstanceOperationsImpl extends HasMetadataOperation<ServiceI
                 .endSpec()
                     .build());
     }
-
-  @Override
-  public ServiceInstance edit(Visitor... visitors) {
-    return patch(new ServiceInstanceBuilder(getMandatory()).accept(visitors).build());
-  }
 
 }

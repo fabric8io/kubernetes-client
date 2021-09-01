@@ -25,6 +25,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @EnableOpenShiftMockClient(crud = true)
@@ -32,6 +33,20 @@ class DeploymentConfigCrudTest {
 
   OpenShiftMockServer server;
   OpenShiftClient client;
+
+  @Test
+  void testReadiness() {
+    DeploymentConfig deploymentConfig1 = new DeploymentConfigBuilder().withNewMetadata()
+        .withName("deploymentConfig1")
+        .withNamespace("ns1")
+        .addToLabels("testKey", "testValue")
+        .endMetadata()
+        .build();
+
+    client.deploymentConfigs().inNamespace("ns1").create(deploymentConfig1);
+
+    assertFalse(client.deploymentConfigs().inNamespace("ns1").withName("deploymentConfig1").isReady());
+  }
 
   @Test
   void testCrud() {

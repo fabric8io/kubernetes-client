@@ -16,14 +16,13 @@
 package io.fabric8.crd.generator;
 
 import io.fabric8.crd.generator.decorator.Decorator;
-import io.fabric8.crd.generator.visitor.AdditionalPrinterColumnDetector;
-import io.fabric8.crd.generator.visitor.LabelSelectorPathDetector;
-import io.fabric8.crd.generator.visitor.SpecReplicasPathDetector;
-import io.fabric8.crd.generator.visitor.StatusReplicasPathDetector;
+import io.fabric8.crd.generator.visitor.*;
 import io.fabric8.kubernetes.client.utils.Utils;
+import io.sundr.model.AnnotationRef;
 import io.sundr.model.Property;
 import io.sundr.model.TypeDef;
 import io.sundr.model.TypeDefBuilder;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -53,6 +52,8 @@ public abstract class AbstractCustomResourceHandler {
     LabelSelectorPathDetector labelSelectorPathDetector = new LabelSelectorPathDetector();
     AdditionalPrinterColumnDetector additionalPrinterColumnDetector = new AdditionalPrinterColumnDetector();
 
+    ClassDependenciesVisitor traversedClassesVisitor = new ClassDependenciesVisitor(config.crClassName(), name);
+
     TypeDefBuilder builder = new TypeDefBuilder(def);
     if (config.specClassName().isPresent()) {
       builder.accept(specReplicasPathDetector);
@@ -65,16 +66,16 @@ public abstract class AbstractCustomResourceHandler {
     def = builder
       .accept(labelSelectorPathDetector)
       .accept(additionalPrinterColumnDetector)
+      .accept(traversedClassesVisitor)
       .build();
 
     addDecorators(config, def, specReplicasPathDetector.getPath(),
       statusReplicasPathDetector.getPath(), labelSelectorPathDetector.getPath());
 
-    Map<String, Property> additionalPrinterColumns = new HashMap<>();
-    additionalPrinterColumns.putAll(additionalPrinterColumnDetector.getProperties());
+    Map<String, Property> additionalPrinterColumns = new HashMap<>(additionalPrinterColumnDetector.getProperties());
     additionalPrinterColumns.forEach((path, property) -> {
       Map<String, Object> parameters = property.getAnnotations().stream()
-        .filter(a -> a.getClassRef().getName().equals("PrinterColumn")).map(a -> a.getParameters())
+      .filter(a -> a.getClassRef().getName().equals("PrinterColumn")).map(AnnotationRef::getParameters)
         .findFirst().orElse(Collections.emptyMap());
       String type = AbstractJsonSchema.getSchemaTypeFor(property.getTypeRef());
       String column = (String) parameters.get("name");
@@ -89,7 +90,7 @@ public abstract class AbstractCustomResourceHandler {
         getPrinterColumnDecorator(name, version, path, type, column, description, format));
     });
   }
-
+  
   /**
    * Provides the decorator implementation associated with the CRD generation version.
    *
@@ -104,7 +105,6 @@ public abstract class AbstractCustomResourceHandler {
    */
   protected abstract Decorator getPrinterColumnDecorator(String name, String version, String path,
     String type, String column, String description, String format);
-
   /**
    * Adds all the necessary decorators to build the specific CRD version. For optional paths, see
    * https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#customresourcesubresourcescale-v1-apiextensions-k8s-io

@@ -30,23 +30,23 @@ import io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaChannel;
 import io.fabric8.knative.eventing.contrib.kafka.v1beta1.KafkaChannelBuilder;
 import io.fabric8.knative.eventing.contrib.prometheus.v1alpha1.PrometheusSource;
 import io.fabric8.knative.eventing.contrib.prometheus.v1alpha1.PrometheusSourceBuilder;
-import io.fabric8.knative.mock.KnativeServer;
+import io.fabric8.knative.mock.EnableKnativeMockClient;
+import io.fabric8.knative.mock.KnativeMockServer;
 import io.fabric8.kubernetes.api.model.LabelSelectorBuilder;
 import io.fabric8.kubernetes.api.model.ObjectReferenceBuilder;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableRuleMigrationSupport
+@EnableKnativeMockClient
 class EventsContribResourcesTest {
-  @Rule
-  public KnativeServer server = new KnativeServer();
 
+
+  KnativeClient client;
+  KnativeMockServer server;
   @Test
   void testKafkaChannel() {
     // Given
@@ -60,10 +60,9 @@ class EventsContribResourcesTest {
     server.expect().post().withPath("/apis/messaging.knative.dev/v1beta1/namespaces/ns1/kafkachannels")
       .andReturn(HttpURLConnection.HTTP_OK, kafkaChannel)
       .once();
-    KnativeClient kn = server.getKnativeClient();
 
     // When
-    kafkaChannel = kn.kafkaChannels().inNamespace("ns1").createOrReplace(kafkaChannel);
+    kafkaChannel = client.kafkaChannels().inNamespace("ns1").createOrReplace(kafkaChannel);
 
     // Then
     assertNotNull(kafkaChannel);
@@ -88,10 +87,9 @@ class EventsContribResourcesTest {
     server.expect().post().withPath("/apis/sources.knative.dev/v1alpha1/namespaces/ns1/awssqssources")
       .andReturn(HttpURLConnection.HTTP_OK, awsSqsSource)
       .once();
-    KnativeClient kn = server.getKnativeClient();
 
     // When
-    awsSqsSource = kn.awsSqsSources().inNamespace("ns1").createOrReplace(awsSqsSource);
+    awsSqsSource = client.awsSqsSources().inNamespace("ns1").createOrReplace(awsSqsSource);
 
     // Then
     assertNotNull(awsSqsSource);
@@ -119,10 +117,9 @@ class EventsContribResourcesTest {
     server.expect().post().withPath("/apis/sources.knative.dev/v1alpha1/namespaces/ns1/couchdbsources")
       .andReturn(HttpURLConnection.HTTP_OK, couchDbSource)
       .once();
-    KnativeClient kn = server.getKnativeClient();
 
     // When
-    couchDbSource = kn.couchDbSources().inNamespace("ns1").createOrReplace(couchDbSource);
+    couchDbSource = client.couchDbSources().inNamespace("ns1").createOrReplace(couchDbSource);
 
     // Then
     assertNotNull(couchDbSource);
@@ -151,10 +148,9 @@ class EventsContribResourcesTest {
     server.expect().post().withPath("/apis/sources.knative.dev/v1alpha1/namespaces/ns1/githubsources")
       .andReturn(HttpURLConnection.HTTP_OK, gitHubSource)
       .once();
-    KnativeClient kn = server.getKnativeClient();
 
     // When
-    gitHubSource = kn.gitHubSources().inNamespace("ns1").createOrReplace(gitHubSource);
+    gitHubSource = client.gitHubSources().inNamespace("ns1").createOrReplace(gitHubSource);
 
     // Then
     assertNotNull(gitHubSource);
@@ -183,10 +179,9 @@ class EventsContribResourcesTest {
     server.expect().post().withPath("/apis/sources.knative.dev/v1alpha1/namespaces/ns1/gitlabsources")
       .andReturn(HttpURLConnection.HTTP_OK, gitLabSource)
       .once();
-    KnativeClient kn = server.getKnativeClient();
 
     // When
-    gitLabSource = kn.gitLabSources().inNamespace("ns1").createOrReplace(gitLabSource);
+    gitLabSource = client.gitLabSources().inNamespace("ns1").createOrReplace(gitLabSource);
 
     // Then
     assertNotNull(gitLabSource);
@@ -212,10 +207,9 @@ class EventsContribResourcesTest {
     server.expect().post().withPath("/apis/bindings.knative.dev/v1alpha1/namespaces/ns1/gitlabbindings")
       .andReturn(HttpURLConnection.HTTP_OK, gitLabBinding)
       .once();
-    KnativeClient kn = server.getKnativeClient();
 
     // When
-    gitLabBinding = kn.gitLabBindings().inNamespace("ns1").createOrReplace(gitLabBinding);
+    gitLabBinding = client.gitLabBindings().inNamespace("ns1").createOrReplace(gitLabBinding);
 
     // Then
     assertNotNull(gitLabBinding);
@@ -245,10 +239,9 @@ class EventsContribResourcesTest {
     server.expect().post().withPath("/apis/sources.knative.dev/v1alpha1/namespaces/ns1/prometheussources")
       .andReturn(HttpURLConnection.HTTP_OK, prometheusSource)
       .once();
-    KnativeClient kn = server.getKnativeClient();
 
     // When
-    prometheusSource = kn.prometheusSources().inNamespace("ns1").createOrReplace(prometheusSource);
+    prometheusSource = client.prometheusSources().inNamespace("ns1").createOrReplace(prometheusSource);
 
     // Then
     assertNotNull(prometheusSource);

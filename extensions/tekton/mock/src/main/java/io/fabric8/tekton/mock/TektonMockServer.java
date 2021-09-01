@@ -22,7 +22,7 @@ import io.fabric8.mockwebserver.Context;
 import io.fabric8.mockwebserver.ServerRequest;
 import io.fabric8.mockwebserver.ServerResponse;
 import io.fabric8.tekton.client.DefaultTektonClient;
-import io.fabric8.tekton.client.TektonClient;
+import io.fabric8.tekton.client.NamespacedTektonClient;
 import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockWebServer;
 
@@ -52,7 +52,7 @@ public class TektonMockServer extends KubernetesMockServer {
     return new String[]{"/api","/apis/tekton.k8s.io"};
   }
 
-  public TektonClient createTekton() {
+  public NamespacedTektonClient createTekton() {
     Config config = new ConfigBuilder()
       .withMasterUrl(url("/"))
       .withNamespace("test")

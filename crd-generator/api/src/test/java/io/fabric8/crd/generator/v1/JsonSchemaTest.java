@@ -17,6 +17,7 @@ package io.fabric8.crd.generator.v1;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -80,6 +81,33 @@ class JsonSchemaTest {
     assertTrue(spec.containsKey("from-getter"));
     assertTrue(spec.containsKey("unnamed"));
     assertTrue(spec.containsKey("emptySetter"));
+  }
+
+  @Test
+  void shouldHaveDescriptionIfJacksonAnnotated() {
+    // Given
+    TypeDef annotated = Types.typeDefFrom(Annotated.class);
+    // When
+    JSONSchemaProps schema = JsonSchema.from(annotated);
+    // Then
+    assertNotNull(schema);
+    Map<String, JSONSchemaProps> properties = schema.getProperties();
+    assertEquals(2, properties.size());
+    Map<String, JSONSchemaProps> spec = properties.get("spec").getProperties();
+    // should have description
+    assertTrue(spec.containsKey("from-field"));
+    JSONSchemaProps fromField = spec.get("from-field");
+    assertNotNull(fromField.getDescription(), "description cannot be null");
+    assertEquals("from-field-description", fromField.getDescription());
+    assertTrue(spec.containsKey("from-getter"));
+    JSONSchemaProps fromGetter = spec.get("from-getter");
+    assertNotNull(fromGetter.getDescription(), "description cannot be null");
+    assertEquals("from-getter-description", fromGetter.getDescription());
+    // should not have description
+    assertTrue(spec.containsKey("unnamed"));
+    assertNull(spec.get("unnamed").getDescription());
+    assertTrue(spec.containsKey("emptySetter"));
+    assertNull(spec.get("emptySetter").getDescription());
   }
 
 }

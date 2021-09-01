@@ -60,6 +60,7 @@ import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClass;
 import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClassList;
 import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
+import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.RawCustomResourceOperationsImpl;
 import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectorBuilder;
 import io.fabric8.kubernetes.client.extended.run.RunOperations;
@@ -112,8 +113,43 @@ public interface KubernetesClient extends Client {
    * @param <T> T type represents CustomResource type. If it's a namespaced resource, it must implement
    *           {@link io.fabric8.kubernetes.api.model.Namespaced}
    * @return returns a MixedOperation object with which you can do basic CustomResource operations
+   * @deprecated use {@link #resources(Class)} instead
    */
+  @Deprecated
   <T extends CustomResource> MixedOperation<T, KubernetesResourceList<T>, Resource<T>> customResources(Class<T> resourceType);
+  
+  /**
+   * Typed API for managing resources. Any properly annotated POJO can be utilized as a resource.
+   *
+   * <p>
+   *   Note: your resource POJO (T in this context) must implement
+   *   {@link io.fabric8.kubernetes.api.model.Namespaced} if it is a namespace-scoped resource.
+   * </p>
+   *
+   * @param resourceType Class for resource
+   * @param <T> T type represents resource type. If it's a namespaced resource, it must implement
+   *           {@link io.fabric8.kubernetes.api.model.Namespaced}
+   * @return returns a MixedOperation object with which you can do basic resource operations.  If the class is a known type the dsl operation logic will be used.
+   */
+  default <T extends HasMetadata> MixedOperation<T, KubernetesResourceList<T>, Resource<T>> resources(Class<T> resourceType) {
+    return resources(resourceType, null);
+  }
+  
+  /**
+   * Typed API for managing resources. Any properly annotated POJO can be utilized as a resource.
+   *
+   * <p>
+   *   Note: your resource POJO (T in this context) must implement
+   *   {@link io.fabric8.kubernetes.api.model.Namespaced} if it is a namespace-scoped resource.
+   * </p>
+   *
+   * @param resourceType Class for resource
+   * @param <T> T type represents resource type. If it's a namespaced resource, it must implement
+   *           {@link io.fabric8.kubernetes.api.model.Namespaced}
+   * @param <L> L type represents resource list type
+   * @return returns a MixedOperation object with which you can do basic resource operations.  If the class is a known type the dsl operation logic will be used.
+   */
+  <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> resources(Class<T> resourceType, Class<L> listClass);
 
   /**
    * Typed API for managing CustomResources. You would need to provide POJOs for
@@ -131,9 +167,10 @@ public interface KubernetesClient extends Client {
    *           {@link io.fabric8.kubernetes.api.model.Namespaced}
    * @param <L> L type represents CustomResourceList type
    * @return returns a MixedOperation object with which you can do basic CustomResource operations
+   * @deprecated use {@link #resources(Class, Class)} instead
    */
+  @Deprecated
   <T extends CustomResource, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(Class<T> resourceType, Class<L> listClass);
-
 
   /**
    * Typed API for managing CustomResources. You would need to provide POJOs for
@@ -149,7 +186,7 @@ public interface KubernetesClient extends Client {
    *
    * @deprecated Since 5.x versions of client {@link CustomResourceDefinitionContext} is now configured via annotations
    *             inside POJOs, no need to provide it explicitly here.
-   * @param crdContext CustomResourceDefinitionContext describes the core fields used to search for CustomResources
+   * @param context ResourceDefinitionContext describes the core fields used to search for CustomResources
    * @param resourceType Class for CustomResource
    * @param listClass Class for list object for CustomResource
    * @param <T> T type represents CustomResource type. If it's Namespaced resource, it must implement
@@ -158,17 +195,17 @@ public interface KubernetesClient extends Client {
    * @return returns a MixedOperation object with which you can do basic CustomResource operations
    */
   @Deprecated
-  <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(CustomResourceDefinitionContext crdContext, Class<T> resourceType, Class<L> listClass);
+  <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(ResourceDefinitionContext context, Class<T> resourceType, Class<L> listClass);
   
   /**
    * Semi-Typed API for managing {@link GenericKubernetesResource}s which can represent any resource.
    *
-   * @param crdContext CustomResourceDefinitionContext describes the core fields
+   * @param context ResourceDefinitionContext describes the core fields
    * @return returns a MixedOperation object with which you can do basic operations
    */
   default MixedOperation<GenericKubernetesResource, GenericKubernetesResourceList, Resource<GenericKubernetesResource>> genericKubernetesResources(
-      CustomResourceDefinitionContext crdContext) {
-    return customResources(crdContext, GenericKubernetesResource.class, GenericKubernetesResourceList.class);
+      ResourceDefinitionContext context) {
+    return customResources(context, GenericKubernetesResource.class, GenericKubernetesResourceList.class);
   }
 
   /**
@@ -215,7 +252,9 @@ public interface KubernetesClient extends Client {
    *
    * @param customResourceDefinition CustomResourceDefinitionContext - information about CustomResource like versioning, namespaced or not and group etc
    * @return a RawCustomResourceOperations object which offers several functions for creating, deleting, updating, watching CustomResources.
+   * @deprecated Use {@link #genericKubernetesResources(ResourceDefinitionContext)} instead
    */
+  @Deprecated
   RawCustomResourceOperationsImpl customResource(CustomResourceDefinitionContext customResourceDefinition);
 
   /**
@@ -293,7 +332,7 @@ public interface KubernetesClient extends Client {
    *
    * @return MixedOperation object with which you can do basic operations for ComponentStatus
    */
-  MixedOperation<ComponentStatus, ComponentStatusList, Resource<ComponentStatus>> componentstatuses();
+  NonNamespaceOperation<ComponentStatus, ComponentStatusList, Resource<ComponentStatus>> componentstatuses();
 
   /**
    * Load a Kubernetes resource object from file InputStream
@@ -443,7 +482,7 @@ public interface KubernetesClient extends Client {
    *
    * @return MixedOperation object for APIService related operations
    */
-  MixedOperation<APIService, APIServiceList, Resource<APIService>> apiServices();
+  NonNamespaceOperation<APIService, APIServiceList, Resource<APIService>> apiServices();
 
   /**
    * List related operations.

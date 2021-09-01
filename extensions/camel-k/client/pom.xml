@@ -21,7 +21,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>camel-k-extension-pom</artifactId>
-    <version>5.5-SNAPSHOT</version>
+    <version>5.8-SNAPSHOT</version>
   </parent>
 
   <artifactId>camel-k-client</artifactId>
@@ -33,10 +33,6 @@
       osgi.extender;
       filter:="(osgi.extender=osgi.serviceloader.registrar)"
     </osgi.require-capability>
-    <osgi.provide-capability>
-      osgi.serviceloader;
-      osgi.serviceloader=io.fabric8.kubernetes.client.ResourceHandler
-    </osgi.provide-capability>
     <osgi.import>
       io.fabric8.kubernetes.api.builder,
       !io.fabric8.camelk.client.*,
@@ -46,8 +42,7 @@
       io.fabric8.camelk.client.*
     </osgi.export>
     <osgi.include.resources>
-      /META-INF/services/io.fabric8.kubernetes.client.ExtensionAdapter=target/classes/META-INF/services/io.fabric8.kubernetes.client.ExtensionAdapter,
-      /META-INF/services/io.fabric8.kubernetes.client.ResourceHandler=target/classes/META-INF/services/io.fabric8.kubernetes.client.ResourceHandler
+      /META-INF/services/io.fabric8.kubernetes.client.ExtensionAdapter=target/classes/META-INF/services/io.fabric8.kubernetes.client.ExtensionAdapter
     </osgi.include.resources>
   </properties>
 

@@ -18,8 +18,6 @@ package io.fabric8.kubernetes.client.dsl.base;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.client.dsl.WritableOperation;
 import io.fabric8.kubernetes.client.utils.CreateOrReplaceHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import io.fabric8.kubernetes.api.builder.TypedVisitor;
 import io.fabric8.kubernetes.api.builder.Visitor;
@@ -48,7 +46,7 @@ import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.Informable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
-import io.fabric8.kubernetes.client.dsl.Replaceable;
+import io.fabric8.kubernetes.client.dsl.ReplaceDeletable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.internal.DefaultOperationInfo;
 import io.fabric8.kubernetes.client.dsl.internal.WatchConnectionManager;
@@ -78,7 +76,7 @@ import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -88,13 +86,13 @@ import okhttp3.HttpUrl;
 import okhttp3.Request;
 
 public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>>
-  extends OperationSupport
+  extends CreateOnlyResourceOperation<T, T>
   implements
   OperationInfo,
   MixedOperation<T, L, R>,
-  Resource<T> {
+  Resource<T>,
+  ListerWatcher<T, L> {
 
-  private static final Logger LOG = LoggerFactory.getLogger(BaseOperation.class);
   private static final String READ_ONLY_UPDATE_EXCEPTION_MESSAGE = "Cannot update read-only resources";
   private static final String READ_ONLY_EDIT_EXCEPTION_MESSAGE = "Cannot edit read-only resources";
 
@@ -108,7 +106,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   protected String apiVersion;
 
-  protected Class<T> type;
   protected Class<L> listType;
   private Map<String, Function<T, List<String>>> indexers;
 
@@ -136,9 +133,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     try {
       HttpUrl.Builder requestUrlBuilder = HttpUrl.get(url).newBuilder();
 
-      addQueryStringParam(requestUrlBuilder, "labelSelector", getLabelQueryParam());
-      addQueryStringParam(requestUrlBuilder, "fieldSelector", getFieldQueryParam());
-
       Request.Builder requestBuilder = new Request.Builder().get().url(requestUrlBuilder.build());
       L answer = handleResponse(requestBuilder, listType);
       updateApiVersion(answer);
@@ -153,12 +147,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   protected URL fetchListUrl(URL url, ListOptions listOptions) throws MalformedURLException {
     return new URL(HttpClientUtils.appendListOptionParams(HttpUrl.get(url.toString()).newBuilder(), listOptions).toString());
-  }
-
-  private void addQueryStringParam(HttpUrl.Builder requestUrlBuilder, String name, String value) {
-    if (Utils.isNotNullOrEmpty(value)) {
-      requestUrlBuilder.addQueryParameter(name, value);
-    }
   }
 
   @Override
@@ -268,7 +256,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public Replaceable<T> lockResourceVersion(String resourceVersion) {
+  public ReplaceDeletable<T> lockResourceVersion(String resourceVersion) {
     return newInstance(context.withResourceVersion(resourceVersion));
   }
 
@@ -320,45 +308,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   @Override
   public Gettable<T> fromServer() {
     return newInstance(context.withReloadingFromServer(true));
-  }
-
-  @SafeVarargs
-  @Override
-  public final T create(T... resources) {
-    try {
-      if (resources.length > 1) {
-        throw new IllegalArgumentException("Too many items to create.");
-      } else if (resources.length == 1) {
-        return withItem(resources[0]).create();
-      } else if (getItem() == null) {
-        throw new IllegalArgumentException("Nothing to create.");
-      } else {
-        return handleCreate(getItem());
-      }
-    }  catch (InterruptedException ie) {
-      Thread.currentThread().interrupt();
-      throw KubernetesClientException.launderThrowable(forOperationType("create"), ie);
-    } catch (ExecutionException | IOException e) {
-      throw KubernetesClientException.launderThrowable(forOperationType("create"), e);
-    }
-
-  }
-
-  @Override
-  public T create(T resource) {
-    try {
-      if (resource != null) {
-        return handleCreate(resource);
-      } else {
-        throw new IllegalArgumentException("Nothing to create.");
-      }
-    }  catch (InterruptedException ie) {
-      Thread.currentThread().interrupt();
-      throw KubernetesClientException.launderThrowable(forOperationType("create"), ie);
-    } catch (ExecutionException | IOException e) {
-      throw KubernetesClientException.launderThrowable(forOperationType("create"), e);
-    }
-
   }
 
   @SafeVarargs
@@ -517,11 +466,17 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
         sb.append(entry.getKey()).append(" notin ").append("(").append(Utils.join(entry.getValue())).append(")");
       }
     }
-    return sb.toString();
+    if (sb.length() > 0) {
+      return sb.toString();
+    }
+    return null;
   }
 
   public String getFieldQueryParam() {
     StringBuilder sb = new StringBuilder();
+    if (Utils.isNotNullOrEmpty(context.getName())) {
+      sb.append("metadata.name").append("=").append(context.getName());
+    }
     Map<String, String> fields = context.getFields();
     if (fields != null && !fields.isEmpty()) {
       for (Iterator<Map.Entry<String, String>> iter = fields.entrySet().iterator(); iter.hasNext(); ) {
@@ -547,27 +502,49 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
         }
       }
     }
-    return sb.toString();
-  }
-
-  public L list() {
-    try {
-      return listRequestHelper(getResourceUrl(namespace, name));
-    } catch (IOException e) {
-      throw KubernetesClientException.launderThrowable(forOperationType("list"), e);
+    if (sb.length() > 0) {
+      return sb.toString();
     }
+    return null;
   }
 
+  @Override
+  public L list() {
+    return list(new ListOptions());
+  }
+
+  @Override
   public L list(Integer limitVal, String continueVal) {
     return list(new ListOptionsBuilder().withLimit(Long.parseLong(limitVal.toString())).withContinue(continueVal).build());
   }
 
+  @Override
   public L list(ListOptions listOptions) {
     try {
-      return listRequestHelper(fetchListUrl(getNamespacedUrl(), listOptions));
+      return listRequestHelper(
+          fetchListUrl(getNamespacedUrl(), defaultListOptions(listOptions, null)));
     } catch (MalformedURLException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("list"), e);
     }
+  }
+
+  /**
+   * Override the options based upon the context / call
+   */
+  private ListOptions defaultListOptions(ListOptions options, Boolean watch) {
+    options.setWatch(watch);
+    String fieldQueryParam = getFieldQueryParam();
+    if (fieldQueryParam != null) {
+      options.setFieldSelector(fieldQueryParam);
+    }
+    String lableQueryParam = getLabelQueryParam();
+    if (lableQueryParam != null) {
+      options.setLabelSelector(lableQueryParam);
+    }
+    if (resourceVersion != null) {
+      options.setResourceVersion(resourceVersion);
+    }
+    return options;
   }
 
   @Override
@@ -656,9 +633,9 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     try {
       if (item != null) {
         updateApiVersion(item);
-        handleDelete(item, gracePeriodSeconds, propagationPolicy, cascading);
+        handleDelete(item, gracePeriodSeconds, propagationPolicy, resourceVersion, cascading);
       } else {
-        handleDelete(getResourceURLForWriteOperation(getResourceUrl()), gracePeriodSeconds, propagationPolicy, cascading);
+        handleDelete(getResourceURLForWriteOperation(getResourceUrl()), gracePeriodSeconds, propagationPolicy, resourceVersion, cascading);
       }
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(forOperationType("delete"), e);
@@ -670,14 +647,13 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public R withResourceVersion(String resourceVersion) {
-    return (R) newInstance(context.withResourceVersion(resourceVersion));
+  public BaseOperation<T, L, R> withResourceVersion(String resourceVersion) {
+    return newInstance(context.withResourceVersion(resourceVersion));
   }
 
+  @Override
   public Watch watch(final Watcher<T> watcher) {
-    return watch(new ListOptionsBuilder()
-      .withResourceVersion(resourceVersion)
-      .build(), watcher);
+    return watch(new ListOptions(), watcher); 
   }
 
   @Override
@@ -690,7 +666,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   @Override
   public Watch watch(ListOptions options, final Watcher<T> watcher) {
     WatcherToggle<T> watcherToggle = new WatcherToggle<>(watcher, true);
-    options.setWatch(Boolean.TRUE);
+    options = defaultListOptions(options, true);
     WatchConnectionManager<T, L> watch = null;
     try {
       watch = new WatchConnectionManager<>(
@@ -771,6 +747,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     return handleResponse(requestBuilder, getType());
   }
 
+  @Override
   protected T handleCreate(T resource) throws ExecutionException, InterruptedException, IOException {
     updateApiVersion(resource);
     return handleCreate(resource, getType());
@@ -851,6 +828,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     return cascading;
   }
 
+  @Override
   public T getItem() {
     return item;
   }
@@ -871,12 +849,9 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     return propagationPolicy;
   }
 
+  @Override
   public String getResourceT() {
     return resourceT;
-  }
-
-  public Class<T> getType() {
-    return type;
   }
 
   public Class<L> getListType() {
@@ -910,7 +885,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public BaseOperation<T, L, R> withWaitRetryBackoff(long initialBackoff, TimeUnit backoffUnit, double backoffMultiplier) {
-    return newInstance(context.withWatchRetryInitialBackoffMillis(backoffUnit.toMillis(initialBackoff)).withWatchRetryBackoffMultiplier(backoffMultiplier));
+    return this;
   }
 
   protected Class<? extends Config> getConfigType() {
@@ -924,7 +899,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
    * @param list Kubernetes resource list
    */
   protected void updateApiVersion(KubernetesResourceList<T> list) {
-    String version = getApiVersion();
+    String version = apiVersion;
     if (list != null && version != null && version.length() > 0 && list.getItems() != null) {
       list.getItems().forEach(this::updateApiVersion);
     }
@@ -937,7 +912,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
    * @param hasMetadata object whose api version needs to be updated
    */
   protected void updateApiVersion(HasMetadata hasMetadata) {
-    String version = getApiVersion();
+    String version = apiVersion;
     if (hasMetadata != null && version != null && version.length() > 0) {
       String current = hasMetadata.getApiVersion();
       // lets overwrite the api version if its currently missing, the resource uses an API Group with '/'
@@ -948,26 +923,17 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     }
   }
 
-  public String getApiVersion() {
-    return apiVersion;
-  }
-
-  /**
-   * Return true if this is an API Group where the versions include a slash in them
-   *
-   * @return boolean value indicating whether API group or not
-   */
-  public boolean isApiGroup() {
-    return apiVersion != null && apiVersion.indexOf('/') > 0;
-  }
-
   public Readiness getReadiness() {
-    return Readiness.getInstance();
+    return config.getReadiness();
   }
 
   @Override
-  public final Boolean isReady() {
-    return getReadiness().isReady(get());
+  public final boolean isReady() {
+    T item = fromServer().get();
+    if (item == null) {
+      return false;
+    }
+    return getReadiness().isReady(item);
   }
 
   @Override
@@ -977,56 +943,70 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public T waitUntilCondition(Predicate<T> condition, long amount, TimeUnit timeUnit) {
-    CompletableFuture<T> future = new CompletableFuture<>();
-    // tests the condition, trapping any exceptions
-    Consumer<T> tester = obj -> {
-      try {
-        if (condition.test(obj)) {
-          future.complete(obj);
-        }
-      } catch (Exception e) {
-        future.completeExceptionally(e);
+    CompletableFuture<T> futureCondition = informOnCondition(l -> {
+      if (l.isEmpty()) {
+        return condition.test(null);
       }
-    };
-    // start an informer that supplies the tester with events and empty list handling
-    try (SharedIndexInformer<T> informer = this.createInformer(0, l -> {
-      if (l.getItems().isEmpty()) {
-        tester.accept(null);
-      }
-    }, new ResourceEventHandler<T>() {
-
-      @Override
-      public void onAdd(T obj) {
-        tester.accept(obj);
-      }
-
-      @Override
-      public void onUpdate(T oldObj, T newObj) {
-        tester.accept(newObj);
-      }
-
-      @Override
-      public void onDelete(T obj, boolean deletedFinalStateUnknown) {
-        tester.accept(null);
-      }
-    })) {
-      // prevent unnecessary watches
-      future.whenComplete((r,t) -> informer.stop());
-      informer.run();
-      return future.get(amount, timeUnit);
-    } catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-      throw KubernetesClientException.launderThrowable(e.getCause());
-    } catch (ExecutionException e) {
-      throw KubernetesClientException.launderThrowable(e.getCause());
-    } catch (TimeoutException e) {
+      return condition.test(l.get(0));
+    }).thenApply(l -> l.isEmpty() ? null : l.get(0));
+    
+    if (!Utils.waitUntilReady(futureCondition, amount, timeUnit)) {
+      futureCondition.cancel(true);
       T i = getItem();
       if (i != null) {
         throw new KubernetesClientTimeoutException(i, amount, timeUnit);
       }
       throw new KubernetesClientTimeoutException(getKind(), getName(), getNamespace(), amount, timeUnit);
     }
+    return futureCondition.getNow(null);
   }
+  
+  @Override
+  public CompletableFuture<List<T>> informOnCondition(Predicate<List<T>> condition) {
+    CompletableFuture<List<T>> future = new CompletableFuture<>();
+    AtomicReference<Runnable> tester = new AtomicReference<>();
+    
+    // create an informer that supplies the tester with events and empty list handling
+    SharedIndexInformer<T> informer = this.createInformer(0);
+    
+    // prevent unnecessary watches and handle closure
+    future.whenComplete((r, t) -> informer.stop());
+    
+    // use the cache to evaluate the list predicate, trapping any exceptions
+    Runnable test = () -> {
+      try {
+        // could skip if lastResourceVersion has not changed
+        List<T> list = informer.getStore().list();
+        if (condition.test(list)) {
+          future.complete(list);
+        }
+      } catch (Exception e) {
+        future.completeExceptionally(e);
+      }
+    };
+    tester.set(test);
+    
+    informer.addEventHandler(new ResourceEventHandler<T>() {
+      @Override
+      public void onAdd(T obj) {
+        test.run();
+      }
+      @Override
+      public void onDelete(T obj, boolean deletedFinalStateUnknown) {
+        test.run();
+      }
+      @Override
+      public void onUpdate(T oldObj, T newObj) {
+        test.run();
+      }
+      @Override
+      public void onNothing() {
+        test.run();
+      }
+    });
+    informer.run();
+    return future;
+  }  
 
   public void setType(Class<T> type) {
     this.type = type;
@@ -1054,42 +1034,26 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public SharedIndexInformer<T> inform(ResourceEventHandler<T> handler, long resync) {
-    DefaultSharedIndexInformer<T, L> result = createInformer(resync, null, handler);
+    DefaultSharedIndexInformer<T, L> result = createInformer(resync);
+    if (handler != null) {
+      result.addEventHandler(handler);
+    }
     // synchronous start list/watch must succeed in the calling thread
     // initial add events will be processed in the calling thread as well
     result.run();
     return result;
   }
 
-  private DefaultSharedIndexInformer<T, L> createInformer(long resync, Consumer<L> onList, ResourceEventHandler<T> handler) {
+  private DefaultSharedIndexInformer<T, L> createInformer(long resync) {
     T i = getItem();
-    String name = (Utils.isNotNullOrEmpty(getName()) || i != null) ? checkName(i) : null;
+    if (Utils.isNotNullOrEmpty(getName()) && i != null) {
+      checkName(i);
+    }
 
-    // use the local context / namespace
-    DefaultSharedIndexInformer<T, L> informer = new DefaultSharedIndexInformer<>(getType(), new ListerWatcher<T, L>() {
-      @Override
-      public L list(ListOptions params, String namespace, OperationContext context) {
-        // convert the name into something listable
-        if (name != null) {
-          params.setFieldSelector("metadata.name="+name);
-        }
-        L result = BaseOperation.this.list(params);
-        if (onList != null) {
-          onList.accept(result);
-        }
-        return result;
-      }
-
-      @Override
-      public Watch watch(ListOptions params, String namespace, OperationContext context, Watcher<T> watcher) {
-        return BaseOperation.this.watch(params, watcher);
-      }
-    }, resync, context, Runnable::run); // just run the event notification in the websocket thread
+    // use the local context / namespace but without a resourceVersion
+    DefaultSharedIndexInformer<T, L> informer = new DefaultSharedIndexInformer<>(getType(), this.withResourceVersion(null), resync, Runnable::run); // just run the event notification in the websocket thread
     if (indexers != null) {
       informer.addIndexers(indexers);
-    }
-    if (handler != null) {
-      informer.addEventHandler(handler);
     }
     return informer;
   }

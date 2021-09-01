@@ -16,27 +16,23 @@
 package io.fabric8.knative.test.crud;
 
 import io.fabric8.knative.client.KnativeClient;
-import io.fabric8.knative.mock.KnativeServer;
+import io.fabric8.knative.mock.EnableKnativeMockClient;
 import io.fabric8.knative.serving.v1.Route;
 import io.fabric8.knative.serving.v1.RouteBuilder;
 import io.fabric8.knative.serving.v1.RouteList;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-@EnableRuleMigrationSupport
+@EnableKnativeMockClient(crud = true)
 class RouteCrudTest {
-  @Rule
-  public KnativeServer server = new KnativeServer(true, true);
+
+  KnativeClient client;
 
   @Test
   void shouldReturnEmptyList() {
     // Given
-    KnativeClient client = server.getKnativeClient();
+
 
     // When
     RouteList RouteList = client.routes().inNamespace("ns1").list();
@@ -49,7 +45,7 @@ class RouteCrudTest {
   @Test
   void shouldListAndGetRoute() {
     // Given
-    KnativeClient client = server.getKnativeClient();
+
     Route Route2 = new RouteBuilder().withNewMetadata().withName("Route2").endMetadata()
       .withNewSpec()
       .addNewTraffic()
@@ -73,7 +69,7 @@ class RouteCrudTest {
   @Test
   void shouldDeleteARoute() {
     // Given
-    KnativeClient client = server.getKnativeClient();
+
     Route route3 = new RouteBuilder().withNewMetadata().withName("route3").endMetadata().build();
     client.routes().inNamespace("ns3").create(route3);
 

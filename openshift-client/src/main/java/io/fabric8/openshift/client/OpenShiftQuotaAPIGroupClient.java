@@ -24,8 +24,6 @@ import io.fabric8.openshift.api.model.AppliedClusterResourceQuotaList;
 import io.fabric8.openshift.api.model.ClusterResourceQuota;
 import io.fabric8.openshift.api.model.ClusterResourceQuotaList;
 import io.fabric8.openshift.client.dsl.OpenShiftQuotaAPIGroupDSL;
-import io.fabric8.openshift.client.dsl.internal.quota.AppliedClusterResourceQuotaOperationsImpl;
-import io.fabric8.openshift.client.dsl.internal.quota.ClusterResourceQuotaOperationsImpl;
 import okhttp3.OkHttpClient;
 
 public class OpenShiftQuotaAPIGroupClient extends BaseClient implements OpenShiftQuotaAPIGroupDSL {
@@ -39,11 +37,11 @@ public class OpenShiftQuotaAPIGroupClient extends BaseClient implements OpenShif
 
   @Override
   public MixedOperation<AppliedClusterResourceQuota, AppliedClusterResourceQuotaList, Resource<AppliedClusterResourceQuota>> appliedClusterResourceQuotas() {
-    return new AppliedClusterResourceQuotaOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(AppliedClusterResourceQuota.class, AppliedClusterResourceQuotaList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 
   @Override
   public MixedOperation<ClusterResourceQuota, ClusterResourceQuotaList, Resource<ClusterResourceQuota>> clusterResourceQuotas() {
-    return new ClusterResourceQuotaOperationsImpl(httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(ClusterResourceQuota.class, ClusterResourceQuotaList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
   }
 }

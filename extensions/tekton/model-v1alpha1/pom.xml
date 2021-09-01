@@ -21,7 +21,7 @@
     <parent>
       <groupId>io.fabric8</groupId>
       <artifactId>tekton-extension-pom</artifactId>
-      <version>5.5-SNAPSHOT</version>
+      <version>5.8-SNAPSHOT</version>
     </parent>
 
     <artifactId>tekton-model-v1alpha1</artifactId>
@@ -68,11 +68,6 @@
       <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-migrationsupport</artifactId>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.skyscreamer</groupId>
-        <artifactId>jsonassert</artifactId>
         <scope>test</scope>
       </dependency>
       <dependency>

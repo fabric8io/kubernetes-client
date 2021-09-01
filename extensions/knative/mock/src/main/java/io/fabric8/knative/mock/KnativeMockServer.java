@@ -15,6 +15,7 @@
  */
 package io.fabric8.knative.mock;
 
+import io.fabric8.knative.client.NamespacedKnativeClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
@@ -52,7 +53,7 @@ public class KnativeMockServer extends KubernetesMockServer {
     return new String[]{"/api","/apis/serving.knative.dev", "/apis/eventing/knative.dev"};
   }
 
-  public KnativeClient createKnative() {
+  public NamespacedKnativeClient createKnative() {
     Config config = new ConfigBuilder()
       .withMasterUrl(url("/"))
       .withNamespace("test")

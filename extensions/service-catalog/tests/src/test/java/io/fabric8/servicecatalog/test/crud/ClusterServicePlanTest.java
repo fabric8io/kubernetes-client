@@ -20,26 +20,19 @@ import io.fabric8.servicecatalog.api.model.ClusterServicePlan;
 import io.fabric8.servicecatalog.api.model.ClusterServicePlanBuilder;
 import io.fabric8.servicecatalog.api.model.ClusterServicePlanList;
 import io.fabric8.servicecatalog.client.ServiceCatalogClient;
-import io.fabric8.servicecatalog.server.mock.ServiceCatalogServer;
-
+import io.fabric8.servicecatalog.server.mock.EnableServiceCatalogMockClient;
 import org.junit.jupiter.api.Test;
-import org.junit.Rule;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
-@EnableRuleMigrationSupport
+@EnableServiceCatalogMockClient(crud = true)
 class ClusterServicePlanTest {
 
-    @Rule
-    public ServiceCatalogServer server = new ServiceCatalogServer(true, true);
+    ServiceCatalogClient client;
 
     @Test
     void testCrud() {
-        ServiceCatalogClient client = server.getServiceCatalogClient();
+
         ClusterServicePlan plan1 = new ClusterServicePlanBuilder()
                 .withNewMetadata()
                 .withName("plan1")

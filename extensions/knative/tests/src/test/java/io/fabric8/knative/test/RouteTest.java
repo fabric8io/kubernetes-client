@@ -16,21 +16,21 @@
 package io.fabric8.knative.test;
 
 import io.fabric8.knative.client.KnativeClient;
-import io.fabric8.knative.mock.KnativeServer;
+import io.fabric8.knative.mock.EnableKnativeMockClient;
+import io.fabric8.knative.mock.KnativeMockServer;
 import io.fabric8.knative.serving.v1.Route;
 import io.fabric8.knative.serving.v1.RouteBuilder;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnableRuleMigrationSupport
+@EnableKnativeMockClient
 class RouteTest {
-  @Rule
-  public KnativeServer server = new KnativeServer();
+
+  KnativeClient client;
+  KnativeMockServer server;
 
   @Test
   void testCreateOrReplace() {
@@ -56,10 +56,9 @@ class RouteTest {
     server.expect().put().withPath("/apis/serving.knative.dev/v1/namespaces/test/routes/helloworld-nodejs-red-blue1")
       .andReturn(HttpURLConnection.HTTP_OK, route)
       .once();
-    KnativeClient kn = server.getKnativeClient();
 
     // When
-    route = kn.routes().createOrReplace(new RouteBuilder()
+    route = client.routes().createOrReplace(new RouteBuilder()
       .withNewMetadata()
       .withName("helloworld-nodejs-red-blue1")
       .addToAnnotations("foo", "bar")

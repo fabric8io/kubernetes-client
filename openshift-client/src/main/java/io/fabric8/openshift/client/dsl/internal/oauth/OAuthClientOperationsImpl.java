@@ -36,9 +36,7 @@ public class OAuthClientOperationsImpl extends OpenShiftOperation<OAuthClient, O
 
   public OAuthClientOperationsImpl(OperationContext context) {
     super(context.withApiGroupName(OAUTH)
-      .withPlural("oauthclients"));
-    this.type = OAuthClient.class;
-    this.listType = OAuthClientList.class;
+      .withPlural("oauthclients"), OAuthClient.class, OAuthClientList.class);
   }
 
   @Override

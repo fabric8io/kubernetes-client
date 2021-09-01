@@ -29,41 +29,22 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class CustomResourceDefinitionContext {
+public class CustomResourceDefinitionContext extends ResourceDefinitionContext {
   private String name;
-  private String group;
   private String scope;
-  private String plural;
-  private String version;
-  private String kind;
   private boolean statusSubresource;
 
   public String getName() { return name; }
-
-  public String getGroup() {
-    return group;
-  }
 
   public String getScope() {
     return scope;
   }
 
-  public String getPlural() {
-    return plural;
-  }
-
-  public String getVersion() {
-    return version;
-  }
-
-  public String getKind() {
-    return kind;
-  }
-  
   public boolean isStatusSubresource() {
     return statusSubresource;
   }
 
+  @Override
   public boolean isNamespaceScoped() {
     if (scope != null) {
       return Scope.NAMESPACED.value().equals(scope);

@@ -17,10 +17,10 @@ package io.fabric8.camelk.client;
 
 import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.camelk.client.dsl.V1alpha1APIGroupDSL;
-import io.fabric8.camelk.client.internal.v1alpha1.KameletOperationsImpl;
 import io.fabric8.camelk.v1alpha1.Kamelet;
 import io.fabric8.camelk.v1alpha1.KameletList;
 import okhttp3.OkHttpClient;
@@ -37,6 +37,6 @@ public class V1alpha1APIGroupClient extends BaseClient implements V1alpha1APIGro
 
   @Override
   public MixedOperation<Kamelet, KameletList, Resource<Kamelet>> kamelets() {
-    return new KameletOperationsImpl(httpClient, getConfiguration());
+    return Handlers.getOperation(Kamelet.class, KameletList.class, httpClient,  getConfiguration());
   }
 }

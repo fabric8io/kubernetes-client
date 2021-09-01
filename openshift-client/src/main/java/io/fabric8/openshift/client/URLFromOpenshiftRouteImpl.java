@@ -52,7 +52,7 @@ public class URLFromOpenshiftRouteImpl implements ServiceToURLProvider {
         }
       } catch (KubernetesClientException e) {
         if(e.getCode() == HttpURLConnection.HTTP_FORBIDDEN) {
-          logger.warn("Could not lookup route:" + serviceName + " in namespace:"+ namespace +", due to: " + e.getMessage());
+          logger.warn("Could not lookup route:{} in namespace:{}, due to:{} ",serviceName,namespace,e.getMessage());
         }
       }
     }

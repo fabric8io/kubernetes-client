@@ -22,7 +22,9 @@ import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.ResourceNotFoundException;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
@@ -46,8 +48,17 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   private static final String PATCH_OPERATION = "patch";
   private static final String REPLACE_OPERATION = "replace";
 
-  public HasMetadataOperation(OperationContext ctx) {
+  public HasMetadataOperation(OperationContext ctx, Class<T> type, Class<L> listType) {
     super(ctx);
+    this.type = type;
+    this.listType = listType;
+    validateOperation(type);
+  }
+  
+  protected void validateOperation(Class<T> type) {
+    if (Handlers.shouldRegister(type)) {
+      throw new AssertionError(String.format("%s needs registered with Handlers", getClass().getName()));
+    }
   }
 
   @Override
@@ -58,11 +69,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   }
 
   private T clone(T item) {
-    try {
-      return createVisitableBuilder(item).build();
-    } catch (KubernetesClientException e) {
-      return Serialization.clone(item);
-    }
+    return Serialization.clone(item);
   }
   
   @Override
@@ -80,7 +87,11 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
     return patch(null, clone, item, false);
   }
   
-  protected VisitableBuilder<T, ?> createVisitableBuilder(T item) {
+  protected <V extends VisitableBuilder<T, V>> VisitableBuilder<T, V> createVisitableBuilder(T item) {
+    ResourceHandler<T, V> handler = Handlers.get(item);
+    if (handler != null) {
+      return handler.edit(item);
+    }
     throw new KubernetesClientException(NO_BUILDER);
   }
   
@@ -257,5 +268,10 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
     } catch (IOException | ExecutionException e) {
       throw KubernetesClientException.launderThrowable(forOperationType(PATCH_OPERATION), e);
     }
+  }
+  
+  @Override
+  public BaseOperation<T, L, R> newInstance(OperationContext context) {
+    return new HasMetadataOperation<>(context, type, listType);
   }
 }

@@ -16,27 +16,24 @@
 package io.fabric8.knative.test;
 
 import io.fabric8.knative.client.KnativeClient;
-import io.fabric8.knative.mock.KnativeServer;
+import io.fabric8.knative.mock.EnableKnativeMockClient;
+import io.fabric8.knative.mock.KnativeMockServer;
 import io.fabric8.knative.serving.v1.Service;
 import io.fabric8.knative.serving.v1.ServiceBuilder;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import okhttp3.mockwebserver.RecordedRequest;
-import org.junit.Rule;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 
 import java.net.HttpURLConnection;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-@EnableRuleMigrationSupport
+@EnableKnativeMockClient
 class ServiceTest {
-  @Rule
-  public KnativeServer server = new KnativeServer();
 
+  KnativeClient client;
+  KnativeMockServer server;
   @Test
   @DisplayName("Should get a Knative Service")
   void testGet() {
@@ -44,7 +41,6 @@ class ServiceTest {
     server.expect().get().withPath("/apis/serving.knative.dev/v1/namespaces/ns2/services/service2")
       .andReturn(HttpURLConnection.HTTP_OK, service2)
       .once();
-    KnativeClient client = server.getKnativeClient();
 
     Service service = client.services().inNamespace("ns2").withName("service2").get();
     assertNotNull(service);
@@ -58,7 +54,6 @@ class ServiceTest {
     server.expect().post().withPath("/apis/serving.knative.dev/v1/namespaces/ns2/services")
       .andReturn(HttpURLConnection.HTTP_OK, service)
       .once();
-    KnativeClient client = server.getKnativeClient();
     service = client.services().inNamespace("ns2").create(service);
     assertNotNull(service);
   }
@@ -69,11 +64,10 @@ class ServiceTest {
     server.expect().delete().withPath("/apis/serving.knative.dev/v1/namespaces/ns3/services/service3")
       .andReturn(HttpURLConnection.HTTP_OK, new ServiceBuilder().build())
       .once();
-    KnativeClient client = server.getKnativeClient();
     Boolean deleted = client.services().inNamespace("ns3").withName("service3").delete();
     assertTrue(deleted);
 
-    RecordedRequest recordedRequest = server.getMockServer().takeRequest();
+    RecordedRequest recordedRequest = server.takeRequest();
     assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Background\"}", recordedRequest.getBody().readUtf8());
   }
 
@@ -83,11 +77,10 @@ class ServiceTest {
     server.expect().delete().withPath("/apis/serving.knative.dev/v1/namespaces/ns3/services/service3")
       .andReturn(HttpURLConnection.HTTP_OK, new ServiceBuilder().build())
       .once();
-    KnativeClient client = server.getKnativeClient();
     Boolean deleted = client.services().inNamespace("ns3").withName("service3").withPropagationPolicy(DeletionPropagation.ORPHAN).delete();
     assertTrue(deleted);
 
-    RecordedRequest recordedRequest = server.getMockServer().takeRequest();
+    RecordedRequest recordedRequest = server.takeRequest();
     assertEquals("{\"apiVersion\":\"v1\",\"kind\":\"DeleteOptions\",\"propagationPolicy\":\"Orphan\"}", recordedRequest.getBody().readUtf8());
   }
 }

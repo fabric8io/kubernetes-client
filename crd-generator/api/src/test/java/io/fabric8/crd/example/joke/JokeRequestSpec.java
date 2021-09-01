@@ -15,6 +15,7 @@
  */
 package io.fabric8.crd.example.joke;
 
+import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import io.fabric8.kubernetes.model.annotation.PrinterColumn;
 
 public class JokeRequestSpec {
@@ -39,6 +40,7 @@ public class JokeRequestSpec {
   }
 
   @PrinterColumn(name = "jokeCategory")
+  @JsonPropertyDescription("category-description")
   private Category category = Category.Any;
   @PrinterColumn(name = "excludedTopics")
   private ExcludedTopic[] excluded = new ExcludedTopic[]{ExcludedTopic.nsfw, ExcludedTopic.racist,

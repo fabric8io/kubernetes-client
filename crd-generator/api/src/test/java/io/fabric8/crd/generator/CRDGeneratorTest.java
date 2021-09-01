@@ -15,40 +15,40 @@
  */
 package io.fabric8.crd.generator;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import io.fabric8.crd.example.basic.Basic;
-import io.fabric8.crd.example.inherited.Child;
+import io.fabric8.crd.example.basic.BasicSpec;
+import io.fabric8.crd.example.basic.BasicStatus;
+import io.fabric8.crd.example.inherited.*;
 import io.fabric8.crd.example.joke.Joke;
 import io.fabric8.crd.example.joke.JokeRequest;
+import io.fabric8.crd.example.joke.JokeRequestSpec;
+import io.fabric8.crd.example.joke.JokeRequestStatus;
+import io.fabric8.crd.example.multiple.v1.Multiple;
+import io.fabric8.crd.example.multiple.v1.MultipleSpec;
 import io.fabric8.crd.example.simplest.Simplest;
+import io.fabric8.crd.example.simplest.SimplestSpec;
+import io.fabric8.crd.example.simplest.SimplestStatus;
 import io.fabric8.crd.generator.CRDGenerator.AbstractCRDOutput;
 import io.fabric8.crd.generator.utils.Types;
-import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceColumnDefinition;
-import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
-import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionNames;
-import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionSpec;
-import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionVersion;
-import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceValidation;
-import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.*;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.model.Scope;
+import org.junit.jupiter.api.Test;
+import org.opentest4j.AssertionFailedError;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.junit.jupiter.api.Test;
-import org.opentest4j.AssertionFailedError;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static org.junit.jupiter.api.Assertions.*;
 
 class CRDGeneratorTest {
 
@@ -126,6 +126,67 @@ class CRDGeneratorTest {
     assertTrue(infos.contains(jr));
   }
 
+  @Test
+  void shouldProperlyRecordNumberOfGeneratedCRDs() {
+    CRDGenerator generator = new CRDGenerator();
+    assertEquals(0, generator.generate());
+    assertEquals(0, generator.detailedGenerate().numberOfGeneratedCRDs());
+
+    final CRDGenerationInfo info = generator
+      .customResourceClasses(Simplest.class, Child.class, Joke.class, JokeRequest.class)
+      .forCRDVersions("v1", "v1beta1")
+      .withOutput(output).detailedGenerate();
+
+    assertEquals(4 * 2, info.numberOfGeneratedCRDs());
+    final Map<String, Map<String, CRDInfo>> details = info.getCRDDetailsPerNameAndVersion();
+    assertEquals(4, details.size());
+    assertTrue(details.containsKey(CustomResource.getCRDName(Simplest.class)));
+    assertTrue(details.containsKey(CustomResource.getCRDName(Child.class)));
+    assertTrue(details.containsKey(CustomResource.getCRDName(Joke.class)));
+    final String crdName = CustomResource.getCRDName(JokeRequest.class);
+    assertTrue(details.containsKey(crdName));
+    final Map<String, CRDInfo> jokeRequestInfos = info.getCRDInfos(crdName);
+    assertEquals(2, jokeRequestInfos.size());
+    assertTrue(jokeRequestInfos.containsKey("v1"));
+    assertTrue(jokeRequestInfos.containsKey("v1beta1"));
+  }
+
+  @Test
+  void shouldProperlyGenerateMultipleVersionsOfCRDs() {
+    CRDGenerator generator = new CRDGenerator();
+    final String specVersion = "v1beta1";
+    final CRDGenerationInfo info = generator
+      .customResourceClasses(Multiple.class, io.fabric8.crd.example.multiple.v2.Multiple.class)
+      .forCRDVersions(specVersion)
+      .withOutput(output).detailedGenerate();
+
+    assertEquals(1, info.numberOfGeneratedCRDs());
+    final Map<String, Map<String, CRDInfo>> details = info.getCRDDetailsPerNameAndVersion();
+    assertEquals(1, details.size());
+    // check multiple versions for same CR
+    final String crdName = CustomResource.getCRDName(Multiple.class);
+    assertTrue(details.containsKey(crdName));
+    final Map<String, CRDInfo> infos = info.getCRDInfos(crdName);
+    assertEquals(1, infos.size());
+    assertTrue(infos.containsKey(specVersion));
+
+    final String outputName = CRDGenerator.getOutputName(crdName, specVersion);
+    CustomResourceDefinition definition = output.definition(outputName);
+    assertNotNull(definition);
+    assertEquals("apiextensions.k8s.io/" + specVersion, definition.getApiVersion());
+
+    CustomResourceDefinitionSpec spec = definition.getSpec();
+    final List<CustomResourceDefinitionVersion> versions = spec.getVersions();
+    assertEquals(2, versions.size());
+    assertTrue(versions.stream().filter(v -> v.getName().equals("v1")).count() == 1);
+    assertTrue(versions.stream().filter(v -> v.getName().equals("v2")).count() == 1);
+
+
+    Class<?>[] mustContainTraversedClasses = {Multiple.class, MultipleSpec.class, io.fabric8.crd.example.multiple.v2.Multiple.class, io.fabric8.crd.example.multiple.v2.MultipleSpec.class};
+    final Set<String> dependentClassNames = infos.get(specVersion).getDependentClassNames();
+    Arrays.stream(mustContainTraversedClasses).map(Class::getCanonicalName).forEach(c -> assertTrue(dependentClassNames.contains(c), "should contain " + c));
+  }
+
   @Test void notDefiningOutputShouldNotGenerateAnything() {
     CRDGenerator generator = new CRDGenerator();
     assertEquals(0, generator.generate());
@@ -156,7 +217,7 @@ class CRDGeneratorTest {
   void simplestCRDShouldWork() {
     outputCRDIfFailed(Simplest.class, (customResource) -> {
       final CustomResourceDefinitionVersion version = checkCRD(customResource, "Simplest", "simplests",
-        Scope.CLUSTER);
+        Scope.CLUSTER, SimplestSpec.class, SimplestStatus.class);
       assertNotNull(version.getSubresources());
     });
 
@@ -166,11 +227,12 @@ class CRDGeneratorTest {
   void inheritedCRDShouldWork() {
     outputCRDIfFailed(Child.class, (customResource) -> {
       final CustomResourceDefinitionVersion version = checkCRD(customResource, "Child", "children",
-        Scope.NAMESPACED);
+        Scope.NAMESPACED, ChildSpec.class, ChildStatus.class, BaseSpec.class, BaseStatus.class);
       assertNotNull(version.getSubresources());
       final Map<String, JSONSchemaProps> specProps = version.getSchema().getOpenAPIV3Schema()
         .getProperties().get("spec").getProperties();
-      assertEquals(3, specProps.size());
+      assertEquals(4, specProps.size());
+      assertEquals("integer", specProps.get("baseInt").getType());
       checkMapProp(specProps, "unsupported");
       checkMapProp(specProps, "unsupported2");
       checkMapProp(specProps, "supported");
@@ -195,7 +257,8 @@ class CRDGeneratorTest {
   @Test
   void jokerequestCRDShouldWork() {
     outputCRDIfFailed(JokeRequest.class, (customResource) -> {
-      final CustomResourceDefinitionSpec spec = checkSpec(customResource, Scope.NAMESPACED);
+      final CustomResourceDefinitionSpec spec = checkSpec(customResource, Scope.NAMESPACED,
+        JokeRequestSpec.class, JokeRequestStatus.class, JokeRequestSpec.Category.class, JokeRequestSpec.ExcludedTopic.class, JokeRequestStatus.State.class);
 
       final CustomResourceDefinitionNames names = checkNames("JokeRequest",
         "jokerequests", spec);
@@ -226,6 +289,7 @@ class CRDGeneratorTest {
       JSONSchemaProps category = specProps.get("category");
       assertEquals("string", category.getType());
       assertEquals(7, category.getEnum().size());
+      assertEquals("category-description", category.getDescription());
       JSONSchemaProps excluded = specProps.get("excluded");
       assertEquals("array", excluded.getType());
       assertEquals("string", excluded.getItems().getSchema().getType());
@@ -237,7 +301,7 @@ class CRDGeneratorTest {
   void checkCRDGenerator() {
     outputCRDIfFailed(Basic.class, (customResource) -> {
       final CustomResourceDefinitionVersion version = checkCRD(customResource, "Basic", "basics",
-        Scope.NAMESPACED);
+        Scope.NAMESPACED, BasicSpec.class, BasicStatus.class);
       assertNotNull(version.getSubresources());
       CustomResourceValidation schema = version.getSchema();
       assertNotNull(schema);
@@ -251,8 +315,8 @@ class CRDGeneratorTest {
   }
 
   private CustomResourceDefinitionVersion checkCRD(Class<? extends CustomResource<?,?>> customResource, String kind, String plural,
-    Scope scope) {
-    CustomResourceDefinitionSpec spec = checkSpec(customResource, scope);
+    Scope scope, Class<?>... traversedClasses) {
+    CustomResourceDefinitionSpec spec = checkSpec(customResource, scope, traversedClasses);
     checkNames(kind, plural, spec);
 
     return checkVersion(spec);
@@ -273,17 +337,30 @@ class CRDGeneratorTest {
   }
 
   private CustomResourceDefinitionSpec checkSpec(
-    Class<? extends CustomResource<?, ?>> customResource, Scope scope) {
+    Class<? extends CustomResource<?, ?>> customResource, Scope scope, Class<?>... mustContainTraversedClasses) {
     CRDGenerator generator = new CRDGenerator();
 
     // record info to be able to output it if the test fails
     final String outputName = keyFor(customResource);
     final CustomResourceInfo info = CustomResourceInfo.fromClass(customResource);
     output.put(outputName, info);
-    assertEquals(1, generator.withOutput(output)
-      .forCRDVersions("v1")
+    final String v1 = "v1";
+    final CRDGenerationInfo generatedInfo = generator.withOutput(output)
+      .forCRDVersions(v1)
       .customResources(info)
-      .generate());
+      .detailedGenerate();
+    assertEquals(1, generatedInfo.numberOfGeneratedCRDs());
+    final String crdName = info.crdName();
+    final Map<String, CRDInfo> crdInfos = generatedInfo.getCRDInfos(crdName);
+    assertEquals(1, crdInfos.size());
+    final CRDInfo crdInfo = crdInfos.get(v1);
+    assertEquals(crdName, crdInfo.getCrdName());
+    assertEquals(v1, crdInfo.getCrdSpecVersion());
+    assertTrue(crdInfo.getFilePath().endsWith(CRDGenerator.getOutputName(crdName, v1))); // test output uses the CRD name as URI
+    if(mustContainTraversedClasses != null && mustContainTraversedClasses.length > 0) {
+      final Set<String> dependentClassNames = crdInfo.getDependentClassNames();
+      Arrays.stream(mustContainTraversedClasses).map(Class::getCanonicalName).forEach(c -> assertTrue(dependentClassNames.contains(c), "should contain " + c));
+    }
 
     CustomResourceDefinition definition = output.definition(outputName);
     assertNotNull(definition);

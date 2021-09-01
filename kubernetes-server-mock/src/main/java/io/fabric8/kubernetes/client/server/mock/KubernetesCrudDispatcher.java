@@ -269,11 +269,10 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
       query = query.add(new Attribute("name", resourceName));
     }
     WatchEventsListener watchEventListener = new WatchEventsListener(context, query, watchEventListeners, LOGGER,
-      watch -> {
+      watch -> 
         map.entrySet().stream()
           .filter(entry -> watch.attributeMatches(entry.getKey()))
-          .forEach(entry -> watch.sendWebSocketResponse(entry.getValue(), Action.ADDED));
-      });
+          .forEach(entry -> watch.sendWebSocketResponse(entry.getValue(), Action.ADDED)));
     watchEventListeners.add(watchEventListener);
     mockResponse.setSocketPolicy(SocketPolicy.KEEP_OPEN);
     return mockResponse.withWebSocketUpgrade(watchEventListener);

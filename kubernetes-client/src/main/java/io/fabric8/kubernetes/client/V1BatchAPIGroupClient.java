@@ -23,7 +23,6 @@ import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.ScalableResource;
 import io.fabric8.kubernetes.client.dsl.V1BatchAPIGroupDSL;
-import io.fabric8.kubernetes.client.dsl.internal.batch.v1.CronJobOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.batch.v1.JobOperationsImpl;
 import okhttp3.OkHttpClient;
 
@@ -43,7 +42,7 @@ public class V1BatchAPIGroupClient extends BaseClient implements V1BatchAPIGroup
 
   @Override
   public MixedOperation<CronJob, CronJobList, Resource<CronJob>> cronjobs() {
-    return new CronJobOperationsImpl(httpClient, getConfiguration());
+    return Handlers.getOperation(CronJob.class, CronJobList.class, httpClient, getConfiguration());
   }
 }
 

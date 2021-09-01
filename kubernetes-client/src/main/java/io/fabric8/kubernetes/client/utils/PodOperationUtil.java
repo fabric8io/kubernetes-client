@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.utils;
 import io.fabric8.kubernetes.api.model.OwnerReference;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
@@ -25,6 +26,8 @@ import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.OutputStream;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -53,19 +56,45 @@ public class PodOperationUtil {
     return pods;
   }
 
-  public static PodOperationsImpl getGenericPodOperations(OperationContext context, boolean isPretty, Integer podLogWaitTimeout) {
-    return new PodOperationsImpl(new PodOperationContext(context.getClient(),
-      context.getConfig(), context.getPlural(), context.getNamespace(), null, null,
-      "v1", context.getCascading(), context.getItem(), context.getLabels(), context.getLabelsNot(),
-      context.getLabelsIn(), context.getLabelsNotIn(), context.getFields(), context.getFieldsNot(), context.getResourceVersion(),
-      context.isReloadingFromServer(), context.getGracePeriodSeconds(), context.getPropagationPolicy(),
-      context.getWatchRetryInitialBackoffMillis(), context.getWatchRetryBackoffMultiplier(), context.isNamespaceFromGlobalConfig(), context.getDryRun(), null, null, null, null, null,
-      null, null, null, null, false, false, false, null, null,
-      null, isPretty, null, null, null, null, null, podLogWaitTimeout));
+  public static PodOperationsImpl getGenericPodOperations(OperationContext context, boolean isPretty, Integer podLogWaitTimeout, String containerId) {
+    return new PodOperationsImpl(new PodOperationContext(containerId,
+      null, null, null, null, null,
+      null, null, null, false, false,
+      false, null, null, null, isPretty,
+      null, null, null,
+      null, null, podLogWaitTimeout), context.withName(null).withApiGroupName(null).withApiGroupVersion("v1"));
   }
 
-  public static List<PodResource<Pod>> getPodOperationsForController(OperationContext context, String controllerUid, Map<String, String> selectorLabels, boolean isPretty, Integer podLogWaitTimeout) {
-    return getPodOperationsForController(PodOperationUtil.getGenericPodOperations(context, isPretty, podLogWaitTimeout), controllerUid, selectorLabels);
+  public static List<PodResource<Pod>> getPodOperationsForController(OperationContext context, String controllerUid, Map<String, String> selectorLabels, boolean isPretty, Integer podLogWaitTimeout, String containerId) {
+    return getPodOperationsForController(PodOperationUtil.getGenericPodOperations(context, isPretty, podLogWaitTimeout, containerId), controllerUid, selectorLabels);
+  }
+
+  public static LogWatch watchLog(List<PodResource<Pod>> podResources, OutputStream out) {
+    if (!podResources.isEmpty()) {
+      if (podResources.size() > 1) {
+        LOG.debug("Found {} pods, Using first one to watch logs", podResources.size());
+      }
+      return podResources.get(0).watchLog(out);
+    }
+    return null;
+  }
+
+  public static Reader getLogReader(List<PodResource<Pod>> podResources) {
+    if (!podResources.isEmpty()) {
+      if (podResources.size() > 1) {
+        LOG.debug("Found {} pods, Using first one to get log reader", podResources.size());
+      }
+      return podResources.get(0).getLogReader();
+    }
+    return null;
+  }
+
+  public static String getLog(List<PodResource<Pod>> podOperationList, Boolean isPretty) {
+    StringBuilder stringBuilder = new StringBuilder();
+    for (PodResource<Pod> podOperation : podOperationList) {
+      stringBuilder.append(podOperation.getLog(isPretty));
+    }
+    return stringBuilder.toString();
   }
 
   static List<PodResource<Pod>> getPodOperationsForController(PodOperationsImpl podOperations, String controllerUid, Map<String, String> selectorLabels) {

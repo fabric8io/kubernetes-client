@@ -16,7 +16,9 @@
 
 package io.fabric8.kubernetes.client.dsl;
 
+import io.fabric8.kubernetes.api.builder.TypedVisitor;
 import io.fabric8.kubernetes.api.builder.Visitable;
+import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.client.FromServerGettable;
 import io.fabric8.kubernetes.client.Watcher;
 
@@ -25,5 +27,23 @@ public interface VisitFromServerGetWatchDeleteRecreateWaitApplicable<T> extends 
   Watchable<Watcher<T>>,
   Waitable<T, T>,
   VisitFromServerWritable<T>,
-  DryRunable<VisitFromServerWritable<T>> {
+  DryRunable<VisitFromServerWritable<T>>,
+  Readiable,
+  Editable<T> {
+  
+  /**
+   * @deprecated use {@link Editable#edit(Visitor...)} instead
+   */
+  @Override
+  @Deprecated
+  VisitFromServerGetWatchDeleteRecreateWaitApplicable<T> accept(Visitor... arg0);
+  
+  /**
+   * @deprecated use {@link Editable#edit(Class, Visitor)} instead
+   */
+  @Override
+  @Deprecated
+  default <V> VisitFromServerGetWatchDeleteRecreateWaitApplicable<T> accept(Class<V> type, Visitor<V> visitor) {
+    return accept(new TypedVisitor<V>() {@Override public Class<V> getType() {return type;} @Override public void visit(V element) {visitor.visit(element);}});
+  }
 }

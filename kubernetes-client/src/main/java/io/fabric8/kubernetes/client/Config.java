@@ -50,6 +50,7 @@ import io.fabric8.kubernetes.api.model.NamedContext;
 import io.fabric8.kubernetes.client.internal.CertUtils;
 import io.fabric8.kubernetes.client.internal.KubeConfigUtils;
 import io.fabric8.kubernetes.client.internal.SSLUtils;
+import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import io.fabric8.kubernetes.client.utils.IOHelpers;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -471,7 +472,7 @@ public class Config {
     String masterPort = Utils.getSystemPropertyOrEnvVar(KUBERNETES_SERVICE_PORT_PROPERTY, (String) null);
     if (masterHost != null && masterPort != null) {
       String hostPort = joinHostPort(masterHost, masterPort);
-      LOGGER.debug("Found service account host and port: " + hostPort);
+      LOGGER.debug("Found service account host and port: {}", hostPort);
       config.setMasterUrl("https://" + hostPort);
     }
     if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYSERVICEACCOUNT_SYSTEM_PROPERTY, true)) {
@@ -744,7 +745,7 @@ public class Config {
       String serviceAccountNamespace = Utils.getSystemPropertyOrEnvVar(KUBERNETES_NAMESPACE_FILE, KUBERNETES_NAMESPACE_PATH);
       boolean serviceAccountNamespaceExists = Files.isRegularFile(new File(serviceAccountNamespace).toPath());
       if (serviceAccountNamespaceExists) {
-        LOGGER.debug("Found service account namespace at: [" + serviceAccountNamespace + "].");
+        LOGGER.debug("Found service account namespace at: [{}].",serviceAccountNamespace);
         try {
           String namespace = new String(Files.readAllBytes(new File(serviceAccountNamespace).toPath()));
           config.setNamespace(namespace.replace(System.lineSeparator(), ""));
@@ -753,7 +754,7 @@ public class Config {
           LOGGER.error("Error reading service account namespace from: [" + serviceAccountNamespace + "].", e);
         }
       } else {
-        LOGGER.debug("Did not find service account namespace at: [" + serviceAccountNamespace + "]. Ignoring.");
+        LOGGER.debug("Did not find service account namespace at: [{}]. Ignoring.",serviceAccountNamespace);
       }
     }
     return false;
@@ -819,7 +820,7 @@ public class Config {
         return getKeyAlgorithm(keyInputStream);
       }
     } catch(IOException exception) {
-      LOGGER.debug("Failure in determining private key algorithm type, defaulting to RSA ", exception.getMessage());
+      LOGGER.debug("Failure in determining private key algorithm type, defaulting to RSA {}", exception.getMessage());
     }
     return null;
   }
@@ -1333,6 +1334,11 @@ public class Config {
    */
   public File getFile() {
     return file;
+  }
+
+  @JsonIgnore
+  public Readiness getReadiness() {
+    return Readiness.getInstance();
   }
 
 }

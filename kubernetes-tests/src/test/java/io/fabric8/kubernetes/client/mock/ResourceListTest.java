@@ -276,8 +276,8 @@ public class ResourceListTest {
       .anyMatch(c -> "True".equals(c.getStatus()));
 
     // The pods are never ready if you request them directly.
-    server.expect().get().withPath("/api/v1/namespaces/ns1/pods/pod1").andReturn(HTTP_OK, noReady1).once();
-    server.expect().get().withPath("/api/v1/namespaces/ns1/pods/pod2").andReturn(HTTP_OK, noReady2).once();
+    ResourceTest.list(server, noReady1);
+    ResourceTest.list(server, noReady2);
 
     Status gone = new StatusBuilder()
       .withCode(HTTP_GONE)

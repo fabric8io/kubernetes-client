@@ -34,9 +34,7 @@ public class DNSOperationsImpl extends OpenShiftOperation<DNS, DNSList, Resource
   public DNSOperationsImpl(OperationContext context) {
     super(context.withApiGroupName("config.openshift.io")
       .withApiGroupVersion("v1")
-      .withPlural("dnses"));
-    this.type = DNS.class;
-    this.listType = DNSList.class;
+      .withPlural("dnses"), DNS.class, DNSList.class);
   }
 
   @Override

@@ -16,13 +16,13 @@
 package io.fabric8.openshift.client.dsl.internal.project;
 
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
-import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.rbac.RoleBinding;
 import io.fabric8.kubernetes.api.model.rbac.RoleBindingBuilder;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl;
+import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitOperationContext;
 import io.fabric8.openshift.api.model.Project;
 import io.fabric8.openshift.api.model.ProjectBuilder;
 import io.fabric8.openshift.api.model.ProjectList;
@@ -51,9 +51,7 @@ public class ProjectOperationsImpl extends OpenShiftOperation<Project, ProjectLi
 
   public ProjectOperationsImpl(OperationContext context) {
     super(context.withApiGroupName(PROJECT)
-      .withPlural("projects"));
-    this.type = Project.class;
-    this.listType = ProjectList.class;
+      .withPlural("projects"), Project.class, ProjectList.class);
   }
   @Override
   public ProjectOperationsImpl newInstance(OperationContext context) {
@@ -75,7 +73,7 @@ public class ProjectOperationsImpl extends OpenShiftOperation<Project, ProjectLi
     result.add(create(project));
 
     // Create Role Bindings
-    NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl listOp = new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(client, config, getNamespace(), null, false, false, new ArrayList<>(), projectRoleBindings, null, DeletionPropagation.BACKGROUND, true, context.getDryRun()) {};
+    NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl listOp = new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(context.withItem(projectRoleBindings), new NamespaceVisitOperationContext());
     result.addAll(listOp.createOrReplace());
 
     return result;

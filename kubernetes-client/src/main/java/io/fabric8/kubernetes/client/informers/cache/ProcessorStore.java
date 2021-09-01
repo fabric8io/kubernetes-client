@@ -16,13 +16,17 @@
 
 package io.fabric8.kubernetes.client.informers.cache;
 
+import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
+
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Wraps a {@link Cache} and a {@link SharedProcessor} to distribute events related to changes and syncs
  */
-public class ProcessorStore<T> implements SyncableStore<T> {
+public class ProcessorStore<T extends HasMetadata> implements SyncableStore<T> {
 
   private Cache<T> cache;
   private SharedProcessor<T> processor;
@@ -78,14 +82,19 @@ public class ProcessorStore<T> implements SyncableStore<T> {
   @Override
   public void replace(List<T> list) {
     Map<String, T> oldState = cache.replace(list);
+    
+    if (list.isEmpty() && oldState.isEmpty()) {
+      this.processor.distribute(l -> l.getHandler().onNothing(), false);      
+    }
 
     // now that the store is up-to-date, process the notifications
     for (T newValue : list) {
       T old = oldState.remove(cache.getKey(newValue));
       if (old == null) {
-        this.processor.distribute(new ProcessorListener.AddNotification<>(newValue), true);
+        this.processor.distribute(new ProcessorListener.AddNotification<>(newValue), false);
       } else {
-        this.processor.distribute(new ProcessorListener.UpdateNotification<>(old, newValue), true);
+        boolean same = Objects.equals(KubernetesResourceUtil.getResourceVersion(old), KubernetesResourceUtil.getResourceVersion(newValue));
+        this.processor.distribute(new ProcessorListener.UpdateNotification<>(old, newValue), same);
       }
     }
     // deletes are not marked as sync=true in keeping with the old code

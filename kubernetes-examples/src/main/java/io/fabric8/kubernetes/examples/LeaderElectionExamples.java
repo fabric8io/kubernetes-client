@@ -40,7 +40,7 @@ import java.util.stream.Stream;
 
 @SuppressWarnings("java:S106")
 public class LeaderElectionExamples {
-
+ 
   private static final String NAMESPACE = "default";
   private static final String NAME = "leaders-of-the-future";
 
@@ -59,7 +59,7 @@ public class LeaderElectionExamples {
               .withLeaderCallbacks(new LeaderCallbacks(
                 () -> System.out.println("STARTED LEADERSHIP"),
                 () -> System.out.println("STOPPED LEADERSHIP"),
-                newLeader -> System.out.printf("New leader elected %s\n", newLeader)
+                newLeader -> System.out.printf("New leader elected %s%n", newLeader)
               ))
               .build())
           .build().run();

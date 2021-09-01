@@ -15,6 +15,7 @@
  */
 package io.fabric8.certmanager.server.mock;
 
+import io.fabric8.certmanager.client.NamespacedCertManagerClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
@@ -22,7 +23,6 @@ import io.fabric8.mockwebserver.Context;
 import io.fabric8.mockwebserver.ServerRequest;
 import io.fabric8.mockwebserver.ServerResponse;
 import io.fabric8.certmanager.client.DefaultCertManagerClient;
-import io.fabric8.certmanager.client.CertManagerClient;
 import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockWebServer;
 
@@ -52,7 +52,7 @@ public class CertManagerMockServer extends KubernetesMockServer {
     return new String[]{"/api", "/apis/cert-manager.io"};
   }
 
-  public CertManagerClient createCertManager() {
+  public NamespacedCertManagerClient createCertManager() {
     Config config = new ConfigBuilder()
       .withMasterUrl(url("/"))
       .withNamespace("test")

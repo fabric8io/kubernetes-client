@@ -27,6 +27,8 @@ import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.api.model.ServiceListBuilder;
 import io.fabric8.kubernetes.api.model.extensions.IngressListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import okhttp3.mockwebserver.RecordedRequest;
@@ -89,6 +91,16 @@ class ServiceTest {
 
   @Test
   void testReplace() throws InterruptedException {
+    helpTestReplace(client.services());
+  }
+
+  @Test
+  void testReplaceWithResources() throws InterruptedException {
+    helpTestReplace(client.resources(Service.class));
+  }
+
+  private void helpTestReplace(MixedOperation<Service, ?, ? extends Resource<Service>> services)
+      throws InterruptedException {
     Service serviceFromServer = new ServiceBuilder(service)
       .editOrNewSpec().withClusterIP("10.96.129.1").endSpec().build();
     Service serviceUpdated = new ServiceBuilder(service)
@@ -111,7 +123,11 @@ class ServiceTest {
       .andReturn(HttpURLConnection.HTTP_OK, serviceUpdated)
       .once();
 
-    Service responseSvc = client.services().inNamespace("test").createOrReplace(serviceUpdated);
+    Service responseSvc = services.inNamespace("test")
+        .createOrReplace(new ServiceBuilder(service).editMetadata()
+            .addToAnnotations("foo", "bar")
+            .endMetadata()
+            .build());
     assertNotNull(responseSvc);
     assertEquals("httpbin", responseSvc.getMetadata().getName());
 
@@ -194,10 +210,10 @@ class ServiceTest {
         .addToPorts(new EndpointPortBuilder().withPort(8443).build())
         .build())
       .build();
-    server.expect().get().withPath("/api/v1/namespaces/ns1/endpoints?fieldSelector=metadata.name%3Dsvc1&watch=false")
+    server.expect().get().withPath("/api/v1/namespaces/ns1/endpoints?fieldSelector=metadata.name%3Dsvc1")
       .andReturn(HttpURLConnection.HTTP_OK, new EndpointsListBuilder().withItems(endpoint).withNewMetadata().withResourceVersion("1").endMetadata().build())
       .once();
-    server.expect().get().withPath("/api/v1/namespaces/ns1/services?fieldSelector=metadata.name%3Dsvc1&watch=false")
+    server.expect().get().withPath("/api/v1/namespaces/ns1/services?fieldSelector=metadata.name%3Dsvc1")
       .andReturn(HttpURLConnection.HTTP_OK, new ServiceListBuilder().withItems(svc1).withNewMetadata().withResourceVersion("1").endMetadata().build())
       .once();
     server.expect().get().withPath("/api/v1/namespaces/ns1/services/svc1")

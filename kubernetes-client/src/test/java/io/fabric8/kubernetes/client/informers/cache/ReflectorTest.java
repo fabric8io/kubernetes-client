@@ -22,7 +22,6 @@ import io.fabric8.kubernetes.api.model.PodListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.WatcherException;
-import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.informers.ListerWatcher;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -37,16 +36,16 @@ class ReflectorTest {
   void testStateFlags() {
     ListerWatcher<Pod, PodList> mock = Mockito.mock(ListerWatcher.class);
     PodList list = new PodListBuilder().withNewMetadata().withResourceVersion("1").endMetadata().build();
-    Mockito.when(mock.list(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(list);
+    Mockito.when(mock.list()).thenReturn(list);
 
     Reflector<Pod, PodList> reflector =
-        new Reflector<>(Pod.class, mock, Mockito.mock(SyncableStore.class), new OperationContext());
+        new Reflector<>(Pod.class, mock, Mockito.mock(SyncableStore.class));
 
     assertFalse(reflector.isWatching());
     assertFalse(reflector.isRunning());
 
     // throw an exception, then watch normally
-    Mockito.when(mock.watch(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
+    Mockito.when(mock.watch(Mockito.any(),Mockito.any()))
         .thenThrow(new KubernetesClientException("error"))
         .thenReturn(Mockito.mock(Watch.class));
 
@@ -71,10 +70,10 @@ class ReflectorTest {
   void testNonHttpGone() {
     ListerWatcher<Pod, PodList> mock = Mockito.mock(ListerWatcher.class);
     PodList list = new PodListBuilder().withNewMetadata().withResourceVersion("1").endMetadata().build();
-    Mockito.when(mock.list(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(list);
+    Mockito.when(mock.list()).thenReturn(list);
 
     Reflector<Pod, PodList> reflector =
-        new Reflector<>(Pod.class, mock, Mockito.mock(SyncableStore.class), new OperationContext());
+        new Reflector<>(Pod.class, mock, Mockito.mock(SyncableStore.class));
 
     reflector.listSyncAndWatch();
 

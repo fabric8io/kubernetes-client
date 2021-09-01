@@ -27,6 +27,7 @@ import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.Watcher.Action;
+import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.OkHttpClient;
@@ -34,6 +35,7 @@ import okhttp3.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.MalformedURLException;
 import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -46,11 +48,6 @@ import static java.net.HttpURLConnection.HTTP_GONE;
 
 public abstract class AbstractWatchManager<T extends HasMetadata> implements Watch {
 
-  @FunctionalInterface
-  interface RequestBuilder {
-    Request build(final String resourceVersion);
-  }
-  
   private static final Logger logger = LoggerFactory.getLogger(AbstractWatchManager.class);
 
   final Watcher<T> watcher;
@@ -62,21 +59,21 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
   final AtomicInteger currentReconnectAttempt;
   private ScheduledFuture<?> reconnectAttempt;
   
-  private final RequestBuilder requestBuilder;
+  private final BaseOperationRequestBuilder requestBuilder;
   protected final OkHttpClient client;
 
   private final AtomicBoolean reconnectPending = new AtomicBoolean(false);
 
   AbstractWatchManager(
-    Watcher<T> watcher, ListOptions listOptions, int reconnectLimit, int reconnectInterval, int maxIntervalExponent, RequestBuilder requestBuilder, Supplier<OkHttpClient> clientSupplier
-  ) {
+    Watcher<T> watcher, BaseOperation<T, ?, ?> baseOperation, ListOptions listOptions, int reconnectLimit, int reconnectInterval, int maxIntervalExponent, Supplier<OkHttpClient> clientSupplier
+  ) throws MalformedURLException {
     this.watcher = watcher;
     this.reconnectLimit = reconnectLimit;
     this.retryIntervalCalculator = new ExponentialBackoffIntervalCalculator(reconnectInterval, maxIntervalExponent);
     this.resourceVersion = new AtomicReference<>(listOptions.getResourceVersion());
     this.currentReconnectAttempt = new AtomicInteger(0);
     this.forceClosed = new AtomicBoolean();
-    this.requestBuilder = requestBuilder;
+    this.requestBuilder = new BaseOperationRequestBuilder<>(baseOperation, listOptions);
     this.client = clientSupplier.get();
     
     runWatch();
@@ -172,8 +169,13 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     return forceClosed.get();
   }
   
-  void eventReceived(Watcher.Action action, T resource) {
-    watcher.eventReceived(action, resource);
+  void eventReceived(Watcher.Action action, HasMetadata resource) {
+    // the WatchEvent deserialization is not specifically typed
+    // modify the type here if needed
+    if (resource != null && !requestBuilder.getBaseOperation().getType().isAssignableFrom(resource.getClass())) {
+      resource = (HasMetadata) Serialization.jsonMapper().convertValue(resource, requestBuilder.getBaseOperation().getType());
+    }
+    watcher.eventReceived(action, (T)resource);
   }
   
   void updateResourceVersion(final String newResourceVersion) {
@@ -238,7 +240,7 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
         List<HasMetadata> items = list.getItems();
         if (items != null) {
           for (HasMetadata item : items) {
-            eventReceived(action, (T) item);
+            eventReceived(action, item);
           }
         }
       } else if (object instanceof Status) {

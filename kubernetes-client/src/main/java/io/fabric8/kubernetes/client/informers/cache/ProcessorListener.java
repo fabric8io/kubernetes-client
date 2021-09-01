@@ -16,8 +16,6 @@
 package io.fabric8.kubernetes.client.informers.cache;
 
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
@@ -34,7 +32,6 @@ import java.time.temporal.ChronoUnit;
  * @param <T> type of ProcessorListener
  */
 public class ProcessorListener<T> {
-  private static final Logger log = LoggerFactory.getLogger(ProcessorListener.class);
   private long resyncPeriodInMillis;
   private ZonedDateTime nextResync;
   private ResourceEventHandler<T> handler;
@@ -47,11 +44,7 @@ public class ProcessorListener<T> {
   }
 
   public void add(Notification<T> notification) {
-    try {
-      notification.handle(handler);
-    } catch (Exception ex) {
-      log.error("Failed invoking {} event handler: {}", handler, ex.getMessage(), ex);
-    }
+    notification.handle(handler);
   }
 
   public void determineNextResync(ZonedDateTime now) {
@@ -122,4 +115,9 @@ public class ProcessorListener<T> {
       resourceEventHandler.onDelete(getOldObject(), unknownFinalState);
     }
   }
+  
+  public ResourceEventHandler<T> getHandler() {
+    return handler;
+  }
+
 }

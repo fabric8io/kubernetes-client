@@ -22,7 +22,7 @@ import io.fabric8.mockwebserver.Context;
 import io.fabric8.mockwebserver.ServerRequest;
 import io.fabric8.mockwebserver.ServerResponse;
 import io.fabric8.servicecatalog.client.DefaultServiceCatalogClient;
-import io.fabric8.servicecatalog.client.ServiceCatalogClient;
+import io.fabric8.servicecatalog.client.NamespacedServiceCatalogClient;
 import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockWebServer;
 
@@ -51,7 +51,7 @@ public class ServiceCatalogMockServer extends KubernetesMockServer {
     return new String[]{"/api","/apis/servicecatalog.k8s.io"};
   }
 
-  public ServiceCatalogClient createServiceCatalog() {
+  public NamespacedServiceCatalogClient createServiceCatalog() {
     Config config = new ConfigBuilder()
       .withMasterUrl(url("/"))
       .withNamespace("test")

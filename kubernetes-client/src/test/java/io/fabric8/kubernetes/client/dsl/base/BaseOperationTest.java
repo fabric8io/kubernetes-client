@@ -68,7 +68,7 @@ class BaseOperationTest {
     fieldsMap.put("yesKey1", "yesValue1");
     fieldsMap.put("yesKey2", "yesValue2");
 
-    PodOperationsImpl operation = new PodOperationsImpl(new PodOperationContext());
+    PodOperationsImpl operation = new PodOperationsImpl(new PodOperationContext(), new OperationContext());
     operation = (PodOperationsImpl) operation
       .withFields(fieldsMap)
       .withField("yesKey2", "overrideValue2")
@@ -85,7 +85,7 @@ class BaseOperationTest {
 
   @Test
   void testSkippingFieldNotMatchingNullValues() {
-    PodOperationsImpl operation = new PodOperationsImpl(new PodOperationContext());
+    PodOperationsImpl operation = new PodOperationsImpl(new PodOperationContext(), new OperationContext());
     operation = (PodOperationsImpl) operation
       .withField("key1", "value1")
       .withoutField("key2", "value2")
@@ -100,7 +100,7 @@ class BaseOperationTest {
   
   @Test
   void testFilterContextModification() {
-    PodOperationsImpl operation = new PodOperationsImpl(new PodOperationContext());
+    PodOperationsImpl operation = new PodOperationsImpl(new PodOperationContext(), new OperationContext());
     operation.withField("x", "y");
     // should not modify the existing context
     assertTrue(Utils.isNullOrEmpty(operation.getFieldQueryParam()));
@@ -143,21 +143,21 @@ class BaseOperationTest {
         .withContinue("eyJ2IjoibWV0YS5rOHMuaW8vdjEiLCJydiI6MjE0NDUzLCJzdGFydCI6ImV0Y2QtbWluaWt1YmVcdTAwMDAifQ")
         .withFieldSelector("status.phase=Running")
         .build()).toString());
-    assertEquals(URLUtils.join(url.toString(), "?limit=5&continue=eyJ2IjoibWV0YS5rOHMuaW8vdjEiLCJydiI6MjE0NDUzLCJzdGFydCI6ImV0Y2QtbWluaWt1YmVcdTAwMDAifQ&resourceVersion=210448&fieldSelector=status.phase%3DRunning"),
+    assertEquals(URLUtils.join(url.toString(), "?limit=5&continue=eyJ2IjoibWV0YS5rOHMuaW8vdjEiLCJydiI6MjE0NDUzLCJzdGFydCI6ImV0Y2QtbWluaWt1YmVcdTAwMDAifQ&fieldSelector=status.phase%3DRunning&resourceVersion=210448"),
       operation.fetchListUrl(url, new ListOptionsBuilder()
         .withLimit(5L)
         .withContinue("eyJ2IjoibWV0YS5rOHMuaW8vdjEiLCJydiI6MjE0NDUzLCJzdGFydCI6ImV0Y2QtbWluaWt1YmVcdTAwMDAifQ")
         .withFieldSelector("status.phase=Running")
         .withResourceVersion("210448")
         .build()).toString());
-    assertEquals(URLUtils.join(url.toString(), "?limit=5&continue=eyJ2IjoibWV0YS5rOHMuaW8vdjEiLCJydiI6MjE0NDUzLCJzdGFydCI6ImV0Y2QtbWluaWt1YmVcdTAwMDAifQ&resourceVersion=210448&labelSelector=%21node-role.kubernetes.io%2Fmaster"),
+    assertEquals(URLUtils.join(url.toString(), "?limit=5&continue=eyJ2IjoibWV0YS5rOHMuaW8vdjEiLCJydiI6MjE0NDUzLCJzdGFydCI6ImV0Y2QtbWluaWt1YmVcdTAwMDAifQ&labelSelector=%21node-role.kubernetes.io%2Fmaster&resourceVersion=210448"),
       operation.fetchListUrl(url, new ListOptionsBuilder()
         .withLimit(5L)
         .withContinue("eyJ2IjoibWV0YS5rOHMuaW8vdjEiLCJydiI6MjE0NDUzLCJzdGFydCI6ImV0Y2QtbWluaWt1YmVcdTAwMDAifQ")
         .withLabelSelector("!node-role.kubernetes.io/master")
         .withResourceVersion("210448")
         .build()).toString());
-    assertEquals(URLUtils.join(url.toString(), "?limit=5&continue=eyJ2IjoibWV0YS5rOHMuaW8vdjEiLCJydiI6MjE0NDUzLCJzdGFydCI6ImV0Y2QtbWluaWt1YmVcdTAwMDAifQ&resourceVersion=210448&labelSelector=%21node-role.kubernetes.io%2Fmaster&timeoutSeconds=10"),
+    assertEquals(URLUtils.join(url.toString(), "?limit=5&continue=eyJ2IjoibWV0YS5rOHMuaW8vdjEiLCJydiI6MjE0NDUzLCJzdGFydCI6ImV0Y2QtbWluaWt1YmVcdTAwMDAifQ&labelSelector=%21node-role.kubernetes.io%2Fmaster&resourceVersion=210448&timeoutSeconds=10"),
       operation.fetchListUrl(url, new ListOptionsBuilder()
         .withLimit(5L)
         .withContinue("eyJ2IjoibWV0YS5rOHMuaW8vdjEiLCJydiI6MjE0NDUzLCJzdGFydCI6ImV0Y2QtbWluaWt1YmVcdTAwMDAifQ")
@@ -165,7 +165,7 @@ class BaseOperationTest {
         .withResourceVersion("210448")
         .withTimeoutSeconds(10L)
         .build()).toString());
-    assertEquals(URLUtils.join(url.toString(), "?limit=5&continue=eyJ2IjoibWV0YS5rOHMuaW8vdjEiLCJydiI6MjE0NDUzLCJzdGFydCI6ImV0Y2QtbWluaWt1YmVcdTAwMDAifQ&resourceVersion=210448&labelSelector=%21node-role.kubernetes.io%2Fmaster&timeoutSeconds=10&allowWatchBookmarks=true"),
+    assertEquals(URLUtils.join(url.toString(), "?limit=5&continue=eyJ2IjoibWV0YS5rOHMuaW8vdjEiLCJydiI6MjE0NDUzLCJzdGFydCI6ImV0Y2QtbWluaWt1YmVcdTAwMDAifQ&labelSelector=%21node-role.kubernetes.io%2Fmaster&resourceVersion=210448&timeoutSeconds=10&allowWatchBookmarks=true"),
       operation.fetchListUrl(url, new ListOptionsBuilder()
         .withLimit(5L)
         .withContinue("eyJ2IjoibWV0YS5rOHMuaW8vdjEiLCJydiI6MjE0NDUzLCJzdGFydCI6ImV0Y2QtbWluaWt1YmVcdTAwMDAifQ")
@@ -174,7 +174,7 @@ class BaseOperationTest {
         .withTimeoutSeconds(10L)
         .withAllowWatchBookmarks(true)
         .build()).toString());
-    assertEquals(URLUtils.join(url.toString(), "?limit=5&continue=eyJ2IjoibWV0YS5rOHMuaW8vdjEiLCJydiI6MjE0NDUzLCJzdGFydCI6ImV0Y2QtbWluaWt1YmVcdTAwMDAifQ&resourceVersion=210448&labelSelector=%21node-role.kubernetes.io%2Fmaster&timeoutSeconds=10&allowWatchBookmarks=true&watch=true"),
+    assertEquals(URLUtils.join(url.toString(), "?limit=5&continue=eyJ2IjoibWV0YS5rOHMuaW8vdjEiLCJydiI6MjE0NDUzLCJzdGFydCI6ImV0Y2QtbWluaWt1YmVcdTAwMDAifQ&labelSelector=%21node-role.kubernetes.io%2Fmaster&resourceVersion=210448&timeoutSeconds=10&allowWatchBookmarks=true&watch=true"),
       operation.fetchListUrl(url, new ListOptionsBuilder()
         .withLimit(5L)
         .withContinue("eyJ2IjoibWV0YS5rOHMuaW8vdjEiLCJydiI6MjE0NDUzLCJzdGFydCI6ImV0Y2QtbWluaWt1YmVcdTAwMDAifQ")
@@ -239,7 +239,13 @@ class BaseOperationTest {
         when(mockCall.execute()).thenAnswer(i -> {
           int count = httpExecutionCounter.getAndIncrement();
           if (count < numFailures) {
-            return new Response.Builder().request(req).message("Internal Server Error").protocol(HTTP_1_1).code(500).build();
+            // Altering the type of the error for each call:
+            // even numbered calls (including the first call) fail with an IOException and odd numbered calls fail with HTTP response 500
+            if (count % 2 == 0) {
+              throw new IOException("For example java.net.ConnectException");
+            } else {
+              return new Response.Builder().request(req).message("Internal Server Error").protocol(HTTP_1_1).code(500).build();
+            }
           } else {
             Pod podNoLabels = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
             ResponseBody body = ResponseBody.create(MediaType.get("application/json"), Serialization.asJson(podNoLabels));
@@ -269,7 +275,8 @@ class BaseOperationTest {
     });
 
     // Then
-    assertTrue(exception.getMessage().contains("Internal Server Error"));
+    assertTrue("As the first failure is an IOException the message of the causedBy expected to contain the given text: 'For example java.net.ConnectException'!",
+      exception.getCause().getMessage().contains("For example java.net.ConnectException"));
     assertEquals(1, httpExecutionCounter.get());
   }
 
@@ -290,7 +297,8 @@ class BaseOperationTest {
     });
 
     // Then
-    assertTrue(exception.getMessage().contains("Internal Server Error"));
+    assertTrue("As the last failure, the 3rd one, is not an IOException the message expected to contain: 'Internal Server Error'!",
+        exception.getMessage().contains("Internal Server Error"));
     assertEquals("Expected 4 calls: one normal try and 3 backoff retries!", 4, httpExecutionCounter.get());
   }
 
