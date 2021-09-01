@@ -31,6 +31,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.List;
 
+/**
+ * This is an example of creating pod.
+ */
 public class CreatePod {
 
   private static final Logger logger = LoggerFactory.getLogger(CreatePod.class);

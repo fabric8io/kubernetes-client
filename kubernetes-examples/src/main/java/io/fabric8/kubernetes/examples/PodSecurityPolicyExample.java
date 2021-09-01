@@ -26,7 +26,9 @@ import org.slf4j.LoggerFactory;
 import java.io.InputStream;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
-
+/**
+ * This is an example of how to use the client to create a PodSecurityPolicy.
+ */
 public class PodSecurityPolicyExample {
 
   //You need to be login as admin on OpenShift for this Example

@@ -22,6 +22,9 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * This is an example of how to create a CRD from yaml.
+ */
 public class CRDLoadExample {
 
   private static final Logger logger = LoggerFactory.getLogger(CRDLoadExample.class);

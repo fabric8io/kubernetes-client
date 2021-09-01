@@ -26,6 +26,9 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * This is an example of how to use the client to create or update a HorizontalPodAutoscaler.
+ */
 public class HorizontalPodAutoscalerV2beta2Example {
   private static final Logger logger = LoggerFactory.getLogger(HorizontalPodAutoscalerV2beta2Example.class);
 

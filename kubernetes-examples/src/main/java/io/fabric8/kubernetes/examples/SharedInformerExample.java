@@ -28,7 +28,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
-
+/**
+ * This is an example of how to use the SharedInformer to listen pod.
+ */
 public class SharedInformerExample {
   private static final Logger logger = LoggerFactory.getLogger(SharedInformerExample.class);
 

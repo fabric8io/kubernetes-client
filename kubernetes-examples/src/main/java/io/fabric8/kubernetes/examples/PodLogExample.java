@@ -20,7 +20,9 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+/**
+ * Creates a example that log of pod.
+ */
 @SuppressWarnings("java:S106")
 public class PodLogExample {
 

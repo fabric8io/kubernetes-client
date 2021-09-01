@@ -29,7 +29,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
-
+/**
+ * This is an example of pod add PortForward.
+ */
 public class PortForwardExample {
 
   private static final Logger logger = LoggerFactory.getLogger(PortForwardExample.class);

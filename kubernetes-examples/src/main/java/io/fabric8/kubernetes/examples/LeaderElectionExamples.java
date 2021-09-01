@@ -37,7 +37,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Stream;
-
+/**
+ *  This is an example of how to use the client to create or update a LeaderElection.
+ */
 @SuppressWarnings("java:S106")
 public class LeaderElectionExamples {
  

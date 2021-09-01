@@ -26,7 +26,9 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+/**
+ * This is an example of updating pod.
+ */
 public class ReplaceExamples {
 
   private static final Logger logger = LoggerFactory.getLogger(ReplaceExamples.class);

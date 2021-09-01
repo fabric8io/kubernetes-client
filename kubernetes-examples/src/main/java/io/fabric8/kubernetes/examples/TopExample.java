@@ -23,7 +23,9 @@ import org.slf4j.LoggerFactory;
 
 import java.net.HttpURLConnection;
 import java.util.Optional;
-
+/**
+ * This is an example of how to use the client to get cpu and memory info.
+ */
 public class TopExample {
 
   private static final Logger logger = LoggerFactory.getLogger(TopExample.class);

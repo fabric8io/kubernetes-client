@@ -21,7 +21,9 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+/**
+ * This is an example of get StorageClass list.
+ */
 public class ListStorageClassExample {
 
   private static final Logger logger = LoggerFactory.getLogger(ListStorageClassExample.class);

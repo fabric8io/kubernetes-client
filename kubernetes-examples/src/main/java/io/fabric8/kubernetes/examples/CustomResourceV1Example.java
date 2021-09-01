@@ -31,6 +31,9 @@ import io.fabric8.kubernetes.model.annotation.Version;
 
 import java.io.Serializable;
 
+/**
+ * This is an example of how to use the client to update or create a CustomResource.
+ */
 public class CustomResourceV1Example {
 
   @SuppressWarnings("java:S106")

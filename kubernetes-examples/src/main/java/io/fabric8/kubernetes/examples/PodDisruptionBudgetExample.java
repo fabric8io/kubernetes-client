@@ -27,6 +27,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 
+/**
+ * This is an example of how to use the client to create or update a PodDisruptionBudget.
+ */
 public class PodDisruptionBudgetExample {
   private static final Logger logger = LoggerFactory.getLogger(PodDisruptionBudgetExample.class);
 

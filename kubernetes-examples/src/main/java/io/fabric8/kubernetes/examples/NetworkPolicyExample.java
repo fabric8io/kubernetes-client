@@ -26,6 +26,7 @@ import java.util.Collections;
 
 /**
  * Created by hshinde on 1/6/18.
+ * This is an example of how to use the client to update or create a NetworkPolicy.
  */
 public class NetworkPolicyExample {
   private static final Logger logger = LoggerFactory.getLogger(NetworkPolicyExample.class);

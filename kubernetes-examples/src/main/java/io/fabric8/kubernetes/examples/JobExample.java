@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
-/*
+/**
  * Creates a simple run to complete job that computes π to 2000 places and prints it out.
  */
 public class JobExample {

@@ -21,6 +21,9 @@ import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import okhttp3.Response;
 
+/**
+ * This is an example of executing a command with terminal size.
+ */
 @SuppressWarnings("java:S106")
 public class ExecExampleWithTerminalSize {
 

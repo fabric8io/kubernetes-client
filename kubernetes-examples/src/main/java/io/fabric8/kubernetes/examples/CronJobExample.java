@@ -27,7 +27,7 @@ import java.util.Collections;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-/*
+/**
  * Creates a simple cronjob that runs every minute spinning a pod that echoes hello world.
  */
 public class CronJobExample {

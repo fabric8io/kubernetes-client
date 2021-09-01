@@ -19,7 +19,9 @@ package io.fabric8.kubernetes.examples;
 import io.fabric8.kubernetes.client.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+/**
+ *  This is an example of getting kubernetes version.
+ */
 public class KubernetesVersionExample {
   private static final Logger logger = LoggerFactory.getLogger(KubernetesVersionExample.class);
 

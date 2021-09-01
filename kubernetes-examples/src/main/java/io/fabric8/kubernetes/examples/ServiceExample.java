@@ -26,7 +26,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.Optional;
-
+/**
+ * This is an example of creating Service.
+ */
 public class ServiceExample {
 
   private static final Logger logger = LoggerFactory.getLogger(ServiceExample.class);

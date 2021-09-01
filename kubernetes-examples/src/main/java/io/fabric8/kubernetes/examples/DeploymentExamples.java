@@ -26,7 +26,9 @@ import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+/**
+ * This is an example of how to use the client to create、update、 delete a Deployment.
+ */
 public class DeploymentExamples {
 
   private static final Logger logger = LoggerFactory.getLogger(DeploymentExamples.class);

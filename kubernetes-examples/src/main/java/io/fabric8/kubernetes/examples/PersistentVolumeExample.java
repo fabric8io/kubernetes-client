@@ -28,7 +28,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
-
+/**
+ * This is an example of how to use the client to create a PersistentVolume.
+ */
 public class PersistentVolumeExample {
   private static final Logger logger = LoggerFactory.getLogger(PersistentVolumeExample.class);
 

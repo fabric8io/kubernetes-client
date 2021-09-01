@@ -23,6 +23,9 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 
 import java.util.List;
 
+/**
+ * This is an example of get CustomResourceDefinition list.
+ */
 @SuppressWarnings("java:S106")
 public class ListCustomResourceDefinitions {
   public static void main(String[] args) {

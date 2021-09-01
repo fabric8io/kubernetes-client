@@ -25,7 +25,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.UUID;
-
+/**
+ * This is an example of how to use the client to create or update a StorageClass.
+ */
 public class StorageClassExamples {
 
   private static final Logger logger = LoggerFactory.getLogger(StorageClassExamples.class);

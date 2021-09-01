@@ -41,19 +41,19 @@ import org.slf4j.LoggerFactory;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Example of Cluster and Namespaced scoped K8S Custom Resources.
+ * To test Cluster scoped resource use "--cluster" as first argument.
+ * To test Namespaced resource provide namespace as first argument (namespace must exists in K8S).
+ *
+ * @param args Either "--cluster" or namespace name.
+ */
 public class CRDExample {
 
   private static final Logger logger = LoggerFactory.getLogger(CRDExample.class);
 
   private static boolean logRootPaths = false;
 
-  /**
-   * Example of Cluster and Namespaced scoped K8S Custom Resources.
-   * To test Cluster scoped resource use "--cluster" as first argument.
-   * To test Namespaced resource provide namespace as first argument (namespace must exists in K8S).
-   *
-   * @param args Either "--cluster" or namespace name.
-   */
   public static void main(String[] args) {
     boolean resourceNamespaced = true;
     String namespace = null;

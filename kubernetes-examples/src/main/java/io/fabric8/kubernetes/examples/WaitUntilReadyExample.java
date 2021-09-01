@@ -26,7 +26,9 @@ import org.slf4j.LoggerFactory;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
-
+/**
+ * This is an example of waiting for pod to get ready.
+ */
 public class WaitUntilReadyExample {
 
   private static final Logger logger = LoggerFactory.getLogger(WaitUntilReadyExample.class);

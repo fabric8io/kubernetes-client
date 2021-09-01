@@ -27,7 +27,9 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+/**
+ * This is an example of updating Namespace Quota.
+ */
 public class NamespaceQuotaExample {
 
   private static final Logger logger = LoggerFactory.getLogger(NamespaceQuotaExample.class);

@@ -29,7 +29,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 import java.util.UUID;
-
+/**
+ * This is an example of watching resource event.
+ */
 public class WatchExample {
 
   private static final Logger logger = LoggerFactory.getLogger(WatchExample.class);

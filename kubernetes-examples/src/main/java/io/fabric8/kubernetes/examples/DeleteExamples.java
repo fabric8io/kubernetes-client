@@ -22,6 +22,9 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * This is an example of deleting resources.
+ */
 public class DeleteExamples {
 
   private static final Logger logger = LoggerFactory.getLogger(DeleteExamples.class);

@@ -35,6 +35,9 @@ import io.fabric8.kubernetes.client.internal.SerializationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * This is an example of how to use the client to update、create、get a Namespace or ReplicationController.
+ */
 public class FullExample {
 
     private static final Logger logger = LoggerFactory.getLogger(FullExample.class);

@@ -31,7 +31,9 @@ import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
-
+/**
+ * This is an example of running command on pod.
+ */
 @SuppressWarnings("java:S106")
 public class ExecuteCommandOnPodExample implements AutoCloseable {
 

@@ -33,7 +33,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
-
+/**
+ * This is an example of how to use the client to update、create、delete a PersistentVolumeClaim.
+ */
 public class PersistentVolumeClaimExample {
   private static final Logger logger = LoggerFactory.getLogger(PersistentVolumeClaimExample.class);
 
