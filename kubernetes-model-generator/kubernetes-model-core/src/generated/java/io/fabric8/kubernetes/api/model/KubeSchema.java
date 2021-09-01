@@ -23,6 +23,8 @@ import lombok.ToString;
     "metadata",
     "APIGroup",
     "APIGroupList",
+    "APIResource",
+    "APIResourceList",
     "APIService",
     "APIServiceList",
     "BaseKubernetesList",
@@ -92,6 +94,10 @@ public class KubeSchema {
     private APIGroup aPIGroup;
     @JsonProperty("APIGroupList")
     private APIGroupList aPIGroupList;
+    @JsonProperty("APIResource")
+    private APIResource aPIResource;
+    @JsonProperty("APIResourceList")
+    private APIResourceList aPIResourceList;
     @JsonProperty("APIService")
     private APIService aPIService;
     @JsonProperty("APIServiceList")
@@ -239,6 +245,7 @@ public class KubeSchema {
      * @param groupVersionResource
      * @param limitRangeList
      * @param toleration
+     * @param aPIResourceList
      * @param nodeList
      * @param groupVersionKind
      * @param node
@@ -269,6 +276,7 @@ public class KubeSchema {
      * @param microTime
      * @param podExecOptions
      * @param serviceAccount
+     * @param aPIResource
      * @param resourceQuotaList
      * @param topologySelectorTerm
      * @param createOptions
@@ -284,10 +292,12 @@ public class KubeSchema {
      * @param endpointPort
      * @param config
      */
-    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, APIService aPIService, APIServiceList aPIServiceList, BaseKubernetesList baseKubernetesList, Binding binding, ComponentStatus componentStatus, ComponentStatusList componentStatusList, Condition condition, Config config, ConfigMap configMap, ConfigMapList configMapList, ContainerStatus containerStatus, CreateOptions createOptions, DeleteOptions deleteOptions, EndpointPort endpointPort, Endpoints endpoints, EndpointsList endpointsList, EnvVar envVar, Event event, EventList eventList, EventSeries eventSeries, EventSource eventSource, GetOptions getOptions, GroupVersionKind groupVersionKind, GroupVersionResource groupVersionResource, Info info, LimitRangeList limitRangeList, ListOptions listOptions, MicroTime microTime, Namespace namespace, NamespaceList namespaceList, Node node, NodeList nodeList, ObjectMeta objectMeta, Patch patch, PatchOptions patchOptions, PersistentVolume persistentVolume, PersistentVolumeClaim persistentVolumeClaim, PersistentVolumeClaimList persistentVolumeClaimList, PersistentVolumeList persistentVolumeList, PodExecOptions podExecOptions, PodList podList, PodTemplateList podTemplateList, Quantity quantity, ReplicationControllerList replicationControllerList, ResourceQuota resourceQuota, ResourceQuotaList resourceQuotaList, RootPaths rootPaths, Secret secret, SecretList secretList, ServiceAccount serviceAccount, ServiceAccountList serviceAccountList, ServiceList serviceList, Status status, String time, Toleration toleration, TopologySelectorTerm topologySelectorTerm, TypeMeta typeMeta, UpdateOptions updateOptions, WatchEvent watchEvent) {
+    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, APIResource aPIResource, APIResourceList aPIResourceList, APIService aPIService, APIServiceList aPIServiceList, BaseKubernetesList baseKubernetesList, Binding binding, ComponentStatus componentStatus, ComponentStatusList componentStatusList, Condition condition, Config config, ConfigMap configMap, ConfigMapList configMapList, ContainerStatus containerStatus, CreateOptions createOptions, DeleteOptions deleteOptions, EndpointPort endpointPort, Endpoints endpoints, EndpointsList endpointsList, EnvVar envVar, Event event, EventList eventList, EventSeries eventSeries, EventSource eventSource, GetOptions getOptions, GroupVersionKind groupVersionKind, GroupVersionResource groupVersionResource, Info info, LimitRangeList limitRangeList, ListOptions listOptions, MicroTime microTime, Namespace namespace, NamespaceList namespaceList, Node node, NodeList nodeList, ObjectMeta objectMeta, Patch patch, PatchOptions patchOptions, PersistentVolume persistentVolume, PersistentVolumeClaim persistentVolumeClaim, PersistentVolumeClaimList persistentVolumeClaimList, PersistentVolumeList persistentVolumeList, PodExecOptions podExecOptions, PodList podList, PodTemplateList podTemplateList, Quantity quantity, ReplicationControllerList replicationControllerList, ResourceQuota resourceQuota, ResourceQuotaList resourceQuotaList, RootPaths rootPaths, Secret secret, SecretList secretList, ServiceAccount serviceAccount, ServiceAccountList serviceAccountList, ServiceList serviceList, Status status, String time, Toleration toleration, TopologySelectorTerm topologySelectorTerm, TypeMeta typeMeta, UpdateOptions updateOptions, WatchEvent watchEvent) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
+        this.aPIResource = aPIResource;
+        this.aPIResourceList = aPIResourceList;
         this.aPIService = aPIService;
         this.aPIServiceList = aPIServiceList;
         this.baseKubernetesList = baseKubernetesList;
@@ -367,6 +377,26 @@ public class KubeSchema {
     @JsonProperty("APIGroupList")
     public void setAPIGroupList(APIGroupList aPIGroupList) {
         this.aPIGroupList = aPIGroupList;
+    }
+
+    @JsonProperty("APIResource")
+    public APIResource getAPIResource() {
+        return aPIResource;
+    }
+
+    @JsonProperty("APIResource")
+    public void setAPIResource(APIResource aPIResource) {
+        this.aPIResource = aPIResource;
+    }
+
+    @JsonProperty("APIResourceList")
+    public APIResourceList getAPIResourceList() {
+        return aPIResourceList;
+    }
+
+    @JsonProperty("APIResourceList")
+    public void setAPIResourceList(APIResourceList aPIResourceList) {
+        this.aPIResourceList = aPIResourceList;
     }
 
     @JsonProperty("APIService")

@@ -10,6 +10,8 @@
 #### Dependency Upgrade
 
 #### New Features
+* Fix #3294: Support fetching APIGroupList
+* Fix #3303: Support fetching APIResourceList
 
 #### _**Note**_: Breaking changes in the API
 

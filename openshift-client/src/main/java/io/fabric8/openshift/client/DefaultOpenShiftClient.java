@@ -37,7 +37,6 @@ import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Nameable;
 import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
-import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.Namespaceable;
 import io.fabric8.kubernetes.client.dsl.NamespacedInOutCreateable;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
@@ -47,8 +46,7 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.ComponentStatusOperationsImpl;
 import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectorBuilder;
-import io.fabric8.kubernetes.client.utils.BackwardsCompatibilityInterceptor;
-import io.fabric8.kubernetes.client.utils.ImpersonatorInterceptor;
+import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.openshift.api.model.BrokerTemplateInstance;
 import io.fabric8.openshift.api.model.BrokerTemplateInstanceList;
@@ -174,17 +172,15 @@ import io.fabric8.openshift.client.dsl.internal.user.GroupOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.user.UserOperationsImpl;
 import io.fabric8.openshift.client.internal.OpenShiftClusterOperationsImpl;
 import io.fabric8.openshift.client.internal.OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl;
-import io.fabric8.openshift.client.internal.OpenShiftOAuthInterceptor;
-import okhttp3.Authenticator;
 import okhttp3.OkHttpClient;
 
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Class for Default Openshift Client implementing KubernetesClient interface.
@@ -192,7 +188,7 @@ import java.util.Objects;
  */
 public class DefaultOpenShiftClient extends BaseKubernetesClient<NamespacedOpenShiftClient> implements NamespacedOpenShiftClient {
 
-  private static final Map<String, Boolean> API_GROUPS_ENABLED_PER_URL = new HashMap<>();
+  private static final Map<String, Boolean> API_GROUPS_ENABLED_PER_URL = new ConcurrentHashMap<>();
   public static final String AUTHORIZATION_OPENSHIFT_IO = "authorization.openshift.io";
   public static final String V1_APIVERSION = "v1";
 
@@ -211,19 +207,12 @@ public class DefaultOpenShiftClient extends BaseKubernetesClient<NamespacedOpenS
   }
 
   public DefaultOpenShiftClient(final OpenShiftConfig config) {
-    super(configWithApiGroupsEnabled(clientWithOpenShiftOAuthInterceptor(config), config));
-    try {
-      this.httpClient = clientWithOpenShiftOAuthInterceptor(this.httpClient, config);
-      this.openShiftUrl = new URL(config.getOpenShiftUrl());
-    } catch (MalformedURLException e) {
-      throw new KubernetesClientException("Could not create client", e);
-    }
+    this(HttpClientUtils.createHttpClient(config), config);
   }
 
   public DefaultOpenShiftClient(OkHttpClient httpClient, OpenShiftConfig config) {
     super(httpClient, configWithApiGroupsEnabled(httpClient, config));
     try {
-      this.httpClient = clientWithOpenShiftOAuthInterceptor(httpClient, getConfiguration());
       this.openShiftUrl = new URL(config.getOpenShiftUrl());
     } catch (MalformedURLException e) {
       throw new KubernetesClientException("Could not create client", e);
@@ -237,13 +226,13 @@ public class DefaultOpenShiftClient extends BaseKubernetesClient<NamespacedOpenS
       return config;
     }
 
-    if (!config.isDisableApiGroupCheck()) {
+    if (config.isDisableApiGroupCheck()) {
       return config.withOpenshiftApiGroupsEnabled(false);
     }
 
-    Boolean enabled = OpenshiftAdapterSupport.isOpenShiftAPIGroups(httpClient, url);
+    boolean enabled = OpenshiftAdapterSupport.isOpenShift(httpClient, config);
     API_GROUPS_ENABLED_PER_URL.put(url, enabled);
-   return config.withOpenshiftApiGroupsEnabled(enabled);
+    return config.withOpenshiftApiGroupsEnabled(enabled);
   }
 
   public static DefaultOpenShiftClient fromConfig(String config) {
@@ -252,22 +241,6 @@ public class DefaultOpenShiftClient extends BaseKubernetesClient<NamespacedOpenS
 
   public static DefaultOpenShiftClient fromConfig(InputStream is) {
     return new DefaultOpenShiftClient(Serialization.unmarshal(is, OpenShiftConfig.class));
-  }
-
-  private static OkHttpClient clientWithOpenShiftOAuthInterceptor(Config config) {
-    return clientWithOpenShiftOAuthInterceptor(null, config);
-  }
-
-  static OkHttpClient clientWithOpenShiftOAuthInterceptor(OkHttpClient httpClient, Config config) {
-    OkHttpClient.Builder builder = httpClient != null ?
-      httpClient.newBuilder().authenticator(Authenticator.NONE) :
-      new OkHttpClient.Builder().authenticator(Authenticator.NONE);
-
-    builder.interceptors().clear();
-    return builder.addInterceptor(new OpenShiftOAuthInterceptor(httpClient, OpenShiftConfig.wrap(config)))
-      .addInterceptor(new ImpersonatorInterceptor(config))
-      .addInterceptor(new BackwardsCompatibilityInterceptor())
-      .build();
   }
 
   @Override

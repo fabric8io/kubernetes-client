@@ -16,8 +16,6 @@
 
 package io.fabric8.openshift.client;
 
-import okhttp3.OkHttpClient;
-import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.ExtensionAdapter;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
@@ -32,11 +30,4 @@ public class NamespacedOpenShiftExtensionAdapter extends OpenshiftAdapterSupport
     return NamespacedOpenShiftClient.class;
   }
 
-  @Override
-  public NamespacedOpenShiftClient adapt(Client client) {
-    if (!isAdaptable(client)) {
-      throw new OpenShiftNotAvailableException("OpenShift is not available. Root paths at: " + client.getMasterUrl() + " do not include /oapi or the new /apis/*.openshift.io APIs.");
-    }
-    return new DefaultOpenShiftClient(client.adapt(OkHttpClient.class), OpenShiftConfig.wrap(client.getConfiguration()));
-  }
 }

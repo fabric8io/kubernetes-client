@@ -26,11 +26,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.OAuthTokenProvider;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
+import io.fabric8.kubernetes.client.utils.BackwardsCompatibilityInterceptor;
+import io.fabric8.kubernetes.client.utils.ImpersonatorInterceptor;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
+import io.fabric8.openshift.client.internal.OpenShiftOAuthInterceptor;
 import io.fabric8.openshift.client.internal.readiness.OpenShiftReadiness;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
+import okhttp3.Authenticator;
+import okhttp3.OkHttpClient;
 import okhttp3.TlsVersion;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -196,4 +201,18 @@ public class OpenShiftConfig extends Config {
   public Readiness getReadiness() {
     return OpenShiftReadiness.getInstance();
   }
+
+  @Override
+  public OkHttpClient adaptClient(OkHttpClient httpClient) {
+    OkHttpClient.Builder builder = httpClient != null ?
+        httpClient.newBuilder().authenticator(Authenticator.NONE) :
+        new OkHttpClient.Builder().authenticator(Authenticator.NONE);
+
+      builder.interceptors().clear();
+      return builder.addInterceptor(new OpenShiftOAuthInterceptor(httpClient, this))
+        .addInterceptor(new ImpersonatorInterceptor(this))
+        .addInterceptor(new BackwardsCompatibilityInterceptor())
+        .build();
+  }
+
 }

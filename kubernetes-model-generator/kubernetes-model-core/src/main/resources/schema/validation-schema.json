@@ -231,6 +231,87 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_apimachinery_pkg_apis_APIResource": {
+      "type": "object",
+      "properties": {
+        "categories": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "group": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "namespaced": {
+          "type": "boolean"
+        },
+        "shortNames": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "singularName": {
+          "type": "string"
+        },
+        "storageVersionHash": {
+          "type": "string"
+        },
+        "verbs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.APIResource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_apimachinery_pkg_apis_APIResourceList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "v1",
+          "required": true
+        },
+        "groupVersion": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string",
+          "default": "APIResourceList",
+          "required": true
+        },
+        "resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_APIResource",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.APIResource"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.APIResourceList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_apimachinery_pkg_apis_Condition": {
       "type": "object",
       "properties": {
@@ -7398,6 +7479,14 @@
       "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_APIGroupList",
       "existingJavaType": "io.fabric8.kubernetes.api.model.APIGroupList"
     },
+    "APIResource": {
+      "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_APIResource",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.APIResource"
+    },
+    "APIResourceList": {
+      "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_APIResourceList",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.APIResourceList"
+    },
     "APIService": {
       "$ref": "#/definitions/kubernetes_aggregator_APIService",
       "existingJavaType": "io.fabric8.kubernetes.api.model.APIService"
@@ -7709,6 +7798,77 @@
           "type": "string",
           "default": "APIGroupList",
           "required": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "apiresource": {
+      "properties": {
+        "categories": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "group": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "namespaced": {
+          "type": "boolean"
+        },
+        "shortNames": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "singularName": {
+          "type": "string"
+        },
+        "storageVersionHash": {
+          "type": "string"
+        },
+        "verbs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "apiresourcelist": {
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "v1",
+          "required": true
+        },
+        "groupVersion": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string",
+          "default": "APIResourceList",
+          "required": true
+        },
+        "resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_APIResource",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.APIResource"
+          }
         }
       },
       "additionalProperties": true
