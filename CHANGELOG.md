@@ -8,7 +8,7 @@
 #### New Features
 #### _**Note**_: Breaking changes in the API
 
-### 5.7.2
+### 5.7.2 (2021-09-02)
 #### Dependency Upgrade
 * Fix: Revert #3427 bump jandex from 2.3.1.Final to 2.4.0.Final
 
