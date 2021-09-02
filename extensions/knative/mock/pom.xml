@@ -21,7 +21,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>knative-extension-pom</artifactId>
-    <version>5.7.2</version>
+    <version>5.8-SNAPSHOT</version>
   </parent>
 
   <artifactId>knative-mock</artifactId>

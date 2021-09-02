@@ -21,7 +21,7 @@
   <parent>
     <artifactId>kubernetes-client-project</artifactId>
     <groupId>io.fabric8</groupId>
-    <version>5.7.2</version>
+    <version>5.8-SNAPSHOT</version>
   </parent>
 
   <artifactId>kubernetes-openshift-uberjar</artifactId>
