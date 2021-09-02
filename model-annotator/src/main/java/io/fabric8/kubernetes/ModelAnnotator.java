@@ -24,8 +24,8 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import io.sundr.transform.annotations.VelocityTransformation;
-import io.sundr.transform.annotations.VelocityTransformations;
+import io.sundr.transform.annotations.TemplateTransformation;
+import io.sundr.transform.annotations.TemplateTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.jsonschema2pojo.AbstractAnnotator;
@@ -76,9 +76,9 @@ public class ModelAnnotator extends AbstractAnnotator {
       }
 
       if (isCRD(clazz, propertiesNode)) { // include in model.properties (only CRDs not Lists!)
-        JAnnotationArrayMember arrayMember = clazz.annotate(VelocityTransformations.class)
+        JAnnotationArrayMember arrayMember = clazz.annotate(TemplateTransformations.class)
           .paramArray("value");
-        arrayMember.annotate(VelocityTransformation.class)
+        arrayMember.annotate(TemplateTransformation.class)
           .param("value", "/manifest.vm")
           .param("outputPath", "model.properties")
           .param("gather", true);

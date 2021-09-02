@@ -94,7 +94,10 @@
       <groupId>io.sundr</groupId>
       <artifactId>transform-annotations</artifactId>
     </dependency>
-
+    <dependency>
+      <groupId>io.sundr</groupId>
+      <artifactId>sundr-codegen-velocity-nodeps</artifactId>
+    </dependency>
     <!-- Test dependencies -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>

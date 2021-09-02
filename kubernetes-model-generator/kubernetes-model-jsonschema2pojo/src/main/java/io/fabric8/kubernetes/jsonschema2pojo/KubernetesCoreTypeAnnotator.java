@@ -29,8 +29,8 @@ import com.sun.codemodel.JFormatter;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
-import io.sundr.transform.annotations.VelocityTransformation;
-import io.sundr.transform.annotations.VelocityTransformations;
+import io.sundr.transform.annotations.TemplateTransformation;
+import io.sundr.transform.annotations.TemplateTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.jsonschema2pojo.GenerationConfig;
@@ -170,9 +170,9 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
   protected void addClassesToPropertyFiles(JDefinedClass clazz) {
     String packageCategory = getPackageCategory(clazz.getPackage().name());
     if (moduleName.equals(packageCategory) /*&& shouldIncludeClass(clazz.name())*/) {
-      JAnnotationArrayMember arrayMember = clazz.annotate(VelocityTransformations.class)
+      JAnnotationArrayMember arrayMember = clazz.annotate(TemplateTransformations.class)
         .paramArray(ANNOTATION_VALUE);
-      arrayMember.annotate(VelocityTransformation.class).param(ANNOTATION_VALUE, "/manifest.vm")
+      arrayMember.annotate(TemplateTransformation.class).param(ANNOTATION_VALUE, "/manifest.vm")
         .param("outputPath", moduleName + ".properties").param("gather", true);
     }
   }
