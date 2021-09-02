@@ -22,13 +22,27 @@ import io.fabric8.kubernetes.api.model.Duration;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.Quantity;
 import io.sundr.builder.internal.functions.TypeAs;
-import io.sundr.codegen.functions.ClassTo;
 import io.sundr.model.*;
 import io.sundr.utils.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+
+import static io.sundr.model.utils.Types.BOOLEAN;
+import static io.sundr.model.utils.Types.BOOLEAN_REF;
+
+import static io.sundr.model.utils.Types.STRING;
+import static io.sundr.model.utils.Types.STRING_REF;
+
+import static io.sundr.model.utils.Types.INT;
+import static io.sundr.model.utils.Types.INT_REF;
+
+import static io.sundr.model.utils.Types.LONG;
+import static io.sundr.model.utils.Types.LONG_REF;
+
+import static io.sundr.model.utils.Types.DOUBLE;
+import static io.sundr.model.utils.Types.DOUBLE_REF;
 
 /**
  * Encapsulates the common logic supporting OpenAPI schema generation for CRD generation.
@@ -40,27 +54,16 @@ public abstract class AbstractJsonSchema<T, B> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(AbstractJsonSchema.class);
 
-  protected static final TypeDef QUANTITY = ClassTo.TYPEDEF.apply(Quantity.class);
-  protected static final TypeDef DURATION = ClassTo.TYPEDEF.apply(Duration.class);
-  protected static final TypeDef INT_OR_STRING = ClassTo.TYPEDEF.apply(IntOrString.class);
+  protected static final TypeDef QUANTITY = TypeDef.forName(Quantity.class.getName());
+  protected static final TypeDef DURATION = TypeDef.forName(Duration.class.getName());
+  protected static final TypeDef INT_OR_STRING =TypeDef.forName(IntOrString.class.getName());  
 
-
-  protected static final TypeDef BOOLEAN = ClassTo.TYPEDEF.apply(Boolean.class);
-  protected static final TypeDef STRING = ClassTo.TYPEDEF.apply(String.class);
-  protected static final TypeDef INT = ClassTo.TYPEDEF.apply(Integer.class);
-  protected static final TypeDef LONG = ClassTo.TYPEDEF.apply(Long.class);
-  protected static final TypeDef DOUBLE = ClassTo.TYPEDEF.apply(Double.class);
-  protected static final TypeDef DATE = ClassTo.TYPEDEF.apply(Date.class);
   protected static final TypeRef QUANTITY_REF = QUANTITY.toReference();
   protected static final TypeRef DURATION_REF = DURATION.toReference();
   protected static final TypeRef INT_OR_STRING_REF = INT_OR_STRING.toReference();
 
 
-  protected static final TypeRef BOOLEAN_REF = BOOLEAN.toReference();
-  protected static final TypeRef STRING_REF = STRING.toReference();
-  protected static final TypeRef INT_REF = INT.toReference();
-  protected static final TypeRef LONG_REF = LONG.toReference();
-  protected static final TypeRef DOUBLE_REF = DOUBLE.toReference();
+  protected static final TypeDef DATE = TypeDef.forName(Date.class.getName());
   protected static final TypeRef DATE_REF = DATE.toReference();
 
   private static final String INT_OR_STRING_MARKER = "int_or_string";

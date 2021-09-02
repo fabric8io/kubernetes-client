@@ -13,8 +13,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
-import io.sundr.transform.annotations.VelocityTransformation;
-import io.sundr.transform.annotations.VelocityTransformations;
+import io.sundr.transform.annotations.TemplateTransformation;
+import io.sundr.transform.annotations.TemplateTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -31,8 +31,8 @@ import lombok.ToString;
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Version("v1")
 @Group("")
-@VelocityTransformations({
-    @VelocityTransformation(value = "/manifest.vm", outputPath = "core.properties", gather = true)
+@TemplateTransformations({
+    @TemplateTransformation(value = "/manifest.vm", outputPath = "core.properties", gather = true)
 })
 public class LimitRange implements HasMetadata, Namespaced
 {

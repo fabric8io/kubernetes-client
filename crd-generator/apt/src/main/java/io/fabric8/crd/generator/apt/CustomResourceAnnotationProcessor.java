@@ -26,7 +26,6 @@ import io.fabric8.kubernetes.model.Scope;
 import io.fabric8.kubernetes.model.annotation.*;
 import io.sundr.adapter.api.Adapters;
 import io.sundr.adapter.apt.AptContext;
-import io.sundr.codegen.CodegenContext;
 import io.sundr.model.TypeDef;
 import io.sundr.model.repo.DefinitionRepository;
 
@@ -62,7 +61,6 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
 
     // make sure we create the context before using it
     AptContext.create(processingEnv.getElementUtils(), processingEnv.getTypeUtils(), DefinitionRepository.getRepository());
-    CodegenContext.create(processingEnv.getElementUtils(), processingEnv.getTypeUtils());
 
     //Collect all annotated types.
     for (TypeElement annotation : annotations) {
@@ -77,7 +75,7 @@ public class CustomResourceAnnotationProcessor extends AbstractProcessor {
   }
   
   private CustomResourceInfo toCustomResourceInfo(TypeElement customResource) {
-    TypeDef definition = Adapters.adapt(customResource, AptContext.getContext());
+    TypeDef definition = Adapters.adaptType(customResource, AptContext.getContext());
     definition = Types.unshallow(definition);
     
     if (CustomResourceInfo.DESCRIBE_TYPE_DEFS) {

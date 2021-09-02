@@ -24,8 +24,8 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import io.sundr.transform.annotations.VelocityTransformation;
-import io.sundr.transform.annotations.VelocityTransformations;
+import io.sundr.transform.annotations.TemplateTransformation;
+import io.sundr.transform.annotations.TemplateTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -53,8 +53,8 @@ import lombok.ToString;
 })
 @Version("v1")
 @Group("image.openshift.io")
-@VelocityTransformations({
-    @VelocityTransformation(value = "/manifest.vm", outputPath = "openshift.properties", gather = true)
+@TemplateTransformations({
+    @TemplateTransformation(value = "/manifest.vm", outputPath = "openshift.properties", gather = true)
 })
 public class ImageStream implements HasMetadata, Namespaced
 {

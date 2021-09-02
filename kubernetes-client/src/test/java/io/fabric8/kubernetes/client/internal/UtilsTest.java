@@ -70,6 +70,7 @@ import io.fabric8.kubernetes.api.model.storage.StorageClass;
 import io.fabric8.kubernetes.api.model.storage.VolumeAttachment;
 import io.fabric8.kubernetes.api.model.storage.v1beta1.CSIDriver;
 import io.fabric8.kubernetes.api.model.storage.v1beta1.CSINode;
+import io.fabric8.kubernetes.client.lib.FileSystem;
 import io.fabric8.kubernetes.client.utils.Utils;
 import java.io.File;
 import java.util.Collections;
@@ -80,7 +81,6 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.concurrent.ThreadFactory;
 
-import org.apache.commons.lang.SystemUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -366,12 +366,14 @@ class UtilsTest {
 
     assertNotNull(commandPrefix);
     assertEquals(2, commandPrefix.size());
-    if (SystemUtils.IS_OS_WINDOWS) {
-      assertEquals("cmd.exe", commandPrefix.get(0));
-      assertEquals("/c", commandPrefix.get(1));
-    } else {
-      assertEquals("sh", commandPrefix.get(0));
-      assertEquals("-c", commandPrefix.get(1));
+    switch (FileSystem.getCurrent()) {
+      case WINDOWS:
+        assertEquals("cmd.exe", commandPrefix.get(0));
+        assertEquals("/c", commandPrefix.get(1));
+        break;
+      default:
+        assertEquals("sh", commandPrefix.get(0));
+        assertEquals("-c", commandPrefix.get(1));
     }
   }
   

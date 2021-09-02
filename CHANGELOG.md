@@ -5,6 +5,7 @@
 #### Bugs
 #### Improvements
 #### Dependency Upgrade
+  * Upgrade Sundrio to 0.50.1
 #### New Features
 #### _**Note**_: Breaking changes in the API
 

@@ -17,8 +17,8 @@ package io.fabric8.crd.generator.utils;
 
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.client.CustomResource;
+import io.sundr.adapter.api.AdapterContext;
 import io.sundr.adapter.api.Adapters;
-import io.sundr.adapter.reflect.ReflectionContext;
 import io.sundr.builder.TypedVisitor;
 import io.sundr.model.ClassRef;
 import io.sundr.model.ClassRefBuilder;
@@ -56,11 +56,10 @@ public class Types {
   private static final Logger LOGGER = LoggerFactory.getLogger(Types.class);
   private static final String NAMESPACED = Namespaced.class.getName();
   public static final String JAVA_LANG_VOID = "java.lang.Void";
-  public static final ReflectionContext REFLECTION_CONTEXT = new ReflectionContext(DefinitionRepository.getRepository());
-
+  public static final AdapterContext REFLECTION_CONTEXT = AdapterContext.create(DefinitionRepository.getRepository());
 
   public static TypeDef typeDefFrom(Class<?> clazz) {
-    return unshallow(Adapters.adapt(clazz, REFLECTION_CONTEXT));
+    return unshallow(Adapters.adaptType(clazz, REFLECTION_CONTEXT));
   }
 
   public static TypeDef unshallow(TypeDef definition) {

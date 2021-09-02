@@ -30,8 +30,8 @@ import io.fabric8.kubernetes.api.model.HasMetadataComparator;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
-import io.sundr.transform.annotations.VelocityTransformation;
-import io.sundr.transform.annotations.VelocityTransformations;
+import io.sundr.transform.annotations.TemplateTransformation;
+import io.sundr.transform.annotations.TemplateTransformations;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -64,8 +64,8 @@ import java.util.Map;
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage=false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Version("v1")
 @Group("")
-@VelocityTransformations({
-    @VelocityTransformation(value = "/manifest.vm", outputPath = "openshift.properties", gather = true)
+@TemplateTransformations({
+    @TemplateTransformation(value = "/manifest.vm", outputPath = "openshift.properties", gather = true)
 })
 public class Template implements HasMetadata, Namespaced {
 

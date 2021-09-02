@@ -25,7 +25,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,6 +51,8 @@ import java.util.Map;
  */
 public class OpenIDConnectionUtils {
   private static final Logger LOGGER = LoggerFactory.getLogger(OpenIDConnectionUtils.class);
+
+  public static final String EMPTY = "";
   public static final String ID_TOKEN_KUBECONFIG = "id-token";
   public static final String ISSUER_KUBECONFIG = "idp-issuer-url";
   public static final String REFRESH_TOKEN_KUBECONFIG = "refresh-token";
@@ -240,7 +241,7 @@ public class OpenIDConnectionUtils {
     } else {
       LOGGER.warn("oidc: oidc: discovery object doesn't contain a {}", key);
     }
-    return StringUtils.EMPTY;
+    return EMPTY;
   }
 
   /**
