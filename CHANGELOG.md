@@ -3,6 +3,8 @@
 ### 5.8-SNAPSHOT
 
 #### Bugs
+* Fix #3445: TokenRefreshInterceptor throws when running incluster config
+
 #### Improvements
 #### Dependency Upgrade
 #### New Features

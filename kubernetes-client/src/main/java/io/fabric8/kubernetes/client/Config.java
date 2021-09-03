@@ -484,14 +484,14 @@ public class Config {
     if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYSERVICEACCOUNT_SYSTEM_PROPERTY, true)) {
       boolean serviceAccountCaCertExists = Files.isRegularFile(new File(caCertPath).toPath());
       if (serviceAccountCaCertExists) {
-        LOGGER.debug("Found service account ca cert at: ["+caCertPath+"].");
+        LOGGER.debug("Found service account ca cert at: [{}}].", caCertPath);
         config.setCaCertFile(caCertPath);
       } else {
-        LOGGER.debug("Did not find service account ca cert at: ["+caCertPath+"].");
+        LOGGER.debug("Did not find service account ca cert at: [{}}].", caCertPath);
       }
       try {
         String serviceTokenCandidate = new String(Files.readAllBytes(new File(saTokenPath).toPath()));
-        LOGGER.debug("Found service account token at: ["+saTokenPath+"].");
+        LOGGER.debug("Found service account token at: [{}].", saTokenPath);
         config.setOauthToken(serviceTokenCandidate);
         String txt = "Configured service account doesn't have access. Service account may have been revoked.";
         config.getErrorMessages().put(401, "Unauthorized! " + txt);
