@@ -20,43 +20,34 @@ import io.fabric8.kubernetes.client.CustomResource;
 import io.sundr.adapter.api.AdapterContext;
 import io.sundr.adapter.api.Adapters;
 import io.sundr.builder.TypedVisitor;
-import io.sundr.model.ClassRef;
-import io.sundr.model.ClassRefBuilder;
-import io.sundr.model.PrimitiveRef;
-import io.sundr.model.Property;
-import io.sundr.model.PropertyBuilder;
-import io.sundr.model.TypeDef;
-import io.sundr.model.TypeDefBuilder;
-import io.sundr.model.TypeParamDef;
-import io.sundr.model.TypeParamRef;
-import io.sundr.model.TypeRef;
-import io.sundr.model.VoidRef;
-import io.sundr.model.WildcardRef;
+import io.sundr.model.*;
 import io.sundr.model.functions.GetDefinition;
 import io.sundr.model.repo.DefinitionRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 public class Types {
   private Types() {
     throw new IllegalStateException("Utility class");
   }
+
   private static final Logger LOGGER = LoggerFactory.getLogger(Types.class);
   private static final String NAMESPACED = Namespaced.class.getName();
   public static final String JAVA_LANG_VOID = "java.lang.Void";
   public static final AdapterContext REFLECTION_CONTEXT = AdapterContext.create(DefinitionRepository.getRepository());
+
+  /**
+   * Make sure the generation context is reset so that types can be properly introspected if classes have changed since the last generation round.
+   */
+  public static void resetGenerationContext() {
+    DefinitionRepository.getRepository().clear();
+  }
 
   public static TypeDef typeDefFrom(Class<?> clazz) {
     return unshallow(Adapters.adaptType(clazz, REFLECTION_CONTEXT));
@@ -166,24 +157,24 @@ public class Types {
   private static List<Property> projectProperties(TypeDef typeDef) {
     final String fqn = typeDef.getFullyQualifiedName();
     return Stream.concat(
-      typeDef.getProperties().stream().filter(p -> {
-        // enums have self-referential static properties for each enum case so we cannot ignore them
-        if(typeDef.isEnum()) {
-          final TypeRef typeRef = p.getTypeRef();
-          if (typeRef instanceof ClassRef && fqn.equals(((ClassRef) typeRef).getFullyQualifiedName())) {
-            // we're dealing with an enum case so keep it
-            return true;
+        typeDef.getProperties().stream().filter(p -> {
+          // enums have self-referential static properties for each enum case so we cannot ignore them
+          if (typeDef.isEnum()) {
+            final TypeRef typeRef = p.getTypeRef();
+            if (typeRef instanceof ClassRef && fqn.equals(((ClassRef) typeRef).getFullyQualifiedName())) {
+              // we're dealing with an enum case so keep it
+              return true;
+            }
           }
-        }
-        // otherwise exclude all static properties
-        return !p.isStatic();
-      }),
-      typeDef.getExtendsList().stream()
-        .filter(e -> !e.getFullyQualifiedName().startsWith("java."))
-        .flatMap(e -> projectProperties(projectDefinition(e))
-          .stream()
-          .filter(p -> filterCustomResourceProperties(e).test(p)))
-    )
+          // otherwise exclude all static properties
+          return !p.isStatic();
+        }),
+        typeDef.getExtendsList().stream()
+          .filter(e -> !e.getFullyQualifiedName().startsWith("java."))
+          .flatMap(e -> projectProperties(projectDefinition(e))
+            .stream()
+            .filter(p -> filterCustomResourceProperties(e).test(p)))
+      )
 
       .collect(Collectors.toList());
   }

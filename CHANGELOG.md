@@ -3,6 +3,8 @@
 ### 5.8-SNAPSHOT
 
 #### Bugs
+* Fix #3442: make sure new CRDGenerator instances start with a clean generation context
+
 #### Improvements
 #### Dependency Upgrade
   * Upgrade Sundrio to 0.50.1
