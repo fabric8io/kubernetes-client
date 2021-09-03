@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator.Feature;
+import io.fabric8.crd.generator.utils.Types;
 import io.fabric8.crd.generator.v1.CustomResourceHandler;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.CustomResource;
@@ -55,6 +56,7 @@ public class CRDGenerator {
 
   public CRDGenerator() {
     resources = new Resources();
+    Types.resetGenerationContext(); // make sure the new generator starts up with a clean slate
   }
 
   public CRDGenerator inOutputDir(File outputDir) {
