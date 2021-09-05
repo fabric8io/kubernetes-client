@@ -67,7 +67,7 @@ public class TokenRefreshInterceptorTest {
   }
 
   @Test
-  public void shouldReloadInClusterServiceAccount() throws IOException {
+  void shouldReloadInClusterServiceAccount() throws IOException {
     try {
       // Write service account token file with value "expired" in it,
       // Set properties for it to be used instead of kubeconfig.
