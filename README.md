@@ -84,6 +84,7 @@ System properties are preferred over environment variables. The following system
 | `kubernetes.certs.client.key.passphrase` / `KUBERNETES_CERTS_CLIENT_KEY_PASSPHRASE` | | |
 | `kubernetes.auth.basic.username` / `KUBERNETES_AUTH_BASIC_USERNAME` | | |
 | `kubernetes.auth.basic.password` / `KUBERNETES_AUTH_BASIC_PASSWORD` | | |
+| `kubernetes.auth.serviceAccount.token` / `KUBERNETES_AUTH_SERVICEACCOUNT_TOKEN` | Name of the service account token file | `/var/run/secrets/kubernetes.io/serviceaccount/token`|
 | `kubernetes.auth.tryKubeConfig` / `KUBERNETES_AUTH_TRYKUBECONFIG` | Configure client using Kubernetes config | `true` |
 | `kubeconfig` / `KUBECONFIG` | Name of the kubernetes config file to read | `~/.kube/config` |
 | `kubernetes.auth.tryServiceAccount` / `KUBERNETES_AUTH_TRYSERVICEACCOUNT` | Configure client from Service account | `true` |
