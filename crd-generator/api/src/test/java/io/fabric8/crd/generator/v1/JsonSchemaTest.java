@@ -75,7 +75,7 @@ class JsonSchemaTest {
     assertEquals(2, properties.size());
     final JSONSchemaProps specSchema = properties.get("spec");
     Map<String, JSONSchemaProps> spec = specSchema.getProperties();
-    assertEquals(5, spec.size());
+    assertEquals(6, spec.size());
 
     // check descriptions are present
     assertTrue(spec.containsKey("from-field"));

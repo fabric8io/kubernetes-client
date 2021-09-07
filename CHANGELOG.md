@@ -12,6 +12,7 @@
 
 #### Bugs
 * Fix: Extension annotator doesn't generate XxxEditable classes
+* Fix #3450: CRD generator fails with ClassCastException in some cases
 
 #### Dependency Upgrade
 * Fix #3438: Upgrade Sundrio to 0.50.1
