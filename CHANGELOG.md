@@ -5,14 +5,21 @@
 #### Bugs
 #### Improvements
 #### Dependency Upgrade
-  * Upgrade Sundrio to 0.50.1
 #### New Features
 #### _**Note**_: Breaking changes in the API
+
+### 5.7.3
+
+#### Bugs
+* Fix: Extension annotator doesn't generate XxxEditable classes
+
+#### Dependency Upgrade
+* Fix #3438: Upgrade Sundrio to 0.50.1
 
 ### 5.7.2 (2021-09-02)
 
 #### Dependency Upgrade
-* Fix: Revert #3427 bump jandex from 2.3.1.Final to 2.4.0.Final
+* Fix #3441: Revert #3427 bump jandex from 2.3.1.Final to 2.4.0.Final
 
 ### 5.7.1 (2021-09-01)
 
