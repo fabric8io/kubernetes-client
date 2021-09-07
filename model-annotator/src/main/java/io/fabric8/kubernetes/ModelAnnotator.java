@@ -54,7 +54,7 @@ public class ModelAnnotator extends AbstractAnnotator {
       clazz.annotate(EqualsAndHashCode.class);
 
       JAnnotationUse buildable = clazz.annotate(Buildable.class)
-        .param("editableEnabled", true)
+        .param("editableEnabled", false)
         .param("validationEnabled", false)
         .param("generateBuilderPackage", false)
         .param("builderPackage", "io.fabric8.kubernetes.api.builder");
