@@ -18,6 +18,7 @@ package io.fabric8.crd.example.annotated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 public class AnnotatedSpec {
@@ -30,6 +31,8 @@ public class AnnotatedSpec {
   @NotNull
   private boolean emptySetter;
   private AnnotatedEnum anEnum;
+  @Min(0) // a non-string value attribute
+  private int sizedField;
 
   @JsonProperty("from-getter")
   @JsonPropertyDescription("from-getter-description")

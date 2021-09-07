@@ -190,19 +190,20 @@ public abstract class AbstractJsonSchema<T, B> {
 
     public void process() {
       annotations.forEach(a -> {
-        final String fromAnnotation = (String) a.getParameters().get("value");
         switch (a.getClassRef().getFullyQualifiedName()) {
           case ANNOTATION_NOT_NULL:
             required = true;
             break;
           case ANNOTATION_JSON_PROPERTY:
-            if (!Strings.isNullOrEmpty(fromAnnotation) && !propertyName.equals(fromAnnotation)) {
-              renamedTo = fromAnnotation;
+            final String nameFromAnnotation = (String) a.getParameters().get("value");
+            if (!Strings.isNullOrEmpty(nameFromAnnotation) && !propertyName.equals(nameFromAnnotation)) {
+              renamedTo = nameFromAnnotation;
             }
             break;
           case ANNOTATION_JSON_PROPERTY_DESCRIPTION:
-            if (!Strings.isNullOrEmpty(fromAnnotation)) {
-              description = fromAnnotation;
+            final String descriptionFromAnnotation = (String) a.getParameters().get("value");
+            if (!Strings.isNullOrEmpty(descriptionFromAnnotation)) {
+              description = descriptionFromAnnotation;
             }
             break;
         }
