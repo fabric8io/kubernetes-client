@@ -36,6 +36,7 @@ import java.util.Objects;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_KUBECONFIG_FILE;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_AUTH_SERVICEACCOUNT_TOKEN_FILE_SYSTEM_PROPERTY;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_AUTH_TRYKUBECONFIG_SYSTEM_PROPERTY;
+
 public class TokenRefreshInterceptorTest {
 
   @Test
@@ -103,6 +104,50 @@ public class TokenRefreshInterceptorTest {
       // Remove any side effect
       System.clearProperty(KUBERNETES_AUTH_SERVICEACCOUNT_TOKEN_FILE_SYSTEM_PROPERTY);
       System.clearProperty(KUBERNETES_AUTH_TRYKUBECONFIG_SYSTEM_PROPERTY);
+    }
+  }
+
+  @Test
+  void shouldRefreshOIDCToken() throws IOException {
+    try {
+      // Prepare kubeconfig for autoconfiguration
+      File tempFile = Files.createTempFile("test", "kubeconfig").toFile();
+      Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/test-kubeconfig-oidc")),
+          Paths.get(tempFile.getPath()), StandardCopyOption.REPLACE_EXISTING);
+      System.setProperty(KUBERNETES_KUBECONFIG_FILE, tempFile.getAbsolutePath());
+
+      // Prepare HTTP call that will fail with 401 Unauthorized to trigger OIDC token renewal.
+      Interceptor.Chain chain = Mockito.mock(Interceptor.Chain.class, Mockito.RETURNS_DEEP_STUBS);
+      Request req = new Request.Builder().url("http://mock").build();
+      Mockito.when(chain.request()).thenReturn(req);
+      final Response.Builder responseBuilder = new Response.Builder()
+          .request(req).protocol(Protocol.HTTP_1_1)
+          .message("")
+          .body(ResponseBody.create(MediaType.parse("text"), "foo"));
+      Mockito.when(chain.proceed(Mockito.any())).thenReturn(
+          responseBuilder.code(HttpURLConnection.HTTP_UNAUTHORIZED).build(),
+          responseBuilder.code(HttpURLConnection.HTTP_OK).build());
+
+      // Loads the initial kubeconfig, including initial token value.
+      Config config = Config.autoConfigure(null);
+
+      // Copy over new config with following auth provider configuration:
+      // - refresh-token is set to null to avoid real network connection towards
+      //   OIDC provider. This makes it unnecessary to mock the OIDC HTTP client.
+      // - id-token to set to "renewed". Since the original id-token at autoconfigure
+      //   had different value, we can be used the new value to assert/observe that
+      //   401 Unauthorized triggers renewal when OIDC auth provider is used.
+      Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/test-kubeconfig-tokeninterceptor-oidc")),
+          Paths.get(tempFile.getPath()), StandardCopyOption.REPLACE_EXISTING);
+
+      new TokenRefreshInterceptor(config).intercept(chain);
+
+      // Make the call and check that renewed token was read at 401 Unauthorized.
+      Mockito.verify(chain)
+          .proceed(Mockito.argThat(argument -> "Bearer renewed".equals(argument.header("Authorization"))));
+    } finally {
+      // Remove any side effect.
+      System.clearProperty(KUBERNETES_KUBECONFIG_FILE);
     }
 
   }
