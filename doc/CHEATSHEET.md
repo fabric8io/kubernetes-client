@@ -54,7 +54,7 @@ This document contains common usages of different resources using Fabric8 Kubern
   * [CatalogSource](#catalogsource)
   * [PrometheusRule](#prometheusrule)
   * [ServiceMonitor](#servicemonitor)
-  * [CluserResourceQuota](#clusterresourcequota)
+  * [ClusterResourceQuota](#clusterresourcequota)
   * [ClusterVersion](#clusterversion)
   * [EgressNetworkPolicy](#egressnetworkpolicy)
 
