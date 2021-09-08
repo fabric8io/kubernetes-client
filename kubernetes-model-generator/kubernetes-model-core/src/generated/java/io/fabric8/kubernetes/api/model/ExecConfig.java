@@ -26,6 +26,7 @@ import lombok.ToString;
     "command",
     "env",
     "installHint",
+    "interactiveMode",
     "provideClusterInfo"
 })
 @ToString
@@ -44,6 +45,8 @@ public class ExecConfig implements KubernetesResource
     private List<ExecEnvVar> env = new ArrayList<ExecEnvVar>();
     @JsonProperty("installHint")
     private String installHint;
+    @JsonProperty("interactiveMode")
+    private String interactiveMode;
     @JsonProperty("provideClusterInfo")
     private Boolean provideClusterInfo;
     @JsonIgnore
@@ -63,15 +66,17 @@ public class ExecConfig implements KubernetesResource
      * @param provideClusterInfo
      * @param env
      * @param installHint
+     * @param interactiveMode
      * @param command
      */
-    public ExecConfig(String apiVersion, List<String> args, String command, List<ExecEnvVar> env, String installHint, Boolean provideClusterInfo) {
+    public ExecConfig(String apiVersion, List<String> args, String command, List<ExecEnvVar> env, String installHint, String interactiveMode, Boolean provideClusterInfo) {
         super();
         this.apiVersion = apiVersion;
         this.args = args;
         this.command = command;
         this.env = env;
         this.installHint = installHint;
+        this.interactiveMode = interactiveMode;
         this.provideClusterInfo = provideClusterInfo;
     }
 
@@ -123,6 +128,16 @@ public class ExecConfig implements KubernetesResource
     @JsonProperty("installHint")
     public void setInstallHint(String installHint) {
         this.installHint = installHint;
+    }
+
+    @JsonProperty("interactiveMode")
+    public String getInteractiveMode() {
+        return interactiveMode;
+    }
+
+    @JsonProperty("interactiveMode")
+    public void setInteractiveMode(String interactiveMode) {
+        this.interactiveMode = interactiveMode;
     }
 
     @JsonProperty("provideClusterInfo")

@@ -326,6 +326,9 @@
         "operation": {
           "type": "string"
         },
+        "subresource": {
+          "type": "string"
+        },
         "time": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
           "existingJavaType": "String"
@@ -841,6 +844,9 @@
     "kubernetes_certificates_v1_CertificateSigningRequestSpec": {
       "type": "object",
       "properties": {
+        "expirationSeconds": {
+          "type": "integer"
+        },
         "extra": {
           "type": "object",
           "additionalProperties": {
@@ -1002,6 +1008,9 @@
     "kubernetes_certificates_v1beta1_CertificateSigningRequestSpec": {
       "type": "object",
       "properties": {
+        "expirationSeconds": {
+          "type": "integer"
+        },
         "extra": {
           "type": "object",
           "additionalProperties": {
@@ -1319,6 +1328,9 @@
     },
     "certificatesigningrequestspec": {
       "properties": {
+        "expirationSeconds": {
+          "type": "integer"
+        },
         "extra": {
           "type": "object",
           "additionalProperties": {
@@ -1606,6 +1618,9 @@
           "type": "string"
         },
         "operation": {
+          "type": "string"
+        },
+        "subresource": {
           "type": "string"
         },
         "time": {

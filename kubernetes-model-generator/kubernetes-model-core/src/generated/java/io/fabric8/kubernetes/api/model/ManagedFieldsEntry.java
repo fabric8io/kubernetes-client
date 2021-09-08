@@ -24,6 +24,7 @@ import lombok.ToString;
     "fieldsV1",
     "manager",
     "operation",
+    "subresource",
     "time"
 })
 @ToString
@@ -42,6 +43,8 @@ public class ManagedFieldsEntry implements KubernetesResource
     private java.lang.String manager;
     @JsonProperty("operation")
     private java.lang.String operation;
+    @JsonProperty("subresource")
+    private java.lang.String subresource;
     @JsonProperty("time")
     private String time;
     @JsonIgnore
@@ -59,17 +62,19 @@ public class ManagedFieldsEntry implements KubernetesResource
      * @param apiVersion
      * @param fieldsV1
      * @param manager
+     * @param subresource
      * @param time
      * @param operation
      * @param fieldsType
      */
-    public ManagedFieldsEntry(java.lang.String apiVersion, java.lang.String fieldsType, FieldsV1 fieldsV1, java.lang.String manager, java.lang.String operation, String time) {
+    public ManagedFieldsEntry(java.lang.String apiVersion, java.lang.String fieldsType, FieldsV1 fieldsV1, java.lang.String manager, java.lang.String operation, java.lang.String subresource, String time) {
         super();
         this.apiVersion = apiVersion;
         this.fieldsType = fieldsType;
         this.fieldsV1 = fieldsV1;
         this.manager = manager;
         this.operation = operation;
+        this.subresource = subresource;
         this.time = time;
     }
 
@@ -121,6 +126,16 @@ public class ManagedFieldsEntry implements KubernetesResource
     @JsonProperty("operation")
     public void setOperation(java.lang.String operation) {
         this.operation = operation;
+    }
+
+    @JsonProperty("subresource")
+    public java.lang.String getSubresource() {
+        return subresource;
+    }
+
+    @JsonProperty("subresource")
+    public void setSubresource(java.lang.String subresource) {
+        this.subresource = subresource;
     }
 
     @JsonProperty("time")

@@ -405,6 +405,9 @@
         "operation": {
           "type": "string"
         },
+        "subresource": {
+          "type": "string"
+        },
         "time": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
           "existingJavaType": "String"
@@ -1183,6 +1186,9 @@
           }
         },
         "installHint": {
+          "type": "string"
+        },
+        "interactiveMode": {
           "type": "string"
         },
         "provideClusterInfo": {
@@ -2675,6 +2681,10 @@
           }
         },
         "dataSource": {
+          "$ref": "#/definitions/kubernetes_core_TypedLocalObjectReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.TypedLocalObjectReference"
+        },
+        "dataSourceRef": {
           "$ref": "#/definitions/kubernetes_core_TypedLocalObjectReference",
           "existingJavaType": "io.fabric8.kubernetes.api.model.TypedLocalObjectReference"
         },
@@ -4180,6 +4190,9 @@
         },
         "gmsaCredentialSpecName": {
           "type": "string"
+        },
+        "hostProcess": {
+          "type": "boolean"
         },
         "runAsUserName": {
           "type": "string"
@@ -15807,10 +15820,10 @@
     },
     "clusternetworkentry": {
       "properties": {
-        "cidr": {
+        "CIDR": {
           "type": "string"
         },
-        "hostPrefix": {
+        "hostSubnetLength": {
           "type": "integer"
         }
       },
@@ -17961,6 +17974,9 @@
           }
         },
         "installHint": {
+          "type": "string"
+        },
+        "interactiveMode": {
           "type": "string"
         },
         "provideClusterInfo": {
@@ -20295,6 +20311,9 @@
         "operation": {
           "type": "string"
         },
+        "subresource": {
+          "type": "string"
+        },
         "time": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
           "existingJavaType": "String"
@@ -21471,6 +21490,10 @@
           }
         },
         "dataSource": {
+          "$ref": "#/definitions/kubernetes_core_TypedLocalObjectReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.TypedLocalObjectReference"
+        },
+        "dataSourceRef": {
           "$ref": "#/definitions/kubernetes_core_TypedLocalObjectReference",
           "existingJavaType": "io.fabric8.kubernetes.api.model.TypedLocalObjectReference"
         },
@@ -25561,6 +25584,9 @@
         },
         "gmsaCredentialSpecName": {
           "type": "string"
+        },
+        "hostProcess": {
+          "type": "boolean"
         },
         "runAsUserName": {
           "type": "string"

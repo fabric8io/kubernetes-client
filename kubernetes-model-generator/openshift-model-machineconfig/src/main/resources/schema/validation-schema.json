@@ -218,6 +218,9 @@
         "operation": {
           "type": "string"
         },
+        "subresource": {
+          "type": "string"
+        },
         "time": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
           "existingJavaType": "String"
@@ -2051,8 +2054,7 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.machineconfig.v1.MachineConfigPoolStatusConfiguration",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.KubernetesResource",
-        "io.fabric8.kubernetes.api.model.Namespaced"
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
     "os_machineconfig_v1_MachineConfigSpec": {
@@ -3344,6 +3346,9 @@
           "type": "string"
         },
         "operation": {
+          "type": "string"
+        },
+        "subresource": {
           "type": "string"
         },
         "time": {
