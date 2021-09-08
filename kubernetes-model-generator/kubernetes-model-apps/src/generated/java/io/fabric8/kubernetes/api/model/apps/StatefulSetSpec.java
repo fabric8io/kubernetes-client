@@ -30,6 +30,7 @@ import lombok.ToString;
     "apiVersion",
     "kind",
     "metadata",
+    "minReadySeconds",
     "podManagementPolicy",
     "replicas",
     "revisionHistoryLimit",
@@ -55,6 +56,8 @@ import lombok.ToString;
 public class StatefulSetSpec implements KubernetesResource
 {
 
+    @JsonProperty("minReadySeconds")
+    private Integer minReadySeconds;
     @JsonProperty("podManagementPolicy")
     private String podManagementPolicy;
     @JsonProperty("replicas")
@@ -90,11 +93,13 @@ public class StatefulSetSpec implements KubernetesResource
      * @param replicas
      * @param revisionHistoryLimit
      * @param selector
+     * @param minReadySeconds
      * @param serviceName
      * @param volumeClaimTemplates
      */
-    public StatefulSetSpec(String podManagementPolicy, Integer replicas, Integer revisionHistoryLimit, io.fabric8.kubernetes.api.model.LabelSelector selector, String serviceName, io.fabric8.kubernetes.api.model.PodTemplateSpec template, StatefulSetUpdateStrategy updateStrategy, List<io.fabric8.kubernetes.api.model.PersistentVolumeClaim> volumeClaimTemplates) {
+    public StatefulSetSpec(Integer minReadySeconds, String podManagementPolicy, Integer replicas, Integer revisionHistoryLimit, io.fabric8.kubernetes.api.model.LabelSelector selector, String serviceName, io.fabric8.kubernetes.api.model.PodTemplateSpec template, StatefulSetUpdateStrategy updateStrategy, List<io.fabric8.kubernetes.api.model.PersistentVolumeClaim> volumeClaimTemplates) {
         super();
+        this.minReadySeconds = minReadySeconds;
         this.podManagementPolicy = podManagementPolicy;
         this.replicas = replicas;
         this.revisionHistoryLimit = revisionHistoryLimit;
@@ -103,6 +108,16 @@ public class StatefulSetSpec implements KubernetesResource
         this.template = template;
         this.updateStrategy = updateStrategy;
         this.volumeClaimTemplates = volumeClaimTemplates;
+    }
+
+    @JsonProperty("minReadySeconds")
+    public Integer getMinReadySeconds() {
+        return minReadySeconds;
+    }
+
+    @JsonProperty("minReadySeconds")
+    public void setMinReadySeconds(Integer minReadySeconds) {
+        this.minReadySeconds = minReadySeconds;
     }
 
     @JsonProperty("podManagementPolicy")

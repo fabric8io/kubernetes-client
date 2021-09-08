@@ -1782,6 +1782,9 @@
         "operation": {
           "type": "string"
         },
+        "subresource": {
+          "type": "string"
+        },
         "time": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
           "existingJavaType": "String"
@@ -2538,12 +2541,19 @@
     },
     "customresourceconversion": {
       "properties": {
+        "conversionReviewVersions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
         "strategy": {
           "type": "string"
         },
-        "webhook": {
-          "$ref": "#/definitions/kubernetes_apiextensions_v1_WebhookConversion",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1.WebhookConversion"
+        "webhookClientConfig": {
+          "$ref": "#/definitions/kubernetes_apiextensions_v1beta1_WebhookClientConfig",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.WebhookClientConfig"
         }
       },
       "additionalProperties": true
@@ -2600,14 +2610,14 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "apiextensions.k8s.io/v1beta1",
+          "default": "apiextensions.k8s.io/v1",
           "required": true
         },
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_apiextensions_v1beta1_CustomResourceDefinition",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition"
+            "$ref": "#/definitions/kubernetes_apiextensions_v1_CustomResourceDefinition",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition"
           }
         },
         "kind": {
@@ -2655,16 +2665,24 @@
     },
     "customresourcedefinitionspec": {
       "properties": {
+        "additionalPrinterColumns": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_apiextensions_v1beta1_CustomResourceColumnDefinition",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceColumnDefinition"
+          }
+        },
         "conversion": {
-          "$ref": "#/definitions/kubernetes_apiextensions_v1_CustomResourceConversion",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceConversion"
+          "$ref": "#/definitions/kubernetes_apiextensions_v1beta1_CustomResourceConversion",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceConversion"
         },
         "group": {
           "type": "string"
         },
         "names": {
-          "$ref": "#/definitions/kubernetes_apiextensions_v1_CustomResourceDefinitionNames",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionNames"
+          "$ref": "#/definitions/kubernetes_apiextensions_v1beta1_CustomResourceDefinitionNames",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionNames"
         },
         "preserveUnknownFields": {
           "type": "boolean"
@@ -2672,11 +2690,23 @@
         "scope": {
           "type": "string"
         },
+        "subresources": {
+          "$ref": "#/definitions/kubernetes_apiextensions_v1beta1_CustomResourceSubresources",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceSubresources"
+        },
+        "validation": {
+          "$ref": "#/definitions/kubernetes_apiextensions_v1beta1_CustomResourceValidation",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceValidation"
+        },
+        "version": {
+          "type": "string"
+        },
         "versions": {
           "type": "array",
+          "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_apiextensions_v1_CustomResourceDefinitionVersion",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionVersion"
+            "$ref": "#/definitions/kubernetes_apiextensions_v1beta1_CustomResourceDefinitionVersion",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionVersion"
           }
         }
       },
@@ -2685,14 +2715,14 @@
     "customresourcedefinitionstatus": {
       "properties": {
         "acceptedNames": {
-          "$ref": "#/definitions/kubernetes_apiextensions_v1_CustomResourceDefinitionNames",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionNames"
+          "$ref": "#/definitions/kubernetes_apiextensions_v1beta1_CustomResourceDefinitionNames",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionNames"
         },
         "conditions": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_apiextensions_v1_CustomResourceDefinitionCondition",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionCondition"
+            "$ref": "#/definitions/kubernetes_apiextensions_v1beta1_CustomResourceDefinitionCondition",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinitionCondition"
           }
         },
         "storedVersions": {
@@ -2710,8 +2740,8 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_apiextensions_v1beta1_CustomResourceColumnDefinition",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceColumnDefinition"
+            "$ref": "#/definitions/kubernetes_apiextensions_v1_CustomResourceColumnDefinition",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceColumnDefinition"
           }
         },
         "deprecated": {
@@ -2724,8 +2754,8 @@
           "type": "string"
         },
         "schema": {
-          "$ref": "#/definitions/kubernetes_apiextensions_v1beta1_CustomResourceValidation",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceValidation"
+          "$ref": "#/definitions/kubernetes_apiextensions_v1_CustomResourceValidation",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceValidation"
         },
         "served": {
           "type": "boolean"
@@ -2734,8 +2764,8 @@
           "type": "boolean"
         },
         "subresources": {
-          "$ref": "#/definitions/kubernetes_apiextensions_v1beta1_CustomResourceSubresources",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceSubresources"
+          "$ref": "#/definitions/kubernetes_apiextensions_v1_CustomResourceSubresources",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceSubresources"
         }
       },
       "additionalProperties": true
@@ -2743,12 +2773,12 @@
     "customresourcesubresources": {
       "properties": {
         "scale": {
-          "$ref": "#/definitions/kubernetes_apiextensions_v1_CustomResourceSubresourceScale",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceSubresourceScale"
+          "$ref": "#/definitions/kubernetes_apiextensions_v1beta1_CustomResourceSubresourceScale",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceSubresourceScale"
         },
         "status": {
-          "$ref": "#/definitions/kubernetes_apiextensions_v1_CustomResourceSubresourceStatus",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceSubresourceStatus"
+          "$ref": "#/definitions/kubernetes_apiextensions_v1beta1_CustomResourceSubresourceStatus",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceSubresourceStatus"
         }
       },
       "additionalProperties": true
@@ -3133,8 +3163,8 @@
           }
         },
         "Schema": {
-          "$ref": "#/definitions/kubernetes_apiextensions_v1_JSONSchemaProps",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps"
+          "$ref": "#/definitions/kubernetes_apiextensions_v1beta1_JSONSchemaProps",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps"
         }
       },
       "additionalProperties": true
@@ -3243,6 +3273,9 @@
           "type": "string"
         },
         "operation": {
+          "type": "string"
+        },
+        "subresource": {
           "type": "string"
         },
         "time": {

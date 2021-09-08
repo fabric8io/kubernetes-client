@@ -7,6 +7,8 @@
 
 #### Improvements
 #### Dependency Upgrade
+  * Upgrade Sundrio to 0.50.1
+  * Upgrade Kubernetes Model to v1.22.1
 #### New Features
 #### _**Note**_: Breaking changes in the API
 

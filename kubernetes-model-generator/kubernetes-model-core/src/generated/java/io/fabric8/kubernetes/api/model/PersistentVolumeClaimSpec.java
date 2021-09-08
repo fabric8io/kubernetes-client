@@ -24,6 +24,7 @@ import lombok.ToString;
     "metadata",
     "accessModes",
     "dataSource",
+    "dataSourceRef",
     "resources",
     "selector",
     "storageClassName",
@@ -41,6 +42,8 @@ public class PersistentVolumeClaimSpec implements KubernetesResource
     private List<String> accessModes = new ArrayList<String>();
     @JsonProperty("dataSource")
     private TypedLocalObjectReference dataSource;
+    @JsonProperty("dataSourceRef")
+    private TypedLocalObjectReference dataSourceRef;
     @JsonProperty("resources")
     private ResourceRequirements resources;
     @JsonProperty("selector")
@@ -64,6 +67,7 @@ public class PersistentVolumeClaimSpec implements KubernetesResource
     /**
      * 
      * @param storageClassName
+     * @param dataSourceRef
      * @param volumeName
      * @param resources
      * @param selector
@@ -71,10 +75,11 @@ public class PersistentVolumeClaimSpec implements KubernetesResource
      * @param dataSource
      * @param volumeMode
      */
-    public PersistentVolumeClaimSpec(List<String> accessModes, TypedLocalObjectReference dataSource, ResourceRequirements resources, LabelSelector selector, String storageClassName, String volumeMode, String volumeName) {
+    public PersistentVolumeClaimSpec(List<String> accessModes, TypedLocalObjectReference dataSource, TypedLocalObjectReference dataSourceRef, ResourceRequirements resources, LabelSelector selector, String storageClassName, String volumeMode, String volumeName) {
         super();
         this.accessModes = accessModes;
         this.dataSource = dataSource;
+        this.dataSourceRef = dataSourceRef;
         this.resources = resources;
         this.selector = selector;
         this.storageClassName = storageClassName;
@@ -100,6 +105,16 @@ public class PersistentVolumeClaimSpec implements KubernetesResource
     @JsonProperty("dataSource")
     public void setDataSource(TypedLocalObjectReference dataSource) {
         this.dataSource = dataSource;
+    }
+
+    @JsonProperty("dataSourceRef")
+    public TypedLocalObjectReference getDataSourceRef() {
+        return dataSourceRef;
+    }
+
+    @JsonProperty("dataSourceRef")
+    public void setDataSourceRef(TypedLocalObjectReference dataSourceRef) {
+        this.dataSourceRef = dataSourceRef;
     }
 
     @JsonProperty("resources")

@@ -326,6 +326,9 @@
         "operation": {
           "type": "string"
         },
+        "subresource": {
+          "type": "string"
+        },
         "time": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
           "existingJavaType": "String"
@@ -1298,6 +1301,9 @@
         "operation": {
           "type": "string"
         },
+        "subresource": {
+          "type": "string"
+        },
         "time": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
           "existingJavaType": "String"
@@ -1481,7 +1487,7 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "scheduling.k8s.io/v1beta1",
+          "default": "scheduling.k8s.io/v1",
           "required": true
         },
         "description": {
@@ -1512,14 +1518,14 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "scheduling.k8s.io/v1",
+          "default": "scheduling.k8s.io/v1beta1",
           "required": true
         },
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_scheduling_v1_PriorityClass",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.scheduling.v1.PriorityClass"
+            "$ref": "#/definitions/kubernetes_scheduling_v1beta1_PriorityClass",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.scheduling.v1beta1.PriorityClass"
           }
         },
         "kind": {

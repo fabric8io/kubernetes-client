@@ -22,6 +22,7 @@ import lombok.ToString;
     "metadata",
     "gmsaCredentialSpec",
     "gmsaCredentialSpecName",
+    "hostProcess",
     "runAsUserName"
 })
 @ToString
@@ -34,6 +35,8 @@ public class WindowsSecurityContextOptions implements KubernetesResource
     private String gmsaCredentialSpec;
     @JsonProperty("gmsaCredentialSpecName")
     private String gmsaCredentialSpecName;
+    @JsonProperty("hostProcess")
+    private Boolean hostProcess;
     @JsonProperty("runAsUserName")
     private String runAsUserName;
     @JsonIgnore
@@ -50,12 +53,14 @@ public class WindowsSecurityContextOptions implements KubernetesResource
      * 
      * @param gmsaCredentialSpec
      * @param runAsUserName
+     * @param hostProcess
      * @param gmsaCredentialSpecName
      */
-    public WindowsSecurityContextOptions(String gmsaCredentialSpec, String gmsaCredentialSpecName, String runAsUserName) {
+    public WindowsSecurityContextOptions(String gmsaCredentialSpec, String gmsaCredentialSpecName, Boolean hostProcess, String runAsUserName) {
         super();
         this.gmsaCredentialSpec = gmsaCredentialSpec;
         this.gmsaCredentialSpecName = gmsaCredentialSpecName;
+        this.hostProcess = hostProcess;
         this.runAsUserName = runAsUserName;
     }
 
@@ -77,6 +82,16 @@ public class WindowsSecurityContextOptions implements KubernetesResource
     @JsonProperty("gmsaCredentialSpecName")
     public void setGmsaCredentialSpecName(String gmsaCredentialSpecName) {
         this.gmsaCredentialSpecName = gmsaCredentialSpecName;
+    }
+
+    @JsonProperty("hostProcess")
+    public Boolean getHostProcess() {
+        return hostProcess;
+    }
+
+    @JsonProperty("hostProcess")
+    public void setHostProcess(Boolean hostProcess) {
+        this.hostProcess = hostProcess;
     }
 
     @JsonProperty("runAsUserName")

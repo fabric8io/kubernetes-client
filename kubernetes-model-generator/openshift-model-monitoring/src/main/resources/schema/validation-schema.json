@@ -231,6 +231,9 @@
         "operation": {
           "type": "string"
         },
+        "subresource": {
+          "type": "string"
+        },
         "time": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
           "existingJavaType": "String"
@@ -1672,6 +1675,10 @@
           "$ref": "#/definitions/kubernetes_core_TypedLocalObjectReference",
           "existingJavaType": "io.fabric8.kubernetes.api.model.TypedLocalObjectReference"
         },
+        "dataSourceRef": {
+          "$ref": "#/definitions/kubernetes_core_TypedLocalObjectReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.TypedLocalObjectReference"
+        },
         "resources": {
           "$ref": "#/definitions/kubernetes_core_ResourceRequirements",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
@@ -2862,6 +2869,9 @@
         },
         "gmsaCredentialSpecName": {
           "type": "string"
+        },
+        "hostProcess": {
+          "type": "boolean"
         },
         "runAsUserName": {
           "type": "string"
@@ -7838,6 +7848,9 @@
         "operation": {
           "type": "string"
         },
+        "subresource": {
+          "type": "string"
+        },
         "time": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
           "existingJavaType": "String"
@@ -8242,6 +8255,10 @@
           }
         },
         "dataSource": {
+          "$ref": "#/definitions/kubernetes_core_TypedLocalObjectReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.TypedLocalObjectReference"
+        },
+        "dataSourceRef": {
           "$ref": "#/definitions/kubernetes_core_TypedLocalObjectReference",
           "existingJavaType": "io.fabric8.kubernetes.api.model.TypedLocalObjectReference"
         },
@@ -8656,36 +8673,23 @@
     },
     "probe": {
       "properties": {
-        "exec": {
-          "$ref": "#/definitions/kubernetes_core_ExecAction",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.ExecAction"
+        "apiVersion": {
+          "type": "string",
+          "default": "monitoring.coreos.com/v1",
+          "required": true
         },
-        "failureThreshold": {
-          "type": "integer"
+        "kind": {
+          "type": "string",
+          "default": "Probe",
+          "required": true
         },
-        "httpGet": {
-          "$ref": "#/definitions/kubernetes_core_HTTPGetAction",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.HTTPGetAction"
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
-        "initialDelaySeconds": {
-          "type": "integer"
-        },
-        "periodSeconds": {
-          "type": "integer"
-        },
-        "successThreshold": {
-          "type": "integer"
-        },
-        "tcpSocket": {
-          "$ref": "#/definitions/kubernetes_core_TCPSocketAction",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.TCPSocketAction"
-        },
-        "terminationGracePeriodSeconds": {
-          "type": "integer",
-          "existingJavaType": "Long"
-        },
-        "timeoutSeconds": {
-          "type": "integer"
+        "spec": {
+          "$ref": "#/definitions/os_monitoring_v1_ProbeSpec",
+          "existingJavaType": "io.fabric8.openshift.api.model.monitoring.v1.ProbeSpec"
         }
       },
       "additionalProperties": true
@@ -11326,6 +11330,9 @@
         },
         "gmsaCredentialSpecName": {
           "type": "string"
+        },
+        "hostProcess": {
+          "type": "boolean"
         },
         "runAsUserName": {
           "type": "string"

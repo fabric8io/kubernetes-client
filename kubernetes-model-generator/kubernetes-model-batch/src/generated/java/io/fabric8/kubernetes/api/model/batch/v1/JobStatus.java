@@ -39,7 +39,8 @@ import lombok.ToString;
     "conditions",
     "failed",
     "startTime",
-    "succeeded"
+    "succeeded",
+    "uncountedTerminatedPods"
 })
 @ToString
 @EqualsAndHashCode
@@ -72,6 +73,8 @@ public class JobStatus implements KubernetesResource
     private String startTime;
     @JsonProperty("succeeded")
     private Integer succeeded;
+    @JsonProperty("uncountedTerminatedPods")
+    private UncountedTerminatedPods uncountedTerminatedPods;
     @JsonIgnore
     private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
 
@@ -88,11 +91,12 @@ public class JobStatus implements KubernetesResource
      * @param completedIndexes
      * @param active
      * @param startTime
+     * @param uncountedTerminatedPods
      * @param failed
      * @param conditions
      * @param succeeded
      */
-    public JobStatus(Integer active, java.lang.String completedIndexes, String completionTime, List<JobCondition> conditions, Integer failed, String startTime, Integer succeeded) {
+    public JobStatus(Integer active, java.lang.String completedIndexes, String completionTime, List<JobCondition> conditions, Integer failed, String startTime, Integer succeeded, UncountedTerminatedPods uncountedTerminatedPods) {
         super();
         this.active = active;
         this.completedIndexes = completedIndexes;
@@ -101,6 +105,7 @@ public class JobStatus implements KubernetesResource
         this.failed = failed;
         this.startTime = startTime;
         this.succeeded = succeeded;
+        this.uncountedTerminatedPods = uncountedTerminatedPods;
     }
 
     @JsonProperty("active")
@@ -171,6 +176,16 @@ public class JobStatus implements KubernetesResource
     @JsonProperty("succeeded")
     public void setSucceeded(Integer succeeded) {
         this.succeeded = succeeded;
+    }
+
+    @JsonProperty("uncountedTerminatedPods")
+    public UncountedTerminatedPods getUncountedTerminatedPods() {
+        return uncountedTerminatedPods;
+    }
+
+    @JsonProperty("uncountedTerminatedPods")
+    public void setUncountedTerminatedPods(UncountedTerminatedPods uncountedTerminatedPods) {
+        this.uncountedTerminatedPods = uncountedTerminatedPods;
     }
 
     @JsonAnyGetter

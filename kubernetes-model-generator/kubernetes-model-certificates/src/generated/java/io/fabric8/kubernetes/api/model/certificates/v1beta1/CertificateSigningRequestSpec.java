@@ -33,6 +33,7 @@ import lombok.ToString;
     "apiVersion",
     "kind",
     "metadata",
+    "expirationSeconds",
     "extra",
     "groups",
     "request",
@@ -57,6 +58,8 @@ import lombok.ToString;
 public class CertificateSigningRequestSpec implements KubernetesResource
 {
 
+    @JsonProperty("expirationSeconds")
+    private Integer expirationSeconds;
     @JsonProperty("extra")
     private Map<String, ArrayList<String>> extra;
     @JsonProperty("groups")
@@ -87,14 +90,16 @@ public class CertificateSigningRequestSpec implements KubernetesResource
      * 
      * @param request
      * @param uid
+     * @param expirationSeconds
      * @param extra
      * @param groups
      * @param usages
      * @param signerName
      * @param username
      */
-    public CertificateSigningRequestSpec(Map<String, ArrayList<String>> extra, List<java.lang.String> groups, java.lang.String request, java.lang.String signerName, java.lang.String uid, List<java.lang.String> usages, java.lang.String username) {
+    public CertificateSigningRequestSpec(Integer expirationSeconds, Map<String, ArrayList<String>> extra, List<java.lang.String> groups, java.lang.String request, java.lang.String signerName, java.lang.String uid, List<java.lang.String> usages, java.lang.String username) {
         super();
+        this.expirationSeconds = expirationSeconds;
         this.extra = extra;
         this.groups = groups;
         this.request = request;
@@ -102,6 +107,16 @@ public class CertificateSigningRequestSpec implements KubernetesResource
         this.uid = uid;
         this.usages = usages;
         this.username = username;
+    }
+
+    @JsonProperty("expirationSeconds")
+    public Integer getExpirationSeconds() {
+        return expirationSeconds;
+    }
+
+    @JsonProperty("expirationSeconds")
+    public void setExpirationSeconds(Integer expirationSeconds) {
+        this.expirationSeconds = expirationSeconds;
     }
 
     @JsonProperty("extra")
