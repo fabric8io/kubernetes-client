@@ -1044,6 +1044,11 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     return result;
   }
 
+  @Override
+  public SharedIndexInformer<T> runnableInformer(long resync) {
+    return createInformer(resync);
+  }
+
   private DefaultSharedIndexInformer<T, L> createInformer(long resync) {
     T i = getItem();
     if (Utils.isNotNullOrEmpty(getName()) && i != null) {

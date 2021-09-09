@@ -37,6 +37,7 @@ import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableKubernetesMockClient(https = false)
@@ -217,6 +218,59 @@ class InformTest {
 
     assertTrue(deleteLatch.await(1000, TimeUnit.SECONDS));
     assertTrue(addLatch.await(1000, TimeUnit.SECONDS));
+
+    informer.stop();
+  }
+
+  @Test
+  void testRunnableInformer() throws InterruptedException {
+    // Given
+    Pod pod1 = new PodBuilder().withNewMetadata().withNamespace("test").withName("pod1")
+        .withResourceVersion("1").endMetadata().build();
+
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods?labelSelector=my-label")
+        .andReturn(HttpURLConnection.HTTP_OK,
+            new PodListBuilder().withNewMetadata().withResourceVersion("1").endMetadata().withItems(pod1).build())
+        .once();
+
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods?labelSelector=my-label&resourceVersion=1&watch=true")
+        .andUpgradeToWebSocket()
+        .open()
+        .waitFor(EVENT_WAIT_PERIOD_MS)
+        .andEmit(new WatchEvent(pod1, "DELETED"))
+        .done()
+        .once();
+    final CountDownLatch deleteLatch = new CountDownLatch(1);
+    final CountDownLatch addLatch = new CountDownLatch(1);
+    final ResourceEventHandler<Pod> handler = new ResourceEventHandler<Pod>() {
+
+      @Override
+      public void onAdd(Pod obj) {
+        addLatch.countDown();
+      }
+
+      @Override
+      public void onDelete(Pod obj, boolean deletedFinalStateUnknown) {
+        deleteLatch.countDown();
+      }
+
+      @Override
+      public void onUpdate(Pod oldObj, Pod newObj) {
+
+      }
+
+    };
+    SharedIndexInformer<Pod> informer = client.resources(Pod.class).withLabel("my-label").runnableInformer(1000L);
+
+    assertFalse(informer.isRunning());
+    informer.addEventHandler(handler);
+
+    informer.run();
+
+    assertTrue(deleteLatch.await(10, TimeUnit.SECONDS));
+    assertTrue(addLatch.await(10, TimeUnit.SECONDS));
 
     informer.stop();
   }

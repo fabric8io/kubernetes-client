@@ -4,6 +4,9 @@
 
 #### Bugs
 #### Improvements
+
+* Fix #3468: Add method to get non-running `Informer` from context specific dsl
+
 #### Dependency Upgrade
 #### New Features
 #### _**Note**_: Breaking changes in the API
