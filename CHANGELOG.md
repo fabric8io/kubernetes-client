@@ -3,18 +3,17 @@
 ### 5.8-SNAPSHOT
 
 #### Bugs
-* Fix #3442: make sure new CRDGenerator instances start with a clean generation context
-
 #### Improvements
 #### Dependency Upgrade
 #### New Features
 #### _**Note**_: Breaking changes in the API
 
-### 5.7.3
+### 5.7.3 (2021-09-09)
 
 #### Bugs
-* Fix: Extension annotator doesn't generate XxxEditable classes
+* Fix #3433: Extension annotator doesn't generate XxxEditable classes
 * Fix #3450: CRD generator fails with ClassCastException in some cases
+* Fix #3442: make sure new CRDGenerator instances start with a clean generation context
 
 #### Dependency Upgrade
 * Fix #3438: Upgrade Sundrio to 0.50.1
