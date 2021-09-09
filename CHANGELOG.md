@@ -4,6 +4,7 @@
 
 #### Bugs
 * Fix #3445: TokenRefreshInterceptor throws when running incluster config
+* Fix #3456: io.fabric8:crd-generator README should reference crd-generator-apt instead of now removed crd-generator artifact
 
 #### Improvements
 #### Dependency Upgrade

@@ -11,7 +11,7 @@ Please give it a try and report any issue you might find.
 - Several annotations are available to override the default behavior if it doesn't fit your needs
 - Validation schema is automatically derived from your class' spec implementation (or from the CR
   class, if no spec is present)
-- CRDs are automatically generated at compile-time if you include the `io.fabric8:crd-generator`
+- CRDs are automatically generated at compile-time if you include `io.fabric8:crd-generator-apt` 
   dependency to your project (with the suggested `compile` scope)
 - CRDs are generated for both `v1beta1` and `v1` versions of the specification at this point
 - One CRD manifest is generated per CRD using the CRD name (e.g. `mycrplural.group.example.com`)
