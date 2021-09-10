@@ -9,6 +9,7 @@
 #### Dependency Upgrade
 
 #### New Features
+* Fix #3430: Support Vertical Pod Autoscaler
 
 #### _**Note**_: Breaking changes in the API
 

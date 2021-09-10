@@ -14,12 +14,15 @@
 # limitations under the License.
 #
 
-declare -a modules=("generator-v1alpha2" "generator-v1alpha3" "generator-v1beta1" "generator-v1")
+SHELL := /bin/bash
 
-for module in ${modules[*]}
-do
-    echo "Compiling ${module}"
-    cd $module
-    make
-    cd ..
-done    
+all: build
+
+build: gobuild
+	pushd ../model-v1 && \
+	mvn clean install -o && \
+  popd
+
+gobuild:
+	go mod vendor
+	CGO_ENABLED=0 GO111MODULE=on GO15VENDOREXPERIMENT=1 go run -mod=vendor -a ./cmd/generate/generate.go > ../model-v1/src/main/resources/schema/verticalpodautoscaler-schema.json
