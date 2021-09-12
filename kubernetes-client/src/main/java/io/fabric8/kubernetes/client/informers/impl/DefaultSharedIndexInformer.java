@@ -91,12 +91,12 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
    * @param handler event handler
    */
   @Override
-  public void addEventHandler(ResourceEventHandler<T> handler) {
+  public void addEventHandler(ResourceEventHandler<? super T> handler) {
     addEventHandlerWithResyncPeriod(handler, defaultEventHandlerResyncPeriod);
   }
 
   @Override
-  public void addEventHandlerWithResyncPeriod(ResourceEventHandler<T> handler, long resyncPeriodMillis) {
+  public void addEventHandlerWithResyncPeriod(ResourceEventHandler<? super T> handler, long resyncPeriodMillis) {
     if (stopped) {
       log.info("DefaultSharedIndexInformer#Handler was not added to shared informer because it has stopped already");
       return;

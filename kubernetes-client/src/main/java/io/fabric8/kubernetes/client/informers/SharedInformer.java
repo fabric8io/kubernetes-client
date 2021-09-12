@@ -29,7 +29,7 @@ public interface SharedInformer<T> extends AutoCloseable {
    *
    * @param handler event handler
    */
-  void addEventHandler(ResourceEventHandler<T> handler);
+  void addEventHandler(ResourceEventHandler<? super T> handler);
 
   /**
    * Adds an event handler to the shared informer using the specified resync period.
@@ -39,7 +39,7 @@ public interface SharedInformer<T> extends AutoCloseable {
    * @param handle the event handler
    * @param resyncPeriod the specific resync period
    */
-  void addEventHandlerWithResyncPeriod(ResourceEventHandler<T> handle, long resyncPeriod);
+  void addEventHandlerWithResyncPeriod(ResourceEventHandler<? super T> handle, long resyncPeriod);
 
   /**
    * Starts the shared informer, which will be stopped when {@link #stop()} is called.
