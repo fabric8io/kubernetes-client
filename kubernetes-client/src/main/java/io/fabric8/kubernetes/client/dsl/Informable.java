@@ -64,7 +64,7 @@ public interface Informable<T> {
    * @param handler to notify
    * @return a running {@link SharedIndexInformer}
    */
-  default SharedIndexInformer<T> inform(ResourceEventHandler<T> handler) {
+  default SharedIndexInformer<T> inform(ResourceEventHandler<? super T> handler) {
     return inform(handler, 0);
   }
   
@@ -80,7 +80,7 @@ public interface Informable<T> {
    * @param resync the resync period or 0 for no resync
    * @return a running {@link SharedIndexInformer}
    */
-  SharedIndexInformer<T> inform(ResourceEventHandler<T> handler, long resync);
+  SharedIndexInformer<T> inform(ResourceEventHandler<? super T> handler, long resync);
   
   /**
    * Return a {@link Future} when the list at this context satisfies the given {@link Predicate}.

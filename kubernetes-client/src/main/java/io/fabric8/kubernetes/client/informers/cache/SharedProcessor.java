@@ -140,7 +140,7 @@ public class SharedProcessor<T> {
    * Adds a new listener.  When running this will pause event distribution until
    * the new listener has received an initial set of add events
    */
-  public ProcessorListener<T> addProcessorListener(ResourceEventHandler<T> handler, long resyncPeriodMillis, Supplier<Collection<T>> initialItems) {
+  public ProcessorListener<T> addProcessorListener(ResourceEventHandler<? super T> handler, long resyncPeriodMillis, Supplier<Collection<T>> initialItems) {
     lock.writeLock().lock();
     try {
       ProcessorListener<T> listener = new ProcessorListener<>(handler, resyncPeriodMillis);

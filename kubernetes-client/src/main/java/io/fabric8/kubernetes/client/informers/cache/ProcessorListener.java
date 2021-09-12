@@ -34,9 +34,9 @@ import java.time.temporal.ChronoUnit;
 public class ProcessorListener<T> {
   private long resyncPeriodInMillis;
   private ZonedDateTime nextResync;
-  private ResourceEventHandler<T> handler;
+  private ResourceEventHandler<? super T> handler;
   
-  public ProcessorListener(ResourceEventHandler<T> handler, long resyncPeriodInMillis) {
+  public ProcessorListener(ResourceEventHandler<? super T> handler, long resyncPeriodInMillis) {
     this.resyncPeriodInMillis = resyncPeriodInMillis;
     this.handler = handler;
 
@@ -72,7 +72,7 @@ public class ProcessorListener<T> {
       return newObject;
     }
 
-    public abstract void handle(ResourceEventHandler<T> resourceEventHandler);
+    public abstract void handle(ResourceEventHandler<? super T> resourceEventHandler);
   }
 
   public static final class UpdateNotification<T> extends Notification<T> {
@@ -81,7 +81,7 @@ public class ProcessorListener<T> {
     }
 
     @Override
-    public void handle(ResourceEventHandler<T> resourceEventHandler) {
+    public void handle(ResourceEventHandler<? super T> resourceEventHandler) {
       resourceEventHandler.onUpdate(getOldObject(), getNewObject());
     }
   }
@@ -92,7 +92,7 @@ public class ProcessorListener<T> {
     }
 
     @Override
-    public void handle(ResourceEventHandler<T> resourceEventHandler) {
+    public void handle(ResourceEventHandler<? super T> resourceEventHandler) {
       resourceEventHandler.onAdd(getNewObject());
     }
   }
@@ -111,12 +111,12 @@ public class ProcessorListener<T> {
     }
 
     @Override
-    public void handle(ResourceEventHandler<T> resourceEventHandler) {
+    public void handle(ResourceEventHandler<? super T> resourceEventHandler) {
       resourceEventHandler.onDelete(getOldObject(), unknownFinalState);
     }
   }
   
-  public ResourceEventHandler<T> getHandler() {
+  public ResourceEventHandler<? super T> getHandler() {
     return handler;
   }
 
