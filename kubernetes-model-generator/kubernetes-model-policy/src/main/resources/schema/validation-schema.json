@@ -898,6 +898,35 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_policy_v1_Eviction": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "policy/v1",
+          "required": true
+        },
+        "deleteOptions": {
+          "$ref": "#/definitions/kubernetes_apimachinery_DeleteOptions",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.DeleteOptions"
+        },
+        "kind": {
+          "type": "string",
+          "default": "Eviction",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.policy.v1.Eviction",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
     "kubernetes_policy_v1_PodDisruptionBudget": {
       "type": "object",
       "properties": {
@@ -1676,6 +1705,10 @@
       "$ref": "#/definitions/kubernetes_apimachinery_UpdateOptions",
       "existingJavaType": "io.fabric8.kubernetes.api.model.UpdateOptions"
     },
+    "V1Eviction": {
+      "$ref": "#/definitions/kubernetes_policy_v1_Eviction",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1.Eviction"
+    },
     "V1PodDisruptionBudget": {
       "$ref": "#/definitions/kubernetes_policy_v1_PodDisruptionBudget",
       "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1.PodDisruptionBudget"
@@ -2323,7 +2356,7 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "policy/v1",
+          "default": "policy/v1beta1",
           "required": true
         },
         "kind": {
@@ -2336,12 +2369,12 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/kubernetes_policy_v1_PodDisruptionBudgetSpec",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1.PodDisruptionBudgetSpec"
+          "$ref": "#/definitions/kubernetes_policy_v1beta1_PodDisruptionBudgetSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudgetSpec"
         },
         "status": {
-          "$ref": "#/definitions/kubernetes_policy_v1_PodDisruptionBudgetStatus",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1.PodDisruptionBudgetStatus"
+          "$ref": "#/definitions/kubernetes_policy_v1beta1_PodDisruptionBudgetStatus",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudgetStatus"
         }
       },
       "additionalProperties": true
@@ -2350,14 +2383,14 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "policy/v1beta1",
+          "default": "policy/v1",
           "required": true
         },
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_policy_v1beta1_PodDisruptionBudget",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudget"
+            "$ref": "#/definitions/kubernetes_policy_v1_PodDisruptionBudget",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1.PodDisruptionBudget"
           }
         },
         "kind": {
