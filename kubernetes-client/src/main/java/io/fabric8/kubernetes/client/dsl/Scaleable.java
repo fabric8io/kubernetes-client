@@ -22,8 +22,20 @@ public interface Scaleable<T> {
 
   int POLL_INTERVAL_MS = 100;
 
+  /**
+   * Scale the resource to given count
+   * @param count the desired instance count
+   * @return the resource
+   */
   T scale(int count);
 
+  /**
+   * Scale the resource to given count
+   * @param count the desired instance count
+   * @param wait if true, wait for the number of instances to exist - no guarantee is made
+   * as to readiness 
+   * @return the resource
+   */
   T scale(int count, boolean wait);
 
   Scale scale();

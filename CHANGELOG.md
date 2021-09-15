@@ -4,6 +4,8 @@
 
 #### Bugs
 #### Improvements
+* Fix #3398: Added javadocs explaining the wait parameter
+
 #### Dependency Upgrade
 #### New Features
 #### _**Note**_: Breaking changes in the API
