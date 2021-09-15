@@ -426,6 +426,13 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
   }
 
   private void setDefaultMetadata(JsonNode source, Map<String, String> pathValues, JsonNode existing) {
+    boolean containsSpecUpdate = false;
+    if (existing != null && existing.get("spec") != null && source.get("spec") != null) {
+      ObjectNode existingSpec = (ObjectNode) existing.findValue("spec");
+      ObjectNode newSpec = (ObjectNode) source.findValue("spec");
+      containsSpecUpdate = !existingSpec.equals(newSpec);
+    }
+
     ObjectNode metadata = (ObjectNode)source.findValue("metadata");
     ObjectNode existingMetadata = null;
     if (existing != null) {
@@ -441,7 +448,13 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
     metadata.put("uid", getOrDefault(existingMetadata, "uid", uuid.toString()));
     // resourceVersion is not yet handled appropriately
     metadata.put("resourceVersion", "1");
-    metadata.put("generation", 1);
+
+    if (containsSpecUpdate) {
+      metadata.put("generation", Integer.parseInt(getOrDefault(existingMetadata, "generation", "0")) + 1);
+    } else {
+      metadata.put("generation", getOrDefault(existingMetadata, "generation", "1"));
+    }
+
     metadata.put("creationTimestamp", getOrDefault(existingMetadata, "creationTimestamp", ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT)));
   }
 
