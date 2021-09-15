@@ -7,6 +7,8 @@
 * Fix #3456: io.fabric8:crd-generator README should reference crd-generator-apt instead of now removed crd-generator artifact
 
 #### Improvements
+* Fix #3398: Added javadocs explaining the wait parameter
+
 #### Dependency Upgrade
   * Upgrade Sundrio to 0.50.1
   * Upgrade Kubernetes Model to v1.22.1
