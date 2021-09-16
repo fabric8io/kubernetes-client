@@ -37,6 +37,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import io.fabric8.kubernetes.api.model.DeleteOptions;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.Eviction;
@@ -269,45 +270,46 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
 
   @Override
   public Boolean evict() {
+    Eviction eviction = new EvictionBuilder()
+      .withNewMetadata()
+      .withName(getName())
+      .withNamespace(getNamespace())
+      .endMetadata()
+      .withDeleteOptions(new DeleteOptions())
+      .build();
+    return handleEvict(eviction);
+  }
+
+  @Override
+  public Boolean evict(io.fabric8.kubernetes.api.model.policy.v1.Eviction eviction) {
+    return handleEvict(eviction);
+  }
+
+  private Boolean handleEvict(HasMetadata eviction) {
     try {
-      evictThis();
+      if (Utils.isNullOrEmpty(eviction.getMetadata().getNamespace())) {
+        throw new KubernetesClientException("Namespace not specified, but operation requires it.");
+      }
+      if (Utils.isNullOrEmpty(eviction.getMetadata().getName())) {
+        throw new KubernetesClientException("Name not specified, but operation requires it.");
+      }
+      RequestBody requestBody = RequestBody.create(JSON, JSON_MAPPER.writeValueAsString(eviction));
+
+      URL requestUrl = new URL(URLUtils.join(getResourceUrl().toString(), "eviction"));
+      Request.Builder requestBuilder = new Request.Builder().post(requestBody).url(requestUrl);
+      handleResponse(requestBuilder, null, Collections.emptyMap());
       return true;
     } catch (KubernetesClientException e) {
       if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND && e.getCode() != HTTP_TOO_MANY_REQUESTS) {
         throw e;
       }
       return false;
+    } catch (ExecutionException | IOException exception) {
+      throw KubernetesClientException.launderThrowable(forOperationType("evict"), exception);
+    } catch (InterruptedException interruptedException) {
+      Thread.currentThread().interrupt();
+      throw KubernetesClientException.launderThrowable(forOperationType("evict"), interruptedException);
     }
-  }
-
-  private void evictThis() {
-    try {
-      if (Utils.isNullOrEmpty(getNamespace())) {
-        throw new KubernetesClientException("Namespace not specified, but operation requires it.");
-      }
-      if (Utils.isNullOrEmpty(getName())) {
-        throw new KubernetesClientException("Name not specified, but operation requires it.");
-      }
-      handleEvict(getResourceUrl(), getNamespace(), getName());
-    } catch (Exception e) {
-      throw KubernetesClientException.launderThrowable(forOperationType("evict"), e);
-    }
-  }
-
-  private void handleEvict(URL podUrl, String namespace, String name) throws ExecutionException, InterruptedException, IOException {
-    Eviction eviction = new EvictionBuilder()
-      .withNewMetadata()
-      .withName(name)
-      .withNamespace(namespace)
-      .endMetadata()
-      .withDeleteOptions(new DeleteOptions())
-      .build();
-
-    RequestBody requestBody = RequestBody.create(JSON, JSON_MAPPER.writeValueAsString(eviction));
-
-    URL requestUrl = new URL(URLUtils.join(podUrl.toString(), "eviction"));
-    Request.Builder requestBuilder = new Request.Builder().post(requestBody).url(requestUrl);
-    handleResponse(requestBuilder, null, Collections.<String, String>emptyMap());
   }
 
   @Override

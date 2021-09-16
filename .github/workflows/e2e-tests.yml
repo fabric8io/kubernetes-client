@@ -52,14 +52,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        kubernetes: [v1.20.1,v1.19.2,v1.12.0]
+        kubernetes: [v1.22.1,v1.20.1,v1.19.2,v1.14.0]
     steps:
       - name: Checkout
         uses: actions/checkout@v2.3.4
       - name: Setup Minikube-Kubernetes
         uses: manusa/actions-setup-minikube@v2.4.2
         with:
-          minikube version: v1.16.0
+          minikube version: v1.23.0
           kubernetes version: ${{ matrix.kubernetes }}
           github token: ${{ secrets.GITHUB_TOKEN }}
           start args: '--addons=metrics-server --force'

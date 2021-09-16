@@ -16,6 +16,7 @@
 
 package io.fabric8.kubernetes.client.mock;
 
+import io.fabric8.kubernetes.api.model.DeleteOptionsBuilder;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
@@ -23,6 +24,7 @@ import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
 import io.fabric8.kubernetes.api.model.WatchEvent;
+import io.fabric8.kubernetes.api.model.policy.v1.EvictionBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.LocalPortForward;
@@ -50,6 +52,7 @@ import org.junit.jupiter.api.io.TempDir;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
@@ -248,6 +251,27 @@ class PodTest {
     // unhandled error
     PodResource<Pod> resource = client.pods().inNamespace("ns1").withName("pod4");
     assertThrows(KubernetesClientException.class, resource::evict);
+  }
+
+  @Test
+  void testEvictWithPolicyV1Eviction() {
+    // Given
+    server.expect().post()
+      .withPath("/api/v1/namespaces/ns1/pods/foo/eviction")
+      .andReturn(HttpURLConnection.HTTP_OK, new PodBuilder().build())
+      .once();
+
+    // When
+    boolean evicted = client.pods().inNamespace("ns1").withName("foo").evict(new EvictionBuilder()
+        .withNewMetadata()
+        .withName("foo")
+        .withNamespace("ns1")
+        .endMetadata()
+        .withDeleteOptions(new DeleteOptionsBuilder().build())
+      .build());
+
+    // Then
+    assertTrue(evicted);
   }
 
   @Test
