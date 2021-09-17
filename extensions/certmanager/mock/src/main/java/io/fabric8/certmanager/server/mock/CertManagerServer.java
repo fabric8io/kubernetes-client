@@ -53,7 +53,7 @@ public class CertManagerServer extends ExternalResource {
 
   public void before() {
     mock = crudMode
-      ? new CertManagerMockServer(new Context(), new MockWebServer(), new HashMap<ServerRequest, Queue<ServerResponse>>(), new KubernetesCrudDispatcher(), true)
+      ? new CertManagerMockServer(new Context(), new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(), true)
       : new CertManagerMockServer(https);
     mock.init();
     client = mock.createCertManager();
