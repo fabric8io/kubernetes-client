@@ -175,11 +175,11 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
             }
 
             webSocketRef.set(webSocket);
-            if (!executorService.isShutdown()) {
+            if (in != null && !executorService.isShutdown()) {
               // the task will be cancelled via shutdownNow
               InputStreamPumper.pump(InputStreamPumper.asInterruptible(in), this::send, executorService);
-              startedFuture.complete(null);
             }
+            startedFuture.complete(null);
         } catch (IOException e) {
           startedFuture.completeExceptionally(new KubernetesClientException(OperationSupport.createStatus(response)));
         } finally {
@@ -268,22 +268,27 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
         }
     }
 
+    @Override
     public OutputStream getInput() {
         return input;
     }
 
+    @Override
     public InputStream getOutput() {
         return output;
     }
 
+    @Override
     public InputStream getError() {
         return error;
     }
 
+    @Override
     public InputStream getErrorChannel() {
         return errorChannel;
     }
 
+    @Override
     public void resize(int cols, int rows) {
       if (cols < 0 || rows < 0) {
         return;
