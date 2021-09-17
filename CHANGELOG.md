@@ -7,6 +7,7 @@
 * Fix #3456: io.fabric8:crd-generator README should reference crd-generator-apt instead of now removed crd-generator artifact
 
 #### Improvements
+* Fix #3472: Allow for customizing default key and indexing behavior of informers
 * Fix #3398: Added javadocs explaining the wait parameter
 
 #### Dependency Upgrade

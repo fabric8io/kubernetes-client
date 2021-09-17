@@ -17,8 +17,8 @@ package io.fabric8.kubernetes.client.informers.impl;
 
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
-import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.informers.ListerWatcher;
+import io.fabric8.kubernetes.client.informers.cache.Cache;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,11 +37,10 @@ class DefaultSharedIndexInformerResyncTest {
   private abstract static class AbstractPodListerWatcher implements ListerWatcher<Pod, PodList> {};
   private static final Long WAIT_TIME = 500L;
   private final ListerWatcher<Pod, PodList> listerWatcher = Mockito.mock(AbstractPodListerWatcher.class, Mockito.RETURNS_DEEP_STUBS);
-  private final OperationContext operationContext = Mockito.mock(OperationContext.class, Mockito.RETURNS_DEEP_STUBS);
   DefaultSharedIndexInformer<Pod, PodList> defaultSharedIndexInformer;
 
   private DefaultSharedIndexInformer<Pod, PodList> createDefaultSharedIndexInformer(long resyncPeriod) {
-    defaultSharedIndexInformer = new DefaultSharedIndexInformer<>(Pod.class, listerWatcher, resyncPeriod, Runnable::run);
+    defaultSharedIndexInformer = new DefaultSharedIndexInformer<>(Pod.class, listerWatcher, resyncPeriod, Runnable::run, new Cache<>());
     return defaultSharedIndexInformer;
   }
   

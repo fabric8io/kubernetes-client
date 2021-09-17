@@ -27,10 +27,10 @@ import java.util.Map;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CacheTest {
-  private static Cache cache = new Cache("mock", CacheTest::mockIndexFunction, CacheTest::mockKeyFunction);
+  private static Cache cache = new Cache(CacheTest::mockKeyFunction, false).addIndexFunc("mock", CacheTest::mockIndexFunction);
 
   @Test
   void testCacheIndex() {
@@ -129,6 +129,14 @@ class CacheTest {
 
     List<Pod> clusterNameIndexedPods = podCache.byIndex(clusterIndex, "test-cluster");
     assertEquals(1, clusterNameIndexedPods.size());
+  }
+  
+  @Test
+  void testAlternatives() {
+    Cache<Pod> cache = new Cache<Pod>(p -> p.getMetadata().getUid(), false);
+    assertTrue(cache.getIndexers().isEmpty());
+    
+    assertEquals("uid", cache.getKey(new PodBuilder().withNewMetadata().withUid("uid").endMetadata().build()));
   }
 
   private static List<String> mockIndexFunction(Object obj) {

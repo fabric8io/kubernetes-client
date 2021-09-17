@@ -38,6 +38,21 @@ public interface Informable<T> {
   Informable<T> withIndexers(Map<String, Function<T, List<String>>> indexers);
   
   /**
+   * By default an index of resource namespaces is added to informers.  Use this to method to disable that index if it's not needed.
+   * @param enabled if true the resource namespace will be indexed
+   * @return the current {@link Informable}
+   */
+  Informable<T> withNamespaceIndex(boolean enabled);
+  
+  /**
+   * By default the key function of an informer cache is based upon the namespace/name.  If this not desirable, you can provide your own
+   * function here.  Be sure to select a function that provides sufficient uniqueness, such as the resource uuid.
+   * @param keyFunction the function to use
+   * @return the current {@link Informable}
+   */
+  Informable<T> withKeyFunction(Function<T, String> keyFunction);
+  
+  /**
    * Similar to a {@link Watch}, but will attempt to handle failures after successfully started.
    * and provides a store of all the current resources.
    * <p>This returned informer will not support resync.

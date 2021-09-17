@@ -55,13 +55,14 @@ public class Cache<T> implements Indexer<T> {
   private BooleanSupplier isRunning = () -> false;
 
   public Cache() {
-    this(NAMESPACE_INDEX, Cache::metaNamespaceIndexFunc, Cache::metaNamespaceKeyFunc);
+    this(Cache::metaNamespaceKeyFunc, true);
   }
 
-  public Cache(String indexName, Function<T, List<String>> indexFunc, Function<T, String> keyFunc) {
-    this.indexers.put(indexName, indexFunc);
+  public Cache(Function<T, String> keyFunc, boolean addNamespaceIndex) {
     this.keyFunc = keyFunc;
-    this.indices.put(indexName, new HashMap<>());
+    if (addNamespaceIndex) {
+      addIndexFunc(NAMESPACE_INDEX, Cache::metaNamespaceIndexFunc);
+    }
   }
   
   public void setIsRunning(BooleanSupplier isRunning) {
@@ -350,9 +351,10 @@ public class Cache<T> implements Indexer<T> {
    * @param indexName the index name
    * @param indexFunc the index func
    */
-  public synchronized void addIndexFunc(String indexName, Function<T, List<String>> indexFunc) {
+  public synchronized Cache<T> addIndexFunc(String indexName, Function<T, List<String>> indexFunc) {
     this.indices.put(indexName, new HashMap<>());
     this.indexers.put(indexName, indexFunc);
+    return this;
   }
 
   /**

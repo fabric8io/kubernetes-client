@@ -67,7 +67,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
 
   private ScheduledFuture<?> resyncFuture;
 
-  public DefaultSharedIndexInformer(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, long resyncPeriod, Executor informerExecutor) {
+  public DefaultSharedIndexInformer(Class<T> apiTypeClass, ListerWatcher<T, L> listerWatcher, long resyncPeriod, Executor informerExecutor, Cache<T> cache) {
     if (resyncPeriod < 0) {
       throw new IllegalArgumentException("Invalid resync period provided, It should be a non-negative value");
     }
@@ -78,7 +78,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
     this.informerExecutor = informerExecutor;
     // reuse the informer executor, but ensure serial processing
     this.processor = new SharedProcessor<>(new SerialExecutor(informerExecutor));
-    this.indexer = new Cache<>();
+    this.indexer = cache;
     this.indexer.setIsRunning(this::isRunning);
 
     processorStore = new ProcessorStore<>(this.indexer, this.processor);

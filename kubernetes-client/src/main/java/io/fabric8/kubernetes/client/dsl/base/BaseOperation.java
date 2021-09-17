@@ -54,6 +54,7 @@ import io.fabric8.kubernetes.client.dsl.internal.WatchHTTPManager;
 import io.fabric8.kubernetes.client.informers.ListerWatcher;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
+import io.fabric8.kubernetes.client.informers.cache.Cache;
 import io.fabric8.kubernetes.client.informers.impl.DefaultSharedIndexInformer;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
@@ -108,6 +109,8 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   protected Class<L> listType;
   private Map<String, Function<T, List<String>>> indexers;
+  private boolean namespaceIndexed = true;
+  private Function<T, String> keyFunction = Cache::metaNamespaceKeyFunc;
 
   protected BaseOperation(OperationContext ctx) {
     super(ctx);
@@ -1028,8 +1031,26 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   @Override
   public Informable<T> withIndexers(Map<String, Function<T, List<String>>> indexers) {
     BaseOperation<T, L, R> result = newInstance(context);
-    result.indexers = indexers;
-    return result;
+    return result.setInformerContext(namespaceIndexed, keyFunction, indexers);
+  }
+
+  private Informable<T> setInformerContext(boolean namespaceIndexed, Function<T, String> keyFunction, Map<String, Function<T, List<String>>> indexers) {
+    this.namespaceIndexed = namespaceIndexed;
+    this.keyFunction = keyFunction;
+    this.indexers = indexers; // not modified, so safe to use the reference
+    return this;
+  }
+  
+  @Override
+  public Informable<T> withNamespaceIndex(boolean enabled) {
+    BaseOperation<T, L, R> result = newInstance(context);
+    return result.setInformerContext(enabled, keyFunction, indexers);
+  }
+  
+  @Override
+  public Informable<T> withKeyFunction(Function<T, String> keyFunction) {
+    BaseOperation<T, L, R> result = newInstance(context);
+    return result.setInformerContext(namespaceIndexed, keyFunction, indexers);
   }
 
   @Override
@@ -1051,7 +1072,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     }
 
     // use the local context / namespace but without a resourceVersion
-    DefaultSharedIndexInformer<T, L> informer = new DefaultSharedIndexInformer<>(getType(), this.withResourceVersion(null), resync, Runnable::run); // just run the event notification in the websocket thread
+    DefaultSharedIndexInformer<T, L> informer = new DefaultSharedIndexInformer<>(getType(), this.withResourceVersion(null), resync, Runnable::run, new Cache<>(this.keyFunction, this.namespaceIndexed)); // just run the event notification in the websocket thread
     if (indexers != null) {
       informer.addIndexers(indexers);
     }

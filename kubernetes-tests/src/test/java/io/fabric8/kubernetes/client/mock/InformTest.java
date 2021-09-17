@@ -37,6 +37,7 @@ import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableKubernetesMockClient(https = false)
@@ -217,6 +218,56 @@ class InformTest {
 
     assertTrue(deleteLatch.await(1000, TimeUnit.SECONDS));
     assertTrue(addLatch.await(1000, TimeUnit.SECONDS));
+
+    informer.stop();
+  }
+
+  @Test
+  void testInformWithAlternativeKeyFunction() throws InterruptedException {
+    // Given
+    Pod pod1 = new PodBuilder().withNewMetadata().withNamespace("test").withName("pod1")
+        .withResourceVersion("1").withUid("uid").endMetadata().build();
+
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods")
+        .andReturn(HttpURLConnection.HTTP_OK,
+            new PodListBuilder().withNewMetadata().withResourceVersion("1").endMetadata().withItems(pod1).build())
+        .once();
+
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods?resourceVersion=1&watch=true")
+        .andUpgradeToWebSocket()
+        .open()
+        .done()
+        .once();
+
+    final CountDownLatch addLatch = new CountDownLatch(1);
+    final ResourceEventHandler<Pod> handler = new ResourceEventHandler<Pod>() {
+
+      @Override
+      public void onAdd(Pod obj) {
+        addLatch.countDown();
+      }
+
+      @Override
+      public void onDelete(Pod obj, boolean deletedFinalStateUnknown) {
+      }
+
+      @Override
+      public void onUpdate(Pod oldObj, Pod newObj) {
+
+      }
+
+    };
+    // When
+    SharedIndexInformer<Pod> informer = client.pods()
+        .withNamespaceIndex(false)
+        .withKeyFunction(p -> p.getMetadata().getUid())
+        .inform(handler);
+
+    assertTrue(addLatch.await(10, TimeUnit.SECONDS));
+    assertTrue(informer.getIndexer().getIndexers().isEmpty());
+    assertEquals(Arrays.asList("uid"), informer.getStore().listKeys());
 
     informer.stop();
   }

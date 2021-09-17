@@ -26,6 +26,7 @@ import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
+import io.fabric8.kubernetes.client.informers.cache.Cache;
 import io.fabric8.kubernetes.client.informers.impl.DefaultSharedIndexInformer;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
@@ -242,7 +243,7 @@ public class SharedInformerFactory {
     HasMetadataOperationsImpl<T, L> resources = getResourceOperation(apiTypeClass, apiListTypeClass, operationContext, rdc);
 
     // we want the resources to no longer reference a resourceVersion
-    SharedIndexInformer<T> informer = new DefaultSharedIndexInformer<>(apiTypeClass, resources.withResourceVersion(null), resyncPeriodInMillis, informerExecutor);
+    SharedIndexInformer<T> informer = new DefaultSharedIndexInformer<>(apiTypeClass, resources.withResourceVersion(null), resyncPeriodInMillis, informerExecutor, new Cache<>());
     this.informers.add(new AbstractMap.SimpleEntry<>(resources.getOperationContext(), informer));
     return informer;
   }
