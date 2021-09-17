@@ -63,7 +63,7 @@ public class RawCustomResourceIT {
 
   @ClassRule
   public static final AssumingK8sVersionAtLeast assumingK8sVersion =
-    new AssumingK8sVersionAtLeast("1", "13");
+    new AssumingK8sVersionAtLeast("1", "16");
 
   private String currentNamespace;
 
@@ -229,7 +229,7 @@ public class RawCustomResourceIT {
 
     // When
     deer = client.customResource(customResourceDefinitionContext).create(currentNamespace, deer);
-    await().atMost(5, TimeUnit.SECONDS)
+    await().atMost(10, TimeUnit.SECONDS)
       .until(() -> client.customResource(customResourceDefinitionContext).get(currentNamespace, name) != null);
     deer.put("status", status);
     Map<String, Object> updatedDeer = client.customResource(customResourceDefinitionContext).updateStatus(currentNamespace, name, deer);

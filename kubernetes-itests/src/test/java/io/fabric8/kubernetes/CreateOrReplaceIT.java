@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes;
 
+import io.fabric8.commons.AssumingK8sVersionAtLeast;
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.HasMetadata;
@@ -27,14 +28,15 @@ import io.fabric8.kubernetes.api.model.ServicePort;
 import io.fabric8.kubernetes.api.model.ServiceSpec;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
-import io.fabric8.kubernetes.api.model.extensions.Ingress;
-import io.fabric8.kubernetes.api.model.extensions.IngressBuilder;
+import io.fabric8.kubernetes.api.model.networking.v1.Ingress;
+import io.fabric8.kubernetes.api.model.networking.v1.IngressBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.After;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -59,6 +61,10 @@ public class CreateOrReplaceIT {
 
   @ArquillianResource
   Session session;
+
+  @ClassRule
+  public static final AssumingK8sVersionAtLeast assumingK8sVersion =
+    new AssumingK8sVersionAtLeast("1", "16");
 
   private HasMetadata resource = null;
   private List<HasMetadata> resourceList = null;
@@ -205,8 +211,10 @@ public class CreateOrReplaceIT {
       .withPath("/testPath")
       .withPathType("Prefix")
       .withNewBackend()
-      .withServiceName("test")
-      .withServicePort(new IntOrString(80))
+      .withNewService()
+      .withName("test")
+      .withNewPort().withNumber(80).endPort()
+      .endService()
       .endBackend()
       .endPath()
       .endHttp()
@@ -215,7 +223,7 @@ public class CreateOrReplaceIT {
       .build();
 
     // 1st createOrReplace(); should create the resource
-    ingress = client.extensions().ingresses().inNamespace(session.getNamespace()).createOrReplace(ingress);
+    ingress = client.network().v1().ingresses().inNamespace(session.getNamespace()).createOrReplace(ingress);
     assertNotNull(ingress);
     assertEquals(getTestResourcePrefix() + "-ing", ingress.getMetadata().getName());
     assertEquals(1, ingress.getSpec().getRules().size());
@@ -224,7 +232,7 @@ public class CreateOrReplaceIT {
     ingress.getMetadata().setAnnotations(Collections.singletonMap("nginx.ingress.kubernetes.io/rewrite-target", "/"));
 
     // 2nd createOrReplace; should update the resource
-    ingress = client.extensions().ingresses().inNamespace(session.getNamespace()).createOrReplace(ingress);
+    ingress = client.network().v1().ingresses().inNamespace(session.getNamespace()).createOrReplace(ingress);
     assertNotNull(ingress);
     assertEquals("/", ingress.getMetadata().getAnnotations().get("nginx.ingress.kubernetes.io/rewrite-target"));
   }
