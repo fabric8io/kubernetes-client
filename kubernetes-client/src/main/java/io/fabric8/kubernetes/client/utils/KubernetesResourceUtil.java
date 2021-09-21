@@ -228,11 +228,12 @@ public class KubernetesResourceUtil {
    */
   public static String sanitizeName(String name) {
     if(name != null) {
+      name = name.replaceAll("[^A-Za-z0-9]+", "-");
       final int length = name.length();
       if(length > KUBERNETES_DNS1123_LABEL_MAX_LENGTH) {
         name = name.substring(0, KUBERNETES_DNS1123_LABEL_MAX_LENGTH);
       }
-      return name.replaceAll("[^A-Za-z0-9]+", "-");
+      return name;
     }
     return null;
   }
