@@ -87,10 +87,18 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     // proactively close the request (it will be called again in close)
     // for reconnecting watchers, we may not complete onClose for a while
     closeRequest();  
-    if (!watcher.reconnecting() && forceClosed.getAndSet(true)) {
+    if (forceClosed.get()) {
       logger.debug("Ignoring duplicate firing of onClose event");
-    } else {
-      watcher.onClose(cause);
+    } else { 
+      boolean success = false;
+      try {
+        watcher.onClose(cause);
+        success = true;
+      } finally {
+        if (success || !watcher.reconnecting()) {
+          forceClosed.set(true);
+        }
+      }
     }
     close();
   }
