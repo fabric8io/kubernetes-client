@@ -71,6 +71,24 @@ class AbstractWatchManagerTest {
     // Then
     assertThat(watcher.closeCount.get()).isEqualTo(1);
   }
+  
+  @Test
+  void closeEventWithExceptionIsIdempotentWithReconnecting() throws MalformedURLException {
+    // Given
+    final WatcherAdapter<HasMetadata> watcher = new WatcherAdapter<HasMetadata>() {
+      @Override
+      public boolean reconnecting() {
+        return true;
+      }
+    };
+    final WatchManager<HasMetadata> awm = withDefaultWatchManager(watcher);
+    // When
+    for (int it = 0; it < 10; it++) {
+      awm.close(new WatcherException("Mock"));
+    }
+    // Then
+    assertThat(watcher.closeCount.get()).isEqualTo(1);
+  }
 
   @Test
   @DisplayName("closeWebSocket, closes web socket with 1000 code (Normal Closure)")
