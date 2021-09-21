@@ -16,14 +16,12 @@
     limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>tekton-extension-pom</artifactId>
-    <version>5.7.3-nordix-SNAPSHOT</version>
+    <version>5.7.3-nordix-1</version>
   </parent>
 
   <artifactId>tekton-model-v1beta1</artifactId>
@@ -124,9 +122,7 @@
             <configuration>
               <target>
                   <!-- removing the generated Schema class -->
-                <delete
-                  file="${project.build.directory}/generated-sources/io/fabric8/tekton/api/model/TektonSchemaV1beta1.java"
-                  verbose="true" />
+                <delete file="${project.build.directory}/generated-sources/io/fabric8/tekton/api/model/TektonSchemaV1beta1.java" verbose="true" />
               </target>
             </configuration>
             <goals>

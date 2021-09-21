@@ -16,14 +16,12 @@
     limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>io.fabric8</groupId>
   <artifactId>kubernetes-client-project</artifactId>
-  <version>5.7.3-nordix-SNAPSHOT</version>
+  <version>5.7.3-nordix-1</version>
   <packaging>pom</packaging>
 
   <name>Fabric8 :: Kubernetes :: Project</name>
@@ -59,6 +57,7 @@
     <url>https://github.com/Nordix/kubernetes-client</url>
     <connection>scm:git:git@github.com:Nordix/kubernetes-client.git</connection>
     <developerConnection>scm:git:git@github.com:Nordix/kubernetes-client.git</developerConnection>
+    <tag>5.7.3-nordix-1</tag>
   </scm>
 
   <distributionManagement>
@@ -162,7 +161,7 @@
     <osgi.export.service />
     <osgi.include.resources>{maven-resources}</osgi.include.resources>
     <karaf.itest.skip>false</karaf.itest.skip>
-    <project.build.outputTimestamp>2020-11-14T12:24:00Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2021-09-21T06:50:50Z</project.build.outputTimestamp>
     <validation-api.version>2.0.1.Final</validation-api.version>
   </properties>
 
@@ -1011,8 +1010,8 @@
         <sonar.moduleKey>${project.artifactId}</sonar.moduleKey>
         <sonar.organization>fabric8io</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-        <sonar.login/>
-        <sonar.password/>
+        <sonar.login />
+        <sonar.password />
         <sonar.projectName>Fabric8 :: Kubernetes Client</sonar.projectName>
         <sonar.links.homepage>https://github.com/fabric8io/kubernetes-client</sonar.links.homepage>
         <sonar.links.ci>https://github.com/fabric8io/kubernetes-client/actions</sonar.links.ci>
