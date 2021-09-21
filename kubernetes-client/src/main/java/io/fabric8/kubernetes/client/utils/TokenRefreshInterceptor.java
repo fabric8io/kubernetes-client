@@ -15,15 +15,11 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
-import io.fabric8.kubernetes.api.model.AuthInfo;
-import io.fabric8.kubernetes.api.model.Context;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.internal.KubeConfigUtils;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 
@@ -41,30 +37,26 @@ public class TokenRefreshInterceptor implements Interceptor {
     Request request = chain.request();
     Response response = chain.proceed(request);
     if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
-      io.fabric8.kubernetes.api.model.Config kubeConfig = KubeConfigUtils.parseConfig(new File(Config.getKubeconfigFilename()));
-      Context currentContext = null;
       String currentContextName = null;
+      String newAccessToken = null;
+
       if (config.getCurrentContext() != null) {
-        currentContext = config.getCurrentContext().getContext();
         currentContextName = config.getCurrentContext().getName();
       }
-      AuthInfo currentAuthInfo = KubeConfigUtils.getUserAuthInfo(kubeConfig, currentContext);
-      // Check if AuthProvider is set or not
-      if (currentAuthInfo != null) {
+      Config newestConfig = Config.autoConfigure(currentContextName);
+      if (newestConfig.getAuthProvider() != null && newestConfig.getAuthProvider().getName().equalsIgnoreCase("oidc")) {
+        newAccessToken = OpenIDConnectionUtils.resolveOIDCTokenFromAuthConfig(newestConfig.getAuthProvider().getConfig());
+      } else {
+        newAccessToken = newestConfig.getOauthToken();
+      }
+
+      if (newAccessToken != null) {
         response.close();
-        String newAccessToken;
-        // Check if AuthProvider is set to oidc
-        if (currentAuthInfo.getAuthProvider() != null && currentAuthInfo.getAuthProvider().getName().equalsIgnoreCase("oidc")) {
-          newAccessToken = OpenIDConnectionUtils.resolveOIDCTokenFromAuthConfig(currentAuthInfo.getAuthProvider().getConfig());
-        } else {
-          Config newestConfig = Config.autoConfigure(currentContextName);
-          newAccessToken = newestConfig.getOauthToken();
-        }
         // Delete old Authorization header and append new one
         Request authReqWithUpdatedToken = chain.request().newBuilder()
           .header("Authorization", "Bearer " + newAccessToken).build();
         config.setOauthToken(newAccessToken);
-        return chain.proceed(authReqWithUpdatedToken);
+        response = chain.proceed(authReqWithUpdatedToken);
       }
     }
     return response;
