@@ -16,8 +16,8 @@
 
 package io.fabric8.kubernetes.client.utils;
 
-import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.EnvVarBuilder;
 import io.fabric8.kubernetes.api.model.Event;
@@ -228,6 +228,10 @@ public class KubernetesResourceUtil {
    */
   public static String sanitizeName(String name) {
     if(name != null) {
+      final int length = name.length();
+      if(length > KUBERNETES_DNS1123_LABEL_MAX_LENGTH) {
+        name = name.substring(0, KUBERNETES_DNS1123_LABEL_MAX_LENGTH);
+      }
       return name.replaceAll("[^A-Za-z0-9]+", "-");
     }
     return null;
@@ -300,7 +304,7 @@ public class KubernetesResourceUtil {
    * Validates labels/annotations of Kubernetes resources
    *
    * @param map Label/Annotation of resource
-   * @return returns a boolean value inidicating whether it's valid or not
+   * @return returns a boolean value indicating whether it's valid or not
    */
   public static boolean isValidLabelOrAnnotation(Map<String, String> map) {
     for(Map.Entry<String, String> entry : map.entrySet()) {

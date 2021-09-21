@@ -3,6 +3,7 @@
 ### 5.9-SNAPSHOT
 
 #### Bugs
+* Fix #3482: sanitizeName now truncate names to be less than 63 chars and makes sure first and last charaters are letters
 
 #### Improvements
 
