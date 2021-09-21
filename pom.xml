@@ -23,7 +23,7 @@
 
   <groupId>io.fabric8</groupId>
   <artifactId>kubernetes-client-project</artifactId>
-  <version>5.7.3</version>
+  <version>5.7.3-nordix-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Fabric8 :: Kubernetes :: Project</name>
@@ -56,21 +56,16 @@
   </developers>
 
   <scm>
-    <connection>scm:git:git@github.com:fabric8io/kubernetes-client.git</connection>
-    <developerConnection>scm:git:git@github.com:fabric8io/kubernetes-client.git</developerConnection>
-    <url>http://github.com/fabric8io/kubernetes-client/</url>
-    <tag>${project.version}</tag>
+    <url>https://github.com/Nordix/kubernetes-client</url>
+    <connection>scm:git:git@github.com:Nordix/kubernetes-client.git</connection>
+    <developerConnection>scm:git:git@github.com:Nordix/kubernetes-client.git</developerConnection>
   </scm>
 
   <distributionManagement>
-    <snapshotRepository>
-      <id>oss-sonatype-staging</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-    </snapshotRepository>
     <repository>
-      <id>oss-sonatype-staging</id>
-      <name>Sonatype Staging Repository</name>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+      <id>github</id>
+      <name>GitHub Nordix Apache Maven Packages</name>
+      <url>https://maven.pkg.github.com/Nordix/kubernetes-client</url>
     </repository>
   </distributionManagement>
 
@@ -862,24 +857,6 @@
       </properties>
       <build>
         <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-gpg-plugin</artifactId>
-            <version>${maven.gpg.plugin.version}</version>
-            <configuration>
-              <passphrase>4uds0n</passphrase>
-              <useAgent>true</useAgent>
-            </configuration>
-            <executions>
-              <execution>
-                <id>sign-artifacts</id>
-                <phase>verify</phase>
-                <goals>
-                  <goal>sign</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-release-plugin</artifactId>
