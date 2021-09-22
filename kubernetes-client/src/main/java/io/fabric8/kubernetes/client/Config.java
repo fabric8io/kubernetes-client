@@ -16,30 +16,10 @@
 
 package io.fabric8.kubernetes.client;
 
-import static okhttp3.TlsVersion.TLS_1_2;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import io.fabric8.kubernetes.api.model.AuthInfo;
 import io.fabric8.kubernetes.api.model.AuthProviderConfig;
 import io.fabric8.kubernetes.api.model.Cluster;
@@ -56,8 +36,25 @@ import io.fabric8.kubernetes.client.utils.IOHelpers;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.sundr.builder.annotations.Buildable;
-import okhttp3.OkHttpClient;
 import okhttp3.TlsVersion;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+import static okhttp3.TlsVersion.TLS_1_2;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true, allowGetters = true, allowSetters = true)
@@ -527,7 +524,7 @@ public class Config {
     return new File(relativeTo.getParentFile(), filename).getAbsolutePath();
   }
 
-  public static Config fromKubeconfig(String kubeconfigContents) throws IOException {
+  public static Config fromKubeconfig(String kubeconfigContents) {
     return fromKubeconfig(null, kubeconfigContents, null);
   }
 
@@ -1357,7 +1354,4 @@ public class Config {
     return authProvider;
   }
 
-  public OkHttpClient adaptClient(OkHttpClient httpClient) {
-    return httpClient;
-  }
 }

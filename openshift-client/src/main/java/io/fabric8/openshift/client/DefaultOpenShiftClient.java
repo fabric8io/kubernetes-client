@@ -675,4 +675,9 @@ public class DefaultOpenShiftClient extends BaseKubernetesClient<NamespacedOpenS
     return false;
   }
 
+  @Override
+  protected OkHttpClient adaptOkHttpClient(OkHttpClient okHttpClient) {
+    return OpenshiftAdapterSupport.adaptOkHttpClient(okHttpClient, getConfiguration());
+  }
+
 }

@@ -42,14 +42,14 @@ public class ApiGroupResourceListsIT {
   Session session;
 
   @Test
-  public void testApiGroups() throws InterruptedException {
+  public void testApiGroups() {
     APIGroupList list = client.getApiGroups();
 
     assertTrue(list.getGroups().stream().anyMatch(g -> "apps".equals(g.getName())));
   }
 
   @Test
-  public void testApiGroup() throws InterruptedException {
+  public void testApiGroup() {
     APIGroup group = client.getApiGroup("apps");
 
     assertNotNull(group);
@@ -60,7 +60,7 @@ public class ApiGroupResourceListsIT {
   }
 
   @Test
-  public void testApiResources() throws InterruptedException {
+  public void testApiResources() {
     APIResourceList list = client.getApiResources("apps/v1");
 
     assertTrue(list.getResources().stream().anyMatch(r -> "deployments".equals(r.getName())));
