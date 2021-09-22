@@ -13,6 +13,9 @@
 * Fix #3303: Support fetching APIResourceList
 
 #### _**Note**_: Breaking changes in the API
+* OpenShiftConfig#disableApiGroupCheck is now considered when assessing if the cluster is OpenShift compatible or not.
+  Previously, this value was negated and was enabling the API group check instead of disabling it. The value is now
+  taken into account, so by default DefaultOpenShiftClient now **does check** if it has compatible API groups.
 
 ### 5.8.0 (2021-09-23)
 
