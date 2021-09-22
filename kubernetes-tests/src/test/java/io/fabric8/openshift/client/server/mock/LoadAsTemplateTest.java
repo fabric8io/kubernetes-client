@@ -116,7 +116,7 @@ class LoadAsTemplateTest {
   }
 
   private static DefaultOpenShiftClient createOpenShiftClientWithNoServer() {
-    return new DefaultOpenShiftClient(new OpenShiftConfigBuilder().build());
+    return new DefaultOpenShiftClient(new OpenShiftConfigBuilder().withDisableApiGroupCheck(true).build());
   }
 
   //Check that the processed template is as expected

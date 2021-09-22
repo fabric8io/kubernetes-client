@@ -178,7 +178,7 @@ class TemplateTest {
 
   @Test
   void shouldLoadTemplateWithNumberParameters() {
-    OpenShiftClient client = new DefaultOpenShiftClient(new OpenShiftConfigBuilder().build());
+    OpenShiftClient client = new DefaultOpenShiftClient(new OpenShiftConfigBuilder().withDisableApiGroupCheck(true).build());
     Map<String, String> map = new HashMap<>();
     map.put("PORT", "8080");
     KubernetesList list = client.templates().withParameters(map).load(getClass().getResourceAsStream("/template-with-number-params.yml")).processLocally(map);
