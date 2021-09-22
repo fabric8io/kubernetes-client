@@ -17,7 +17,6 @@ import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
-import io.fabric8.kubernetes.api.model.policy.v1beta1.Eviction;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicy;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicyList;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.RunAsUserStrategyOptions;
@@ -57,6 +56,7 @@ import lombok.ToString;
     "Time",
     "TypeMeta",
     "UpdateOptions",
+    "V1Eviction",
     "V1PodDisruptionBudget",
     "V1PodDisruptionBudgetList"
 })
@@ -86,7 +86,7 @@ public class KubeSchema {
     @JsonProperty("DeleteOptions")
     private DeleteOptions deleteOptions;
     @JsonProperty("Eviction")
-    private Eviction eviction;
+    private io.fabric8.kubernetes.api.model.policy.v1beta1.Eviction eviction;
     @JsonProperty("GetOptions")
     private GetOptions getOptions;
     @JsonProperty("Info")
@@ -123,6 +123,8 @@ public class KubeSchema {
     private TypeMeta typeMeta;
     @JsonProperty("UpdateOptions")
     private UpdateOptions updateOptions;
+    @JsonProperty("V1Eviction")
+    private io.fabric8.kubernetes.api.model.policy.v1.Eviction v1Eviction;
     @JsonProperty("V1PodDisruptionBudget")
     private io.fabric8.kubernetes.api.model.policy.v1.PodDisruptionBudget v1PodDisruptionBudget;
     @JsonProperty("V1PodDisruptionBudgetList")
@@ -152,6 +154,7 @@ public class KubeSchema {
      * @param podDisruptionBudget
      * @param rootPaths
      * @param info
+     * @param v1Eviction
      * @param patchOptions
      * @param deleteOptions
      * @param quantity
@@ -166,7 +169,7 @@ public class KubeSchema {
      * @param podSecurityPolicyList
      * @param status
      */
-    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, BaseKubernetesList baseKubernetesList, CreateOptions createOptions, DeleteOptions deleteOptions, Eviction eviction, GetOptions getOptions, Info info, RunAsUserStrategyOptions kubernetesRunAsUserStrategyOptions, ListOptions listOptions, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, io.fabric8.kubernetes.api.model.ObjectReference objectReference, Patch patch, PatchOptions patchOptions, io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudget podDisruptionBudget, io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudgetList podDisruptionBudgetList, PodSecurityPolicy podSecurityPolicy, PodSecurityPolicyList podSecurityPolicyList, Quantity quantity, RootPaths rootPaths, Status status, String time, TypeMeta typeMeta, UpdateOptions updateOptions, io.fabric8.kubernetes.api.model.policy.v1.PodDisruptionBudget v1PodDisruptionBudget, io.fabric8.kubernetes.api.model.policy.v1.PodDisruptionBudgetList v1PodDisruptionBudgetList) {
+    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, BaseKubernetesList baseKubernetesList, CreateOptions createOptions, DeleteOptions deleteOptions, io.fabric8.kubernetes.api.model.policy.v1beta1.Eviction eviction, GetOptions getOptions, Info info, RunAsUserStrategyOptions kubernetesRunAsUserStrategyOptions, ListOptions listOptions, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, io.fabric8.kubernetes.api.model.ObjectReference objectReference, Patch patch, PatchOptions patchOptions, io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudget podDisruptionBudget, io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudgetList podDisruptionBudgetList, PodSecurityPolicy podSecurityPolicy, PodSecurityPolicyList podSecurityPolicyList, Quantity quantity, RootPaths rootPaths, Status status, String time, TypeMeta typeMeta, UpdateOptions updateOptions, io.fabric8.kubernetes.api.model.policy.v1.Eviction v1Eviction, io.fabric8.kubernetes.api.model.policy.v1.PodDisruptionBudget v1PodDisruptionBudget, io.fabric8.kubernetes.api.model.policy.v1.PodDisruptionBudgetList v1PodDisruptionBudgetList) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
@@ -192,6 +195,7 @@ public class KubeSchema {
         this.time = time;
         this.typeMeta = typeMeta;
         this.updateOptions = updateOptions;
+        this.v1Eviction = v1Eviction;
         this.v1PodDisruptionBudget = v1PodDisruptionBudget;
         this.v1PodDisruptionBudgetList = v1PodDisruptionBudgetList;
     }
@@ -247,12 +251,12 @@ public class KubeSchema {
     }
 
     @JsonProperty("Eviction")
-    public Eviction getEviction() {
+    public io.fabric8.kubernetes.api.model.policy.v1beta1.Eviction getEviction() {
         return eviction;
     }
 
     @JsonProperty("Eviction")
-    public void setEviction(Eviction eviction) {
+    public void setEviction(io.fabric8.kubernetes.api.model.policy.v1beta1.Eviction eviction) {
         this.eviction = eviction;
     }
 
@@ -434,6 +438,16 @@ public class KubeSchema {
     @JsonProperty("UpdateOptions")
     public void setUpdateOptions(UpdateOptions updateOptions) {
         this.updateOptions = updateOptions;
+    }
+
+    @JsonProperty("V1Eviction")
+    public io.fabric8.kubernetes.api.model.policy.v1.Eviction getV1Eviction() {
+        return v1Eviction;
+    }
+
+    @JsonProperty("V1Eviction")
+    public void setV1Eviction(io.fabric8.kubernetes.api.model.policy.v1.Eviction v1Eviction) {
+        this.v1Eviction = v1Eviction;
     }
 
     @JsonProperty("V1PodDisruptionBudget")

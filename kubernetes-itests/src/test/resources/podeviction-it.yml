@@ -1,4 +1,3 @@
-#!/bin/bash
 #
 # Copyright (C) 2015 Red Hat, Inc.
 #
@@ -15,16 +14,13 @@
 # limitations under the License.
 #
 
-set -e
-
-BASEDIR=$(dirname "$BASH_SOURCE")
-ABSOLUTE_BASEDIR=$(realpath "$BASEDIR/..")
-
-DOCKER_IMAGE_GOLANG=marcnuri/golang-1.16-java11
-
-docker run                                                   \
-  --rm                                                       \
-  -v "$ABSOLUTE_BASEDIR":/usr/src                            \
-  -w /usr/src/kubernetes-model-generator                     \
-  -e LOCAL_USER="$(id -u):$(id -g)"                          \
-  $DOCKER_IMAGE_GOLANG "./generateModel.sh" "$@"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: podeviction-it-with-v1-policy-eviction
+spec:
+  containers:
+    - name: alpine
+      image: alpine:3.13.6
+      command: ["sleep", "36000"]

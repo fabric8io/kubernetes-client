@@ -17,4 +17,6 @@ replace (
 	k8s.io/client-go => k8s.io/client-go v0.16.5
 )
 
+exclude github.com/mikefarah/yaml/v2 v2.4.0
+
 go 1.13

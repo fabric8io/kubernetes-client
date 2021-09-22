@@ -66,6 +66,7 @@ type Schema struct {
   Eviction                                 policy.Eviction
   V1PodDisruptionBudget                    v1policy.PodDisruptionBudget
   V1PodDisruptionBudgetList                v1policy.PodDisruptionBudgetList
+  V1Eviction                               v1policy.Eviction
 }
 
 func main() {

@@ -40,7 +40,6 @@ import lombok.ToString;
     "selector",
     "sessionAffinity",
     "sessionAffinityConfig",
-    "topologyKeys",
     "type"
 })
 @ToString
@@ -90,9 +89,6 @@ public class ServiceSpec implements KubernetesResource
     private java.lang.String sessionAffinity;
     @JsonProperty("sessionAffinityConfig")
     private SessionAffinityConfig sessionAffinityConfig;
-    @JsonProperty("topologyKeys")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<java.lang.String> topologyKeys = new ArrayList<java.lang.String>();
     @JsonProperty("type")
     private java.lang.String type;
     @JsonIgnore
@@ -124,11 +120,10 @@ public class ServiceSpec implements KubernetesResource
      * @param externalTrafficPolicy
      * @param selector
      * @param publishNotReadyAddresses
-     * @param topologyKeys
      * @param internalTrafficPolicy
      * @param clusterIP
      */
-    public ServiceSpec(Boolean allocateLoadBalancerNodePorts, java.lang.String clusterIP, List<java.lang.String> clusterIPs, List<java.lang.String> externalIPs, java.lang.String externalName, java.lang.String externalTrafficPolicy, Integer healthCheckNodePort, java.lang.String internalTrafficPolicy, List<java.lang.String> ipFamilies, java.lang.String ipFamilyPolicy, java.lang.String loadBalancerClass, java.lang.String loadBalancerIP, List<java.lang.String> loadBalancerSourceRanges, List<ServicePort> ports, Boolean publishNotReadyAddresses, Map<String, String> selector, java.lang.String sessionAffinity, SessionAffinityConfig sessionAffinityConfig, List<java.lang.String> topologyKeys, java.lang.String type) {
+    public ServiceSpec(Boolean allocateLoadBalancerNodePorts, java.lang.String clusterIP, List<java.lang.String> clusterIPs, List<java.lang.String> externalIPs, java.lang.String externalName, java.lang.String externalTrafficPolicy, Integer healthCheckNodePort, java.lang.String internalTrafficPolicy, List<java.lang.String> ipFamilies, java.lang.String ipFamilyPolicy, java.lang.String loadBalancerClass, java.lang.String loadBalancerIP, List<java.lang.String> loadBalancerSourceRanges, List<ServicePort> ports, Boolean publishNotReadyAddresses, Map<String, String> selector, java.lang.String sessionAffinity, SessionAffinityConfig sessionAffinityConfig, java.lang.String type) {
         super();
         this.allocateLoadBalancerNodePorts = allocateLoadBalancerNodePorts;
         this.clusterIP = clusterIP;
@@ -148,7 +143,6 @@ public class ServiceSpec implements KubernetesResource
         this.selector = selector;
         this.sessionAffinity = sessionAffinity;
         this.sessionAffinityConfig = sessionAffinityConfig;
-        this.topologyKeys = topologyKeys;
         this.type = type;
     }
 
@@ -330,16 +324,6 @@ public class ServiceSpec implements KubernetesResource
     @JsonProperty("sessionAffinityConfig")
     public void setSessionAffinityConfig(SessionAffinityConfig sessionAffinityConfig) {
         this.sessionAffinityConfig = sessionAffinityConfig;
-    }
-
-    @JsonProperty("topologyKeys")
-    public List<java.lang.String> getTopologyKeys() {
-        return topologyKeys;
-    }
-
-    @JsonProperty("topologyKeys")
-    public void setTopologyKeys(List<java.lang.String> topologyKeys) {
-        this.topologyKeys = topologyKeys;
     }
 
     @JsonProperty("type")

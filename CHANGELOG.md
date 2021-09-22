@@ -3,11 +3,19 @@
 ### 5.8-SNAPSHOT
 
 #### Bugs
+* Fix #3445: TokenRefreshInterceptor throws when running incluster config
+* Fix #3456: io.fabric8:crd-generator README should reference crd-generator-apt instead of now removed crd-generator artifact
+* Fix #3384: preventing NPE from being logged with pod execs.
+* Fix #3484: Ensuring that the informer isWatching flag is correctly reported
+
 #### Improvements
 
 * Fix #3468: Add method to get non-running `Informer` from context specific dsl
+* Fix #3398: Added javadocs explaining the wait parameter
 
 #### Dependency Upgrade
+  * Upgrade Sundrio to 0.50.1
+  * Upgrade Kubernetes Model to v1.22.1
 #### New Features
 #### _**Note**_: Breaking changes in the API
 

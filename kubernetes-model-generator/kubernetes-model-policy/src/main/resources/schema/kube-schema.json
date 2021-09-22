@@ -404,6 +404,9 @@
         "operation": {
           "type": "string"
         },
+        "subresource": {
+          "type": "string"
+        },
         "time": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
           "existingJavaType": "String"
@@ -893,6 +896,35 @@
       "existingJavaType": "io.fabric8.kubernetes.api.model.SELinuxOptions",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_policy_v1_Eviction": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "policy/v1",
+          "required": true
+        },
+        "deleteOptions": {
+          "$ref": "#/definitions/kubernetes_apimachinery_DeleteOptions",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.DeleteOptions"
+        },
+        "kind": {
+          "type": "string",
+          "default": "Eviction",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.policy.v1.Eviction",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
       ]
     },
     "kubernetes_policy_v1_PodDisruptionBudget": {
@@ -1672,6 +1704,10 @@
     "UpdateOptions": {
       "$ref": "#/definitions/kubernetes_apimachinery_UpdateOptions",
       "existingJavaType": "io.fabric8.kubernetes.api.model.UpdateOptions"
+    },
+    "V1Eviction": {
+      "$ref": "#/definitions/kubernetes_policy_v1_Eviction",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1.Eviction"
     },
     "V1PodDisruptionBudget": {
       "$ref": "#/definitions/kubernetes_policy_v1_PodDisruptionBudget",

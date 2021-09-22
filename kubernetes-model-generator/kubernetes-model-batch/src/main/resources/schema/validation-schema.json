@@ -374,6 +374,9 @@
         "operation": {
           "type": "string"
         },
+        "subresource": {
+          "type": "string"
+        },
         "time": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
           "existingJavaType": "String"
@@ -1104,6 +1107,10 @@
         },
         "succeeded": {
           "type": "integer"
+        },
+        "uncountedTerminatedPods": {
+          "$ref": "#/definitions/kubernetes_batch_v1_UncountedTerminatedPods",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.batch.v1.UncountedTerminatedPods"
         }
       },
       "additionalProperties": true,
@@ -1126,6 +1133,30 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.batch.v1.JobTemplateSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_batch_v1_UncountedTerminatedPods": {
+      "type": "object",
+      "properties": {
+        "failed": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "succeeded": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.batch.v1.UncountedTerminatedPods",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -2624,6 +2655,10 @@
           "$ref": "#/definitions/kubernetes_core_TypedLocalObjectReference",
           "existingJavaType": "io.fabric8.kubernetes.api.model.TypedLocalObjectReference"
         },
+        "dataSourceRef": {
+          "$ref": "#/definitions/kubernetes_core_TypedLocalObjectReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.TypedLocalObjectReference"
+        },
         "resources": {
           "$ref": "#/definitions/kubernetes_core_ResourceRequirements",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
@@ -4060,6 +4095,9 @@
         "gmsaCredentialSpecName": {
           "type": "string"
         },
+        "hostProcess": {
+          "type": "boolean"
+        },
         "runAsUserName": {
           "type": "string"
         }
@@ -4595,7 +4633,7 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "batch/v1",
+          "default": "batch/v1beta1",
           "required": true
         },
         "kind": {
@@ -4608,12 +4646,12 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/kubernetes_batch_v1_CronJobSpec",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.batch.v1.CronJobSpec"
+          "$ref": "#/definitions/kubernetes_batch_v1beta1_CronJobSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.batch.v1beta1.CronJobSpec"
         },
         "status": {
-          "$ref": "#/definitions/kubernetes_batch_v1_CronJobStatus",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.batch.v1.CronJobStatus"
+          "$ref": "#/definitions/kubernetes_batch_v1beta1_CronJobStatus",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.batch.v1beta1.CronJobStatus"
         }
       },
       "additionalProperties": true
@@ -4653,8 +4691,8 @@
           "type": "integer"
         },
         "jobTemplate": {
-          "$ref": "#/definitions/kubernetes_batch_v1_JobTemplateSpec",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.batch.v1.JobTemplateSpec"
+          "$ref": "#/definitions/kubernetes_batch_v1beta1_JobTemplateSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.batch.v1beta1.JobTemplateSpec"
         },
         "schedule": {
           "type": "string"
@@ -5570,6 +5608,10 @@
         },
         "succeeded": {
           "type": "integer"
+        },
+        "uncountedTerminatedPods": {
+          "$ref": "#/definitions/kubernetes_batch_v1_UncountedTerminatedPods",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.batch.v1.UncountedTerminatedPods"
         }
       },
       "additionalProperties": true
@@ -5764,6 +5806,9 @@
           "type": "string"
         },
         "operation": {
+          "type": "string"
+        },
+        "subresource": {
           "type": "string"
         },
         "time": {
@@ -6037,6 +6082,10 @@
           }
         },
         "dataSource": {
+          "$ref": "#/definitions/kubernetes_core_TypedLocalObjectReference",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.TypedLocalObjectReference"
+        },
+        "dataSourceRef": {
           "$ref": "#/definitions/kubernetes_core_TypedLocalObjectReference",
           "existingJavaType": "io.fabric8.kubernetes.api.model.TypedLocalObjectReference"
         },
@@ -7056,6 +7105,25 @@
       },
       "additionalProperties": true
     },
+    "uncountedterminatedpods": {
+      "properties": {
+        "failed": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "succeeded": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
     "updateoptions": {
       "properties": {
         "apiVersion": {
@@ -7419,6 +7487,9 @@
         },
         "gmsaCredentialSpecName": {
           "type": "string"
+        },
+        "hostProcess": {
+          "type": "boolean"
         },
         "runAsUserName": {
           "type": "string"

@@ -104,6 +104,8 @@ public class ServiceIT {
     svc.getSpec().setExternalName("my.database.example.com");
     svc.getSpec().setClusterIP("");
     svc.getSpec().setClusterIPs(Collections.emptyList());
+    svc.getSpec().setIpFamilies(Collections.emptyList());
+    svc.getSpec().setIpFamilyPolicy(null);
     svc = client.services().inNamespace(session.getNamespace()).createOrReplace(svc);
 
     // Then

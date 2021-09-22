@@ -41,6 +41,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.fabric8.kubernetes.api.model.AuthInfo;
+import io.fabric8.kubernetes.api.model.AuthProviderConfig;
 import io.fabric8.kubernetes.api.model.Cluster;
 import io.fabric8.kubernetes.api.model.ConfigBuilder;
 import io.fabric8.kubernetes.api.model.Context;
@@ -83,6 +84,7 @@ public class Config {
   public static final String KUBERNETES_AUTH_BASIC_PASSWORD_SYSTEM_PROPERTY = "kubernetes.auth.basic.password";
   public static final String KUBERNETES_AUTH_TRYKUBECONFIG_SYSTEM_PROPERTY = "kubernetes.auth.tryKubeConfig";
   public static final String KUBERNETES_AUTH_TRYSERVICEACCOUNT_SYSTEM_PROPERTY = "kubernetes.auth.tryServiceAccount";
+  public static final String KUBERNETES_AUTH_SERVICEACCOUNT_TOKEN_FILE_SYSTEM_PROPERTY = "kubernetes.auth.serviceAccount.token";
   public static final String KUBERNETES_OAUTH_TOKEN_SYSTEM_PROPERTY = "kubernetes.auth.token";
   public static final String KUBERNETES_WATCH_RECONNECT_INTERVAL_SYSTEM_PROPERTY = "kubernetes.watch.reconnectInterval";
   public static final String KUBERNETES_WATCH_RECONNECT_LIMIT_SYSTEM_PROPERTY = "kubernetes.watch.reconnectLimit";
@@ -169,6 +171,7 @@ public class Config {
   private String trustStorePassphrase;
   private String keyStoreFile;
   private String keyStorePassphrase;
+  private AuthProviderConfig authProvider;
 
   private RequestConfig requestConfig = new RequestConfig();
 
@@ -470,22 +473,25 @@ public class Config {
     LOGGER.debug("Trying to configure client from service account...");
     String masterHost = Utils.getSystemPropertyOrEnvVar(KUBERNETES_SERVICE_HOST_PROPERTY, (String) null);
     String masterPort = Utils.getSystemPropertyOrEnvVar(KUBERNETES_SERVICE_PORT_PROPERTY, (String) null);
+    String saTokenPath = Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_SERVICEACCOUNT_TOKEN_FILE_SYSTEM_PROPERTY, KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH);
+    String caCertPath = Utils.getSystemPropertyOrEnvVar(KUBERNETES_CA_CERTIFICATE_FILE_SYSTEM_PROPERTY, KUBERNETES_SERVICE_ACCOUNT_CA_CRT_PATH);
+
     if (masterHost != null && masterPort != null) {
       String hostPort = joinHostPort(masterHost, masterPort);
       LOGGER.debug("Found service account host and port: {}", hostPort);
       config.setMasterUrl("https://" + hostPort);
     }
     if (Utils.getSystemPropertyOrEnvVar(KUBERNETES_AUTH_TRYSERVICEACCOUNT_SYSTEM_PROPERTY, true)) {
-      boolean serviceAccountCaCertExists = Files.isRegularFile(new File(KUBERNETES_SERVICE_ACCOUNT_CA_CRT_PATH).toPath());
+      boolean serviceAccountCaCertExists = Files.isRegularFile(new File(caCertPath).toPath());
       if (serviceAccountCaCertExists) {
-        LOGGER.debug("Found service account ca cert at: ["+KUBERNETES_SERVICE_ACCOUNT_CA_CRT_PATH+"].");
-        config.setCaCertFile(KUBERNETES_SERVICE_ACCOUNT_CA_CRT_PATH);
+        LOGGER.debug("Found service account ca cert at: [{}}].", caCertPath);
+        config.setCaCertFile(caCertPath);
       } else {
-        LOGGER.debug("Did not find service account ca cert at: ["+KUBERNETES_SERVICE_ACCOUNT_CA_CRT_PATH+"].");
+        LOGGER.debug("Did not find service account ca cert at: [{}}].", caCertPath);
       }
       try {
-        String serviceTokenCandidate = new String(Files.readAllBytes(new File(KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH).toPath()));
-        LOGGER.debug("Found service account token at: ["+KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH+"].");
+        String serviceTokenCandidate = new String(Files.readAllBytes(new File(saTokenPath).toPath()));
+        LOGGER.debug("Found service account token at: [{}].", saTokenPath);
         config.setOauthToken(serviceTokenCandidate);
         String txt = "Configured service account doesn't have access. Service account may have been revoked.";
         config.getErrorMessages().put(401, "Unauthorized! " + txt);
@@ -493,7 +499,7 @@ public class Config {
         return true;
       } catch (IOException e) {
         // No service account token available...
-        LOGGER.warn("Error reading service account token from: [{}]. Ignoring.", KUBERNETES_SERVICE_ACCOUNT_TOKEN_PATH);
+        LOGGER.warn("Error reading service account token from: [{}]. Ignoring.", saTokenPath);
       }
     }
     return false;
@@ -619,6 +625,7 @@ public class Config {
 
           if (Utils.isNullOrEmpty(config.getOauthToken()) && currentAuthInfo.getAuthProvider() != null) {
             if (currentAuthInfo.getAuthProvider().getConfig() != null) {
+              config.setAuthProvider(currentAuthInfo.getAuthProvider());
               if (!Utils.isNullOrEmpty(currentAuthInfo.getAuthProvider().getConfig().get(ACCESS_TOKEN))) {
                 // GKE token
                 config.setOauthToken(currentAuthInfo.getAuthProvider().getConfig().get(ACCESS_TOKEN));
@@ -1341,4 +1348,11 @@ public class Config {
     return Readiness.getInstance();
   }
 
+  public void setAuthProvider(AuthProviderConfig authProvider) {
+    this.authProvider = authProvider;
+  }
+
+  public AuthProviderConfig getAuthProvider() {
+    return authProvider;
+  }
 }

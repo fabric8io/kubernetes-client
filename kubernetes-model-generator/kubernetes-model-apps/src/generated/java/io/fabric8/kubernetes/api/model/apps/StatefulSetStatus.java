@@ -33,6 +33,7 @@ import lombok.ToString;
     "apiVersion",
     "kind",
     "metadata",
+    "availableReplicas",
     "collisionCount",
     "conditions",
     "currentReplicas",
@@ -59,6 +60,8 @@ import lombok.ToString;
 public class StatefulSetStatus implements KubernetesResource
 {
 
+    @JsonProperty("availableReplicas")
+    private Integer availableReplicas;
     @JsonProperty("collisionCount")
     private Integer collisionCount;
     @JsonProperty("conditions")
@@ -98,10 +101,12 @@ public class StatefulSetStatus implements KubernetesResource
      * @param currentReplicas
      * @param conditions
      * @param updatedReplicas
+     * @param availableReplicas
      * @param observedGeneration
      */
-    public StatefulSetStatus(Integer collisionCount, List<StatefulSetCondition> conditions, Integer currentReplicas, String currentRevision, Long observedGeneration, Integer readyReplicas, Integer replicas, String updateRevision, Integer updatedReplicas) {
+    public StatefulSetStatus(Integer availableReplicas, Integer collisionCount, List<StatefulSetCondition> conditions, Integer currentReplicas, String currentRevision, Long observedGeneration, Integer readyReplicas, Integer replicas, String updateRevision, Integer updatedReplicas) {
         super();
+        this.availableReplicas = availableReplicas;
         this.collisionCount = collisionCount;
         this.conditions = conditions;
         this.currentReplicas = currentReplicas;
@@ -111,6 +116,16 @@ public class StatefulSetStatus implements KubernetesResource
         this.replicas = replicas;
         this.updateRevision = updateRevision;
         this.updatedReplicas = updatedReplicas;
+    }
+
+    @JsonProperty("availableReplicas")
+    public Integer getAvailableReplicas() {
+        return availableReplicas;
+    }
+
+    @JsonProperty("availableReplicas")
+    public void setAvailableReplicas(Integer availableReplicas) {
+        this.availableReplicas = availableReplicas;
     }
 
     @JsonProperty("collisionCount")
