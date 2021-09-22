@@ -53,23 +53,23 @@ public interface Client extends ConfigAware, Closeable {
 
   @Override
   void close();
-  
+
   /**
    * Returns the api groups
    * @return the {@link APIGroupList} metadata
    */
   APIGroupList getApiGroups();
-  
+
   /**
    * Return a single api group
    * @param name of the group
    * @return the {@link APIGroup} metadata
    */
   APIGroup getApiGroup(String name);
-  
+
   /**
    * Return the api resource metadata for the given groupVersion
-   * @param the groupVersion - group/version
+   * @param groupVersion the groupVersion - group/version
    * @return the {@link APIResourceList} for the groupVersion
    */
   APIResourceList getApiResources(String groupVersion);
