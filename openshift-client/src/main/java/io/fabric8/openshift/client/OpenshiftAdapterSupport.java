@@ -19,6 +19,10 @@ package io.fabric8.openshift.client;
 import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.utils.BackwardsCompatibilityInterceptor;
+import io.fabric8.kubernetes.client.utils.ImpersonatorInterceptor;
+import io.fabric8.openshift.client.internal.OpenShiftOAuthInterceptor;
+import okhttp3.Authenticator;
 import okhttp3.OkHttpClient;
 
 import java.net.URI;
@@ -44,7 +48,7 @@ public class OpenshiftAdapterSupport {
    * @return         True if oapi is found in the root paths.
    */
   public static boolean isOpenShift(OkHttpClient client, OpenShiftConfig config) {
-    return new BaseClient(client, config) {}.getApiGroups()
+    return new BaseClient(adaptOkHttpClient(client, config), config) {}.getApiGroups()
         .getGroups().stream().anyMatch(g -> g.getName().endsWith("openshift.io"));
   }
 
@@ -62,4 +66,22 @@ public class OpenshiftAdapterSupport {
             throw KubernetesClientException.launderThrowable(e);
         }
     }
+
+  /**
+   * Creates a new OkHttpClient from the provided one with OpenShift specific interceptors and configurations.
+   *
+   * @param okHttpClient the client to adapt.
+   * @param config the OpenShift configuration.
+   * @return an adapted OkHttpClient instance
+   */
+  public static OkHttpClient adaptOkHttpClient(OkHttpClient okHttpClient, OpenShiftConfig config) {
+    OkHttpClient.Builder builder = okHttpClient != null ?
+      okHttpClient.newBuilder().authenticator(Authenticator.NONE) :
+      new OkHttpClient.Builder().authenticator(Authenticator.NONE);
+    builder.interceptors().clear();
+    return builder.addInterceptor(new OpenShiftOAuthInterceptor(okHttpClient, config))
+      .addInterceptor(new ImpersonatorInterceptor(config))
+      .addInterceptor(new BackwardsCompatibilityInterceptor())
+      .build();
+  }
 }

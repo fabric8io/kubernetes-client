@@ -124,7 +124,7 @@ import java.util.concurrent.ExecutorService;
  * It is thread safe.
  */
 public abstract class BaseKubernetesClient<C extends Client> extends BaseClient implements GenericKubernetesClient<C> {
-  
+
   static {
     Handlers.register(Pod.class, PodOperationsImpl::new);
     Handlers.register(Job.class, JobOperationsImpl::new);
@@ -181,7 +181,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
   public NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable<HasMetadata> resourceList(KubernetesResourceList item) {
     return resourceListFor(item);
   }
-  
+
   public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl resourceListFor(Object item) {
     return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(httpClient, getConfiguration(), item);
   }
@@ -412,7 +412,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
   public <T extends CustomResource, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(Class<T> resourceType, Class<L> listClass) {
     return customResources(CustomResourceDefinitionContext.fromCustomResourceType(resourceType), resourceType, listClass);
   }
-  
+
   @Override
   public <T extends HasMetadata, L extends KubernetesResourceList<T>> HasMetadataOperation<T, L, Resource<T>> resources(
       Class<T> resourceType, Class<L> listClass) {
@@ -591,5 +591,5 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
   public NonNamespaceOperation<RuntimeClass, RuntimeClassList, Resource<RuntimeClass>> runtimeClasses() {
     return Handlers.getOperation(RuntimeClass.class, RuntimeClassList.class, httpClient, getConfiguration());
   }
-  
+
 }

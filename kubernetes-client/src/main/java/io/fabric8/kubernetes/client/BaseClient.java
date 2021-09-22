@@ -35,7 +35,7 @@ import java.util.concurrent.ExecutorService;
 
 
 public abstract class BaseClient implements Client, HttpClientAware {
-  
+
   public static final String APIS = "/apis";
 
   protected OkHttpClient httpClient;
@@ -58,9 +58,9 @@ public abstract class BaseClient implements Client, HttpClientAware {
 
   public BaseClient(final OkHttpClient httpClient, Config config) {
     try {
-      this.httpClient = config.adaptClient(httpClient);
-      this.namespace = config.getNamespace();
       this.configuration = config;
+      this.httpClient = adaptOkHttpClient(httpClient);
+      this.namespace = config.getNamespace();
       this.apiVersion = config.getApiVersion();
       if (config.getMasterUrl() == null) {
         throw new KubernetesClientException("Unknown Kubernetes master URL - " +
@@ -161,19 +161,23 @@ public abstract class BaseClient implements Client, HttpClientAware {
     }
     return false;
   }
-  
+
   @Override
   public APIGroupList getApiGroups() {
     return newBaseOperation(httpClient, configuration).restCall(APIGroupList.class, APIS);
   }
-  
+
   @Override
   public APIGroup getApiGroup(String name) {
     return newBaseOperation(httpClient, configuration).restCall(APIGroup.class, APIS, name);
   }
-  
+
   @Override
   public APIResourceList getApiResources(String groupVersion) {
     return newBaseOperation(httpClient, configuration).restCall(APIResourceList.class, APIS, groupVersion);
+  }
+
+  protected OkHttpClient adaptOkHttpClient(OkHttpClient okHttpClient) {
+    return okHttpClient;
   }
 }

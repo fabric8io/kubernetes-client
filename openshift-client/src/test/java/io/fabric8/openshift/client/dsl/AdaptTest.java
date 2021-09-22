@@ -17,6 +17,7 @@ package io.fabric8.openshift.client.dsl;
 
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
+import io.fabric8.openshift.client.OpenShiftConfigBuilder;
 import okhttp3.OkHttpClient;
 import org.junit.jupiter.api.Test;
 
@@ -24,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AdaptTest {
+
   @Test
   void testAdaptToHttpClient() {
     // Given
@@ -37,7 +39,8 @@ class AdaptTest {
   @Test
   void testAdaptDSLs() {
     // Given
-    OpenShiftClient client = new DefaultOpenShiftClient();
+    OpenShiftClient client = new DefaultOpenShiftClient(
+      new OpenShiftConfigBuilder().withDisableApiGroupCheck(true).build());
 
     assertNotNull(client.v1());
     assertNotNull(client.apps());
