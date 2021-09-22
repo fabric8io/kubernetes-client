@@ -50,6 +50,8 @@ public class OpenShiftMockServer extends KubernetesMockServer {
       .withTrustCerts(true)
       .withTlsVersions(TLS_1_2)
       .build();
-    return new DefaultOpenShiftClient(createHttpClientForMockServer(config), new OpenShiftConfig(config));
+    OpenShiftConfig openShiftConfig = new OpenShiftConfig(config);
+    openShiftConfig.setDisableApiGroupCheck(true);
+    return new DefaultOpenShiftClient(createHttpClientForMockServer(config), openShiftConfig);
   }
 }
