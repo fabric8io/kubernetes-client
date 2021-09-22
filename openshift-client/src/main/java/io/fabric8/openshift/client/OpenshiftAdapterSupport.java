@@ -26,8 +26,12 @@ import okhttp3.Authenticator;
 import okhttp3.OkHttpClient;
 
 import java.net.URI;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class OpenshiftAdapterSupport {
+
+  private static final Map<String, Boolean> API_GROUPS_ENABLED_PER_URL = new ConcurrentHashMap<>();
 
   public Boolean isAdaptable(Client client) {
     OpenShiftConfig config = OpenShiftConfig.wrap(client.getConfiguration());
@@ -48,8 +52,15 @@ public class OpenshiftAdapterSupport {
    * @return         True if oapi is found in the root paths.
    */
   public static boolean isOpenShift(OkHttpClient client, OpenShiftConfig config) {
-    return new BaseClient(adaptOkHttpClient(client, config), config) {}.getApiGroups()
-        .getGroups().stream().anyMatch(g -> g.getName().endsWith("openshift.io"));
+    if (config.isDisableApiGroupCheck()) {
+      return true;
+    }
+    String url = config.getMasterUrl();
+    return API_GROUPS_ENABLED_PER_URL.computeIfAbsent(url,
+        k -> new BaseClient(adaptOkHttpClient(client, config), config) {}.getApiGroups()
+            .getGroups()
+            .stream()
+            .anyMatch(g -> g.getName().endsWith("openshift.io")));
   }
 
     /**

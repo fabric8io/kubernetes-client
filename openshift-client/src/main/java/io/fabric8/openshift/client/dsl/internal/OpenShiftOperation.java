@@ -27,6 +27,7 @@ import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.OpenShiftConfigBuilder;
+import io.fabric8.openshift.client.OpenshiftAdapterSupport;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -62,7 +63,7 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
   }
 
   private static OperationContext getOpenShiftOperationContext(OpenShiftConfig config, OperationContext context, String oapiVersion) {
-    if (config.isOpenshiftApiGroupsEnabled()) {
+    if (config.isOpenshiftApiGroupsEnabled() || OpenshiftAdapterSupport.isOpenShift(context.getClient(), config)) {
       return getOperationContextWithApiGroupVersion(config, context, oapiVersion);
     } else {
       String apiGroupUrl = URLUtils.join(config.getMasterUrl(), "oapi", oapiVersion);

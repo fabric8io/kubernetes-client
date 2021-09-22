@@ -178,9 +178,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Class for Default Openshift Client implementing KubernetesClient interface.
@@ -188,7 +186,6 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class DefaultOpenShiftClient extends BaseKubernetesClient<NamespacedOpenShiftClient> implements NamespacedOpenShiftClient {
 
-  private static final Map<String, Boolean> API_GROUPS_ENABLED_PER_URL = new ConcurrentHashMap<>();
   public static final String AUTHORIZATION_OPENSHIFT_IO = "authorization.openshift.io";
   public static final String V1_APIVERSION = "v1";
 
@@ -211,28 +208,12 @@ public class DefaultOpenShiftClient extends BaseKubernetesClient<NamespacedOpenS
   }
 
   public DefaultOpenShiftClient(OkHttpClient httpClient, OpenShiftConfig config) {
-    super(httpClient, configWithApiGroupsEnabled(httpClient, config));
+    super(httpClient, config);
     try {
       this.openShiftUrl = new URL(config.getOpenShiftUrl());
     } catch (MalformedURLException e) {
       throw new KubernetesClientException("Could not create client", e);
     }
-  }
-
-  private static OpenShiftConfig configWithApiGroupsEnabled(OkHttpClient httpClient, OpenShiftConfig config) {
-    String url = config.getMasterUrl();
-    Boolean openshiftApiGroupsEnabled = API_GROUPS_ENABLED_PER_URL.containsKey(url);
-    if (openshiftApiGroupsEnabled) {
-      return config;
-    }
-
-    if (config.isDisableApiGroupCheck()) {
-      return config.withOpenshiftApiGroupsEnabled(false);
-    }
-
-    boolean enabled = OpenshiftAdapterSupport.isOpenShift(httpClient, config);
-    API_GROUPS_ENABLED_PER_URL.put(url, enabled);
-    return config.withOpenshiftApiGroupsEnabled(enabled);
   }
 
   public static DefaultOpenShiftClient fromConfig(String config) {
