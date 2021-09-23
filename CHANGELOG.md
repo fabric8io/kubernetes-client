@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 5.8-SNAPSHOT
+### 5.8.0 (2021-09-23)
 
 #### Bugs
 * Fix #3445: TokenRefreshInterceptor throws when running incluster config
@@ -15,8 +15,8 @@
 * Fix #3491: Add more metadata to `KubernetesClientException` when possible
 
 #### Dependency Upgrade
-  * Upgrade Sundrio to 0.50.1
-  * Upgrade Kubernetes Model to v1.22.1
+  * Fix #3326: Upgrade Kubernetes Model to v1.22.1
+
 #### New Features
 #### _**Note**_: Breaking changes in the API
 
