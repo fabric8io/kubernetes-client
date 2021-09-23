@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.client.dsl.base;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.DeleteOptions;
@@ -50,6 +49,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
@@ -654,8 +654,6 @@ public class OperationSupport {
         status = new StatusBuilder(status).withCode(statusCode).build();
       }
       return status;
-    } catch (JsonParseException e) {
-      return createStatus(statusCode, statusMessage);
     } catch (IOException e) {
       return createStatus(statusCode, statusMessage);
     }
@@ -671,28 +669,75 @@ public class OperationSupport {
   }
 
   public static KubernetesClientException requestFailure(Request request, Status status) {
+    return requestFailure(request, status, null);
+  }
+
+  public static KubernetesClientException requestFailure(Request request, Status status, String message) {
     StringBuilder sb = new StringBuilder();
+    if(message != null && !message.isEmpty()) {
+      sb.append(message).append(". ");
+    }
+    
     sb.append("Failure executing: ").append(request.method())
-      .append(" at: ").append(request.url().toString()).append(".");
+      .append(" at: ").append(request.url()).append(".");
 
     if (status.getMessage() != null && !status.getMessage().isEmpty()) {
       sb.append(" Message: ").append(status.getMessage()).append(".");
     }
 
-    if (status != null && !status.getAdditionalProperties().containsKey(CLIENT_STATUS_FLAG)) {
+    if (!status.getAdditionalProperties().containsKey(CLIENT_STATUS_FLAG)) {
       sb.append(" Received status: ").append(status).append(".");
     }
 
-    return new KubernetesClientException(sb.toString(), status.getCode(), status);
+    final RequestMetadata metadata = RequestMetadata.from(request);
+    return new KubernetesClientException(sb.toString(), status.getCode(), status, metadata.group, metadata.version, metadata.plural, metadata.namespace);
+  }
+
+  public static KubernetesClientException requestException(Request request, Throwable e, String message) {
+    StringBuilder sb = new StringBuilder();
+    if (message != null && !message.isEmpty()) {
+      sb.append(message).append(". ");
+    }
+    
+    sb.append("Error executing: ").append(request.method())
+      .append(" at: ").append(request.url())
+      .append(". Cause: ").append(e.getMessage());
+
+    final RequestMetadata metadata = RequestMetadata.from(request);
+    return new KubernetesClientException(sb.toString(), e, metadata.group, metadata.version, metadata.plural, metadata.namespace);
   }
 
   public static KubernetesClientException requestException(Request request, Exception e) {
-    StringBuilder sb = new StringBuilder();
-    sb.append("Error executing: ").append(request.method())
-      .append(" at: ").append(request.url().toString())
-      .append(". Cause: ").append(e.getMessage());
+    return requestException(request, e, null);
+  }
+  
+  private static class RequestMetadata {
+    private final String group;
+    private final String version;
+    private final String plural;
+    private final String namespace;
+    private final static RequestMetadata EMPTY = new RequestMetadata(null, null, null, null);
 
-    return new KubernetesClientException(sb.toString(), e);
+    private RequestMetadata(String group, String version, String plural, String namespace) {
+      this.group = group;
+      this.version = version;
+      this.plural = plural;
+      this.namespace = namespace;
+    }
+
+    static RequestMetadata from(Request request) {
+      final List<String> segments = request.url().pathSegments();
+      switch (segments.size()) {
+        case 4:
+          // cluster URL
+          return new RequestMetadata(segments.get(1), segments.get(2), segments.get(3), null);
+        case 6:
+          // namespaced URL
+          return new RequestMetadata(segments.get(1), segments.get(2), segments.get(5), segments.get(4));
+        default:
+          return EMPTY;
+      }
+    }
   }
 
   protected static <T> T unmarshal(InputStream is) {

@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.model.annotation.Plural;
 import io.fabric8.kubernetes.model.annotation.Singular;
 import io.fabric8.kubernetes.model.annotation.Version;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -143,6 +144,21 @@ public interface HasMetadata extends KubernetesResource {
   @JsonIgnore
   default String getSingular() {
     return getSingular(getClass());
+  }
+
+  static String getFullResourceName(Class<?> clazz) {
+    return getFullResourceName(getPlural(clazz), getGroup(clazz));
+  }
+
+  static String getFullResourceName(String plural, String group) {
+    Objects.requireNonNull(plural);
+    Objects.requireNonNull(group);
+    return plural + "." + group;
+  }
+
+  @JsonIgnore
+  default String getFullResourceName() {
+    return getFullResourceName(getClass());
   }
   
   /**

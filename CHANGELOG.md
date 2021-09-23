@@ -12,6 +12,7 @@
 
 * Fix #3468: Add method to get non-running `Informer` from context specific dsl
 * Fix #3398: Added javadocs explaining the wait parameter
+* Fix #3491: Add more metadata to `KubernetesClientException` when possible
 
 #### Dependency Upgrade
   * Upgrade Sundrio to 0.50.1

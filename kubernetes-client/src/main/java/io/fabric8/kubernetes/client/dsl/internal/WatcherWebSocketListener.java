@@ -66,15 +66,15 @@ class WatcherWebSocketListener<T extends HasMetadata> extends WebSocketListener 
         // an exception and try the watch via a persistent HTTP Get.
         // Newer Kubernetes might also return 503 Service Unavailable in case WebSockets are not supported
         if (HTTP_OK == code || HTTP_UNAVAILABLE == code) {
-          pushException(new KubernetesClientException("Received " + code + " on websocket", code, null));
+          pushException(OperationSupport.requestFailure(response.request(), null, "Received " + code + " on websocket"));
           return;
         }
         Status status = OperationSupport.createStatus(response);
         logger.warn("Exec Failure: HTTP {}, Status: {} - {}", code, status.getCode(), status.getMessage());
-        pushException(new KubernetesClientException(status));
+        pushException(OperationSupport.requestFailure(response.request(), status));
       } else {
         logger.warn("Exec Failure {} {}", t.getClass().getName(), t.getMessage());
-        pushException(new KubernetesClientException("Failed to start websocket", t));
+        pushException(OperationSupport.requestException(response.request(), t, "Failed to start websocket"));
       }
     } finally {
       WatchConnectionManager.closeBody(response);
