@@ -15,6 +15,8 @@
  */
 package io.fabric8.kubernetes.client;
 
+import io.fabric8.kubernetes.api.model.HasMetadata;
+
 public interface OperationInfo {
 
   String getKind();
@@ -26,4 +28,25 @@ public interface OperationInfo {
   String getOperationType();
 
   OperationInfo forOperationType(String type);
+
+  default String getGroup() {
+    return null;
+  }
+
+  default String getPlural() {
+    return null;
+  }
+  
+  default String getVersion() {
+    return null;
+  }
+
+  default String getFullResourceName() {
+    final String plural = getPlural();
+    final String group = getGroup();
+    if (plural != null && group != null) {
+      return HasMetadata.getFullResourceName(plural, group);
+    }
+    return null;
+  }
 }

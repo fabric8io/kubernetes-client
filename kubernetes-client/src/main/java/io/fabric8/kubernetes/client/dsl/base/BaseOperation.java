@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl.base;
 
+import io.fabric8.kubernetes.api.Pluralize;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.client.dsl.WritableOperation;
 import io.fabric8.kubernetes.client.utils.CreateOrReplaceHelper;
@@ -848,19 +849,29 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   public DeletionPropagation getPropagationPolicy() {
     return propagationPolicy;
   }
-
-  @Override
-  public String getResourceT() {
-    return resourceT;
-  }
-
+  
   public Class<L> getListType() {
     return listType;
   }
 
   @Override
   public String getKind() {
-    return type != null ? type.getSimpleName() : "Resource";
+    return type != null ? HasMetadata.getKind(type) : "Resource";
+  }
+
+  @Override
+  public String getGroup() {
+    return getAPIGroupName();
+  }
+
+  @Override
+  public String getPlural() {
+    return getResourceT();
+  }
+
+  @Override
+  public String getVersion() {
+    return getAPIGroupVersion();
   }
 
   @Override
@@ -870,7 +881,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public OperationInfo forOperationType(String type) {
-    return new DefaultOperationInfo(getKind(), type, name, namespace);
+    return new DefaultOperationInfo(getKind(), type, name, namespace, getGroup(), getPlural(), getVersion());
   }
 
   @Override

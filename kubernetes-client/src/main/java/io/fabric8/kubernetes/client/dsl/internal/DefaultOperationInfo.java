@@ -23,12 +23,18 @@ public class DefaultOperationInfo implements OperationInfo {
   private final String operationType;
   private final String name;
   private final String namespace;
+  private final String group;
+  private final String plural;
+  private final String version;
 
-  public DefaultOperationInfo(String kind, String operationType, String name, String namespace) {
+  public DefaultOperationInfo(String kind, String operationType, String name, String namespace, String group, String plural, String version) {
     this.kind = kind;
     this.name = name;
     this.namespace = namespace;
     this.operationType = operationType;
+    this.group = group;
+    this.plural = plural;
+    this.version = version;
   }
 
 
@@ -54,6 +60,21 @@ public class DefaultOperationInfo implements OperationInfo {
 
   @Override
   public OperationInfo forOperationType(String type) {
-    return new DefaultOperationInfo(kind, type, name, namespace);
+    return new DefaultOperationInfo(kind, type, name, namespace, group, plural, version);
+  }
+
+  @Override
+  public String getGroup() {
+    return group;
+  }
+
+  @Override
+  public String getPlural() {
+    return plural;
+  }
+
+  @Override
+  public String getVersion() {
+    return version;
   }
 }
