@@ -47,9 +47,8 @@ import java.util.regex.Pattern;
 public class KubernetesResourceUtil {
   private KubernetesResourceUtil() {}
 
-  public static final Pattern KUBERNETES_DNS1123_LABEL_REGEX = Pattern.compile("[a-z0-9]([-a-z0-9]*[a-z0-9])?");
-
-  public static final int KUBERNETES_DNS1123_LABEL_MAX_LENGTH = 63;
+  public static final Pattern KUBERNETES_DNS1123_LABEL_REGEX = Pattern.compile("[a-z0-9]([-a-z0-9]{0,61}[a-z0-9])?");
+  private static final Pattern INVALID_LABEL_CHARS_PATTERN = Pattern.compile("[^A-Za-z0-9]+");
 
   /**
    * Returns the resource version for the entity or null if it does not have one
@@ -228,10 +227,18 @@ public class KubernetesResourceUtil {
    */
   public static String sanitizeName(String name) {
     if(name != null) {
+      name = INVALID_LABEL_CHARS_PATTERN.matcher(name).replaceAll("_");
       name = name.replaceAll("[^A-Za-z0-9]+", "-");
-      final int length = name.length();
-      if(length > KUBERNETES_DNS1123_LABEL_MAX_LENGTH) {
-        name = name.substring(0, KUBERNETES_DNS1123_LABEL_MAX_LENGTH);
+      if (!Character.isLetterOrDigit(name.charAt(0))) {
+        name = "a" + name;
+      }
+      if (name.length() > 63) {
+        name = name.substring(0, 63);
+      }
+      name = name.toLowerCase();
+      final int lastChar = name.length() - 1;
+      if (!Character.isLetterOrDigit(name.charAt(lastChar))) {
+        name = name.substring(0, lastChar - 1) + "a";
       }
       return name;
     }
@@ -295,9 +302,7 @@ public class KubernetesResourceUtil {
    * @return returns a boolean value indicating whether it's valid or not
    */
   public static boolean isValidName(String name) {
-    return Utils.isNotNullOrEmpty(name) &&
-      name.length() < KUBERNETES_DNS1123_LABEL_MAX_LENGTH &&
-      KUBERNETES_DNS1123_LABEL_REGEX.matcher(name).matches();
+    return Utils.isNotNullOrEmpty(name) && KUBERNETES_DNS1123_LABEL_REGEX.matcher(name).matches();
   }
 
 
