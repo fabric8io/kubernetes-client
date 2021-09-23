@@ -28,7 +28,6 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
-import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
@@ -192,32 +191,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       throw KubernetesClientException.launderThrowable(forOperationType("get"), ie);
     } catch (ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("get"), e);
-    }
- }
-
-  public RootPaths getRootPaths() {
-    return restCall(RootPaths.class);
-  }
-  
-  public <Res> Res restCall(Class<Res> result, String... path) {
-    try {
-      URL requestUrl = new URL(config.getMasterUrl());
-      String url = requestUrl.toString();
-      if (path != null && path.length > 0) {
-        url = URLUtils.join(url, URLUtils.pathJoin(path));
-      }
-      Request.Builder req = new Request.Builder().get().url(url);
-      return handleResponse(req, result);
-    } catch (KubernetesClientException e) {
-      if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
-        throw e;
-      }
-      return null;
-    } catch (InterruptedException ie) {
-      Thread.currentThread().interrupt();
-      throw KubernetesClientException.launderThrowable(ie);
-    } catch (ExecutionException | IOException e) {
-      throw KubernetesClientException.launderThrowable(e);
     }
  }
 

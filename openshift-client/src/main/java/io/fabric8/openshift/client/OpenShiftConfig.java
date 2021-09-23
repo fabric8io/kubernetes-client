@@ -136,6 +136,9 @@ public class OpenShiftConfig extends Config {
     }
   }
 
+  /**
+   * @deprecated openshiftApiGroupsEnabled is no longer honored
+   */
   @Deprecated
   public OpenShiftConfig withOpenshiftApiGroupsEnabled(boolean openshiftApiGroupsEnabled) {
     return new OpenShiftConfigBuilder(this).withOpenshiftApiGroupsEnabled(openshiftApiGroupsEnabled).build();
@@ -185,11 +188,17 @@ public class OpenShiftConfig extends Config {
     this.disableApiGroupCheck = disableApiGroupCheck;
   }
 
+  /**
+   * @deprecated openshiftApiGroupsEnabled is no longer honored
+   */
   @Deprecated
   public boolean isOpenshiftApiGroupsEnabled() {
     return openshiftApiGroupsEnabled;
   }
 
+  /**
+   * @deprecated openshiftApiGroupsEnabled is no longer honored
+   */
   @Deprecated
   public void setOpenshiftApiGroupsEnabled(boolean openshiftApiGroupsEnabled) {
     this.openshiftApiGroupsEnabled = openshiftApiGroupsEnabled;

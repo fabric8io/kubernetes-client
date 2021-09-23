@@ -46,6 +46,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
@@ -766,4 +767,27 @@ public class OperationSupport {
     }
     return STRATEGIC_MERGE_JSON_PATCH;
   }
+  
+  public <R1> R1 restCall(Class<R1> result, String... path) {
+    try {
+      URL requestUrl = new URL(config.getMasterUrl());
+      String url = requestUrl.toString();
+      if (path != null && path.length > 0) {
+        url = URLUtils.join(url, URLUtils.pathJoin(path));
+      }
+      Request.Builder req = new Request.Builder().get().url(url);
+      return handleResponse(req, result);
+    } catch (KubernetesClientException e) {
+      if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
+        throw e;
+      }
+      return null;
+    } catch (InterruptedException ie) {
+      Thread.currentThread().interrupt();
+      throw KubernetesClientException.launderThrowable(ie);
+    } catch (ExecutionException | IOException e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
+ }
+  
 }
