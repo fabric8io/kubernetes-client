@@ -48,7 +48,7 @@ public class KubernetesResourceUtil {
   private KubernetesResourceUtil() {}
 
   public static final Pattern KUBERNETES_DNS1123_LABEL_REGEX = Pattern.compile("[a-z0-9]([-a-z0-9]{0,61}[a-z0-9])?");
-  private static final Pattern INVALID_LABEL_CHARS_PATTERN = Pattern.compile("[^A-Za-z0-9]+");
+  private static final Pattern INVALID_LABEL_CHARS_PATTERN = Pattern.compile("[^-A-Za-z0-9]+");
 
   /**
    * Returns the resource version for the entity or null if it does not have one
@@ -227,8 +227,7 @@ public class KubernetesResourceUtil {
    */
   public static String sanitizeName(String name) {
     if(name != null) {
-      name = INVALID_LABEL_CHARS_PATTERN.matcher(name).replaceAll("_");
-      name = name.replaceAll("[^A-Za-z0-9]+", "-");
+      name = INVALID_LABEL_CHARS_PATTERN.matcher(name).replaceAll("-");
       if (!Character.isLetterOrDigit(name.charAt(0))) {
         name = "a" + name;
       }
