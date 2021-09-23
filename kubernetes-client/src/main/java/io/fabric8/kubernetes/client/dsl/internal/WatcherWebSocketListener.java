@@ -74,7 +74,7 @@ class WatcherWebSocketListener<T extends HasMetadata> extends WebSocketListener 
         pushException(OperationSupport.requestFailure(response.request(), status));
       } else {
         logger.warn("Exec Failure {} {}", t.getClass().getName(), t.getMessage());
-        pushException(OperationSupport.requestException(response.request(), t, "Failed to start websocket"));
+        pushException(new KubernetesClientException("Failed to start websocket", t));
       }
     } finally {
       WatchConnectionManager.closeBody(response);
