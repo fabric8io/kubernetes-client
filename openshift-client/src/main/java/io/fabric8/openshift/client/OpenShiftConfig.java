@@ -73,7 +73,7 @@ public class OpenShiftConfig extends Config {
     this.openShiftUrl = openShiftUrl;
     this.buildTimeout = buildTimeout;
     this.openshiftApiGroupsEnabled = openshiftApiGroupsEnabled;
-    this.disableApiGroupCheck = openshiftApiGroupsEnabled ? false : disableApiGroupCheck;
+    this.disableApiGroupCheck = disableApiGroupCheck;
 
     if (this.openShiftUrl == null || this.openShiftUrl.isEmpty()) {
       this.openShiftUrl = URLUtils.join(getMasterUrl(), "oapi", this.oapiVersion);
@@ -136,6 +136,7 @@ public class OpenShiftConfig extends Config {
     }
   }
 
+  @Deprecated
   public OpenShiftConfig withOpenshiftApiGroupsEnabled(boolean openshiftApiGroupsEnabled) {
     return new OpenShiftConfigBuilder(this).withOpenshiftApiGroupsEnabled(openshiftApiGroupsEnabled).build();
   }
@@ -184,10 +185,12 @@ public class OpenShiftConfig extends Config {
     this.disableApiGroupCheck = disableApiGroupCheck;
   }
 
+  @Deprecated
   public boolean isOpenshiftApiGroupsEnabled() {
     return openshiftApiGroupsEnabled;
   }
 
+  @Deprecated
   public void setOpenshiftApiGroupsEnabled(boolean openshiftApiGroupsEnabled) {
     this.openshiftApiGroupsEnabled = openshiftApiGroupsEnabled;
   }

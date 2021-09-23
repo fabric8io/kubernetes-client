@@ -27,7 +27,6 @@ import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.OpenShiftConfigBuilder;
-import io.fabric8.openshift.client.OpenshiftAdapterSupport;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -55,30 +54,13 @@ public class OpenShiftOperation<T extends HasMetadata, L extends KubernetesResou
 
   static OperationContext getOperationContextWithApiGroupName(OpenShiftConfig config, OperationContext context, String oapiVersion) {
     String apiGroupVersionFromConfig = Utils.isNotNullOrEmpty(context.getApiGroupVersion()) ? context.getApiGroupVersion() : oapiVersion;
-    if (isOpenShiftApiGroup(context.getApiGroupName())) {
-      return getOpenShiftOperationContext(config, context, apiGroupVersionFromConfig);
-    } else {
-      return getOperationContextWithApiGroupVersion(config, context, apiGroupVersionFromConfig);
-    }
-  }
-
-  private static OperationContext getOpenShiftOperationContext(OpenShiftConfig config, OperationContext context, String oapiVersion) {
-    if (config.isOpenshiftApiGroupsEnabled() || OpenshiftAdapterSupport.isOpenShift(context.getClient(), config)) {
-      return getOperationContextWithApiGroupVersion(config, context, oapiVersion);
-    } else {
-      String apiGroupUrl = URLUtils.join(config.getMasterUrl(), "oapi", oapiVersion);
-      return context.withConfig(new OpenShiftConfigBuilder(config).withOpenShiftUrl(apiGroupUrl).build()).withApiGroupName(context.getApiGroupName()).withApiGroupVersion(oapiVersion);
-    }
+    return getOperationContextWithApiGroupVersion(config, context, apiGroupVersionFromConfig);
   }
 
   private static OperationContext getOperationContextWithApiGroupVersion(OpenShiftConfig config, OperationContext context, String version) {
     String apiGroupUrl = URLUtils.join(config.getMasterUrl(), "apis", context.getApiGroupName(), version);
     String apiGroupVersion = URLUtils.join(context.getApiGroupName(), version);
     return context.withConfig(new OpenShiftConfigBuilder(config).withOpenShiftUrl(apiGroupUrl).build()).withApiGroupName(context.getApiGroupName()).withApiGroupVersion(apiGroupVersion);
-  }
-
-  private static boolean isOpenShiftApiGroup(String apiGroupName) {
-    return apiGroupName.contains(OPENSHIFT_APIGROUP_SUFFIX);
   }
 
   @Override

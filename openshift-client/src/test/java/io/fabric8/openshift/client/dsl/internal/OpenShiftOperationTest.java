@@ -28,7 +28,6 @@ class OpenShiftOperationTest {
     // Given
     OperationContext context = new OperationContext()
       .withConfig(new OpenShiftConfigBuilder()
-        .withOpenshiftApiGroupsEnabled(true)
         .build())
       .withApiGroupName("apps.openshift.io")
       .withApiGroupVersion("v1");
@@ -46,7 +45,6 @@ class OpenShiftOperationTest {
     // Given
     OperationContext context = new OperationContext()
       .withConfig(new OpenShiftConfigBuilder()
-        .withOpenshiftApiGroupsEnabled(false)
         .build())
       .withApiGroupName("")
       .withApiGroupVersion("v1");
@@ -64,7 +62,6 @@ class OpenShiftOperationTest {
     // Given
     OperationContext context = new OperationContext()
       .withConfig(new OpenShiftConfigBuilder()
-        .withOpenshiftApiGroupsEnabled(false)
         .build())
       .withApiGroupName("operators.coreos.com")
       .withApiGroupVersion("v1alpha1");
@@ -82,7 +79,6 @@ class OpenShiftOperationTest {
     // Given
     OperationContext context = new OperationContext()
       .withConfig(new OpenShiftConfigBuilder()
-        .withOpenshiftApiGroupsEnabled(true)
         .build())
       .withApiGroupName("operator.openshift.io")
       .withApiGroupVersion("v1alpha1");

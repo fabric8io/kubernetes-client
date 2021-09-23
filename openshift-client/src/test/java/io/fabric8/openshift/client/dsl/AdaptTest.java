@@ -37,6 +37,15 @@ class AdaptTest {
   }
 
   @Test
+  void testAdaptDisabledCheck() {
+    // Given
+    OpenShiftClient client = new DefaultOpenShiftClient(new OpenShiftConfigBuilder().withDisableApiGroupCheck(true).build());
+
+    // When + Then
+    assertTrue(client.isAdaptable(OpenShiftClient.class));
+  }
+
+  @Test
   void testAdaptDSLs() {
     // Given
     OpenShiftClient client = new DefaultOpenShiftClient(
