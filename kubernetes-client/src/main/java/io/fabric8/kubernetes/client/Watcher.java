@@ -44,7 +44,7 @@ public interface Watcher<T> {
   void onClose(WatcherException cause);
 
   enum Action {
-    ADDED, MODIFIED, DELETED, ERROR
+    ADDED, MODIFIED, DELETED, ERROR, BOOKMARK
   }
 
 }
