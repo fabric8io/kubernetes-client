@@ -1,5 +1,17 @@
 ## CHANGELOG
 
+### 5.9-SNAPSHOT
+
+#### Bugs
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
+#### _**Note**_: Breaking changes in the API
+
 ### 5.8.0 (2021-09-23)
 
 #### Bugs
@@ -9,16 +21,12 @@
 * Fix #3484: Ensuring that the informer isWatching flag is correctly reported
 
 #### Improvements
-
 * Fix #3468: Add method to get non-running `Informer` from context specific dsl
 * Fix #3398: Added javadocs explaining the wait parameter
 * Fix #3491: Add more metadata to `KubernetesClientException` when possible
 
 #### Dependency Upgrade
   * Fix #3326: Upgrade Kubernetes Model to v1.22.1
-
-#### New Features
-#### _**Note**_: Breaking changes in the API
 
 ### 5.7.3 (2021-09-09)
 
