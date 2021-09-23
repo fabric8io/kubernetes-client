@@ -35,7 +35,7 @@ public class OpenshiftAdapterSupport {
 
   public Boolean isAdaptable(Client client) {
     OpenShiftConfig config = OpenShiftConfig.wrap(client.getConfiguration());
-    return hasCustomOpenShiftUrl(config) || isOpenShift(client.adapt(OkHttpClient.class), config);
+    return hasCustomOpenShiftUrl(config) || isOpenShiftAPIGroups(client.adapt(OkHttpClient.class), config);
   }
 
   public DefaultOpenShiftClient adapt(Client client) {
@@ -46,12 +46,12 @@ public class OpenshiftAdapterSupport {
   }
 
   /**
-   * Check if OpenShift is available.
+   * Check if OpenShift API Groups are available
    * @param client   The client.
    * @param config {@link OpenShiftConfig} OpenShift Configuration
    * @return         True if oapi is found in the root paths.
    */
-  public static boolean isOpenShift(OkHttpClient client, OpenShiftConfig config) {
+  public static boolean isOpenShiftAPIGroups(OkHttpClient client, OpenShiftConfig config) {
     if (config.isDisableApiGroupCheck()) {
       return true;
     }
