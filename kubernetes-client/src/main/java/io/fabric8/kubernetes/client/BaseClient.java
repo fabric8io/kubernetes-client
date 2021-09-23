@@ -16,8 +16,7 @@
 
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-
+import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import okhttp3.ConnectionPool;
 import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
@@ -25,7 +24,6 @@ import io.fabric8.kubernetes.api.model.APIGroup;
 import io.fabric8.kubernetes.api.model.APIGroupList;
 import io.fabric8.kubernetes.api.model.APIResourceList;
 import io.fabric8.kubernetes.api.model.RootPaths;
-import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 
@@ -139,11 +137,7 @@ public abstract class BaseClient implements Client, HttpClientAware {
 
   @Override
   public RootPaths rootPaths() {
-    return newBaseOperation(httpClient, configuration).getRootPaths();
-  }
-
-  static BaseOperation<?, ?, ?> newBaseOperation(OkHttpClient httpClient, Config configuration) {
-    return new BaseOperation(new OperationContext().withOkhttpClient(httpClient).withConfig(configuration)) {};
+    return new OperationSupport(httpClient, configuration).restCall(RootPaths.class);
   }
 
   @Override
@@ -164,17 +158,17 @@ public abstract class BaseClient implements Client, HttpClientAware {
 
   @Override
   public APIGroupList getApiGroups() {
-    return newBaseOperation(httpClient, configuration).restCall(APIGroupList.class, APIS);
+    return new OperationSupport(httpClient, configuration).restCall(APIGroupList.class, APIS);
   }
 
   @Override
   public APIGroup getApiGroup(String name) {
-    return newBaseOperation(httpClient, configuration).restCall(APIGroup.class, APIS, name);
+    return new OperationSupport(httpClient, configuration).restCall(APIGroup.class, APIS, name);
   }
 
   @Override
   public APIResourceList getApiResources(String groupVersion) {
-    return newBaseOperation(httpClient, configuration).restCall(APIResourceList.class, APIS, groupVersion);
+    return new OperationSupport(httpClient, configuration).restCall(APIResourceList.class, APIS, groupVersion);
   }
 
   protected OkHttpClient adaptOkHttpClient(OkHttpClient okHttpClient) {
