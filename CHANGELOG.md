@@ -9,6 +9,8 @@
 * Fix #3484: Ensuring that the informer isWatching flag is correctly reported
 
 #### Improvements
+
+* Fix #3468: Add method to get non-running `Informer` from context specific dsl
 * Fix #3398: Added javadocs explaining the wait parameter
 
 #### Dependency Upgrade
