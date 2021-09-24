@@ -21,17 +21,21 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.ObjectCodec;
-import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.sundr.builder.annotations.Buildable;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.HashMap;
 import java.util.Map;
-import java.io.Serializable;
 
 
 /**
@@ -265,9 +269,9 @@ public class Quantity  implements Serializable {
       JsonNode node = oc.readTree(jsonParser);
       Quantity quantity = null;
       if (node.get("amount") != null && node.get("format") != null) {
-        quantity = new Quantity(node.get("amount").toString(), node.get("format").toString());
+        quantity = new Quantity(node.get("amount").asText(), node.get("format").asText());
       } else if (node.get("amount") != null) {
-        quantity = new Quantity(node.get("amount").toString());
+        quantity = new Quantity(node.get("amount").asText());
       } else {
         quantity = new Quantity(node.asText());
       }
