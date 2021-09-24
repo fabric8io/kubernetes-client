@@ -288,7 +288,7 @@ class WatchTest {
       .andUpgradeToWebSocket().open()
       .waitFor(EVENT_WAIT_PERIOD_MS).andEmit(new WatchEvent(pod1, "BOOKMARK"))
       .waitFor(EVENT_WAIT_PERIOD_MS).andEmit(outdatedEvent()).done().once();
-    final CountDownLatch deleteLatch = new CountDownLatch(1);
+    final CountDownLatch bookmarkLatch = new CountDownLatch(1);
     final CountDownLatch closeLatch = new CountDownLatch(1);
     final Watcher<Pod> watcher = new Watcher<Pod>() {
       @Override
@@ -296,7 +296,7 @@ class WatchTest {
         if (action != BOOKMARK) {
           fail();
         }
-        deleteLatch.countDown();
+        bookmarkLatch.countDown();
       }
 
       @Override
@@ -309,7 +309,7 @@ class WatchTest {
     try (Watch watch = client.pods().withName("pod1").withResourceVersion("1").watch(watcher)) {
       // Then
       assertNotNull(watch);
-      assertTrue(deleteLatch.await(10, TimeUnit.SECONDS));
+      assertTrue(bookmarkLatch.await(10, TimeUnit.SECONDS));
       assertTrue(closeLatch.await(10, TimeUnit.SECONDS));
     }
   }
