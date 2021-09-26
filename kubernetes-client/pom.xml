@@ -193,6 +193,11 @@
       <artifactId>generex</artifactId>
       <version>${generex.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-text</artifactId>
+      <version>${commons-text.version}</version>
+    </dependency>
 
     <!-- Compile Only Dependencies -->
     <dependency>

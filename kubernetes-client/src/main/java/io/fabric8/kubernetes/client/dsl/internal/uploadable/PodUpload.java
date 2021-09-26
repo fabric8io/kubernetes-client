@@ -15,28 +15,6 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal.uploadable;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Optional;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-import java.util.function.ObjIntConsumer;
-import java.util.zip.GZIPOutputStream;
-
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
 import io.fabric8.kubernetes.client.utils.URLUtils;
@@ -47,6 +25,17 @@ import org.apache.commons.codec.binary.Base64InputStream;
 import org.apache.commons.codec.binary.Base64OutputStream;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
+import org.apache.commons.text.StringEscapeUtils;
+
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Optional;
+import java.util.concurrent.*;
+import java.util.function.ObjIntConsumer;
+import java.util.zip.GZIPOutputStream;
 
 public class PodUpload {
 
@@ -72,7 +61,7 @@ public class PodUpload {
     OperationSupport operationSupport, Path pathToUpload)
     throws IOException, InterruptedException {
 
-    final String file = context.getFile();
+    final String file = StringEscapeUtils.escapeXSI(context.getFile());
     final String directory = file.substring(0, file.lastIndexOf('/'));
     final String command = String.format(
       "mkdir -p %s && base64 -d - > %s", directory, file);
@@ -94,7 +83,7 @@ public class PodUpload {
     throws IOException, InterruptedException {
 
     final String command = String.format(
-      "mkdir -p %1$s && base64 -d - | tar -C %1$s -xzf -", context.getDir());
+      "mkdir -p %1$s && base64 -d - | tar -C %1$s -xzf -", StringEscapeUtils.escapeXSI(context.getDir()));
     final PodUploadWebSocketListener podUploadWebSocketListener = initWebSocket(
       buildCommandUrl(command, context, operationSupport), client);
     try (
