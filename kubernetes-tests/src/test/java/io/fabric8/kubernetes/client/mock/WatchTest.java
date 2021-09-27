@@ -40,6 +40,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import static io.fabric8.kubernetes.client.Watcher.Action.DELETED;
+import static io.fabric8.kubernetes.client.Watcher.Action.BOOKMARK;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -275,5 +276,41 @@ class WatchTest {
         .withMessage(
         "410: The event in requested index is outdated and cleared (the requested history has been cleared [3/1]) [2]")
       .build()).build();
+  }
+
+
+  @Test
+  @DisplayName("TryWithResources, connects and receives event then receives GONE, should receive first event and then close")
+  void testTryWithResourcesConnectsThenReceivesEventBookmark() throws InterruptedException {
+    // Given
+    server.expect()
+      .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true")
+      .andUpgradeToWebSocket().open()
+      .waitFor(EVENT_WAIT_PERIOD_MS).andEmit(new WatchEvent(pod1, "BOOKMARK"))
+      .waitFor(EVENT_WAIT_PERIOD_MS).andEmit(outdatedEvent()).done().once();
+    final CountDownLatch bookmarkLatch = new CountDownLatch(1);
+    final CountDownLatch closeLatch = new CountDownLatch(1);
+    final Watcher<Pod> watcher = new Watcher<Pod>() {
+      @Override
+      public void eventReceived(Action action, Pod resource) {
+        if (action != BOOKMARK) {
+          fail();
+        }
+        bookmarkLatch.countDown();
+      }
+
+      @Override
+      public void onClose(WatcherException cause) {
+        assertTrue(cause.isHttpGone());
+        closeLatch.countDown();
+      }
+    };
+    // When
+    try (Watch watch = client.pods().withName("pod1").withResourceVersion("1").watch(watcher)) {
+      // Then
+      assertNotNull(watch);
+      assertTrue(bookmarkLatch.await(10, TimeUnit.SECONDS));
+      assertTrue(closeLatch.await(10, TimeUnit.SECONDS));
+    }
   }
 }
