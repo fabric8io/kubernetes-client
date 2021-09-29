@@ -92,7 +92,6 @@ import io.fabric8.kubernetes.client.dsl.V1APIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
-import io.fabric8.kubernetes.client.dsl.internal.ClusterOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.DeploymentOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.ReplicaSetOperationsImpl;
@@ -125,6 +124,8 @@ import java.util.concurrent.ExecutorService;
  */
 public abstract class BaseKubernetesClient<C extends Client> extends BaseClient implements GenericKubernetesClient<C> {
 
+  public static final String KUBERNETES_VERSION_ENDPOINT = "version";
+  
   static {
     Handlers.register(Pod.class, PodOperationsImpl::new);
     Handlers.register(Job.class, JobOperationsImpl::new);
@@ -476,12 +477,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public VersionInfo getVersion() {
-    return getVersion(this);
-  }
-
-  public static VersionInfo getVersion(BaseClient client) {
-    return new ClusterOperationsImpl(client.httpClient, client.getConfiguration(),
-      ClusterOperationsImpl.KUBERNETES_VERSION_ENDPOINT).fetchVersion();
+    return getVersionInfo(KUBERNETES_VERSION_ENDPOINT);
   }
 
   /**

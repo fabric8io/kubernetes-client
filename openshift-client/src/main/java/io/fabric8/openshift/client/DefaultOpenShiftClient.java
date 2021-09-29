@@ -60,6 +60,7 @@ import io.fabric8.openshift.api.model.ClusterRole;
 import io.fabric8.openshift.api.model.ClusterRoleBinding;
 import io.fabric8.openshift.api.model.ClusterRoleBindingList;
 import io.fabric8.openshift.api.model.ClusterRoleList;
+import io.fabric8.openshift.api.model.ClusterVersion;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigList;
 import io.fabric8.openshift.api.model.EgressNetworkPolicy;
@@ -170,13 +171,13 @@ import io.fabric8.openshift.client.dsl.internal.project.ProjectOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.security.SecurityContextConstraintsOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.user.GroupOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.user.UserOperationsImpl;
-import io.fabric8.openshift.client.internal.OpenShiftClusterOperationsImpl;
 import io.fabric8.openshift.client.internal.OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl;
 import okhttp3.OkHttpClient;
 
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Objects;
 
@@ -186,6 +187,7 @@ import java.util.Objects;
  */
 public class DefaultOpenShiftClient extends BaseKubernetesClient<NamespacedOpenShiftClient> implements NamespacedOpenShiftClient {
 
+  public static final String OPENSHIFT_VERSION_ENDPOINT = "version/openshift";
   public static final String AUTHORIZATION_OPENSHIFT_IO = "authorization.openshift.io";
   public static final String V1_APIVERSION = "v1";
 
@@ -517,9 +519,38 @@ public class DefaultOpenShiftClient extends BaseKubernetesClient<NamespacedOpenS
 
   @Override
   public VersionInfo getVersion() {
-    final VersionInfo versionInfo = new OpenShiftClusterOperationsImpl(httpClient,
-      getConfiguration(), OpenShiftClusterOperationsImpl.OPENSHIFT_VERSION_ENDPOINT).fetchVersion();
-    return versionInfo == null ? super.getVersion() : versionInfo;
+    try {
+      VersionInfo result = getVersionInfo(OPENSHIFT_VERSION_ENDPOINT);
+      if (result != null) {
+        return result;
+      }
+    } catch (KubernetesClientException exception) {
+      // try the openshift4 endpoint
+    }
+    try {
+      // Handle Openshift 4 version case
+      return resources(ClusterVersion.class).list().getItems().stream().findFirst().map(clusterVersion -> {
+        String[] versionParts = clusterVersion.getStatus().getDesired().getVersion().split("\\.");
+        VersionInfo.Builder versionInfoBuilder = new VersionInfo.Builder();
+        if (versionParts.length > 2) {
+          versionInfoBuilder.withMajor(versionParts[0]);
+          versionInfoBuilder.withMinor(versionParts[1] + "." + versionParts[2]);
+        }
+        try {
+          versionInfoBuilder.withBuildDate(clusterVersion.getMetadata().getCreationTimestamp());
+        } catch (ParseException e) {
+          throw KubernetesClientException.launderThrowable(e);
+        }
+        return versionInfoBuilder.build();
+      }).orElse(super.getVersion());
+    } catch (Exception e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
+  }
+
+  @Override
+  public VersionInfo getKubernetesVersion() {
+    return super.getVersion();
   }
 
   @Override

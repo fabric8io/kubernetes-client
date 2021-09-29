@@ -171,6 +171,10 @@ public abstract class BaseClient implements Client, HttpClientAware {
     return new OperationSupport(httpClient, configuration).restCall(APIResourceList.class, APIS, groupVersion);
   }
 
+  protected VersionInfo getVersionInfo(String path) {
+    return new OperationSupport(this.httpClient, this.getConfiguration()).restCall(VersionInfo.class, path);
+  }
+
   protected OkHttpClient adaptOkHttpClient(OkHttpClient okHttpClient) {
     return okHttpClient;
   }

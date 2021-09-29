@@ -806,6 +806,11 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
+  public VersionInfo getKubernetesVersion() {
+    return delegate.getKubernetesVersion();
+  }
+
+  @Override
   public V1APIGroupDSL v1() {
     return delegate.v1();
   }
