@@ -91,6 +91,13 @@ public interface OpenShiftClient extends KubernetesClient {
   VersionInfo getVersion();
 
   /**
+   * Get Kubernetes server version
+   *
+   * @return ClusterVersion object containing versioning information
+   */
+  VersionInfo getKubernetesVersion();
+
+  /**
    * {@inheritDoc}
    */
   @Override
