@@ -811,6 +811,16 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   }
 
   @Override
+  public VersionInfo getOpenShiftV3Version() {
+    return delegate.getOpenShiftV3Version();
+  }
+
+  @Override
+  public String getOpenShiftV4Version() {
+    return delegate.getOpenShiftV4Version();
+  }
+
+  @Override
   public V1APIGroupDSL v1() {
     return delegate.v1();
   }

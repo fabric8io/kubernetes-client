@@ -554,6 +554,17 @@ public class DefaultOpenShiftClient extends BaseKubernetesClient<NamespacedOpenS
   }
 
   @Override
+  public VersionInfo getOpenShiftV3Version() {
+    return getVersionInfo(OPENSHIFT_VERSION_ENDPOINT);
+  }
+
+  @Override
+  public String getOpenShiftV4Version() {
+    return resources(ClusterVersion.class).list().getItems().stream().findFirst()
+        .map(cv -> cv.getStatus().getDesired().getVersion()).orElse(null);
+  }
+
+  @Override
   public MachineConfigurationAPIGroupDSL machineConfigurations() {
     return adapt(OpenShiftMachineConfigurationAPIGroupClient.class);
   }

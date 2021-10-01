@@ -46,7 +46,7 @@ class OpenShiftVersionInfoTest {
     assertEquals("3", client.getVersion().getMajor());
     assertEquals("11+", client.getVersion().getMinor());
     assertEquals(119, client.getVersion().getBuildDate().getYear());
-    assertEquals(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX").parse("2019-10-31T21:06:55Z").getTime(), client.getVersion().getBuildDate().getTime());
+    assertEquals(new SimpleDateFormat(VersionInfo.VersionKeys.BUILD_DATE_FORMAT).parse("2019-10-31T21:06:55Z").getTime(), client.getVersion().getBuildDate().getTime());
   }
 
   @Test
