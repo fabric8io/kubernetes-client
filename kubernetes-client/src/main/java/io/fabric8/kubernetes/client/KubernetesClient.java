@@ -242,8 +242,17 @@ public interface KubernetesClient extends Client {
    * Get Kubernetes API server version
    *
    * @return VersionInfo object containing versioning information
+   * @deprecated use {@link #getKubernetesVersion()} instead
    */
+  @Deprecated
   VersionInfo getVersion();
+
+  /**
+   * Get Kubernetes API server version
+   *
+   * @return VersionInfo object containing versioning information
+   */
+  VersionInfo getKubernetesVersion();
 
   /**
    * Typeless API for interacting with CustomResources. You can do basic operations with CustomResources

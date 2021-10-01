@@ -17,6 +17,7 @@
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.VersionInfo;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import org.junit.jupiter.api.Test;
@@ -48,7 +49,7 @@ public class VersionInfoTest {
     assertEquals("3", client.getVersion().getMajor());
     assertEquals("6", client.getVersion().getMinor());
     assertEquals(118, client.getVersion().getBuildDate().getYear());
-    assertEquals(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX").parse("2018-03-01T14:27:17Z").getTime(),
+    assertEquals(new SimpleDateFormat(VersionInfo.VersionKeys.BUILD_DATE_FORMAT).parse("2018-03-01T14:27:17Z").getTime(),
       client.getVersion().getBuildDate().getTime());
   }
 

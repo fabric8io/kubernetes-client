@@ -479,6 +479,11 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
   public VersionInfo getVersion() {
     return getVersionInfo(KUBERNETES_VERSION_ENDPOINT);
   }
+  
+  @Override
+  public VersionInfo getKubernetesVersion() {
+    return getVersionInfo(KUBERNETES_VERSION_ENDPOINT);
+  }
 
   /**
    * {@inheritDoc}

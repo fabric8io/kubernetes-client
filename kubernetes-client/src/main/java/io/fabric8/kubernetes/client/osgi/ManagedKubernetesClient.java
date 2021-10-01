@@ -233,6 +233,7 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
     delegate.close();
   }
 
+  @Override
   public NonNamespaceOperation<ComponentStatus, ComponentStatusList, Resource<ComponentStatus>> componentstatuses() {
 	return delegate.componentstatuses();
   }
@@ -273,26 +274,32 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
     return delegate.resource(s);
   }
 
+  @Override
   public MixedOperation<Endpoints, EndpointsList, Resource<Endpoints>> endpoints() {
     return delegate.endpoints();
   }
 
+  @Override
   public MixedOperation<Binding, KubernetesResourceList<Binding>, Resource<Binding>> bindings() {
     return delegate.bindings();
   }
 
+  @Override
   public MixedOperation<Pod, PodList, PodResource<Pod>> pods() {
     return delegate.pods();
   }
 
+  @Override
   public MixedOperation<io.fabric8.kubernetes.api.model.Service, ServiceList, ServiceResource<io.fabric8.kubernetes.api.model.Service>> services() {
     return delegate.services();
   }
 
+  @Override
   public NonNamespaceOperation<Namespace, NamespaceList, Resource<Namespace>> namespaces() {
     return delegate.namespaces();
   }
 
+  @Override
   public MixedOperation<ServiceAccount, ServiceAccountList, Resource<ServiceAccount>> serviceAccounts() {
     return delegate.serviceAccounts();
   }
@@ -302,14 +309,17 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
     return delegate.apiServices();
   }
 
+  @Override
   public NonNamespaceOperation<PersistentVolume, PersistentVolumeList, Resource<PersistentVolume>> persistentVolumes() {
     return delegate.persistentVolumes();
   }
 
+  @Override
   public MixedOperation<ResourceQuota, ResourceQuotaList, Resource<ResourceQuota>> resourceQuotas() {
     return delegate.resourceQuotas();
   }
 
+  @Override
   public KubernetesListMixedOperation lists() {
     return delegate.lists();
   }
@@ -324,18 +334,22 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
     return delegate.limitRanges();
   }
 
+  @Override
   public NonNamespaceOperation<Node, NodeList, Resource<Node>> nodes() {
     return delegate.nodes();
   }
 
+  @Override
   public MixedOperation<PersistentVolumeClaim, PersistentVolumeClaimList, Resource<PersistentVolumeClaim>> persistentVolumeClaims() {
     return delegate.persistentVolumeClaims();
   }
 
+  @Override
   public MixedOperation<ReplicationController, ReplicationControllerList, RollableScalableResource<ReplicationController>> replicationControllers() {
     return delegate.replicationControllers();
   }
 
+  @Override
   public MixedOperation<Secret, SecretList, Resource<Secret>> secrets() {
     return delegate.secrets();
   }
@@ -357,6 +371,11 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
 
   @Override
   public VersionInfo getVersion() {
+    return delegate.getVersion();
+  }
+  
+  @Override
+  public VersionInfo getKubernetesVersion() {
     return delegate.getVersion();
   }
 
