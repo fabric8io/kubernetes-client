@@ -31,7 +31,7 @@ public class BuildConfigOperationContext {
   private String asFile;
 
   private long timeout;
-  private TimeUnit timeoutUnit;
+  private TimeUnit timeoutUnit = TimeUnit.MILLISECONDS;
 
   public BuildConfigOperationContext() {
   }
