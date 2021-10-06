@@ -15,15 +15,18 @@
  */
 package io.fabric8.kubernetes.client.dsl.base;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.OkHttpClient;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 
 public class OperationContext {
 
@@ -58,16 +61,21 @@ public class OperationContext {
   protected Map<String, String[]> labelsNotIn;
   protected Map<String, String> fields;
   protected Map<String, String[]> fieldsNot;
+  protected String selectorAsString;
 
   public OperationContext() {
   }
 
+  public OperationContext(OperationContext other) {
+    this(other.client, other.config, other.plural, other.namespace, other.name, other.apiGroupName, other.apiGroupVersion, other.cascading, other.item, other.labels, other.labelsNot, other.labelsIn, other.labelsNotIn, other.fields, other.fieldsNot, other.resourceVersion, other.reloadingFromServer, other.gracePeriodSeconds, other.propagationPolicy, other.namespaceFromGlobalConfig, other.dryRun, other.selectorAsString);
+  }
+
   public OperationContext(OkHttpClient client, Config config, String plural, String namespace, String name,
-      String apiGroupName, String apiGroupVersion, boolean cascading, Object item, Map<String, String> labels,
-      Map<String, String[]> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn,
-      Map<String, String> fields, Map<String, String[]> fieldsNot, String resourceVersion, boolean reloadingFromServer,
-      long gracePeriodSeconds, DeletionPropagation propagationPolicy, boolean namespaceFromGlobalConfig,
-      boolean dryRun) {
+                          String apiGroupName, String apiGroupVersion, boolean cascading, Object item, Map<String, String> labels,
+                          Map<String, String[]> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn,
+                          Map<String, String> fields, Map<String, String[]> fieldsNot, String resourceVersion, boolean reloadingFromServer,
+                          long gracePeriodSeconds, DeletionPropagation propagationPolicy, boolean namespaceFromGlobalConfig,
+                          boolean dryRun, String selectorAsString) {
     this.client = client;
     this.config = config;
     this.plural = plural;
@@ -89,6 +97,7 @@ public class OperationContext {
     this.propagationPolicy = propagationPolicy;
     this.namespaceFromGlobalConfig = namespaceFromGlobalConfig;
     this.dryRun = dryRun;
+    this.selectorAsString = selectorAsString;
   }
 
   public OkHttpClient getClient() {
@@ -174,216 +183,265 @@ public class OperationContext {
   public boolean getDryRun() {
     return dryRun;
   }
-  
+
+  public String getLabelQueryParam() {
+    if(Utils.isNotNullOrEmpty(selectorAsString)) {
+      return selectorAsString;
+    }
+    
+    StringBuilder sb = new StringBuilder(101);
+
+    appendEntriesAsParam(sb, getLabels(), asKeyValuePair);
+    appendEntriesAsParam(sb, getLabelsNot(), asNotEqualToValues);
+    appendEntriesAsParam(sb, getLabelsIn(), asInSet);
+    appendEntriesAsParam(sb, getLabelsNotIn(), asNotInSet);
+
+    if (sb.length() > 0) {
+      return sb.toString();
+    }
+    return null;
+  }
+
+  private static BiFunction<String, String[], String> getEntryProcessorFor(String operator) {
+    return (key, values) -> key + " " + operator + " (" + String.join(",", values) + ")";
+  }
+
+  private final static BiFunction<String, String, String> asKeyValuePair =
+    (key, value) -> value != null ? key + "=" + value : key;
+  private final static BiFunction<String, String[], String> asNotEqualToValues =
+    (key, values) -> Utils.isNotNull(values) ? Arrays.stream(values).map(v -> key + "!=" + v).collect(Collectors.joining(",")) : "!" + key;
+  private final static BiFunction<String, String[], String> asInSet = getEntryProcessorFor("in");
+  private final static BiFunction<String, String[], String> asNotInSet = getEntryProcessorFor("notin");
+
+  private <T> void appendEntriesAsParam(StringBuilder sb, Map<String, T> entries, BiFunction<String, T, String> entryProcessor) {
+    if (entries != null && !entries.isEmpty()) {
+      if (sb.length() > 0) {
+        sb.append(",");
+      }
+
+      sb.append(entries.entrySet().stream()
+        .map(entry -> entryProcessor.apply(entry.getKey(), entry.getValue()))
+        .collect(Collectors.joining(","))
+      );
+    }
+  }
+
+  public String getFieldQueryParam() {
+    StringBuilder sb = new StringBuilder(101);
+    if (Utils.isNotNullOrEmpty(getName())) {
+      sb.append("metadata.name").append("=").append(getName());
+    }
+
+    appendEntriesAsParam(sb, getFields(), asKeyValuePair);
+    appendEntriesAsParam(sb, getFieldsNot(), asNotEqualToValues);
+
+    if (sb.length() > 0) {
+      return sb.toString();
+    }
+    return null;
+  }
+
+
   public OperationContext copy() {
-    return new OperationContext(client, this.config, this.plural, this.namespace, this.name, this.apiGroupName,
-        this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
-        this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
-        this.propagationPolicy, this.namespaceFromGlobalConfig, this.dryRun);
+    return new OperationContext(this);
   }
 
   public OperationContext withOkhttpClient(OkHttpClient client) {
     if (this.client == client) {
       return this;
     }
-    return new OperationContext(client, this.config, this.plural, this.namespace, this.name, this.apiGroupName,
-        this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
-        this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
-        this.propagationPolicy, this.namespaceFromGlobalConfig, this.dryRun);
+    final OperationContext context = new OperationContext(this);
+    context.client = client;
+    return context;
   }
 
   public OperationContext withConfig(Config config) {
     if (this.config == config) {
       return this;
     }
-    return new OperationContext(this.client, config, this.plural, this.namespace, this.name, this.apiGroupName,
-      this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
-      this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
-      this.propagationPolicy, this.namespaceFromGlobalConfig, this.dryRun);
+    final OperationContext context = new OperationContext(this);
+    context.config = config;
+    return context;
   }
 
   public OperationContext withPlural(String plural) {
     if (Objects.equals(this.plural, plural)) {
       return this;
     }
-    return new OperationContext(this.client, this.config, plural, this.namespace, this.name, this.apiGroupName,
-        this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
-        this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
-        this.propagationPolicy, this.namespaceFromGlobalConfig, this.dryRun);
+    final OperationContext context = new OperationContext(this);
+    context.plural = plural;
+    return context;
   }
 
   public OperationContext withNamespace(String namespace) {
     if (Objects.equals(this.namespace, namespace)) {
       return this;
     }
-    return new OperationContext(this.client, this.config, this.plural, namespace, this.name, this.apiGroupName,
-        this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
-        this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
-        this.propagationPolicy, this.namespaceFromGlobalConfig, this.dryRun);
+    final OperationContext context = new OperationContext(this);
+    context.namespace = namespace;
+    return context;
   }
 
   public OperationContext withName(String name) {
     if (Objects.equals(this.name, name)) {
       return this;
     }
-    return new OperationContext(this.client, this.config, this.plural, this.namespace, name, this.apiGroupName,
-        this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
-        this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
-        this.propagationPolicy, this.namespaceFromGlobalConfig, this.dryRun);
+    final OperationContext context = new OperationContext(this);
+    context.name = name;
+    return context;
   }
 
   public OperationContext withApiGroupName(String apiGroupName) {
     if (Objects.equals(this.apiGroupName, apiGroupName)) {
       return this;
     }
-    return new OperationContext(this.client, this.config, this.plural, this.namespace, this.name, apiGroupName,
-        this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
-        this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
-        this.propagationPolicy, this.namespaceFromGlobalConfig, this.dryRun);
+    final OperationContext context = new OperationContext(this);
+    context.apiGroupName = apiGroupName;
+    return context;
   }
 
   public OperationContext withApiGroupVersion(String apiGroupVersion) {
     if (Objects.equals(this.apiGroupVersion, apiGroupVersion)) {
       return this;
     }
-    return new OperationContext(this.client, this.config, this.plural, this.namespace, this.name, this.apiGroupName,
-        apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
-        this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
-        this.propagationPolicy, this.namespaceFromGlobalConfig, this.dryRun);
+    final OperationContext context = new OperationContext(this);
+    context.apiGroupVersion = apiGroupVersion;
+    return context;
   }
 
   public OperationContext withItem(Object item) {
     if (this.item == item) {
       return this;
     }
-    return new OperationContext(this.client, this.config, this.plural, this.namespace, this.name, this.apiGroupName,
-        this.apiGroupVersion, this.cascading, item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
-        this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
-        this.propagationPolicy, this.namespaceFromGlobalConfig, this.dryRun);
+    final OperationContext context = new OperationContext(this);
+    context.item = item;
+    return context;
   }
 
   public OperationContext withCascading(boolean cascading) {
     if (this.cascading == cascading) {
       return this;
     }
-    return new OperationContext(this.client, this.config, this.plural, this.namespace, this.name, this.apiGroupName,
-        this.apiGroupVersion, cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
-        this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
-        this.propagationPolicy, this.namespaceFromGlobalConfig, this.dryRun);
+    final OperationContext context = new OperationContext(this);
+    context.cascading = cascading;
+    return context;
   }
 
   public OperationContext withLabels(Map<String, String> labels) {
-    if (this.labels == labels) {
+    if (Objects.equals(this.labels, labels)) {
       return this;
     }
-    return new OperationContext(this.client, this.config, this.plural, this.namespace, this.name, this.apiGroupName,
-        this.apiGroupVersion, this.cascading, this.item, labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
-        this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
-        this.propagationPolicy, this.namespaceFromGlobalConfig, this.dryRun);
+    final OperationContext context = new OperationContext(this);
+    context.labels = labels;
+    return context;
   }
 
   public OperationContext withLabelsIn(Map<String, String[]> labelsIn) {
-    if (this.labelsIn == labelsIn) {
+    if (Objects.equals(this.labelsIn, labelsIn)) {
       return this;
     }
-    return new OperationContext(this.client, this.config, this.plural, this.namespace, this.name, this.apiGroupName,
-        this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, labelsIn, this.labelsNotIn,
-        this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
-        this.propagationPolicy, this.namespaceFromGlobalConfig, this.dryRun);
+    final OperationContext context = new OperationContext(this);
+    context.labelsIn = labelsIn;
+    return context;
   }
 
   public OperationContext withLabelsNot(Map<String, String[]> labelsNot) {
-    if (this.labelsNot == labelsNot) {
+    if (Objects.equals(this.labelsNot, labelsNot)) {
       return this;
     }
-    return new OperationContext(this.client, this.config, this.plural, this.namespace, this.name, this.apiGroupName,
-        this.apiGroupVersion, this.cascading, this.item, this.labels, labelsNot, this.labelsIn, this.labelsNotIn,
-        this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
-        this.propagationPolicy, this.namespaceFromGlobalConfig, this.dryRun);
+    final OperationContext context = new OperationContext(this);
+    context.labelsNot = labelsNot;
+    return context;
   }
 
   public OperationContext withLabelsNotIn(Map<String, String[]> labelsNotIn) {
-    if (this.labelsNotIn == labelsNotIn) {
+    if (Objects.equals(this.labelsNotIn, labelsNotIn)) {
       return this;
     }
-    return new OperationContext(this.client, this.config, this.plural, this.namespace, this.name, this.apiGroupName,
-        this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, labelsNotIn,
-        this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
-        this.propagationPolicy, this.namespaceFromGlobalConfig, this.dryRun);
+    final OperationContext context = new OperationContext(this);
+    context.labelsNotIn = labelsNotIn;
+    return context;
   }
 
   public OperationContext withFields(Map<String, String> fields) {
-    if (this.fields == fields) {
+    if (Objects.equals(this.fields, fields)) {
       return this;
     }
-    return new OperationContext(this.client, this.config, this.plural, this.namespace, this.name, this.apiGroupName,
-        this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
-        fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
-        this.propagationPolicy, this.namespaceFromGlobalConfig, this.dryRun);
+    final OperationContext context = new OperationContext(this);
+    context.fields = fields;
+    return context;
   }
 
   public OperationContext withFieldsNot(Map<String, String[]> fieldsNot) {
-    if (this.fieldsNot == fieldsNot) {
+    if (Objects.equals(this.fieldsNot, fieldsNot)) {
       return this;
     }
-    return new OperationContext(this.client, this.config, this.plural, this.namespace, this.name, this.apiGroupName,
-        this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
-        this.fields, fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
-        this.propagationPolicy, this.namespaceFromGlobalConfig, this.dryRun);
+    final OperationContext context = new OperationContext(this);
+    context.fieldsNot = fieldsNot;
+    return context;
   }
 
   public OperationContext withResourceVersion(String resourceVersion) {
     if (Objects.equals(this.resourceVersion, resourceVersion)) {
       return this;
     }
-    return new OperationContext(this.client, this.config, this.plural, this.namespace, this.name, this.apiGroupName,
-        this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
-        this.fields, this.fieldsNot, resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
-        this.propagationPolicy, this.namespaceFromGlobalConfig, this.dryRun);
+    final OperationContext context = new OperationContext(this);
+    context.resourceVersion = resourceVersion;
+    return context;
   }
 
   public OperationContext withReloadingFromServer(boolean reloadingFromServer) {
     if (this.reloadingFromServer == reloadingFromServer) {
       return this;
     }
-    return new OperationContext(this.client, this.config, this.plural, this.namespace, this.name, this.apiGroupName,
-        this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
-        this.fields, this.fieldsNot, this.resourceVersion, reloadingFromServer, this.gracePeriodSeconds,
-        this.propagationPolicy, this.namespaceFromGlobalConfig, this.dryRun);
+    final OperationContext context = new OperationContext(this);
+    context.reloadingFromServer = reloadingFromServer;
+    return context;
   }
 
   public OperationContext withGracePeriodSeconds(long gracePeriodSeconds) {
     if (this.gracePeriodSeconds == gracePeriodSeconds) {
       return this;
     }
-    return new OperationContext(this.client, this.config, this.plural, this.namespace, this.name, this.apiGroupName,
-        this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
-        this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, gracePeriodSeconds,
-        this.propagationPolicy, this.namespaceFromGlobalConfig, this.dryRun);
+    final OperationContext context = new OperationContext(this);
+    context.gracePeriodSeconds = gracePeriodSeconds;
+    return context;
   }
 
   public OperationContext withPropagationPolicy(DeletionPropagation propagationPolicy) {
     if (this.propagationPolicy == propagationPolicy) {
       return this;
     }
-    return new OperationContext(this.client, this.config, this.plural, this.namespace, this.name, this.apiGroupName,
-        this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
-        this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
-        propagationPolicy, this.namespaceFromGlobalConfig, this.dryRun);
+    final OperationContext context = new OperationContext(this);
+    context.propagationPolicy = propagationPolicy;
+    return context;
   }
 
   public OperationContext withIsNamespaceConfiguredFromGlobalConfig(boolean namespaceFromGlobalConfig) {
     if (this.namespaceFromGlobalConfig == namespaceFromGlobalConfig) {
       return this;
     }
-    return new OperationContext(this.client, this.config, this.plural, this.namespace, this.name, this.apiGroupName,
-        this.apiGroupVersion, this.cascading, this.item, this.labels, this.labelsNot, this.labelsIn, this.labelsNotIn,
-        this.fields, this.fieldsNot, this.resourceVersion, this.reloadingFromServer, this.gracePeriodSeconds,
-        this.propagationPolicy, namespaceFromGlobalConfig, this.dryRun);
+    final OperationContext context = new OperationContext(this);
+    context.namespaceFromGlobalConfig = namespaceFromGlobalConfig;
+    return context;
   }
 
   public OperationContext withDryRun(boolean dryRun) {
-    return new OperationContext(client, config, plural, namespace, name, apiGroupName, apiGroupVersion, cascading,item, labels, labelsNot, labelsIn, labelsNotIn, fields, fieldsNot, resourceVersion, reloadingFromServer, gracePeriodSeconds, propagationPolicy, namespaceFromGlobalConfig, dryRun);
+    if(this.dryRun == dryRun) {
+      return this;
+    }
+    final OperationContext context = new OperationContext(this);
+    context.dryRun = dryRun;
+    return context;
+  }
+
+  public OperationContext withLabelSelector(String selectorAsString) {
+    if (Objects.equals(this.selectorAsString, selectorAsString)) {
+      return this;
+    }
+    final OperationContext context = new OperationContext(this);
+    context.selectorAsString = selectorAsString;
+    return context;
   }
 
   /**
@@ -412,7 +470,9 @@ public class OperationContext {
       context.isReloadingFromServer() ? context.isReloadingFromServer() : isReloadingFromServer(),
       context.getGracePeriodSeconds() > 0 ? context.getGracePeriodSeconds() : getGracePeriodSeconds(),
       Utils.getNonNullOrElse(context.getPropagationPolicy(), getPropagationPolicy()),
-      context.isNamespaceFromGlobalConfig() ? context.isNamespaceFromGlobalConfig() : isNamespaceFromGlobalConfig(), context.getDryRun() ? context.getDryRun() : getDryRun());
+      context.isNamespaceFromGlobalConfig() ? context.isNamespaceFromGlobalConfig() : isNamespaceFromGlobalConfig(), context.getDryRun() ? context.getDryRun() : getDryRun(),
+      Utils.getNonNullOrElse(context.selectorAsString, selectorAsString)
+    );
   }
 
 }

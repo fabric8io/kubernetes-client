@@ -27,6 +27,8 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
+import io.fabric8.kubernetes.api.model.ObjectReference;
+import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
@@ -47,6 +49,7 @@ import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ReplaceDeletable;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.WritableOperation;
 import io.fabric8.kubernetes.client.dsl.internal.DefaultOperationInfo;
 import io.fabric8.kubernetes.client.dsl.internal.WatchConnectionManager;
 import io.fabric8.kubernetes.client.dsl.internal.WatchHTTPManager;
@@ -55,10 +58,13 @@ import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 import io.fabric8.kubernetes.client.informers.impl.DefaultSharedIndexInformer;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
+import io.fabric8.kubernetes.client.utils.CreateOrReplaceHelper;
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.client.utils.WatcherToggle;
+import okhttp3.HttpUrl;
+import okhttp3.Request;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -80,9 +86,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
-
-import okhttp3.HttpUrl;
-import okhttp3.Request;
+import java.util.stream.Collectors;
 
 public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>>
   extends CreateOnlyResourceOperation<T, T>
@@ -142,7 +146,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     } catch (ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("list"), e);
     }
- }
+  }
 
   protected URL fetchListUrl(URL url, ListOptions listOptions) throws MalformedURLException {
     return new URL(HttpClientUtils.appendListOptionParams(HttpUrl.get(url.toString()).newBuilder(), listOptions).toString());
@@ -191,7 +195,25 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     } catch (ExecutionException | IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("get"), e);
     }
- }
+  }
+
+  public RootPaths getRootPaths() {
+    try {
+      URL requestUrl = new URL(config.getMasterUrl());
+      Request.Builder req = new Request.Builder().get().url(requestUrl);
+      return handleResponse(req, RootPaths.class);
+    } catch (KubernetesClientException e) {
+      if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
+        throw e;
+      }
+      return null;
+    } catch (InterruptedException ie) {
+      Thread.currentThread().interrupt();
+      throw KubernetesClientException.launderThrowable(ie);
+    } catch (ExecutionException | IOException e) {
+      throw KubernetesClientException.launderThrowable(e);
+    }
+  }
 
   @Override
   public T edit(UnaryOperator<T> function) {
@@ -211,14 +233,15 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   @Override
   public <V> T edit(final Class<V> visitorType, final Visitor<V> visitor) {
     return edit(new TypedVisitor<V>() {
-        @Override
-        public Class<V> getType() {
-          return visitorType;
-        }
-        @Override
-        public void visit(V item) {
-          visitor.visit(item);
-        }
+      @Override
+      public Class<V> getType() {
+        return visitorType;
+      }
+
+      @Override
+      public void visit(V item) {
+        visitor.visit(item);
+      }
     });
   }
 
@@ -356,6 +379,11 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
+  public FilterWatchListDeletable<T, L> withLabelSelector(String selectorAsString) {
+    return withNewFilter().withLabelSelector(selectorAsString).endFilter();
+  }
+
+  @Override
   public FilterWatchListDeletable<T, L> withFields(Map<String, String> fields) {
     return withNewFilter().withFields(fields).endFilter();
   }
@@ -388,105 +416,12 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     return withNewFilter().withoutField(key, value).endFilter();
   }
 
-  public String getLabelQueryParam() {
-    StringBuilder sb = new StringBuilder();
-
-    Map<String, String> labels = context.getLabels();
-    if (labels != null && !labels.isEmpty()) {
-      for (Iterator<Map.Entry<String, String>> iter = labels.entrySet().iterator(); iter.hasNext(); ) {
-        if (sb.length() > 0) {
-          sb.append(",");
-        }
-        Map.Entry<String, String> entry = iter.next();
-        if (entry.getValue() != null) {
-          sb.append(entry.getKey()).append("=").append(entry.getValue());
-        } else {
-          sb.append(entry.getKey());
-        }
-      }
-    }
-
-    Map<String, String[]> labelsNot = context.getLabelsNot();
-    if (labelsNot != null && !labelsNot.isEmpty()) {
-      for (Iterator<Map.Entry<String, String[]>> iter = labelsNot.entrySet().iterator(); iter.hasNext(); ) {
-        if (sb.length() > 0) {
-          sb.append(",");
-        }
-        Map.Entry<String, String[]> entry = iter.next();
-        if (Utils.isNotNull(entry.getValue())) {
-          for (int i = 0; i < entry.getValue().length; i++) {
-            if (i > 0) {
-              sb.append(",");
-            }
-            sb.append(entry.getKey()).append("!=").append(entry.getValue()[i]);
-          }
-        } else {
-          sb.append('!').append(entry.getKey());
-        }
-      }
-    }
-
-    Map<String, String[]> labelsIn = context.getLabelsIn();
-    if (labelsIn != null && !labelsIn.isEmpty()) {
-      for (Iterator<Map.Entry<String, String[]>> iter = labelsIn.entrySet().iterator(); iter.hasNext(); ) {
-        if (sb.length() > 0) {
-          sb.append(",");
-        }
-        Map.Entry<String, String[]> entry = iter.next();
-        sb.append(entry.getKey()).append(" in ").append("(").append(Utils.join(entry.getValue())).append(")");
-      }
-    }
-
-    Map<String, String[]> labelsNotIn = context.getLabelsNotIn();
-    if (labelsNotIn != null && !labelsNotIn.isEmpty()) {
-      for (Iterator<Map.Entry<String, String[]>> iter = labelsNotIn.entrySet().iterator(); iter.hasNext(); ) {
-        if (sb.length() > 0) {
-          sb.append(",");
-        }
-        Map.Entry<String, String[]> entry = iter.next();
-        sb.append(entry.getKey()).append(" notin ").append("(").append(Utils.join(entry.getValue())).append(")");
-      }
-    }
-    if (sb.length() > 0) {
-      return sb.toString();
-    }
-    return null;
+  public String getFieldQueryParam() {
+    return context.getFieldQueryParam();
   }
 
-  public String getFieldQueryParam() {
-    StringBuilder sb = new StringBuilder();
-    if (Utils.isNotNullOrEmpty(context.getName())) {
-      sb.append("metadata.name").append("=").append(context.getName());
-    }
-    Map<String, String> fields = context.getFields();
-    if (fields != null && !fields.isEmpty()) {
-      for (Iterator<Map.Entry<String, String>> iter = fields.entrySet().iterator(); iter.hasNext(); ) {
-        if (sb.length() > 0) {
-          sb.append(",");
-        }
-        Map.Entry<String, String> entry = iter.next();
-        sb.append(entry.getKey()).append("=").append(entry.getValue());
-      }
-    }
-    Map<String, String[]> fieldsNot = context.getFieldsNot();
-    if (fieldsNot != null && !fieldsNot.isEmpty()) {
-      for (Iterator<Map.Entry<String, String[]>> iter = fieldsNot.entrySet().iterator(); iter.hasNext(); ) {
-        if (sb.length() > 0) {
-          sb.append(",");
-        }
-        Map.Entry<String, String[]> entry = iter.next();
-        for (int i = 0; i < entry.getValue().length; i++) {
-          if (i > 0) {
-            sb.append(",");
-          }
-          sb.append(entry.getKey()).append("!=").append(entry.getValue()[i]);
-        }
-      }
-    }
-    if (sb.length() > 0) {
-      return sb.toString();
-    }
-    return null;
+  public String getLabelQueryParam() {
+    return context.getLabelQueryParam();
   }
 
   @Override
@@ -503,7 +438,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   public L list(ListOptions listOptions) {
     try {
       return listRequestHelper(
-          fetchListUrl(getNamespacedUrl(), defaultListOptions(listOptions, null)));
+        fetchListUrl(getNamespacedUrl(), defaultListOptions(listOptions, null)));
     } catch (MalformedURLException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("list"), e);
     }
@@ -514,13 +449,13 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
    */
   private ListOptions defaultListOptions(ListOptions options, Boolean watch) {
     options.setWatch(watch);
-    String fieldQueryParam = getFieldQueryParam();
+    String fieldQueryParam = context.getFieldQueryParam();
     if (fieldQueryParam != null) {
       options.setFieldSelector(fieldQueryParam);
     }
-    String lableQueryParam = getLabelQueryParam();
-    if (lableQueryParam != null) {
-      options.setLabelSelector(lableQueryParam);
+    String labelQueryParam = context.getLabelQueryParam();
+    if (labelQueryParam != null) {
+      options.setLabelSelector(labelQueryParam);
     }
     if (resourceVersion != null) {
       options.setResourceVersion(resourceVersion);
@@ -634,7 +569,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public Watch watch(final Watcher<T> watcher) {
-    return watch(new ListOptions(), watcher); 
+    return watch(new ListOptions(), watcher);
   }
 
   @Override
@@ -665,7 +600,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       throw KubernetesClientException.launderThrowable(forOperationType("watch"), e);
     } catch (KubernetesClientException ke) {
       List<Integer> furtherProcessedCodes = Arrays.asList(200, 503);
-      if (! furtherProcessedCodes.contains(ke.getCode())) {
+      if (!furtherProcessedCodes.contains(ke.getCode())) {
         if (watch != null) {
           //release the watch
           watch.close();
@@ -763,7 +698,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   protected Scale handleScale(Scale scaleParam) {
     try {
       return handleScale(getCompleteResourceUrl().toString(), scaleParam);
-    }  catch (InterruptedException ie) {
+    } catch (InterruptedException ie) {
       Thread.currentThread().interrupt();
       throw KubernetesClientException.launderThrowable(forOperationType("scale"), ie);
     } catch (ExecutionException | IOException e) {
@@ -775,7 +710,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   protected Status handleDeploymentRollback(DeploymentRollback deploymentRollback) {
     try {
       return handleDeploymentRollback(getCompleteResourceUrl().toString(), deploymentRollback);
-    }  catch (InterruptedException ie) {
+    } catch (InterruptedException ie) {
       Thread.currentThread().interrupt();
       throw KubernetesClientException.launderThrowable(forOperationType("rollback"), ie);
     } catch (ExecutionException | IOException e) {
@@ -829,7 +764,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   public DeletionPropagation getPropagationPolicy() {
     return propagationPolicy;
   }
-  
+
   public Class<L> getListType() {
     return listType;
   }
@@ -940,7 +875,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       }
       return condition.test(l.get(0));
     }).thenApply(l -> l.isEmpty() ? null : l.get(0));
-    
+
     if (!Utils.waitUntilReady(futureCondition, amount, timeUnit)) {
       futureCondition.cancel(true);
       T i = getItem();
@@ -951,18 +886,18 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     }
     return futureCondition.getNow(null);
   }
-  
+
   @Override
   public CompletableFuture<List<T>> informOnCondition(Predicate<List<T>> condition) {
     CompletableFuture<List<T>> future = new CompletableFuture<>();
     AtomicReference<Runnable> tester = new AtomicReference<>();
-    
+
     // create an informer that supplies the tester with events and empty list handling
     SharedIndexInformer<T> informer = this.createInformer(0);
-    
+
     // prevent unnecessary watches and handle closure
     future.whenComplete((r, t) -> informer.stop());
-    
+
     // use the cache to evaluate the list predicate, trapping any exceptions
     Runnable test = () -> {
       try {
@@ -976,20 +911,23 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       }
     };
     tester.set(test);
-    
+
     informer.addEventHandler(new ResourceEventHandler<T>() {
       @Override
       public void onAdd(T obj) {
         test.run();
       }
+
       @Override
       public void onDelete(T obj, boolean deletedFinalStateUnknown) {
         test.run();
       }
+
       @Override
       public void onUpdate(T oldObj, T newObj) {
         test.run();
       }
+
       @Override
       public void onNothing() {
         test.run();
@@ -997,7 +935,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     });
     informer.run();
     return future;
-  }  
+  }
 
   public void setType(Class<T> type) {
     this.type = type;
