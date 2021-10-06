@@ -5,6 +5,7 @@
 #### Bugs
 * Fix #3482: sanitizeName now truncate names to be less than 63 chars and makes sure first and last charaters are letters
 * Fix #3353: addressing extra quoting in quantity serialization
+* Fix #3509: notify reader when something is written in ExecWebSocketListener
 
 #### Improvements
 
