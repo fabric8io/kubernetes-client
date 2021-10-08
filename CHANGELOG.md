@@ -8,6 +8,7 @@
 * Fix #3509: notify reader when something is written in ExecWebSocketListener
 
 #### Improvements
+* Fix #3448 added methods for getting specific version information - `KubernetesClient.getKubernetesVersion`, `OpenShiftClient.getOpenShiftV3Version`, and `OpenShiftClient.getOpenShiftV3Version`
 
 #### Dependency Upgrade
 
@@ -18,6 +19,7 @@
 #### _**Note**_: Breaking changes in the API
 * OpenShiftConfig#openshiftApiGroupsEnabled is deprecated and no longer used.
 * OpenShiftConfig#disableApiGroupCheck is used only to determine if a client is adaptable to the OpenShiftClient and is generally only needed in mock scenarios.  It will be set automatically on clients obtained from an openshift mock server.
+* `KubernetesClient.getVersion` has been deprecated, please use one of the more specific methods introduced by #3448 - `KubernetesClient.getKubernetesVersion`, `OpenShiftClient.getOpenShiftV3Version`, and `OpenShiftClient.getOpenShiftV3Version`
 
 ### 5.8.0 (2021-09-23)
 
