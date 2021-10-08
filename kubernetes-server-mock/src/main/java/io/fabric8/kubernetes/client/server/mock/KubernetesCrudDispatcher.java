@@ -35,9 +35,14 @@ import io.fabric8.mockwebserver.crud.Attribute;
 import io.fabric8.mockwebserver.crud.AttributeSet;
 import io.fabric8.mockwebserver.crud.CrudDispatcher;
 import io.fabric8.mockwebserver.crud.ResponseComposer;
+import io.fabric8.zjsonpatch.JsonDiff;
 import io.fabric8.zjsonpatch.JsonPatch;
 import okhttp3.MediaType;
 import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.RecordedRequest;
+import okhttp3.mockwebserver.SocketPolicy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -57,11 +62,7 @@ import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import okhttp3.mockwebserver.RecordedRequest;
-import okhttp3.mockwebserver.SocketPolicy;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.stream.StreamSupport;
 
 import static io.fabric8.kubernetes.client.server.mock.KubernetesAttributesExtractor.toKubernetesResource;
 
@@ -73,6 +74,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
   private static final String GET = "GET";
   private static final String DELETE = "DELETE";
 
+  private static final String GENERATION = "generation";
   private static final String STATUS = "status";
 
   private static final Logger LOGGER = LoggerFactory.getLogger(KubernetesCrudDispatcher.class);
@@ -429,14 +431,19 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
     return path.endsWith("/" + STATUS);
   }
 
-  private void setDefaultMetadata(JsonNode source, Map<String, String> pathValues, JsonNode existing) {
-    boolean containsSpecUpdate = false;
-    if (existing != null && existing.get("spec") != null && source.get("spec") != null) {
-      ObjectNode existingSpec = (ObjectNode) existing.findValue("spec");
-      ObjectNode newSpec = (ObjectNode) source.findValue("spec");
-      containsSpecUpdate = !existingSpec.equals(newSpec);
+  // Visible for testing
+  static boolean shouldIncreaseGeneration(JsonNode existing, JsonNode source) {
+    final JsonNode differences = Optional.ofNullable(existing).map(e -> JsonDiff.asJson(e, source))
+      .orElse(null);
+    if (differences != null && !differences.isEmpty()) {
+      return StreamSupport.stream(differences.spliterator(), false)
+        .filter(n -> !n.get("path").asText().startsWith("/metadata/"))
+        .anyMatch(n -> !n.get("path").asText().startsWith("/status/"));
     }
+    return false;
+  }
 
+  private void setDefaultMetadata(JsonNode source, Map<String, String> pathValues, JsonNode existing) {
     ObjectNode metadata = (ObjectNode)source.findValue("metadata");
     ObjectNode existingMetadata = null;
     if (existing != null) {
@@ -453,10 +460,10 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
     // resourceVersion is not yet handled appropriately
     metadata.put("resourceVersion", "1");
 
-    if (containsSpecUpdate) {
-      metadata.put("generation", Integer.parseInt(getOrDefault(existingMetadata, "generation", "0")) + 1);
+    if (shouldIncreaseGeneration(existing, source)) {
+      metadata.put(GENERATION, Integer.parseInt(getOrDefault(existingMetadata, GENERATION, "0")) + 1);
     } else {
-      metadata.put("generation", getOrDefault(existingMetadata, "generation", "1"));
+      metadata.put(GENERATION, getOrDefault(existingMetadata, GENERATION, "1"));
     }
 
     metadata.put("creationTimestamp", getOrDefault(existingMetadata, "creationTimestamp", ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT)));

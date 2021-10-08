@@ -15,78 +15,68 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import org.junit.jupiter.api.Test;
-
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
-import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
+import org.junit.jupiter.api.Test;
 
-@EnableKubernetesMockClient
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
+@EnableKubernetesMockClient(crud = true)
 class GenerationTest {
 
   private final static String NAMESPACE = "test-namespace";
 
-  KubernetesMockServer server;
   KubernetesClient client;
-  
+
   @Test
-  public void testCreatedObjectHasGeneration() {
+  void testCreatedObjectHasGeneration() {
     ConfigMap configMap = new ConfigMapBuilder()
         .withNewMetadata()
-        .withName("test-configmap")
+        .withName("test-configmap-created")
         .withNamespace(NAMESPACE)
         .endMetadata()
         .build();
 
     assertNull(configMap.getMetadata().getGeneration());
     configMap = client.configMaps().inNamespace(NAMESPACE).createOrReplace(configMap);
-    assertEquals(configMap.getMetadata().getGeneration().longValue(), 1L);
+    assertEquals(1L, configMap.getMetadata().getGeneration());
   }
 
   @Test
-  public void testUpdatedSpecIncrementsGeneration() {
-    ConfigMap configMap = new ConfigMapBuilder()
+  void testUpdatedSpecIncrementsGeneration() {
+    final ConfigMap original = new ConfigMapBuilder()
         .withNewMetadata()
-        .withName("test-configmap")
+        .withName("test-configmap-updated")
         .withNamespace(NAMESPACE)
         .endMetadata()
         .build();
+    final ConfigMapBuilder inServer = new ConfigMapBuilder(
+      client.configMaps().inNamespace(NAMESPACE).createOrReplace(original));
+    inServer.addToData("key", "value");
 
-    configMap = client.configMaps().inNamespace(NAMESPACE).createOrReplace(configMap);
-    assertEquals(configMap.getMetadata().getGeneration().longValue(), 1L);
-
-    Map<String, String> configMapData = new HashMap<>();
-    configMapData.put("key", "value");
-    configMap.setData(configMapData);
-
-    configMap = client.configMaps().inNamespace(NAMESPACE).createOrReplace(configMap);
-    assertEquals(configMap.getMetadata().getGeneration().longValue(), 2L);
+    final ConfigMap result = client.configMaps().inNamespace(NAMESPACE).createOrReplace(inServer.build());
+    assertEquals(2L, result.getMetadata().getGeneration());
   }
 
   @Test
-  public void testUpdatingMetadataDoesNotIncrementGeneration() {
-    ConfigMap configMap = new ConfigMapBuilder()
-        .withNewMetadata()
-        .withName("test-configmap")
-        .withNamespace(NAMESPACE)
-        .endMetadata()
-        .build();
+  void testUpdatingMetadataDoesNotIncrementGeneration() {
+    final ConfigMap original = new ConfigMapBuilder()
+      .withNewMetadata()
+      .withName("test-configmap-updated-metadata")
+      .withNamespace(NAMESPACE)
+      .endMetadata()
+      .build();
+    final ConfigMapBuilder inServer = new ConfigMapBuilder(
+      client.configMaps().inNamespace(NAMESPACE).createOrReplace(original));
 
-    configMap = client.configMaps().inNamespace(NAMESPACE).createOrReplace(configMap);
-    assertEquals(configMap.getMetadata().getGeneration().longValue(), 1L);
+    inServer.editMetadata().addToAnnotations("new-annotation", "new-value");
 
-    configMap.getMetadata().getAnnotations().put("new-annotation", "new-value");
-
-    configMap = client.configMaps().inNamespace(NAMESPACE).createOrReplace(configMap);
-    assertEquals(configMap.getMetadata().getGeneration().longValue(), 1L);
+    final ConfigMap result = client.configMaps().inNamespace(NAMESPACE).createOrReplace(inServer.build());
+    assertEquals(1L, result.getMetadata().getGeneration());
   }
+
 
 }
