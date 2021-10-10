@@ -20,6 +20,9 @@ import io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequest
 import io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestList;
 import io.fabric8.kubernetes.client.Client;
 
+import java.security.cert.Certificate;
+
 public interface V1CertificatesAPIGroupDSL extends Client {
   NonNamespaceOperation<CertificateSigningRequest, CertificateSigningRequestList, Resource<CertificateSigningRequest>> certificateSigningRequests();
+  public CertificateSigningRequest approve(CertificateSigningRequest csr, String name);
 }
