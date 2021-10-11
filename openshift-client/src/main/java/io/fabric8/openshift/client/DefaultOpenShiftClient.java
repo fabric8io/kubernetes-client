@@ -180,6 +180,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 /**
  * Class for Default Openshift Client implementing KubernetesClient interface.
@@ -188,8 +189,6 @@ import java.util.Objects;
 public class DefaultOpenShiftClient extends BaseKubernetesClient<NamespacedOpenShiftClient> implements NamespacedOpenShiftClient {
 
   public static final String OPENSHIFT_VERSION_ENDPOINT = "version/openshift";
-  public static final String AUTHORIZATION_OPENSHIFT_IO = "authorization.openshift.io";
-  public static final String V1_APIVERSION = "v1";
 
   private final URL openShiftUrl;
 
@@ -517,35 +516,23 @@ public class DefaultOpenShiftClient extends BaseKubernetesClient<NamespacedOpenS
     return adapt(ExtensionsAPIGroupClient.class);
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public VersionInfo getVersion() {
-    try {
-      VersionInfo result = getVersionInfo(OPENSHIFT_VERSION_ENDPOINT);
-      if (result != null) {
-        return result;
+    for (Supplier<VersionInfo> supplier : new Supplier[] {
+      this::getOpenShiftV3Version,
+      this::getOpenShiftV4VersionInfo
+    }) {
+      try {
+        final VersionInfo vi = supplier.get();
+        if (vi != null) {
+          return vi;
+        }
+      } catch(Exception ex) {
+        // try next
       }
-    } catch (KubernetesClientException exception) {
-      // try the openshift4 endpoint
     }
-    try {
-      // Handle Openshift 4 version case
-      return resources(ClusterVersion.class).list().getItems().stream().findFirst().map(clusterVersion -> {
-        String[] versionParts = clusterVersion.getStatus().getDesired().getVersion().split("\\.");
-        VersionInfo.Builder versionInfoBuilder = new VersionInfo.Builder();
-        if (versionParts.length > 2) {
-          versionInfoBuilder.withMajor(versionParts[0]);
-          versionInfoBuilder.withMinor(versionParts[1] + "." + versionParts[2]);
-        }
-        try {
-          versionInfoBuilder.withBuildDate(clusterVersion.getMetadata().getCreationTimestamp());
-        } catch (ParseException e) {
-          throw KubernetesClientException.launderThrowable(e);
-        }
-        return versionInfoBuilder.build();
-      }).orElse(super.getVersion());
-    } catch (Exception e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
+    return super.getVersion();
   }
 
   @Override
@@ -556,6 +543,23 @@ public class DefaultOpenShiftClient extends BaseKubernetesClient<NamespacedOpenS
   @Override
   public VersionInfo getOpenShiftV3Version() {
     return getVersionInfo(OPENSHIFT_VERSION_ENDPOINT);
+  }
+
+  private VersionInfo getOpenShiftV4VersionInfo() {
+    return resources(ClusterVersion.class).list().getItems().stream().findFirst().map(clusterVersion -> {
+      String[] versionParts = clusterVersion.getStatus().getDesired().getVersion().split("\\.");
+      VersionInfo.Builder versionInfoBuilder = new VersionInfo.Builder();
+      if (versionParts.length > 2) {
+        versionInfoBuilder.withMajor(versionParts[0]);
+        versionInfoBuilder.withMinor(versionParts[1] + "." + versionParts[2]);
+      }
+      try {
+        versionInfoBuilder.withBuildDate(clusterVersion.getMetadata().getCreationTimestamp());
+      } catch (ParseException e) {
+        return null;
+      }
+      return versionInfoBuilder.build();
+    }).orElse(null);
   }
 
   @Override
