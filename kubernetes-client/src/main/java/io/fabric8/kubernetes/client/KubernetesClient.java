@@ -207,6 +207,17 @@ public interface KubernetesClient extends Client {
       ResourceDefinitionContext context) {
     return customResources(context, GenericKubernetesResource.class, GenericKubernetesResourceList.class);
   }
+  
+  /**
+   * Semi-typed API for managing resources. 
+   * 
+   * Will perform a look-up if needed for additional metadata about the resource.
+   * 
+   * @param apiVersion the api/version 
+   * @param kind the resource kind
+   * @return returns a MixedOperation object with which you can do basic resource operations.
+   */
+  MixedOperation<GenericKubernetesResource, GenericKubernetesResourceList, Resource<GenericKubernetesResource>> genericKubernetesResources(String apiVersion, String kind);
 
   /**
    * Discovery API entrypoint for APIGroup discovery.k8s.io

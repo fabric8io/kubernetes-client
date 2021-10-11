@@ -34,6 +34,7 @@ import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
+import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -90,7 +91,7 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl im
 
   public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(OkHttpClient httpClient, Config configuration, HasMetadata item) {
     this(HasMetadataOperationsImpl.defaultContext(new OperationContext(), httpClient, configuration).withItem(item), new NamespaceVisitOperationContext());
-    handlerOf(item); // validate the handler
+    handlerOf(item, new BaseClient(httpClient, configuration)); // validate the handler
   }
 
   @Override
@@ -184,7 +185,7 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl im
   
   Resource<HasMetadata> getResource() {
     HasMetadata meta = (HasMetadata) context.getItem();
-    ResourceHandler<HasMetadata, ?> handler = handlerOf(meta);
+    ResourceHandler<HasMetadata, ?> handler = handlerOf(meta, new BaseClient(this.context.getClient(), this.context.getConfig()));
     HasMetadataOperation<HasMetadata, ?, Resource<HasMetadata>> operation = handler.operation(context.getClient(), context.getConfig(), null);
     return operation.newInstance(context).inNamespace(KubernetesResourceUtil.getNamespace(meta)).withName(KubernetesResourceUtil.getName(meta));
   }
@@ -242,7 +243,7 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl im
   }
   
   static HasMetadata acceptVisitors(HasMetadata item, List<Visitor> visitors, String explicitNamespace) {
-    ResourceHandler<HasMetadata, ?> h = handlerOf(item);
+    ResourceHandler<HasMetadata, ?> h = handlerOf(item, null);
     VisitableBuilder<HasMetadata, ?> builder = h.edit(item);
 
     //Let's apply any visitor that might have been specified.
@@ -255,8 +256,8 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl im
     return builder.build();
   }
 
-  static <T extends HasMetadata, V extends VisitableBuilder<T, V>> ResourceHandler<T, V> handlerOf(T item) {
-    ResourceHandler<T, V> result = Handlers.get(item);
+  static <T extends HasMetadata, V extends VisitableBuilder<T, V>> ResourceHandler<T, V> handlerOf(T item, BaseClient client) {
+    ResourceHandler<T, V> result = Handlers.get(item, client);
     if (result == null) {
       throw new KubernetesClientException("Could not find a registered handler for item: [" + item + "].");
     }

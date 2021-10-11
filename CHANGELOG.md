@@ -10,6 +10,7 @@
 
 #### Improvements
 * Fix #3448 added methods for getting specific version information - `KubernetesClient.getKubernetesVersion`, `OpenShiftClient.getOpenShiftV3Version`, and `OpenShiftClient.getOpenShiftV3Version`
+* Fix #3404 supporting generic resources in resource/resourceList with minimal metadata, as well as a new entry point `KubernetesClient.genericKubernetesResources(String apiVersion, String kind)`
 
 #### Dependency Upgrade
 

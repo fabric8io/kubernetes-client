@@ -46,6 +46,14 @@ class ResourceHandlerImpl<T extends HasMetadata, V extends VisitableBuilder<T, V
     this.operationConstructor = operationConstructor;
   }
   
+  ResourceHandlerImpl(Class<T> type, Class<? extends KubernetesResourceList<T>> listClass, ResourceDefinitionContext context) {
+    this.type = type;
+    this.context = context;
+    this.defaultListClass = listClass;
+    this.builderClass = null;
+    this.operationConstructor = null;
+  }
+  
   @Override
   public V edit(T item) {
     if (this.builderClass == null) {

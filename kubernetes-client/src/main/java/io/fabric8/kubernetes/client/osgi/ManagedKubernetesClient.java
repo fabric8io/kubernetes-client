@@ -24,6 +24,8 @@ import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapList;
 import io.fabric8.kubernetes.api.model.Endpoints;
 import io.fabric8.kubernetes.api.model.EndpointsList;
+import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
+import io.fabric8.kubernetes.api.model.GenericKubernetesResourceList;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LimitRange;
@@ -590,4 +592,11 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
   public NonNamespaceOperation<RuntimeClass, RuntimeClassList, Resource<RuntimeClass>> runtimeClasses() {
     return delegate.runtimeClasses();
   }
+  
+  @Override
+  public MixedOperation<GenericKubernetesResource, GenericKubernetesResourceList, Resource<GenericKubernetesResource>> genericKubernetesResources(
+      String apiVersion, String kind) {
+    return delegate.genericKubernetesResources(apiVersion, kind);
+  }
+  
 }
