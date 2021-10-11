@@ -44,7 +44,7 @@ public class CustomResourceDefinitionIT {
   public static final AssumingK8sVersionAtLeast assumingK8sVersion =
     new AssumingK8sVersionAtLeast("1", "16");
 
-  public CustomResourceDefinition createCRD() {
+  public static CustomResourceDefinition createCRD() {
     return new CustomResourceDefinitionBuilder()
       .withApiVersion("apiextensions.k8s.io/v1")
       .withNewMetadata()
@@ -106,4 +106,5 @@ public class CustomResourceDefinitionIT {
     boolean bDeleted = client.apiextensions().v1().customResourceDefinitions().withName(crd1.getMetadata().getName()).delete();
     assertThat(bDeleted).isTrue();
   }
+
 }

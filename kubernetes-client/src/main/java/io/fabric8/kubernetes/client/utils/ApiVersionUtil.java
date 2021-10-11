@@ -31,7 +31,7 @@ public class ApiVersionUtil {
    */
   
   public static <T> String apiGroup(T item, String apiGroup) {
-        if (item instanceof HasMetadata && Utils.isNotNullOrEmpty(((HasMetadata) item).getApiVersion())) {
+    if (item instanceof HasMetadata && Utils.isNotNullOrEmpty(((HasMetadata) item).getApiVersion())) {
       return trimGroupOrNull(((HasMetadata) item).getApiVersion());
     } else if (apiGroup != null && !apiGroup.isEmpty()) {
       return trimGroup(apiGroup);

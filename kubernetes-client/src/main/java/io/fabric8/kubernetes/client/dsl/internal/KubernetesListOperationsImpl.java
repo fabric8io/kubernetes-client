@@ -22,6 +22,7 @@ import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
+import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.ResourceHandler;
@@ -125,7 +126,7 @@ public class KubernetesListOperationsImpl
   }
 
   private Resource<HasMetadata> getResource(HasMetadata resource) {
-    ResourceHandler<HasMetadata, ?> handler = NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl.handlerOf(resource);
+    ResourceHandler<HasMetadata, ?> handler = NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl.handlerOf(resource, new BaseClient(this.context.getClient(), this.context.getConfig()));
     return handler.operation(context.getClient(), context.getConfig(), null).newInstance(context.withItem(resource));
   }
 

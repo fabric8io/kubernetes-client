@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.client.dsl.base;
 
-import io.fabric8.kubernetes.api.Pluralize;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.client.dsl.WritableOperation;
 import io.fabric8.kubernetes.client.utils.CreateOrReplaceHelper;

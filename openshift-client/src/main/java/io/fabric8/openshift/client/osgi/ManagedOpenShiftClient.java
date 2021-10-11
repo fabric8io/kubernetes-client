@@ -25,6 +25,8 @@ import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapList;
 import io.fabric8.kubernetes.api.model.Endpoints;
 import io.fabric8.kubernetes.api.model.EndpointsList;
+import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
+import io.fabric8.kubernetes.api.model.GenericKubernetesResourceList;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
@@ -1011,4 +1013,11 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   public boolean supportsOpenShiftAPIGroup(String apiGroup) {
     return delegate.supportsOpenShiftAPIGroup(apiGroup);
   }
+
+  @Override
+  public MixedOperation<GenericKubernetesResource, GenericKubernetesResourceList, Resource<GenericKubernetesResource>> genericKubernetesResources(
+      String apiVersion, String kind) {
+    return delegate.genericKubernetesResources(apiVersion, kind);
+  }
+
 }

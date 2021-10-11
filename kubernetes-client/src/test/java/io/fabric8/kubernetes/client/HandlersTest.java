@@ -45,10 +45,10 @@ public class HandlersTest {
   public void testRegister() {
     Handlers.register(MyPod.class, MyPodOperationsImpl::new);
 
-    assertThat(Handlers.get(new MyPod()).operation(null, null, null), Matchers.instanceOf(MyPodOperationsImpl.class));
+    assertThat(Handlers.get(new MyPod(), null).operation(null, null, null), Matchers.instanceOf(MyPodOperationsImpl.class));
     
     Handlers.unregister(MyPod.class);
     
-    assertThat(Handlers.get(new MyPod()).operation(null, null, null), Matchers.instanceOf(HasMetadataOperationsImpl.class));
+    assertThat(Handlers.get(new MyPod(), null).operation(null, null, null), Matchers.instanceOf(HasMetadataOperationsImpl.class));
   }
 }

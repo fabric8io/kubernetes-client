@@ -31,8 +31,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
-
-public abstract class BaseClient implements Client, HttpClientAware {
+public class BaseClient implements Client, HttpClientAware {
 
   public static final String APIS = "/apis";
 

@@ -24,6 +24,8 @@ import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapList;
 import io.fabric8.kubernetes.api.model.Endpoints;
 import io.fabric8.kubernetes.api.model.EndpointsList;
+import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
+import io.fabric8.kubernetes.api.model.GenericKubernetesResourceList;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
@@ -413,7 +415,17 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
   public <T extends CustomResource, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(Class<T> resourceType, Class<L> listClass) {
     return customResources(CustomResourceDefinitionContext.fromCustomResourceType(resourceType), resourceType, listClass);
   }
-
+  
+  @Override
+  public MixedOperation<GenericKubernetesResource, GenericKubernetesResourceList, Resource<GenericKubernetesResource>> genericKubernetesResources(
+      String apiVersion, String kind) {
+    ResourceDefinitionContext context = Handlers.getResourceDefinitionContext(apiVersion, kind, this);
+    if (context == null) {
+      throw new KubernetesClientException("Could not find the metadata for the given apiVersion and kind, please pass a ResourceDefinitionContext instead");
+    }
+    return genericKubernetesResources(context);
+  }
+  
   @Override
   public <T extends HasMetadata, L extends KubernetesResourceList<T>> HasMetadataOperation<T, L, Resource<T>> resources(
       Class<T> resourceType, Class<L> listClass) {

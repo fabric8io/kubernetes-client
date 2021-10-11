@@ -57,7 +57,7 @@ public class OpenshiftAdapterSupport {
     }
     String url = config.getMasterUrl();
     return API_GROUPS_ENABLED_PER_URL.computeIfAbsent(url,
-        k -> new BaseClient(adaptOkHttpClient(client, config), config) {}.getApiGroups()
+        k -> new BaseClient(adaptOkHttpClient(client, config), config).getApiGroups()
             .getGroups()
             .stream()
             .anyMatch(g -> g.getName().endsWith("openshift.io")));
