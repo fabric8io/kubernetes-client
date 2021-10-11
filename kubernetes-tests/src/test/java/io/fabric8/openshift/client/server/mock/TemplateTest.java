@@ -26,6 +26,7 @@ import io.fabric8.kubernetes.api.model.ServicePort;
 import io.fabric8.kubernetes.api.model.ServiceSpec;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.client.utils.IOHelpers;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.openshift.api.model.ParameterBuilder;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateBuilder;
@@ -183,6 +184,13 @@ class TemplateTest {
     map.put("PORT", "8080");
     KubernetesList list = client.templates().withParameters(map).load(getClass().getResourceAsStream("/template-with-number-params.yml")).processLocally(map);
     assertListIsServiceWithPort8080(list);
+  }
+
+  @Test
+  void shouldGetTemplateWithNumberParameters() {
+    OpenShiftClient client = new DefaultOpenShiftClient(new OpenShiftConfigBuilder().withDisableApiGroupCheck(true).build());
+    Template template = client.templates().load(getClass().getResourceAsStream("/template-with-number-params.yml")).get();
+    assertTrue(Serialization.asYaml(template.getObjects().get(0)).contains("{PORT}"));
   }
 
   protected void assertListIsServiceWithPort8080(KubernetesList list) {
