@@ -114,6 +114,7 @@ public class LogWatchCallback implements LogWatch, Callback, AutoCloseable {
       }
     }
 
+    @Override
     public InputStream getOutput() {
         return output;
     }
@@ -139,7 +140,8 @@ public class LogWatchCallback implements LogWatch, Callback, AutoCloseable {
           response.close();
         });
         startedFuture.complete(null);
+      } else {
+        response.close();
       }
-
     }
 }
