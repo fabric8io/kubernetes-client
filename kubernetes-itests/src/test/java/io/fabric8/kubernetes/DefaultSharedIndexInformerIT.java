@@ -15,9 +15,10 @@
  */
 package io.fabric8.kubernetes;
 
+import io.fabric8.kubernetes.api.model.ConfigMap;
+import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
-import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
@@ -61,30 +62,29 @@ public class DefaultSharedIndexInformerIT {
   }
 
   @Test
-  public void testPodSharedIndexInformerGetsSingleUpdates() throws InterruptedException {
-    // Given
-    String namespace = "kube-system";
-    PodList podList = client.pods().inNamespace(namespace).list();
-    int expectedAddEvents = podList.getItems().size();
-    CountDownLatch addEvents = new CountDownLatch(expectedAddEvents);
-    // Let's assume informer resyncs at least two times so we would get update
-    // events for all pods two times
-    CountDownLatch updateEvents = new CountDownLatch(2 * expectedAddEvents);
-    SharedInformerFactory informerFactory = client.informers();
-    SharedIndexInformer<Pod> podInformer = informerFactory.inNamespace(namespace).sharedIndexInformerFor(Pod.class, RESYNC_PERIOD);
-    TestResourceEventHandler<Pod> eventHandler = new TestResourceEventHandler<>(addEvents, updateEvents);
-    podInformer.addEventHandler(eventHandler);
+  public void testSharedIndexInformerGetsSingleUpdates() throws InterruptedException {
+    client.configMaps().withName("my-map").delete();
 
-    // When
-    informerFactory.startAllRegisteredInformers();
-    updateEvents.await(3 * RESYNC_PERIOD, TimeUnit.MILLISECONDS);
-    addEvents.await(3 * RESYNC_PERIOD, TimeUnit.MILLISECONDS);
+    CountDownLatch addEvents = new CountDownLatch(1);
+    // Let's assume informer resyncs at least two times
+    CountDownLatch updateEvents = new CountDownLatch(2);
 
-    // Then
-    assertThat(addEvents.getCount()).isZero();
-    assertThat(updateEvents.getCount()).isZero();
-    assertThat(eventHandler.getUpdateEventsCount()).isLessThan(4 * expectedAddEvents);
-    informerFactory.stopAllRegisteredInformers();
+    TestResourceEventHandler<HasMetadata> eventHandler = new TestResourceEventHandler<>(addEvents, updateEvents);
+
+    SharedIndexInformer<ConfigMap> informer = client.configMaps().withName("my-map").inform(eventHandler, RESYNC_PERIOD);
+
+    client.configMaps().create(new ConfigMapBuilder().withNewMetadata().withName("my-map").endMetadata().build());
+    try {
+      // When
+      addEvents.await(30000, TimeUnit.MILLISECONDS);
+      updateEvents.await(30000, TimeUnit.MILLISECONDS);
+
+      // Then
+      assertThat(addEvents.getCount()).isZero();
+      assertThat(updateEvents.getCount()).isZero();
+    } finally {
+      informer.stop();
+    }
   }
 
   private static class TestResourceEventHandler<T extends HasMetadata> implements ResourceEventHandler<T> {
