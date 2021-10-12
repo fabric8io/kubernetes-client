@@ -15,28 +15,17 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
-import io.fabric8.kubernetes.client.internal.SerializationUtils;
-import io.fabric8.kubernetes.client.mock.crd.CronTab;
-import io.fabric8.kubernetes.client.mock.crd.CronTabSpec;
-import io.fabric8.kubernetes.client.mock.crd.CronTabStatus;
 import io.fabric8.kubernetes.client.mock.crd.EntandoBundleRelease;
 import io.fabric8.kubernetes.client.mock.crd.EntandoBundleReleaseList;
 import io.fabric8.kubernetes.client.mock.crd.EntandoBundleReleaseSpec;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
-import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.internal.KubernetesDeserializer;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -78,6 +67,7 @@ class CustomResourceCrudWithCRDContextTest {
     assertEquals("ebr1", ebr1.getMetadata().getName());
   }
 
+
   private EntandoBundleRelease getMockedEntandoBundleRelease() {
     EntandoBundleReleaseSpec entandoBundleReleaseSpec = new EntandoBundleReleaseSpec();
     entandoBundleReleaseSpec.setDatabaseType("MySQL");
@@ -87,84 +77,5 @@ class CustomResourceCrudWithCRDContextTest {
       .build());
     entandoBundleRelease.setSpec(entandoBundleReleaseSpec);
     return entandoBundleRelease;
-  }
-
-  @Test
-  void testUpdateStatusSubresource() throws IOException {
-    CustomResourceDefinitionContext context = setupCronTabContext();
-
-    CronTab cronTab1 = createCronTab("my-new-cron-object", "* * * * */5", 3, "my-awesome-cron-image");
-    client.customResource(context).inNamespace("test-ns").create(asMap(cronTab1));
-
-    cronTab1.setStatus(new CronTabStatus());
-    cronTab1.getStatus().setReplicas(12);
-    client.customResource(context).inNamespace("test-ns").updateStatus(asMap(cronTab1));
-
-    CronTab cronTabUpdated = Serialization.jsonMapper().convertValue(
-            client.customResource(context).inNamespace("test-ns").withName("my-new-cron-object").get(),
-            CronTab.class);
-    assertCronTab(cronTabUpdated, "my-new-cron-object", "* * * * */5", 3, "my-awesome-cron-image");
-    assertEquals(12, cronTabUpdated.getStatus().getReplicas());
-  }
-
-  @Test
-  public void testUpdateStatusSubresource() throws IOException {
-    CustomResourceDefinitionContext context = setupCronTabContext();
-
-    CronTab cronTab1 = createCronTab("my-new-cron-object", "* * * * */5", 3, "my-awesome-cron-image");
-    client.customResource(context).inNamespace("test-ns").create(asMap(cronTab1));
-
-    cronTab1.setStatus(new CronTabStatus());
-    cronTab1.getStatus().setReplicas(12);
-    client.customResource(context).inNamespace("test-ns").updateStatus(asMap(cronTab1));
-
-    CronTab cronTabUpdated = Serialization.jsonMapper().convertValue(
-            client.customResource(context).inNamespace("test-ns").withName("my-new-cron-object").get(),
-            CronTab.class);
-    assertCronTab(cronTabUpdated, "my-new-cron-object", "* * * * */5", 3, "my-awesome-cron-image");
-    assertEquals(12, cronTabUpdated.getStatus().getReplicas());
-  }
-
-  void assertCronTab(CronTab cronTab, String name, String cronTabSpec, int replicas, String image) {
-    assertEquals(name, cronTab.getMetadata().getName());
-    assertEquals(cronTabSpec, cronTab.getSpec().getCronSpec());
-    assertEquals(replicas, cronTab.getSpec().getReplicas());
-    assertEquals(image, cronTab.getSpec().getImage());
-  }
-
-  private CustomResourceDefinitionContext setupCronTabContext() {
-    KubernetesDeserializer.registerCustomKind("stable.example.com/v1", "CronTab", CronTab.class);
-    CustomResourceDefinition cronTabCrd = client
-            .apiextensions().v1beta1()
-            .customResourceDefinitions()
-            .load(getClass().getResourceAsStream("/crontab-crd.yml"))
-            .get();
-    client.apiextensions().v1beta1().customResourceDefinitions().create(cronTabCrd);
-
-    CustomResourceDefinitionContext context =
-            new CustomResourceDefinitionContext.Builder()
-                    .withGroup("stable.example.com")
-                    .withPlural("crontabs")
-                    .withScope("Namespaced")
-                    .withVersion("v1")
-                    .withKind("CronTab")
-                    .build();
-    return context;
-  }
-
-  private Map<String, Object> asMap(CronTab cronTab1) {
-    return SerializationUtils.getMapper().convertValue(cronTab1, new TypeReference<Map<String, Object>>() {
-    });
-  }
-
-  private CronTab createCronTab(String name, String cronTabSpecStr, int replicas, String image) {
-    CronTab cronTab = new CronTab();
-    cronTab.setMetadata(new ObjectMetaBuilder().withName(name).build());
-    CronTabSpec cronTabSpec = new CronTabSpec();
-    cronTabSpec.setCronSpec(cronTabSpecStr);
-    cronTabSpec.setImage(image);
-    cronTabSpec.setReplicas(replicas);
-    cronTab.setSpec(cronTabSpec);
-    return cronTab;
   }
 }

@@ -20,6 +20,8 @@ import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.ConfigMapList;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.dsl.base.PatchContext;
+import io.fabric8.kubernetes.client.dsl.base.PatchType;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import org.junit.jupiter.api.Test;
 
@@ -82,5 +84,9 @@ class ConfigMapCrudTest {
     configmap2 = client.configMaps().inNamespace("ns1").withName("configmap2").edit(c -> new ConfigMapBuilder(c).addToData("II", "TWO").build());
     assertNotNull(configmap2);
     assertEquals("TWO", configmap2.getData().get("II"));
+
+    configmap2 = client.configMaps().inNamespace("ns1").withName("configmap2").patch(PatchContext.of(PatchType.JSON_MERGE), new ConfigMapBuilder(configmap2).addToData("III", "THREE").build());
+    assertNotNull(configmap2);
+    assertEquals("THREE", configmap2.getData().get("III"));
   }
 }
