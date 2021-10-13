@@ -28,10 +28,13 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
+import org.awaitility.Awaitility;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
@@ -71,6 +74,8 @@ public class GenericResourceIT {
     CustomResourceDefinition crd1 = client.apiextensions().v1().customResourceDefinitions().createOrReplace(CustomResourceDefinitionIT.createCRD());
 
     assertThat(crd1).isNotNull();
+
+    Awaitility.await().atMost(1, TimeUnit.MINUTES).until(() -> client.getApiResources("examples.fabric8.io/v1") != null);
 
     GenericKubernetesResource itest = new GenericKubernetesResource();
     itest.setKind("Itest");
