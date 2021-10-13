@@ -439,7 +439,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
                   e.printStackTrace();
                 }
               }
-            }).exec("sh", "-c", "cat " + source + "|" + "base64");
+            }).exec("sh", "-c", String.format("cat %s | base64", PodUpload.shellQuote(source)));
             return new org.apache.commons.codec.binary.Base64InputStream(in);
           } catch (Exception e) {
             throw KubernetesClientException.launderThrowable(e);

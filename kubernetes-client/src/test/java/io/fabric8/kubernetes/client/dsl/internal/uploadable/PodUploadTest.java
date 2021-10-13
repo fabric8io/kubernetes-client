@@ -110,7 +110,7 @@ class PodUploadTest {
     assertThat(result, equalTo(true));
     verify(mockPathToUpload, atLeast(1)).toFile();
     verify(mockClient, times(1)).newWebSocket(argThat(request -> {
-      assertThat(request.url().toString(), equalTo("https://openshift.com:8443/api/v1/namespaces/default/pods/mock-pod/exec?command=sh&command=-c&command=mkdir+-p+%2Fmock%2Fdir+%26%26+base64+-d+-+%3E+%2Fmock%2Fdir%2Ffile&stdin=true&stderr=true"));
+      assertThat(request.url().toString(), equalTo("https://openshift.com:8443/api/v1/namespaces/default/pods/mock-pod/exec?command=sh&command=-c&command=mkdir+-p+%27%2Fmock%2Fdir%27+%26%26+base64+-d+-+%3E+%27%2Fmock%2Fdir%2Ffile%27&stdin=true&stderr=true"));
       return true;
     }), any(PodUploadWebSocketListener.class));
     verify(mockWebSocket, atLeast(1)).send(any(ByteString.class));
@@ -149,7 +149,7 @@ class PodUploadTest {
     assertThat(result, equalTo(true));
     verify(mockPathToUpload, atLeast(1)).toFile();
     verify(mockClient, times(1)).newWebSocket(argThat(request -> {
-      assertThat(request.url().toString(), equalTo("https://openshift.com:8443/api/v1/namespaces/default/pods/mock-pod/exec?command=sh&command=-c&command=mkdir+-p+%2Fmock%2Fdir+%26%26+base64+-d+-+%7C+tar+-C+%2Fmock%2Fdir+-xzf+-&stdin=true&stderr=true"));
+      assertThat(request.url().toString(), equalTo("https://openshift.com:8443/api/v1/namespaces/default/pods/mock-pod/exec?command=sh&command=-c&command=mkdir+-p+%27%2Fmock%2Fdir%27+%26%26+base64+-d+-+%7C+tar+-C+%27%2Fmock%2Fdir%27+-xzf+-&stdin=true&stderr=true"));
       return true;
     }), any(PodUploadWebSocketListener.class));
     verify(mockWebSocket, atLeast(1)).send(any(ByteString.class));

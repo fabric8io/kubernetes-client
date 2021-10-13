@@ -7,6 +7,7 @@
 * Fix #3353: addressing extra quoting in quantity serialization
 * Fix #3509: notify reader when something is written in ExecWebSocketListener
 * Fix #3501: addressed NPE with default BuildConfig operations
+* Fix #3408: quote pod upload file paths to support special chars
 
 #### Improvements
 * Fix #3448 added methods for getting specific version information - `KubernetesClient.getKubernetesVersion`, `OpenShiftClient.getOpenShiftV3Version`, and `OpenShiftClient.getOpenShiftV3Version`
