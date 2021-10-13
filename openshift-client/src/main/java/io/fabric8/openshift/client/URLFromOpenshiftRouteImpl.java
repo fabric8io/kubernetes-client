@@ -16,7 +16,6 @@
 
 package io.fabric8.openshift.client;
 
-import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServicePort;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -28,21 +27,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 public class URLFromOpenshiftRouteImpl implements ServiceToURLProvider {
   public static final Logger logger = LoggerFactory.getLogger(URLFromOpenshiftRouteImpl.class);
-  private final ConcurrentMap<URL, Boolean> IS_OPENSHIFT = new ConcurrentHashMap<>();
 
   @Override
   public String getURL(Service service, String portName, String namespace, KubernetesClient client) {
     String serviceName = service.getMetadata().getName();
     ServicePort port = URLFromServiceUtil.getServicePortByName(service, portName);
-    if(port != null && port.getName() != null && isOpenShift(client)) {
+    if(port != null && port.getName() != null && client.isAdaptable(OpenShiftClient.class)) {
       try {
         String serviceProtocol = port.getProtocol();
         OpenShiftClient openShiftClient = client.adapt(OpenShiftClient.class);
@@ -64,25 +58,4 @@ public class URLFromOpenshiftRouteImpl implements ServiceToURLProvider {
     return ServiceToUrlImplPriority.FOURTH.getValue();
   }
 
-  public boolean isOpenShift(KubernetesClient client) {
-    URL masterUrl = client.getMasterUrl();
-    if (IS_OPENSHIFT.containsKey(masterUrl)) {
-      return IS_OPENSHIFT.get(masterUrl);
-    } else {
-      RootPaths rootPaths = client.rootPaths();
-      if (rootPaths != null) {
-        List<String> paths = rootPaths.getPaths();
-        if (paths != null) {
-          for (String path : paths) {
-            if (java.util.Objects.equals("/oapi", path) || java.util.Objects.equals("oapi", path)) {
-              IS_OPENSHIFT.putIfAbsent(masterUrl, true);
-              return true;
-            }
-          }
-        }
-      }
-    }
-    IS_OPENSHIFT.putIfAbsent(masterUrl, false);
-    return false;
-  }
 }
