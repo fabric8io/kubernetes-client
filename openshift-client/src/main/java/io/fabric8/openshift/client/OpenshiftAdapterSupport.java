@@ -16,6 +16,7 @@
 
 package io.fabric8.openshift.client;
 
+import io.fabric8.kubernetes.api.model.APIGroupList;
 import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -57,10 +58,16 @@ public class OpenshiftAdapterSupport {
     }
     String url = config.getMasterUrl();
     return API_GROUPS_ENABLED_PER_URL.computeIfAbsent(url,
-        k -> new BaseClient(adaptOkHttpClient(client, config), config).getApiGroups()
-            .getGroups()
-            .stream()
-            .anyMatch(g -> g.getName().endsWith("openshift.io")));
+        k -> {
+          APIGroupList apiGroups = new BaseClient(adaptOkHttpClient(client, config), config).getApiGroups();
+          if (apiGroups == null) {
+            return false;
+          }
+          return apiGroups
+              .getGroups()
+              .stream()
+              .anyMatch(g -> g.getName().endsWith("openshift.io"));
+        });
   }
 
     /**
