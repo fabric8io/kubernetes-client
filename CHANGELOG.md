@@ -1,5 +1,18 @@
 ## CHANGELOG
 
+### 5.10-SNAPSHOT
+
+#### Bugs
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
+#### _**Note**_: Breaking changes in the API
+
+
 ### 5.9.0 (2021-10-14)
 
 #### Bugs
@@ -12,8 +25,6 @@
 * Fix #3448 added methods for getting specific version information - `KubernetesClient.getKubernetesVersion`, `OpenShiftClient.getOpenShiftV3Version`, and `OpenShiftClient.getOpenShiftV3Version`
 * Fix #3404 supporting generic resources in resource/resourceList with minimal metadata, as well as a new entry point `KubernetesClient.genericKubernetesResources(String apiVersion, String kind)`
 * Fix #3390: Make mock server support JSON_MERGE_PATCH
-
-#### Dependency Upgrade
 
 #### New Features
 * Fix #3294: Support fetching APIGroupList
