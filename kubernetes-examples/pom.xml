@@ -21,7 +21,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>kubernetes-client-project</artifactId>
-    <version>5.9-SNAPSHOT</version>
+    <version>5.9.0</version>
   </parent>
 
   <artifactId>kubernetes-examples</artifactId>
