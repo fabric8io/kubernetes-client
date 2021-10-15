@@ -78,19 +78,19 @@ public class OperationContext {
                           boolean dryRun, String selectorAsString) {
     this.client = client;
     this.config = config;
-    this.plural = plural;
-    this.namespace = Utils.isNotNullOrEmpty(namespace) ? namespace : (config != null ? config.getNamespace() : null);
-    this.name = name;
-    this.apiGroupName = ApiVersionUtil.apiGroup(item, apiGroupName);
-    this.apiGroupVersion = ApiVersionUtil.apiVersion(item, apiGroupVersion);
-    this.cascading = cascading;
     this.item = item;
-    this.labels = Utils.getNonNullOrElse(labels, new HashMap<>());
-    this.labelsNot = Utils.getNonNullOrElse(labelsNot, new HashMap<>());
-    this.labelsIn = Utils.getNonNullOrElse(labelsIn, new HashMap<>());
-    this.labelsNotIn = Utils.getNonNullOrElse(labelsNotIn, new HashMap<>());
-    this.fields = Utils.getNonNullOrElse(fields, new HashMap<>());
-    this.fieldsNot = Utils.getNonNullOrElse(fieldsNot, new HashMap<>());
+    this.plural = plural;
+    setNamespace(namespace);
+    this.name = name;
+    setApiGroupName(apiGroupName);
+    setApiGroupVersion(apiGroupVersion);
+    this.cascading = cascading;
+    setLabels(labels);
+    setLabelsNot(labelsNot);
+    setLabelsIn(labelsIn);
+    setLabelsNotIn(labelsNotIn);
+    setFields(fields);
+    setFieldsNot(fieldsNot);
     this.resourceVersion = resourceVersion;
     this.reloadingFromServer = reloadingFromServer;
     this.gracePeriodSeconds = gracePeriodSeconds;
@@ -98,6 +98,42 @@ public class OperationContext {
     this.namespaceFromGlobalConfig = namespaceFromGlobalConfig;
     this.dryRun = dryRun;
     this.selectorAsString = selectorAsString;
+  }
+
+  private void setFieldsNot(Map<String, String[]> fieldsNot) {
+    this.fieldsNot = Utils.getNonNullOrElse(fieldsNot, new HashMap<>());
+  }
+
+  private void setFields(Map<String, String> fields) {
+    this.fields = Utils.getNonNullOrElse(fields, new HashMap<>());
+  }
+
+  private void setLabelsNotIn(Map<String, String[]> labelsNotIn) {
+    this.labelsNotIn = Utils.getNonNullOrElse(labelsNotIn, new HashMap<>());
+  }
+
+  private void setLabelsIn(Map<String, String[]> labelsIn) {
+    this.labelsIn = Utils.getNonNullOrElse(labelsIn, new HashMap<>());
+  }
+
+  private void setLabelsNot(Map<String, String[]> labelsNot) {
+    this.labelsNot = Utils.getNonNullOrElse(labelsNot, new HashMap<>());
+  }
+
+  private void setLabels(Map<String, String> labels) {
+    this.labels = Utils.getNonNullOrElse(labels, new HashMap<>());
+  }
+
+  private void setApiGroupVersion(String apiGroupVersion) {
+    this.apiGroupVersion = ApiVersionUtil.apiVersion(item, apiGroupVersion);
+  }
+
+  private void setApiGroupName(String apiGroupName) {
+    this.apiGroupName = ApiVersionUtil.apiGroup(item, apiGroupName);
+  }
+
+  private void setNamespace(String namespace) {
+    this.namespace = Utils.isNotNullOrEmpty(namespace) ? namespace : (config != null ? config.getNamespace() : null);
   }
 
   public OkHttpClient getClient() {
@@ -278,7 +314,7 @@ public class OperationContext {
       return this;
     }
     final OperationContext context = new OperationContext(this);
-    context.namespace = namespace;
+    context.setNamespace(namespace);
     return context;
   }
 
@@ -296,7 +332,7 @@ public class OperationContext {
       return this;
     }
     final OperationContext context = new OperationContext(this);
-    context.apiGroupName = apiGroupName;
+    context.setApiGroupVersion(apiGroupName);
     return context;
   }
 
@@ -305,7 +341,7 @@ public class OperationContext {
       return this;
     }
     final OperationContext context = new OperationContext(this);
-    context.apiGroupVersion = apiGroupVersion;
+    context.setApiGroupVersion(apiGroupVersion);
     return context;
   }
 
@@ -332,7 +368,7 @@ public class OperationContext {
       return this;
     }
     final OperationContext context = new OperationContext(this);
-    context.labels = labels;
+    context.setLabels(labels);
     return context;
   }
 
@@ -341,7 +377,7 @@ public class OperationContext {
       return this;
     }
     final OperationContext context = new OperationContext(this);
-    context.labelsIn = labelsIn;
+    context.setLabelsIn(labelsIn);
     return context;
   }
 
@@ -350,7 +386,7 @@ public class OperationContext {
       return this;
     }
     final OperationContext context = new OperationContext(this);
-    context.labelsNot = labelsNot;
+    context.setLabelsNot(labelsNot);
     return context;
   }
 
@@ -359,7 +395,7 @@ public class OperationContext {
       return this;
     }
     final OperationContext context = new OperationContext(this);
-    context.labelsNotIn = labelsNotIn;
+    context.setLabelsNotIn(labelsNotIn);
     return context;
   }
 
@@ -368,7 +404,7 @@ public class OperationContext {
       return this;
     }
     final OperationContext context = new OperationContext(this);
-    context.fields = fields;
+    context.setFields(fields);
     return context;
   }
 
@@ -377,7 +413,7 @@ public class OperationContext {
       return this;
     }
     final OperationContext context = new OperationContext(this);
-    context.fieldsNot = fieldsNot;
+    context.setFieldsNot(fieldsNot);
     return context;
   }
 
