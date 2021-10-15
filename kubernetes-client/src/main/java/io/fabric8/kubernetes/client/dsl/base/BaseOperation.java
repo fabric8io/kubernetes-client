@@ -197,24 +197,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     }
   }
 
-  public RootPaths getRootPaths() {
-    try {
-      URL requestUrl = new URL(config.getMasterUrl());
-      Request.Builder req = new Request.Builder().get().url(requestUrl);
-      return handleResponse(req, RootPaths.class);
-    } catch (KubernetesClientException e) {
-      if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {
-        throw e;
-      }
-      return null;
-    } catch (InterruptedException ie) {
-      Thread.currentThread().interrupt();
-      throw KubernetesClientException.launderThrowable(ie);
-    } catch (ExecutionException | IOException e) {
-      throw KubernetesClientException.launderThrowable(e);
-    }
-  }
-
   @Override
   public T edit(UnaryOperator<T> function) {
     throw new KubernetesClientException(READ_ONLY_EDIT_EXCEPTION_MESSAGE);
