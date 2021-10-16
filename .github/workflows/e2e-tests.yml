@@ -73,7 +73,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '8'
-          distribution: 'adopt'
+          distribution: 'temurin'
       - name: Install and Run Integration Tests
         run: |
           mvn ${MAVEN_ARGS} -f $IT_DIR/pom.xml test -Dtest="io.fabric8.kubernetes.**"
@@ -103,7 +103,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '8'
-          distribution: 'adopt'
+          distribution: 'temurin'
       - name: Install and Run Integration Tests
         run: |
           mvn ${MAVEN_ARGS} -f $IT_DIR/pom.xml test -Dtest="io.fabric8.openshift.**"

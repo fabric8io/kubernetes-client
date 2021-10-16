@@ -36,6 +36,6 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '8'
-          distribution: 'adopt'
+          distribution: 'temurin'
       - name: Check License Headers
         run: mvn ${MAVEN_ARGS} -N license:check
