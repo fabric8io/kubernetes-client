@@ -13,15 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.fabric8.kubernetes.client.dsl;
 
-
 import io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequest;
-import io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestList;
-import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.dsl.internal.CertificateSigningRequestsOperationsImpl;
+import java.net.MalformedURLException;
 
-public interface V1CertificatesAPIGroupDSL extends Client {
-  NonNamespaceOperation<CertificateSigningRequest, CertificateSigningRequestList, Resource<CertificateSigningRequest>> certificateSigningRequests();
-  public CertificateSigningRequestsOperationsImpl approve();
+public interface Approvable {
+  public CertificateSigningRequest approveOrDeny(String csrName, boolean approve) throws MalformedURLException;
 }
