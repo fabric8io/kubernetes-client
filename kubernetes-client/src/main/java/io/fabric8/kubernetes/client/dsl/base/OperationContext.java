@@ -332,7 +332,7 @@ public class OperationContext {
       return this;
     }
     final OperationContext context = new OperationContext(this);
-    context.setApiGroupVersion(apiGroupName);
+    context.setApiGroupName(apiGroupName);
     return context;
   }
 
