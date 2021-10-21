@@ -35,8 +35,8 @@ public class ApproveTest {
   KubernetesClient client;
   @Test
   public void testApprove() throws MalformedURLException {
+    
     //Given
-    KubernetesClient client = new DefaultKubernetesClient();
     CertificateSigningRequest csr = new CertificateSigningRequestBuilder()
       .withNewMetadata().withName("my-cert").endMetadata()
       .withNewSpec()
@@ -66,7 +66,6 @@ public class ApproveTest {
   public void testDeny() throws MalformedURLException {
 
     //Given
-    KubernetesClient client = new DefaultKubernetesClient();
     CertificateSigningRequest csr = new CertificateSigningRequestBuilder()
       .withNewMetadata().withName("my-cert").endMetadata()
       .withNewSpec()
