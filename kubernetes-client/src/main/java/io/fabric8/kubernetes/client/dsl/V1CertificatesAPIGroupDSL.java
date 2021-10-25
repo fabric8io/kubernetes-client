@@ -19,9 +19,7 @@ package io.fabric8.kubernetes.client.dsl;
 import io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequest;
 import io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestList;
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.dsl.internal.CertificateSigningRequestsOperationsImpl;
 
 public interface V1CertificatesAPIGroupDSL extends Client {
-  NonNamespaceOperation<CertificateSigningRequest, CertificateSigningRequestList, Resource<CertificateSigningRequest>> certificateSigningRequests();
-  public CertificateSigningRequestsOperationsImpl approve();
+  NonNamespaceOperation<CertificateSigningRequest, CertificateSigningRequestList, CertificateSigningRequestResource<CertificateSigningRequest>> certificateSigningRequests();
 }

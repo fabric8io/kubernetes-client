@@ -109,6 +109,7 @@ import io.fabric8.kubernetes.client.dsl.internal.core.v1.ComponentStatusOperatio
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.ReplicationControllerOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.ServiceOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.certificates.v1.CertificateSigningRequestOperationsImpl;
 import io.fabric8.kubernetes.client.extended.run.RunConfigBuilder;
 import io.fabric8.kubernetes.client.extended.run.RunOperations;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
@@ -141,6 +142,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
     Handlers.register(io.fabric8.kubernetes.api.model.extensions.ReplicaSet.class, io.fabric8.kubernetes.client.dsl.internal.extensions.v1beta1.ReplicaSetOperationsImpl::new);
     Handlers.register(ReplicationController.class, ReplicationControllerOperationsImpl::new);
     Handlers.register(StatefulSet.class, StatefulSetOperationsImpl::new);
+    Handlers.register(io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequest.class, CertificateSigningRequestOperationsImpl::new);
     // trigger a load of the other client handlers
     Adapters.list(Client.class);
   }
