@@ -18,29 +18,29 @@ package io.fabric8.kubernetes.client.dsl;
 import io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestCondition;
 import io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestConditionBuilder;
 
-public interface Approvable<T> {
+public interface Deniable<T> {
   /**
-   * Approve a given CertificateSigningRequest.
+   * Deny a given CertificateSigningRequest.
    *
-   * @param certificateSigningRequestCondition a condition of a CertificateSigningRequest object
-   * @return updated CertificateSigningRequest from Kubernetes ApiServer
-   */
-  T approve(CertificateSigningRequestCondition certificateSigningRequestCondition);
-
-  /**
-   * Approve a given CertificateSigningRequest.
-   *
-   * Creates an opinionated CertificateSigningRequestCondition while approving
+   * Creates an opinionated CertificateSigningRequestCondition while denying
    * provided CertificateSigningRequest
    *
    * @return updated CertificateSigningRequest from Kubernetes ApiServer
    */
-  default T approve() {
-    return approve(new CertificateSigningRequestConditionBuilder()
-      .withType("Approved")
+  default T deny() {
+    return deny(new CertificateSigningRequestConditionBuilder()
+      .withType("Denied")
       .withStatus("True")
-      .withReason("ApprovedViaRESTApi")
-      .withMessage("Approved by REST API /approval endpoint.")
+      .withReason("DeniedViaRESTApi")
+      .withMessage("Denied by REST API /approval endpoint.")
       .build());
   }
+
+  /**
+   * Reject a given CertificateSigningRequest.
+   *
+   * @param certificateSigningRequestCondition a condition of a CertificateSigningRequest object
+   * @return updated CertificateSigningRequest from Kubernetes ApiServer
+   */
+  T deny(CertificateSigningRequestCondition certificateSigningRequestCondition);
 }
