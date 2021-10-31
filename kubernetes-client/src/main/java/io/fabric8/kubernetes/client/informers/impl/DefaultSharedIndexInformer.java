@@ -190,7 +190,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
     if (check == 0) {
       return 0;
     }
-    return desired < check ? check : desired;
+    return Math.max(desired, check);
   }
 
   @Override
