@@ -21,7 +21,7 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
@@ -35,7 +35,7 @@ public class HandlersTest {
   
   static class MyPodOperationsImpl extends HasMetadataOperation<MyPod, KubernetesResourceList<MyPod>, Resource<MyPod>> {
 
-    public MyPodOperationsImpl(OkHttpClient client, Config config) {
+    public MyPodOperationsImpl(HttpClient client, Config config) {
       super(new OperationContext(), MyPod.class, null);
     }
     

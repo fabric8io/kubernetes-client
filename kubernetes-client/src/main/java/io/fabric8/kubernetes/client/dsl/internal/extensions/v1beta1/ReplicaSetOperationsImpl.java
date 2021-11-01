@@ -31,8 +31,8 @@ import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.RollingOperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.RollableScalableResourceOperation;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.RollingUpdater;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.utils.PodOperationUtil;
-import okhttp3.OkHttpClient;
 
 import java.io.OutputStream;
 import java.io.Reader;
@@ -45,12 +45,12 @@ import java.util.concurrent.TimeUnit;
 public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<ReplicaSet, ReplicaSetList, RollableScalableResource<ReplicaSet>>
   implements TimeoutImageEditReplacePatchable<ReplicaSet> {
 
-  public ReplicaSetOperationsImpl(OkHttpClient client, Config config) {
+  public ReplicaSetOperationsImpl(HttpClient client, Config config) {
     this(client, config, null);
   }
 
-  public ReplicaSetOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(new RollingOperationContext(), new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
+  public ReplicaSetOperationsImpl(HttpClient client, Config config, String namespace) {
+    this(new RollingOperationContext(), new OperationContext().withHttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
 
   public ReplicaSetOperationsImpl(RollingOperationContext context, OperationContext superContext) {

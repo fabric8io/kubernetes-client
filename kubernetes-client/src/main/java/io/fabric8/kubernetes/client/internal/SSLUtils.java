@@ -17,7 +17,11 @@ package io.fabric8.kubernetes.client.internal;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
-import io.fabric8.kubernetes.client.utils.HttpClientUtils;
+import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.http.HttpRequest;
+import io.fabric8.kubernetes.client.http.HttpResponse;
+import io.fabric8.kubernetes.client.internal.okhttp.HttpClientUtils;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.KeyManagementException;
@@ -37,10 +41,6 @@ import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
 import io.fabric8.kubernetes.client.utils.Utils;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,20 +62,17 @@ public final class SSLUtils {
                 .withConnectionTimeout(1000)
                 .build();
 
-        OkHttpClient client = HttpClientUtils.createHttpClient(config);
+        HttpClient client = HttpClientUtils.createHttpClient(config);
         try {
-            Request request = new Request.Builder().get().url(sslConfig.getMasterUrl())
+            HttpRequest request = client.newHttpRequestBuilder().uri(sslConfig.getMasterUrl())
                     .build();
-            Response response = client.newCall(request).execute();
-            try (ResponseBody body = response.body()) {
-              return response.isSuccessful();
-            }
+            HttpResponse<InputStream> response = client.send(request, InputStream.class);
+            response.body().close();
+            return response.isSuccessful();
         } catch (Throwable t) {
             LOG.warn("SSL handshake failed. Falling back to insecure connection.");
         } finally {
-            if (client != null && client.connectionPool() != null) {
-                client.connectionPool().evictAll();
-            }
+          client.clearPool();
         }
         return false;
     }
@@ -100,12 +97,15 @@ public final class SSLUtils {
         if (isTrustCerts) {
             return new TrustManager[]{
                 new X509TrustManager() {
+                    @Override
                     public void checkClientTrusted(X509Certificate[] chain, String s) {
                     }
 
+                    @Override
                     public void checkServerTrusted(X509Certificate[] chain, String s) {
                     }
 
+                    @Override
                     public X509Certificate[] getAcceptedIssuers() {
                         return new X509Certificate[0];
                     }

@@ -19,15 +19,15 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class RunOperations {
-  private final OkHttpClient client;
+  private final HttpClient client;
   private final Config config;
   private final String namespace;
   private final RunConfigBuilder runConfigBuilder;
 
-  public RunOperations(OkHttpClient client, Config config, String namespace, RunConfigBuilder runConfigBuilder) {
+  public RunOperations(HttpClient client, Config config, String namespace, RunConfigBuilder runConfigBuilder) {
     this.client = client;
     this.config = config;
     this.namespace = namespace;

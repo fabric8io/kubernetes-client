@@ -22,21 +22,25 @@ import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.client.utils.ExponentialBackoffIntervalCalculator;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.WatchEvent;
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.Watcher.Action;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -59,13 +63,15 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
   final AtomicInteger currentReconnectAttempt;
   private ScheduledFuture<?> reconnectAttempt;
   
-  private final BaseOperationRequestBuilder requestBuilder;
-  protected final OkHttpClient client;
+  protected final HttpClient client;
+  private BaseOperation<T, ?, ?> baseOperation;
+  private ListOptions listOptions;
+  private URL requestUrl;
 
   private final AtomicBoolean reconnectPending = new AtomicBoolean(false);
 
   AbstractWatchManager(
-    Watcher<T> watcher, BaseOperation<T, ?, ?> baseOperation, ListOptions listOptions, int reconnectLimit, int reconnectInterval, int maxIntervalExponent, Supplier<OkHttpClient> clientSupplier
+    Watcher<T> watcher, BaseOperation<T, ?, ?> baseOperation, ListOptions listOptions, int reconnectLimit, int reconnectInterval, int maxIntervalExponent, Supplier<HttpClient> clientSupplier
   ) throws MalformedURLException {
     this.watcher = watcher;
     this.reconnectLimit = reconnectLimit;
@@ -73,13 +79,15 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     this.resourceVersion = new AtomicReference<>(listOptions.getResourceVersion());
     this.currentReconnectAttempt = new AtomicInteger(0);
     this.forceClosed = new AtomicBoolean();
-    this.requestBuilder = new BaseOperationRequestBuilder<>(baseOperation, listOptions);
+    this.baseOperation = baseOperation;
+    this.requestUrl = baseOperation.getNamespacedUrl();
+    this.listOptions = listOptions;
     this.client = clientSupplier.get();
     
     runWatch();
   }
   
-  protected abstract void run(Request request);
+  protected abstract void run(URL url, Map<String, String> headers);
   
   protected abstract void closeRequest();
   
@@ -180,8 +188,8 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
   void eventReceived(Watcher.Action action, HasMetadata resource) {
     // the WatchEvent deserialization is not specifically typed
     // modify the type here if needed
-    if (resource != null && !requestBuilder.getBaseOperation().getType().isAssignableFrom(resource.getClass())) {
-      resource = (HasMetadata) Serialization.jsonMapper().convertValue(resource, requestBuilder.getBaseOperation().getType());
+    if (resource != null && !baseOperation.getType().isAssignableFrom(resource.getClass())) {
+      resource = Serialization.jsonMapper().convertValue(resource, baseOperation.getType());
     }
     watcher.eventReceived(action, (T)resource);
   }
@@ -191,11 +199,31 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
   }
   
   protected void runWatch() {
-    final Request request = requestBuilder.build(resourceVersion.get());
-    logger.debug("Watching {}...", request.url());
+    listOptions.setResourceVersion(resourceVersion.get());
+    URL url = BaseOperation.appendListOptionParams(requestUrl, listOptions);
+
+    String origin = requestUrl.getProtocol() + "://" + requestUrl.getHost();
+    if (requestUrl.getPort() != -1) {
+      origin += ":" + requestUrl.getPort();
+    }
+
+    Map<String, String> headers = new HashMap<>();
+    headers.put("Origin", origin);
+    
+    // this seems unnecessary as there's already an intercepter
+    Config config = baseOperation.getConfig();
+    if (Objects.nonNull(config)) {
+      Map<String, String> customHeaders = config.getCustomHeaders();
+      if (Objects.nonNull(customHeaders) && !customHeaders.isEmpty()) {
+        for (String key : customHeaders.keySet()) {
+          headers.put(key, customHeaders.get(key));
+        }
+      }
+    }
+    logger.debug("Watching {}...", url);
   
     closeRequest(); // only one can be active at a time
-    run(request);
+    run(url, headers);
   }
   
   @Override

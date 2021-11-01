@@ -86,7 +86,7 @@ public class CustomResourceDefinitionIT {
     assertThat(crd1).isNotNull();
 
     // Create
-    crd1 = client.apiextensions().v1().customResourceDefinitions().create(createCRD());
+    crd1 = client.apiextensions().v1().customResourceDefinitions().createOrReplace(createCRD());
     assertNotNull(crd1);
 
     // Get

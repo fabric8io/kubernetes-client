@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.ExtensionAdapter;
 import io.fabric8.kubernetes.client.ExtensionAdapterSupport;
 import io.fabric8.kubernetes.client.Handlers;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.servicecatalog.api.model.ClusterServiceBroker;
 import io.fabric8.servicecatalog.api.model.ClusterServiceClass;
 import io.fabric8.servicecatalog.api.model.ClusterServicePlan;
@@ -29,7 +30,6 @@ import io.fabric8.servicecatalog.client.internal.ClusterServiceClassOperationsIm
 import io.fabric8.servicecatalog.client.internal.ClusterServicePlanOperationsImpl;
 import io.fabric8.servicecatalog.client.internal.ServiceBindingOperationsImpl;
 import io.fabric8.servicecatalog.client.internal.ServiceInstanceOperationsImpl;
-import okhttp3.OkHttpClient;
 
 import java.net.URL;
 import java.util.concurrent.ConcurrentHashMap;
@@ -60,6 +60,6 @@ public class ServiceCatalogExtensionAdapter extends ExtensionAdapterSupport impl
 
 	@Override
 	public ServiceCatalogClient adapt(Client client) {
-            return new DefaultServiceCatalogClient(client.adapt(OkHttpClient.class), client.getConfiguration());
+            return new DefaultServiceCatalogClient(client.adapt(HttpClient.class), client.getConfiguration());
 	}
 }

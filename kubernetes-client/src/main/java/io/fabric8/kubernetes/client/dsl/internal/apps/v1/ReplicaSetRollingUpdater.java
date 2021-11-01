@@ -24,15 +24,15 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.Operation;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.WatchListDeletable;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 class ReplicaSetRollingUpdater extends RollingUpdater<ReplicaSet, ReplicaSetList> {
 
-  ReplicaSetRollingUpdater(OkHttpClient client, Config config, String namespace) {
+  ReplicaSetRollingUpdater(HttpClient client, Config config, String namespace) {
     super(client, config, namespace);
   }
 
-  ReplicaSetRollingUpdater(OkHttpClient client, Config config, String namespace, long rollingTimeoutMillis, long loggingIntervalMillis) {
+  ReplicaSetRollingUpdater(HttpClient client, Config config, String namespace, long rollingTimeoutMillis, long loggingIntervalMillis) {
     super(client, config, namespace, rollingTimeoutMillis, loggingIntervalMillis);
   }
 

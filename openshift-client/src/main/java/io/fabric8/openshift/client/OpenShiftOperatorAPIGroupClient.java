@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.openshift.api.model.operator.controlplane.v1alpha1.PodNetworkConnectivityCheck;
 import io.fabric8.openshift.api.model.operator.controlplane.v1alpha1.PodNetworkConnectivityCheckList;
 import io.fabric8.openshift.api.model.operator.v1.Authentication;
@@ -68,14 +69,13 @@ import io.fabric8.openshift.api.model.operator.v1.StorageList;
 import io.fabric8.openshift.api.model.operator.v1alpha1.ImageContentSourcePolicy;
 import io.fabric8.openshift.api.model.operator.v1alpha1.ImageContentSourcePolicyList;
 import io.fabric8.openshift.client.dsl.OpenShiftOperatorAPIGroupDSL;
-import okhttp3.OkHttpClient;
 
 public class OpenShiftOperatorAPIGroupClient extends BaseClient implements OpenShiftOperatorAPIGroupDSL {
   public OpenShiftOperatorAPIGroupClient() {
     super();
   }
 
-  public OpenShiftOperatorAPIGroupClient(OkHttpClient httpClient, final Config config) {
+  public OpenShiftOperatorAPIGroupClient(HttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

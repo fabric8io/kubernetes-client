@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchType;
+import io.fabric8.kubernetes.client.internal.okhttp.OkHttpClientImpl;
 import okhttp3.Call;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -65,7 +66,7 @@ class PatchTest {
     when(mockCall.execute())
       .thenReturn(mockResponse, mockResponse);
     when(mockClient.newCall(any())).thenReturn(mockCall);
-    kubernetesClient = new DefaultKubernetesClient(mockClient, config);
+    kubernetesClient = new DefaultKubernetesClient(new OkHttpClientImpl(mockClient), config);
   }
 
   @Test

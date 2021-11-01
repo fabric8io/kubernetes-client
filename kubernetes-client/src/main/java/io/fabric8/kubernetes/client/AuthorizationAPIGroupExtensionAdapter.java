@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.client;
 
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class AuthorizationAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<AuthorizationAPIGroupClient> {
 
@@ -31,7 +31,7 @@ public class AuthorizationAPIGroupExtensionAdapter extends APIGroupExtensionAdap
 
   @Override
   protected AuthorizationAPIGroupClient newInstance(Client client) {
-    return new AuthorizationAPIGroupClient(client.adapt(OkHttpClient.class), client.getConfiguration());
+    return new AuthorizationAPIGroupClient(client.adapt(HttpClient.class), client.getConfiguration());
   }
 
 }

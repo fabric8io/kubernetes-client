@@ -59,6 +59,8 @@ import org.junit.jupiter.api.Test;
 
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
+import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.internal.okhttp.OkHttpClientImpl;
 
 class BaseOperationTest {
 
@@ -230,7 +232,7 @@ class BaseOperationTest {
     assertEquals("https://172.17.0.2:8443/api/v1/namespaces/ns1/pods/foo", result.toString());
   }
 
-  private OkHttpClient newHttpClientWithSomeFailures(final AtomicInteger httpExecutionCounter, final int numFailures) {
+  private HttpClient newHttpClientWithSomeFailures(final AtomicInteger httpExecutionCounter, final int numFailures) {
     OkHttpClient mockClient = mock(OkHttpClient.class);
     when(mockClient.newCall(any())).thenAnswer(
       invocation -> {
@@ -255,18 +257,18 @@ class BaseOperationTest {
         return mockCall;
       }
     );
-    return mockClient;
+    return new OkHttpClientImpl(mockClient);
   }
 
   @Test
   void testNoHttpRetryWithDefaultConfig() throws MalformedURLException, IOException {
     final AtomicInteger httpExecutionCounter = new AtomicInteger(0);
-    OkHttpClient mockClient = newHttpClientWithSomeFailures(httpExecutionCounter, 1000);
+    HttpClient mockClient = newHttpClientWithSomeFailures(httpExecutionCounter, 1000);
     BaseOperation<Pod, PodList, Resource<Pod>> baseOp = new BaseOperation(new OperationContext()
       .withConfig(new ConfigBuilder().withMasterUrl("https://172.17.0.2:8443").build())
       .withPlural("pods")
       .withName("test-pod")
-      .withOkhttpClient(mockClient));
+      .withHttpClient(mockClient));
     baseOp.setType(Pod.class);
 
     // When
@@ -283,12 +285,12 @@ class BaseOperationTest {
   @Test
   void testHttpRetryWithMoreFailuresThanRetries() throws MalformedURLException, IOException {
     final AtomicInteger httpExecutionCounter = new AtomicInteger(0);
-    OkHttpClient mockClient = newHttpClientWithSomeFailures(httpExecutionCounter, 1000);
+    HttpClient mockClient = newHttpClientWithSomeFailures(httpExecutionCounter, 1000);
     BaseOperation<Pod, PodList, Resource<Pod>> baseOp = new BaseOperation(new OperationContext()
       .withConfig(new ConfigBuilder().withMasterUrl("https://172.17.0.2:8443").withRequestRetryBackoffLimit(3).build())
       .withPlural("pods")
       .withName("test-pod")
-      .withOkhttpClient(mockClient));
+      .withHttpClient(mockClient));
     baseOp.setType(Pod.class);
 
     // When
@@ -305,12 +307,12 @@ class BaseOperationTest {
   @Test
   void testHttpRetryWithLessFailuresThanRetries() throws MalformedURLException, IOException {
     final AtomicInteger httpExecutionCounter = new AtomicInteger(0);
-    OkHttpClient mockClient = newHttpClientWithSomeFailures(httpExecutionCounter, 2);
+    HttpClient mockClient = newHttpClientWithSomeFailures(httpExecutionCounter, 2);
     BaseOperation<Pod, PodList, Resource<Pod>> baseOp = new BaseOperation(new OperationContext()
       .withConfig(new ConfigBuilder().withMasterUrl("https://172.17.0.2:8443").withRequestRetryBackoffLimit(3).build())
       .withPlural("pods")
       .withName("test-pod")
-      .withOkhttpClient(mockClient));
+      .withHttpClient(mockClient));
     baseOp.setType(Pod.class);
 
     // When

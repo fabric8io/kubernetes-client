@@ -46,7 +46,8 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.ComponentStatusOperationsImpl;
 import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectorBuilder;
-import io.fabric8.kubernetes.client.utils.HttpClientUtils;
+import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.internal.okhttp.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.openshift.api.model.BrokerTemplateInstance;
 import io.fabric8.openshift.api.model.BrokerTemplateInstanceList;
@@ -172,7 +173,6 @@ import io.fabric8.openshift.client.dsl.internal.security.SecurityContextConstrai
 import io.fabric8.openshift.client.dsl.internal.user.GroupOperationsImpl;
 import io.fabric8.openshift.client.dsl.internal.user.UserOperationsImpl;
 import io.fabric8.openshift.client.internal.OpenShiftNamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl;
-import okhttp3.OkHttpClient;
 
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -208,7 +208,7 @@ public class DefaultOpenShiftClient extends BaseKubernetesClient<NamespacedOpenS
     this(HttpClientUtils.createHttpClient(config), config);
   }
 
-  public DefaultOpenShiftClient(OkHttpClient httpClient, OpenShiftConfig config) {
+  public DefaultOpenShiftClient(HttpClient httpClient, OpenShiftConfig config) {
     super(httpClient, config);
     try {
       this.openShiftUrl = new URL(config.getOpenShiftUrl());
@@ -702,8 +702,8 @@ public class DefaultOpenShiftClient extends BaseKubernetesClient<NamespacedOpenS
   }
 
   @Override
-  protected OkHttpClient adaptOkHttpClient(OkHttpClient okHttpClient) {
-    return OpenshiftAdapterSupport.adaptOkHttpClient(okHttpClient, getConfiguration());
+  protected HttpClient adaptHttpClient(HttpClient httpClient) {
+    return OpenshiftAdapterSupport.adaptHttpClient(httpClient, getConfiguration());
   }
 
 }

@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import io.fabric8.kubernetes.client.utils.InputStreamPumper;
-import okhttp3.Response;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
@@ -56,11 +55,11 @@ public class ExecLoopExample {
         final CountDownLatch latch = new CountDownLatch(1);
         watch = client.pods().inNamespace(namespace).withName(podName).redirectingOutput().usingListener(new ExecListener() {
           @Override
-          public void onOpen(Response response) {
+          public void onOpen() {
           }
 
           @Override
-          public void onFailure(Throwable t, Response response) {
+          public void onFailure(Throwable t) {
             latch.countDown();
           }
 

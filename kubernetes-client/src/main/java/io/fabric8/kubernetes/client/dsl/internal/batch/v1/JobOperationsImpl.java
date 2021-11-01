@@ -22,8 +22,8 @@ import io.fabric8.kubernetes.client.dsl.Loggable;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.PodControllerOperationContext;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.utils.PodOperationUtil;
-import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.batch.v1.Job;
 import io.fabric8.kubernetes.api.model.batch.v1.JobList;
 import io.fabric8.kubernetes.client.Config;
@@ -49,12 +49,12 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
   static final transient Logger LOG = LoggerFactory.getLogger(JobOperationsImpl.class);
   private final PodControllerOperationContext podControllerOperationContext;
 
-  public JobOperationsImpl(OkHttpClient client, Config config) {
+  public JobOperationsImpl(HttpClient client, Config config) {
     this(client, config, null);
   }
 
-  public JobOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(new PodControllerOperationContext(), new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
+  public JobOperationsImpl(HttpClient client, Config config, String namespace) {
+    this(new PodControllerOperationContext(), new OperationContext().withHttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
 
   public JobOperationsImpl(PodControllerOperationContext context, OperationContext superContext) {

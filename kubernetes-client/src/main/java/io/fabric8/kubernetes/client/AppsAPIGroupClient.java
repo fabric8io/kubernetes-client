@@ -32,8 +32,7 @@ import io.fabric8.kubernetes.client.dsl.AppsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.DeploymentOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.ReplicaSetOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.StatefulSetOperationsImpl;
-
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class AppsAPIGroupClient extends BaseClient implements AppsAPIGroupDSL {
 
@@ -41,7 +40,7 @@ public class AppsAPIGroupClient extends BaseClient implements AppsAPIGroupDSL {
     super();
   }
 
-  public AppsAPIGroupClient(OkHttpClient httpClient, final Config config) {
+  public AppsAPIGroupClient(HttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

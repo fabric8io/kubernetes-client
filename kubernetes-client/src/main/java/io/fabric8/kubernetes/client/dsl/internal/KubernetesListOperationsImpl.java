@@ -18,7 +18,6 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import io.fabric8.kubernetes.client.dsl.KubernetesListMixedOperation;
 import io.fabric8.kubernetes.client.dsl.KubernetesListOperation;
 import io.fabric8.kubernetes.client.dsl.Loadable;
-import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
@@ -32,6 +31,7 @@ import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.RecreateFromServerGettable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.utils.Serialization;
 
 import java.io.File;
@@ -53,7 +53,7 @@ public class KubernetesListOperationsImpl
   private final boolean deletingExisting;
   private final OperationContext context;
 
-  public KubernetesListOperationsImpl(OkHttpClient client, Config config) {
+  public KubernetesListOperationsImpl(HttpClient client, Config config) {
     this.context = HasMetadataOperationsImpl.defaultContext(new OperationContext(), client, config);
     this.deletingExisting = false;
   }

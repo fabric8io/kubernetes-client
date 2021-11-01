@@ -19,19 +19,19 @@ import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.openshift.api.model.storageversionmigrator.v1alpha1.StorageState;
 import io.fabric8.openshift.api.model.storageversionmigrator.v1alpha1.StorageStateList;
 import io.fabric8.openshift.api.model.storageversionmigrator.v1alpha1.StorageVersionMigration;
 import io.fabric8.openshift.api.model.storageversionmigrator.v1alpha1.StorageVersionMigrationList;
 import io.fabric8.openshift.client.dsl.OpenShiftStorageVersionMigratorApiGroupDSL;
-import okhttp3.OkHttpClient;
 
 public class OpenShiftStorageVersionMigratorApiGroupClient extends BaseClient implements OpenShiftStorageVersionMigratorApiGroupDSL {
   public OpenShiftStorageVersionMigratorApiGroupClient() {
     super();
   }
 
-  public OpenShiftStorageVersionMigratorApiGroupClient(OkHttpClient httpClient, final Config config) {
+  public OpenShiftStorageVersionMigratorApiGroupClient(HttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

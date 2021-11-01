@@ -16,7 +16,7 @@
 package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.client.dsl.*;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class AutoscalingAPIGroupClient extends BaseClient implements AutoscalingAPIGroupDSL {
 
@@ -24,7 +24,7 @@ public class AutoscalingAPIGroupClient extends BaseClient implements Autoscaling
     super();
   }
 
-  public AutoscalingAPIGroupClient(OkHttpClient httpClient, final Config config) {
+  public AutoscalingAPIGroupClient(HttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

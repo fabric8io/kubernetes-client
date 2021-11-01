@@ -19,13 +19,13 @@ import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.ExtensionAdapter;
 import io.fabric8.kubernetes.client.ExtensionAdapterSupport;
 import io.fabric8.kubernetes.client.Handlers;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshot;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotClass;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotContent;
 import io.fabric8.volumesnapshot.client.internal.VolumeSnapshotClassOperationsImpl;
 import io.fabric8.volumesnapshot.client.internal.VolumeSnapshotContentOperationsImpl;
 import io.fabric8.volumesnapshot.client.internal.VolumeSnapshotOperationsImpl;
-import okhttp3.OkHttpClient;
 
 import java.net.URL;
 import java.util.concurrent.ConcurrentHashMap;
@@ -55,7 +55,7 @@ public class VolumeSnapshotExtensionAdapter extends ExtensionAdapterSupport impl
 
   @Override
   public VolumeSnapshotClient adapt(Client client) {
-    return new DefaultVolumeSnapshotClient(client.adapt(OkHttpClient.class), client.getConfiguration());
+    return new DefaultVolumeSnapshotClient(client.adapt(HttpClient.class), client.getConfiguration());
   }
 
 }

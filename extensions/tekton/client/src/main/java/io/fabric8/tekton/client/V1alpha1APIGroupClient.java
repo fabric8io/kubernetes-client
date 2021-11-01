@@ -21,19 +21,41 @@ import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.tekton.client.dsl.V1alpha1APIGroupDSL;
-import io.fabric8.tekton.pipeline.v1alpha1.*;
+import io.fabric8.tekton.pipeline.v1alpha1.ClusterTask;
+import io.fabric8.tekton.pipeline.v1alpha1.ClusterTaskList;
+import io.fabric8.tekton.pipeline.v1alpha1.Condition;
+import io.fabric8.tekton.pipeline.v1alpha1.ConditionList;
+import io.fabric8.tekton.pipeline.v1alpha1.Pipeline;
+import io.fabric8.tekton.pipeline.v1alpha1.PipelineList;
+import io.fabric8.tekton.pipeline.v1alpha1.PipelineRun;
+import io.fabric8.tekton.pipeline.v1alpha1.PipelineRunList;
+import io.fabric8.tekton.pipeline.v1alpha1.Task;
+import io.fabric8.tekton.pipeline.v1alpha1.TaskList;
+import io.fabric8.tekton.pipeline.v1alpha1.TaskRun;
+import io.fabric8.tekton.pipeline.v1alpha1.TaskRunList;
 import io.fabric8.tekton.resource.v1alpha1.PipelineResource;
 import io.fabric8.tekton.resource.v1alpha1.PipelineResourceList;
-import io.fabric8.tekton.triggers.v1alpha1.*;
-import okhttp3.OkHttpClient;
+import io.fabric8.tekton.triggers.v1alpha1.ClusterInterceptor;
+import io.fabric8.tekton.triggers.v1alpha1.ClusterInterceptorList;
+import io.fabric8.tekton.triggers.v1alpha1.ClusterTriggerBinding;
+import io.fabric8.tekton.triggers.v1alpha1.ClusterTriggerBindingList;
+import io.fabric8.tekton.triggers.v1alpha1.EventListener;
+import io.fabric8.tekton.triggers.v1alpha1.EventListenerList;
+import io.fabric8.tekton.triggers.v1alpha1.Trigger;
+import io.fabric8.tekton.triggers.v1alpha1.TriggerBinding;
+import io.fabric8.tekton.triggers.v1alpha1.TriggerBindingList;
+import io.fabric8.tekton.triggers.v1alpha1.TriggerList;
+import io.fabric8.tekton.triggers.v1alpha1.TriggerTemplate;
+import io.fabric8.tekton.triggers.v1alpha1.TriggerTemplateList;
 
 public class V1alpha1APIGroupClient extends BaseClient implements V1alpha1APIGroupDSL {
   public V1alpha1APIGroupClient() {
     super();
   }
 
-  public V1alpha1APIGroupClient(OkHttpClient httpClient, final Config config) {
+  public V1alpha1APIGroupClient(HttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

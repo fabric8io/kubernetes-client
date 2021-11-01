@@ -17,14 +17,14 @@ package io.fabric8.kubernetes.client.utils;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
-import okhttp3.Interceptor;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okio.Buffer;
+import io.fabric8.kubernetes.client.http.BasicBuilder;
+import io.fabric8.kubernetes.client.http.HttpRequest;
+import io.fabric8.kubernetes.client.http.HttpResponse;
+import io.fabric8.kubernetes.client.http.Interceptor;
+import io.fabric8.kubernetes.client.http.HttpRequest.Builder;
 
-import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -127,28 +127,65 @@ public class BackwardsCompatibilityInterceptor implements Interceptor {
     openshiftOAPITransformations.put("imagestreamtags", new ResourceKey("ImageStream", "imagestreamtags", "image.openshift.io", "v1"));
     openshiftOAPITransformations.put("securitycontextconstraints", new ResourceKey("SecurityContextConstraints", "securitycontextconstraints", "security.openshift.io", "v1"));
   }
+  
+  @Override
+  public boolean afterFailure(Builder builder, HttpResponse<?> response) {
+    ResourceKey target = findNewTarget(builder, response);
+    if (target == null) {
+      return false;
+    }
+    
+    HttpRequest request = response.request();
+    if (request.bodyString() != null && !request.method().equalsIgnoreCase(PATCH)) {
+      Object object = Serialization.unmarshal(request.bodyString());
+      if (object instanceof HasMetadata) {
+        HasMetadata h = (HasMetadata) object;
+        if (target != null) {
+          h.setApiVersion(target.group + "/" + target.version);
+        }
+        switch (request.method()) {
+        case "POST":
+          builder.post(OperationSupport.JSON, Serialization.asJson(h));
+          break;
+        case "PUT":
+          builder.put(OperationSupport.JSON, Serialization.asJson(h));
+          break;
+        case "DELETE":
+          builder.delete(OperationSupport.JSON, Serialization.asJson(h));
+          break;
+        default:
+          return false;
+        }
+      }
+    }
 
-  public Response intercept(Chain chain) throws IOException {
-    Request request = chain.request();
-    Response response = chain.proceed(request);
+    return true;
+  }
+  
+  public ResourceKey findNewTarget(BasicBuilder basicBuilder, HttpResponse<?> response) {
+    HttpRequest request = response.request();
     if (isDeprecatedOpenshiftOapiRequest(request)) {
-      return handleOpenshiftOapiRequests(request, response, chain);
+      return handleOpenshiftOapiRequests(basicBuilder, request, response);
     } else if (!response.isSuccessful() && responseCodeToTransformations.keySet().contains(response.code())) {
-      String url = request.url().toString();
+      String url = request.uri().toString();
       Matcher matcher = getMatcher(url);
       ResourceKey key = getKey(matcher);
       ResourceKey target = responseCodeToTransformations.get(response.code()).get(key);
       if (target != null) {
-        response.close(); // At this point, we know we won't reuse or return the response; so close it to avoid a connection leak.
         String newUrl = new StringBuilder(url)
           .replace(matcher.start(API_VERSION), matcher.end(API_VERSION), target.version) // Order matters: We need to substitute right to left, so that former substitution don't affect the indexes of later.
           .replace(matcher.start(API_GROUP), matcher.end(API_GROUP), target.group)
           .toString();
-
-        return handleNewRequestAndProceed(request, newUrl, target, chain);
+        basicBuilder.uri(URI.create(newUrl));
+        return target;
       }
     }
-    return response;
+    return null;
+  }
+  
+  @Override
+  public boolean afterFailure(BasicBuilder basicBuilder, HttpResponse<?> response) {
+    return findNewTarget(basicBuilder, response) != null;
   }
 
   private static Matcher getMatcher(String url) {
@@ -168,46 +205,25 @@ public class BackwardsCompatibilityInterceptor implements Interceptor {
     return m != null ? new ResourceKey(null, m.group(PATH), m.group(API_GROUP), m.group(API_VERSION)) : null;
   }
 
-  private static Response handleOpenshiftOapiRequests(Request request, Response response, Chain chain) throws IOException{
+  private static ResourceKey handleOpenshiftOapiRequests(BasicBuilder builder, HttpRequest request, HttpResponse<?> response) {
     if (!response.isSuccessful() && response.code() == HttpURLConnection.HTTP_NOT_FOUND) {
-      String requestUrl = request.url().toString();
+      String requestUrl = request.uri().toString();
       // handle case when /oapi is not available
       String[] parts = requestUrl.split("/");
       String resourcePath = parts[parts.length - 1];
       ResourceKey target = openshiftOAPITransformations.get(resourcePath);
       if (target != null) {
         requestUrl = requestUrl.replace("/oapi", "/apis/" + target.getGroup());
-        return handleNewRequestAndProceed(request, requestUrl, target, chain);
+        builder.uri(URI.create(requestUrl));
+        return target;
       }
     }
-    return response;
+    return null;
   }
 
-  private static Response handleNewRequestAndProceed(Request request, String newUrl, ResourceKey target, Chain chain) throws IOException {
-    Request.Builder newRequest = request.newBuilder()
-      .url(newUrl);
-
-    if (request.body() != null && !request.method().equalsIgnoreCase(PATCH)) {
-      try (Buffer buffer = new Buffer()) {
-        request.body().writeTo(buffer);
-
-        Object object = Serialization.unmarshal(buffer.inputStream());
-        if (object instanceof HasMetadata) {
-          HasMetadata h = (HasMetadata) object;
-          if (target != null) {
-            h.setApiVersion(target.group + "/" + target.version);
-          }
-          newRequest = newRequest.method(request.method(), RequestBody.create(OperationSupport.JSON, Serialization.asJson(h)));
-        }
-      }
-    }
-
-    return chain.proceed(newRequest.build());
-  }
-
-  private static boolean isDeprecatedOpenshiftOapiRequest(Request request) {
-    if (request != null && request.url() != null) {
-      return request.url().toString().contains("oapi");
+  private static boolean isDeprecatedOpenshiftOapiRequest(HttpRequest request) {
+    if (request != null && request.uri() != null) {
+      return request.uri().toString().contains("oapi");
     }
     return false;
   }

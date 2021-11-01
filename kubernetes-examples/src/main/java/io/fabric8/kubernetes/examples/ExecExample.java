@@ -19,7 +19,6 @@ import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
-import okhttp3.Response;
 
 /**
  * This is an example of entering a pod to execute a command.
@@ -61,12 +60,12 @@ public class ExecExample {
     private static class SimpleListener implements ExecListener {
 
         @Override
-        public void onOpen(Response response) {
+        public void onOpen() {
             System.out.println("The shell will remain open for 10 seconds.");
         }
 
         @Override
-        public void onFailure(Throwable t, Response response) {
+        public void onFailure(Throwable t) {
             System.err.println("shell barfed");
         }
 

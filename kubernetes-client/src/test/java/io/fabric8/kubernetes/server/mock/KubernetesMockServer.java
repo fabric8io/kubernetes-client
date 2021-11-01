@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
+import io.fabric8.kubernetes.client.http.TlsVersion;
 import io.fabric8.mockwebserver.Context;
 import io.fabric8.mockwebserver.ContextBuilder;
 import io.fabric8.mockwebserver.DefaultMockServer;
@@ -31,8 +32,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
 
-import static io.fabric8.kubernetes.client.utils.HttpClientUtils.createHttpClientForMockServer;
-import static okhttp3.TlsVersion.TLS_1_2;
+import static io.fabric8.kubernetes.client.internal.okhttp.HttpClientUtils.createHttpClientForMockServer;
 
 @Deprecated
 // The class has moved under mvn:io.fabric8:kubernetes-server-mock in package: io.fabric8.client.server.mock
@@ -66,6 +66,7 @@ public class KubernetesMockServer extends DefaultMockServer {
         shutdown();
     }
 
+    @Override
     public void onStart() {
        expect().get().withPath("/").andReturn(200, new RootPathsBuilder().addToPaths(getRootPaths()).build()).always();
     }
@@ -78,7 +79,7 @@ public class KubernetesMockServer extends DefaultMockServer {
         Config config = new ConfigBuilder()
                 .withMasterUrl(url("/"))
                 .withTrustCerts(true)
-                .withTlsVersions(TLS_1_2)
+                .withTlsVersions(TlsVersion.TLS_1_2)
                 .withNamespace("test")
                 .build();
         return new DefaultKubernetesClient(createHttpClientForMockServer(config), config);

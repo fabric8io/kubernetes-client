@@ -22,15 +22,15 @@ import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.servicecatalog.api.model.ServiceBinding;
 import io.fabric8.servicecatalog.api.model.ServiceBindingList;
-import okhttp3.OkHttpClient;
 
 
 public class ServiceBindingOperationsImpl extends HasMetadataOperation<ServiceBinding, ServiceBindingList, ServiceBindingResource> implements ServiceBindingResource {
 
-  public ServiceBindingOperationsImpl(OkHttpClient client, Config config) {
-      this(new OperationContext().withOkhttpClient(client).withConfig(config));
+  public ServiceBindingOperationsImpl(HttpClient client, Config config) {
+      this(new OperationContext().withHttpClient(client).withConfig(config));
   }
 
     public ServiceBindingOperationsImpl(OperationContext ctx) {

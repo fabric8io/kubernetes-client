@@ -34,7 +34,7 @@ import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.utils.PodOperationUtil;
 import io.fabric8.kubernetes.client.dsl.internal.RollingOperationContext;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -49,12 +49,12 @@ import java.util.concurrent.TimeUnit;
 public class StatefulSetOperationsImpl extends RollableScalableResourceOperation<StatefulSet, StatefulSetList, RollableScalableResource<StatefulSet>>
   implements TimeoutImageEditReplacePatchable<StatefulSet>
 {
-  public StatefulSetOperationsImpl(OkHttpClient client, Config config) {
+  public StatefulSetOperationsImpl(HttpClient client, Config config) {
     this(client, config, null);
   }
 
-  public StatefulSetOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(new RollingOperationContext(), new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
+  public StatefulSetOperationsImpl(HttpClient client, Config config, String namespace) {
+    this(new RollingOperationContext(), new OperationContext().withHttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
 
   public StatefulSetOperationsImpl(RollingOperationContext context, OperationContext superContext) {

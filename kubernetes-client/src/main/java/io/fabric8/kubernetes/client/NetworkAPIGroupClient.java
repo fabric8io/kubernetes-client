@@ -22,7 +22,7 @@ import io.fabric8.kubernetes.api.model.networking.v1beta1.IngressList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NetworkAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class NetworkAPIGroupClient extends BaseClient implements NetworkAPIGroupDSL {
 
@@ -30,7 +30,7 @@ public class NetworkAPIGroupClient extends BaseClient implements NetworkAPIGroup
     super();
   }
 
-  public NetworkAPIGroupClient(OkHttpClient httpClient, final Config config) {
+  public NetworkAPIGroupClient(HttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

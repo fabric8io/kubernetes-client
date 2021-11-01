@@ -21,7 +21,7 @@ import io.fabric8.kubernetes.api.model.authorization.v1beta1.SelfSubjectRulesRev
 import io.fabric8.kubernetes.api.model.authorization.v1beta1.SubjectAccessReview;
 import io.fabric8.kubernetes.client.dsl.InOutCreateable;
 import io.fabric8.kubernetes.client.dsl.NamespacedInOutCreateable;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class V1beta1AuthorizationAPIGroupClient extends BaseClient implements V1beta1AuthorizationAPIGroupDSL {
 
@@ -32,7 +32,7 @@ public class V1beta1AuthorizationAPIGroupClient extends BaseClient implements V1
     super();
   }
 
-  public V1beta1AuthorizationAPIGroupClient(OkHttpClient httpClient, final Config config) {
+  public V1beta1AuthorizationAPIGroupClient(HttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

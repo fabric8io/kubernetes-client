@@ -22,8 +22,8 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.ServiceResource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.utils.URLUtils;
-import okhttp3.OkHttpClient;
 
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
@@ -35,12 +35,12 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
 
   public static final String EXTERNAL_NAME = "ExternalName";
 
-  public ServiceOperationsImpl(OkHttpClient client, Config config) {
+  public ServiceOperationsImpl(HttpClient client, Config config) {
     this(client, config, null);
   }
 
-  public ServiceOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
+  public ServiceOperationsImpl(HttpClient client, Config config, String namespace) {
+    this(new OperationContext().withHttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
 
   public ServiceOperationsImpl(OperationContext context) {
@@ -70,6 +70,7 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
     return get();
   }
 
+  @Override
   public String getURL(String portName) {
     String clusterIP = getMandatory().getSpec().getClusterIP();
     if ("None".equals(clusterIP)) {
@@ -136,6 +137,7 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
   }
 
   public class ServiceToUrlSortComparator implements Comparator<ServiceToURLProvider> {
+    @Override
     public int compare(ServiceToURLProvider first, ServiceToURLProvider second) {
       return first.getPriority() - second.getPriority();
     }

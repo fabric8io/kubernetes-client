@@ -19,14 +19,14 @@ import io.fabric8.kubernetes.api.model.metrics.v1beta1.PodMetrics;
 import io.fabric8.kubernetes.api.model.metrics.v1beta1.PodMetricsList;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.Namespaceable;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class PodMetricOperationsImpl extends MetricOperationsImpl<PodMetrics, PodMetricsList> implements Namespaceable<PodMetricOperationsImpl> {
-  public PodMetricOperationsImpl(OkHttpClient client, Config config) {
+  public PodMetricOperationsImpl(HttpClient client, Config config) {
     super(client, config, null, null, "pods", null, PodMetrics.class, PodMetricsList.class);
   }
 
-  private PodMetricOperationsImpl(OkHttpClient client, Config config, String name, String namespace) {
+  private PodMetricOperationsImpl(HttpClient client, Config config, String name, String namespace) {
     super(client, config, name, namespace, "pods", null, PodMetrics.class, PodMetricsList.class);
   }
 

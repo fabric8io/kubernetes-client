@@ -14,10 +14,26 @@
  * limitations under the License.
  */
 
-package io.fabric8.kubernetes.client;
+package io.fabric8.kubernetes.client.http;
 
-@Deprecated
-public interface ClientAware<C extends Client> {
+/**
+ * TODO: determine if java names should be used here as well or instead
+ */
+public enum TlsVersion {
+  TLS_1_3,
+  TLS_1_2,
+  TLS_1_1,
+  TLS_1_0,
+  SSL_3_0;
 
-  C getClient();
+  public static TlsVersion forJavaName(String string) {
+    if (string.equals("SSLv3")) {
+      return SSL_3_0;
+    }
+    if (string.equals("TLSv1")) {
+      return TLS_1_0;
+    }
+    return TlsVersion.valueOf(string.replaceAll("[v.]", "_"));
+  }
+  
 }

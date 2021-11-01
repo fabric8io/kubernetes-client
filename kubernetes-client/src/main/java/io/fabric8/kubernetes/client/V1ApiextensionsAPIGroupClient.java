@@ -19,14 +19,14 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class V1ApiextensionsAPIGroupClient extends BaseClient implements V1ApiextensionAPIGroupDSL {
   public V1ApiextensionsAPIGroupClient() {
     super();
   }
 
-  public V1ApiextensionsAPIGroupClient(OkHttpClient httpClient, final Config config) {
+  public V1ApiextensionsAPIGroupClient(HttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

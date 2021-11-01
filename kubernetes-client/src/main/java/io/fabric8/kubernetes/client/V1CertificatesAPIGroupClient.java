@@ -20,14 +20,14 @@ import io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequest
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.V1CertificatesAPIGroupDSL;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class V1CertificatesAPIGroupClient extends BaseClient implements V1CertificatesAPIGroupDSL {
   public V1CertificatesAPIGroupClient() {
     super();
   }
 
-  public V1CertificatesAPIGroupClient(OkHttpClient httpClient, final Config config) {
+  public V1CertificatesAPIGroupClient(HttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

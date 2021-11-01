@@ -18,13 +18,14 @@ package io.fabric8.openshift.client.dsl.internal.build;
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.model.Event;
 import io.fabric8.kubernetes.api.model.EventList;
-import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Triggerable;
 import io.fabric8.kubernetes.client.dsl.Typeable;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
+import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -47,17 +48,9 @@ import io.fabric8.openshift.client.dsl.buildconfig.CommitterEmailable;
 import io.fabric8.openshift.client.dsl.buildconfig.MessageAsFileTimeoutInputStreamable;
 import io.fabric8.openshift.client.dsl.internal.BuildConfigOperationContext;
 import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okio.BufferedSink;
-import okio.Okio;
-import okio.Source;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -91,8 +84,8 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
   private final long timeout;
   private final TimeUnit timeoutUnit;
 
-  public BuildConfigOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
-    this(new BuildConfigOperationContext(), new OperationContext().withOkhttpClient(client).withConfig(config));
+  public BuildConfigOperationsImpl(HttpClient client, OpenShiftConfig config) {
+    this(new BuildConfigOperationContext(), new OperationContext().withHttpClient(client).withConfig(config));
   }
 
   public BuildConfigOperationsImpl(BuildConfigOperationContext context, OperationContext superContext) {
@@ -126,8 +119,7 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
     try {
       updateApiVersion(request);
       URL instantiationUrl = new URL(URLUtils.join(getResourceUrl().toString(), "instantiate"));
-      RequestBody requestBody = RequestBody.create(JSON, OperationSupport.JSON_MAPPER.writer().writeValueAsString(request));
-      Request.Builder requestBuilder = new Request.Builder().post(requestBody).url(instantiationUrl);
+      HttpRequest.Builder requestBuilder = client.newHttpRequestBuilder().post(JSON, OperationSupport.JSON_MAPPER.writer().writeValueAsString(request)).url(instantiationUrl);
       return handleResponse(requestBuilder, Build.class);
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
@@ -145,11 +137,10 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
     try {
       //TODO: This needs some attention.
       String triggerUrl = URLUtils.join(getResourceUrl().toString(), "webhooks", secret, triggerType);
-      RequestBody requestBody = RequestBody.create(JSON, OperationSupport.JSON_MAPPER.writer().writeValueAsBytes(trigger));
-      Request.Builder requestBuilder = new Request.Builder()
-        .post(requestBody)
-        .url(triggerUrl)
-        .addHeader("X-Github-Event", "push");
+      HttpRequest.Builder requestBuilder = client.newHttpRequestBuilder()
+        .post(JSON, OperationSupport.JSON_MAPPER.writer().writeValueAsBytes(trigger))
+        .uri(triggerUrl)
+        .header("X-Github-Event", "push");
       handleResponse(requestBuilder, null);
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
@@ -164,7 +155,7 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
 
   @Override
   public Build fromInputStream(final InputStream inputStream) {
-    return fromInputStream(inputStream, -1L);
+    return submitToApiServer(inputStream, -1L);
   }
 
   @Override
@@ -176,14 +167,10 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
       // Use a length to prevent chunked encoding with OkHttp, which in turn
       // doesn't work with 'Expect: 100-continue' negotiation with the OpenShift API server
       logger.debug("Uploading archive file \"{}\" as binary input for the build ...", file.getAbsolutePath());
-      return fromInputStream(is, file.length());
+      return submitToApiServer(is, file.length());
     } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
-  }
-
-  private Build fromInputStream(final InputStream inputStream, final long contentLength) {
-    return submitToApiServerWithRequestBody(new ArchiveFileInputStreamRequestBody(client, config, inputStream, contentLength, name, namespace));
   }
 
   private String getQueryParameters() throws MalformedURLException {
@@ -277,79 +264,39 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
       return new BuildConfigBuilder(item);
   }
 
-  protected Build submitToApiServerWithRequestBody(RequestBody requestBody) {
+  protected Build submitToApiServer(InputStream inputStream, long contentLength) {
     try {
-      OkHttpClient newClient = client.newBuilder()
+      HttpClient newClient = client.newBuilder()
         .readTimeout(timeout, timeoutUnit)
         .writeTimeout(timeout, timeoutUnit)
         .build();
-      Request.Builder requestBuilder =
-        new Request.Builder().post(requestBody)
+      HttpRequest.Builder requestBuilder =
+        client.newHttpRequestBuilder().post("application/octet-stream", inputStream, contentLength)
           .header("Expect", "100-continue")
-          .url(getQueryParameters());
+          .uri(getQueryParameters());
       return handleResponse(newClient, requestBuilder, Build.class);
-    } catch (Exception e) {
-      throw KubernetesClientException.launderThrowable(e);
+    } catch (Throwable e) {
+      // TODO: better determine which exception this should occur on
+      // otherwise we need to have the httpclient api open up to the notion
+      // of a RequestBody/BodyPublisher
+      logger.error("Failed to upload archive file for the build: {}", name);
+      logger.error("Please check cluster events via `oc get events` to see what could have possibly gone wrong");
+      throw new KubernetesClientException("Can't instantiate binary build, due to error reading/writing stream. "
+        + "Can be caused if the output stream was closed by the server." +
+        "See if something's wrong in recent events in Cluster = " + getRecentEvents(), e);
     }
   }
 
-  public static class ArchiveFileInputStreamRequestBody extends RequestBody {
-    private long contentLength;
-    private InputStream inputStream;
-    private OkHttpClient okHttpClient;
-    private Config clientConfig;
-    private String name;
-    private String namespace;
-    public ArchiveFileInputStreamRequestBody(OkHttpClient client, Config config, InputStream inputStream, long contentLength, String name, String namespace) {
-      this.contentLength = contentLength;
-      this.inputStream = inputStream;
-      this.okHttpClient = client;
-      this.clientConfig = config;
-      this.name = name;
-      this.namespace = namespace;
+  protected String getRecentEvents() {
+    StringBuilder eventsAsStrBuilder = new StringBuilder();
+    List<Event> recentEventList = Handlers.getOperation(Event.class, EventList.class, client, config).inNamespace(namespace).list().getItems();
+    KubernetesResourceUtil.sortEventListBasedOnTimestamp(recentEventList);
+    for (int i = 0; i < 10 && i < recentEventList.size(); i++) {
+      Event event = recentEventList.get(i);
+      eventsAsStrBuilder.append(event.getReason()).append(" ")
+        .append(event.getMetadata().getName()).append(" ")
+        .append(event.getMessage()).append("\n");
     }
-
-    @Override
-    public MediaType contentType() {
-      return MediaType.parse("application/octet-stream");
-    }
-
-    @Override
-    public long contentLength() throws IOException {
-      return contentLength;
-    }
-
-    @Override
-    public void writeTo(BufferedSink sink) throws IOException {
-      try {
-        writeToSink(sink);
-      } catch (IOException e) {
-        logger.error("Failed to upload archive file for the build: {}", name);
-        logger.error("Please check cluster events via `oc get events` to see what could have possibly gone wrong");
-        throw KubernetesClientException.launderThrowable("Can't instantiate binary build, due to error reading/writing stream. "
-          + "Can be caused if the output stream was closed by the server." +
-          "See if something's wrong in recent events in Cluster = " + getRecentEvents(), e);
-      }
-    }
-
-    public void writeToSink(BufferedSink sink) throws IOException {
-      try (final BufferedInputStream bis = new BufferedInputStream(inputStream);
-           final Source source = Okio.source(bis)) {
-        sink.writeAll(source);
-      }
-    }
-
-    protected String getRecentEvents() {
-      StringBuilder eventsAsStrBuilder = new StringBuilder();
-      List<Event> recentEventList = Handlers.getOperation(Event.class, EventList.class, okHttpClient, clientConfig).inNamespace(namespace).list().getItems();
-      KubernetesResourceUtil.sortEventListBasedOnTimestamp(recentEventList);
-      for (int i = 0; i < 10 && i < recentEventList.size(); i++) {
-        Event event = recentEventList.get(i);
-        eventsAsStrBuilder.append(event.getReason()).append(" ")
-          .append(event.getMetadata().getName()).append(" ")
-          .append(event.getMessage()).append("\n");
-      }
-      return eventsAsStrBuilder.toString();
-    }
+    return eventsAsStrBuilder.toString();
   }
 }

@@ -23,15 +23,15 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class BindingOperationsImpl extends HasMetadataOperation<Binding, KubernetesResourceList<Binding>, Resource<Binding>> {
-  public BindingOperationsImpl(OkHttpClient client, Config config) {
+  public BindingOperationsImpl(HttpClient client, Config config) {
     this(client, config, null);
   }
 
-  public BindingOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
+  public BindingOperationsImpl(HttpClient client, Config config, String namespace) {
+    this(new OperationContext().withHttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
 
   public BindingOperationsImpl(OperationContext context) {
@@ -40,6 +40,7 @@ public class BindingOperationsImpl extends HasMetadataOperation<Binding, Kuberne
       .withPlural("bindings"), Binding.class, (Class<KubernetesResourceList<Binding>>) TypeFactory.rawClass(new TypeReference<KubernetesResourceList<Binding>>(){}.getType()));
   }
 
+  @Override
   public BindingOperationsImpl newInstance(OperationContext context) {
     return new BindingOperationsImpl(context);
   }

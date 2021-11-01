@@ -17,11 +17,10 @@ package io.fabric8.kubernetes.client.utils;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.RequestConfig;
-import okhttp3.Interceptor;
-import okhttp3.Request;
-import okhttp3.Response;
+import io.fabric8.kubernetes.client.http.BasicBuilder;
+import io.fabric8.kubernetes.client.http.HttpHeaders;
+import io.fabric8.kubernetes.client.http.Interceptor;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -33,20 +32,18 @@ public class ImpersonatorInterceptor implements Interceptor {
   public ImpersonatorInterceptor(Config config) {
     this.config = config;
   }
-
+  
   @Override
-  public Response intercept(Chain chain) throws IOException {
-    Request request = chain.request();
+  public void before(BasicBuilder builder, HttpHeaders headers) {
     RequestConfig requestConfig = config.getRequestConfig();
     if (isNotNullOrEmpty(requestConfig.getImpersonateUsername())) {
-      Request.Builder requestBuilder = chain.request().newBuilder();
 
-      requestBuilder.addHeader("Impersonate-User", requestConfig.getImpersonateUsername());
+      builder.header("Impersonate-User", requestConfig.getImpersonateUsername());
 
       String[] impersonateGroups = requestConfig.getImpersonateGroups();
       if (isNotNullOrEmpty(impersonateGroups)) {
         for (String group : impersonateGroups) {
-          requestBuilder.addHeader("Impersonate-Group", group);
+          builder.header("Impersonate-Group", group);
         }
       }
 
@@ -57,14 +54,11 @@ public class ImpersonatorInterceptor implements Interceptor {
           List<String> values = impersonateExtras.get(key);
           if(values != null) {
             for (String value : values) {
-              requestBuilder.addHeader("Impersonate-Extra-" + key, value);
+              builder.header("Impersonate-Extra-" + key, value);
             }
           }
         }
       }
-
-      request = requestBuilder.build();
     }
-    return chain.proceed(request);
   }
 }

@@ -27,24 +27,21 @@ import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.internal.LogWatchCallback;
 import io.fabric8.kubernetes.client.dsl.internal.RollingOperationContext;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.utils.PodOperationUtil;
 import io.fabric8.kubernetes.client.utils.URLUtils;
+import io.fabric8.kubernetes.client.utils.URLUtils.URLBuilder;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigList;
 import io.fabric8.openshift.client.dsl.DeployableScalableResource;
 import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,8 +61,8 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
   public static final String OPENSHIFT_IO_DEPLOYMENT_CONFIG_NAME = "openshift.io/deployment-config.name";
   private final RollingOperationContext rollingOperationContext;
 
-  public DeploymentConfigOperationsImpl(OkHttpClient client, Config config) {
-    this(new RollingOperationContext(), new OperationContext().withOkhttpClient(client).withConfig(config).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
+  public DeploymentConfigOperationsImpl(HttpClient client, Config config) {
+    this(new RollingOperationContext(), new OperationContext().withHttpClient(client).withConfig(config).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
 
   public DeploymentConfigOperationsImpl(RollingOperationContext context, OperationContext superContext) {
@@ -203,21 +200,13 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
 
   @Override
   public String getLog(Boolean isPretty) {
-    try {
-      return doGetLog(isPretty).string();
-    } catch (IOException e) {
-      throw KubernetesClientException.launderThrowable(forOperationType("getLog"), e);
-    }
+    return doGetLog(isPretty, String.class);
   }
 
-  private ResponseBody doGetLog(Boolean isPretty) {
+  private <T> T doGetLog(Boolean isPretty, Class<T> type) {
     try {
-      Request.Builder requestBuilder = new Request.Builder().get().url(getResourceLogUrl(isPretty, false));
-      Request request = requestBuilder.build();
-      Response response = client.newCall(request).execute();
-      ResponseBody body = response.body();
-      assertResponseCode(request, response);
-      return body;
+      URL url = getResourceLogUrl(isPretty, false);
+      return handleRawGet(url, type);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(forOperationType("doGetLog"), t);
     }
@@ -229,7 +218,7 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
    */
   @Override
   public Reader getLogReader() {
-    return doGetLog(false).charStream();
+    return doGetLog(false, Reader.class);
   }
 
   @Override
@@ -242,19 +231,16 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
     try {
       // In case of DeploymentConfig we directly get logs at DeploymentConfig Url, but we need to wait for Pods
       waitUntilDeploymentConfigPodBecomesReady(fromServer().get());
-      Request request = new Request.Builder().url(getResourceLogUrl(false, true)).get().build();
-      final LogWatchCallback callback = new LogWatchCallback(out);
-      OkHttpClient clone = client.newBuilder().readTimeout(0, TimeUnit.MILLISECONDS).build();
-      clone.newCall(request).enqueue(callback);
-      callback.waitUntilReady();
-      return callback;
+      URL url = getResourceLogUrl(false, true);
+      final LogWatchCallback callback = new LogWatchCallback(config, out);
+      return callback.callAndWait(client, url);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(forOperationType("watchLog"), t);
     }
   }
 
-  private HttpUrl getResourceLogUrl(Boolean withPrettyOutput, Boolean follow) throws MalformedURLException {
-    HttpUrl.Builder requestUrlBuilder = HttpUrl.get(URLUtils.join(getResourceUrl().toString(), "log")).newBuilder();
+  private URL getResourceLogUrl(Boolean withPrettyOutput, Boolean follow) throws MalformedURLException {
+    URLBuilder requestUrlBuilder = new URLBuilder(URLUtils.join(getResourceUrl().toString(), "log"));
     if (Boolean.TRUE.equals(withPrettyOutput)) {
       requestUrlBuilder.addQueryParameter("pretty", withPrettyOutput.toString());
     }

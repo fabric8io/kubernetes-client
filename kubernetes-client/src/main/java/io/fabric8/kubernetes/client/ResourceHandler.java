@@ -20,7 +20,7 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 
 public interface ResourceHandler<T extends HasMetadata, V extends VisitableBuilder<T, V>> {
@@ -39,7 +39,7 @@ public interface ResourceHandler<T extends HasMetadata, V extends VisitableBuild
    * @param listType      The list type
    * @return              The {@link HasMetadataOperation}
    */
-  <L extends KubernetesResourceList<T>> HasMetadataOperation<T, L, Resource<T>> operation(OkHttpClient client, Config config, Class<L> listType);
+  <L extends KubernetesResourceList<T>> HasMetadataOperation<T, L, Resource<T>> operation(HttpClient client, Config config, Class<L> listType);
 
   /**
    * @return true if there is a specialized operation associated with this handler

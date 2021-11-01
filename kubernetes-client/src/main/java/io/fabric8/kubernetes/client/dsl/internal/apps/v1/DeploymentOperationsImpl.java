@@ -25,8 +25,8 @@ import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.internal.RollingOperationContext;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
-import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DeploymentList;
 import io.fabric8.kubernetes.client.Config;
@@ -56,8 +56,8 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
   static final transient Logger LOG = LoggerFactory.getLogger(DeploymentOperationsImpl.class);
   public static final String DEPLOYMENT_KUBERNETES_IO_REVISION = "deployment.kubernetes.io/revision";
 
-  public DeploymentOperationsImpl(OkHttpClient client, Config config) {
-    this(new RollingOperationContext(), new OperationContext().withOkhttpClient(client).withConfig(config).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
+  public DeploymentOperationsImpl(HttpClient client, Config config) {
+    this(new RollingOperationContext(), new OperationContext().withHttpClient(client).withConfig(config).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
 
   public DeploymentOperationsImpl(RollingOperationContext context, OperationContext superContext) {

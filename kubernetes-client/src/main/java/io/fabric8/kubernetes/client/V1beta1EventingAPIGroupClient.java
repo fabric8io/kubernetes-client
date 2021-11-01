@@ -20,14 +20,14 @@ import io.fabric8.kubernetes.api.model.events.v1beta1.EventList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.V1beta1EventingAPIGroupDSL;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class V1beta1EventingAPIGroupClient extends BaseClient implements V1beta1EventingAPIGroupDSL {
   public V1beta1EventingAPIGroupClient() {
     super();
   }
 
-  public V1beta1EventingAPIGroupClient(OkHttpClient httpClient, final Config config) {
+  public V1beta1EventingAPIGroupClient(HttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

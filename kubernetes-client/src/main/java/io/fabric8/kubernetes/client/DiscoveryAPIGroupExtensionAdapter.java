@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.client;
 
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class DiscoveryAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<DiscoveryAPIGroupClient> {
 
@@ -31,6 +31,6 @@ public class DiscoveryAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<
 
   @Override
   protected DiscoveryAPIGroupClient newInstance(Client client) {
-    return new DiscoveryAPIGroupClient(client.adapt(OkHttpClient.class), client.getConfiguration());
+    return new DiscoveryAPIGroupClient(client.adapt(HttpClient.class), client.getConfiguration());
   }
 }

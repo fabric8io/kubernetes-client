@@ -25,17 +25,11 @@ import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
+import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.http.HttpRequest;
+import io.fabric8.kubernetes.client.http.HttpResponse;
+import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.utils.Serialization;
-import okhttp3.Call;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Protocol;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
-import okhttp3.WebSocket;
-import okhttp3.WebSocketListener;
-import okio.Buffer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -43,10 +37,16 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
@@ -60,21 +60,33 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class RawCustomResourceOperationsImplTest {
-  private OkHttpClient mockClient;
+  private HttpClient mockClient;
+  private HttpRequest.Builder mockRequestBuilder;
+  private HttpRequest mockRequest;
   private Config config;
   private CustomResourceDefinitionContext namespacedCustomResourceDefinitionContext;
   private RawCustomResourceOperationsImpl namespacedOperations;
   private RawCustomResourceOperationsImpl clusterOperations;
-  private ArgumentCaptor<Request> captor;
+  private ArgumentCaptor<HttpRequest> requestCaptor;
+  private ArgumentCaptor<URL> urlCaptor;
+  private ArgumentCaptor<String> bodyCaptor;
 
   @BeforeEach
   public void setUp() throws IOException {
-    mockClient = Mockito.mock(OkHttpClient.class, Mockito.RETURNS_DEEP_STUBS);
+    mockClient = Mockito.mock(HttpClient.class, Mockito.RETURNS_DEEP_STUBS);
+    mockRequestBuilder = Mockito.mock(HttpRequest.Builder.class, Mockito.RETURNS_SELF);
+    mockRequest = Mockito.mock(HttpRequest.class);
+    when(mockRequest.uri()).thenAnswer(uri -> {
+      ArgumentCaptor<URL> urlCaptor = ArgumentCaptor.forClass(URL.class);
+      verify(mockRequestBuilder, atLeastOnce()).url(urlCaptor.capture());
+      return urlCaptor.getValue().toURI();
+    });
+    when(mockRequestBuilder.build()).thenReturn(mockRequest);
+    when(mockClient.newHttpRequestBuilder()).thenReturn(mockRequestBuilder);
     config = new ConfigBuilder().withMasterUrl("https://localhost:8443/").build();
     namespacedCustomResourceDefinitionContext = new CustomResourceDefinitionContext.Builder()
       .withGroup("test.fabric8.io")
@@ -92,7 +104,9 @@ class RawCustomResourceOperationsImplTest {
       .build();
     namespacedOperations = new RawCustomResourceOperationsImpl(mockClient, config, namespacedCustomResourceDefinitionContext);
     clusterOperations = new RawCustomResourceOperationsImpl(mockClient, config, clusterCustomResourceDefinitionContext);
-    captor = ArgumentCaptor.forClass(Request.class);
+    requestCaptor = ArgumentCaptor.forClass(HttpRequest.class);
+    urlCaptor = ArgumentCaptor.forClass(URL.class);
+    bodyCaptor = ArgumentCaptor.forClass(String.class);
   }
 
   @Test
@@ -271,7 +285,7 @@ class RawCustomResourceOperationsImplTest {
       .isNotNull()
       .hasFieldOrPropertyWithValue("metadata.resourceVersion", "replaced");
     assertRequestCaptured(0, "/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos", "POST");
-    assertRequestCaptured("/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos/myresource", "PUT");
+    assertRequestCaptured(1, "/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos/myresource", "PUT");
   }
 
   @Test
@@ -305,7 +319,7 @@ class RawCustomResourceOperationsImplTest {
     // Then
     assertTrue(result); // delete()->deleteList() always returns true
     assertRequestCaptured(0, "/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos", "GET");
-    assertRequestCaptured("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/hello", "DELETE");
+    assertRequestCaptured(1, "/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/hello", "DELETE");
   }
 
   @Test
@@ -326,7 +340,7 @@ class RawCustomResourceOperationsImplTest {
     // Then
     assertTrue(result); // delete()->deleteList() always returns true
     assertRequestCaptured(0, "/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos", "GET");
-    assertRequestCaptured("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/hello", "DELETE");
+    assertRequestCaptured(1, "/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/hello", "DELETE");
   }
 
   @Test
@@ -347,7 +361,7 @@ class RawCustomResourceOperationsImplTest {
     // Then
     assertTrue(result); // delete()->deleteList() always returns true
     assertRequestCaptured(0, "/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos", "GET");
-    assertRequestCaptured("/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/hello", "DELETE");
+    assertRequestCaptured(1, "/apis/test.fabric8.io/v1alpha1/namespaces/ns1/hellos/hello", "DELETE");
   }
 
   @Test
@@ -464,7 +478,7 @@ class RawCustomResourceOperationsImplTest {
 
     // Then
     assertRequestCaptured("/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos/myresource", "DELETE");
-    assertEquals("dryRun=All", captor.getValue().url().encodedQuery());
+    assertEquals("dryRun=All", urlCaptor.getValue().getQuery());
   }
 
   @Test
@@ -476,9 +490,7 @@ class RawCustomResourceOperationsImplTest {
     namespacedOperations.inNamespace("myns").withName("myresource").withGracePeriod(1337L).delete();
     // Then
     assertRequestCaptured("/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos/myresource", "DELETE");
-    final Buffer b = new Buffer();
-    captor.getValue().body().writeTo(b);
-    assertThat(b.readUtf8()).contains("\"gracePeriodSeconds\":1337");
+    assertThat(bodyCaptor.getValue()).contains("\"gracePeriodSeconds\":1337");
   }
 
   @Test
@@ -491,9 +503,7 @@ class RawCustomResourceOperationsImplTest {
       .withPropagationPolicy(DeletionPropagation.FOREGROUND).delete();
     // Then
     assertRequestCaptured("/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos/myresource", "DELETE");
-    final Buffer b = new Buffer();
-    captor.getValue().body().writeTo(b);
-    assertThat(b.readUtf8()).contains("\"propagationPolicy\":\"Foreground\"");
+    assertThat(bodyCaptor.getValue()).contains("\"propagationPolicy\":\"Foreground\"");
   }
 
   @Test
@@ -506,7 +516,7 @@ class RawCustomResourceOperationsImplTest {
 
     // Then
     assertRequestCaptured("/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos", "POST");
-    assertEquals("dryRun=All", captor.getValue().url().encodedQuery());
+    assertEquals("dryRun=All", urlCaptor.getValue().getQuery());
   }
 
   @Test
@@ -543,7 +553,7 @@ class RawCustomResourceOperationsImplTest {
 
     // Then
     assertRequestCaptured("/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos", "GET");
-    assertEquals("limit=4&continue=eyJ2IjoibWV0YS5rOHMuaW8vdj", captor.getValue().url().encodedQuery());
+    assertEquals("limit=4&continue=eyJ2IjoibWV0YS5rOHMuaW8vdj", urlCaptor.getValue().getQuery());
   }
 
   @Test
@@ -556,7 +566,7 @@ class RawCustomResourceOperationsImplTest {
 
     // Then
     assertRequestCaptured("/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos", "GET");
-    assertEquals("limit=4", captor.getValue().url().encodedQuery());
+    assertEquals("limit=4", urlCaptor.getValue().getQuery());
   }
 
   @Test
@@ -569,7 +579,7 @@ class RawCustomResourceOperationsImplTest {
 
     // Then
     assertRequestCaptured("/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos", "GET");
-    assertEquals("labelSelector=foo%3Dbar", captor.getValue().url().encodedQuery());
+    assertEquals("labelSelector=foo%3Dbar", urlCaptor.getValue().getQuery());
   }
 
   @Test
@@ -591,7 +601,7 @@ class RawCustomResourceOperationsImplTest {
     // Then
     assertRequestCaptured(0, "/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos", "GET");
     assertRequestCaptured(1, "/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos/one", "DELETE");
-    assertRequestCaptured("/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos/two", "DELETE");
+    assertRequestCaptured(2, "/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos/two", "DELETE");
   }
 
   @Test
@@ -613,7 +623,7 @@ class RawCustomResourceOperationsImplTest {
     // Then
     assertRequestCaptured(0, "/apis/test.fabric8.io/v1alpha1/hellos", "GET");
     assertRequestCaptured(1, "/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos/one", "DELETE");
-    assertRequestCaptured("/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos/two", "DELETE");
+    assertRequestCaptured(2, "/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos/two", "DELETE");
   }
 
   @Test
@@ -647,7 +657,7 @@ class RawCustomResourceOperationsImplTest {
     // Then
     assertRequestCaptured(0, "/apis/test.fabric8.io/v1alpha1/hellos", "GET");
     assertRequestCaptured(1, "/apis/test.fabric8.io/v1alpha1/hellos/one", "DELETE");
-    assertRequestCaptured("/apis/test.fabric8.io/v1alpha1/hellos/two", "DELETE");
+    assertRequestCaptured(2, "/apis/test.fabric8.io/v1alpha1/hellos/two", "DELETE");
   }
 
   @Test
@@ -669,7 +679,7 @@ class RawCustomResourceOperationsImplTest {
     // Then
     assertRequestCaptured(0, "/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos", "GET");
     assertRequestCaptured(1, "/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos/one", "DELETE");
-    assertRequestCaptured("/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos/two", "DELETE");
+    assertRequestCaptured(2, "/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos/two", "DELETE");
   }
 
   @Test
@@ -691,7 +701,7 @@ class RawCustomResourceOperationsImplTest {
     // Then
     assertRequestCaptured(0, "/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos", "GET");
     assertRequestCaptured(1, "/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos/one", "DELETE");
-    assertRequestCaptured("/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos/two", "DELETE");
+    assertRequestCaptured(2, "/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos/two", "DELETE");
   }
 
   @Test
@@ -714,7 +724,7 @@ class RawCustomResourceOperationsImplTest {
     // Then
     assertRequestCaptured(0, "/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos", "GET");
     assertRequestCaptured(1, "/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos/one", "DELETE");
-    assertRequestCaptured("/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos/two", "DELETE");
+    assertRequestCaptured(2, "/apis/test.fabric8.io/v1alpha1/namespaces/myns/hellos/two", "DELETE");
   }
 
   @Test
@@ -793,12 +803,14 @@ class RawCustomResourceOperationsImplTest {
   void watch() throws IOException {
     // Given
     final AtomicReference<String> eventReceived = new AtomicReference<>();
-    when(mockClient.newBuilder().readTimeout(anyLong(), any()).build().newWebSocket(any(), any())).thenAnswer(i -> {
+    WebSocket.Builder builder = Mockito.mock(WebSocket.Builder.class, Mockito.RETURNS_SELF);
+    when(mockClient.newBuilder().readTimeout(anyLong(), any()).build().newWebSocketBuilder()).thenReturn(builder);
+    when(builder.buildAsync(any())).thenAnswer(i -> {
       final WebSocket webSocket = mock(WebSocket.class);
-      ((WebSocketListener)i.getArguments()[1]).onOpen(webSocket, mock(Response.class));
-      ((WebSocketListener)i.getArguments()[1])
+      ((WebSocket.Listener)i.getArguments()[0]).onOpen(webSocket);
+      ((WebSocket.Listener)i.getArguments()[0])
         .onMessage(webSocket, "{\"type\":\"ADDED\", \"object\":{\"kind\": \"Hello\", \"metadata\": {\"name\": \"test\"}}}");
-      return webSocket;
+      return CompletableFuture.completedFuture(webSocket);
     });
     // When
     final Watch result = clusterOperations.watch(new Watcher<String>() {
@@ -813,12 +825,9 @@ class RawCustomResourceOperationsImplTest {
       }
     });
     // Then
-    verify(mockClient.newBuilder().readTimeout(anyLong(), any()).build(), times(1))
-      .newWebSocket(captor.capture(), any());
     assertThat(eventReceived).hasValue("{\"kind\":\"Hello\",\"metadata\":{\"name\":\"test\"}}");
     assertThat(result).isNotNull();
-    assertThat(captor.getValue().url())
-      .hasToString("https://localhost:8443/apis/test.fabric8.io/v1alpha1/hellos?watch=true");
+    verify(builder, Mockito.times(1)).uri(Mockito.eq(URI.create("https://localhost:8443/apis/test.fabric8.io/v1alpha1/hellos?watch=true")));
   }
 
   private void mockCallWithResponse(int code) throws IOException {
@@ -831,11 +840,10 @@ class RawCustomResourceOperationsImplTest {
 
   @SafeVarargs
   private final void mockCallWithResponse(
-    Function<InvocationOnMock, Response> response, Function<InvocationOnMock, Response>... responses)
+    Function<InvocationOnMock, HttpResponse<InputStream>> response, Function<InvocationOnMock, HttpResponse<InputStream>>... responses)
     throws IOException {
-    Call mockCall = mock(Call.class);
     final AtomicInteger invocationCount = new AtomicInteger(-1);
-    when(mockCall.execute()).thenAnswer(invocation -> {
+    when(mockClient.send(any(), any())).thenAnswer(invocation -> {
       final int current = invocationCount.getAndIncrement();
       if (current == -1 || responses.length == 0){
         return response.apply(invocation);
@@ -844,32 +852,41 @@ class RawCustomResourceOperationsImplTest {
       }
       return responses[responses.length - 1].apply(invocation);
     });
-    when(mockClient.newCall(any())).thenReturn(mockCall);
   }
 
-  private Response buildResponse(int code) {
+  private HttpResponse<InputStream> buildResponse(int code) {
     return buildResponse(code, "{\"kind\":\"Status\",\"status\":\"Success\"}");
   }
 
-  private Response buildResponse(int code, String body) {
-    return new Response.Builder()
-      .request(new Request.Builder().url("http://mock").build())
-      .protocol(Protocol.HTTP_1_1)
-      .code(code)
-      .body(ResponseBody.create(MediaType.get("application/json"), body))
-      .message("mock")
-      .build();
+  private HttpResponse<InputStream> buildResponse(int code, String body) {
+    HttpResponse<InputStream> response = Mockito.mock(HttpResponse.class, Mockito.CALLS_REAL_METHODS);
+    when(response.code()).thenReturn(code);
+    when(response.body()).thenReturn(new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8)));
+    return response;
   }
 
-  private void assertRequestCaptured(int order, String url, String method) {
-    verify(mockClient, atLeastOnce()).newCall(captor.capture());
-    assertEquals(url, captor.getAllValues().get(order).url().encodedPath());
-    assertEquals(method, captor.getAllValues().get(order).method());
+  private void assertRequestCaptured(int order, String url, String method) throws IOException {
+    verify(mockClient, atLeastOnce()).send(requestCaptor.capture(), any());
+    switch (method) {
+    case "PUT":
+      verify(mockRequestBuilder, atLeastOnce()).put(any(), bodyCaptor.capture());
+      break;
+    case "POST":
+      verify(mockRequestBuilder, atLeastOnce()).post(any(), bodyCaptor.capture());
+      break;
+    case "GET":
+      break;
+    case "DELETE":
+      verify(mockRequestBuilder, atLeastOnce()).delete(any(), bodyCaptor.capture());
+      break;
+    default:
+      throw new AssertionError();
+    }
+    verify(mockRequestBuilder, atLeastOnce()).url(urlCaptor.capture());
+    assertEquals(url, urlCaptor.getAllValues().get(order).getPath());
   }
-
-  private void assertRequestCaptured(String url, String method) {
-    verify(mockClient, atLeastOnce()).newCall(captor.capture());
-    assertEquals(url, captor.getValue().url().encodedPath());
-    assertEquals(method, captor.getValue().method());
+  
+  private void assertRequestCaptured(String url, String method) throws IOException {
+    assertRequestCaptured(0, url, method);
   }
 }

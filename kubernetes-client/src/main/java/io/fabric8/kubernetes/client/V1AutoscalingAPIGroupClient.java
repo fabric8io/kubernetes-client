@@ -19,7 +19,7 @@ import io.fabric8.kubernetes.api.model.autoscaling.v1.HorizontalPodAutoscaler;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.HorizontalPodAutoscalerList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class V1AutoscalingAPIGroupClient extends BaseClient implements V1AutoscalingAPIGroupDSL {
 
@@ -27,7 +27,7 @@ public class V1AutoscalingAPIGroupClient extends BaseClient implements V1Autosca
     super();
   }
 
-  public V1AutoscalingAPIGroupClient(OkHttpClient httpClient, final Config config) {
+  public V1AutoscalingAPIGroupClient(HttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

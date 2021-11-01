@@ -17,9 +17,9 @@ package io.fabric8.openshift.client;
 
 import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.openshift.api.model.console.v1.ConsoleCLIDownload;
 import io.fabric8.openshift.api.model.console.v1.ConsoleCLIDownloadList;
 import io.fabric8.openshift.api.model.console.v1.ConsoleExternalLogLink;
@@ -35,14 +35,13 @@ import io.fabric8.openshift.api.model.console.v1.ConsoleYAMLSampleList;
 import io.fabric8.openshift.api.model.console.v1alpha1.ConsolePlugin;
 import io.fabric8.openshift.api.model.console.v1alpha1.ConsolePluginList;
 import io.fabric8.openshift.client.dsl.OpenShiftConsoleAPIGroupDSL;
-import okhttp3.OkHttpClient;
 
 public class OpenShiftConsoleAPIGroupClient extends BaseClient implements OpenShiftConsoleAPIGroupDSL {
   public OpenShiftConsoleAPIGroupClient() {
     super();
   }
 
-  public OpenShiftConsoleAPIGroupClient(OkHttpClient httpClient, final Config config) {
+  public OpenShiftConsoleAPIGroupClient(HttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

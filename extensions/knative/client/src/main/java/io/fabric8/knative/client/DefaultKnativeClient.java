@@ -76,7 +76,7 @@ import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class DefaultKnativeClient extends BaseClient implements NamespacedKnativeClient {
 
@@ -88,7 +88,7 @@ public class DefaultKnativeClient extends BaseClient implements NamespacedKnativ
         super(configuration);
     }
 
-    public DefaultKnativeClient(OkHttpClient httpClient, Config configuration) {
+    public DefaultKnativeClient(HttpClient httpClient, Config configuration) {
         super(httpClient, configuration);
     }
 

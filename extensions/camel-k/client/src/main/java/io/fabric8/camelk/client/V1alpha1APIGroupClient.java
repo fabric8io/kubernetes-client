@@ -15,15 +15,15 @@
  */
 package io.fabric8.camelk.client;
 
+import io.fabric8.camelk.client.dsl.V1alpha1APIGroupDSL;
+import io.fabric8.camelk.v1alpha1.Kamelet;
+import io.fabric8.camelk.v1alpha1.KameletList;
 import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.camelk.client.dsl.V1alpha1APIGroupDSL;
-import io.fabric8.camelk.v1alpha1.Kamelet;
-import io.fabric8.camelk.v1alpha1.KameletList;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class V1alpha1APIGroupClient extends BaseClient implements V1alpha1APIGroupDSL {
 
@@ -31,7 +31,7 @@ public class V1alpha1APIGroupClient extends BaseClient implements V1alpha1APIGro
     super();
   }
 
-  public V1alpha1APIGroupClient(OkHttpClient httpClient, final Config config) {
+  public V1alpha1APIGroupClient(HttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

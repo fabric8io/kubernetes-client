@@ -23,9 +23,9 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.kubernetes.client.utils.Utils;
-import okhttp3.OkHttpClient;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.function.BiFunction;
@@ -36,9 +36,9 @@ class ResourceHandlerImpl<T extends HasMetadata, V extends VisitableBuilder<T, V
   private final Class<T> type;
   private final Class<V> builderClass;
   private final Class<? extends KubernetesResourceList<T>> defaultListClass;
-  private final BiFunction<OkHttpClient, Config, HasMetadataOperation<T, ?, Resource<T>>> operationConstructor;
+  private final BiFunction<HttpClient, Config, HasMetadataOperation<T, ?, Resource<T>>> operationConstructor;
   
-  ResourceHandlerImpl(Class<T> type, BiFunction<OkHttpClient, Config, HasMetadataOperation<T, ?, Resource<T>>> operationConstructor) {
+  ResourceHandlerImpl(Class<T> type, BiFunction<HttpClient, Config, HasMetadataOperation<T, ?, Resource<T>>> operationConstructor) {
     this.type = type;
     this.context = ResourceDefinitionContext.fromResourceType(type);
     this.builderClass = KubernetesResourceUtil.inferBuilderType(type);
@@ -68,7 +68,7 @@ class ResourceHandlerImpl<T extends HasMetadata, V extends VisitableBuilder<T, V
   }
 
   @Override
-  public <L extends KubernetesResourceList<T>> HasMetadataOperation<T, L, Resource<T>> operation(OkHttpClient client, Config config, Class<L> listType) {
+  public <L extends KubernetesResourceList<T>> HasMetadataOperation<T, L, Resource<T>> operation(HttpClient client, Config config, Class<L> listType) {
     if (operationConstructor != null) {
       if (listType != null && !listType.isAssignableFrom(defaultListClass)) {
         throw new IllegalArgumentException(String.format("Handler type %s with list %s not compatible with %s", type, defaultListClass.getName(), listType.getName()));

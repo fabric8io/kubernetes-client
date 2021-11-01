@@ -20,14 +20,14 @@ import io.fabric8.kubernetes.api.model.discovery.v1.EndpointSliceList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.V1DiscoveryAPIGroupDSL;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class V1DiscoveryAPIGroupClient  extends BaseClient implements V1DiscoveryAPIGroupDSL {
   public V1DiscoveryAPIGroupClient() {
     super();
   }
 
-  public V1DiscoveryAPIGroupClient(OkHttpClient httpClient, final Config config) {
+  public V1DiscoveryAPIGroupClient(HttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

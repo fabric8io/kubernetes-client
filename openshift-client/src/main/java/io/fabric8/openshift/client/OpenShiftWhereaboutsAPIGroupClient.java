@@ -19,19 +19,19 @@ import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.openshift.api.model.whereabouts.v1alpha1.IPPool;
 import io.fabric8.openshift.api.model.whereabouts.v1alpha1.IPPoolList;
 import io.fabric8.openshift.api.model.whereabouts.v1alpha1.OverlappingRangeIPReservation;
 import io.fabric8.openshift.api.model.whereabouts.v1alpha1.OverlappingRangeIPReservationList;
 import io.fabric8.openshift.client.dsl.OpenShiftWhereaboutsAPIGroupDSL;
-import okhttp3.OkHttpClient;
 
 public class OpenShiftWhereaboutsAPIGroupClient  extends BaseClient implements OpenShiftWhereaboutsAPIGroupDSL {
   public OpenShiftWhereaboutsAPIGroupClient() {
     super();
   }
 
-  public OpenShiftWhereaboutsAPIGroupClient(OkHttpClient httpClient, final Config config) {
+  public OpenShiftWhereaboutsAPIGroupClient(HttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

@@ -19,13 +19,16 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.servicecatalog.api.model.*;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.servicecatalog.api.model.ServiceBinding;
+import io.fabric8.servicecatalog.api.model.ServiceBindingBuilder;
+import io.fabric8.servicecatalog.api.model.ServiceInstance;
+import io.fabric8.servicecatalog.api.model.ServiceInstanceList;
 
 public class ServiceInstanceOperationsImpl extends HasMetadataOperation<ServiceInstance, ServiceInstanceList, ServiceInstanceResource> implements ServiceInstanceResource {
 
-    public ServiceInstanceOperationsImpl(OkHttpClient client, Config config) {
-        this(new OperationContext().withOkhttpClient(client).withConfig(config));
+    public ServiceInstanceOperationsImpl(HttpClient client, Config config) {
+        this(new OperationContext().withHttpClient(client).withConfig(config));
     }
 
     public ServiceInstanceOperationsImpl(OperationContext ctx) {

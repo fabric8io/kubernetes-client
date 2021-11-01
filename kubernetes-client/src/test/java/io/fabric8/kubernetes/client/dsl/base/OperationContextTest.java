@@ -19,7 +19,7 @@ import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.batch.v1.Job;
 import io.fabric8.kubernetes.api.model.batch.v1.JobBuilder;
 import io.fabric8.kubernetes.client.Config;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -34,12 +34,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 class OperationContextTest {
-  private OkHttpClient okHttpClient;
+  private HttpClient httpClient;
   private Config config;
 
   @BeforeEach
   public void setUp() {
-    this.okHttpClient = Mockito.mock(OkHttpClient.class, Mockito.RETURNS_DEEP_STUBS);
+    this.httpClient = Mockito.mock(HttpClient.class, Mockito.RETURNS_DEEP_STUBS);
     this.config = Mockito.mock(Config.class, Mockito.RETURNS_DEEP_STUBS);
   }
 
@@ -71,7 +71,7 @@ class OperationContextTest {
       .withConfig(config)
       .withApiGroupName("batch")
       .withApiGroupVersion("v1")
-      .withOkhttpClient(okHttpClient)
+      .withHttpClient(httpClient)
       .withPlural("jobs")
       .withItem(new JobBuilder().withNewMetadata().withName("testItem").endMetadata().build())
       .withCascading(false)

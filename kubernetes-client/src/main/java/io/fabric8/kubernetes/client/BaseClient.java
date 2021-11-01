@@ -17,25 +17,22 @@
 package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
-import okhttp3.ConnectionPool;
-import okhttp3.Dispatcher;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.internal.okhttp.HttpClientUtils;
 import io.fabric8.kubernetes.api.model.APIGroup;
 import io.fabric8.kubernetes.api.model.APIGroupList;
 import io.fabric8.kubernetes.api.model.APIResourceList;
 import io.fabric8.kubernetes.api.model.RootPaths;
-import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 
 import java.net.URL;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 
 public class BaseClient implements Client, HttpClientAware {
 
   public static final String APIS = "/apis";
 
-  protected OkHttpClient httpClient;
+  protected HttpClient httpClient;
   private URL masterUrl;
   private String apiVersion;
   private String namespace;
@@ -53,10 +50,10 @@ public class BaseClient implements Client, HttpClientAware {
     this(HttpClientUtils.createHttpClient(config), config);
   }
 
-  public BaseClient(final OkHttpClient httpClient, Config config) {
+  public BaseClient(final HttpClient httpClient, Config config) {
     try {
       this.configuration = config;
-      this.httpClient = adaptOkHttpClient(httpClient);
+      this.httpClient = adaptHttpClient(httpClient);
       this.namespace = config.getNamespace();
       this.apiVersion = config.getApiVersion();
       if (config.getMasterUrl() == null) {
@@ -72,21 +69,7 @@ public class BaseClient implements Client, HttpClientAware {
 
   @Override
   public void close() {
-    ConnectionPool connectionPool = httpClient.connectionPool();
-    Dispatcher dispatcher = httpClient.dispatcher();
-    ExecutorService executorService = httpClient.dispatcher() != null ? httpClient.dispatcher().executorService() : null;
-
-    if (dispatcher != null) {
-      dispatcher.cancelAll();
-    }
-
-    if (connectionPool != null) {
-      connectionPool.evictAll();
-    }
-
-    if (executorService != null) {
-      executorService.shutdownNow();
-    }
+    httpClient.close();
   }
 
   @Override
@@ -111,7 +94,7 @@ public class BaseClient implements Client, HttpClientAware {
   }
 
   @Override
-  public OkHttpClient getHttpClient() {
+  public HttpClient getHttpClient() {
     return httpClient;
   }
 
@@ -174,7 +157,7 @@ public class BaseClient implements Client, HttpClientAware {
     return new OperationSupport(this.httpClient, this.getConfiguration()).restCall(VersionInfo.class, path);
   }
 
-  protected OkHttpClient adaptOkHttpClient(OkHttpClient okHttpClient) {
+  protected HttpClient adaptHttpClient(HttpClient okHttpClient) {
     return okHttpClient;
   }
 }

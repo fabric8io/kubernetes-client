@@ -27,20 +27,20 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.internal.KubernetesDeserializer;
-import okhttp3.OkHttpClient;
 
 public class HasMetadataOperationsImpl<T extends HasMetadata, L extends KubernetesResourceList<T>> extends HasMetadataOperation<T, L, Resource<T>> implements MixedOperation<T, L, Resource<T>> {
 
   private final ResourceDefinitionContext rdc;
   
-  public HasMetadataOperationsImpl(OkHttpClient client, Config config, ResourceDefinitionContext rdc, Class<T> type, Class<L> listType) {
+  public HasMetadataOperationsImpl(HttpClient client, Config config, ResourceDefinitionContext rdc, Class<T> type, Class<L> listType) {
     this(defaultContext(new OperationContext(), client, config), rdc, type, listType);
   }
 
-  public static OperationContext defaultContext(OperationContext context, OkHttpClient client, Config config) {
-    return context.withOkhttpClient(client).withConfig(config).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY);
+  public static OperationContext defaultContext(OperationContext context, HttpClient client, Config config) {
+    return context.withHttpClient(client).withConfig(config).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY);
   }
   
   public HasMetadataOperationsImpl(OperationContext context, ResourceDefinitionContext rdc, Class<T> type, Class<L> listType) {

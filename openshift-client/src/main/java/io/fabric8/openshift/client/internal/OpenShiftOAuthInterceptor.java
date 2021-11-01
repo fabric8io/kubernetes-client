@@ -20,7 +20,15 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.authorization.v1.SelfSubjectAccessReview;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.http.BasicBuilder;
+import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.http.HttpHeaders;
+import io.fabric8.kubernetes.client.http.HttpRequest;
+import io.fabric8.kubernetes.client.http.HttpResponse;
+import io.fabric8.kubernetes.client.http.Interceptor;
+import io.fabric8.kubernetes.client.internal.okhttp.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.Serialization;
+import io.fabric8.kubernetes.client.utils.TokenRefreshInterceptor;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.api.model.LocalResourceAccessReview;
@@ -30,17 +38,12 @@ import io.fabric8.openshift.api.model.SelfSubjectRulesReview;
 import io.fabric8.openshift.api.model.SubjectAccessReview;
 import io.fabric8.openshift.api.model.SubjectRulesReview;
 import io.fabric8.openshift.client.OpenShiftConfig;
-import okhttp3.Credentials;
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -66,35 +69,33 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
     HasMetadata.getPlural(SelfSubjectAccessReview.class)
     )));
 
-  private final OkHttpClient client;
+  private final HttpClient client;
   private final OpenShiftConfig config;
   private final AtomicReference<String> oauthToken = new AtomicReference<>();
 
-  public OpenShiftOAuthInterceptor(OkHttpClient client, OpenShiftConfig config) {
+  public OpenShiftOAuthInterceptor(HttpClient client, OpenShiftConfig config) {
     this.client = client;
     this.config = config;
   }
 
   @Override
-  public Response intercept(Chain chain) throws IOException {
-    Request request = chain.request();
-
-    //Build new request
-    Request.Builder builder = request.newBuilder();
-
+  public void before(BasicBuilder builder, HttpHeaders headers) {
     String token = oauthToken.get();
     // avoid overwriting basic auth token with stale bearer token
-    if (Utils.isNotNullOrEmpty(token) && Utils.isNullOrEmpty(request.header(AUTHORIZATION))) {
+    if (Utils.isNotNullOrEmpty(token) && (headers.headers(AUTHORIZATION).isEmpty() || Utils.isNullOrEmpty(headers.headers(AUTHORIZATION).get(0)))) {
       setAuthHeader(builder, token);
     }
+  }
 
-    request = builder.build();
-    Response response = chain.proceed(request);
+  @Override
+  public boolean afterFailure(BasicBuilder builder, HttpResponse<?> response) {
+    if (shouldProceed(response.request(), response)) {
+      return false;
+    }
 
-    //If response is Forbidden or Unauthorized, try to obtain a token via authorize() or via config.
-    if (isResponseSuccessful(request, response)) {
-      return response;
-    } else if (Utils.isNotNullOrEmpty(config.getUsername()) && Utils.isNotNullOrEmpty(config.getPassword())) {
+    String token = oauthToken.get();
+
+    if (Utils.isNotNullOrEmpty(config.getUsername()) && Utils.isNotNullOrEmpty(config.getPassword())) {
       synchronized (client) {
         // current token (if exists) is borked, don't resend
         oauthToken.set(null);
@@ -108,21 +109,16 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
       oauthToken.set(token);
     }
 
-
     //If token was obtained, then retry request using the obtained token.
     if (Utils.isNotNullOrEmpty(token)) {
-      // Close the previous response to prevent leaked connections.
-      response.body().close();
-
       setAuthHeader(builder, token);
-      request = builder.build();
-      return chain.proceed(request); //repeat request with new token
-    } else {
-      return response;
+      return true;
     }
+
+    return false;
   }
 
-  private void setAuthHeader(Request.Builder builder, String token) {
+  private void setAuthHeader(BasicBuilder builder, String token) {
     if (token != null) {
       builder.header(AUTHORIZATION, String.format("Bearer %s", token));
     }
@@ -130,31 +126,30 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
 
   private  String authorize() {
     try {
-      OkHttpClient.Builder builder = client.newBuilder();
-      builder.interceptors().remove(this);
-      OkHttpClient clone = builder.build();
+      HttpClient.Builder builder = client.newBuilder();
+      builder.addOrReplaceInterceptor(TokenRefreshInterceptor.NAME, null);
+      HttpClient clone = builder.build();
 
       URL url = new URL(URLUtils.join(config.getMasterUrl(), AUTHORIZATION_SERVER_PATH));
-      Response response = clone.newCall(new Request.Builder().get().url(url).build()).execute();
+      HttpResponse<String> response = clone.send(clone.newHttpRequestBuilder().url(url).build(), String.class);
 
       if (!response.isSuccessful() || response.body() == null) {
         throw new KubernetesClientException("Unexpected response (" + response.code() + " " + response.message() + ")");
       }
 
-      String body = response.body().string();
+      String body = response.body();
       JsonNode jsonResponse = Serialization.jsonMapper().readTree(body);
       String authorizationServer = jsonResponse.get("authorization_endpoint").asText();
-      response.close();
 
       url = new URL(authorizationServer + AUTHORIZE_QUERY);
 
-      String credential = Credentials.basic(config.getUsername(), config.getPassword());
-      response = clone.newCall(new Request.Builder().get().url(url).header(AUTHORIZATION, credential).build()).execute();
+      String credential = HttpClientUtils.basicCredentials(config.getUsername(), config.getPassword());
+      response = clone.send(client.newHttpRequestBuilder().url(url).header(AUTHORIZATION, credential).build(), String.class);
 
-      response.close();
-      response = response.priorResponse() != null ? response.priorResponse() : response;
-      response = response.networkResponse() != null ? response.networkResponse() : response;
-      String token = response.header(LOCATION);
+      response = response.previousResponse().isPresent() ? response.previousResponse().get() : response;
+
+      List<String> location = response.headers(LOCATION);
+      String token = !location.isEmpty() ? location.get(0) : null;
       if (token == null || token.isEmpty()) {
         throw new KubernetesClientException("Unexpected response (" + response.code() + " " + response.message() + "), to the authorization request. Missing header:[" + LOCATION + "]!");
       }
@@ -166,8 +161,8 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
     }
   }
 
-  private boolean isResponseSuccessful(Request request, Response response) {
-    String url = request.url().toString();
+  private boolean shouldProceed(HttpRequest request, HttpResponse<?> response) {
+    String url = request.uri().toString();
     String method = request.method();
     // always retry in case of authorization endpoints; since they also return 200 when no
     // authorization header is provided

@@ -15,8 +15,6 @@
  */
 package io.fabric8.kubernetes.client.dsl.base;
 
-import okhttp3.MediaType;
-
 import static io.fabric8.kubernetes.client.dsl.base.OperationSupport.JSON_PATCH;
 import static io.fabric8.kubernetes.client.dsl.base.OperationSupport.JSON_MERGE_PATCH;
 import static io.fabric8.kubernetes.client.dsl.base.OperationSupport.STRATEGIC_MERGE_JSON_PATCH;
@@ -29,13 +27,13 @@ public enum PatchType {
   JSON_MERGE(JSON_MERGE_PATCH),
   STRATEGIC_MERGE(STRATEGIC_MERGE_JSON_PATCH);
 
-  private final MediaType mediaType;
+  private final String contentType;
 
-  PatchType(MediaType mediaType) {
-    this.mediaType = mediaType;
+  PatchType(String mediaType) {
+    this.contentType = mediaType;
   }
 
-  public MediaType getMediaType() {
-    return this.mediaType;
+  public String getContentType() {
+    return this.contentType;
   }
 }

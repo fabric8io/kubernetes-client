@@ -39,10 +39,10 @@ import io.fabric8.kubernetes.client.dsl.Namespaceable;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.model.Scope;
-import okhttp3.OkHttpClient;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -75,18 +75,18 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
   private final GenericKubernetesResourceOperationsImpl delegate;
   private final CustomResourceDefinitionContext customResourceDefinition;
 
-  private RawCustomResourceOperationsImpl(OkHttpClient client, GenericKubernetesResourceOperationsImpl delegate, CustomResourceDefinitionContext crdContext) {
+  private RawCustomResourceOperationsImpl(HttpClient client, GenericKubernetesResourceOperationsImpl delegate, CustomResourceDefinitionContext crdContext) {
     super(client, delegate.getConfig());
     this.delegate = delegate;
     this.customResourceDefinition = crdContext;
   }
 
-  public RawCustomResourceOperationsImpl(OkHttpClient client, Config config, CustomResourceDefinitionContext customResourceDefinition) {
+  public RawCustomResourceOperationsImpl(HttpClient client, Config config, CustomResourceDefinitionContext customResourceDefinition) {
     this(
       client,
       new GenericKubernetesResourceOperationsImpl(
         new OperationContext()
-          .withOkhttpClient(client)
+          .withHttpClient(client)
           .withConfig(config)
           .withNamespace(null)
           .withName(null)

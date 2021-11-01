@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.client;
 
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class PolicyAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<PolicyAPIGroupClient> {
 
@@ -31,6 +31,6 @@ public class PolicyAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<Pol
 
   @Override
   protected PolicyAPIGroupClient newInstance(Client client) {
-    return new PolicyAPIGroupClient(client.adapt(OkHttpClient.class), client.getConfiguration());
+    return new PolicyAPIGroupClient(client.adapt(HttpClient.class), client.getConfiguration());
   }
 }

@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.client;
 
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class SchedulingAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<SchedulingAPIGroupClient> {
   @Override
@@ -28,6 +28,6 @@ public class SchedulingAPIGroupExtensionAdapter extends APIGroupExtensionAdapter
   }
   @Override
   protected SchedulingAPIGroupClient newInstance(Client client) {
-    return new SchedulingAPIGroupClient(client.adapt(OkHttpClient.class), client.getConfiguration());
+    return new SchedulingAPIGroupClient(client.adapt(HttpClient.class), client.getConfiguration());
   }
 }

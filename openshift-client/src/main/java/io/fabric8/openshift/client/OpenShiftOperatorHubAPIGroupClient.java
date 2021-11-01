@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.openshift.api.model.operatorhub.lifecyclemanager.v1.PackageManifest;
 import io.fabric8.openshift.api.model.operatorhub.lifecyclemanager.v1.PackageManifestList;
 import io.fabric8.openshift.api.model.operatorhub.v1.Operator;
@@ -37,14 +38,13 @@ import io.fabric8.openshift.api.model.operatorhub.v1alpha1.InstallPlanList;
 import io.fabric8.openshift.api.model.operatorhub.v1alpha1.Subscription;
 import io.fabric8.openshift.api.model.operatorhub.v1alpha1.SubscriptionList;
 import io.fabric8.openshift.client.dsl.OpenShiftOperatorHubAPIGroupDSL;
-import okhttp3.OkHttpClient;
 
 public class OpenShiftOperatorHubAPIGroupClient extends BaseClient implements OpenShiftOperatorHubAPIGroupDSL {
   public OpenShiftOperatorHubAPIGroupClient() {
     super();
   }
 
-  public OpenShiftOperatorHubAPIGroupClient(OkHttpClient httpClient, final Config config) {
+  public OpenShiftOperatorHubAPIGroupClient(HttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

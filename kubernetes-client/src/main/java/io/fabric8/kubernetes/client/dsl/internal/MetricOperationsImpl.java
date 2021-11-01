@@ -20,9 +20,9 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Nameable;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.utils.URLUtils;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.utils.URLUtils.URLBuilder;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -38,8 +38,8 @@ public class MetricOperationsImpl<T, L> extends OperationSupport implements Name
   private final String configuredName;
   private final Map<String, String> configuredLabels;
 
-  public MetricOperationsImpl(OkHttpClient client, Config config, String configuredName, String configuredNamespace, String plural, Map<String, String> configuredLabels, Class<T> apiTypeClass, Class<L> apiTypeListClass) {
-    super(new OperationContext().withOkhttpClient(client).withConfig(config));
+  public MetricOperationsImpl(HttpClient client, Config config, String configuredName, String configuredNamespace, String plural, Map<String, String> configuredLabels, Class<T> apiTypeClass, Class<L> apiTypeListClass) {
+    super(new OperationContext().withHttpClient(client).withConfig(config));
     this.plural = plural;
     this.apiTypeClass = apiTypeClass;
     this.apiTypeListClass = apiTypeListClass;
@@ -128,7 +128,7 @@ public class MetricOperationsImpl<T, L> extends OperationSupport implements Name
   }
 
   private String getUrlWithLabels(String baseUrl, Map<String, String> labels) {
-    HttpUrl.Builder httpUrlBuilder = HttpUrl.get(baseUrl).newBuilder();
+    URLBuilder httpUrlBuilder = new URLBuilder(baseUrl);
 
     StringBuilder sb = new StringBuilder();
     for(Map.Entry<String, String> entry : labels.entrySet()) {

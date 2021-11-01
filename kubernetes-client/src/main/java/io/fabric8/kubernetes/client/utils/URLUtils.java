@@ -16,12 +16,56 @@
 package io.fabric8.kubernetes.client.utils;
 
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
 public class URLUtils {
+  
+  public static class URLBuilder {
+    
+    private StringBuilder url;
+    
+    public URLBuilder(String url) {
+      this.url = new StringBuilder(url);
+    }
+    
+    public URLBuilder(URL url) {
+      this(url.toString());
+    }
+
+    public URLBuilder addQueryParameter(String key, String value) {
+      if (url.indexOf("?") == -1) {
+        url.append("?");
+      } else {
+        url.append("&");
+      }
+      try {
+        url.append(encodeToUTF(key).replaceAll("[+]", "%20")).append("=").append(encodeToUTF(value).replaceAll("[+]", "%20"));
+      } catch (UnsupportedEncodingException e) {
+        throw new RuntimeException(e);
+      }
+      return this;
+    }
+
+    public URL build() {
+      try {
+        return new URL(this.url.toString());
+      } catch (MalformedURLException e) {
+        throw new IllegalArgumentException(e.getMessage(), e);
+      }
+    }
+    
+    @Override
+    public String toString() {
+      return build().toString();
+    }
+    
+  }
+  
   private URLUtils() {
     throw new IllegalStateException("Utility class");
   }

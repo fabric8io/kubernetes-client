@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.openshift.api.model.machineconfig.v1.ContainerRuntimeConfig;
 import io.fabric8.openshift.api.model.machineconfig.v1.ContainerRuntimeConfigList;
 import io.fabric8.openshift.api.model.machineconfig.v1.ControllerConfig;
@@ -30,7 +31,6 @@ import io.fabric8.openshift.api.model.machineconfig.v1.MachineConfigList;
 import io.fabric8.openshift.api.model.machineconfig.v1.MachineConfigPool;
 import io.fabric8.openshift.api.model.machineconfig.v1.MachineConfigPoolList;
 import io.fabric8.openshift.client.dsl.MachineConfigurationAPIGroupDSL;
-import okhttp3.OkHttpClient;
 
 public class OpenShiftMachineConfigurationAPIGroupClient extends BaseClient implements MachineConfigurationAPIGroupDSL {
 
@@ -38,7 +38,7 @@ public class OpenShiftMachineConfigurationAPIGroupClient extends BaseClient impl
     super();
   }
 
-  public OpenShiftMachineConfigurationAPIGroupClient(OkHttpClient httpClient, final Config config) {
+  public OpenShiftMachineConfigurationAPIGroupClient(HttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

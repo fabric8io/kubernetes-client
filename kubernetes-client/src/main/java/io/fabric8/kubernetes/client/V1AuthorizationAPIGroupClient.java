@@ -21,7 +21,7 @@ import io.fabric8.kubernetes.api.model.authorization.v1.SelfSubjectRulesReview;
 import io.fabric8.kubernetes.api.model.authorization.v1.SubjectAccessReview;
 import io.fabric8.kubernetes.client.dsl.InOutCreateable;
 import io.fabric8.kubernetes.client.dsl.NamespacedInOutCreateable;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class V1AuthorizationAPIGroupClient extends BaseClient implements V1AuthorizationAPIGroupDSL {
   public static final String AUTHORIZATION_APIGROUP = "authorization.k8s.io";
@@ -31,7 +31,7 @@ public class V1AuthorizationAPIGroupClient extends BaseClient implements V1Autho
     super();
   }
 
-  public V1AuthorizationAPIGroupClient(OkHttpClient httpClient, final Config config) {
+  public V1AuthorizationAPIGroupClient(HttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

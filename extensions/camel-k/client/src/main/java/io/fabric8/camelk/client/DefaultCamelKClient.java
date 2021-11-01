@@ -15,15 +15,15 @@
  */
 package io.fabric8.camelk.client;
 
-import io.fabric8.camelk.client.dsl.V1alpha1APIGroupDSL;
 import io.fabric8.camelk.client.dsl.V1APIGroupDSL;
-import okhttp3.OkHttpClient;
+import io.fabric8.camelk.client.dsl.V1alpha1APIGroupDSL;
+import io.fabric8.kubernetes.client.BaseClient;
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
-import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class DefaultCamelKClient extends BaseClient implements NamespacedCamelKClient {
 
@@ -35,7 +35,7 @@ public class DefaultCamelKClient extends BaseClient implements NamespacedCamelKC
     super(configuration);
   }
 
-  public DefaultCamelKClient(OkHttpClient httpClient, Config configuration) {
+  public DefaultCamelKClient(HttpClient httpClient, Config configuration) {
     super(httpClient, configuration);
   }
 

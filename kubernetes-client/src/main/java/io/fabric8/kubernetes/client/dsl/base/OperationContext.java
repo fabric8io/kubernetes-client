@@ -21,13 +21,14 @@ import java.util.Objects;
 
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.internal.okhttp.OkHttpClientImpl;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.Utils;
-import okhttp3.OkHttpClient;
 
 public class OperationContext {
 
-  protected OkHttpClient client;
+  protected HttpClient client;
   protected Config config;
   protected Object item;
   protected String resourceVersion;
@@ -62,7 +63,7 @@ public class OperationContext {
   public OperationContext() {
   }
 
-  public OperationContext(OkHttpClient client, Config config, String plural, String namespace, String name,
+  public OperationContext(HttpClient client, Config config, String plural, String namespace, String name,
       String apiGroupName, String apiGroupVersion, boolean cascading, Object item, Map<String, String> labels,
       Map<String, String[]> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn,
       Map<String, String> fields, Map<String, String[]> fieldsNot, String resourceVersion, boolean reloadingFromServer,
@@ -91,7 +92,7 @@ public class OperationContext {
     this.dryRun = dryRun;
   }
 
-  public OkHttpClient getClient() {
+  public HttpClient getClient() {
     return client;
   }
 
@@ -182,7 +183,7 @@ public class OperationContext {
         this.propagationPolicy, this.namespaceFromGlobalConfig, this.dryRun);
   }
 
-  public OperationContext withOkhttpClient(OkHttpClient client) {
+  public OperationContext withHttpClient(HttpClient client) {
     if (this.client == client) {
       return this;
     }

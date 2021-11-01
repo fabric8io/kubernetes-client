@@ -19,19 +19,19 @@ import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.openshift.api.model.tuned.v1.Profile;
 import io.fabric8.openshift.api.model.tuned.v1.ProfileList;
 import io.fabric8.openshift.api.model.tuned.v1.Tuned;
 import io.fabric8.openshift.api.model.tuned.v1.TunedList;
 import io.fabric8.openshift.client.dsl.OpenShiftTunedAPIGroupDSL;
-import okhttp3.OkHttpClient;
 
 public class OpenShiftTunedAPIGroupClient extends BaseClient implements OpenShiftTunedAPIGroupDSL {
   public OpenShiftTunedAPIGroupClient() {
     super();
   }
 
-  public OpenShiftTunedAPIGroupClient(OkHttpClient httpClient, final Config config) {
+  public OpenShiftTunedAPIGroupClient(HttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

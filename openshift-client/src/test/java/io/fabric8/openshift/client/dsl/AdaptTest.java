@@ -15,10 +15,10 @@
  */
 package io.fabric8.openshift.client.dsl;
 
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftConfigBuilder;
-import okhttp3.OkHttpClient;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -32,8 +32,8 @@ class AdaptTest {
     OpenShiftClient client = new DefaultOpenShiftClient();
 
     // When + Then
-    assertTrue(client.isAdaptable(OkHttpClient.class));
-    assertNotNull(client.adapt(OkHttpClient.class));
+    assertTrue(client.isAdaptable(HttpClient.class));
+    assertNotNull(client.adapt(HttpClient.class));
   }
 
   @Test

@@ -17,9 +17,9 @@ package io.fabric8.openshift.client;
 
 import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.openshift.api.model.APIServer;
 import io.fabric8.openshift.api.model.APIServerList;
 import io.fabric8.openshift.api.model.Authentication;
@@ -50,14 +50,13 @@ import io.fabric8.openshift.api.model.Scheduler;
 import io.fabric8.openshift.api.model.SchedulerList;
 import io.fabric8.openshift.client.dsl.OpenShiftConfigAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.internal.config.DNSOperationsImpl;
-import okhttp3.OkHttpClient;
 
 public class OpenShiftConfigAPIGroupClient extends BaseClient implements OpenShiftConfigAPIGroupDSL {
   public OpenShiftConfigAPIGroupClient() {
     super();
   }
 
-  public OpenShiftConfigAPIGroupClient(OkHttpClient httpClient, final Config config) {
+  public OpenShiftConfigAPIGroupClient(HttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

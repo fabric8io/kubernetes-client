@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.openshift.api.model.monitoring.v1.Alertmanager;
 import io.fabric8.openshift.api.model.monitoring.v1.AlertmanagerList;
 import io.fabric8.openshift.api.model.monitoring.v1.PodMonitor;
@@ -36,14 +37,13 @@ import io.fabric8.openshift.api.model.monitoring.v1.ThanosRulerList;
 import io.fabric8.openshift.api.model.monitoring.v1alpha1.AlertmanagerConfig;
 import io.fabric8.openshift.api.model.monitoring.v1alpha1.AlertmanagerConfigList;
 import io.fabric8.openshift.client.dsl.OpenShiftMonitoringAPIGroupDSL;
-import okhttp3.OkHttpClient;
 
 public class OpenShiftMonitoringAPIGroupClient extends BaseClient implements OpenShiftMonitoringAPIGroupDSL {
   public OpenShiftMonitoringAPIGroupClient() {
     super();
   }
 
-  public OpenShiftMonitoringAPIGroupClient(OkHttpClient httpClient, final Config config) {
+  public OpenShiftMonitoringAPIGroupClient(HttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

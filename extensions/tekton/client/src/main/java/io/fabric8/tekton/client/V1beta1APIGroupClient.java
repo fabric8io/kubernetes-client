@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.tekton.client.dsl.V1beta1APIGroupDSL;
 import io.fabric8.tekton.pipeline.v1beta1.ClusterTask;
 import io.fabric8.tekton.pipeline.v1beta1.ClusterTaskList;
@@ -32,14 +33,13 @@ import io.fabric8.tekton.pipeline.v1beta1.Task;
 import io.fabric8.tekton.pipeline.v1beta1.TaskList;
 import io.fabric8.tekton.pipeline.v1beta1.TaskRun;
 import io.fabric8.tekton.pipeline.v1beta1.TaskRunList;
-import okhttp3.OkHttpClient;
 
 public class V1beta1APIGroupClient extends BaseClient implements V1beta1APIGroupDSL {
   public V1beta1APIGroupClient() {
     super();
   }
 
-  public V1beta1APIGroupClient(OkHttpClient httpClient, final Config config) {
+  public V1beta1APIGroupClient(HttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

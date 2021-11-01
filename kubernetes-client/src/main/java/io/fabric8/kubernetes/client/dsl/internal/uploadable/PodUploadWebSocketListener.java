@@ -16,18 +16,16 @@
 package io.fabric8.kubernetes.client.dsl.internal.uploadable;
 
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import okhttp3.Response;
-import okhttp3.WebSocket;
-import okhttp3.WebSocketListener;
-import okio.ByteString;
+import io.fabric8.kubernetes.client.http.WebSocket;
 
 import java.io.IOException;
-import java.util.Optional;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class PodUploadWebSocketListener extends WebSocketListener {
+public class PodUploadWebSocketListener implements WebSocket.Listener {
 
   private static final byte FLAG_STDIN = (byte) 0;
   private static final long MAX_QUEUE_SIZE = 16 * 1024 * 1024L;
@@ -45,39 +43,28 @@ public class PodUploadWebSocketListener extends WebSocketListener {
   }
 
   @Override
-  public void onOpen(WebSocket webSocket, Response response) {
+  public void onOpen(WebSocket webSocket) {
     webSocketRef.set(webSocket);
   }
 
   @Override
-  public void onMessage(WebSocket webSocket, ByteString bytes) {
-    if (readyLatch.getCount() > 0 && bytes.size() == 1) {
+  public void onMessage(WebSocket webSocket, ByteBuffer bytes) {
+    if (readyLatch.getCount() > 0 && bytes.remaining() == 1) {
       readyLatch.countDown();
-    } else if (bytes.size() > 1) {
-      error.set(bytes.substring(1).toString());
+    } else if (bytes.remaining() > 1) {
+      bytes.position(1);
+      error.set(StandardCharsets.UTF_8.decode(bytes).toString());
     }
   }
-
+  
   @Override
-  public void onClosed(WebSocket webSocket, int code, String reason) {
+  public void onClose(WebSocket webSocket, int code, String reason) {
     completeLatch.countDown();
   }
 
   @Override
-  public void onFailure(WebSocket webSocket, Throwable t, Response response) {
-    if (response != null) {
-      final String responseBody = Optional.ofNullable(response.body())
-        .map(rb -> {
-          try {
-            return rb.string();
-          } catch (IOException e) {
-            return e.getMessage();
-          }
-        }).orElse("");
-      error.set(String.format("%s - %s%n%s", response.code(), response.message(), responseBody));
-    } else {
-      error.set("PodUploadWebSocketListener failed with no response");
-    }
+  public void onError​(WebSocket webSocket, Throwable t) {
+    error.set(String.format("PodUploadWebSocketListener failed with - %s", t.getMessage()));
     while (readyLatch.getCount() > 0) {
       readyLatch.countDown();
     }
@@ -104,7 +91,7 @@ public class PodUploadWebSocketListener extends WebSocketListener {
       checkError();
       Thread.sleep(50);
     }
-    webSocketRef.get().close(1000, "Operation completed");
+    webSocketRef.get().sendClose(1000, "Operation completed");
     if (!completeLatch.await(timeoutMilliseconds, TimeUnit.MILLISECONDS)) {
       throw new IOException("Upload operation timed out before completing");
     }
@@ -117,7 +104,7 @@ public class PodUploadWebSocketListener extends WebSocketListener {
     byte[] toSend = new byte[length + 1];
     toSend[0] = FLAG_STDIN;
     System.arraycopy(data, 0, toSend, 1, length);
-    webSocketRef.get().send(ByteString.of(toSend));
+    webSocketRef.get().send(ByteBuffer.wrap(toSend));
   }
 
   final void waitForQueue(int length) {

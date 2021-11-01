@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.openshift.api.model.machine.v1beta1.Machine;
 import io.fabric8.openshift.api.model.machine.v1beta1.MachineHealthCheck;
 import io.fabric8.openshift.api.model.machine.v1beta1.MachineHealthCheckList;
@@ -26,14 +27,13 @@ import io.fabric8.openshift.api.model.machine.v1beta1.MachineList;
 import io.fabric8.openshift.api.model.machine.v1beta1.MachineSet;
 import io.fabric8.openshift.api.model.machine.v1beta1.MachineSetList;
 import io.fabric8.openshift.client.dsl.OpenShiftMachineAPIGroupDSL;
-import okhttp3.OkHttpClient;
 
 public class OpenShiftMachineAPIGroupClient extends BaseClient implements OpenShiftMachineAPIGroupDSL {
   public OpenShiftMachineAPIGroupClient() {
     super();
   }
 
-  public OpenShiftMachineAPIGroupClient(OkHttpClient httpClient, final Config config) {
+  public OpenShiftMachineAPIGroupClient(HttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

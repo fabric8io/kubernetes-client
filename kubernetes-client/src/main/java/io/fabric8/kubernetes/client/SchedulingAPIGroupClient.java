@@ -22,10 +22,10 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.SchedulingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1SchedulingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1beta1SchedulingAPIGroupDSL;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class SchedulingAPIGroupClient extends BaseClient implements SchedulingAPIGroupDSL {
-  public SchedulingAPIGroupClient(OkHttpClient httpClient, final Config config) {
+  public SchedulingAPIGroupClient(HttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

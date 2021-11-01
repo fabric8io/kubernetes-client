@@ -25,6 +25,7 @@ import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.Reader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
@@ -33,6 +34,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.Collections;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
@@ -71,14 +73,12 @@ import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
 import io.fabric8.kubernetes.client.utils.PodOperationUtil;
 import io.fabric8.kubernetes.client.dsl.internal.PortForwarderWebsocket;
 import io.fabric8.kubernetes.client.dsl.internal.uploadable.PodUpload;
+import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.http.HttpRequest;
+import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
+import io.fabric8.kubernetes.client.utils.URLUtils.URLBuilder;
 import io.fabric8.kubernetes.client.lib.FilenameUtils;
 
 public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodResource<Pod>> implements PodResource<Pod>,CopyOrReadable<Boolean,InputStream, Boolean> {
@@ -109,12 +109,12 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
     private final Integer bufferSize;
     private final PodOperationContext podOperationContext;
 
-  public PodOperationsImpl(OkHttpClient client, Config config) {
+  public PodOperationsImpl(HttpClient client, Config config) {
     this(client, config, null);
   }
 
-  public PodOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(new PodOperationContext(), new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
+  public PodOperationsImpl(HttpClient client, Config config, String namespace) {
+    this(new PodOperationContext(), new OperationContext().withHttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
 
   public PodOperationsImpl(PodOperationContext context, OperationContext superContext) {
@@ -175,16 +175,11 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
     }
     return sb.toString();
   }
-
-  protected ResponseBody doGetLog(){
+  
+  protected <T> T doGetLog(Class<T> type){
     try {
       URL url = new URL(URLUtils.join(getResourceUrl().toString(), getLogParameters()));
-      Request.Builder requestBuilder = new Request.Builder().get().url(url);
-      Request request = requestBuilder.build();
-      Response response = client.newCall(request).execute();
-      ResponseBody body = response.body();
-      assertResponseCode(request, response);
-      return body;
+      return handleRawGet(url, type);
     } catch (IOException ioException) {
       throw KubernetesClientException.launderThrowable(forOperationType("doGetLog"), ioException);
     }
@@ -192,11 +187,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
 
   @Override
   public String getLog() {
-    try(ResponseBody body = doGetLog()) {
-      return body.string();
-    } catch (IOException e) {
-      throw KubernetesClientException.launderThrowable(forOperationType("getLog"), e);
-    }
+    return doGetLog(String.class);
   }
 
   /**
@@ -205,7 +196,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
    */
   @Override
   public Reader getLogReader() {
-    return doGetLog().charStream();
+    return doGetLog(Reader.class);
   }
 
   @Override
@@ -225,12 +216,8 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
         getContext().getLogWaitTimeout() : DEFAULT_POD_LOG_WAIT_TIMEOUT);
       // Issue Pod Logs HTTP request
       URL url = new URL(URLUtils.join(getResourceUrl().toString(), getLogParameters() + "&follow=true"));
-      Request request = new Request.Builder().url(url).get().build();
-      final LogWatchCallback callback = new LogWatchCallback(out);
-      OkHttpClient clone = client.newBuilder().readTimeout(0, TimeUnit.MILLISECONDS).build();
-      clone.newCall(request).enqueue(callback);
-      callback.waitUntilReady();
-      return callback;
+      final LogWatchCallback callback = new LogWatchCallback(config, out);
+      return callback.callAndWait(client, url);
     } catch (IOException ioException) {
       throw KubernetesClientException.launderThrowable(forOperationType("watchLog"), ioException);
     }
@@ -293,10 +280,9 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
       if (Utils.isNullOrEmpty(eviction.getMetadata().getName())) {
         throw new KubernetesClientException("Name not specified, but operation requires it.");
       }
-      RequestBody requestBody = RequestBody.create(JSON, JSON_MAPPER.writeValueAsString(eviction));
 
       URL requestUrl = new URL(URLUtils.join(getResourceUrl().toString(), "eviction"));
-      Request.Builder requestBuilder = new Request.Builder().post(requestBody).url(requestUrl);
+      HttpRequest.Builder requestBuilder = client.newHttpRequestBuilder().post(JSON, JSON_MAPPER.writeValueAsString(eviction)).url(requestUrl);
       handleResponse(requestBuilder, null, Collections.emptyMap());
       return true;
     } catch (KubernetesClientException e) {
@@ -321,23 +307,32 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
     public ExecWatch exec(String... command) {
         String[] actualCommands = command.length >= 1 ? command : EMPTY_COMMAND;
         try {
-            URL url = getURLWithCommandParams(HttpUrl.get(getResourceUrl()).newBuilder(), actualCommands);
-            Request.Builder r = new Request.Builder().url(url).header("Sec-WebSocket-Protocol", "v4.channel.k8s.io").get();
-            OkHttpClient clone = client.newBuilder().readTimeout(0, TimeUnit.MILLISECONDS).build();
-            final ExecWebSocketListener execWebSocketListener = new ExecWebSocketListener(getConfig(), in, out, err, errChannel, inPipe, outPipe, errPipe, errChannelPipe, execListener, bufferSize);
-            clone.newWebSocket(r.build(), execWebSocketListener);
-            execWebSocketListener.waitUntilReady();
+            URL url = getURLWithCommandParams(actualCommands);
+            HttpClient clone = client.newBuilder().readTimeout(0, TimeUnit.MILLISECONDS).build();
+            final ExecWebSocketListener execWebSocketListener = new ExecWebSocketListener(in, out, err, errChannel, inPipe, outPipe, errPipe, errChannelPipe, execListener, bufferSize);
+            CompletableFuture<WebSocket> startedFuture = clone.newWebSocketBuilder()
+                .header("Sec-WebSocket-Protocol", "v4.channel.k8s.io")
+                .uri(url.toURI())
+                .buildAsync(execWebSocketListener);
+            startedFuture.whenComplete((w, t) -> {
+              if (t != null) {
+                execWebSocketListener.onError​(w, t);
+              }
+            });
+            Utils.waitUntilReadyOrFail(startedFuture, config.getWebsocketTimeout(), TimeUnit.MILLISECONDS);
             return execWebSocketListener;
         } catch (Throwable t) {
             throw KubernetesClientException.launderThrowable(forOperationType("exec"), t);
         }
     }
 
-    URL getURLWithCommandParams(HttpUrl.Builder httpUrlBuilder, String[] commands) {
-      httpUrlBuilder.addPathSegment("exec");
+    URL getURLWithCommandParams(String[] commands) throws MalformedURLException {
+      String url = URLUtils.join(getResourceUrl().toString(), "exec");
+      
+      URLBuilder httpUrlBuilder = new URLBuilder(url);
 
       for (String cmd : commands) {
-        httpUrlBuilder.addQueryParameter("command", cmd);
+          httpUrlBuilder.addQueryParameter("command", cmd);
       }
 
       if (containerId != null && !containerId.isEmpty()) {
@@ -355,7 +350,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
       if (err != null || errPipe != null) {
         httpUrlBuilder.addQueryParameter("stderr", "true");
       }
-      return httpUrlBuilder.build().url();
+      return httpUrlBuilder.build();
     }
 
     @Override
@@ -421,16 +416,6 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
             PipedInputStream in = new PipedInputStream(out, 1024);
             ExecWatch watch = writingOutput(out).usingListener(new ExecListener() {
               @Override
-              public void onOpen(Response response) {
-
-              }
-
-              @Override
-              public void onFailure(Throwable t, Response response) {
-
-              }
-
-              @Override
               public void onClose(int code, String reason) {
                 try {
                   out.flush();
@@ -494,16 +479,6 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
             PipedOutputStream out = new PipedOutputStream();
             PipedInputStream in = new PipedInputStream(out, 1024);
             ExecWatch watch = writingOutput(out).usingListener(new ExecListener() {
-              @Override
-              public void onOpen(Response response) {
-
-              }
-
-              @Override
-              public void onFailure(Throwable t, Response response) {
-
-              }
-
               @Override
               public void onClose(int code, String reason) {
                 try {

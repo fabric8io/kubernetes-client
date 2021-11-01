@@ -15,10 +15,10 @@
  */
 package io.fabric8.knative.client.serving.v1;
 
-import io.fabric8.kubernetes.client.ExtensionAdapterSupport;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.ExtensionAdapter;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.ExtensionAdapterSupport;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 import java.net.URL;
 import java.util.concurrent.ConcurrentHashMap;
@@ -28,7 +28,7 @@ public class ServingV1ExtensionAdapter extends ExtensionAdapterSupport implement
 
     static final ConcurrentMap<URL, Boolean> IS_KNATIVE = new ConcurrentHashMap<>();
     static final ConcurrentMap<URL, Boolean> USES_KNATIVE_APIGROUPS = new ConcurrentHashMap<>();
-    
+
 	@Override
 	public Class<ServingV1Client> getExtensionType() {
 		return ServingV1Client.class;
@@ -41,6 +41,6 @@ public class ServingV1ExtensionAdapter extends ExtensionAdapterSupport implement
 
 	@Override
 	public ServingV1Client adapt(Client client) {
-    return new DefaultServingV1Client(client.adapt(OkHttpClient.class), client.getConfiguration());
+    return new DefaultServingV1Client(client.adapt(HttpClient.class), client.getConfiguration());
 	}
 }

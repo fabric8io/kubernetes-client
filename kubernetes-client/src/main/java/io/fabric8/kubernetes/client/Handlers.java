@@ -26,10 +26,10 @@ import io.fabric8.kubernetes.client.dsl.NamespacedInOutCreateable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.kubernetes.client.utils.Serialization;
-import okhttp3.OkHttpClient;
 
 import java.util.Arrays;
 import java.util.List;
@@ -46,7 +46,7 @@ public final class Handlers {
     //Utility
   }
 
-  public static <T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>> void register(Class<T> type, BiFunction<OkHttpClient, Config, HasMetadataOperation<T, L, R>> operationConstructor) {
+  public static <T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>> void register(Class<T> type, BiFunction<HttpClient, Config, HasMetadataOperation<T, L, R>> operationConstructor) {
     if (RESOURCE_HANDLER_MAP.put(type, new ResourceHandlerImpl(type, operationConstructor)) != null) {
       throw new AssertionError(String.format("%s already registered", type.getName()));
     }
@@ -131,7 +131,7 @@ public final class Handlers {
     return (ResourceHandler<T, V>) RESOURCE_HANDLER_MAP.computeIfAbsent(type, k -> new ResourceHandlerImpl<>(type, null));
   }
   
-  public static <T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>> HasMetadataOperation<T, L, R> getOperation(Class<T> type, Class<L> listType, OkHttpClient client, Config config) {
+  public static <T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>> HasMetadataOperation<T, L, R> getOperation(Class<T> type, Class<L> listType, HttpClient client, Config config) {
     ResourceHandler<T, ?> resourceHandler = get(type);
     if (resourceHandler == null) {
       throw new IllegalStateException();
@@ -139,7 +139,7 @@ public final class Handlers {
     return (HasMetadataOperation<T, L, R>) resourceHandler.operation(client, config, listType);
   }
   
-  public static <T extends HasMetadata> HasMetadataOperation<T, ?, Resource<T>> getNonListingOperation(Class<T> type, OkHttpClient client, Config config) {
+  public static <T extends HasMetadata> HasMetadataOperation<T, ?, Resource<T>> getNonListingOperation(Class<T> type, HttpClient client, Config config) {
     return getOperation(type, KubernetesResourceUtil.inferListType(type), client, config);
   }
   
@@ -148,7 +148,7 @@ public final class Handlers {
     return !RESOURCE_HANDLER_MAP.isEmpty() && (handler == null || !handler.hasOperation());
   }
 
-  public static <T extends HasMetadata> NamespacedInOutCreateable<T, T> getNamespacedHasMetadataCreateOnlyOperation(Class<T> type, OkHttpClient client, Config config) {
+  public static <T extends HasMetadata> NamespacedInOutCreateable<T, T> getNamespacedHasMetadataCreateOnlyOperation(Class<T> type, HttpClient client, Config config) {
     HasMetadataOperation<T, ?, Resource<T>> operation = getNonListingOperation(type, client, config);
     return operation::inNamespace;
   }

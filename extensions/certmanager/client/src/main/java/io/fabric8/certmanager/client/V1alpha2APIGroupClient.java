@@ -19,7 +19,14 @@ import io.fabric8.certmanager.api.model.acme.v1alpha2.Challenge;
 import io.fabric8.certmanager.api.model.acme.v1alpha2.ChallengeList;
 import io.fabric8.certmanager.api.model.acme.v1alpha2.Order;
 import io.fabric8.certmanager.api.model.acme.v1alpha2.OrderList;
-import io.fabric8.certmanager.api.model.v1alpha2.*;
+import io.fabric8.certmanager.api.model.v1alpha2.Certificate;
+import io.fabric8.certmanager.api.model.v1alpha2.CertificateList;
+import io.fabric8.certmanager.api.model.v1alpha2.CertificateRequest;
+import io.fabric8.certmanager.api.model.v1alpha2.CertificateRequestList;
+import io.fabric8.certmanager.api.model.v1alpha2.ClusterIssuer;
+import io.fabric8.certmanager.api.model.v1alpha2.ClusterIssuerList;
+import io.fabric8.certmanager.api.model.v1alpha2.Issuer;
+import io.fabric8.certmanager.api.model.v1alpha2.IssuerList;
 import io.fabric8.certmanager.client.dsl.V1alpha2APIGroupDSL;
 import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Config;
@@ -27,14 +34,14 @@ import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class V1alpha2APIGroupClient extends BaseClient implements V1alpha2APIGroupDSL {
   public V1alpha2APIGroupClient() {
     super();
   }
 
-  public V1alpha2APIGroupClient(OkHttpClient httpClient, final Config config) {
+  public V1alpha2APIGroupClient(HttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

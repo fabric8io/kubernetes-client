@@ -18,7 +18,7 @@ package io.fabric8.chaosmesh.client;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.ExtensionAdapter;
 import io.fabric8.kubernetes.client.ExtensionAdapterSupport;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 import java.net.URL;
 import java.util.concurrent.ConcurrentHashMap;
@@ -28,7 +28,7 @@ public class ChaosMeshExtensionAdapter extends ExtensionAdapterSupport implement
 
    static final ConcurrentMap<URL, Boolean> IS_CHAOS_MESH = new ConcurrentHashMap<>();
    static final ConcurrentMap<URL, Boolean> USES_CHAOS_MESH_APIGROUPS = new ConcurrentHashMap<>();
-    
+
 	@Override
 	public Class<ChaosMeshClient> getExtensionType() {
 		return ChaosMeshClient.class;
@@ -41,6 +41,6 @@ public class ChaosMeshExtensionAdapter extends ExtensionAdapterSupport implement
 
 	@Override
 	public ChaosMeshClient adapt(Client client) {
-            return new DefaultChaosMeshClient(client.adapt(OkHttpClient.class), client.getConfiguration());
+            return new DefaultChaosMeshClient(client.adapt(HttpClient.class), client.getConfiguration());
 	}
 }

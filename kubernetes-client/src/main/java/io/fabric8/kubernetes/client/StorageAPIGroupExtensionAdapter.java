@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.client;
 
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
@@ -35,7 +35,7 @@ public class StorageAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<St
 
   @Override
   protected StorageAPIGroupClient newInstance(Client client) {
-    return new StorageAPIGroupClient(client.adapt(OkHttpClient.class), client.getConfiguration());
+    return new StorageAPIGroupClient(client.adapt(HttpClient.class), client.getConfiguration());
   }
 
 }

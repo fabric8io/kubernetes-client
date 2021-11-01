@@ -13,13 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.utils;
+package io.fabric8.kubernetes.client.internal.okhttp;
 
-import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.http.BasicBuilder;
+import io.fabric8.kubernetes.client.http.HttpClient.Builder;
+import io.fabric8.kubernetes.client.http.HttpHeaders;
+import io.fabric8.kubernetes.client.http.Interceptor;
 import io.fabric8.kubernetes.client.internal.SSLUtils;
-import okhttp3.*;
+import io.fabric8.kubernetes.client.utils.BackwardsCompatibilityInterceptor;
+import io.fabric8.kubernetes.client.utils.ImpersonatorInterceptor;
+import io.fabric8.kubernetes.client.utils.IpAddressMatcher;
+import io.fabric8.kubernetes.client.utils.TokenRefreshInterceptor;
+import io.fabric8.kubernetes.client.utils.Utils;
+import okhttp3.ConnectionSpec;
+import okhttp3.Credentials;
+import okhttp3.Dispatcher;
+import okhttp3.OkHttpClient;
+import okhttp3.Protocol;
+import okhttp3.Request;
+import okhttp3.TlsVersion;
 import okhttp3.logging.HttpLoggingInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,15 +42,17 @@ import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+
 import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collections;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -62,49 +78,12 @@ public class HttpClientUtils {
     }
   }
 
-  public static OkHttpClient createHttpClient(final Config config) {
+  public static io.fabric8.kubernetes.client.http.HttpClient createHttpClient(final Config config) {
       return createHttpClient(config, (b) -> {});
   }
 
-  public static OkHttpClient createHttpClientForMockServer(final Config config) {
+  public static io.fabric8.kubernetes.client.http.HttpClient createHttpClientForMockServer(final Config config) {
       return createHttpClient(config, b -> b.protocols(Collections.singletonList(Protocol.HTTP_1_1)));
-  }
-
-  public static HttpUrl.Builder appendListOptionParams(HttpUrl.Builder urlBuilder, ListOptions listOptions) {
-    if (listOptions == null) {
-      return urlBuilder;
-    }
-    if (listOptions.getLimit() != null) {
-      urlBuilder.addQueryParameter("limit", listOptions.getLimit().toString());
-    }
-    if (listOptions.getContinue() != null) {
-      urlBuilder.addQueryParameter("continue", listOptions.getContinue());
-    }
-
-    if (listOptions.getFieldSelector() != null) {
-      urlBuilder.addQueryParameter("fieldSelector", listOptions.getFieldSelector());
-    }
-
-    if (listOptions.getLabelSelector() != null) {
-      urlBuilder.addQueryParameter("labelSelector", listOptions.getLabelSelector());
-    }
-    
-    if (listOptions.getResourceVersion() != null) {
-      urlBuilder.addQueryParameter("resourceVersion", listOptions.getResourceVersion());
-    }
-
-    if (listOptions.getTimeoutSeconds() != null) {
-      urlBuilder.addQueryParameter("timeoutSeconds", listOptions.getTimeoutSeconds().toString());
-    }
-
-    if (listOptions.getAllowWatchBookmarks() != null) {
-      urlBuilder.addQueryParameter("allowWatchBookmarks", listOptions.getAllowWatchBookmarks().toString());
-    }
-
-    if (listOptions.getWatch() != null) {
-      urlBuilder.addQueryParameter("watch", listOptions.getWatch().toString());
-    }
-    return urlBuilder;
   }
 
   /**
@@ -113,9 +92,9 @@ public class HttpClientUtils {
    * @param additionalConfig a consumer that allows overriding HTTP client properties
    * @return returns an HTTP client
    */
-  public static OkHttpClient createHttpClient(final Config config, final Consumer<OkHttpClient.Builder> additionalConfig) {
+  public static io.fabric8.kubernetes.client.http.HttpClient createHttpClient(final Config config, final Consumer<OkHttpClient.Builder> additionalConfig) {
         try {
-            OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
+          OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
 
             // Follow any redirects
             httpClientBuilder.followRedirects(true);
@@ -146,8 +125,6 @@ public class HttpClientUtils {
               httpClientBuilder.sslSocketFactory(context.getSocketFactory(), (X509TrustManager) trustManagers[0]);
             }
 
-            List<Interceptor> interceptors = createApplicableInterceptors(config);
-            interceptors.forEach(httpClientBuilder::addInterceptor);
             Logger reqLogger = LoggerFactory.getLogger(HttpLoggingInterceptor.class);
             if (reqLogger.isTraceEnabled()) {
                 HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
@@ -206,7 +183,7 @@ public class HttpClientUtils {
 
             if (config.getTlsVersions() != null && config.getTlsVersions().length > 0) {
               ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
-                .tlsVersions(config.getTlsVersions())
+                .tlsVersions(Arrays.asList(config.getTlsVersions()).stream().map(tls -> TlsVersion.valueOf(tls.name())).toArray(TlsVersion[]::new))
                 .build();
               httpClientBuilder.connectionSpecs(Arrays.asList(spec, CLEARTEXT));
             }
@@ -229,7 +206,9 @@ public class HttpClientUtils {
             });
           }
 
-            return httpClientBuilder.build();
+          Builder builderWrapper = new OkHttpClientImpl(httpClientBuilder.build()).newBuilder();
+          createApplicableInterceptors(config).forEach((s, i) -> builderWrapper.addOrReplaceInterceptor(s, i));
+          return builderWrapper.build();
         } catch (Exception e) {
             throw KubernetesClientException.launderThrowable(e);
         }
@@ -277,30 +256,36 @@ public class HttpClientUtils {
       return System.getProperty("java.version", "").startsWith("1.8");
   }
 
-  static List<Interceptor> createApplicableInterceptors(Config config) {
-    List<Interceptor> interceptors = new ArrayList<>();
+  static Map<String, io.fabric8.kubernetes.client.http.Interceptor> createApplicableInterceptors(Config config) {
+    Map<String, io.fabric8.kubernetes.client.http.Interceptor> interceptors = new LinkedHashMap<>();
     // Header Interceptor
-    interceptors.add(chain -> {
-      Request request = chain.request();
-      if (Utils.isNotNullOrEmpty(config.getUsername()) && Utils.isNotNullOrEmpty(config.getPassword())) {
-        Request authReq = chain.request().newBuilder().addHeader("Authorization", Credentials.basic(config.getUsername(), config.getPassword())).build();
-        return chain.proceed(authReq);
-      } else if (Utils.isNotNullOrEmpty(config.getOauthToken())) {
-        Request authReq = chain.request().newBuilder().addHeader("Authorization", "Bearer " + config.getOauthToken()).build();
-        return chain.proceed(authReq);
+    interceptors.put("HEADER", new Interceptor() {
+      
+      @Override
+      public void before(BasicBuilder builder, HttpHeaders headers) {
+        if (Utils.isNotNullOrEmpty(config.getUsername()) && Utils.isNotNullOrEmpty(config.getPassword())) {
+          builder.header("Authorization", basicCredentials(config.getUsername(), config.getPassword()));
+        } else if (Utils.isNotNullOrEmpty(config.getOauthToken())) {
+          builder.header("Authorization", "Bearer " + config.getOauthToken());
+        }
       }
-      return chain.proceed(request);
     });
     // Impersonator Interceptor
-    interceptors.add(new ImpersonatorInterceptor(config));
+    interceptors.put("IMPERSONATOR", new ImpersonatorInterceptor(config));
     // Token Refresh Interceptor
-    interceptors.add(new TokenRefreshInterceptor(config));
+    interceptors.put(TokenRefreshInterceptor.NAME, new TokenRefreshInterceptor(config));
     // Backwards Compatibility Interceptor
     String shouldDisableBackwardsCompatibilityInterceptor = Utils.getSystemPropertyOrEnvVar(KUBERNETES_BACKWARDS_COMPATIBILITY_INTERCEPTOR_DISABLE, "false");
     if (!Boolean.parseBoolean(shouldDisableBackwardsCompatibilityInterceptor)) {
-      interceptors.add(new BackwardsCompatibilityInterceptor());
+      interceptors.put("BACKWARDS", new BackwardsCompatibilityInterceptor());
     }
 
     return interceptors;
+  }
+  
+  public static String basicCredentials(String username, String password) {
+    String usernameAndPassword = username + ":" + password;
+    String encoded = Base64.getEncoder().encodeToString(usernameAndPassword.getBytes(StandardCharsets.ISO_8859_1));
+    return "Basic " + encoded;
   }
 }

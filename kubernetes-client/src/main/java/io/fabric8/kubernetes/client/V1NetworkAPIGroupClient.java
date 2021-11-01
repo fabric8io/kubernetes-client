@@ -23,14 +23,14 @@ import io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicy;
 import io.fabric8.kubernetes.api.model.networking.v1.NetworkPolicyList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class V1NetworkAPIGroupClient extends BaseClient implements V1NetworkAPIGroupDSL {
   public V1NetworkAPIGroupClient() {
     super();
   }
 
-  public V1NetworkAPIGroupClient(OkHttpClient httpClient, final Config config) {
+  public V1NetworkAPIGroupClient(HttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

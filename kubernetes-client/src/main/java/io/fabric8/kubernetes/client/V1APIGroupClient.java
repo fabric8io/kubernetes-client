@@ -22,14 +22,14 @@ import io.fabric8.kubernetes.api.model.PodTemplateList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.V1APIGroupDSL;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class V1APIGroupClient extends BaseClient implements V1APIGroupDSL {
   public V1APIGroupClient() {
     super();
   }
 
-  public V1APIGroupClient(OkHttpClient httpClient, final Config config) {
+  public V1APIGroupClient(HttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

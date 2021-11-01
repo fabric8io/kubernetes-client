@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshot;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotClass;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotClassList;
@@ -35,7 +36,6 @@ import io.fabric8.volumesnapshot.client.internal.VolumeSnapshotContentOperations
 import io.fabric8.volumesnapshot.client.internal.VolumeSnapshotContentResource;
 import io.fabric8.volumesnapshot.client.internal.VolumeSnapshotOperationsImpl;
 import io.fabric8.volumesnapshot.client.internal.VolumeSnapshotResource;
-import okhttp3.OkHttpClient;
 
 public class DefaultVolumeSnapshotClient extends BaseClient implements NamespacedVolumeSnapshotClient {
 
@@ -47,19 +47,22 @@ public class DefaultVolumeSnapshotClient extends BaseClient implements Namespace
     super(configuration);
   }
 
-  public DefaultVolumeSnapshotClient(OkHttpClient httpClient, Config configuration) {
+  public DefaultVolumeSnapshotClient(HttpClient httpClient, Config configuration) {
     super(httpClient, configuration);
   }
 
-  public NonNamespaceOperation<VolumeSnapshotClass, VolumeSnapshotClassList, VolumeSnapshotClassResource> volumeSnapshotClasses() {
+  @Override
+public NonNamespaceOperation<VolumeSnapshotClass, VolumeSnapshotClassList, VolumeSnapshotClassResource> volumeSnapshotClasses() {
     return new VolumeSnapshotClassOperationsImpl(this.getHttpClient(), this.getConfiguration());
   }
 
-  public NonNamespaceOperation<VolumeSnapshotContent, VolumeSnapshotContentList, VolumeSnapshotContentResource> volumeSnapshotContents() {
+  @Override
+public NonNamespaceOperation<VolumeSnapshotContent, VolumeSnapshotContentList, VolumeSnapshotContentResource> volumeSnapshotContents() {
     return new VolumeSnapshotContentOperationsImpl(this.getHttpClient(), this.getConfiguration());
   }
 
-  public MixedOperation<VolumeSnapshot, VolumeSnapshotList, VolumeSnapshotResource> volumeSnapshots() {
+  @Override
+public MixedOperation<VolumeSnapshot, VolumeSnapshotList, VolumeSnapshotResource> volumeSnapshots() {
     return new VolumeSnapshotOperationsImpl(this.getHttpClient(), this.getConfiguration());
   }
 

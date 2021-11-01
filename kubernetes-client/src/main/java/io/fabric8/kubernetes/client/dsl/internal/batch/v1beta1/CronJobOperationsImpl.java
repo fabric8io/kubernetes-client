@@ -23,18 +23,18 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 import java.io.InputStream;
 
 public class CronJobOperationsImpl extends HasMetadataOperation<CronJob, CronJobList, Resource<CronJob>> {
 
-  public CronJobOperationsImpl(OkHttpClient client, Config config) {
+  public CronJobOperationsImpl(HttpClient client, Config config) {
     this(client, config, null);
   }
 
-  public CronJobOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
+  public CronJobOperationsImpl(HttpClient client, Config config, String namespace) {
+    this(new OperationContext().withHttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
 
   public CronJobOperationsImpl(OperationContext context) {

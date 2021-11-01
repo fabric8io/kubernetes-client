@@ -18,13 +18,13 @@ package io.fabric8.openshift.client.server.mock;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
+import io.fabric8.kubernetes.client.http.TlsVersion;
 import io.fabric8.kubernetes.server.mock.KubernetesMockServer;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.NamespacedOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftConfig;
 
-import static io.fabric8.kubernetes.client.utils.HttpClientUtils.createHttpClientForMockServer;
-import static okhttp3.TlsVersion.TLS_1_2;
+import static io.fabric8.kubernetes.client.internal.okhttp.HttpClientUtils.createHttpClientForMockServer;
 
 @Deprecated
 // The class has moved under mvn:io.fabric8:openshift-server-mock in package: io.fabric8.openshift.client.server.mock
@@ -48,7 +48,7 @@ public class OpenShiftMockServer extends KubernetesMockServer {
       .withMasterUrl(url("/"))
       .withNamespace("test")
       .withTrustCerts(true)
-      .withTlsVersions(TLS_1_2)
+      .withTlsVersions(TlsVersion.TLS_1_2)
       .build();
     OpenShiftConfig openShiftConfig = new OpenShiftConfig(config);
     openShiftConfig.setDisableApiGroupCheck(true);

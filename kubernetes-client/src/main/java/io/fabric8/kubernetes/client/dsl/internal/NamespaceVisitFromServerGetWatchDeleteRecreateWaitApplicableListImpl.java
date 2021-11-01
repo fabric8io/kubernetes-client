@@ -27,11 +27,10 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
 import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
-
-import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,7 +64,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
     this.context = context;
   }
   
-  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(OkHttpClient client, Config config, Object item) {
+  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(HttpClient client, Config config, Object item) {
     this(HasMetadataOperationsImpl.defaultContext(new OperationContext(), client, config).withItem(item), new NamespaceVisitOperationContext());
   }
 

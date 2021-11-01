@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
+import io.fabric8.kubernetes.client.internal.okhttp.OkHttpClientImpl;
 import okhttp3.Call;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -62,7 +63,7 @@ class DryRunTest {
     when(mockCall.execute())
       .thenReturn(mockResponse);
     when(mockClient.newCall(any())).thenReturn(mockCall);
-    kubernetesClient = new DefaultKubernetesClient(mockClient, config);
+    kubernetesClient = new DefaultKubernetesClient(new OkHttpClientImpl(mockClient), config);
   }
 
   @Test

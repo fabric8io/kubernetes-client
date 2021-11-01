@@ -19,7 +19,6 @@ import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.client.dsl.VisitFromServerWritable;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
-import okhttp3.OkHttpClient;
 
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -52,6 +51,7 @@ import io.fabric8.kubernetes.client.dsl.VisitFromServerGetWatchDeleteRecreateWai
 import io.fabric8.kubernetes.client.dsl.Waitable;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
 
 import static io.fabric8.kubernetes.client.utils.DeleteAndCreateHelper.deleteAndCreateItem;
@@ -89,7 +89,7 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl im
     this.namespaceVisitOperationContext = namespaceVisitOperationContext;
   }
 
-  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(OkHttpClient httpClient, Config configuration, HasMetadata item) {
+  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(HttpClient httpClient, Config configuration, HasMetadata item) {
     this(HasMetadataOperationsImpl.defaultContext(new OperationContext(), httpClient, configuration).withItem(item), new NamespaceVisitOperationContext());
     handlerOf(item, new BaseClient(httpClient, configuration)); // validate the handler
   }

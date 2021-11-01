@@ -18,17 +18,17 @@ package io.fabric8.openshift.client.dsl.internal.core;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.openshift.api.model.miscellaneous.cncf.cni.v1.NetworkAttachmentDefinition;
 import io.fabric8.openshift.api.model.miscellaneous.cncf.cni.v1.NetworkAttachmentDefinitionBuilder;
 import io.fabric8.openshift.api.model.miscellaneous.cncf.cni.v1.NetworkAttachmentDefinitionList;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
-import okhttp3.OkHttpClient;
 
 public class NetworkAttachmentDefinitionOperationsImpl extends OpenShiftOperation<NetworkAttachmentDefinition, NetworkAttachmentDefinitionList, Resource<NetworkAttachmentDefinition>> {
 
-  public NetworkAttachmentDefinitionOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
+  public NetworkAttachmentDefinitionOperationsImpl(HttpClient client, OpenShiftConfig config) {
+    this(new OperationContext().withHttpClient(client).withConfig(config).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
   }
 
   public NetworkAttachmentDefinitionOperationsImpl(OperationContext context) {

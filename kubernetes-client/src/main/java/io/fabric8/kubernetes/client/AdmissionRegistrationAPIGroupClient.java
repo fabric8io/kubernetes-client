@@ -15,14 +15,14 @@
  */
 package io.fabric8.kubernetes.client;
 
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class AdmissionRegistrationAPIGroupClient extends BaseClient implements AdmissionRegistrationAPIGroupDSL {
   public AdmissionRegistrationAPIGroupClient() {
     super();
   }
 
-  public AdmissionRegistrationAPIGroupClient(OkHttpClient httpClient, final Config config) {
+  public AdmissionRegistrationAPIGroupClient(HttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

@@ -16,26 +16,28 @@
 package io.fabric8.kubernetes.client.utils;
 
 import io.fabric8.kubernetes.client.Config;
-import okhttp3.Interceptor;
-import okhttp3.Request;
-import okhttp3.Response;
+import io.fabric8.kubernetes.client.http.BasicBuilder;
+import io.fabric8.kubernetes.client.http.HttpResponse;
+import io.fabric8.kubernetes.client.http.Interceptor;
+import io.fabric8.kubernetes.client.internal.okhttp.OpenIDConnectionUtils;
 
-import java.io.IOException;
 import java.net.HttpURLConnection;
 
 /**
  * Interceptor for handling expired OIDC tokens.
  */
 public class TokenRefreshInterceptor implements Interceptor {
+  
+  public static final String NAME = "TOKEN"; 
+  
   private final Config config;
   public TokenRefreshInterceptor(Config config) {
     this.config = config;
   }
-
+  
   @Override
-  public Response intercept(Chain chain) throws IOException {
-    Request request = chain.request();
-    Response response = chain.proceed(request);
+  public boolean afterFailure(BasicBuilder headerBuilder, HttpResponse<?> response) {
+    boolean resubmit = false;
     if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
       String currentContextName = null;
       String newAccessToken = null;
@@ -51,14 +53,14 @@ public class TokenRefreshInterceptor implements Interceptor {
       }
 
       if (newAccessToken != null) {
-        response.close();
         // Delete old Authorization header and append new one
-        Request authReqWithUpdatedToken = chain.request().newBuilder()
-          .header("Authorization", "Bearer " + newAccessToken).build();
+        headerBuilder
+          .setHeader("Authorization", "Bearer " + newAccessToken);
         config.setOauthToken(newAccessToken);
-        response = chain.proceed(authReqWithUpdatedToken);
+        resubmit = true;
       }
     }
-    return response;
+    return resubmit;
   }
+
 }

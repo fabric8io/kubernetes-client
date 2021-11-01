@@ -15,12 +15,6 @@
  */
 package io.fabric8.camelk.client;
 
-import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.Handlers;
-import io.fabric8.kubernetes.client.dsl.MixedOperation;
-import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
-import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.camelk.client.dsl.V1APIGroupDSL;
 import io.fabric8.camelk.v1.Build;
 import io.fabric8.camelk.v1.BuildList;
@@ -32,14 +26,19 @@ import io.fabric8.camelk.v1.IntegrationKitList;
 import io.fabric8.camelk.v1.IntegrationList;
 import io.fabric8.camelk.v1.IntegrationPlatform;
 import io.fabric8.camelk.v1.IntegrationPlatformList;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.BaseClient;
+import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.Handlers;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class V1APIGroupClient extends BaseClient implements V1APIGroupDSL {
   public V1APIGroupClient() {
     super();
   }
 
-  public V1APIGroupClient(OkHttpClient httpClient, final Config config) {
+  public V1APIGroupClient(HttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

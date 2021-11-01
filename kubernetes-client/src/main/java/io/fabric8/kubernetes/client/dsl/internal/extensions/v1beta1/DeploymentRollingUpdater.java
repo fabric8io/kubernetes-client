@@ -25,15 +25,15 @@ import io.fabric8.kubernetes.client.dsl.Operation;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.WatchListDeletable;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.RollingUpdater;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 class DeploymentRollingUpdater extends RollingUpdater<Deployment, DeploymentList> {
 
-  DeploymentRollingUpdater(OkHttpClient client, Config config, String namespace) {
+  DeploymentRollingUpdater(HttpClient client, Config config, String namespace) {
     super(client, config, namespace);
   }
 
-  DeploymentRollingUpdater(OkHttpClient client, Config config, String namespace, long rollingTimeoutMillis, long loggingIntervalMillis) {
+  DeploymentRollingUpdater(HttpClient client, Config config, String namespace, long rollingTimeoutMillis, long loggingIntervalMillis) {
     super(client, config, namespace, rollingTimeoutMillis, loggingIntervalMillis);
   }
 

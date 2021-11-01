@@ -17,7 +17,7 @@ package io.fabric8.openshift.client;
 
 import io.fabric8.kubernetes.client.APIGroupExtensionAdapter;
 import io.fabric8.kubernetes.client.Client;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class OpenShiftStorageVersionMigratorApiGroupExtensionAdapter extends APIGroupExtensionAdapter<OpenShiftStorageVersionMigratorApiGroupClient> {
   @Override
@@ -32,6 +32,6 @@ public class OpenShiftStorageVersionMigratorApiGroupExtensionAdapter extends API
 
   @Override
   protected OpenShiftStorageVersionMigratorApiGroupClient newInstance(Client client) {
-    return new OpenShiftStorageVersionMigratorApiGroupClient(client.adapt(OkHttpClient.class), client.getConfiguration());
+    return new OpenShiftStorageVersionMigratorApiGroupClient(client.adapt(HttpClient.class), client.getConfiguration());
   }
 }

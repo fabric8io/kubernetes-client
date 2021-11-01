@@ -19,8 +19,12 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.servicecatalog.api.model.*;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.servicecatalog.api.model.ClusterServiceBroker;
+import io.fabric8.servicecatalog.api.model.ClusterServiceBrokerList;
+import io.fabric8.servicecatalog.api.model.ClusterServiceClass;
+import io.fabric8.servicecatalog.api.model.ClusterServiceClassList;
+import io.fabric8.servicecatalog.api.model.ClusterServicePlanList;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,8 +33,8 @@ import java.util.Map;
 
 public class ClusterServiceBrokerOperationsImpl extends HasMetadataOperation<ClusterServiceBroker, ClusterServiceBrokerList, ClusterServiceBrokerResource> implements ClusterServiceBrokerResource {
 
-  public ClusterServiceBrokerOperationsImpl(OkHttpClient client, Config config) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config));
+  public ClusterServiceBrokerOperationsImpl(HttpClient client, Config config) {
+    this(new OperationContext().withHttpClient(client).withConfig(config));
   }
 
   public ClusterServiceBrokerOperationsImpl(OperationContext context) {

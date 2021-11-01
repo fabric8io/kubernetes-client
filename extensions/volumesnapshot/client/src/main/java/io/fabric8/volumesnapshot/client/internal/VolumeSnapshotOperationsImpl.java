@@ -19,14 +19,14 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshot;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotList;
-import okhttp3.OkHttpClient;
 
 public class VolumeSnapshotOperationsImpl extends HasMetadataOperation<VolumeSnapshot, VolumeSnapshotList, VolumeSnapshotResource> implements VolumeSnapshotResource {
 
-  public VolumeSnapshotOperationsImpl(OkHttpClient client, Config config) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config));
+  public VolumeSnapshotOperationsImpl(HttpClient client, Config config) {
+    this(new OperationContext().withHttpClient(client).withConfig(config));
   }
 
   public VolumeSnapshotOperationsImpl(OperationContext ctx) {

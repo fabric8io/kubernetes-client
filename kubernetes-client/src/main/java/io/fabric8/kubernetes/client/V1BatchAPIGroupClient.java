@@ -24,14 +24,14 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.ScalableResource;
 import io.fabric8.kubernetes.client.dsl.V1BatchAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.internal.batch.v1.JobOperationsImpl;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class V1BatchAPIGroupClient extends BaseClient implements V1BatchAPIGroupDSL {
   public V1BatchAPIGroupClient() {
     super();
   }
 
-  public V1BatchAPIGroupClient(OkHttpClient httpClient, final Config config) {
+  public V1BatchAPIGroupClient(HttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

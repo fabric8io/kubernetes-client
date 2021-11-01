@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.utils;
+package io.fabric8.kubernetes.client.internal.okhttp;
 
 import io.fabric8.kubernetes.api.model.NamedContext;
 import io.fabric8.kubernetes.client.internal.KubeConfigUtils;
@@ -36,13 +36,13 @@ import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.Map;
 
-import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.CLIENT_ID_KUBECONFIG;
-import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.CLIENT_SECRET_KUBECONFIG;
-import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.ID_TOKEN_KUBECONFIG;
-import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.ID_TOKEN_PARAM;
-import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.REFRESH_TOKEN_KUBECONFIG;
-import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.REFRESH_TOKEN_PARAM;
-import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.TOKEN_ENDPOINT_PARAM;
+import static io.fabric8.kubernetes.client.internal.okhttp.OpenIDConnectionUtils.CLIENT_ID_KUBECONFIG;
+import static io.fabric8.kubernetes.client.internal.okhttp.OpenIDConnectionUtils.CLIENT_SECRET_KUBECONFIG;
+import static io.fabric8.kubernetes.client.internal.okhttp.OpenIDConnectionUtils.ID_TOKEN_KUBECONFIG;
+import static io.fabric8.kubernetes.client.internal.okhttp.OpenIDConnectionUtils.ID_TOKEN_PARAM;
+import static io.fabric8.kubernetes.client.internal.okhttp.OpenIDConnectionUtils.REFRESH_TOKEN_KUBECONFIG;
+import static io.fabric8.kubernetes.client.internal.okhttp.OpenIDConnectionUtils.REFRESH_TOKEN_PARAM;
+import static io.fabric8.kubernetes.client.internal.okhttp.OpenIDConnectionUtils.TOKEN_ENDPOINT_PARAM;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

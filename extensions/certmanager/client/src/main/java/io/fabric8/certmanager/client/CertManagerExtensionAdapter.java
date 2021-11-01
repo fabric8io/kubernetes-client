@@ -15,10 +15,10 @@
  */
 package io.fabric8.certmanager.client;
 
-import io.fabric8.kubernetes.client.ExtensionAdapterSupport;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.ExtensionAdapter;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.ExtensionAdapterSupport;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 import java.net.URL;
 import java.util.concurrent.ConcurrentHashMap;
@@ -42,6 +42,6 @@ public class CertManagerExtensionAdapter extends ExtensionAdapterSupport impleme
 
   @Override
   public CertManagerClient adapt(Client client) {
-    return new DefaultCertManagerClient(client.adapt(OkHttpClient.class), client.getConfiguration());
+    return new DefaultCertManagerClient(client.adapt(HttpClient.class), client.getConfiguration());
   }
 }

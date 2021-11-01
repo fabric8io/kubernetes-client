@@ -19,19 +19,19 @@ import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.openshift.api.model.AppliedClusterResourceQuota;
 import io.fabric8.openshift.api.model.AppliedClusterResourceQuotaList;
 import io.fabric8.openshift.api.model.ClusterResourceQuota;
 import io.fabric8.openshift.api.model.ClusterResourceQuotaList;
 import io.fabric8.openshift.client.dsl.OpenShiftQuotaAPIGroupDSL;
-import okhttp3.OkHttpClient;
 
 public class OpenShiftQuotaAPIGroupClient extends BaseClient implements OpenShiftQuotaAPIGroupDSL {
   public OpenShiftQuotaAPIGroupClient() {
     super();
   }
 
-  public OpenShiftQuotaAPIGroupClient(OkHttpClient httpClient, final Config config) {
+  public OpenShiftQuotaAPIGroupClient(HttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

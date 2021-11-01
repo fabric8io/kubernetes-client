@@ -18,17 +18,29 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ListOptions;
+import io.fabric8.kubernetes.api.model.Status;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.WebSocket;
+import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
+import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.http.HttpResponse;
+import io.fabric8.kubernetes.client.http.WebSocket;
+import io.fabric8.kubernetes.client.http.WebSocket.Builder;
+import io.fabric8.kubernetes.client.http.WebSocketHandshakeException;
+import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+
+import static java.net.HttpURLConnection.HTTP_OK;
+import static java.net.HttpURLConnection.HTTP_UNAVAILABLE;
 
 /**
  * Manages a WebSocket and listener per request
@@ -38,13 +50,14 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
   private static final Logger logger = LoggerFactory.getLogger(WatchConnectionManager.class);
   
   protected WatcherWebSocketListener<T> listener;
+  private CompletableFuture<WebSocket> websocketFuture;
   private WebSocket websocket;
   
   static void closeWebSocket(WebSocket webSocket) {
     if (webSocket != null) {
       logger.debug("Closing websocket {}", webSocket);
       try {
-        if (!webSocket.close(1000, null)) {
+        if (!webSocket.sendClose(1000, null)) {
           logger.debug("Websocket already closed {}", webSocket);
         }
       } catch (IllegalStateException e) {
@@ -53,19 +66,13 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
     }
   }
   
-  static void closeBody(Response response) {
-    if (response != null && response.body() != null) {
-      response.body().close();
-    }
-  }
-
-  public WatchConnectionManager(final OkHttpClient client, final BaseOperation<T, L, ?> baseOperation, final ListOptions listOptions, final Watcher<T> watcher, final int reconnectInterval, final int reconnectLimit, long websocketTimeout, int maxIntervalExponent) throws MalformedURLException {
+  public WatchConnectionManager(final HttpClient client, final BaseOperation<T, L, ?> baseOperation, final ListOptions listOptions, final Watcher<T> watcher, final int reconnectInterval, final int reconnectLimit, long websocketTimeout, int maxIntervalExponent) throws MalformedURLException {
     super(watcher, baseOperation, listOptions, reconnectLimit, reconnectInterval, maxIntervalExponent, () -> client.newBuilder()
             .readTimeout(websocketTimeout, TimeUnit.MILLISECONDS)
             .build());
   }
   
-  public WatchConnectionManager(final OkHttpClient client, final BaseOperation<T, L, ?> baseOperation, final ListOptions listOptions, final Watcher<T> watcher, final int reconnectInterval, final int reconnectLimit, long websocketTimeout) throws MalformedURLException {
+  public WatchConnectionManager(final HttpClient client, final BaseOperation<T, L, ?> baseOperation, final ListOptions listOptions, final Watcher<T> watcher, final int reconnectInterval, final int reconnectLimit, long websocketTimeout) throws MalformedURLException {
     // Default max 32x slowdown from base interval
     this(client, baseOperation, listOptions, watcher, reconnectInterval, reconnectLimit, websocketTimeout, 5);
   }
@@ -73,21 +80,46 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
   @Override
   protected synchronized void closeRequest() {
     closeWebSocket(websocket);
-    websocket = null;
+    websocketFuture = null;
   }
 
   public void waitUntilReady() {
-    getListener().waitUntilReady();
+    Utils.waitUntilReadyOrFail(websocketFuture, 10, TimeUnit.SECONDS);
+    this.websocket = websocketFuture.getNow(null);
   }
 
   synchronized WatcherWebSocketListener<T> getListener() {
     return listener;
   }
-
+  
   @Override
-  protected synchronized void run(Request request) {
+  protected void run(URL url, Map<String, String> headers) {
     this.listener = new WatcherWebSocketListener<>(this);
-    this.websocket = client.newWebSocket(request, this.listener);    
+    Builder builder = client.newWebSocketBuilder();
+    headers.forEach((k, v) -> builder.header(k, v));
+    builder.uri(URI.create(url.toString()));
+    
+    this.websocketFuture = builder.buildAsync(this.listener).handle((w, t) -> {
+      if (t != null) {
+        if (t instanceof WebSocketHandshakeException) {
+          WebSocketHandshakeException wshe = (WebSocketHandshakeException)t;
+          HttpResponse<?> response = wshe.getResponse();
+          final int code = response.code();
+          // We do not expect a 200 in response to the websocket connection. If it occurs, we throw
+          // an exception and try the watch via a persistent HTTP Get.
+          // Newer Kubernetes might also return 503 Service Unavailable in case WebSockets are not supported
+          if (HTTP_OK == code || HTTP_UNAVAILABLE == code) {
+            throw OperationSupport.requestFailure(client.newHttpRequestBuilder().url(url).build(), null, "Received " + code + " on websocket");
+          } 
+          Status status = OperationSupport.createStatus(response);
+          logger.warn("Exec Failure: HTTP {}, Status: {} - {}", code, status.getCode(), status.getMessage());
+          t = OperationSupport.requestFailure(client.newHttpRequestBuilder().url(url).build(), status);
+        }
+        listener.onError​(w, t);
+        throw KubernetesClientException.launderThrowable(t);
+      }
+      return w;
+    });
   }
-
+  
 }

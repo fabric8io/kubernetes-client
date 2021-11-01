@@ -29,7 +29,7 @@ import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.StorageAPIGroupDSL;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class StorageAPIGroupClient extends BaseClient implements StorageAPIGroupDSL {
 
@@ -37,7 +37,7 @@ public class StorageAPIGroupClient extends BaseClient implements StorageAPIGroup
     super();
   }
 
-  public StorageAPIGroupClient(OkHttpClient httpClient, final Config config) {
+  public StorageAPIGroupClient(HttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

@@ -17,8 +17,8 @@ package io.fabric8.openshift.client.dsl.internal.oauth;
 
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
-import okhttp3.OkHttpClient;
 import io.fabric8.openshift.api.model.OAuthAccessToken;
 import io.fabric8.openshift.api.model.OAuthAccessTokenList;
 import io.fabric8.openshift.client.OpenShiftConfig;
@@ -28,8 +28,8 @@ import static io.fabric8.openshift.client.OpenShiftAPIGroups.OAUTH;
 public class OAuthAccessTokenOperationsImpl extends OpenShiftOperation<OAuthAccessToken, OAuthAccessTokenList,
   Resource<OAuthAccessToken>> {
 
-  public OAuthAccessTokenOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config));
+  public OAuthAccessTokenOperationsImpl(HttpClient client, OpenShiftConfig config) {
+    this(new OperationContext().withHttpClient(client).withConfig(config));
   }
 
   public OAuthAccessTokenOperationsImpl(OperationContext context) {

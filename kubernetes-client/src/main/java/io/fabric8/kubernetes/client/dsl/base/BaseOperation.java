@@ -50,13 +50,14 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.internal.DefaultOperationInfo;
 import io.fabric8.kubernetes.client.dsl.internal.WatchConnectionManager;
 import io.fabric8.kubernetes.client.dsl.internal.WatchHTTPManager;
+import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.informers.ListerWatcher;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 import io.fabric8.kubernetes.client.informers.impl.DefaultSharedIndexInformer;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
-import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.URLUtils;
+import io.fabric8.kubernetes.client.utils.URLUtils.URLBuilder;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.client.utils.WatcherToggle;
 
@@ -80,9 +81,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
-
-import okhttp3.HttpUrl;
-import okhttp3.Request;
 
 public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>>
   extends CreateOnlyResourceOperation<T, T>
@@ -130,9 +128,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
    */
   private L listRequestHelper(URL url) {
     try {
-      HttpUrl.Builder requestUrlBuilder = HttpUrl.get(url).newBuilder();
-
-      Request.Builder requestBuilder = new Request.Builder().get().url(requestUrlBuilder.build());
+      HttpRequest.Builder requestBuilder = client.newHttpRequestBuilder().url(url);
       L answer = handleResponse(requestBuilder, listType);
       updateApiVersion(answer);
       return answer;
@@ -144,8 +140,8 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     }
  }
 
-  protected URL fetchListUrl(URL url, ListOptions listOptions) throws MalformedURLException {
-    return new URL(HttpClientUtils.appendListOptionParams(HttpUrl.get(url.toString()).newBuilder(), listOptions).toString());
+  protected URL fetchListUrl(URL url, ListOptions listOptions) {
+    return appendListOptionParams(url, listOptions);
   }
 
   @Override
@@ -724,7 +720,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     return Utils.isResourceNamespaced(getType());
   }
 
-  protected T handleResponse(Request.Builder requestBuilder) throws ExecutionException, InterruptedException, IOException {
+  protected T handleResponse(HttpRequest.Builder requestBuilder) throws ExecutionException, InterruptedException, IOException {
     return handleResponse(requestBuilder, getType());
   }
 
@@ -1053,5 +1049,44 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     }
     return informer;
   }
+  
+  public static URL appendListOptionParams(URL base, ListOptions listOptions) {
+    if (listOptions == null) {
+      return base;
+    }
+    URLBuilder urlBuilder = new URLBuilder(base);
+    if (listOptions.getLimit() != null) {
+      urlBuilder.addQueryParameter("limit", listOptions.getLimit().toString());
+    }
+    if (listOptions.getContinue() != null) {
+      urlBuilder.addQueryParameter("continue", listOptions.getContinue());
+    }
+
+    if (listOptions.getFieldSelector() != null) {
+      urlBuilder.addQueryParameter("fieldSelector", listOptions.getFieldSelector());
+    }
+
+    if (listOptions.getLabelSelector() != null) {
+      urlBuilder.addQueryParameter("labelSelector", listOptions.getLabelSelector());
+    }
+    
+    if (listOptions.getResourceVersion() != null) {
+      urlBuilder.addQueryParameter("resourceVersion", listOptions.getResourceVersion());
+    }
+
+    if (listOptions.getTimeoutSeconds() != null) {
+      urlBuilder.addQueryParameter("timeoutSeconds", listOptions.getTimeoutSeconds().toString());
+    }
+
+    if (listOptions.getAllowWatchBookmarks() != null) {
+      urlBuilder.addQueryParameter("allowWatchBookmarks", listOptions.getAllowWatchBookmarks().toString());
+    }
+
+    if (listOptions.getWatch() != null) {
+      urlBuilder.addQueryParameter("watch", listOptions.getWatch().toString());
+    }
+    return urlBuilder.build();
+  }
+  
 }
 

@@ -22,14 +22,14 @@ import io.fabric8.kubernetes.api.model.admissionregistration.v1beta1.ValidatingW
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class V1beta1AdmissionRegistrationAPIGroupClient extends BaseClient implements V1beta1AdmissionRegistrationAPIGroupDSL {
   public V1beta1AdmissionRegistrationAPIGroupClient() {
     super();
   }
 
-  public V1beta1AdmissionRegistrationAPIGroupClient(OkHttpClient httpClient, final Config config) {
+  public V1beta1AdmissionRegistrationAPIGroupClient(HttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

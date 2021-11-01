@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
+import io.fabric8.kubernetes.client.internal.okhttp.OkHttpClientImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -60,7 +61,7 @@ class DefaultKubernetesClientTest {
 
     final DefaultKubernetesClient customHeaderConfigClient = new DefaultKubernetesClient(configWithCustomerHeaders);
 
-    assertThat(customHeaderConfigClient.getHttpClient().networkInterceptors()).hasSize(1);
+    assertThat(((OkHttpClientImpl)customHeaderConfigClient.getHttpClient()).getOkHttpClient().networkInterceptors()).hasSize(1);
   }
 
   @Test
@@ -69,7 +70,7 @@ class DefaultKubernetesClientTest {
 
     DefaultKubernetesClient defaultConfigClient = new DefaultKubernetesClient(defaultEmptyConfig);
 
-    assertThat(defaultConfigClient.getHttpClient().networkInterceptors()).isEmpty();
+    assertThat(((OkHttpClientImpl)defaultConfigClient.getHttpClient()).getOkHttpClient().networkInterceptors()).isEmpty();
   }
 
   @Test

@@ -20,7 +20,7 @@ import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.RbacAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class RbacAPIGroupClient extends BaseClient implements RbacAPIGroupDSL {
 
@@ -28,7 +28,7 @@ public class RbacAPIGroupClient extends BaseClient implements RbacAPIGroupDSL {
     super();
   }
 
-  public RbacAPIGroupClient(OkHttpClient httpClient, final Config config) {
+  public RbacAPIGroupClient(HttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

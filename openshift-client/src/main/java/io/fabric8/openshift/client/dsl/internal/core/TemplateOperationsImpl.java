@@ -25,6 +25,9 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.http.HttpRequest;
+import io.fabric8.kubernetes.client.http.HttpRequest.Builder;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -37,9 +40,6 @@ import io.fabric8.openshift.client.ParameterValue;
 import io.fabric8.openshift.client.dsl.TemplateOperation;
 import io.fabric8.openshift.client.dsl.TemplateResource;
 import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,8 +71,8 @@ public class TemplateOperationsImpl
 
   private final Map<String, String> parameters;
 
-  public TemplateOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config), null);
+  public TemplateOperationsImpl(HttpClient client, OpenShiftConfig config) {
+    this(new OperationContext().withHttpClient(client).withConfig(config), null);
   }
 
   public TemplateOperationsImpl(OperationContext context, Map<String, String> parameters) {
@@ -119,8 +119,7 @@ public class TemplateOperationsImpl
         }
       }
 
-      RequestBody body = RequestBody.create(JSON, JSON_MAPPER.writeValueAsString(t));
-      Request.Builder requestBuilder = new Request.Builder().post(body).url(getProcessUrl());
+      HttpRequest.Builder requestBuilder = client.newHttpRequestBuilder().post(JSON, JSON_MAPPER.writeValueAsString(t)).url(getProcessUrl());
       t = handleResponse(requestBuilder);
       KubernetesList l = new KubernetesList();
       l.setItems(t.getObjects());
@@ -284,7 +283,8 @@ public class TemplateOperationsImpl
   }
 
   @Override
-  protected <T> T handleResponse(Request.Builder requestBuilder, Class<T> type) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+  protected <T> T handleResponse(Builder requestBuilder, Class<T> type)
+      throws ExecutionException, InterruptedException, IOException {
     return handleResponse(requestBuilder, type, parameters);
   }
 

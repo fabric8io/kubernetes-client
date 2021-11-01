@@ -34,14 +34,14 @@ import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class V1beta1APIGroupClient extends BaseClient implements V1beta1APIGroupDSL {
   public V1beta1APIGroupClient() {
     super();
   }
 
-  public V1beta1APIGroupClient(OkHttpClient httpClient, final Config config) {
+  public V1beta1APIGroupClient(HttpClient httpClient, final Config config) {
     super(httpClient, config);
   }
 

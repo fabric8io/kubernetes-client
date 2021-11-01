@@ -48,7 +48,7 @@ import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class DefaultChaosMeshClient extends BaseClient implements NamespacedChaosMeshClient {
 
@@ -60,7 +60,7 @@ public class DefaultChaosMeshClient extends BaseClient implements NamespacedChao
         super(configuration);
     }
 
-    public DefaultChaosMeshClient(OkHttpClient httpClient, Config configuration) {
+    public DefaultChaosMeshClient(HttpClient httpClient, Config configuration) {
         super(httpClient, configuration);
     }
 
