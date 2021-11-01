@@ -29,8 +29,6 @@ import okhttp3.mockwebserver.MockWebServer;
 import java.util.Map;
 import java.util.Queue;
 
-import static io.fabric8.kubernetes.client.internal.okhttp.HttpClientUtils.createHttpClientForMockServer;
-
 public class OpenShiftMockServer extends KubernetesMockServer {
   private boolean disableApiGroupCheck = true;
 
@@ -54,7 +52,7 @@ public class OpenShiftMockServer extends KubernetesMockServer {
   public NamespacedOpenShiftClient createOpenShiftClient() {
     OpenShiftConfig config = OpenShiftConfig.wrap(getMockConfiguration());
     config.setDisableApiGroupCheck(disableApiGroupCheck);
-    return new DefaultOpenShiftClient(createHttpClientForMockServer(config), config);
+    return new DefaultOpenShiftClient(config);
   }
 
   public boolean isDisableApiGroupCheck() {

@@ -16,8 +16,6 @@
 package io.fabric8.volumesnapshot.server.mock;
 
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.ConfigBuilder;
-import io.fabric8.kubernetes.client.http.TlsVersion;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.mockwebserver.Context;
 import io.fabric8.mockwebserver.ServerRequest;
@@ -49,13 +47,7 @@ public class VolumeSnapshotMockServer extends KubernetesMockServer {
   }
 
   public NamespacedVolumeSnapshotClient createVolumeSnapshot() {
-    // FIXME
-    Config config = new ConfigBuilder()
-      .withMasterUrl(url("/"))
-      .withNamespace("test")
-      .withTrustCerts(true)
-      .withTlsVersions(TlsVersion.TLS_1_2)
-      .build();
+    Config config = getMockConfiguration();
     return new DefaultVolumeSnapshotClient(config);
   }
 }

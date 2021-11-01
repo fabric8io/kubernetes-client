@@ -32,8 +32,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
 
-import static io.fabric8.kubernetes.client.internal.okhttp.HttpClientUtils.createHttpClientForMockServer;
-
 @Deprecated
 // The class has moved under mvn:io.fabric8:kubernetes-server-mock in package: io.fabric8.client.server.mock
 public class KubernetesMockServer extends DefaultMockServer {
@@ -76,13 +74,18 @@ public class KubernetesMockServer extends DefaultMockServer {
     }
 
     public NamespacedKubernetesClient createClient() {
-        Config config = new ConfigBuilder()
-                .withMasterUrl(url("/"))
-                .withTrustCerts(true)
-                .withTlsVersions(TlsVersion.TLS_1_2)
-                .withNamespace("test")
-                .build();
-        return new DefaultKubernetesClient(createHttpClientForMockServer(config), config);
+        Config config = getMockConfiguration();
+        return new DefaultKubernetesClient(config);
+    }
+
+    protected Config getMockConfiguration() {
+      return new ConfigBuilder()
+              .withMasterUrl(url("/"))
+              .withTrustCerts(true)
+              .withTlsVersions(TlsVersion.TLS_1_2)
+              .withNamespace("test")
+              .withHttp2Disable(true)
+              .build();
     }
 
 

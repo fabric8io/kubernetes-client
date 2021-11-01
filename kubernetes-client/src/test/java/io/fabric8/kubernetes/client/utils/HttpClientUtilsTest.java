@@ -13,19 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.internal.okhttp;
+package io.fabric8.kubernetes.client.utils;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.http.Interceptor;
-import io.fabric8.kubernetes.client.utils.BackwardsCompatibilityInterceptor;
-import io.fabric8.kubernetes.client.utils.ImpersonatorInterceptor;
-import io.fabric8.kubernetes.client.utils.TokenRefreshInterceptor;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
 
-import static io.fabric8.kubernetes.client.internal.okhttp.HttpClientUtils.KUBERNETES_BACKWARDS_COMPATIBILITY_INTERCEPTOR_DISABLE;
+import static io.fabric8.kubernetes.client.utils.HttpClientUtils.KUBERNETES_BACKWARDS_COMPATIBILITY_INTERCEPTOR_DISABLE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class HttpClientUtilsTest {

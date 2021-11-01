@@ -21,13 +21,9 @@ import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.http.HttpClient;
-import io.fabric8.kubernetes.client.internal.okhttp.HttpClientUtils;
-import io.fabric8.kubernetes.client.internal.okhttp.OkHttpClientImpl;
-import io.fabric8.kubernetes.client.utils.BackwardsCompatibilityInterceptor;
-import io.fabric8.kubernetes.client.utils.ImpersonatorInterceptor;
+import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.TokenRefreshInterceptor;
 import io.fabric8.openshift.client.internal.OpenShiftOAuthInterceptor;
-import okhttp3.OkHttpClient;
 
 import java.net.URI;
 import java.util.Map;

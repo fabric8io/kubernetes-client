@@ -16,11 +16,19 @@
 
 package io.fabric8.kubernetes.client.http;
 
+import io.fabric8.kubernetes.client.Config;
+
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 public interface HttpClient {
+  
+  public interface Factory {
+      
+    HttpClient createHttpClient(Config config);
+
+  }
   
   public interface Builder {
 

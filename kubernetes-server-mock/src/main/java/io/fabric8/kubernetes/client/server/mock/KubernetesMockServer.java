@@ -36,8 +36,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
 
-import static io.fabric8.kubernetes.client.internal.okhttp.HttpClientUtils.createHttpClientForMockServer;
-
 public class KubernetesMockServer extends DefaultMockServer {
 
     private static final Context context = new ContextBuilder().withMapper(Serialization.jsonMapper()).build();
@@ -90,7 +88,7 @@ public class KubernetesMockServer extends DefaultMockServer {
 
     public NamespacedKubernetesClient createClient() {
         Config config = getMockConfiguration();
-        return new DefaultKubernetesClient(createHttpClientForMockServer(config), config);
+        return new DefaultKubernetesClient(config);
     }
 
     protected Config getMockConfiguration() {
@@ -99,6 +97,7 @@ public class KubernetesMockServer extends DefaultMockServer {
                 .withTrustCerts(true)
                 .withTlsVersions(TlsVersion.TLS_1_2)
                 .withNamespace("test")
+                .withHttp2Disable(true)
                 .build();
         return config;
     }

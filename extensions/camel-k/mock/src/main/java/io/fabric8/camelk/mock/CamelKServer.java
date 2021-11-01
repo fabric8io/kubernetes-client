@@ -15,17 +15,14 @@
  */
 package io.fabric8.camelk.mock;
 
+import io.fabric8.camelk.client.CamelKClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesCrudDispatcher;
 import io.fabric8.mockwebserver.Context;
-import io.fabric8.mockwebserver.ServerRequest;
-import io.fabric8.mockwebserver.ServerResponse;
 import io.fabric8.mockwebserver.dsl.MockServerExpectation;
-import io.fabric8.camelk.client.CamelKClient;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.rules.ExternalResource;
 
 import java.util.HashMap;
-import java.util.Queue;
 
 public class CamelKServer extends ExternalResource {
 
@@ -51,7 +48,8 @@ public class CamelKServer extends ExternalResource {
     this.crudMode = crudMode;
   }
 
-  public void before() {
+  @Override
+public void before() {
     mock = crudMode
       ? new CamelKMockServer(new Context(), new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(), true)
       : new CamelKMockServer(https);
@@ -59,7 +57,8 @@ public class CamelKServer extends ExternalResource {
     client = mock.createCamelKClient();
   }
 
-  public void after() {
+  @Override
+public void after() {
     mock.destroy();
     client.close();
   }

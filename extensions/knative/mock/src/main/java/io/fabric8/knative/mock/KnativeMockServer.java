@@ -18,8 +18,6 @@ package io.fabric8.knative.mock;
 import io.fabric8.knative.client.DefaultKnativeClient;
 import io.fabric8.knative.client.NamespacedKnativeClient;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.ConfigBuilder;
-import io.fabric8.kubernetes.client.http.TlsVersion;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.mockwebserver.Context;
 import io.fabric8.mockwebserver.ServerRequest;
@@ -30,10 +28,7 @@ import okhttp3.mockwebserver.MockWebServer;
 import java.util.Map;
 import java.util.Queue;
 
-import static io.fabric8.kubernetes.client.internal.okhttp.HttpClientUtils.createHttpClientForMockServer;
-
 public class KnativeMockServer extends KubernetesMockServer {
-  private boolean disableApiGroupCheck = true;
 
   public KnativeMockServer() {
     super();
@@ -53,12 +48,7 @@ public class KnativeMockServer extends KubernetesMockServer {
   }
 
   public NamespacedKnativeClient createKnative() {
-    Config config = new ConfigBuilder()
-      .withMasterUrl(url("/"))
-      .withNamespace("test")
-      .withTrustCerts(true)
-      .withTlsVersions(TlsVersion.TLS_1_2)
-      .build();
-    return new DefaultKnativeClient(createHttpClientForMockServer(config), config);
+    Config config = getMockConfiguration();
+    return new DefaultKnativeClient(config);
   }
 }
