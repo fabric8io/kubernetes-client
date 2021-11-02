@@ -33,7 +33,6 @@ import static io.fabric8.kubernetes.client.utils.HttpClientUtils.createHttpClien
 import static okhttp3.TlsVersion.TLS_1_2;
 
 public class VerticalPodAutoscalerMockServer extends KubernetesMockServer {
-  private boolean disableApiGroupCheck = true;
 
   public VerticalPodAutoscalerMockServer() {
     super();
