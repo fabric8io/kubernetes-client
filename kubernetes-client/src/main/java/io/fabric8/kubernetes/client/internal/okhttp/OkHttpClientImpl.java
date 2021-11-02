@@ -19,25 +19,16 @@ package io.fabric8.kubernetes.client.internal.okhttp;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
-import okhttp3.Authenticator;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.ConnectionPool;
 import okhttp3.Dispatcher;
-import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
-import okhttp3.logging.HttpLoggingInterceptor;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Reader;
 import java.util.HashMap;
 import java.util.List;
@@ -45,7 +36,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class OkHttpClientImpl implements HttpClient {
   
@@ -56,10 +46,6 @@ public class OkHttpClientImpl implements HttpClient {
   public static final MediaType STRATEGIC_MERGE_JSON_PATCH = parseMediaType("application/strategic-merge-patch+json");
   public static final MediaType JSON_MERGE_PATCH = parseMediaType("application/merge-patch+json");
 
-  public static Builder builder() {
-    return new BuilderImpl(new OkHttpClient.Builder());
-  }
-  
   static MediaType parseMediaType(String contentType) {
     MediaType result = MediaType.parse(contentType);
     MEDIA_TYPES.put(contentType, result);
@@ -122,128 +108,6 @@ public class OkHttpClientImpl implements HttpClient {
     
   }
   
-  private static final class InteceptorAdapter implements Interceptor {
-    private final io.fabric8.kubernetes.client.http.Interceptor interceptor;
-    private final String name;
-
-    private InteceptorAdapter(io.fabric8.kubernetes.client.http.Interceptor interceptor, String name) {
-      this.interceptor = interceptor;
-      this.name = name;
-    }
-
-    @Override
-    public Response intercept(Chain chain) throws IOException {
-      Request.Builder requestBuilder = chain.request().newBuilder();
-      OkHttpRequestImpl.BuilderImpl builderImpl = new OkHttpRequestImpl.BuilderImpl(requestBuilder);
-      interceptor.before(new OkHttpRequestImpl.BuilderImpl(requestBuilder), new OkHttpRequestImpl(chain.request()));
-      Response response = chain.proceed(requestBuilder.build());
-      if (!response.isSuccessful()) {
-        boolean call = interceptor.afterFailure(builderImpl, new OkHttpResponseImpl<>(response, InputStream.class));
-        if (call) {
-          return chain.proceed(requestBuilder.build());
-        }
-      }
-      return response;
-    }
-    
-    public String getName() {
-      return name;
-    }
-  }
-  
-  public static class BuilderImpl implements Builder {
-    
-    private boolean streaming;
-    private OkHttpClient.Builder builder;
-
-    public BuilderImpl(okhttp3.OkHttpClient.Builder newBuilder) {
-      this.builder = newBuilder;
-    }
-
-    @Override
-    public HttpClient build() {
-      OkHttpClient client = builder.build();
-      
-      if (streaming) {
-        // If we set the HttpLoggingInterceptor's logging level to Body (as it is by default), it does
-        // not let us stream responses from the server.
-        for (Interceptor i : client.networkInterceptors()) {
-          if (i instanceof HttpLoggingInterceptor) {
-            HttpLoggingInterceptor interceptor = (HttpLoggingInterceptor) i;
-            interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
-          }
-        }
-      }
-      
-      return new OkHttpClientImpl(client);
-    }
-
-    @Override
-    public Builder readTimeout(long readTimeout, TimeUnit unit) {
-      builder.readTimeout(readTimeout, unit);
-      return this;
-    }
-
-    @Override
-    public Builder connectTimeout(long connectTimeout, TimeUnit unit) {
-      builder.connectTimeout(connectTimeout, unit);
-      return this;
-    }
-    
-    @Override
-    public Builder writeTimeout(long timeout, TimeUnit timeoutUnit) {
-      builder.writeTimeout(timeout, timeoutUnit);
-      return this;
-    }
-
-    @Override
-    public Builder forStreaming() {
-      builder.cache(null);
-      this.streaming = true;
-      return this;
-    }
-
-    @Override
-    public Builder addOrReplaceInterceptor(String name, io.fabric8.kubernetes.client.http.Interceptor interceptor) {
-      List<Interceptor> interceptors = builder.interceptors();
-      for (int i = 0; i < interceptors.size(); i++) {
-        Interceptor exiting = interceptors.get(i);
-        if (exiting instanceof InteceptorAdapter) {
-          InteceptorAdapter adapter = (InteceptorAdapter)exiting;
-          if (adapter.getName().equals(name)) {
-            if (interceptor == null) {
-              interceptors.remove(i);
-            } else {
-              interceptors.set(i, new InteceptorAdapter(interceptor, name));
-            }
-            return this;
-          }
-        }
-      }
-      if (interceptor != null) {
-        builder.addInterceptor(new InteceptorAdapter(interceptor, name));
-      }
-      return this;
-    }
-
-    @Override
-    public Builder authenticatorNone() {
-      builder.authenticator(Authenticator.NONE);
-      return this;
-    }
-    
-    @Override
-    public Builder sslContext(SSLContext context, TrustManager[] trustManagers) {
-      X509TrustManager trustManager = null;
-      if (trustManagers != null && trustManagers.length == 1) {
-        trustManager = (X509TrustManager) trustManagers[0];
-      }
-      builder.sslSocketFactory(context.getSocketFactory(), trustManager);
-      return null;
-    }
-    
-  }
-  
   private final okhttp3.OkHttpClient httpClient;
   
   public OkHttpClientImpl(OkHttpClient httpClient) {
@@ -283,7 +147,7 @@ public class OkHttpClientImpl implements HttpClient {
   
   @Override
   public Builder newBuilder() {
-    return new BuilderImpl(httpClient.newBuilder());
+    return new OkHttpClientBuilderImpl(httpClient.newBuilder());
   }
   
   @Override

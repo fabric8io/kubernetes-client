@@ -18,13 +18,23 @@ package io.fabric8.kubernetes.client.http;
 
 /**
  * TODO: determine if java names should be used here as well or instead
+ * 
+ * Replacement for okhttp3.TlsVersion
  */
 public enum TlsVersion {
-  TLS_1_3,
-  TLS_1_2,
-  TLS_1_1,
-  TLS_1_0,
-  SSL_3_0;
+  
+  TLS_1_3("TLSv1.3"), 
+  TLS_1_2("TLSv1.2"), 
+  TLS_1_1("TLSv1.1"), 
+  TLS_1_0("TLSv1"),   
+  SSL_3_0("SSLv3"), 
+  ;
+
+  final String javaName;
+
+  TlsVersion(String javaName) {
+    this.javaName = javaName;
+  }
 
   public static TlsVersion forJavaName(String string) {
     if (string.equals("SSLv3")) {
@@ -34,6 +44,10 @@ public enum TlsVersion {
       return TLS_1_0;
     }
     return TlsVersion.valueOf(string.replaceAll("[v.]", "_"));
+  }
+  
+  public String javaName() {
+    return javaName;
   }
   
 }

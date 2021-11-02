@@ -21,15 +21,22 @@ import io.fabric8.kubernetes.client.http.BasicBuilder;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpHeaders;
 import io.fabric8.kubernetes.client.http.Interceptor;
+import io.fabric8.kubernetes.client.internal.SSLUtils;
 import io.fabric8.kubernetes.client.internal.okhttp.OkHttpClientFactory;
-import io.fabric8.kubernetes.client.internal.okhttp.OkHttpClientImpl;
 
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+
+import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -128,6 +135,58 @@ public class HttpClientUtils {
   public static HttpClient createHttpClient(Config config) {
     // TODO: replace with reflection / service load and factory interface
     return new OkHttpClientFactory().createHttpClient(config);
+  }
+  
+  public static void applyCommonConfiguration(Config config, HttpClient.Builder builder) {
+    builder.followAllRedirects();
+    
+    if (config.getConnectionTimeout() > 0) {
+      builder.connectTimeout(config.getConnectionTimeout(), TimeUnit.MILLISECONDS);
+    }
+
+    if (config.getRequestTimeout() > 0) {
+      builder.readTimeout(config.getRequestTimeout(), TimeUnit.MILLISECONDS);
+    }
+    
+    if (config.isHttp2Disable()) {
+      builder.preferHttp11();
+    }
+    
+    try {
+      
+      // Only check proxy if it's a full URL with protocol
+      if (config.getMasterUrl().toLowerCase(Locale.ROOT).startsWith(Config.HTTP_PROTOCOL_PREFIX)
+          || config.getMasterUrl().startsWith(Config.HTTPS_PROTOCOL_PREFIX)) {
+        try {
+          URL proxyUrl = HttpClientUtils.getProxyUrl(config);
+          if (proxyUrl != null) {
+            builder.proxyAddress(new InetSocketAddress(proxyUrl.getHost(), proxyUrl.getPort()));
+
+            if (config.getProxyUsername() != null) {
+              builder.proxyAuthorization(basicCredentials(config.getProxyUsername(), config.getProxyPassword()));
+            }
+          } else {
+            builder.proxyAddress(null);
+          }
+        } catch (MalformedURLException e) {
+          throw new KubernetesClientException("Invalid proxy server configuration", e);
+        }
+      }
+      
+      TrustManager[] trustManagers = SSLUtils.trustManagers(config);
+      KeyManager[] keyManagers = SSLUtils.keyManagers(config);
+  
+      SSLContext sslContext = SSLUtils.sslContext(keyManagers, trustManagers);
+      builder.sslContext(sslContext, trustManagers);
+      
+      if (config.getTlsVersions() != null && config.getTlsVersions().length > 0) {
+        builder.tlsVersions(config.getTlsVersions());
+      }
+      
+    } catch (Exception e) {
+      KubernetesClientException.launderThrowable(e);
+    }
+    HttpClientUtils.createApplicableInterceptors(config).forEach((s, i) -> builder.addOrReplaceInterceptor(s, i));
   }
   
   public static HttpClient.Builder createHttpClientBuilder() {

@@ -22,6 +22,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
@@ -52,6 +53,16 @@ public interface HttpClient extends AutoCloseable {
     Builder authenticatorNone();
     
     Builder sslContext(SSLContext context, TrustManager[] trustManagers);
+    
+    Builder followAllRedirects();
+    
+    Builder proxyAddress(InetSocketAddress proxyAddress);
+
+    Builder proxyAuthorization(String credentials);
+
+    Builder tlsVersions(TlsVersion[] tlsVersions);
+    
+    Builder preferHttp11();
   }
 
   @Override
