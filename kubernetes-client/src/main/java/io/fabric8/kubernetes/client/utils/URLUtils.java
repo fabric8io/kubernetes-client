@@ -148,7 +148,7 @@ public class URLUtils {
       } catch (URISyntaxException exception) {
         return false;
       }
-      return url.contains("null") ? false : true;
+      return true;
     } else {
       return false;
     }
