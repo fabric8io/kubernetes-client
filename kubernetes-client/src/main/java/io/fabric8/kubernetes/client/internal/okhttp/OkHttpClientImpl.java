@@ -166,7 +166,11 @@ public class OkHttpClientImpl implements HttpClient {
         future.completeExceptionally(e);
       }
     });
-    future.whenComplete((r, t) -> call.cancel());
+    future.whenComplete((r, t) -> {
+      if (future.isCancelled()) {
+        call.cancel();
+      }
+    });
     return future;
   }
   
