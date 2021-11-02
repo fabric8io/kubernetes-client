@@ -44,7 +44,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import static io.fabric8.kubernetes.client.utils.Utils.closeQuietly;
 
 /**
- * A {@link WebSocketListener} for exec operations.
+ * A {@link WebSocket.Listener} for exec operations.
  *
  * This listener, is only responsible for the resources it creates. Externally passed resource, will not get closed,
  * by this listener.

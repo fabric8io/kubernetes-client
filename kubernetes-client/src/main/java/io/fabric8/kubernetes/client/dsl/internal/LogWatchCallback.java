@@ -56,11 +56,6 @@ public class LogWatchCallback implements LogWatch, AutoCloseable, BiConsumer<Htt
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final AtomicBoolean closed = new AtomicBoolean(false);
 
-    @Deprecated
-    public LogWatchCallback(OutputStream out) {
-        this(new Config(), out);
-    }
-
   public LogWatchCallback(Config config, OutputStream out) {
     this.config = config;
     if (out == null) {

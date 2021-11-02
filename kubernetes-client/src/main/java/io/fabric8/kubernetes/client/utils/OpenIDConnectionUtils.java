@@ -71,7 +71,6 @@ public class OpenIDConnectionUtils {
    * Fetch OpenID Connect token from Kubeconfig, check whether it's still valid or not; If expired handle
    * token refresh with OpenID Connection provider APIs
    *
-   * @param client Http Client
    * @param currentAuthProviderConfig current AuthInfo's AuthProvider config as a map
    * @return access token for interacting with Kubernetes API
    */

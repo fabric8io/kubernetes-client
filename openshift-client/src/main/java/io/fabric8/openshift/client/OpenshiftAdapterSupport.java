@@ -87,7 +87,7 @@ public class OpenshiftAdapterSupport {
   /**
    * Creates a new OkHttpClient from the provided one with OpenShift specific interceptors and configurations.
    *
-   * @param okHttpClient the client to adapt.
+   * @param httpClient the client to adapt.
    * @param config the OpenShift configuration.
    * @return an adapted OkHttpClient instance
    */

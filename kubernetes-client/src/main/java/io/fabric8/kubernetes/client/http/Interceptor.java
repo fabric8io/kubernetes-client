@@ -16,8 +16,10 @@
 
 package io.fabric8.kubernetes.client.http;
 
+import java.util.concurrent.Future;
+
 /**
- * TODO: consider if this should return a Future<Boolean> rather
+ * TODO: consider if after should return a {@link Future} rather
  * than be blocking
  */
 public interface Interceptor {
