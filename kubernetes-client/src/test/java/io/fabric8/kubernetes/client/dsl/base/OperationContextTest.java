@@ -61,7 +61,7 @@ class OperationContextTest {
   }
 
   @Test
-  void testCompeteOperationContext() {
+  void testCompleteOperationContext() {
     // Given
     OperationContext operationContext = new OperationContext();
 
@@ -106,5 +106,13 @@ class OperationContextTest {
     assertFalse(operationContext.isReloadingFromServer());
     assertEquals(0, operationContext.getGracePeriodSeconds());
     assertEquals(DeletionPropagation.BACKGROUND, operationContext.getPropagationPolicy());
+
+    assertEquals("test=labels,test!=labelsNot,test in (labelsIn1,labelsIn2),test notin (labelsNotIn)", operationContext.getLabelQueryParam());
+    assertEquals("metadata.name=operand-name,test=field,test!=fieldsNot", operationContext.getFieldQueryParam());
+
+    final String selectorAsString = "foo=bar,!baz";
+    operationContext = operationContext.withLabelSelector(selectorAsString);
+    assertEquals(selectorAsString, operationContext.getLabelQueryParam());
+    assertEquals("metadata.name=operand-name,test=field,test!=fieldsNot", operationContext.getFieldQueryParam());
   }
 }

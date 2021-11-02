@@ -72,6 +72,8 @@ public interface Filterable<T> {
 
   T withLabelSelector(LabelSelector selector);
 
+  T withLabelSelector(String selectorAsString);
+
   /**
    * Filter with the object that this event is about.
    * @param objectReference {@link ObjectReference} for providing information of referred object

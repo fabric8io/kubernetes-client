@@ -57,6 +57,7 @@ final class FilterNestedImpl<T extends HasMetadata, L extends KubernetesResource
     context.fields = new LinkedHashMap<>(this.baseOperation.context.getFields());
     // Use a multi-value map as its possible to define keyA != foo && keyA != bar
     context.fieldsNot = new LinkedHashMap<>(this.baseOperation.context.getFieldsNot());
+    context.selectorAsString = this.baseOperation.context.selectorAsString;
   }
 
   @Override
@@ -196,5 +197,12 @@ final class FilterNestedImpl<T extends HasMetadata, L extends KubernetesResource
   @Override
   public FilterWatchListDeletable<T, L> and() {
     return this.baseOperation.newInstance(context);
+  }
+
+
+  @Override
+  public FilterNested<FilterWatchListDeletable<T, L>> withLabelSelector(String selectorAsString) {
+    this.context.selectorAsString = selectorAsString;
+    return this;
   }
 }
