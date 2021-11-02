@@ -13,17 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.internal.okhttp;
+package io.fabric8.kubernetes.client.utils;
 
 import io.fabric8.kubernetes.api.model.NamedContext;
+import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.internal.KubeConfigUtils;
-import okhttp3.Call;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Protocol;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -36,23 +31,22 @@ import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.Map;
 
-import static io.fabric8.kubernetes.client.internal.okhttp.OpenIDConnectionUtils.CLIENT_ID_KUBECONFIG;
-import static io.fabric8.kubernetes.client.internal.okhttp.OpenIDConnectionUtils.CLIENT_SECRET_KUBECONFIG;
-import static io.fabric8.kubernetes.client.internal.okhttp.OpenIDConnectionUtils.ID_TOKEN_KUBECONFIG;
-import static io.fabric8.kubernetes.client.internal.okhttp.OpenIDConnectionUtils.ID_TOKEN_PARAM;
-import static io.fabric8.kubernetes.client.internal.okhttp.OpenIDConnectionUtils.REFRESH_TOKEN_KUBECONFIG;
-import static io.fabric8.kubernetes.client.internal.okhttp.OpenIDConnectionUtils.REFRESH_TOKEN_PARAM;
-import static io.fabric8.kubernetes.client.internal.okhttp.OpenIDConnectionUtils.TOKEN_ENDPOINT_PARAM;
+import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.CLIENT_ID_KUBECONFIG;
+import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.CLIENT_SECRET_KUBECONFIG;
+import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.ID_TOKEN_KUBECONFIG;
+import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.ID_TOKEN_PARAM;
+import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.REFRESH_TOKEN_KUBECONFIG;
+import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.REFRESH_TOKEN_PARAM;
+import static io.fabric8.kubernetes.client.utils.OpenIDConnectionUtils.TOKEN_ENDPOINT_PARAM;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class OpenIDConnectionUtilsTest {
-  OkHttpClient mockClient = Mockito.mock(OkHttpClient.class, Mockito.RETURNS_DEEP_STUBS);
+  HttpClient mockClient = Mockito.mock(HttpClient.class, Mockito.RETURNS_DEEP_STUBS);
 
   @Test
   void testLoadTokenURL() throws IOException {
@@ -194,20 +188,14 @@ class OpenIDConnectionUtilsTest {
   }
 
   private void mockOkHttpClient(int responseCode, String responseAsStr) throws IOException {
-    Call mockCall = mock(Call.class);
-    Response mockSuccessResponse = mockResponse(responseCode, responseAsStr);
-    when(mockCall.execute())
-      .thenReturn(mockSuccessResponse);
-    when(mockClient.newCall(any())).thenReturn(mockCall);
+    HttpResponse<String> mockSuccessResponse = mockResponse(responseCode, responseAsStr);
+    when(mockClient.send(any(), Mockito.eq(String.class))).thenReturn(mockSuccessResponse);
   }
 
-  private Response mockResponse(int responseCode, String responseBody) {
-    return new Response.Builder()
-      .request(new Request.Builder().url("http://mock").build())
-      .protocol(Protocol.HTTP_1_1)
-      .code(responseCode)
-      .body(ResponseBody.create(MediaType.get("application/json"), responseBody))
-      .message("mock")
-      .build();
+  private HttpResponse<String> mockResponse(int responseCode, String responseBody) {
+    HttpResponse<String> response = Mockito.mock(HttpResponse.class, Mockito.CALLS_REAL_METHODS);
+    Mockito.when(response.code()).thenReturn(responseCode);
+    Mockito.when(response.body()).thenReturn(responseBody);
+    return response;
   }
 }

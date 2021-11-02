@@ -17,8 +17,13 @@
 package io.fabric8.kubernetes.client.http;
 
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public interface HttpRequest extends HttpHeaders {
   
@@ -61,7 +66,21 @@ public interface HttpRequest extends HttpHeaders {
     
     @Override
     Builder setHeader(String k, String v);
+    
+    default Builder post(Map<String, String> formData) {
+      return post("application/x-www-form-urlencoded", formData.entrySet().stream().map((e) -> {
+        return formURLEncode(e.getKey()) + "=" + formURLEncode(e.getValue());
+      }).collect(Collectors.joining("&")));
+    }
 
+  }
+  
+  static String formURLEncode(String value) {
+    try {
+      return URLEncoder.encode(value, StandardCharsets.UTF_8.displayName());
+    } catch (UnsupportedEncodingException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   URI uri();

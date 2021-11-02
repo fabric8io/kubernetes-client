@@ -18,15 +18,20 @@ package io.fabric8.kubernetes.client.http;
 
 import io.fabric8.kubernetes.client.Config;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
-public interface HttpClient {
+public interface HttpClient extends AutoCloseable {
   
   public interface Factory {
       
     HttpClient createHttpClient(Config config);
+    
+    HttpClient.Builder newBuilder();
 
   }
   
@@ -45,8 +50,11 @@ public interface HttpClient {
     Builder addOrReplaceInterceptor(String name, Interceptor interceptor);
     
     Builder authenticatorNone();
+    
+    Builder sslContext(SSLContext context, TrustManager[] trustManagers);
   }
 
+  @Override
   void close();
   
   Builder newBuilder();

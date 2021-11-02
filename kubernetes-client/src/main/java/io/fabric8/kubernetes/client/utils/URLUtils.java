@@ -15,13 +15,12 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
-import java.io.UnsupportedEncodingException;
+import io.fabric8.kubernetes.client.http.HttpRequest;
+
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 
 public class URLUtils {
   
@@ -43,11 +42,7 @@ public class URLUtils {
       } else {
         url.append("&");
       }
-      try {
-        url.append(encodeToUTF(key).replaceAll("[+]", "%20")).append("=").append(encodeToUTF(value).replaceAll("[+]", "%20"));
-      } catch (UnsupportedEncodingException e) {
-        throw new RuntimeException(e);
-      }
+      url.append(encodeToUTF(key).replaceAll("[+]", "%20")).append("=").append(encodeToUTF(value).replaceAll("[+]", "%20"));
       return this;
     }
 
@@ -198,7 +193,7 @@ public class URLUtils {
     }
   }
 
-  public static String encodeToUTF(String url) throws UnsupportedEncodingException {
-	  return URLEncoder.encode(url, StandardCharsets.UTF_8.displayName());
+  public static String encodeToUTF(String url) {
+	  return HttpRequest.formURLEncode(url);
   }
 }

@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpHeaders;
 import io.fabric8.kubernetes.client.http.Interceptor;
 import io.fabric8.kubernetes.client.internal.okhttp.OkHttpClientFactory;
+import io.fabric8.kubernetes.client.internal.okhttp.OkHttpClientImpl;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -126,6 +127,11 @@ public class HttpClientUtils {
 
   public static HttpClient createHttpClient(Config config) {
     // TODO: replace with reflection / service load and factory interface
-    return OkHttpClientFactory.createHttpClient(config, builder -> {});
+    return new OkHttpClientFactory().createHttpClient(config);
+  }
+  
+  public static HttpClient.Builder createHttpClientBuilder() {
+    // TODO: replace with reflection / service load and factory interface
+    return new OkHttpClientFactory().newBuilder();
   }
 }

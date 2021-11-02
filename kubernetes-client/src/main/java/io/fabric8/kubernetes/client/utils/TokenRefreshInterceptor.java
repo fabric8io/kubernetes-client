@@ -19,7 +19,6 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.http.BasicBuilder;
 import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.http.Interceptor;
-import io.fabric8.kubernetes.client.internal.okhttp.OpenIDConnectionUtils;
 
 import java.net.HttpURLConnection;
 
@@ -31,6 +30,7 @@ public class TokenRefreshInterceptor implements Interceptor {
   public static final String NAME = "TOKEN"; 
   
   private final Config config;
+  
   public TokenRefreshInterceptor(Config config) {
     this.config = config;
   }

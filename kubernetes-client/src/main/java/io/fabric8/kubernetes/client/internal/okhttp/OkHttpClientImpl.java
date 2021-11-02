@@ -32,6 +32,10 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
@@ -147,7 +151,7 @@ public class OkHttpClientImpl implements HttpClient {
     }
   }
   
-  static class BuilderImpl implements Builder {
+  public static class BuilderImpl implements Builder {
     
     private boolean streaming;
     private OkHttpClient.Builder builder;
@@ -227,6 +231,17 @@ public class OkHttpClientImpl implements HttpClient {
       builder.authenticator(Authenticator.NONE);
       return this;
     }
+    
+    @Override
+    public Builder sslContext(SSLContext context, TrustManager[] trustManagers) {
+      X509TrustManager trustManager = null;
+      if (trustManagers != null && trustManagers.length == 1) {
+        trustManager = (X509TrustManager) trustManagers[0];
+      }
+      builder.sslSocketFactory(context.getSocketFactory(), trustManager);
+      return null;
+    }
+    
   }
   
   private final okhttp3.OkHttpClient httpClient;
@@ -304,5 +319,5 @@ public class OkHttpClientImpl implements HttpClient {
   public HttpRequest.Builder newHttpRequestBuilder() {
     return new OkHttpRequestImpl.BuilderImpl();
   }
-
+  
 }

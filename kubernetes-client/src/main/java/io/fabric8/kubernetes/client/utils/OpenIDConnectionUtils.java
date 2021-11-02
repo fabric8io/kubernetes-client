@@ -13,32 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.internal.okhttp;
+package io.fabric8.kubernetes.client.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.fabric8.kubernetes.api.model.NamedContext;
+import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.http.HttpRequest;
+import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.internal.KubeConfigUtils;
 import io.fabric8.kubernetes.client.internal.SSLUtils;
-import io.fabric8.kubernetes.client.utils.Serialization;
-import io.fabric8.kubernetes.client.utils.URLUtils;
-import io.fabric8.kubernetes.client.utils.Utils;
-import okhttp3.FormBody;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
+
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
@@ -47,6 +39,7 @@ import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -78,6 +71,7 @@ public class OpenIDConnectionUtils {
    * Fetch OpenID Connect token from Kubeconfig, check whether it's still valid or not; If expired handle
    * token refresh with OpenID Connection provider APIs
    *
+   * @param client Http Client
    * @param currentAuthProviderConfig current AuthInfo's AuthProvider config as a map
    * @return access token for interacting with Kubernetes API
    */
@@ -97,7 +91,7 @@ public class OpenIDConnectionUtils {
   /**
    * Get OIDC Provider discovery token_endpoint and issue refresh request
    *
-   * @param client OkHttp Client
+   * @param client Http Client
    * @param wellKnownOpenIdConfiguration OIDC Provider Discovery Document
    * @param clientId client id as string
    * @param refreshToken refresh token
@@ -106,7 +100,7 @@ public class OpenIDConnectionUtils {
    * @param shouldPersistUpdatedTokenInKubeConfig boolean value whether to modify kubeconfig file in disc or not
    * @return returns access token(either updated or old) depending upon response from provider
    */
-  static String getOIDCProviderTokenEndpointAndRefreshToken(OkHttpClient client, Map<String, Object> wellKnownOpenIdConfiguration, String clientId, String refreshToken, String clientSecret, String accessToken, boolean shouldPersistUpdatedTokenInKubeConfig) {
+  static String getOIDCProviderTokenEndpointAndRefreshToken(HttpClient client, Map<String, Object> wellKnownOpenIdConfiguration, String clientId, String refreshToken, String clientSecret, String accessToken, boolean shouldPersistUpdatedTokenInKubeConfig) {
     String oidcTokenEndpoint = getParametersFromDiscoveryResponse(wellKnownOpenIdConfiguration, TOKEN_ENDPOINT_PARAM);
     try {
       String freshAccessToken = OpenIDConnectionUtils.refreshToken(client, oidcTokenEndpoint, clientId, refreshToken, clientSecret, shouldPersistUpdatedTokenInKubeConfig);
@@ -133,7 +127,7 @@ public class OpenIDConnectionUtils {
   /**
    * Issue Token refresh request
    *
-   * @param client okhttp client
+   * @param client http client
    * @param oidcTokenEndpoint OIDC provider token endpoint
    * @param clientId client id
    * @param refreshToken refresh token for token refreshing
@@ -141,7 +135,7 @@ public class OpenIDConnectionUtils {
    * @param shouldPersistUpdatedTokenInKubeConfig boolean value whether to update local kubeconfig file or not
    * @return access token received from OpenID Connection provider
    */
-  static String refreshToken(OkHttpClient client, String oidcTokenEndpoint, String clientId, String refreshToken, String clientSecret, boolean shouldPersistUpdatedTokenInKubeConfig) {
+  static String refreshToken(HttpClient client, String oidcTokenEndpoint, String clientId, String refreshToken, String clientSecret, boolean shouldPersistUpdatedTokenInKubeConfig) {
     try {
       Map<String, Object> response = refreshOidcToken(client, clientId, refreshToken, clientSecret, oidcTokenEndpoint);
 
@@ -166,7 +160,7 @@ public class OpenIDConnectionUtils {
   /**
    * Issue Token Refresh HTTP Request to OIDC Provider
    *
-   * @param client OkHttp Client for issuing HTTP request
+   * @param client Http Client for issuing HTTP request
    * @param clientId client id
    * @param refreshToken refresh token
    * @param clientSecret client secret
@@ -174,19 +168,17 @@ public class OpenIDConnectionUtils {
    * @return response as HashMap
    * @throws IOException in case of any error in contacting OIDC provider
    */
-  static Map<String, Object> refreshOidcToken(OkHttpClient client, String clientId, String refreshToken, String clientSecret, String tokenURL) throws IOException {
-    try (Response response = client.newCall(getTokenRefreshHttpRequest(tokenURL, clientId, refreshToken, clientSecret)).execute()) {
-      String responseBody;
-      if (response.body() != null) {
-        // Get response body as string
-        responseBody = response.body().string();
-        if (response.isSuccessful()) {
-          // Deserialize response body into a Map and return
-          return convertJsonStringToMap(responseBody);
-        } else {
-          // Log error response body
-          LOGGER.warn("Response: {}", responseBody);
-        }
+  static Map<String, Object> refreshOidcToken(HttpClient client, String clientId, String refreshToken, String clientSecret, String tokenURL) throws IOException {
+    HttpRequest request = getTokenRefreshHttpRequest(client, tokenURL, clientId, refreshToken, clientSecret);
+    HttpResponse<String> response = client.send(request, String.class);
+    if (response.body() != null) {
+      // Get response body as string
+      if (response.isSuccessful()) {
+        // Deserialize response body into a Map and return
+        return convertJsonStringToMap(response.body());
+      } else {
+        // Log error response body
+        LOGGER.warn("Response: {}", response.body());
       }
     }
     return Collections.emptyMap();
@@ -197,17 +189,19 @@ public class OpenIDConnectionUtils {
    * at a well-known URL which looks like this: https://[base-server-url]/.well-known/openid-configuration
    * This method performs an Http Get at this public URL and fetches response as a HashMap
    *
-   * @param client OkHttpClient for doing HTTP Get to well known URL of OpenID provider
+   * @param client HttpClient for doing HTTP Get to well known URL of OpenID provider
    * @param issuer OpenID Connect provider issuer URL
    * @return a HashMap of Discovery document
    */
-  static Map<String, Object> getOIDCDiscoveryDocumentAsMap(OkHttpClient client, String issuer) {
-    try (Response response = client.newCall(getDiscoveryDocumentHttpRequest(issuer)).execute()) {
+  static Map<String, Object> getOIDCDiscoveryDocumentAsMap(HttpClient client, String issuer) {
+    HttpRequest request = client.newHttpRequestBuilder().uri(getWellKnownUrlForOpenIDIssuer(issuer)).build();
+    try {
+      HttpResponse<String> response = client.send(request, String.class);
       if (response.isSuccessful() && response.body() != null) {
-        return convertJsonStringToMap(response.body().string());
+        return convertJsonStringToMap(response.body());
       } else {
         // Don't produce an error that's too huge (e.g. if we get HTML back for some reason).
-        String responseBody = response.body() != null ? response.body().string() : null;
+        String responseBody = response.body();
         LOGGER.warn("oidc: failed to query metadata endpoint: {} {}", response.code(), responseBody);
       }
     } catch (IOException e) {
@@ -282,84 +276,59 @@ public class OpenIDConnectionUtils {
     return Serialization.jsonMapper().readValue(jsonString, Map.class);
   }
 
-  private static SSLContext getSSLContext(String idpCert) {
+  private static HttpClient getDefaultHttpClientWithPemCert(String idpCert) {
     SSLContext sslContext = null;
+    TrustManager[] trustManagers = null;
+    // fist, lets get the pem
+    String pemCert = new String(java.util.Base64.getDecoder().decode(idpCert));
 
-    if (idpCert != null) {
-      // fist, lets get the pem
-      String pemCert = new String(java.util.Base64.getDecoder().decode(idpCert));
-
-      try {
-        TrustManager[] trustManagers = SSLUtils.trustManagers(pemCert, null, false, null, null);
-        KeyManager[] keyManagers = SSLUtils.keyManagers(pemCert, null, null, null, null, null, null, null);
-        sslContext = SSLUtils.sslContext(keyManagers, trustManagers);
-      } catch (KeyStoreException |
-        KeyManagementException |
-        InvalidKeySpecException |
-        NoSuchAlgorithmException |
-        IOException |
-        UnrecoverableKeyException |
-        CertificateException e) {
-        throw new RuntimeException("Could not import idp certificate", e);
-      }
+    try {
+      trustManagers = SSLUtils.trustManagers(pemCert, null, false, null, null);
+      KeyManager[] keyManagers = SSLUtils.keyManagers(pemCert, null, null, null, null, null, null, null);
+      sslContext = SSLUtils.sslContext(keyManagers, trustManagers);
+    } catch (KeyStoreException |
+      KeyManagementException |
+      InvalidKeySpecException |
+      NoSuchAlgorithmException |
+      IOException |
+      UnrecoverableKeyException |
+      CertificateException e) {
+      throw new RuntimeException("Could not import idp certificate", e);
     }
-    return sslContext;
-  }
-
-  private static OkHttpClient getOkHttpClient(SSLContext sslContext, String pemCert) {
-    OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
+    
+    HttpClient.Builder clientBuilder = HttpClientUtils.createHttpClientBuilder();
     if (sslContext != null) {
-      clientBuilder.sslSocketFactory(sslContext.getSocketFactory(), getTrustManagerForAllCerts(pemCert));
+      clientBuilder.sslContext(sslContext, trustManagers);
     }
     return clientBuilder.build();
   }
 
-  private static X509TrustManager getTrustManagerForAllCerts(String pemCert) {
-    X509TrustManager trustManager = null;
-    try {
-      TrustManager[] trustManagers = SSLUtils.trustManagers(pemCert, null, false, null, null);
-      if (trustManagers != null && trustManagers.length == 1) {
-        trustManager = (X509TrustManager) trustManagers[0];
-      }
-    } catch (CertificateException | NoSuchAlgorithmException | KeyStoreException | IOException e) {
-      LOGGER.warn("Could not get trust manager");
-    }
-    return trustManager;
-  }
+  private static HttpRequest getTokenRefreshHttpRequest(HttpClient client, String tokenEndpointUrl, String clientId, String refreshToken, String clientSecret) throws JsonProcessingException {
+    HttpRequest.Builder httpRequestBuilder = client.newHttpRequestBuilder().uri(tokenEndpointUrl);
 
-  private static Request getTokenRefreshHttpRequest(String tokenEndpointUrl, String clientId, String refreshToken, String clientSecret) throws JsonProcessingException {
-    HttpUrl.Builder httpUrlBuilder = HttpUrl.get(tokenEndpointUrl).newBuilder();
-
-    RequestBody requestBody = getRequestBodyContentForRefresh(clientId, refreshToken, clientSecret);
-    Request.Builder requestBuilder = new Request.Builder().post(requestBody).url(httpUrlBuilder.build());
+    Map<String, String> requestBody = getRequestBodyContentForRefresh(clientId, refreshToken, clientSecret);
     String credentials =
       java.util.Base64.getEncoder()
         .encodeToString((clientId + ':' + clientSecret).getBytes(StandardCharsets.UTF_8));
-    requestBuilder.addHeader("Authorization", "Basic " + credentials);
-    requestBuilder.addHeader("Content-Type", "application/x-www-form-urlencoded");
-    return requestBuilder.build();
+    httpRequestBuilder.header("Authorization", "Basic " + credentials);
+    httpRequestBuilder.post(requestBody);
+    return httpRequestBuilder.build();
   }
 
-  private static Request getDiscoveryDocumentHttpRequest(String issuer) throws MalformedURLException {
-    URL wellKnown = new URL(getWellKnownUrlForOpenIDIssuer(issuer));
-    return new Request.Builder()
-      .url(wellKnown)
-      .build();
-  }
-
-  private static RequestBody getRequestBodyContentForRefresh(String clientId, String refreshToken, String clientSecret) {
-    return  new FormBody.Builder()
-      .add(REFRESH_TOKEN_PARAM, refreshToken)
-      .add(GRANT_TYPE_PARAM, GRANT_TYPE_REFRESH_TOKEN)
-      .add(CLIENT_ID_PARAM, clientId)
-      .add(CLIENT_SECRET_PARAM, clientSecret)
-      .build();
+  private static Map<String, String> getRequestBodyContentForRefresh(String clientId, String refreshToken, String clientSecret) {
+    Map<String, String> result = new LinkedHashMap<>();
+    result.put(REFRESH_TOKEN_PARAM, refreshToken);
+    result.put(GRANT_TYPE_PARAM, GRANT_TYPE_REFRESH_TOKEN);
+    result.put(CLIENT_ID_PARAM, clientId);
+    result.put(CLIENT_SECRET_PARAM, clientSecret);
+    return result;
   }
 
   private static String getOIDCProviderTokenEndpointAndRefreshToken(String issuer, String clientId, String refreshToken, String clientSecret, String accessToken, String idpCert) {
-    OkHttpClient okHttpClient = getOkHttpClient(getSSLContext(idpCert), idpCert);
-    Map<String, Object> wellKnownOpenIdConfiguration = getOIDCDiscoveryDocumentAsMap(okHttpClient, issuer);
-    return getOIDCProviderTokenEndpointAndRefreshToken(okHttpClient, wellKnownOpenIdConfiguration, clientId, refreshToken, clientSecret, accessToken, true);
+    try (HttpClient newClient = getDefaultHttpClientWithPemCert(idpCert)) {
+      Map<String, Object> wellKnownOpenIdConfiguration = getOIDCDiscoveryDocumentAsMap(newClient, issuer);
+      return getOIDCProviderTokenEndpointAndRefreshToken(newClient, wellKnownOpenIdConfiguration, clientId, refreshToken, clientSecret, accessToken, true);
+    }
   }
 
   private static boolean persistKubeConfigWithUpdatedToken(Map<String, Object> updatedAuthProviderConfig) throws IOException {

@@ -35,13 +35,11 @@ import org.slf4j.LoggerFactory;
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 
 import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.URL;
-import java.security.GeneralSecurityException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Locale;
@@ -55,6 +53,11 @@ public class OkHttpClientFactory implements HttpClient.Factory {
   @Override
   public HttpClient createHttpClient(Config config) {
     return createHttpClient(config, builder -> {});
+  }
+  
+  @Override
+  public Builder newBuilder() {
+    return OkHttpClientImpl.builder();
   }
 
   /**
@@ -74,20 +77,6 @@ public class OkHttpClientFactory implements HttpClient.Factory {
 
       if (config.isTrustCerts() || config.isDisableHostnameVerification()) {
         httpClientBuilder.hostnameVerifier((s, sslSession) -> true);
-      }
-
-      TrustManager[] trustManagers = SSLUtils.trustManagers(config);
-      KeyManager[] keyManagers = SSLUtils.keyManagers(config);
-
-      try {
-        SSLContext sslContext = SSLUtils.sslContext(keyManagers, trustManagers);
-        X509TrustManager trustManager = null;
-        if (trustManagers != null && trustManagers.length == 1) {
-          trustManager = (X509TrustManager) trustManagers[0];
-        }
-        httpClientBuilder.sslSocketFactory(sslContext.getSocketFactory(), trustManager);
-      } catch (GeneralSecurityException e) {
-        throw new AssertionError(e); // The system has no TLS. Just give up.
       }
 
       Logger reqLogger = LoggerFactory.getLogger(HttpLoggingInterceptor.class);
@@ -159,7 +148,15 @@ public class OkHttpClientFactory implements HttpClient.Factory {
         additionalConfig.accept(httpClientBuilder);
       }
 
-      Builder builderWrapper = new OkHttpClientImpl(httpClientBuilder.build()).newBuilder();
+      Builder builderWrapper = new OkHttpClientImpl.BuilderImpl(httpClientBuilder);
+      
+      // TODO: the rest can be moved to common logic
+      TrustManager[] trustManagers = SSLUtils.trustManagers(config);
+      KeyManager[] keyManagers = SSLUtils.keyManagers(config);
+
+      SSLContext sslContext = SSLUtils.sslContext(keyManagers, trustManagers);
+      builderWrapper.sslContext(sslContext, trustManagers);
+      
       HttpClientUtils.createApplicableInterceptors(config).forEach((s, i) -> builderWrapper.addOrReplaceInterceptor(s, i));
       return builderWrapper.build();
     } catch (Exception e) {
