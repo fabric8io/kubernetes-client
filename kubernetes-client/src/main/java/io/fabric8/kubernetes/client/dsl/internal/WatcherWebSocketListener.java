@@ -115,8 +115,8 @@ class WatcherWebSocketListener<T extends HasMetadata> extends WebSocketListener 
     logger.debug("WebSocket close received. code: {}, reason: {}", code, reason);
     manager.scheduleReconnect();
   }
-  
-  protected void waitUntilReady() {
-    Utils.waitUntilReadyOrFail(startedFuture, 10, TimeUnit.SECONDS);
+
+  protected void waitUntilReady(final int readTimeoutMs) {
+    Utils.waitUntilReadyOrFail(startedFuture, readTimeoutMs, TimeUnit.MILLISECONDS);
   }
 }

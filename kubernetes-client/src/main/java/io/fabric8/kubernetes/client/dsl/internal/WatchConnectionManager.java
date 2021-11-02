@@ -77,7 +77,7 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
   }
 
   public void waitUntilReady() {
-    getListener().waitUntilReady();
+    getListener().waitUntilReady(this.client.readTimeoutMillis());
   }
 
   synchronized WatcherWebSocketListener<T> getListener() {
