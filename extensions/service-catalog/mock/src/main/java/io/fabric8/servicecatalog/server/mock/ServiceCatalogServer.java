@@ -32,11 +32,11 @@ public class ServiceCatalogServer extends ExternalResource {
   protected ServiceCatalogMockServer mock;
   private ServiceCatalogClient client;
 
-  private boolean https;
+  private final boolean https;
   // In this mode the mock web server will store, read, update and delete
   // kubernetes resources using an in memory map and will appear as a real api
   // server.
-  private boolean crudMode;
+  private final boolean crudMode;
 
   public ServiceCatalogServer() {
     this(true, false);
@@ -51,6 +51,7 @@ public class ServiceCatalogServer extends ExternalResource {
     this.crudMode = crudMode;
   }
 
+  @Override
   public void before() {
     mock = crudMode
       ? new ServiceCatalogMockServer(new Context(), new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(), true)
@@ -59,11 +60,11 @@ public class ServiceCatalogServer extends ExternalResource {
     client = mock.createServiceCatalog();
   }
 
+  @Override
   public void after() {
     mock.destroy();
     client.close();
   }
-
 
   public ServiceCatalogClient getServiceCatalogClient() {
     return client;
@@ -82,9 +83,5 @@ public class ServiceCatalogServer extends ExternalResource {
   @Deprecated
   public void expectAndReturnAsString(String path, int code, String body) {
     expect().withPath(path).andReturn(code, body).always();
-  }
-
-  public MockWebServer getMockServer() {
-    return mock.getServer();
   }
 }

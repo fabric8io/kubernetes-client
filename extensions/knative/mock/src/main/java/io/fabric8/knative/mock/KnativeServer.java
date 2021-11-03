@@ -15,28 +15,25 @@
  */
 package io.fabric8.knative.mock;
 
+import io.fabric8.knative.client.KnativeClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesCrudDispatcher;
 import io.fabric8.mockwebserver.Context;
-import io.fabric8.mockwebserver.ServerRequest;
-import io.fabric8.mockwebserver.ServerResponse;
 import io.fabric8.mockwebserver.dsl.MockServerExpectation;
-import io.fabric8.knative.client.KnativeClient;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.rules.ExternalResource;
 
 import java.util.HashMap;
-import java.util.Queue;
 
 public class KnativeServer extends ExternalResource {
 
   protected KnativeMockServer mock;
   private KnativeClient client;
 
-  private boolean https;
+  private final boolean https;
   // In this mode the mock web server will store, read, update and delete
   // kubernetes resources using an in memory map and will appear as a real api
   // server.
-  private boolean crudMode;
+  private final boolean crudMode;
 
   public KnativeServer() {
     this(true, false);
@@ -51,6 +48,7 @@ public class KnativeServer extends ExternalResource {
     this.crudMode = crudMode;
   }
 
+  @Override
   public void before() {
     mock = crudMode
       ? new KnativeMockServer(new Context(), new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(), true)
@@ -59,16 +57,15 @@ public class KnativeServer extends ExternalResource {
     client = mock.createKnative();
   }
 
+  @Override
   public void after() {
     mock.destroy();
     client.close();
   }
 
-
   public KnativeClient getKnativeClient() {
     return client;
   }
-
 
   public MockServerExpectation expect() {
     return mock.expect();
@@ -82,9 +79,5 @@ public class KnativeServer extends ExternalResource {
   @Deprecated
   public void expectAndReturnAsString(String path, int code, String body) {
     expect().withPath(path).andReturn(code, body).always();
-  }
-
-  public MockWebServer getMockServer() {
-    return mock.getServer();
   }
 }

@@ -44,7 +44,7 @@ import static io.fabric8.mockwebserver.crud.AttributeType.EXISTS;
 import static io.fabric8.mockwebserver.crud.AttributeType.NOT_EXISTS;
 import static io.fabric8.mockwebserver.crud.AttributeType.WITHOUT;
 
-public class KubernetesAttributesExtractor implements AttributeExtractor<HasMetadata> {
+public class KubernetesAttributesExtractor implements AttributeExtractor {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(KubernetesAttributesExtractor.class);
 
@@ -88,7 +88,7 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
   private static final String SCHEME = "http";
   private static final String HOST = "localhost";
 
-  private Map<List<String>, CustomResourceDefinitionContext> crdContexts;
+  private final Map<List<String>, CustomResourceDefinitionContext> crdContexts;
 
   public KubernetesAttributesExtractor() {
     this(Collections.emptyList());
@@ -160,12 +160,6 @@ public class KubernetesAttributesExtractor implements AttributeExtractor<HasMeta
     return new AttributeSet();
   }
 
-  @Override
-  public AttributeSet extract(String s) {
-    return fromPath(s);
-  }
-
-  @Override
   public AttributeSet extract(HasMetadata hasMetadata) {
     AttributeSet metadataAttributes = new AttributeSet();
     String apiVersion = hasMetadata.getApiVersion();
