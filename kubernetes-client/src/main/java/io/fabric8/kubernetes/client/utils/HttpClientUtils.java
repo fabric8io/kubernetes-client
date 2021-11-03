@@ -39,6 +39,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
@@ -60,6 +61,24 @@ public class HttpClientUtils {
     } catch (PatternSyntaxException e) {
       throw KubernetesClientException.launderThrowable("Unable to compile ipv4address pattern.", e);
     }
+  }
+  
+  public static void close(OkHttpClient httpClient) {
+    ConnectionPool connectionPool = httpClient.connectionPool();
+    Dispatcher dispatcher = httpClient.dispatcher();
+    ExecutorService executorService = httpClient.dispatcher() != null ? httpClient.dispatcher().executorService() : null;
+
+    if (dispatcher != null) {
+      dispatcher.cancelAll();
+    }
+
+    if (connectionPool != null) {
+      connectionPool.evictAll();
+    }
+
+    if (executorService != null) {
+      executorService.shutdownNow();
+    } 
   }
 
   public static OkHttpClient createHttpClient(final Config config) {
