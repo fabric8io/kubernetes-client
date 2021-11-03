@@ -21,6 +21,9 @@ import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionBuilder;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionVersionBuilder;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable;
@@ -34,6 +37,7 @@ import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -71,7 +75,7 @@ public class GenericResourceIT {
 
   @Test
   public void testGenericCustomResourceWithoutMetadata() {
-    CustomResourceDefinition crd1 = client.apiextensions().v1().customResourceDefinitions().createOrReplace(CustomResourceDefinitionIT.createCRD());
+    CustomResourceDefinition crd1 = client.apiextensions().v1().customResourceDefinitions().createOrReplace(createCRD());
 
     assertThat(crd1).isNotNull();
 
@@ -88,4 +92,39 @@ public class GenericResourceIT {
     assertNotNull(result);
   }
 
+
+  public static CustomResourceDefinition createCRD() {
+    return new CustomResourceDefinitionBuilder()
+      .withApiVersion("apiextensions.k8s.io/v1")
+      .withNewMetadata()
+      .withName("itests.examples.fabric8.io")
+      .endMetadata()
+      .withNewSpec()
+      .withGroup("examples.fabric8.io")
+      .addAllToVersions(Collections.singletonList(new CustomResourceDefinitionVersionBuilder()
+        .withName("v1")
+        .withServed(true)
+        .withStorage(true)
+        .withNewSchema()
+        .withNewOpenAPIV3Schema()
+        .withType("object")
+        .addToProperties("spec", new JSONSchemaPropsBuilder()
+          .withType("object")
+          .addToProperties("field", new JSONSchemaPropsBuilder()
+            .withType("string")
+            .build())
+          .build())
+        .endOpenAPIV3Schema()
+        .endSchema()
+        .build()))
+      .withScope("Namespaced")
+      .withNewNames()
+      .withPlural("itests")
+      .withSingular("itest")
+      .withKind("Itest")
+      .withShortNames("it")
+      .endNames()
+      .endSpec()
+      .build();
+  }
 }
