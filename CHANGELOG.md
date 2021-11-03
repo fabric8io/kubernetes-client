@@ -7,6 +7,7 @@
 #### Improvements
 
 #### Dependency Upgrade
+* Fix #3562: Bump MockWebServer
 
 #### New Features
 * Fix #3430: Support Vertical Pod Autoscaler
