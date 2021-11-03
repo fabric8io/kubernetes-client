@@ -61,7 +61,6 @@ public final class SSLUtils {
                 .withRequestTimeout(1000)
                 .withConnectionTimeout(1000)
                 .build();
-
         OkHttpClient client = HttpClientUtils.createHttpClient(config);
         try {
             Request request = new Request.Builder().get().url(sslConfig.getMasterUrl())
@@ -73,9 +72,7 @@ public final class SSLUtils {
         } catch (Throwable t) {
             LOG.warn("SSL handshake failed. Falling back to insecure connection.");
         } finally {
-            if (client != null && client.connectionPool() != null) {
-                client.connectionPool().evictAll();
-            }
+          HttpClientUtils.close(client);
         }
         return false;
     }
@@ -100,12 +97,15 @@ public final class SSLUtils {
         if (isTrustCerts) {
             return new TrustManager[]{
                 new X509TrustManager() {
+                    @Override
                     public void checkClientTrusted(X509Certificate[] chain, String s) {
                     }
 
+                    @Override
                     public void checkServerTrusted(X509Certificate[] chain, String s) {
                     }
 
+                    @Override
                     public X509Certificate[] getAcceptedIssuers() {
                         return new X509Certificate[0];
                     }

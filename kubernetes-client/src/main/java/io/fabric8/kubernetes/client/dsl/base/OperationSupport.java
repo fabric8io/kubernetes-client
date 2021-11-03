@@ -592,6 +592,9 @@ public class OperationSupport {
         if (numRetries < requestRetryBackoffLimit && response.code() >= 500) {
           retryInterval = retryIntervalCalculator.getInterval(numRetries);
           LOG.debug("HTTP operation on url: {} should be retried as the response code was {}, retrying after {} millis", request.url(), response.code(), retryInterval);
+          if (response.body() != null) {
+            response.body().close();
+          }
         } else {
           return response;
         }

@@ -355,8 +355,12 @@ public class OpenIDConnectionUtils {
 
   private static String getOIDCProviderTokenEndpointAndRefreshToken(String issuer, String clientId, String refreshToken, String clientSecret, String accessToken, String idpCert) {
     OkHttpClient okHttpClient = getOkHttpClient(getSSLContext(idpCert), idpCert);
-    Map<String, Object> wellKnownOpenIdConfiguration = getOIDCDiscoveryDocumentAsMap(okHttpClient, issuer);
-    return getOIDCProviderTokenEndpointAndRefreshToken(okHttpClient, wellKnownOpenIdConfiguration, clientId, refreshToken, clientSecret, accessToken, true);
+    try {
+      Map<String, Object> wellKnownOpenIdConfiguration = getOIDCDiscoveryDocumentAsMap(okHttpClient, issuer);
+      return getOIDCProviderTokenEndpointAndRefreshToken(okHttpClient, wellKnownOpenIdConfiguration, clientId, refreshToken, clientSecret, accessToken, true);
+    } finally {
+      HttpClientUtils.close(okHttpClient);
+    }
   }
 
   private static boolean persistKubeConfigWithUpdatedToken(Map<String, Object> updatedAuthProviderConfig) throws IOException {
