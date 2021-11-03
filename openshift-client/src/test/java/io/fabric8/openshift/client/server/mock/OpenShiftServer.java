@@ -58,8 +58,4 @@ public class OpenShiftServer extends ExternalResource {
   public void expectAndReturnAsString(String path, int code, String body) {
     expect().withPath(path).andReturn(code, body).always();
   }
-
-  public MockWebServer getMockServer() {
-    return mock.getServer();
-  }
 }

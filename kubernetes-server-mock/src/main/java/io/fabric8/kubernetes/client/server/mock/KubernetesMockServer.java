@@ -22,16 +22,13 @@ import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.mockwebserver.Context;
-import io.fabric8.mockwebserver.ContextBuilder;
 import io.fabric8.mockwebserver.DefaultMockServer;
 import io.fabric8.mockwebserver.ServerRequest;
 import io.fabric8.mockwebserver.ServerResponse;
 import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockWebServer;
-import okhttp3.mockwebserver.RecordedRequest;
 
 import java.net.InetAddress;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
@@ -41,7 +38,7 @@ import static okhttp3.TlsVersion.TLS_1_2;
 
 public class KubernetesMockServer extends DefaultMockServer {
 
-    private static final Context context = new ContextBuilder().withMapper(Serialization.jsonMapper()).build();
+    private static final Context context = new Context(Serialization.jsonMapper());
 
     public KubernetesMockServer() {
         this(true);
@@ -63,6 +60,11 @@ public class KubernetesMockServer extends DefaultMockServer {
         super(context, server, responses, dispatcher, useHttps);
     }
 
+    @Override
+    public void onStart() {
+        expect().get().withPath("/").andReturn(200, new RootPathsBuilder().addToPaths(getRootPaths()).build()).always();
+    }
+
     public void init() {
         start();
     }
@@ -75,15 +77,6 @@ public class KubernetesMockServer extends DefaultMockServer {
         shutdown();
     }
 
-    public void onStart() {
-       expect().get().withPath("/").andReturn(200, new RootPathsBuilder().addToPaths(getRootPaths()).build()).always();
-    }
-    public RecordedRequest getLastRequest() throws InterruptedException {
-      int requestCount = this.getRequestCount();
-      RecordedRequest lastRequest = null;
-      while(requestCount--> 0)lastRequest = this.takeRequest();
-      return lastRequest;
-    }
     public String[] getRootPaths() {
         return new String[]{"/api", "/apis/extensions"};
     }
@@ -94,12 +87,11 @@ public class KubernetesMockServer extends DefaultMockServer {
     }
 
     protected Config getMockConfiguration() {
-        Config config = new ConfigBuilder(Config.empty())
+        return new ConfigBuilder(Config.empty())
                 .withMasterUrl(url("/"))
                 .withTrustCerts(true)
                 .withTlsVersions(TLS_1_2)
                 .withNamespace("test")
                 .build();
-        return config;
     }
 }

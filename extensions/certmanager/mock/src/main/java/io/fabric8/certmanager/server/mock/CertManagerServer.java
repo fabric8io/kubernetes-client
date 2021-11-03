@@ -15,28 +15,25 @@
  */
 package io.fabric8.certmanager.server.mock;
 
+import io.fabric8.certmanager.client.CertManagerClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesCrudDispatcher;
 import io.fabric8.mockwebserver.Context;
-import io.fabric8.mockwebserver.ServerRequest;
-import io.fabric8.mockwebserver.ServerResponse;
 import io.fabric8.mockwebserver.dsl.MockServerExpectation;
-import io.fabric8.certmanager.client.CertManagerClient;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.rules.ExternalResource;
 
 import java.util.HashMap;
-import java.util.Queue;
 
 public class CertManagerServer extends ExternalResource {
 
   protected CertManagerMockServer mock;
   private CertManagerClient client;
 
-  private boolean https;
+  private final boolean https;
   // In this mode the mock web server will store, read, update and delete
   // kubernetes resources using an in memory map and will appear as a real api
   // server.
-  private boolean crudMode;
+  private final boolean crudMode;
 
   public CertManagerServer() {
     this(true, false);
@@ -51,6 +48,7 @@ public class CertManagerServer extends ExternalResource {
     this.crudMode = crudMode;
   }
 
+  @Override
   public void before() {
     mock = crudMode
       ? new CertManagerMockServer(new Context(), new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(), true)
@@ -59,6 +57,7 @@ public class CertManagerServer extends ExternalResource {
     client = mock.createCertManager();
   }
 
+  @Override
   public void after() {
     mock.destroy();
     client.close();

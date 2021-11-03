@@ -5,6 +5,7 @@
 #### Bugs
 
 #### Improvements
+* Fix #3562: Kubernetes Mock Server improvements
 
 #### Dependency Upgrade
 * Fix #3562: Bump MockWebServer

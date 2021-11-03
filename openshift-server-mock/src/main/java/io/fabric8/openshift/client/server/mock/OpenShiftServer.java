@@ -17,30 +17,25 @@ package io.fabric8.openshift.client.server.mock;
 
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesCrudDispatcher;
-import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.mockwebserver.Context;
-import io.fabric8.mockwebserver.ServerRequest;
-import io.fabric8.mockwebserver.ServerResponse;
 import io.fabric8.mockwebserver.dsl.MockServerExpectation;
 import io.fabric8.openshift.client.NamespacedOpenShiftClient;
-import io.fabric8.openshift.client.OpenshiftAdapterSupport;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.rules.ExternalResource;
 
 import java.util.HashMap;
-import java.util.Queue;
 
 public class OpenShiftServer extends ExternalResource {
 
   protected OpenShiftMockServer mock;
   private NamespacedOpenShiftClient client;
 
-  private boolean https;
+  private final boolean https;
   // In this mode the mock web server will store, read, update and delete
   // kubernetes resources using an in memory map and will appear as a real api
   // server.
-  private boolean crudMode;
+  private final boolean crudMode;
 
   public OpenShiftServer() {
     this(true, false);
@@ -55,6 +50,7 @@ public class OpenShiftServer extends ExternalResource {
     this.crudMode = crudMode;
   }
 
+  @Override
   public void before() {
     mock = crudMode
       ? new OpenShiftMockServer(new Context(), new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(), https)
@@ -63,11 +59,11 @@ public class OpenShiftServer extends ExternalResource {
     client = mock.createOpenShiftClient();
   }
 
+  @Override
   public void after() {
     mock.destroy();
     client.close();
   }
-
 
   public KubernetesClient getKubernetesClient() {
     return client;
@@ -91,16 +87,7 @@ public class OpenShiftServer extends ExternalResource {
     expect().withPath(path).andReturn(code, body).always();
   }
 
-  public MockWebServer getMockServer() {
-    return mock.getServer();
-  }
-
   public RecordedRequest getLastRequest() throws InterruptedException {
-    int count = mock.getServer().getRequestCount();
-    RecordedRequest request = null;
-    while (count-- > 0) {
-      request = mock.getServer().takeRequest();
-    }
-    return request;
+    return mock.getLastRequest();
   }
 }

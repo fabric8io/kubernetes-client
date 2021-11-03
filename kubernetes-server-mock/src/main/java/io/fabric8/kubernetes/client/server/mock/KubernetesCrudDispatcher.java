@@ -69,12 +69,6 @@ import static io.fabric8.kubernetes.client.server.mock.KubernetesAttributesExtra
 
 public class KubernetesCrudDispatcher extends CrudDispatcher {
 
-  private static final String POST = "POST";
-  private static final String PUT = "PUT";
-  private static final String PATCH = "PATCH";
-  private static final String GET = "GET";
-  private static final String DELETE = "DELETE";
-
   private static final String GENERATION = "generation";
   private static final String STATUS = "status";
 
@@ -98,26 +92,6 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
     crdProcessor = new CustomResourceDefinitionProcessor(kubernetesAttributesExtractor);
   }
 
-  @Override
-  public synchronized MockResponse dispatch(RecordedRequest request) {
-    String path = request.getPath();
-    String method = request.getMethod();
-    switch (method.toUpperCase()) {
-      case POST:
-        return handleCreate(path, request.getBody().readUtf8());
-      case PUT:
-        return handleReplace(path, request.getBody().readUtf8());
-      case PATCH:
-        return handlePatch(path, request.getBody().readUtf8(), request.getHeader("Content-Type"));
-      case GET:
-        return detectWatchMode(path)? handleWatch(path): handleGet(path);
-      case DELETE:
-        return handleDelete(path);
-      default:
-        return null;
-    }
-  }
-
   /**
    * Adds the specified object to the in-memory db.
    *
@@ -136,7 +110,8 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
    * @param s String
    * @return The {@link MockResponse}
    */
-  public MockResponse handleReplace(String path, String s) {
+  @Override
+  public MockResponse handleUpdate(String path, String s) {
     return validateRequestBodyAndHandleRequest(s, h -> doCreateOrModify(path, s, h, Action.MODIFIED));
   }
 
@@ -148,15 +123,19 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
    */
   @Override
   public MockResponse handleGet(String path) {
+    if (detectWatchMode(path)) {
+      return handleWatch(path);
+    }
     MockResponse response = new MockResponse();
     List<String> items = new ArrayList<>();
     AttributeSet query = attributeExtractor.fromPath(path);
 
-    map.entrySet().stream().filter(entry -> entry.getKey()
-      .matches(query)).forEach(entry -> {
-      LOGGER.debug("Entry found for query {} : {}", query, entry);
-      items.add(entry.getValue());
-    });
+    map.entrySet().stream()
+      .filter(entry -> entry.getKey().matches(query))
+      .forEach(entry -> {
+        LOGGER.debug("Entry found for query {} : {}", query, entry);
+        items.add(entry.getValue());
+      });
 
     if (query.containsKey(KubernetesAttributesExtractor.NAME)) {
       if (!items.isEmpty()) {
@@ -175,12 +154,13 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
   /**
    * Patches the specified object to the in-memory db.
    *
-   * @param path path of resource
-   * @param s object
-   * @param contentType
    * @return The {@link MockResponse}
    */
-  public MockResponse handlePatch(String path, String s, String contentType) {
+  @Override
+  public MockResponse handlePatch(RecordedRequest request) {
+    final String path = request.getPath();
+    final String requestBody = request.getBody().readUtf8();
+    final String contentType = request.getHeader("Content-Type");
     MockResponse response = new MockResponse();
 
     AttributeSet query = attributeExtractor.fromPath(path);
@@ -194,7 +174,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
     } else {
       String body = bodyEntry.get().getValue();
       try {
-        JsonNode patch = context.getMapper().readTree(s);
+        JsonNode patch = context.getMapper().readTree(requestBody);
         JsonNode source = context.getMapper().readTree(body);
         JsonNode status = null;
 
@@ -228,7 +208,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
           updated = JsonPatch.apply(patch, source);
         } else {
           ObjectReader objectReader = context.getMapper().readerForUpdating(source);
-          updated = objectReader.readValue(s);
+          updated = objectReader.readValue(requestBody);
         }
 
         if (isStatusPath(path)) {
@@ -361,18 +341,17 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
     }
     if (!Objects.equals(existing, newState)) {
       AttributeSet finalAttributeSet = newAttributes;
-      watchEventListeners.stream()
-        .forEach(listener -> {
-          boolean matchesOld = oldAttributes != null && listener.attributeMatches(oldAttributes);
-          boolean matchesNew = finalAttributeSet != null && listener.attributeMatches(finalAttributeSet);
-          if (matchesOld && matchesNew) {
-            listener.sendWebSocketResponse(newState, Action.MODIFIED);
-          } else if (matchesOld) {
-            listener.sendWebSocketResponse(existing, Action.DELETED);
-          } else if (matchesNew) {
-            listener.sendWebSocketResponse(newState, Action.ADDED);
-          }
-        });
+      watchEventListeners.forEach(listener -> {
+        boolean matchesOld = oldAttributes != null && listener.attributeMatches(oldAttributes);
+        boolean matchesNew = finalAttributeSet != null && listener.attributeMatches(finalAttributeSet);
+        if (matchesOld && matchesNew) {
+          listener.sendWebSocketResponse(newState, Action.MODIFIED);
+        } else if (matchesOld) {
+          listener.sendWebSocketResponse(existing, Action.DELETED);
+        } else if (matchesNew) {
+          listener.sendWebSocketResponse(newState, Action.ADDED);
+        }
+      });
 
       crdProcessor.process(path, Utils.getNonNullOrElse(newState, existing), newState == null);
     }
