@@ -36,6 +36,7 @@
     <module>chaosmesh</module>
     <module>camel-k</module>
     <module>certmanager</module>
+    <module>verticalpodautoscaler</module>
   </modules>
 
 </project>

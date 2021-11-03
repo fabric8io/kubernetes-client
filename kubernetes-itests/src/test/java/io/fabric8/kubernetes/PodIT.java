@@ -115,7 +115,7 @@ public class PodIT {
   }
 
   @Test
-  public void evict() throws InterruptedException {
+  public void evict() {
     Pod pod1 = client.pods().inNamespace(session.getNamespace()).withName("pod-standard").get();
     String pdbScope = pod1.getMetadata().getLabels().get("pdb-scope");
     assertNotNull("pdb-scope label is null. is pod1 misconfigured?", pdbScope);

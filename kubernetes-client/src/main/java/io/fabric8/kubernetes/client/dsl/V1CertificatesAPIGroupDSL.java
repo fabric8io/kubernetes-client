@@ -21,5 +21,5 @@ import io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequest
 import io.fabric8.kubernetes.client.Client;
 
 public interface V1CertificatesAPIGroupDSL extends Client {
-  NonNamespaceOperation<CertificateSigningRequest, CertificateSigningRequestList, Resource<CertificateSigningRequest>> certificateSigningRequests();
+  NonNamespaceOperation<CertificateSigningRequest, CertificateSigningRequestList, CertificateSigningRequestResource<CertificateSigningRequest>> certificateSigningRequests();
 }

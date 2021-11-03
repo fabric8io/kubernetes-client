@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.http;
 
 import io.fabric8.kubernetes.client.utils.IOHelpers;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
@@ -41,6 +42,10 @@ public interface HttpResponse<T> extends HttpHeaders {
     return HttpStatusMessage.getMessageForStatus(code());
   }
   
+  /**
+   * Get the body.  If the body is {@link Closeable}, it should be closed by the caller.
+   * @return the body
+   */
   T body();
   
   /**

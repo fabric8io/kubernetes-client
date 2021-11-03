@@ -30,7 +30,6 @@ import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.function.Supplier;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.AUTHORIZATION;
@@ -56,7 +55,7 @@ public class RoleBindingOperationsImpl extends OpenShiftOperation<RoleBinding, R
   }
 
   @Override
-  protected RoleBinding handleCreate(RoleBinding resource) throws ExecutionException, InterruptedException, IOException {
+  protected RoleBinding handleCreate(RoleBinding resource) throws InterruptedException, IOException {
     return super.handleCreate(enrichRoleBinding(resource));
   }
 

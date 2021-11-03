@@ -16,6 +16,7 @@
 package io.fabric8.openshift.client.server.mock;
 
 import io.fabric8.kubernetes.api.model.APIGroupListBuilder;
+import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
@@ -26,6 +27,7 @@ import io.fabric8.kubernetes.api.model.ServicePort;
 import io.fabric8.kubernetes.api.model.ServiceSpec;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.client.utils.IOHelpers;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.openshift.api.model.ParameterBuilder;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateBuilder;
@@ -44,6 +46,7 @@ import java.util.List;
 import java.util.Map;
 
 import static java.util.Collections.singletonMap;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -183,6 +186,22 @@ class TemplateTest {
     map.put("PORT", "8080");
     KubernetesList list = client.templates().withParameters(map).load(getClass().getResourceAsStream("/template-with-number-params.yml")).processLocally(map);
     assertListIsServiceWithPort8080(list);
+    assertThat(list.getItems()).singleElement()
+      .isInstanceOf(Service.class)
+      .extracting("spec.ports").asList().singleElement()
+      .hasFieldOrPropertyWithValue("port", 8080);
+  }
+
+  @Test
+  void shouldGetTemplateWithNumberParameters() {
+    OpenShiftClient client = new DefaultOpenShiftClient(new OpenShiftConfigBuilder().withDisableApiGroupCheck(true).build());
+    Template template = client.templates().load(getClass().getResourceAsStream("/template-with-number-params.yml")).get();
+    assertThat(template)
+      .extracting(Template::getObjects).asList()
+      .singleElement()
+      .isInstanceOf(GenericKubernetesResource.class)
+      .extracting("additionalProperties.spec.ports").asList().singleElement()
+      .hasFieldOrPropertyWithValue("port", "${PORT}");
   }
 
   protected void assertListIsServiceWithPort8080(KubernetesList list) {
