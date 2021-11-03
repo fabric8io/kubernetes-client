@@ -182,9 +182,8 @@ public class OkHttpClientBuilderImpl implements Builder {
   
   @Override
   public Builder proxyAuthorization(String credentials) {
-    builder.proxyAuthenticator((route, response) -> {
-      return response.request().newBuilder().header("Proxy-Authorization", credentials).build();
-    });
+    builder.proxyAuthenticator(
+        (route, response) -> response.request().newBuilder().header("Proxy-Authorization", credentials).build());
     return this;
   }
   

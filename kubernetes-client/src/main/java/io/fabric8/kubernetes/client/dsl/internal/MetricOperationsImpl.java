@@ -27,7 +27,6 @@ import io.fabric8.kubernetes.client.utils.URLUtils.URLBuilder;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 public class MetricOperationsImpl<T, L> extends OperationSupport implements Nameable<MetricOperationsImpl<T, L>> {
   public static final String METRIC_ENDPOINT_URL = "apis/metrics.k8s.io/v1beta1/";
@@ -71,7 +70,7 @@ public class MetricOperationsImpl<T, L> extends OperationSupport implements Name
   public L metrics() {
     try {
       return handleMetric(getMetricEndpointUrl(), apiTypeListClass);
-    } catch (IOException | ExecutionException exception) {
+    } catch (IOException exception) {
       throw KubernetesClientException.launderThrowable(exception);
     } catch (InterruptedException interruptedException) {
       Thread.currentThread().interrupt();
@@ -87,7 +86,7 @@ public class MetricOperationsImpl<T, L> extends OperationSupport implements Name
   public T metric() {
     try {
       return handleMetric(getMetricEndpointUrl(), apiTypeClass);
-    } catch (IOException | ExecutionException exception) {
+    } catch (IOException exception) {
       throw KubernetesClientException.launderThrowable(exception);
     } catch (InterruptedException interruptedException) {
       Thread.currentThread().interrupt();

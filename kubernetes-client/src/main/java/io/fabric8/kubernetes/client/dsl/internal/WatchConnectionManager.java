@@ -96,7 +96,7 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
   protected void run(URL url, Map<String, String> headers) {
     this.listener = new WatcherWebSocketListener<>(this);
     Builder builder = client.newWebSocketBuilder();
-    headers.forEach((k, v) -> builder.header(k, v));
+    headers.forEach(builder::header);
     builder.uri(URI.create(url.toString()));
     
     this.websocketFuture = builder.buildAsync(this.listener).handle((w, t) -> {

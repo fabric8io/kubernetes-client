@@ -50,7 +50,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 import static io.fabric8.kubernetes.client.internal.PatchUtils.patchMapper;
 
@@ -256,17 +255,17 @@ public class OperationSupport {
     throw new KubernetesClientException("Name mismatch. Item name:" + itemName + ". Operation name:" + operationName + ".");
   }
 
-  protected <T> T handleMetric(String resourceUrl, Class<T> type) throws InterruptedException, IOException, ExecutionException {
+  protected <T> T handleMetric(String resourceUrl, Class<T> type) throws InterruptedException, IOException {
       HttpRequest.Builder requestBuilder = client.newHttpRequestBuilder()
         .uri(resourceUrl);
       return handleResponse(requestBuilder, type);
   }
 
-  protected <T> void handleDelete(T resource, long gracePeriodSeconds, DeletionPropagation propagationPolicy, String resourceVersion, boolean cascading) throws ExecutionException, InterruptedException, IOException {
+  protected <T> void handleDelete(T resource, long gracePeriodSeconds, DeletionPropagation propagationPolicy, String resourceVersion, boolean cascading) throws InterruptedException, IOException {
     handleDelete(getResourceURLForWriteOperation(getResourceUrl(checkNamespace(resource), checkName(resource))), gracePeriodSeconds, propagationPolicy, resourceVersion, cascading);
   }
 
-  protected void handleDelete(URL requestUrl, long gracePeriodSeconds, DeletionPropagation propagationPolicy, String resourceVersion, boolean cascading) throws ExecutionException, InterruptedException, IOException {
+  protected void handleDelete(URL requestUrl, long gracePeriodSeconds, DeletionPropagation propagationPolicy, String resourceVersion, boolean cascading) throws InterruptedException, IOException {
     DeleteOptions deleteOptions = new DeleteOptions();
     if (gracePeriodSeconds >= 0) {
       deleteOptions.setGracePeriodSeconds(gracePeriodSeconds);
@@ -301,11 +300,10 @@ public class OperationSupport {
    * @param <I> template argument for resource
    *
    * @return returns de-serialized version of apiserver response in form of type provided
-   * @throws ExecutionException Execution Exception
    * @throws InterruptedException Interrupted Exception
    * @throws IOException IOException
    */
-  protected <T, I> T handleCreate(I resource, Class<T> outputType) throws ExecutionException, InterruptedException, IOException {
+  protected <T, I> T handleCreate(I resource, Class<T> outputType) throws InterruptedException, IOException {
     HttpRequest.Builder requestBuilder = client.newHttpRequestBuilder().post(JSON, JSON_MAPPER.writeValueAsString(resource)).url(getResourceURLForWriteOperation(getResourceUrl(checkNamespace(resource), null)));
     return handleResponse(requestBuilder, outputType, Collections.<String, String>emptyMap());
   }
@@ -320,11 +318,10 @@ public class OperationSupport {
    * @param <T> template argument provided
    *
    * @return returns de-serialized version of api server response
-   * @throws ExecutionException Execution Exception
    * @throws InterruptedException Interrupted Exception
    * @throws IOException IOException
    */
-  protected <T> T handleUpdate(T updated, Class<T> type, boolean status) throws ExecutionException, InterruptedException, IOException {
+  protected <T> T handleUpdate(T updated, Class<T> type, boolean status) throws InterruptedException, IOException {
     return handleUpdate(updated, type, Collections.<String, String>emptyMap(), status);
   }
 
@@ -338,11 +335,10 @@ public class OperationSupport {
    * @param <T> template argument provided
    *
    * @return returns de-serialized version of api server response.
-   * @throws ExecutionException Execution Exception
    * @throws InterruptedException Interrupted Exception
    * @throws IOException IOException
    */
-  protected <T> T handleUpdate(T updated, Class<T> type, Map<String, String> parameters, boolean status) throws ExecutionException, InterruptedException, IOException {
+  protected <T> T handleUpdate(T updated, Class<T> type, Map<String, String> parameters, boolean status) throws InterruptedException, IOException {
     HttpRequest.Builder requestBuilder = client.newHttpRequestBuilder()
         .put(JSON, JSON_MAPPER.writeValueAsString(updated))
         .url(getResourceURLForWriteOperation(getResourceUrl(checkNamespace(updated), checkName(updated), status)));
@@ -362,11 +358,10 @@ public class OperationSupport {
    * @param <T> template argument provided
    *
    * @return returns de-serialized version of api server response
-   * @throws ExecutionException Execution Exception
    * @throws InterruptedException Interrupted Exception
    * @throws IOException IOException
    */
-  protected <T> T handlePatch(PatchContext patchContext, T current, T updated, Class<T> type, boolean status) throws ExecutionException, InterruptedException, IOException {
+  protected <T> T handlePatch(PatchContext patchContext, T current, T updated, Class<T> type, boolean status) throws InterruptedException, IOException {
     String patchForUpdate = null;
     if (current != null && (patchContext == null || patchContext.getPatchType() == PatchType.JSON)) {
       patchForUpdate = JSON_MAPPER.writeValueAsString(JsonDiff.asJson(patchMapper().valueToTree(current), patchMapper().valueToTree(updated)));
@@ -389,11 +384,10 @@ public class OperationSupport {
    * @param <T> template argument provided
    *
    * @return returns de-serialized version of api server response
-   * @throws ExecutionException Execution Exception
    * @throws InterruptedException Interrupted Exception
    * @throws IOException IOException
    */
-  protected <T> T handlePatch(T current, Map<String, Object> patchForUpdate, Class<T> type) throws ExecutionException, InterruptedException, IOException {
+  protected <T> T handlePatch(T current, Map<String, Object> patchForUpdate, Class<T> type) throws InterruptedException, IOException {
     return handlePatch(new PatchContext.Builder().withPatchType(PatchType.STRATEGIC_MERGE).build(), current,
         JSON_MAPPER.writeValueAsString(patchForUpdate), type, false);
   }
@@ -408,11 +402,10 @@ public class OperationSupport {
    * @param status if this is only the status subresource
    * @param <T> template argument provided
    * @return returns de-serialized version of api server response
-   * @throws ExecutionException Execution Exception
    * @throws InterruptedException Interrupted Exception
    * @throws IOException IOException in case of network errors
    */
-  protected <T> T handlePatch(PatchContext patchContext, T current, String patchForUpdate, Class<T> type, boolean status) throws ExecutionException, InterruptedException, IOException {
+  protected <T> T handlePatch(PatchContext patchContext, T current, String patchForUpdate, Class<T> type, boolean status) throws InterruptedException, IOException {
     String bodyContentType = getContentTypeFromPatchContextOrDefault(patchContext);
     HttpRequest.Builder requestBuilder = client.newHttpRequestBuilder().patch(bodyContentType, patchForUpdate).url(getResourceURLForPatchOperation(getResourceUrl(checkNamespace(current), checkName(current), status), patchContext));
     return handleResponse(requestBuilder, type, Collections.emptyMap());
@@ -424,11 +417,10 @@ public class OperationSupport {
    * @param resourceUrl Kubernetes resource URL
    * @param scale Scale object which we want to inject
    * @return updated Scale object
-   * @throws ExecutionException in case of any execution exception
    * @throws InterruptedException in case thread is interrupted
    * @throws IOException in some other I/O problem
    */
-  protected Scale handleScale(String resourceUrl, Scale scale) throws ExecutionException, InterruptedException, IOException {
+  protected Scale handleScale(String resourceUrl, Scale scale) throws InterruptedException, IOException {
     HttpRequest.Builder requestBuilder = client.newHttpRequestBuilder().uri(resourceUrl + "/scale");
     if (scale != null) {
       requestBuilder.put(JSON, JSON_MAPPER.writeValueAsString(scale));
@@ -442,11 +434,10 @@ public class OperationSupport {
    * @param resourceUrl resource url
    * @param deploymentRollback DeploymentRollback resource
    * @return Status
-   * @throws ExecutionException in case of any execution exception
    * @throws InterruptedException in case thread is interrupted
    * @throws IOException in some other I/O problem
    */
-  protected Status handleDeploymentRollback(String resourceUrl, DeploymentRollback deploymentRollback) throws ExecutionException, InterruptedException, IOException {
+  protected Status handleDeploymentRollback(String resourceUrl, DeploymentRollback deploymentRollback) throws InterruptedException, IOException {
     HttpRequest.Builder requestBuilder = client.newHttpRequestBuilder().uri(resourceUrl + "/rollback").post(JSON, JSON_MAPPER.writeValueAsString(deploymentRollback));
     return handleResponse(requestBuilder, Status.class);
   }
@@ -459,11 +450,10 @@ public class OperationSupport {
    * @param <T> template argument provided
    *
    * @return returns a deserialized object as api server response of provided type.
-   * @throws ExecutionException Execution Exception
    * @throws InterruptedException Interrupted Exception
    * @throws IOException IOException
    */
-  protected <T> T handleGet(URL resourceUrl, Class<T> type) throws ExecutionException, InterruptedException, IOException {
+  protected <T> T handleGet(URL resourceUrl, Class<T> type) throws InterruptedException, IOException {
     return handleGet(resourceUrl, type, Collections.<String, String>emptyMap());
   }
   
@@ -489,11 +479,10 @@ public class OperationSupport {
    * @param <T> template argument provided
    *
    * @return Returns a deserialized object as api server response of provided type.
-   * @throws ExecutionException Execution Exception
    * @throws InterruptedException Interrupted Exception
    * @throws IOException IOException
    */
-  protected <T> T handleGet(URL resourceUrl, Class<T> type, Map<String, String> parameters) throws ExecutionException, InterruptedException, IOException {
+  protected <T> T handleGet(URL resourceUrl, Class<T> type, Map<String, String> parameters) throws InterruptedException, IOException {
     HttpRequest.Builder requestBuilder = client.newHttpRequestBuilder().url(resourceUrl);
     return handleResponse(requestBuilder, type, parameters);
   }
@@ -506,11 +495,10 @@ public class OperationSupport {
    * @param <T> template argument provided
    *
    * @return Returns a de-serialized object as api server response of provided type.
-   * @throws ExecutionException Execution Exception
    * @throws InterruptedException Interrupted Exception
    * @throws IOException IOException
    */
-  protected <T> T handleResponse(HttpRequest.Builder requestBuilder, Class<T> type) throws ExecutionException, InterruptedException, IOException {
+  protected <T> T handleResponse(HttpRequest.Builder requestBuilder, Class<T> type) throws InterruptedException, IOException {
     return handleResponse(requestBuilder, type, Collections.<String, String>emptyMap());
   }
 
@@ -523,11 +511,10 @@ public class OperationSupport {
    * @param <T> template argument provided
    *
    * @return Returns a de-serialized object as api server response of provided type.
-   * @throws ExecutionException Execution Exception
    * @throws InterruptedException Interrupted Exception
    * @throws IOException IOException
    */
-  protected <T> T handleResponse(HttpRequest.Builder requestBuilder, Class<T> type, Map<String, String> parameters) throws ExecutionException, InterruptedException, IOException {
+  protected <T> T handleResponse(HttpRequest.Builder requestBuilder, Class<T> type, Map<String, String> parameters) throws InterruptedException, IOException {
     return handleResponse(client, requestBuilder, type, parameters);
   }
 
@@ -540,11 +527,10 @@ public class OperationSupport {
    * @param <T> template argument provided
    *
    * @return Returns a de-serialized object as api server response of provided type.
-   * @throws ExecutionException Execution Exception
    * @throws InterruptedException Interrupted Exception
    * @throws IOException IOException
    */
-  protected <T> T handleResponse(HttpClient client, HttpRequest.Builder requestBuilder, Class<T> type) throws ExecutionException, InterruptedException, IOException {
+  protected <T> T handleResponse(HttpClient client, HttpRequest.Builder requestBuilder, Class<T> type) throws InterruptedException, IOException {
     return handleResponse(client, requestBuilder, type, Collections.<String, String>emptyMap());
   }
 
@@ -558,11 +544,10 @@ public class OperationSupport {
    * @param <T>                  Template argument provided
    *
    * @return                      Returns a de-serialized object as api server response of provided type.
-   * @throws ExecutionException   Execution Exception
    * @throws InterruptedException Interrupted Exception
    * @throws IOException IOException
    */
-  protected <T> T handleResponse(HttpClient client, HttpRequest.Builder requestBuilder, Class<T> type, Map<String, String> parameters) throws ExecutionException, InterruptedException, IOException {
+  protected <T> T handleResponse(HttpClient client, HttpRequest.Builder requestBuilder, Class<T> type, Map<String, String> parameters) throws InterruptedException, IOException {
     VersionUsageUtils.log(this.resourceT, this.apiGroupVersion);
     HttpRequest request = requestBuilder.build();
     HttpResponse<InputStream> response = retryWithExponentialBackoff(client, request);
@@ -784,7 +769,7 @@ public class OperationSupport {
     } catch (InterruptedException ie) {
       Thread.currentThread().interrupt();
       throw KubernetesClientException.launderThrowable(ie);
-    } catch (ExecutionException | IOException e) {
+    } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
  }

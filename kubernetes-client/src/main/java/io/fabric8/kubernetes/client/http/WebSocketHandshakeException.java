@@ -35,7 +35,7 @@ public final class WebSocketHandshakeException extends IOException {
   }
   
   @Override
-  public WebSocketHandshakeException initCause(Throwable cause) {
+  public synchronized WebSocketHandshakeException initCause(Throwable cause) {
       return (WebSocketHandshakeException) super.initCause(cause);
   }
 

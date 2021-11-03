@@ -827,7 +827,7 @@ class RawCustomResourceOperationsImplTest {
     // Then
     assertThat(eventReceived).hasValue("{\"kind\":\"Hello\",\"metadata\":{\"name\":\"test\"}}");
     assertThat(result).isNotNull();
-    verify(builder, Mockito.times(1)).uri(Mockito.eq(URI.create("https://localhost:8443/apis/test.fabric8.io/v1alpha1/hellos?watch=true")));
+    verify(builder, Mockito.times(1)).uri(URI.create("https://localhost:8443/apis/test.fabric8.io/v1alpha1/hellos?watch=true"));
   }
 
   private void mockCallWithResponse(int code) throws IOException {

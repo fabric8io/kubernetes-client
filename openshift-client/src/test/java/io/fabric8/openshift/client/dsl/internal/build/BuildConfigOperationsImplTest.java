@@ -102,5 +102,7 @@ class BuildConfigOperationsImplTest {
 
     when(httpClient.send(any(), eq(InputStream.class))).thenReturn(response);
     impl.submitToApiServer(new ByteArrayInputStream(new byte[0]), 0);
+
+    Mockito.verify(response, Mockito.times(1)).body();
   }
 }

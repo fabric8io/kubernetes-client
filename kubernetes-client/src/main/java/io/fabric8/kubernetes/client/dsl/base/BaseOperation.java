@@ -73,7 +73,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -134,7 +133,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     } catch (InterruptedException ie) {
       Thread.currentThread().interrupt();
       throw KubernetesClientException.launderThrowable(forOperationType("list"), ie);
-    } catch (ExecutionException | IOException e) {
+    } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("list"), e);
     }
   }
@@ -183,7 +182,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     } catch (InterruptedException ie) {
       Thread.currentThread().interrupt();
       throw KubernetesClientException.launderThrowable(forOperationType("get"), ie);
-    } catch (ExecutionException | IOException e) {
+    } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("get"), e);
     }
   }
@@ -503,7 +502,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     } catch (InterruptedException ie) {
       Thread.currentThread().interrupt();
       throw KubernetesClientException.launderThrowable(forOperationType("statusUpdate"), ie);
-    } catch (ExecutionException | IOException e) {
+    } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("statusUpdate"), e);
     }
 
@@ -632,27 +631,27 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     return Utils.isResourceNamespaced(getType());
   }
 
-  protected T handleResponse(HttpRequest.Builder requestBuilder) throws ExecutionException, InterruptedException, IOException {
+  protected T handleResponse(HttpRequest.Builder requestBuilder) throws InterruptedException, IOException {
     return handleResponse(requestBuilder, getType());
   }
 
   @Override
-  protected T handleCreate(T resource) throws ExecutionException, InterruptedException, IOException {
+  protected T handleCreate(T resource) throws InterruptedException, IOException {
     updateApiVersion(resource);
     return handleCreate(resource, getType());
   }
 
-  protected T handleUpdate(T updated, boolean status) throws ExecutionException, InterruptedException, IOException {
+  protected T handleUpdate(T updated, boolean status) throws InterruptedException, IOException {
     updateApiVersion(updated);
     return handleUpdate(updated, getType(), status);
   }
 
-  protected T handlePatch(PatchContext context, T current, T updated, boolean status) throws ExecutionException, InterruptedException, IOException {
+  protected T handlePatch(PatchContext context, T current, T updated, boolean status) throws InterruptedException, IOException {
     updateApiVersion(updated);
     return handlePatch(context, current, updated, getType(), status);
   }
 
-  protected T handlePatch(T current, Map<String, Object> patchedUpdate) throws ExecutionException, InterruptedException, IOException {
+  protected T handlePatch(T current, Map<String, Object> patchedUpdate) throws InterruptedException, IOException {
     updateApiVersion(current);
     return handlePatch(current, patchedUpdate, getType());
   }
@@ -663,7 +662,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     } catch (InterruptedException interruptedException) {
       Thread.currentThread().interrupt();
       throw KubernetesClientException.launderThrowable(interruptedException);
-    } catch (ExecutionException | IOException e) {
+    } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
   }
@@ -674,7 +673,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     } catch (InterruptedException ie) {
       Thread.currentThread().interrupt();
       throw KubernetesClientException.launderThrowable(forOperationType("scale"), ie);
-    } catch (ExecutionException | IOException e) {
+    } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("scale"), e);
     }
 
@@ -686,13 +685,13 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     } catch (InterruptedException ie) {
       Thread.currentThread().interrupt();
       throw KubernetesClientException.launderThrowable(forOperationType("rollback"), ie);
-    } catch (ExecutionException | IOException e) {
+    } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("rollback"), e);
     }
 
   }
 
-  protected T handleGet(URL resourceUrl) throws InterruptedException, ExecutionException, IOException {
+  protected T handleGet(URL resourceUrl) throws InterruptedException, IOException {
     T answer = handleGet(resourceUrl, getType());
     updateApiVersion(answer);
     return answer;

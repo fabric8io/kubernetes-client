@@ -32,7 +32,7 @@ public interface WebSocket {
     
     default void onClose(WebSocket webSocket, int code, String reason) {}
     
-    default void onError​(WebSocket webSocket, Throwable error) {};
+    default void onError​(WebSocket webSocket, Throwable error) {}
     
   }
   

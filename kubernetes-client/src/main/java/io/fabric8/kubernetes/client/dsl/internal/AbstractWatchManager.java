@@ -19,17 +19,16 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ListOptions;
-import io.fabric8.kubernetes.client.utils.ExponentialBackoffIntervalCalculator;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.WatchEvent;
-import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
-import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.Watcher.Action;
+import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.utils.ExponentialBackoffIntervalCalculator;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
@@ -40,7 +39,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -210,16 +208,6 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     Map<String, String> headers = new HashMap<>();
     headers.put("Origin", origin);
     
-    // this seems unnecessary as there's already an intercepter
-    Config config = baseOperation.getConfig();
-    if (Objects.nonNull(config)) {
-      Map<String, String> customHeaders = config.getCustomHeaders();
-      if (Objects.nonNull(customHeaders) && !customHeaders.isEmpty()) {
-        for (String key : customHeaders.keySet()) {
-          headers.put(key, customHeaders.get(key));
-        }
-      }
-    }
     logger.debug("Watching {}...", url);
   
     closeRequest(); // only one can be active at a time

@@ -108,5 +108,9 @@ public class HttpStatusMessage {
   public static String getMessageForStatus(int status) {
     return REASONS.getOrDefault(status, UNKNOWN_STATUS);
   }
+  
+  private HttpStatusMessage() {
+    // utility
+  }
 
 }

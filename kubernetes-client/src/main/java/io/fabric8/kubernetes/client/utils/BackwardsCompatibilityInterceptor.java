@@ -140,9 +140,7 @@ public class BackwardsCompatibilityInterceptor implements Interceptor {
       Object object = Serialization.unmarshal(request.bodyString());
       if (object instanceof HasMetadata) {
         HasMetadata h = (HasMetadata) object;
-        if (target != null) {
-          h.setApiVersion(target.group + "/" + target.version);
-        }
+        h.setApiVersion(target.group + "/" + target.version);
         switch (request.method()) {
         case "POST":
           builder.post(OperationSupport.JSON, Serialization.asJson(h));
@@ -222,9 +220,6 @@ public class BackwardsCompatibilityInterceptor implements Interceptor {
   }
 
   private static boolean isDeprecatedOpenshiftOapiRequest(HttpRequest request) {
-    if (request != null && request.uri() != null) {
-      return request.uri().toString().contains("oapi");
-    }
-    return false;
+    return request.uri().toString().contains("oapi");
   }
 }

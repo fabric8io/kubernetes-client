@@ -89,8 +89,6 @@ public interface HttpClient extends AutoCloseable {
    */
   <T> CompletableFuture<HttpResponse<T>> sendAsync(HttpRequest request, Class<T> type);
 
-  void clearPool();
-  
   WebSocket.Builder newWebSocketBuilder();
   
   HttpRequest.Builder newHttpRequestBuilder();

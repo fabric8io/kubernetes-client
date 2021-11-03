@@ -35,7 +35,6 @@ import java.nio.file.StandardCopyOption;
 import java.util.Collections;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import io.fabric8.kubernetes.api.model.DeleteOptions;
@@ -290,7 +289,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
         throw e;
       }
       return false;
-    } catch (ExecutionException | IOException exception) {
+    } catch (IOException exception) {
       throw KubernetesClientException.launderThrowable(forOperationType("evict"), exception);
     } catch (InterruptedException interruptedException) {
       Thread.currentThread().interrupt();
@@ -414,9 +413,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
           try {
             PipedOutputStream out = new PipedOutputStream();
             PipedInputStream in = new PipedInputStream(out, 1024);
-            ExecWatch watch = writingOutput(out).usingListener(new ExecListener() {
-              @Override
-              public void onClose(int code, String reason) {
+            ExecWatch watch = writingOutput(out).usingListener((int code, String reason) -> {
                 try {
                   out.flush();
                   out.close();
@@ -424,7 +421,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
                   e.printStackTrace();
                 }
               }
-            }).exec("sh", "-c", String.format("cat %s | base64", PodUpload.shellQuote(source)));
+            ).exec("sh", "-c", String.format("cat %s | base64", PodUpload.shellQuote(source)));
             return new org.apache.commons.codec.binary.Base64InputStream(in);
           } catch (Exception e) {
             throw KubernetesClientException.launderThrowable(e);
@@ -478,9 +475,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
           try {
             PipedOutputStream out = new PipedOutputStream();
             PipedInputStream in = new PipedInputStream(out, 1024);
-            ExecWatch watch = writingOutput(out).usingListener(new ExecListener() {
-              @Override
-              public void onClose(int code, String reason) {
+            ExecWatch watch = writingOutput(out).usingListener((int code, String reason) -> {
                 try {
                   out.flush();
                   out.close();
@@ -488,7 +483,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
                   e.printStackTrace();
                 }
               }
-            }).exec("sh", "-c", "tar -cf - " + source + "|" + "base64");
+            ).exec("sh", "-c", "tar -cf - " + source + "|" + "base64");
             return new org.apache.commons.codec.binary.Base64InputStream(in);
           } catch (Exception e) {
             throw KubernetesClientException.launderThrowable(e);

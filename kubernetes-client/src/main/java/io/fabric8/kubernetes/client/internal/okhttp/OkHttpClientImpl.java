@@ -39,7 +39,7 @@ import java.util.concurrent.ExecutorService;
 
 public class OkHttpClientImpl implements HttpClient {
   
-  static Map<String, MediaType> MEDIA_TYPES = new HashMap<>();
+  final static Map<String, MediaType> MEDIA_TYPES = new HashMap<>();
   
   public static final MediaType JSON = parseMediaType("application/json");
   public static final MediaType JSON_PATCH = parseMediaType("application/json-patch+json");
@@ -52,7 +52,7 @@ public class OkHttpClientImpl implements HttpClient {
     return result;
   }
   
-  static class OkHttpResponseImpl<T> implements HttpResponse<T> {
+  public static class OkHttpResponseImpl<T> implements HttpResponse<T> {
     
     private final Response response;
     private T body;
@@ -69,7 +69,7 @@ public class OkHttpClientImpl implements HttpClient {
           body = (T) responseBody.string();
         } else if (type == Reader.class) {
           body = (T) responseBody.charStream();
-        } else if (type != null) {
+        } else {
           body = (T) responseBody.byteStream();
         }
       }
@@ -136,13 +136,6 @@ public class OkHttpClientImpl implements HttpClient {
   @Override
   public <T> HttpResponse<T> send(HttpRequest request, Class<T> type) throws IOException {
     return new OkHttpResponseImpl<>(httpClient.newCall(((OkHttpRequestImpl)request).getRequest()).execute(), type);
-  }
-  
-  @Override
-  public void clearPool() {
-    if (httpClient.connectionPool() != null) {
-      httpClient.connectionPool().evictAll();
-    }
   }
   
   @Override

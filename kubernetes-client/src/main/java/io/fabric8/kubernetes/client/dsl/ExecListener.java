@@ -20,14 +20,14 @@ public interface ExecListener {
   /**
    * Called when the request has successfully been upgraded to a web socket.
    */
-  default void onOpen() {};
+  default void onOpen() {}
 
   /**
    * Called when the transport or protocol layer of this web socket errors during communication.
    *
    * @param t Throwable
    */
-  default void onFailure(Throwable t) {};
+  default void onFailure(Throwable t) {}
 
     /**
      * Called when the server sends a close message.

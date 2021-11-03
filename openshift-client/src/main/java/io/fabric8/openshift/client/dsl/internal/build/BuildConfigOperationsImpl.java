@@ -275,6 +275,9 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
           .header("Expect", "100-continue")
           .uri(getQueryParameters());
       return handleResponse(newClient, requestBuilder, Build.class);
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw KubernetesClientException.launderThrowable(e);
     } catch (Throwable e) {
       // TODO: better determine which exception this should occur on
       // otherwise we need to have the httpclient api open up to the notion

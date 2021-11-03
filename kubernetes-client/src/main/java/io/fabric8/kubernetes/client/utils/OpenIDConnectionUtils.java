@@ -302,7 +302,7 @@ public class OpenIDConnectionUtils {
     return clientBuilder.build();
   }
 
-  private static HttpRequest getTokenRefreshHttpRequest(HttpClient client, String tokenEndpointUrl, String clientId, String refreshToken, String clientSecret) throws JsonProcessingException {
+  private static HttpRequest getTokenRefreshHttpRequest(HttpClient client, String tokenEndpointUrl, String clientId, String refreshToken, String clientSecret) {
     HttpRequest.Builder httpRequestBuilder = client.newHttpRequestBuilder().uri(tokenEndpointUrl);
 
     Map<String, String> requestBody = getRequestBodyContentForRefresh(clientId, refreshToken, clientSecret);

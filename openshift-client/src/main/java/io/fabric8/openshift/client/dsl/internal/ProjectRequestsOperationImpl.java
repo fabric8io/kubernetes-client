@@ -31,7 +31,6 @@ import io.fabric8.openshift.client.dsl.ProjectRequestOperation;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.concurrent.ExecutionException;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.PROJECT;
 
@@ -88,7 +87,7 @@ public class ProjectRequestsOperationImpl extends OperationSupport implements Pr
     }  catch (InterruptedException ie) {
       Thread.currentThread().interrupt();
       throw KubernetesClientException.launderThrowable(ie);
-    } catch (ExecutionException | IOException e) {
+    } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
 
@@ -144,7 +143,7 @@ public class ProjectRequestsOperationImpl extends OperationSupport implements Pr
     }  catch (InterruptedException ie) {
       Thread.currentThread().interrupt();
       throw KubernetesClientException.launderThrowable(ie);
-    } catch (ExecutionException | IOException e) {
+    } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
   }

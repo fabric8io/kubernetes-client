@@ -186,7 +186,7 @@ public class HttpClientUtils {
     } catch (Exception e) {
       KubernetesClientException.launderThrowable(e);
     }
-    HttpClientUtils.createApplicableInterceptors(config).forEach((s, i) -> builder.addOrReplaceInterceptor(s, i));
+    HttpClientUtils.createApplicableInterceptors(config).forEach(builder::addOrReplaceInterceptor);
   }
   
   public static HttpClient.Builder createHttpClientBuilder() {

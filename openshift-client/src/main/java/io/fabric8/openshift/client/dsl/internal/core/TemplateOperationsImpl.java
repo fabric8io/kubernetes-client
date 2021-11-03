@@ -56,7 +56,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.TEMPLATE;
 
@@ -278,13 +277,13 @@ public class TemplateOperationsImpl
   }
 
   @Override
-  protected Template handleGet(URL resourceUrl) throws InterruptedException, ExecutionException, IOException {
+  protected Template handleGet(URL resourceUrl) throws InterruptedException, IOException {
     return super.handleGet(resourceUrl, getType(), this.parameters);
   }
 
   @Override
   protected <T> T handleResponse(Builder requestBuilder, Class<T> type)
-      throws ExecutionException, InterruptedException, IOException {
+      throws InterruptedException, IOException {
     return handleResponse(requestBuilder, type, parameters);
   }
 

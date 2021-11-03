@@ -62,8 +62,7 @@ public final class SSLUtils {
                 .withConnectionTimeout(1000)
                 .build();
 
-        HttpClient client = HttpClientUtils.createHttpClient(config);
-        try {
+        try (HttpClient client = HttpClientUtils.createHttpClient(config)) {
             HttpRequest request = client.newHttpRequestBuilder().uri(sslConfig.getMasterUrl())
                     .build();
             HttpResponse<InputStream> response = client.send(request, InputStream.class);
@@ -71,8 +70,6 @@ public final class SSLUtils {
             return response.isSuccessful();
         } catch (Throwable t) {
             LOG.warn("SSL handshake failed. Falling back to insecure connection.");
-        } finally {
-          client.clearPool();
         }
         return false;
     }

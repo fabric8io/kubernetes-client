@@ -32,7 +32,6 @@ import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 
 import java.io.IOException;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -265,7 +264,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
     } catch (InterruptedException interruptedException) {
       Thread.currentThread().interrupt();
       throw KubernetesClientException.launderThrowable(forOperationType(PATCH_OPERATION), interruptedException);
-    } catch (IOException | ExecutionException e) {
+    } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType(PATCH_OPERATION), e);
     }
   }

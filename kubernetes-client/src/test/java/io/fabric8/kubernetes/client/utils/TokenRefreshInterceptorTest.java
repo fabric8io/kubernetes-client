@@ -16,14 +16,13 @@
 package io.fabric8.kubernetes.client.utils;
 
 import io.fabric8.kubernetes.client.Config;
-import okhttp3.Interceptor;
+import io.fabric8.kubernetes.client.http.HttpRequest;
+import io.fabric8.kubernetes.client.internal.okhttp.OkHttpClientImpl;
 import okhttp3.MediaType;
 import okhttp3.Protocol;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
-import org.junit.Ignore;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -36,13 +35,13 @@ import java.nio.file.StandardCopyOption;
 import java.util.Objects;
 
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_KUBECONFIG_FILE;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_AUTH_SERVICEACCOUNT_TOKEN_FILE_SYSTEM_PROPERTY;
 import static io.fabric8.kubernetes.client.Config.KUBERNETES_AUTH_TRYKUBECONFIG_SYSTEM_PROPERTY;
 
 /**
  * Ignoring for now - the token refresh should be based upon the java 11 client or the provided client library and not okhttp
  */
-@Disabled
 public class TokenRefreshInterceptorTest {
 
   @Test
@@ -54,19 +53,18 @@ public class TokenRefreshInterceptorTest {
       System.setProperty(KUBERNETES_KUBECONFIG_FILE, tempFile.getAbsolutePath());
 
       // Prepare http call
-      Interceptor.Chain chain = Mockito.mock(Interceptor.Chain.class, Mockito.RETURNS_DEEP_STUBS);
       Request req = new Request.Builder().url("http://mock").build();
-      Mockito.when(chain.request()).thenReturn(req);
       final Response.Builder responseBuilder = new Response.Builder()
         .request(req)
         .protocol(Protocol.HTTP_1_1)
         .message("")
         .body(ResponseBody.create(MediaType.parse("text"), "foo"));
-      Mockito.when(chain.proceed(Mockito.any())).thenReturn(responseBuilder.code(HttpURLConnection.HTTP_UNAUTHORIZED).build(), responseBuilder.code(HttpURLConnection.HTTP_OK).build());
+      HttpRequest.Builder builder = Mockito.mock(HttpRequest.Builder.class, Mockito.RETURNS_SELF);
 
       // Call
-      //new TokenRefreshInterceptor(Config.autoConfigure(null)).intercept(chain);
-      Mockito.verify(chain).proceed(Mockito.argThat(argument -> "Bearer token".equals(argument.header("Authorization"))));
+      boolean reissue = new TokenRefreshInterceptor(Config.autoConfigure(null)).afterFailure(builder, new OkHttpClientImpl.OkHttpResponseImpl(responseBuilder.code(HttpURLConnection.HTTP_UNAUTHORIZED).build(), String.class));
+      Mockito.verify(builder).setHeader("Authorization", "Bearer token");
+      assertTrue(reissue);
     } finally {
       // Remove any side effect
       System.clearProperty(KUBERNETES_KUBECONFIG_FILE);
@@ -84,28 +82,24 @@ public class TokenRefreshInterceptorTest {
       System.setProperty(KUBERNETES_AUTH_TRYKUBECONFIG_SYSTEM_PROPERTY, "false");
 
       // Prepare HTTP call that will fail with 401 Unauthorized to trigger service account token reload.
-      Interceptor.Chain chain = Mockito.mock(Interceptor.Chain.class, Mockito.RETURNS_DEEP_STUBS);
       Request req = new Request.Builder().url("http://mock").build();
-      Mockito.when(chain.request()).thenReturn(req);
       final Response.Builder responseBuilder = new Response.Builder()
           .request(req)
           .protocol(Protocol.HTTP_1_1)
           .message("")
           .body(ResponseBody.create(MediaType.parse("text"), "foo"));
-      Mockito.when(chain.proceed(Mockito.any())).thenReturn(
-          responseBuilder.code(HttpURLConnection.HTTP_UNAUTHORIZED).build(),
-          responseBuilder.code(HttpURLConnection.HTTP_OK).build());
+      HttpRequest.Builder builder = Mockito.mock(HttpRequest.Builder.class, Mockito.RETURNS_SELF);
 
       // The expired token will be read at auto configure.
       TokenRefreshInterceptor interceptor = new TokenRefreshInterceptor(Config.autoConfigure(null));
 
       // Write new value to token file to simulate renewal.
       Files.write(tokenFile.toPath(), "renewed".getBytes());
-      //interceptor.intercept(chain);
+      boolean reissue = interceptor.afterFailure(builder, new OkHttpClientImpl.OkHttpResponseImpl(responseBuilder.code(HttpURLConnection.HTTP_UNAUTHORIZED).build(), String.class));
 
       // Make the call and check that renewed token was read at 401 Unauthorized.
-      Mockito.verify(chain)
-        .proceed(Mockito.argThat(argument -> "Bearer renewed".equals(argument.header("Authorization"))));
+      Mockito.verify(builder).setHeader("Authorization", "Bearer renewed");
+      assertTrue(reissue);
     } finally {
       // Remove any side effect
       System.clearProperty(KUBERNETES_AUTH_SERVICEACCOUNT_TOKEN_FILE_SYSTEM_PROPERTY);
@@ -123,16 +117,12 @@ public class TokenRefreshInterceptorTest {
       System.setProperty(KUBERNETES_KUBECONFIG_FILE, tempFile.getAbsolutePath());
 
       // Prepare HTTP call that will fail with 401 Unauthorized to trigger OIDC token renewal.
-      Interceptor.Chain chain = Mockito.mock(Interceptor.Chain.class, Mockito.RETURNS_DEEP_STUBS);
       Request req = new Request.Builder().url("http://mock").build();
-      Mockito.when(chain.request()).thenReturn(req);
       final Response.Builder responseBuilder = new Response.Builder()
           .request(req).protocol(Protocol.HTTP_1_1)
           .message("")
           .body(ResponseBody.create(MediaType.parse("text"), "foo"));
-      Mockito.when(chain.proceed(Mockito.any())).thenReturn(
-          responseBuilder.code(HttpURLConnection.HTTP_UNAUTHORIZED).build(),
-          responseBuilder.code(HttpURLConnection.HTTP_OK).build());
+      HttpRequest.Builder builder = Mockito.mock(HttpRequest.Builder.class, Mockito.RETURNS_SELF);
 
       // Loads the initial kubeconfig, including initial token value.
       Config config = Config.autoConfigure(null);
@@ -146,11 +136,12 @@ public class TokenRefreshInterceptorTest {
       Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/test-kubeconfig-tokeninterceptor-oidc")),
           Paths.get(tempFile.getPath()), StandardCopyOption.REPLACE_EXISTING);
 
-      //new TokenRefreshInterceptor(config).intercept(chain);
+      TokenRefreshInterceptor interceptor = new TokenRefreshInterceptor(config);
+      boolean reissue = interceptor.afterFailure(builder, new OkHttpClientImpl.OkHttpResponseImpl(responseBuilder.code(HttpURLConnection.HTTP_UNAUTHORIZED).build(), String.class));
 
       // Make the call and check that renewed token was read at 401 Unauthorized.
-      Mockito.verify(chain)
-          .proceed(Mockito.argThat(argument -> "Bearer renewed".equals(argument.header("Authorization"))));
+      Mockito.verify(builder).setHeader("Authorization", "Bearer renewed");
+      assertTrue(reissue);
     } finally {
       // Remove any side effect.
       System.clearProperty(KUBERNETES_KUBECONFIG_FILE);

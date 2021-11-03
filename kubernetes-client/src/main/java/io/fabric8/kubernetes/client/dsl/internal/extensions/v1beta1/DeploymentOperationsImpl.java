@@ -49,7 +49,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.UnaryOperator;
@@ -327,7 +326,7 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
     } catch (InterruptedException interruptedException) {
       Thread.currentThread().interrupt();
       throw KubernetesClientException.launderThrowable(interruptedException);
-    } catch (ExecutionException | IOException e) {
+    } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
   }

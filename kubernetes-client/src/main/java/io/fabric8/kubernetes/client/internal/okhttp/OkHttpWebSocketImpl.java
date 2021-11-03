@@ -51,7 +51,7 @@ class OkHttpWebSocketImpl implements WebSocket {
     @Override
     public CompletableFuture<WebSocket> buildAsync(Listener listener) {
       Request request = builder.build();
-      CompletableFuture<WebSocket> future = new CompletableFuture<WebSocket>();
+      CompletableFuture<WebSocket> future = new CompletableFuture<>();
       httpClient.newWebSocket(request, new WebSocketListener() {
         private volatile boolean opened; 
         

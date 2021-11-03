@@ -57,20 +57,19 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
     throws MalformedURLException {
     
     super(
-        watcher, baseOperation, listOptions, reconnectLimit, reconnectInterval, maxIntervalExponent, () -> {
-          return client.newBuilder()
-              .connectTimeout(connectTimeout, TimeUnit.MILLISECONDS)
-              .readTimeout(0, TimeUnit.MILLISECONDS)
-              .forStreaming()
-              .build();
-        });
+        watcher, baseOperation, listOptions, reconnectLimit, reconnectInterval, maxIntervalExponent,
+        () -> client.newBuilder()
+            .connectTimeout(connectTimeout, TimeUnit.MILLISECONDS)
+            .readTimeout(0, TimeUnit.MILLISECONDS)
+            .forStreaming()
+            .build());
     
   }
   
   @Override
   protected synchronized void run(URL url, Map<String, String> headers) {
     HttpRequest.Builder builder = client.newHttpRequestBuilder().url(url);
-    headers.forEach((k, v) -> builder.header(k, v));
+    headers.forEach(builder::header);
     call = client.sendAsync(builder.build(), InputStream.class);
     call.whenComplete((response, t) -> {
       if (!call.isCancelled() && t != null) {

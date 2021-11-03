@@ -43,7 +43,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 public class StatefulSetOperationsImpl extends RollableScalableResourceOperation<StatefulSet, StatefulSetList, RollableScalableResource<StatefulSet>>
@@ -216,7 +215,7 @@ public class StatefulSetOperationsImpl extends RollableScalableResourceOperation
     } catch (InterruptedException interruptedException) {
       Thread.currentThread().interrupt();
       throw KubernetesClientException.launderThrowable(interruptedException);
-    } catch (ExecutionException | IOException e) {
+    } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
   }

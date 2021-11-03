@@ -182,7 +182,7 @@ public class PodUpload {
   }
 
   private static URL buildCommandUrl(String command, PodOperationContext context, OperationSupport operationSupport)
-    throws UnsupportedEncodingException, MalformedURLException {
+    throws MalformedURLException {
 
     final StringBuilder commandBuilder = new StringBuilder();
     commandBuilder.append("exec?");

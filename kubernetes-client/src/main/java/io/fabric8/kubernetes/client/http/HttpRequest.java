@@ -68,9 +68,11 @@ public interface HttpRequest extends HttpHeaders {
     Builder setHeader(String k, String v);
     
     default Builder post(Map<String, String> formData) {
-      return post("application/x-www-form-urlencoded", formData.entrySet().stream().map((e) -> {
-        return formURLEncode(e.getKey()) + "=" + formURLEncode(e.getValue());
-      }).collect(Collectors.joining("&")));
+      return post("application/x-www-form-urlencoded",
+          formData.entrySet()
+              .stream()
+              .map(e -> formURLEncode(e.getKey()) + "=" + formURLEncode(e.getValue()))
+              .collect(Collectors.joining("&")));
     }
 
   }
