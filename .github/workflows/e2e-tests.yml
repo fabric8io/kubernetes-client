@@ -59,7 +59,7 @@ jobs:
       - name: Setup Minikube-Kubernetes
         uses: manusa/actions-setup-minikube@v2.4.2
         with:
-          minikube version: v1.23.0
+          minikube version: v1.23.2
           kubernetes version: ${{ matrix.kubernetes }}
           github token: ${{ secrets.GITHUB_TOKEN }}
           start args: '--addons=metrics-server --force'
