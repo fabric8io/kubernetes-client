@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.server.mock;
 
+import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.mockwebserver.ServerRequest;
 import io.fabric8.mockwebserver.ServerResponse;
 import io.fabric8.mockwebserver.dsl.HttpMethod;
@@ -24,6 +25,8 @@ import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.RecordedRequest;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
@@ -42,9 +45,14 @@ public class KubernetesMixedDispatcher extends Dispatcher {
   private final KubernetesCrudDispatcher kubernetesCrudDispatcher;
 
   public KubernetesMixedDispatcher(Map<ServerRequest, Queue<ServerResponse>> responses) {
+    this(responses, Collections.emptyList());
+  }
+
+  public KubernetesMixedDispatcher(
+    Map<ServerRequest, Queue<ServerResponse>> responses, List<CustomResourceDefinitionContext> crdContexts) {
     this.responses = responses;
     mockDispatcher = new MockDispatcher(responses);
-    kubernetesCrudDispatcher = new KubernetesCrudDispatcher();
+    kubernetesCrudDispatcher = new KubernetesCrudDispatcher(crdContexts);
   }
 
   @Override

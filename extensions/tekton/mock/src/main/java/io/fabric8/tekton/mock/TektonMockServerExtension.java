@@ -17,18 +17,20 @@
 
 package io.fabric8.tekton.mock;
 
-
-import io.fabric8.kubernetes.client.server.mock.KubernetesCrudDispatcher;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMixedDispatcher;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServerExtension;
 import io.fabric8.mockwebserver.Context;
+import io.fabric8.mockwebserver.ServerRequest;
+import io.fabric8.mockwebserver.ServerResponse;
 import io.fabric8.tekton.client.NamespacedTektonClient;
 import io.fabric8.tekton.client.TektonClient;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
 import java.lang.reflect.Field;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Queue;
 
 /**
  * The class that implements JUnit5 extension mechanism. You can use it directly in your JUnit test
@@ -58,8 +60,9 @@ public class TektonMockServerExtension extends KubernetesMockServerExtension {
   @Override
   protected void initializeKubernetesClientAndMockServer(Class<?> testClass) {
     EnableTektonMockClient a = testClass.getAnnotation(EnableTektonMockClient.class);
+    final Map<ServerRequest, Queue<ServerResponse>> responses = new HashMap<>();
     tektonMockServer = a.crud()
-      ? new TektonMockServer(new Context(), new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(Collections.emptyList()), a.https())
+      ? new TektonMockServer(new Context(), new MockWebServer(), responses, new KubernetesMixedDispatcher(responses), a.https())
       : new TektonMockServer(a.https());
     tektonMockServer.init();
     tektonClient = tektonMockServer.createTekton();
