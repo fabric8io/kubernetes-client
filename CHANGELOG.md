@@ -10,6 +10,7 @@
 #### Dependency Upgrade
 
 #### New Features
+* Fix #3579: Add support for Volcano extension
 
 #### _**Note**_: Breaking changes in the API
 

@@ -1,0 +1,290 @@
+{
+  "id": "http://fabric8.io/volcano.sh/VolcanoSchema#",
+  "$schema": "http://json-schema.org/draft-05/schema#",
+  "definitions": {
+    "volcano_sh_apis_pkg_apis_scheduling_v1beta1_PodGroup": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "scheduling.volcano.sh/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "PodGroup",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/volcano_sh_apis_pkg_apis_scheduling_v1beta1_PodGroupSpec",
+          "existingJavaType": "io.fabric8.volcano.scheduling.v1beta1.PodGroupSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/volcano_sh_apis_pkg_apis_scheduling_v1beta1_PodGroupStatus",
+          "existingJavaType": "io.fabric8.volcano.scheduling.v1beta1.PodGroupStatus"
+        }
+      },
+      "javaType": "io.fabric8.volcano.scheduling.v1beta1.PodGroup",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "volcano_sh_apis_pkg_apis_scheduling_v1beta1_PodGroupCondition": {
+      "type": "object",
+      "properties": {
+        "lastTransitionTime": {
+          "existingJavaType": "java.lang.String"
+        },
+        "message": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "transitionID": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.volcano.scheduling.v1beta1.PodGroupCondition",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "volcano_sh_apis_pkg_apis_scheduling_v1beta1_PodGroupList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "scheduling.volcano.sh/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/volcano_sh_apis_pkg_apis_scheduling_v1beta1_PodGroup",
+            "existingJavaType": "io.fabric8.volcano.scheduling.v1beta1.PodGroup"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "PodGroupList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.volcano.scheduling.v1beta1.PodGroupList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.volcano.scheduling.v1beta1.PodGroup\u003e"
+      ]
+    },
+    "volcano_sh_apis_pkg_apis_scheduling_v1beta1_PodGroupSpec": {
+      "type": "object",
+      "properties": {
+        "minMember": {
+          "type": "integer"
+        },
+        "minResources": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,io.fabric8.kubernetes.api.model.Quantity\u003e"
+        },
+        "priorityClassName": {
+          "type": "string"
+        },
+        "queue": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.volcano.scheduling.v1beta1.PodGroupSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "volcano_sh_apis_pkg_apis_scheduling_v1beta1_PodGroupStatus": {
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/volcano_sh_apis_pkg_apis_scheduling_v1beta1_PodGroupCondition",
+            "existingJavaType": "io.fabric8.volcano.scheduling.v1beta1.PodGroupCondition"
+          }
+        },
+        "failed": {
+          "type": "integer"
+        },
+        "phase": {
+          "type": "string"
+        },
+        "running": {
+          "type": "integer"
+        },
+        "succeeded": {
+          "type": "integer"
+        }
+      },
+      "javaType": "io.fabric8.volcano.scheduling.v1beta1.PodGroupStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "volcano_sh_apis_pkg_apis_scheduling_v1beta1_Queue": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "scheduling.volcano.sh/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "Queue",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/volcano_sh_apis_pkg_apis_scheduling_v1beta1_QueueSpec",
+          "existingJavaType": "io.fabric8.volcano.scheduling.v1beta1.QueueSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/volcano_sh_apis_pkg_apis_scheduling_v1beta1_QueueStatus",
+          "existingJavaType": "io.fabric8.volcano.scheduling.v1beta1.QueueStatus"
+        }
+      },
+      "javaType": "io.fabric8.volcano.scheduling.v1beta1.Queue",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "volcano_sh_apis_pkg_apis_scheduling_v1beta1_QueueList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "scheduling.volcano.sh/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/volcano_sh_apis_pkg_apis_scheduling_v1beta1_Queue",
+            "existingJavaType": "io.fabric8.volcano.scheduling.v1beta1.Queue"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "QueueList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.volcano.scheduling.v1beta1.QueueList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.volcano.scheduling.v1beta1.Queue\u003e"
+      ]
+    },
+    "volcano_sh_apis_pkg_apis_scheduling_v1beta1_QueueSpec": {
+      "type": "object",
+      "properties": {
+        "capability": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,io.fabric8.kubernetes.api.model.Quantity\u003e"
+        },
+        "reclaimable": {
+          "type": "boolean",
+          "existingJavaType": "Boolean"
+        },
+        "weight": {
+          "type": "integer"
+        }
+      },
+      "javaType": "io.fabric8.volcano.scheduling.v1beta1.QueueSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "volcano_sh_apis_pkg_apis_scheduling_v1beta1_QueueStatus": {
+      "type": "object",
+      "properties": {
+        "inqueue": {
+          "type": "integer"
+        },
+        "pending": {
+          "type": "integer"
+        },
+        "running": {
+          "type": "integer"
+        },
+        "state": {
+          "type": "string"
+        },
+        "unknown": {
+          "type": "integer"
+        }
+      },
+      "javaType": "io.fabric8.volcano.scheduling.v1beta1.QueueStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "volcano_sh_apis_pkg_apis_scheduling_v1beta1_PodGroup": {
+      "$ref": "#/definitions/volcano_sh_apis_pkg_apis_scheduling_v1beta1_PodGroup",
+      "existingJavaType": "io.fabric8.volcano.scheduling.v1beta1.PodGroup"
+    },
+    "volcano_sh_apis_pkg_apis_scheduling_v1beta1_PodGroupCondition": {
+      "$ref": "#/definitions/volcano_sh_apis_pkg_apis_scheduling_v1beta1_PodGroupCondition",
+      "existingJavaType": "io.fabric8.volcano.scheduling.v1beta1.PodGroupCondition"
+    },
+    "volcano_sh_apis_pkg_apis_scheduling_v1beta1_PodGroupList": {
+      "$ref": "#/definitions/volcano_sh_apis_pkg_apis_scheduling_v1beta1_PodGroupList",
+      "existingJavaType": "io.fabric8.volcano.scheduling.v1beta1.PodGroupList"
+    },
+    "volcano_sh_apis_pkg_apis_scheduling_v1beta1_PodGroupSpec": {
+      "$ref": "#/definitions/volcano_sh_apis_pkg_apis_scheduling_v1beta1_PodGroupSpec",
+      "existingJavaType": "io.fabric8.volcano.scheduling.v1beta1.PodGroupSpec"
+    },
+    "volcano_sh_apis_pkg_apis_scheduling_v1beta1_PodGroupStatus": {
+      "$ref": "#/definitions/volcano_sh_apis_pkg_apis_scheduling_v1beta1_PodGroupStatus",
+      "existingJavaType": "io.fabric8.volcano.scheduling.v1beta1.PodGroupStatus"
+    },
+    "volcano_sh_apis_pkg_apis_scheduling_v1beta1_Queue": {
+      "$ref": "#/definitions/volcano_sh_apis_pkg_apis_scheduling_v1beta1_Queue",
+      "existingJavaType": "io.fabric8.volcano.scheduling.v1beta1.Queue"
+    },
+    "volcano_sh_apis_pkg_apis_scheduling_v1beta1_QueueList": {
+      "$ref": "#/definitions/volcano_sh_apis_pkg_apis_scheduling_v1beta1_QueueList",
+      "existingJavaType": "io.fabric8.volcano.scheduling.v1beta1.QueueList"
+    },
+    "volcano_sh_apis_pkg_apis_scheduling_v1beta1_QueueSpec": {
+      "$ref": "#/definitions/volcano_sh_apis_pkg_apis_scheduling_v1beta1_QueueSpec",
+      "existingJavaType": "io.fabric8.volcano.scheduling.v1beta1.QueueSpec"
+    },
+    "volcano_sh_apis_pkg_apis_scheduling_v1beta1_QueueStatus": {
+      "$ref": "#/definitions/volcano_sh_apis_pkg_apis_scheduling_v1beta1_QueueStatus",
+      "existingJavaType": "io.fabric8.volcano.scheduling.v1beta1.QueueStatus"
+    }
+  },
+  "additionalProperties": false
+}
