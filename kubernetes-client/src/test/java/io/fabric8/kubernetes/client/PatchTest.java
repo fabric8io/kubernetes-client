@@ -17,78 +17,75 @@ package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.client.dsl.PodResource;
+import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchType;
-import io.fabric8.kubernetes.client.internal.okhttp.OkHttpClientImpl;
-import okhttp3.Call;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Protocol;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
-import org.assertj.core.api.AssertionsForClassTypes;
+import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.http.HttpRequest;
+import io.fabric8.kubernetes.client.http.HttpRequest.Builder;
+import io.fabric8.kubernetes.client.http.HttpResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
-import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class PatchTest {
-  private Call mockCall;
-  private OkHttpClient mockClient;
+  private HttpClient mockClient;
   private KubernetesClient kubernetesClient;
+  private List<HttpRequest.Builder> builders = new ArrayList<>();
 
   @BeforeEach
   public void setUp() throws IOException {
-    this.mockClient = Mockito.mock(OkHttpClient.class, Mockito.RETURNS_DEEP_STUBS);
+    // TODO: fully mocking makes this logic more difficult and basically copied in other tests, we may want to rely on an actual implementation instead
+    builders.clear();
+    this.mockClient = Mockito.mock(HttpClient.class, Mockito.RETURNS_DEEP_STUBS);
     Config config = new ConfigBuilder().withMasterUrl("https://localhost:8443/").build();
-    mockCall = mock(Call.class);
-    Response mockResponse = new Response.Builder()
-      .request(new Request.Builder().url("http://mock").build())
-      .protocol(Protocol.HTTP_1_1)
-      .code(HttpURLConnection.HTTP_OK)
-      .body(ResponseBody.create(MediaType.get("application/json"), "{\"metadata\":{\"name\":\"foo\"}}"))
-      .message("mock")
-      .build();
-    when(mockCall.execute())
-      .thenReturn(mockResponse, mockResponse);
-    when(mockClient.newCall(any())).thenReturn(mockCall);
-    kubernetesClient = new DefaultKubernetesClient(new OkHttpClientImpl(mockClient), config);
+    HttpResponse<InputStream> mockResponse = MockHttpClientUtils.buildResponse(HttpURLConnection.HTTP_OK, "{}");
+    when(mockClient.send(any(), Mockito.eq(InputStream.class))).thenReturn(mockResponse);
+    kubernetesClient = new DefaultKubernetesClient(mockClient, config);
+    Mockito.when(mockClient.newHttpRequestBuilder()).thenAnswer(answer -> {
+      HttpRequest.Builder result = Mockito.mock(HttpRequest.Builder.class, Mockito.RETURNS_SELF);
+      HttpRequest request = Mockito.mock(HttpRequest.class, Mockito.RETURNS_DEEP_STUBS);
+      Mockito.when(request.uri()).thenReturn(URI.create("https://localhost:8443/"));
+      Mockito.when(result.build()).thenReturn(request);
+      builders.add(result);
+      return result;
+    });
   }
 
   @Test
-  void testJsonPatch() {
+  void testJsonPatch() throws IOException {
     // Given
-    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
 
     // When
     kubernetesClient.pods().inNamespace("ns1").withName("foo")
       .patch("{\"metadata\":{\"annotations\":{\"bob\":\"martin\"}}}");
 
     // Then
-    verify(mockClient, times(2)).newCall(captor.capture());
-    assertRequest(captor.getAllValues().get(0), "GET", "/api/v1/namespaces/ns1/pods/foo", null);
-    assertRequest(captor.getAllValues().get(1), "PATCH", "/api/v1/namespaces/ns1/pods/foo", null);
-    assertBodyContentType("strategic-merge-patch+json", captor.getAllValues().get(1));
+    verify(mockClient, times(2)).send(any(), any());
+    assertRequest("GET", "/api/v1/namespaces/ns1/pods/foo", null);
+    assertRequest(1, "PATCH", "/api/v1/namespaces/ns1/pods/foo", null, OperationSupport.STRATEGIC_MERGE_JSON_PATCH);
   }
 
   @Test
-  void testJsonMergePatch() {
+  void testJsonMergePatch() throws IOException {
     // Given
-    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
     PatchContext patchContext = new PatchContext.Builder()
       .withPatchType(PatchType.JSON_MERGE)
       .build();
@@ -98,38 +95,29 @@ class PatchTest {
       .patch(patchContext, "{\"metadata\":{\"annotations\":{\"bob\":\"martin\"}}}");
 
     // Then
-    verify(mockClient, times(2)).newCall(captor.capture());
-    assertRequest(captor.getAllValues().get(0), "GET", "/api/v1/namespaces/ns1/pods/foo", null);
-    assertRequest(captor.getAllValues().get(1), "PATCH", "/api/v1/namespaces/ns1/pods/foo", null);
-    assertBodyContentType("merge-patch+json", captor.getAllValues().get(1));
+    verify(mockClient, times(2)).send(any(), any());
+    assertRequest("GET", "/api/v1/namespaces/ns1/pods/foo", null);
+    assertRequest(1, "PATCH", "/api/v1/namespaces/ns1/pods/foo", null, OperationSupport.JSON_MERGE_PATCH);
   }
 
   @Test
-  void testYamlPatchConvertedToJson() {
+  void testYamlPatchConvertedToJson() throws IOException {
     // Given
-    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
 
     // When
     kubernetesClient.pods().inNamespace("ns1").withName("foo").patch("metadata:\n  annotations:\n    bob: martin");
 
     // Then
-    verify(mockClient, times(2)).newCall(captor.capture());
-    assertRequest(captor.getAllValues().get(0), "GET", "/api/v1/namespaces/ns1/pods/foo", null);
-    assertRequest(captor.getAllValues().get(1), "PATCH", "/api/v1/namespaces/ns1/pods/foo", null);
-    assertBodyContentType("strategic-merge-patch+json", captor.getAllValues().get(1));
+    verify(mockClient, times(2)).send(any(), any());
+    assertRequest("GET", "/api/v1/namespaces/ns1/pods/foo", null);
+    assertRequest(1, "PATCH", "/api/v1/namespaces/ns1/pods/foo", null, OperationSupport.STRATEGIC_MERGE_JSON_PATCH);
   }
 
   @Test
   void testPatchThrowExceptionWhenResourceNotFound() throws IOException {
     // Given
-    when(mockCall.execute()).thenReturn(new Response.Builder()
-      .request(new Request.Builder().url("http://mock").build())
-      .protocol(Protocol.HTTP_1_1)
-      .code(HttpURLConnection.HTTP_NOT_FOUND)
-      .body(ResponseBody.create(MediaType.get("application/json"), "{}"))
-      .message("mock")
-      .build());
-    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
+    HttpResponse<InputStream> mockResponse = MockHttpClientUtils.buildResponse(HttpURLConnection.HTTP_NOT_FOUND, "{}");
+    when(mockClient.send(any(), Mockito.eq(InputStream.class))).thenReturn(mockResponse);
 
     // When
     PodResource<Pod> podResource = kubernetesClient.pods()
@@ -139,15 +127,14 @@ class PatchTest {
         () -> podResource.patch("{\"metadata\":{\"annotations\":{\"bob\":\"martin\"}}}"));
 
     // Then
-    verify(mockClient, times(1)).newCall(captor.capture());
-    assertRequest(captor.getValue(), "GET", "/api/v1/namespaces/ns1/pods/foo", null);
+    verify(mockClient).send(any(), any());
+    assertRequest("GET", "/api/v1/namespaces/ns1/pods/foo", null);
     assertEquals(HttpURLConnection.HTTP_NOT_FOUND, e.getCode());
   }
 
   @Test
-  void testJsonPatchWithPositionalArrays() {
+  void testJsonPatchWithPositionalArrays() throws IOException {
     // Given
-    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
     PatchContext patchContext = new PatchContext.Builder().withPatchType(PatchType.JSON).build();
 
     // When
@@ -155,16 +142,14 @@ class PatchTest {
       .patch(patchContext, "[{\"op\": \"replace\", \"path\":\"/spec/containers/0/image\", \"value\":\"foo/gb-frontend:v4\"}]");
 
     // Then
-    verify(mockClient, times(2)).newCall(captor.capture());
-    assertRequest(captor.getAllValues().get(0), "GET", "/api/v1/namespaces/ns1/pods/foo", null);
-    assertRequest(captor.getAllValues().get(1), "PATCH", "/api/v1/namespaces/ns1/pods/foo", null);
-    assertBodyContentType("json-patch+json", captor.getAllValues().get(1));
+    verify(mockClient, times(2)).send(any(), any());
+    assertRequest("GET", "/api/v1/namespaces/ns1/pods/foo", null);
+    assertRequest(1, "PATCH", "/api/v1/namespaces/ns1/pods/foo", null, OperationSupport.JSON_PATCH);
   }
 
   @Test
-  void testPatchWithPatchOptions() {
+  void testPatchWithPatchOptions() throws IOException {
     // Given
-    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
 
     // When
     kubernetesClient.pods().inNamespace("ns1").withName("foo")
@@ -174,21 +159,50 @@ class PatchTest {
         .build(), "{\"metadata\":{\"annotations\":{\"bob\":\"martin\"}}}");
 
     // Then
-    verify(mockClient, times(2)).newCall(captor.capture());
-    assertRequest(captor.getAllValues().get(0), "GET", "/api/v1/namespaces/ns1/pods/foo", null);
-    assertRequest(captor.getAllValues().get(1), "PATCH", "/api/v1/namespaces/ns1/pods/foo", "fieldManager=fabric8&dryRun=All");
-    assertBodyContentType("strategic-merge-patch+json", captor.getAllValues().get(1));
+    verify(mockClient, times(2)).send(any(), any());
+    assertRequest("GET", "/api/v1/namespaces/ns1/pods/foo", null);
+    assertRequest(1, "PATCH", "/api/v1/namespaces/ns1/pods/foo", "fieldManager=fabric8&dryRun=All", OperationSupport.STRATEGIC_MERGE_JSON_PATCH);
   }
 
-  private void assertRequest(Request request, String method, String url, String queryParam) {
-    assertThat(request.url().encodedPath()).isEqualTo(url);
-    assertThat(request.method()).isEqualTo(method);
-    assertThat(request.url().encodedQuery()).isEqualTo(queryParam);
+  private void assertRequest(String method, String url, String queryParam) {
+    assertRequest(0, method, url, queryParam, null);
+  }
+  
+  private void assertRequest(int index, String method, String url, String queryParam, String contentType) {
+    ArgumentCaptor<URL> urlCaptor = ArgumentCaptor.forClass(URL.class);
+    Builder mock = builders.get(index);
+    verify(mock).url(urlCaptor.capture());
+    URL capturedURL = urlCaptor.getValue();
+    assertEquals(url, capturedURL.getPath());
+
+    validateMethod(method, contentType, mock);
+    
+    assertEquals(queryParam, capturedURL.getQuery());
   }
 
-  private void assertBodyContentType(String expectedContentSubtype, Request request) {
-    AssertionsForClassTypes.assertThat(request.body().contentType()).isNotNull();
-    AssertionsForClassTypes.assertThat(request.body().contentType().type()).isEqualTo("application");
-    AssertionsForClassTypes.assertThat(request.body().contentType().subtype()).isEqualTo(expectedContentSubtype);
+  static void validateMethod(String method, String contentType, Builder mock) {
+    ArgumentCaptor<String> contentTypeCaptor = ArgumentCaptor.forClass(String.class);
+    switch (method) {
+    case "DELETE":
+      Mockito.verify(mock).delete(contentTypeCaptor.capture(), any());
+      break;
+    case "POST":
+      Mockito.verify(mock).post(contentTypeCaptor.capture(), any(String.class));
+      break;
+    case "PUT":
+      Mockito.verify(mock).put(contentTypeCaptor.capture(), any());
+      break;
+    case "PATCH":
+      Mockito.verify(mock).patch(contentTypeCaptor.capture(), any());
+      break;
+    default:
+      break; //TODO: validate GET, but that explicit call was removed
+    }
+    
+    if (contentType != null) {
+      assertEquals(contentType, contentTypeCaptor.getValue());
+    }
   }
+  
+  
 }

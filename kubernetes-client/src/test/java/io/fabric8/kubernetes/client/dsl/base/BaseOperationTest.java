@@ -15,7 +15,35 @@
  */
 package io.fabric8.kubernetes.client.dsl.base;
 
-import static okhttp3.Protocol.HTTP_1_1;
+import io.fabric8.kubernetes.api.model.DeletionPropagation;
+import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
+import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.PodBuilder;
+import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.client.ConfigBuilder;
+import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.MockHttpClientUtils;
+import io.fabric8.kubernetes.client.dsl.EditReplacePatchDeletable;
+import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
+import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
+import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.http.HttpRequest;
+import io.fabric8.kubernetes.client.utils.Serialization;
+import io.fabric8.kubernetes.client.utils.URLUtils;
+import io.fabric8.kubernetes.client.utils.Utils;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -25,42 +53,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.HashMap;
-import java.util.Map;
-
-import io.fabric8.kubernetes.api.model.DeletionPropagation;
-import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
-import io.fabric8.kubernetes.api.model.Pod;
-import io.fabric8.kubernetes.api.model.PodBuilder;
-import io.fabric8.kubernetes.api.model.PodList;
-import io.fabric8.kubernetes.client.ConfigBuilder;
-import io.fabric8.kubernetes.client.dsl.EditReplacePatchDeletable;
-import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.utils.Serialization;
-import io.fabric8.kubernetes.client.utils.URLUtils;
-import io.fabric8.kubernetes.client.utils.Utils;
-import okhttp3.Call;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
-import org.junit.jupiter.api.Test;
-
-import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
-import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
-import io.fabric8.kubernetes.client.http.HttpClient;
-import io.fabric8.kubernetes.client.internal.okhttp.OkHttpClientImpl;
 
 class BaseOperationTest {
 
@@ -232,32 +226,28 @@ class BaseOperationTest {
     assertEquals("https://172.17.0.2:8443/api/v1/namespaces/ns1/pods/foo", result.toString());
   }
 
-  private HttpClient newHttpClientWithSomeFailures(final AtomicInteger httpExecutionCounter, final int numFailures) {
-    OkHttpClient mockClient = mock(OkHttpClient.class);
-    when(mockClient.newCall(any())).thenAnswer(
+  private HttpClient newHttpClientWithSomeFailures(final AtomicInteger httpExecutionCounter, final int numFailures) throws IOException {
+    HttpClient mockClient = mock(HttpClient.class, Mockito.RETURNS_DEEP_STUBS);
+    HttpRequest.Builder mockRequestBuilder = mock(HttpRequest.Builder.class, Mockito.RETURNS_SELF);
+    HttpRequest request = MockHttpClientUtils.buildRequest();
+    when(mockClient.newHttpRequestBuilder()).thenReturn(mockRequestBuilder);
+    when(mockRequestBuilder.build()).thenReturn(request);
+    when(mockClient.send(Mockito.any(), Mockito.eq(InputStream.class))).thenAnswer(
       invocation -> {
-        Call mockCall = mock(Call.class);
-        Request req = invocation.getArgument(0);
-        when(mockCall.execute()).thenAnswer(i -> {
-          int count = httpExecutionCounter.getAndIncrement();
-          if (count < numFailures) {
-            // Altering the type of the error for each call:
-            // even numbered calls (including the first call) fail with an IOException and odd numbered calls fail with HTTP response 500
-            if (count % 2 == 0) {
-              throw new IOException("For example java.net.ConnectException");
-            } else {
-              return new Response.Builder().request(req).message("Internal Server Error").protocol(HTTP_1_1).code(500).build();
-            }
-          } else {
-            Pod podNoLabels = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
-            ResponseBody body = ResponseBody.create(MediaType.get("application/json"), Serialization.asJson(podNoLabels));
-            return new Response.Builder().request(req).protocol(HTTP_1_1).body(body).message("OK").code(HttpURLConnection.HTTP_OK).build();
+        int count = httpExecutionCounter.getAndIncrement();
+        if (count < numFailures) {
+          // Altering the type of the error for each call:
+          // even numbered calls (including the first call) fail with an IOException and odd numbered calls fail with HTTP response 500
+          if (count % 2 == 0) {
+            throw new IOException("For example java.net.ConnectException");
           }
-        });
-        return mockCall;
+          return MockHttpClientUtils.buildResponse(500);
+        }
+        Pod podNoLabels = new PodBuilder().withNewMetadata().withName("pod1").withNamespace("test").and().build();
+        return MockHttpClientUtils.buildResponse(HttpURLConnection.HTTP_OK, Serialization.asJson(podNoLabels));
       }
     );
-    return new OkHttpClientImpl(mockClient);
+    return mockClient;
   }
 
   @Test
