@@ -16,13 +16,17 @@
 package io.fabric8.certmanager.server.mock;
 
 import io.fabric8.certmanager.client.CertManagerClient;
-import io.fabric8.kubernetes.client.server.mock.KubernetesCrudDispatcher;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMixedDispatcher;
 import io.fabric8.mockwebserver.Context;
+import io.fabric8.mockwebserver.ServerRequest;
+import io.fabric8.mockwebserver.ServerResponse;
 import io.fabric8.mockwebserver.dsl.MockServerExpectation;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.rules.ExternalResource;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Queue;
 
 public class CertManagerServer extends ExternalResource {
 
@@ -50,8 +54,9 @@ public class CertManagerServer extends ExternalResource {
 
   @Override
   public void before() {
+    final Map<ServerRequest, Queue<ServerResponse>> responses = new HashMap<>();
     mock = crudMode
-      ? new CertManagerMockServer(new Context(), new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(), true)
+      ? new CertManagerMockServer(new Context(), new MockWebServer(), responses, new KubernetesMixedDispatcher(responses), true)
       : new CertManagerMockServer(https);
     mock.init();
     client = mock.createCertManager();

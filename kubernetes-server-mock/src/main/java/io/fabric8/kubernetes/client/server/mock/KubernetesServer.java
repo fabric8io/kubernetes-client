@@ -18,6 +18,8 @@ package io.fabric8.kubernetes.client.server.mock;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.mockwebserver.Context;
+import io.fabric8.mockwebserver.ServerRequest;
+import io.fabric8.mockwebserver.ServerResponse;
 import io.fabric8.mockwebserver.dsl.MockServerExpectation;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
@@ -27,6 +29,8 @@ import java.net.InetAddress;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Queue;
 
 public class KubernetesServer extends ExternalResource {
 
@@ -67,8 +71,9 @@ public class KubernetesServer extends ExternalResource {
 
   @Override
   public void before() {
+    final Map<ServerRequest, Queue<ServerResponse>> responses = new HashMap<>();
     mock = crudMode
-      ? new KubernetesMockServer(new Context(), new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(crdContextList), https)
+      ? new KubernetesMockServer(new Context(), new MockWebServer(), responses, new KubernetesMixedDispatcher(responses, crdContextList), https)
       : new KubernetesMockServer(https);
     mock.init(address, port);
     client = mock.createClient();

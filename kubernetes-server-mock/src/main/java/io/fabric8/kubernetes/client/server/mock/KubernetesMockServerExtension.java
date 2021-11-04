@@ -18,13 +18,16 @@ package io.fabric8.kubernetes.client.server.mock;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Queue;
 
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.mockwebserver.Context;
+import io.fabric8.mockwebserver.ServerRequest;
+import io.fabric8.mockwebserver.ServerResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.AfterEachCallback;
@@ -85,8 +88,9 @@ public class KubernetesMockServerExtension implements AfterEachCallback, AfterAl
 
   protected void initializeKubernetesClientAndMockServer(Class<?> testClass) {
     EnableKubernetesMockClient a = testClass.getAnnotation(EnableKubernetesMockClient.class);
+    final Map<ServerRequest, Queue<ServerResponse>> responses = new HashMap<>();
     mock = a.crud()
-      ? new KubernetesMockServer(new Context(), new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(Collections.emptyList()), a.https())
+      ? new KubernetesMockServer(new Context(), new MockWebServer(), responses, new KubernetesMixedDispatcher(responses), a.https())
       : new KubernetesMockServer(a.https());
     mock.init();
     client = mock.createClient();
