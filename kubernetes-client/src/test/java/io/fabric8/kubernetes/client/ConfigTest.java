@@ -18,13 +18,10 @@ package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.api.model.ExecConfig;
 import io.fabric8.kubernetes.api.model.ExecConfigBuilder;
-import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.TlsVersion;
-import io.fabric8.kubernetes.client.internal.okhttp.OkHttpClientImpl;
 import io.fabric8.kubernetes.client.lib.FileSystem;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
-import okhttp3.Dispatcher;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,11 +41,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -451,36 +448,6 @@ public class ConfigTest {
     assertEquals(original.getConfiguration().getNamespace(), copy.getConfiguration().getNamespace());
     assertEquals(original.getConfiguration().getUsername(), copy.getConfiguration().getUsername());
     assertEquals(original.getConfiguration().getPassword(), copy.getConfiguration().getPassword());
-  }
-
-  @Test
-  void shouldRespectMaxRequests() {
-    Config config = new ConfigBuilder()
-      .withMaxConcurrentRequests(120)
-      .build();
-
-    KubernetesClient client = new DefaultKubernetesClient();
-    assertEquals(64, getDispatcher(client).getMaxRequests());
-
-    client = new DefaultKubernetesClient(config);
-    assertEquals(120, getDispatcher(client).getMaxRequests());
-  }
-
-  private Dispatcher getDispatcher(KubernetesClient client) {
-    return ((OkHttpClientImpl)client.adapt(HttpClient.class)).getOkHttpClient().dispatcher();
-  }
-  
-  @Test
-  void shouldRespectMaxRequestsPerHost() {
-    Config config = new ConfigBuilder()
-      .withMaxConcurrentRequestsPerHost(20)
-      .build();
-
-    KubernetesClient client = new DefaultKubernetesClient();
-    assertEquals(5, getDispatcher(client).getMaxRequestsPerHost());
-
-    client = new DefaultKubernetesClient(config);
-    assertEquals(20, getDispatcher(client).getMaxRequestsPerHost());
   }
 
   @Test

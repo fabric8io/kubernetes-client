@@ -16,7 +16,6 @@
 
 package io.fabric8.kubernetes.client.internal.okhttp;
 
-import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpClient.Builder;
 import io.fabric8.kubernetes.client.http.TlsVersion;
 import io.fabric8.kubernetes.client.internal.okhttp.OkHttpClientImpl.OkHttpResponseImpl;
@@ -83,7 +82,7 @@ public class OkHttpClientBuilderImpl implements Builder {
   }
 
   @Override
-  public HttpClient build() {
+  public OkHttpClientImpl build() {
     OkHttpClient client = builder.build();
     
     if (streaming) {

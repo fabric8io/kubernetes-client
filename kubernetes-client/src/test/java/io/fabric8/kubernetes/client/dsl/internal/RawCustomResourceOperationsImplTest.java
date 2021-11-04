@@ -37,13 +37,11 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -51,13 +49,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
+import static io.fabric8.kubernetes.client.MockHttpClientUtils.buildResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -852,17 +851,6 @@ class RawCustomResourceOperationsImplTest {
       }
       return responses[responses.length - 1].apply(invocation);
     });
-  }
-
-  private HttpResponse<InputStream> buildResponse(int code) {
-    return buildResponse(code, "{\"kind\":\"Status\",\"status\":\"Success\"}");
-  }
-
-  private HttpResponse<InputStream> buildResponse(int code, String body) {
-    HttpResponse<InputStream> response = Mockito.mock(HttpResponse.class, Mockito.CALLS_REAL_METHODS);
-    when(response.code()).thenReturn(code);
-    when(response.body()).thenReturn(new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8)));
-    return response;
   }
 
   private void assertRequestCaptured(int order, String url, String method) throws IOException {

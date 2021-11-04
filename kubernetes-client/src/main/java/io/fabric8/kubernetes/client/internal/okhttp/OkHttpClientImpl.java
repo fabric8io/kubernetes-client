@@ -30,16 +30,16 @@ import okhttp3.ResponseBody;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 
 public class OkHttpClientImpl implements HttpClient {
   
-  final static Map<String, MediaType> MEDIA_TYPES = new HashMap<>();
+  static final Map<String, MediaType> MEDIA_TYPES = new ConcurrentHashMap<>();
   
   public static final MediaType JSON = parseMediaType("application/json");
   public static final MediaType JSON_PATCH = parseMediaType("application/json-patch+json");

@@ -33,7 +33,7 @@ import java.util.function.Consumer;
 public class OkHttpClientFactory implements HttpClient.Factory {
 
   @Override
-  public HttpClient createHttpClient(Config config) {
+  public OkHttpClientImpl createHttpClient(Config config) {
     return createHttpClient(config, builder -> {});
   }
   
@@ -48,7 +48,7 @@ public class OkHttpClientFactory implements HttpClient.Factory {
    * @param additionalConfig a consumer that allows overriding HTTP client properties
    * @return returns an HTTP client
    */
-  public static io.fabric8.kubernetes.client.http.HttpClient createHttpClient(Config config,
+  public static OkHttpClientImpl createHttpClient(Config config,
       final Consumer<OkHttpClient.Builder> additionalConfig) {
     try {
       OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
@@ -75,7 +75,7 @@ public class OkHttpClientFactory implements HttpClient.Factory {
         httpClientBuilder.dispatcher(dispatcher);
       }
 
-      Builder builderWrapper = new OkHttpClientBuilderImpl(httpClientBuilder);
+      OkHttpClientBuilderImpl builderWrapper = new OkHttpClientBuilderImpl(httpClientBuilder);
 
       HttpClientUtils.applyCommonConfiguration(config, builderWrapper);
       

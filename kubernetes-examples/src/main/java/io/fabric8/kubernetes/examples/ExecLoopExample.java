@@ -56,6 +56,7 @@ public class ExecLoopExample {
         watch = client.pods().inNamespace(namespace).withName(podName).redirectingOutput().usingListener(new ExecListener() {
           @Override
           public void onOpen() {
+            System.out.println("Open");
           }
 
           @Override
