@@ -16,34 +16,46 @@
 package io.fabric8.kubernetes.client.server.mock;
 
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.VersionInfo;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnableKubernetesMockClient(crud = true)
-class KubernetesMockServerExtensionTests {
+class KubernetesMockServerTest {
 
-  KubernetesClient client;
+  private KubernetesMockServer server;
+  private KubernetesClient client;
 
-  @Test
-  void testExample() {
-    Assertions.assertNotNull(client);
-    Assertions.assertNull(client.getConfiguration().getOauthToken());
-    Assertions.assertNull(client.getConfiguration().getCurrentContext());
-    Assertions.assertTrue(client.getConfiguration().getContexts().isEmpty());
+  @BeforeEach
+  void setUp() {
+    server = new KubernetesMockServer();
+    server.start();
+    client = server.createClient();
+  }
+
+  @AfterEach
+  void tearDown() {
+    client.close();
+    server.shutdown();
   }
 
   @Test
-  @DisplayName("KubernetesMockServerExtension uses KubernetesMixedDispatcher and provides expectation for GET /version")
-  void testGetKubernetesVersion() {
-    // When
-    final VersionInfo result = client.getKubernetesVersion();
+  @DisplayName("onStart, generates version endpoint")
+  void onStartVersionInfo() {
     // Then
-    assertThat(result)
+    assertThat(client.getKubernetesVersion())
       .hasFieldOrPropertyWithValue("major", "0")
       .hasFieldOrPropertyWithValue("minor", "0");
+  }
+
+  @Test
+  @DisplayName("clearExpectations, removes pre-recorded versionInfo expectation")
+  void clearExpectationsRemovesVersionInfo() {
+    // When
+    server.clearExpectations();
+    // Then
+    assertThat(client.getKubernetesVersion()).isNull();
   }
 }
