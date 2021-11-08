@@ -8,6 +8,7 @@
 
 #### Improvements
 * Fix #3562: Kubernetes Mock Server improvements
+* Fix #3574: support for deserialization of properties that don't match the target field's type
 
 #### Dependency Upgrade
 * Fix #3562: Bump MockWebServer

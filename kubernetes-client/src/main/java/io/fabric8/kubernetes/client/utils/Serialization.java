@@ -37,6 +37,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import io.fabric8.kubernetes.client.utils.serialization.UnmatchedFieldTypeModule;
 import org.yaml.snakeyaml.Yaml;
 
 public class Serialization {
@@ -44,12 +46,15 @@ public class Serialization {
 
   private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
   static {
-    JSON_MAPPER.registerModule(new JavaTimeModule());
+    JSON_MAPPER.registerModules(new JavaTimeModule(), new UnmatchedFieldTypeModule());
   }
 
   private static final ObjectMapper YAML_MAPPER = new ObjectMapper(
     new YAMLFactory().disable(YAMLGenerator.Feature.USE_NATIVE_TYPE_ID)
   );
+  static {
+    YAML_MAPPER.registerModules(new UnmatchedFieldTypeModule());
+  }
 
   private static final String DOCUMENT_DELIMITER = "---";
 
@@ -144,7 +149,7 @@ public class Serialization {
       throw KubernetesClientException.launderThrowable(e);
     }
   }
-  
+
   /**
    * Unmarshals a {@link String}
    * @param str   The {@link String}.
@@ -326,7 +331,7 @@ public class Serialization {
     }
     return JSON_MAPPER.readerFor(KubernetesResource.class).readValue(jsonString);
   }
-  
+
   /**
    * Create a copy of the resource via serialization.
    * @return a deep clone of the resource
