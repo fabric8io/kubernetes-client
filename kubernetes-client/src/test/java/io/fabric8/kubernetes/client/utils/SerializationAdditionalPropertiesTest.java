@@ -13,44 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.utils.serialization;
+package io.fabric8.kubernetes.client.utils;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class UnmatchedFieldTypeModuleTest {
-
-  private ObjectMapper objectMapper;
-
-  @BeforeEach
-  void setUp() {
-    objectMapper = new ObjectMapper();
-    objectMapper.registerModule(new UnmatchedFieldTypeModule());
-  }
+class SerializationAdditionalPropertiesTest {
 
   @Test
-  @DisplayName("readValue, with unknown fields, values are set in additionalProperties map")
-  void readValueWithUnknownFields() throws JsonProcessingException {
+  @DisplayName("unmarshal, with unknown fields, values are set in additionalProperties map")
+  void unmarshalWithUnknownFields() {
     // Given
-    final String json =
+    final String marshalled =
       "{\"kind\": \"ConfigMap\"," +
         "\"apiVersion\": \"v1\"," +
         "\"metadata\":{\"name\":\"the-name\"}," +
         "\"data\":{\"key\":\"value\"}," +
         "\"unknownField\":\"unknownValue\"}";
     // When
-    final KubernetesResource result = objectMapper.readValue(json, KubernetesResource.class);
+    final KubernetesResource result = Serialization.unmarshal(marshalled);
     // Then
     assertThat(result)
       .isInstanceOf(ConfigMap.class)
@@ -60,10 +47,10 @@ class UnmatchedFieldTypeModuleTest {
   }
 
   @Test
-  @DisplayName("readValue, with unmatched type fields, values are set in additionalProperties map")
-  void readValueWithUnmatchedTypeFields() throws JsonProcessingException {
+  @DisplayName("unmarshal, with unmatched type fields, values are set in additionalProperties map")
+  void unmarshalWithUnmatchedTypeFields() {
     // Given
-    final String json =
+    final String marshalled =
       "{\"kind\": \"ConfigMap\"," +
         "\"apiVersion\": \"v1\"," +
         "\"metadata\":{\"name\":\"the-name\"}," +
@@ -71,7 +58,7 @@ class UnmatchedFieldTypeModuleTest {
         "\"unknownField\":\"unknownValue\"," +
         "\"immutable\":\"${immutable}\"}";
     // When
-    final KubernetesResource result = objectMapper.readValue(json, KubernetesResource.class);
+    final KubernetesResource result = Serialization.unmarshal(marshalled);
     // Then
     assertThat(result)
       .isInstanceOf(ConfigMap.class)
@@ -82,17 +69,17 @@ class UnmatchedFieldTypeModuleTest {
   }
 
   @Test
-  @DisplayName("readValue, with unmatched type nested fields, values are set in additionalProperties map")
-  void readValueWithUnmatchedTypeNestedFields() throws JsonProcessingException {
+  @DisplayName("unmarshal, with unmatched type nested fields, values are set in additionalProperties map")
+  void unmarshalWithUnmatchedTypeNestedFields() {
     // Given
-    final String json =
+    final String marshalled =
       "{\"kind\": \"Deployment\"," +
         "\"apiVersion\": \"apps/v1\"," +
         "\"metadata\":{\"name\":\"deployment\", \"annotations\": \"${annotations}\"}," +
         "\"spec\":{\"replicas\":\"${replicas}\",\"paused\":true}," +
         "\"unknownField\":\"unknownValue\"}";
     // When
-    final KubernetesResource result = objectMapper.readValue(json, KubernetesResource.class);
+    final KubernetesResource result = Serialization.unmarshal(marshalled);
     // Then
     assertThat(result)
       .isInstanceOf(Deployment.class)
@@ -106,41 +93,26 @@ class UnmatchedFieldTypeModuleTest {
   }
 
   @Test
-  @DisplayName("readValue, with no anySetter, should throw Exception")
-  void readValueWithNoAnySetterShouldThrowException()  {
-    // Given
-    final String json = "{\"value\": false}";
-    // When
-    final MismatchedInputException result = assertThrows(MismatchedInputException.class, () ->
-      objectMapper.readValue(json, Example.class));
-    // Then
-    assertThat(result).hasMessageStartingWith("Cannot deserialize value of type `int` from Boolean value");
-  }
-
-  @Test
-  @DisplayName("writeValueAsString, with unmatched type fields, values are set in additionalProperties map")
-  void writeValueAsStringWithAdditionalPropertiesOverridingFields() throws JsonProcessingException {
+  @DisplayName("marshal, with unmatched type fields, values are set in additionalProperties map")
+  void marshalWithAdditionalPropertiesOverridingFields() {
     // Given
     final ConfigMap configMap = new ConfigMapBuilder()
-      .withNewMetadata().withName("name").addToAnnotations("key", "ignored").addToLabels("lKey", "value").endMetadata()
+      .withNewMetadata().withName("name").addToAnnotations("key", "value").endMetadata()
       .withImmutable(true)
       .build();
     configMap.getAdditionalProperties().put("unknownField", "unknownValue");
     configMap.getAdditionalProperties().put("immutable", "${immutable}");
     configMap.getMetadata().getAdditionalProperties().put("annotations", "${annotations}");
     // When
-    final String result = objectMapper.writeValueAsString(configMap);
+    final String result = Serialization.asJson(configMap);
     // Then
     assertThat(result).isEqualTo("{" +
       "\"apiVersion\":\"v1\"," +
       "\"kind\":\"ConfigMap\"," +
-      "\"metadata\":{\"labels\":{\"lKey\":\"value\"},\"name\":\"name\",\"annotations\":\"${annotations}\"}," +
+      "\"metadata\":{\"name\":\"name\",\"annotations\":\"${annotations}\"}," +
       "\"immutable\":\"${immutable}\"," +
       "\"unknownField\":\"unknownValue\"" +
       "}");
   }
 
-  private static class Example {
-    public int value;
-  }
 }

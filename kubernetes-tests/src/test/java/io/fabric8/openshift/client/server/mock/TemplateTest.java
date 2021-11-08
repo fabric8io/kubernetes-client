@@ -16,7 +16,6 @@
 package io.fabric8.openshift.client.server.mock;
 
 import io.fabric8.kubernetes.api.model.APIGroupListBuilder;
-import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
@@ -27,7 +26,6 @@ import io.fabric8.kubernetes.api.model.ServicePort;
 import io.fabric8.kubernetes.api.model.ServiceSpec;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.client.utils.IOHelpers;
-import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.openshift.api.model.ParameterBuilder;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateBuilder;
@@ -199,9 +197,9 @@ class TemplateTest {
     assertThat(template)
       .extracting(Template::getObjects).asList()
       .singleElement()
-      .isInstanceOf(GenericKubernetesResource.class)
-      .extracting("additionalProperties.spec.ports").asList().singleElement()
-      .hasFieldOrPropertyWithValue("port", "${PORT}");
+      .isInstanceOf(Service.class)
+      .extracting("spec.ports").asList().singleElement()
+      .hasFieldOrPropertyWithValue("additionalProperties.port", "${PORT}");
   }
 
   protected void assertListIsServiceWithPort8080(KubernetesList list) {
