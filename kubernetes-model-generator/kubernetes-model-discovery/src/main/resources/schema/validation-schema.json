@@ -1436,8 +1436,8 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_discovery_v1_ForZone",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1.ForZone"
+            "$ref": "#/definitions/kubernetes_discovery_v1beta1_ForZone",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1beta1.ForZone"
           }
         }
       },
@@ -1469,14 +1469,14 @@
         },
         "apiVersion": {
           "type": "string",
-          "default": "discovery.k8s.io/v1",
+          "default": "discovery.k8s.io/v1beta1",
           "required": true
         },
         "endpoints": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_discovery_v1_Endpoint",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1.Endpoint"
+            "$ref": "#/definitions/kubernetes_discovery_v1beta1_Endpoint",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1beta1.Endpoint"
           }
         },
         "kind": {
@@ -1491,8 +1491,8 @@
         "ports": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_discovery_v1_EndpointPort",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1.EndpointPort"
+            "$ref": "#/definitions/kubernetes_discovery_v1beta1_EndpointPort",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.discovery.v1beta1.EndpointPort"
           }
         }
       },

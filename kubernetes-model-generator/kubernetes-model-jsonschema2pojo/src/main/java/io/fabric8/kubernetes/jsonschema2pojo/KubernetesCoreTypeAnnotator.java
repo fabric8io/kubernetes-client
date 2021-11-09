@@ -32,7 +32,9 @@ import io.sundr.builder.annotations.Buildable;
 import io.sundr.transform.annotations.TemplateTransformation;
 import io.sundr.transform.annotations.TemplateTransformations;
 import lombok.EqualsAndHashCode;
+import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.Accessors;
 import org.jsonschema2pojo.GenerationConfig;
 import org.jsonschema2pojo.Jackson2Annotator;
 
@@ -73,6 +75,8 @@ public class KubernetesCoreTypeAnnotator extends Jackson2Annotator {
 
     clazz.annotate(ToString.class);
     clazz.annotate(EqualsAndHashCode.class);
+    clazz.annotate(Setter.class);
+    clazz.annotate(Accessors.class).paramArray("prefix").param("_").param("");
     processBuildable(clazz);
 
     final Map<String, JFieldVar> fields = clazz.fields();

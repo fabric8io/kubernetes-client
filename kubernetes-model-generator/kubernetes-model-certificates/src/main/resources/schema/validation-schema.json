@@ -1379,8 +1379,8 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "$ref": "#/definitions/kubernetes_certificates_v1_CertificateSigningRequestCondition",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestCondition"
+            "$ref": "#/definitions/kubernetes_certificates_v1beta1_CertificateSigningRequestCondition",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestCondition"
           }
         }
       },
