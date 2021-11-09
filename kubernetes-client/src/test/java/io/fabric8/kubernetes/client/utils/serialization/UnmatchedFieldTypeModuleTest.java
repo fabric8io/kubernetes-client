@@ -25,9 +25,19 @@ import io.fabric8.kubernetes.api.model.apps.Deployment;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 class UnmatchedFieldTypeModuleTest {
 
@@ -118,7 +128,7 @@ class UnmatchedFieldTypeModuleTest {
   }
 
   @Test
-  @DisplayName("writeValueAsString, with unmatched type fields, values are set in additionalProperties map")
+  @DisplayName("writeValueAsString, with additionalProperties overriding fields, additionalProperties are serialized and fields ignored")
   void writeValueAsStringWithAdditionalPropertiesOverridingFields() throws JsonProcessingException {
     // Given
     final ConfigMap configMap = new ConfigMapBuilder()
@@ -138,6 +148,52 @@ class UnmatchedFieldTypeModuleTest {
       "\"immutable\":\"${immutable}\"," +
       "\"unknownField\":\"unknownValue\"" +
       "}");
+  }
+
+  @Test
+  @DisplayName("writeValueAsString, with additionalProperties overriding fields and enabled log, should log warning")
+  void writeValueAsStringWithAdditionalPropertiesOverridingFieldsShouldLogWarning() throws JsonProcessingException {
+    try (MockedStatic<LoggerFactory> lfMock = mockStatic(LoggerFactory.class)) {
+      // Given
+      final ConfigMap configMap = new ConfigMapBuilder()
+        .withNewMetadata().withName("name").endMetadata()
+        .withImmutable(true)
+        .build();
+      configMap.getAdditionalProperties().put("immutable", "I'll trigger a warning");
+      final Logger mockLogger = mock(Logger.class, RETURNS_DEEP_STUBS);
+      lfMock.when(() -> LoggerFactory.getLogger(any(Class.class))).thenReturn(mockLogger);
+      // When
+      objectMapper.writeValueAsString(configMap);
+      // Then
+      verify(mockLogger, times(1))
+        .warn("Value in field '{}' ignored in favor of value in additionalProperties ({}) for {}",
+          "immutable", "I'll trigger a warning", "io.fabric8.kubernetes.api.model.ConfigMap");
+    }
+  }
+
+  @Test
+  @DisplayName("writeValueAsString, with additionalProperties overriding fields and disabled log, should NOT log warning")
+  void writeValueAsStringWithAdditionalPropertiesOverridingFieldsShouldNotLogWarning() throws JsonProcessingException {
+    try (MockedStatic<LoggerFactory> lfMock = mockStatic(LoggerFactory.class)) {
+      // Given
+      final ObjectMapper om = new ObjectMapper();
+      final UnmatchedFieldTypeModule module = new UnmatchedFieldTypeModule();
+      om.registerModule(module);
+      module.setLogWarnings(false);
+      final ConfigMap configMap = new ConfigMapBuilder()
+        .withNewMetadata().withName("name").endMetadata()
+        .withImmutable(true)
+        .build();
+      configMap.getAdditionalProperties().put("immutable", "I'll trigger a warning");
+      final Logger mockLogger = mock(Logger.class, RETURNS_DEEP_STUBS);
+      lfMock.when(() -> LoggerFactory.getLogger(any(Class.class))).thenReturn(mockLogger);
+      // When
+      om.writeValueAsString(configMap);
+      // Then
+      verify(mockLogger, never())
+        .warn("Value in field '{}' ignored in favor of value in additionalProperties ({}) for {}",
+          "immutable", "I'll trigger a warning", "io.fabric8.kubernetes.api.model.ConfigMap");
+    }
   }
 
   private static class Example {

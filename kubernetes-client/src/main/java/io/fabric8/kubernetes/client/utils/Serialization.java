@@ -44,16 +44,18 @@ import org.yaml.snakeyaml.Yaml;
 public class Serialization {
   private Serialization() { }
 
+  public static final UnmatchedFieldTypeModule UNMATCHED_FIELD_TYPE_MODULE = new UnmatchedFieldTypeModule();
+
   private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
   static {
-    JSON_MAPPER.registerModules(new JavaTimeModule(), new UnmatchedFieldTypeModule());
+    JSON_MAPPER.registerModules(new JavaTimeModule(), UNMATCHED_FIELD_TYPE_MODULE);
   }
 
   private static final ObjectMapper YAML_MAPPER = new ObjectMapper(
     new YAMLFactory().disable(YAMLGenerator.Feature.USE_NATIVE_TYPE_ID)
   );
   static {
-    YAML_MAPPER.registerModules(new UnmatchedFieldTypeModule());
+    YAML_MAPPER.registerModules(UNMATCHED_FIELD_TYPE_MODULE);
   }
 
   private static final String DOCUMENT_DELIMITER = "---";

@@ -19,9 +19,12 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
 import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 /**
  * Variant of {@link BeanPropertyWriter} which prevents property values present in the {@link AnnotatedMember} anyGetter
@@ -36,27 +39,31 @@ import java.util.Optional;
  */
 public class BeanPropertyWriterDelegate extends BeanPropertyWriter {
 
+  private static final Logger logger = LoggerFactory.getLogger(BeanPropertyWriterDelegate.class);
+
   private final BeanPropertyWriter delegate;
   private final AnnotatedMember anyGetter;
+  private final transient Supplier<Boolean> logDuplicateWarning;
 
-  BeanPropertyWriterDelegate(BeanPropertyWriter delegate, AnnotatedMember anyGetter) {
+  BeanPropertyWriterDelegate(BeanPropertyWriter delegate, AnnotatedMember anyGetter, Supplier<Boolean> logDuplicateWarning) {
     super(delegate);
     this.delegate = delegate;
     this.anyGetter = anyGetter;
+    this.logDuplicateWarning = logDuplicateWarning;
   }
 
   @Override
   public void serializeAsField(Object bean, JsonGenerator gen, SerializerProvider prov) throws Exception {
-    if (shouldSerializeProperty(bean)) {
-      delegate.serializeAsField(bean, gen, prov);
-    }
-  }
-
-  private boolean shouldSerializeProperty(Object bean) {
-    return !Optional.ofNullable(anyGetter)
+    final Object valueInAnyGetter = Optional.ofNullable(anyGetter)
       .map(ag -> ag.getValue(bean))
       .map(Map.class::cast)
       .map(m -> m.get(delegate.getName()))
-      .isPresent();
+      .orElse(null);
+    if (valueInAnyGetter == null) {
+      delegate.serializeAsField(bean, gen, prov);
+    } else if (Boolean.TRUE.equals(logDuplicateWarning.get())) {
+      logger.warn("Value in field '{}' ignored in favor of value in additionalProperties ({}) for {}",
+        delegate.getName(), valueInAnyGetter, bean.getClass().getName());
+    }
   }
 }
