@@ -25,9 +25,11 @@ import com.fasterxml.jackson.databind.deser.SettableAnyProperty;
 import com.fasterxml.jackson.databind.deser.SettableBeanProperty;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
+import io.fabric8.kubernetes.internal.KubernetesDeserializer;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.util.function.Supplier;
 
 /**
  * This concrete sub-class encapsulates a {@link SettableBeanProperty} delegate that is always tried first.
@@ -39,11 +41,13 @@ public class SettableBeanPropertyDelegate extends SettableBeanProperty {
 
   private final SettableBeanProperty delegate;
   private final SettableAnyProperty anySetter;
+  private final transient Supplier<Boolean> restrictToTemplates;
 
-  SettableBeanPropertyDelegate(SettableBeanProperty delegate, SettableAnyProperty anySetter) {
+  SettableBeanPropertyDelegate(SettableBeanProperty delegate, SettableAnyProperty anySetter, Supplier<Boolean> restrictToTemplates) {
     super(delegate);
     this.delegate = delegate;
     this.anySetter = anySetter;
+    this.restrictToTemplates = restrictToTemplates;
   }
 
   /**
@@ -51,7 +55,7 @@ public class SettableBeanPropertyDelegate extends SettableBeanProperty {
    */
   @Override
   public SettableBeanProperty withValueDeserializer(JsonDeserializer<?> deser) {
-    return new SettableBeanPropertyDelegate(delegate.withValueDeserializer(deser), anySetter);
+    return new SettableBeanPropertyDelegate(delegate.withValueDeserializer(deser), anySetter, restrictToTemplates);
   }
 
   /**
@@ -59,7 +63,7 @@ public class SettableBeanPropertyDelegate extends SettableBeanProperty {
    */
   @Override
   public SettableBeanProperty withName(PropertyName newName) {
-    return new SettableBeanPropertyDelegate(delegate.withName(newName), anySetter);
+    return new SettableBeanPropertyDelegate(delegate.withName(newName), anySetter, restrictToTemplates);
   }
 
   /**
@@ -67,7 +71,7 @@ public class SettableBeanPropertyDelegate extends SettableBeanProperty {
    */
   @Override
   public SettableBeanProperty withNullProvider(NullValueProvider nva) {
-    return new SettableBeanPropertyDelegate(delegate.withNullProvider(nva), anySetter);
+    return new SettableBeanPropertyDelegate(delegate.withNullProvider(nva), anySetter, restrictToTemplates);
   }
 
   /**
@@ -126,7 +130,7 @@ public class SettableBeanPropertyDelegate extends SettableBeanProperty {
     try {
       delegate.deserializeAndSet(p, ctxt, instance);
     } catch (MismatchedInputException ex) {
-      if (anySetter != null) {
+      if (shouldUseAnySetter()) {
         anySetter.set(instance, delegate.getName(), p.getText());
       } else {
         throw ex;
@@ -161,5 +165,15 @@ public class SettableBeanPropertyDelegate extends SettableBeanProperty {
   @Override
   public Object setAndReturn(Object instance, Object value) throws IOException {
     return delegate.setAndReturn(instance, value);
+  }
+
+  private boolean shouldUseAnySetter() {
+    if (anySetter == null) {
+      return false;
+    }
+    if (Boolean.TRUE.equals(restrictToTemplates.get()) ) {
+      return KubernetesDeserializer.isInTemplate();
+    }
+    return true;
   }
 }

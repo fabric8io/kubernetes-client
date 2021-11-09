@@ -42,11 +42,13 @@ import static org.mockito.Mockito.verify;
 class UnmatchedFieldTypeModuleTest {
 
   private ObjectMapper objectMapper;
+  private UnmatchedFieldTypeModule unmatchedFieldTypeModule;
 
   @BeforeEach
   void setUp() {
     objectMapper = new ObjectMapper();
-    objectMapper.registerModule(new UnmatchedFieldTypeModule());
+    unmatchedFieldTypeModule = new UnmatchedFieldTypeModule(false, false);
+    objectMapper.registerModule(unmatchedFieldTypeModule);
   }
 
   @Test
@@ -128,6 +130,24 @@ class UnmatchedFieldTypeModuleTest {
   }
 
   @Test
+  @DisplayName("readValue, with restrict to templates and unmatched type,  should throw Exception")
+  void readValueWithRestrictToTemplatesAndUnmatchedTypeFields() {
+    // Given
+    unmatchedFieldTypeModule.setRestrictToTemplates(true);
+    final String json =
+      "{\"kind\": \"ConfigMap\"," +
+        "\"apiVersion\": \"v1\"," +
+        "\"metadata\":{\"name\":\"the-name\"}," +
+        "\"data\":{\"key\":\"value\"}," +
+        "\"immutable\":\"${immutable}\"}";
+    // When
+    final MismatchedInputException result = assertThrows(MismatchedInputException.class, () ->
+      objectMapper.readValue(json, KubernetesResource.class));
+    // Then
+    assertThat(result).hasMessageStartingWith("Cannot deserialize value of type `java.lang.Boolean` from String");
+  }
+
+  @Test
   @DisplayName("writeValueAsString, with additionalProperties overriding fields, additionalProperties are serialized and fields ignored")
   void writeValueAsStringWithAdditionalPropertiesOverridingFields() throws JsonProcessingException {
     // Given
@@ -155,6 +175,7 @@ class UnmatchedFieldTypeModuleTest {
   void writeValueAsStringWithAdditionalPropertiesOverridingFieldsShouldLogWarning() throws JsonProcessingException {
     try (MockedStatic<LoggerFactory> lfMock = mockStatic(LoggerFactory.class)) {
       // Given
+      unmatchedFieldTypeModule.setLogWarnings(true);
       final ConfigMap configMap = new ConfigMapBuilder()
         .withNewMetadata().withName("name").endMetadata()
         .withImmutable(true)

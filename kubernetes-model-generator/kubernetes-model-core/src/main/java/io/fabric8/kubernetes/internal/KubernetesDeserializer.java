@@ -44,10 +44,17 @@ import io.fabric8.kubernetes.model.util.Helper;
 
 public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource> {
 
+    private static final String TEMPLATE_CLASS_NAME = "io.fabric8.openshift.api.model.Template";
     private static final String KIND = "kind";
     private static final String API_VERSION = "apiVersion";
 
     private static final Mapping mapping = new Mapping();
+
+    private static final ThreadLocal<Boolean> IN_TEMPLATE = ThreadLocal.withInitial(() -> false);
+
+    public static boolean isInTemplate() {
+        return IN_TEMPLATE.get();
+    }
 
     @Override
     public KubernetesResource deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
@@ -83,7 +90,18 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
             if (resourceType == null) {
               return jp.getCodec().treeToValue(node, GenericKubernetesResource.class);
             } else if (KubernetesResource.class.isAssignableFrom(resourceType)){
-              return jp.getCodec().treeToValue(node, resourceType);
+              boolean inTemplate = false;
+              if (TEMPLATE_CLASS_NAME.equals(resourceType.getName())) {
+                inTemplate = true;
+                IN_TEMPLATE.set(true);
+              }
+              try {
+                return jp.getCodec().treeToValue(node, resourceType);
+              } finally {
+                if (inTemplate) {
+                  IN_TEMPLATE.remove();
+                }
+              }
             }
         }
         return null;

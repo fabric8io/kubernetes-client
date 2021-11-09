@@ -16,6 +16,7 @@
 package io.fabric8.openshift.client.server.mock;
 
 import io.fabric8.kubernetes.api.model.APIGroupListBuilder;
+import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
@@ -200,6 +201,27 @@ class TemplateTest {
       .isInstanceOf(Service.class)
       .extracting("spec.ports").asList().singleElement()
       .hasFieldOrPropertyWithValue("additionalProperties.port", "${PORT}");
+  }
+
+  @Test
+  void shouldGetTemplateWithMultipleObjects() {
+    OpenShiftClient client = new DefaultOpenShiftClient(new OpenShiftConfigBuilder().withDisableApiGroupCheck(true).build());
+    Template template = client.templates().load(getClass().getResourceAsStream("/template-with-multiple-objects.yml")).get();
+    assertThat(template)
+      .extracting(Template::getObjects).asList()
+      .hasSize(3)
+      .satisfies(l -> assertThat(l).first()
+        .isInstanceOf(Service.class)
+        .extracting("spec.ports").asList().singleElement()
+        .hasFieldOrPropertyWithValue("additionalProperties.port", "${PORT}"))
+      .satisfies(l -> assertThat(l).element(1)
+        .isInstanceOf(Service.class)
+        .extracting("spec.ports").asList().singleElement()
+        .hasFieldOrPropertyWithValue("additionalProperties.port", "${BAZ_PORT}"))
+      .satisfies(l -> assertThat(l).element(2)
+        .isInstanceOf(ConfigMap.class)
+        .hasFieldOrPropertyWithValue("metadata.name", "qux")
+        .hasFieldOrPropertyWithValue("additionalProperties.immutable", "${IMMUTABLE}"));
   }
 
   protected void assertListIsServiceWithPort8080(KubernetesList list) {

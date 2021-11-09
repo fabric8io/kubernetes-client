@@ -46,7 +46,7 @@ class SettableBeanPropertyDelegateTest {
   void setUp() {
     delegateMock = mock(SettableBeanProperty.class, RETURNS_DEEP_STUBS);
     anySetterMock = mock(SettableAnyProperty.class);
-    settableBeanPropertyDelegate = new SettableBeanPropertyDelegate(delegateMock, anySetterMock);
+    settableBeanPropertyDelegate = new SettableBeanPropertyDelegate(delegateMock, anySetterMock, () -> false);
   }
 
   @Test
