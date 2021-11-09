@@ -37,7 +37,14 @@ import java.util.stream.Collectors;
  */
 public class UnmatchedFieldTypeModule extends SimpleModule {
 
+  private boolean logWarnings;
+
   public UnmatchedFieldTypeModule() {
+    this(true);
+  }
+
+  public UnmatchedFieldTypeModule(boolean logWarnings) {
+    this.logWarnings = logWarnings;
     setDeserializerModifier(new BeanDeserializerModifier() {
 
       @Override
@@ -52,9 +59,23 @@ public class UnmatchedFieldTypeModule extends SimpleModule {
       @Override
       public BeanSerializerBuilder updateBuilder(SerializationConfig config, BeanDescription beanDesc, BeanSerializerBuilder builder) {
         builder.setProperties(builder.getProperties().stream().map(p ->
-          new BeanPropertyWriterDelegate(p, builder.getBeanDescription().findAnyGetter())).collect(Collectors.toList()));
+          new BeanPropertyWriterDelegate(p, builder.getBeanDescription().findAnyGetter(), UnmatchedFieldTypeModule.this::isLogWarnings))
+          .collect(Collectors.toList()));
         return builder;
       }
     });
+  }
+
+  boolean isLogWarnings() {
+    return logWarnings;
+  }
+
+  /**
+   * Set if warnings should be logged for ambiguous serializer and deserializer situations.
+   *
+   * @param logWarnings if true, warnings will be logged.
+   */
+  public void setLogWarnings(boolean logWarnings) {
+    this.logWarnings = logWarnings;
   }
 }
