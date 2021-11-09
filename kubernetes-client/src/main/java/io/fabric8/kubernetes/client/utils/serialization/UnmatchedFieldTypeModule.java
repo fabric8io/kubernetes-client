@@ -38,19 +38,21 @@ import java.util.stream.Collectors;
 public class UnmatchedFieldTypeModule extends SimpleModule {
 
   private boolean logWarnings;
+  private boolean restrictToTemplates;
 
   public UnmatchedFieldTypeModule() {
-    this(true);
+    this(true, true);
   }
 
-  public UnmatchedFieldTypeModule(boolean logWarnings) {
+  public UnmatchedFieldTypeModule(boolean logWarnings, boolean restrictToTemplates) {
     this.logWarnings = logWarnings;
+    this.restrictToTemplates = restrictToTemplates;
     setDeserializerModifier(new BeanDeserializerModifier() {
 
       @Override
       public BeanDeserializerBuilder updateBuilder(DeserializationConfig config, BeanDescription beanDesc, BeanDeserializerBuilder builder) {
         builder.getProperties().forEachRemaining(p ->
-          builder.addOrReplaceProperty(new SettableBeanPropertyDelegate(p, builder.getAnySetter()) {
+          builder.addOrReplaceProperty(new SettableBeanPropertyDelegate(p, builder.getAnySetter(), UnmatchedFieldTypeModule.this::isRestrictToTemplates) {
           }, true));
         return builder;
       }
@@ -77,5 +79,18 @@ public class UnmatchedFieldTypeModule extends SimpleModule {
    */
   public void setLogWarnings(boolean logWarnings) {
     this.logWarnings = logWarnings;
+  }
+
+  boolean isRestrictToTemplates() {
+    return restrictToTemplates;
+  }
+
+  /**
+   * Sets if the DeserializerModifier should only be applied to Templates or object trees contained in Templates.
+   *
+   * @param restrictToTemplates if true, the DeserializerModifier will only be applicable for Templates.
+   */
+  public void setRestrictToTemplates(boolean restrictToTemplates) {
+    this.restrictToTemplates = restrictToTemplates;
   }
 }

@@ -15,16 +15,26 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
+import io.fabric8.kubernetes.client.KubernetesClientException;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class SerializationAdditionalPropertiesTest {
+
+  @AfterEach
+  void tearDown() {
+    // Revert to initial state
+    Serialization.UNMATCHED_FIELD_TYPE_MODULE.setRestrictToTemplates(true);
+  }
 
   @Test
   @DisplayName("unmarshal, with unknown fields, values are set in additionalProperties map")
@@ -47,9 +57,30 @@ class SerializationAdditionalPropertiesTest {
   }
 
   @Test
-  @DisplayName("unmarshal, with unmatched type fields, values are set in additionalProperties map")
+  @DisplayName("unmarshal, with unmatched type fields, should throw Exception")
+  void unmarshalWithUnmatchedTypeFieldsAndDefaults() {
+    // Given
+    final String marshalled =
+      "{\"kind\": \"ConfigMap\"," +
+        "\"apiVersion\": \"v1\"," +
+        "\"metadata\":{\"name\":\"the-name\"}," +
+        "\"data\":{\"key\":\"value\"}," +
+        "\"immutable\":\"${immutable}\"}";
+    // When
+    final KubernetesClientException result = assertThrows(KubernetesClientException.class, () ->
+      Serialization.unmarshal(marshalled));
+    // Then
+    assertThat(result)
+      .getCause()
+      .isInstanceOf(InvalidFormatException.class)
+      .hasMessageStartingWith("Cannot deserialize value of type `java.lang.Boolean` from String \"${immutable}\"");
+  }
+
+  @Test
+  @DisplayName("unmarshal, with unmatched type fields and unrestricted, values are set in additionalProperties map")
   void unmarshalWithUnmatchedTypeFields() {
     // Given
+    Serialization.UNMATCHED_FIELD_TYPE_MODULE.setRestrictToTemplates(false);
     final String marshalled =
       "{\"kind\": \"ConfigMap\"," +
         "\"apiVersion\": \"v1\"," +
@@ -69,9 +100,10 @@ class SerializationAdditionalPropertiesTest {
   }
 
   @Test
-  @DisplayName("unmarshal, with unmatched type nested fields, values are set in additionalProperties map")
+  @DisplayName("unmarshal, with unmatched type nested fields and unrestricted, values are set in additionalProperties map")
   void unmarshalWithUnmatchedTypeNestedFields() {
     // Given
+    Serialization.UNMATCHED_FIELD_TYPE_MODULE.setRestrictToTemplates(false);
     final String marshalled =
       "{\"kind\": \"Deployment\"," +
         "\"apiVersion\": \"apps/v1\"," +
