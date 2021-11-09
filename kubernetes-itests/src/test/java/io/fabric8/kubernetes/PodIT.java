@@ -45,21 +45,17 @@ import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static junit.framework.TestCase.assertNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -67,7 +63,6 @@ import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 @RunWith(ArquillianConditionalRunner.class)
 @RequiresKubernetes
@@ -121,7 +116,7 @@ public class PodIT {
   }
 
   @Test
-  public void evict() throws InterruptedException {
+  public void evict() {
     Pod pod1 = client.pods().inNamespace(session.getNamespace()).withName("pod-standard").get();
     String pdbScope = pod1.getMetadata().getLabels().get("pdb-scope");
     assertNotNull("pdb-scope label is null. is pod1 misconfigured?", pdbScope);
@@ -260,12 +255,17 @@ public class PodIT {
     final Path tmpFile = Files.createTempFile("PodIT", "toBeUploaded");
     Files.write(tmpFile, Arrays.asList("I'm uploaded"));
 
+    assertUploaded(pod1, tmpFile, "/tmp/toBeUploaded");
+    assertUploaded(pod1, tmpFile, "/tmp/001_special_!@#\\$^&(.mp4");
+  }
+
+  private void assertUploaded(Pod pod1, final Path tmpFile, String filename) throws IOException {
     PodResource<Pod> podResource = client.pods().inNamespace(session.getNamespace())
         .withName(pod1.getMetadata().getName());
 
-    podResource.file("/tmp/toBeUploaded").upload(tmpFile);
+    podResource.file(filename).upload(tmpFile);
 
-    try (InputStream checkIs = podResource.file("/tmp/toBeUploaded").read();
+    try (InputStream checkIs = podResource.file(filename).read();
         BufferedReader br = new BufferedReader(new InputStreamReader(checkIs, StandardCharsets.UTF_8))) {
       String result = br.lines().collect(Collectors.joining(System.lineSeparator()));
       assertEquals("I'm uploaded", result);

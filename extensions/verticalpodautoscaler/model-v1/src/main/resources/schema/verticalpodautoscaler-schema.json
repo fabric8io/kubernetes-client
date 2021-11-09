@@ -1,0 +1,433 @@
+{
+  "id": "http://fabric8.io/autoscaler/VerticalPodAutoscalerSchema#",
+  "$schema": "http://json-schema.org/draft-05/schema#",
+  "definitions": {
+    "k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_ContainerResourcePolicy": {
+      "type": "object",
+      "properties": {
+        "containerName": {
+          "type": "string"
+        },
+        "controlledResources": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "existingJavaType": "java.util.List\u003cString\u003e"
+          }
+        },
+        "controlledValues": {
+          "type": "string",
+          "existingJavaType": "String"
+        },
+        "maxAllowed": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,io.fabric8.kubernetes.api.model.Quantity\u003e"
+        },
+        "minAllowed": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,io.fabric8.kubernetes.api.model.Quantity\u003e"
+        },
+        "mode": {
+          "type": "string",
+          "existingJavaType": "String"
+        }
+      },
+      "javaType": "io.fabric8.verticalpodautoscaler.api.model.v1.ContainerResourcePolicy",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_HistogramCheckpoint": {
+      "type": "object",
+      "properties": {
+        "bucketWeights": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cInteger,Long\u003e"
+        },
+        "referenceTimestamp": {
+          "existingJavaType": "java.lang.String"
+        },
+        "totalWeight": {
+          "type": "float"
+        }
+      },
+      "javaType": "io.fabric8.verticalpodautoscaler.api.model.v1.HistogramCheckpoint",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_PodResourcePolicy": {
+      "type": "object",
+      "properties": {
+        "containerPolicies": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_ContainerResourcePolicy",
+            "existingJavaType": "io.fabric8.verticalpodautoscaler.api.model.v1.ContainerResourcePolicy"
+          }
+        }
+      },
+      "javaType": "io.fabric8.verticalpodautoscaler.api.model.v1.PodResourcePolicy",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_PodUpdatePolicy": {
+      "type": "object",
+      "properties": {
+        "updateMode": {
+          "type": "string",
+          "existingJavaType": "String"
+        }
+      },
+      "javaType": "io.fabric8.verticalpodautoscaler.api.model.v1.PodUpdatePolicy",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_RecommendedContainerResources": {
+      "type": "object",
+      "properties": {
+        "containerName": {
+          "type": "string"
+        },
+        "lowerBound": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,io.fabric8.kubernetes.api.model.Quantity\u003e"
+        },
+        "target": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,io.fabric8.kubernetes.api.model.Quantity\u003e"
+        },
+        "uncappedTarget": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,io.fabric8.kubernetes.api.model.Quantity\u003e"
+        },
+        "upperBound": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,io.fabric8.kubernetes.api.model.Quantity\u003e"
+        }
+      },
+      "javaType": "io.fabric8.verticalpodautoscaler.api.model.v1.RecommendedContainerResources",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_RecommendedPodResources": {
+      "type": "object",
+      "properties": {
+        "containerRecommendations": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_RecommendedContainerResources",
+            "existingJavaType": "io.fabric8.verticalpodautoscaler.api.model.v1.RecommendedContainerResources"
+          }
+        }
+      },
+      "javaType": "io.fabric8.verticalpodautoscaler.api.model.v1.RecommendedPodResources",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_VerticalPodAutoscaler": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "autoscaling.k8s.io/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "VerticalPodAutoscaler",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_VerticalPodAutoscalerSpec",
+          "existingJavaType": "io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscalerSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_VerticalPodAutoscalerStatus",
+          "existingJavaType": "io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscalerStatus"
+        }
+      },
+      "javaType": "io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscaler",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_VerticalPodAutoscalerCheckpoint": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "autoscaling.k8s.io/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "VerticalPodAutoscalerCheckpoint",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_VerticalPodAutoscalerCheckpointSpec",
+          "existingJavaType": "io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscalerCheckpointSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_VerticalPodAutoscalerCheckpointStatus",
+          "existingJavaType": "io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscalerCheckpointStatus"
+        }
+      },
+      "javaType": "io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscalerCheckpoint",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_VerticalPodAutoscalerCheckpointList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "autoscaling.k8s.io/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_VerticalPodAutoscalerCheckpoint",
+            "existingJavaType": "io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscalerCheckpoint"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "VerticalPodAutoscalerCheckpointList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscalerCheckpointList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscalerCheckpoint\u003e"
+      ]
+    },
+    "k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_VerticalPodAutoscalerCheckpointSpec": {
+      "type": "object",
+      "properties": {
+        "containerName": {
+          "type": "string"
+        },
+        "vpaObjectName": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscalerCheckpointSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_VerticalPodAutoscalerCheckpointStatus": {
+      "type": "object",
+      "properties": {
+        "cpuHistogram": {
+          "$ref": "#/definitions/k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_HistogramCheckpoint",
+          "existingJavaType": "io.fabric8.verticalpodautoscaler.api.model.v1.HistogramCheckpoint"
+        },
+        "firstSampleStart": {
+          "existingJavaType": "java.lang.String"
+        },
+        "lastSampleStart": {
+          "existingJavaType": "java.lang.String"
+        },
+        "lastUpdateTime": {
+          "existingJavaType": "java.lang.String"
+        },
+        "memoryHistogram": {
+          "$ref": "#/definitions/k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_HistogramCheckpoint",
+          "existingJavaType": "io.fabric8.verticalpodautoscaler.api.model.v1.HistogramCheckpoint"
+        },
+        "totalSamplesCount": {
+          "type": "integer"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscalerCheckpointStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_VerticalPodAutoscalerCondition": {
+      "type": "object",
+      "properties": {
+        "lastTransitionTime": {
+          "existingJavaType": "java.lang.String"
+        },
+        "message": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscalerCondition",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_VerticalPodAutoscalerList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "autoscaling.k8s.io/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_VerticalPodAutoscaler",
+            "existingJavaType": "io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscaler"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "VerticalPodAutoscalerList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscalerList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscaler\u003e"
+      ]
+    },
+    "k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_VerticalPodAutoscalerSpec": {
+      "type": "object",
+      "properties": {
+        "resourcePolicy": {
+          "$ref": "#/definitions/k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_PodResourcePolicy",
+          "existingJavaType": "io.fabric8.verticalpodautoscaler.api.model.v1.PodResourcePolicy"
+        },
+        "targetRef": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.autoscaling.v1.CrossVersionObjectReference"
+        },
+        "updatePolicy": {
+          "$ref": "#/definitions/k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_PodUpdatePolicy",
+          "existingJavaType": "io.fabric8.verticalpodautoscaler.api.model.v1.PodUpdatePolicy"
+        }
+      },
+      "javaType": "io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscalerSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_VerticalPodAutoscalerStatus": {
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_VerticalPodAutoscalerCondition",
+            "existingJavaType": "io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscalerCondition"
+          }
+        },
+        "recommendation": {
+          "$ref": "#/definitions/k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_RecommendedPodResources",
+          "existingJavaType": "io.fabric8.verticalpodautoscaler.api.model.v1.RecommendedPodResources"
+        }
+      },
+      "javaType": "io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscalerStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_ContainerResourcePolicy": {
+      "$ref": "#/definitions/k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_ContainerResourcePolicy",
+      "existingJavaType": "io.fabric8.verticalpodautoscaler.api.model.v1.ContainerResourcePolicy"
+    },
+    "k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_HistogramCheckpoint": {
+      "$ref": "#/definitions/k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_HistogramCheckpoint",
+      "existingJavaType": "io.fabric8.verticalpodautoscaler.api.model.v1.HistogramCheckpoint"
+    },
+    "k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_PodResourcePolicy": {
+      "$ref": "#/definitions/k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_PodResourcePolicy",
+      "existingJavaType": "io.fabric8.verticalpodautoscaler.api.model.v1.PodResourcePolicy"
+    },
+    "k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_PodUpdatePolicy": {
+      "$ref": "#/definitions/k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_PodUpdatePolicy",
+      "existingJavaType": "io.fabric8.verticalpodautoscaler.api.model.v1.PodUpdatePolicy"
+    },
+    "k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_RecommendedContainerResources": {
+      "$ref": "#/definitions/k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_RecommendedContainerResources",
+      "existingJavaType": "io.fabric8.verticalpodautoscaler.api.model.v1.RecommendedContainerResources"
+    },
+    "k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_RecommendedPodResources": {
+      "$ref": "#/definitions/k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_RecommendedPodResources",
+      "existingJavaType": "io.fabric8.verticalpodautoscaler.api.model.v1.RecommendedPodResources"
+    },
+    "k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_VerticalPodAutoscaler": {
+      "$ref": "#/definitions/k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_VerticalPodAutoscaler",
+      "existingJavaType": "io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscaler"
+    },
+    "k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_VerticalPodAutoscalerCheckpoint": {
+      "$ref": "#/definitions/k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_VerticalPodAutoscalerCheckpoint",
+      "existingJavaType": "io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscalerCheckpoint"
+    },
+    "k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_VerticalPodAutoscalerCheckpointList": {
+      "$ref": "#/definitions/k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_VerticalPodAutoscalerCheckpointList",
+      "existingJavaType": "io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscalerCheckpointList"
+    },
+    "k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_VerticalPodAutoscalerCheckpointSpec": {
+      "$ref": "#/definitions/k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_VerticalPodAutoscalerCheckpointSpec",
+      "existingJavaType": "io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscalerCheckpointSpec"
+    },
+    "k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_VerticalPodAutoscalerCheckpointStatus": {
+      "$ref": "#/definitions/k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_VerticalPodAutoscalerCheckpointStatus",
+      "existingJavaType": "io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscalerCheckpointStatus"
+    },
+    "k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_VerticalPodAutoscalerCondition": {
+      "$ref": "#/definitions/k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_VerticalPodAutoscalerCondition",
+      "existingJavaType": "io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscalerCondition"
+    },
+    "k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_VerticalPodAutoscalerList": {
+      "$ref": "#/definitions/k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_VerticalPodAutoscalerList",
+      "existingJavaType": "io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscalerList"
+    },
+    "k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_VerticalPodAutoscalerSpec": {
+      "$ref": "#/definitions/k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_VerticalPodAutoscalerSpec",
+      "existingJavaType": "io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscalerSpec"
+    },
+    "k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_VerticalPodAutoscalerStatus": {
+      "$ref": "#/definitions/k8s_io_autoscaler_vertical-pod-autoscaler_pkg_apis_autoscaling_k8s_io_v1_VerticalPodAutoscalerStatus",
+      "existingJavaType": "io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscalerStatus"
+    }
+  },
+  "additionalProperties": false
+}

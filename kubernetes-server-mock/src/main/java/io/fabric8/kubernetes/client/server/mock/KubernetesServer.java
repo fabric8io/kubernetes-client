@@ -18,6 +18,8 @@ package io.fabric8.kubernetes.client.server.mock;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.mockwebserver.Context;
+import io.fabric8.mockwebserver.ServerRequest;
+import io.fabric8.mockwebserver.ServerResponse;
 import io.fabric8.mockwebserver.dsl.MockServerExpectation;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
@@ -27,19 +29,21 @@ import java.net.InetAddress;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Queue;
 
 public class KubernetesServer extends ExternalResource {
 
   private KubernetesMockServer mock;
   private NamespacedKubernetesClient client;
-  private boolean https;
+  private final boolean https;
   // In this mode the mock web server will store, read, update and delete
   // kubernetes resources using an in memory map and will appear as a real api
   // server.
-  private boolean crudMode;
+  private final boolean crudMode;
   private final InetAddress address;
-  private int port;
-  private List<CustomResourceDefinitionContext> crdContextList;
+  private final int port;
+  private final List<CustomResourceDefinitionContext> crdContextList;
 
   public KubernetesServer() {
     this(true);
@@ -65,14 +69,17 @@ public class KubernetesServer extends ExternalResource {
     this.crdContextList = crdContextList;
   }
 
+  @Override
   public void before() {
+    final Map<ServerRequest, Queue<ServerResponse>> responses = new HashMap<>();
     mock = crudMode
-      ? new KubernetesMockServer(new Context(), new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(crdContextList), https)
+      ? new KubernetesMockServer(new Context(), new MockWebServer(), responses, new KubernetesMixedDispatcher(responses, crdContextList), https)
       : new KubernetesMockServer(https);
     mock.init(address, port);
     client = mock.createClient();
   }
 
+  @Override
   public void after() {
     mock.destroy();
     client.close();
@@ -103,16 +110,7 @@ public class KubernetesServer extends ExternalResource {
     expect().withPath(path).andReturn(code, body).always();
   }
 
-  public MockWebServer getMockServer() {
-    return mock.getServer();
-  }
-
   public RecordedRequest getLastRequest() throws InterruptedException {
-    int count = mock.getServer().getRequestCount();
-    RecordedRequest request = null;
-    while (count-- > 0) {
-      request = mock.getServer().takeRequest();
-    }
-    return request;
+    return mock.getLastRequest();
   }
 }

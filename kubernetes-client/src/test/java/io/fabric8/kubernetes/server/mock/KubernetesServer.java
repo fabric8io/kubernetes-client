@@ -17,7 +17,6 @@ package io.fabric8.kubernetes.server.mock;
 
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.mockwebserver.dsl.MockServerExpectation;
-import okhttp3.mockwebserver.MockWebServer;
 import org.junit.rules.ExternalResource;
 
 @Deprecated
@@ -25,7 +24,7 @@ import org.junit.rules.ExternalResource;
 public class KubernetesServer extends ExternalResource {
   private KubernetesMockServer mock;
   private NamespacedKubernetesClient client;
-  private boolean https;
+  private final boolean https;
 
   public KubernetesServer() {
     this(true);
@@ -69,9 +68,5 @@ public class KubernetesServer extends ExternalResource {
   @Deprecated
   public void expectAndReturnAsString(String method, String path, int code, String body) {
     expect().withPath(path).andReturn(code, body).always();
-  }
-
-  public MockWebServer getMockServer() {
-    return mock.getServer();
   }
 }

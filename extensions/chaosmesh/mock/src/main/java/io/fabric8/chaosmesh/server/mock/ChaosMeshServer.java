@@ -16,13 +16,17 @@
 package io.fabric8.chaosmesh.server.mock;
 
 import io.fabric8.chaosmesh.client.ChaosMeshClient;
-import io.fabric8.kubernetes.client.server.mock.KubernetesCrudDispatcher;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMixedDispatcher;
 import io.fabric8.mockwebserver.Context;
+import io.fabric8.mockwebserver.ServerRequest;
+import io.fabric8.mockwebserver.ServerResponse;
 import io.fabric8.mockwebserver.dsl.MockServerExpectation;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.rules.ExternalResource;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Queue;
 
 public class ChaosMeshServer extends ExternalResource {
 
@@ -47,8 +51,9 @@ public class ChaosMeshServer extends ExternalResource {
 
   @Override
   public void before() {
+    final Map<ServerRequest, Queue<ServerResponse>> responses = new HashMap<>();
     mock = crudMode
-      ? new ChaosMeshMockServer(new Context(), new MockWebServer(), new HashMap<>(), new KubernetesCrudDispatcher(), true)
+      ? new ChaosMeshMockServer(new Context(), new MockWebServer(), responses, new KubernetesMixedDispatcher(responses), true)
       : new ChaosMeshMockServer(https);
     mock.init();
     client = mock.createChaosMeshClient();

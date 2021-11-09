@@ -4,12 +4,17 @@
 
 #### Bugs
 * Fix #3538: Update Plural rule to work with Prometheus
+* Fix #3408: quote pod upload file paths to support special chars
+* Fix #3561: ensure okhttp resources are closed
 
 #### Improvements
+* Fix #3562: Kubernetes Mock Server improvements
 
 #### Dependency Upgrade
+* Fix #3562: Bump MockWebServer
 
 #### New Features
+* Fix #3430: Support Vertical Pod Autoscaler
 
 #### _**Note**_: Breaking changes in the API
 

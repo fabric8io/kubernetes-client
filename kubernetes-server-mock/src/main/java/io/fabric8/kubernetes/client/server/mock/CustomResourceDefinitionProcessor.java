@@ -30,7 +30,7 @@ public class CustomResourceDefinitionProcessor {
   private static final String V1BETA1_PATH = "/apis/apiextensions.k8s.io/v1beta1/customresourcedefinitions";
   private static final String V1_PATH = "/apis/apiextensions.k8s.io/v1/customresourcedefinitions";
 
-  private KubernetesAttributesExtractor extractor;
+  private final KubernetesAttributesExtractor extractor;
 
   public CustomResourceDefinitionProcessor(KubernetesAttributesExtractor extractor) {
     this.extractor = extractor;

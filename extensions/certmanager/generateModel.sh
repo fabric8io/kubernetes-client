@@ -15,7 +15,6 @@
 #
 
 declare -a modules=("generator-v1alpha2" "generator-v1alpha3" "generator-v1beta1" "generator-v1")
-)
 
 for module in ${modules[*]}
 do

@@ -15,7 +15,7 @@
  */
 package io.fabric8.servicecatalog.client.mock;
 
-import io.fabric8.kubernetes.client.server.mock.KubernetesCrudDispatcher;
+import io.fabric8.kubernetes.client.server.mock.KubernetesMixedDispatcher;
 import io.fabric8.mockwebserver.Context;
 import io.fabric8.mockwebserver.ServerRequest;
 import io.fabric8.mockwebserver.ServerResponse;
@@ -28,6 +28,7 @@ import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.*;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Queue;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -45,11 +46,12 @@ class ServiceCatalogCrudTest {
   public ServiceCatalogClient client = null;
   @BeforeEach
   void setUp(){
+    final Map<ServerRequest, Queue<ServerResponse>> responses = new HashMap<>();
     server =  new ServiceCatalogMockServer(
       new Context(),
       new MockWebServer(),
-      new HashMap<ServerRequest, Queue<ServerResponse>>(),
-      new KubernetesCrudDispatcher(),
+      responses,
+      new KubernetesMixedDispatcher(responses),
       true
     );
     client = server.createServiceCatalog();

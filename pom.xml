@@ -85,7 +85,7 @@
     <okio.version>1.15.0</okio.version>
     <okio.bundle.version>1.15.0_1</okio.bundle.version>
     <jackson.version>2.13.0</jackson.version>
-    <mockwebserver.version>0.1.8</mockwebserver.version>
+    <mockwebserver.version>0.2.2</mockwebserver.version>
 
     <!-- API versions -->
     <jsr305.version>3.0.2</jsr305.version>
@@ -93,7 +93,7 @@
     <!-- Testing versions -->
     <assertj.core.version>3.21.0</assertj.core.version>
     <arquillian.core.version>1.2.0.Final</arquillian.core.version>
-    <awaitility.version>4.1.0</awaitility.version>
+    <awaitility.version>4.1.1</awaitility.version>
 
     <retrofit.bundle.version>2.5.0_1</retrofit.bundle.version>
     <conscrypt-openjdk-uber.version>1.4.2</conscrypt-openjdk-uber.version>

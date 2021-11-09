@@ -21,15 +21,15 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 @EnableKubernetesMockClient(crud = true)
-public class KubernetesMockServerExtensionStaticTests {
+class KubernetesMockServerExtensionStaticTests {
 
-	static KubernetesClient client;
+  static KubernetesClient client;
 
-	@Test
-	void testExample() {
-		Assertions.assertNotNull(client);
+  @Test
+  void testExample() {
+    Assertions.assertNotNull(client);
     Assertions.assertNull(client.getConfiguration().getOauthToken());
     Assertions.assertNull(client.getConfiguration().getCurrentContext());
     Assertions.assertTrue(client.getConfiguration().getContexts().isEmpty());
-	}
+  }
 }
