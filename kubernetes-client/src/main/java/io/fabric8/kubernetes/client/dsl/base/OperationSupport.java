@@ -630,12 +630,16 @@ public class OperationSupport {
       statusMessage = "No response";
     } else { 
       try {
-        Status status = JSON_MAPPER.readValue(response.bodyString(), Status.class);
-        if (status.getCode() == null) {
-          status = new StatusBuilder(status).withCode(statusCode).build();
+        String bodyString = response.bodyString();
+        if (Utils.isNotNullOrEmpty(bodyString)) {
+          Status status = JSON_MAPPER.readValue(bodyString, Status.class);
+          if (status.getCode() == null) {
+            status = new StatusBuilder(status).withCode(statusCode).build();
+          }
+          return status;
         }
-        return status;
       } catch (IOException e) {
+        // ignored
       }
       if (response.message() != null) {
         statusMessage = response.message();
