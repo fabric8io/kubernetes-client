@@ -60,14 +60,47 @@ public class Serialization {
 
   private static final String DOCUMENT_DELIMITER = "---";
 
+  /**
+   * {@link ObjectMapper} singleton instance used internally by the Kubernetes client.
+   *
+   * <p> The ObjectMapper has an {@link UnmatchedFieldTypeModule} module registered. This module allows the client
+   * to work with Resources that contain properties that don't match the target field type. This is especially useful
+   * and necessary to work with OpenShift Templates.
+   *
+   * <p> n.b. the use of this module gives precedence to properties present in the additionalProperties Map present
+   * in most KubernetesResource instances. If a property is both defined in the Map and in the original field, the
+   * one from the additionalProperties Map will be serialized.
+   */
   public static ObjectMapper jsonMapper() {
     return JSON_MAPPER;
   }
 
+  /**
+   * {@link ObjectMapper} singleton instance used internally by the Kubernetes client.
+   *
+   * <p> The ObjectMapper has an {@link UnmatchedFieldTypeModule} module registered. This module allows the client
+   * to work with Resources that contain properties that don't match the target field type. This is especially useful
+   * and necessary to work with OpenShift Templates.
+   *
+   * <p> n.b. the use of this module gives precedence to properties present in the additionalProperties Map present
+   * in most KubernetesResource instances. If a property is both defined in the Map and in the original field, the
+   * one from the additionalProperties Map will be serialized.
+   */
   public static ObjectMapper yamlMapper() {
     return YAML_MAPPER;
   }
 
+  /**
+   * Returns a JSON representation of the given object.
+   *
+   * <p> If the provided object contains a JsonAnyGetter annotated method with a Map that contains an entry that
+   * overrides a field of the provided object, the Map entry will take precedence upon serialization. Properties won't
+   * be duplicated.
+   *
+   * @param object the object to serialize.
+   * @param <T> the type of the object being serialized.
+   * @return a String containing a JSON representation of the provided object.
+   */
   public static <T> String asJson(T object) {
     try {
       return JSON_MAPPER.writeValueAsString(object);
@@ -76,6 +109,17 @@ public class Serialization {
     }
   }
 
+  /**
+   * Returns a YAML representation of the given object.
+   *
+   * <p> If the provided object contains a JsonAnyGetter annotated method with a Map that contains an entry that
+   * overrides a field of the provided object, the Map entry will take precedence upon serialization. Properties won't
+   * be duplicated.
+   *
+   * @param object the object to serialize.
+   * @param <T> the type of the object being serialized.
+   * @return a String containing a JSON representation of the provided object.
+   */
   public static <T> String asYaml(T object) {
     try {
       return YAML_MAPPER.writeValueAsString(object);

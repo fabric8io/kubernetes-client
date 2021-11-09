@@ -17,7 +17,10 @@
 * Fix #3430: Support Vertical Pod Autoscaler
 
 #### _**Note**_: Breaking changes in the API
-
+##### Tools Changes:
+- Serialization: Those KubernetesResources that include entries in the additionalProperties Map that override a field
+  of the resource instance, will no longer be duplicated. The values present in the additionalProperties Map take
+  precedence.
 
 ### 5.9.0 (2021-10-14)
 
