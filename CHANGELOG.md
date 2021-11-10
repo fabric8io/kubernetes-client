@@ -8,7 +8,10 @@
 
 #### Improvements
 * Fix #3562: Kubernetes Mock Server improvements
+* Fix #3406: Add support for approve/deny CertificateSigningRequests
+* Fix #3460: support for deserializing templates with non-string params
 * Fix #3574: support for deserialization of properties that don't match the target field's type
+* Fix #3511: Improve selectors support in OperationContext
 
 #### Dependency Upgrade
 * Fix #3562: Bump MockWebServer
@@ -34,6 +37,7 @@
 * Fix #3448 added methods for getting specific version information - `KubernetesClient.getKubernetesVersion`, `OpenShiftClient.getOpenShiftV3Version`, and `OpenShiftClient.getOpenShiftV3Version`
 * Fix #3404 supporting generic resources in resource/resourceList with minimal metadata, as well as a new entry point `KubernetesClient.genericKubernetesResources(String apiVersion, String kind)`
 * Fix #3390: Make mock server support JSON_MERGE_PATCH
+* Fix #2171: Support BOOKMARK (Watcher) events
 
 #### New Features
 * Fix #3294: Support fetching APIGroupList
