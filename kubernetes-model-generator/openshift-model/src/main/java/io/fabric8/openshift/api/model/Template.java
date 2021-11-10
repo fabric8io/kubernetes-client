@@ -24,18 +24,19 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.HasMetadataComparator;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.api.model.HasMetadataComparator;
+import io.fabric8.kubernetes.model.annotation.Generated;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.transform.annotations.TemplateTransformation;
 import io.sundr.transform.annotations.TemplateTransformations;
 import lombok.EqualsAndHashCode;
+import lombok.Setter;
 import lombok.ToString;
-
-import io.fabric8.kubernetes.model.annotation.Generated;
+import lombok.experimental.Accessors;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -61,6 +62,11 @@ import java.util.Map;
 @JsonDeserialize(using = JsonDeserializer.None.class)
 @EqualsAndHashCode
 @ToString
+@Setter
+@Accessors(prefix = {
+    "_",
+    ""
+})
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage=false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Version("v1")
 @Group("")
@@ -136,6 +142,7 @@ public class Template implements HasMetadata, Namespaced {
      *
      * @return The apiVersion
      */
+    @Override
     @JsonProperty("apiVersion")
     public String getApiVersion() {
         return apiVersion;
@@ -146,6 +153,7 @@ public class Template implements HasMetadata, Namespaced {
      *
      * @param apiVersion The apiVersion
      */
+    @Override
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
@@ -156,6 +164,7 @@ public class Template implements HasMetadata, Namespaced {
      *
      * @return The kind
      */
+    @Override
     @JsonProperty("kind")
     public java.lang.String getKind() {
         return kind;
@@ -190,6 +199,7 @@ public class Template implements HasMetadata, Namespaced {
     /**
      * @return The metadata
      */
+    @Override
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
         return metadata;
@@ -198,6 +208,7 @@ public class Template implements HasMetadata, Namespaced {
     /**
      * @param metadata The metadata
      */
+    @Override
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
         this.metadata = metadata;

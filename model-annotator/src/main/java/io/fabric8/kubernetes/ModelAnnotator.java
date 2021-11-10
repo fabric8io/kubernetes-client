@@ -19,7 +19,12 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.sun.codemodel.*;
+import com.sun.codemodel.JAnnotationArrayMember;
+import com.sun.codemodel.JAnnotationUse;
+import com.sun.codemodel.JClassAlreadyExistsException;
+import com.sun.codemodel.JCodeModel;
+import com.sun.codemodel.JDefinedClass;
+import com.sun.codemodel.JFieldVar;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
@@ -27,7 +32,9 @@ import io.sundr.builder.annotations.BuildableReference;
 import io.sundr.transform.annotations.TemplateTransformation;
 import io.sundr.transform.annotations.TemplateTransformations;
 import lombok.EqualsAndHashCode;
+import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.Accessors;
 import org.jsonschema2pojo.AbstractAnnotator;
 
 import java.util.HashSet;
@@ -52,6 +59,8 @@ public class ModelAnnotator extends AbstractAnnotator {
         .param("using", JsonDeserializer.None.class);
       clazz.annotate(ToString.class);
       clazz.annotate(EqualsAndHashCode.class);
+      clazz.annotate(Setter.class);
+      clazz.annotate(Accessors.class).paramArray("prefix").param("_").param("");
 
       JAnnotationUse buildable = clazz.annotate(Buildable.class)
         .param("editableEnabled", false)
