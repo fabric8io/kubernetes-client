@@ -15,8 +15,6 @@
  */
 package io.fabric8.certmanager.api.model.acme.v1beta1;
 
-import java.util.HashMap;
-import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -35,7 +33,12 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
+import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.Accessors;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -48,6 +51,11 @@ import lombok.ToString;
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @ToString
 @EqualsAndHashCode
+@Setter
+@Accessors(prefix = {
+    "_",
+    ""
+})
 @Buildable(editableEnabled = true, validationEnabled = false, generateBuilderPackage = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
   @BuildableReference(ObjectMeta.class),
   @BuildableReference(LabelSelector.class),

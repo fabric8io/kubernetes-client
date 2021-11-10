@@ -34,7 +34,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.sundr.builder.annotations.Buildable;
 import lombok.EqualsAndHashCode;
+import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.Accessors;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -51,6 +53,11 @@ import java.util.Map;
 })
 @ToString
 @EqualsAndHashCode
+@Setter
+@Accessors(prefix = {
+    "_",
+    ""
+})
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage=true, builderPackage = "io.fabric8.kubernetes.api.builder")
 public class IntOrString implements Serializable {
 
