@@ -21,7 +21,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>service-catalog</artifactId>
-    <version>5.10.0</version>
+    <version>5.11-SNAPSHOT</version>
   </parent>
 
   <artifactId>servicecatalog-model</artifactId>

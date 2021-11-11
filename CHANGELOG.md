@@ -1,5 +1,17 @@
 ## CHANGELOG
 
+### 5.11-SNAPSHOT
+
+#### Bugs
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
+#### _**Note**_: Breaking changes in the API
+
 ### 5.10.0 (2021-11-11)
 
 #### Bugs
