@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 5.10-SNAPSHOT
+### 5.10.0 (2021-11-11)
 
 #### Bugs
 * Fix #3408: quote pod upload file paths to support special chars
