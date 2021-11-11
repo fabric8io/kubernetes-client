@@ -92,6 +92,10 @@ public class OpenShiftServer extends ExternalResource {
     expect().withPath(path).andReturn(code, body).always();
   }
 
+  public OpenShiftMockServer getOpenShiftMockServer() {
+    return mock;
+  }
+
   public RecordedRequest getLastRequest() throws InterruptedException {
     return mock.getLastRequest();
   }

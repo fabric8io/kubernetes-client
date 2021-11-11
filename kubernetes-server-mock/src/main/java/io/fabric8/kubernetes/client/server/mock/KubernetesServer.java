@@ -110,6 +110,10 @@ public class KubernetesServer extends ExternalResource {
     expect().withPath(path).andReturn(code, body).always();
   }
 
+  public KubernetesMockServer getKubernetesMockServer() {
+    return mock;
+  }
+
   public RecordedRequest getLastRequest() throws InterruptedException {
     return mock.getLastRequest();
   }
