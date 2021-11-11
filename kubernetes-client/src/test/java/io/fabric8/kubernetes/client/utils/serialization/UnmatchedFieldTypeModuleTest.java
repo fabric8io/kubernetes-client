@@ -155,8 +155,8 @@ class UnmatchedFieldTypeModuleTest {
       .withNewMetadata().withName("name").addToAnnotations("key", "ignored").addToLabels("lKey", "value").endMetadata()
       .withImmutable(true)
       .build();
-    configMap.getAdditionalProperties().put("unknownField", "unknownValue");
     configMap.getAdditionalProperties().put("immutable", "${immutable}");
+    configMap.getAdditionalProperties().put("unknownField", "unknownValue");
     configMap.getMetadata().getAdditionalProperties().put("annotations", "${annotations}");
     // When
     final String result = objectMapper.writeValueAsString(configMap);

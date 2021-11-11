@@ -132,8 +132,8 @@ class SerializationAdditionalPropertiesTest {
       .withNewMetadata().withName("name").addToAnnotations("key", "value").endMetadata()
       .withImmutable(true)
       .build();
-    configMap.getAdditionalProperties().put("unknownField", "unknownValue");
     configMap.getAdditionalProperties().put("immutable", "${immutable}");
+    configMap.getAdditionalProperties().put("unknownField", "unknownValue");
     configMap.getMetadata().getAdditionalProperties().put("annotations", "${annotations}");
     // When
     final String result = Serialization.asJson(configMap);
