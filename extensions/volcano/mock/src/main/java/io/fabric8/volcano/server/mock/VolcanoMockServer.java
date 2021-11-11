@@ -34,8 +34,6 @@ import static okhttp3.TlsVersion.TLS_1_2;
 
 public class VolcanoMockServer extends KubernetesMockServer {
 
-  private boolean disableApiGroupCheck = true;
-
   public VolcanoMockServer() {
     super();
   }
