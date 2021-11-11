@@ -55,6 +55,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class ConfigTest {
 
   private static final String TEST_KUBECONFIG_FILE = Utils.filePath(ConfigTest.class.getResource("/test-kubeconfig"));
+  private static final String TEST_EC_KUBECONFIG_FILE = Utils.filePath(ConfigTest.class.getResource("/test-ec-kubeconfig"));
   private static final String TEST_NAMESPACE_FILE = Utils.filePath(ConfigTest.class.getResource("/test-namespace"));
 
   private static final String TEST_CONFIG_YML_FILE = Utils.filePath(ConfigTest.class.getResource("/test-config.yml"));
@@ -330,6 +331,14 @@ public class ConfigTest {
     final String configYAML = String.join("\n", Files.readAllLines(configFile.toPath()));
     final Config config = Config.fromKubeconfig(configYAML);
     assertEquals("https://172.28.128.4:8443", config.getMasterUrl());
+  }
+
+  @Test
+  void testFromKubeconfigKeyAlgo() throws IOException {
+    File configFile = new File(TEST_EC_KUBECONFIG_FILE);
+    final String configYAML = String.join("\n", Files.readAllLines(configFile.toPath()));
+    final Config config = Config.fromKubeconfig(configYAML);
+    assertEquals("EC", config.getClientKeyAlgo());
   }
 
   @Test

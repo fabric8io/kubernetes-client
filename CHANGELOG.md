@@ -5,6 +5,7 @@
 #### Bugs
 * Fix #3538: Update Plural rule to work with Prometheus
 * Fix #3555: using the new builder for generic resources
+* Fix #3535: ensure clientKeyAlgo is set properly when loading config YAML from `fromKubeconfig`
 
 #### Improvements
 
