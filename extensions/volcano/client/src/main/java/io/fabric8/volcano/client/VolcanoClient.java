@@ -28,7 +28,7 @@ import io.fabric8.volcano.scheduling.v1beta1.QueueList;
  * Main interface for Volcano client library.
  */
 public interface VolcanoClient extends Client {
-  MixedOperation<PodGroup, PodGroupList, Resource<PodGroup>> PodGroups();
-  MixedOperation<Queue, QueueList, Resource<Queue>> Queues();
+  MixedOperation<PodGroup, PodGroupList, Resource<PodGroup>> podGroups();
+  MixedOperation<Queue, QueueList, Resource<Queue>> queues();
   V1beta1APIGroupDSL v1beta1();
 }

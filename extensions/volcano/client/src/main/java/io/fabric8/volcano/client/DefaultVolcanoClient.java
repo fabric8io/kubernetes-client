@@ -59,21 +59,21 @@ public class DefaultVolcanoClient extends BaseClient implements NamespacedVolcan
   }
 
   @Override
-  public MixedOperation<PodGroup, PodGroupList, Resource<PodGroup>> PodGroups() {
-    // By default, client.PodGroups() use v1beta1 version,
+  public MixedOperation<PodGroup, PodGroupList, Resource<PodGroup>> podGroups() {
+    // By default, client.podGroups() use v1beta1 version,
     return Handlers.getOperation(PodGroup.class, PodGroupList.class, this.getHttpClient(), this.getConfiguration());
   }
 
   @Override
-  public MixedOperation<Queue, QueueList, Resource<Queue>> Queues() {
-    // By default, client.PodGroups() use v1beta1 version,
+  public MixedOperation<Queue, QueueList, Resource<Queue>> queues() {
+    // By default, client.podGroups() use v1beta1 version,
     return Handlers.getOperation(Queue.class, QueueList.class, this.getHttpClient(), this.getConfiguration());
   }
 
 
   @Override
   public V1beta1APIGroupDSL v1beta1() {
-    // User can specify client.v1beta1().PodGroups() to use v1beta1 API
+    // User can specify client.v1beta1().podGroups() to use v1beta1 API
     return adapt(V1beta1APIGroupClient.class);
   }
 }

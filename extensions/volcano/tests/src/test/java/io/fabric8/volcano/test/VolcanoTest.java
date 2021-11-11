@@ -61,10 +61,10 @@ class VolcanoTest {
         .withMinResources(resourceMap)
       .endSpec()
       .build();
-    client.PodGroups().inNamespace(TEST_NAMESPACE_NAME).create(podGroup);
+    client.podGroups().inNamespace(TEST_NAMESPACE_NAME).create(podGroup);
 
     // Check podgroup
-    PodGroupList podGroupList = client.PodGroups().inNamespace(TEST_NAMESPACE_NAME).list();
+    PodGroupList podGroupList = client.podGroups().inNamespace(TEST_NAMESPACE_NAME).list();
     assertNotNull(podGroupList);
     assertEquals(1, podGroupList.getItems().size());
 
@@ -84,9 +84,8 @@ class VolcanoTest {
         .withName("queue1")
       .endMetadata()
       .build();
-    client.Queues().inNamespace("ns1").create(queue);
-
-    QueueList queueList = client.Queues().inNamespace("ns1").list();
+    client.queues().inNamespace("ns1").create(queue);
+    QueueList queueList = client.queues().inNamespace("ns1").list();
     assertNotNull(queueList);
     assertEquals(1, queueList.getItems().size());
   }

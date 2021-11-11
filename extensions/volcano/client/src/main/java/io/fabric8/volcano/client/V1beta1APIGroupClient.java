@@ -34,12 +34,12 @@ public class V1beta1APIGroupClient  extends BaseClient implements V1beta1APIGrou
   }
 
   @Override
-  public MixedOperation<PodGroup, PodGroupList, Resource<PodGroup>> PodGroups() {
+  public MixedOperation<PodGroup, PodGroupList, Resource<PodGroup>> podGroups() {
     return Handlers.getOperation(PodGroup.class, PodGroupList.class, this.getHttpClient(), this.getConfiguration());
   }
 
   @Override
-  public MixedOperation<Queue, QueueList, Resource<Queue>> Queues() {
+  public MixedOperation<Queue, QueueList, Resource<Queue>> queues() {
     return Handlers.getOperation(Queue.class, QueueList.class, this.getHttpClient(), this.getConfiguration());
   }
 }

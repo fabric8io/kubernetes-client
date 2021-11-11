@@ -35,9 +35,9 @@ class V1Beta1VolcanoTest {
         .withName("Pod")
       .endMetadata()
       .build();
-    client.v1beta1().PodGroups().inNamespace("ns1").create(podGroup);
+    client.v1beta1().podGroups().inNamespace("ns1").create(podGroup);
 
-    PodGroupList podGroupList = client.v1beta1().PodGroups().inNamespace("ns1").list();
+    PodGroupList podGroupList = client.v1beta1().podGroups().inNamespace("ns1").list();
     assertNotNull(podGroupList);
     assertEquals(1, podGroupList.getItems().size());
   }
@@ -49,9 +49,9 @@ class V1Beta1VolcanoTest {
         .withName("queue1")
       .endMetadata()
       .build();
-    client.v1beta1().Queues().inNamespace("ns1").create(queue);
+    client.v1beta1().queues().inNamespace("ns1").create(queue);
 
-    QueueList queueList = client.v1beta1().Queues().inNamespace("ns1").list();
+    QueueList queueList = client.v1beta1().queues().inNamespace("ns1").list();
     assertNotNull(queueList);
     assertEquals(1, queueList.getItems().size());
   }

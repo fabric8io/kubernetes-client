@@ -29,8 +29,8 @@ func main() {
 	// the CRD List types for which the model should be generated
 	// no other types need to be defined as they are auto discovered
 	crdLists := map[reflect.Type]schemagen.CrdScope{
-		reflect.TypeOf(volcanov1beta1.PodGroupList{}):   schemagen.Namespaced,
-		reflect.TypeOf(volcanov1beta1.QueueList{}):   schemagen.Namespaced,
+		reflect.TypeOf(volcanov1beta1.PodGroupList{}): schemagen.Namespaced,
+		reflect.TypeOf(volcanov1beta1.QueueList{}):    schemagen.Namespaced,
 	}
 
 	// constraints and patterns for fields
