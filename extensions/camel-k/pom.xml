@@ -21,7 +21,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>kubernetes-extensions</artifactId>
-    <version>5.11-SNAPSHOT</version>
+    <version>5.10.1</version>
   </parent>
 
   <artifactId>camel-k-extension-pom</artifactId>

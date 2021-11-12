@@ -12,6 +12,12 @@
 
 #### _**Note**_: Breaking changes in the API
 
+### 5.10.1 (2021-11-12)
+
+#### Bugs
+* Fix #3583: Add KubernetesMockServer accessor to JUnit4 KubernetesServer rules
+* Fix #3584: Add GenericKubernetesResourceBuilder to Kubernetes Model Core
+
 ### 5.10.0 (2021-11-11)
 
 #### Bugs
