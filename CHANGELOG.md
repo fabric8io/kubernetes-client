@@ -3,6 +3,7 @@
 ### 5.11-SNAPSHOT
 
 #### Bugs
+* Fix #3538: Update Plural rule to work with Prometheus
 
 #### Improvements
 
@@ -21,7 +22,6 @@
 ### 5.10.0 (2021-11-11)
 
 #### Bugs
-* Fix #3538: Update Plural rule to work with Prometheus
 * Fix #3408: quote pod upload file paths to support special chars
 * Fix #3561: ensure okhttp resources are closed
 * Fix #3570: added a setter for additionalProperties for proper builder support
