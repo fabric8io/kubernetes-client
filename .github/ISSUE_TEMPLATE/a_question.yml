@@ -1,0 +1,36 @@
+name: Question 🤔
+description: Usage question or discussion about Fabric8 kubernetes-client
+labels: [kind/question]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### Asking a new Question 🤔
+        🔍  Before opening a new issue please search existing issues at https://github.com/fabric8io/kubernetes-client/issues
+
+        🤔  To make it easier for us to help you, please include as much useful information as possible.
+
+        Useful Links:
+
+          - 📄  Documentation: https://fabric8.io/
+          - 📝  Contributing: https://github.com/fabric8io/kubernetes-client/blob/master/CONTRIBUTING.md
+
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: Enter your question
+      placeholder: Summary of your question
+    validations:
+      required: true
+
+  - type: textarea
+    id: relevant-information
+    attributes:
+      label: Relevant information
+      description: Provide as much useful information as you can
+      placeholder: Provide as much useful information as you can
+    validations:
+      required: false
