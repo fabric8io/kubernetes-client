@@ -44,8 +44,8 @@ body:
   - type: dropdown
     id: version
     attributes:
-      label: kubernetes-client version
-      description: if workspace is running, version can be obtained with help/about menu
+      label: Fabric8 Kubernetes Client version
+      description: Fabric8 Kubernetes Client version (can be found in pom.xml dependency or build.gradle implementation section)
       options:
         - "5.10.1@latest"
         - "next (development version)"
@@ -94,7 +94,6 @@ body:
         - OpenShift
         - minikube
         - CodeReady Container
-        - Docker Desktop
         - other (please specify in additional context)
     validations:
       required: true
@@ -138,7 +137,7 @@ body:
   - type: textarea
     id: logs
     attributes:
-      label: Eclipse Che Logs
+      label: Fabric8 Kubernetes Client Logs
       placeholder: |
         Please copy and paste any relevant log output.
 
