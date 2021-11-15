@@ -58,8 +58,7 @@ public final class Handlers {
   
   /**
    * Returns a {@link ResourceHandler} for the given item.  The client is optional, if it is supplied, then the server can be 
-   * consulted for resource metadata if a generic item is passed in.  The client is not needed at all for lookups related to 
-   * obtaining a builder - as there is no builder associated with generic resources. 
+   * consulted for resource metadata if a generic item is passed in. 
    */
   public static <T extends HasMetadata, V extends VisitableBuilder<T, V>> ResourceHandler<T, V> get(T meta, BaseClient client) {
     Class<T> type = (Class<T>)meta.getClass();
@@ -124,7 +123,7 @@ public final class Handlers {
     return rdc;
   }
 
-  public static <T extends HasMetadata, V extends VisitableBuilder<T, V>> ResourceHandler<T, V> get(Class<T> type) {
+  private static <T extends HasMetadata, V extends VisitableBuilder<T, V>> ResourceHandler<T, V> get(Class<T> type) {
     if (type.equals(GenericKubernetesResource.class)) {
       return null;
     }

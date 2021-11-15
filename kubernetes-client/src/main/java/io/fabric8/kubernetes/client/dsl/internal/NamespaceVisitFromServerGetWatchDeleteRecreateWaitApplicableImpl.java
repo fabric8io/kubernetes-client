@@ -91,7 +91,7 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl im
 
   public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(OkHttpClient httpClient, Config configuration, HasMetadata item) {
     this(HasMetadataOperationsImpl.defaultContext(new OperationContext(), httpClient, configuration).withItem(item), new NamespaceVisitOperationContext());
-    handlerOf(item, new BaseClient(httpClient, configuration)); // validate the handler
+    handlerOf(item, this.context); // validate the handler
   }
 
   @Override
@@ -128,7 +128,7 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl im
 
   @Override
   public VisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata> inNamespace(String explicitNamespace) {
-    HasMetadata item = acceptVisitors(get(), Collections.emptyList(), explicitNamespace);
+    HasMetadata item = acceptVisitors(get(), Collections.emptyList(), explicitNamespace, this.context);
     return newInstance(context.withItem(item).withNamespace(explicitNamespace), namespaceVisitOperationContext.withExplicitNamespace(explicitNamespace));
   }
 
@@ -144,7 +144,7 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl im
 
   @Override
   public VisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata> accept(Visitor... visitors) {
-    HasMetadata item = acceptVisitors(get(), Arrays.asList(visitors), namespaceVisitOperationContext.getExplicitNamespace());
+    HasMetadata item = acceptVisitors(get(), Arrays.asList(visitors), namespaceVisitOperationContext.getExplicitNamespace(), this.context);
     return newInstance(context.withItem(item), namespaceVisitOperationContext);
   }
 
@@ -185,7 +185,7 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl im
   
   Resource<HasMetadata> getResource() {
     HasMetadata meta = (HasMetadata) context.getItem();
-    ResourceHandler<HasMetadata, ?> handler = handlerOf(meta, new BaseClient(this.context.getClient(), this.context.getConfig()));
+    ResourceHandler<HasMetadata, ?> handler = handlerOf(meta, context);
     HasMetadataOperation<HasMetadata, ?, Resource<HasMetadata>> operation = handler.operation(context.getClient(), context.getConfig(), null);
     return operation.newInstance(context).inNamespace(KubernetesResourceUtil.getNamespace(meta)).withName(KubernetesResourceUtil.getName(meta));
   }
@@ -242,8 +242,8 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl im
     return getResource().accept(function);
   }
   
-  static HasMetadata acceptVisitors(HasMetadata item, List<Visitor> visitors, String explicitNamespace) {
-    ResourceHandler<HasMetadata, ?> h = handlerOf(item, null);
+  static HasMetadata acceptVisitors(HasMetadata item, List<Visitor> visitors, String explicitNamespace, OperationContext context) {
+    ResourceHandler<HasMetadata, ?> h = handlerOf(item, context);
     VisitableBuilder<HasMetadata, ?> builder = h.edit(item);
 
     //Let's apply any visitor that might have been specified.
@@ -256,8 +256,8 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl im
     return builder.build();
   }
 
-  static <T extends HasMetadata, V extends VisitableBuilder<T, V>> ResourceHandler<T, V> handlerOf(T item, BaseClient client) {
-    ResourceHandler<T, V> result = Handlers.get(item, client);
+  static <T extends HasMetadata, V extends VisitableBuilder<T, V>> ResourceHandler<T, V> handlerOf(T item, OperationContext context) {
+    ResourceHandler<T, V> result = Handlers.get(item, new BaseClient(context.getClient(), context.getConfig()));
     if (result == null) {
       throw new KubernetesClientException("Could not find a registered handler for item: [" + item + "].");
     }
