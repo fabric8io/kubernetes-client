@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.ResourceHandler;
@@ -88,7 +89,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   }
   
   protected <V extends VisitableBuilder<T, V>> VisitableBuilder<T, V> createVisitableBuilder(T item) {
-    ResourceHandler<T, V> handler = Handlers.get(item, null);
+    ResourceHandler<T, V> handler = Handlers.get(item, new BaseClient(this.client, this.config));
     if (handler != null) {
       return handler.edit(item);
     }

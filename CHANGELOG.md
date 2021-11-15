@@ -4,6 +4,7 @@
 
 #### Bugs
 * Fix #3538: Update Plural rule to work with Prometheus
+* Fix #3555: using the new builder for generic resources
 
 #### Improvements
 

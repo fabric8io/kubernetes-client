@@ -19,6 +19,8 @@ package io.fabric8.kubernetes;
 import io.fabric8.commons.AssumingK8sVersionAtLeast;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResourceList;
+import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.NamespaceBuilder;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionBuilder;
@@ -28,6 +30,7 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.clnt.v4_0.utils.Serialization;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
@@ -37,10 +40,14 @@ import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -90,8 +97,16 @@ public class GenericResourceIT {
 
     GenericKubernetesResource result = resource.createOrReplace();
     assertNotNull(result);
-  }
 
+    // ensure the namespace can be manipulated
+    client.namespaces().create(new NamespaceBuilder().withNewMetadata().withName("x").endMetadata().build());
+    result = resource.inNamespace("x").createOrReplace();
+    assertEquals("x", result.getMetadata().getNamespace());
+
+    // ensure it can be loaded as a list
+    List<HasMetadata> created = client.load(new ByteArrayInputStream(Serialization.asYaml(itest).getBytes(StandardCharsets.UTF_8))).createOrReplace();
+    assertEquals(1, created.size());
+  }
 
   public static CustomResourceDefinition createCRD() {
     return new CustomResourceDefinitionBuilder()
