@@ -98,12 +98,20 @@ body:
     validations:
       required: true
 
-  - type: textarea
-    id: screenshots
+  - type: dropdown
+    id: version
     attributes:
-      label: Screenshots
-      description: If applicable, add screenshots to help explain your problem.
-
+      label: Kubectl version
+      description: Kubectl version
+      options:
+        - "1.22.0@latest"
+        - "next (development version)"
+        - "1.21.0"
+        - "1.20.0"
+        - "other (please specify in additional context)"
+    validations:
+      required: true
+      
   - type: dropdown
     id: install-method
     attributes:
