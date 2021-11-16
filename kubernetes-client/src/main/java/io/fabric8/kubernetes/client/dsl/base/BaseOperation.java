@@ -15,10 +15,6 @@
  */
 package io.fabric8.kubernetes.client.dsl.base;
 
-import io.fabric8.kubernetes.api.model.ObjectReference;
-import io.fabric8.kubernetes.client.dsl.WritableOperation;
-import io.fabric8.kubernetes.client.utils.CreateOrReplaceHelper;
-
 import io.fabric8.kubernetes.api.builder.TypedVisitor;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
@@ -28,7 +24,6 @@ import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
 import io.fabric8.kubernetes.api.model.ObjectReference;
-import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
@@ -74,7 +69,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -86,7 +80,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
-import java.util.stream.Collectors;
 
 public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>>
   extends CreateOnlyResourceOperation<T, T>
@@ -851,13 +844,13 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public T waitUntilCondition(Predicate<T> condition, long amount, TimeUnit timeUnit) {
-    CompletableFuture<T> futureCondition = informOnCondition(l -> {
+    CompletableFuture<List<T>> futureCondition = informOnCondition(l -> {
       if (l.isEmpty()) {
         return condition.test(null);
       }
       return condition.test(l.get(0));
-    }).thenApply(l -> l.isEmpty() ? null : l.get(0));
-
+    });
+    
     if (!Utils.waitUntilReady(futureCondition, amount, timeUnit)) {
       futureCondition.cancel(true);
       T i = getItem();
@@ -866,7 +859,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       }
       throw new KubernetesClientTimeoutException(getKind(), getName(), getNamespace(), amount, timeUnit);
     }
-    return futureCondition.getNow(null);
+    return futureCondition.thenApply(l -> l.isEmpty() ? null : l.get(0)).getNow(null);
   }
 
   @Override
