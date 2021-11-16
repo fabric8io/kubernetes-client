@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.api.model;
 
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -67,10 +68,142 @@ class HasMetadataTest {
     assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer("fabric8.io/finalizer-"));
     assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer("fabric8.io/finalizerreallyreallywaywaywaytooooooooooooooooooooolooooooooonnnnnnnnnnng"));
   }
+
+  @Test
+  void addingNullOwnerReferenceShouldFail() {
+    final String name = "defaultName";
+    final String kind = "Default";
+    final Default target = new Default(name) {
+      @Override
+      public String getKind() {
+        return kind;
+      }
+    };
+
+    IllegalArgumentException iae = assertThrows(IllegalArgumentException.class, () -> target.addOwnerReference((OwnerReference) null));
+    String msg = iae.getMessage();
+    assertTrue(msg.contains("null reference to '" + name + "' " + kind));
+    iae = assertThrows(IllegalArgumentException.class, () -> target.addOwnerReference((HasMetadata) null));
+    msg = iae.getMessage();
+    assertTrue(msg.contains("null owner to '" + name + "' " + kind));
+  }
+
+  @Test
+  void addingReferenceToOwnerWithMissingFieldsShouldFail() {
+    HasMetadata hasMetadata = new Default();
+    HasMetadata owner = new InvalidOwner();
+
+    IllegalArgumentException iae = assertThrows(IllegalArgumentException.class,
+      () -> hasMetadata.addOwnerReference(owner));
+    final String msg = iae.getMessage();
+    assertTrue(
+      msg.contains("uid") && msg.contains("apiVersion") && msg.contains("name") && msg.contains(
+        "kind"));
+  }
+
+  @Test
+  void addingAndRemovingOwnerReferenceShouldWork() {
+    HasMetadata hasMetadata = new Default();
+    HasMetadata owner = new Owner();
+
+    assertEquals(0, hasMetadata.getMetadata().getOwnerReferences().size());
+    assertFalse(hasMetadata.hasOwnerReferenceFor(owner));
+
+    OwnerReference ownerReference = hasMetadata.addOwnerReference(owner);
+    assertEquals(1, hasMetadata.getMetadata().getOwnerReferences().size());
+    assertTrue(hasMetadata.hasOwnerReferenceFor(owner));
+    assertTrue(hasMetadata.hasOwnerReferenceFor(Owner.uid));
+
+    final Optional<OwnerReference> retrieved = hasMetadata.getOwnerReferenceFor(owner);
+    assertTrue(retrieved.isPresent());
+    assertEquals(ownerReference, retrieved.get());
+    assertEquals(retrieved, hasMetadata.getOwnerReferenceFor(Owner.uid));
+
+    assertEquals(Owner.uid, ownerReference.getUid());
+    assertEquals(Owner.apiVersion, ownerReference.getApiVersion());
+    assertEquals(Owner.name, ownerReference.getName());
+    assertEquals(Owner.kind, ownerReference.getKind());
+
+    final String uid2 = "uid2";
+    final Owner owner2 = new Owner(uid2);
+    ownerReference = hasMetadata.addOwnerReference(owner2);
+    assertEquals(uid2, ownerReference.getUid());
+    assertEquals(2, hasMetadata.getMetadata().getOwnerReferences().size());
+    assertTrue(hasMetadata.hasOwnerReferenceFor(owner2));
+    assertTrue(hasMetadata.hasOwnerReferenceFor(owner2.getMetadata().getUid()));
+
+    hasMetadata.removeOwnerReference((String) null);
+    assertEquals(2, hasMetadata.getMetadata().getOwnerReferences().size());
+    hasMetadata.removeOwnerReference((HasMetadata) null);
+    assertEquals(2, hasMetadata.getMetadata().getOwnerReferences().size());
+    hasMetadata.removeOwnerReference(Owner.uid);
+    assertEquals(1, hasMetadata.getMetadata().getOwnerReferences().size());
+    assertFalse(hasMetadata.hasOwnerReferenceFor(Owner.uid));
+    hasMetadata.removeOwnerReference(owner2);
+    assertTrue(hasMetadata.getMetadata().getOwnerReferences().isEmpty());
+    assertFalse(hasMetadata.hasOwnerReferenceFor(owner2));
+  }
+
+  @Test
+  void addingSameOwnerReferenceMultipleTimesShouldAddItOnlyOnce() {
+    HasMetadata hasMetadata = new Default();
+    HasMetadata owner = new Owner();
+
+    hasMetadata.addOwnerReference(owner);
+    hasMetadata.addOwnerReference(owner);
+    hasMetadata.addOwnerReference(owner);
+    assertEquals(1, hasMetadata.getMetadata().getOwnerReferences().size());
+  }
+
+  private static class Owner extends Default {
+    static final String kind = "Owner";
+    static final String apiVersion = "group/version";
+    static final String uid = "ownerUid";
+    static final String name = "ownerName";
+
+    Owner() {
+      this(uid);
+    }
+
+    Owner(String uid) {
+      super(name);
+      meta.setUid(uid);
+    }
+
+    @Override
+    public String getKind() {
+      return kind;
+    }
+
+    @Override
+    public String getApiVersion() {
+      return apiVersion;
+    }
+  }
+
+  private static class InvalidOwner extends Default {
+
+    @Override
+    public String getKind() {
+      return null;
+    }
+
+    @Override
+    public String getApiVersion() {
+      return "   ";
+    }
+  }
   
   private static class Default implements HasMetadata {
-    private final ObjectMeta meta = new ObjectMeta();
-    
+    protected final ObjectMeta meta = new ObjectMeta();
+
+    Default() {
+    }
+
+    Default(String name) {
+      meta.setName(name);
+    }
+
     @Override
     public ObjectMeta getMetadata() {
       return meta;
@@ -78,22 +211,22 @@ class HasMetadataTest {
     
     @Override
     public void setMetadata(ObjectMeta metadata) {
-      throw new RuntimeException("shouldn't be called");
+      throw new RuntimeException("setMetadata shouldn't be called");
     }
     
     @Override
     public String getKind() {
-      throw new RuntimeException("shouldn't be called");
+      throw new RuntimeException("getKind shouldn't be called");
     }
     
     @Override
     public String getApiVersion() {
-      throw new RuntimeException("shouldn't be called");
+      throw new RuntimeException("getApiVersion shouldn't be called");
     }
     
     @Override
     public void setApiVersion(String version) {
-      throw new RuntimeException("shouldn't be called");
+      throw new RuntimeException("setApiVersion shouldn't be called");
     }
   }
 }

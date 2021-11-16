@@ -6,6 +6,7 @@
 * Fix #3538: Update Plural rule to work with Prometheus
 
 #### Improvements
+* Fix #3600: add owner references support to HasMetadata
 
 #### Dependency Upgrade
 
