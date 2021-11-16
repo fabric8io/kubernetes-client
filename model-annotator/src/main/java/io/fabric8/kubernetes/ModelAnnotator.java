@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -43,6 +44,7 @@ import java.util.Set;
 public class ModelAnnotator extends AbstractAnnotator {
 
   private static final String BUILDABLE_REFERENCE_VALUE = "value";
+  private static final String INTERFACE_TYPE_PROPERTY = "interfaceType";
 
   private final Set<String> handledClasses = new HashSet<>();
 
@@ -106,6 +108,11 @@ public class ModelAnnotator extends AbstractAnnotator {
 
     if (propertyNode.has("javaOmitEmpty") && propertyNode.get("javaOmitEmpty").asBoolean(false)) {
       field.annotate(JsonInclude.class).param("value", JsonInclude.Include.NON_EMPTY);
+    }
+
+    // Annotate JsonUnwrapped for interfaces as they cannot be created when no implementations
+    if (propertyNode.hasNonNull(INTERFACE_TYPE_PROPERTY)) {
+      field.annotate(JsonUnwrapped.class);
     }
   }
 

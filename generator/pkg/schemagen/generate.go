@@ -35,14 +35,15 @@ type PackageInformation struct {
 }
 
 type schemaGenerator struct {
-	crdLists         map[reflect.Type]CrdScope
-	types            map[reflect.Type]*JSONObjectDescriptor
-	providedPackages map[string]string
-	manualTypeMap    map[reflect.Type]string
-	packageMapping   map[string]PackageInformation
-	mappingSchema    map[string]string
-	providedTypes    []ProvidedType
-	constraints      map[reflect.Type]map[string]*Constraint // type -> field name -> constraint
+	crdLists             map[reflect.Type]CrdScope
+	types                map[reflect.Type]*JSONObjectDescriptor
+	providedPackages     map[string]string
+	manualTypeMap        map[reflect.Type]string
+	packageMapping       map[string]PackageInformation
+	mappingSchema        map[string]string
+	providedTypes        []ProvidedType
+	constraints          map[reflect.Type]map[string]*Constraint // type -> field name -> constraint
+	interfacesMapping    map[string][]reflect.Type               // interface -> list of implementations
 	generatedTypesPrefix string
 }
 
@@ -60,7 +61,22 @@ const (
 )
 
 func GenerateSchema(schemaId string, crdLists map[reflect.Type]CrdScope, providedPackages map[string]string, manualTypeMap map[reflect.Type]string, packageMapping map[string]PackageInformation, mappingSchema map[string]string, providedTypes []ProvidedType, constraints map[reflect.Type]map[string]*Constraint, generatedTypesPrefix string) string {
-	g := newSchemaGenerator(crdLists, providedPackages, manualTypeMap, packageMapping, mappingSchema, providedTypes, constraints, generatedTypesPrefix)
+	return GenerateSchemaWithAllOptions(schemaId, crdLists, make(map[reflect.Type]*JSONObjectDescriptor), providedPackages, manualTypeMap, packageMapping, mappingSchema, providedTypes, constraints, make(map[string][]reflect.Type), generatedTypesPrefix)
+}
+
+func GenerateSchemaWithAllOptions(schemaId string, crdLists map[reflect.Type]CrdScope, typesDescriptors map[reflect.Type]*JSONObjectDescriptor, providedPackages map[string]string, manualTypeMap map[reflect.Type]string, packageMapping map[string]PackageInformation, mappingSchema map[string]string, providedTypes []ProvidedType, constraints map[reflect.Type]map[string]*Constraint, interfacesMapping map[string][]reflect.Type, generatedTypesPrefix string) string {
+	g := &schemaGenerator{
+		crdLists:             crdLists,
+		types:                typesDescriptors,
+		providedPackages:     providedPackages,
+		manualTypeMap:        manualTypeMap,
+		packageMapping:       packageMapping,
+		mappingSchema:        mappingSchema,
+		providedTypes:        providedTypes,
+		constraints:          constraints,
+		generatedTypesPrefix: generatedTypesPrefix,
+		interfacesMapping:    interfacesMapping,
+	}
 	schema, err := g.generate(schemaId, crdLists)
 
 	if err != nil {
@@ -79,21 +95,6 @@ func GenerateSchema(schemaId string, crdLists map[reflect.Type]CrdScope, provide
 	}
 
 	return out.String()
-}
-
-func newSchemaGenerator(crdLists map[reflect.Type]CrdScope, providedPackages map[string]string, manualTypeMap map[reflect.Type]string, packageMapping map[string]PackageInformation, mappingSchema map[string]string, providedTypes []ProvidedType, constraints map[reflect.Type]map[string]*Constraint, generatedTypesPrefix string) *schemaGenerator {
-	g := schemaGenerator{
-		crdLists:         crdLists,
-		types:            make(map[reflect.Type]*JSONObjectDescriptor),
-		providedPackages: providedPackages,
-		manualTypeMap:    manualTypeMap,
-		packageMapping:   packageMapping,
-		mappingSchema:    mappingSchema,
-		providedTypes:    providedTypes,
-		constraints:      constraints,
-		generatedTypesPrefix: generatedTypesPrefix,
-	}
-	return &g
 }
 
 func (g *schemaGenerator) jsonFieldName(f reflect.StructField) string {
@@ -133,8 +134,16 @@ func (g *schemaGenerator) qualifiedName(t reflect.Type) string {
 	return strings.NewReplacer(".", "_", "/", "_").Replace(path) + "_" + name
 }
 
+func (g *schemaGenerator) qualifiedNameForString(className string) string {
+	return strings.NewReplacer(".", "_", "/", "_").Replace(className)
+}
+
 func (g *schemaGenerator) generateReference(t reflect.Type) string {
-	return "#/definitions/" + g.qualifiedName(t)
+	return g.generateReferenceForString(g.qualifiedName(t))
+}
+
+func (g *schemaGenerator) generateReferenceForString(str string) string {
+	return "#/definitions/" + str
 }
 
 func (g *schemaGenerator) resolvePointer(t reflect.Type) reflect.Type {
@@ -226,6 +235,11 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 		return g.resolveJavaClassUsingMappingSchema(t)
 	}
 
+	// When having something like: Tag interface{}, it should be mapped into "Tag Object".
+	if t.Kind() == reflect.Interface {
+		return "Object"
+	}
+
 	panic("No type mapping for " + t.PkgPath() + "." + t.Name())
 }
 
@@ -283,6 +297,57 @@ func (g *schemaGenerator) generate(schemaId string, crdLists map[reflect.Type]Cr
 		g.handleType(crd)
 	}
 
+	for interfaceName, implementations := range g.interfacesMapping {
+		// register interface
+		interfaceJavaClass := g.resolveFqnJavaTypeUsingMappingSchema(interfaceName)
+		interfaceKey := g.qualifiedNameForString(interfaceName)
+		s.Definitions[interfaceKey] = JSONPropertyDescriptor{
+			JSONDescriptor: &JSONDescriptor{
+				Type: "object",
+			},
+			JavaInterfaceDescriptor: &JavaInterfaceDescriptor{
+				InterfaceType: g.adaptJavaClassName(interfaceJavaClass),
+			},
+		}
+		s.Properties[interfaceKey] = JSONPropertyDescriptor{
+			JSONReferenceDescriptor: &JSONReferenceDescriptor{
+				Reference: g.generateReferenceForString(interfaceKey),
+			},
+			JavaInterfaceDescriptor: &JavaInterfaceDescriptor{
+				InterfaceType: g.adaptJavaClassName(interfaceJavaClass),
+			},
+		}
+
+		// register implementations
+		for _, implementation := range implementations {
+			implementationName := g.qualifiedName(implementation)
+
+			s.Definitions[implementationName] = JSONPropertyDescriptor{
+				JSONDescriptor: &JSONDescriptor{
+					Type: "object",
+				},
+				JSONObjectDescriptor: &JSONObjectDescriptor{
+					Properties: g.getStructProperties(implementation),
+				},
+				JavaTypeDescriptor: &JavaTypeDescriptor{
+					JavaType: g.javaType(implementation),
+				},
+				JavaInterfacesDescriptor: &JavaInterfacesDescriptor{
+					JavaInterfaces: []string{g.adaptJavaClassName(interfaceJavaClass)},
+				},
+			}
+			s.Properties[implementationName] = JSONPropertyDescriptor{
+				JSONReferenceDescriptor: &JSONReferenceDescriptor{
+					Reference: g.generateReference(implementation),
+				},
+				JavaTypeDescriptor: &JavaTypeDescriptor{
+					JavaType: g.javaType(implementation),
+				},
+			}
+		}
+
+	}
+
 	for k, v := range g.types {
 
 		name := g.qualifiedName(k)
@@ -324,11 +389,12 @@ func (g *schemaGenerator) generate(schemaId string, crdLists map[reflect.Type]Cr
 type FieldType string
 
 const (
-	EMBEDDED FieldType = "E"
-	OBJECT   FieldType = "O"
-	MAP      FieldType = "M"
-	SIMPLE   FieldType = "S"
-	LIST     FieldType = "L"
+	EMBEDDED  FieldType = "E"
+	OBJECT    FieldType = "O"
+	MAP       FieldType = "M"
+	INTERFACE FieldType = "I"
+	SIMPLE    FieldType = "S"
+	LIST      FieldType = "L"
 )
 
 func (g *schemaGenerator) getFields(t reflect.Type) []reflect.StructField {
@@ -419,6 +485,10 @@ func (g *schemaGenerator) propertyDescriptor(field reflect.StructField, parentTy
 		return g.propertyDescriptorForList(field)
 	}
 
+	if fieldCategory == INTERFACE {
+		return g.propertyDescriptorForInterface(field)
+	}
+
 	panic("Failed to get property descriptor for field")
 }
 
@@ -475,6 +545,8 @@ func (g *schemaGenerator) fieldCategory(field reflect.StructField) FieldType {
 		return OBJECT
 	case reflect.Map:
 		return MAP
+	case reflect.Interface:
+		return INTERFACE
 
 	default:
 		return SIMPLE
@@ -576,7 +648,7 @@ func (g *schemaGenerator) isProvidedType(t reflect.Type) bool {
 func (g *schemaGenerator) resolveJavaClassForProvidedType(t reflect.Type) string {
 	for _, pt := range g.providedTypes {
 		if pt.GoType == t {
-			return pt.JavaClass
+			return g.adaptJavaClassName(pt.JavaClass)
 		}
 	}
 	panic("Failed to resolve java class for provided type")
@@ -588,7 +660,17 @@ func (g *schemaGenerator) isPartOfOwnPackage(t reflect.Type) bool {
 }
 
 func (g *schemaGenerator) resolveJavaClassUsingOwnPackages(t reflect.Type) string {
-	return g.packageMapping[t.PkgPath()].JavaPackage + "." + t.Name()
+	return g.adaptJavaClassName(g.packageMapping[t.PkgPath()].JavaPackage + "." + t.Name())
+}
+
+func (g *schemaGenerator) adaptJavaClassName(className string) string {
+	lastDot := strings.LastIndex(className, ".")
+	packageName := className[:lastDot]
+	className = className[lastDot+1:]
+
+	// If the java name starts with a lowercase character, change it to uppercase
+	className = strings.Title(className)
+	return packageName + "." + className
 }
 
 func (g *schemaGenerator) isPartOfMappingSchema(t reflect.Type) bool {
@@ -605,6 +687,17 @@ func (g *schemaGenerator) resolveJavaClassUsingMappingSchema(t reflect.Type) str
 	for key, value := range g.mappingSchema {
 		if strings.HasPrefix(t.PkgPath(), key) {
 			typeName := t.PkgPath() + "." + t.Name()
+			modifiedTypeName := strings.NewReplacer(key, value, "/", ".").Replace(typeName)
+			return g.adaptJavaClassName(modifiedTypeName)
+		}
+	}
+	panic("Failed to resolve Java Class using mapping schema definition")
+}
+
+func (g *schemaGenerator) resolveFqnJavaTypeUsingMappingSchema(typeName string) string {
+
+	for key, value := range g.mappingSchema {
+		if strings.HasPrefix(typeName, key) {
 			modifiedTypeName := strings.NewReplacer(key, value, "/", ".").Replace(typeName)
 			return modifiedTypeName
 		}
@@ -740,6 +833,17 @@ func (g *schemaGenerator) propertyDescriptorForList(field reflect.StructField) J
 		}
 	}
 
+}
+
+func (g *schemaGenerator) propertyDescriptorForInterface(field reflect.StructField) JSONPropertyDescriptor {
+	fieldType := g.resolvePointer(field.Type)
+
+	return JSONPropertyDescriptor{
+		JSONReferenceDescriptor: g.referenceDescriptor(fieldType),
+		JavaInterfaceDescriptor: &JavaInterfaceDescriptor{
+			InterfaceType: g.javaType(fieldType),
+		},
+	}
 }
 
 func (g *schemaGenerator) isCRD(t reflect.Type) bool {
