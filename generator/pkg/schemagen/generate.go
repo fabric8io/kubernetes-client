@@ -175,6 +175,9 @@ func (g *schemaGenerator) jsonDescriptor(t reflect.Type) *JSONDescriptor {
 		return &JSONDescriptor{Type: "boolean"}
 	case reflect.String:
 		return &JSONDescriptor{Type: "string"}
+	case reflect.Interface:
+		// When having something like: Tag interface{}, it should be mapped into "Tag Object".
+		return &JSONDescriptor{Type: "object"}
 	}
 
 	panic("Nothing for " + t.Name())
@@ -563,6 +566,11 @@ func (g *schemaGenerator) fieldCategory(field reflect.StructField) FieldType {
 	case reflect.Map:
 		return MAP
 	case reflect.Interface:
+		// Special case when "interface {}" is a Interface kind, but meant to be mapped to Objects
+		if fieldType.String() == "interface {}" {
+			return SIMPLE
+		}
+
 		return INTERFACE
 
 	default:
