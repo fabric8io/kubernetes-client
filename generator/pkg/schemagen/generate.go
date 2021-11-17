@@ -34,6 +34,14 @@ type PackageInformation struct {
 	JavaPackage string
 }
 
+// Name strategy mapping for auto discovered classes
+type JavaNameStrategyMapping struct {
+	// To provide a custom generic rule that applies to all java, interface, enum
+	CustomJavaNameRule func(packageName *string, javaName *string)
+	// To manually map a golang class to a Java class
+	NameMapping map[reflect.Type]string
+}
+
 type schemaGenerator struct {
 	crdLists             map[reflect.Type]CrdScope
 	types                map[reflect.Type]*JSONObjectDescriptor
@@ -44,6 +52,7 @@ type schemaGenerator struct {
 	providedTypes        []ProvidedType
 	constraints          map[reflect.Type]map[string]*Constraint // type -> field name -> constraint
 	interfacesMapping    map[string][]reflect.Type               // interface -> list of implementations
+	javaNameStrategy     JavaNameStrategyMapping                 // java name strategy by extension
 	generatedTypesPrefix string
 }
 
@@ -61,10 +70,10 @@ const (
 )
 
 func GenerateSchema(schemaId string, crdLists map[reflect.Type]CrdScope, providedPackages map[string]string, manualTypeMap map[reflect.Type]string, packageMapping map[string]PackageInformation, mappingSchema map[string]string, providedTypes []ProvidedType, constraints map[reflect.Type]map[string]*Constraint, generatedTypesPrefix string) string {
-	return GenerateSchemaWithAllOptions(schemaId, crdLists, make(map[reflect.Type]*JSONObjectDescriptor), providedPackages, manualTypeMap, packageMapping, mappingSchema, providedTypes, constraints, make(map[string][]reflect.Type), generatedTypesPrefix)
+	return GenerateSchemaWithAllOptions(schemaId, crdLists, make(map[reflect.Type]*JSONObjectDescriptor), providedPackages, manualTypeMap, packageMapping, mappingSchema, providedTypes, constraints, make(map[string][]reflect.Type), JavaNameStrategyMapping{}, generatedTypesPrefix)
 }
 
-func GenerateSchemaWithAllOptions(schemaId string, crdLists map[reflect.Type]CrdScope, typesDescriptors map[reflect.Type]*JSONObjectDescriptor, providedPackages map[string]string, manualTypeMap map[reflect.Type]string, packageMapping map[string]PackageInformation, mappingSchema map[string]string, providedTypes []ProvidedType, constraints map[reflect.Type]map[string]*Constraint, interfacesMapping map[string][]reflect.Type, generatedTypesPrefix string) string {
+func GenerateSchemaWithAllOptions(schemaId string, crdLists map[reflect.Type]CrdScope, typesDescriptors map[reflect.Type]*JSONObjectDescriptor, providedPackages map[string]string, manualTypeMap map[reflect.Type]string, packageMapping map[string]PackageInformation, mappingSchema map[string]string, providedTypes []ProvidedType, constraints map[reflect.Type]map[string]*Constraint, interfacesMapping map[string][]reflect.Type, javaNameStrategy JavaNameStrategyMapping, generatedTypesPrefix string) string {
 	g := &schemaGenerator{
 		crdLists:             crdLists,
 		types:                typesDescriptors,
@@ -76,6 +85,7 @@ func GenerateSchemaWithAllOptions(schemaId string, crdLists map[reflect.Type]Crd
 		constraints:          constraints,
 		generatedTypesPrefix: generatedTypesPrefix,
 		interfacesMapping:    interfacesMapping,
+		javaNameStrategy:     javaNameStrategy,
 	}
 	schema, err := g.generate(schemaId, crdLists)
 
@@ -186,6 +196,13 @@ func (g *schemaGenerator) javaType(t reflect.Type) string {
 
 	// follow pointer
 	t = g.resolvePointer(t)
+
+	if g.javaNameStrategy.NameMapping != nil {
+		found, ok := g.javaNameStrategy.NameMapping[t]
+		if ok {
+			return found
+		}
+	}
 
 	manualType, ok := g.manualTypeMap[t]
 	if ok {
@@ -670,6 +687,12 @@ func (g *schemaGenerator) adaptJavaClassName(className string) string {
 
 	// If the java name starts with a lowercase character, change it to uppercase
 	className = strings.Title(className)
+
+	// apply custom rules
+	if g.javaNameStrategy.CustomJavaNameRule != nil {
+		g.javaNameStrategy.CustomJavaNameRule(&packageName, &className)
+	}
+
 	return packageName + "." + className
 }
 
