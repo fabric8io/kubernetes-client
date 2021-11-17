@@ -104,10 +104,10 @@ body:
       label: Kubernetes API Server version
       description: Kubernetes API Server version
       options:
-        - "0.22.3@latest"
+        - "1.22.3@latest"
         - "next (development version)"
-        - "0.21.6"
-        - "0.20.12"
+        - "1.21.6"
+        - "1.20.12"
         - "other (please specify in additional context)"
     validations:
       required: true
