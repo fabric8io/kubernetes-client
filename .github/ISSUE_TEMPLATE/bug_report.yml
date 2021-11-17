@@ -101,17 +101,17 @@ body:
   - type: dropdown
     id: version
     attributes:
-      label: Kubectl version
-      description: Kubectl version
+      label: Kubernetes API Server version
+      description: Kubernetes API Server version
       options:
-        - "1.22.0@latest"
+        - "0.22.3@latest"
         - "next (development version)"
-        - "1.21.0"
-        - "1.20.0"
+        - "0.21.6"
+        - "0.20.12"
         - "other (please specify in additional context)"
     validations:
       required: true
-      
+
   - type: dropdown
     id: install-method
     attributes:
