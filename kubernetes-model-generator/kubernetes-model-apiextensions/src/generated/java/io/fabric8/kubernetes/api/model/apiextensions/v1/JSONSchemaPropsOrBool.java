@@ -24,7 +24,9 @@ import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
+import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.Accessors;
 
 @JsonSerialize(using = io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrBoolSerDe.Serializer.class)
 @JsonDeserialize(using = io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsOrBoolSerDe.Deserializer.class)
@@ -38,6 +40,11 @@ import lombok.ToString;
 })
 @ToString
 @EqualsAndHashCode
+@Setter
+@Accessors(prefix = {
+    "_",
+    ""
+})
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
     @BuildableReference(LabelSelector.class),

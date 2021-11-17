@@ -59,6 +59,7 @@ public class Pluralize implements UnaryOperator<String> {
     new StringReplace("(^analy)sis$", "$1sis"),
     new StringReplace("((a)naly|(b)a|(d)iagno|(p)arenthe|(p)rogno|(s)ynop|(t)he)ses$", "$1$2sis"),
     new StringReplace("([ti])um$", "$1a"),
+    new StringReplace("(prometheus)$", "$1es"),
     new StringReplace("(s|si|u)s$", "$1s")
   );
 

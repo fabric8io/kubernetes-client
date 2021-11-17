@@ -21,8 +21,8 @@ import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.http.TlsVersion;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.mockwebserver.Context;
-import io.fabric8.mockwebserver.ContextBuilder;
 import io.fabric8.mockwebserver.DefaultMockServer;
 import io.fabric8.mockwebserver.ServerRequest;
 import io.fabric8.mockwebserver.ServerResponse;
@@ -36,15 +36,14 @@ import java.util.Queue;
 // The class has moved under mvn:io.fabric8:kubernetes-server-mock in package: io.fabric8.client.server.mock
 public class KubernetesMockServer extends DefaultMockServer {
 
-    private static final Context context = new ContextBuilder()
-            .build();
+    private static final Context context = new Context(Serialization.jsonMapper());
 
     public KubernetesMockServer() {
         this(true);
     }
 
     public KubernetesMockServer(boolean useHttps) {
-        this(new MockWebServer(), new HashMap(), useHttps);
+        this(new MockWebServer(), new HashMap<>(), useHttps);
     }
 
     public KubernetesMockServer(MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses, boolean useHttps) {

@@ -22,18 +22,17 @@ import io.fabric8.kubernetes.client.http.TlsVersion;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.IOException;
 import java.util.Locale;
 
-public class MasterProtocolTest {
+class MasterProtocolTest {
 
     @Test
-    public void testWithSSL() throws IOException {
+    void testWithSSL() {
         KubernetesMockServer sslServer = new KubernetesMockServer();
         sslServer.init();
 
         String host = sslServer.getHostName();
-        Integer port = sslServer.getPort();
+        int port = sslServer.getPort();
         Config config = new ConfigBuilder()
                 .withMasterUrl(host + ":" +port)
                 .withTlsVersions(TlsVersion.TLS_1_2)
@@ -45,11 +44,11 @@ public class MasterProtocolTest {
     }
 
     @Test
-    public void testWithoutSSL() throws IOException {
+    void testWithoutSSL() {
         KubernetesMockServer plainServer = new KubernetesMockServer(false);
         plainServer.init();
         String host = plainServer.getHostName();
-        Integer port = plainServer.getPort();
+        int port = plainServer.getPort();
         Config config = new ConfigBuilder()
                 .withMasterUrl(host + ":" +port)
                 .build();

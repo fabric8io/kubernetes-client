@@ -13,23 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.fabric8.kubernetes.client.server.mock;
 
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.VersionInfo;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @EnableKubernetesMockClient(crud = true)
-public class KubernetesMockServerExtensionTests {
+class KubernetesMockServerExtensionTests {
 
-	KubernetesClient client;
+  KubernetesClient client;
 
-	@Test
-	void testExample() {
-		Assertions.assertNotNull(client);
+  @Test
+  void testExample() {
+    Assertions.assertNotNull(client);
     Assertions.assertNull(client.getConfiguration().getOauthToken());
     Assertions.assertNull(client.getConfiguration().getCurrentContext());
     Assertions.assertTrue(client.getConfiguration().getContexts().isEmpty());
-	}
+  }
+
+  @Test
+  @DisplayName("KubernetesMockServerExtension uses KubernetesMixedDispatcher and provides expectation for GET /version")
+  void testGetKubernetesVersion() {
+    // When
+    final VersionInfo result = client.getKubernetesVersion();
+    // Then
+    assertThat(result)
+      .hasFieldOrPropertyWithValue("major", "0")
+      .hasFieldOrPropertyWithValue("minor", "0");
+  }
 }

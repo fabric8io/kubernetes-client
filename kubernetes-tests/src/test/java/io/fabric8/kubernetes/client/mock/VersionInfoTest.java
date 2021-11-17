@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.VersionInfo;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
@@ -29,13 +30,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @EnableKubernetesMockClient
-public class VersionInfoTest {
+class VersionInfoTest {
 
   KubernetesMockServer server;
   KubernetesClient client;
 
+  @BeforeEach
+  void setUp() {
+    server.clearExpectations();
+  }
+
   @Test
-  public void testClusterVersioning() throws ParseException {
+  void testClusterVersioning() throws ParseException {
     server.expect().withPath("/version").andReturn(200, "{" +
       "    \"buildDate\": \"2018-03-01T14:27:17Z\"," +
       "    \"gitCommit\": \"e6301f88a8\"," +
@@ -54,7 +60,7 @@ public class VersionInfoTest {
   }
 
   @Test
-  public void testClusterVersioningWithMissingBuildDate() {
+  void testClusterVersioningWithMissingBuildDate() {
     server.expect().withPath("/version").andReturn(200, "{" +
       "    \"gitCommit\": \"e6301f88a8\"," +
       "    \"gitVersion\": \"v1.6.1+5115d708d7\"," +

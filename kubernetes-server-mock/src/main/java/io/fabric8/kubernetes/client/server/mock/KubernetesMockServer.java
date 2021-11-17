@@ -21,15 +21,15 @@ import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.http.TlsVersion;
+import io.fabric8.kubernetes.client.VersionInfo;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.mockwebserver.Context;
-import io.fabric8.mockwebserver.ContextBuilder;
 import io.fabric8.mockwebserver.DefaultMockServer;
 import io.fabric8.mockwebserver.ServerRequest;
 import io.fabric8.mockwebserver.ServerResponse;
+import io.fabric8.mockwebserver.internal.MockDispatcher;
 import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockWebServer;
-import okhttp3.mockwebserver.RecordedRequest;
 
 import java.net.InetAddress;
 import java.util.HashMap;
@@ -38,7 +38,10 @@ import java.util.Queue;
 
 public class KubernetesMockServer extends DefaultMockServer {
 
-    private static final Context context = new ContextBuilder().withMapper(Serialization.jsonMapper()).build();
+    private static final Context context = new Context(Serialization.jsonMapper());
+
+    private final Map<ServerRequest, Queue<ServerResponse>> responses;
+    private final VersionInfo versionInfo;
 
     public KubernetesMockServer() {
         this(true);
@@ -53,11 +56,24 @@ public class KubernetesMockServer extends DefaultMockServer {
     }
 
     public KubernetesMockServer(Context context, MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses, boolean useHttps) {
-        super(context, server, responses, useHttps);
+        this(context, server, responses, new MockDispatcher(responses), useHttps);
     }
 
     public KubernetesMockServer(Context context, MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses, Dispatcher dispatcher, boolean useHttps) {
+        this(context, server, responses, dispatcher, useHttps,
+          new VersionInfo.Builder().withMajor("0").withMinor("0").build());
+    }
+
+    public KubernetesMockServer(Context context, MockWebServer server, Map<ServerRequest, Queue<ServerResponse>> responses, Dispatcher dispatcher, boolean useHttps, VersionInfo versionInfo) {
         super(context, server, responses, dispatcher, useHttps);
+        this.responses = responses;
+        this.versionInfo = versionInfo;
+    }
+
+    @Override
+    public void onStart() {
+        expect().get().withPath("/").andReturn(200, new RootPathsBuilder().addToPaths(getRootPaths()).build()).always();
+        expect().get().withPath("/version").andReturn(200, versionInfo).always();
     }
 
     public void init() {
@@ -72,16 +88,6 @@ public class KubernetesMockServer extends DefaultMockServer {
         shutdown();
     }
 
-    @Override
-    public void onStart() {
-       expect().get().withPath("/").andReturn(200, new RootPathsBuilder().addToPaths(getRootPaths()).build()).always();
-    }
-    public RecordedRequest getLastRequest() throws InterruptedException {
-      int requestCount = this.getRequestCount();
-      RecordedRequest lastRequest = null;
-      while(requestCount--> 0)lastRequest = this.takeRequest();
-      return lastRequest;
-    }
     public String[] getRootPaths() {
         return new String[]{"/api", "/apis/extensions"};
     }
@@ -91,14 +97,21 @@ public class KubernetesMockServer extends DefaultMockServer {
         return new DefaultKubernetesClient(config);
     }
 
+
+  /**
+   * Removes all recorded expectations.
+   */
+  public void clearExpectations(){
+      responses.clear();
+    }
+
     protected Config getMockConfiguration() {
-        Config config = new ConfigBuilder(Config.empty())
+        return new ConfigBuilder(Config.empty())
                 .withMasterUrl(url("/"))
                 .withTrustCerts(true)
                 .withTlsVersions(TlsVersion.TLS_1_2)
                 .withNamespace("test")
                 .withHttp2Disable(true)
                 .build();
-        return config;
     }
 }

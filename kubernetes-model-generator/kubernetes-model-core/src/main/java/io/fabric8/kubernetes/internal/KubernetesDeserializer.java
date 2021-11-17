@@ -33,7 +33,6 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import io.fabric8.kubernetes.api.KubernetesResourceMappingProvider;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.HasMetadata;
@@ -45,13 +44,17 @@ import io.fabric8.kubernetes.model.util.Helper;
 
 public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource> {
 
+    private static final String TEMPLATE_CLASS_NAME = "io.fabric8.openshift.api.model.Template";
     private static final String KIND = "kind";
     private static final String API_VERSION = "apiVersion";
 
     private static final Mapping mapping = new Mapping();
 
-    // template deserialization can fail if unless we use generic resources
-    private static ThreadLocal<Boolean> IN_TEMPLATE = ThreadLocal.withInitial(() -> false);
+    private static final ThreadLocal<Boolean> IN_TEMPLATE = ThreadLocal.withInitial(() -> false);
+
+    public static boolean isInTemplate() {
+        return IN_TEMPLATE.get();
+    }
 
     @Override
     public KubernetesResource deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
@@ -87,23 +90,18 @@ public class KubernetesDeserializer extends JsonDeserializer<KubernetesResource>
             if (resourceType == null) {
               return jp.getCodec().treeToValue(node, GenericKubernetesResource.class);
             } else if (KubernetesResource.class.isAssignableFrom(resourceType)){
-                boolean inTemplate = IN_TEMPLATE.get();
-                if (!inTemplate && "io.fabric8.openshift.api.model.Template".equals(resourceType.getName())) {
-                    inTemplate = true;
-                    IN_TEMPLATE.set(true);
+              boolean inTemplate = false;
+              if (TEMPLATE_CLASS_NAME.equals(resourceType.getName())) {
+                inTemplate = true;
+                IN_TEMPLATE.set(true);
+              }
+              try {
+                return jp.getCodec().treeToValue(node, resourceType);
+              } finally {
+                if (inTemplate) {
+                  IN_TEMPLATE.remove();
                 }
-                try {
-                    return jp.getCodec().treeToValue(node, resourceType);
-                } catch (InvalidFormatException e) {
-                    if (!inTemplate) {
-                        throw e;
-                    }
-                    return jp.getCodec().treeToValue(node, GenericKubernetesResource.class);
-                } finally {
-                    if (inTemplate) {
-                        IN_TEMPLATE.remove();
-                    }
-                }
+              }
             }
         }
         return null;

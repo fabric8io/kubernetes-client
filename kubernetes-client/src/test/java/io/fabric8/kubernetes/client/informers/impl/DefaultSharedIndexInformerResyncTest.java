@@ -37,7 +37,6 @@ class DefaultSharedIndexInformerResyncTest {
   private abstract static class AbstractPodListerWatcher implements ListerWatcher<Pod, PodList> {};
   private static final Long WAIT_TIME = 500L;
   private final ListerWatcher<Pod, PodList> listerWatcher = Mockito.mock(AbstractPodListerWatcher.class, Mockito.RETURNS_DEEP_STUBS);
-  private final OperationContext operationContext = Mockito.mock(OperationContext.class, Mockito.RETURNS_DEEP_STUBS);
   DefaultSharedIndexInformer<Pod, PodList> defaultSharedIndexInformer;
 
   private DefaultSharedIndexInformer<Pod, PodList> createDefaultSharedIndexInformer(long resyncPeriod) {

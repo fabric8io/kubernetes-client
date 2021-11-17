@@ -1,18 +1,49 @@
 ## CHANGELOG
 
-### 5.10-SNAPSHOT
+### 5.11-SNAPSHOT
 
 #### Bugs
+* Fix #3538: Update Plural rule to work with Prometheus
 
 #### Improvements
 
 #### Dependency Upgrade
 
 #### New Features
-* Fix #3430: Support Vertical Pod Autoscaler
 
 #### _**Note**_: Breaking changes in the API
 
+### 5.10.1 (2021-11-12)
+
+#### Bugs
+* Fix #3583: Add KubernetesMockServer accessor to JUnit4 KubernetesServer rules
+* Fix #3584: Add GenericKubernetesResourceBuilder to Kubernetes Model Core
+
+### 5.10.0 (2021-11-11)
+
+#### Bugs
+* Fix #3408: quote pod upload file paths to support special chars
+* Fix #3561: ensure okhttp resources are closed
+* Fix #3570: added a setter for additionalProperties for proper builder support
+
+#### Improvements
+* Fix #3562: Kubernetes Mock Server improvements
+* Fix #3406: Add support for approve/deny CertificateSigningRequests
+* Fix #3460: support for deserializing templates with non-string params
+* Fix #3574: support for deserialization of properties that don't match the target field's type
+* Fix #3511: Improve selectors support in OperationContext
+
+#### Dependency Upgrade
+* Fix #3562: Bump MockWebServer
+
+#### New Features
+* Fix #3430: Support Vertical Pod Autoscaler
+
+#### _**Note**_: Breaking changes in the API
+##### Tools Changes:
+- Serialization: Those KubernetesResources that include entries in the additionalProperties Map that override a field
+  of the resource instance, will no longer be duplicated. The values present in the additionalProperties Map take
+  precedence.
 
 ### 5.9.0 (2021-10-14)
 
@@ -21,12 +52,12 @@
 * Fix #3353: addressing extra quoting in quantity serialization
 * Fix #3509: notify reader when something is written in ExecWebSocketListener
 * Fix #3501: addressed NPE with default BuildConfig operations
-* Fix #3408: quote pod upload file paths to support special chars
 
 #### Improvements
 * Fix #3448 added methods for getting specific version information - `KubernetesClient.getKubernetesVersion`, `OpenShiftClient.getOpenShiftV3Version`, and `OpenShiftClient.getOpenShiftV3Version`
 * Fix #3404 supporting generic resources in resource/resourceList with minimal metadata, as well as a new entry point `KubernetesClient.genericKubernetesResources(String apiVersion, String kind)`
 * Fix #3390: Make mock server support JSON_MERGE_PATCH
+* Fix #2171: Support BOOKMARK (Watcher) events
 
 #### New Features
 * Fix #3294: Support fetching APIGroupList

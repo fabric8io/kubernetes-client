@@ -18,8 +18,13 @@ package io.fabric8.kubernetes.jsonschema2pojo;
 import org.jsonschema2pojo.DefaultGenerationConfig;
 import org.jsonschema2pojo.Jackson2Annotator;
 import org.jsonschema2pojo.SchemaStore;
+import org.jsonschema2pojo.rules.Rule;
 import org.jsonschema2pojo.rules.RuleFactory;
 import org.jsonschema2pojo.util.NameHelper;
+import org.jsonschema2pojo.util.ParcelableHelper;
+
+import com.sun.codemodel.JPackage;
+import com.sun.codemodel.JType;
 
 public class Fabric8RuleFactory extends RuleFactory {
 
@@ -33,5 +38,10 @@ public class Fabric8RuleFactory extends RuleFactory {
   @Override
   public NameHelper getNameHelper() {
     return nameHelper;
+  }
+
+  @Override
+  public Rule<JPackage, JType> getObjectRule() {
+    return new Fabric8ObjectRule(this, new ParcelableHelper(), getReflectionHelper());
   }
 }

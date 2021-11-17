@@ -116,6 +116,26 @@ class GenericKubernetesResourceTest {
       .isNotEqualTo(gkr1);
   }
 
+  @Test
+  @DisplayName("builder should initialize GenericKubernetesResource")
+  void builder() {
+    // Given
+    GenericKubernetesResourceBuilder genericKubernetesResourceBuilder = new GenericKubernetesResourceBuilder()
+      .withApiVersion("the-cr.example.com/v1")
+      .withKind("SomeCustomResource")
+      .withNewMetadata().withName("foo").withNamespace("ns1").endMetadata();
+
+    // When
+    GenericKubernetesResource genericKubernetesResource = genericKubernetesResourceBuilder.build();
+
+    // Then
+    assertThat(genericKubernetesResource)
+      .hasFieldOrPropertyWithValue("kind", "SomeCustomResource")
+      .hasFieldOrPropertyWithValue("apiVersion", "the-cr.example.com/v1")
+      .hasFieldOrPropertyWithValue("metadata.namespace", "ns1")
+      .hasFieldOrPropertyWithValue("metadata.name", "foo");
+  }
+
   private static InputStream load(String resource) {
     return GenericKubernetesResource.class.getResourceAsStream("/generic-kubernetes-resource/" + resource);
   }

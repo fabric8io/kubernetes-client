@@ -37,30 +37,70 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import io.fabric8.kubernetes.client.utils.serialization.UnmatchedFieldTypeModule;
 import org.yaml.snakeyaml.Yaml;
 
 public class Serialization {
   private Serialization() { }
 
+  public static final UnmatchedFieldTypeModule UNMATCHED_FIELD_TYPE_MODULE = new UnmatchedFieldTypeModule();
+
   private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
   static {
-    JSON_MAPPER.registerModule(new JavaTimeModule());
+    JSON_MAPPER.registerModules(new JavaTimeModule(), UNMATCHED_FIELD_TYPE_MODULE);
   }
 
   private static final ObjectMapper YAML_MAPPER = new ObjectMapper(
     new YAMLFactory().disable(YAMLGenerator.Feature.USE_NATIVE_TYPE_ID)
   );
+  static {
+    YAML_MAPPER.registerModules(UNMATCHED_FIELD_TYPE_MODULE);
+  }
 
   private static final String DOCUMENT_DELIMITER = "---";
 
+  /**
+   * {@link ObjectMapper} singleton instance used internally by the Kubernetes client.
+   *
+   * <p> The ObjectMapper has an {@link UnmatchedFieldTypeModule} module registered. This module allows the client
+   * to work with Resources that contain properties that don't match the target field type. This is especially useful
+   * and necessary to work with OpenShift Templates.
+   *
+   * <p> n.b. the use of this module gives precedence to properties present in the additionalProperties Map present
+   * in most KubernetesResource instances. If a property is both defined in the Map and in the original field, the
+   * one from the additionalProperties Map will be serialized.
+   */
   public static ObjectMapper jsonMapper() {
     return JSON_MAPPER;
   }
 
+  /**
+   * {@link ObjectMapper} singleton instance used internally by the Kubernetes client.
+   *
+   * <p> The ObjectMapper has an {@link UnmatchedFieldTypeModule} module registered. This module allows the client
+   * to work with Resources that contain properties that don't match the target field type. This is especially useful
+   * and necessary to work with OpenShift Templates.
+   *
+   * <p> n.b. the use of this module gives precedence to properties present in the additionalProperties Map present
+   * in most KubernetesResource instances. If a property is both defined in the Map and in the original field, the
+   * one from the additionalProperties Map will be serialized.
+   */
   public static ObjectMapper yamlMapper() {
     return YAML_MAPPER;
   }
 
+  /**
+   * Returns a JSON representation of the given object.
+   *
+   * <p> If the provided object contains a JsonAnyGetter annotated method with a Map that contains an entry that
+   * overrides a field of the provided object, the Map entry will take precedence upon serialization. Properties won't
+   * be duplicated.
+   *
+   * @param object the object to serialize.
+   * @param <T> the type of the object being serialized.
+   * @return a String containing a JSON representation of the provided object.
+   */
   public static <T> String asJson(T object) {
     try {
       return JSON_MAPPER.writeValueAsString(object);
@@ -69,6 +109,17 @@ public class Serialization {
     }
   }
 
+  /**
+   * Returns a YAML representation of the given object.
+   *
+   * <p> If the provided object contains a JsonAnyGetter annotated method with a Map that contains an entry that
+   * overrides a field of the provided object, the Map entry will take precedence upon serialization. Properties won't
+   * be duplicated.
+   *
+   * @param object the object to serialize.
+   * @param <T> the type of the object being serialized.
+   * @return a String containing a JSON representation of the provided object.
+   */
   public static <T> String asYaml(T object) {
     try {
       return YAML_MAPPER.writeValueAsString(object);
@@ -144,7 +195,7 @@ public class Serialization {
       throw KubernetesClientException.launderThrowable(e);
     }
   }
-  
+
   /**
    * Unmarshals a {@link String}
    * @param str   The {@link String}.
@@ -326,7 +377,7 @@ public class Serialization {
     }
     return JSON_MAPPER.readerFor(KubernetesResource.class).readValue(jsonString);
   }
-  
+
   /**
    * Create a copy of the resource via serialization.
    * @return a deep clone of the resource
