@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.volcano.test;
+package io.fabric8.volcano.test.crud;
 import io.fabric8.volcano.client.VolcanoClient;
 import io.fabric8.volcano.scheduling.v1beta1.*;
 import io.fabric8.volcano.scheduling.v1beta1.PodGroupBuilder;

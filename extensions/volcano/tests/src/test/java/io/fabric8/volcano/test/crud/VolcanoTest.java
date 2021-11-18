@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.volcano.test;
+package io.fabric8.volcano.test.crud;
 import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.QuantityBuilder;
 import io.fabric8.volcano.client.VolcanoClient;

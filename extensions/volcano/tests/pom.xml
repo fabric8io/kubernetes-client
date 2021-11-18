@@ -32,19 +32,14 @@
   <dependencies>
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-client</artifactId>
+      <artifactId>volcano-client</artifactId>
+      <version>${project.version}</version>
     </dependency>
 
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>volcano-server-mock</artifactId>
       <version>${project.version}</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>mockwebserver</artifactId>
       <scope>test</scope>
     </dependency>
 
@@ -58,12 +53,6 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
       <version>${slf4j.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>volcano-model-v1beta1</artifactId>
-      <version>5.11-SNAPSHOT</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

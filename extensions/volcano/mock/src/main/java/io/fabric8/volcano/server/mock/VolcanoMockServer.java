@@ -48,7 +48,7 @@ public class VolcanoMockServer extends KubernetesMockServer {
 
   @Override
   public String[] getRootPaths() {
-    return new String[]{"/api", "/apis/scheduling.k8s.io/v1beta1"};
+    return new String[]{"/api", "/apis/scheduling.k8s.io"};
   }
 
   public NamespacedVolcanoClient createVolcano() {
