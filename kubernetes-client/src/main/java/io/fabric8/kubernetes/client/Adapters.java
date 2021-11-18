@@ -16,7 +16,6 @@
 
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.client.http.HttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,31 +35,9 @@ public final class Adapters {
   private static final Set<ClassLoader> CLASS_LOADERS = new HashSet<>();
   private static final Map<Class, ExtensionAdapter> EXTENSION_ADAPTER_MAP = new HashMap<>();
 
-  private static final ExtensionAdapter<HttpClient> OK_HTTP_CLIENT_EXTENSION_ADAPTER = new ExtensionAdapter<HttpClient>() {
-
-    @Override
-    public Class<HttpClient> getExtensionType() {
-      return HttpClient.class;
-    }
-
-    @Override
-    public Boolean isAdaptable(Client client) {
-      return client instanceof HttpClientAware;
-    }
-
-    @Override
-    public HttpClient adapt(Client client) {
-      if (client instanceof HttpClientAware) {
-        return ((HttpClientAware)client).getHttpClient().newBuilder().build();
-      }
-      throw new IllegalArgumentException("This adapter only supports instances of HttpClientAware.");
-    }
-  };
-
   static {
     //Register adapters
     discoverServices(Adapters.class.getClassLoader());
-    register(OK_HTTP_CLIENT_EXTENSION_ADAPTER);
   }
 
   private Adapters() {

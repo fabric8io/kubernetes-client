@@ -21,11 +21,12 @@ import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
-import io.fabric8.kubernetes.client.http.HttpClient;
-import io.fabric8.kubernetes.client.utils.Utils;
+import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.utils.URLUtils.URLBuilder;
+import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.api.model.ProjectRequest;
 import io.fabric8.openshift.client.OpenShiftConfig;
+import io.fabric8.openshift.client.OpenshiftClientState;
 import io.fabric8.openshift.client.dsl.ProjectRequestOperation;
 
 import java.io.IOException;
@@ -37,8 +38,8 @@ import static io.fabric8.openshift.client.OpenShiftAPIGroups.PROJECT;
 // TODO: Check why this class does not extend OpenshiftOperation, then the getRoot method can be removed
 public class ProjectRequestsOperationImpl extends OperationSupport implements ProjectRequestOperation {
 
-  public ProjectRequestsOperationImpl(HttpClient client, OpenShiftConfig config) {
-    this(new OperationContext().withHttpClient(client).withConfig(config));
+  public ProjectRequestsOperationImpl(OpenshiftClientState clientState) {
+    this(HasMetadataOperationsImpl.defaultContext(clientState));
   }
 
   public ProjectRequestsOperationImpl(OperationContext context) {

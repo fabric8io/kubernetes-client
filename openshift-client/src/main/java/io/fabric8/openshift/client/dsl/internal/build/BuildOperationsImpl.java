@@ -26,15 +26,15 @@ import io.fabric8.kubernetes.client.dsl.PrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.TailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.TimeTailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.LogWatchCallback;
-import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.internal.PatchUtils;
 import io.fabric8.kubernetes.client.utils.PodOperationUtil;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildBuilder;
 import io.fabric8.openshift.api.model.BuildList;
-import io.fabric8.openshift.client.OpenShiftConfig;
+import io.fabric8.openshift.client.OpenshiftClientState;
 import io.fabric8.openshift.client.dsl.BuildResource;
 import io.fabric8.openshift.client.dsl.internal.BuildOperationContext;
 import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
@@ -67,8 +67,8 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList,
   private Integer podLogWaitTimeout;
   private final BuildOperationContext buildOperationContext;
 
-  public BuildOperationsImpl(HttpClient client, OpenShiftConfig config) {
-    this(new BuildOperationContext(), new OperationContext().withHttpClient(client).withConfig(config));
+  public BuildOperationsImpl(OpenshiftClientState clientState) {
+    this(new BuildOperationContext(), HasMetadataOperationsImpl.defaultContext(clientState));
   }
 
   public BuildOperationsImpl(BuildOperationContext context, OperationContext superContext) {
@@ -160,8 +160,8 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList,
       // In case of Build we directly get logs at Build Url, but we need to wait for Pods
       waitUntilBuildPodBecomesReady(fromServer().get());
       URL url = new URL(URLUtils.join(getResourceUrl().toString(), getLogParameters() + "&follow=true"));
-      final LogWatchCallback callback = new LogWatchCallback(config, out);
-      return callback.callAndWait(client, url);
+      final LogWatchCallback callback = new LogWatchCallback(this.config, out);
+      return callback.callAndWait(this.httpClient, url);
     } catch (IOException t) {
       throw KubernetesClientException.launderThrowable(forOperationType("watchLog"), t);
     }

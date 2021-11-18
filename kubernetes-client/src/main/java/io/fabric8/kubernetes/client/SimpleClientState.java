@@ -13,26 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.client.dsl.AuthorizationAPIGroupDSL;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
-public class AuthorizationAPIGroupClient extends BaseClient implements AuthorizationAPIGroupDSL {
-  public AuthorizationAPIGroupClient() {
-    super();
+public class SimpleClientState implements ClientState {
+  
+  protected Config config;
+  protected HttpClient httpClient;
+  
+  public SimpleClientState() {
+    
   }
 
-  public AuthorizationAPIGroupClient(ClientState clientState) {
-    super(clientState);
+  public SimpleClientState(Config config, HttpClient httpClient) {
+    this.config = config;
+    this.httpClient = httpClient;
   }
 
   @Override
-  public V1AuthorizationAPIGroupDSL v1() {
-    return adapt(V1AuthorizationAPIGroupClient.class);
+  public Config getConfiguration() {
+    return config;
   }
 
   @Override
-  public V1beta1AuthorizationAPIGroupDSL v1beta1() {
-    return adapt(V1beta1AuthorizationAPIGroupClient.class);
+  public HttpClient getHttpClient() {
+    return httpClient;
   }
 }

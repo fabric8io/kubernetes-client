@@ -21,24 +21,24 @@ import io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequest
 import io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestList;
 import io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestStatus;
 import io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestStatusBuilder;
-import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ClientState;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.CertificateSigningRequestResource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 
 import java.io.IOException;
 
 public class CertificateSigningRequestOperationsImpl extends HasMetadataOperation<CertificateSigningRequest, CertificateSigningRequestList, CertificateSigningRequestResource<CertificateSigningRequest>> implements CertificateSigningRequestResource<CertificateSigningRequest> {
-  public CertificateSigningRequestOperationsImpl(HttpClient client, Config config) {
-    this(client, config, null);
+  public CertificateSigningRequestOperationsImpl(ClientState clientState) {
+    this(clientState, null);
   }
 
-  public CertificateSigningRequestOperationsImpl(HttpClient client, Config config, String namespace) {
-    this(new OperationContext().withHttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
+  public CertificateSigningRequestOperationsImpl(ClientState clientState, String namespace) {
+    this(HasMetadataOperationsImpl.defaultContext(clientState).withNamespace(namespace));
   }
 
   public CertificateSigningRequestOperationsImpl(OperationContext context) {
@@ -68,7 +68,7 @@ public class CertificateSigningRequestOperationsImpl extends HasMetadataOperatio
       CertificateSigningRequest fromServerCsr = fromServer().get();
       fromServerCsr.setStatus(createCertificateSigningRequestStatus(csrCondition));
       String uri = URLUtils.join(getResourceUrl(null, fromServerCsr.getMetadata().getName(), false).toString(), "approval");
-      HttpRequest.Builder requestBuilder = client.newHttpRequestBuilder().put(JSON, JSON_MAPPER.writeValueAsString(fromServerCsr)).uri(uri);
+      HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder().put(JSON, JSON_MAPPER.writeValueAsString(fromServerCsr)).uri(uri);
       return handleResponse(requestBuilder, CertificateSigningRequest.class);
     } catch (InterruptedException ie) {
       Thread.currentThread().interrupt();

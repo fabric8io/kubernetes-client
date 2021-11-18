@@ -15,33 +15,31 @@
  */
 package io.fabric8.openshift.client;
 
-import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ClientState;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.openshift.api.model.whereabouts.v1alpha1.IPPool;
 import io.fabric8.openshift.api.model.whereabouts.v1alpha1.IPPoolList;
 import io.fabric8.openshift.api.model.whereabouts.v1alpha1.OverlappingRangeIPReservation;
 import io.fabric8.openshift.api.model.whereabouts.v1alpha1.OverlappingRangeIPReservationList;
 import io.fabric8.openshift.client.dsl.OpenShiftWhereaboutsAPIGroupDSL;
 
-public class OpenShiftWhereaboutsAPIGroupClient  extends BaseClient implements OpenShiftWhereaboutsAPIGroupDSL {
+public class OpenShiftWhereaboutsAPIGroupClient  extends BaseOpenShiftClient implements OpenShiftWhereaboutsAPIGroupDSL {
   public OpenShiftWhereaboutsAPIGroupClient() {
     super();
   }
 
-  public OpenShiftWhereaboutsAPIGroupClient(HttpClient httpClient, final Config config) {
-    super(httpClient, config);
+  public OpenShiftWhereaboutsAPIGroupClient(ClientState clientState) {
+    super(clientState);
   }
 
   @Override
   public MixedOperation<IPPool, IPPoolList, Resource<IPPool>> ippools() {
-    return OpenShiftHandlers.getOperation(IPPool.class, IPPoolList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(IPPool.class, IPPoolList.class, this);
   }
 
   @Override
   public MixedOperation<OverlappingRangeIPReservation, OverlappingRangeIPReservationList, Resource<OverlappingRangeIPReservation>> overlappingRangeIpReservations() {
-    return OpenShiftHandlers.getOperation(OverlappingRangeIPReservation.class, OverlappingRangeIPReservationList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(OverlappingRangeIPReservation.class, OverlappingRangeIPReservationList.class, this);
   }
 }

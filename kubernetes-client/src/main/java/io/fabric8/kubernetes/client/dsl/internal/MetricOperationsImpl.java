@@ -15,12 +15,10 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ClientState;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Nameable;
-import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
-import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.URLUtils.URLBuilder;
 
@@ -37,8 +35,8 @@ public class MetricOperationsImpl<T, L> extends OperationSupport implements Name
   private final String configuredName;
   private final Map<String, String> configuredLabels;
 
-  public MetricOperationsImpl(HttpClient client, Config config, String configuredName, String configuredNamespace, String plural, Map<String, String> configuredLabels, Class<T> apiTypeClass, Class<L> apiTypeListClass) {
-    super(new OperationContext().withHttpClient(client).withConfig(config));
+  public MetricOperationsImpl(ClientState client, String configuredName, String configuredNamespace, String plural, Map<String, String> configuredLabels, Class<T> apiTypeClass, Class<L> apiTypeListClass) {
+    super(HasMetadataOperationsImpl.defaultContext(client));
     this.plural = plural;
     this.apiTypeClass = apiTypeClass;
     this.apiTypeListClass = apiTypeListClass;
@@ -49,7 +47,7 @@ public class MetricOperationsImpl<T, L> extends OperationSupport implements Name
 
   @Override
   public MetricOperationsImpl<T, L> withName(String name) {
-    return new MetricOperationsImpl<>(client, config, name, configuredNamespace, plural, configuredLabels, apiTypeClass, apiTypeListClass);
+    return new MetricOperationsImpl<>(this, name, configuredNamespace, plural, configuredLabels, apiTypeClass, apiTypeListClass);
   }
 
   /**
@@ -59,7 +57,7 @@ public class MetricOperationsImpl<T, L> extends OperationSupport implements Name
    * @return {@link MetricOperationsImpl} with which you can call metrics() for getting filtered Metrics
    */
   public MetricOperationsImpl<T, L> withLabels(Map<String, String> labels) {
-    return new MetricOperationsImpl<>(client, config, name, configuredNamespace, plural, labels, apiTypeClass, apiTypeListClass);
+    return new MetricOperationsImpl<>(this, name, configuredNamespace, plural, labels, apiTypeClass, apiTypeListClass);
   }
 
   /**

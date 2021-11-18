@@ -15,33 +15,31 @@
  */
 package io.fabric8.openshift.client;
 
-import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ClientState;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.openshift.api.model.AppliedClusterResourceQuota;
 import io.fabric8.openshift.api.model.AppliedClusterResourceQuotaList;
 import io.fabric8.openshift.api.model.ClusterResourceQuota;
 import io.fabric8.openshift.api.model.ClusterResourceQuotaList;
 import io.fabric8.openshift.client.dsl.OpenShiftQuotaAPIGroupDSL;
 
-public class OpenShiftQuotaAPIGroupClient extends BaseClient implements OpenShiftQuotaAPIGroupDSL {
+public class OpenShiftQuotaAPIGroupClient extends BaseOpenShiftClient implements OpenShiftQuotaAPIGroupDSL {
   public OpenShiftQuotaAPIGroupClient() {
     super();
   }
 
-  public OpenShiftQuotaAPIGroupClient(HttpClient httpClient, final Config config) {
-    super(httpClient, config);
+  public OpenShiftQuotaAPIGroupClient(ClientState clientState) {
+    super(clientState);
   }
 
   @Override
   public MixedOperation<AppliedClusterResourceQuota, AppliedClusterResourceQuotaList, Resource<AppliedClusterResourceQuota>> appliedClusterResourceQuotas() {
-    return OpenShiftHandlers.getOperation(AppliedClusterResourceQuota.class, AppliedClusterResourceQuotaList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(AppliedClusterResourceQuota.class, AppliedClusterResourceQuotaList.class, this);
   }
 
   @Override
   public MixedOperation<ClusterResourceQuota, ClusterResourceQuotaList, Resource<ClusterResourceQuota>> clusterResourceQuotas() {
-    return OpenShiftHandlers.getOperation(ClusterResourceQuota.class, ClusterResourceQuotaList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(ClusterResourceQuota.class, ClusterResourceQuotaList.class, this);
   }
 }

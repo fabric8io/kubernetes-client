@@ -26,7 +26,6 @@ import io.fabric8.kubernetes.client.dsl.ScalableResource;
 import io.fabric8.kubernetes.client.dsl.V1BatchAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1beta1BatchAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.internal.batch.v1beta1.CronJobOperationsImpl;
-import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.dsl.internal.batch.v1.JobOperationsImpl;
 
 public class BatchAPIGroupClient extends BaseClient implements BatchAPIGroupDSL {
@@ -35,18 +34,18 @@ public class BatchAPIGroupClient extends BaseClient implements BatchAPIGroupDSL 
     super();
   }
 
-  public BatchAPIGroupClient(HttpClient httpClient, final Config config) {
-    super(httpClient, config);
+  public BatchAPIGroupClient(ClientState clientState) {
+    super(clientState);
   }
 
   @Override
   public MixedOperation<Job, JobList, ScalableResource<Job>> jobs() {
-    return new JobOperationsImpl(httpClient, getConfiguration());
+    return new JobOperationsImpl(this);
   }
 
   @Override
   public MixedOperation<CronJob, CronJobList, Resource<CronJob>> cronjobs() {
-    return new CronJobOperationsImpl(httpClient, getConfiguration());
+    return new CronJobOperationsImpl(this);
   }
 
   @Override

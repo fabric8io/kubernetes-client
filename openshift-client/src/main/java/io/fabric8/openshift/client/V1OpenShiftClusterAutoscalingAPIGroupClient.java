@@ -15,26 +15,24 @@
  */
 package io.fabric8.openshift.client;
 
-import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ClientState;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.openshift.api.model.clusterautoscaling.v1.ClusterAutoscaler;
 import io.fabric8.openshift.api.model.clusterautoscaling.v1.ClusterAutoscalerList;
 import io.fabric8.openshift.client.dsl.V1ClusterAutoscalingAPIGroupDSL;
 
-public class V1OpenShiftClusterAutoscalingAPIGroupClient extends BaseClient implements V1ClusterAutoscalingAPIGroupDSL {
+public class V1OpenShiftClusterAutoscalingAPIGroupClient extends BaseOpenShiftClient implements V1ClusterAutoscalingAPIGroupDSL {
   public V1OpenShiftClusterAutoscalingAPIGroupClient() {
     super();
   }
 
-  public V1OpenShiftClusterAutoscalingAPIGroupClient(HttpClient httpClient, final Config config) {
-    super(httpClient, config);
+  public V1OpenShiftClusterAutoscalingAPIGroupClient(ClientState clientState) {
+    super(clientState);
   }
 
   @Override
   public NonNamespaceOperation<ClusterAutoscaler, ClusterAutoscalerList, Resource<ClusterAutoscaler>> clusterAutoscalers() {
-    return OpenShiftHandlers.getOperation(ClusterAutoscaler.class, ClusterAutoscalerList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(ClusterAutoscaler.class, ClusterAutoscalerList.class, this);
   }
 }

@@ -43,6 +43,10 @@ public class DefaultKubernetesClient extends BaseKubernetesClient<NamespacedKube
   public DefaultKubernetesClient(HttpClient httpClient, Config config) {
     super(httpClient, config);
   }
+  
+  public DefaultKubernetesClient(ClientState clientState) {
+    super(clientState);
+  }
 
   public static DefaultKubernetesClient fromConfig(String config) {
     return new DefaultKubernetesClient(Serialization.unmarshal(config, Config.class));
@@ -55,7 +59,7 @@ public class DefaultKubernetesClient extends BaseKubernetesClient<NamespacedKube
   @Override
   public NamespacedKubernetesClient inNamespace(String name) {
     Config updated = new ConfigBuilder(getConfiguration()).withNamespace(name).build();
-    return new DefaultKubernetesClient(httpClient, updated);
+    return new DefaultKubernetesClient(newState(updated));
   }
 
   @Override

@@ -28,6 +28,7 @@ import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.SimpleClientState;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
@@ -53,7 +54,7 @@ import java.util.Map;
 
 import static io.fabric8.kubernetes.client.internal.PatchUtils.patchMapper;
 
-public class OperationSupport {
+public class OperationSupport extends SimpleClientState {
 
   public static final String JSON = "application/json";
   public static final String JSON_PATCH = "application/json-patch+json";
@@ -67,8 +68,6 @@ public class OperationSupport {
   private static final int maxRetryIntervalExponent = 5;
 
   protected OperationContext context;
-  protected final HttpClient client;
-  protected final Config config;
   protected final String resourceT;
   protected String namespace;
   protected String name;
@@ -86,13 +85,9 @@ public class OperationSupport {
     this(new OperationContext().withHttpClient(client).withConfig(config));
   }
 
-  public OperationSupport(HttpClient client, Config config, String namespace, DeletionPropagation propagationPolicy, long gracePeriodInSeconds) {
-    this(new OperationContext().withHttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(propagationPolicy).withGracePeriodSeconds(gracePeriodInSeconds));
-  }
-
   public OperationSupport(OperationContext ctx) {
     this.context = ctx;
-    this.client = ctx.getClient();
+    this.httpClient = ctx.getClient();
     this.config = ctx.getConfig();
     this.resourceT = ctx.getPlural();
     this.namespace = ctx.getNamespace();
@@ -256,7 +251,7 @@ public class OperationSupport {
   }
 
   protected <T> T handleMetric(String resourceUrl, Class<T> type) throws InterruptedException, IOException {
-      HttpRequest.Builder requestBuilder = client.newHttpRequestBuilder()
+      HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
         .uri(resourceUrl);
       return handleResponse(requestBuilder, type);
   }
@@ -286,7 +281,7 @@ public class OperationSupport {
       deleteOptions.setDryRun(Collections.singletonList("All"));
     }
 
-    HttpRequest.Builder requestBuilder = client.newHttpRequestBuilder().delete(JSON, JSON_MAPPER.writeValueAsString(deleteOptions)).url(requestUrl);
+    HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder().delete(JSON, JSON_MAPPER.writeValueAsString(deleteOptions)).url(requestUrl);
     handleResponse(requestBuilder, null, Collections.<String, String>emptyMap());
   }
 
@@ -304,7 +299,7 @@ public class OperationSupport {
    * @throws IOException IOException
    */
   protected <T, I> T handleCreate(I resource, Class<T> outputType) throws InterruptedException, IOException {
-    HttpRequest.Builder requestBuilder = client.newHttpRequestBuilder().post(JSON, JSON_MAPPER.writeValueAsString(resource)).url(getResourceURLForWriteOperation(getResourceUrl(checkNamespace(resource), null)));
+    HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder().post(JSON, JSON_MAPPER.writeValueAsString(resource)).url(getResourceURLForWriteOperation(getResourceUrl(checkNamespace(resource), null)));
     return handleResponse(requestBuilder, outputType, Collections.<String, String>emptyMap());
   }
 
@@ -339,7 +334,7 @@ public class OperationSupport {
    * @throws IOException IOException
    */
   protected <T> T handleUpdate(T updated, Class<T> type, Map<String, String> parameters, boolean status) throws InterruptedException, IOException {
-    HttpRequest.Builder requestBuilder = client.newHttpRequestBuilder()
+    HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
         .put(JSON, JSON_MAPPER.writeValueAsString(updated))
         .url(getResourceURLForWriteOperation(getResourceUrl(checkNamespace(updated), checkName(updated), status)));
     return handleResponse(requestBuilder, type, parameters);
@@ -407,7 +402,7 @@ public class OperationSupport {
    */
   protected <T> T handlePatch(PatchContext patchContext, T current, String patchForUpdate, Class<T> type, boolean status) throws InterruptedException, IOException {
     String bodyContentType = getContentTypeFromPatchContextOrDefault(patchContext);
-    HttpRequest.Builder requestBuilder = client.newHttpRequestBuilder().patch(bodyContentType, patchForUpdate).url(getResourceURLForPatchOperation(getResourceUrl(checkNamespace(current), checkName(current), status), patchContext));
+    HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder().patch(bodyContentType, patchForUpdate).url(getResourceURLForPatchOperation(getResourceUrl(checkNamespace(current), checkName(current), status), patchContext));
     return handleResponse(requestBuilder, type, Collections.emptyMap());
   }
 
@@ -421,7 +416,7 @@ public class OperationSupport {
    * @throws IOException in some other I/O problem
    */
   protected Scale handleScale(String resourceUrl, Scale scale) throws InterruptedException, IOException {
-    HttpRequest.Builder requestBuilder = client.newHttpRequestBuilder().uri(resourceUrl + "/scale");
+    HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder().uri(resourceUrl + "/scale");
     if (scale != null) {
       requestBuilder.put(JSON, JSON_MAPPER.writeValueAsString(scale));
     }
@@ -438,7 +433,7 @@ public class OperationSupport {
    * @throws IOException in some other I/O problem
    */
   protected Status handleDeploymentRollback(String resourceUrl, DeploymentRollback deploymentRollback) throws InterruptedException, IOException {
-    HttpRequest.Builder requestBuilder = client.newHttpRequestBuilder().uri(resourceUrl + "/rollback").post(JSON, JSON_MAPPER.writeValueAsString(deploymentRollback));
+    HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder().uri(resourceUrl + "/rollback").post(JSON, JSON_MAPPER.writeValueAsString(deploymentRollback));
     return handleResponse(requestBuilder, Status.class);
   }
 
@@ -463,9 +458,9 @@ public class OperationSupport {
    * NOTE: Currently does not utilize the retry logic
    */
   protected <T> T handleRawGet(URL resourceUrl, Class<T> type) throws IOException{
-    HttpRequest.Builder requestBuilder = client.newHttpRequestBuilder().url(resourceUrl);
+    HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder().url(resourceUrl);
     HttpRequest request = requestBuilder.build();
-    HttpResponse<T> response = client.send(request, type);
+    HttpResponse<T> response = httpClient.send(request, type);
     assertResponseCode(request, response);
     return response.body();
   }
@@ -483,7 +478,7 @@ public class OperationSupport {
    * @throws IOException IOException
    */
   protected <T> T handleGet(URL resourceUrl, Class<T> type, Map<String, String> parameters) throws InterruptedException, IOException {
-    HttpRequest.Builder requestBuilder = client.newHttpRequestBuilder().url(resourceUrl);
+    HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder().url(resourceUrl);
     return handleResponse(requestBuilder, type, parameters);
   }
 
@@ -515,7 +510,7 @@ public class OperationSupport {
    * @throws IOException IOException
    */
   protected <T> T handleResponse(HttpRequest.Builder requestBuilder, Class<T> type, Map<String, String> parameters) throws InterruptedException, IOException {
-    return handleResponse(client, requestBuilder, type, parameters);
+    return handleResponse(httpClient, requestBuilder, type, parameters);
   }
 
   /**
@@ -763,7 +758,7 @@ public class OperationSupport {
       if (path != null && path.length > 0) {
         url = URLUtils.join(url, URLUtils.pathJoin(path));
       }
-      HttpRequest.Builder req = client.newHttpRequestBuilder().uri(url);
+      HttpRequest.Builder req = httpClient.newHttpRequestBuilder().uri(url);
       return handleResponse(req, result);
     } catch (KubernetesClientException e) {
       if (e.getCode() != HttpURLConnection.HTTP_NOT_FOUND) {

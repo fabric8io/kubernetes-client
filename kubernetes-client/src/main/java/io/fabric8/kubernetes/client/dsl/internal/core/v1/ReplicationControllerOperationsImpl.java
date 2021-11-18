@@ -21,18 +21,18 @@ import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerList;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
-import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ClientState;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.kubernetes.client.utils.PodOperationUtil;
+import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.RollingOperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.RollableScalableResourceOperation;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.RollingUpdater;
-import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.utils.PodOperationUtil;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -46,12 +46,12 @@ import java.util.concurrent.TimeUnit;
 public class ReplicationControllerOperationsImpl extends RollableScalableResourceOperation<ReplicationController, ReplicationControllerList, RollableScalableResource<ReplicationController>>
   implements TimeoutImageEditReplacePatchable<ReplicationController> {
 
-  public ReplicationControllerOperationsImpl(HttpClient client, Config config) {
-    this(client, config, null);
+  public ReplicationControllerOperationsImpl(ClientState clientState) {
+    this(clientState, null);
   }
 
-  public ReplicationControllerOperationsImpl(HttpClient client, Config config, String namespace) {
-    this(new RollingOperationContext(), new OperationContext().withHttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
+  public ReplicationControllerOperationsImpl(ClientState clientState, String namespace) {
+    this(new RollingOperationContext(), HasMetadataOperationsImpl.defaultContext(clientState).withNamespace(namespace));
   }
 
   public ReplicationControllerOperationsImpl(RollingOperationContext context, OperationContext superContext) {
@@ -81,7 +81,7 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
 
   @Override
   public RollingUpdater<ReplicationController, ReplicationControllerList> getRollingUpdater(long rollingTimeout, TimeUnit rollingTimeUnit) {
-    return new ReplicationControllerRollingUpdater(client, config, namespace, rollingTimeUnit.toMillis(rollingTimeout), config.getLoggingInterval());
+    return new ReplicationControllerRollingUpdater(this, namespace, rollingTimeUnit.toMillis(rollingTimeout), config.getLoggingInterval());
   }
 
   @Override

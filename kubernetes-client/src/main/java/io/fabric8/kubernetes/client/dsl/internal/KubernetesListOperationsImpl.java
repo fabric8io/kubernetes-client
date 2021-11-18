@@ -15,23 +15,22 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import io.fabric8.kubernetes.client.dsl.KubernetesListMixedOperation;
-import io.fabric8.kubernetes.client.dsl.KubernetesListOperation;
-import io.fabric8.kubernetes.client.dsl.Loadable;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ClientState;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.ResourceHandler;
-import io.fabric8.kubernetes.client.dsl.KubernetesListNonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Createable;
 import io.fabric8.kubernetes.client.dsl.Gettable;
+import io.fabric8.kubernetes.client.dsl.KubernetesListMixedOperation;
+import io.fabric8.kubernetes.client.dsl.KubernetesListNonNamespaceOperation;
+import io.fabric8.kubernetes.client.dsl.KubernetesListOperation;
+import io.fabric8.kubernetes.client.dsl.Loadable;
 import io.fabric8.kubernetes.client.dsl.RecreateFromServerGettable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.utils.Serialization;
 
 import java.io.File;
@@ -53,8 +52,8 @@ public class KubernetesListOperationsImpl
   private final boolean deletingExisting;
   private final OperationContext context;
 
-  public KubernetesListOperationsImpl(HttpClient client, Config config) {
-    this.context = HasMetadataOperationsImpl.defaultContext(new OperationContext(), client, config);
+  public KubernetesListOperationsImpl(ClientState clientState) {
+    this.context = HasMetadataOperationsImpl.defaultContext(clientState);
     this.deletingExisting = false;
   }
   
@@ -127,7 +126,7 @@ public class KubernetesListOperationsImpl
 
   private Resource<HasMetadata> getResource(HasMetadata resource) {
     ResourceHandler<HasMetadata, ?> handler = NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl.handlerOf(resource, new BaseClient(this.context.getClient(), this.context.getConfig()));
-    return handler.operation(context.getClient(), context.getConfig(), null).newInstance(context.withItem(resource));
+    return handler.operation(this.context, null).newInstance(context.withItem(resource));
   }
 
   @Override

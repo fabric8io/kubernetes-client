@@ -18,17 +18,17 @@ package io.fabric8.openshift.client.dsl.internal.config;
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.openshift.api.model.DNS;
 import io.fabric8.openshift.api.model.DNSBuilder;
 import io.fabric8.openshift.api.model.DNSList;
-import io.fabric8.openshift.client.OpenShiftConfig;
+import io.fabric8.openshift.client.OpenshiftClientState;
 import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
 
 public class DNSOperationsImpl extends OpenShiftOperation<DNS, DNSList, Resource<DNS>> {
 
-  public DNSOperationsImpl(HttpClient client, OpenShiftConfig config) {
-    this(new OperationContext().withHttpClient(client).withConfig(config).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
+  public DNSOperationsImpl(OpenshiftClientState clientState) {
+    this(HasMetadataOperationsImpl.defaultContext(clientState));
   }
 
   public DNSOperationsImpl(OperationContext context) {

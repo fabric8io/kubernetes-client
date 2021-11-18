@@ -22,24 +22,23 @@ import io.fabric8.kubernetes.api.model.PodTemplateList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.V1APIGroupDSL;
-import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class V1APIGroupClient extends BaseClient implements V1APIGroupDSL {
   public V1APIGroupClient() {
     super();
   }
 
-  public V1APIGroupClient(HttpClient httpClient, final Config config) {
-    super(httpClient, config);
+  public V1APIGroupClient(ClientState clientState) {
+    super(clientState);
   }
 
   @Override
   public MixedOperation<PodTemplate, PodTemplateList, Resource<PodTemplate>> podTemplates() {
-    return Handlers.getOperation(PodTemplate.class, PodTemplateList.class, httpClient, getConfiguration());
+    return Handlers.getOperation(PodTemplate.class, PodTemplateList.class, this);
   }
 
   @Override
   public MixedOperation<Event, EventList, Resource<Event>> events() {
-    return Handlers.getOperation(Event.class, EventList.class, httpClient, getConfiguration());
+    return Handlers.getOperation(Event.class, EventList.class, this);
   }
 }

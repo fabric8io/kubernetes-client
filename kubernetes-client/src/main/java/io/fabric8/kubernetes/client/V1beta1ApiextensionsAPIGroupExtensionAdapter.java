@@ -15,8 +15,6 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.client.http.HttpClient;
-
 public class V1beta1ApiextensionsAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<V1beta1ApiextensionsAPIGroupClient> {
   @Override
   protected String getAPIGroupName() {
@@ -30,6 +28,6 @@ public class V1beta1ApiextensionsAPIGroupExtensionAdapter extends APIGroupExtens
 
   @Override
   protected V1beta1ApiextensionsAPIGroupClient newInstance(Client client) {
-    return new V1beta1ApiextensionsAPIGroupClient(client.adapt(HttpClient.class), client.getConfiguration());
+    return new V1beta1ApiextensionsAPIGroupClient(client);
   }
 }

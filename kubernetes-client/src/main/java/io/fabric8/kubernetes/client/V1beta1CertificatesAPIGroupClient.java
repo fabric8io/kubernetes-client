@@ -20,19 +20,18 @@ import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRe
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.V1beta1CertificatesAPIGroupDSL;
-import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class V1beta1CertificatesAPIGroupClient extends BaseClient implements V1beta1CertificatesAPIGroupDSL {
   public V1beta1CertificatesAPIGroupClient() {
     super();
   }
 
-  public V1beta1CertificatesAPIGroupClient(HttpClient httpClient, final Config config) {
-    super(httpClient, config);
+  public V1beta1CertificatesAPIGroupClient(ClientState clientState) {
+    super(clientState);
   }
 
   @Override
   public NonNamespaceOperation<CertificateSigningRequest, CertificateSigningRequestList, Resource<CertificateSigningRequest>> certificateSigningRequests() {
-    return Handlers.getOperation(CertificateSigningRequest.class, CertificateSigningRequestList.class, httpClient, getConfiguration());
+    return Handlers.getOperation(CertificateSigningRequest.class, CertificateSigningRequestList.class, this);
   }
 }

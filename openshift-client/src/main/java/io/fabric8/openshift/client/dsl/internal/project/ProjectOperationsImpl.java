@@ -21,13 +21,13 @@ import io.fabric8.kubernetes.api.model.rbac.RoleBinding;
 import io.fabric8.kubernetes.api.model.rbac.RoleBindingBuilder;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl;
 import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitOperationContext;
-import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.openshift.api.model.Project;
 import io.fabric8.openshift.api.model.ProjectBuilder;
 import io.fabric8.openshift.api.model.ProjectList;
-import io.fabric8.openshift.client.OpenShiftConfig;
+import io.fabric8.openshift.client.OpenshiftClientState;
 import io.fabric8.openshift.client.dsl.ProjectOperation;
 import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
 
@@ -45,8 +45,8 @@ public class ProjectOperationsImpl extends OpenShiftOperation<Project, ProjectLi
   public static final String CLUSTER_ROLE = "ClusterRole";
 
 
-  public ProjectOperationsImpl(HttpClient client, OpenShiftConfig config) {
-    this(new OperationContext().withHttpClient(client).withConfig(config));
+  public ProjectOperationsImpl(OpenshiftClientState clientState) {
+    this(HasMetadataOperationsImpl.defaultContext(clientState));
   }
 
   public ProjectOperationsImpl(OperationContext context) {

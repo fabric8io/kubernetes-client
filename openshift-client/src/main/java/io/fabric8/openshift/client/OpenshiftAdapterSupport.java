@@ -35,14 +35,14 @@ public class OpenshiftAdapterSupport {
 
   public Boolean isAdaptable(Client client) {
     OpenShiftConfig config = OpenShiftConfig.wrap(client.getConfiguration());
-    return hasCustomOpenShiftUrl(config) || isOpenShiftAPIGroups(client.adapt(HttpClient.class), config);
+    return hasCustomOpenShiftUrl(config) || isOpenShiftAPIGroups(client.getHttpClient(), config);
   }
 
   public DefaultOpenShiftClient adapt(Client client) {
     if (!isAdaptable(client)) {
       throw new OpenShiftNotAvailableException("OpenShift is not available. Root paths at: " + client.getMasterUrl() + " do not include oapi.");
     }
-    return new DefaultOpenShiftClient(client.adapt(HttpClient.class), OpenShiftConfig.wrap(client.getConfiguration()));
+    return new DefaultOpenShiftClient(client);
   }
 
   /**

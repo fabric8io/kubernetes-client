@@ -25,7 +25,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpRequest.Builder;
 import io.fabric8.kubernetes.client.utils.Serialization;
@@ -35,7 +35,7 @@ import io.fabric8.openshift.api.model.Parameter;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateBuilder;
 import io.fabric8.openshift.api.model.TemplateList;
-import io.fabric8.openshift.client.OpenShiftConfig;
+import io.fabric8.openshift.client.OpenshiftClientState;
 import io.fabric8.openshift.client.ParameterValue;
 import io.fabric8.openshift.client.dsl.TemplateOperation;
 import io.fabric8.openshift.client.dsl.TemplateResource;
@@ -70,8 +70,8 @@ public class TemplateOperationsImpl
 
   private final Map<String, String> parameters;
 
-  public TemplateOperationsImpl(HttpClient client, OpenShiftConfig config) {
-    this(new OperationContext().withHttpClient(client).withConfig(config), null);
+  public TemplateOperationsImpl(OpenshiftClientState clientState) {
+    this(HasMetadataOperationsImpl.defaultContext(clientState), null);
   }
 
   public TemplateOperationsImpl(OperationContext context, Map<String, String> parameters) {
@@ -118,7 +118,7 @@ public class TemplateOperationsImpl
         }
       }
 
-      HttpRequest.Builder requestBuilder = client.newHttpRequestBuilder().post(JSON, JSON_MAPPER.writeValueAsString(t)).url(getProcessUrl());
+      HttpRequest.Builder requestBuilder = this.httpClient.newHttpRequestBuilder().post(JSON, JSON_MAPPER.writeValueAsString(t)).url(getProcessUrl());
       t = handleResponse(requestBuilder);
       KubernetesList l = new KubernetesList();
       l.setItems(t.getObjects());

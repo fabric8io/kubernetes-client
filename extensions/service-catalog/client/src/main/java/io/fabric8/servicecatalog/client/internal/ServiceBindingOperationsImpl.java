@@ -17,20 +17,20 @@ package io.fabric8.servicecatalog.client.internal;
 
 import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.api.model.SecretList;
-import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ClientState;
 import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.servicecatalog.api.model.ServiceBinding;
 import io.fabric8.servicecatalog.api.model.ServiceBindingList;
 
 
 public class ServiceBindingOperationsImpl extends HasMetadataOperation<ServiceBinding, ServiceBindingList, ServiceBindingResource> implements ServiceBindingResource {
 
-  public ServiceBindingOperationsImpl(HttpClient client, Config config) {
-      this(new OperationContext().withHttpClient(client).withConfig(config));
+  public ServiceBindingOperationsImpl(ClientState clientState) {
+      this(HasMetadataOperationsImpl.defaultContext(clientState));
   }
 
     public ServiceBindingOperationsImpl(OperationContext ctx) {
@@ -51,7 +51,7 @@ public class ServiceBindingOperationsImpl extends HasMetadataOperation<ServiceBi
   @Override
   public Secret getSecret() {
       ServiceBinding instance = get();
-      return Handlers.getOperation(Secret.class, SecretList.class, client, getConfig())
+      return Handlers.getOperation(Secret.class, SecretList.class, this)
               .newInstance(context.withItem(null).withName(instance.getSpec().getSecretName())).get();
   }
 }

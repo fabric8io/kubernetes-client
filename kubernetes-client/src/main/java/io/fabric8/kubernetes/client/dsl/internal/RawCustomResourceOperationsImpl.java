@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
+import io.fabric8.kubernetes.client.ClientState;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.GracePeriodConfigurable;
 import io.fabric8.kubernetes.client.PropagationPolicyConfigurable;
@@ -38,8 +39,6 @@ import io.fabric8.kubernetes.client.dsl.Nameable;
 import io.fabric8.kubernetes.client.dsl.Namespaceable;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
-import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.model.Scope;
@@ -62,7 +61,7 @@ import static io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation.DEFAULT
  * Right now it supports basic operations like GET, POST, PUT, DELETE.
  *
  */
-public class RawCustomResourceOperationsImpl extends OperationSupport implements Nameable<RawCustomResourceOperationsImpl>,
+public class RawCustomResourceOperationsImpl implements Nameable<RawCustomResourceOperationsImpl>,
   Namespaceable<RawCustomResourceOperationsImpl>,
   AnyNamespaceable<RawCustomResourceOperationsImpl>,
   Listable<Map<String, Object>>,
@@ -75,19 +74,17 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
   private final GenericKubernetesResourceOperationsImpl delegate;
   private final CustomResourceDefinitionContext customResourceDefinition;
 
-  private RawCustomResourceOperationsImpl(HttpClient client, GenericKubernetesResourceOperationsImpl delegate, CustomResourceDefinitionContext crdContext) {
-    super(client, delegate.getConfig());
+  private RawCustomResourceOperationsImpl(GenericKubernetesResourceOperationsImpl delegate, CustomResourceDefinitionContext crdContext) {
     this.delegate = delegate;
     this.customResourceDefinition = crdContext;
   }
 
-  public RawCustomResourceOperationsImpl(HttpClient client, Config config, CustomResourceDefinitionContext customResourceDefinition) {
+  public RawCustomResourceOperationsImpl(ClientState clientState, CustomResourceDefinitionContext customResourceDefinition) {
     this(
-      client,
       new GenericKubernetesResourceOperationsImpl(
         new OperationContext()
-          .withHttpClient(client)
-          .withConfig(config)
+          .withHttpClient(clientState.getHttpClient())
+          .withConfig(clientState.getConfiguration())
           .withNamespace(null)
           .withName(null)
           .withGracePeriodSeconds(-1L)
@@ -105,41 +102,40 @@ public class RawCustomResourceOperationsImpl extends OperationSupport implements
 
   @Override
   public RawCustomResourceOperationsImpl withName(String name) {
-    return new RawCustomResourceOperationsImpl(client, (GenericKubernetesResourceOperationsImpl) delegate.withName(name), customResourceDefinition);
+    return new RawCustomResourceOperationsImpl((GenericKubernetesResourceOperationsImpl) delegate.withName(name), customResourceDefinition);
   }
 
   @Override
   public RawCustomResourceOperationsImpl inNamespace(String namespace) {
-    return new RawCustomResourceOperationsImpl(client, (GenericKubernetesResourceOperationsImpl) delegate.inNamespace(namespace), customResourceDefinition);
+    return new RawCustomResourceOperationsImpl((GenericKubernetesResourceOperationsImpl) delegate.inNamespace(namespace), customResourceDefinition);
   }
 
   @Override
   public RawCustomResourceOperationsImpl inAnyNamespace() {
-    return new RawCustomResourceOperationsImpl(client, (GenericKubernetesResourceOperationsImpl) delegate.inAnyNamespace(), customResourceDefinition);
+    return new RawCustomResourceOperationsImpl((GenericKubernetesResourceOperationsImpl) delegate.inAnyNamespace(), customResourceDefinition);
   }
 
   @Override
   public RawCustomResourceOperationsImpl withGracePeriod(long gracePeriodSeconds) {
-    return new RawCustomResourceOperationsImpl(client, (GenericKubernetesResourceOperationsImpl) delegate.withGracePeriod(gracePeriodSeconds), customResourceDefinition);
+    return new RawCustomResourceOperationsImpl((GenericKubernetesResourceOperationsImpl) delegate.withGracePeriod(gracePeriodSeconds), customResourceDefinition);
   }
 
   @Override
   public RawCustomResourceOperationsImpl withPropagationPolicy(DeletionPropagation propagationPolicy) {
-    return new RawCustomResourceOperationsImpl(client, (GenericKubernetesResourceOperationsImpl) delegate.withPropagationPolicy(propagationPolicy), customResourceDefinition);
+    return new RawCustomResourceOperationsImpl((GenericKubernetesResourceOperationsImpl) delegate.withPropagationPolicy(propagationPolicy), customResourceDefinition);
   }
 
   @Override
   public RawCustomResourceOperationsImpl dryRun(boolean isDryRun) {
-    return new RawCustomResourceOperationsImpl(client, (GenericKubernetesResourceOperationsImpl) delegate.dryRun(isDryRun), customResourceDefinition);
+    return new RawCustomResourceOperationsImpl((GenericKubernetesResourceOperationsImpl) delegate.dryRun(isDryRun), customResourceDefinition);
   }
 
-  @Override
   public Config getConfig() {
     return delegate.getConfig();
   }
 
   private RawCustomResourceOperationsImpl withDeleteOptions(DeleteOptions deleteOptions) {
-    return new RawCustomResourceOperationsImpl(client, (GenericKubernetesResourceOperationsImpl) delegate.withGracePeriod(resolveGracePeriod(deleteOptions.getGracePeriodSeconds())).withPropagationPolicy(resolvePropagationPolicy(deleteOptions.getPropagationPolicy())), customResourceDefinition);
+    return new RawCustomResourceOperationsImpl((GenericKubernetesResourceOperationsImpl) delegate.withGracePeriod(resolveGracePeriod(deleteOptions.getGracePeriodSeconds())).withPropagationPolicy(resolvePropagationPolicy(deleteOptions.getPropagationPolicy())), customResourceDefinition);
   }
 
   /**

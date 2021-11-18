@@ -28,15 +28,13 @@ import io.fabric8.kubernetes.client.utils.Utils;
 import java.net.URL;
 import java.util.List;
 
-public class BaseClient implements Client, HttpClientAware {
+public class BaseClient extends SimpleClientState implements Client {
 
   public static final String APIS = "/apis";
 
-  protected HttpClient httpClient;
   private URL masterUrl;
   private String apiVersion;
   private String namespace;
-  private Config configuration;
 
   public BaseClient() {
     this(new ConfigBuilder().build());
@@ -51,9 +49,14 @@ public class BaseClient implements Client, HttpClientAware {
   }
 
   public BaseClient(final HttpClient httpClient, Config config) {
+    this(new SimpleClientState(config, httpClient));
+  }
+  
+  public BaseClient(ClientState clientState) {
     try {
-      this.configuration = config;
-      this.httpClient = adaptHttpClient(httpClient);
+      this.config = clientState.getConfiguration();
+      this.httpClient = clientState.getHttpClient();
+      adaptState();
       this.namespace = config.getNamespace();
       this.apiVersion = config.getApiVersion();
       if (config.getMasterUrl() == null) {
@@ -87,17 +90,6 @@ public class BaseClient implements Client, HttpClientAware {
     return namespace;
   }
 
-
-  @Override
-  public Config getConfiguration() {
-    return configuration;
-  }
-
-  @Override
-  public HttpClient getHttpClient() {
-    return httpClient;
-  }
-
   @Override
   public <C> Boolean isAdaptable(Class<C> type) {
     ExtensionAdapter<C> adapter = Adapters.get(type);
@@ -119,7 +111,7 @@ public class BaseClient implements Client, HttpClientAware {
 
   @Override
   public RootPaths rootPaths() {
-    return new OperationSupport(httpClient, configuration).restCall(RootPaths.class);
+    return new OperationSupport(httpClient, config).restCall(RootPaths.class);
   }
 
   @Override
@@ -140,24 +132,28 @@ public class BaseClient implements Client, HttpClientAware {
 
   @Override
   public APIGroupList getApiGroups() {
-    return new OperationSupport(httpClient, configuration).restCall(APIGroupList.class, APIS);
+    return new OperationSupport(httpClient, config).restCall(APIGroupList.class, APIS);
   }
 
   @Override
   public APIGroup getApiGroup(String name) {
-    return new OperationSupport(httpClient, configuration).restCall(APIGroup.class, APIS, name);
+    return new OperationSupport(httpClient, config).restCall(APIGroup.class, APIS, name);
   }
 
   @Override
   public APIResourceList getApiResources(String groupVersion) {
-    return new OperationSupport(httpClient, configuration).restCall(APIResourceList.class, APIS, groupVersion);
+    return new OperationSupport(httpClient, config).restCall(APIResourceList.class, APIS, groupVersion);
   }
 
   protected VersionInfo getVersionInfo(String path) {
     return new OperationSupport(this.httpClient, this.getConfiguration()).restCall(VersionInfo.class, path);
   }
 
-  protected HttpClient adaptHttpClient(HttpClient okHttpClient) {
-    return okHttpClient;
+  protected void adaptState() {
+    
+  }
+  
+  protected SimpleClientState newState(Config updated) {
+    return new SimpleClientState(updated, httpClient);
   }
 }

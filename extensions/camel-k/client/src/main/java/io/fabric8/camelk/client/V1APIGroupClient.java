@@ -27,44 +27,43 @@ import io.fabric8.camelk.v1.IntegrationList;
 import io.fabric8.camelk.v1.IntegrationPlatform;
 import io.fabric8.camelk.v1.IntegrationPlatformList;
 import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ClientState;
 import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class V1APIGroupClient extends BaseClient implements V1APIGroupDSL {
   public V1APIGroupClient() {
     super();
   }
 
-  public V1APIGroupClient(HttpClient httpClient, final Config config) {
-    super(httpClient, config);
+  public V1APIGroupClient(ClientState clientState) {
+    super(clientState);
   }
 
 @Override
 public MixedOperation<Build, BuildList, Resource<Build>> builds() {
-	return Handlers.getOperation(Build.class, BuildList.class, httpClient,  getConfiguration());
+	return Handlers.getOperation(Build.class, BuildList.class, this);
 }
 
 @Override
 public MixedOperation<CamelCatalog, CamelCatalogList, Resource<CamelCatalog>> camelCatalogs() {
-	return Handlers.getOperation(CamelCatalog.class, CamelCatalogList.class, httpClient,  getConfiguration());
+	return Handlers.getOperation(CamelCatalog.class, CamelCatalogList.class, this);
 }
 
 @Override
 public MixedOperation<Integration, IntegrationList, Resource<Integration>> integrations() {
-	return Handlers.getOperation(Integration.class, IntegrationList.class, httpClient,  getConfiguration());
+	return Handlers.getOperation(Integration.class, IntegrationList.class, this);
 }
 
 @Override
 public MixedOperation<IntegrationKit, IntegrationKitList, Resource<IntegrationKit>> integrationKits() {
-	return Handlers.getOperation(IntegrationKit.class, IntegrationKitList.class, httpClient,  getConfiguration());
+	return Handlers.getOperation(IntegrationKit.class, IntegrationKitList.class, this);
 }
 
 @Override
 public MixedOperation<IntegrationPlatform, IntegrationPlatformList, Resource<IntegrationPlatform>> integrationPlatforms() {
-  return Handlers.getOperation(IntegrationPlatform.class, IntegrationPlatformList.class, httpClient,  getConfiguration());
+  return Handlers.getOperation(IntegrationPlatform.class, IntegrationPlatformList.class, this);
 }
 
 }

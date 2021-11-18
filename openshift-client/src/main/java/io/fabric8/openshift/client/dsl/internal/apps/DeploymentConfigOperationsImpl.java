@@ -17,7 +17,6 @@ package io.fabric8.openshift.client.dsl.internal.apps;
 
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
-import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
@@ -25,14 +24,15 @@ import io.fabric8.kubernetes.client.dsl.Loggable;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
+import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.LogWatchCallback;
 import io.fabric8.kubernetes.client.dsl.internal.RollingOperationContext;
-import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.utils.PodOperationUtil;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.URLUtils.URLBuilder;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigList;
+import io.fabric8.openshift.client.OpenshiftClientState;
 import io.fabric8.openshift.client.dsl.DeployableScalableResource;
 import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
 import org.slf4j.Logger;
@@ -61,8 +61,8 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
   public static final String OPENSHIFT_IO_DEPLOYMENT_CONFIG_NAME = "openshift.io/deployment-config.name";
   private final RollingOperationContext rollingOperationContext;
 
-  public DeploymentConfigOperationsImpl(HttpClient client, Config config) {
-    this(new RollingOperationContext(), new OperationContext().withHttpClient(client).withConfig(config).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
+  public DeploymentConfigOperationsImpl(OpenshiftClientState clientState) {
+    this(new RollingOperationContext(), HasMetadataOperationsImpl.defaultContext(clientState));
   }
 
   public DeploymentConfigOperationsImpl(RollingOperationContext context, OperationContext superContext) {
@@ -232,8 +232,8 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
       // In case of DeploymentConfig we directly get logs at DeploymentConfig Url, but we need to wait for Pods
       waitUntilDeploymentConfigPodBecomesReady(fromServer().get());
       URL url = getResourceLogUrl(false, true);
-      final LogWatchCallback callback = new LogWatchCallback(config, out);
-      return callback.callAndWait(client, url);
+      final LogWatchCallback callback = new LogWatchCallback(this.config, out);
+      return callback.callAndWait(this.httpClient, url);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(forOperationType("watchLog"), t);
     }

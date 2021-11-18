@@ -19,7 +19,6 @@ package io.fabric8.openshift.client.server.mock;
 import io.fabric8.kubernetes.api.model.APIGroupBuilder;
 import io.fabric8.kubernetes.api.model.APIGroupListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.mockwebserver.utils.ResponseProvider;
@@ -53,8 +52,8 @@ class AdaptTest {
       .build()).once();
 
     OpenShiftClient oclient = client.adapt(OpenShiftClient.class);
-    assertNotNull(client.adapt(HttpClient.class));
-    assertNotNull(oclient.adapt(HttpClient.class));
+    assertNotNull(client.getHttpClient());
+    assertNotNull(oclient.getHttpClient());
   }
 
   @Test

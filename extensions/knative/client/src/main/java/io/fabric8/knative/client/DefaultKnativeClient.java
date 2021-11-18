@@ -68,6 +68,7 @@ import io.fabric8.knative.sources.v1.PingSourceList;
 import io.fabric8.knative.sources.v1.SinkBinding;
 import io.fabric8.knative.sources.v1.SinkBindingList;
 import io.fabric8.kubernetes.client.BaseClient;
+import io.fabric8.kubernetes.client.ClientState;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.Handlers;
@@ -76,7 +77,6 @@ import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class DefaultKnativeClient extends BaseClient implements NamespacedKnativeClient {
 
@@ -88,8 +88,8 @@ public class DefaultKnativeClient extends BaseClient implements NamespacedKnativ
         super(configuration);
     }
 
-    public DefaultKnativeClient(HttpClient httpClient, Config configuration) {
-        super(httpClient, configuration);
+    public DefaultKnativeClient(ClientState clientState) {
+        super(clientState);
     }
 
     @Override
@@ -101,7 +101,7 @@ public class DefaultKnativeClient extends BaseClient implements NamespacedKnativ
     public NamespacedKnativeClient inNamespace(String namespace) {
         Config updated = new ConfigBuilder(getConfiguration()).withNamespace(namespace).build();
 
-        return new DefaultKnativeClient(getHttpClient(), updated);
+        return new DefaultKnativeClient(newState(updated));
     }
 
     @Override
@@ -111,131 +111,131 @@ public class DefaultKnativeClient extends BaseClient implements NamespacedKnativ
 
     @Override
     public MixedOperation<Service, ServiceList, Resource<Service>> services() {
-        return Handlers.getOperation(Service.class, ServiceList.class, this.getHttpClient(), this.getConfiguration());
+        return Handlers.getOperation(Service.class, ServiceList.class, this);
     }
 
     @Override
     public MixedOperation<Route, RouteList, Resource<Route>> routes() {
-        return Handlers.getOperation(Route.class, RouteList.class, this.getHttpClient(), this.getConfiguration());
+        return Handlers.getOperation(Route.class, RouteList.class, this);
     }
 
     @Override
     public MixedOperation<Revision, RevisionList, Resource<Revision>> revisions() {
-        return Handlers.getOperation(Revision.class, RevisionList.class, this.getHttpClient(), this.getConfiguration());
+        return Handlers.getOperation(Revision.class, RevisionList.class, this);
     }
 
     @Override
     public MixedOperation<Configuration, ConfigurationList, Resource<Configuration>> configurations() {
-        return Handlers.getOperation(Configuration.class, ConfigurationList.class, this.getHttpClient(), this.getConfiguration());
+        return Handlers.getOperation(Configuration.class, ConfigurationList.class, this);
     }
 
     @Override
     public MixedOperation<Broker, BrokerList, Resource<Broker>> brokers() {
-        return Handlers.getOperation(Broker.class, BrokerList.class, this.getHttpClient(), this.getConfiguration());
+        return Handlers.getOperation(Broker.class, BrokerList.class, this);
     }
 
     @Override
     public MixedOperation<Trigger, TriggerList, Resource<Trigger>> triggers() {
-        return Handlers.getOperation(Trigger.class, TriggerList.class, this.getHttpClient(), this.getConfiguration());
+        return Handlers.getOperation(Trigger.class, TriggerList.class, this);
     }
 
     @Override
     public MixedOperation<Channel, ChannelList, Resource<Channel>> channels() {
-        return Handlers.getOperation(Channel.class, ChannelList.class, this.getHttpClient(), this.getConfiguration());
+        return Handlers.getOperation(Channel.class, ChannelList.class, this);
     }
 
     @Override
     public MixedOperation<Subscription, SubscriptionList, Resource<Subscription>> subscriptions() {
-        return Handlers.getOperation(Subscription.class, SubscriptionList.class, this.getHttpClient(), this.getConfiguration());
+        return Handlers.getOperation(Subscription.class, SubscriptionList.class, this);
     }
 
     @Override
     public MixedOperation<EventType, EventTypeList, Resource<EventType>> eventTypes() {
-        return Handlers.getOperation(EventType.class, EventTypeList.class, this.getHttpClient(), this.getConfiguration());
+        return Handlers.getOperation(EventType.class, EventTypeList.class, this);
     }
 
     @Override
     public MixedOperation<Sequence, SequenceList, Resource<Sequence>> sequences() {
-        return Handlers.getOperation(Sequence.class, SequenceList.class, this.getHttpClient(), this.getConfiguration());
+        return Handlers.getOperation(Sequence.class, SequenceList.class, this);
     }
 
   @Override
   public MixedOperation<Parallel, ParallelList, Resource<Parallel>> parallels() {
-    return Handlers.getOperation(Parallel.class, ParallelList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(Parallel.class, ParallelList.class, this);
   }
 
   @Override
     public MixedOperation<InMemoryChannel, InMemoryChannelList, Resource<InMemoryChannel>> inMemoryChannels() {
-        return Handlers.getOperation(InMemoryChannel.class, InMemoryChannelList.class, this.getHttpClient(), this.getConfiguration());
+        return Handlers.getOperation(InMemoryChannel.class, InMemoryChannelList.class, this);
     }
 
   @Override
   public MixedOperation<PingSource, PingSourceList, Resource<PingSource>> pingSources() {
-    return Handlers.getOperation(PingSource.class, PingSourceList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(PingSource.class, PingSourceList.class, this);
   }
 
   @Override
   public MixedOperation<SinkBinding, SinkBindingList, Resource<SinkBinding>> sinkBindings() {
-    return Handlers.getOperation(SinkBinding.class, SinkBindingList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(SinkBinding.class, SinkBindingList.class, this);
   }
 
   @Override
   public MixedOperation<ContainerSource, ContainerSourceList, Resource<ContainerSource>> containerSources() {
-    return Handlers.getOperation(ContainerSource.class, ContainerSourceList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(ContainerSource.class, ContainerSourceList.class, this);
   }
 
   @Override
   public MixedOperation<ApiServerSource, ApiServerSourceList, Resource<ApiServerSource>> apiServerSources() {
-    return Handlers.getOperation(ApiServerSource.class, ApiServerSourceList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(ApiServerSource.class, ApiServerSourceList.class, this);
   }
 
   @Override
   public MixedOperation<AwsSqsSource, AwsSqsSourceList, Resource<AwsSqsSource>> awsSqsSources() {
-    return Handlers.getOperation(AwsSqsSource.class, AwsSqsSourceList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(AwsSqsSource.class, AwsSqsSourceList.class, this);
   }
 
   @Override
   public MixedOperation<CouchDbSource, CouchDbSourceList, Resource<CouchDbSource>> couchDbSources() {
-    return Handlers.getOperation(CouchDbSource.class, CouchDbSourceList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(CouchDbSource.class, CouchDbSourceList.class, this);
   }
 
   @Override
   public MixedOperation<GitHubSource, GitHubSourceList, Resource<GitHubSource>> gitHubSources() {
-    return Handlers.getOperation(GitHubSource.class, GitHubSourceList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(GitHubSource.class, GitHubSourceList.class, this);
   }
 
   @Override
   public MixedOperation<GitHubBinding, GitHubBindingList, Resource<GitHubBinding>> gitHubBindings() {
-    return Handlers.getOperation(GitHubBinding.class, GitHubBindingList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(GitHubBinding.class, GitHubBindingList.class, this);
   }
 
   @Override
   public MixedOperation<GitLabSource, GitLabSourceList, Resource<GitLabSource>> gitLabSources() {
-    return Handlers.getOperation(GitLabSource.class, GitLabSourceList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(GitLabSource.class, GitLabSourceList.class, this);
   }
 
   @Override
   public MixedOperation<GitLabBinding, GitLabBindingList, Resource<GitLabBinding>> gitLabBindings() {
-    return Handlers.getOperation(GitLabBinding.class, GitLabBindingList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(GitLabBinding.class, GitLabBindingList.class, this);
   }
 
   @Override
   public MixedOperation<PrometheusSource, PrometheusSourceList, Resource<PrometheusSource>> prometheusSources() {
-    return Handlers.getOperation(PrometheusSource.class, PrometheusSourceList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(PrometheusSource.class, PrometheusSourceList.class, this);
   }
 
   @Override
   public MixedOperation<KafkaChannel, KafkaChannelList, Resource<KafkaChannel>> kafkaChannels() {
-    return Handlers.getOperation(KafkaChannel.class, KafkaChannelList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(KafkaChannel.class, KafkaChannelList.class, this);
   }
 
   @Override
   public MixedOperation<KafkaSource, KafkaSourceList, Resource<KafkaSource>> kafkasSources() {
-    return Handlers.getOperation(KafkaSource.class, KafkaSourceList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(KafkaSource.class, KafkaSourceList.class, this);
   }
 
   @Override
   public MixedOperation<KafkaBinding, KafkaBindingList, Resource<KafkaBinding>> kafkaBindings() {
-    return Handlers.getOperation(KafkaBinding.class, KafkaBindingList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(KafkaBinding.class, KafkaBindingList.class, this);
   }
 }

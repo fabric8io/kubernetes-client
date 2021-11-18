@@ -55,7 +55,7 @@ public class VolumeSnapshotExtensionAdapter extends ExtensionAdapterSupport impl
 
   @Override
   public VolumeSnapshotClient adapt(Client client) {
-    return new DefaultVolumeSnapshotClient(client.adapt(HttpClient.class), client.getConfiguration());
+    return new DefaultVolumeSnapshotClient(client);
   }
 
 }

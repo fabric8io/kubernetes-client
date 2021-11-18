@@ -18,7 +18,6 @@ package io.fabric8.verticalpodautoscaler.client;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.ExtensionAdapter;
 import io.fabric8.kubernetes.client.ExtensionAdapterSupport;
-import io.fabric8.kubernetes.client.http.HttpClient;
 
 import java.net.URL;
 import java.util.concurrent.ConcurrentHashMap;
@@ -42,6 +41,6 @@ public class VerticalPodAutoscalerExtensionAdapter extends ExtensionAdapterSuppo
 
   @Override
   public VerticalPodAutoscalerClient adapt(Client client) {
-    return new DefaultVerticalPodAutoscalerClient(client.adapt(HttpClient.class), client.getConfiguration());
+    return new DefaultVerticalPodAutoscalerClient(client);
   }
 }

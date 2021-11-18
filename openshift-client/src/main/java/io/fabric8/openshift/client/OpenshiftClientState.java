@@ -13,26 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.client.dsl.AuthorizationAPIGroupDSL;
+package io.fabric8.openshift.client;
 
-public class AuthorizationAPIGroupClient extends BaseClient implements AuthorizationAPIGroupDSL {
-  public AuthorizationAPIGroupClient() {
-    super();
-  }
+import io.fabric8.kubernetes.client.ClientState;
 
-  public AuthorizationAPIGroupClient(ClientState clientState) {
-    super(clientState);
-  }
+public interface OpenshiftClientState extends ClientState {
 
   @Override
-  public V1AuthorizationAPIGroupDSL v1() {
-    return adapt(V1AuthorizationAPIGroupClient.class);
-  }
+  OpenShiftConfig getConfiguration();
 
-  @Override
-  public V1beta1AuthorizationAPIGroupDSL v1beta1() {
-    return adapt(V1beta1AuthorizationAPIGroupClient.class);
-  }
 }

@@ -15,8 +15,7 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.client.dsl.*;
-import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.dsl.AutoscalingAPIGroupDSL;
 
 public class AutoscalingAPIGroupClient extends BaseClient implements AutoscalingAPIGroupDSL {
 
@@ -24,8 +23,8 @@ public class AutoscalingAPIGroupClient extends BaseClient implements Autoscaling
     super();
   }
 
-  public AutoscalingAPIGroupClient(HttpClient httpClient, final Config config) {
-    super(httpClient, config);
+  public AutoscalingAPIGroupClient(ClientState clientState) {
+    super(clientState);
   }
 
   @Override

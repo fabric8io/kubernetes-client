@@ -18,19 +18,19 @@ package io.fabric8.openshift.client.dsl.internal.user;
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.openshift.api.model.User;
 import io.fabric8.openshift.api.model.UserBuilder;
 import io.fabric8.openshift.api.model.UserList;
-import io.fabric8.openshift.client.OpenShiftConfig;
+import io.fabric8.openshift.client.OpenshiftClientState;
 import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.USER;
 
 public class UserOperationsImpl extends OpenShiftOperation<User, UserList, Resource<User>> {
 
-  public UserOperationsImpl(HttpClient client, OpenShiftConfig config) {
-    this(new OperationContext().withHttpClient(client).withConfig(config));
+  public UserOperationsImpl(OpenshiftClientState clientState) {
+    this(HasMetadataOperationsImpl.defaultContext(clientState));
   }
 
   public UserOperationsImpl(OperationContext context) {

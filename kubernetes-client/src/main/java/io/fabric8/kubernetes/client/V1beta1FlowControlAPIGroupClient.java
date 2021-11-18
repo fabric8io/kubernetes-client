@@ -22,24 +22,23 @@ import io.fabric8.kubernetes.api.model.flowcontrol.v1beta1.PriorityLevelConfigur
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.V1beta1FlowControlAPIGroupDSL;
-import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class V1beta1FlowControlAPIGroupClient extends BaseClient implements V1beta1FlowControlAPIGroupDSL {
   public V1beta1FlowControlAPIGroupClient() {
     super();
   }
 
-  public V1beta1FlowControlAPIGroupClient(HttpClient httpClient, final Config config) {
-    super(httpClient, config);
+  public V1beta1FlowControlAPIGroupClient(ClientState clientState) {
+    super(clientState);
   }
 
   @Override
   public NonNamespaceOperation<FlowSchema, FlowSchemaList, Resource<FlowSchema>> flowSchema() {
-    return Handlers.getOperation(FlowSchema.class, FlowSchemaList.class, httpClient, getConfiguration());
+    return Handlers.getOperation(FlowSchema.class, FlowSchemaList.class, this);
   }
 
   @Override
   public NonNamespaceOperation<PriorityLevelConfiguration, PriorityLevelConfigurationList, Resource<PriorityLevelConfiguration>> priorityLevelConfigurations() {
-    return Handlers.getOperation(PriorityLevelConfiguration.class, PriorityLevelConfigurationList.class, httpClient, getConfiguration());
+    return Handlers.getOperation(PriorityLevelConfiguration.class, PriorityLevelConfigurationList.class, this);
   }
 }

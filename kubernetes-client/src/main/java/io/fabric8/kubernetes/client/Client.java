@@ -24,7 +24,7 @@ import io.fabric8.kubernetes.api.model.RootPaths;
 import java.io.Closeable;
 import java.net.URL;
 
-public interface Client extends ConfigAware, Closeable {
+public interface Client extends ClientState, Closeable {
 
   /**
    * Checks if the client can be adapted to an other client type.

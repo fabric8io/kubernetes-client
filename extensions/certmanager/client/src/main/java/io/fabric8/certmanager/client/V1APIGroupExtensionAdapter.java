@@ -17,7 +17,6 @@ package io.fabric8.certmanager.client;
 
 import io.fabric8.kubernetes.client.APIGroupExtensionAdapter;
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class V1APIGroupExtensionAdapter extends APIGroupExtensionAdapter<V1APIGroupClient> {
   @Override
@@ -32,6 +31,6 @@ public class V1APIGroupExtensionAdapter extends APIGroupExtensionAdapter<V1APIGr
 
   @Override
   protected V1APIGroupClient newInstance(Client client) {
-    return new V1APIGroupClient(client.adapt(HttpClient.class), client.getConfiguration());
+    return new V1APIGroupClient(client);
   }
 }

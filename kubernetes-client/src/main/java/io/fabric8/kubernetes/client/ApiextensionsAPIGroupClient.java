@@ -16,15 +16,14 @@
 package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.client.dsl.ApiextensionsAPIGroupDSL;
-import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class ApiextensionsAPIGroupClient extends BaseClient implements ApiextensionsAPIGroupDSL {
   public ApiextensionsAPIGroupClient() {
     super();
   }
 
-  public ApiextensionsAPIGroupClient(HttpClient httpClient, final Config config) {
-    super(httpClient, config);
+  public ApiextensionsAPIGroupClient(ClientState clientState) {
+    super(clientState);
   }
 
 

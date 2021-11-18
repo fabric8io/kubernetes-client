@@ -15,23 +15,23 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal.core.v1;
 
-import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.api.model.ComponentStatus;
 import io.fabric8.kubernetes.api.model.ComponentStatusList;
-import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ClientState;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 
 public class ComponentStatusOperationsImpl extends HasMetadataOperation<ComponentStatus, ComponentStatusList,
   Resource<ComponentStatus>> {
 
-  public ComponentStatusOperationsImpl(HttpClient client, Config config) {
-    this(client, config, null);
+  public ComponentStatusOperationsImpl(ClientState clientState) {
+    this(clientState, null);
   }
 
-  public ComponentStatusOperationsImpl(HttpClient client, Config config, String namespace) {
-    this(new OperationContext().withHttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
+  public ComponentStatusOperationsImpl(ClientState clientState, String namespace) {
+    this(HasMetadataOperationsImpl.defaultContext(clientState).withNamespace(namespace));
   }
 
   public ComponentStatusOperationsImpl(OperationContext context) {

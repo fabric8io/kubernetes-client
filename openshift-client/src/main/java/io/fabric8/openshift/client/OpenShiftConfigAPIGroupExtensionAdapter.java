@@ -17,7 +17,6 @@ package io.fabric8.openshift.client;
 
 import io.fabric8.kubernetes.client.APIGroupExtensionAdapter;
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class OpenShiftConfigAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<OpenShiftConfigAPIGroupClient> {
   @Override
@@ -32,7 +31,7 @@ public class OpenShiftConfigAPIGroupExtensionAdapter extends APIGroupExtensionAd
 
   @Override
   protected OpenShiftConfigAPIGroupClient newInstance(Client client) {
-    return new OpenShiftConfigAPIGroupClient(client.adapt(HttpClient.class), client.getConfiguration());
+    return new OpenShiftConfigAPIGroupClient(client);
   }
 
 }

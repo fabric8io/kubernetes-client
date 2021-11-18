@@ -16,12 +16,12 @@
 package io.fabric8.tekton.client;
 
 import io.fabric8.kubernetes.client.BaseClient;
+import io.fabric8.kubernetes.client.ClientState;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
-import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.tekton.client.dsl.V1alpha1APIGroupDSL;
 import io.fabric8.tekton.client.dsl.V1beta1APIGroupDSL;
 
@@ -35,8 +35,8 @@ public class DefaultTektonClient extends BaseClient implements NamespacedTektonC
     super(configuration);
   }
 
-  public DefaultTektonClient(HttpClient httpClient, Config configuration) {
-    super(httpClient, configuration);
+  public DefaultTektonClient(ClientState clientState) {
+    super(clientState);
   }
 
   @Override
@@ -50,7 +50,7 @@ public class DefaultTektonClient extends BaseClient implements NamespacedTektonC
       .withNamespace(namespace)
       .build();
 
-    return new DefaultTektonClient(getHttpClient(), updated);
+    return new DefaultTektonClient(newState(updated));
   }
 
   @Override

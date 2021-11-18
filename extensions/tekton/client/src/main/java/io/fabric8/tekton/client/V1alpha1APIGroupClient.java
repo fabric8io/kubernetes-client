@@ -16,12 +16,11 @@
 package io.fabric8.tekton.client;
 
 import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ClientState;
 import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.tekton.client.dsl.V1alpha1APIGroupDSL;
 import io.fabric8.tekton.pipeline.v1alpha1.ClusterTask;
 import io.fabric8.tekton.pipeline.v1alpha1.ClusterTaskList;
@@ -55,72 +54,72 @@ public class V1alpha1APIGroupClient extends BaseClient implements V1alpha1APIGro
     super();
   }
 
-  public V1alpha1APIGroupClient(HttpClient httpClient, final Config config) {
-    super(httpClient, config);
+  public V1alpha1APIGroupClient(ClientState clientState) {
+    super(clientState);
   }
 
   @Override
   public MixedOperation<Pipeline, PipelineList, Resource<Pipeline>> pipelines() {
-    return Handlers.getOperation(Pipeline.class, PipelineList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(Pipeline.class, PipelineList.class, this);
   }
 
   @Override
   public MixedOperation<PipelineRun, PipelineRunList, Resource<PipelineRun>> pipelineRuns() {
-    return Handlers.getOperation(PipelineRun.class, PipelineRunList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(PipelineRun.class, PipelineRunList.class, this);
   }
 
   @Override
   public MixedOperation<PipelineResource, PipelineResourceList, Resource<PipelineResource>> pipelineResources() {
-    return Handlers.getOperation(PipelineResource.class, PipelineResourceList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(PipelineResource.class, PipelineResourceList.class, this);
   }
 
   @Override
   public MixedOperation<Task, TaskList, Resource<Task>> tasks() {
-    return Handlers.getOperation(Task.class, TaskList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(Task.class, TaskList.class, this);
   }
 
   @Override
   public MixedOperation<TaskRun, TaskRunList, Resource<TaskRun>> taskRuns() {
-    return Handlers.getOperation(TaskRun.class, TaskRunList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(TaskRun.class, TaskRunList.class, this);
   }
 
   @Override
   public MixedOperation<Condition, ConditionList, Resource<Condition>> conditions() {
-    return Handlers.getOperation(Condition.class, ConditionList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(Condition.class, ConditionList.class, this);
   }
 
   @Override
   public MixedOperation<TriggerTemplate, TriggerTemplateList, Resource<TriggerTemplate>> triggerTemplates() {
-    return Handlers.getOperation(TriggerTemplate.class, TriggerTemplateList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(TriggerTemplate.class, TriggerTemplateList.class, this);
   }
 
   @Override
   public MixedOperation<TriggerBinding, TriggerBindingList, Resource<TriggerBinding>> triggerBindings() {
-    return Handlers.getOperation(TriggerBinding.class, TriggerBindingList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(TriggerBinding.class, TriggerBindingList.class, this);
   }
 
   @Override
   public MixedOperation<Trigger, TriggerList, Resource<Trigger>> triggers() {
-    return Handlers.getOperation(Trigger.class, TriggerList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(Trigger.class, TriggerList.class, this);
   }
 
   @Override
   public MixedOperation<EventListener, EventListenerList, Resource<EventListener>> eventListeners() {
-    return Handlers.getOperation(EventListener.class, EventListenerList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(EventListener.class, EventListenerList.class, this);
   }
 
   @Override
   public NonNamespaceOperation<ClusterTask, ClusterTaskList, Resource<ClusterTask>> clusterTasks() {
-    return Handlers.getOperation(ClusterTask.class, ClusterTaskList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(ClusterTask.class, ClusterTaskList.class, this);
   }
 
   @Override
   public NonNamespaceOperation<ClusterTriggerBinding, ClusterTriggerBindingList, Resource<ClusterTriggerBinding>> clusterTriggerBindings() {
-    return Handlers.getOperation(ClusterTriggerBinding.class, ClusterTriggerBindingList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(ClusterTriggerBinding.class, ClusterTriggerBindingList.class, this);
   }
 
   @Override
   public NonNamespaceOperation<ClusterInterceptor, ClusterInterceptorList, Resource<ClusterInterceptor>> clusterInterceptors() {
-    return Handlers.getOperation(ClusterInterceptor.class, ClusterInterceptorList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(ClusterInterceptor.class, ClusterInterceptorList.class, this);
   }
 }

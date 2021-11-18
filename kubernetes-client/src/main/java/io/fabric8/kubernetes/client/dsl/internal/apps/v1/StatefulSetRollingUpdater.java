@@ -20,20 +20,19 @@ import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.apps.StatefulSet;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetBuilder;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetList;
-import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ClientState;
 import io.fabric8.kubernetes.client.dsl.Operation;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.WatchListDeletable;
-import io.fabric8.kubernetes.client.http.HttpClient;
 
 class StatefulSetRollingUpdater extends RollingUpdater<StatefulSet, StatefulSetList> {
 
-  StatefulSetRollingUpdater(HttpClient client, Config config, String namespace) {
-    super(client, config, namespace);
+  StatefulSetRollingUpdater(ClientState clientState, String namespace) {
+    super(clientState, namespace);
   }
 
-  StatefulSetRollingUpdater(HttpClient client, Config config, String namespace, long rollingTimeoutMillis, long loggingIntervalMillis) {
-    super(client, config, namespace, rollingTimeoutMillis, loggingIntervalMillis);
+  StatefulSetRollingUpdater(ClientState clientState, String namespace, long rollingTimeoutMillis, long loggingIntervalMillis) {
+    super(clientState, namespace, rollingTimeoutMillis, loggingIntervalMillis);
   }
 
   @Override
@@ -91,6 +90,6 @@ class StatefulSetRollingUpdater extends RollingUpdater<StatefulSet, StatefulSetL
 
   @Override
   protected Operation<StatefulSet, StatefulSetList, RollableScalableResource<StatefulSet>> resources() {
-    return new StatefulSetOperationsImpl(client, config);
+    return new StatefulSetOperationsImpl(this.clientState);
   }
 }

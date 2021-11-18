@@ -18,25 +18,24 @@ package io.fabric8.kubernetes.client;
 import io.fabric8.kubernetes.client.dsl.MetricAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.internal.NodeMetricOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.PodMetricOperationsImpl;
-import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class MetricAPIGroupClient extends BaseClient implements MetricAPIGroupDSL {
   public MetricAPIGroupClient() {
     super();
   }
 
-  public MetricAPIGroupClient(HttpClient httpClient, final Config config) {
-    super(httpClient, config);
+  public MetricAPIGroupClient(ClientState clientState) {
+    super(clientState);
   }
 
   @Override
   public PodMetricOperationsImpl pods() {
-    return new PodMetricOperationsImpl(httpClient, getConfiguration());
+    return new PodMetricOperationsImpl(this);
   }
 
   @Override
   public NodeMetricOperationsImpl nodes() {
-    return new NodeMetricOperationsImpl(httpClient, getConfiguration());
+    return new NodeMetricOperationsImpl(this);
   }
 
 }

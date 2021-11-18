@@ -18,11 +18,11 @@ package io.fabric8.openshift.client.dsl.internal.oauth;
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.openshift.api.model.OAuthClient;
 import io.fabric8.openshift.api.model.OAuthClientBuilder;
 import io.fabric8.openshift.api.model.OAuthClientList;
-import io.fabric8.openshift.client.OpenShiftConfig;
+import io.fabric8.openshift.client.OpenshiftClientState;
 import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.OAUTH;
@@ -30,8 +30,8 @@ import static io.fabric8.openshift.client.OpenShiftAPIGroups.OAUTH;
 public class OAuthClientOperationsImpl extends OpenShiftOperation<OAuthClient, OAuthClientList,
   Resource<OAuthClient>> {
 
-  public OAuthClientOperationsImpl(HttpClient client, OpenShiftConfig config) {
-    this(new OperationContext().withHttpClient(client).withConfig(config));
+  public OAuthClientOperationsImpl(OpenshiftClientState clientState) {
+    this(HasMetadataOperationsImpl.defaultContext(clientState));
   }
 
   public OAuthClientOperationsImpl(OperationContext context) {

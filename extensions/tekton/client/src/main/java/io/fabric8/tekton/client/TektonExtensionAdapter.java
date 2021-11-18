@@ -18,7 +18,6 @@ package io.fabric8.tekton.client;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.ExtensionAdapter;
 import io.fabric8.kubernetes.client.ExtensionAdapterSupport;
-import io.fabric8.kubernetes.client.http.HttpClient;
 
 import java.net.URL;
 import java.util.concurrent.ConcurrentHashMap;
@@ -41,6 +40,6 @@ public class TektonExtensionAdapter extends ExtensionAdapterSupport implements E
 
 	@Override
 	public TektonClient adapt(Client client) {
-            return new DefaultTektonClient(client.adapt(HttpClient.class), client.getConfiguration());
+            return new DefaultTektonClient(client);
 	}
 }

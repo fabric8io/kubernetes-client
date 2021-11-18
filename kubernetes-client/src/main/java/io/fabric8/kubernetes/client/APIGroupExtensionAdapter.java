@@ -15,10 +15,6 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.api.model.RootPaths;
-
-import java.util.List;
-
 public abstract class APIGroupExtensionAdapter<T> implements ExtensionAdapter<T> {
 
   abstract protected  String getAPIGroupName();

@@ -43,7 +43,7 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.Eviction;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.EvictionBuilder;
-import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ClientState;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.LocalPortForward;
 import io.fabric8.kubernetes.client.PortForward;
@@ -67,6 +67,7 @@ import io.fabric8.kubernetes.client.dsl.TtyExecable;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.ExecWebSocketListener;
+import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.LogWatchCallback;
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
 import io.fabric8.kubernetes.client.utils.PodOperationUtil;
@@ -108,12 +109,12 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
     private final Integer bufferSize;
     private final PodOperationContext podOperationContext;
 
-  public PodOperationsImpl(HttpClient client, Config config) {
-    this(client, config, null);
+  public PodOperationsImpl(ClientState clientState) {
+    this(clientState, null);
   }
 
-  public PodOperationsImpl(HttpClient client, Config config, String namespace) {
-    this(new PodOperationContext(), new OperationContext().withHttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
+  public PodOperationsImpl(ClientState clientState, String namespace) {
+    this(new PodOperationContext(), HasMetadataOperationsImpl.defaultContext(clientState).withNamespace(namespace));
   }
 
   public PodOperationsImpl(PodOperationContext context, OperationContext superContext) {
@@ -216,7 +217,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
       // Issue Pod Logs HTTP request
       URL url = new URL(URLUtils.join(getResourceUrl().toString(), getLogParameters() + "&follow=true"));
       final LogWatchCallback callback = new LogWatchCallback(config, out);
-      return callback.callAndWait(client, url);
+      return callback.callAndWait(httpClient, url);
     } catch (IOException ioException) {
       throw KubernetesClientException.launderThrowable(forOperationType("watchLog"), ioException);
     }
@@ -230,7 +231,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   @Override
   public PortForward portForward(int port, ReadableByteChannel in, WritableByteChannel out) {
     try {
-      return new PortForwarderWebsocket(client).forward(getResourceUrl(), port, in, out);
+      return new PortForwarderWebsocket(httpClient).forward(getResourceUrl(), port, in, out);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -239,7 +240,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   @Override
   public LocalPortForward portForward(int port) {
     try {
-      return new PortForwarderWebsocket(client).forward(getResourceUrl(), port);
+      return new PortForwarderWebsocket(httpClient).forward(getResourceUrl(), port);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -248,7 +249,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   @Override
   public LocalPortForward portForward(int port, int localPort) {
     try {
-      return new PortForwarderWebsocket(client).forward(getResourceUrl(), port, localPort);
+      return new PortForwarderWebsocket(httpClient).forward(getResourceUrl(), port, localPort);
     } catch (Throwable t) {
       throw KubernetesClientException.launderThrowable(t);
     }
@@ -281,7 +282,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
       }
 
       URL requestUrl = new URL(URLUtils.join(getResourceUrl().toString(), "eviction"));
-      HttpRequest.Builder requestBuilder = client.newHttpRequestBuilder().post(JSON, JSON_MAPPER.writeValueAsString(eviction)).url(requestUrl);
+      HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder().post(JSON, JSON_MAPPER.writeValueAsString(eviction)).url(requestUrl);
       handleResponse(requestBuilder, null, Collections.emptyMap());
       return true;
     } catch (KubernetesClientException e) {
@@ -307,7 +308,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
         String[] actualCommands = command.length >= 1 ? command : EMPTY_COMMAND;
         try {
             URL url = getURLWithCommandParams(actualCommands);
-            HttpClient clone = client.newBuilder().readTimeout(0, TimeUnit.MILLISECONDS).build();
+            HttpClient clone = httpClient.newBuilder().readTimeout(0, TimeUnit.MILLISECONDS).build();
             final ExecWebSocketListener execWebSocketListener = new ExecWebSocketListener(in, out, err, errChannel, inPipe, outPipe, errPipe, errChannelPipe, execListener, bufferSize);
             CompletableFuture<WebSocket> startedFuture = clone.newWebSocketBuilder()
                 .header("Sec-WebSocket-Protocol", "v4.channel.k8s.io")
@@ -382,7 +383,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   public Boolean upload(Path path) {
     return wrapRunWithOptionalDependency(() -> {
       try {
-        return PodUpload.upload(client, getContext(), this, path);
+        return PodUpload.upload(httpClient, getContext(), this, path);
       } catch (Exception ex) {
         Thread.currentThread().interrupt();
         throw KubernetesClientException.launderThrowable(ex);

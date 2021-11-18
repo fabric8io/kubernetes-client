@@ -15,8 +15,6 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.client.http.HttpClient;
-
 public class RbacAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<RbacAPIGroupClient> {
 
   @Override
@@ -31,6 +29,6 @@ public class RbacAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<RbacA
 
   @Override
   protected RbacAPIGroupClient newInstance(Client client) {
-    return new RbacAPIGroupClient(client.adapt(HttpClient.class), client.getConfiguration());
+    return new RbacAPIGroupClient(client);
   }
 }

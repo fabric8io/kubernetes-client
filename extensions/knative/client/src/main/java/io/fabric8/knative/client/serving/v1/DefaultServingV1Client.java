@@ -24,6 +24,7 @@ import io.fabric8.knative.serving.v1.RouteList;
 import io.fabric8.knative.serving.v1.Service;
 import io.fabric8.knative.serving.v1.ServiceList;
 import io.fabric8.kubernetes.client.BaseClient;
+import io.fabric8.kubernetes.client.ClientState;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.Handlers;
@@ -32,7 +33,6 @@ import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class DefaultServingV1Client extends BaseClient implements NamespacedServingV1Client {
 
@@ -44,8 +44,8 @@ public class DefaultServingV1Client extends BaseClient implements NamespacedServ
     super(configuration);
   }
 
-  public DefaultServingV1Client(HttpClient httpClient, Config configuration) {
-    super(httpClient, configuration);
+  public DefaultServingV1Client(ClientState clientState) {
+    super(clientState);
   }
 
   @Override
@@ -57,7 +57,7 @@ public class DefaultServingV1Client extends BaseClient implements NamespacedServ
   public NamespacedServingV1Client inNamespace(String namespace) {
     Config updated = new ConfigBuilder(getConfiguration()).withNamespace(namespace).build();
 
-    return new DefaultServingV1Client(getHttpClient(), updated);
+    return new DefaultServingV1Client(newState(updated));
   }
 
   @Override
@@ -67,22 +67,22 @@ public class DefaultServingV1Client extends BaseClient implements NamespacedServ
 
   @Override
   public MixedOperation<Service, ServiceList, Resource<Service>> services() {
-    return Handlers.getOperation(Service.class, ServiceList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(Service.class, ServiceList.class, this);
   }
 
   @Override
   public MixedOperation<Route, RouteList, Resource<Route>> routes() {
-    return Handlers.getOperation(Route.class, RouteList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(Route.class, RouteList.class, this);
   }
 
   @Override
   public MixedOperation<Revision, RevisionList, Resource<Revision>> revisions() {
-    return Handlers.getOperation(Revision.class, RevisionList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(Revision.class, RevisionList.class, this);
   }
 
   @Override
   public MixedOperation<Configuration, ConfigurationList, Resource<Configuration>> configurations() {
-    return Handlers.getOperation(Configuration.class, ConfigurationList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(Configuration.class, ConfigurationList.class, this);
   }
 
 }

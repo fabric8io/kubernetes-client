@@ -16,15 +16,13 @@
 package io.fabric8.kubernetes.client.dsl.internal.apps.v1;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
-import io.fabric8.kubernetes.client.http.HttpClient;
-import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodCondition;
 import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.client.ClientState;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
@@ -32,6 +30,8 @@ import io.fabric8.kubernetes.client.dsl.Operation;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.WatchListDeletable;
+import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
+import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,19 +61,17 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
 
   private static final transient Logger LOG = LoggerFactory.getLogger(RollingUpdater.class);
 
-  protected final HttpClient client;
-  protected final Config config;
+  protected final ClientState clientState;
   protected final String namespace;
   private final long rollingTimeoutMillis;
   private final long loggingIntervalMillis;
 
-  public RollingUpdater(HttpClient client, Config config, String namespace) {
-    this(client, config, namespace, DEFAULT_ROLLING_TIMEOUT, Config.DEFAULT_LOGGING_INTERVAL);
+  public RollingUpdater(ClientState clientState, String namespace) {
+    this(clientState, namespace, DEFAULT_ROLLING_TIMEOUT, Config.DEFAULT_LOGGING_INTERVAL);
   }
 
-  public RollingUpdater(HttpClient client, Config config, String namespace, long rollingTimeoutMillis, long loggingIntervalMillis) {
-    this.client = client;
-    this.config = config;
+  public RollingUpdater(ClientState clientState, String namespace, long rollingTimeoutMillis, long loggingIntervalMillis) {
+    this.clientState = clientState;
     this.namespace = namespace;
     this.rollingTimeoutMillis = rollingTimeoutMillis;
     this.loggingIntervalMillis = loggingIntervalMillis;
@@ -265,11 +263,11 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
   protected abstract Operation<T, L, RollableScalableResource<T>> resources();
 
   protected Operation<Pod, PodList, PodResource<Pod>> pods() {
-    return new PodOperationsImpl(client, config);
+    return new PodOperationsImpl(clientState);
   }
   
   protected FilterWatchListDeletable<Pod, PodList> selectedPodLister(LabelSelector selector) {
     return pods().inNamespace(namespace).withLabelSelector(selector);
   }
-
+  
 }

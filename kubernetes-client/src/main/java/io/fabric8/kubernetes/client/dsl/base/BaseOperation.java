@@ -126,7 +126,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
    */
   private L listRequestHelper(URL url) {
     try {
-      HttpRequest.Builder requestBuilder = client.newHttpRequestBuilder().url(url);
+      HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder().url(url);
       L answer = handleResponse(requestBuilder, listType);
       updateApiVersion(answer);
       return answer;
@@ -558,7 +558,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     WatchConnectionManager<T, L> watch = null;
     try {
       watch = new WatchConnectionManager<>(
-        client,
+        httpClient,
         this,
         options,
         watcherToggle,
@@ -592,7 +592,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       // websockets. Issue: https://github.com/kubernetes/kubernetes/issues/25126
       try {
         return new WatchHTTPManager<>(
-          client,
+          httpClient,
           this,
           options,
           watcher,

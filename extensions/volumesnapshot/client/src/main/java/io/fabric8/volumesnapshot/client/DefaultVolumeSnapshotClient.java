@@ -16,6 +16,7 @@
 package io.fabric8.volumesnapshot.client;
 
 import io.fabric8.kubernetes.client.BaseClient;
+import io.fabric8.kubernetes.client.ClientState;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.RequestConfig;
@@ -23,7 +24,6 @@ import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
-import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshot;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotClass;
 import io.fabric8.volumesnapshot.api.model.VolumeSnapshotClassList;
@@ -47,23 +47,23 @@ public class DefaultVolumeSnapshotClient extends BaseClient implements Namespace
     super(configuration);
   }
 
-  public DefaultVolumeSnapshotClient(HttpClient httpClient, Config configuration) {
-    super(httpClient, configuration);
+  public DefaultVolumeSnapshotClient(ClientState clientState) {
+    super(clientState);
   }
 
   @Override
 public NonNamespaceOperation<VolumeSnapshotClass, VolumeSnapshotClassList, VolumeSnapshotClassResource> volumeSnapshotClasses() {
-    return new VolumeSnapshotClassOperationsImpl(this.getHttpClient(), this.getConfiguration());
+    return new VolumeSnapshotClassOperationsImpl(this);
   }
 
   @Override
 public NonNamespaceOperation<VolumeSnapshotContent, VolumeSnapshotContentList, VolumeSnapshotContentResource> volumeSnapshotContents() {
-    return new VolumeSnapshotContentOperationsImpl(this.getHttpClient(), this.getConfiguration());
+    return new VolumeSnapshotContentOperationsImpl(this);
   }
 
   @Override
 public MixedOperation<VolumeSnapshot, VolumeSnapshotList, VolumeSnapshotResource> volumeSnapshots() {
-    return new VolumeSnapshotOperationsImpl(this.getHttpClient(), this.getConfiguration());
+    return new VolumeSnapshotOperationsImpl(this);
   }
 
   @Override
@@ -77,7 +77,7 @@ public MixedOperation<VolumeSnapshot, VolumeSnapshotList, VolumeSnapshotResource
       .withNamespace(namespace)
       .build();
 
-    return new DefaultVolumeSnapshotClient(getHttpClient(), updated);
+    return new DefaultVolumeSnapshotClient(newState(updated));
   }
 
   @Override

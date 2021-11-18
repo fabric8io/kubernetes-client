@@ -16,11 +16,10 @@
 package io.fabric8.verticalpodautoscaler.client;
 
 import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ClientState;
 import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscaler;
 import io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscalerCheckpoint;
 import io.fabric8.verticalpodautoscaler.api.model.v1.VerticalPodAutoscalerCheckpointList;
@@ -30,17 +29,17 @@ import io.fabric8.verticalpodautoscaler.client.dsl.V1APIGroupDSL;
 public class V1APIGroupClient extends BaseClient implements V1APIGroupDSL {
   public V1APIGroupClient() {super();}
 
-  public V1APIGroupClient(HttpClient httpClient, final Config config) {
-    super(httpClient, config);
+  public V1APIGroupClient(ClientState clientState) {
+    super(clientState);
   }
 
   @Override
   public MixedOperation<VerticalPodAutoscaler, VerticalPodAutoscalerList, Resource<VerticalPodAutoscaler>> verticalpodautoscalers() {
-    return Handlers.getOperation(VerticalPodAutoscaler.class, VerticalPodAutoscalerList.class, this.getHttpClient(),  this.getConfiguration());
+    return Handlers.getOperation(VerticalPodAutoscaler.class, VerticalPodAutoscalerList.class, this);
   }
 
   @Override
   public MixedOperation<VerticalPodAutoscalerCheckpoint, VerticalPodAutoscalerCheckpointList, Resource<VerticalPodAutoscalerCheckpoint>> verticalpodautoscalercheckpoints() {
-    return Handlers.getOperation(VerticalPodAutoscalerCheckpoint.class, VerticalPodAutoscalerCheckpointList.class, this.getHttpClient(),  this.getConfiguration());
+    return Handlers.getOperation(VerticalPodAutoscalerCheckpoint.class, VerticalPodAutoscalerCheckpointList.class, this);
   }
 }

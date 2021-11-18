@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.client.http.HttpClient;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
@@ -35,6 +34,6 @@ public class BatchAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<Batc
 
   @Override
   protected BatchAPIGroupClient newInstance(Client client) {
-    return new BatchAPIGroupClient(client.adapt(HttpClient.class), client.getConfiguration());
+    return new BatchAPIGroupClient(client);
   }
 }

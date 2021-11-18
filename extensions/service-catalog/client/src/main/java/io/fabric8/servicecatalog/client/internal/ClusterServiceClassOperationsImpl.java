@@ -15,11 +15,11 @@
  */
 package io.fabric8.servicecatalog.client.internal;
 
-import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ClientState;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.servicecatalog.api.model.ClusterServiceClass;
 import io.fabric8.servicecatalog.api.model.ClusterServiceClassList;
 import io.fabric8.servicecatalog.api.model.ClusterServicePlan;
@@ -35,8 +35,8 @@ import java.util.Map;
 public class ClusterServiceClassOperationsImpl extends HasMetadataOperation<ClusterServiceClass, ClusterServiceClassList, ClusterServiceClassResource> implements ClusterServiceClassResource {
 
 
-  public ClusterServiceClassOperationsImpl(HttpClient client, Config config) {
-      this(new OperationContext().withHttpClient(client).withConfig(config));
+  public ClusterServiceClassOperationsImpl(ClientState clientState) {
+      this(HasMetadataOperationsImpl.defaultContext(clientState));
   }
 
     public ClusterServiceClassOperationsImpl(OperationContext ctx) {

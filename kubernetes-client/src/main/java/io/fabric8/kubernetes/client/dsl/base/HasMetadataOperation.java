@@ -46,7 +46,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   public static final long DEFAULT_GRACE_PERIOD_IN_SECONDS = -1L;
   private static final String PATCH_OPERATION = "patch";
   private static final String REPLACE_OPERATION = "replace";
-
+  
   public HasMetadataOperation(OperationContext ctx, Class<T> type, Class<L> listType) {
     super(ctx);
     this.type = type;

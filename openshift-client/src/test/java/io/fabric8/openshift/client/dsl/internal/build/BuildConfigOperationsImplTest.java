@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.OpenShiftConfigBuilder;
+import io.fabric8.openshift.client.OpenshiftClientState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -71,7 +72,18 @@ class BuildConfigOperationsImplTest {
     // Given
     String eventMessage = "FailedScheduling demo-1-7zkjd.1619493da51f6b6f some error";
 
-    BuildConfigOperationsImpl impl = new BuildConfigOperationsImpl(httpClient, config) {
+    BuildConfigOperationsImpl impl = new BuildConfigOperationsImpl(new OpenshiftClientState() {
+
+      @Override
+      public HttpClient getHttpClient() {
+        return httpClient;
+      }
+
+      @Override
+      public OpenShiftConfig getConfiguration() {
+        return config;
+      }
+    }) {
       @Override
       protected String getRecentEvents() {
         return eventMessage;
@@ -89,7 +101,18 @@ class BuildConfigOperationsImplTest {
   @Test
   void testWriteShouldCompleteSuccessfully() throws IOException {
     // Given
-    BuildConfigOperationsImpl impl = new BuildConfigOperationsImpl(httpClient, config) {
+    BuildConfigOperationsImpl impl = new BuildConfigOperationsImpl(new OpenshiftClientState() {
+
+      @Override
+      public HttpClient getHttpClient() {
+        return httpClient;
+      }
+
+      @Override
+      public OpenShiftConfig getConfiguration() {
+        return config;
+      }
+    }) {
       @Override
       protected String getRecentEvents() {
         throw new AssertionError();

@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.dsl.base;
 
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.SimpleClientState;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -28,10 +29,8 @@ import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
-public class OperationContext {
+public class OperationContext extends SimpleClientState {
 
-  protected HttpClient client;
-  protected Config config;
   protected Object item;
   protected String resourceVersion;
   protected String plural;
@@ -67,7 +66,7 @@ public class OperationContext {
   }
 
   public OperationContext(OperationContext other) {
-    this(other.client, other.config, other.plural, other.namespace, other.name, other.apiGroupName, other.apiGroupVersion, other.cascading, other.item, other.labels, other.labelsNot, other.labelsIn, other.labelsNotIn, other.fields, other.fieldsNot, other.resourceVersion, other.reloadingFromServer, other.gracePeriodSeconds, other.propagationPolicy, other.namespaceFromGlobalConfig, other.dryRun, other.selectorAsString);
+    this(other.httpClient, other.config, other.plural, other.namespace, other.name, other.apiGroupName, other.apiGroupVersion, other.cascading, other.item, other.labels, other.labelsNot, other.labelsIn, other.labelsNotIn, other.fields, other.fieldsNot, other.resourceVersion, other.reloadingFromServer, other.gracePeriodSeconds, other.propagationPolicy, other.namespaceFromGlobalConfig, other.dryRun, other.selectorAsString);
   }
 
   public OperationContext(HttpClient client, Config config, String plural, String namespace, String name,
@@ -76,7 +75,7 @@ public class OperationContext {
                           Map<String, String> fields, Map<String, String[]> fieldsNot, String resourceVersion, boolean reloadingFromServer,
                           long gracePeriodSeconds, DeletionPropagation propagationPolicy, boolean namespaceFromGlobalConfig,
                           boolean dryRun, String selectorAsString) {
-    this.client = client;
+    this.httpClient = client;
     this.config = config;
     this.item = item;
     this.plural = plural;
@@ -137,7 +136,7 @@ public class OperationContext {
   }
 
   public HttpClient getClient() {
-    return client;
+    return httpClient;
   }
 
   public Config getConfig() {
@@ -283,11 +282,11 @@ public class OperationContext {
   }
 
   public OperationContext withHttpClient(HttpClient client) {
-    if (this.client == client) {
+    if (this.httpClient == client) {
       return this;
     }
     final OperationContext context = new OperationContext(this);
-    context.client = client;
+    context.httpClient = client;
     return context;
   }
 
@@ -510,5 +509,5 @@ public class OperationContext {
       Utils.getNonNullOrElse(context.selectorAsString, selectorAsString)
     );
   }
-
+  
 }

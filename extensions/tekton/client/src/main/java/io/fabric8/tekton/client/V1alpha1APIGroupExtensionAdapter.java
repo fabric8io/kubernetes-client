@@ -32,6 +32,6 @@ public class V1alpha1APIGroupExtensionAdapter extends APIGroupExtensionAdapter<V
 
   @Override
   protected V1alpha1APIGroupClient newInstance(Client client) {
-    return new V1alpha1APIGroupClient(client.adapt(HttpClient.class), client.getConfiguration());
+    return new V1alpha1APIGroupClient(client);
   }
 }

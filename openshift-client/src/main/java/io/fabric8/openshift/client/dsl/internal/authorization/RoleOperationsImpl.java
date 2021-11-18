@@ -18,19 +18,19 @@ package io.fabric8.openshift.client.dsl.internal.authorization;
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.openshift.api.model.Role;
 import io.fabric8.openshift.api.model.RoleBuilder;
 import io.fabric8.openshift.api.model.RoleList;
-import io.fabric8.openshift.client.OpenShiftConfig;
+import io.fabric8.openshift.client.OpenshiftClientState;
 import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.AUTHORIZATION;
 
 public class RoleOperationsImpl extends OpenShiftOperation<Role, RoleList, Resource<Role>> {
 
-  public RoleOperationsImpl(HttpClient client, OpenShiftConfig config) {
-    this((new OperationContext()).withHttpClient(client).withConfig(config));
+  public RoleOperationsImpl(OpenshiftClientState clientState) {
+    this(HasMetadataOperationsImpl.defaultContext(clientState));
   }
 
   public RoleOperationsImpl(OperationContext context) {

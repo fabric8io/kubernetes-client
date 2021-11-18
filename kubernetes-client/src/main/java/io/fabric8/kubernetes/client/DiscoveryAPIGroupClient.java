@@ -18,15 +18,14 @@ package io.fabric8.kubernetes.client;
 import io.fabric8.kubernetes.client.dsl.DiscoveryAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1DiscoveryAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1beta1DiscoveryAPIGroupDSL;
-import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class DiscoveryAPIGroupClient extends BaseClient implements DiscoveryAPIGroupDSL {
   public DiscoveryAPIGroupClient() {
     super();
   }
 
-  public DiscoveryAPIGroupClient(HttpClient httpClient, final Config config) {
-    super(httpClient, config);
+  public DiscoveryAPIGroupClient(ClientState clientState) {
+    super(clientState);
   }
 
   @Override

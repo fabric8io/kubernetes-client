@@ -22,24 +22,23 @@ import io.fabric8.kubernetes.api.model.policy.v1beta1.PodSecurityPolicyList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.V1beta1PolicyAPIGroupDSL;
-import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class V1beta1PolicyAPIGroupClient extends BaseClient implements V1beta1PolicyAPIGroupDSL {
   public V1beta1PolicyAPIGroupClient() {
     super();
   }
 
-  public V1beta1PolicyAPIGroupClient(HttpClient httpClient, final Config config) {
-    super(httpClient, config);
+  public V1beta1PolicyAPIGroupClient(ClientState clientState) {
+    super(clientState);
   }
 
   @Override
   public MixedOperation<PodSecurityPolicy, PodSecurityPolicyList, Resource<PodSecurityPolicy>> podSecurityPolicies() {
-    return Handlers.getOperation(PodSecurityPolicy.class, PodSecurityPolicyList.class, httpClient, getConfiguration());
+    return Handlers.getOperation(PodSecurityPolicy.class, PodSecurityPolicyList.class, this);
   }
 
   @Override
   public MixedOperation<PodDisruptionBudget, PodDisruptionBudgetList, Resource<PodDisruptionBudget>> podDisruptionBudget() {
-    return Handlers.getOperation(PodDisruptionBudget.class, PodDisruptionBudgetList.class, httpClient, getConfiguration());
+    return Handlers.getOperation(PodDisruptionBudget.class, PodDisruptionBudgetList.class, this);
   }
 }

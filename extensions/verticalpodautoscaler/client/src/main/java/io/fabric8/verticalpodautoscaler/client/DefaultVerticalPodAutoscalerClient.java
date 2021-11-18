@@ -16,12 +16,12 @@
 package io.fabric8.verticalpodautoscaler.client;
 
 import io.fabric8.kubernetes.client.BaseClient;
+import io.fabric8.kubernetes.client.ClientState;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
-import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.verticalpodautoscaler.client.dsl.V1APIGroupDSL;
 
 public class DefaultVerticalPodAutoscalerClient extends BaseClient implements NamespacedVerticalPodAutoscalerClient {
@@ -34,8 +34,8 @@ public class DefaultVerticalPodAutoscalerClient extends BaseClient implements Na
     super(configuration);
   }
 
-  public DefaultVerticalPodAutoscalerClient(HttpClient httpClient, Config configuration) {
-    super(httpClient, configuration);
+  public DefaultVerticalPodAutoscalerClient(ClientState clientState) {
+    super(clientState);
   }
 
   @Override
@@ -49,7 +49,7 @@ public class DefaultVerticalPodAutoscalerClient extends BaseClient implements Na
       .withNamespace(namespace)
       .build();
 
-    return new DefaultVerticalPodAutoscalerClient(getHttpClient(), updated);
+    return new DefaultVerticalPodAutoscalerClient(newState(updated));
   }
 
   @Override

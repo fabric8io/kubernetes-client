@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.client.dsl.Triggerable;
 import io.fabric8.kubernetes.client.dsl.Typeable;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
+import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
@@ -35,7 +36,7 @@ import io.fabric8.openshift.api.model.BuildConfigBuilder;
 import io.fabric8.openshift.api.model.BuildConfigList;
 import io.fabric8.openshift.api.model.BuildRequest;
 import io.fabric8.openshift.api.model.WebHookTrigger;
-import io.fabric8.openshift.client.OpenShiftConfig;
+import io.fabric8.openshift.client.OpenshiftClientState;
 import io.fabric8.openshift.client.dsl.BuildConfigOperation;
 import io.fabric8.openshift.client.dsl.BuildConfigResource;
 import io.fabric8.openshift.client.dsl.InputStreamable;
@@ -84,8 +85,8 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
   private final long timeout;
   private final TimeUnit timeoutUnit;
 
-  public BuildConfigOperationsImpl(HttpClient client, OpenShiftConfig config) {
-    this(new BuildConfigOperationContext(), new OperationContext().withHttpClient(client).withConfig(config));
+  public BuildConfigOperationsImpl(OpenshiftClientState clientState) {
+    this(new BuildConfigOperationContext(), HasMetadataOperationsImpl.defaultContext(clientState));
   }
 
   public BuildConfigOperationsImpl(BuildConfigOperationContext context, OperationContext superContext) {
@@ -119,7 +120,7 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
     try {
       updateApiVersion(request);
       URL instantiationUrl = new URL(URLUtils.join(getResourceUrl().toString(), "instantiate"));
-      HttpRequest.Builder requestBuilder = client.newHttpRequestBuilder().post(JSON, OperationSupport.JSON_MAPPER.writer().writeValueAsString(request)).url(instantiationUrl);
+      HttpRequest.Builder requestBuilder = this.httpClient.newHttpRequestBuilder().post(JSON, OperationSupport.JSON_MAPPER.writer().writeValueAsString(request)).url(instantiationUrl);
       return handleResponse(requestBuilder, Build.class);
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
@@ -137,7 +138,7 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
     try {
       //TODO: This needs some attention.
       String triggerUrl = URLUtils.join(getResourceUrl().toString(), "webhooks", secret, triggerType);
-      HttpRequest.Builder requestBuilder = client.newHttpRequestBuilder()
+      HttpRequest.Builder requestBuilder = this.httpClient.newHttpRequestBuilder()
         .post(JSON, OperationSupport.JSON_MAPPER.writer().writeValueAsBytes(trigger))
         .uri(triggerUrl)
         .header("X-Github-Event", "push");
@@ -266,12 +267,12 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
 
   protected Build submitToApiServer(InputStream inputStream, long contentLength) {
     try {
-      HttpClient newClient = client.newBuilder()
+      HttpClient newClient = this.httpClient.newBuilder()
         .readTimeout(timeout, timeoutUnit)
         .writeTimeout(timeout, timeoutUnit)
         .build();
       HttpRequest.Builder requestBuilder =
-        client.newHttpRequestBuilder().post("application/octet-stream", inputStream, contentLength)
+        this.httpClient.newHttpRequestBuilder().post("application/octet-stream", inputStream, contentLength)
           .header("Expect", "100-continue")
           .uri(getQueryParameters());
       return handleResponse(newClient, requestBuilder, Build.class);
@@ -292,7 +293,7 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
 
   protected String getRecentEvents() {
     StringBuilder eventsAsStrBuilder = new StringBuilder();
-    List<Event> recentEventList = Handlers.getOperation(Event.class, EventList.class, client, config).inNamespace(namespace).list().getItems();
+    List<Event> recentEventList = Handlers.getOperation(Event.class, EventList.class, this).inNamespace(namespace).list().getItems();
     KubernetesResourceUtil.sortEventListBasedOnTimestamp(recentEventList);
     for (int i = 0; i < 10 && i < recentEventList.size(); i++) {
       Event event = recentEventList.get(i);

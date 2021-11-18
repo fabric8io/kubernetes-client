@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.client.http.HttpClient;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
@@ -35,7 +34,7 @@ public class AutoscalingAPIGroupExtensionAdapter extends APIGroupExtensionAdapte
 
   @Override
   protected AutoscalingAPIGroupClient newInstance(Client client) {
-    return new AutoscalingAPIGroupClient(client.adapt(HttpClient.class), client.getConfiguration());
+    return new AutoscalingAPIGroupClient(client);
   }
 
 }

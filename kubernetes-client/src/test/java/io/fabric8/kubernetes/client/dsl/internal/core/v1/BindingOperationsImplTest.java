@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal.core.v1;
 
+import io.fabric8.kubernetes.client.SimpleClientState;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -24,7 +25,7 @@ class BindingOperationsImplTest {
   @Test
   void canBeInstantiated() {
     // When
-    final BindingOperationsImpl result = new BindingOperationsImpl(null, null);
+    final BindingOperationsImpl result = new BindingOperationsImpl(new SimpleClientState(), null);
     // Then
     assertThat(result).isNotNull();
   }

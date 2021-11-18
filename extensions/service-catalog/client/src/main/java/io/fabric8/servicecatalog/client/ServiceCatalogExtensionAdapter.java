@@ -60,6 +60,6 @@ public class ServiceCatalogExtensionAdapter extends ExtensionAdapterSupport impl
 
 	@Override
 	public ServiceCatalogClient adapt(Client client) {
-            return new DefaultServiceCatalogClient(client.adapt(HttpClient.class), client.getConfiguration());
+            return new DefaultServiceCatalogClient(client);
 	}
 }

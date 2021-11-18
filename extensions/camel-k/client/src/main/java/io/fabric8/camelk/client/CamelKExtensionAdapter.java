@@ -18,7 +18,6 @@ package io.fabric8.camelk.client;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.ExtensionAdapter;
 import io.fabric8.kubernetes.client.ExtensionAdapterSupport;
-import io.fabric8.kubernetes.client.http.HttpClient;
 
 import java.net.URL;
 import java.util.concurrent.ConcurrentHashMap;
@@ -41,7 +40,7 @@ public class CamelKExtensionAdapter extends ExtensionAdapterSupport implements E
 
 	@Override
 	public CamelKClient adapt(Client client) {
-            return new DefaultCamelKClient(client.adapt(HttpClient.class), client.getConfiguration());
+            return new DefaultCamelKClient(client);
   }
 
 }
