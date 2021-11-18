@@ -48,6 +48,11 @@ type PackageInformation struct {
 
 // Name strategy mapping for auto discovered classes
 type JavaNameStrategyMapping struct {
+	// Sometimes the json field name is set in this way:
+	// GoField *GoType `protobuf:"...,json=goField,proto3" json:"go_field,omitempty"`
+	// By default, we will still use the one from `json`, if this flag is true,
+	// it will then use the one from the protobuf.
+	ResolveFieldNameFromProtobufFirst bool
 	// To provide a custom generic rule that applies to all java, interface, enum
 	CustomJavaNameRule func(packageName *string, javaName *string)
 	// To manually map a golang class to a Java class
@@ -122,6 +127,14 @@ func GenerateSchemaWithAllOptions(schemaId string, crdLists map[reflect.Type]Crd
 }
 
 func (g *schemaGenerator) jsonFieldName(f reflect.StructField) string {
+	if g.javaNameStrategy.ResolveFieldNameFromProtobufFirst {
+		protobufTag := f.Tag.Get("protobuf")
+		if len(protobufTag) > 0 && strings.Contains(protobufTag, "json=") {
+			fieldName := protobufTag[strings.LastIndex(protobufTag, "json=")+5:]
+			return fieldName[:strings.Index(fieldName, ",")]
+		}
+	}
+
 	json := f.Tag.Get("json")
 	if len(json) > 0 {
 		parts := strings.Split(json, ",")
