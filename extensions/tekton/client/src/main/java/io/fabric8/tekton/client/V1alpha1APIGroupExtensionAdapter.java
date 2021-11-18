@@ -17,7 +17,6 @@ package io.fabric8.tekton.client;
 
 import io.fabric8.kubernetes.client.APIGroupExtensionAdapter;
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.http.HttpClient;
 
 public class V1alpha1APIGroupExtensionAdapter extends APIGroupExtensionAdapter<V1alpha1APIGroupClient> {
   @Override

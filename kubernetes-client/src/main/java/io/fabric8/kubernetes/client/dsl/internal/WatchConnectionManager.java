@@ -80,7 +80,14 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
   @Override
   protected synchronized void closeRequest() {
     closeWebSocket(websocket);
-    websocketFuture = null;
+    if (this.websocketFuture != null) {
+      this.websocketFuture.whenComplete((w, t) -> {
+        if (w != null) {
+          closeWebSocket(w);
+        }
+      });
+      websocketFuture = null;
+    }
   }
 
   public void waitUntilReady() {
