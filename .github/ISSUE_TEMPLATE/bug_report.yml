@@ -99,7 +99,7 @@ body:
       required: true
 
   - type: dropdown
-    id: version
+    id: api-version
     attributes:
       label: Kubernetes API Server version
       description: Kubernetes API Server version
