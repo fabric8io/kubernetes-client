@@ -195,7 +195,7 @@ func (g *schemaGenerator) jsonDescriptor(t reflect.Type) *JSONDescriptor {
 
 	switch t.Kind() {
 	case reflect.Float32, reflect.Float64:
-		return &JSONDescriptor{Type: "float"}
+		return &JSONDescriptor{Type: "number"}
 	case reflect.Int, reflect.Uint8, reflect.Int16, reflect.Int32, reflect.Int64, reflect.Uint32, reflect.Uint64, reflect.Uint16:
 		return &JSONDescriptor{Type: "integer"}
 	case reflect.Bool:
