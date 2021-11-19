@@ -12,6 +12,12 @@
 #### New Features
 
 #### _**Note**_: Breaking changes in the API
+* Refactoring #3547: due to an abstraction layer added over okHttp, the following api changes were made:
+    * OperationContext withOkHttpClient was removed, it should be needed to be directly called
+    * PatchType.getMediaType was replaced with PatchType.getContentType
+    * ExecListener no longer passes the okhttp3.Response.
+    * okhttp3.TlsVersions has been replaced by io.fabric8.kubernetes.client.http.TlsVersion
+    * Client constructors referencing okhttp3.HttpClient have been removed.
 
 ### 5.10.1 (2021-11-12)
 

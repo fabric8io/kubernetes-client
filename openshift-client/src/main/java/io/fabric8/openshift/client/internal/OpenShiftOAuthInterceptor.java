@@ -120,7 +120,7 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
 
   private void setAuthHeader(BasicBuilder builder, String token) {
     if (token != null) {
-      builder.header(AUTHORIZATION, String.format("Bearer %s", token));
+      builder.setHeader(AUTHORIZATION, String.format("Bearer %s", token));
     }
   }
 
@@ -144,7 +144,7 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
       url = new URL(authorizationServer + AUTHORIZE_QUERY);
 
       String credential = HttpClientUtils.basicCredentials(config.getUsername(), config.getPassword());
-      response = clone.send(client.newHttpRequestBuilder().url(url).header(AUTHORIZATION, credential).build(), String.class);
+      response = clone.send(client.newHttpRequestBuilder().url(url).setHeader(AUTHORIZATION, credential).build(), String.class);
 
       response = response.previousResponse().isPresent() ? response.previousResponse().get() : response;
 

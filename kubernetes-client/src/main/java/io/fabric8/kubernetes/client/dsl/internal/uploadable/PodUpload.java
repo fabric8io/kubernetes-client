@@ -169,7 +169,7 @@ public class PodUpload {
     final PodUploadWebSocketListener podUploadWebSocketListener = new PodUploadWebSocketListener();
     final HttpClient clone = client.newBuilder().readTimeout(0, TimeUnit.MILLISECONDS).build();
     CompletableFuture<WebSocket> startedFuture = clone.newWebSocketBuilder()
-      .header("Sec-WebSocket-Protocol", "v4.channel.k8s.io")
+      .setHeader("Sec-WebSocket-Protocol", "v4.channel.k8s.io")
       .uri(URI.create(url.toString()))
       .buildAsync(podUploadWebSocketListener);
     startedFuture.whenComplete((w, t) -> {
