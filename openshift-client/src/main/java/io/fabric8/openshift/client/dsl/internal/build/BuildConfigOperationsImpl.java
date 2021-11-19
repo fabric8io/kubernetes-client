@@ -273,7 +273,7 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
         .build();
       HttpRequest.Builder requestBuilder =
         this.httpClient.newHttpRequestBuilder().post("application/octet-stream", inputStream, contentLength)
-          .setHeader("Expect", "100-continue")
+          .expectContinue()
           .uri(getQueryParameters());
       return handleResponse(newClient, requestBuilder, Build.class);
     } catch (InterruptedException e) {

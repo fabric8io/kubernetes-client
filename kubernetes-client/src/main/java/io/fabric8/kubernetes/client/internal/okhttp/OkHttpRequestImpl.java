@@ -123,6 +123,12 @@ class OkHttpRequestImpl implements HttpRequest {
       return this;
     }
     
+    @Override
+    public Builder expectContinue() {
+      builder.header("Expect", "100-continue");
+      return this;
+    }
+    
   }
   
   private Request request;

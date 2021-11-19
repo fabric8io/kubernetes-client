@@ -75,6 +75,8 @@ public interface HttpRequest extends HttpHeaders {
               .collect(Collectors.joining("&")));
     }
 
+    Builder expectContinue();
+
   }
   
   static String formURLEncode(String value) {

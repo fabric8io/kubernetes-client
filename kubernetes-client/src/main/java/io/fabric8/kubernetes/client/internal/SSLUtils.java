@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.client.http.HttpResponse;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.Socket;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -35,8 +36,10 @@ import java.security.spec.InvalidKeySpecException;
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLEngine;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509ExtendedTrustManager;
 import javax.net.ssl.X509TrustManager;
 
 import io.fabric8.kubernetes.client.utils.HttpClientUtils;
@@ -93,7 +96,7 @@ public final class SSLUtils {
         KeyStore trustStore = null;
         if (isTrustCerts) {
             return new TrustManager[]{
-                new X509TrustManager() {
+                new X509ExtendedTrustManager() {
                     @Override
                     public void checkClientTrusted(X509Certificate[] chain, String s) {
                     }
@@ -105,6 +108,30 @@ public final class SSLUtils {
                     @Override
                     public X509Certificate[] getAcceptedIssuers() {
                         return new X509Certificate[0];
+                    }
+
+                    @Override
+                    public void checkClientTrusted(X509Certificate[] chain, String authType, Socket socket)
+                        throws CertificateException {
+                      
+                    }
+
+                    @Override
+                    public void checkServerTrusted(X509Certificate[] chain, String authType, Socket socket)
+                        throws CertificateException {
+                      
+                    }
+
+                    @Override
+                    public void checkClientTrusted(X509Certificate[] chain, String authType, SSLEngine engine)
+                        throws CertificateException {
+                      
+                    }
+
+                    @Override
+                    public void checkServerTrusted(X509Certificate[] chain, String authType, SSLEngine engine)
+                        throws CertificateException {
+                      
                     }
                 }
             };
