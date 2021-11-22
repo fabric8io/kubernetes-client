@@ -219,8 +219,11 @@ public class Template implements HasMetadata, Namespaced {
      */
     @JsonProperty("objects")
     public List<HasMetadata> getObjects() {
-        List<HasMetadata> sortedObjects = new ArrayList<>(objects);
-        Collections.sort(sortedObjects, new HasMetadataComparator());
+        if (objects == null) {
+            return Collections.emptyList();
+        }
+        final List<HasMetadata> sortedObjects = new ArrayList<>(objects);
+        sortedObjects.sort(new HasMetadataComparator());
         return sortedObjects;
     }
 
