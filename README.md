@@ -560,6 +560,7 @@ All the resource objects used here will be according to OpenShift 3.9.0  and Kub
   - [Service Catalog API](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/service-catalog)
   - [Knative](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/knative)
   - [Tekton](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/tekton)
+  - [Volcano](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/volcano)
 
   Frameworks/Libraries/Tools:
   - [Arquillian Cube](http://arquillian.org/arquillian-cube/)

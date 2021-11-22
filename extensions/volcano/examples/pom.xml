@@ -16,28 +16,24 @@
     limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <artifactId>kubernetes-client-project</artifactId>
     <groupId>io.fabric8</groupId>
+    <artifactId>volcano-extension-pom</artifactId>
     <version>5.11-SNAPSHOT</version>
   </parent>
 
-  <artifactId>kubernetes-extensions</artifactId>
-  <packaging>pom</packaging>
-  <name>Fabric8 :: Kubernetes :: Extensions</name>
+  <artifactId>volcano-examples</artifactId>
+  <name>Fabric8 :: Volcano :: Examples</name>
 
-  <modules>
-    <module>knative</module>
-    <module>tekton</module>
-    <module>service-catalog</module>
-    <module>volumesnapshot</module>
-    <module>chaosmesh</module>
-    <module>camel-k</module>
-    <module>certmanager</module>
-    <module>verticalpodautoscaler</module>
-    <module>volcano</module>
-  </modules>
+  <dependencies>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>volcano-client</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
 
 </project>
