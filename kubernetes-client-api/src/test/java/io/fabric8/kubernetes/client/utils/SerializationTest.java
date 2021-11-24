@@ -168,7 +168,8 @@ class SerializationTest {
         .hasFieldOrPropertyWithValue("spec.securityContext.runAsGroup", 1000L)
         .hasFieldOrPropertyWithValue("spec.securityContext.runAsUser", 1000L)
         .extracting(Pod::getSpec)
-        .returns(Arrays.asList(new Toleration("NoSchedule", "nodeType", "Equal", null, "build")), PodSpec::getTolerations)
+        .returns(Collections.singletonList(new Toleration("NoSchedule", "nodeType", "Equal", null, "build")),
+            PodSpec::getTolerations)
         .extracting(PodSpec::getContainers).asList()
         .hasSize(2)
         .extracting("name", "image", "resources.requests.cpu")
