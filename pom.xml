@@ -431,6 +431,22 @@
         <version>${project.version}</version>
       </dependency>
 
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>volcano-model-v1beta1</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>volcano-client</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>volcano-server-mock</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
       <!-- Jackson dependencies, imported as a BOM -->
       <dependency>
         <groupId>com.fasterxml.jackson</groupId>
