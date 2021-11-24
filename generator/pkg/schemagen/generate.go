@@ -335,26 +335,13 @@ func (g *schemaGenerator) generate(schemaId string, crdLists map[reflect.Type]Cr
 		// register interface
 		interfaceJavaClass := g.resolveFqnJavaTypeUsingMappingSchema(interfaceName)
 		interfaceKey := g.qualifiedNameForString(interfaceName)
-		s.Definitions[interfaceKey] = JSONPropertyDescriptor{
-			JSONDescriptor: &JSONDescriptor{
-				Type: "object",
-			},
-			JavaInterfaceDescriptor: &JavaInterfaceDescriptor{
-				InterfaceType: g.adaptJavaClassName(interfaceJavaClass),
-			},
-		}
-		s.Properties[interfaceKey] = JSONPropertyDescriptor{
-			JSONReferenceDescriptor: &JSONReferenceDescriptor{
-				Reference: g.generateReferenceForString(interfaceKey),
-			},
-			JavaInterfaceDescriptor: &JavaInterfaceDescriptor{
-				InterfaceType: g.adaptJavaClassName(interfaceJavaClass),
-			},
-		}
+		interfaceImplementations := make([]string, 0)
 
 		// register implementations
 		for _, implementation := range implementations {
 			implementationName := g.qualifiedName(implementation)
+			implementationJavaName := g.javaType(implementation)
+			interfaceImplementations = append(interfaceImplementations, implementationJavaName)
 
 			s.Definitions[implementationName] = JSONPropertyDescriptor{
 				JSONDescriptor: &JSONDescriptor{
@@ -364,7 +351,7 @@ func (g *schemaGenerator) generate(schemaId string, crdLists map[reflect.Type]Cr
 					Properties: g.getStructProperties(implementation),
 				},
 				JavaTypeDescriptor: &JavaTypeDescriptor{
-					JavaType: g.javaType(implementation),
+					JavaType: implementationJavaName,
 				},
 				JavaInterfacesDescriptor: &JavaInterfacesDescriptor{
 					JavaInterfaces: []string{g.adaptJavaClassName(interfaceJavaClass)},
@@ -375,9 +362,28 @@ func (g *schemaGenerator) generate(schemaId string, crdLists map[reflect.Type]Cr
 					Reference: g.generateReference(implementation),
 				},
 				JavaTypeDescriptor: &JavaTypeDescriptor{
-					JavaType: g.javaType(implementation),
+					JavaType: implementationJavaName,
 				},
 			}
+		}
+
+		// register interface
+		s.Definitions[interfaceKey] = JSONPropertyDescriptor{
+			JSONDescriptor: &JSONDescriptor{
+				Type: "object",
+			},
+			JavaInterfaceDescriptor: &JavaInterfaceDescriptor{
+				InterfaceType:   g.adaptJavaClassName(interfaceJavaClass),
+				Implementations: interfaceImplementations,
+			},
+		}
+		s.Properties[interfaceKey] = JSONPropertyDescriptor{
+			JSONReferenceDescriptor: &JSONReferenceDescriptor{
+				Reference: g.generateReferenceForString(interfaceKey),
+			},
+			JavaInterfaceDescriptor: &JavaInterfaceDescriptor{
+				InterfaceType: g.adaptJavaClassName(interfaceJavaClass),
+			},
 		}
 
 	}
