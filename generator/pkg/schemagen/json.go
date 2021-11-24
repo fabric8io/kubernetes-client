@@ -59,7 +59,8 @@ type JavaTypeDescriptor struct {
 }
 
 type JavaInterfaceDescriptor struct {
-	InterfaceType string `json:"interfaceType"`
+	InterfaceType   string   `json:"interfaceType"`
+	Implementations []string `json:"interfaceImpls,omitempty"`
 }
 
 type ExistingJavaTypeDescriptor struct {

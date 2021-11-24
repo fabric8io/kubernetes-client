@@ -15,23 +15,36 @@
  */
 package io.fabric8.kubernetes.jsonschema2pojo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.jsonschema2pojo.Schema;
 import org.jsonschema2pojo.rules.ObjectRule;
 import org.jsonschema2pojo.rules.RuleFactory;
 import org.jsonschema2pojo.util.ParcelableHelper;
 import org.jsonschema2pojo.util.ReflectionHelper;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
+import com.sun.codemodel.JAnnotationArrayMember;
+import com.sun.codemodel.JAnnotationUse;
 import com.sun.codemodel.JClassAlreadyExistsException;
+import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JPackage;
 import com.sun.codemodel.JType;
+
+import io.fabric8.kubernetes.model.jackson.UnwrappedTypeResolverBuilder;
 
 /**
  * Class that extend the object rule to add support of interfaces.
  */
 public class Fabric8ObjectRule extends ObjectRule {
   private static final String INTERFACE_TYPE_PROPERTY = "interfaceType";
+  private static final String INTERFACE_IMPLEMENTATIONS_TYPE_PROPERTY = "interfaceImpls";
+  private static final String VALUE_PROPERTY = "value";
 
   private final RuleFactory ruleFactory;
 
@@ -65,6 +78,25 @@ public class Fabric8ObjectRule extends ObjectRule {
 
     this.ruleFactory.getAnnotator().typeInfo(newType, node);
     this.ruleFactory.getAnnotator().propertyInclusion(newType, node);
+
+    // Allow to deserialize the interface from implementations:
+    if (node.has(INTERFACE_IMPLEMENTATIONS_TYPE_PROPERTY)) {
+      newType.annotate(JsonTypeResolver.class).param(VALUE_PROPERTY, UnwrappedTypeResolverBuilder.class);
+      JAnnotationArrayMember subTypes = newType.annotate(JsonSubTypes.class).paramArray(VALUE_PROPERTY);
+      JsonNode implementationsNode = node.get(INTERFACE_IMPLEMENTATIONS_TYPE_PROPERTY);
+      List<String> implementations = new ArrayList<>();
+      for (JsonNode implementationNode : implementationsNode) {
+        String implementation = implementationNode.textValue();
+        implementations.add(implementation);
+        subTypes.annotate(JsonSubTypes.Type.class).param(VALUE_PROPERTY, new JCodeModel().ref(implementation));
+      }
+
+      JAnnotationUse jsonTypeAnnotation = newType.annotate(JsonTypeInfo.class).param("use", JsonTypeInfo.Id.DEDUCTION);
+      if (implementations.size() == 1) {
+        jsonTypeAnnotation.param("defaultImpl", new JCodeModel().ref(implementations.get(0)));
+      }
+    }
+
     return newType;
   }
 }
