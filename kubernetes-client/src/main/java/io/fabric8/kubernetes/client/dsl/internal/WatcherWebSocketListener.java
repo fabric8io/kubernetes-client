@@ -37,6 +37,11 @@ import static java.net.HttpURLConnection.HTTP_UNAVAILABLE;
 class WatcherWebSocketListener<T extends HasMetadata> extends WebSocketListener {
   protected static final Logger logger = LoggerFactory.getLogger(WatcherWebSocketListener.class);
   
+  // don't allow for concurrent failure and message processing
+  // if something is holding the message thread, this can lead to concurrent processing on the watcher
+  // or worse additional reconnection attempts while the previous threads are still held
+  private final Object reconnectLock = new Object();
+  
   private final CompletableFuture<Void> startedFuture = new CompletableFuture<>();
   protected final AbstractWatchManager<T> manager;
   
@@ -85,12 +90,16 @@ class WatcherWebSocketListener<T extends HasMetadata> extends WebSocketListener 
       return;
     }
     
-    manager.scheduleReconnect();
+    synchronized (reconnectLock) {
+      manager.scheduleReconnect();
+    }
   }
   
   @Override
   public void onMessage(WebSocket webSocket, String text) {
-    manager.onMessage(text);
+    synchronized (reconnectLock) {
+      manager.onMessage(text);
+    }
   }
   
   private void pushException(KubernetesClientException exception) {
