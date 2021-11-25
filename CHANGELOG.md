@@ -17,6 +17,7 @@
 
 #### New Features
 * Fix #3579: Add support for Volcano extension
+* Fix #3593: Add support for Istio extension
 
 #### _**Note**_: Breaking changes in the API
 

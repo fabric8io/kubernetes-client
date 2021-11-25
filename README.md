@@ -561,6 +561,7 @@ All the resource objects used here will be according to OpenShift 3.9.0  and Kub
   - [Knative](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/knative)
   - [Tekton](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/tekton)
   - [Volcano](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/volcano)
+  - [Istio](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/istio)
 
   Frameworks/Libraries/Tools:
   - [Arquillian Cube](http://arquillian.org/arquillian-cube/)
