@@ -28,8 +28,14 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -45,6 +51,8 @@ import java.util.Map;
 @EqualsAndHashCode
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 public class GenericKubernetesResource implements HasMetadata {
+
+  private static final Pattern ARRAY_PROPERTY_PATTERN = Pattern.compile("^(.+)\\[(\\d+)]$");
 
   @JsonProperty("apiVersion")
   private String apiVersion;
@@ -69,4 +77,55 @@ public class GenericKubernetesResource implements HasMetadata {
     this.additionalProperties.put(name, value);
   }
 
+  /**
+   * Allows the retrieval of field values from this Resource for the provided path segments.
+   *
+   * <p> The following notation is supported
+   * <ul>
+   *   <li>
+   *     Dot Notation
+   *     <pre>{@code resource.get("path.of.the.nested.prop");}</pre>
+   *   </li>
+   *   <li>
+   *     Varargs Notation
+   *     <pre>{@code resource.get("path", "of", "the", "nested", "prop");}</pre>
+   *   </li>
+   *   <li>
+   *     Mixed Notation
+   *     <pre>{@code resource.get("path.of", "the.nested", "prop");}</pre>
+   *   </li>
+   * </ul>
+   *
+   * <p> In addition, fields that contain collections/arrays can also be traversed
+   * <pre>{@code resource.get("path.collectionField[1].nested.array[0].field");}</pre>
+   *
+   * @param path of the field to retrieve.
+   * @param <T> type of the returned object.
+   * @return the value of the traversed path or null if the field does not exist.
+   */
+  @SuppressWarnings("unchecked")
+  public <T> T get(String... path) {
+    Object current = null;
+    int firstPropertyMarker = 0;
+    final List<String> properties = Stream.of(path).map(p -> p.split("\\.")).flatMap(Stream::of)
+      .collect(Collectors.toList());
+    for (String p : properties) {
+      if (firstPropertyMarker++ == 0) {
+        current = getAdditionalProperties().get(p);
+      } else {
+        final Matcher arrayMatcher = ARRAY_PROPERTY_PATTERN.matcher(p);
+        if (current instanceof Map && arrayMatcher.find()) {
+          final String key = arrayMatcher.group(1);
+          final int index = Integer.parseInt(arrayMatcher.group(2));
+          final Map<String, Object> field = (Map<String, Object>) current;
+          current = ((Collection<Object>)field.get(key)).toArray()[index];
+        } else if (current instanceof Map) {
+          current = ((Map<String, Object>) current).get(p);
+        } else {
+          throw new IllegalArgumentException("Cannot get property " + String.join(".", properties) + " from " + getApiVersion() + " " + getKind());
+        }
+      }
+    }
+    return (T) current;
+  }
 }
