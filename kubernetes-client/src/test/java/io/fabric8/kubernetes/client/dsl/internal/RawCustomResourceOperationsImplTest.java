@@ -818,7 +818,7 @@ class RawCustomResourceOperationsImplTest {
     assertThat(eventReceived).hasValue("{\"kind\":\"Hello\",\"metadata\":{\"name\":\"test\"}}");
     assertThat(result).isNotNull();
     assertThat(captor.getValue().url())
-      .hasToString("https://localhost:8443/apis/test.fabric8.io/v1alpha1/hellos?watch=true");
+      .hasToString("https://localhost:8443/apis/test.fabric8.io/v1alpha1/hellos?allowWatchBookmarks=true&watch=true");
   }
 
   private void mockCallWithResponse(int code) throws IOException {
