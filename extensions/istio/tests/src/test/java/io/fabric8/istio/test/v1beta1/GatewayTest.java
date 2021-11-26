@@ -144,18 +144,18 @@ class GatewayTest {
 
     final String output = Serialization.yamlMapper().writeValueAsString(gateway);
     Yaml parser = new Yaml();
-    final Map<String, Map> reloaded = parser.loadAs(output, Map.class);
+    final Map<String, Object> reloaded = parser.loadAs(output, Map.class);
 
     Assert.assertEquals("Gateway", reloaded.get("kind"));
 
-    final Map metadata = reloaded.get("metadata");
+    final Map metadata = (Map) reloaded.get("metadata");
     Assert.assertNotNull(metadata);
     Assert.assertEquals("httpbin-gateway", metadata.get("name"));
 
-    final Map<String, Map> spec = reloaded.get("spec");
+    final Map<String, Map> spec = (Map<String, Map>) reloaded.get("spec");
     Assert.assertNotNull(spec);
 
-    final Map<String, Map> selector = spec.get("selector");
+    final Map<String, Object> selector = spec.get("selector");
     Assert.assertNotNull(selector);
     Assert.assertEquals("ingressgateway", selector.get("istio"));
 
@@ -166,13 +166,13 @@ class GatewayTest {
     Map<String, Map> server = servers.get(0);
     Assert.assertNotNull(server);
 
-    Map<String, Map> port = server.get("port");
+    Map<String, Object> port = server.get("port");
     Assert.assertNotNull(port);
     Assert.assertEquals(80, port.get("number"));
     Assert.assertEquals("http", port.get("name"));
     Assert.assertEquals("HTTP", port.get("protocol"));
 
-    final List<Map> hosts = (List) server.get("hosts");
+    final List<String> hosts = (List<String>) server.get("hosts");
     Assert.assertNotNull(hosts);
     Assert.assertEquals("httpbin.example.com", hosts.get(0));
 

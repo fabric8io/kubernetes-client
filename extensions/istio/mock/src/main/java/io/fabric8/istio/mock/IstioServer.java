@@ -76,14 +76,4 @@ public class IstioServer extends ExternalResource {
   public MockServerExpectation expect() {
     return mock.expect();
   }
-
-  @Deprecated
-  public <T> void expectAndReturnAsJson(String path, int code, T body) {
-    expect().withPath(path).andReturn(code, body).always();
-  }
-
-  @Deprecated
-  public void expectAndReturnAsString(String path, int code, String body) {
-    expect().withPath(path).andReturn(code, body).always();
-  }
 }
