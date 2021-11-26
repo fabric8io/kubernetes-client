@@ -202,7 +202,8 @@ class GenericKubernetesResourceTest {
       gkr.get("spec", "field.nested.not.here"));
     // Then
     assertThat(result)
-      .hasMessageContaining("Cannot get property spec.field.nested.not.here");
+      .hasMessageContaining("Cannot get property 'spec.field.nested.not.here'")
+      .hasMessageContaining("(missing segment 'not.here')");
   }
 
   @Test
