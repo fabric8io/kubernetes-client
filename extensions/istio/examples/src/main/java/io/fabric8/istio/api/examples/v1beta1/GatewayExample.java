@@ -34,7 +34,7 @@ public class GatewayExample {
       createResource(client);
       System.exit(0);
     } catch (KubernetesClientException ex) {
-      System.out.println("Failed with " + ex.getMessage());
+      System.err.println("Failed with " + ex.getMessage());
       System.exit(1);
     }
   }

@@ -189,15 +189,15 @@ spec:
     final String output = Serialization.yamlMapper().writeValueAsString(virtualService);
 
     Yaml parser = new Yaml();
-    final Map<String, Map> reloaded = parser.loadAs(output, Map.class);
+    final Map<String, Object> reloaded = parser.loadAs(output, Map.class);
 
     Assert.assertEquals("VirtualService", reloaded.get("kind"));
 
-    final Map metadata = reloaded.get("metadata");
+    final Map<String, Object> metadata = (Map<String, Object>) reloaded.get("metadata");
     Assert.assertNotNull(metadata);
     Assert.assertEquals("details", metadata.get("name"));
 
-    final Map<String, Map> spec = reloaded.get("spec");
+    final Map<String, Object> spec = (Map<String, Object>) reloaded.get("spec");
     Assert.assertNotNull(spec);
 
     final List<Map> https = (List) spec.get("http");
@@ -212,7 +212,7 @@ spec:
     final Map<String, Map> route = routes.get(0);
     Assert.assertNotNull(route);
 
-    final Map<String, Map> destination = route.get("destination");
+    final Map<String, Object> destination = route.get("destination");
     Assert.assertNotNull(destination);
 
     Assert.assertEquals("details", destination.get("host"));
@@ -269,15 +269,15 @@ spec:
 
     final String output = Serialization.yamlMapper().writeValueAsString(resource);
     Yaml parser = new Yaml();
-    final Map<String, Map> reloaded = parser.loadAs(output, Map.class);
+    final Map<String, Object> reloaded = parser.loadAs(output, Map.class);
 
     Assert.assertEquals("VirtualService", reloaded.get("kind"));
 
-    final Map metadata = reloaded.get("metadata");
+    final Map<String, Object> metadata = (Map<String, Object>) reloaded.get("metadata");
     Assert.assertNotNull(metadata);
     Assert.assertEquals("reviews-route", metadata.get("name"));
 
-    final Map<String, Map> spec = reloaded.get("spec");
+    final Map<String, Object> spec = (Map<String, Object>) reloaded.get("spec");
     Assert.assertNotNull(spec);
 
     Assert.assertEquals(reviewsHost, ((List) spec.get("hosts")).get(0).toString());
@@ -352,15 +352,15 @@ spec:
 
     final String output = Serialization.yamlMapper().writeValueAsString(resource);
     Yaml parser = new Yaml();
-    final Map<String, Map> reloaded = parser.loadAs(output, Map.class);
+    final Map<String, Object> reloaded = parser.loadAs(output, Map.class);
 
     Assert.assertEquals("VirtualService", reloaded.get("kind"));
 
-    final Map metadata = reloaded.get("metadata");
+    final Map<String, Object> metadata = (Map<String, Object>) reloaded.get("metadata");
     Assert.assertNotNull(metadata);
     Assert.assertEquals("reviews-route", metadata.get("name"));
 
-    final Map<String, Map> spec = reloaded.get("spec");
+    final Map<String, Object> spec = (Map<String, Object>) reloaded.get("spec");
     Assert.assertNotNull(spec);
 
     Assert.assertEquals(reviewsHost, ((List) spec.get("hosts")).get(0).toString());
