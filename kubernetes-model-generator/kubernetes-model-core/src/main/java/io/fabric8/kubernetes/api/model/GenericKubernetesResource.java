@@ -106,11 +106,11 @@ public class GenericKubernetesResource implements HasMetadata {
   @SuppressWarnings("unchecked")
   public <T> T get(String... path) {
     Object current = null;
-    int firstPropertyMarker = 0;
+    int it = 0;
     final List<String> properties = Stream.of(path).map(p -> p.split("\\.")).flatMap(Stream::of)
       .collect(Collectors.toList());
     for (String p : properties) {
-      if (firstPropertyMarker++ == 0) {
+      if (it++ == 0) {
         current = getAdditionalProperties().get(p);
       } else {
         final Matcher arrayMatcher = ARRAY_PROPERTY_PATTERN.matcher(p);
@@ -122,7 +122,9 @@ public class GenericKubernetesResource implements HasMetadata {
         } else if (current instanceof Map) {
           current = ((Map<String, Object>) current).get(p);
         } else {
-          throw new IllegalArgumentException("Cannot get property " + String.join(".", properties) + " from " + getApiVersion() + " " + getKind());
+          throw new IllegalArgumentException("Cannot get property '" + String.join(".", properties) +
+            "' from " + getApiVersion() + " " + getKind() +
+            " (missing segment '" + String.join(".", properties.subList(it - 1, properties.size())) + "')");
         }
       }
     }
