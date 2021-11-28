@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.informers.cache;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
+import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
@@ -50,7 +51,7 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
   }
 
   protected L getList() {
-    return listerWatcher.list();
+    return listerWatcher.list(new ListOptions());
   }
 
   public void stop() {

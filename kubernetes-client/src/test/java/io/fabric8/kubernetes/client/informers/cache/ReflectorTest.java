@@ -36,7 +36,7 @@ class ReflectorTest {
   void testStateFlags() {
     ListerWatcher<Pod, PodList> mock = Mockito.mock(ListerWatcher.class);
     PodList list = new PodListBuilder().withNewMetadata().withResourceVersion("1").endMetadata().build();
-    Mockito.when(mock.list()).thenReturn(list);
+    Mockito.when(mock.list(Mockito.any())).thenReturn(list);
 
     Reflector<Pod, PodList> reflector =
         new Reflector<>(Pod.class, mock, Mockito.mock(SyncableStore.class));
@@ -70,7 +70,7 @@ class ReflectorTest {
   void testNonHttpGone() {
     ListerWatcher<Pod, PodList> mock = Mockito.mock(ListerWatcher.class);
     PodList list = new PodListBuilder().withNewMetadata().withResourceVersion("1").endMetadata().build();
-    Mockito.when(mock.list()).thenReturn(list);
+    Mockito.when(mock.list(Mockito.any())).thenReturn(list);
 
     Reflector<Pod, PodList> reflector =
         new Reflector<>(Pod.class, mock, Mockito.mock(SyncableStore.class));
