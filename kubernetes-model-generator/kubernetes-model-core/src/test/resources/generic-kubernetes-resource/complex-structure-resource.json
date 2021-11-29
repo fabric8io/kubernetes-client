@@ -17,7 +17,12 @@
         [{"entry":  1}, {"entry":  2}],
         [{"entry":  3}, {"entry":  4}]
       ]
-    }
+    },
+    "oh!.come-on![1337]this.is#Outrageous[0][1]": [
+      [
+        {"impossible": [313373]}
+      ]
+    ]
   },
   "status": {
     "reconciled": true
