@@ -191,19 +191,16 @@ class GenericKubernetesResourceTest {
   }
 
   @Test
-  @DisplayName("get with mixed notation, with nested Maps and traversed path property missing,  should throw Exception")
-  void getMixedNotationWithNestedMapsException() {
+  @DisplayName("get with mixed notation, with nested Maps and traversed path property missing, should return null")
+  void getMixedNotationWithNestedMapsTraversedNotFound() {
     // Given
     final GenericKubernetesResource gkr = new GenericKubernetesResource();
     gkr.setAdditionalProperties(Collections.singletonMap("spec",
       Collections.singletonMap("field", Collections.singletonMap("nested", 42))));
     // When
-    final IllegalArgumentException result = assertThrows(IllegalArgumentException.class, () ->
-      gkr.get("spec", "field.nested.not.here"));
+    final Object result = gkr.get("spec", "field.nested.not.here");
     // Then
-    assertThat(result)
-      .hasMessageContaining("Cannot get property 'spec.field.nested.not.here'")
-      .hasMessageContaining("(missing segment 'not.here')");
+    assertThat(result).isNull();
   }
 
   @Test

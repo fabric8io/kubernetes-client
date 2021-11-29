@@ -28,12 +28,13 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
@@ -111,10 +112,10 @@ public class GenericKubernetesResource implements HasMetadata {
   @SuppressWarnings("unchecked")
   public <T> T get(String... path) {
     Object current = getAdditionalProperties();
-    final String[] properties = Stream.of(path).map(p -> p.split("(?<!\\\\)\\.")).flatMap(Stream::of)
-      .toArray(String[]::new);
-    for (int it = 0; it < properties.length; it++) {
-      final String p = properties[it].replace("\\.", ".");
+    final List<String> properties = Stream.of(path).map(p -> p.split("(?<!\\\\)\\.")).flatMap(Stream::of)
+      .collect(Collectors.toList());
+    for (String property : properties) {
+      final String p = property.replace("\\.", ".");
       final Matcher arrayPropertyMatcher = ARRAY_PROPERTY_PATTERN.matcher(p);
       if (current instanceof Map && arrayPropertyMatcher.find()) {
         final StringBuilder key = new StringBuilder(arrayPropertyMatcher.group(1));
@@ -133,9 +134,7 @@ public class GenericKubernetesResource implements HasMetadata {
       } else if (current instanceof Map) {
         current = ((Map<String, Object>) current).get(p);
       } else {
-        throw new IllegalArgumentException("Cannot get property '" + String.join(".", properties) +
-          "' from " + getApiVersion() + " " + getKind() +
-          " (missing segment '" + String.join(".", Arrays.copyOfRange(properties, it, properties.length)) + "')");
+        return null;
       }
     }
     return (T) current;
