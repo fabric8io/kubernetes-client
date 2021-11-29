@@ -275,6 +275,33 @@ class GenericKubernetesResourceTest {
       .hasMessageContaining("Collection");
   }
 
+  @Test
+  @DisplayName("get, with dots in field, should return value")
+  void getWithDotsInFieldFound() {
+    // Given
+    final GenericKubernetesResource gkr = new GenericKubernetesResource();
+    gkr.setAdditionalProperties(Collections.singletonMap("spec",
+      Collections.singletonMap("field.with.dots",
+        Collections.singletonMap("check", "mate")
+      )));
+    // When
+    final String result = gkr.get("spec", "field\\.with\\.dots.check");
+    // Then
+    assertThat(result).isEqualTo("mate");
+  }
+
+  @Test
+  @DisplayName("get, with complex-structure-resource, should return queried values")
+  void getWithComplexStructureShouldRetrieveQueried() throws Exception {
+    // Given
+    final GenericKubernetesResource gkr = objectMapper
+      .readValue(load("complex-structure-resource.json"), GenericKubernetesResource.class);
+    // When
+    final int result = gkr.get("spec.dot\\.in\\.field");
+    // Then
+    assertThat(result).isEqualTo(42);
+  }
+
   private static InputStream load(String resource) {
     return GenericKubernetesResource.class.getResourceAsStream("/generic-kubernetes-resource/" + resource);
   }

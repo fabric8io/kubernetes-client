@@ -99,6 +99,9 @@ public class GenericKubernetesResource implements HasMetadata {
    * <p> In addition, fields that contain collections/arrays can also be traversed
    * <pre>{@code resource.get("path.collectionField[1].nested.array[0].field");}</pre>
    *
+   * <p> {@code .} may be escaped with {@code \\.}
+   * Any other appearance of {@code \\} will be treated as itself.
+   *
    * @param path of the field to retrieve.
    * @param <T> type of the returned object.
    * @return the value of the traversed path or null if the field does not exist.
@@ -107,9 +110,10 @@ public class GenericKubernetesResource implements HasMetadata {
   public <T> T get(String... path) {
     Object current = null;
     int it = 0;
-    final List<String> properties = Stream.of(path).map(p -> p.split("\\.")).flatMap(Stream::of)
+    final List<String> properties = Stream.of(path).map(p -> p.split("(?<!\\\\)\\.")).flatMap(Stream::of)
       .collect(Collectors.toList());
     for (String p : properties) {
+      p = p.replace("\\.", ".");
       if (it++ == 0) {
         current = getAdditionalProperties().get(p);
       } else {
