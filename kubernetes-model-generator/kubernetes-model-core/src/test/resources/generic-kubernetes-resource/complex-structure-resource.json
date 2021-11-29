@@ -1,0 +1,25 @@
+{
+  "apiVersion": "the-cr.example.com/v1",
+  "kind": "SomeCustomResource",
+  "metadata": {
+    "name": "custom-resource-example"
+  },
+  "spec": {
+    "field": "value",
+    "dot.in.field": 42,
+    "nested": {
+      "list": [
+        {"entry":  1},
+        {"entry":  2},
+        {"entry":  3}
+      ],
+      "2dList": [
+        [{"entry":  1}, {"entry":  2}],
+        [{"entry":  1}, {"entry":  2}]
+      ]
+    }
+  },
+  "status": {
+    "reconciled": true
+  }
+}
