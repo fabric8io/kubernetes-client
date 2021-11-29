@@ -28,13 +28,12 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
@@ -111,31 +110,32 @@ public class GenericKubernetesResource implements HasMetadata {
    */
   @SuppressWarnings("unchecked")
   public <T> T get(String... path) {
-    Object current = null;
-    int it = 0;
-    final List<String> properties = Stream.of(path).map(p -> p.split("(?<!\\\\)\\.")).flatMap(Stream::of)
-      .collect(Collectors.toList());
-    for (String p : properties) {
-      p = p.replace("\\.", ".");
-      if (it++ == 0) {
-        current = getAdditionalProperties().get(p);
-      } else {
-        final Matcher arrayPropertyMatcher = ARRAY_PROPERTY_PATTERN.matcher(p);
-        if (current instanceof Map && arrayPropertyMatcher.find()) {
-          final String key = arrayPropertyMatcher.group(1);
-          current = ((Map<String, Object>) current).get(key);
-          final Matcher arrayMatcher = ARRAY_PATTERN.matcher(arrayPropertyMatcher.group(2));
-          while (arrayMatcher.find()) {
+    Object current = getAdditionalProperties();
+    final String[] properties = Stream.of(path).map(p -> p.split("(?<!\\\\)\\.")).flatMap(Stream::of)
+      .toArray(String[]::new);
+    for (int it = 0; it < properties.length; it++) {
+      final String p = properties[it].replace("\\.", ".");
+      final Matcher arrayPropertyMatcher = ARRAY_PROPERTY_PATTERN.matcher(p);
+      if (current instanceof Map && arrayPropertyMatcher.find()) {
+        final StringBuilder key = new StringBuilder(arrayPropertyMatcher.group(1));
+        final Matcher arrayMatcher = ARRAY_PATTERN.matcher(arrayPropertyMatcher.group(2));
+        Object inArray = ((Map<String, Object>) current).get(key.toString());
+        while (arrayMatcher.find()) {
+          if (inArray != null) {
             final int index = Integer.parseInt(arrayMatcher.group(1));
-            current = ((Collection<Object>)current).toArray()[index];
+            inArray = ((Collection<Object>) inArray).toArray()[index];
+          } else {
+            key.append("[").append(arrayMatcher.group(1)).append("]");
+            inArray = ((Map<String, Object>) current).get(key.toString());
           }
-        } else if (current instanceof Map) {
-          current = ((Map<String, Object>) current).get(p);
-        } else {
-          throw new IllegalArgumentException("Cannot get property '" + String.join(".", properties) +
-            "' from " + getApiVersion() + " " + getKind() +
-            " (missing segment '" + String.join(".", properties.subList(it - 1, properties.size())) + "')");
         }
+        current = inArray;
+      } else if (current instanceof Map) {
+        current = ((Map<String, Object>) current).get(p);
+      } else {
+        throw new IllegalArgumentException("Cannot get property '" + String.join(".", properties) +
+          "' from " + getApiVersion() + " " + getKind() +
+          " (missing segment '" + String.join(".", Arrays.copyOfRange(properties, it, properties.length)) + "')");
       }
     }
     return (T) current;
