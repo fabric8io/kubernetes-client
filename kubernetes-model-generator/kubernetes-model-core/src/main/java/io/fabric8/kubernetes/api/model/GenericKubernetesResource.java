@@ -52,7 +52,10 @@ import java.util.stream.Stream;
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 public class GenericKubernetesResource implements HasMetadata {
 
-  private static final Pattern ARRAY_PROPERTY_PATTERN = Pattern.compile("^(.+)\\[(\\d+)]$");
+  // (.+?) -> Captures the field in group(1)
+  // ((?:\[\d+])+) -> Captures the repetition of [0][1][0].... in group(2)
+  private static final Pattern ARRAY_PROPERTY_PATTERN = Pattern.compile("^(.+?)((?:\\[\\d+])+)$");
+  private static final Pattern ARRAY_PATTERN = Pattern.compile("\\[(\\d+)]");
 
   @JsonProperty("apiVersion")
   private String apiVersion;
@@ -117,12 +120,15 @@ public class GenericKubernetesResource implements HasMetadata {
       if (it++ == 0) {
         current = getAdditionalProperties().get(p);
       } else {
-        final Matcher arrayMatcher = ARRAY_PROPERTY_PATTERN.matcher(p);
-        if (current instanceof Map && arrayMatcher.find()) {
-          final String key = arrayMatcher.group(1);
-          final int index = Integer.parseInt(arrayMatcher.group(2));
-          final Map<String, Object> field = (Map<String, Object>) current;
-          current = ((Collection<Object>)field.get(key)).toArray()[index];
+        final Matcher arrayPropertyMatcher = ARRAY_PROPERTY_PATTERN.matcher(p);
+        if (current instanceof Map && arrayPropertyMatcher.find()) {
+          final String key = arrayPropertyMatcher.group(1);
+          current = ((Map<String, Object>) current).get(key);
+          final Matcher arrayMatcher = ARRAY_PATTERN.matcher(arrayPropertyMatcher.group(2));
+          while (arrayMatcher.find()) {
+            final int index = Integer.parseInt(arrayMatcher.group(1));
+            current = ((Collection<Object>)current).toArray()[index];
+          }
         } else if (current instanceof Map) {
           current = ((Map<String, Object>) current).get(p);
         } else {

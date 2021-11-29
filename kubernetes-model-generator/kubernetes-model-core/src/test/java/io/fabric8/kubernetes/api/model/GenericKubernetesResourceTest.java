@@ -291,15 +291,59 @@ class GenericKubernetesResourceTest {
   }
 
   @Test
+  @DisplayName("get, with with 2D array, should return value")
+  void getWith2DArrayInFieldFound() {
+    // Given
+    final GenericKubernetesResource gkr = new GenericKubernetesResource();
+    gkr.setAdditionalProperties(Collections.singletonMap("spec",
+      Collections.singletonMap("nested",
+        Collections.singletonMap("2dList", Arrays.asList(
+          Arrays.asList(
+            Collections.singletonMap("entry", 0),
+            Collections.singletonMap("entry", 1),
+            Collections.singletonMap("entry", 2)
+          ),
+          Collections.singletonList(Collections.singletonMap("entry", 3))
+        )))));
+    // When
+    final int result = gkr.get("spec.nested.2dList[1][0].entry");
+    // Then
+    assertThat(result).isEqualTo(3);
+  }
+
+  @Test
+  @DisplayName("get, with with multidimensional array, should return value")
+  void getWithMultidimensionalArrayInFieldFound() {
+    // Given
+    final GenericKubernetesResource gkr = new GenericKubernetesResource();
+    gkr.setAdditionalProperties(Collections.singletonMap("spec",
+      Collections.singletonMap("nested",
+        Collections.singletonMap("multidimensional", Collections.singletonList(
+          Collections.singletonList(
+            Collections.singletonList(
+              Arrays.asList(
+                Collections.singletonMap("entry", 0),
+                Collections.singletonMap("entry", 1),
+                Collections.singletonMap("entry", 2)
+              )
+            )))))));
+    // When
+    final int result = gkr.get("spec.nested.multidimensional[0][0][0][2].entry");
+    // Then
+    assertThat(result).isEqualTo(2);
+  }
+
+  @Test
   @DisplayName("get, with complex-structure-resource, should return queried values")
   void getWithComplexStructureShouldRetrieveQueried() throws Exception {
     // Given
-    final GenericKubernetesResource gkr = objectMapper
-      .readValue(load("complex-structure-resource.json"), GenericKubernetesResource.class);
     // When
-    final int result = gkr.get("spec.dot\\.in\\.field");
+    final GenericKubernetesResource result = objectMapper
+      .readValue(load("complex-structure-resource.json"), GenericKubernetesResource.class);
     // Then
-    assertThat(result).isEqualTo(42);
+    assertThat(result)
+      .returns(42, gkr -> gkr.get("spec.dot\\.in\\.field"))
+      .returns(3, gkr -> gkr.get("spec.nested.2dList[1][0].entry"));
   }
 
   private static InputStream load(String resource) {
