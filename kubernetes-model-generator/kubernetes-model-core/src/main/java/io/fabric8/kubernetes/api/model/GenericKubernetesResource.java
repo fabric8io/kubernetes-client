@@ -21,6 +21,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.sundr.builder.annotations.Buildable;
 import lombok.EqualsAndHashCode;
@@ -57,6 +59,8 @@ public class GenericKubernetesResource implements HasMetadata {
   private static final Pattern ARRAY_PROPERTY_PATTERN = Pattern.compile("^(.+?)((?:\\[\\d+])+)$");
   private static final Pattern ARRAY_PATTERN = Pattern.compile("\\[(\\d+)]");
 
+  private static final ObjectMapper MAPPER = new ObjectMapper();
+
   @JsonProperty("apiVersion")
   private String apiVersion;
   @JsonProperty("kind")
@@ -78,6 +82,11 @@ public class GenericKubernetesResource implements HasMetadata {
   @JsonAnySetter
   public void setAdditionalProperty(String name, Object value) {
     this.additionalProperties.put(name, value);
+  }
+
+  @JsonIgnore
+  public JsonNode getAdditionalPropertiesNode() {
+    return MAPPER.convertValue(getAdditionalProperties(), JsonNode.class);
   }
 
   /**
