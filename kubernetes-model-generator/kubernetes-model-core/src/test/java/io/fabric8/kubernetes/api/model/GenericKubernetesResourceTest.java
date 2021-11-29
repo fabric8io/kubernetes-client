@@ -438,6 +438,19 @@ class GenericKubernetesResourceTest {
       .returns(true, gkr -> gkr.get("status.reconciled"));
   }
 
+  @Test
+  @DisplayName("getAdditionalPropertiesNode, with complex-structure-resource, should return queried values")
+  void getAdditionalPropertiesNodeWithComplexStructureShouldRetrieveQueried() throws Exception {
+    // When
+    final GenericKubernetesResource result = objectMapper
+      .readValue(load("complex-structure-resource.json"), GenericKubernetesResource.class);
+    // Then
+    assertThat(result)
+      .extracting(GenericKubernetesResource::getAdditionalPropertiesNode)
+      .returns("value", node -> node.get("spec").get("field").asText())
+      .returns(2, node -> node.get("spec").get("nested").get("list").get(1).get("entry").asInt());
+  }
+
   private static InputStream load(String resource) {
     return GenericKubernetesResource.class.getResourceAsStream("/generic-kubernetes-resource/" + resource);
   }
