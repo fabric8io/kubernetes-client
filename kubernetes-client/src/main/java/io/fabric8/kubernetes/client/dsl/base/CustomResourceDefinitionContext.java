@@ -223,6 +223,7 @@ public class CustomResourceDefinitionContext extends ResourceDefinitionContext {
     }
 
     public CustomResourceDefinitionContext build() {
+      this.customResourceDefinitionContext.validate();
       return this.customResourceDefinitionContext;
     }
   }

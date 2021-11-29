@@ -142,8 +142,8 @@ class CustomResourceDefinitionContextTest {
   @Test
   void isNamespaceScoped() {
     // Given
-    CustomResourceDefinitionContext crdc1 = new CustomResourceDefinitionContext.Builder().withScope("Namespaced").build();
-    CustomResourceDefinitionContext crdc2 = new CustomResourceDefinitionContext.Builder().withScope("Cluster").build();
+    CustomResourceDefinitionContext crdc1 = new CustomResourceDefinitionContext.Builder().withPlural("values").withScope("Namespaced").build();
+    CustomResourceDefinitionContext crdc2 = new CustomResourceDefinitionContext.Builder().withPlural("values").withScope("Cluster").build();
 
     // When + Then
     assertThat(crdc1.isNamespaceScoped()).isTrue();
