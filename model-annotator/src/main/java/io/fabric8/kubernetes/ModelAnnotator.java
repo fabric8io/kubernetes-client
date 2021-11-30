@@ -28,6 +28,7 @@ import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JFieldVar;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
+import io.fabric8.kubernetes.model.jackson.JsonUnwrappedDeserializer;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import io.sundr.transform.annotations.TemplateTransformation;
@@ -39,6 +40,7 @@ import lombok.experimental.Accessors;
 import org.jsonschema2pojo.AbstractAnnotator;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 public class ModelAnnotator extends AbstractAnnotator {
@@ -57,8 +59,14 @@ public class ModelAnnotator extends AbstractAnnotator {
         return;
 
       // add common annotations
-      clazz.annotate(JsonDeserialize.class)
-        .param("using", JsonDeserializer.None.class);
+      if (hasInterfaceFields(propertiesNode)) {
+        clazz.annotate(JsonDeserialize.class)
+          .param("using", JsonUnwrappedDeserializer.class);
+      } else {
+        clazz.annotate(JsonDeserialize.class)
+          .param("using", JsonDeserializer.None.class);
+      }
+
       clazz.annotate(ToString.class);
       clazz.annotate(EqualsAndHashCode.class);
       clazz.annotate(Setter.class);
@@ -114,6 +122,17 @@ public class ModelAnnotator extends AbstractAnnotator {
     if (propertyNode.hasNonNull(INTERFACE_TYPE_PROPERTY)) {
       field.annotate(JsonUnwrapped.class);
     }
+  }
+
+  private boolean hasInterfaceFields(JsonNode propertiesNode) {
+    for (Iterator<JsonNode> field = propertiesNode.elements(); field.hasNext(); ) {
+      JsonNode propertyNode = field.next();
+      if (propertyNode.hasNonNull(INTERFACE_TYPE_PROPERTY)) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   /**

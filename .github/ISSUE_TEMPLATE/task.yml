@@ -1,0 +1,62 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+name: Task 🔧
+description: Internal things, technical debt, and to-do tasks to be performed
+labels: [kind/task]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### Suggesting a new task 🔧
+        🔍  Before opening a new issue please search existing issues at https://github.com/fabric8io/kubernetes-client/issues
+
+        🤔  To make it easier for us to help you, please include as much useful information as possible.
+
+        Useful Links:
+
+          - 📄  Documentation: https://github.com/fabric8io/kubernetes-client/blob/master/doc/CHEATSHEET.md
+          - 📝  Contributing: https://github.com/fabric8io/kubernetes-client/blob/master/CONTRIBUTING.md
+
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Is your task related to a problem? Please describe
+      description: A clear and concise description of what the problem is.
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Describe the solution you'd like
+      description: A clear and concise description of what you want to happen.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Describe alternatives you've considered
+      description: A clear and concise description of any alternative solutions or features you've considered.
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: Add any other context or screenshots about the enhancement here.

@@ -49,7 +49,7 @@ class ResourceHandlerImpl<T extends HasMetadata, V extends VisitableBuilder<T, V
     this.type = type;
     this.context = context;
     this.defaultListClass = listClass;
-    this.builderClass = null;
+    this.builderClass = KubernetesResourceUtil.inferBuilderType(type);
     this.operationConstructor = null;
   }
   

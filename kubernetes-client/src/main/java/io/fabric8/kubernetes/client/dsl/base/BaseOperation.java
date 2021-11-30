@@ -841,13 +841,13 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public T waitUntilCondition(Predicate<T> condition, long amount, TimeUnit timeUnit) {
-    CompletableFuture<T> futureCondition = informOnCondition(l -> {
+    CompletableFuture<List<T>> futureCondition = informOnCondition(l -> {
       if (l.isEmpty()) {
         return condition.test(null);
       }
       return condition.test(l.get(0));
-    }).thenApply(l -> l.isEmpty() ? null : l.get(0));
-
+    });
+    
     if (!Utils.waitUntilReady(futureCondition, amount, timeUnit)) {
       futureCondition.cancel(true);
       T i = getItem();
@@ -856,7 +856,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       }
       throw new KubernetesClientTimeoutException(getKind(), getName(), getNamespace(), amount, timeUnit);
     }
-    return futureCondition.getNow(null);
+    return futureCondition.thenApply(l -> l.isEmpty() ? null : l.get(0)).getNow(null);
   }
 
   @Override

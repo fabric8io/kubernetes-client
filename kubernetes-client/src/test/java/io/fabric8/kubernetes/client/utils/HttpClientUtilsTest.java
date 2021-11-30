@@ -32,7 +32,7 @@ class HttpClientUtilsTest {
     Config config = new ConfigBuilder().build();
 
     // When
-    Collection<Interceptor> interceptorList = HttpClientUtils.createApplicableInterceptors(config).values();
+    Collection<Interceptor> interceptorList = HttpClientUtils.createApplicableInterceptors(config, null).values();
 
     // Then
     assertThat(interceptorList)
@@ -50,7 +50,7 @@ class HttpClientUtilsTest {
     System.setProperty(KUBERNETES_BACKWARDS_COMPATIBILITY_INTERCEPTOR_DISABLE, "true");
 
     // When
-    Collection<Interceptor> interceptorList = HttpClientUtils.createApplicableInterceptors(config).values();
+    Collection<Interceptor> interceptorList = HttpClientUtils.createApplicableInterceptors(config, null).values();
 
     // Then
     assertThat(interceptorList)

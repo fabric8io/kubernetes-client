@@ -168,7 +168,7 @@ class OpenIDConnectionUtilsTest {
     currentAuthProviderConfig.put(ID_TOKEN_KUBECONFIG, "id-token");
 
     // When
-    String token = OpenIDConnectionUtils.resolveOIDCTokenFromAuthConfig(currentAuthProviderConfig);
+    String token = OpenIDConnectionUtils.resolveOIDCTokenFromAuthConfig(currentAuthProviderConfig, null);
 
     // Then
     assertEquals("id-token", token);

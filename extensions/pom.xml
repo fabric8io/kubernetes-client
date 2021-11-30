@@ -37,6 +37,7 @@
     <module>camel-k</module>
     <module>certmanager</module>
     <module>verticalpodautoscaler</module>
+    <module>volcano</module>
   </modules>
 
 </project>

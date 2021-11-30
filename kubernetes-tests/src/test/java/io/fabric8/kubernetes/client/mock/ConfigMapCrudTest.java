@@ -23,10 +23,12 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchType;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -88,5 +90,22 @@ class ConfigMapCrudTest {
     configmap2 = client.configMaps().inNamespace("ns1").withName("configmap2").patch(PatchContext.of(PatchType.JSON_MERGE), new ConfigMapBuilder(configmap2).addToData("III", "THREE").build());
     assertNotNull(configmap2);
     assertEquals("THREE", configmap2.getData().get("III"));
+  }
+
+  @Test
+  @DisplayName("edit, should add and remove data entries")
+  void edit() {
+    // Given
+    final ConfigMap cm = new ConfigMapBuilder()
+      .withNewMetadata().withName("config-map").endMetadata()
+      .addToData("one", "1")
+      .build();
+    client.configMaps().create(cm);
+    // When
+    client.configMaps().edit(c -> new ConfigMapBuilder(c).removeFromData("one").addToData("two", "2").build());
+    // Then
+    assertThat(client.configMaps().withName("config-map").get().getData())
+      .hasSize(1)
+      .containsExactlyInAnyOrderEntriesOf(Collections.singletonMap("two", "2"));
   }
 }

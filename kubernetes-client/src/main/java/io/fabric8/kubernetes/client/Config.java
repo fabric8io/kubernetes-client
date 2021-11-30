@@ -615,6 +615,7 @@ public class Config {
           config.setClientCertData(currentAuthInfo.getClientCertificateData());
           config.setClientKeyFile(clientKeyFile);
           config.setClientKeyData(currentAuthInfo.getClientKeyData());
+          config.setClientKeyAlgo(getKeyAlgorithm(config.getClientKeyFile(), config.getClientKeyData()));
           config.setOauthToken(currentAuthInfo.getToken());
           config.setUsername(currentAuthInfo.getUsername());
           config.setPassword(currentAuthInfo.getPassword());

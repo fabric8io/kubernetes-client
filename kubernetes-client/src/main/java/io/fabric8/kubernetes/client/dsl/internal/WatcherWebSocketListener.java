@@ -27,6 +27,11 @@ import java.nio.charset.StandardCharsets;
 class WatcherWebSocketListener<T extends HasMetadata> implements WebSocket.Listener {
   protected static final Logger logger = LoggerFactory.getLogger(WatcherWebSocketListener.class);
   
+  // don't allow for concurrent failure and message processing
+  // if something is holding the message thread, this can lead to concurrent processing on the watcher
+  // or worse additional reconnection attempts while the previous threads are still held
+  private final Object reconnectLock = new Object();
+  
   protected final AbstractWatchManager<T> manager;
   
   protected WatcherWebSocketListener(AbstractWatchManager<T> manager) {
@@ -52,12 +57,16 @@ class WatcherWebSocketListener<T extends HasMetadata> implements WebSocket.Liste
       return;
     }
     
-    manager.scheduleReconnect();
+    synchronized (reconnectLock) {
+      manager.scheduleReconnect();
+    }
   }
   
   @Override
   public void onMessage(WebSocket webSocket, String text) {
-    manager.onMessage(text);
+    synchronized (reconnectLock) {
+      manager.onMessage(text);
+    }
   }
   
   @Override

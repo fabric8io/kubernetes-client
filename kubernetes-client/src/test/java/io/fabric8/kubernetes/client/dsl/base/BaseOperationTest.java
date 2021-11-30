@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
 import io.fabric8.kubernetes.client.MockHttpClientUtils;
 import io.fabric8.kubernetes.client.dsl.EditReplacePatchDeletable;
 import io.fabric8.kubernetes.client.dsl.Resource;
@@ -32,6 +33,7 @@ import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
+import okhttp3.OkHttpClient;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -41,8 +43,13 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Predicate;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -53,6 +60,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -311,5 +319,36 @@ class BaseOperationTest {
     // Then
     assertNotNull(result);
     assertEquals("Expected 3 calls: 2 failures and 1 success!", 3, httpExecutionCounter.get());
+  }
+  
+  @Test
+  void testWaitUntilFailureCompletion() throws MalformedURLException, IOException {
+    final AtomicInteger httpExecutionCounter = new AtomicInteger(0);
+    HttpClient mockClient = newHttpClientWithSomeFailures(httpExecutionCounter, 2);
+    CompletableFuture<List<Pod>> future = new CompletableFuture<>();
+    BaseOperation<Pod, PodList, Resource<Pod>> baseOp = new BaseOperation(new OperationContext()
+      .withConfig(new ConfigBuilder().withMasterUrl("https://172.17.0.2:8443").build())
+      .withPlural("pods")
+      .withName("test-pod")
+      .withHttpClient(mockClient)) {
+      
+      @Override
+      public CompletableFuture<List<Pod>> informOnCondition(Predicate condition) {
+        return future;
+      }
+      
+    };
+    baseOp.setType(Pod.class);
+
+    // When
+    try {
+      baseOp.waitUntilCondition(Objects::isNull, 1, TimeUnit.MILLISECONDS);
+      fail("should timeout");
+    } catch (KubernetesClientTimeoutException e) {
+      
+    }
+    
+    // Then
+    assertTrue(future.isCancelled());
   }
 }

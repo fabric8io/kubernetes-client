@@ -1,0 +1,148 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+name: Bug report 🐞
+description: Report a bug found in Fabric8 kubernetes-client
+labels: [kind/bug]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### Creating a new Bug 🐞
+        🔍  Before opening a new issue please search existing issues at https://github.com/fabric8io/kubernetes-client/issues
+
+        🤔  To make it easier for us to help you, please include as much useful information as possible.
+
+        Useful Links:
+
+          - 📄  Documentation: https://github.com/fabric8io/kubernetes-client/blob/master/doc/CHEATSHEET.md
+          - 📝  Contributing: https://github.com/fabric8io/kubernetes-client/blob/master/CONTRIBUTING.md
+
+
+  - type: textarea
+    id: describe-bug
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of what the bug is.
+      placeholder: Describe the bug
+    validations:
+      required: true
+  - type: dropdown
+    id: version
+    attributes:
+      label: Fabric8 Kubernetes Client version
+      description: Fabric8 Kubernetes Client version (can be found in pom.xml dependency or build.gradle implementation section)
+      options:
+        - "5.10.1@latest"
+        - "next (development version)"
+        - "5.10.0"
+        - "5.9.0"
+        - "5.8.0"
+        - "5.7.0"
+        - "5.6.0"
+        - "5.5.0"
+        - "5.4.0"
+        - "5.3.0"
+        - "5.2.0"
+        - "5.1.0"
+        - "other (please specify in additional context)"
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: What are the steps to reproduce this bug ?
+      placeholder: |
+        1. Do '...'
+        2. Click on '....'
+        3. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected behavior
+      description: A clear and concise description of what you expected to happen.
+      placeholder:
+    validations:
+      required: true
+
+  - type: dropdown
+    id: runtime
+    attributes:
+      label: Runtime
+      description: What is the kubernetes flavor ?
+      multiple: true
+      options:
+        - Kubernetes (vanilla)
+        - OpenShift
+        - minikube
+        - CodeReady Container
+        - other (please specify in additional context)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: api-version
+    attributes:
+      label: Kubernetes API Server version
+      description: Kubernetes API Server version
+      options:
+        - "1.22.3@latest"
+        - "next (development version)"
+        - "1.21.6"
+        - "1.20.12"
+        - "other (please specify in additional context)"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Environment
+      multiple: true
+      options:
+        - Windows
+        - Linux
+        - macOS
+        - Amazon
+        - Azure
+        - GKE
+        - "Dev Sandbox (workspaces.openshift.com)"
+        - other (please specify in additional context)
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Fabric8 Kubernetes Client Logs
+      placeholder: |
+        Please copy and paste any relevant log output.
+
+        This will be automatically formatted into code, so no need for backticks
+      description:
+      render: shell
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: Add any other context about the problem here.
+      placeholder:

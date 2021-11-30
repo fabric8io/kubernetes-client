@@ -125,7 +125,7 @@ public class KubernetesListOperationsImpl
   }
 
   private Resource<HasMetadata> getResource(HasMetadata resource) {
-    ResourceHandler<HasMetadata, ?> handler = NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl.handlerOf(resource, new BaseClient(this.context.getClient(), this.context.getConfig()));
+    ResourceHandler<HasMetadata, ?> handler = NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl.handlerOf(resource, context);
     return handler.operation(this.context, null).newInstance(context.withItem(resource));
   }
 

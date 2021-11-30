@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.utils;
 
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -50,7 +51,7 @@ public class TokenRefreshInterceptorTest {
       HttpRequest.Builder builder = Mockito.mock(HttpRequest.Builder.class, Mockito.RETURNS_SELF);
 
       // Call
-      boolean reissue = new TokenRefreshInterceptor(Config.autoConfigure(null)).afterFailure(builder, buildResponse(HttpURLConnection.HTTP_UNAUTHORIZED, "foo"));
+      boolean reissue = new TokenRefreshInterceptor(Config.autoConfigure(null), null).afterFailure(builder, buildResponse(HttpURLConnection.HTTP_UNAUTHORIZED, "foo"));
       Mockito.verify(builder).setHeader("Authorization", "Bearer token");
       assertTrue(reissue);
     } finally {
@@ -72,7 +73,7 @@ public class TokenRefreshInterceptorTest {
       HttpRequest.Builder builder = Mockito.mock(HttpRequest.Builder.class, Mockito.RETURNS_SELF);
 
       // The expired token will be read at auto configure.
-      TokenRefreshInterceptor interceptor = new TokenRefreshInterceptor(Config.autoConfigure(null));
+      TokenRefreshInterceptor interceptor = new TokenRefreshInterceptor(Config.autoConfigure(null), null);
 
       // Write new value to token file to simulate renewal.
       Files.write(tokenFile.toPath(), "renewed".getBytes());
@@ -112,7 +113,7 @@ public class TokenRefreshInterceptorTest {
       Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/test-kubeconfig-tokeninterceptor-oidc")),
           Paths.get(tempFile.getPath()), StandardCopyOption.REPLACE_EXISTING);
 
-      TokenRefreshInterceptor interceptor = new TokenRefreshInterceptor(config);
+      TokenRefreshInterceptor interceptor = new TokenRefreshInterceptor(config, Mockito.mock(HttpClient.Factory.class));
       boolean reissue = interceptor.afterFailure(builder, buildResponse(HttpURLConnection.HTTP_UNAUTHORIZED, "foo"));
 
       // Make the call and check that renewed token was read at 401 Unauthorized.

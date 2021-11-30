@@ -4,12 +4,17 @@
 
 #### Bugs
 * Fix #3538: Update Plural rule to work with Prometheus
+* Fix #3555: using the new builder for generic resources
+* Fix #3535: ensure clientKeyAlgo is set properly when loading config YAML from `fromKubeconfig`
+* Fix #3598: applying cancel to the correct future for waitUntilCondition and waitUntilReady
+* Fix #3609: adding locking to prevent long running Watcher methods from causing reconnects with concurrent processing
 
 #### Improvements
 
 #### Dependency Upgrade
 
 #### New Features
+* Fix #3579: Add support for Volcano extension
 
 #### _**Note**_: Breaking changes in the API
 * Refactoring #3547: due to an abstraction layer added over okHttp, the following api changes were made:

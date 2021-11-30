@@ -560,6 +560,7 @@ All the resource objects used here will be according to OpenShift 3.9.0  and Kub
   - [Service Catalog API](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/service-catalog)
   - [Knative](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/knative)
   - [Tekton](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/tekton)
+  - [Volcano](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/volcano)
 
   Frameworks/Libraries/Tools:
   - [Arquillian Cube](http://arquillian.org/arquillian-cube/)
@@ -661,3 +662,6 @@ operations. However, some might require slightly more code to achieve same resul
 | `kubectl get events`                                                               | [EventsGetEquivalent.java](./kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/kubectl/equivalents/EventsGetEquivalent.java) |
 | `kubectl top nodes`                                                                | [TopEquivalent.java](./kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/kubectl/equivalents/TopEquivalent.java) |
 | `kubectl auth can-i create deployment.apps`                                        | [CanIEquivalent.java](./kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/kubectl/equivalents/CanIEquivalent.java) |
+| `kubectl create -f test-csr-v1.yml`                                                | [CertificateSigningRequestCreateYamlEquivalent.java](./kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/kubectl/equivalents/CertificateSigningRequestCreateYamlEquivalent.java) |
+| `kubectl certificate approve my-cert`                                              | [CertificateSigningRequestApproveYamlEquivalent.java](./kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/kubectl/equivalents/CertificateSigningRequestApproveYamlEquivalent.java) |
+| `kubectl certificate deny my-cert`                                                 | [CertificateSigningRequestDenyYamlEquivalent.java](./kubernetes-examples/src/main/java/io/fabric8/kubernetes/examples/kubectl/equivalents/CertificateSigningRequestDenyYamlEquivalent.java) |

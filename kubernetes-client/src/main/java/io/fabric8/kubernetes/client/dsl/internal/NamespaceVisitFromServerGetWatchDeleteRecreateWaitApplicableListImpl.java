@@ -85,7 +85,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
     
     return asHasMetadata(item).stream()
         .map(meta -> NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl.acceptVisitors(meta,
-            Collections.emptyList(), namespaceVisitOperationContext.getExplicitNamespace()))
+            Collections.emptyList(), namespaceVisitOperationContext.getExplicitNamespace(), this.context))
         .collect(Collectors.toList());
   }
   

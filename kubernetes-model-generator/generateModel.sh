@@ -56,19 +56,28 @@ declare -a modules=(
     "../extensions/knative/generator"
     "../extensions/camel-k/generator-v1"
     "../extensions/camel-k/generator-v1alpha1"
+    "../extensions/certmanager/generator-v1"
+    "../extensions/certmanager/generator-v1alpha2"
+    "../extensions/certmanager/generator-v1alpha3"
+    "../extensions/certmanager/generator-v1beta1"
     "../extensions/chaosmesh/generator"
     "../extensions/service-catalog/generator"
     "../extensions/tekton/generator-v1alpha1"
     "../extensions/tekton/generator-v1beta1"
+    "../extensions/verticalpodautoscaler/generator-v1"
+    "../extensions/volcano/generator-v1beta1"
     "../extensions/volumesnapshot/generator"
 )
 
 declare -a extensionModuleParents=(
     "../extensions/knative/pom.xml"
     "../extensions/camel-k/pom.xml"
+    "../extensions/certmanager/pom.xml"
     "../extensions/chaosmesh/pom.xml"
     "../extensions/service-catalog/pom.xml"
     "../extensions/tekton/pom.xml"
+    "../extensions/verticalpodautoscaler/pom.xml"
+    "../extensions/volcano/pom.xml"
     "../extensions/volumesnapshot/pom.xml"
 )
 

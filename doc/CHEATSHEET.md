@@ -1812,6 +1812,7 @@ closeLatch.await(10, TimeUnit.MINUTES);
 
 ### CertificateSigningRequest
 Kubernetes Client provides using `CertificateSigningRequest` via the `client.certificates().v1().certificateSigningRequests()` DSL interface. Here is an example of creating `CertificateSigningRequest` using Fabric8 Kubernetes Client:
+- Create `CertificateSigningRequest`:
 ```
 try (KubernetesClient client = new DefaultKubernetesClient()) {
     CertificateSigningRequest csr = new CertificateSigningRequestBuilder()
@@ -1826,7 +1827,26 @@ try (KubernetesClient client = new DefaultKubernetesClient()) {
     client.certificates().v1().certificateSigningRequests().create(csr);
 }
 ```
-
+- Approve a `CertificateSigningRequest`:
+```java
+    CertificateSigningRequestCondition csrCondition = new CertificateSigningRequestConditionBuilder()
+            .withType("Approved")
+            .withStatus("True")
+            .withReason("Approved ViaRESTApi")
+            .withMessage("Approved by REST API /approval endpoint.")
+            .build();
+    client.certificates().v1().certificateSigningRequests().withName("test-k8s-csr").approve(csrCondition);
+```
+- Deny a `CertificateSigningRequest`:
+```java
+    CertificateSigningRequestCondition csrCondition = new CertificateSigningRequestConditionBuilder()
+            .withType("Denied")
+            .withStatus("True")
+            .withReason("Denied ViaRESTApi")
+            .withMessage("Denied by REST API /approval endpoint.")
+            .build();
+  client.certificates().v1().certificateSigningRequests().withName("test-k8s-csr").deny(csrCondition);
+```
 
 ### SharedInformers
 Kubernetes Client also provides `SharedInformer` support in order to stay updated to events happening to your resource inside Kubernetes. Its implementation is simply list and watch operations after a certain interval of time. Here are some of the common usages:

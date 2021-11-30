@@ -18,10 +18,22 @@ package schemagen
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"log"
 	"reflect"
+	"strconv"
 	"strings"
 )
+
+type EnumDescriptor struct {
+	Type   string
+	Values []EnumValueDescriptor
+}
+
+type EnumValueDescriptor struct {
+	Name  string
+	Value interface{}
+}
 
 type ProvidedType struct {
 	GoType    reflect.Type
@@ -53,6 +65,7 @@ type schemaGenerator struct {
 	constraints          map[reflect.Type]map[string]*Constraint // type -> field name -> constraint
 	interfacesMapping    map[string][]reflect.Type               // interface -> list of implementations
 	javaNameStrategy     JavaNameStrategyMapping                 // java name strategy by extension
+	enumTypes            map[reflect.Type]EnumDescriptor         // enum -> json descriptor
 	generatedTypesPrefix string
 }
 
@@ -70,10 +83,10 @@ const (
 )
 
 func GenerateSchema(schemaId string, crdLists map[reflect.Type]CrdScope, providedPackages map[string]string, manualTypeMap map[reflect.Type]string, packageMapping map[string]PackageInformation, mappingSchema map[string]string, providedTypes []ProvidedType, constraints map[reflect.Type]map[string]*Constraint, generatedTypesPrefix string) string {
-	return GenerateSchemaWithAllOptions(schemaId, crdLists, make(map[reflect.Type]*JSONObjectDescriptor), providedPackages, manualTypeMap, packageMapping, mappingSchema, providedTypes, constraints, make(map[string][]reflect.Type), JavaNameStrategyMapping{}, generatedTypesPrefix)
+	return GenerateSchemaWithAllOptions(schemaId, crdLists, make(map[reflect.Type]*JSONObjectDescriptor), providedPackages, manualTypeMap, packageMapping, mappingSchema, providedTypes, constraints, make(map[string][]reflect.Type), JavaNameStrategyMapping{}, make(map[reflect.Type]EnumDescriptor), generatedTypesPrefix)
 }
 
-func GenerateSchemaWithAllOptions(schemaId string, crdLists map[reflect.Type]CrdScope, typesDescriptors map[reflect.Type]*JSONObjectDescriptor, providedPackages map[string]string, manualTypeMap map[reflect.Type]string, packageMapping map[string]PackageInformation, mappingSchema map[string]string, providedTypes []ProvidedType, constraints map[reflect.Type]map[string]*Constraint, interfacesMapping map[string][]reflect.Type, javaNameStrategy JavaNameStrategyMapping, generatedTypesPrefix string) string {
+func GenerateSchemaWithAllOptions(schemaId string, crdLists map[reflect.Type]CrdScope, typesDescriptors map[reflect.Type]*JSONObjectDescriptor, providedPackages map[string]string, manualTypeMap map[reflect.Type]string, packageMapping map[string]PackageInformation, mappingSchema map[string]string, providedTypes []ProvidedType, constraints map[reflect.Type]map[string]*Constraint, interfacesMapping map[string][]reflect.Type, javaNameStrategy JavaNameStrategyMapping, enumTypes map[reflect.Type]EnumDescriptor, generatedTypesPrefix string) string {
 	g := &schemaGenerator{
 		crdLists:             crdLists,
 		types:                typesDescriptors,
@@ -86,6 +99,7 @@ func GenerateSchemaWithAllOptions(schemaId string, crdLists map[reflect.Type]Crd
 		generatedTypesPrefix: generatedTypesPrefix,
 		interfacesMapping:    interfacesMapping,
 		javaNameStrategy:     javaNameStrategy,
+		enumTypes:            enumTypes,
 	}
 	schema, err := g.generate(schemaId, crdLists)
 
@@ -321,26 +335,13 @@ func (g *schemaGenerator) generate(schemaId string, crdLists map[reflect.Type]Cr
 		// register interface
 		interfaceJavaClass := g.resolveFqnJavaTypeUsingMappingSchema(interfaceName)
 		interfaceKey := g.qualifiedNameForString(interfaceName)
-		s.Definitions[interfaceKey] = JSONPropertyDescriptor{
-			JSONDescriptor: &JSONDescriptor{
-				Type: "object",
-			},
-			JavaInterfaceDescriptor: &JavaInterfaceDescriptor{
-				InterfaceType: g.adaptJavaClassName(interfaceJavaClass),
-			},
-		}
-		s.Properties[interfaceKey] = JSONPropertyDescriptor{
-			JSONReferenceDescriptor: &JSONReferenceDescriptor{
-				Reference: g.generateReferenceForString(interfaceKey),
-			},
-			JavaInterfaceDescriptor: &JavaInterfaceDescriptor{
-				InterfaceType: g.adaptJavaClassName(interfaceJavaClass),
-			},
-		}
+		interfaceImplementations := make([]string, 0)
 
 		// register implementations
 		for _, implementation := range implementations {
 			implementationName := g.qualifiedName(implementation)
+			implementationJavaName := g.javaType(implementation)
+			interfaceImplementations = append(interfaceImplementations, implementationJavaName)
 
 			s.Definitions[implementationName] = JSONPropertyDescriptor{
 				JSONDescriptor: &JSONDescriptor{
@@ -350,7 +351,7 @@ func (g *schemaGenerator) generate(schemaId string, crdLists map[reflect.Type]Cr
 					Properties: g.getStructProperties(implementation),
 				},
 				JavaTypeDescriptor: &JavaTypeDescriptor{
-					JavaType: g.javaType(implementation),
+					JavaType: implementationJavaName,
 				},
 				JavaInterfacesDescriptor: &JavaInterfacesDescriptor{
 					JavaInterfaces: []string{g.adaptJavaClassName(interfaceJavaClass)},
@@ -361,9 +362,28 @@ func (g *schemaGenerator) generate(schemaId string, crdLists map[reflect.Type]Cr
 					Reference: g.generateReference(implementation),
 				},
 				JavaTypeDescriptor: &JavaTypeDescriptor{
-					JavaType: g.javaType(implementation),
+					JavaType: implementationJavaName,
 				},
 			}
+		}
+
+		// register interface
+		s.Definitions[interfaceKey] = JSONPropertyDescriptor{
+			JSONDescriptor: &JSONDescriptor{
+				Type: "object",
+			},
+			JavaInterfaceDescriptor: &JavaInterfaceDescriptor{
+				InterfaceType:   g.adaptJavaClassName(interfaceJavaClass),
+				Implementations: interfaceImplementations,
+			},
+		}
+		s.Properties[interfaceKey] = JSONPropertyDescriptor{
+			JSONReferenceDescriptor: &JSONReferenceDescriptor{
+				Reference: g.generateReferenceForString(interfaceKey),
+			},
+			JavaInterfaceDescriptor: &JavaInterfaceDescriptor{
+				InterfaceType: g.adaptJavaClassName(interfaceJavaClass),
+			},
 		}
 
 	}
@@ -403,6 +423,40 @@ func (g *schemaGenerator) generate(schemaId string, crdLists map[reflect.Type]Cr
 
 	}
 
+	for enumType, enumDescriptor := range g.enumTypes {
+		enumTypeName := g.qualifiedName(enumType)
+
+		enumValues := make([]interface{}, 0)
+		javaEnums := make([]JSONJavaEnumDescriptor, 0)
+
+		for _, enumValue := range enumDescriptor.Values {
+			enumValues = append(enumValues, enumValue.Value)
+			javaEnums = append(javaEnums, JSONJavaEnumDescriptor{
+				Name: enumValue.Name,
+			})
+		}
+
+		s.Definitions[enumTypeName] = JSONPropertyDescriptor{
+			JSONDescriptor: &JSONDescriptor{
+				Type:      enumDescriptor.Type,
+				Enum:      enumValues,
+				JavaEnums: javaEnums,
+			},
+			JavaTypeDescriptor: &JavaTypeDescriptor{
+				JavaType: g.resolveJavaClassUsingMappingSchema(enumType),
+			},
+		}
+
+		s.Properties[enumTypeName] = JSONPropertyDescriptor{
+			JSONReferenceDescriptor: &JSONReferenceDescriptor{
+				Reference: g.generateReference(enumType),
+			},
+			JavaTypeDescriptor: &JavaTypeDescriptor{
+				JavaType: g.resolveJavaClassUsingMappingSchema(enumType),
+			},
+		}
+	}
+
 	return &s, nil
 }
 
@@ -415,6 +469,7 @@ const (
 	INTERFACE FieldType = "I"
 	SIMPLE    FieldType = "S"
 	LIST      FieldType = "L"
+	ENUM      FieldType = "N"
 )
 
 func (g *schemaGenerator) getFields(t reflect.Type) []reflect.StructField {
@@ -477,6 +532,38 @@ func (g *schemaGenerator) getStructProperties(t reflect.Type) map[string]JSONPro
 	return result
 }
 
+func (g *schemaGenerator) getEnumDescriptor(t reflect.Type) EnumDescriptor {
+	instance := reflect.New(t).Elem()
+	enumValues := make([]EnumValueDescriptor, 0)
+
+	// Note that at the moment, this only supports "string" types, for others, it must be
+	// defined in the extensions using the "enumTypes"
+	var index int64
+	end := false
+	index = 0
+	for !end {
+		instance.SetInt(index)
+		enumJavaName := fmt.Sprintf("%v", instance.Interface())
+		if enumJavaName == strconv.FormatInt(index, 10) {
+			end = true
+		} else {
+			enumValues = append(enumValues, EnumValueDescriptor{
+				Name: enumJavaName,
+				// For "string" type, the Value is the same as the Name
+				// but for "integer" type, the Value would be the index, so we need both fields.
+				Value: enumJavaName,
+			})
+		}
+
+		index++
+	}
+
+	return EnumDescriptor{
+		Type:   "string", // TODO: To be auto discovered.
+		Values: enumValues,
+	}
+}
+
 func (g *schemaGenerator) propertyDescriptor(field reflect.StructField, parentType reflect.Type) JSONPropertyDescriptor {
 
 	// type might have manual overwrite
@@ -507,6 +594,10 @@ func (g *schemaGenerator) propertyDescriptor(field reflect.StructField, parentTy
 
 	if fieldCategory == INTERFACE {
 		return g.propertyDescriptorForInterface(field)
+	}
+
+	if fieldCategory == ENUM {
+		return g.propertyDescriptorForEnum(field)
 	}
 
 	panic("Failed to get property descriptor for field")
@@ -542,6 +633,7 @@ func (g *schemaGenerator) fieldCategory(field reflect.StructField) FieldType {
 	fieldType := g.resolvePointer(field.Type)
 
 	jsonTag := field.Tag.Get("json")
+	protobufTag := field.Tag.Get("protobuf")
 
 	jsonFieldName := g.jsonFieldName(field)
 
@@ -554,6 +646,13 @@ func (g *schemaGenerator) fieldCategory(field reflect.StructField) FieldType {
 
 	if field.Anonymous && (jsonTag == "" || strings.Contains(jsonTag, "inline") || jsonFieldName == "") {
 		return EMBEDDED
+	}
+
+	// enum examples:
+	// - Mode    PeerAuthenticationMode `protobuf:"varint,1,opt,name=mode,proto3,enum=package.to.type.PeerAuthenticationMode" json:"mode,omitempty"`
+
+	if strings.Contains(protobufTag, "enum") {
+		return ENUM
 	}
 
 	switch fieldType.Kind() {
@@ -873,6 +972,23 @@ func (g *schemaGenerator) propertyDescriptorForInterface(field reflect.StructFie
 		JSONReferenceDescriptor: g.referenceDescriptor(fieldType),
 		JavaInterfaceDescriptor: &JavaInterfaceDescriptor{
 			InterfaceType: g.javaType(fieldType),
+		},
+	}
+}
+
+func (g *schemaGenerator) propertyDescriptorForEnum(field reflect.StructField) JSONPropertyDescriptor {
+	fieldType := g.resolvePointer(field.Type)
+
+	// Check whether it was already defined
+	_, ok := g.enumTypes[fieldType]
+	if !ok {
+		g.enumTypes[fieldType] = g.getEnumDescriptor(fieldType)
+	}
+
+	return JSONPropertyDescriptor{
+		JSONReferenceDescriptor: g.referenceDescriptor(fieldType),
+		JavaTypeDescriptor: &JavaTypeDescriptor{
+			JavaType: g.resolveJavaClassUsingMappingSchema(fieldType),
 		},
 	}
 }
