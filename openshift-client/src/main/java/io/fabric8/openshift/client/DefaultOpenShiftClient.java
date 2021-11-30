@@ -213,7 +213,7 @@ public class DefaultOpenShiftClient extends BaseKubernetesClient<NamespacedOpenS
   }
 
   /**
-   * @deprecated use {@link DefaultOpenShiftClient#DefaultOpenShiftClient(HttpClient, Config)} instead.
+   * @deprecated use {@link DefaultOpenShiftClient#DefaultOpenShiftClient(HttpClient, OpenShiftConfig)} instead.
    * use {@link OkHttpClientImpl#OkHttpClientImpl(OkHttpClient)} to wrap the client.
    */
   @Deprecated

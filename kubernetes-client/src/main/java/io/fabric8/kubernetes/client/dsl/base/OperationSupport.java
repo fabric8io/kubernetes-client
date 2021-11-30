@@ -26,9 +26,9 @@ import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
+import io.fabric8.kubernetes.client.ClientState;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.SimpleClientState;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
@@ -54,7 +54,7 @@ import java.util.Map;
 
 import static io.fabric8.kubernetes.client.internal.PatchUtils.patchMapper;
 
-public class OperationSupport extends SimpleClientState {
+public class OperationSupport implements ClientState {
 
   public static final String JSON = "application/json";
   public static final String JSON_PATCH = "application/json-patch+json";
@@ -68,6 +68,8 @@ public class OperationSupport extends SimpleClientState {
   private static final int maxRetryIntervalExponent = 5;
 
   protected OperationContext context;
+  protected final HttpClient httpClient;
+  protected final Config config;
   protected final String resourceT;
   protected String namespace;
   protected String name;
@@ -772,5 +774,15 @@ public class OperationSupport extends SimpleClientState {
       throw KubernetesClientException.launderThrowable(e);
     }
  }
+  
+  @Override
+  public Config getConfiguration() {
+    return context.getConfiguration();
+  }
+  
+  @Override
+  public HttpClient getHttpClient() {
+    return context.getClient();
+  }
   
 }

@@ -20,6 +20,18 @@ import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
+import io.fabric8.kubernetes.client.utils.HttpClientUtils;
+import io.fabric8.kubernetes.client.utils.Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLEngine;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509ExtendedTrustManager;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,19 +45,6 @@ import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.security.spec.InvalidKeySpecException;
-import javax.net.ssl.KeyManager;
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLEngine;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.TrustManagerFactory;
-import javax.net.ssl.X509ExtendedTrustManager;
-import javax.net.ssl.X509TrustManager;
-
-import io.fabric8.kubernetes.client.utils.HttpClientUtils;
-import io.fabric8.kubernetes.client.utils.Utils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static io.fabric8.kubernetes.client.internal.CertUtils.createKeyStore;
 import static io.fabric8.kubernetes.client.internal.CertUtils.createTrustStore;
@@ -99,10 +98,12 @@ public final class SSLUtils {
                 new X509ExtendedTrustManager() {
                     @Override
                     public void checkClientTrusted(X509Certificate[] chain, String s) {
+                      //not needed
                     }
 
                     @Override
                     public void checkServerTrusted(X509Certificate[] chain, String s) {
+                      //not needed
                     }
 
                     @Override
@@ -113,25 +114,25 @@ public final class SSLUtils {
                     @Override
                     public void checkClientTrusted(X509Certificate[] chain, String authType, Socket socket)
                         throws CertificateException {
-                      
+                      //not needed
                     }
 
                     @Override
                     public void checkServerTrusted(X509Certificate[] chain, String authType, Socket socket)
                         throws CertificateException {
-                      
+                      //not needed
                     }
 
                     @Override
                     public void checkClientTrusted(X509Certificate[] chain, String authType, SSLEngine engine)
                         throws CertificateException {
-                      
+                      //not needed
                     }
 
                     @Override
                     public void checkServerTrusted(X509Certificate[] chain, String authType, SSLEngine engine)
                         throws CertificateException {
-                      
+                      //not needed
                     }
                 }
             };

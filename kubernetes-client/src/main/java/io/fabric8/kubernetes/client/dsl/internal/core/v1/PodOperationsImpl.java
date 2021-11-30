@@ -423,7 +423,13 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
                 }
               }
             ).exec("sh", "-c", String.format("cat %s | base64", PodUpload.shellQuote(source)));
-            return new org.apache.commons.codec.binary.Base64InputStream(in);
+            return new org.apache.commons.codec.binary.Base64InputStream(in) {
+              @Override
+              public void close() throws IOException {
+                watch.close();
+                super.close();
+              }
+            };
           } catch (Exception e) {
             throw KubernetesClientException.launderThrowable(e);
           }
@@ -485,7 +491,13 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
                 }
               }
             ).exec("sh", "-c", "tar -cf - " + source + "|" + "base64");
-            return new org.apache.commons.codec.binary.Base64InputStream(in);
+            return new org.apache.commons.codec.binary.Base64InputStream(in) {
+              @Override
+              public void close() throws IOException {
+                watch.close();
+                super.close();
+              }
+            };
           } catch (Exception e) {
             throw KubernetesClientException.launderThrowable(e);
           } catch (NoClassDefFoundError n) {

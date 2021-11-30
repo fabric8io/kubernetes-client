@@ -46,7 +46,6 @@ public class OkHttpClientFactory implements HttpClient.Factory {
    * Creates an HTTP client configured to access the Kubernetes API.
    * @param config Kubernetes API client config
    * @param additionalConfig a consumer that allows overriding HTTP client properties
-   * @param factory for creating additional builders
    * @return returns an HTTP client
    */
   public OkHttpClientImpl createHttpClient(Config config,

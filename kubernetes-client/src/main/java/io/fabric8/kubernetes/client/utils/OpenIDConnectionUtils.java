@@ -170,14 +170,15 @@ public class OpenIDConnectionUtils {
   static Map<String, Object> refreshOidcToken(HttpClient client, String clientId, String refreshToken, String clientSecret, String tokenURL) throws IOException {
     HttpRequest request = getTokenRefreshHttpRequest(client, tokenURL, clientId, refreshToken, clientSecret);
     HttpResponse<String> response = client.send(request, String.class);
-    if (response.body() != null) {
+    String body = response.body();
+    if (body != null) {
       // Get response body as string
       if (response.isSuccessful()) {
         // Deserialize response body into a Map and return
-        return convertJsonStringToMap(response.body());
+        return convertJsonStringToMap(body);
       } else {
         // Log error response body
-        LOGGER.warn("Response: {}", response.body());
+        LOGGER.warn("Response: {}", body);
       }
     }
     return Collections.emptyMap();

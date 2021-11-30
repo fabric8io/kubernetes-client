@@ -107,14 +107,10 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
     }
 
     public void close(int code, String reason) {
-      close(webSocketRef.get(), code, reason);
+      explicitlyClosed.set(true);
+      closeWebSocketOnce(code, reason);
+      onClosed(code, reason);
     }
-
-  private void close(WebSocket ws, int code, String reason) {
-    explicitlyClosed.set(true);
-    closeWebSocketOnce(code, reason);
-    onClosed(ws, code, reason);
-  }
 
   /**
    * Performs the cleanup tasks:
@@ -177,7 +173,7 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
             }
         }
     }
-    
+
   @Override
   public void onError​(WebSocket webSocket, Throwable t) {
 
@@ -205,7 +201,7 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
         }
       }
     }
-  
+
   @Override
   public void onMessage(WebSocket webSocket, ByteBuffer bytes) {
         try {
@@ -238,13 +234,13 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
             throw KubernetesClientException.launderThrowable(e);
         }
     }
-  
+
   @Override
   public void onClose(WebSocket webSocket, int code, String reason) {
-    ExecWebSocketListener.this.close(webSocket, code, reason);
+    ExecWebSocketListener.this.close(code, reason);
   }
 
-    public void onClosed(WebSocket webSocket, int code, String reason) {
+    private void onClosed(int code, String reason) {
        //If we already called onClosed() or onFailed() before, we need to abort.
        if (!closed.compareAndSet(false, true) || failed.get()) {
          return;

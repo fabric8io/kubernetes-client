@@ -36,7 +36,7 @@ public final class OpenShiftHandlers {
 
   public static <T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>> void register(
       Class<T> type, Function<OpenshiftClientState, HasMetadataOperation<T, L, R>> operationConstructor) {
-    Handlers.register(type, (c) -> operationConstructor.apply(new OpenshiftClientState() {
+    Handlers.register(type, c -> operationConstructor.apply(new OpenshiftClientState() {
 
       @Override
       public HttpClient getHttpClient() {

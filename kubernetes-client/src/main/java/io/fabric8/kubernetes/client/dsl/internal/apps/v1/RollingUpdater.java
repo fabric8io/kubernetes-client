@@ -66,11 +66,11 @@ public abstract class RollingUpdater<T extends HasMetadata, L> {
   private final long rollingTimeoutMillis;
   private final long loggingIntervalMillis;
 
-  public RollingUpdater(ClientState clientState, String namespace) {
+  protected RollingUpdater(ClientState clientState, String namespace) {
     this(clientState, namespace, DEFAULT_ROLLING_TIMEOUT, Config.DEFAULT_LOGGING_INTERVAL);
   }
 
-  public RollingUpdater(ClientState clientState, String namespace, long rollingTimeoutMillis, long loggingIntervalMillis) {
+  protected RollingUpdater(ClientState clientState, String namespace, long rollingTimeoutMillis, long loggingIntervalMillis) {
     this.clientState = clientState;
     this.namespace = namespace;
     this.rollingTimeoutMillis = rollingTimeoutMillis;

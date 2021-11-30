@@ -149,8 +149,11 @@ public class BaseClient extends SimpleClientState implements Client {
     return new OperationSupport(this.httpClient, this.getConfiguration()).restCall(VersionInfo.class, path);
   }
 
+  /**
+   * For subclasses to adapt the client state
+   */
   protected void adaptState() {
-    
+    // nothing by default
   }
   
   protected SimpleClientState newState(Config updated) {

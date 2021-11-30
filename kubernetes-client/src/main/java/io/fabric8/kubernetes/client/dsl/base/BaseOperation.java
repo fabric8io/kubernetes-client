@@ -88,6 +88,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   Resource<T>,
   ListerWatcher<T, L> {
 
+  private static final String WATCH = "watch";
   private static final String READ_ONLY_UPDATE_EXCEPTION_MESSAGE = "Cannot update read-only resources";
   private static final String READ_ONLY_EDIT_EXCEPTION_MESSAGE = "Cannot edit read-only resources";
 
@@ -569,7 +570,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       watch.waitUntilReady();
       return watch;
     } catch (MalformedURLException e) {
-      throw KubernetesClientException.launderThrowable(forOperationType("watch"), e);
+      throw KubernetesClientException.launderThrowable(forOperationType(WATCH), e);
     } catch (KubernetesClientException ke) {
       List<Integer> furtherProcessedCodes = Arrays.asList(200, 503);
       if (!furtherProcessedCodes.contains(ke.getCode())) {
@@ -601,7 +602,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
           config.getConnectionTimeout()
         );
       } catch (MalformedURLException e) {
-        throw KubernetesClientException.launderThrowable(forOperationType("watch"), e);
+        throw KubernetesClientException.launderThrowable(forOperationType(WATCH), e);
       }
     }
   }
@@ -997,7 +998,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     }
 
     if (listOptions.getWatch() != null) {
-      urlBuilder.addQueryParameter("watch", listOptions.getWatch().toString());
+      urlBuilder.addQueryParameter(WATCH, listOptions.getWatch().toString());
     }
     return urlBuilder.build();
   }

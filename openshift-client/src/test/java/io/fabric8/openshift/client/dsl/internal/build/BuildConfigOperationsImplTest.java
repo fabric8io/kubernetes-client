@@ -91,8 +91,9 @@ class BuildConfigOperationsImplTest {
     };
 
     // When
+    ByteArrayInputStream inputStream = new ByteArrayInputStream(new byte[0]);
     KubernetesClientException exception = assertThrows(KubernetesClientException.class,
-      () -> impl.submitToApiServer(new ByteArrayInputStream(new byte[0]), 0));
+      () -> impl.submitToApiServer(inputStream, 0));
 
     // Then
     assertTrue(exception.getMessage().contains(eventMessage));
