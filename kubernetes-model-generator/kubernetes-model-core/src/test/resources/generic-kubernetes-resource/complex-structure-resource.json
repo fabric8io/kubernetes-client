@@ -13,6 +13,7 @@
         {"entry":  2},
         {"entry":  3}
       ],
+      "list[0]": {"entry":  "ambiguous"},
       "2dList": [
         [{"entry":  1}, {"entry":  2}],
         [{"entry":  3}, {"entry":  4}]
