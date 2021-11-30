@@ -17,7 +17,7 @@
     * PatchType.getMediaType was replaced with PatchType.getContentType
     * ExecListener no longer passes the okhttp3.Response.
     * okhttp3.TlsVersions has been replaced by io.fabric8.kubernetes.client.http.TlsVersion
-    * Client constructors referencing okhttp3.HttpClient have been removed.
+    * HttpClientUtils.createHttpClient(config, additionalConfig) has been deprecated and now returns an OkHttpClientImpl
 
 ### 5.10.1 (2021-11-12)
 

@@ -74,7 +74,7 @@ public class OpenIDConnectionUtils {
    * @param currentAuthProviderConfig current AuthInfo's AuthProvider config as a map
    * @return access token for interacting with Kubernetes API
    */
-  public static String resolveOIDCTokenFromAuthConfig(Map<String, String> currentAuthProviderConfig) {
+  public static String resolveOIDCTokenFromAuthConfig(Map<String, String> currentAuthProviderConfig, HttpClient.Builder clientBuilder) {
     String accessToken = currentAuthProviderConfig.get(ID_TOKEN_KUBECONFIG);
     String issuer = currentAuthProviderConfig.get(ISSUER_KUBECONFIG);
     String clientId = currentAuthProviderConfig.get(CLIENT_ID_KUBECONFIG);
@@ -82,7 +82,7 @@ public class OpenIDConnectionUtils {
     String clientSecret = currentAuthProviderConfig.getOrDefault(CLIENT_SECRET_KUBECONFIG, "");
     String idpCert = currentAuthProviderConfig.get(IDP_CERT_DATA);
     if (isTokenRefreshSupported(currentAuthProviderConfig)) {
-      return getOIDCProviderTokenEndpointAndRefreshToken(issuer, clientId, refreshToken, clientSecret, accessToken, idpCert);
+      return getOIDCProviderTokenEndpointAndRefreshToken(issuer, clientId, refreshToken, clientSecret, accessToken, idpCert, clientBuilder);
     }
     return accessToken;
   }
@@ -275,7 +275,7 @@ public class OpenIDConnectionUtils {
     return Serialization.jsonMapper().readValue(jsonString, Map.class);
   }
 
-  private static HttpClient getDefaultHttpClientWithPemCert(String idpCert) {
+  private static HttpClient getDefaultHttpClientWithPemCert(String idpCert, HttpClient.Builder clientBuilder) {
     SSLContext sslContext = null;
     TrustManager[] trustManagers = null;
     // fist, lets get the pem
@@ -295,7 +295,6 @@ public class OpenIDConnectionUtils {
       throw new RuntimeException("Could not import idp certificate", e);
     }
     
-    HttpClient.Builder clientBuilder = HttpClientUtils.createHttpClientBuilder();
     if (sslContext != null) {
       clientBuilder.sslContext(sslContext, trustManagers);
     }
@@ -323,8 +322,8 @@ public class OpenIDConnectionUtils {
     return result;
   }
 
-  private static String getOIDCProviderTokenEndpointAndRefreshToken(String issuer, String clientId, String refreshToken, String clientSecret, String accessToken, String idpCert) {
-    try (HttpClient newClient = getDefaultHttpClientWithPemCert(idpCert)) {
+  private static String getOIDCProviderTokenEndpointAndRefreshToken(String issuer, String clientId, String refreshToken, String clientSecret, String accessToken, String idpCert, HttpClient.Builder clientBuilder) {
+    try (HttpClient newClient = getDefaultHttpClientWithPemCert(idpCert, clientBuilder)) {
       Map<String, Object> wellKnownOpenIdConfiguration = getOIDCDiscoveryDocumentAsMap(newClient, issuer);
       return getOIDCProviderTokenEndpointAndRefreshToken(newClient, wellKnownOpenIdConfiguration, clientId, refreshToken, clientSecret, accessToken, true);
     }

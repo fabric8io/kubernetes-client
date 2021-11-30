@@ -46,9 +46,10 @@ public class OkHttpClientFactory implements HttpClient.Factory {
    * Creates an HTTP client configured to access the Kubernetes API.
    * @param config Kubernetes API client config
    * @param additionalConfig a consumer that allows overriding HTTP client properties
+   * @param factory for creating additional builders
    * @return returns an HTTP client
    */
-  public static OkHttpClientImpl createHttpClient(Config config,
+  public OkHttpClientImpl createHttpClient(Config config,
       final Consumer<OkHttpClient.Builder> additionalConfig) {
     try {
       OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
@@ -77,7 +78,7 @@ public class OkHttpClientFactory implements HttpClient.Factory {
 
       OkHttpClientBuilderImpl builderWrapper = new OkHttpClientBuilderImpl(httpClientBuilder);
 
-      HttpClientUtils.applyCommonConfiguration(config, builderWrapper);
+      HttpClientUtils.applyCommonConfiguration(config, builderWrapper, this);
       
       if (shouldDisableHttp2() && !config.isHttp2Disable()) {
         builderWrapper.preferHttp11();

@@ -68,6 +68,10 @@ public interface HttpClient extends AutoCloseable {
   @Override
   void close();
   
+  /**
+   * Create a builder that starts with the same state as this client
+   * @return a new builder
+   */
   Builder newBuilder();
   
   /**

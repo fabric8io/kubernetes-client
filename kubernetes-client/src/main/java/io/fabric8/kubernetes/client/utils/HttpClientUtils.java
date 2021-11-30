@@ -23,6 +23,8 @@ import io.fabric8.kubernetes.client.http.HttpHeaders;
 import io.fabric8.kubernetes.client.http.Interceptor;
 import io.fabric8.kubernetes.client.internal.SSLUtils;
 import io.fabric8.kubernetes.client.internal.okhttp.OkHttpClientFactory;
+import io.fabric8.kubernetes.client.internal.okhttp.OkHttpClientImpl;
+import okhttp3.OkHttpClient;
 
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
@@ -37,6 +39,7 @@ import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -57,6 +60,18 @@ public class HttpClientUtils {
     } catch (PatternSyntaxException e) {
       throw KubernetesClientException.launderThrowable("Unable to compile ipv4address pattern.", e);
     }
+  }
+  
+  /**
+   * Creates an HTTP client configured to access the Kubernetes API.
+   * @param config Kubernetes API client config
+   * @param additionalConfig a consumer that allows overriding HTTP client properties
+   * @return returns an HTTP client
+   * @deprecated use {@link OkHttpClientFactory#createHttpClient(Config, Consumer)} instead
+   */
+  @Deprecated
+  public static OkHttpClientImpl createHttpClient(final Config config, final Consumer<OkHttpClient.Builder> additionalConfig) {
+    return new OkHttpClientFactory().createHttpClient(config, additionalConfig);
   }
 
     public static URL getProxyUrl(Config config) throws MalformedURLException {
@@ -90,7 +105,7 @@ public class HttpClientUtils {
         return ipMatcher.matches();
     }
 
-  public static Map<String, io.fabric8.kubernetes.client.http.Interceptor> createApplicableInterceptors(Config config) {
+  public static Map<String, io.fabric8.kubernetes.client.http.Interceptor> createApplicableInterceptors(Config config, HttpClient.Factory factory) {
     Map<String, io.fabric8.kubernetes.client.http.Interceptor> interceptors = new LinkedHashMap<>();
     
     // Header Interceptor
@@ -116,7 +131,7 @@ public class HttpClientUtils {
     // Impersonator Interceptor
     interceptors.put("IMPERSONATOR", new ImpersonatorInterceptor(config));
     // Token Refresh Interceptor
-    interceptors.put(TokenRefreshInterceptor.NAME, new TokenRefreshInterceptor(config));
+    interceptors.put(TokenRefreshInterceptor.NAME, new TokenRefreshInterceptor(config, factory));
     // Backwards Compatibility Interceptor
     String shouldDisableBackwardsCompatibilityInterceptor = Utils.getSystemPropertyOrEnvVar(KUBERNETES_BACKWARDS_COMPATIBILITY_INTERCEPTOR_DISABLE, "false");
     if (!Boolean.parseBoolean(shouldDisableBackwardsCompatibilityInterceptor)) {
@@ -137,7 +152,7 @@ public class HttpClientUtils {
     return new OkHttpClientFactory().createHttpClient(config);
   }
   
-  public static void applyCommonConfiguration(Config config, HttpClient.Builder builder) {
+  public static void applyCommonConfiguration(Config config, HttpClient.Builder builder, HttpClient.Factory factory) {
     builder.followAllRedirects();
     
     if (config.getConnectionTimeout() > 0) {
@@ -186,11 +201,7 @@ public class HttpClientUtils {
     } catch (Exception e) {
       KubernetesClientException.launderThrowable(e);
     }
-    HttpClientUtils.createApplicableInterceptors(config).forEach(builder::addOrReplaceInterceptor);
+    HttpClientUtils.createApplicableInterceptors(config, factory).forEach(builder::addOrReplaceInterceptor);
   }
   
-  public static HttpClient.Builder createHttpClientBuilder() {
-    // TODO: replace with reflection / service load and factory interface
-    return new OkHttpClientFactory().newBuilder();
-  }
 }
