@@ -24,10 +24,10 @@ import org.junit.jupiter.api.Test;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class GenericKubernetesResourceTest {
 
@@ -139,21 +139,8 @@ class GenericKubernetesResourceTest {
   }
 
   @Test
-  @DisplayName("get with dot notation, with nested Maps, should return value")
-  void getDotNotationWithNestedMapsFound() {
-    // Given
-    final GenericKubernetesResource gkr = new GenericKubernetesResource();
-    gkr.setAdditionalProperties(Collections.singletonMap("spec",
-      Collections.singletonMap("field", Collections.singletonMap("nested", 42))));
-    // When
-    final int result = gkr.get("spec.field.nested");
-    // Then
-    assertThat(result).isEqualTo(42);
-  }
-
-  @Test
-  @DisplayName("get with path/varargs notation, with nested Maps, should return value")
-  void getPathNotationWithNestedMapsFound() {
+  @DisplayName("get, with nested Maps, should return value")
+  void getWithNestedMapsFound() {
     // Given
     final GenericKubernetesResource gkr = new GenericKubernetesResource();
     gkr.setAdditionalProperties(Collections.singletonMap("spec",
@@ -165,47 +152,21 @@ class GenericKubernetesResourceTest {
   }
 
   @Test
-  @DisplayName("get with mixed notation, with nested Maps, should return value")
-  void getMixedNotationWithNestedMapsFound() {
+  @DisplayName("get, with nested Maps and traversed path property missing, should return null")
+  void getWithNestedMapsTraversedNotFound() {
     // Given
     final GenericKubernetesResource gkr = new GenericKubernetesResource();
     gkr.setAdditionalProperties(Collections.singletonMap("spec",
       Collections.singletonMap("field", Collections.singletonMap("nested", 42))));
     // When
-    final int result = gkr.get("spec", "field.nested");
-    // Then
-    assertThat(result).isEqualTo(42);
-  }
-
-  @Test
-  @DisplayName("get with mixed notation, with nested Maps and last path property missing, should return null")
-  void getMixedNotationWithNestedMapsNotFound() {
-    // Given
-    final GenericKubernetesResource gkr = new GenericKubernetesResource();
-    gkr.setAdditionalProperties(Collections.singletonMap("spec",
-      Collections.singletonMap("field", Collections.singletonMap("nested", 42))));
-    // When
-    final Object result = gkr.get("spec", "field.not-here");
+    final Object result = gkr.get("spec", "field", "nested", "not", "here");
     // Then
     assertThat(result).isNull();
   }
 
   @Test
-  @DisplayName("get with mixed notation, with nested Maps and traversed path property missing, should return null")
-  void getMixedNotationWithNestedMapsTraversedNotFound() {
-    // Given
-    final GenericKubernetesResource gkr = new GenericKubernetesResource();
-    gkr.setAdditionalProperties(Collections.singletonMap("spec",
-      Collections.singletonMap("field", Collections.singletonMap("nested", 42))));
-    // When
-    final Object result = gkr.get("spec", "field.nested.not.here");
-    // Then
-    assertThat(result).isNull();
-  }
-
-  @Test
-  @DisplayName("get with wrong notation, with nested Maps and Arrays, should throw Exception")
-  void getWrongNotationWithNestedMapsAndArraysException() {
+  @DisplayName("get, with nested Maps and Arrays and index out of bounds, should return null")
+  void getWithNestedMapsAndArraysAndIndexOutOfBoundsNotFound() {
     // Given
     final GenericKubernetesResource gkr = new GenericKubernetesResource();
     gkr.setAdditionalProperties(Collections.singletonMap("spec",
@@ -214,12 +175,9 @@ class GenericKubernetesResourceTest {
           true, false, 1337
         )))));
     // When
-    final NumberFormatException result = assertThrows(NumberFormatException.class, () ->
-      gkr.get("spec", "field.nested["+(Integer.MAX_VALUE+1L)+"]"));
+    final Object result = gkr.get("spec", "field", "nested", Integer.MAX_VALUE);
     // Then
-    assertThat(result)
-      .hasMessageContaining("For input string")
-      .hasMessageContaining("2147483648");
+    assertThat(result).isNull();
   }
 
   @Test
@@ -233,7 +191,7 @@ class GenericKubernetesResourceTest {
           true, false, 1337
         )))));
     // When
-    final boolean result = gkr.get("spec", "field.nested[1]");
+    final boolean result = gkr.get("spec", "field", "nested", 1);
     // Then
     assertThat(result).isFalse();
   }
@@ -250,7 +208,7 @@ class GenericKubernetesResourceTest {
           Collections.singletonMap("objectField", "Particles")
         )))));
     // When
-    final String result = gkr.get("spec", "field.nested[1].objectField");
+    final String result = gkr.get("spec", "field", "nested", 1, "objectField");
     // Then
     assertThat(result).isEqualTo("Particles");
   }
@@ -265,116 +223,82 @@ class GenericKubernetesResourceTest {
         Collections.singletonMap("nested", Arrays.asList(42, 13, 37)
         ))));
     // When
-    final int result = gkr.get("spec.field.nested[2]");
+    final int result = gkr.get("spec", "field", "nested", 2);
     // Then
     assertThat(result).isEqualTo(37);
   }
 
   @Test
-  @DisplayName("get, with nested Maps and invalid array reference, should throw Exception")
-  void getWithNestedMapsAndInvalidArrayReferenceShouldThrowException() {
+  @DisplayName("get, with nested Maps and invalid array reference, should return null")
+  void getWithNestedMapsAndInvalidArrayReferenceNotFound() {
     // Given
     final GenericKubernetesResource gkr = new GenericKubernetesResource();
     gkr.setAdditionalProperties(Collections.singletonMap("spec",
       Collections.singletonMap("field", Collections.singletonMap("nested",
-        Collections.singletonMap("not", "an-array")))));
+        Collections.singletonMap("1", "not-an-array")))));
     // When
-    final ClassCastException result = assertThrows(ClassCastException.class, () ->
-      gkr.get("spec", "field.nested[1].not"));
+    final String result = gkr.get("spec", "field", "nested", 1);
     // Then
-    assertThat(result)
-      .hasMessageContaining("cannot be cast to")
-      .hasMessageContaining("Collection");
+    assertThat(result).isNull();
   }
 
   @Test
-  @DisplayName("get, with dots in field, should return value")
+  @DisplayName("get, with nested Maps and invalid reference, should return null")
+  void getWithNestedMapsAndInvalidReferenceNotFound() {
+    // Given
+    final GenericKubernetesResource gkr = new GenericKubernetesResource();
+    gkr.setAdditionalProperties(Collections.singletonMap("spec",
+      Collections.singletonMap("field", Collections.singletonMap("nested",
+        Collections.singletonMap("false", "not-allowed")))));
+    // When
+    final String result = gkr.get("spec", "field", "nested", false);
+    // Then
+    assertThat(result).isNull();
+  }
+
+  @Test
+  @DisplayName("get, with symbols in field, should return value")
   void getWithDotsInFieldFound() {
     // Given
     final GenericKubernetesResource gkr = new GenericKubernetesResource();
     gkr.setAdditionalProperties(Collections.singletonMap("spec",
-      Collections.singletonMap("field.with.dots",
+      Collections.singletonMap("field\uD83E\uDD2Cwith.symbols[]!\"·$%&/()=`' {}_-<>",
         Collections.singletonMap("check", "mate")
       )));
     // When
-    final String result = gkr.get("spec", "field\\.with\\.dots.check");
+    final String result = gkr.get("spec", "field\uD83E\uDD2Cwith.symbols[]!\"·$%&/()=`' {}_-<>", "check");
     // Then
     assertThat(result).isEqualTo("mate");
   }
 
   @Test
-  @DisplayName("get, with array syntax in field, should return value")
-  void getWithArraySyntaxInFieldFound() {
+  @DisplayName("get, with ambiguous array and array position, should return value")
+  void getWithAmbiguousArrayAndArrayPositionFound() {
     // Given
+    final Map<String, Object> ambiguity = new HashMap<>();
+    ambiguity.put("array", Collections.singletonList("edge"));
+    ambiguity.put("array[0]", "case");
     final GenericKubernetesResource gkr = new GenericKubernetesResource();
-    gkr.setAdditionalProperties(Collections.singletonMap("spec",
-      Collections.singletonMap("field[1]with[0]array[42]syntax",
-        Collections.singletonMap("check", "mate")
-      )));
+    gkr.setAdditionalProperties(Collections.singletonMap("spec", ambiguity));
     // When
-    final String result = gkr.get("spec", "field[1]with[0]array[42]syntax", "check");
-    // Then
-    assertThat(result).isEqualTo("mate");
-  }
-
-  @Test
-  @DisplayName("get, with array syntax in field and Array, should return value")
-  void getWithArraySyntaxInFieldAndArrayFound() {
-    // Given
-    final GenericKubernetesResource gkr = new GenericKubernetesResource();
-    gkr.setAdditionalProperties(Collections.singletonMap("spec",
-      Collections.singletonMap("field[1]with[0]array[42]syntax",
-        Collections.singletonList(Collections.singletonMap("check", "mate"))
-      )));
-    // When
-    final String result = gkr.get("spec", "field[1]with[0]array[42]syntax[0]", "check");
-    // Then
-    assertThat(result).isEqualTo("mate");
-  }
-
-  @Test
-  @DisplayName("get, with array syntax in end of field and Map, should return value")
-  void getWithArraySyntaxInEndOfFieldAndMapFound() {
-    // Given
-    final GenericKubernetesResource gkr = new GenericKubernetesResource();
-    gkr.setAdditionalProperties(Collections.singletonMap("spec",
-      Collections.singletonMap("field[1]with[0]array[42]syntax[0][1337]", "edge")
-    ));
-    // When
-    final String result = gkr.get("spec", "field[1]with[0]array[42]syntax[0][1337]");
+    final String result = gkr.get("spec", "array", 0);
     // Then
     assertThat(result).isEqualTo("edge");
   }
 
   @Test
-  @DisplayName("get, with array syntax in end of field and Array, should return value")
-  void getWithArraySyntaxInEndOfFieldAndArrayFound() {
+  @DisplayName("get, with ambiguous array and field property, should return value")
+  void getWithAmbiguousArrayAndFieldPropertyFound() {
     // Given
+    final Map<String, Object> ambiguity = new HashMap<>();
+    ambiguity.put("array", Collections.singletonList("edge"));
+    ambiguity.put("array[0]", "case");
     final GenericKubernetesResource gkr = new GenericKubernetesResource();
-    gkr.setAdditionalProperties(Collections.singletonMap("spec",
-      Collections.singletonMap("field[1]with[0]array[42]syntax[0][1337]",
-        Collections.singletonList(Collections.singletonList(Collections.singletonMap("check", "mate")
-        )))));
+    gkr.setAdditionalProperties(Collections.singletonMap("spec", ambiguity));
     // When
-    final String result = gkr.get("spec", "field[1]with[0]array[42]syntax[0][1337][0][0]", "check");
+    final String result = gkr.get("spec", "array[0]");
     // Then
-    assertThat(result).isEqualTo("mate");
-  }
-
-  @Test
-  @DisplayName("get, with array syntax in end of field and nested array, should return value")
-  void getWithArraySyntaxInEndOfFieldAndNestedArrayFound() {
-    // Given
-    final GenericKubernetesResource gkr = new GenericKubernetesResource();
-    gkr.setAdditionalProperties(Collections.singletonMap("spec",
-      Collections.singletonMap("field[1]with[0]array[42]syntax[0][1337]",
-        Collections.singletonList(Collections.singletonList(
-          Collections.singletonMap("check", Collections.singletonList(42))
-        )))));
-    // When
-    final int result = gkr.get("spec", "field[1]with[0]array[42]syntax[0][1337][0][0]", "check[0]");
-    // Then
-    assertThat(result).isEqualTo(42);
+    assertThat(result).isEqualTo("case");
   }
 
   @Test
@@ -393,7 +317,7 @@ class GenericKubernetesResourceTest {
           Collections.singletonList(Collections.singletonMap("entry", 3))
         )))));
     // When
-    final int result = gkr.get("spec.nested.2dList[1][0].entry");
+    final int result = gkr.get("spec","nested", "2dList", 1, 0, "entry");
     // Then
     assertThat(result).isEqualTo(3);
   }
@@ -415,7 +339,7 @@ class GenericKubernetesResourceTest {
               )
             )))))));
     // When
-    final int result = gkr.get("spec.nested.multidimensional[0][0][0][2].entry");
+    final int result = gkr.get("spec","nested", "multidimensional", 0, 0, 0, 2, "entry");
     // Then
     assertThat(result).isEqualTo(2);
   }
@@ -430,12 +354,13 @@ class GenericKubernetesResourceTest {
     assertThat(result)
       .hasFieldOrPropertyWithValue("kind", "SomeCustomResource")
       .returns("value", gkr -> gkr.get("spec", "field"))
-      .returns(42, gkr -> gkr.get("spec.dot\\.in\\.field"))
-      .returns(2, gkr -> gkr.get("spec", "nested", "list[1]", "entry"))
-      .returns(3, gkr -> gkr.get("spec.nested.2dList[1][0].entry"))
-      .returns(313373, gkr -> gkr.get("spec.oh!\\.come-on![1337]this\\.is#Outrageous[0][1][0][0].impossible[0]"))
-      .returns(313373, gkr -> gkr.get("spec", "oh!\\.come-on![1337]this\\.is#Outrageous[0][1][0][0]", "impossible[0]"))
-      .returns(true, gkr -> gkr.get("status.reconciled"));
+      .returns(42, gkr -> gkr.get("spec", "dot.in.field"))
+      .returns(2, gkr -> gkr.get("spec", "nested", "list", 1, "entry"))
+      .returns(1, gkr -> gkr.get("spec", "nested", "list", 0, "entry"))
+      .returns("ambiguous", gkr -> gkr.get("spec", "nested", "list[0]", "entry"))
+      .returns(3, gkr -> gkr.get("spec", "nested", "2dList", 1, 0, "entry"))
+      .returns(313373, gkr -> gkr.get("spec", "oh!.come-on![1337]this.is#Outrageous[0][1]", 0, 0, "impossible", 0))
+      .returns(true, gkr -> gkr.get("status", "reconciled"));
   }
 
   @Test

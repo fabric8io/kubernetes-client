@@ -32,12 +32,7 @@ import lombok.ToString;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -53,11 +48,6 @@ import java.util.stream.Stream;
 @EqualsAndHashCode
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 public class GenericKubernetesResource implements HasMetadata {
-
-  // (.+?) -> Captures the field in group(1)
-  // ((?:\[\d+])+) -> Captures the repetition of [0][1][0].... in group(2)
-  private static final Pattern ARRAY_PROPERTY_PATTERN = Pattern.compile("^(.+?)((?:\\[\\d+])+)$");
-  private static final Pattern ARRAY_PATTERN = Pattern.compile("\\[(\\d+)]");
 
   private static final ObjectMapper MAPPER = new ObjectMapper();
 
@@ -92,56 +82,51 @@ public class GenericKubernetesResource implements HasMetadata {
   /**
    * Allows the retrieval of field values from this Resource for the provided path segments.
    *
-   * <p> The following notation is supported
+   * <p> If the path segment is of type {@link Integer}, then we assume that it is an array index to retrieve
+   * the value of an entry in the array.
+   *
+   * <p> If the path segment is of type {@link String}, then we assume that it is a field name to retrieve the value
+   * from the resource.
+   *
+   * <p> In any other case, the path segment is ignored and considered invalid. The method returns null.
+   *
+   * <p> Considering the following JSON object:
+   *
+   * <pre>{@code
+   * {
+   *   "field": {
+   *     "value": 42
+   *     "list": [
+   *       {entry: 1}, {entry: 2}, {entry: 3}
+   *     ],
+   *     "1": "one"
+   *   }
+   * }
+   * }</pre>
+   *
+   * <p> The following invocations will produce the documented results:
    * <ul>
-   *   <li>
-   *     Dot Notation
-   *     <pre>{@code resource.get("path.of.the.nested.prop");}</pre>
-   *   </li>
-   *   <li>
-   *     Varargs Notation
-   *     <pre>{@code resource.get("path", "of", "the", "nested", "prop");}</pre>
-   *   </li>
-   *   <li>
-   *     Mixed Notation
-   *     <pre>{@code resource.get("path.of", "the.nested", "prop");}</pre>
-   *   </li>
+   *   <li>{@code get("field", "value")} will result in {@code 42}</li>
+   *   <li>{@code get("field", "1")} will result in {@code "one"}</li>
+   *   <li>{@code get("field", 1)} will result in {@code null}</li>
+   *   <li>{@code get("field", "list", 1, "entry")} will result in {@code 2}</li>
+   *   <li>{@code get("field", "list", 99, "entry")} will result in {@code null}</li>
+   *   <li>{@code get("field", "list", "1", "entry")} will result in {@code null}</li>
+   *   <li>{@code get("field", "list", 1, false)} will result in {@code null}</li>
    * </ul>
-   *
-   * <p> In addition, fields that contain collections/arrays can also be traversed
-   * <pre>{@code resource.get("path.collectionField[1].nested.array[0].field");}</pre>
-   *
-   * <p> {@code .} may be escaped with {@code \\.}
-   * Any other appearance of {@code \\} will be treated as itself.
    *
    * @param path of the field to retrieve.
    * @param <T> type of the returned object.
    * @return the value of the traversed path or null if the field does not exist.
    */
   @SuppressWarnings("unchecked")
-  public <T> T get(String... path) {
+  public <T> T get(Object... path) {
     Object current = getAdditionalProperties();
-    final List<String> properties = Stream.of(path).map(p -> p.split("(?<!\\\\)\\.")).flatMap(Stream::of)
-      .collect(Collectors.toList());
-    for (String property : properties) {
-      final String p = property.replace("\\.", ".");
-      final Matcher arrayPropertyMatcher = ARRAY_PROPERTY_PATTERN.matcher(p);
-      if (current instanceof Map && arrayPropertyMatcher.find()) {
-        final StringBuilder key = new StringBuilder(arrayPropertyMatcher.group(1));
-        final Matcher arrayMatcher = ARRAY_PATTERN.matcher(arrayPropertyMatcher.group(2));
-        Object inArray = ((Map<String, Object>) current).get(key.toString());
-        while (arrayMatcher.find()) {
-          if (inArray != null) {
-            final int index = Integer.parseInt(arrayMatcher.group(1));
-            inArray = ((Collection<Object>) inArray).toArray()[index];
-          } else {
-            key.append("[").append(arrayMatcher.group(1)).append("]");
-            inArray = ((Map<String, Object>) current).get(key.toString());
-          }
-        }
-        current = inArray;
-      } else if (current instanceof Map) {
-        current = ((Map<String, Object>) current).get(p);
+    for (Object segment : path) {
+      if (segment instanceof Integer && current instanceof Collection && ((Collection<?>)current).size() > (int)segment) {
+        current = ((Collection<Object>) current).toArray()[(int)segment];
+      } else if (segment instanceof String && current instanceof Map) {
+        current = ((Map<String, Object>) current).get(segment.toString());
       } else {
         return null;
       }
