@@ -34,9 +34,12 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "clientTLS",
     "defaultCertificate",
     "domain",
     "endpointPublishingStrategy",
+    "httpCompression",
+    "httpEmptyRequestsPolicy",
     "httpErrorCodePages",
     "httpHeaders",
     "logging",
@@ -70,12 +73,18 @@ import lombok.experimental.Accessors;
 public class IngressControllerSpec implements KubernetesResource
 {
 
+    @JsonProperty("clientTLS")
+    private ClientTLS clientTLS;
     @JsonProperty("defaultCertificate")
     private io.fabric8.kubernetes.api.model.LocalObjectReference defaultCertificate;
     @JsonProperty("domain")
     private String domain;
     @JsonProperty("endpointPublishingStrategy")
     private EndpointPublishingStrategy endpointPublishingStrategy;
+    @JsonProperty("httpCompression")
+    private HTTPCompressionPolicy httpCompression;
+    @JsonProperty("httpEmptyRequestsPolicy")
+    private String httpEmptyRequestsPolicy;
     @JsonProperty("httpErrorCodePages")
     private ConfigMapNameReference httpErrorCodePages;
     @JsonProperty("httpHeaders")
@@ -111,13 +120,16 @@ public class IngressControllerSpec implements KubernetesResource
     /**
      * 
      * @param httpErrorCodePages
+     * @param httpCompression
      * @param routeSelector
      * @param replicas
      * @param endpointPublishingStrategy
      * @param namespaceSelector
      * @param httpHeaders
      * @param nodePlacement
+     * @param clientTLS
      * @param routeAdmission
+     * @param httpEmptyRequestsPolicy
      * @param domain
      * @param tlsSecurityProfile
      * @param defaultCertificate
@@ -125,11 +137,14 @@ public class IngressControllerSpec implements KubernetesResource
      * @param logging
      * @param tuningOptions
      */
-    public IngressControllerSpec(io.fabric8.kubernetes.api.model.LocalObjectReference defaultCertificate, String domain, EndpointPublishingStrategy endpointPublishingStrategy, ConfigMapNameReference httpErrorCodePages, IngressControllerHTTPHeaders httpHeaders, IngressControllerLogging logging, io.fabric8.kubernetes.api.model.LabelSelector namespaceSelector, NodePlacement nodePlacement, Integer replicas, RouteAdmissionPolicy routeAdmission, io.fabric8.kubernetes.api.model.LabelSelector routeSelector, TLSSecurityProfile tlsSecurityProfile, IngressControllerTuningOptions tuningOptions, HasMetadata unsupportedConfigOverrides) {
+    public IngressControllerSpec(ClientTLS clientTLS, io.fabric8.kubernetes.api.model.LocalObjectReference defaultCertificate, String domain, EndpointPublishingStrategy endpointPublishingStrategy, HTTPCompressionPolicy httpCompression, String httpEmptyRequestsPolicy, ConfigMapNameReference httpErrorCodePages, IngressControllerHTTPHeaders httpHeaders, IngressControllerLogging logging, io.fabric8.kubernetes.api.model.LabelSelector namespaceSelector, NodePlacement nodePlacement, Integer replicas, RouteAdmissionPolicy routeAdmission, io.fabric8.kubernetes.api.model.LabelSelector routeSelector, TLSSecurityProfile tlsSecurityProfile, IngressControllerTuningOptions tuningOptions, HasMetadata unsupportedConfigOverrides) {
         super();
+        this.clientTLS = clientTLS;
         this.defaultCertificate = defaultCertificate;
         this.domain = domain;
         this.endpointPublishingStrategy = endpointPublishingStrategy;
+        this.httpCompression = httpCompression;
+        this.httpEmptyRequestsPolicy = httpEmptyRequestsPolicy;
         this.httpErrorCodePages = httpErrorCodePages;
         this.httpHeaders = httpHeaders;
         this.logging = logging;
@@ -141,6 +156,16 @@ public class IngressControllerSpec implements KubernetesResource
         this.tlsSecurityProfile = tlsSecurityProfile;
         this.tuningOptions = tuningOptions;
         this.unsupportedConfigOverrides = unsupportedConfigOverrides;
+    }
+
+    @JsonProperty("clientTLS")
+    public ClientTLS getClientTLS() {
+        return clientTLS;
+    }
+
+    @JsonProperty("clientTLS")
+    public void setClientTLS(ClientTLS clientTLS) {
+        this.clientTLS = clientTLS;
     }
 
     @JsonProperty("defaultCertificate")
@@ -171,6 +196,26 @@ public class IngressControllerSpec implements KubernetesResource
     @JsonProperty("endpointPublishingStrategy")
     public void setEndpointPublishingStrategy(EndpointPublishingStrategy endpointPublishingStrategy) {
         this.endpointPublishingStrategy = endpointPublishingStrategy;
+    }
+
+    @JsonProperty("httpCompression")
+    public HTTPCompressionPolicy getHttpCompression() {
+        return httpCompression;
+    }
+
+    @JsonProperty("httpCompression")
+    public void setHttpCompression(HTTPCompressionPolicy httpCompression) {
+        this.httpCompression = httpCompression;
+    }
+
+    @JsonProperty("httpEmptyRequestsPolicy")
+    public String getHttpEmptyRequestsPolicy() {
+        return httpEmptyRequestsPolicy;
+    }
+
+    @JsonProperty("httpEmptyRequestsPolicy")
+    public void setHttpEmptyRequestsPolicy(String httpEmptyRequestsPolicy) {
+        this.httpEmptyRequestsPolicy = httpEmptyRequestsPolicy;
     }
 
     @JsonProperty("httpErrorCodePages")

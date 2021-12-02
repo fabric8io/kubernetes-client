@@ -33,6 +33,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "armEndpoint",
     "cloudName",
     "networkResourceGroupName",
     "resourceGroupName"
@@ -58,6 +59,8 @@ import lombok.experimental.Accessors;
 public class AzurePlatformStatus implements KubernetesResource
 {
 
+    @JsonProperty("armEndpoint")
+    private String armEndpoint;
     @JsonProperty("cloudName")
     private String cloudName;
     @JsonProperty("networkResourceGroupName")
@@ -76,15 +79,27 @@ public class AzurePlatformStatus implements KubernetesResource
 
     /**
      * 
+     * @param armEndpoint
      * @param resourceGroupName
      * @param cloudName
      * @param networkResourceGroupName
      */
-    public AzurePlatformStatus(String cloudName, String networkResourceGroupName, String resourceGroupName) {
+    public AzurePlatformStatus(String armEndpoint, String cloudName, String networkResourceGroupName, String resourceGroupName) {
         super();
+        this.armEndpoint = armEndpoint;
         this.cloudName = cloudName;
         this.networkResourceGroupName = networkResourceGroupName;
         this.resourceGroupName = resourceGroupName;
+    }
+
+    @JsonProperty("armEndpoint")
+    public String getArmEndpoint() {
+        return armEndpoint;
+    }
+
+    @JsonProperty("armEndpoint")
+    public void setArmEndpoint(String armEndpoint) {
+        this.armEndpoint = armEndpoint;
     }
 
     @JsonProperty("cloudName")

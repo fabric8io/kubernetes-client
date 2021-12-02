@@ -35,8 +35,12 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "logLevel",
+    "managementState",
     "nodePlacement",
-    "servers"
+    "operatorLogLevel",
+    "servers",
+    "upstreamResolvers"
 })
 @ToString
 @EqualsAndHashCode
@@ -59,11 +63,19 @@ import lombok.experimental.Accessors;
 public class DNSSpec implements KubernetesResource
 {
 
+    @JsonProperty("logLevel")
+    private String logLevel;
+    @JsonProperty("managementState")
+    private String managementState;
     @JsonProperty("nodePlacement")
     private DNSNodePlacement nodePlacement;
+    @JsonProperty("operatorLogLevel")
+    private String operatorLogLevel;
     @JsonProperty("servers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Server> servers = new ArrayList<Server>();
+    @JsonProperty("upstreamResolvers")
+    private UpstreamResolvers upstreamResolvers;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -78,11 +90,39 @@ public class DNSSpec implements KubernetesResource
      * 
      * @param nodePlacement
      * @param servers
+     * @param upstreamResolvers
+     * @param logLevel
+     * @param operatorLogLevel
+     * @param managementState
      */
-    public DNSSpec(DNSNodePlacement nodePlacement, List<Server> servers) {
+    public DNSSpec(String logLevel, String managementState, DNSNodePlacement nodePlacement, String operatorLogLevel, List<Server> servers, UpstreamResolvers upstreamResolvers) {
         super();
+        this.logLevel = logLevel;
+        this.managementState = managementState;
         this.nodePlacement = nodePlacement;
+        this.operatorLogLevel = operatorLogLevel;
         this.servers = servers;
+        this.upstreamResolvers = upstreamResolvers;
+    }
+
+    @JsonProperty("logLevel")
+    public String getLogLevel() {
+        return logLevel;
+    }
+
+    @JsonProperty("logLevel")
+    public void setLogLevel(String logLevel) {
+        this.logLevel = logLevel;
+    }
+
+    @JsonProperty("managementState")
+    public String getManagementState() {
+        return managementState;
+    }
+
+    @JsonProperty("managementState")
+    public void setManagementState(String managementState) {
+        this.managementState = managementState;
     }
 
     @JsonProperty("nodePlacement")
@@ -95,6 +135,16 @@ public class DNSSpec implements KubernetesResource
         this.nodePlacement = nodePlacement;
     }
 
+    @JsonProperty("operatorLogLevel")
+    public String getOperatorLogLevel() {
+        return operatorLogLevel;
+    }
+
+    @JsonProperty("operatorLogLevel")
+    public void setOperatorLogLevel(String operatorLogLevel) {
+        this.operatorLogLevel = operatorLogLevel;
+    }
+
     @JsonProperty("servers")
     public List<Server> getServers() {
         return servers;
@@ -103,6 +153,16 @@ public class DNSSpec implements KubernetesResource
     @JsonProperty("servers")
     public void setServers(List<Server> servers) {
         this.servers = servers;
+    }
+
+    @JsonProperty("upstreamResolvers")
+    public UpstreamResolvers getUpstreamResolvers() {
+        return upstreamResolvers;
+    }
+
+    @JsonProperty("upstreamResolvers")
+    public void setUpstreamResolvers(UpstreamResolvers upstreamResolvers) {
+        this.upstreamResolvers = upstreamResolvers;
     }
 
     @JsonAnyGetter

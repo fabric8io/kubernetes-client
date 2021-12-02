@@ -1305,6 +1305,48 @@
         "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openshift.api.model.console.v1alpha1.ConsolePlugin\u003e"
       ]
     },
+    "os_console_v1alpha1_ConsolePluginProxy": {
+      "type": "object",
+      "properties": {
+        "services": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/os_console_v1alpha1_ConsolePluginProxyService",
+            "existingJavaType": "io.fabric8.openshift.api.model.console.v1alpha1.ConsolePluginProxyService"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.console.v1alpha1.ConsolePluginProxy",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_console_v1alpha1_ConsolePluginProxyService": {
+      "type": "object",
+      "properties": {
+        "authorize": {
+          "type": "boolean"
+        },
+        "caCertificate": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.console.v1alpha1.ConsolePluginProxyService",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "os_console_v1alpha1_ConsolePluginService": {
       "type": "object",
       "properties": {
@@ -1332,6 +1374,10 @@
       "properties": {
         "displayName": {
           "type": "string"
+        },
+        "proxy": {
+          "$ref": "#/definitions/os_console_v1alpha1_ConsolePluginProxy",
+          "existingJavaType": "io.fabric8.openshift.api.model.console.v1alpha1.ConsolePluginProxy"
         },
         "service": {
           "$ref": "#/definitions/os_console_v1alpha1_ConsolePluginService",

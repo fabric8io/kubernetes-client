@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.Duration;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -33,9 +34,15 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "clientFinTimeout",
+    "clientTimeout",
     "headerBufferBytes",
     "headerBufferMaxRewriteBytes",
-    "threadCount"
+    "serverFinTimeout",
+    "serverTimeout",
+    "threadCount",
+    "tlsInspectDelay",
+    "tunnelTimeout"
 })
 @ToString
 @EqualsAndHashCode
@@ -58,12 +65,24 @@ import lombok.experimental.Accessors;
 public class IngressControllerTuningOptions implements KubernetesResource
 {
 
+    @JsonProperty("clientFinTimeout")
+    private Duration clientFinTimeout;
+    @JsonProperty("clientTimeout")
+    private Duration clientTimeout;
     @JsonProperty("headerBufferBytes")
     private Integer headerBufferBytes;
     @JsonProperty("headerBufferMaxRewriteBytes")
     private Integer headerBufferMaxRewriteBytes;
+    @JsonProperty("serverFinTimeout")
+    private Duration serverFinTimeout;
+    @JsonProperty("serverTimeout")
+    private Duration serverTimeout;
     @JsonProperty("threadCount")
     private Integer threadCount;
+    @JsonProperty("tlsInspectDelay")
+    private Duration tlsInspectDelay;
+    @JsonProperty("tunnelTimeout")
+    private Duration tunnelTimeout;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -76,15 +95,47 @@ public class IngressControllerTuningOptions implements KubernetesResource
 
     /**
      * 
+     * @param tunnelTimeout
      * @param headerBufferBytes
+     * @param serverFinTimeout
+     * @param clientFinTimeout
      * @param threadCount
+     * @param clientTimeout
      * @param headerBufferMaxRewriteBytes
+     * @param tlsInspectDelay
+     * @param serverTimeout
      */
-    public IngressControllerTuningOptions(Integer headerBufferBytes, Integer headerBufferMaxRewriteBytes, Integer threadCount) {
+    public IngressControllerTuningOptions(Duration clientFinTimeout, Duration clientTimeout, Integer headerBufferBytes, Integer headerBufferMaxRewriteBytes, Duration serverFinTimeout, Duration serverTimeout, Integer threadCount, Duration tlsInspectDelay, Duration tunnelTimeout) {
         super();
+        this.clientFinTimeout = clientFinTimeout;
+        this.clientTimeout = clientTimeout;
         this.headerBufferBytes = headerBufferBytes;
         this.headerBufferMaxRewriteBytes = headerBufferMaxRewriteBytes;
+        this.serverFinTimeout = serverFinTimeout;
+        this.serverTimeout = serverTimeout;
         this.threadCount = threadCount;
+        this.tlsInspectDelay = tlsInspectDelay;
+        this.tunnelTimeout = tunnelTimeout;
+    }
+
+    @JsonProperty("clientFinTimeout")
+    public Duration getClientFinTimeout() {
+        return clientFinTimeout;
+    }
+
+    @JsonProperty("clientFinTimeout")
+    public void setClientFinTimeout(Duration clientFinTimeout) {
+        this.clientFinTimeout = clientFinTimeout;
+    }
+
+    @JsonProperty("clientTimeout")
+    public Duration getClientTimeout() {
+        return clientTimeout;
+    }
+
+    @JsonProperty("clientTimeout")
+    public void setClientTimeout(Duration clientTimeout) {
+        this.clientTimeout = clientTimeout;
     }
 
     @JsonProperty("headerBufferBytes")
@@ -107,6 +158,26 @@ public class IngressControllerTuningOptions implements KubernetesResource
         this.headerBufferMaxRewriteBytes = headerBufferMaxRewriteBytes;
     }
 
+    @JsonProperty("serverFinTimeout")
+    public Duration getServerFinTimeout() {
+        return serverFinTimeout;
+    }
+
+    @JsonProperty("serverFinTimeout")
+    public void setServerFinTimeout(Duration serverFinTimeout) {
+        this.serverFinTimeout = serverFinTimeout;
+    }
+
+    @JsonProperty("serverTimeout")
+    public Duration getServerTimeout() {
+        return serverTimeout;
+    }
+
+    @JsonProperty("serverTimeout")
+    public void setServerTimeout(Duration serverTimeout) {
+        this.serverTimeout = serverTimeout;
+    }
+
     @JsonProperty("threadCount")
     public Integer getThreadCount() {
         return threadCount;
@@ -115,6 +186,26 @@ public class IngressControllerTuningOptions implements KubernetesResource
     @JsonProperty("threadCount")
     public void setThreadCount(Integer threadCount) {
         this.threadCount = threadCount;
+    }
+
+    @JsonProperty("tlsInspectDelay")
+    public Duration getTlsInspectDelay() {
+        return tlsInspectDelay;
+    }
+
+    @JsonProperty("tlsInspectDelay")
+    public void setTlsInspectDelay(Duration tlsInspectDelay) {
+        this.tlsInspectDelay = tlsInspectDelay;
+    }
+
+    @JsonProperty("tunnelTimeout")
+    public Duration getTunnelTimeout() {
+        return tunnelTimeout;
+    }
+
+    @JsonProperty("tunnelTimeout")
+    public void setTunnelTimeout(Duration tunnelTimeout) {
+        this.tunnelTimeout = tunnelTimeout;
     }
 
     @JsonAnyGetter

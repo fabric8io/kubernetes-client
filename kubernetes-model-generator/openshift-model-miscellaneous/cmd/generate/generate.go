@@ -32,6 +32,8 @@ import (
   networkattachment "github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/apis/k8s.cni.cncf.io/v1"
   baremetal "github.com/metal3-io/baremetal-operator/apis/metal3.io/v1alpha1"
   clusternetworkoperator "github.com/openshift/cluster-network-operator/pkg/apis/network/v1"
+  networkoperator "github.com/openshift/api/networkoperator/v1"
+  apiserver "github.com/openshift/api/apiserver/v1"
   imageregistry "github.com/openshift/api/imageregistry/v1"
   operatorv1 "github.com/openshift/api/operator/v1"
 
@@ -56,8 +58,12 @@ type Schema struct {
   BareMetalHostList                        baremetal.BareMetalHostList
   OperatorPKI                              clusternetworkoperator.OperatorPKI
   OperatorPKIList                          clusternetworkoperator.OperatorPKIList
+  EgressRouter                             networkoperator.EgressRouter
+  EgressRouterList                         networkoperator.EgressRouterList
   Config                                   imageregistry.Config
   ConfigList                               imageregistry.ConfigList
+  APIRequestCount                          apiserver.APIRequestCount
+  APIRequestCountList                      apiserver.APIRequestCountList
 }
 
 func main() {
@@ -76,7 +82,9 @@ func main() {
     {"github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/apis/k8s.cni.cncf.io/v1", "k8s.cni.cncf.io", "io.fabric8.openshift.api.model.miscellaneous.cncf.cni.v1", "os_cncf_cni_v1_", true},
     {"github.com/metal3-io/baremetal-operator/apis/metal3.io/v1alpha1", "metal3.io", "io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1", "os_metal3_v1alpha1_", true},
     {"github.com/openshift/cluster-network-operator/pkg/apis/network/v1", "network.operator", "io.fabric8.openshift.api.model.miscellaneous.network.operator.v1", "os_network_operator_v1_", true},
+    {"github.com/openshift/api/networkoperator/v1", "network.operator", "io.fabric8.openshift.api.model.miscellaneous.network.operator.v1", "os_network_operator_v1_", true},
     {"github.com/openshift/api/imageregistry/v1", "imageregistry.operator", "io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1", "os_imageregistry_v1_", true},
+    {"github.com/openshift/api/apiserver/v1", "apiserver", "io.fabric8.openshift.api.model.miscellaneous.apiserver.v1", "os_apiserver_v1_", true},
   }
 
   typeMap := map[reflect.Type]reflect.Type{

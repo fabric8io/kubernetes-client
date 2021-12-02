@@ -700,6 +700,48 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "os_machine_v1beta1_LifecycleHook": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.machine.v1beta1.LifecycleHook",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_machine_v1beta1_LifecycleHooks": {
+      "type": "object",
+      "properties": {
+        "preDrain": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_machine_v1beta1_LifecycleHook",
+            "existingJavaType": "io.fabric8.openshift.api.model.machine.v1beta1.LifecycleHook"
+          }
+        },
+        "preTerminate": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_machine_v1beta1_LifecycleHook",
+            "existingJavaType": "io.fabric8.openshift.api.model.machine.v1beta1.LifecycleHook"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.machine.v1beta1.LifecycleHooks",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "os_machine_v1beta1_Machine": {
       "type": "object",
       "properties": {
@@ -1017,6 +1059,10 @@
     "os_machine_v1beta1_MachineSpec": {
       "type": "object",
       "properties": {
+        "lifecycleHooks": {
+          "$ref": "#/definitions/os_machine_v1beta1_LifecycleHooks",
+          "existingJavaType": "io.fabric8.openshift.api.model.machine.v1beta1.LifecycleHooks"
+        },
         "metadata": {
           "$ref": "#/definitions/os_machine_v1beta1_ObjectMeta",
           "existingJavaType": "io.fabric8.openshift.api.model.machine.v1beta1.ObjectMeta"

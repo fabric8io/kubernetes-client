@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.EmptyDirVolumeSource;
+import io.fabric8.kubernetes.api.model.EphemeralVolumeSource;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
@@ -36,6 +37,7 @@ import lombok.experimental.Accessors;
     "metadata",
     "disableMountSubPath",
     "emptyDir",
+    "ephemeral",
     "volumeClaimTemplate"
 })
 @ToString
@@ -63,6 +65,8 @@ public class StorageSpec implements KubernetesResource
     private Boolean disableMountSubPath;
     @JsonProperty("emptyDir")
     private EmptyDirVolumeSource emptyDir;
+    @JsonProperty("ephemeral")
+    private EphemeralVolumeSource ephemeral;
     @JsonProperty("volumeClaimTemplate")
     private EmbeddedPersistentVolumeClaim volumeClaimTemplate;
     @JsonIgnore
@@ -78,13 +82,15 @@ public class StorageSpec implements KubernetesResource
     /**
      * 
      * @param emptyDir
+     * @param ephemeral
      * @param volumeClaimTemplate
      * @param disableMountSubPath
      */
-    public StorageSpec(Boolean disableMountSubPath, EmptyDirVolumeSource emptyDir, EmbeddedPersistentVolumeClaim volumeClaimTemplate) {
+    public StorageSpec(Boolean disableMountSubPath, EmptyDirVolumeSource emptyDir, EphemeralVolumeSource ephemeral, EmbeddedPersistentVolumeClaim volumeClaimTemplate) {
         super();
         this.disableMountSubPath = disableMountSubPath;
         this.emptyDir = emptyDir;
+        this.ephemeral = ephemeral;
         this.volumeClaimTemplate = volumeClaimTemplate;
     }
 
@@ -106,6 +112,16 @@ public class StorageSpec implements KubernetesResource
     @JsonProperty("emptyDir")
     public void setEmptyDir(EmptyDirVolumeSource emptyDir) {
         this.emptyDir = emptyDir;
+    }
+
+    @JsonProperty("ephemeral")
+    public EphemeralVolumeSource getEphemeral() {
+        return ephemeral;
+    }
+
+    @JsonProperty("ephemeral")
+    public void setEphemeral(EphemeralVolumeSource ephemeral) {
+        this.ephemeral = ephemeral;
     }
 
     @JsonProperty("volumeClaimTemplate")

@@ -41,7 +41,8 @@ import lombok.experimental.Accessors;
     "observedConfig",
     "operatorLogLevel",
     "succeededRevisionLimit",
-    "unsupportedConfigOverrides"
+    "unsupportedConfigOverrides",
+    "useMoreSecureServiceCA"
 })
 @ToString
 @EqualsAndHashCode
@@ -80,6 +81,8 @@ public class KubeControllerManagerSpec implements KubernetesResource
     private Integer succeededRevisionLimit;
     @JsonProperty("unsupportedConfigOverrides")
     private HasMetadata unsupportedConfigOverrides;
+    @JsonProperty("useMoreSecureServiceCA")
+    private Boolean useMoreSecureServiceCA;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -93,6 +96,7 @@ public class KubeControllerManagerSpec implements KubernetesResource
     /**
      * 
      * @param forceRedeploymentReason
+     * @param useMoreSecureServiceCA
      * @param logLevel
      * @param unsupportedConfigOverrides
      * @param operatorLogLevel
@@ -101,7 +105,7 @@ public class KubeControllerManagerSpec implements KubernetesResource
      * @param managementState
      * @param succeededRevisionLimit
      */
-    public KubeControllerManagerSpec(Integer failedRevisionLimit, String forceRedeploymentReason, String logLevel, String managementState, HasMetadata observedConfig, String operatorLogLevel, Integer succeededRevisionLimit, HasMetadata unsupportedConfigOverrides) {
+    public KubeControllerManagerSpec(Integer failedRevisionLimit, String forceRedeploymentReason, String logLevel, String managementState, HasMetadata observedConfig, String operatorLogLevel, Integer succeededRevisionLimit, HasMetadata unsupportedConfigOverrides, Boolean useMoreSecureServiceCA) {
         super();
         this.failedRevisionLimit = failedRevisionLimit;
         this.forceRedeploymentReason = forceRedeploymentReason;
@@ -111,6 +115,7 @@ public class KubeControllerManagerSpec implements KubernetesResource
         this.operatorLogLevel = operatorLogLevel;
         this.succeededRevisionLimit = succeededRevisionLimit;
         this.unsupportedConfigOverrides = unsupportedConfigOverrides;
+        this.useMoreSecureServiceCA = useMoreSecureServiceCA;
     }
 
     @JsonProperty("failedRevisionLimit")
@@ -191,6 +196,16 @@ public class KubeControllerManagerSpec implements KubernetesResource
     @JsonProperty("unsupportedConfigOverrides")
     public void setUnsupportedConfigOverrides(HasMetadata unsupportedConfigOverrides) {
         this.unsupportedConfigOverrides = unsupportedConfigOverrides;
+    }
+
+    @JsonProperty("useMoreSecureServiceCA")
+    public Boolean getUseMoreSecureServiceCA() {
+        return useMoreSecureServiceCA;
+    }
+
+    @JsonProperty("useMoreSecureServiceCA")
+    public void setUseMoreSecureServiceCA(Boolean useMoreSecureServiceCA) {
+        this.useMoreSecureServiceCA = useMoreSecureServiceCA;
     }
 
     @JsonAnyGetter
