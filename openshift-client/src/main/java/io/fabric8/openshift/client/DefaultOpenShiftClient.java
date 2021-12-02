@@ -131,6 +131,8 @@ import io.fabric8.openshift.api.model.UserIdentityMapping;
 import io.fabric8.openshift.api.model.UserList;
 import io.fabric8.openshift.api.model.UserOAuthAccessToken;
 import io.fabric8.openshift.api.model.UserOAuthAccessTokenList;
+import io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.APIRequestCount;
+import io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.APIRequestCountList;
 import io.fabric8.openshift.api.model.miscellaneous.cloudcredential.v1.CredentialsRequest;
 import io.fabric8.openshift.api.model.miscellaneous.cloudcredential.v1.CredentialsRequestList;
 import io.fabric8.openshift.api.model.miscellaneous.cncf.cni.v1.NetworkAttachmentDefinition;
@@ -138,6 +140,8 @@ import io.fabric8.openshift.api.model.miscellaneous.cncf.cni.v1.NetworkAttachmen
 import io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.ConfigList;
 import io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.BareMetalHost;
 import io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.BareMetalHostList;
+import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.EgressRouter;
+import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.EgressRouterList;
 import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.OperatorPKI;
 import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.OperatorPKIList;
 import io.fabric8.openshift.client.dsl.BuildConfigResource;
@@ -431,6 +435,11 @@ public class DefaultOpenShiftClient extends BaseKubernetesClient<NamespacedOpenS
   }
 
   @Override
+  public MixedOperation<EgressRouter, EgressRouterList, Resource<EgressRouter>> egressRouters() {
+    return OpenShiftHandlers.getOperation(EgressRouter.class, EgressRouterList.class, httpClient, getConfiguration());
+  }
+
+  @Override
   public NamespacedInOutCreateable<PodSecurityPolicySelfSubjectReview, PodSecurityPolicySelfSubjectReview> podSecurityPolicySelfSubjectReviews() {
     return OpenShiftHandlers.getCreateOnlyResourceOperation(PodSecurityPolicySelfSubjectReview.class, PodSecurityPolicySelfSubjectReview.class, this);
   }
@@ -616,6 +625,11 @@ public class DefaultOpenShiftClient extends BaseKubernetesClient<NamespacedOpenS
   @Override
   public NonNamespaceOperation<HostSubnet, HostSubnetList, Resource<HostSubnet>> hostSubnets() {
     return OpenShiftHandlers.getOperation(HostSubnet.class, HostSubnetList.class, this);
+  }
+
+  @Override
+  public NonNamespaceOperation<APIRequestCount, APIRequestCountList, Resource<APIRequestCount>> apiRequestCounts() {
+    return OpenShiftHandlers.getOperation(APIRequestCount.class, APIRequestCountList.class, httpClient, getConfiguration());
   }
 
   @Override
