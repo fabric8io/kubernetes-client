@@ -12,6 +12,7 @@
 #### Improvements
 
 #### Dependency Upgrade
+* Fix #3505: Update OpenShift Model to latest version (4.9.x)
 
 #### New Features
 * Fix #3579: Add support for Volcano extension
