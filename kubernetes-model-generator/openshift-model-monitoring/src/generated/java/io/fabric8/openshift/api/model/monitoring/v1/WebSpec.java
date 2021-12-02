@@ -33,7 +33,8 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "pageTitle"
+    "pageTitle",
+    "tlsConfig"
 })
 @ToString
 @EqualsAndHashCode
@@ -58,6 +59,8 @@ public class WebSpec implements KubernetesResource
 
     @JsonProperty("pageTitle")
     private String pageTitle;
+    @JsonProperty("tlsConfig")
+    private WebTLSConfig tlsConfig;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -71,10 +74,12 @@ public class WebSpec implements KubernetesResource
     /**
      * 
      * @param pageTitle
+     * @param tlsConfig
      */
-    public WebSpec(String pageTitle) {
+    public WebSpec(String pageTitle, WebTLSConfig tlsConfig) {
         super();
         this.pageTitle = pageTitle;
+        this.tlsConfig = tlsConfig;
     }
 
     @JsonProperty("pageTitle")
@@ -85,6 +90,16 @@ public class WebSpec implements KubernetesResource
     @JsonProperty("pageTitle")
     public void setPageTitle(String pageTitle) {
         this.pageTitle = pageTitle;
+    }
+
+    @JsonProperty("tlsConfig")
+    public WebTLSConfig getTlsConfig() {
+        return tlsConfig;
+    }
+
+    @JsonProperty("tlsConfig")
+    public void setTlsConfig(WebTLSConfig tlsConfig) {
+        this.tlsConfig = tlsConfig;
     }
 
     @JsonAnyGetter

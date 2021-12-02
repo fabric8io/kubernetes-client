@@ -35,6 +35,7 @@ import lombok.experimental.Accessors;
     "metadata",
     "address",
     "facility",
+    "maxLength",
     "port"
 })
 @ToString
@@ -62,6 +63,8 @@ public class SyslogLoggingDestinationParameters implements KubernetesResource
     private String address;
     @JsonProperty("facility")
     private String facility;
+    @JsonProperty("maxLength")
+    private Integer maxLength;
     @JsonProperty("port")
     private Integer port;
     @JsonIgnore
@@ -79,11 +82,13 @@ public class SyslogLoggingDestinationParameters implements KubernetesResource
      * @param address
      * @param port
      * @param facility
+     * @param maxLength
      */
-    public SyslogLoggingDestinationParameters(String address, String facility, Integer port) {
+    public SyslogLoggingDestinationParameters(String address, String facility, Integer maxLength, Integer port) {
         super();
         this.address = address;
         this.facility = facility;
+        this.maxLength = maxLength;
         this.port = port;
     }
 
@@ -105,6 +110,16 @@ public class SyslogLoggingDestinationParameters implements KubernetesResource
     @JsonProperty("facility")
     public void setFacility(String facility) {
         this.facility = facility;
+    }
+
+    @JsonProperty("maxLength")
+    public Integer getMaxLength() {
+        return maxLength;
+    }
+
+    @JsonProperty("maxLength")
+    public void setMaxLength(Integer maxLength) {
+        this.maxLength = maxLength;
     }
 
     @JsonProperty("port")

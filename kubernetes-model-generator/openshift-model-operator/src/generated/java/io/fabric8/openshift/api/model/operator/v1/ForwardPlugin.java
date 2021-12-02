@@ -35,6 +35,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "policy",
     "upstreams"
 })
 @ToString
@@ -58,6 +59,8 @@ import lombok.experimental.Accessors;
 public class ForwardPlugin implements KubernetesResource
 {
 
+    @JsonProperty("policy")
+    private String policy;
     @JsonProperty("upstreams")
     private List<String> upstreams = new ArrayList<String>();
     @JsonIgnore
@@ -73,10 +76,22 @@ public class ForwardPlugin implements KubernetesResource
     /**
      * 
      * @param upstreams
+     * @param policy
      */
-    public ForwardPlugin(List<String> upstreams) {
+    public ForwardPlugin(String policy, List<String> upstreams) {
         super();
+        this.policy = policy;
         this.upstreams = upstreams;
+    }
+
+    @JsonProperty("policy")
+    public String getPolicy() {
+        return policy;
+    }
+
+    @JsonProperty("policy")
+    public void setPolicy(String policy) {
+        this.policy = policy;
     }
 
     @JsonProperty("upstreams")

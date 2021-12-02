@@ -36,6 +36,9 @@ import lombok.experimental.Accessors;
     "metadata",
     "endpoints",
     "jobLabel",
+    "labelLimit",
+    "labelNameLengthLimit",
+    "labelValueLengthLimit",
     "namespaceSelector",
     "podTargetLabels",
     "sampleLimit",
@@ -68,6 +71,12 @@ public class ServiceMonitorSpec implements KubernetesResource
     private List<Endpoint> endpoints = new ArrayList<Endpoint>();
     @JsonProperty("jobLabel")
     private String jobLabel;
+    @JsonProperty("labelLimit")
+    private Long labelLimit;
+    @JsonProperty("labelNameLengthLimit")
+    private Long labelNameLengthLimit;
+    @JsonProperty("labelValueLengthLimit")
+    private Long labelValueLengthLimit;
     @JsonProperty("namespaceSelector")
     private NamespaceSelector namespaceSelector;
     @JsonProperty("podTargetLabels")
@@ -101,12 +110,18 @@ public class ServiceMonitorSpec implements KubernetesResource
      * @param targetLabels
      * @param targetLimit
      * @param namespaceSelector
+     * @param labelLimit
+     * @param labelValueLengthLimit
      * @param selector
+     * @param labelNameLengthLimit
      */
-    public ServiceMonitorSpec(List<Endpoint> endpoints, String jobLabel, NamespaceSelector namespaceSelector, List<String> podTargetLabels, Long sampleLimit, io.fabric8.kubernetes.api.model.LabelSelector selector, List<String> targetLabels, Long targetLimit) {
+    public ServiceMonitorSpec(List<Endpoint> endpoints, String jobLabel, Long labelLimit, Long labelNameLengthLimit, Long labelValueLengthLimit, NamespaceSelector namespaceSelector, List<String> podTargetLabels, Long sampleLimit, io.fabric8.kubernetes.api.model.LabelSelector selector, List<String> targetLabels, Long targetLimit) {
         super();
         this.endpoints = endpoints;
         this.jobLabel = jobLabel;
+        this.labelLimit = labelLimit;
+        this.labelNameLengthLimit = labelNameLengthLimit;
+        this.labelValueLengthLimit = labelValueLengthLimit;
         this.namespaceSelector = namespaceSelector;
         this.podTargetLabels = podTargetLabels;
         this.sampleLimit = sampleLimit;
@@ -133,6 +148,36 @@ public class ServiceMonitorSpec implements KubernetesResource
     @JsonProperty("jobLabel")
     public void setJobLabel(String jobLabel) {
         this.jobLabel = jobLabel;
+    }
+
+    @JsonProperty("labelLimit")
+    public Long getLabelLimit() {
+        return labelLimit;
+    }
+
+    @JsonProperty("labelLimit")
+    public void setLabelLimit(Long labelLimit) {
+        this.labelLimit = labelLimit;
+    }
+
+    @JsonProperty("labelNameLengthLimit")
+    public Long getLabelNameLengthLimit() {
+        return labelNameLengthLimit;
+    }
+
+    @JsonProperty("labelNameLengthLimit")
+    public void setLabelNameLengthLimit(Long labelNameLengthLimit) {
+        this.labelNameLengthLimit = labelNameLengthLimit;
+    }
+
+    @JsonProperty("labelValueLengthLimit")
+    public Long getLabelValueLengthLimit() {
+        return labelValueLengthLimit;
+    }
+
+    @JsonProperty("labelValueLengthLimit")
+    public void setLabelValueLengthLimit(Long labelValueLengthLimit) {
+        this.labelValueLengthLimit = labelValueLengthLimit;
     }
 
     @JsonProperty("namespaceSelector")

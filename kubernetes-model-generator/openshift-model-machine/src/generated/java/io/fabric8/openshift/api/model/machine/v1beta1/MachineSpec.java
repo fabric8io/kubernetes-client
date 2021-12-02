@@ -35,6 +35,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "lifecycleHooks",
     "providerID",
     "providerSpec",
     "taints"
@@ -60,6 +61,8 @@ import lombok.experimental.Accessors;
 public class MachineSpec implements KubernetesResource
 {
 
+    @JsonProperty("lifecycleHooks")
+    private LifecycleHooks lifecycleHooks;
     @JsonProperty("metadata")
     private io.fabric8.openshift.api.model.machine.v1beta1.ObjectMeta metadata;
     @JsonProperty("providerID")
@@ -85,13 +88,25 @@ public class MachineSpec implements KubernetesResource
      * @param providerID
      * @param providerSpec
      * @param taints
+     * @param lifecycleHooks
      */
-    public MachineSpec(io.fabric8.openshift.api.model.machine.v1beta1.ObjectMeta metadata, String providerID, ProviderSpec providerSpec, List<Taint> taints) {
+    public MachineSpec(LifecycleHooks lifecycleHooks, io.fabric8.openshift.api.model.machine.v1beta1.ObjectMeta metadata, String providerID, ProviderSpec providerSpec, List<Taint> taints) {
         super();
+        this.lifecycleHooks = lifecycleHooks;
         this.metadata = metadata;
         this.providerID = providerID;
         this.providerSpec = providerSpec;
         this.taints = taints;
+    }
+
+    @JsonProperty("lifecycleHooks")
+    public LifecycleHooks getLifecycleHooks() {
+        return lifecycleHooks;
+    }
+
+    @JsonProperty("lifecycleHooks")
+    public void setLifecycleHooks(LifecycleHooks lifecycleHooks) {
+        this.lifecycleHooks = lifecycleHooks;
     }
 
     @JsonProperty("metadata")

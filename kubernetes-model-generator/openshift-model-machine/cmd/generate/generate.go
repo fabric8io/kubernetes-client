@@ -26,7 +26,7 @@ import (
   "reflect"
   "strings"
   "time"
-  machineapi "github.com/openshift/machine-api-operator/pkg/apis/machine/v1beta1"
+  machineapi "github.com/openshift/api/machine/v1beta1"
 
   "os"
 
@@ -62,7 +62,7 @@ func main() {
     {"k8s.io/kubernetes/pkg/api/errors", "", "io.fabric8.kubernetes.api.model", "kubernetes_errors_", false},
     {"k8s.io/kubernetes/pkg/api/unversioned", "", "io.fabric8.kubernetes.api.model", "api_", false},
     {"k8s.io/apimachinery/pkg/apis/meta/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_", false},
-    {"github.com/openshift/machine-api-operator/pkg/apis/machine/v1beta1", "", "io.fabric8.openshift.api.model.machine.v1beta1", "os_machine_v1beta1_", true},
+    {"github.com/openshift/api/machine/v1beta1", "", "io.fabric8.openshift.api.model.machine.v1beta1", "os_machine_v1beta1_", true},
   }
 
   typeMap := map[reflect.Type]reflect.Type{

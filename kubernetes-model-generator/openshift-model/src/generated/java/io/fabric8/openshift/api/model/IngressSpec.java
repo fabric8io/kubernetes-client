@@ -37,7 +37,8 @@ import lombok.experimental.Accessors;
     "metadata",
     "appsDomain",
     "componentRoutes",
-    "domain"
+    "domain",
+    "requiredHSTSPolicies"
 })
 @ToString
 @EqualsAndHashCode
@@ -67,6 +68,9 @@ public class IngressSpec implements KubernetesResource
     private List<ComponentRouteSpec> componentRoutes = new ArrayList<ComponentRouteSpec>();
     @JsonProperty("domain")
     private String domain;
+    @JsonProperty("requiredHSTSPolicies")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<RequiredHSTSPolicy> requiredHSTSPolicies = new ArrayList<RequiredHSTSPolicy>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -82,12 +86,14 @@ public class IngressSpec implements KubernetesResource
      * @param componentRoutes
      * @param domain
      * @param appsDomain
+     * @param requiredHSTSPolicies
      */
-    public IngressSpec(String appsDomain, List<ComponentRouteSpec> componentRoutes, String domain) {
+    public IngressSpec(String appsDomain, List<ComponentRouteSpec> componentRoutes, String domain, List<RequiredHSTSPolicy> requiredHSTSPolicies) {
         super();
         this.appsDomain = appsDomain;
         this.componentRoutes = componentRoutes;
         this.domain = domain;
+        this.requiredHSTSPolicies = requiredHSTSPolicies;
     }
 
     @JsonProperty("appsDomain")
@@ -118,6 +124,16 @@ public class IngressSpec implements KubernetesResource
     @JsonProperty("domain")
     public void setDomain(String domain) {
         this.domain = domain;
+    }
+
+    @JsonProperty("requiredHSTSPolicies")
+    public List<RequiredHSTSPolicy> getRequiredHSTSPolicies() {
+        return requiredHSTSPolicies;
+    }
+
+    @JsonProperty("requiredHSTSPolicies")
+    public void setRequiredHSTSPolicies(List<RequiredHSTSPolicy> requiredHSTSPolicies) {
+        this.requiredHSTSPolicies = requiredHSTSPolicies;
     }
 
     @JsonAnyGetter

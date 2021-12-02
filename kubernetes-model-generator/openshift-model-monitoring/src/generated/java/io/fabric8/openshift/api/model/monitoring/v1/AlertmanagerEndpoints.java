@@ -32,6 +32,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "authorization",
     "bearerTokenFile",
     "name",
     "namespace",
@@ -64,6 +65,8 @@ public class AlertmanagerEndpoints implements KubernetesResource
 
     @JsonProperty("apiVersion")
     private String apiVersion;
+    @JsonProperty("authorization")
+    private SafeAuthorization authorization;
     @JsonProperty("bearerTokenFile")
     private String bearerTokenFile;
     @JsonProperty("name")
@@ -92,6 +95,7 @@ public class AlertmanagerEndpoints implements KubernetesResource
 
     /**
      * 
+     * @param authorization
      * @param apiVersion
      * @param scheme
      * @param port
@@ -102,9 +106,10 @@ public class AlertmanagerEndpoints implements KubernetesResource
      * @param timeout
      * @param tlsConfig
      */
-    public AlertmanagerEndpoints(String apiVersion, String bearerTokenFile, String name, String namespace, String pathPrefix, io.fabric8.kubernetes.api.model.IntOrString port, String scheme, String timeout, TLSConfig tlsConfig) {
+    public AlertmanagerEndpoints(String apiVersion, SafeAuthorization authorization, String bearerTokenFile, String name, String namespace, String pathPrefix, io.fabric8.kubernetes.api.model.IntOrString port, String scheme, String timeout, TLSConfig tlsConfig) {
         super();
         this.apiVersion = apiVersion;
+        this.authorization = authorization;
         this.bearerTokenFile = bearerTokenFile;
         this.name = name;
         this.namespace = namespace;
@@ -123,6 +128,16 @@ public class AlertmanagerEndpoints implements KubernetesResource
     @JsonProperty("apiVersion")
     public void setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
+    }
+
+    @JsonProperty("authorization")
+    public SafeAuthorization getAuthorization() {
+        return authorization;
+    }
+
+    @JsonProperty("authorization")
+    public void setAuthorization(SafeAuthorization authorization) {
+        this.authorization = authorization;
     }
 
     @JsonProperty("bearerTokenFile")

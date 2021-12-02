@@ -35,15 +35,19 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "authorization",
     "basicAuth",
     "bearerToken",
     "bearerTokenFile",
     "headers",
     "metadataConfig",
     "name",
+    "oauth2",
     "proxyUrl",
     "queueConfig",
     "remoteTimeout",
+    "sendExemplars",
+    "sigv4",
     "tlsConfig",
     "url",
     "writeRelabelConfigs"
@@ -69,6 +73,8 @@ import lombok.experimental.Accessors;
 public class RemoteWriteSpec implements KubernetesResource
 {
 
+    @JsonProperty("authorization")
+    private Authorization authorization;
     @JsonProperty("basicAuth")
     private BasicAuth basicAuth;
     @JsonProperty("bearerToken")
@@ -81,12 +87,18 @@ public class RemoteWriteSpec implements KubernetesResource
     private MetadataConfig metadataConfig;
     @JsonProperty("name")
     private java.lang.String name;
+    @JsonProperty("oauth2")
+    private OAuth2 oauth2;
     @JsonProperty("proxyUrl")
     private java.lang.String proxyUrl;
     @JsonProperty("queueConfig")
     private QueueConfig queueConfig;
     @JsonProperty("remoteTimeout")
     private java.lang.String remoteTimeout;
+    @JsonProperty("sendExemplars")
+    private Boolean sendExemplars;
+    @JsonProperty("sigv4")
+    private Sigv4 sigv4;
     @JsonProperty("tlsConfig")
     private TLSConfig tlsConfig;
     @JsonProperty("url")
@@ -107,32 +119,50 @@ public class RemoteWriteSpec implements KubernetesResource
     /**
      * 
      * @param headers
+     * @param basicAuth
+     * @param proxyUrl
+     * @param sigv4
+     * @param oauth2
+     * @param url
+     * @param tlsConfig
+     * @param authorization
      * @param bearerToken
      * @param remoteTimeout
      * @param queueConfig
      * @param writeRelabelConfigs
-     * @param basicAuth
-     * @param proxyUrl
      * @param name
+     * @param sendExemplars
      * @param bearerTokenFile
-     * @param url
      * @param metadataConfig
-     * @param tlsConfig
      */
-    public RemoteWriteSpec(BasicAuth basicAuth, java.lang.String bearerToken, java.lang.String bearerTokenFile, Map<String, String> headers, MetadataConfig metadataConfig, java.lang.String name, java.lang.String proxyUrl, QueueConfig queueConfig, java.lang.String remoteTimeout, TLSConfig tlsConfig, java.lang.String url, List<RelabelConfig> writeRelabelConfigs) {
+    public RemoteWriteSpec(Authorization authorization, BasicAuth basicAuth, java.lang.String bearerToken, java.lang.String bearerTokenFile, Map<String, String> headers, MetadataConfig metadataConfig, java.lang.String name, OAuth2 oauth2, java.lang.String proxyUrl, QueueConfig queueConfig, java.lang.String remoteTimeout, Boolean sendExemplars, Sigv4 sigv4, TLSConfig tlsConfig, java.lang.String url, List<RelabelConfig> writeRelabelConfigs) {
         super();
+        this.authorization = authorization;
         this.basicAuth = basicAuth;
         this.bearerToken = bearerToken;
         this.bearerTokenFile = bearerTokenFile;
         this.headers = headers;
         this.metadataConfig = metadataConfig;
         this.name = name;
+        this.oauth2 = oauth2;
         this.proxyUrl = proxyUrl;
         this.queueConfig = queueConfig;
         this.remoteTimeout = remoteTimeout;
+        this.sendExemplars = sendExemplars;
+        this.sigv4 = sigv4;
         this.tlsConfig = tlsConfig;
         this.url = url;
         this.writeRelabelConfigs = writeRelabelConfigs;
+    }
+
+    @JsonProperty("authorization")
+    public Authorization getAuthorization() {
+        return authorization;
+    }
+
+    @JsonProperty("authorization")
+    public void setAuthorization(Authorization authorization) {
+        this.authorization = authorization;
     }
 
     @JsonProperty("basicAuth")
@@ -195,6 +225,16 @@ public class RemoteWriteSpec implements KubernetesResource
         this.name = name;
     }
 
+    @JsonProperty("oauth2")
+    public OAuth2 getOauth2() {
+        return oauth2;
+    }
+
+    @JsonProperty("oauth2")
+    public void setOauth2(OAuth2 oauth2) {
+        this.oauth2 = oauth2;
+    }
+
     @JsonProperty("proxyUrl")
     public java.lang.String getProxyUrl() {
         return proxyUrl;
@@ -223,6 +263,26 @@ public class RemoteWriteSpec implements KubernetesResource
     @JsonProperty("remoteTimeout")
     public void setRemoteTimeout(java.lang.String remoteTimeout) {
         this.remoteTimeout = remoteTimeout;
+    }
+
+    @JsonProperty("sendExemplars")
+    public Boolean getSendExemplars() {
+        return sendExemplars;
+    }
+
+    @JsonProperty("sendExemplars")
+    public void setSendExemplars(Boolean sendExemplars) {
+        this.sendExemplars = sendExemplars;
+    }
+
+    @JsonProperty("sigv4")
+    public Sigv4 getSigv4() {
+        return sigv4;
+    }
+
+    @JsonProperty("sigv4")
+    public void setSigv4(Sigv4 sigv4) {
+        this.sigv4 = sigv4;
     }
 
     @JsonProperty("tlsConfig")

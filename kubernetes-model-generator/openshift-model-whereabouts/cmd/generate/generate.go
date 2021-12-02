@@ -25,7 +25,7 @@ import (
   "reflect"
   "strings"
   "time"
-  whereabouts "github.com/dougbtv/whereabouts/pkg/api/v1alpha1"
+  whereabouts "github.com/k8snetworkplumbingwg/whereabouts/pkg/api/v1alpha1"
 
   "os"
 
@@ -61,7 +61,7 @@ func main() {
     {"k8s.io/kubernetes/pkg/api/unversioned", "", "io.fabric8.kubernetes.api.model", "api_", false},
     {"k8s.io/apimachinery/pkg/apis/meta/v1", "", "io.fabric8.kubernetes.api.model", "kubernetes_apimachinery_", false},
     {"github.com/openshift/api/config/v1", "", "io.fabric8.openshift.api.model", "os_config_v1_", false},
-    {"github.com/dougbtv/whereabouts/pkg/api/v1alpha1", "whereabouts.cni.cncf.io", "io.fabric8.openshift.api.model.whereabouts.v1alpha1", "os_whereabouts_v1alpha1_", true},
+    {"github.com/k8snetworkplumbingwg/whereabouts/pkg/api/v1alpha1", "whereabouts.cni.cncf.io", "io.fabric8.openshift.api.model.whereabouts.v1alpha1", "os_whereabouts_v1alpha1_", true},
   }
 
   typeMap := map[reflect.Type]reflect.Type{

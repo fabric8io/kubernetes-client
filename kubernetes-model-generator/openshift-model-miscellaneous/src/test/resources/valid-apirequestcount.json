@@ -1,0 +1,3139 @@
+{
+  "apiVersion": "apiserver.openshift.io/v1",
+  "kind": "APIRequestCount",
+  "metadata": {
+    "creationTimestamp": "2021-11-07T04:45:41Z",
+    "generation": 1,
+    "managedFields": [
+      {
+        "apiVersion": "apiserver.openshift.io/v1",
+        "fieldsType": "FieldsV1",
+        "fieldsV1": {
+          "f:spec": {
+            ".": {},
+            "f:numberOfUsersToReport": {}
+          }
+        },
+        "manager": "kube-apiserver",
+        "operation": "Update",
+        "time": "2021-11-07T04:45:41Z"
+      },
+      {
+        "apiVersion": "apiserver.openshift.io/v1",
+        "fieldsType": "FieldsV1",
+        "fieldsV1": {
+          "f:status": {
+            ".": {},
+            "f:currentHour": {
+              ".": {},
+              "f:byNode": {},
+              "f:requestCount": {}
+            },
+            "f:last24h": {},
+            "f:requestCount": {}
+          }
+        },
+        "manager": "kube-apiserver",
+        "operation": "Update",
+        "subresource": "status",
+        "time": "2021-11-07T04:45:41Z"
+      }
+    ],
+    "name": "secrets.v1",
+    "resourceVersion": "93171",
+    "uid": "5e8c7e00-41c0-4699-a4aa-ce84c79eed90"
+  },
+  "spec": {
+    "numberOfUsersToReport": 10
+  },
+  "status": {
+    "currentHour": {
+      "byNode": [
+        {
+          "nodeName": "192.168.126.10",
+          "requestCount": 0
+        },
+        {
+          "byUser": [
+            {
+              "byVerb": [
+                {
+                  "requestCount": 165,
+                  "verb": "get"
+                }
+              ],
+              "requestCount": 165,
+              "userAgent": "kube-controller-manager/v1.22.0",
+              "username": "system:serviceaccount:kube-system:generic-garbage-collector"
+            },
+            {
+              "byVerb": [
+                {
+                  "requestCount": 72,
+                  "verb": "list"
+                },
+                {
+                  "requestCount": 72,
+                  "verb": "watch"
+                }
+              ],
+              "requestCount": 144,
+              "userAgent": "kubelet/v1.22.0",
+              "username": "system:node:crc-ktfxm-master-0"
+            },
+            {
+              "byVerb": [
+                {
+                  "requestCount": 51,
+                  "verb": "deletecollection"
+                },
+                {
+                  "requestCount": 51,
+                  "verb": "list"
+                }
+              ],
+              "requestCount": 102,
+              "userAgent": "kube-controller-manager/v1.22.0",
+              "username": "system:serviceaccount:kube-system:namespace-controller"
+            },
+            {
+              "byVerb": [
+                {
+                  "requestCount": 42,
+                  "verb": "delete"
+                },
+                {
+                  "requestCount": 35,
+                  "verb": "get"
+                },
+                {
+                  "requestCount": 8,
+                  "verb": "list"
+                },
+                {
+                  "requestCount": 8,
+                  "verb": "watch"
+                }
+              ],
+              "requestCount": 93,
+              "userAgent": "authentication-operator/v0.0.0",
+              "username": "system:serviceaccount:openshift-authentication-operator:authentication-operator"
+            },
+            {
+              "byVerb": [
+                {
+                  "requestCount": 51,
+                  "verb": "delete"
+                },
+                {
+                  "requestCount": 18,
+                  "verb": "get"
+                },
+                {
+                  "requestCount": 7,
+                  "verb": "list"
+                },
+                {
+                  "requestCount": 7,
+                  "verb": "watch"
+                }
+              ],
+              "requestCount": 83,
+              "userAgent": "cluster-kube-apiserver-operator/v0.0.0",
+              "username": "system:serviceaccount:openshift-kube-apiserver-operator:kube-apiserver-operator"
+            },
+            {
+              "byVerb": [
+                {
+                  "requestCount": 68,
+                  "verb": "get"
+                },
+                {
+                  "requestCount": 5,
+                  "verb": "list"
+                },
+                {
+                  "requestCount": 5,
+                  "verb": "watch"
+                }
+              ],
+              "requestCount": 78,
+              "userAgent": "cluster-kube-controller-manager-operator/v0.0.0",
+              "username": "system:serviceaccount:openshift-kube-controller-manager-operator:kube-controller-manager-operator"
+            },
+            {
+              "byVerb": [
+                {
+                  "requestCount": 39,
+                  "verb": "delete"
+                },
+                {
+                  "requestCount": 1,
+                  "verb": "get"
+                },
+                {
+                  "requestCount": 8,
+                  "verb": "list"
+                },
+                {
+                  "requestCount": 8,
+                  "verb": "watch"
+                }
+              ],
+              "requestCount": 56,
+              "userAgent": "cluster-openshift-apiserver-operator/v0.0.0",
+              "username": "system:serviceaccount:openshift-apiserver-operator:openshift-apiserver-operator"
+            },
+            {
+              "byVerb": [
+                {
+                  "requestCount": 30,
+                  "verb": "get"
+                },
+                {
+                  "requestCount": 12,
+                  "verb": "list"
+                },
+                {
+                  "requestCount": 12,
+                  "verb": "watch"
+                }
+              ],
+              "requestCount": 54,
+              "userAgent": "ingress-operator/v0.0.0",
+              "username": "system:serviceaccount:openshift-ingress-operator:ingress-operator"
+            },
+            {
+              "byVerb": [
+                {
+                  "requestCount": 48,
+                  "verb": "get"
+                },
+                {
+                  "requestCount": 1,
+                  "verb": "list"
+                },
+                {
+                  "requestCount": 1,
+                  "verb": "watch"
+                }
+              ],
+              "requestCount": 50,
+              "userAgent": "cluster-image-registry-operator/v0.0.0",
+              "username": "system:serviceaccount:openshift-image-registry:cluster-image-registry-operator"
+            },
+            {
+              "byVerb": [
+                {
+                  "requestCount": 30,
+                  "verb": "get"
+                },
+                {
+                  "requestCount": 5,
+                  "verb": "list"
+                },
+                {
+                  "requestCount": 5,
+                  "verb": "watch"
+                }
+              ],
+              "requestCount": 40,
+              "userAgent": "cluster-kube-scheduler-operator/v0.0.0",
+              "username": "system:serviceaccount:openshift-kube-scheduler-operator:openshift-kube-scheduler-operator"
+            },
+            {
+              "byVerb": [
+                {
+                  "requestCount": 18,
+                  "verb": "get"
+                },
+                {
+                  "requestCount": 5,
+                  "verb": "list"
+                },
+                {
+                  "requestCount": 5,
+                  "verb": "watch"
+                }
+              ],
+              "requestCount": 28,
+              "userAgent": "cluster-kube-controller-manager-operator/v0.0.0",
+              "username": "system:serviceaccount:openshift-kube-controller-manager:localhost-recovery-client"
+            },
+            {
+              "byVerb": [
+                {
+                  "requestCount": 6,
+                  "verb": "get"
+                },
+                {
+                  "requestCount": 5,
+                  "verb": "list"
+                },
+                {
+                  "requestCount": 5,
+                  "verb": "watch"
+                }
+              ],
+              "requestCount": 16,
+              "userAgent": "cluster-openshift-controller-manager-operator/v0.0.0",
+              "username": "system:serviceaccount:openshift-controller-manager-operator:openshift-controller-manager-operator"
+            },
+            {
+              "byVerb": [
+                {
+                  "requestCount": 4,
+                  "verb": "get"
+                },
+                {
+                  "requestCount": 5,
+                  "verb": "list"
+                },
+                {
+                  "requestCount": 5,
+                  "verb": "watch"
+                }
+              ],
+              "requestCount": 14,
+              "userAgent": "service-ca-operator/v0.0.0",
+              "username": "system:serviceaccount:openshift-service-ca-operator:service-ca-operator"
+            },
+            {
+              "byVerb": [
+                {
+                  "requestCount": 5,
+                  "verb": "list"
+                },
+                {
+                  "requestCount": 5,
+                  "verb": "watch"
+                }
+              ],
+              "requestCount": 10,
+              "userAgent": "cluster-etcd-operator/v0.0.0",
+              "username": "system:serviceaccount:openshift-etcd-operator:etcd-operator"
+            },
+            {
+              "byVerb": [
+                {
+                  "requestCount": 6,
+                  "verb": "get"
+                },
+                {
+                  "requestCount": 3,
+                  "verb": "update"
+                }
+              ],
+              "requestCount": 9,
+              "userAgent": "machine-config-operator/v0.0.0",
+              "username": "system:serviceaccount:openshift-machine-config-operator:default"
+            },
+            {
+              "byVerb": [
+                {
+                  "requestCount": 4,
+                  "verb": "list"
+                },
+                {
+                  "requestCount": 4,
+                  "verb": "watch"
+                }
+              ],
+              "requestCount": 8,
+              "userAgent": "cluster-kube-apiserver-operator/v0.0.0",
+              "username": "system:serviceaccount:openshift-kube-apiserver:localhost-recovery-client"
+            },
+            {
+              "byVerb": [
+                {
+                  "requestCount": 2,
+                  "verb": "get"
+                },
+                {
+                  "requestCount": 2,
+                  "verb": "list"
+                },
+                {
+                  "requestCount": 2,
+                  "verb": "watch"
+                }
+              ],
+              "requestCount": 6,
+              "userAgent": "console/v0.0.0",
+              "username": "system:serviceaccount:openshift-console-operator:console-operator"
+            },
+            {
+              "byVerb": [
+                {
+                  "requestCount": 3,
+                  "verb": "list"
+                },
+                {
+                  "requestCount": 3,
+                  "verb": "watch"
+                }
+              ],
+              "requestCount": 6,
+              "userAgent": "cluster-kube-scheduler-operator/v0.0.0",
+              "username": "system:serviceaccount:openshift-kube-scheduler:localhost-recovery-client"
+            },
+            {
+              "byVerb": [
+                {
+                  "requestCount": 2,
+                  "verb": "get"
+                },
+                {
+                  "requestCount": 2,
+                  "verb": "list"
+                },
+                {
+                  "requestCount": 2,
+                  "verb": "watch"
+                }
+              ],
+              "requestCount": 6,
+              "userAgent": "olm/v0.0.0",
+              "username": "system:serviceaccount:openshift-operator-lifecycle-manager:olm-operator-serviceaccount"
+            },
+            {
+              "byVerb": [
+                {
+                  "requestCount": 3,
+                  "verb": "get"
+                },
+                {
+                  "requestCount": 3,
+                  "verb": "update"
+                }
+              ],
+              "requestCount": 6,
+              "userAgent": "collect-profiles/v0.0.0",
+              "username": "system:serviceaccount:openshift-operator-lifecycle-manager:collect-profiles"
+            },
+            {
+              "byVerb": [
+                {
+                  "requestCount": 3,
+                  "verb": "get"
+                },
+                {
+                  "requestCount": 1,
+                  "verb": "list"
+                },
+                {
+                  "requestCount": 1,
+                  "verb": "watch"
+                }
+              ],
+              "requestCount": 5,
+              "userAgent": "kube-apiserver/v1.22.0",
+              "username": "system:apiserver"
+            },
+            {
+              "byVerb": [
+                {
+                  "requestCount": 2,
+                  "verb": "get"
+                },
+                {
+                  "requestCount": 2,
+                  "verb": "list"
+                }
+              ],
+              "requestCount": 4,
+              "userAgent": "oc/4.9.0",
+              "username": "system:admin"
+            },
+            {
+              "byVerb": [
+                {
+                  "requestCount": 1,
+                  "verb": "get"
+                },
+                {
+                  "requestCount": 1,
+                  "verb": "list"
+                },
+                {
+                  "requestCount": 1,
+                  "verb": "watch"
+                }
+              ],
+              "requestCount": 3,
+              "userAgent": "machine-config-controller/v0.0.0",
+              "username": "system:serviceaccount:openshift-machine-config-operator:machine-config-controller"
+            },
+            {
+              "byVerb": [
+                {
+                  "requestCount": 1,
+                  "verb": "list"
+                },
+                {
+                  "requestCount": 1,
+                  "verb": "watch"
+                }
+              ],
+              "requestCount": 2,
+              "userAgent": "cluster-policy-controller/v0.0.0",
+              "username": "system:kube-controller-manager"
+            },
+            {
+              "byVerb": [
+                {
+                  "requestCount": 1,
+                  "verb": "list"
+                },
+                {
+                  "requestCount": 1,
+                  "verb": "watch"
+                }
+              ],
+              "requestCount": 2,
+              "userAgent": "cluster-network-check-endpoints/v0.0.0",
+              "username": "system:serviceaccount:openshift-network-diagnostics:network-diagnostics"
+            }
+          ],
+          "nodeName": "192.168.126.11",
+          "requestCount": 1005
+        }
+      ],
+      "requestCount": 1005
+    },
+    "last24h": [
+      {
+        "byNode": [
+          {
+            "nodeName": "192.168.126.10",
+            "requestCount": 0
+          },
+          {
+            "nodeName": "192.168.126.11",
+            "requestCount": 0
+          }
+        ],
+        "requestCount": 0
+      },
+      {
+        "byNode": [
+          {
+            "nodeName": "192.168.126.10",
+            "requestCount": 0
+          },
+          {
+            "nodeName": "192.168.126.11",
+            "requestCount": 0
+          }
+        ],
+        "requestCount": 0
+      },
+      {
+        "byNode": [
+          {
+            "nodeName": "192.168.126.10",
+            "requestCount": 0
+          },
+          {
+            "nodeName": "192.168.126.11",
+            "requestCount": 0
+          }
+        ],
+        "requestCount": 0
+      },
+      {
+        "byNode": [
+          {
+            "nodeName": "192.168.126.10",
+            "requestCount": 0
+          },
+          {
+            "nodeName": "192.168.126.11",
+            "requestCount": 0
+          }
+        ],
+        "requestCount": 0
+      },
+      {
+        "byNode": [
+          {
+            "byUser": [
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 4,
+                    "verb": "create"
+                  },
+                  {
+                    "requestCount": 281,
+                    "verb": "delete"
+                  },
+                  {
+                    "requestCount": 151,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 16,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 16,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 468,
+                "userAgent": "authentication-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-authentication-operator:authentication-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 35,
+                    "verb": "create"
+                  },
+                  {
+                    "requestCount": 207,
+                    "verb": "delete"
+                  },
+                  {
+                    "requestCount": 110,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 14,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 14,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 380,
+                "userAgent": "cluster-kube-apiserver-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-kube-apiserver-operator:kube-apiserver-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 2,
+                    "verb": "create"
+                  },
+                  {
+                    "requestCount": 162,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 1,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 162,
+                    "verb": "update"
+                  },
+                  {
+                    "requestCount": 1,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 328,
+                "userAgent": "kube-controller-manager/v1.22.0",
+                "username": "system:kube-controller-manager"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 1,
+                    "verb": "create"
+                  },
+                  {
+                    "requestCount": 254,
+                    "verb": "delete"
+                  },
+                  {
+                    "requestCount": 15,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 16,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 16,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 302,
+                "userAgent": "cluster-openshift-apiserver-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-apiserver-operator:openshift-apiserver-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 158,
+                    "verb": "create"
+                  },
+                  {
+                    "requestCount": 4,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 1,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 4,
+                    "verb": "update"
+                  },
+                  {
+                    "requestCount": 2,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 169,
+                "userAgent": "kube-controller-manager/v1.22.0",
+                "username": "system:admin"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 21,
+                    "verb": "create"
+                  },
+                  {
+                    "requestCount": 7,
+                    "verb": "delete"
+                  },
+                  {
+                    "requestCount": 93,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 10,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 10,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 141,
+                "userAgent": "cluster-kube-controller-manager-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-kube-controller-manager-operator:kube-controller-manager-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 12,
+                    "verb": "create"
+                  },
+                  {
+                    "requestCount": 26,
+                    "verb": "delete"
+                  },
+                  {
+                    "requestCount": 80,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 10,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 12,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 140,
+                "userAgent": "cluster-kube-scheduler-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-kube-scheduler-operator:openshift-kube-scheduler-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 41,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 60,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 101,
+                "userAgent": "kubelet/v1.22.0",
+                "username": "system:node:crc-ktfxm-master-0"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 45,
+                    "verb": "create"
+                  },
+                  {
+                    "requestCount": 45,
+                    "verb": "get"
+                  }
+                ],
+                "requestCount": 90,
+                "userAgent": "cluster-bootstrap/v0.0.0",
+                "username": "system:admin"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 42,
+                    "verb": "create"
+                  },
+                  {
+                    "requestCount": 1,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 2,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 45,
+                "userAgent": "service-ca-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-service-ca:service-ca"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 1,
+                    "verb": "create"
+                  },
+                  {
+                    "requestCount": 24,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 10,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 10,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 45,
+                "userAgent": "service-ca-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-service-ca-operator:service-ca-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 14,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 10,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 10,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 34,
+                "userAgent": "cluster-openshift-controller-manager-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-controller-manager-operator:openshift-controller-manager-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 1,
+                    "verb": "create"
+                  },
+                  {
+                    "requestCount": 4,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 12,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 12,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 29,
+                "userAgent": "ingress-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-ingress-operator:ingress-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 7,
+                    "verb": "create"
+                  },
+                  {
+                    "requestCount": 1,
+                    "verb": "delete"
+                  },
+                  {
+                    "requestCount": 10,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 10,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 28,
+                "userAgent": "cluster-etcd-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-etcd-operator:etcd-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 26,
+                    "verb": "get"
+                  }
+                ],
+                "requestCount": 26,
+                "userAgent": "cluster-kube-apiserver-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-kube-apiserver:installer-sa"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 11,
+                    "verb": "get"
+                  }
+                ],
+                "requestCount": 11,
+                "userAgent": "cluster-kube-controller-manager-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-kube-controller-manager:installer-sa"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 2,
+                    "verb": "create"
+                  },
+                  {
+                    "requestCount": 8,
+                    "verb": "get"
+                  }
+                ],
+                "requestCount": 10,
+                "userAgent": "cluster-version-operator/v0.0.0",
+                "username": "system:admin"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 8,
+                    "verb": "get"
+                  }
+                ],
+                "requestCount": 8,
+                "userAgent": "cluster-kube-scheduler-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-kube-scheduler:installer-sa"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 2,
+                    "verb": "create"
+                  },
+                  {
+                    "requestCount": 4,
+                    "verb": "get"
+                  }
+                ],
+                "requestCount": 6,
+                "userAgent": "machine-config-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-machine-config-operator:default"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 1,
+                    "verb": "create"
+                  },
+                  {
+                    "requestCount": 1,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 2,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 2,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 6,
+                "userAgent": "olm/v0.0.0",
+                "username": "system:serviceaccount:openshift-operator-lifecycle-manager:olm-operator-serviceaccount"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 1,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 3,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 4,
+                "userAgent": "kube-apiserver/v1.22.0",
+                "username": "system:apiserver"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 2,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 1,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 1,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 4,
+                "userAgent": "machine-config-controller/v0.0.0",
+                "username": "system:serviceaccount:openshift-machine-config-operator:machine-config-controller"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 1,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 2,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 3,
+                "userAgent": "cloud-credential-operator/v0.0.0",
+                "username": "system:admin"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 1,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 2,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 3,
+                "userAgent": "cluster-policy-controller/v0.0.0",
+                "username": "system:admin"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 2,
+                    "verb": "get"
+                  }
+                ],
+                "requestCount": 2,
+                "userAgent": "cluster-etcd-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-etcd:installer-sa"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 2,
+                    "verb": "get"
+                  }
+                ],
+                "requestCount": 2,
+                "userAgent": "kube-controller-manager/v1.22.0",
+                "username": "system:serviceaccount:kube-system:generic-garbage-collector"
+              }
+            ],
+            "nodeName": "192.168.126.10",
+            "requestCount": 2385
+          },
+          {
+            "nodeName": "192.168.126.11",
+            "requestCount": 0
+          }
+        ],
+        "requestCount": 2385
+      },
+      {
+        "byNode": [
+          {
+            "byUser": [
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 623,
+                    "verb": "create"
+                  },
+                  {
+                    "requestCount": 423,
+                    "verb": "update"
+                  }
+                ],
+                "requestCount": 1046,
+                "userAgent": "openshift-controller-manager/v0.0.0",
+                "username": "system:serviceaccount:openshift-infra:serviceaccount-pull-secrets-controller"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 1,
+                    "verb": "create"
+                  },
+                  {
+                    "requestCount": 540,
+                    "verb": "delete"
+                  },
+                  {
+                    "requestCount": 436,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 24,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 40,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 1041,
+                "userAgent": "authentication-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-authentication-operator:authentication-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 4,
+                    "verb": "create"
+                  },
+                  {
+                    "requestCount": 511,
+                    "verb": "delete"
+                  },
+                  {
+                    "requestCount": 205,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 21,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 28,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 769,
+                "userAgent": "cluster-kube-apiserver-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-kube-apiserver-operator:kube-apiserver-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 132,
+                    "verb": "create"
+                  },
+                  {
+                    "requestCount": 307,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 5,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 307,
+                    "verb": "update"
+                  },
+                  {
+                    "requestCount": 5,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 756,
+                "userAgent": "kube-controller-manager/v1.22.0",
+                "username": "system:kube-controller-manager"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 186,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 376,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 562,
+                "userAgent": "kubelet/v1.22.0",
+                "username": "system:node:crc-ktfxm-master-0"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 388,
+                    "verb": "delete"
+                  },
+                  {
+                    "requestCount": 36,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 24,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 32,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 480,
+                "userAgent": "cluster-openshift-apiserver-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-apiserver-operator:openshift-apiserver-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 2,
+                    "verb": "delete"
+                  },
+                  {
+                    "requestCount": 427,
+                    "verb": "get"
+                  }
+                ],
+                "requestCount": 429,
+                "userAgent": "kube-controller-manager/v1.22.0",
+                "username": "system:serviceaccount:kube-system:generic-garbage-collector"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 3,
+                    "verb": "create"
+                  },
+                  {
+                    "requestCount": 284,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 15,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 1,
+                    "verb": "update"
+                  },
+                  {
+                    "requestCount": 20,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 323,
+                "userAgent": "cluster-kube-controller-manager-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-kube-controller-manager-operator:kube-controller-manager-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 225,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 15,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 20,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 260,
+                "userAgent": "cluster-kube-scheduler-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-kube-scheduler-operator:openshift-kube-scheduler-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 1,
+                    "verb": "create"
+                  },
+                  {
+                    "requestCount": 1,
+                    "verb": "delete"
+                  },
+                  {
+                    "requestCount": 120,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 25,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 2,
+                    "verb": "update"
+                  },
+                  {
+                    "requestCount": 30,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 179,
+                "userAgent": "cluster-kube-controller-manager-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-kube-controller-manager:localhost-recovery-client"
+              }
+            ],
+            "nodeName": "192.168.126.11",
+            "requestCount": 5845
+          }
+        ],
+        "requestCount": 5845
+      },
+      {
+        "byNode": [
+          {
+            "byUser": [
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 114,
+                    "verb": "delete"
+                  },
+                  {
+                    "requestCount": 108,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 1,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 223,
+                "userAgent": "authentication-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-authentication-operator:authentication-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 131,
+                    "verb": "delete"
+                  },
+                  {
+                    "requestCount": 52,
+                    "verb": "get"
+                  }
+                ],
+                "requestCount": 183,
+                "userAgent": "cluster-kube-apiserver-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-kube-apiserver-operator:kube-apiserver-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 120,
+                    "verb": "get"
+                  }
+                ],
+                "requestCount": 120,
+                "userAgent": "cluster-kube-controller-manager-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-kube-controller-manager-operator:kube-controller-manager-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 95,
+                    "verb": "delete"
+                  },
+                  {
+                    "requestCount": 4,
+                    "verb": "get"
+                  }
+                ],
+                "requestCount": 99,
+                "userAgent": "cluster-openshift-apiserver-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-apiserver-operator:openshift-apiserver-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 64,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 1,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 65,
+                "userAgent": "cluster-kube-scheduler-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-kube-scheduler-operator:openshift-kube-scheduler-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 58,
+                    "verb": "get"
+                  }
+                ],
+                "requestCount": 58,
+                "userAgent": "cluster-image-registry-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-image-registry:cluster-image-registry-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 34,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 3,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 37,
+                "userAgent": "cluster-kube-controller-manager-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-kube-controller-manager:localhost-recovery-client"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 1,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 28,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 29,
+                "userAgent": "kubelet/v1.22.0",
+                "username": "system:node:crc-ktfxm-master-0"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 20,
+                    "verb": "get"
+                  }
+                ],
+                "requestCount": 20,
+                "userAgent": "service-ca-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-service-ca-operator:service-ca-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 8,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 3,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 11,
+                "userAgent": "ingress-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-ingress-operator:ingress-operator"
+              }
+            ],
+            "nodeName": "192.168.126.11",
+            "requestCount": 845
+          }
+        ],
+        "requestCount": 845
+      },
+      {
+        "byNode": [
+          {
+            "nodeName": "192.168.126.11",
+            "requestCount": 0
+          }
+        ],
+        "requestCount": 0
+      },
+      {
+        "byNode": [
+          {
+            "nodeName": "192.168.126.10",
+            "requestCount": 0
+          },
+          {
+            "nodeName": "192.168.126.11",
+            "requestCount": 0
+          }
+        ],
+        "requestCount": 0
+      },
+      {
+        "byNode": [
+          {
+            "nodeName": "192.168.126.10",
+            "requestCount": 0
+          },
+          {
+            "byUser": [
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 165,
+                    "verb": "get"
+                  }
+                ],
+                "requestCount": 165,
+                "userAgent": "kube-controller-manager/v1.22.0",
+                "username": "system:serviceaccount:kube-system:generic-garbage-collector"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 72,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 72,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 144,
+                "userAgent": "kubelet/v1.22.0",
+                "username": "system:node:crc-ktfxm-master-0"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 51,
+                    "verb": "deletecollection"
+                  },
+                  {
+                    "requestCount": 51,
+                    "verb": "list"
+                  }
+                ],
+                "requestCount": 102,
+                "userAgent": "kube-controller-manager/v1.22.0",
+                "username": "system:serviceaccount:kube-system:namespace-controller"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 42,
+                    "verb": "delete"
+                  },
+                  {
+                    "requestCount": 35,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 8,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 8,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 93,
+                "userAgent": "authentication-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-authentication-operator:authentication-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 51,
+                    "verb": "delete"
+                  },
+                  {
+                    "requestCount": 18,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 7,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 7,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 83,
+                "userAgent": "cluster-kube-apiserver-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-kube-apiserver-operator:kube-apiserver-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 68,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 5,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 5,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 78,
+                "userAgent": "cluster-kube-controller-manager-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-kube-controller-manager-operator:kube-controller-manager-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 39,
+                    "verb": "delete"
+                  },
+                  {
+                    "requestCount": 1,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 8,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 8,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 56,
+                "userAgent": "cluster-openshift-apiserver-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-apiserver-operator:openshift-apiserver-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 30,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 12,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 12,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 54,
+                "userAgent": "ingress-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-ingress-operator:ingress-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 48,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 1,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 1,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 50,
+                "userAgent": "cluster-image-registry-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-image-registry:cluster-image-registry-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 30,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 5,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 5,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 40,
+                "userAgent": "cluster-kube-scheduler-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-kube-scheduler-operator:openshift-kube-scheduler-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 18,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 5,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 5,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 28,
+                "userAgent": "cluster-kube-controller-manager-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-kube-controller-manager:localhost-recovery-client"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 6,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 5,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 5,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 16,
+                "userAgent": "cluster-openshift-controller-manager-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-controller-manager-operator:openshift-controller-manager-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 4,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 5,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 5,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 14,
+                "userAgent": "service-ca-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-service-ca-operator:service-ca-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 5,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 5,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 10,
+                "userAgent": "cluster-etcd-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-etcd-operator:etcd-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 6,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 3,
+                    "verb": "update"
+                  }
+                ],
+                "requestCount": 9,
+                "userAgent": "machine-config-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-machine-config-operator:default"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 4,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 4,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 8,
+                "userAgent": "cluster-kube-apiserver-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-kube-apiserver:localhost-recovery-client"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 2,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 2,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 2,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 6,
+                "userAgent": "console/v0.0.0",
+                "username": "system:serviceaccount:openshift-console-operator:console-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 3,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 3,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 6,
+                "userAgent": "cluster-kube-scheduler-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-kube-scheduler:localhost-recovery-client"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 2,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 2,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 2,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 6,
+                "userAgent": "olm/v0.0.0",
+                "username": "system:serviceaccount:openshift-operator-lifecycle-manager:olm-operator-serviceaccount"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 3,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 3,
+                    "verb": "update"
+                  }
+                ],
+                "requestCount": 6,
+                "userAgent": "collect-profiles/v0.0.0",
+                "username": "system:serviceaccount:openshift-operator-lifecycle-manager:collect-profiles"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 3,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 1,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 1,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 5,
+                "userAgent": "kube-apiserver/v1.22.0",
+                "username": "system:apiserver"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 2,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 2,
+                    "verb": "list"
+                  }
+                ],
+                "requestCount": 4,
+                "userAgent": "oc/4.9.0",
+                "username": "system:admin"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 1,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 1,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 1,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 3,
+                "userAgent": "machine-config-controller/v0.0.0",
+                "username": "system:serviceaccount:openshift-machine-config-operator:machine-config-controller"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 1,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 1,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 2,
+                "userAgent": "cluster-policy-controller/v0.0.0",
+                "username": "system:kube-controller-manager"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 1,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 1,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 2,
+                "userAgent": "cluster-network-check-endpoints/v0.0.0",
+                "username": "system:serviceaccount:openshift-network-diagnostics:network-diagnostics"
+              }
+            ],
+            "nodeName": "192.168.126.11",
+            "requestCount": 1005
+          }
+        ],
+        "requestCount": 1005
+      },
+      {
+        "requestCount": 0
+      },
+      {
+        "byNode": [
+          {
+            "nodeName": "192.168.126.10",
+            "requestCount": 0
+          },
+          {
+            "nodeName": "192.168.126.11",
+            "requestCount": 0
+          }
+        ],
+        "requestCount": 0
+      },
+      {
+        "byNode": [
+          {
+            "nodeName": "192.168.126.10",
+            "requestCount": 0
+          },
+          {
+            "byUser": [
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 357,
+                    "verb": "delete"
+                  },
+                  {
+                    "requestCount": 308,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 8,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 1,
+                    "verb": "update"
+                  },
+                  {
+                    "requestCount": 21,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 695,
+                "userAgent": "authentication-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-authentication-operator:authentication-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 400,
+                    "verb": "delete"
+                  },
+                  {
+                    "requestCount": 158,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 7,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 17,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 582,
+                "userAgent": "cluster-kube-apiserver-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-kube-apiserver-operator:kube-apiserver-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 356,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 5,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 14,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 375,
+                "userAgent": "cluster-kube-controller-manager-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-kube-controller-manager-operator:kube-controller-manager-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 291,
+                    "verb": "delete"
+                  },
+                  {
+                    "requestCount": 9,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 8,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 21,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 329,
+                "userAgent": "cluster-openshift-apiserver-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-apiserver-operator:openshift-apiserver-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 79,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 196,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 275,
+                "userAgent": "kubelet/v1.22.0",
+                "username": "system:node:crc-ktfxm-master-0"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 188,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 5,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 16,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 209,
+                "userAgent": "cluster-kube-scheduler-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-kube-scheduler-operator:openshift-kube-scheduler-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 164,
+                    "verb": "get"
+                  }
+                ],
+                "requestCount": 164,
+                "userAgent": "kube-controller-manager/v1.22.0",
+                "username": "system:serviceaccount:kube-system:generic-garbage-collector"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 144,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 1,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 3,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 148,
+                "userAgent": "cluster-image-registry-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-image-registry:cluster-image-registry-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 106,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 5,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 15,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 126,
+                "userAgent": "cluster-kube-controller-manager-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-kube-controller-manager:localhost-recovery-client"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 37,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 5,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 15,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 57,
+                "userAgent": "service-ca-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-service-ca-operator:service-ca-operator"
+              }
+            ],
+            "nodeName": "192.168.126.11",
+            "requestCount": 2960
+          }
+        ],
+        "requestCount": 2960
+      },
+      {
+        "byNode": [
+          {
+            "byUser": [
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 1886,
+                    "verb": "delete"
+                  },
+                  {
+                    "requestCount": 1360,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 63,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 3309,
+                "userAgent": "authentication-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-authentication-operator:authentication-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 2101,
+                    "verb": "delete"
+                  },
+                  {
+                    "requestCount": 812,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 54,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 2967,
+                "userAgent": "cluster-kube-apiserver-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-kube-apiserver-operator:kube-apiserver-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 1876,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 41,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 1917,
+                "userAgent": "cluster-kube-controller-manager-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-kube-controller-manager-operator:kube-controller-manager-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 1590,
+                    "verb": "delete"
+                  },
+                  {
+                    "requestCount": 43,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 68,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 1701,
+                "userAgent": "cluster-openshift-apiserver-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-apiserver-operator:openshift-apiserver-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 998,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 37,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 1035,
+                "userAgent": "cluster-kube-scheduler-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-kube-scheduler-operator:openshift-kube-scheduler-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 866,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 7,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 873,
+                "userAgent": "cluster-image-registry-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-image-registry:cluster-image-registry-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 556,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 40,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 596,
+                "userAgent": "cluster-kube-controller-manager-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-kube-controller-manager:localhost-recovery-client"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 23,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 546,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 569,
+                "userAgent": "kubelet/v1.22.0",
+                "username": "system:node:crc-ktfxm-master-0"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 269,
+                    "verb": "create"
+                  },
+                  {
+                    "requestCount": 63,
+                    "verb": "delete"
+                  },
+                  {
+                    "requestCount": 137,
+                    "verb": "list"
+                  }
+                ],
+                "requestCount": 469,
+                "userAgent": "openshift-controller-manager/v0.0.0",
+                "username": "system:serviceaccount:openshift-infra:serviceaccount-pull-secrets-controller"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 162,
+                    "verb": "create"
+                  },
+                  {
+                    "requestCount": 68,
+                    "verb": "delete"
+                  },
+                  {
+                    "requestCount": 74,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 74,
+                    "verb": "update"
+                  },
+                  {
+                    "requestCount": 8,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 386,
+                "userAgent": "kube-controller-manager/v1.22.0",
+                "username": "system:kube-controller-manager"
+              }
+            ],
+            "nodeName": "192.168.126.11",
+            "requestCount": 13822
+          }
+        ],
+        "requestCount": 13822
+      },
+      {
+        "byNode": [
+          {
+            "byUser": [
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 1899,
+                    "verb": "delete"
+                  },
+                  {
+                    "requestCount": 1342,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 62,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 3303,
+                "userAgent": "authentication-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-authentication-operator:authentication-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 2116,
+                    "verb": "delete"
+                  },
+                  {
+                    "requestCount": 793,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 57,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 2966,
+                "userAgent": "cluster-kube-apiserver-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-kube-apiserver-operator:kube-apiserver-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 1892,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 40,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 1932,
+                "userAgent": "cluster-kube-controller-manager-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-kube-controller-manager-operator:kube-controller-manager-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 1592,
+                    "verb": "delete"
+                  },
+                  {
+                    "requestCount": 43,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 62,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 1697,
+                "userAgent": "cluster-openshift-apiserver-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-apiserver-operator:openshift-apiserver-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 992,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 41,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 1033,
+                "userAgent": "cluster-kube-scheduler-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-kube-scheduler-operator:openshift-kube-scheduler-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 786,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 8,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 794,
+                "userAgent": "cluster-image-registry-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-image-registry:cluster-image-registry-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 564,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 40,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 604,
+                "userAgent": "cluster-kube-controller-manager-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-kube-controller-manager:localhost-recovery-client"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 21,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 546,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 567,
+                "userAgent": "kubelet/v1.22.0",
+                "username": "system:node:crc-ktfxm-master-0"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 141,
+                    "verb": "deletecollection"
+                  },
+                  {
+                    "requestCount": 141,
+                    "verb": "list"
+                  }
+                ],
+                "requestCount": 282,
+                "userAgent": "kube-controller-manager/v1.22.0",
+                "username": "system:serviceaccount:kube-system:namespace-controller"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 187,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 42,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 229,
+                "userAgent": "service-ca-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-service-ca-operator:service-ca-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 168,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 42,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 210,
+                "userAgent": "cluster-openshift-controller-manager-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-controller-manager-operator:openshift-controller-manager-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 116,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 58,
+                    "verb": "update"
+                  }
+                ],
+                "requestCount": 174,
+                "userAgent": "machine-config-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-machine-config-operator:default"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 54,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 16,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 70,
+                "userAgent": "console/v0.0.0",
+                "username": "system:serviceaccount:openshift-console-operator:console-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 51,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 51,
+                "userAgent": "ingress-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-ingress-operator:ingress-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 16,
+                    "verb": "create"
+                  },
+                  {
+                    "requestCount": 3,
+                    "verb": "delete"
+                  },
+                  {
+                    "requestCount": 11,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 11,
+                    "verb": "update"
+                  },
+                  {
+                    "requestCount": 8,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 49,
+                "userAgent": "kube-controller-manager/v1.22.0",
+                "username": "system:kube-controller-manager"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 39,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 39,
+                "userAgent": "cluster-etcd-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-etcd-operator:etcd-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 32,
+                    "verb": "create"
+                  },
+                  {
+                    "requestCount": 1,
+                    "verb": "delete"
+                  },
+                  {
+                    "requestCount": 3,
+                    "verb": "list"
+                  }
+                ],
+                "requestCount": 36,
+                "userAgent": "openshift-controller-manager/v0.0.0",
+                "username": "system:serviceaccount:openshift-infra:serviceaccount-pull-secrets-controller"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 11,
+                    "verb": "create"
+                  },
+                  {
+                    "requestCount": 14,
+                    "verb": "delete"
+                  },
+                  {
+                    "requestCount": 7,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 1,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 1,
+                    "verb": "patch"
+                  },
+                  {
+                    "requestCount": 1,
+                    "verb": "update"
+                  }
+                ],
+                "requestCount": 35,
+                "userAgent": "okhttp/3.12.12",
+                "username": "kubeadmin"
+              }
+            ],
+            "nodeName": "192.168.126.11",
+            "requestCount": 14205
+          }
+        ],
+        "requestCount": 14205
+      },
+      {
+        "byNode": [
+          {
+            "byUser": [
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 273,
+                    "verb": "delete"
+                  },
+                  {
+                    "requestCount": 180,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 8,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 461,
+                "userAgent": "authentication-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-authentication-operator:authentication-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 304,
+                    "verb": "delete"
+                  },
+                  {
+                    "requestCount": 112,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 7,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 423,
+                "userAgent": "cluster-kube-apiserver-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-kube-apiserver-operator:kube-apiserver-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 276,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 7,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 283,
+                "userAgent": "cluster-kube-controller-manager-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-kube-controller-manager-operator:kube-controller-manager-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 225,
+                    "verb": "delete"
+                  },
+                  {
+                    "requestCount": 2,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 10,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 237,
+                "userAgent": "cluster-openshift-apiserver-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-apiserver-operator:openshift-apiserver-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 140,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 7,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 147,
+                "userAgent": "cluster-kube-scheduler-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-kube-scheduler-operator:openshift-kube-scheduler-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 114,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 1,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 115,
+                "userAgent": "cluster-image-registry-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-image-registry:cluster-image-registry-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 84,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 5,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 89,
+                "userAgent": "cluster-kube-controller-manager-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-kube-controller-manager:localhost-recovery-client"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 1,
+                    "verb": "list"
+                  },
+                  {
+                    "requestCount": 87,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 88,
+                "userAgent": "kubelet/v1.22.0",
+                "username": "system:node:crc-ktfxm-master-0"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 18,
+                    "verb": "deletecollection"
+                  },
+                  {
+                    "requestCount": 18,
+                    "verb": "list"
+                  }
+                ],
+                "requestCount": 36,
+                "userAgent": "kube-controller-manager/v1.22.0",
+                "username": "system:serviceaccount:kube-system:namespace-controller"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 22,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 7,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 29,
+                "userAgent": "cluster-openshift-controller-manager-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-controller-manager-operator:openshift-controller-manager-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 20,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 6,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 26,
+                "userAgent": "service-ca-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-service-ca-operator:service-ca-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 16,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 8,
+                    "verb": "update"
+                  }
+                ],
+                "requestCount": 24,
+                "userAgent": "machine-config-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-machine-config-operator:default"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 6,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 6,
+                "userAgent": "cluster-etcd-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-etcd-operator:etcd-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 6,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 6,
+                "userAgent": "ingress-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-ingress-operator:ingress-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 4,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 4,
+                "userAgent": "cluster-kube-scheduler-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-kube-scheduler:localhost-recovery-client"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 4,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 4,
+                "userAgent": "cluster-kube-apiserver-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-kube-apiserver:localhost-recovery-client"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 4,
+                    "verb": "get"
+                  }
+                ],
+                "requestCount": 4,
+                "userAgent": "cluster-version-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-cluster-version:default"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 1,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 2,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 3,
+                "userAgent": "console/v0.0.0",
+                "username": "system:serviceaccount:openshift-console-operator:console-operator"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 1,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 1,
+                    "verb": "update"
+                  }
+                ],
+                "requestCount": 2,
+                "userAgent": "collect-profiles/v0.0.0",
+                "username": "system:serviceaccount:openshift-operator-lifecycle-manager:collect-profiles"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 2,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 2,
+                "userAgent": "cluster-kube-apiserver-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-kube-apiserver:check-endpoints"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 2,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 2,
+                "userAgent": "service-ca-operator/v0.0.0",
+                "username": "system:serviceaccount:openshift-service-ca:service-ca"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 1,
+                    "verb": "get"
+                  },
+                  {
+                    "requestCount": 1,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 2,
+                "userAgent": "machine-config-controller/v0.0.0",
+                "username": "system:serviceaccount:openshift-machine-config-operator:machine-config-controller"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 2,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 2,
+                "userAgent": "olm/v0.0.0",
+                "username": "system:serviceaccount:openshift-operator-lifecycle-manager:olm-operator-serviceaccount"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 1,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 1,
+                "userAgent": "kube-apiserver/v1.22.0",
+                "username": "system:apiserver"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 1,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 1,
+                "userAgent": "kube-controller-manager/v1.22.0",
+                "username": "system:kube-controller-manager"
+              },
+              {
+                "byVerb": [
+                  {
+                    "requestCount": 1,
+                    "verb": "watch"
+                  }
+                ],
+                "requestCount": 1,
+                "userAgent": "cluster-policy-controller/v0.0.0",
+                "username": "system:kube-controller-manager"
+              }
+            ],
+            "nodeName": "192.168.126.11",
+            "requestCount": 1998
+          }
+        ],
+        "requestCount": 1998
+      },
+      {
+        "byNode": [
+          {
+            "nodeName": "192.168.126.11",
+            "requestCount": 0
+          }
+        ],
+        "requestCount": 0
+      },
+      {
+        "byNode": [
+          {
+            "nodeName": "192.168.126.10",
+            "requestCount": 0
+          },
+          {
+            "nodeName": "192.168.126.11",
+            "requestCount": 0
+          }
+        ],
+        "requestCount": 0
+      },
+      {
+        "byNode": [
+          {
+            "nodeName": "192.168.126.10",
+            "requestCount": 0
+          },
+          {
+            "nodeName": "192.168.126.11",
+            "requestCount": 0
+          }
+        ],
+        "requestCount": 0
+      },
+      {
+        "byNode": [
+          {
+            "nodeName": "192.168.126.10",
+            "requestCount": 0
+          },
+          {
+            "nodeName": "192.168.126.11",
+            "requestCount": 0
+          }
+        ],
+        "requestCount": 0
+      },
+      {
+        "byNode": [
+          {
+            "nodeName": "192.168.126.10",
+            "requestCount": 0
+          },
+          {
+            "nodeName": "192.168.126.11",
+            "requestCount": 0
+          }
+        ],
+        "requestCount": 0
+      },
+      {
+        "byNode": [
+          {
+            "nodeName": "192.168.126.10",
+            "requestCount": 0
+          },
+          {
+            "nodeName": "192.168.126.11",
+            "requestCount": 0
+          }
+        ],
+        "requestCount": 0
+      },
+      {
+        "byNode": [
+          {
+            "nodeName": "192.168.126.10",
+            "requestCount": 0
+          },
+          {
+            "nodeName": "192.168.126.11",
+            "requestCount": 0
+          }
+        ],
+        "requestCount": 0
+      },
+      {
+        "byNode": [
+          {
+            "nodeName": "192.168.126.10",
+            "requestCount": 0
+          },
+          {
+            "nodeName": "192.168.126.11",
+            "requestCount": 0
+          }
+        ],
+        "requestCount": 0
+      }
+    ],
+    "requestCount": 43065
+  }
+}

@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.fabric8.kubernetes.api.model.Condition;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -34,6 +35,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "conditions",
     "lastUpdated",
     "namespaces",
     "serviceAccountRef"
@@ -59,6 +61,9 @@ import lombok.experimental.Accessors;
 public class OperatorGroupStatus implements KubernetesResource
 {
 
+    @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<Condition> conditions = new ArrayList<Condition>();
     @JsonProperty("lastUpdated")
     private String lastUpdated;
     @JsonProperty("namespaces")
@@ -79,14 +84,26 @@ public class OperatorGroupStatus implements KubernetesResource
     /**
      * 
      * @param lastUpdated
+     * @param conditions
      * @param serviceAccountRef
      * @param namespaces
      */
-    public OperatorGroupStatus(String lastUpdated, List<java.lang.String> namespaces, io.fabric8.kubernetes.api.model.ObjectReference serviceAccountRef) {
+    public OperatorGroupStatus(List<Condition> conditions, String lastUpdated, List<java.lang.String> namespaces, io.fabric8.kubernetes.api.model.ObjectReference serviceAccountRef) {
         super();
+        this.conditions = conditions;
         this.lastUpdated = lastUpdated;
         this.namespaces = namespaces;
         this.serviceAccountRef = serviceAccountRef;
+    }
+
+    @JsonProperty("conditions")
+    public List<Condition> getConditions() {
+        return conditions;
+    }
+
+    @JsonProperty("conditions")
+    public void setConditions(List<Condition> conditions) {
+        this.conditions = conditions;
     }
 
     @JsonProperty("lastUpdated")

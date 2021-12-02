@@ -33,6 +33,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "alibabaCloud",
     "aws",
     "azure",
     "baremetal",
@@ -42,6 +43,7 @@ import lombok.experimental.Accessors;
     "kubevirt",
     "openstack",
     "ovirt",
+    "powervs",
     "type",
     "vsphere"
 })
@@ -66,6 +68,8 @@ import lombok.experimental.Accessors;
 public class PlatformSpec implements KubernetesResource
 {
 
+    @JsonProperty("alibabaCloud")
+    private AlibabaCloudPlatformSpec alibabaCloud;
     @JsonProperty("aws")
     private AWSPlatformSpec aws;
     @JsonProperty("azure")
@@ -84,6 +88,8 @@ public class PlatformSpec implements KubernetesResource
     private OpenStackPlatformSpec openstack;
     @JsonProperty("ovirt")
     private OvirtPlatformSpec ovirt;
+    @JsonProperty("powervs")
+    private PowerVSPlatformSpec powervs;
     @JsonProperty("type")
     private String type;
     @JsonProperty("vsphere")
@@ -101,19 +107,22 @@ public class PlatformSpec implements KubernetesResource
     /**
      * 
      * @param baremetal
-     * @param vsphere
-     * @param gcp
+     * @param powervs
+     * @param alibabaCloud
      * @param ibmcloud
      * @param equinixMetal
+     * @param type
+     * @param vsphere
+     * @param gcp
      * @param ovirt
      * @param kubevirt
      * @param openstack
      * @param aws
-     * @param type
      * @param azure
      */
-    public PlatformSpec(AWSPlatformSpec aws, AzurePlatformSpec azure, BareMetalPlatformSpec baremetal, EquinixMetalPlatformSpec equinixMetal, GCPPlatformSpec gcp, IBMCloudPlatformSpec ibmcloud, KubevirtPlatformSpec kubevirt, OpenStackPlatformSpec openstack, OvirtPlatformSpec ovirt, String type, VSpherePlatformSpec vsphere) {
+    public PlatformSpec(AlibabaCloudPlatformSpec alibabaCloud, AWSPlatformSpec aws, AzurePlatformSpec azure, BareMetalPlatformSpec baremetal, EquinixMetalPlatformSpec equinixMetal, GCPPlatformSpec gcp, IBMCloudPlatformSpec ibmcloud, KubevirtPlatformSpec kubevirt, OpenStackPlatformSpec openstack, OvirtPlatformSpec ovirt, PowerVSPlatformSpec powervs, String type, VSpherePlatformSpec vsphere) {
         super();
+        this.alibabaCloud = alibabaCloud;
         this.aws = aws;
         this.azure = azure;
         this.baremetal = baremetal;
@@ -123,8 +132,19 @@ public class PlatformSpec implements KubernetesResource
         this.kubevirt = kubevirt;
         this.openstack = openstack;
         this.ovirt = ovirt;
+        this.powervs = powervs;
         this.type = type;
         this.vsphere = vsphere;
+    }
+
+    @JsonProperty("alibabaCloud")
+    public AlibabaCloudPlatformSpec getAlibabaCloud() {
+        return alibabaCloud;
+    }
+
+    @JsonProperty("alibabaCloud")
+    public void setAlibabaCloud(AlibabaCloudPlatformSpec alibabaCloud) {
+        this.alibabaCloud = alibabaCloud;
     }
 
     @JsonProperty("aws")
@@ -215,6 +235,16 @@ public class PlatformSpec implements KubernetesResource
     @JsonProperty("ovirt")
     public void setOvirt(OvirtPlatformSpec ovirt) {
         this.ovirt = ovirt;
+    }
+
+    @JsonProperty("powervs")
+    public PowerVSPlatformSpec getPowervs() {
+        return powervs;
+    }
+
+    @JsonProperty("powervs")
+    public void setPowervs(PowerVSPlatformSpec powervs) {
+        this.powervs = powervs;
     }
 
     @JsonProperty("type")

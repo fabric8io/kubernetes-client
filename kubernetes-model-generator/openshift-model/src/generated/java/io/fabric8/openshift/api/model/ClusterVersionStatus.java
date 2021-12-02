@@ -36,6 +36,7 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "availableUpdates",
+    "conditionalUpdates",
     "conditions",
     "desired",
     "history",
@@ -65,6 +66,9 @@ public class ClusterVersionStatus implements KubernetesResource
 
     @JsonProperty("availableUpdates")
     private List<Release> availableUpdates = new ArrayList<Release>();
+    @JsonProperty("conditionalUpdates")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<ConditionalUpdate> conditionalUpdates = new ArrayList<ConditionalUpdate>();
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ClusterOperatorStatusCondition> conditions = new ArrayList<ClusterOperatorStatusCondition>();
@@ -90,15 +94,17 @@ public class ClusterVersionStatus implements KubernetesResource
     /**
      * 
      * @param desired
+     * @param conditionalUpdates
      * @param availableUpdates
      * @param history
      * @param versionHash
      * @param conditions
      * @param observedGeneration
      */
-    public ClusterVersionStatus(List<Release> availableUpdates, List<ClusterOperatorStatusCondition> conditions, Release desired, List<UpdateHistory> history, Long observedGeneration, String versionHash) {
+    public ClusterVersionStatus(List<Release> availableUpdates, List<ConditionalUpdate> conditionalUpdates, List<ClusterOperatorStatusCondition> conditions, Release desired, List<UpdateHistory> history, Long observedGeneration, String versionHash) {
         super();
         this.availableUpdates = availableUpdates;
+        this.conditionalUpdates = conditionalUpdates;
         this.conditions = conditions;
         this.desired = desired;
         this.history = history;
@@ -114,6 +120,16 @@ public class ClusterVersionStatus implements KubernetesResource
     @JsonProperty("availableUpdates")
     public void setAvailableUpdates(List<Release> availableUpdates) {
         this.availableUpdates = availableUpdates;
+    }
+
+    @JsonProperty("conditionalUpdates")
+    public List<ConditionalUpdate> getConditionalUpdates() {
+        return conditionalUpdates;
+    }
+
+    @JsonProperty("conditionalUpdates")
+    public void setConditionalUpdates(List<ConditionalUpdate> conditionalUpdates) {
+        this.conditionalUpdates = conditionalUpdates;
     }
 
     @JsonProperty("conditions")

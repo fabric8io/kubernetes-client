@@ -33,7 +33,8 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "containerid"
+    "containerid",
+    "podref"
 })
 @ToString
 @EqualsAndHashCode
@@ -58,6 +59,8 @@ public class OverlappingRangeIPReservationSpec implements KubernetesResource
 
     @JsonProperty("containerid")
     private String containerid;
+    @JsonProperty("podref")
+    private String podref;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -70,11 +73,13 @@ public class OverlappingRangeIPReservationSpec implements KubernetesResource
 
     /**
      * 
+     * @param podref
      * @param containerid
      */
-    public OverlappingRangeIPReservationSpec(String containerid) {
+    public OverlappingRangeIPReservationSpec(String containerid, String podref) {
         super();
         this.containerid = containerid;
+        this.podref = podref;
     }
 
     @JsonProperty("containerid")
@@ -85,6 +90,16 @@ public class OverlappingRangeIPReservationSpec implements KubernetesResource
     @JsonProperty("containerid")
     public void setContainerid(String containerid) {
         this.containerid = containerid;
+    }
+
+    @JsonProperty("podref")
+    public String getPodref() {
+        return podref;
+    }
+
+    @JsonProperty("podref")
+    public void setPodref(String podref) {
+        this.podref = podref;
     }
 
     @JsonAnyGetter

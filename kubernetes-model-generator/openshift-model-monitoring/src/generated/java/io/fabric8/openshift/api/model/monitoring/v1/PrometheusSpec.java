@@ -52,6 +52,10 @@ import lombok.experimental.Accessors;
     "disableCompaction",
     "enableAdminAPI",
     "enableFeatures",
+    "enforcedBodySizeLimit",
+    "enforcedLabelLimit",
+    "enforcedLabelNameLengthLimit",
+    "enforcedLabelValueLengthLimit",
     "enforcedNamespaceLabel",
     "enforcedSampleLimit",
     "enforcedTargetLimit",
@@ -65,6 +69,7 @@ import lombok.experimental.Accessors;
     "listenLocal",
     "logFormat",
     "logLevel",
+    "minReadySeconds",
     "nodeSelector",
     "overrideHonorLabels",
     "overrideHonorTimestamps",
@@ -163,6 +168,14 @@ public class PrometheusSpec implements KubernetesResource
     @JsonProperty("enableFeatures")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<java.lang.String> enableFeatures = new ArrayList<java.lang.String>();
+    @JsonProperty("enforcedBodySizeLimit")
+    private java.lang.String enforcedBodySizeLimit;
+    @JsonProperty("enforcedLabelLimit")
+    private Long enforcedLabelLimit;
+    @JsonProperty("enforcedLabelNameLengthLimit")
+    private Long enforcedLabelNameLengthLimit;
+    @JsonProperty("enforcedLabelValueLengthLimit")
+    private Long enforcedLabelValueLengthLimit;
     @JsonProperty("enforcedNamespaceLabel")
     private java.lang.String enforcedNamespaceLabel;
     @JsonProperty("enforcedSampleLimit")
@@ -191,6 +204,8 @@ public class PrometheusSpec implements KubernetesResource
     private java.lang.String logFormat;
     @JsonProperty("logLevel")
     private java.lang.String logLevel;
+    @JsonProperty("minReadySeconds")
+    private Integer minReadySeconds;
     @JsonProperty("nodeSelector")
     private Map<String, String> nodeSelector;
     @JsonProperty("overrideHonorLabels")
@@ -312,9 +327,11 @@ public class PrometheusSpec implements KubernetesResource
      * @param securityContext
      * @param nodeSelector
      * @param volumeMounts
+     * @param enforcedLabelLimit
      * @param tolerations
      * @param scrapeInterval
      * @param queryLogFile
+     * @param enforcedLabelValueLengthLimit
      * @param tag
      * @param thanos
      * @param image
@@ -327,12 +344,15 @@ public class PrometheusSpec implements KubernetesResource
      * @param version
      * @param serviceMonitorNamespaceSelector
      * @param logFormat
+     * @param enforcedBodySizeLimit
      * @param evaluationInterval
      * @param retentionSize
      * @param containers
      * @param probeSelector
+     * @param minReadySeconds
      * @param podMetadata
      * @param affinity
+     * @param enforcedLabelNameLengthLimit
      * @param externalLabels
      * @param ruleNamespaceSelector
      * @param arbitraryFSAccessThroughSMs
@@ -374,7 +394,7 @@ public class PrometheusSpec implements KubernetesResource
      * @param remoteWrite
      * @param initContainers
      */
-    public PrometheusSpec(SecretKeySelector additionalAlertManagerConfigs, SecretKeySelector additionalAlertRelabelConfigs, SecretKeySelector additionalScrapeConfigs, Affinity affinity, AlertingSpec alerting, Boolean allowOverlappingBlocks, APIServerConfig apiserverConfig, ArbitraryFSAccessThroughSMsConfig arbitraryFSAccessThroughSMs, java.lang.String baseImage, List<java.lang.String> configMaps, List<io.fabric8.kubernetes.api.model.Container> containers, Boolean disableCompaction, Boolean enableAdminAPI, List<java.lang.String> enableFeatures, java.lang.String enforcedNamespaceLabel, Long enforcedSampleLimit, Long enforcedTargetLimit, java.lang.String evaluationInterval, Map<String, String> externalLabels, java.lang.String externalUrl, Boolean ignoreNamespaceSelectors, java.lang.String image, List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets, List<io.fabric8.kubernetes.api.model.Container> initContainers, Boolean listenLocal, java.lang.String logFormat, java.lang.String logLevel, Map<String, String> nodeSelector, Boolean overrideHonorLabels, Boolean overrideHonorTimestamps, Boolean paused, EmbeddedObjectMetadata podMetadata, io.fabric8.kubernetes.api.model.LabelSelector podMonitorNamespaceSelector, io.fabric8.kubernetes.api.model.LabelSelector podMonitorSelector, java.lang.String portName, java.lang.String priorityClassName, io.fabric8.kubernetes.api.model.LabelSelector probeNamespaceSelector, io.fabric8.kubernetes.api.model.LabelSelector probeSelector, java.lang.String prometheusExternalLabelName, List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce, QuerySpec query, java.lang.String queryLogFile, List<RemoteReadSpec> remoteRead, List<RemoteWriteSpec> remoteWrite, java.lang.String replicaExternalLabelName, Integer replicas, io.fabric8.kubernetes.api.model.ResourceRequirements resources, java.lang.String retention, java.lang.String retentionSize, java.lang.String routePrefix, io.fabric8.kubernetes.api.model.LabelSelector ruleNamespaceSelector, io.fabric8.kubernetes.api.model.LabelSelector ruleSelector, Rules rules, java.lang.String scrapeInterval, java.lang.String scrapeTimeout, List<java.lang.String> secrets, PodSecurityContext securityContext, java.lang.String serviceAccountName, io.fabric8.kubernetes.api.model.LabelSelector serviceMonitorNamespaceSelector, io.fabric8.kubernetes.api.model.LabelSelector serviceMonitorSelector, java.lang.String sha, Integer shards, StorageSpec storage, java.lang.String tag, ThanosSpec thanos, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, java.lang.String version, List<VolumeMount> volumeMounts, List<Volume> volumes, Boolean walCompression, WebSpec web) {
+    public PrometheusSpec(SecretKeySelector additionalAlertManagerConfigs, SecretKeySelector additionalAlertRelabelConfigs, SecretKeySelector additionalScrapeConfigs, Affinity affinity, AlertingSpec alerting, Boolean allowOverlappingBlocks, APIServerConfig apiserverConfig, ArbitraryFSAccessThroughSMsConfig arbitraryFSAccessThroughSMs, java.lang.String baseImage, List<java.lang.String> configMaps, List<io.fabric8.kubernetes.api.model.Container> containers, Boolean disableCompaction, Boolean enableAdminAPI, List<java.lang.String> enableFeatures, java.lang.String enforcedBodySizeLimit, Long enforcedLabelLimit, Long enforcedLabelNameLengthLimit, Long enforcedLabelValueLengthLimit, java.lang.String enforcedNamespaceLabel, Long enforcedSampleLimit, Long enforcedTargetLimit, java.lang.String evaluationInterval, Map<String, String> externalLabels, java.lang.String externalUrl, Boolean ignoreNamespaceSelectors, java.lang.String image, List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets, List<io.fabric8.kubernetes.api.model.Container> initContainers, Boolean listenLocal, java.lang.String logFormat, java.lang.String logLevel, Integer minReadySeconds, Map<String, String> nodeSelector, Boolean overrideHonorLabels, Boolean overrideHonorTimestamps, Boolean paused, EmbeddedObjectMetadata podMetadata, io.fabric8.kubernetes.api.model.LabelSelector podMonitorNamespaceSelector, io.fabric8.kubernetes.api.model.LabelSelector podMonitorSelector, java.lang.String portName, java.lang.String priorityClassName, io.fabric8.kubernetes.api.model.LabelSelector probeNamespaceSelector, io.fabric8.kubernetes.api.model.LabelSelector probeSelector, java.lang.String prometheusExternalLabelName, List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce, QuerySpec query, java.lang.String queryLogFile, List<RemoteReadSpec> remoteRead, List<RemoteWriteSpec> remoteWrite, java.lang.String replicaExternalLabelName, Integer replicas, io.fabric8.kubernetes.api.model.ResourceRequirements resources, java.lang.String retention, java.lang.String retentionSize, java.lang.String routePrefix, io.fabric8.kubernetes.api.model.LabelSelector ruleNamespaceSelector, io.fabric8.kubernetes.api.model.LabelSelector ruleSelector, Rules rules, java.lang.String scrapeInterval, java.lang.String scrapeTimeout, List<java.lang.String> secrets, PodSecurityContext securityContext, java.lang.String serviceAccountName, io.fabric8.kubernetes.api.model.LabelSelector serviceMonitorNamespaceSelector, io.fabric8.kubernetes.api.model.LabelSelector serviceMonitorSelector, java.lang.String sha, Integer shards, StorageSpec storage, java.lang.String tag, ThanosSpec thanos, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, java.lang.String version, List<VolumeMount> volumeMounts, List<Volume> volumes, Boolean walCompression, WebSpec web) {
         super();
         this.additionalAlertManagerConfigs = additionalAlertManagerConfigs;
         this.additionalAlertRelabelConfigs = additionalAlertRelabelConfigs;
@@ -390,6 +410,10 @@ public class PrometheusSpec implements KubernetesResource
         this.disableCompaction = disableCompaction;
         this.enableAdminAPI = enableAdminAPI;
         this.enableFeatures = enableFeatures;
+        this.enforcedBodySizeLimit = enforcedBodySizeLimit;
+        this.enforcedLabelLimit = enforcedLabelLimit;
+        this.enforcedLabelNameLengthLimit = enforcedLabelNameLengthLimit;
+        this.enforcedLabelValueLengthLimit = enforcedLabelValueLengthLimit;
         this.enforcedNamespaceLabel = enforcedNamespaceLabel;
         this.enforcedSampleLimit = enforcedSampleLimit;
         this.enforcedTargetLimit = enforcedTargetLimit;
@@ -403,6 +427,7 @@ public class PrometheusSpec implements KubernetesResource
         this.listenLocal = listenLocal;
         this.logFormat = logFormat;
         this.logLevel = logLevel;
+        this.minReadySeconds = minReadySeconds;
         this.nodeSelector = nodeSelector;
         this.overrideHonorLabels = overrideHonorLabels;
         this.overrideHonorTimestamps = overrideHonorTimestamps;
@@ -590,6 +615,46 @@ public class PrometheusSpec implements KubernetesResource
         this.enableFeatures = enableFeatures;
     }
 
+    @JsonProperty("enforcedBodySizeLimit")
+    public java.lang.String getEnforcedBodySizeLimit() {
+        return enforcedBodySizeLimit;
+    }
+
+    @JsonProperty("enforcedBodySizeLimit")
+    public void setEnforcedBodySizeLimit(java.lang.String enforcedBodySizeLimit) {
+        this.enforcedBodySizeLimit = enforcedBodySizeLimit;
+    }
+
+    @JsonProperty("enforcedLabelLimit")
+    public Long getEnforcedLabelLimit() {
+        return enforcedLabelLimit;
+    }
+
+    @JsonProperty("enforcedLabelLimit")
+    public void setEnforcedLabelLimit(Long enforcedLabelLimit) {
+        this.enforcedLabelLimit = enforcedLabelLimit;
+    }
+
+    @JsonProperty("enforcedLabelNameLengthLimit")
+    public Long getEnforcedLabelNameLengthLimit() {
+        return enforcedLabelNameLengthLimit;
+    }
+
+    @JsonProperty("enforcedLabelNameLengthLimit")
+    public void setEnforcedLabelNameLengthLimit(Long enforcedLabelNameLengthLimit) {
+        this.enforcedLabelNameLengthLimit = enforcedLabelNameLengthLimit;
+    }
+
+    @JsonProperty("enforcedLabelValueLengthLimit")
+    public Long getEnforcedLabelValueLengthLimit() {
+        return enforcedLabelValueLengthLimit;
+    }
+
+    @JsonProperty("enforcedLabelValueLengthLimit")
+    public void setEnforcedLabelValueLengthLimit(Long enforcedLabelValueLengthLimit) {
+        this.enforcedLabelValueLengthLimit = enforcedLabelValueLengthLimit;
+    }
+
     @JsonProperty("enforcedNamespaceLabel")
     public java.lang.String getEnforcedNamespaceLabel() {
         return enforcedNamespaceLabel;
@@ -718,6 +783,16 @@ public class PrometheusSpec implements KubernetesResource
     @JsonProperty("logLevel")
     public void setLogLevel(java.lang.String logLevel) {
         this.logLevel = logLevel;
+    }
+
+    @JsonProperty("minReadySeconds")
+    public Integer getMinReadySeconds() {
+        return minReadySeconds;
+    }
+
+    @JsonProperty("minReadySeconds")
+    public void setMinReadySeconds(Integer minReadySeconds) {
+        this.minReadySeconds = minReadySeconds;
     }
 
     @JsonProperty("nodeSelector")
