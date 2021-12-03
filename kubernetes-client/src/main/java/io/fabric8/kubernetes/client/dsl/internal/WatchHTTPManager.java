@@ -88,15 +88,17 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
       @Override
       public void onResponse(Call call, Response response) throws IOException {
         try {
-          resetReconnectAttempts();
-          if (!response.isSuccessful() 
-              && onStatus(OperationSupport.createStatus(response.code(), response.message()))) {
-            return;
-          }
-          BufferedSource source = response.body().source();
-          while (!source.exhausted()) {
-            String message = source.readUtf8LineStrict();
-            onMessage(message);
+          if (!response.isSuccessful()) {
+            if (onStatus(OperationSupport.createStatus(response.code(), response.message()))) {
+              return; // terminal state
+            }
+          } else {
+            resetReconnectAttempts();
+            BufferedSource source = response.body().source();
+            while (!source.exhausted()) {
+              String message = source.readUtf8LineStrict();
+              onMessage(message);
+            }
           }
         } catch (Exception e) {
           logger.info("Watch terminated unexpectedly. reason: {}", e.getMessage());

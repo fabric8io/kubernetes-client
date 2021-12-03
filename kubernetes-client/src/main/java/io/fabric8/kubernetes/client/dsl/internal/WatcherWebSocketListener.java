@@ -70,11 +70,11 @@ class WatcherWebSocketListener<T extends HasMetadata> extends WebSocketListener 
         // We do not expect a 200 in response to the websocket connection. If it occurs, we throw
         // an exception and try the watch via a persistent HTTP Get.
         // Newer Kubernetes might also return 503 Service Unavailable in case WebSockets are not supported
+        Status status = OperationSupport.createStatus(response);
         if (HTTP_OK == code || HTTP_UNAVAILABLE == code) {
-          pushException(OperationSupport.requestFailure(response.request(), null, "Received " + code + " on websocket"));
+          pushException(OperationSupport.requestFailure(response.request(), status, "Received " + code + " on websocket"));
           return;
         }
-        Status status = OperationSupport.createStatus(response);
         logger.warn("Exec Failure: HTTP {}, Status: {} - {}", code, status.getCode(), status.getMessage());
         pushException(OperationSupport.requestFailure(response.request(), status));
       } else {
