@@ -30,6 +30,7 @@
 #### New Features
 * Fix #3721: Add support for uploading file via InputStream
 * Fix #3234: Allow specifying specific localhost while port-forwarding
+* Fix #3506: Add support for Open Cluster Management extension
 
 #### _**Note**_: Breaking changes in the API
 

@@ -1,0 +1,353 @@
+{
+  "id": "http://fabric8.io/OpenClusterManagement#PlacementRuleApps",
+  "$schema": "http://json-schema.org/draft-05/schema#",
+  "definitions": {
+    "github_com_open-cluster-management_multicloud-integrations_pkg_apis_apps_v1beta1_ArgoServerSpec": {
+      "type": "object",
+      "properties": {
+        "argoNamespace": {
+          "type": "string"
+        },
+        "cluster": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudintegration.apps.v1beta1.ArgoServerSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_multicloud-integrations_pkg_apis_apps_v1beta1_GitOpsCluster": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "apps.open-cluster-management.io/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "GitOpsCluster",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/github_com_open-cluster-management_multicloud-integrations_pkg_apis_apps_v1beta1_GitOpsClusterSpec",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudintegration.apps.v1beta1.GitOpsClusterSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/github_com_open-cluster-management_multicloud-integrations_pkg_apis_apps_v1beta1_GitOpsClusterStatus",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudintegration.apps.v1beta1.GitOpsClusterStatus"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudintegration.apps.v1beta1.GitOpsCluster",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "github_com_open-cluster-management_multicloud-integrations_pkg_apis_apps_v1beta1_GitOpsClusterList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "apps.open-cluster-management.io/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/github_com_open-cluster-management_multicloud-integrations_pkg_apis_apps_v1beta1_GitOpsCluster",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudintegration.apps.v1beta1.GitOpsCluster"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "GitOpsClusterList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudintegration.apps.v1beta1.GitOpsClusterList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openclustermanagement.api.model.multicloudintegration.apps.v1beta1.GitOpsCluster\u003e"
+      ]
+    },
+    "github_com_open-cluster-management_multicloud-integrations_pkg_apis_apps_v1beta1_GitOpsClusterSpec": {
+      "type": "object",
+      "properties": {
+        "argoServer": {
+          "$ref": "#/definitions/github_com_open-cluster-management_multicloud-integrations_pkg_apis_apps_v1beta1_ArgoServerSpec",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudintegration.apps.v1beta1.ArgoServerSpec"
+        },
+        "placementRef": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudintegration.apps.v1beta1.GitOpsClusterSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_multicloud-integrations_pkg_apis_apps_v1beta1_GitOpsClusterStatus": {
+      "type": "object",
+      "properties": {
+        "lastUpdateTime": {
+          "existingJavaType": "java.lang.String"
+        },
+        "message": {
+          "type": "string"
+        },
+        "phase": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudintegration.apps.v1beta1.GitOpsClusterStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_multicloud-operators-placementrule_pkg_apis_apps_v1_ClusterConditionFilter": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorsplacementrule.apps.v1.ClusterConditionFilter",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_multicloud-operators-placementrule_pkg_apis_apps_v1_GenericClusterReference": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorsplacementrule.apps.v1.GenericClusterReference",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_multicloud-operators-placementrule_pkg_apis_apps_v1_PlacementDecision": {
+      "type": "object",
+      "properties": {
+        "clusterName": {
+          "type": "string"
+        },
+        "clusterNamespace": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorsplacementrule.apps.v1.PlacementDecision",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_multicloud-operators-placementrule_pkg_apis_apps_v1_PlacementRule": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "apps.open-cluster-management.io/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "PlacementRule",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/github_com_open-cluster-management_multicloud-operators-placementrule_pkg_apis_apps_v1_PlacementRuleSpec",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorsplacementrule.apps.v1.PlacementRuleSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/github_com_open-cluster-management_multicloud-operators-placementrule_pkg_apis_apps_v1_PlacementRuleStatus",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorsplacementrule.apps.v1.PlacementRuleStatus"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorsplacementrule.apps.v1.PlacementRule",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "github_com_open-cluster-management_multicloud-operators-placementrule_pkg_apis_apps_v1_PlacementRuleList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "apps.open-cluster-management.io/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/github_com_open-cluster-management_multicloud-operators-placementrule_pkg_apis_apps_v1_PlacementRule",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorsplacementrule.apps.v1.PlacementRule"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "PlacementRuleList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorsplacementrule.apps.v1.PlacementRuleList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openclustermanagement.api.model.multicloudoperatorsplacementrule.apps.v1.PlacementRule\u003e"
+      ]
+    },
+    "github_com_open-cluster-management_multicloud-operators-placementrule_pkg_apis_apps_v1_PlacementRuleSpec": {
+      "type": "object",
+      "properties": {
+        "clusterConditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_open-cluster-management_multicloud-operators-placementrule_pkg_apis_apps_v1_ClusterConditionFilter",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorsplacementrule.apps.v1.ClusterConditionFilter"
+          }
+        },
+        "clusterReplicas": {
+          "type": "integer",
+          "existingJavaType": "Integer"
+        },
+        "clusterSelector": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
+        },
+        "clusters": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_open-cluster-management_multicloud-operators-placementrule_pkg_apis_apps_v1_GenericClusterReference",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorsplacementrule.apps.v1.GenericClusterReference"
+          }
+        },
+        "policies": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+          }
+        },
+        "resourceHint": {
+          "$ref": "#/definitions/github_com_open-cluster-management_multicloud-operators-placementrule_pkg_apis_apps_v1_ResourceHint",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorsplacementrule.apps.v1.ResourceHint"
+        },
+        "schedulerName": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorsplacementrule.apps.v1.PlacementRuleSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_multicloud-operators-placementrule_pkg_apis_apps_v1_PlacementRuleStatus": {
+      "type": "object",
+      "properties": {
+        "decisions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_open-cluster-management_multicloud-operators-placementrule_pkg_apis_apps_v1_PlacementDecision",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorsplacementrule.apps.v1.PlacementDecision"
+          }
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorsplacementrule.apps.v1.PlacementRuleStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_multicloud-operators-placementrule_pkg_apis_apps_v1_ResourceHint": {
+      "type": "object",
+      "properties": {
+        "order": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorsplacementrule.apps.v1.ResourceHint",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "github_com_open-cluster-management_multicloud-integrations_pkg_apis_apps_v1beta1_ArgoServerSpec": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multicloud-integrations_pkg_apis_apps_v1beta1_ArgoServerSpec",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudintegration.apps.v1beta1.ArgoServerSpec"
+    },
+    "github_com_open-cluster-management_multicloud-integrations_pkg_apis_apps_v1beta1_GitOpsCluster": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multicloud-integrations_pkg_apis_apps_v1beta1_GitOpsCluster",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudintegration.apps.v1beta1.GitOpsCluster"
+    },
+    "github_com_open-cluster-management_multicloud-integrations_pkg_apis_apps_v1beta1_GitOpsClusterList": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multicloud-integrations_pkg_apis_apps_v1beta1_GitOpsClusterList",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudintegration.apps.v1beta1.GitOpsClusterList"
+    },
+    "github_com_open-cluster-management_multicloud-integrations_pkg_apis_apps_v1beta1_GitOpsClusterSpec": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multicloud-integrations_pkg_apis_apps_v1beta1_GitOpsClusterSpec",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudintegration.apps.v1beta1.GitOpsClusterSpec"
+    },
+    "github_com_open-cluster-management_multicloud-integrations_pkg_apis_apps_v1beta1_GitOpsClusterStatus": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multicloud-integrations_pkg_apis_apps_v1beta1_GitOpsClusterStatus",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudintegration.apps.v1beta1.GitOpsClusterStatus"
+    },
+    "github_com_open-cluster-management_multicloud-operators-placementrule_pkg_apis_apps_v1_ClusterConditionFilter": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multicloud-operators-placementrule_pkg_apis_apps_v1_ClusterConditionFilter",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorsplacementrule.apps.v1.ClusterConditionFilter"
+    },
+    "github_com_open-cluster-management_multicloud-operators-placementrule_pkg_apis_apps_v1_GenericClusterReference": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multicloud-operators-placementrule_pkg_apis_apps_v1_GenericClusterReference",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorsplacementrule.apps.v1.GenericClusterReference"
+    },
+    "github_com_open-cluster-management_multicloud-operators-placementrule_pkg_apis_apps_v1_PlacementDecision": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multicloud-operators-placementrule_pkg_apis_apps_v1_PlacementDecision",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorsplacementrule.apps.v1.PlacementDecision"
+    },
+    "github_com_open-cluster-management_multicloud-operators-placementrule_pkg_apis_apps_v1_PlacementRule": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multicloud-operators-placementrule_pkg_apis_apps_v1_PlacementRule",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorsplacementrule.apps.v1.PlacementRule"
+    },
+    "github_com_open-cluster-management_multicloud-operators-placementrule_pkg_apis_apps_v1_PlacementRuleList": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multicloud-operators-placementrule_pkg_apis_apps_v1_PlacementRuleList",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorsplacementrule.apps.v1.PlacementRuleList"
+    },
+    "github_com_open-cluster-management_multicloud-operators-placementrule_pkg_apis_apps_v1_PlacementRuleSpec": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multicloud-operators-placementrule_pkg_apis_apps_v1_PlacementRuleSpec",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorsplacementrule.apps.v1.PlacementRuleSpec"
+    },
+    "github_com_open-cluster-management_multicloud-operators-placementrule_pkg_apis_apps_v1_PlacementRuleStatus": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multicloud-operators-placementrule_pkg_apis_apps_v1_PlacementRuleStatus",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorsplacementrule.apps.v1.PlacementRuleStatus"
+    },
+    "github_com_open-cluster-management_multicloud-operators-placementrule_pkg_apis_apps_v1_ResourceHint": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multicloud-operators-placementrule_pkg_apis_apps_v1_ResourceHint",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorsplacementrule.apps.v1.ResourceHint"
+    }
+  },
+  "additionalProperties": false
+}

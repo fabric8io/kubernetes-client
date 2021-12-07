@@ -23,6 +23,7 @@ This client provides access to the full [Kubernetes](http://kubernetes.io/) &
 | volumesnapshot-client | [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.fabric8/volumesnapshot-client/badge.svg?color=blue)](https://maven-badges.herokuapp.com/maven-central/io.fabric8/volumesnapshot-client) | [![Javadocs](https://www.javadoc.io/badge/io.fabric8/volumesnapshot-client.svg?color=blue)](https://www.javadoc.io/doc/io.fabric8/volumesnapshot-client) |
 | volcano-client | [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.fabric8/volcano-client/badge.svg?color=blue)](https://maven-badges.herokuapp.com/maven-central/io.fabric8/volcano-client) | [![Javadocs](https://www.javadoc.io/badge/io.fabric8/volcano-client.svg?color=blue)](https://www.javadoc.io/doc/io.fabric8/volcano-client) |
 | istio-client | [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.fabric8/istio-client/badge.svg?color=blue)](https://maven-badges.herokuapp.com/maven-central/io.fabric8/istio-client) | [![Javadocs](https://www.javadoc.io/badge/io.fabric8/istio-client.svg?color=blue)](https://www.javadoc.io/doc/io.fabric8/istio-client) |
+| open-cluster-management-client | [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.fabric8/open-cluster-management-client/badge.svg?color=blue)](https://maven-badges.herokuapp.com/maven-central/io.fabric8/open-cluster-management-client) | [![Javadocs](https://www.javadoc.io/badge/io.fabric8/open-cluster-management-client.svg?color=blue)](https://www.javadoc.io/doc/io.fabric8/open-cluster-management-client) |
 
 ## Contents
 - [Usage](#usage)
@@ -578,12 +579,12 @@ All the resource objects used here will be according to OpenShift 3.9.0  and Kub
 ## Who uses Kubernetes & OpenShift Java client?
 
   Extensions:
-  - [Istio API](https://github.com/snowdrop/istio-java-api)
   - [Service Catalog API](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/service-catalog)
   - [Knative](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/knative)
   - [Tekton](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/tekton)
   - [Volcano](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/volcano)
   - [Istio](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/istio)
+  - [Open Cluster Management](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/open-cluster-management)
 
   Frameworks/Libraries/Tools:
   - [Arquillian Cube](http://arquillian.org/arquillian-cube/)

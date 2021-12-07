@@ -1,0 +1,194 @@
+{
+  "id": "http://fabric8.io/OpenClusterManagement#Agent",
+  "$schema": "http://json-schema.org/draft-05/schema#",
+  "definitions": {
+    "github_com_open-cluster-management_klusterlet-addon-controller_pkg_apis_agent_v1_KlusterletAddonAgentConfigSpec": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "proxyPolicy": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.agent.v1.KlusterletAddonAgentConfigSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_klusterlet-addon-controller_pkg_apis_agent_v1_KlusterletAddonConfig": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "agent.open-cluster-management.io/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "KlusterletAddonConfig",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/github_com_open-cluster-management_klusterlet-addon-controller_pkg_apis_agent_v1_KlusterletAddonConfigSpec",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.agent.v1.KlusterletAddonConfigSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/github_com_open-cluster-management_klusterlet-addon-controller_pkg_apis_agent_v1_KlusterletAddonConfigStatus",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.agent.v1.KlusterletAddonConfigStatus"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.agent.v1.KlusterletAddonConfig",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "github_com_open-cluster-management_klusterlet-addon-controller_pkg_apis_agent_v1_KlusterletAddonConfigList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "agent.open-cluster-management.io/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/github_com_open-cluster-management_klusterlet-addon-controller_pkg_apis_agent_v1_KlusterletAddonConfig",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.agent.v1.KlusterletAddonConfig"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "KlusterletAddonConfigList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.agent.v1.KlusterletAddonConfigList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openclustermanagement.api.model.agent.v1.KlusterletAddonConfig\u003e"
+      ]
+    },
+    "github_com_open-cluster-management_klusterlet-addon-controller_pkg_apis_agent_v1_KlusterletAddonConfigSpec": {
+      "type": "object",
+      "properties": {
+        "applicationManager": {
+          "$ref": "#/definitions/github_com_open-cluster-management_klusterlet-addon-controller_pkg_apis_agent_v1_KlusterletAddonAgentConfigSpec",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.agent.v1.KlusterletAddonAgentConfigSpec"
+        },
+        "certPolicyController": {
+          "$ref": "#/definitions/github_com_open-cluster-management_klusterlet-addon-controller_pkg_apis_agent_v1_KlusterletAddonAgentConfigSpec",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.agent.v1.KlusterletAddonAgentConfigSpec"
+        },
+        "clusterLabels": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "clusterName": {
+          "type": "string"
+        },
+        "clusterNamespace": {
+          "type": "string"
+        },
+        "iamPolicyController": {
+          "$ref": "#/definitions/github_com_open-cluster-management_klusterlet-addon-controller_pkg_apis_agent_v1_KlusterletAddonAgentConfigSpec",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.agent.v1.KlusterletAddonAgentConfigSpec"
+        },
+        "policyController": {
+          "$ref": "#/definitions/github_com_open-cluster-management_klusterlet-addon-controller_pkg_apis_agent_v1_KlusterletAddonAgentConfigSpec",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.agent.v1.KlusterletAddonAgentConfigSpec"
+        },
+        "proxyConfig": {
+          "$ref": "#/definitions/github_com_open-cluster-management_klusterlet-addon-controller_pkg_apis_agent_v1_ProxyConfig",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.agent.v1.ProxyConfig"
+        },
+        "searchCollector": {
+          "$ref": "#/definitions/github_com_open-cluster-management_klusterlet-addon-controller_pkg_apis_agent_v1_KlusterletAddonAgentConfigSpec",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.agent.v1.KlusterletAddonAgentConfigSpec"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.agent.v1.KlusterletAddonConfigSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_klusterlet-addon-controller_pkg_apis_agent_v1_KlusterletAddonConfigStatus": {
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "existingJavaType": "io.fabric8.kubernetes.api.model.Condition"
+          }
+        },
+        "ocpGlobalProxy": {
+          "$ref": "#/definitions/github_com_open-cluster-management_klusterlet-addon-controller_pkg_apis_agent_v1_ProxyConfig",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.agent.v1.ProxyConfig"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.agent.v1.KlusterletAddonConfigStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_klusterlet-addon-controller_pkg_apis_agent_v1_ProxyConfig": {
+      "type": "object",
+      "properties": {
+        "httpProxy": {
+          "type": "string"
+        },
+        "httpsProxy": {
+          "type": "string"
+        },
+        "noProxy": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.agent.v1.ProxyConfig",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "github_com_open-cluster-management_klusterlet-addon-controller_pkg_apis_agent_v1_KlusterletAddonAgentConfigSpec": {
+      "$ref": "#/definitions/github_com_open-cluster-management_klusterlet-addon-controller_pkg_apis_agent_v1_KlusterletAddonAgentConfigSpec",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.agent.v1.KlusterletAddonAgentConfigSpec"
+    },
+    "github_com_open-cluster-management_klusterlet-addon-controller_pkg_apis_agent_v1_KlusterletAddonConfig": {
+      "$ref": "#/definitions/github_com_open-cluster-management_klusterlet-addon-controller_pkg_apis_agent_v1_KlusterletAddonConfig",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.agent.v1.KlusterletAddonConfig"
+    },
+    "github_com_open-cluster-management_klusterlet-addon-controller_pkg_apis_agent_v1_KlusterletAddonConfigList": {
+      "$ref": "#/definitions/github_com_open-cluster-management_klusterlet-addon-controller_pkg_apis_agent_v1_KlusterletAddonConfigList",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.agent.v1.KlusterletAddonConfigList"
+    },
+    "github_com_open-cluster-management_klusterlet-addon-controller_pkg_apis_agent_v1_KlusterletAddonConfigSpec": {
+      "$ref": "#/definitions/github_com_open-cluster-management_klusterlet-addon-controller_pkg_apis_agent_v1_KlusterletAddonConfigSpec",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.agent.v1.KlusterletAddonConfigSpec"
+    },
+    "github_com_open-cluster-management_klusterlet-addon-controller_pkg_apis_agent_v1_KlusterletAddonConfigStatus": {
+      "$ref": "#/definitions/github_com_open-cluster-management_klusterlet-addon-controller_pkg_apis_agent_v1_KlusterletAddonConfigStatus",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.agent.v1.KlusterletAddonConfigStatus"
+    },
+    "github_com_open-cluster-management_klusterlet-addon-controller_pkg_apis_agent_v1_ProxyConfig": {
+      "$ref": "#/definitions/github_com_open-cluster-management_klusterlet-addon-controller_pkg_apis_agent_v1_ProxyConfig",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.agent.v1.ProxyConfig"
+    }
+  },
+  "additionalProperties": false
+}

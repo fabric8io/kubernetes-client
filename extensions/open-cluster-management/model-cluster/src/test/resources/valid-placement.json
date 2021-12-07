@@ -1,0 +1,22 @@
+{
+  "apiVersion" : "cluster.open-cluster-management.io/v1alpha1",
+  "kind" : "Placement",
+  "metadata" : {
+    "name" : "placement1",
+    "namespace": "ns1"
+  },
+  "spec": {
+    "predicates": [
+      {
+        "requiredClusterSelector": {
+          "labelSelector": {
+            "matchLabels": {
+              "vendor": "OpenShift"
+            }
+          }
+        }
+      }
+    ]
+  },
+  "status" : { }
+}

@@ -1,0 +1,46 @@
+{
+  "apiVersion" : "apps.open-cluster-management.io/v1",
+  "kind" : "Subscription",
+  "metadata" : {
+    "name" : "sample_subscription",
+    "namespace" : "default",
+    "labels" : {
+      "app" : "sample_subscription-app"
+    },
+    "annotations" : {
+      "apps.open-cluster-management.io/git-path" : "apps/sample/",
+      "apps.open-cluster-management.io/git-branch" : "sample_branch"
+    }
+  },
+  "spec" : {
+    "channel" : "channel_namespace/sample_channel",
+    "packageOverrides" : [ {
+      "packageName" : "my-sample-application",
+      "packageAlias" : "the-sample-app",
+      "packageOverrides" : [ {
+        "path" : "spec",
+        "value" : {
+          "persistence" : {
+            "enabled" : false,
+            "useDynamicProvisioning" : false
+          },
+          "license" : "accept",
+          "tls" : {
+            "hostname" : "my-mcm-cluster.icp"
+          },
+          "sso" : {
+            "registrationImage" : {
+              "pullSecret" : "hub-repo-docker-secret"
+            }
+          }
+        }
+      } ]
+    } ],
+    "placement" : {
+      "placementRef" : {
+        "kind" : "PlacementRule",
+        "name" : "demo-clusters"
+      }
+    }
+  }
+}

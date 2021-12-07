@@ -1,0 +1,709 @@
+{
+  "id": "http://fabric8.io/OpenClusterManagement#",
+  "$schema": "http://json-schema.org/draft-05/schema#",
+  "definitions": {
+    "open-cluster-management_io_api_cluster_v1_ClientConfig": {
+      "type": "object",
+      "properties": {
+        "caBundle": {
+          "type": "string",
+          "javaOmitEmpty": true
+        },
+        "url": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.cluster.v1.ClientConfig",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_api_cluster_v1_ManagedCluster": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "cluster.open-cluster-management.io/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "ManagedCluster",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1_ManagedClusterSpec",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1.ManagedClusterSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1_ManagedClusterStatus",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1.ManagedClusterStatus"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.cluster.v1.ManagedCluster",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "open-cluster-management_io_api_cluster_v1_ManagedClusterClaim": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.cluster.v1.ManagedClusterClaim",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_api_cluster_v1_ManagedClusterList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "cluster.open-cluster-management.io/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1_ManagedCluster",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1.ManagedCluster"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "ManagedClusterList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.cluster.v1.ManagedClusterList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openclustermanagement.api.model.cluster.v1.ManagedCluster\u003e"
+      ]
+    },
+    "open-cluster-management_io_api_cluster_v1_ManagedClusterSpec": {
+      "type": "object",
+      "properties": {
+        "hubAcceptsClient": {
+          "type": "boolean"
+        },
+        "leaseDurationSeconds": {
+          "type": "integer"
+        },
+        "managedClusterClientConfigs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1_ClientConfig",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1.ClientConfig"
+          }
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.cluster.v1.ManagedClusterSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_api_cluster_v1_ManagedClusterStatus": {
+      "type": "object",
+      "properties": {
+        "allocatable": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,io.fabric8.kubernetes.api.model.Quantity\u003e"
+        },
+        "capacity": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,io.fabric8.kubernetes.api.model.Quantity\u003e"
+        },
+        "clusterClaims": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1_ManagedClusterClaim",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1.ManagedClusterClaim"
+          }
+        },
+        "conditions": {
+          "type": "array",
+          "items": {
+            "existingJavaType": "io.fabric8.kubernetes.api.model.Condition"
+          }
+        },
+        "version": {
+          "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1_ManagedClusterVersion",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1.ManagedClusterVersion"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.cluster.v1.ManagedClusterStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_api_cluster_v1_ManagedClusterVersion": {
+      "type": "object",
+      "properties": {
+        "kubernetes": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.cluster.v1.ManagedClusterVersion",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_api_cluster_v1alpha1_ClusterClaimSelector": {
+      "type": "object",
+      "properties": {
+        "matchExpressions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelectorRequirement"
+          }
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.ClusterClaimSelector",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_api_cluster_v1alpha1_ClusterDecision": {
+      "type": "object",
+      "properties": {
+        "clusterName": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.ClusterDecision",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_api_cluster_v1alpha1_ClusterPredicate": {
+      "type": "object",
+      "properties": {
+        "requiredClusterSelector": {
+          "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1alpha1_ClusterSelector",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.ClusterSelector"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.ClusterPredicate",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_api_cluster_v1alpha1_ClusterSelector": {
+      "type": "object",
+      "properties": {
+        "claimSelector": {
+          "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1alpha1_ClusterClaimSelector",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.ClusterClaimSelector"
+        },
+        "labelSelector": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.ClusterSelector",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_api_cluster_v1alpha1_Placement": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "cluster.open-cluster-management.io/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "Placement",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1alpha1_PlacementSpec",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PlacementSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1alpha1_PlacementStatus",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PlacementStatus"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.Placement",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "open-cluster-management_io_api_cluster_v1alpha1_PlacementDecision": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "cluster.open-cluster-management.io/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "PlacementDecision",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "status": {
+          "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1alpha1_PlacementDecisionStatus",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PlacementDecisionStatus"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PlacementDecision",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "open-cluster-management_io_api_cluster_v1alpha1_PlacementDecisionList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "cluster.open-cluster-management.io/v1alpha1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1alpha1_PlacementDecision",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PlacementDecision"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "PlacementDecisionList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PlacementDecisionList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PlacementDecision\u003e"
+      ]
+    },
+    "open-cluster-management_io_api_cluster_v1alpha1_PlacementDecisionStatus": {
+      "type": "object",
+      "properties": {
+        "decisions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1alpha1_ClusterDecision",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.ClusterDecision"
+          }
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PlacementDecisionStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_api_cluster_v1alpha1_PlacementList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "cluster.open-cluster-management.io/v1alpha1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1alpha1_Placement",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.Placement"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "PlacementList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PlacementList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openclustermanagement.api.model.cluster.v1alpha1.Placement\u003e"
+      ]
+    },
+    "open-cluster-management_io_api_cluster_v1alpha1_PlacementSpec": {
+      "type": "object",
+      "properties": {
+        "clusterSets": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "numberOfClusters": {
+          "type": "integer",
+          "existingJavaType": "Integer"
+        },
+        "predicates": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1alpha1_ClusterPredicate",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.ClusterPredicate"
+          }
+        },
+        "prioritizerPolicy": {
+          "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1alpha1_PrioritizerPolicy",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PrioritizerPolicy"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PlacementSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_api_cluster_v1alpha1_PlacementStatus": {
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "items": {
+            "existingJavaType": "io.fabric8.kubernetes.api.model.Condition"
+          }
+        },
+        "numberOfSelectedClusters": {
+          "type": "integer"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PlacementStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_api_cluster_v1alpha1_PrioritizerConfig": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "weight": {
+          "type": "integer"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PrioritizerConfig",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_api_cluster_v1alpha1_PrioritizerPolicy": {
+      "type": "object",
+      "properties": {
+        "configurations": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1alpha1_PrioritizerConfig",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PrioritizerConfig"
+          }
+        },
+        "mode": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PrioritizerPolicy",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_api_cluster_v1beta1_ManagedClusterSet": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "cluster.open-cluster-management.io/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "ManagedClusterSet",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1beta1_ManagedClusterSetSpec",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSetSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1beta1_ManagedClusterSetStatus",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSetStatus"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSet",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "open-cluster-management_io_api_cluster_v1beta1_ManagedClusterSetBinding": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "cluster.open-cluster-management.io/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "ManagedClusterSetBinding",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1beta1_ManagedClusterSetBindingSpec",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSetBindingSpec"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSetBinding",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "open-cluster-management_io_api_cluster_v1beta1_ManagedClusterSetBindingList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "cluster.open-cluster-management.io/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1beta1_ManagedClusterSetBinding",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSetBinding"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "ManagedClusterSetBindingList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSetBindingList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSetBinding\u003e"
+      ]
+    },
+    "open-cluster-management_io_api_cluster_v1beta1_ManagedClusterSetBindingSpec": {
+      "type": "object",
+      "properties": {
+        "clusterSet": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSetBindingSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_api_cluster_v1beta1_ManagedClusterSetList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "cluster.open-cluster-management.io/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1beta1_ManagedClusterSet",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSet"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "ManagedClusterSetList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSetList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSet\u003e"
+      ]
+    },
+    "open-cluster-management_io_api_cluster_v1beta1_ManagedClusterSetSpec": {
+      "type": "object",
+      "javaType": "io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSetSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_api_cluster_v1beta1_ManagedClusterSetStatus": {
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "items": {
+            "existingJavaType": "io.fabric8.kubernetes.api.model.Condition"
+          }
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSetStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "open-cluster-management_io_api_cluster_v1_ClientConfig": {
+      "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1_ClientConfig",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1.ClientConfig"
+    },
+    "open-cluster-management_io_api_cluster_v1_ManagedCluster": {
+      "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1_ManagedCluster",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1.ManagedCluster"
+    },
+    "open-cluster-management_io_api_cluster_v1_ManagedClusterClaim": {
+      "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1_ManagedClusterClaim",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1.ManagedClusterClaim"
+    },
+    "open-cluster-management_io_api_cluster_v1_ManagedClusterList": {
+      "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1_ManagedClusterList",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1.ManagedClusterList"
+    },
+    "open-cluster-management_io_api_cluster_v1_ManagedClusterSpec": {
+      "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1_ManagedClusterSpec",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1.ManagedClusterSpec"
+    },
+    "open-cluster-management_io_api_cluster_v1_ManagedClusterStatus": {
+      "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1_ManagedClusterStatus",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1.ManagedClusterStatus"
+    },
+    "open-cluster-management_io_api_cluster_v1_ManagedClusterVersion": {
+      "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1_ManagedClusterVersion",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1.ManagedClusterVersion"
+    },
+    "open-cluster-management_io_api_cluster_v1alpha1_ClusterClaimSelector": {
+      "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1alpha1_ClusterClaimSelector",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.ClusterClaimSelector"
+    },
+    "open-cluster-management_io_api_cluster_v1alpha1_ClusterDecision": {
+      "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1alpha1_ClusterDecision",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.ClusterDecision"
+    },
+    "open-cluster-management_io_api_cluster_v1alpha1_ClusterPredicate": {
+      "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1alpha1_ClusterPredicate",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.ClusterPredicate"
+    },
+    "open-cluster-management_io_api_cluster_v1alpha1_ClusterSelector": {
+      "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1alpha1_ClusterSelector",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.ClusterSelector"
+    },
+    "open-cluster-management_io_api_cluster_v1alpha1_Placement": {
+      "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1alpha1_Placement",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.Placement"
+    },
+    "open-cluster-management_io_api_cluster_v1alpha1_PlacementDecision": {
+      "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1alpha1_PlacementDecision",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PlacementDecision"
+    },
+    "open-cluster-management_io_api_cluster_v1alpha1_PlacementDecisionList": {
+      "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1alpha1_PlacementDecisionList",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PlacementDecisionList"
+    },
+    "open-cluster-management_io_api_cluster_v1alpha1_PlacementDecisionStatus": {
+      "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1alpha1_PlacementDecisionStatus",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PlacementDecisionStatus"
+    },
+    "open-cluster-management_io_api_cluster_v1alpha1_PlacementList": {
+      "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1alpha1_PlacementList",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PlacementList"
+    },
+    "open-cluster-management_io_api_cluster_v1alpha1_PlacementSpec": {
+      "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1alpha1_PlacementSpec",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PlacementSpec"
+    },
+    "open-cluster-management_io_api_cluster_v1alpha1_PlacementStatus": {
+      "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1alpha1_PlacementStatus",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PlacementStatus"
+    },
+    "open-cluster-management_io_api_cluster_v1alpha1_PrioritizerConfig": {
+      "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1alpha1_PrioritizerConfig",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PrioritizerConfig"
+    },
+    "open-cluster-management_io_api_cluster_v1alpha1_PrioritizerPolicy": {
+      "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1alpha1_PrioritizerPolicy",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1alpha1.PrioritizerPolicy"
+    },
+    "open-cluster-management_io_api_cluster_v1beta1_ManagedClusterSet": {
+      "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1beta1_ManagedClusterSet",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSet"
+    },
+    "open-cluster-management_io_api_cluster_v1beta1_ManagedClusterSetBinding": {
+      "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1beta1_ManagedClusterSetBinding",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSetBinding"
+    },
+    "open-cluster-management_io_api_cluster_v1beta1_ManagedClusterSetBindingList": {
+      "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1beta1_ManagedClusterSetBindingList",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSetBindingList"
+    },
+    "open-cluster-management_io_api_cluster_v1beta1_ManagedClusterSetBindingSpec": {
+      "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1beta1_ManagedClusterSetBindingSpec",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSetBindingSpec"
+    },
+    "open-cluster-management_io_api_cluster_v1beta1_ManagedClusterSetList": {
+      "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1beta1_ManagedClusterSetList",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSetList"
+    },
+    "open-cluster-management_io_api_cluster_v1beta1_ManagedClusterSetSpec": {
+      "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1beta1_ManagedClusterSetSpec",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSetSpec"
+    },
+    "open-cluster-management_io_api_cluster_v1beta1_ManagedClusterSetStatus": {
+      "$ref": "#/definitions/open-cluster-management_io_api_cluster_v1beta1_ManagedClusterSetStatus",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.cluster.v1beta1.ManagedClusterSetStatus"
+    }
+  },
+  "additionalProperties": false
+}

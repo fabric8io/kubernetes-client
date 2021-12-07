@@ -1,0 +1,23 @@
+{
+  "apiVersion": "policy.open-cluster-management.io/v1beta1",
+  "kind": "PolicyAutomation",
+  "metadata": {
+    "name": "create-service-now-ticket"
+  },
+  "spec": {
+    "policyRef": "case5-test-policy",
+    "eventHook": "noncompliant",
+    "mode": "disabled",
+    "automationDef": {
+      "name": "Demo Job Template",
+      "secret": "toweraccess",
+      "extra_vars": {
+        "sn_severity": 1,
+        "sn_priority": 1,
+        "target_clusters": [
+          "cluster1"
+        ]
+      }
+    }
+  }
+}

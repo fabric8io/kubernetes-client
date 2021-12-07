@@ -1,0 +1,23 @@
+{
+  "apiVersion" : "apps.open-cluster-management.io/v1",
+  "kind" : "HelmRelease",
+  "metadata" : {
+    "name" : "nginx-ingress",
+    "namespace" : "default"
+  },
+  "repo" : {
+    "chartName" : "nginx-ingress",
+    "source" : {
+      "helmRepo" : {
+        "urls" : [ "https://kubernetes-charts.storage.googleapis.com/nginx-ingress-1.26.0.tgz" ]
+      },
+      "type" : "helmrepo"
+    },
+    "version" : "1.26.0"
+  },
+  "spec" : {
+    "defaultBackend" : {
+      "replicaCount" : 3
+    }
+  }
+}
