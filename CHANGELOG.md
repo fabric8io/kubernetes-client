@@ -7,9 +7,10 @@
 * Fix #3555: using the new builder for generic resources
 * Fix #3535: ensure clientKeyAlgo is set properly when loading config YAML from `fromKubeconfig`
 * Fix #3598: applying cancel to the correct future for waitUntilCondition and waitUntilReady
-* Fix #3615: opt into bookmarks by default
+* Fix #3609: adding locking to prevent long running Watcher methods from causing reconnects with concurrent processing
 
 #### Improvements
+* Fix #3615: opt into bookmarks by default
 
 #### Dependency Upgrade
 
