@@ -1,0 +1,1481 @@
+{
+  "id": "http://fabric8.io/OpenClusterManagement#Apps",
+  "$schema": "http://json-schema.org/draft-05/schema#",
+  "definitions": {
+    "open-cluster-management_io_multicloud-operators-channel_pkg_apis_apps_v1_Channel": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "apps.open-cluster-management.io/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "Channel",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-channel_pkg_apis_apps_v1_ChannelSpec",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorschannel.apps.v1.ChannelSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-channel_pkg_apis_apps_v1_ChannelStatus",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorschannel.apps.v1.ChannelStatus"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorschannel.apps.v1.Channel",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "open-cluster-management_io_multicloud-operators-channel_pkg_apis_apps_v1_ChannelGate": {
+      "type": "object",
+      "properties": {
+        "annotations": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "labelSelector": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorschannel.apps.v1.ChannelGate",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_multicloud-operators-channel_pkg_apis_apps_v1_ChannelList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "apps.open-cluster-management.io/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-channel_pkg_apis_apps_v1_Channel",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorschannel.apps.v1.Channel"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "ChannelList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorschannel.apps.v1.ChannelList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openclustermanagement.api.model.multicloudoperatorschannel.apps.v1.Channel\u003e"
+      ]
+    },
+    "open-cluster-management_io_multicloud-operators-channel_pkg_apis_apps_v1_ChannelSpec": {
+      "type": "object",
+      "properties": {
+        "configMapRef": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+        },
+        "gates": {
+          "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-channel_pkg_apis_apps_v1_ChannelGate",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorschannel.apps.v1.ChannelGate"
+        },
+        "insecureSkipVerify": {
+          "type": "boolean"
+        },
+        "pathname": {
+          "type": "string"
+        },
+        "secretRef": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+        },
+        "sourceNamespaces": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorschannel.apps.v1.ChannelSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_multicloud-operators-channel_pkg_apis_apps_v1_ChannelStatus": {
+      "type": "object",
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorschannel.apps.v1.ChannelStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_AltSource": {
+      "type": "object",
+      "properties": {
+        "configMapRef": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+        },
+        "git": {
+          "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_Git",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.Git"
+        },
+        "github": {
+          "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_GitHub",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.GitHub"
+        },
+        "helmRepo": {
+          "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_HelmRepo",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.HelmRepo"
+        },
+        "insecureSkipVerify": {
+          "type": "boolean"
+        },
+        "secretRef": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.AltSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_Git": {
+      "type": "object",
+      "properties": {
+        "branch": {
+          "type": "string"
+        },
+        "chartPath": {
+          "type": "string"
+        },
+        "urls": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.Git",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_GitHub": {
+      "type": "object",
+      "properties": {
+        "branch": {
+          "type": "string"
+        },
+        "chartPath": {
+          "type": "string"
+        },
+        "urls": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.GitHub",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_HelmAppCondition": {
+      "type": "object",
+      "properties": {
+        "lastTransitionTime": {
+          "existingJavaType": "java.lang.String"
+        },
+        "message": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.HelmAppCondition",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_HelmAppRelease": {
+      "type": "object",
+      "properties": {
+        "manifest": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.HelmAppRelease",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_HelmAppStatus": {
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_HelmAppCondition",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.HelmAppCondition"
+          }
+        },
+        "deployedRelease": {
+          "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_HelmAppRelease",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.HelmAppRelease"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.HelmAppStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_HelmRelease": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "apps.open-cluster-management.io/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "HelmRelease",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "repo": {
+          "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_HelmReleaseRepo",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.HelmReleaseRepo"
+        },
+        "spec": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,Object\u003e"
+        },
+        "status": {
+          "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_HelmAppStatus",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.HelmAppStatus"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.HelmRelease",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_HelmReleaseList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "apps.open-cluster-management.io/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_HelmRelease",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.HelmRelease"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "HelmReleaseList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.HelmReleaseList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.HelmRelease\u003e"
+      ]
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_HelmReleaseRepo": {
+      "type": "object",
+      "properties": {
+        "altSource": {
+          "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_AltSource",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.AltSource"
+        },
+        "chartName": {
+          "type": "string"
+        },
+        "configMapRef": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+        },
+        "digest": {
+          "type": "string"
+        },
+        "insecureSkipVerify": {
+          "type": "boolean"
+        },
+        "secretRef": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+        },
+        "source": {
+          "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_Source",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.Source"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.HelmReleaseRepo",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_HelmRepo": {
+      "type": "object",
+      "properties": {
+        "urls": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.HelmRepo",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_Source": {
+      "type": "object",
+      "properties": {
+        "git": {
+          "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_Git",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.Git"
+        },
+        "github": {
+          "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_GitHub",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.GitHub"
+        },
+        "helmRepo": {
+          "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_HelmRepo",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.HelmRepo"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.Source",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_placementrule_v1_GenericClusterReference": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.placementrule.v1.GenericClusterReference",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_placementrule_v1_Placement": {
+      "type": "object",
+      "properties": {
+        "clusterSelector": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
+        },
+        "clusters": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_placementrule_v1_GenericClusterReference",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.placementrule.v1.GenericClusterReference"
+          }
+        },
+        "local": {
+          "type": "boolean",
+          "existingJavaType": "Boolean"
+        },
+        "placementRef": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.placementrule.v1.Placement",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_AllowDenyItem": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string"
+        },
+        "kinds": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.AllowDenyItem",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_AnsibleJobsStatus": {
+      "type": "object",
+      "properties": {
+        "lastposthookjob": {
+          "type": "string"
+        },
+        "lastprehookjob": {
+          "type": "string"
+        },
+        "posthookjobshistory": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "prehookjobshistory": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.AnsibleJobsStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_ClusterOverride": {
+      "type": "object",
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.ClusterOverride",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_ClusterOverrides": {
+      "type": "object",
+      "properties": {
+        "clusterName": {
+          "type": "string"
+        },
+        "clusterOverrides": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_ClusterOverride",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.ClusterOverride"
+          }
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.ClusterOverrides",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_HourRange": {
+      "type": "object",
+      "properties": {
+        "end": {
+          "type": "string"
+        },
+        "start": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.HourRange",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_Overrides": {
+      "type": "object",
+      "properties": {
+        "packageAlias": {
+          "type": "string"
+        },
+        "packageName": {
+          "type": "string"
+        },
+        "packageOverrides": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "existingJavaType": "java.util.Map\u003cString, Object\u003e"
+          }
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.Overrides",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_PackageFilter": {
+      "type": "object",
+      "properties": {
+        "annotations": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "filterRef": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.LocalObjectReference"
+        },
+        "labelSelector": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.PackageFilter",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_Subscription": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "apps.open-cluster-management.io/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "Subscription",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_SubscriptionSpec",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.SubscriptionSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_SubscriptionStatus",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.SubscriptionStatus"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.Subscription",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_SubscriptionList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "apps.open-cluster-management.io/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_Subscription",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.Subscription"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "SubscriptionList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.SubscriptionList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.Subscription\u003e"
+      ]
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_SubscriptionPerClusterStatus": {
+      "type": "object",
+      "properties": {
+        "packages": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.SubscriptionUnitStatus\u003e"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.SubscriptionPerClusterStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_SubscriptionSpec": {
+      "type": "object",
+      "properties": {
+        "allow": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_AllowDenyItem",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.AllowDenyItem"
+          }
+        },
+        "channel": {
+          "type": "string"
+        },
+        "deny": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_AllowDenyItem",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.AllowDenyItem"
+          }
+        },
+        "hooksecretref": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+        },
+        "name": {
+          "type": "string"
+        },
+        "overrides": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_ClusterOverrides",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.ClusterOverrides"
+          }
+        },
+        "packageFilter": {
+          "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_PackageFilter",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.PackageFilter"
+        },
+        "packageOverrides": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_Overrides",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.Overrides"
+          }
+        },
+        "placement": {
+          "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_placementrule_v1_Placement",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.placementrule.v1.Placement"
+        },
+        "secondaryChannel": {
+          "type": "string"
+        },
+        "timewindow": {
+          "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_TimeWindow",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.TimeWindow"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.SubscriptionSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_SubscriptionStatus": {
+      "type": "object",
+      "properties": {
+        "ansiblejobs": {
+          "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_AnsibleJobsStatus",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.AnsibleJobsStatus"
+        },
+        "lastUpdateTime": {
+          "existingJavaType": "java.lang.String"
+        },
+        "message": {
+          "type": "string"
+        },
+        "phase": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "statuses": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.SubscriptionPerClusterStatus\u003e"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.SubscriptionStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_SubscriptionUnitStatus": {
+      "type": "object",
+      "properties": {
+        "lastUpdateTime": {
+          "existingJavaType": "java.lang.String"
+        },
+        "message": {
+          "type": "string"
+        },
+        "phase": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "resourceStatus": {
+          "existingJavaType": "java.util.Map\u003cString, Object\u003e"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.SubscriptionUnitStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_TimeWindow": {
+      "type": "object",
+      "properties": {
+        "daysofweek": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "hours": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_HourRange",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.HourRange"
+          }
+        },
+        "location": {
+          "type": "string"
+        },
+        "windowtype": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.TimeWindow",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "sigs_k8s_io_application_api_v1beta1_Application": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "app.k8s.io/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "Application",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/sigs_k8s_io_application_api_v1beta1_ApplicationSpec",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.ApplicationSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/sigs_k8s_io_application_api_v1beta1_ApplicationStatus",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.ApplicationStatus"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.Application",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "sigs_k8s_io_application_api_v1beta1_ApplicationList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "app.k8s.io/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/sigs_k8s_io_application_api_v1beta1_Application",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.Application"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "ApplicationList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.ApplicationList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.Application\u003e"
+      ]
+    },
+    "sigs_k8s_io_application_api_v1beta1_ApplicationSpec": {
+      "type": "object",
+      "properties": {
+        "addOwnerRef": {
+          "type": "boolean"
+        },
+        "assemblyPhase": {
+          "type": "string"
+        },
+        "componentKinds": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "existingJavaType": "io.fabric8.kubernetes.api.model.GroupKind"
+          }
+        },
+        "descriptor": {
+          "$ref": "#/definitions/sigs_k8s_io_application_api_v1beta1_Descriptor",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.Descriptor"
+        },
+        "info": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/sigs_k8s_io_application_api_v1beta1_InfoItem",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.InfoItem"
+          }
+        },
+        "selector": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.ApplicationSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "sigs_k8s_io_application_api_v1beta1_ApplicationStatus": {
+      "type": "object",
+      "properties": {
+        "components": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/sigs_k8s_io_application_api_v1beta1_ObjectStatus",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.ObjectStatus"
+          }
+        },
+        "componentsReady": {
+          "type": "string"
+        },
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/sigs_k8s_io_application_api_v1beta1_Condition",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.Condition"
+          }
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.ApplicationStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "sigs_k8s_io_application_api_v1beta1_Condition": {
+      "type": "object",
+      "properties": {
+        "lastTransitionTime": {
+          "existingJavaType": "java.lang.String"
+        },
+        "lastUpdateTime": {
+          "existingJavaType": "java.lang.String"
+        },
+        "message": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.Condition",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "sigs_k8s_io_application_api_v1beta1_ConfigMapKeySelector": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string"
+        },
+        "fieldPath": {
+          "type": "string"
+        },
+        "key": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "resourceVersion": {
+          "type": "string"
+        },
+        "uid": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.ConfigMapKeySelector",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "sigs_k8s_io_application_api_v1beta1_ContactData": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.ContactData",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "sigs_k8s_io_application_api_v1beta1_Descriptor": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "icons": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/sigs_k8s_io_application_api_v1beta1_ImageSpec",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.ImageSpec"
+          }
+        },
+        "keywords": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "links": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/sigs_k8s_io_application_api_v1beta1_Link",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.Link"
+          }
+        },
+        "maintainers": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/sigs_k8s_io_application_api_v1beta1_ContactData",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.ContactData"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "owners": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/sigs_k8s_io_application_api_v1beta1_ContactData",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.ContactData"
+          }
+        },
+        "type": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.Descriptor",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "sigs_k8s_io_application_api_v1beta1_ImageSpec": {
+      "type": "object",
+      "properties": {
+        "size": {
+          "type": "string"
+        },
+        "src": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.ImageSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "sigs_k8s_io_application_api_v1beta1_InfoItem": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        },
+        "valueFrom": {
+          "$ref": "#/definitions/sigs_k8s_io_application_api_v1beta1_InfoItemSource",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.InfoItemSource"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.InfoItem",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "sigs_k8s_io_application_api_v1beta1_InfoItemSource": {
+      "type": "object",
+      "properties": {
+        "configMapKeyRef": {
+          "$ref": "#/definitions/sigs_k8s_io_application_api_v1beta1_ConfigMapKeySelector",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.ConfigMapKeySelector"
+        },
+        "ingressRef": {
+          "$ref": "#/definitions/sigs_k8s_io_application_api_v1beta1_IngressSelector",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.IngressSelector"
+        },
+        "secretKeyRef": {
+          "$ref": "#/definitions/sigs_k8s_io_application_api_v1beta1_SecretKeySelector",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.SecretKeySelector"
+        },
+        "serviceRef": {
+          "$ref": "#/definitions/sigs_k8s_io_application_api_v1beta1_ServiceSelector",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.ServiceSelector"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.InfoItemSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "sigs_k8s_io_application_api_v1beta1_IngressSelector": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string"
+        },
+        "fieldPath": {
+          "type": "string"
+        },
+        "host": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "protocol": {
+          "type": "string"
+        },
+        "resourceVersion": {
+          "type": "string"
+        },
+        "uid": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.IngressSelector",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "sigs_k8s_io_application_api_v1beta1_Link": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.Link",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "sigs_k8s_io_application_api_v1beta1_ObjectStatus": {
+      "type": "object",
+      "properties": {
+        "group": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "link": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.ObjectStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "sigs_k8s_io_application_api_v1beta1_SecretKeySelector": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string"
+        },
+        "fieldPath": {
+          "type": "string"
+        },
+        "key": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "resourceVersion": {
+          "type": "string"
+        },
+        "uid": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.SecretKeySelector",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "sigs_k8s_io_application_api_v1beta1_ServiceSelector": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string"
+        },
+        "fieldPath": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer",
+          "existingJavaType": "Integer"
+        },
+        "protocol": {
+          "type": "string"
+        },
+        "resourceVersion": {
+          "type": "string"
+        },
+        "uid": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.ServiceSelector",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "open-cluster-management_io_multicloud-operators-channel_pkg_apis_apps_v1_Channel": {
+      "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-channel_pkg_apis_apps_v1_Channel",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorschannel.apps.v1.Channel"
+    },
+    "open-cluster-management_io_multicloud-operators-channel_pkg_apis_apps_v1_ChannelGate": {
+      "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-channel_pkg_apis_apps_v1_ChannelGate",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorschannel.apps.v1.ChannelGate"
+    },
+    "open-cluster-management_io_multicloud-operators-channel_pkg_apis_apps_v1_ChannelList": {
+      "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-channel_pkg_apis_apps_v1_ChannelList",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorschannel.apps.v1.ChannelList"
+    },
+    "open-cluster-management_io_multicloud-operators-channel_pkg_apis_apps_v1_ChannelSpec": {
+      "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-channel_pkg_apis_apps_v1_ChannelSpec",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorschannel.apps.v1.ChannelSpec"
+    },
+    "open-cluster-management_io_multicloud-operators-channel_pkg_apis_apps_v1_ChannelStatus": {
+      "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-channel_pkg_apis_apps_v1_ChannelStatus",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorschannel.apps.v1.ChannelStatus"
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_AltSource": {
+      "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_AltSource",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.AltSource"
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_Git": {
+      "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_Git",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.Git"
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_GitHub": {
+      "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_GitHub",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.GitHub"
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_HelmAppCondition": {
+      "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_HelmAppCondition",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.HelmAppCondition"
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_HelmAppRelease": {
+      "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_HelmAppRelease",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.HelmAppRelease"
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_HelmAppStatus": {
+      "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_HelmAppStatus",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.HelmAppStatus"
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_HelmRelease": {
+      "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_HelmRelease",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.HelmRelease"
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_HelmReleaseList": {
+      "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_HelmReleaseList",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.HelmReleaseList"
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_HelmReleaseRepo": {
+      "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_HelmReleaseRepo",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.HelmReleaseRepo"
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_HelmRepo": {
+      "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_HelmRepo",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.HelmRepo"
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_Source": {
+      "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_helmrelease_v1_Source",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.helmrelease.v1.Source"
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_placementrule_v1_GenericClusterReference": {
+      "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_placementrule_v1_GenericClusterReference",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.placementrule.v1.GenericClusterReference"
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_placementrule_v1_Placement": {
+      "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_placementrule_v1_Placement",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.placementrule.v1.Placement"
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_AllowDenyItem": {
+      "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_AllowDenyItem",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.AllowDenyItem"
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_AnsibleJobsStatus": {
+      "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_AnsibleJobsStatus",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.AnsibleJobsStatus"
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_ClusterOverride": {
+      "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_ClusterOverride",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.ClusterOverride"
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_ClusterOverrides": {
+      "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_ClusterOverrides",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.ClusterOverrides"
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_HourRange": {
+      "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_HourRange",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.HourRange"
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_Overrides": {
+      "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_Overrides",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.Overrides"
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_PackageFilter": {
+      "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_PackageFilter",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.PackageFilter"
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_Subscription": {
+      "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_Subscription",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.Subscription"
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_SubscriptionList": {
+      "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_SubscriptionList",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.SubscriptionList"
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_SubscriptionPerClusterStatus": {
+      "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_SubscriptionPerClusterStatus",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.SubscriptionPerClusterStatus"
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_SubscriptionSpec": {
+      "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_SubscriptionSpec",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.SubscriptionSpec"
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_SubscriptionStatus": {
+      "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_SubscriptionStatus",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.SubscriptionStatus"
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_SubscriptionUnitStatus": {
+      "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_SubscriptionUnitStatus",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.SubscriptionUnitStatus"
+    },
+    "open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_TimeWindow": {
+      "$ref": "#/definitions/open-cluster-management_io_multicloud-operators-subscription_pkg_apis_apps_v1_TimeWindow",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorssubscription.apps.v1.TimeWindow"
+    },
+    "sigs_k8s_io_application_api_v1beta1_Application": {
+      "$ref": "#/definitions/sigs_k8s_io_application_api_v1beta1_Application",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.Application"
+    },
+    "sigs_k8s_io_application_api_v1beta1_ApplicationList": {
+      "$ref": "#/definitions/sigs_k8s_io_application_api_v1beta1_ApplicationList",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.ApplicationList"
+    },
+    "sigs_k8s_io_application_api_v1beta1_ApplicationSpec": {
+      "$ref": "#/definitions/sigs_k8s_io_application_api_v1beta1_ApplicationSpec",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.ApplicationSpec"
+    },
+    "sigs_k8s_io_application_api_v1beta1_ApplicationStatus": {
+      "$ref": "#/definitions/sigs_k8s_io_application_api_v1beta1_ApplicationStatus",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.ApplicationStatus"
+    },
+    "sigs_k8s_io_application_api_v1beta1_Condition": {
+      "$ref": "#/definitions/sigs_k8s_io_application_api_v1beta1_Condition",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.Condition"
+    },
+    "sigs_k8s_io_application_api_v1beta1_ConfigMapKeySelector": {
+      "$ref": "#/definitions/sigs_k8s_io_application_api_v1beta1_ConfigMapKeySelector",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.ConfigMapKeySelector"
+    },
+    "sigs_k8s_io_application_api_v1beta1_ContactData": {
+      "$ref": "#/definitions/sigs_k8s_io_application_api_v1beta1_ContactData",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.ContactData"
+    },
+    "sigs_k8s_io_application_api_v1beta1_Descriptor": {
+      "$ref": "#/definitions/sigs_k8s_io_application_api_v1beta1_Descriptor",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.Descriptor"
+    },
+    "sigs_k8s_io_application_api_v1beta1_ImageSpec": {
+      "$ref": "#/definitions/sigs_k8s_io_application_api_v1beta1_ImageSpec",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.ImageSpec"
+    },
+    "sigs_k8s_io_application_api_v1beta1_InfoItem": {
+      "$ref": "#/definitions/sigs_k8s_io_application_api_v1beta1_InfoItem",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.InfoItem"
+    },
+    "sigs_k8s_io_application_api_v1beta1_InfoItemSource": {
+      "$ref": "#/definitions/sigs_k8s_io_application_api_v1beta1_InfoItemSource",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.InfoItemSource"
+    },
+    "sigs_k8s_io_application_api_v1beta1_IngressSelector": {
+      "$ref": "#/definitions/sigs_k8s_io_application_api_v1beta1_IngressSelector",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.IngressSelector"
+    },
+    "sigs_k8s_io_application_api_v1beta1_Link": {
+      "$ref": "#/definitions/sigs_k8s_io_application_api_v1beta1_Link",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.Link"
+    },
+    "sigs_k8s_io_application_api_v1beta1_ObjectStatus": {
+      "$ref": "#/definitions/sigs_k8s_io_application_api_v1beta1_ObjectStatus",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.ObjectStatus"
+    },
+    "sigs_k8s_io_application_api_v1beta1_SecretKeySelector": {
+      "$ref": "#/definitions/sigs_k8s_io_application_api_v1beta1_SecretKeySelector",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.SecretKeySelector"
+    },
+    "sigs_k8s_io_application_api_v1beta1_ServiceSelector": {
+      "$ref": "#/definitions/sigs_k8s_io_application_api_v1beta1_ServiceSelector",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.app.k8s.v1beta1.ServiceSelector"
+    }
+  },
+  "additionalProperties": false
+}

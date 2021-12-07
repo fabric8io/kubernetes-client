@@ -1,0 +1,27 @@
+{
+  "apiVersion": "observability.open-cluster-management.io/v1beta2",
+  "kind": "MultiClusterObservability",
+  "metadata": {
+    "name": "example"
+  },
+  "spec": {
+    "observabilityAddonSpec": {
+      "enableMetrics": true,
+      "interval": 10,
+      "resources": {
+        "limits": {
+          "cpu": "1000m"
+        },
+        "requests": {
+          "cpu": "500m"
+        }
+      }
+    },
+    "storageConfig": {
+      "metricObjectStorage": {
+        "name": "thanos-object-storage",
+        "key": "thanos.yaml"
+      }
+    }
+  }
+}

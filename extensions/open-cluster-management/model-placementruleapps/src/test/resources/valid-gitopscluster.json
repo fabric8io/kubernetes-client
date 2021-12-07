@@ -1,0 +1,20 @@
+{
+  "apiVersion": "apps.open-cluster-management.io/v1beta1",
+  "kind": "GitOpsCluster",
+  "metadata": {
+    "name": "argo-acm-importer",
+    "namespace": "openshift-gitops"
+  },
+  "spec": {
+    "argoServer": {
+      "cluster": "notused",
+      "argoNamespace": "openshift-gitops"
+    },
+    "placementRef": {
+      "kind": "Placement",
+      "apiVersion": "cluster.open-cluster-management.io/v1alpha1",
+      "name": "all-openshift-clusters",
+      "namespace": "openshift-gitops"
+    }
+  }
+}

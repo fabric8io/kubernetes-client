@@ -1,0 +1,9 @@
+{
+  "apiVersion" : "cluster.open-cluster-management.io/v1alpha1",
+  "kind" : "ManagedClusterSet",
+  "metadata" : {
+    "name" : "clusterset1"
+  },
+  "spec": { },
+  "status" : { }
+}

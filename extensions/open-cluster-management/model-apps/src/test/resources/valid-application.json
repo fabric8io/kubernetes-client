@@ -1,0 +1,23 @@
+{
+  "apiVersion" : "app.k8s.io/v1beta1",
+  "kind" : "Application",
+  "metadata" : {
+    "labels" : {
+      "app" : "nginx-app-details"
+    },
+    "name" : "nginx-app-3",
+    "namespace" : "ns-sub-1"
+  },
+  "spec" : {
+    "componentKinds" : [ {
+      "group" : "apps.open-cluster-management.io",
+      "kind" : "Subscription"
+    } ],
+    "selector" : {
+      "matchLabels" : {
+        "app" : "nginx-app-details"
+      }
+    }
+  },
+  "status" : { }
+}

@@ -1,0 +1,16 @@
+{
+  "apiVersion": "apps.open-cluster-management.io/v1",
+  "kind": "Channel",
+  "metadata": {
+    "name": "sample-channel",
+    "namespace": "default"
+  },
+  "spec": {
+    "configMapRef": {
+      "kind": "configmap",
+      "name": "bookinfo-resource-filter-configmap"
+    },
+    "pathname": "https://charts.helm.sh/stable",
+    "type": "HelmRepo"
+  }
+}

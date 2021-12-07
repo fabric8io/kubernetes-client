@@ -1,0 +1,10 @@
+{
+  "apiVersion": "discovery.open-cluster-management.io/v1alpha1",
+  "kind": "DiscoveredCluster",
+  "metadata": {
+    "name": "discoveredcluster-sample"
+  },
+  "spec": {
+    "name": "foo-cluster"
+  }
+}

@@ -69,6 +69,14 @@ declare -a modules=(
     "../extensions/volumesnapshot/generator"
     "../extensions/istio/generator-v1alpha3"
     "../extensions/istio/generator-v1beta1"
+    "../extensions/open-cluster-management/generator-apps"
+    "../extensions/open-cluster-management/generator-cluster"
+    "../extensions/open-cluster-management/generator-discovery"
+    "../extensions/open-cluster-management/generator-observability"
+    "../extensions/open-cluster-management/generator-operator"
+    "../extensions/open-cluster-management/generator-placementruleapps"
+    "../extensions/open-cluster-management/generator-policy"
+    "../extensions/open-cluster-management/generator-search"
 )
 
 declare -a extensionModuleParents=(

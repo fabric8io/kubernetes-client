@@ -1,0 +1,19 @@
+{
+  "apiVersion": "search.open-cluster-management.io/v1alpha1",
+  "kind": "SearchOperator",
+  "metadata": {
+    "name": "searchoperator"
+  },
+  "spec": {
+    "redisgraph_resource": {
+      "limit_memory": "1Gi",
+      "request_cpu": "25m",
+      "request_memory": "64Mi"
+    },
+    "pullpolicy": "Always",
+    "pullsecret": "multiclusterhub-operator-pull-secret",
+    "searchimageoverrides": {
+      "redisgraph_tls": "quay.io/open-cluster-management/redisgraph-tls:2.4.0-e2ec66da43abff85a7fcf56f22ed5849e0589069"
+    }
+  }
+}

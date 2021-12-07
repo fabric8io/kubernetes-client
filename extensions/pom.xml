@@ -39,6 +39,7 @@
     <module>verticalpodautoscaler</module>
     <module>volcano</module>
     <module>istio</module>
+    <module>open-cluster-management</module>
   </modules>
 
 </project>

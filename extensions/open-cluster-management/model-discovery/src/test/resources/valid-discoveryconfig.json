@@ -1,0 +1,13 @@
+{
+  "apiVersion": "discovery.open-cluster-management.io/v1alpha1",
+  "kind": "DiscoveryConfig",
+  "metadata": {
+    "name": "discovery"
+  },
+  "spec": {
+    "credential": "ocm-api-token",
+    "filters": {
+      "lastActive": 7
+    }
+  }
+}
