@@ -45,7 +45,6 @@ public class WorkloadEntryExample {
       .endMetadata()
       .withNewSpec()
       .withServiceAccount("details-legacy")
-      .withAddress("2.2.2.2")
       .withLabels(Collections.singletonMap("app", "details-legacy"))
       .endSpec()
       .build());

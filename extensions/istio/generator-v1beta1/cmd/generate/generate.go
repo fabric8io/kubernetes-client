@@ -123,6 +123,9 @@ func main() {
 			reflect.TypeOf(api_security_v1beta1.AuthorizationPolicy{}):   "io.fabric8.istio.api.security.v1beta1.AuthorizationPolicySpec",
 			reflect.TypeOf(api_security_v1beta1.PeerAuthentication{}):    "io.fabric8.istio.api.security.v1beta1.PeerAuthenticationSpec",
 			reflect.TypeOf(api_security_v1beta1.RequestAuthentication{}): "io.fabric8.istio.api.security.v1beta1.RequestAuthenticationSpec",
+
+			// Avoid same name for:
+			reflect.TypeOf(api_networking_v1beta1.LoadBalancerSettings_ConsistentHashLB_HTTPCookie{}): "io.fabric8.istio.api.networking.v1beta1.LoadBalancerSettingsConsistentHashLBHttpCookieValue",
 		},
 		CustomJavaNameRule: func(packageName *string, className *string) {
 			// remove underscores
