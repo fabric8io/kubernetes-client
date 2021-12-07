@@ -117,7 +117,7 @@ class DefaultSharedIndexInformerTest {
 
     server.expect().withPath("/api/v1/namespaces/test/pods")
       .andReturn(200, getList(startResourceVersion, Pod.class)).once();
-    server.expect().withPath("/api/v1/namespaces/test/pods?resourceVersion=" + startResourceVersion + "&watch=true")
+    server.expect().withPath("/api/v1/namespaces/test/pods?resourceVersion=" + startResourceVersion + "&allowWatchBookmarks=true&watch=true")
       .andUpgradeToWebSocket()
       .open()
       .waitFor(WATCH_EVENT_EMIT_TIME)
@@ -160,7 +160,7 @@ class DefaultSharedIndexInformerTest {
 
     server.expect().withPath("/api/v1/namespaces/test/pods?fieldSelector=" + Utils.toUrlEncoded("metadata.name=pod1"))
       .andReturn(200, getList(startResourceVersion, Pod.class)).once();
-    server.expect().withPath("/api/v1/namespaces/test/pods?fieldSelector=" + Utils.toUrlEncoded("metadata.name=pod1") + "&resourceVersion=" + startResourceVersion + "&watch=true")
+    server.expect().withPath("/api/v1/namespaces/test/pods?fieldSelector=" + Utils.toUrlEncoded("metadata.name=pod1") + "&resourceVersion=" + startResourceVersion + "&allowWatchBookmarks=true&watch=true")
       .andUpgradeToWebSocket()
       .open()
       .waitFor(WATCH_EVENT_EMIT_TIME)
@@ -204,7 +204,7 @@ class DefaultSharedIndexInformerTest {
 
     server.expect().withPath("/api/v1/pods")
       .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(startResourceVersion).endMetadata().withItems(Collections.emptyList()).build()).once();
-    server.expect().withPath("/api/v1/pods?resourceVersion=" + startResourceVersion + "&watch=true")
+    server.expect().withPath("/api/v1/pods?resourceVersion=" + startResourceVersion + "&allowWatchBookmarks=true&watch=true")
       .andUpgradeToWebSocket()
       .open()
       .waitFor(WATCH_EVENT_EMIT_TIME)
@@ -248,7 +248,7 @@ class DefaultSharedIndexInformerTest {
 
     server.expect().withPath("/api/v1/pods")
       .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(startResourceVersion).endMetadata().withItems(Collections.emptyList()).build()).once();
-    server.expect().withPath("/api/v1/pods?resourceVersion=" + startResourceVersion + "&watch=true")
+    server.expect().withPath("/api/v1/pods?resourceVersion=" + startResourceVersion + "&allowWatchBookmarks=true&watch=true")
       .andUpgradeToWebSocket()
       .open()
       .waitFor(WATCH_EVENT_EMIT_TIME)
@@ -259,7 +259,7 @@ class DefaultSharedIndexInformerTest {
     server.expect().withPath("/api/v1/pods")
       .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(mid2ResourceVersion).endMetadata().withItems(
               new PodBuilder().withNewMetadata().withNamespace("test").withName("pod1").withResourceVersion(endResourceVersion).endMetadata().build()).build()).times(2);
-    server.expect().withPath("/api/v1/pods?resourceVersion=" + mid2ResourceVersion + "&watch=true")
+    server.expect().withPath("/api/v1/pods?resourceVersion=" + mid2ResourceVersion + "&allowWatchBookmarks=true&watch=true")
       .andUpgradeToWebSocket()
       .open()
       .waitFor(WATCH_EVENT_EMIT_TIME)
@@ -302,7 +302,7 @@ class DefaultSharedIndexInformerTest {
 
     server.expect().withPath("/api/v1/pods")
       .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(startResourceVersion).endMetadata().withItems(Collections.emptyList()).build()).once();
-    server.expect().withPath("/api/v1/pods?resourceVersion=" + startResourceVersion + "&watch=true")
+    server.expect().withPath("/api/v1/pods?resourceVersion=" + startResourceVersion + "&allowWatchBookmarks=true&watch=true")
       .andUpgradeToWebSocket()
       .open()
       .waitFor(WATCH_EVENT_EMIT_TIME)
@@ -348,7 +348,7 @@ class DefaultSharedIndexInformerTest {
     String startResourceVersion = "1000", endResourceVersion = "1001";
     server.expect().withPath("/api/v1/namespaces/test/pods")
       .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(startResourceVersion).endMetadata().withItems(Collections.emptyList()).build()).once();
-    server.expect().withPath("/api/v1/namespaces/test/pods?resourceVersion=" + startResourceVersion + "&watch=true")
+    server.expect().withPath("/api/v1/namespaces/test/pods?resourceVersion=" + startResourceVersion + "&allowWatchBookmarks=true&watch=true")
       .andUpgradeToWebSocket()
       .open()
       .waitFor(WATCH_EVENT_EMIT_TIME)
@@ -834,7 +834,7 @@ class DefaultSharedIndexInformerTest {
       .andReturn(200, new PodListBuilder().withNewMetadata().withResourceVersion(startResourceVersion).endMetadata().withItems(Collections.emptyList()).build()).once();
 
     // initial watch - terminates with an exception
-    server.expect().withPath("/api/v1/pods?resourceVersion=" + startResourceVersion + "&watch=true")
+    server.expect().withPath("/api/v1/pods?resourceVersion=" + startResourceVersion + "&allowWatchBookmarks=true&watch=true")
       .andUpgradeToWebSocket()
       .open()
       .waitFor(WATCH_EVENT_EMIT_TIME)
@@ -844,7 +844,7 @@ class DefaultSharedIndexInformerTest {
       .done().always();
 
     // should pick this up after the termination
-    server.expect().withPath("/api/v1/pods?resourceVersion=" + midResourceVersion + "&watch=true")
+    server.expect().withPath("/api/v1/pods?resourceVersion=" + midResourceVersion + "&allowWatchBookmarks=true&watch=true")
       .andUpgradeToWebSocket()
       .open()
       .waitFor(WATCH_EVENT_EMIT_TIME)
@@ -991,7 +991,7 @@ class DefaultSharedIndexInformerTest {
       watchUrl += "?";
     }
 
-    watchUrl += "resourceVersion=" + startResourceVersion + "&watch=true";
+    watchUrl += "resourceVersion=" + startResourceVersion + "&allowWatchBookmarks=true&watch=true";
     server.expect().withPath(watchUrl)
       .andUpgradeToWebSocket()
       .open()

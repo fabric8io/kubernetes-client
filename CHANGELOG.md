@@ -7,6 +7,7 @@
 * Fix #3555: using the new builder for generic resources
 * Fix #3535: ensure clientKeyAlgo is set properly when loading config YAML from `fromKubeconfig`
 * Fix #3598: applying cancel to the correct future for waitUntilCondition and waitUntilReady
+* Fix #3615: opt into bookmarks by default
 
 #### Improvements
 
@@ -16,6 +17,7 @@
 * Fix #3579: Add support for Volcano extension
 
 #### _**Note**_: Breaking changes in the API
+- If you do not wish to receive bookmarks, then set ListOptions.allowWatchBookmarks=false - otherwise your Watch will default to requesting bookmarks.  If supported by the api-server, this will typically avoid 410 exceptions when keeping the watch alive.
 
 ### 5.10.1 (2021-11-12)
 

@@ -76,7 +76,10 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     this.currentReconnectAttempt = new AtomicInteger(0);
     this.forceClosed = new AtomicBoolean();
     this.receiveBookmarks = Boolean.TRUE.equals(listOptions.getAllowWatchBookmarks());
-    listOptions.setAllowWatchBookmarks(true);
+    // opt into bookmarks by default 
+    if (listOptions.getAllowWatchBookmarks() == null) {
+      listOptions.setAllowWatchBookmarks(true);
+    }
     this.requestBuilder = new BaseOperationRequestBuilder<>(baseOperation, listOptions);
     this.client = clientSupplier.get();
     
