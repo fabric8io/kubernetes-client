@@ -1518,7 +1518,7 @@
           "existingJavaType": "java.lang.String"
         }
       },
-      "javaType": "io.fabric8.istio.api.networking.v1alpha3.LoadBalancerSettingsConsistentHashLBHTTPCookie",
+      "javaType": "io.fabric8.istio.api.networking.v1alpha3.LoadBalancerSettingsConsistentHashLBHttpCookieValue",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1528,7 +1528,7 @@
       "properties": {
         "httpCookie": {
           "$ref": "#/definitions/istio_io_api_networking_v1alpha3_LoadBalancerSettings_ConsistentHashLB_HTTPCookie",
-          "existingJavaType": "io.fabric8.istio.api.networking.v1alpha3.LoadBalancerSettingsConsistentHashLBHTTPCookie"
+          "existingJavaType": "io.fabric8.istio.api.networking.v1alpha3.LoadBalancerSettingsConsistentHashLBHttpCookieValue"
         }
       },
       "javaType": "io.fabric8.istio.api.networking.v1alpha3.LoadBalancerSettingsConsistentHashLBHttpCookie",
@@ -3201,7 +3201,7 @@
     },
     "istio_io_api_networking_v1alpha3_LoadBalancerSettings_ConsistentHashLB_HTTPCookie": {
       "$ref": "#/definitions/istio_io_api_networking_v1alpha3_LoadBalancerSettings_ConsistentHashLB_HTTPCookie",
-      "existingJavaType": "io.fabric8.istio.api.networking.v1alpha3.LoadBalancerSettingsConsistentHashLBHTTPCookie"
+      "existingJavaType": "io.fabric8.istio.api.networking.v1alpha3.LoadBalancerSettingsConsistentHashLBHttpCookieValue"
     },
     "istio_io_api_networking_v1alpha3_LoadBalancerSettings_ConsistentHashLB_HttpCookie": {
       "$ref": "#/definitions/istio_io_api_networking_v1alpha3_LoadBalancerSettings_ConsistentHashLB_HttpCookie",

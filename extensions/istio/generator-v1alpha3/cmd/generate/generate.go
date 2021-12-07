@@ -117,6 +117,9 @@ func main() {
 			reflect.TypeOf(api_networking_v1alpha3.VirtualService{}):  "io.fabric8.istio.api.networking.v1alpha3.VirtualServiceSpec",
 			reflect.TypeOf(api_networking_v1alpha3.WorkloadEntry{}):   "io.fabric8.istio.api.networking.v1alpha3.WorkloadEntrySpec",
 			reflect.TypeOf(types.Value{}):                             "io.fabric8.istio.api.internal.protobuf.types.Value",
+
+			// Avoid same name for:
+			reflect.TypeOf(api_networking_v1alpha3.LoadBalancerSettings_ConsistentHashLB_HTTPCookie{}): "io.fabric8.istio.api.networking.v1alpha3.LoadBalancerSettingsConsistentHashLBHttpCookieValue",
 		},
 		CustomJavaNameRule: func(packageName *string, className *string) {
 			// remove underscores
