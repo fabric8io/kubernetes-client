@@ -447,6 +447,22 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_apimachinery_pkg_apis_GroupKind": {
+      "type": "object",
+      "properties": {
+        "group": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.GroupKind",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_apimachinery_pkg_apis_GroupVersionForDiscovery": {
       "type": "object",
       "properties": {
@@ -7661,6 +7677,10 @@
       "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_GetOptions",
       "existingJavaType": "io.fabric8.kubernetes.api.model.GetOptions"
     },
+    "GroupKind": {
+      "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_GroupKind",
+      "existingJavaType": "io.fabric8.kubernetes.api.model.GroupKind"
+    },
     "GroupVersionKind": {
       "$ref": "#/definitions/kubernetes_apimachinery_pkg_apis_GroupVersionKind",
       "existingJavaType": "io.fabric8.kubernetes.api.model.GroupVersionKind"
@@ -9913,6 +9933,17 @@
         },
         "readOnly": {
           "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "groupkind": {
+      "properties": {
+        "group": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
         }
       },
       "additionalProperties": true
