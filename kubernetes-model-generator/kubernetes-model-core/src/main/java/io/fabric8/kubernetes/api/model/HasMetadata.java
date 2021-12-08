@@ -194,6 +194,7 @@ public interface HasMetadata extends KubernetesResource {
     return getFinalizers().contains(finalizer);
   }
 
+  @JsonIgnore
   default List<String> getFinalizers() {
     return optionalMetadata().map(ObjectMeta::getFinalizers).orElse(Collections.emptyList());
   }
