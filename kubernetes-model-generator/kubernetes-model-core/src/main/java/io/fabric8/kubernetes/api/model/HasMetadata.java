@@ -257,14 +257,32 @@ public interface HasMetadata extends KubernetesResource {
     return finalizers.contains(finalizer) && finalizers.remove(finalizer);
   }
 
+  /**
+   * Checks whether the provided {@code HasMetadata} is defined as an owner for this {@code HasMetadata}.
+   *
+   * @param owner the {@code HasMetadata} to check for potential ownership
+   * @return {@code true} if the provided {@code HasMetadata} is an owner of this instance
+   */
   default boolean hasOwnerReferenceFor(HasMetadata owner) {
     return getOwnerReferenceFor(owner).isPresent();
   }
 
+  /**
+   * Checks whether the provided UID identifies an owner for this {@code HasMetadata}.
+   *
+   * @param ownerUid the UID of a {@code HasMetadata} to check for potential ownership
+   * @return {@code true} if the provided {@code HasMetadata} is an owner of this instance
+   */
   default boolean hasOwnerReferenceFor(String ownerUid) {
     return getOwnerReferenceFor(ownerUid).isPresent();
   }
 
+  /**
+   * Retrieves the {@link OwnerReference} associated with the specified owner if it's part of this {@code HasMetadata}'s owners.
+   *
+   * @param owner the potential owner of which we want to retrieve the associated {@link OwnerReference}
+   * @return an {@link Optional} containing the {@link OwnerReference} associated with the specified owner if it exists or {@link Optional#empty()} otherwise.
+   */
   default Optional<OwnerReference> getOwnerReferenceFor(HasMetadata owner) {
     if (owner == null) {
       return Optional.empty();
@@ -274,6 +292,14 @@ public interface HasMetadata extends KubernetesResource {
     return getOwnerReferenceFor(ownerUID);
   }
 
+  /**
+   * Retrieves the {@link OwnerReference} associated with the owner identified by the specified UID if it's part of this{@code HasMetadata}'s owners.
+   *
+   * @param ownerUid the UID of the potential owner of which we want to retrieve the associated {@link
+   *              OwnerReference}
+   * @return an {@link Optional} containing the {@link OwnerReference} associated with the
+   * owner identified by the specified UID if it exists or {@link Optional#empty()} otherwise.
+   */
   default Optional<OwnerReference> getOwnerReferenceFor(String ownerUid) {
     if (ownerUid == null || ownerUid.isEmpty()) {
       return Optional.empty();
@@ -287,6 +313,12 @@ public interface HasMetadata extends KubernetesResource {
       .findFirst();
   }
 
+  /**
+   * Adds an {@link OwnerReference} to the specified owner if possible.
+   *
+   * @param owner the owner to add a reference to
+   * @return the newly added {@link OwnerReference}
+   */
   default OwnerReference addOwnerReference(HasMetadata owner) {
     if (owner == null) {
       throw new IllegalArgumentException("Cannot add a reference to a null owner to "
@@ -310,6 +342,11 @@ public interface HasMetadata extends KubernetesResource {
     return addOwnerReference(ownerReference);
   }
 
+  /**
+   * Adds the specified, supposed valid (for example because validated by calling {@link #sanitizeAndValidate(OwnerReference)} beforehand), {@link OwnerReference} to this {@code HasMetadata}
+   * @param ownerReference the {@link OwnerReference} to add to this {@code HasMetadata}'s owner references
+   * @return the newly added {@link OwnerReference}
+   */
   default OwnerReference addOwnerReference(OwnerReference ownerReference) {
     if (ownerReference == null) {
       throw new IllegalArgumentException("Cannot add a null reference to "
@@ -317,6 +354,31 @@ public interface HasMetadata extends KubernetesResource {
         + getKind());
     }
 
+    final Optional<OwnerReference> existing = getOwnerReferenceFor(ownerReference.getUid());
+    if (existing.isPresent()) {
+      return existing.get();
+    }
+
+    ObjectMeta metadata = getMetadata();
+    if (metadata == null) {
+      metadata = new ObjectMeta();
+      setMetadata(metadata);
+    }
+    List<OwnerReference> ownerReferences = metadata.getOwnerReferences();
+    if (ownerReferences == null) {
+      ownerReferences = new ArrayList<>();
+      metadata.setOwnerReferences(ownerReferences);
+    }
+    ownerReferences.add(ownerReference);
+    return ownerReference;
+  }
+
+  /**
+   * Sanitizes and validates the specified {@link OwnerReference}, presumably to add it
+   * @param ownerReference the {@link OwnerReference} to sanitize and validate
+   * @return the sanitized and validated {@link OwnerReference} which should be used instead of the original one
+   */
+  static OwnerReference sanitizeAndValidate(OwnerReference ownerReference) {
     // validate required fields are present
     final StringBuilder error = new StringBuilder(100);
     error.append("Owner is missing required field(s): ");
@@ -353,26 +415,13 @@ public interface HasMetadata extends KubernetesResource {
       .withName(name.orElseThrow(exceptionSupplier))
       .withKind(kind.orElseThrow(exceptionSupplier))
       .build();
-
-    final Optional<OwnerReference> existing = getOwnerReferenceFor(ownerReference.getUid());
-    if (existing.isPresent()) {
-      return existing.get();
-    }
-
-    ObjectMeta metadata = getMetadata();
-    if (metadata == null) {
-      metadata = new ObjectMeta();
-      setMetadata(metadata);
-    }
-    List<OwnerReference> ownerReferences = metadata.getOwnerReferences();
-    if (ownerReferences == null) {
-      ownerReferences = new ArrayList<>();
-      metadata.setOwnerReferences(ownerReferences);
-    }
-    ownerReferences.add(ownerReference);
     return ownerReference;
   }
 
+  /**
+   * Removes the {@link OwnerReference} identified by the specified UID if it's part of this {@code HasMetadata}'s owner references
+   * @param ownerUid the UID of the {@link OwnerReference} to remove
+   */
   default void removeOwnerReference(String ownerUid) {
     if (ownerUid != null && !ownerUid.isEmpty()) {
       optionalMetadata()
@@ -382,6 +431,12 @@ public interface HasMetadata extends KubernetesResource {
     }
   }
 
+  /**
+   * Removes the {@link OwnerReference} associated with the specified owner if it's part of this {@code
+   * HasMetadata}'s owner references
+   *
+   * @param owner the owner whose reference we want to remove
+   */
   default void removeOwnerReference(HasMetadata owner) {
     if (owner != null) {
       removeOwnerReference(owner.getMetadata().getUid());
