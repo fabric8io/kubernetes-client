@@ -339,7 +339,7 @@ public interface HasMetadata extends KubernetesResource {
       .withName(metadata.getName())
       .withKind(owner.getKind())
       .build();
-    return addOwnerReference(ownerReference);
+    return addOwnerReference(sanitizeAndValidate(ownerReference));
   }
 
   /**
