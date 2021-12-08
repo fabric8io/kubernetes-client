@@ -22,6 +22,9 @@ import io.fabric8.kubernetes.model.annotation.Kind;
 import io.fabric8.kubernetes.model.annotation.Plural;
 import io.fabric8.kubernetes.model.annotation.Singular;
 import io.fabric8.kubernetes.model.annotation.Version;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
@@ -34,13 +37,16 @@ import java.util.regex.Pattern;
  * Represents any {@link KubernetesResource} which possesses a {@link ObjectMeta} and is associated with a kind and API version.
  */
 public interface HasMetadata extends KubernetesResource {
+
   String DNS_LABEL_START = "(?!-)[A-Za-z0-9-]{";
   String DNS_LABEL_END = ",63}(?<!-)";
   String DNS_LABEL_REGEXP = DNS_LABEL_START + 1 + DNS_LABEL_END;
   /**
    * Pattern that checks the format of finalizer identifiers, which should be in {@code <domain name>/<finalizer name>} format.
    */
-  Pattern FINALIZER_NAME_MATCHER = Pattern.compile("^((" + DNS_LABEL_REGEXP + "\\.)+" + DNS_LABEL_START + 2 + DNS_LABEL_END + ")/" + DNS_LABEL_REGEXP);
+  Pattern FINALIZER_NAME_MATCHER = Pattern.compile(
+    "^((" + DNS_LABEL_REGEXP + "\\.)+" + DNS_LABEL_START + 2 + DNS_LABEL_END + ")/"
+      + DNS_LABEL_REGEXP);
 
   ObjectMeta getMetadata();
 
@@ -77,7 +83,9 @@ public interface HasMetadata extends KubernetesResource {
       return group + "/" + version;
     }
     if (group != null || version != null) {
-      throw new IllegalArgumentException("You need to specify both @" + Group.class.getSimpleName() + " and @" + Version.class.getSimpleName() + " annotations if you specify either");
+      throw new IllegalArgumentException(
+        "You need to specify both @" + Group.class.getSimpleName() + " and @"
+          + Version.class.getSimpleName() + " annotations if you specify either");
     }
     return null;
   }
@@ -171,7 +179,8 @@ public interface HasMetadata extends KubernetesResource {
    */
   @JsonIgnore
   default boolean isMarkedForDeletion() {
-    final String deletionTimestamp = getMetadata().getDeletionTimestamp();
+    final String deletionTimestamp = optionalMetadata().map(ObjectMeta::getDeletionTimestamp)
+      .orElse(null);
     return deletionTimestamp != null && !deletionTimestamp.isEmpty();
   }
 
@@ -182,7 +191,11 @@ public interface HasMetadata extends KubernetesResource {
    * @return {@code true} if this {@code HasMetadata} holds the specified finalizer, {@code false} otherwise
    */
   default boolean hasFinalizer(String finalizer) {
-    return getMetadata().getFinalizers().contains(finalizer);
+    return getFinalizers().contains(finalizer);
+  }
+
+  default List<String> getFinalizers() {
+    return optionalMetadata().map(ObjectMeta::getFinalizers).orElse(Collections.emptyList());
   }
 
   /**
@@ -200,9 +213,15 @@ public interface HasMetadata extends KubernetesResource {
       return false;
     }
     if (isFinalizerValid(finalizer)) {
-      return getMetadata().getFinalizers().add(finalizer);
+      ObjectMeta metadata = getMetadata();
+      if (metadata == null) {
+        metadata = new ObjectMeta();
+        setMetadata(metadata);
+      }
+      return metadata.getFinalizers().add(finalizer);
     } else {
-      throw new IllegalArgumentException("Invalid finalizer name: '" + finalizer + "'. Must consist of a domain name, a forward slash and the valid kubernetes name.");
+      throw new IllegalArgumentException("Invalid finalizer name: '" + finalizer
+        + "'. Must consist of a domain name, a forward slash and the valid kubernetes name.");
     }
   }
 
@@ -233,7 +252,8 @@ public interface HasMetadata extends KubernetesResource {
    * @return {@code true} if the finalizer was successfully removed, {@code false} otherwise
    */
   default boolean removeFinalizer(String finalizer) {
-    return getMetadata().getFinalizers().remove(finalizer);
+    final List<String> finalizers = getFinalizers();
+    return finalizers.contains(finalizer) && finalizers.remove(finalizer);
   }
 
   default boolean hasOwnerReferenceFor(HasMetadata owner) {
@@ -249,7 +269,7 @@ public interface HasMetadata extends KubernetesResource {
       return Optional.empty();
     }
 
-    final String ownerUID = owner.getMetadata().getUid();
+    final String ownerUID = owner.optionalMetadata().map(ObjectMeta::getUid).orElse(null);
     return getOwnerReferenceFor(ownerUID);
   }
 
@@ -258,17 +278,28 @@ public interface HasMetadata extends KubernetesResource {
       return Optional.empty();
     }
 
-    return getMetadata().getOwnerReferences().stream()
+    return optionalMetadata()
+      .map(m -> Optional.ofNullable(m.getOwnerReferences()).orElse(Collections.emptyList()))
+      .orElse(Collections.emptyList())
+      .stream()
       .filter(o -> ownerUid.equals(o.getUid()))
       .findFirst();
   }
 
   default OwnerReference addOwnerReference(HasMetadata owner) {
     if (owner == null) {
-      throw new IllegalArgumentException("Cannot add a reference to a null owner to '" + getMetadata().getName() + "' " + getKind());
+      throw new IllegalArgumentException("Cannot add a reference to a null owner to "
+        + optionalMetadata().map(m -> "'" + m.getName() + "' ").orElse("unnamed ")
+        + getKind());
     }
 
     final ObjectMeta metadata = owner.getMetadata();
+    if (metadata == null) {
+      throw new IllegalArgumentException("Cannot add a reference to an owner without metadata to "
+        + optionalMetadata().map(m -> "'" + m.getName() + "' ").orElse("unnamed ")
+        + getKind());
+    }
+
     final OwnerReference ownerReference = new OwnerReferenceBuilder()
       .withUid(metadata.getUid())
       .withApiVersion(owner.getApiVersion())
@@ -280,7 +311,9 @@ public interface HasMetadata extends KubernetesResource {
 
   default OwnerReference addOwnerReference(OwnerReference ownerReference) {
     if (ownerReference == null) {
-      throw new IllegalArgumentException("Cannot add a null reference to '" + getMetadata().getName() + "' " + getKind());
+      throw new IllegalArgumentException("Cannot add a null reference to "
+        + optionalMetadata().map(m -> "'" + m.getName() + "' ").orElse("unnamed ")
+        + getKind());
     }
 
     // validate required fields are present
@@ -319,25 +352,42 @@ public interface HasMetadata extends KubernetesResource {
       .withName(name.orElseThrow(exceptionSupplier))
       .withKind(kind.orElseThrow(exceptionSupplier))
       .build();
-    
+
     final Optional<OwnerReference> existing = getOwnerReferenceFor(ownerReference.getUid());
     if (existing.isPresent()) {
       return existing.get();
     }
 
-    getMetadata().getOwnerReferences().add(ownerReference);
+    ObjectMeta metadata = getMetadata();
+    if (metadata == null) {
+      metadata = new ObjectMeta();
+      setMetadata(metadata);
+    }
+    List<OwnerReference> ownerReferences = metadata.getOwnerReferences();
+    if (ownerReferences == null) {
+      ownerReferences = new ArrayList<>();
+      metadata.setOwnerReferences(ownerReferences);
+    }
+    ownerReferences.add(ownerReference);
     return ownerReference;
   }
 
   default void removeOwnerReference(String ownerUid) {
-    if(ownerUid != null && !ownerUid.isEmpty()) {
-      getMetadata().getOwnerReferences().removeIf(o -> ownerUid.equals(o.getUid()));
+    if (ownerUid != null && !ownerUid.isEmpty()) {
+      optionalMetadata()
+        .map(m -> Optional.ofNullable(m.getOwnerReferences()).orElse(Collections.emptyList()))
+        .orElse(Collections.emptyList())
+        .removeIf(o -> ownerUid.equals(o.getUid()));
     }
   }
 
   default void removeOwnerReference(HasMetadata owner) {
-    if(owner != null) {
-        removeOwnerReference(owner.getMetadata().getUid());
+    if (owner != null) {
+      removeOwnerReference(owner.getMetadata().getUid());
     }
+  }
+
+  default Optional<ObjectMeta> optionalMetadata() {
+    return Optional.ofNullable(getMetadata());
   }
 }

@@ -20,6 +20,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -89,6 +91,42 @@ class HasMetadataTest {
   }
 
   @Test
+  void addingNullOwnerReferenceShouldNotCrashEvenIfTargetDoesNotHaveMetadata() {
+    final HasMetadata target = new Empty();
+
+    IllegalArgumentException iae = assertThrows(IllegalArgumentException.class,
+      () -> target.addOwnerReference((OwnerReference) null));
+    String msg = iae.getMessage();
+    assertTrue(msg.contains("null reference to unnamed " + target.getKind()));
+  }
+
+  @Test
+  void addingOwnerReferenceToOwnerWithoutMetadataShouldFail() {
+    final String name = "defaultName";
+    final String kind = "Default";
+    final Default target = new Default(name) {
+      @Override
+      public String getKind() {
+        return kind;
+      }
+    };
+
+    IllegalArgumentException iae = assertThrows(IllegalArgumentException.class, () -> target.addOwnerReference(new Empty()));
+    String msg = iae.getMessage();
+    assertTrue(msg.contains("to '" + name + "' " + kind) && msg.contains("owner without metadata"));
+  }
+
+  @Test
+  void addingOwnerReferenceOnObjectWithoutMetadataShouldCreateTheMetadata() {
+    HasMetadata target = new Empty();
+    assertNull(target.getMetadata());
+    final Owner owner = new Owner();
+    target.addOwnerReference(owner);
+    assertNotNull(target.getMetadata());
+    assertTrue(target.hasOwnerReferenceFor(owner));
+  }
+
+  @Test
   void addingReferenceToOwnerWithMissingFieldsShouldFail() {
     HasMetadata hasMetadata = new Default();
     HasMetadata owner = new InvalidOwner();
@@ -153,6 +191,24 @@ class HasMetadataTest {
     hasMetadata.addOwnerReference(owner);
     hasMetadata.addOwnerReference(owner);
     assertEquals(1, hasMetadata.getMetadata().getOwnerReferences().size());
+  }
+
+  private static class Empty implements HasMetadata {
+    private ObjectMeta meta;
+
+    @Override
+    public ObjectMeta getMetadata() {
+      return meta;
+    }
+
+    @Override
+    public void setMetadata(ObjectMeta metadata) {
+      this.meta = metadata;
+    }
+
+    @Override
+    public void setApiVersion(String version) {
+    }
   }
 
   private static class Owner extends Default {
