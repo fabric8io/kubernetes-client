@@ -951,6 +951,14 @@ func (g *schemaGenerator) propertyDescriptorForList(field reflect.StructField) J
 	omitIfEmpty := g.isOmitEmpty(field)
 
 	if isSimpleJavaType(listValueType) {
+		if listValueType.Kind() == reflect.Uint8 { // Handle case for byte[]
+			return JSONPropertyDescriptor{
+				JSONDescriptor: &JSONDescriptor{
+					Type:        "string",
+					JavaOmitEmpty: omitIfEmpty,
+				},
+			}
+		}
 		return JSONPropertyDescriptor{
 			JSONDescriptor: &JSONDescriptor{
 				Type:          "array",
