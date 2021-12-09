@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class ResourceDefinitionContextTest {
 
   @Test
-  void testMissing() {
+  void missingRequiredKindShouldFail() {
     ResourceDefinitionContext.Builder builder = new ResourceDefinitionContext.Builder();
     assertThrows(IllegalArgumentException.class, () -> builder.build());
     builder.withKind("Kind");
