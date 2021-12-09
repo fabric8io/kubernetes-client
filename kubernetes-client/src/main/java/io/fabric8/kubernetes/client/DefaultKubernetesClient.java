@@ -18,7 +18,7 @@ package io.fabric8.kubernetes.client;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectorBuilder;
 import io.fabric8.kubernetes.client.http.HttpClient;
-import io.fabric8.kubernetes.client.internal.okhttp.OkHttpClientImpl;
+import io.fabric8.kubernetes.client.okhttp.OkHttpClientImpl;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import okhttp3.OkHttpClient;
 

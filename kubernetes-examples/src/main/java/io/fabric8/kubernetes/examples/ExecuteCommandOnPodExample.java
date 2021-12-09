@@ -84,7 +84,7 @@ public class ExecuteCommandOnPodExample implements AutoCloseable {
     }
 
     @Override
-    public void onFailure(Throwable t) {
+    public void onFailure(Throwable t, Response failureResponse) {
       System.err.println(t.getMessage());
       data.completeExceptionally(t);
     }

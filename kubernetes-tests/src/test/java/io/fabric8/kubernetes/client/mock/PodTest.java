@@ -328,7 +328,7 @@ class PodTest {
     ExecWatch watch = client.pods().withName("pod1").writingOutput(baos).usingListener(new ExecListener() {
 
       @Override
-      public void onFailure(Throwable t) {
+      public void onFailure(Throwable t, Response failureResponse) {
         execLatch.countDown();
       }
 

@@ -15,7 +15,22 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
+import java.io.IOException;
+
 public interface ExecListener {
+  
+  public interface Response {
+    
+    int code();
+    
+    /**
+     * May be null if not provided by the underlying implementation.
+     * @return the body as a String
+     * @throws IOException
+     */
+    String body() throws IOException;
+    
+  }
 
   /**
    * Called when the request has successfully been upgraded to a web socket.
@@ -26,8 +41,9 @@ public interface ExecListener {
    * Called when the transport or protocol layer of this web socket errors during communication.
    *
    * @param t Throwable
+   * @param failureResponse non-null if the failure is caused by the handshake
    */
-  default void onFailure(Throwable t) {}
+  default void onFailure(Throwable t, Response failureResponse) {}
 
     /**
      * Called when the server sends a close message.

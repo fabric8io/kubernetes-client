@@ -200,7 +200,7 @@ public class PodIT {
         }
 
         @Override
-        public void onFailure(Throwable throwable) {
+        public void onFailure(Throwable t, Response failureResponse) {
           logger.info("Shell barfed");
           execLatch.countDown();
         }

@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
+import io.fabric8.kubernetes.client.dsl.ExecListener.Response;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.http.WebSocket;
@@ -56,6 +57,24 @@ import static io.fabric8.kubernetes.client.utils.Utils.closeQuietly;
  *
  */
 public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocket.Listener {
+
+    private final class SimpleResponse implements Response {
+    private final HttpResponse<?> response;
+
+    private SimpleResponse(HttpResponse<?> response) {
+      this.response = response;
+    }
+
+    @Override
+    public int code() {
+      return response.code();
+    }
+
+    @Override
+    public String body() throws IOException {
+      return response.bodyString();
+    }
+  }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExecWebSocketListener.class);
     private static final String HEIGHT = "Height";
@@ -186,8 +205,8 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
         return;
       }
 
+      HttpResponse<?> response = null;
       try {
-        HttpResponse<?> response = null;
         if (t instanceof WebSocketHandshakeException) {
           response = ((WebSocketHandshakeException)t).getResponse();
         }
@@ -197,7 +216,11 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
         cleanUpOnce();
       } finally {
         if (listener != null) {
-          listener.onFailure(t);
+          ExecListener.Response execResponse = null;
+          if (response != null) {
+            execResponse = new SimpleResponse(response);
+          }
+          listener.onFailure(t, execResponse);
         }
       }
     }

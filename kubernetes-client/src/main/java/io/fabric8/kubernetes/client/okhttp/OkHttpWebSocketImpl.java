@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package io.fabric8.kubernetes.client.internal.okhttp;
+package io.fabric8.kubernetes.client.okhttp;
 
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.http.WebSocketHandshakeException;
-import io.fabric8.kubernetes.client.internal.okhttp.OkHttpClientImpl.OkHttpResponseImpl;
+import io.fabric8.kubernetes.client.okhttp.OkHttpClientImpl.OkHttpResponseImpl;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

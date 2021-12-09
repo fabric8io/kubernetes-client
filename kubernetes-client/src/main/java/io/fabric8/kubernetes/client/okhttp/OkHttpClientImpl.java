@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.fabric8.kubernetes.client.internal.okhttp;
+package io.fabric8.kubernetes.client.okhttp;
 
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
@@ -52,7 +52,7 @@ public class OkHttpClientImpl implements HttpClient {
     return result;
   }
   
-  public static class OkHttpResponseImpl<T> implements HttpResponse<T> {
+  static class OkHttpResponseImpl<T> implements HttpResponse<T> {
     
     private final Response response;
     private T body;

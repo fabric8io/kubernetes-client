@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package io.fabric8.kubernetes.client.internal.okhttp;
+package io.fabric8.kubernetes.client.okhttp;
 
 import io.fabric8.kubernetes.client.http.HttpClient.Builder;
+import io.fabric8.kubernetes.client.okhttp.OkHttpClientImpl.OkHttpResponseImpl;
 import io.fabric8.kubernetes.client.http.TlsVersion;
-import io.fabric8.kubernetes.client.internal.okhttp.OkHttpClientImpl.OkHttpResponseImpl;
 import okhttp3.Authenticator;
 import okhttp3.ConnectionSpec;
 import okhttp3.Interceptor;
@@ -43,7 +43,7 @@ import java.util.concurrent.TimeUnit;
 
 import static okhttp3.ConnectionSpec.CLEARTEXT;
 
-public class OkHttpClientBuilderImpl implements Builder {
+class OkHttpClientBuilderImpl implements Builder {
   
   static final class InteceptorAdapter implements Interceptor {
     private final io.fabric8.kubernetes.client.http.Interceptor interceptor;

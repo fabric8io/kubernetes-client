@@ -22,8 +22,8 @@ import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpHeaders;
 import io.fabric8.kubernetes.client.http.Interceptor;
 import io.fabric8.kubernetes.client.internal.SSLUtils;
-import io.fabric8.kubernetes.client.internal.okhttp.OkHttpClientFactory;
-import io.fabric8.kubernetes.client.internal.okhttp.OkHttpClientImpl;
+import io.fabric8.kubernetes.client.okhttp.OkHttpClientFactory;
+import io.fabric8.kubernetes.client.okhttp.OkHttpClientImpl;
 import okhttp3.OkHttpClient;
 
 import javax.net.ssl.KeyManager;

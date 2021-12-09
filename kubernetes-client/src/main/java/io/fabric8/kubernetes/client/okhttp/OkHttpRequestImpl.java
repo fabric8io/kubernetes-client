@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.fabric8.kubernetes.client.internal.okhttp;
+package io.fabric8.kubernetes.client.okhttp;
 
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import okhttp3.MediaType;
