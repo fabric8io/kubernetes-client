@@ -129,13 +129,13 @@ public class HttpClientUtils {
       }
     });
     // Impersonator Interceptor
-    interceptors.put("IMPERSONATOR", new ImpersonatorInterceptor(config));
+    interceptors.put(ImpersonatorInterceptor.NAME, new ImpersonatorInterceptor(config));
     // Token Refresh Interceptor
     interceptors.put(TokenRefreshInterceptor.NAME, new TokenRefreshInterceptor(config, factory));
     // Backwards Compatibility Interceptor
     String shouldDisableBackwardsCompatibilityInterceptor = Utils.getSystemPropertyOrEnvVar(KUBERNETES_BACKWARDS_COMPATIBILITY_INTERCEPTOR_DISABLE, "false");
     if (!Boolean.parseBoolean(shouldDisableBackwardsCompatibilityInterceptor)) {
-      interceptors.put("BACKWARDS", new BackwardsCompatibilityInterceptor());
+      interceptors.put(BackwardsCompatibilityInterceptor.NAME, new BackwardsCompatibilityInterceptor());
     }
 
     return interceptors;

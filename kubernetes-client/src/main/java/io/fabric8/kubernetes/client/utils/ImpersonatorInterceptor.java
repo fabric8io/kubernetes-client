@@ -28,6 +28,9 @@ import java.util.Map;
 import static io.fabric8.kubernetes.client.utils.Utils.isNotNullOrEmpty;
 
 public class ImpersonatorInterceptor implements Interceptor {
+  
+  public static final String NAME = "IMPERSONATOR";
+  
   private final Config config;
   public ImpersonatorInterceptor(Config config) {
     this.config = config;

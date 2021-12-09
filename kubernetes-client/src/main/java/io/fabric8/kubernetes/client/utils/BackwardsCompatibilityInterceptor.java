@@ -32,6 +32,8 @@ import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
 public class BackwardsCompatibilityInterceptor implements Interceptor {
+  
+  public static final String NAME = "BACKWARDS";
 
   private static final int API_GROUP = 1;
   private static final int API_VERSION = 2;

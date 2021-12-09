@@ -33,7 +33,6 @@ public interface HttpRequest extends HttpHeaders {
 
     Builder uri(String uri);
 
-    // TODO: should be uri
     Builder url(URL url);
     
     @Override

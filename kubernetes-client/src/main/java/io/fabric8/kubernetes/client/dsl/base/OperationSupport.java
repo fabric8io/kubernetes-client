@@ -301,7 +301,9 @@ public class OperationSupport implements ClientState {
    * @throws IOException IOException
    */
   protected <T, I> T handleCreate(I resource, Class<T> outputType) throws InterruptedException, IOException {
-    HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder().post(JSON, JSON_MAPPER.writeValueAsString(resource)).url(getResourceURLForWriteOperation(getResourceUrl(checkNamespace(resource), null)));
+    HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
+        .post(JSON, JSON_MAPPER.writeValueAsString(resource))
+        .url(getResourceURLForWriteOperation(getResourceUrl(checkNamespace(resource), null)));
     return handleResponse(requestBuilder, outputType, Collections.<String, String>emptyMap());
   }
 
@@ -404,7 +406,10 @@ public class OperationSupport implements ClientState {
    */
   protected <T> T handlePatch(PatchContext patchContext, T current, String patchForUpdate, Class<T> type, boolean status) throws InterruptedException, IOException {
     String bodyContentType = getContentTypeFromPatchContextOrDefault(patchContext);
-    HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder().patch(bodyContentType, patchForUpdate).url(getResourceURLForPatchOperation(getResourceUrl(checkNamespace(current), checkName(current), status), patchContext));
+    HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder()
+        .patch(bodyContentType, patchForUpdate)
+        .url(getResourceURLForPatchOperation(getResourceUrl(checkNamespace(current), checkName(current), status),
+            patchContext));
     return handleResponse(requestBuilder, type, Collections.emptyMap());
   }
 
