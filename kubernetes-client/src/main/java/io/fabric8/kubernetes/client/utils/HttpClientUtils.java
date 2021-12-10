@@ -25,6 +25,7 @@ import io.fabric8.kubernetes.client.internal.SSLUtils;
 import io.fabric8.kubernetes.client.okhttp.OkHttpClientFactory;
 import io.fabric8.kubernetes.client.okhttp.OkHttpClientImpl;
 import okhttp3.OkHttpClient;
+import okhttp3.OkHttpClient.Builder;
 
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
@@ -67,11 +68,18 @@ public class HttpClientUtils {
    * @param config Kubernetes API client config
    * @param additionalConfig a consumer that allows overriding HTTP client properties
    * @return returns an HTTP client
-   * @deprecated use {@link OkHttpClientFactory#createHttpClient(Config, Consumer)} instead
+   * @deprecated subclass {@link OkHttpClientFactory} and implement the additionalConfig method
    */
   @Deprecated
   public static OkHttpClientImpl createHttpClient(final Config config, final Consumer<OkHttpClient.Builder> additionalConfig) {
-    return new OkHttpClientFactory().createHttpClient(config, additionalConfig);
+    return new OkHttpClientFactory() {
+      @Override
+      protected void additionalConfig(Builder builder) {
+        if (additionalConfig != null) {
+          additionalConfig.accept(builder);
+        }
+      }
+    }.createHttpClient(config);
   }
 
     public static URL getProxyUrl(Config config) throws MalformedURLException {

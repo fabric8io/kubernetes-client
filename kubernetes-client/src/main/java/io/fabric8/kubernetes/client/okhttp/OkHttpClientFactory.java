@@ -28,30 +28,39 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
 
 public class OkHttpClientFactory implements HttpClient.Factory {
 
-  @Override
-  public OkHttpClientImpl createHttpClient(Config config) {
-    return createHttpClient(config, builder -> {});
+  /**
+   * Subclasses may use this to apply a base configuration to the builder
+   */
+  protected OkHttpClient.Builder newOkHttpClientBuilder() {
+    return new OkHttpClient.Builder();
+  }
+  
+  /**
+   * Subclasses may use this to apply additional configuration after the Config has been applied
+   * This method is only called for clients constructed using the Config.
+   * @param builder
+   */
+  protected void additionalConfig(OkHttpClient.Builder builder) {
+    
   }
   
   @Override
   public Builder newBuilder() {
-    return new OkHttpClientBuilderImpl(new OkHttpClient.Builder());
+    return new OkHttpClientBuilderImpl(newOkHttpClientBuilder());
   }
 
   /**
    * Creates an HTTP client configured to access the Kubernetes API.
    * @param config Kubernetes API client config
-   * @param additionalConfig a consumer that allows overriding HTTP client properties
    * @return returns an HTTP client
    */
-  public OkHttpClientImpl createHttpClient(Config config,
-      final Consumer<OkHttpClient.Builder> additionalConfig) {
+  @Override
+  public OkHttpClientImpl createHttpClient(Config config) {
     try {
-      OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
+      OkHttpClient.Builder httpClientBuilder = newOkHttpClientBuilder();
 
       if (config.isTrustCerts() || config.isDisableHostnameVerification()) {
         httpClientBuilder.hostnameVerifier((s, sslSession) -> true);
@@ -83,16 +92,14 @@ public class OkHttpClientFactory implements HttpClient.Factory {
         builderWrapper.preferHttp11();
       }
       
-      if (additionalConfig != null) {
-        additionalConfig.accept(httpClientBuilder);
-      }
+      additionalConfig(httpClientBuilder);
 
       return builderWrapper.build();
     } catch (Exception e) {
       throw KubernetesClientException.launderThrowable(e);
     }
   }
-  
+
   /**
    * OkHttp wrongfully detects >JDK8u251 as {@link okhttp3.internal.platform.Jdk9Platform} which enables Http2
    * unsupported for JDK8.
@@ -100,7 +107,7 @@ public class OkHttpClientFactory implements HttpClient.Factory {
    * @return true if JDK8 is detected, false otherwise-
    * @see <a href="https://github.com/fabric8io/kubernetes-client/issues/2212">#2212</a>
    */
-  private static boolean shouldDisableHttp2() {
+  protected boolean shouldDisableHttp2() {
       return System.getProperty("java.version", "").startsWith("1.8");
   }
 
