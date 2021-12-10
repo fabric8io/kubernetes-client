@@ -17,13 +17,20 @@ package io.fabric8.kubernetes.client.dsl;
 
 import java.io.Closeable;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 public interface LogWatch extends Closeable {
 
+    /**
+     * Returns the {@link InputStream} for the log watch.
+     * If an {@link OutputStream} was passed in, will be null
+     * @return the {@link InputStream}
+     */
     InputStream getOutput();
 
     /**
      * Close the Watch.
      */
+    @Override
     void close();
 }

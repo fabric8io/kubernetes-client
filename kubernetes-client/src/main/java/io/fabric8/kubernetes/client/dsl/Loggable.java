@@ -57,6 +57,7 @@ public interface Loggable<W> {
 
   /**
    * Watch logs of resource and put them inside OutputStream inside
+   * <br>if the OutputStream is a PipedOutputStream, it will be closed when the Watch terminates
    *
    * @param out {@link OutputStream} for storing logs
    * @return returns a Closeable interface for log watch

@@ -9,6 +9,7 @@
 * Fix #3598: applying cancel to the correct future for waitUntilCondition and waitUntilReady
 * Fix #3609: adding locking to prevent long running Watcher methods from causing reconnects with concurrent processing
 * Fix #3620: throw a meaningful exception if no kind/plural is on a ResourceDefinitionContext, default plural if possible
+* Fix #3636: ensure proper handling of LogWatch closure wrt its streams
 
 #### Improvements
 
