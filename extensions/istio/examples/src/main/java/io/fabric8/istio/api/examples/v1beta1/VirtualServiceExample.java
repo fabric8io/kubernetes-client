@@ -15,19 +15,13 @@
  */
 package io.fabric8.istio.api.examples.v1beta1;
 
-import io.fabric8.istio.api.networking.v1beta1.Destination;
-import io.fabric8.istio.api.networking.v1beta1.HTTPMatchRequestBuilder;
-import io.fabric8.istio.api.networking.v1beta1.HTTPRewriteBuilder;
-import io.fabric8.istio.api.networking.v1beta1.HTTPRouteBuilder;
-import io.fabric8.istio.api.networking.v1beta1.HTTPRouteDestinationBuilder;
-import io.fabric8.istio.api.networking.v1beta1.StringMatch;
-import io.fabric8.istio.api.networking.v1beta1.StringMatchPrefix;
 import io.fabric8.istio.api.networking.v1beta1.VirtualServiceBuilder;
 import io.fabric8.istio.api.networking.v1beta1.VirtualServiceList;
 import io.fabric8.istio.client.IstioClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 
 public class VirtualServiceExample {
+
   private static final String NAMESPACE = "test";
 
   public static void main(String[] args) {
@@ -44,24 +38,28 @@ public class VirtualServiceExample {
   public static void createResource(IstioClient client) {
     System.out.println("Creating a virtual service");
     // Example from: https://istio.io/latest/docs/reference/config/networking/virtual-service/
+    final String reviewsHost = "reviews.prod.svc.cluster.local";
     client.v1beta1().virtualServices().inNamespace(NAMESPACE).create(new VirtualServiceBuilder()
       .withNewMetadata()
       .withName("reviews-route")
       .endMetadata()
       .withNewSpec()
-      .withHosts("reviews-v2-routes")
-      .withHttp(
-        new HTTPRouteBuilder().withName("reviews-v2-routes")
-          .withMatch(
-            new HTTPMatchRequestBuilder().withUri(new StringMatch(new StringMatchPrefix("/wpcatalog"))).build(),
-            new HTTPMatchRequestBuilder().withUri(new StringMatch(new StringMatchPrefix("/consumercatalog"))).build()
-          )
-          .withRewrite(new HTTPRewriteBuilder().withUri("/newcatalog").build())
-          .withRoute(
-            new HTTPRouteDestinationBuilder().withDestination(new Destination("reviews.prod.svc.cluster.local", null, "v2"))
-              .build())
-          .build()
-      )
+        .addToHosts(reviewsHost)
+        .addNewHttp()
+          .withName("reviews-v2-routes")
+          .addNewMatch().withNewUri().withNewStringMatchPrefixType("/wpcatalog").endUri().endMatch()
+          .addNewMatch().withNewUri().withNewStringMatchPrefixType("/consumercatalog").endUri().endMatch()
+          .withNewRewrite().withUri("/newcatalog").endRewrite()
+          .addNewRoute()
+            .withNewDestination().withHost(reviewsHost).withSubset("v2").endDestination()
+          .endRoute()
+        .endHttp()
+        .addNewHttp()
+          .withName("reviews-v2-routes")
+          .addNewRoute()
+            .withNewDestination().withHost(reviewsHost).withSubset("v1").endDestination()
+          .endRoute()
+        .endHttp()
       .endSpec()
       .build());
 
