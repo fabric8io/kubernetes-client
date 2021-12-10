@@ -101,7 +101,7 @@ public class OkHttpClientFactory implements HttpClient.Factory {
   }
 
   /**
-   * OkHttp wrongfully detects >JDK8u251 as {@link okhttp3.internal.platform.Jdk9Platform} which enables Http2
+   * OkHttp wrongfully detects &gt; JDK8u251 as okhttp3.internal.platform.Jdk9Platform which enables Http2
    * unsupported for JDK8.
    *
    * @return true if JDK8 is detected, false otherwise-
