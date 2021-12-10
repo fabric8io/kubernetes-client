@@ -10,6 +10,7 @@
 * Fix #3609: adding locking to prevent long running Watcher methods from causing reconnects with concurrent processing
 * Fix #3606: Template getObjects doesn't throw NPE when objects is null
 * Fix #3620: throw a meaningful exception if no kind/plural is on a ResourceDefinitionContext, default plural if possible
+* Fix #3636: ensure proper handling of LogWatch closure wrt its streams
 
 #### Improvements
 * Fix #3600: add owner references support to HasMetadata

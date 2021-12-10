@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.api.model.ListMeta;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
+import io.fabric8.kubernetes.client.utils.InputStreamPumper;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigBuilder;
@@ -34,7 +35,11 @@ import io.fabric8.openshift.client.OpenShiftClient;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -261,6 +266,44 @@ class DeploymentConfigTest {
   @Test
   void testWatchLog() {
     // Given
+    setupWatchLog();
+    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+    // When
+    LogWatch logWatch = client.deploymentConfigs().inNamespace("ns1").withName("dc1").watchLog(byteArrayOutputStream);
+
+    // Then
+    await().atMost(2, TimeUnit.SECONDS).until(() -> byteArrayOutputStream.toString().length() > 0);
+    assertNotNull(byteArrayOutputStream.toString());
+    assertEquals("testlog", byteArrayOutputStream.toString());
+    logWatch.close();
+  }
+
+  @Test
+  void testWatchLogOutput() throws IOException {
+    // Given
+    setupWatchLog();
+
+    // When
+    LogWatch logWatch = client.deploymentConfigs().inNamespace("ns1").withName("dc1").watchLog();
+    InputStream is = logWatch.getOutput();
+
+    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+    Executor exec = Executors.newSingleThreadExecutor();
+
+    InputStreamPumper.pump(is, byteArrayOutputStream::write, exec);
+
+    // Then
+    await().atMost(2, TimeUnit.SECONDS).until(() -> byteArrayOutputStream.toString().length() > 0);
+    assertNotNull(byteArrayOutputStream.toString());
+    assertEquals("testlog", byteArrayOutputStream.toString());
+    // graceful close
+    assertEquals(-1, is.read());
+    logWatch.close();
+  }
+
+  private void setupWatchLog() {
     server.expect().get().withPath("/apis/apps.openshift.io/v1/namespaces/ns1/deploymentconfigs/dc1")
       .andReturn(HttpURLConnection.HTTP_OK, getDeploymentConfig().build())
       .times(2);
@@ -278,16 +321,6 @@ class DeploymentConfigTest {
     server.expect().get().withPath("/apis/apps.openshift.io/v1/namespaces/ns1/deploymentconfigs/dc1/log?follow=true")
       .andReturn(HttpURLConnection.HTTP_OK, "testlog")
       .once();
-    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-
-    // When
-    LogWatch logWatch = client.deploymentConfigs().inNamespace("ns1").withName("dc1").watchLog(byteArrayOutputStream);
-
-    // Then
-    await().atMost(2, TimeUnit.SECONDS).until(() -> byteArrayOutputStream.toString().length() > 0);
-    assertNotNull(byteArrayOutputStream.toString());
-    assertEquals("testlog", byteArrayOutputStream.toString());
-    logWatch.close();
   }
 
   @Test

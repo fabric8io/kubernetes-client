@@ -61,22 +61,18 @@ public class LogWatchCallback implements LogWatch, AutoCloseable, BiConsumer<Htt
     if (out == null) {
       this.out = new PipedOutputStream();
       this.output = new PipedInputStream();
-      toClose.add(this.out);
-      toClose.add(this.output);
-    } else {
-      this.out = out;
-      this.output = null;
-    }
-
-    //We need to connect the pipe here, because onResponse might not be called in time (if log is empty)
-    //This will cause a `Pipe not connected` exception for everyone that tries to read. By always opening
-    //the pipe the user will get a ready to use inputstream, which will block until there is actually something to read.
-    if (this.out instanceof PipedOutputStream && this.output != null) {
       try {
+        // connect so the user will get a ready to use inputstream, which will block until there is actually something to read.
         this.output.connect((PipedOutputStream) this.out);
       } catch (IOException e) {
         throw KubernetesClientException.launderThrowable(e);
       }
+    } else {
+      this.out = out;
+      this.output = null;
+    }
+    if (this.out instanceof PipedOutputStream) {
+      toClose.add(this.out);
     }
   }
 
