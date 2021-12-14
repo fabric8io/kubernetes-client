@@ -18,7 +18,7 @@
 * Fix #3579: Add support for Volcano extension
 
 #### _**Note**_: Breaking changes in the API
-- If you do not wish to receive bookmarks, then set ListOptions.allowWatchBookmarks=false - otherwise your Watch will default to requesting bookmarks.  If supported by the api-server, this will typically avoid 410 exceptions when keeping the watch alive.
+- If you do not wish to receive bookmarks, then set ListOptions.allowWatchBookmarks=false - otherwise all Watches will default to requesting bookmarks.  If supported by the api-server, bookmarks will avoid 410 exceptions and keep the watch alive longer.  If you are using the mock framework with explicit uris, you may need to update your expected watch endpoints to include the parameter allowWatchBookmarks=true
 
 ### 5.10.1 (2021-11-12)
 
