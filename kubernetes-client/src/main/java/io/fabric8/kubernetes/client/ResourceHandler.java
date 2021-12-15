@@ -33,11 +33,11 @@ public interface ResourceHandler<T extends HasMetadata, V extends VisitableBuild
 
   /**
    * Create the operation support for the current resource
-   * @param clientState   The client state
+   * @param clientContext   The client state
    * @param listType      The list type
    * @return              The {@link HasMetadataOperation}
    */
-  <L extends KubernetesResourceList<T>> HasMetadataOperation<T, L, Resource<T>> operation(ClientState clientState, Class<L> listType);
+  <L extends KubernetesResourceList<T>> HasMetadataOperation<T, L, Resource<T>> operation(ClientContext clientContext, Class<L> listType);
 
   /**
    * @return true if there is a specialized operation associated with this handler

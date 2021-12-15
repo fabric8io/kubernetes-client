@@ -18,7 +18,7 @@ package io.fabric8.kubernetes.client.dsl.internal.batch.v1beta1;
 
 import io.fabric8.kubernetes.api.model.batch.v1beta1.CronJob;
 import io.fabric8.kubernetes.api.model.batch.v1beta1.CronJobList;
-import io.fabric8.kubernetes.client.ClientState;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
@@ -29,12 +29,12 @@ import java.io.InputStream;
 
 public class CronJobOperationsImpl extends HasMetadataOperation<CronJob, CronJobList, Resource<CronJob>> {
 
-  public CronJobOperationsImpl(ClientState clientState) {
-    this(clientState, null);
+  public CronJobOperationsImpl(ClientContext clientContext) {
+    this(clientContext, null);
   }
 
-  public CronJobOperationsImpl(ClientState clientState, String namespace) {
-    this(HasMetadataOperationsImpl.defaultContext(clientState).withNamespace(namespace));
+  public CronJobOperationsImpl(ClientContext clientContext, String namespace) {
+    this(HasMetadataOperationsImpl.defaultContext(clientContext).withNamespace(namespace));
   }
 
   public CronJobOperationsImpl(OperationContext context) {

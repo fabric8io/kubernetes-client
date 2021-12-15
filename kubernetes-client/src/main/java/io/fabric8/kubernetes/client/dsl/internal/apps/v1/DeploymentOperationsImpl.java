@@ -23,7 +23,7 @@ import io.fabric8.kubernetes.api.model.apps.DeploymentList;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetList;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
-import io.fabric8.kubernetes.client.ClientState;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
@@ -57,8 +57,8 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
   static final transient Logger LOG = LoggerFactory.getLogger(DeploymentOperationsImpl.class);
   public static final String DEPLOYMENT_KUBERNETES_IO_REVISION = "deployment.kubernetes.io/revision";
 
-  public DeploymentOperationsImpl(ClientState clientState) {
-    this(new RollingOperationContext(), HasMetadataOperationsImpl.defaultContext(clientState));
+  public DeploymentOperationsImpl(ClientContext clientContext) {
+    this(new RollingOperationContext(), HasMetadataOperationsImpl.defaultContext(clientContext));
   }
 
   public DeploymentOperationsImpl(RollingOperationContext context, OperationContext superContext) {
@@ -131,7 +131,7 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
 
   @Override
   public RollingUpdater<Deployment, DeploymentList> getRollingUpdater(long rollingTimeout, TimeUnit rollingTimeUnit) {
-    return new DeploymentRollingUpdater(this, getNamespace(), rollingTimeUnit.toMillis(rollingTimeout), config.getLoggingInterval());
+    return new DeploymentRollingUpdater(context, getNamespace(), rollingTimeUnit.toMillis(rollingTimeout), config.getLoggingInterval());
   }
 
   @Override
@@ -335,7 +335,7 @@ public class DeploymentOperationsImpl extends RollableScalableResourceOperation<
   }
 
   private ReplicaSetList getReplicaSetListForDeployment(Deployment deployment) {
-    return new ReplicaSetOperationsImpl(this, getNamespace()).withLabels(deployment.getSpec().getSelector().getMatchLabels()).list();
+    return new ReplicaSetOperationsImpl(context, getNamespace()).withLabels(deployment.getSpec().getSelector().getMatchLabels()).list();
   }
 
   static Map<String, String> getDeploymentSelectorLabels(Deployment deployment) {

@@ -22,13 +22,13 @@ import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.openshift.api.model.miscellaneous.cncf.cni.v1.NetworkAttachmentDefinition;
 import io.fabric8.openshift.api.model.miscellaneous.cncf.cni.v1.NetworkAttachmentDefinitionBuilder;
 import io.fabric8.openshift.api.model.miscellaneous.cncf.cni.v1.NetworkAttachmentDefinitionList;
-import io.fabric8.openshift.client.OpenshiftClientState;
+import io.fabric8.openshift.client.OpenshiftClientContext;
 import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
 
 public class NetworkAttachmentDefinitionOperationsImpl extends OpenShiftOperation<NetworkAttachmentDefinition, NetworkAttachmentDefinitionList, Resource<NetworkAttachmentDefinition>> {
 
-  public NetworkAttachmentDefinitionOperationsImpl(OpenshiftClientState clientState) {
-    this(HasMetadataOperationsImpl.defaultContext(clientState));
+  public NetworkAttachmentDefinitionOperationsImpl(OpenshiftClientContext clientContext) {
+    this(HasMetadataOperationsImpl.defaultContext(clientContext));
   }
 
   public NetworkAttachmentDefinitionOperationsImpl(OperationContext context) {

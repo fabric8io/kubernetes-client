@@ -16,7 +16,7 @@
 package io.fabric8.volumesnapshot.client;
 
 import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.ClientState;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.RequestConfig;
@@ -47,8 +47,8 @@ public class DefaultVolumeSnapshotClient extends BaseClient implements Namespace
     super(configuration);
   }
 
-  public DefaultVolumeSnapshotClient(ClientState clientState) {
-    super(clientState);
+  public DefaultVolumeSnapshotClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

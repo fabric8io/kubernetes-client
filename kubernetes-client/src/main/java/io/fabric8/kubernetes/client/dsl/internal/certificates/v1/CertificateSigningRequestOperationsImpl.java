@@ -21,7 +21,7 @@ import io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequest
 import io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestList;
 import io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestStatus;
 import io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequestStatusBuilder;
-import io.fabric8.kubernetes.client.ClientState;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.CertificateSigningRequestResource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
@@ -33,12 +33,12 @@ import io.fabric8.kubernetes.client.utils.URLUtils;
 import java.io.IOException;
 
 public class CertificateSigningRequestOperationsImpl extends HasMetadataOperation<CertificateSigningRequest, CertificateSigningRequestList, CertificateSigningRequestResource<CertificateSigningRequest>> implements CertificateSigningRequestResource<CertificateSigningRequest> {
-  public CertificateSigningRequestOperationsImpl(ClientState clientState) {
-    this(clientState, null);
+  public CertificateSigningRequestOperationsImpl(ClientContext clientContext) {
+    this(clientContext, null);
   }
 
-  public CertificateSigningRequestOperationsImpl(ClientState clientState, String namespace) {
-    this(HasMetadataOperationsImpl.defaultContext(clientState).withNamespace(namespace));
+  public CertificateSigningRequestOperationsImpl(ClientContext clientContext, String namespace) {
+    this(HasMetadataOperationsImpl.defaultContext(clientContext).withNamespace(namespace));
   }
 
   public CertificateSigningRequestOperationsImpl(OperationContext context) {

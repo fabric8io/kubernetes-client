@@ -24,8 +24,8 @@ public class DiscoveryAPIGroupClient extends BaseClient implements DiscoveryAPIG
     super();
   }
 
-  public DiscoveryAPIGroupClient(ClientState clientState) {
-    super(clientState);
+  public DiscoveryAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

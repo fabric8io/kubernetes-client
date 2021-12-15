@@ -28,8 +28,8 @@ public class V1beta1FlowControlAPIGroupClient extends BaseClient implements V1be
     super();
   }
 
-  public V1beta1FlowControlAPIGroupClient(ClientState clientState) {
-    super(clientState);
+  public V1beta1FlowControlAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

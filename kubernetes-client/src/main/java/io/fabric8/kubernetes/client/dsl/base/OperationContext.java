@@ -17,7 +17,7 @@ package io.fabric8.kubernetes.client.dsl.base;
 
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.SimpleClientState;
+import io.fabric8.kubernetes.client.SimpleClientContext;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -29,7 +29,7 @@ import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
-public class OperationContext extends SimpleClientState {
+public class OperationContext extends SimpleClientContext {
 
   protected Object item;
   protected String resourceVersion;

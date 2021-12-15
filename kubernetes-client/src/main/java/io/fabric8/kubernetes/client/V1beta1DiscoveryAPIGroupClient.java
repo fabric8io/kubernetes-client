@@ -26,8 +26,8 @@ public class V1beta1DiscoveryAPIGroupClient extends BaseClient implements V1beta
     super();
   }
 
-  public V1beta1DiscoveryAPIGroupClient(ClientState clientState) {
-    super(clientState);
+  public V1beta1DiscoveryAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

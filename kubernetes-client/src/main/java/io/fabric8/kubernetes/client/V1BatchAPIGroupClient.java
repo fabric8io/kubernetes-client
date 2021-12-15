@@ -30,8 +30,8 @@ public class V1BatchAPIGroupClient extends BaseClient implements V1BatchAPIGroup
     super();
   }
 
-  public V1BatchAPIGroupClient(ClientState clientState) {
-    super(clientState);
+  public V1BatchAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

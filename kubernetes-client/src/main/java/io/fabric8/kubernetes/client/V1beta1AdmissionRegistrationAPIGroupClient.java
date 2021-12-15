@@ -28,8 +28,8 @@ public class V1beta1AdmissionRegistrationAPIGroupClient extends BaseClient imple
     super();
   }
 
-  public V1beta1AdmissionRegistrationAPIGroupClient(ClientState clientState) {
-    super(clientState);
+  public V1beta1AdmissionRegistrationAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

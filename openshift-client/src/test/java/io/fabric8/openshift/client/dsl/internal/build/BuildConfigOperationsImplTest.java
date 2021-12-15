@@ -21,7 +21,7 @@ import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.openshift.client.OpenShiftConfig;
 import io.fabric8.openshift.client.OpenShiftConfigBuilder;
-import io.fabric8.openshift.client.OpenshiftClientState;
+import io.fabric8.openshift.client.OpenshiftClientContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -72,7 +72,7 @@ class BuildConfigOperationsImplTest {
     // Given
     String eventMessage = "FailedScheduling demo-1-7zkjd.1619493da51f6b6f some error";
 
-    BuildConfigOperationsImpl impl = new BuildConfigOperationsImpl(new OpenshiftClientState() {
+    BuildConfigOperationsImpl impl = new BuildConfigOperationsImpl(new OpenshiftClientContext() {
 
       @Override
       public HttpClient getHttpClient() {
@@ -102,7 +102,7 @@ class BuildConfigOperationsImplTest {
   @Test
   void testWriteShouldCompleteSuccessfully() throws IOException {
     // Given
-    BuildConfigOperationsImpl impl = new BuildConfigOperationsImpl(new OpenshiftClientState() {
+    BuildConfigOperationsImpl impl = new BuildConfigOperationsImpl(new OpenshiftClientContext() {
 
       @Override
       public HttpClient getHttpClient() {

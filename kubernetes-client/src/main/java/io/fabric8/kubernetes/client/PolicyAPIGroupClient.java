@@ -27,8 +27,8 @@ import io.fabric8.kubernetes.client.dsl.V1beta1PolicyAPIGroupDSL;
 
 public class PolicyAPIGroupClient extends BaseClient implements PolicyAPIGroupDSL {
 
-  public PolicyAPIGroupClient(ClientState clientState) {
-    super(clientState);
+  public PolicyAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

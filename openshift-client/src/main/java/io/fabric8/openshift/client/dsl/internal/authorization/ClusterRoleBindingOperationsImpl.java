@@ -22,15 +22,15 @@ import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.openshift.api.model.ClusterRoleBinding;
 import io.fabric8.openshift.api.model.ClusterRoleBindingBuilder;
 import io.fabric8.openshift.api.model.ClusterRoleBindingList;
-import io.fabric8.openshift.client.OpenshiftClientState;
+import io.fabric8.openshift.client.OpenshiftClientContext;
 import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.AUTHORIZATION;
 
 public class ClusterRoleBindingOperationsImpl extends OpenShiftOperation<ClusterRoleBinding, ClusterRoleBindingList, Resource<ClusterRoleBinding>> {
 
-  public ClusterRoleBindingOperationsImpl(OpenshiftClientState clientState) {
-    this(HasMetadataOperationsImpl.defaultContext(clientState));
+  public ClusterRoleBindingOperationsImpl(OpenshiftClientContext clientContext) {
+    this(HasMetadataOperationsImpl.defaultContext(clientContext));
   }
 
   public ClusterRoleBindingOperationsImpl(OperationContext context) {

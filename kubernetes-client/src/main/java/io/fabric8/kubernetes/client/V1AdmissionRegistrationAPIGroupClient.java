@@ -28,8 +28,8 @@ public class V1AdmissionRegistrationAPIGroupClient extends BaseClient implements
     super();
   }
 
-  public V1AdmissionRegistrationAPIGroupClient(ClientState clientState) {
-    super(clientState);
+  public V1AdmissionRegistrationAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

@@ -20,7 +20,7 @@ import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
 import io.fabric8.kubernetes.api.model.ReplicationControllerList;
-import io.fabric8.kubernetes.client.ClientState;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.dsl.Operation;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.WatchListDeletable;
@@ -28,12 +28,12 @@ import io.fabric8.kubernetes.client.dsl.internal.apps.v1.RollingUpdater;
 
 class ReplicationControllerRollingUpdater extends RollingUpdater<ReplicationController, ReplicationControllerList> {
 
-  ReplicationControllerRollingUpdater(ClientState clientState, String namespace) {
-    super(clientState, namespace);
+  ReplicationControllerRollingUpdater(ClientContext clientContext, String namespace) {
+    super(clientContext, namespace);
   }
 
-  ReplicationControllerRollingUpdater(ClientState clientState, String namespace, long rollingTimeoutMillis, long loggingIntervalMillis) {
-    super(clientState, namespace, rollingTimeoutMillis, loggingIntervalMillis);
+  ReplicationControllerRollingUpdater(ClientContext clientContext, String namespace, long rollingTimeoutMillis, long loggingIntervalMillis) {
+    super(clientContext, namespace, rollingTimeoutMillis, loggingIntervalMillis);
   }
 
   @Override
@@ -91,6 +91,6 @@ class ReplicationControllerRollingUpdater extends RollingUpdater<ReplicationCont
 
   @Override
   protected Operation<ReplicationController, ReplicationControllerList, RollableScalableResource<ReplicationController>> resources() {
-    return new ReplicationControllerOperationsImpl(this.clientState);
+    return new ReplicationControllerOperationsImpl(this.clientContext);
   }
 }

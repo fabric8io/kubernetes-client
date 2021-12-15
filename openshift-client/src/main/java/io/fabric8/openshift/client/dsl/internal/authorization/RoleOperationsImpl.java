@@ -22,15 +22,15 @@ import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.openshift.api.model.Role;
 import io.fabric8.openshift.api.model.RoleBuilder;
 import io.fabric8.openshift.api.model.RoleList;
-import io.fabric8.openshift.client.OpenshiftClientState;
+import io.fabric8.openshift.client.OpenshiftClientContext;
 import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.AUTHORIZATION;
 
 public class RoleOperationsImpl extends OpenShiftOperation<Role, RoleList, Resource<Role>> {
 
-  public RoleOperationsImpl(OpenshiftClientState clientState) {
-    this(HasMetadataOperationsImpl.defaultContext(clientState));
+  public RoleOperationsImpl(OpenshiftClientContext clientContext) {
+    this(HasMetadataOperationsImpl.defaultContext(clientContext));
   }
 
   public RoleOperationsImpl(OperationContext context) {

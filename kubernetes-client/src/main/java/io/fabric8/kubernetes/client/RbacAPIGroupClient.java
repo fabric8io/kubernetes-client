@@ -34,8 +34,8 @@ public class RbacAPIGroupClient extends BaseClient implements RbacAPIGroupDSL {
     super();
   }
 
-  public RbacAPIGroupClient(ClientState clientState) {
-    super(clientState);
+  public RbacAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

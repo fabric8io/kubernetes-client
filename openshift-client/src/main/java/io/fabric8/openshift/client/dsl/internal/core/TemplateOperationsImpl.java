@@ -35,7 +35,7 @@ import io.fabric8.openshift.api.model.Parameter;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateBuilder;
 import io.fabric8.openshift.api.model.TemplateList;
-import io.fabric8.openshift.client.OpenshiftClientState;
+import io.fabric8.openshift.client.OpenshiftClientContext;
 import io.fabric8.openshift.client.ParameterValue;
 import io.fabric8.openshift.client.dsl.TemplateOperation;
 import io.fabric8.openshift.client.dsl.TemplateResource;
@@ -70,8 +70,8 @@ public class TemplateOperationsImpl
 
   private final Map<String, String> parameters;
 
-  public TemplateOperationsImpl(OpenshiftClientState clientState) {
-    this(HasMetadataOperationsImpl.defaultContext(clientState), null);
+  public TemplateOperationsImpl(OpenshiftClientContext clientContext) {
+    this(HasMetadataOperationsImpl.defaultContext(clientContext), null);
   }
 
   public TemplateOperationsImpl(OperationContext context, Map<String, String> parameters) {

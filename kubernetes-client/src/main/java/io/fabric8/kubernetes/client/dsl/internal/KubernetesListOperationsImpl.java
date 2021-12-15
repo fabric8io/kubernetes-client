@@ -19,7 +19,7 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.ClientState;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.dsl.Createable;
@@ -52,8 +52,8 @@ public class KubernetesListOperationsImpl
   private final boolean deletingExisting;
   private final OperationContext context;
 
-  public KubernetesListOperationsImpl(ClientState clientState) {
-    this.context = HasMetadataOperationsImpl.defaultContext(clientState);
+  public KubernetesListOperationsImpl(ClientContext clientContext) {
+    this.context = HasMetadataOperationsImpl.defaultContext(clientContext);
     this.deletingExisting = false;
   }
   

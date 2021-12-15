@@ -23,8 +23,8 @@ public class AutoscalingAPIGroupClient extends BaseClient implements Autoscaling
     super();
   }
 
-  public AutoscalingAPIGroupClient(ClientState clientState) {
-    super(clientState);
+  public AutoscalingAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

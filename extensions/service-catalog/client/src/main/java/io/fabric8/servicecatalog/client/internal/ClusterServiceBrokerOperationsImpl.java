@@ -15,7 +15,7 @@
  */
 package io.fabric8.servicecatalog.client.internal;
 
-import io.fabric8.kubernetes.client.ClientState;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
@@ -33,8 +33,8 @@ import java.util.Map;
 
 public class ClusterServiceBrokerOperationsImpl extends HasMetadataOperation<ClusterServiceBroker, ClusterServiceBrokerList, ClusterServiceBrokerResource> implements ClusterServiceBrokerResource {
 
-  public ClusterServiceBrokerOperationsImpl(ClientState clientState) {
-    this(HasMetadataOperationsImpl.defaultContext(clientState));
+  public ClusterServiceBrokerOperationsImpl(ClientContext clientContext) {
+    this(HasMetadataOperationsImpl.defaultContext(clientContext));
   }
 
   public ClusterServiceBrokerOperationsImpl(OperationContext context) {

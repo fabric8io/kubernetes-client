@@ -20,7 +20,7 @@ import io.fabric8.certmanager.client.dsl.V1alpha2APIGroupDSL;
 import io.fabric8.certmanager.client.dsl.V1alpha3APIGroupDSL;
 import io.fabric8.certmanager.client.dsl.V1beta1APIGroupDSL;
 import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.ClientState;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.RequestConfig;
@@ -37,8 +37,8 @@ public class DefaultCertManagerClient extends BaseClient implements NamespacedCe
     super(configuration);
   }
 
-  public DefaultCertManagerClient(ClientState clientState) {
-    super(clientState);
+  public DefaultCertManagerClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

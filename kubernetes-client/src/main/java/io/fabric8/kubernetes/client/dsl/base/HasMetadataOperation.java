@@ -88,7 +88,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   }
   
   protected <V extends VisitableBuilder<T, V>> VisitableBuilder<T, V> createVisitableBuilder(T item) {
-    ResourceHandler<T, V> handler = Handlers.get(item, new BaseClient(this));
+    ResourceHandler<T, V> handler = Handlers.get(item, new BaseClient(context));
     if (handler != null) {
       return handler.edit(item);
     }

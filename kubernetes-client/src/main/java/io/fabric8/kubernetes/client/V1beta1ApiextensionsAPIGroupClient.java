@@ -25,8 +25,8 @@ public class V1beta1ApiextensionsAPIGroupClient extends BaseClient implements V1
     super();
   }
 
-  public V1beta1ApiextensionsAPIGroupClient(ClientState clientState) {
-    super(clientState);
+  public V1beta1ApiextensionsAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

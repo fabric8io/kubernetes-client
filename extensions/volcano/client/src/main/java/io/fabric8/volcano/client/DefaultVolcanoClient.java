@@ -16,7 +16,7 @@
 package io.fabric8.volcano.client;
 
 import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.ClientState;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.Handlers;
@@ -41,8 +41,8 @@ public class DefaultVolcanoClient extends BaseClient implements NamespacedVolcan
     super(configuration);
   }
 
-  public DefaultVolcanoClient(ClientState clientState) {
-    super(clientState);
+  public DefaultVolcanoClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

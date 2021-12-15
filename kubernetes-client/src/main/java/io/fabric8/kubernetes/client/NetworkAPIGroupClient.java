@@ -29,8 +29,8 @@ public class NetworkAPIGroupClient extends BaseClient implements NetworkAPIGroup
     super();
   }
 
-  public NetworkAPIGroupClient(ClientState clientState) {
-    super(clientState);
+  public NetworkAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

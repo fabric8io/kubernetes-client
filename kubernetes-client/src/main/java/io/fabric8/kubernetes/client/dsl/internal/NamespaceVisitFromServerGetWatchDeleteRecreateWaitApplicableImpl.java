@@ -23,7 +23,7 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.ClientState;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.ResourceHandler;
@@ -87,8 +87,8 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl im
     this.namespaceVisitOperationContext = namespaceVisitOperationContext;
   }
 
-  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(ClientState clientState, HasMetadata item) {
-    this(HasMetadataOperationsImpl.defaultContext(clientState).withItem(item), new NamespaceVisitOperationContext());
+  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(ClientContext clientContext, HasMetadata item) {
+    this(HasMetadataOperationsImpl.defaultContext(clientContext).withItem(item), new NamespaceVisitOperationContext());
     handlerOf(item, this.context); // validate the handler
   }
 

@@ -25,8 +25,8 @@ public class CertificatesAPIGroupClient extends BaseClient implements Certificat
     super();
   }
 
-  public CertificatesAPIGroupClient(ClientState clientState) {
-    super(clientState);
+  public CertificatesAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

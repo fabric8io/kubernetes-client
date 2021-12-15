@@ -16,29 +16,10 @@
 
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.client.http.HttpClient;
-
-public class SimpleClientState implements ClientState {
+/**
+ * Provides the {@link Config} and any derived state necessary for a {@link Client} to function
+ * <br>Generally users will not need to implement this interface, nor use constructors that reference it.
+ */
+public interface ClientContext extends HttpClientAware, ConfigAware<Config> {
   
-  protected Config config;
-  protected HttpClient httpClient;
-  
-  public SimpleClientState() {
-    
-  }
-
-  public SimpleClientState(Config config, HttpClient httpClient) {
-    this.config = config;
-    this.httpClient = httpClient;
-  }
-
-  @Override
-  public Config getConfiguration() {
-    return config;
-  }
-
-  @Override
-  public HttpClient getHttpClient() {
-    return httpClient;
-  }
 }

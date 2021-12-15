@@ -19,19 +19,19 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import io.fabric8.kubernetes.api.model.Binding;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.client.ClientState;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 
 public class BindingOperationsImpl extends HasMetadataOperation<Binding, KubernetesResourceList<Binding>, Resource<Binding>> {
-  public BindingOperationsImpl(ClientState clientState) {
-    this(clientState, null);
+  public BindingOperationsImpl(ClientContext clientContext) {
+    this(clientContext, null);
   }
 
-  public BindingOperationsImpl(ClientState clientState, String namespace) {
-    this(HasMetadataOperationsImpl.defaultContext(clientState).withNamespace(namespace));
+  public BindingOperationsImpl(ClientContext clientContext, String namespace) {
+    this(HasMetadataOperationsImpl.defaultContext(clientContext).withNamespace(namespace));
   }
 
   public BindingOperationsImpl(OperationContext context) {

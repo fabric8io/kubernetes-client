@@ -60,8 +60,8 @@ public class AutoAdaptableKubernetesClient extends DefaultKubernetesClient {
     delegate = adapt(new DefaultKubernetesClient());
   }
 
-  public AutoAdaptableKubernetesClient(ClientState clientState) {
-    delegate = adapt(new DefaultKubernetesClient(clientState));
+  public AutoAdaptableKubernetesClient(ClientContext clientContext) {
+    delegate = adapt(new DefaultKubernetesClient(clientContext));
   }
 
   public AutoAdaptableKubernetesClient(Config config) {

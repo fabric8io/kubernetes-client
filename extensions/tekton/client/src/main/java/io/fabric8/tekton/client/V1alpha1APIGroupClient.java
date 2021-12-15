@@ -16,7 +16,7 @@
 package io.fabric8.tekton.client;
 
 import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.ClientState;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
@@ -54,8 +54,8 @@ public class V1alpha1APIGroupClient extends BaseClient implements V1alpha1APIGro
     super();
   }
 
-  public V1alpha1APIGroupClient(ClientState clientState) {
-    super(clientState);
+  public V1alpha1APIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

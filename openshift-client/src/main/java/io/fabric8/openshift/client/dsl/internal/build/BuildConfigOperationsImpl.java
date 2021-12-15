@@ -36,7 +36,7 @@ import io.fabric8.openshift.api.model.BuildConfigBuilder;
 import io.fabric8.openshift.api.model.BuildConfigList;
 import io.fabric8.openshift.api.model.BuildRequest;
 import io.fabric8.openshift.api.model.WebHookTrigger;
-import io.fabric8.openshift.client.OpenshiftClientState;
+import io.fabric8.openshift.client.OpenshiftClientContext;
 import io.fabric8.openshift.client.dsl.BuildConfigOperation;
 import io.fabric8.openshift.client.dsl.BuildConfigResource;
 import io.fabric8.openshift.client.dsl.InputStreamable;
@@ -85,8 +85,8 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
   private final long timeout;
   private final TimeUnit timeoutUnit;
 
-  public BuildConfigOperationsImpl(OpenshiftClientState clientState) {
-    this(new BuildConfigOperationContext(), HasMetadataOperationsImpl.defaultContext(clientState));
+  public BuildConfigOperationsImpl(OpenshiftClientContext clientContext) {
+    this(new BuildConfigOperationContext(), HasMetadataOperationsImpl.defaultContext(clientContext));
   }
 
   public BuildConfigOperationsImpl(BuildConfigOperationContext context, OperationContext superContext) {
@@ -293,7 +293,7 @@ public class BuildConfigOperationsImpl extends OpenShiftOperation<BuildConfig, B
 
   protected String getRecentEvents() {
     StringBuilder eventsAsStrBuilder = new StringBuilder();
-    List<Event> recentEventList = Handlers.getOperation(Event.class, EventList.class, this).inNamespace(namespace).list().getItems();
+    List<Event> recentEventList = Handlers.getOperation(Event.class, EventList.class, context).inNamespace(namespace).list().getItems();
     KubernetesResourceUtil.sortEventListBasedOnTimestamp(recentEventList);
     for (int i = 0; i < 10 && i < recentEventList.size(); i++) {
       Event event = recentEventList.get(i);

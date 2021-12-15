@@ -15,7 +15,7 @@
  */
 package io.fabric8.openshift.client;
 
-import io.fabric8.kubernetes.client.ClientState;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.openshift.api.model.whereabouts.v1alpha1.IPPool;
@@ -29,8 +29,8 @@ public class OpenShiftWhereaboutsAPIGroupClient  extends BaseOpenShiftClient imp
     super();
   }
 
-  public OpenShiftWhereaboutsAPIGroupClient(ClientState clientState) {
-    super(clientState);
+  public OpenShiftWhereaboutsAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

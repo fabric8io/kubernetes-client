@@ -163,8 +163,8 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
     super(httpClient, config);
   }
   
-  protected BaseKubernetesClient(ClientState clientState) {
-    super(clientState);
+  protected BaseKubernetesClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   /**

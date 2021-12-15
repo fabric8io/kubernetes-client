@@ -29,7 +29,7 @@ import io.fabric8.certmanager.api.model.v1alpha3.Issuer;
 import io.fabric8.certmanager.api.model.v1alpha3.IssuerList;
 import io.fabric8.certmanager.client.dsl.V1alpha3APIGroupDSL;
 import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.ClientState;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
@@ -40,8 +40,8 @@ public class V1alpha3APIGroupClient extends BaseClient implements V1alpha3APIGro
     super();
   }
 
-  public V1alpha3APIGroupClient(ClientState clientState) {
-    super(clientState);
+  public V1alpha3APIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

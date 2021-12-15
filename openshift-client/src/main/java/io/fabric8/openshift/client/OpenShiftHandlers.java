@@ -35,8 +35,8 @@ public final class OpenShiftHandlers {
   }
 
   public static <T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>> void register(
-      Class<T> type, Function<OpenshiftClientState, HasMetadataOperation<T, L, R>> operationConstructor) {
-    Handlers.register(type, c -> operationConstructor.apply(new OpenshiftClientState() {
+      Class<T> type, Function<OpenshiftClientContext, HasMetadataOperation<T, L, R>> operationConstructor) {
+    Handlers.register(type, c -> operationConstructor.apply(new OpenshiftClientContext() {
 
       @Override
       public HttpClient getHttpClient() {
@@ -51,13 +51,13 @@ public final class OpenShiftHandlers {
   }
 
   public static <T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>> HasMetadataOperation<T, L, R> getOperation(
-      Class<T> type, Class<L> listType, OpenshiftClientState clientState) {
-    return Handlers.getOperation(type, listType, clientState);
+      Class<T> type, Class<L> listType, OpenshiftClientContext clientContext) {
+    return Handlers.getOperation(type, listType, clientContext);
   }
 
   public static <I extends KubernetesResource, O extends KubernetesResource> CreateOnlyResourceOperationsImpl<I, O> getCreateOnlyResourceOperation(
-      Class<I> inputType, Class<O> outputType, OpenshiftClientState clientState) {
-    return new CreateOnlyResourceOperationsImpl<>(clientState, ResourceDefinitionContext.fromResourceType(inputType), inputType, outputType);
+      Class<I> inputType, Class<O> outputType, OpenshiftClientContext clientContext) {
+    return new CreateOnlyResourceOperationsImpl<>(clientContext, ResourceDefinitionContext.fromResourceType(inputType), inputType, outputType);
   }
 
 }

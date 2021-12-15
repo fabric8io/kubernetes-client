@@ -24,8 +24,8 @@ public class EventingAPIGroupClient extends BaseClient implements EventingAPIGro
     super();
   }
 
-  public EventingAPIGroupClient(ClientState clientState) {
-    super(clientState);
+  public EventingAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
 

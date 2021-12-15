@@ -26,8 +26,8 @@ public class V1beta1EventingAPIGroupClient extends BaseClient implements V1beta1
     super();
   }
 
-  public V1beta1EventingAPIGroupClient(ClientState clientState) {
-    super(clientState);
+  public V1beta1EventingAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

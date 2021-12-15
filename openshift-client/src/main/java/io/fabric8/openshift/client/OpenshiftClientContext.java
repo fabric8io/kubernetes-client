@@ -14,8 +14,13 @@
  * limitations under the License.
  */
 
-package io.fabric8.kubernetes.client;
+package io.fabric8.openshift.client;
 
-public interface ClientState extends HttpClientAware, ConfigAware<Config> {
-  
+import io.fabric8.kubernetes.client.ClientContext;
+
+public interface OpenshiftClientContext extends ClientContext {
+
+  @Override
+  OpenShiftConfig getConfiguration();
+
 }

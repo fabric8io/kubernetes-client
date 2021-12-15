@@ -34,7 +34,7 @@ import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildBuilder;
 import io.fabric8.openshift.api.model.BuildList;
-import io.fabric8.openshift.client.OpenshiftClientState;
+import io.fabric8.openshift.client.OpenshiftClientContext;
 import io.fabric8.openshift.client.dsl.BuildResource;
 import io.fabric8.openshift.client.dsl.internal.BuildOperationContext;
 import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
@@ -67,8 +67,8 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList,
   private Integer podLogWaitTimeout;
   private final BuildOperationContext buildOperationContext;
 
-  public BuildOperationsImpl(OpenshiftClientState clientState) {
-    this(new BuildOperationContext(), HasMetadataOperationsImpl.defaultContext(clientState));
+  public BuildOperationsImpl(OpenshiftClientContext clientContext) {
+    this(new BuildOperationContext(), HasMetadataOperationsImpl.defaultContext(clientContext));
   }
 
   public BuildOperationsImpl(BuildOperationContext context, OperationContext superContext) {

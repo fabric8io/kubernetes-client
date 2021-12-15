@@ -15,7 +15,7 @@
  */
 package io.fabric8.openshift.client;
 
-import io.fabric8.kubernetes.client.ClientState;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.openshift.api.model.tuned.v1.Profile;
@@ -29,8 +29,8 @@ public class OpenShiftTunedAPIGroupClient extends BaseOpenShiftClient implements
     super();
   }
 
-  public OpenShiftTunedAPIGroupClient(ClientState clientState) {
-    super(clientState);
+  public OpenShiftTunedAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

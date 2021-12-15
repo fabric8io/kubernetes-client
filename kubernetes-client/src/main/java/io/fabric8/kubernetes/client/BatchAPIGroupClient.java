@@ -34,8 +34,8 @@ public class BatchAPIGroupClient extends BaseClient implements BatchAPIGroupDSL 
     super();
   }
 
-  public BatchAPIGroupClient(ClientState clientState) {
-    super(clientState);
+  public BatchAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

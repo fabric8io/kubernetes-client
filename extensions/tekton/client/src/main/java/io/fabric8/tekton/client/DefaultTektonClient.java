@@ -16,7 +16,7 @@
 package io.fabric8.tekton.client;
 
 import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.ClientState;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.RequestConfig;
@@ -35,8 +35,8 @@ public class DefaultTektonClient extends BaseClient implements NamespacedTektonC
     super(configuration);
   }
 
-  public DefaultTektonClient(ClientState clientState) {
-    super(clientState);
+  public DefaultTektonClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

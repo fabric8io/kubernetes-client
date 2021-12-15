@@ -15,7 +15,7 @@
  */
 package io.fabric8.openshift.client;
 
-import io.fabric8.kubernetes.client.ClientState;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.openshift.api.model.console.v1.ConsoleCLIDownload;
@@ -39,8 +39,8 @@ public class OpenShiftConsoleAPIGroupClient extends BaseOpenShiftClient implemen
     super();
   }
 
-  public OpenShiftConsoleAPIGroupClient(ClientState clientState) {
-    super(clientState);
+  public OpenShiftConsoleAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

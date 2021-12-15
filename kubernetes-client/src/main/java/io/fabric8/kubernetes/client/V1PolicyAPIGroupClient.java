@@ -26,8 +26,8 @@ public class V1PolicyAPIGroupClient extends BaseClient implements V1PolicyAPIGro
     super();
   }
 
-  public V1PolicyAPIGroupClient(ClientState clientState) {
-    super(clientState);
+  public V1PolicyAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

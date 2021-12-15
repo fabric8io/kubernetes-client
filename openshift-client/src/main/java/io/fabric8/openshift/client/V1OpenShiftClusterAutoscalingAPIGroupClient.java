@@ -15,7 +15,7 @@
  */
 package io.fabric8.openshift.client;
 
-import io.fabric8.kubernetes.client.ClientState;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.openshift.api.model.clusterautoscaling.v1.ClusterAutoscaler;
@@ -27,8 +27,8 @@ public class V1OpenShiftClusterAutoscalingAPIGroupClient extends BaseOpenShiftCl
     super();
   }
 
-  public V1OpenShiftClusterAutoscalingAPIGroupClient(ClientState clientState) {
-    super(clientState);
+  public V1OpenShiftClusterAutoscalingAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

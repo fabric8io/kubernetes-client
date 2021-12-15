@@ -22,8 +22,8 @@ public class AuthorizationAPIGroupClient extends BaseClient implements Authoriza
     super();
   }
 
-  public AuthorizationAPIGroupClient(ClientState clientState) {
-    super(clientState);
+  public AuthorizationAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

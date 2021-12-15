@@ -18,7 +18,7 @@ package io.fabric8.camelk.client;
 import io.fabric8.camelk.client.dsl.V1APIGroupDSL;
 import io.fabric8.camelk.client.dsl.V1alpha1APIGroupDSL;
 import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.ClientState;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.RequestConfig;
@@ -35,8 +35,8 @@ public class DefaultCamelKClient extends BaseClient implements NamespacedCamelKC
     super(configuration);
   }
 
-  public DefaultCamelKClient(ClientState clientState) {
-    super(clientState);
+  public DefaultCamelKClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

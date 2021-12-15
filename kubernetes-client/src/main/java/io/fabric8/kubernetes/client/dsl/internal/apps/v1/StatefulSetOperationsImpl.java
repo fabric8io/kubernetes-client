@@ -24,7 +24,7 @@ import io.fabric8.kubernetes.api.model.apps.ControllerRevisionList;
 import io.fabric8.kubernetes.api.model.apps.StatefulSet;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetList;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
-import io.fabric8.kubernetes.client.ClientState;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
@@ -48,12 +48,12 @@ import java.util.concurrent.TimeUnit;
 public class StatefulSetOperationsImpl extends RollableScalableResourceOperation<StatefulSet, StatefulSetList, RollableScalableResource<StatefulSet>>
   implements TimeoutImageEditReplacePatchable<StatefulSet>
 {
-  public StatefulSetOperationsImpl(ClientState clientState) {
-    this(clientState, null);
+  public StatefulSetOperationsImpl(ClientContext clientContext) {
+    this(clientContext, null);
   }
 
-  public StatefulSetOperationsImpl(ClientState clientState, String namespace) {
-    this(new RollingOperationContext(), HasMetadataOperationsImpl.defaultContext(clientState).withNamespace(namespace));
+  public StatefulSetOperationsImpl(ClientContext clientContext, String namespace) {
+    this(new RollingOperationContext(), HasMetadataOperationsImpl.defaultContext(clientContext).withNamespace(namespace));
   }
 
   public StatefulSetOperationsImpl(RollingOperationContext context, OperationContext superContext) {
@@ -79,7 +79,7 @@ public class StatefulSetOperationsImpl extends RollableScalableResourceOperation
 
   @Override
   public RollingUpdater<StatefulSet, StatefulSetList> getRollingUpdater(long rollingTimeout, TimeUnit rollingTimeUnit) {
-    return new StatefulSetRollingUpdater(this, getNamespace(), rollingTimeUnit.toMillis(rollingTimeout), config.getLoggingInterval());
+    return new StatefulSetRollingUpdater(context, getNamespace(), rollingTimeUnit.toMillis(rollingTimeout), config.getLoggingInterval());
   }
 
   @Override

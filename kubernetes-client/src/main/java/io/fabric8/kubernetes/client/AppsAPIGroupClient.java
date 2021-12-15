@@ -39,8 +39,8 @@ public class AppsAPIGroupClient extends BaseClient implements AppsAPIGroupDSL {
     super();
   }
 
-  public AppsAPIGroupClient(ClientState clientState) {
-    super(clientState);
+  public AppsAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

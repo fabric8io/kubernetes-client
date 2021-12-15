@@ -40,7 +40,7 @@ import io.fabric8.chaosmesh.v1alpha1.StressChaosList;
 import io.fabric8.chaosmesh.v1alpha1.TimeChaos;
 import io.fabric8.chaosmesh.v1alpha1.TimeChaosList;
 import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.ClientState;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.Handlers;
@@ -60,8 +60,8 @@ public class DefaultChaosMeshClient extends BaseClient implements NamespacedChao
         super(configuration);
     }
 
-    public DefaultChaosMeshClient(ClientState clientState) {
-        super(clientState);
+    public DefaultChaosMeshClient(ClientContext clientContext) {
+        super(clientContext);
     }
 
     @Override

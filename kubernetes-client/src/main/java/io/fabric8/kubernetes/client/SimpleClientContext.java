@@ -14,13 +14,31 @@
  * limitations under the License.
  */
 
-package io.fabric8.openshift.client;
+package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.client.ClientState;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
-public interface OpenshiftClientState extends ClientState {
+public class SimpleClientContext implements ClientContext {
+  
+  protected Config config;
+  protected HttpClient httpClient;
+  
+  public SimpleClientContext() {
+    
+  }
+
+  public SimpleClientContext(Config config, HttpClient httpClient) {
+    this.config = config;
+    this.httpClient = httpClient;
+  }
 
   @Override
-  OpenShiftConfig getConfiguration();
+  public Config getConfiguration() {
+    return config;
+  }
 
+  @Override
+  public HttpClient getHttpClient() {
+    return httpClient;
+  }
 }

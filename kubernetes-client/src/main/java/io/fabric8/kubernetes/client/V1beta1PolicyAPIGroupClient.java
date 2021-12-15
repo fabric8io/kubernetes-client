@@ -28,8 +28,8 @@ public class V1beta1PolicyAPIGroupClient extends BaseClient implements V1beta1Po
     super();
   }
 
-  public V1beta1PolicyAPIGroupClient(ClientState clientState) {
-    super(clientState);
+  public V1beta1PolicyAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

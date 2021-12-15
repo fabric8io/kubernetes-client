@@ -26,8 +26,8 @@ public class V2beta2AutoscalingAPIGroupClient extends BaseClient implements V2be
     super();
   }
 
-  public V2beta2AutoscalingAPIGroupClient(ClientState clientState) {
-    super(clientState);
+  public V2beta2AutoscalingAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

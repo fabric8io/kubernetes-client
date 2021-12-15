@@ -27,8 +27,8 @@ public class V1beta1NetworkAPIGroupClient extends BaseClient implements V1beta1N
     super();
   }
 
-  public V1beta1NetworkAPIGroupClient(ClientState clientState) {
-    super(clientState);
+  public V1beta1NetworkAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

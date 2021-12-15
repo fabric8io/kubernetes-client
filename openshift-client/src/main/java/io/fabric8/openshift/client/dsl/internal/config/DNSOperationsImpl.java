@@ -22,13 +22,13 @@ import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.openshift.api.model.DNS;
 import io.fabric8.openshift.api.model.DNSBuilder;
 import io.fabric8.openshift.api.model.DNSList;
-import io.fabric8.openshift.client.OpenshiftClientState;
+import io.fabric8.openshift.client.OpenshiftClientContext;
 import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
 
 public class DNSOperationsImpl extends OpenShiftOperation<DNS, DNSList, Resource<DNS>> {
 
-  public DNSOperationsImpl(OpenshiftClientState clientState) {
-    this(HasMetadataOperationsImpl.defaultContext(clientState));
+  public DNSOperationsImpl(OpenshiftClientContext clientContext) {
+    this(HasMetadataOperationsImpl.defaultContext(clientContext));
   }
 
   public DNSOperationsImpl(OperationContext context) {

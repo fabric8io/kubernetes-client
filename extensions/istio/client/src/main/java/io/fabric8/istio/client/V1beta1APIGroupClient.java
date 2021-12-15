@@ -34,7 +34,7 @@ import io.fabric8.istio.api.security.v1beta1.PeerAuthenticationList;
 import io.fabric8.istio.api.security.v1beta1.RequestAuthentication;
 import io.fabric8.istio.api.security.v1beta1.RequestAuthenticationList;
 import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.ClientState;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
@@ -50,8 +50,8 @@ public class V1beta1APIGroupClient extends BaseClient implements V1beta1APIGroup
     super(configuration);
   }
 
-  public V1beta1APIGroupClient(ClientState clientState) {
-    super(clientState);
+  public V1beta1APIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   // networking

@@ -35,9 +35,9 @@ class ResourceHandlerImpl<T extends HasMetadata, V extends VisitableBuilder<T, V
   private final Class<T> type;
   private final Class<V> builderClass;
   private final Class<? extends KubernetesResourceList<T>> defaultListClass;
-  private final Function<ClientState, HasMetadataOperation<T, ?, Resource<T>>> operationConstructor;
+  private final Function<ClientContext, HasMetadataOperation<T, ?, Resource<T>>> operationConstructor;
   
-  ResourceHandlerImpl(Class<T> type, Function<ClientState, HasMetadataOperation<T, ?, Resource<T>>> operationConstructor) {
+  ResourceHandlerImpl(Class<T> type, Function<ClientContext, HasMetadataOperation<T, ?, Resource<T>>> operationConstructor) {
     this.type = type;
     this.context = ResourceDefinitionContext.fromResourceType(type);
     this.builderClass = KubernetesResourceUtil.inferBuilderType(type);
@@ -67,14 +67,14 @@ class ResourceHandlerImpl<T extends HasMetadata, V extends VisitableBuilder<T, V
   }
 
   @Override
-  public <L extends KubernetesResourceList<T>> HasMetadataOperation<T, L, Resource<T>> operation(ClientState clientState, Class<L> listType) {
+  public <L extends KubernetesResourceList<T>> HasMetadataOperation<T, L, Resource<T>> operation(ClientContext clientContext, Class<L> listType) {
     if (operationConstructor != null) {
       if (listType != null && !listType.isAssignableFrom(defaultListClass)) {
         throw new IllegalArgumentException(String.format("Handler type %s with list %s not compatible with %s", type, defaultListClass.getName(), listType.getName()));
       }
-      return (HasMetadataOperation<T, L, Resource<T>>) operationConstructor.apply(clientState);
+      return (HasMetadataOperation<T, L, Resource<T>>) operationConstructor.apply(clientContext);
     }
-    return new HasMetadataOperationsImpl<>(clientState, context, type, (Class)Utils.getNonNullOrElse(listType, defaultListClass));
+    return new HasMetadataOperationsImpl<>(clientContext, context, type, (Class)Utils.getNonNullOrElse(listType, defaultListClass));
   }
   
   @Override

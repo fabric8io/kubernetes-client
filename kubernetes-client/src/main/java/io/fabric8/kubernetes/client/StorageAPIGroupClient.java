@@ -36,8 +36,8 @@ public class StorageAPIGroupClient extends BaseClient implements StorageAPIGroup
     super();
   }
 
-  public StorageAPIGroupClient(ClientState clientState) {
-    super(clientState);
+  public StorageAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

@@ -55,8 +55,8 @@ public class DefaultKubernetesClient extends BaseKubernetesClient<NamespacedKube
     super(httpClient, config);
   }
   
-  public DefaultKubernetesClient(ClientState clientState) {
-    super(clientState);
+  public DefaultKubernetesClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   public static DefaultKubernetesClient fromConfig(String config) {

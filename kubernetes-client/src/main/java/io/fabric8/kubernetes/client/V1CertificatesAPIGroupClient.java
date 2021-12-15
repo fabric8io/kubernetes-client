@@ -26,8 +26,8 @@ public class V1CertificatesAPIGroupClient extends BaseClient implements V1Certif
     super();
   }
 
-  public V1CertificatesAPIGroupClient(ClientState clientState) {
-    super(clientState);
+  public V1CertificatesAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

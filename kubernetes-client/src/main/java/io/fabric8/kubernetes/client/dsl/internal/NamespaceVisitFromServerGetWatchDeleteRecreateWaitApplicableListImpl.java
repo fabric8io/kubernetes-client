@@ -22,7 +22,7 @@ import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.client.ClientState;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
@@ -66,8 +66,8 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
     this.context = context;
   }
   
-  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(ClientState clientState, Object item) {
-    this(HasMetadataOperationsImpl.defaultContext(clientState).withItem(item), new NamespaceVisitOperationContext());
+  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(ClientContext clientContext, Object item) {
+    this(HasMetadataOperationsImpl.defaultContext(clientContext).withItem(item), new NamespaceVisitOperationContext());
   }
 
   @Override

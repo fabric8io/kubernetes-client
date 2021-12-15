@@ -22,8 +22,8 @@ public class ApiextensionsAPIGroupClient extends BaseClient implements Apiextens
     super();
   }
 
-  public ApiextensionsAPIGroupClient(ClientState clientState) {
-    super(clientState);
+  public ApiextensionsAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
 

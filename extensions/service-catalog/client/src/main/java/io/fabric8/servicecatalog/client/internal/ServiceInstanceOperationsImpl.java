@@ -15,7 +15,7 @@
  */
 package io.fabric8.servicecatalog.client.internal;
 
-import io.fabric8.kubernetes.client.ClientState;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
@@ -27,8 +27,8 @@ import io.fabric8.servicecatalog.api.model.ServiceInstanceList;
 
 public class ServiceInstanceOperationsImpl extends HasMetadataOperation<ServiceInstance, ServiceInstanceList, ServiceInstanceResource> implements ServiceInstanceResource {
 
-    public ServiceInstanceOperationsImpl(ClientState clientState) {
-        this(HasMetadataOperationsImpl.defaultContext(clientState));
+    public ServiceInstanceOperationsImpl(ClientContext clientContext) {
+        this(HasMetadataOperationsImpl.defaultContext(clientContext));
     }
 
     public ServiceInstanceOperationsImpl(OperationContext ctx) {

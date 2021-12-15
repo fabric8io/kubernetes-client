@@ -29,8 +29,8 @@ public class V1NetworkAPIGroupClient extends BaseClient implements V1NetworkAPIG
     super();
   }
 
-  public V1NetworkAPIGroupClient(ClientState clientState) {
-    super(clientState);
+  public V1NetworkAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

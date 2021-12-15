@@ -28,7 +28,7 @@ import io.fabric8.kubernetes.client.utils.Utils;
 import java.net.URL;
 import java.util.List;
 
-public class BaseClient extends SimpleClientState implements Client {
+public class BaseClient extends SimpleClientContext implements Client {
 
   public static final String APIS = "/apis";
 
@@ -49,13 +49,13 @@ public class BaseClient extends SimpleClientState implements Client {
   }
 
   public BaseClient(final HttpClient httpClient, Config config) {
-    this(new SimpleClientState(config, httpClient));
+    this(new SimpleClientContext(config, httpClient));
   }
   
-  public BaseClient(ClientState clientState) {
+  public BaseClient(ClientContext clientContext) {
     try {
-      this.config = clientState.getConfiguration();
-      this.httpClient = clientState.getHttpClient();
+      this.config = clientContext.getConfiguration();
+      this.httpClient = clientContext.getHttpClient();
       adaptState();
       this.namespace = config.getNamespace();
       this.apiVersion = config.getApiVersion();
@@ -156,7 +156,7 @@ public class BaseClient extends SimpleClientState implements Client {
     // nothing by default
   }
   
-  protected SimpleClientState newState(Config updated) {
-    return new SimpleClientState(updated, httpClient);
+  protected SimpleClientContext newState(Config updated) {
+    return new SimpleClientContext(updated, httpClient);
   }
 }

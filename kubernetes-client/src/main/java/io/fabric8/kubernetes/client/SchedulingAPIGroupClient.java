@@ -24,8 +24,8 @@ import io.fabric8.kubernetes.client.dsl.V1SchedulingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1beta1SchedulingAPIGroupDSL;
 
 public class SchedulingAPIGroupClient extends BaseClient implements SchedulingAPIGroupDSL {
-  public SchedulingAPIGroupClient(ClientState clientState) {
-    super(clientState);
+  public SchedulingAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

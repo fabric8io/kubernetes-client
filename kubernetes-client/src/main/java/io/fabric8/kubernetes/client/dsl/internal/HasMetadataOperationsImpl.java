@@ -19,7 +19,7 @@ import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.client.ClientState;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
@@ -34,16 +34,16 @@ public class HasMetadataOperationsImpl<T extends HasMetadata, L extends Kubernet
 
   private final ResourceDefinitionContext rdc;
   
-  public HasMetadataOperationsImpl(ClientState clientState, ResourceDefinitionContext rdc, Class<T> type, Class<L> listType) {
-    this(defaultContext(clientState), rdc, type, listType);
+  public HasMetadataOperationsImpl(ClientContext clientContext, ResourceDefinitionContext rdc, Class<T> type, Class<L> listType) {
+    this(defaultContext(clientContext), rdc, type, listType);
   }
   
-  public static OperationContext defaultContext(OperationContext context, ClientState clientState) {
-    return context.withHttpClient(clientState.getHttpClient()).withConfig(clientState.getConfiguration()).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY);
+  public static OperationContext defaultContext(OperationContext context, ClientContext clientContext) {
+    return context.withHttpClient(clientContext.getHttpClient()).withConfig(clientContext.getConfiguration()).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY);
   }
     
-  public static OperationContext defaultContext(ClientState clientState) {
-    return defaultContext(new OperationContext(), clientState);
+  public static OperationContext defaultContext(ClientContext clientContext) {
+    return defaultContext(new OperationContext(), clientContext);
   }
 
   public HasMetadataOperationsImpl(OperationContext context, ResourceDefinitionContext rdc, Class<T> type, Class<L> listType) {

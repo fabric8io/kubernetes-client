@@ -30,8 +30,8 @@ public class V1AuthorizationAPIGroupClient extends BaseClient implements V1Autho
     super();
   }
 
-  public V1AuthorizationAPIGroupClient(ClientState clientState) {
-    super(clientState);
+  public V1AuthorizationAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

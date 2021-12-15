@@ -21,7 +21,7 @@ import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerList;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
-import io.fabric8.kubernetes.client.ClientState;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.PodResource;
@@ -46,12 +46,12 @@ import java.util.concurrent.TimeUnit;
 public class ReplicationControllerOperationsImpl extends RollableScalableResourceOperation<ReplicationController, ReplicationControllerList, RollableScalableResource<ReplicationController>>
   implements TimeoutImageEditReplacePatchable<ReplicationController> {
 
-  public ReplicationControllerOperationsImpl(ClientState clientState) {
-    this(clientState, null);
+  public ReplicationControllerOperationsImpl(ClientContext clientContext) {
+    this(clientContext, null);
   }
 
-  public ReplicationControllerOperationsImpl(ClientState clientState, String namespace) {
-    this(new RollingOperationContext(), HasMetadataOperationsImpl.defaultContext(clientState).withNamespace(namespace));
+  public ReplicationControllerOperationsImpl(ClientContext clientContext, String namespace) {
+    this(new RollingOperationContext(), HasMetadataOperationsImpl.defaultContext(clientContext).withNamespace(namespace));
   }
 
   public ReplicationControllerOperationsImpl(RollingOperationContext context, OperationContext superContext) {
@@ -81,7 +81,7 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
 
   @Override
   public RollingUpdater<ReplicationController, ReplicationControllerList> getRollingUpdater(long rollingTimeout, TimeUnit rollingTimeUnit) {
-    return new ReplicationControllerRollingUpdater(this, namespace, rollingTimeUnit.toMillis(rollingTimeout), config.getLoggingInterval());
+    return new ReplicationControllerRollingUpdater(context, namespace, rollingTimeUnit.toMillis(rollingTimeout), config.getLoggingInterval());
   }
 
   @Override

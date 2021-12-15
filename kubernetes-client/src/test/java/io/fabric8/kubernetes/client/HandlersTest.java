@@ -34,7 +34,7 @@ public class HandlersTest {
   
   static class MyPodOperationsImpl extends HasMetadataOperation<MyPod, KubernetesResourceList<MyPod>, Resource<MyPod>> {
 
-    public MyPodOperationsImpl(ClientState clientState) {
+    public MyPodOperationsImpl(ClientContext clientContext) {
       super(new OperationContext(), MyPod.class, null);
     }
     
@@ -44,10 +44,10 @@ public class HandlersTest {
   public void testRegister() {
     Handlers.register(MyPod.class, MyPodOperationsImpl::new);
 
-    assertThat(Handlers.get(new MyPod(), null).operation(new SimpleClientState(), null), Matchers.instanceOf(MyPodOperationsImpl.class));
+    assertThat(Handlers.get(new MyPod(), null).operation(new SimpleClientContext(), null), Matchers.instanceOf(MyPodOperationsImpl.class));
     
     Handlers.unregister(MyPod.class);
     
-    assertThat(Handlers.get(new MyPod(), null).operation(new SimpleClientState(), null), Matchers.instanceOf(HasMetadataOperationsImpl.class));
+    assertThat(Handlers.get(new MyPod(), null).operation(new SimpleClientContext(), null), Matchers.instanceOf(HasMetadataOperationsImpl.class));
   }
 }

@@ -19,7 +19,7 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.api.model.batch.v1.Job;
 import io.fabric8.kubernetes.api.model.batch.v1.JobList;
-import io.fabric8.kubernetes.client.ClientState;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.Loggable;
@@ -49,12 +49,12 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
   static final transient Logger LOG = LoggerFactory.getLogger(JobOperationsImpl.class);
   private final PodControllerOperationContext podControllerOperationContext;
 
-  public JobOperationsImpl(ClientState clientState) {
-    this(clientState, null);
+  public JobOperationsImpl(ClientContext clientContext) {
+    this(clientContext, null);
   }
 
-  public JobOperationsImpl(ClientState clientState, String namespace) {
-    this(new PodControllerOperationContext(), HasMetadataOperationsImpl.defaultContext(clientState).withNamespace(namespace));
+  public JobOperationsImpl(ClientContext clientContext, String namespace) {
+    this(new PodControllerOperationContext(), HasMetadataOperationsImpl.defaultContext(clientContext).withNamespace(namespace));
   }
 
   public JobOperationsImpl(PodControllerOperationContext context, OperationContext superContext) {

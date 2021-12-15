@@ -27,7 +27,7 @@ import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitOperationContext;
 import io.fabric8.openshift.api.model.Project;
 import io.fabric8.openshift.api.model.ProjectBuilder;
 import io.fabric8.openshift.api.model.ProjectList;
-import io.fabric8.openshift.client.OpenshiftClientState;
+import io.fabric8.openshift.client.OpenshiftClientContext;
 import io.fabric8.openshift.client.dsl.ProjectOperation;
 import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
 
@@ -45,8 +45,8 @@ public class ProjectOperationsImpl extends OpenShiftOperation<Project, ProjectLi
   public static final String CLUSTER_ROLE = "ClusterRole";
 
 
-  public ProjectOperationsImpl(OpenshiftClientState clientState) {
-    this(HasMetadataOperationsImpl.defaultContext(clientState));
+  public ProjectOperationsImpl(OpenshiftClientContext clientContext) {
+    this(HasMetadataOperationsImpl.defaultContext(clientContext));
   }
 
   public ProjectOperationsImpl(OperationContext context) {

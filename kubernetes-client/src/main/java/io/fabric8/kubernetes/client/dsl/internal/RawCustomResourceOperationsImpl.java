@@ -23,7 +23,7 @@ import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
-import io.fabric8.kubernetes.client.ClientState;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.GracePeriodConfigurable;
 import io.fabric8.kubernetes.client.PropagationPolicyConfigurable;
@@ -79,12 +79,12 @@ public class RawCustomResourceOperationsImpl implements Nameable<RawCustomResour
     this.customResourceDefinition = crdContext;
   }
 
-  public RawCustomResourceOperationsImpl(ClientState clientState, CustomResourceDefinitionContext customResourceDefinition) {
+  public RawCustomResourceOperationsImpl(ClientContext clientContext, CustomResourceDefinitionContext customResourceDefinition) {
     this(
       new GenericKubernetesResourceOperationsImpl(
         new OperationContext()
-          .withHttpClient(clientState.getHttpClient())
-          .withConfig(clientState.getConfiguration())
+          .withHttpClient(clientContext.getHttpClient())
+          .withConfig(clientContext.getConfiguration())
           .withNamespace(null)
           .withName(null)
           .withGracePeriodSeconds(-1L)

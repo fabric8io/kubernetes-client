@@ -23,8 +23,8 @@ public class FlowControlAPIGroupClient extends BaseClient implements FlowControl
     super();
   }
 
-  public FlowControlAPIGroupClient(ClientState clientState) {
-    super(clientState);
+  public FlowControlAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

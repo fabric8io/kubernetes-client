@@ -21,7 +21,7 @@ import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
-import io.fabric8.kubernetes.client.SimpleClientState;
+import io.fabric8.kubernetes.client.SimpleClientContext;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
@@ -102,8 +102,8 @@ class RawCustomResourceOperationsImplTest {
       .withScope("Cluster")
       .withVersion("v1alpha1")
       .build();
-    namespacedOperations = new RawCustomResourceOperationsImpl(new SimpleClientState(config, mockClient), namespacedCustomResourceDefinitionContext);
-    clusterOperations = new RawCustomResourceOperationsImpl(new SimpleClientState(config, mockClient), clusterCustomResourceDefinitionContext);
+    namespacedOperations = new RawCustomResourceOperationsImpl(new SimpleClientContext(config, mockClient), namespacedCustomResourceDefinitionContext);
+    clusterOperations = new RawCustomResourceOperationsImpl(new SimpleClientContext(config, mockClient), clusterCustomResourceDefinitionContext);
     requestCaptor = ArgumentCaptor.forClass(HttpRequest.class);
     urlCaptor = ArgumentCaptor.forClass(URL.class);
     bodyCaptor = ArgumentCaptor.forClass(String.class);
@@ -452,7 +452,7 @@ class RawCustomResourceOperationsImplTest {
       .withWatchReconnectLimit(1)
       .withWatchReconnectInterval(10)
       .build();
-    RawCustomResourceOperationsImpl rawOp = new RawCustomResourceOperationsImpl(new SimpleClientState(config, mockClient), namespacedCustomResourceDefinitionContext);
+    RawCustomResourceOperationsImpl rawOp = new RawCustomResourceOperationsImpl(new SimpleClientContext(config, mockClient), namespacedCustomResourceDefinitionContext);
 
     // When
     Config configFromRawOp = rawOp.getConfig();
@@ -775,7 +775,7 @@ class RawCustomResourceOperationsImplTest {
       .withScope("Namespaced")
       .withKind("ConfigMap")
       .build();
-    RawCustomResourceOperationsImpl rawOp = new RawCustomResourceOperationsImpl(new SimpleClientState(config, mockClient), configMapContext);
+    RawCustomResourceOperationsImpl rawOp = new RawCustomResourceOperationsImpl(new SimpleClientContext(config, mockClient), configMapContext);
 
     // When
     Map<String, Object> unstructuredConfigMap = rawOp.inNamespace("default").withName("game-config").get();

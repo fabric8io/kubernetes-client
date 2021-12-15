@@ -24,8 +24,8 @@ public class MetricAPIGroupClient extends BaseClient implements MetricAPIGroupDS
     super();
   }
 
-  public MetricAPIGroupClient(ClientState clientState) {
-    super(clientState);
+  public MetricAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

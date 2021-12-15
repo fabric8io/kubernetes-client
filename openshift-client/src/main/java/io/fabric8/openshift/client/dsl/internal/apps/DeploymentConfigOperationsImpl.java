@@ -32,7 +32,7 @@ import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.URLUtils.URLBuilder;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigList;
-import io.fabric8.openshift.client.OpenshiftClientState;
+import io.fabric8.openshift.client.OpenshiftClientContext;
 import io.fabric8.openshift.client.dsl.DeployableScalableResource;
 import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
 import org.slf4j.Logger;
@@ -61,8 +61,8 @@ public class DeploymentConfigOperationsImpl extends OpenShiftOperation<Deploymen
   public static final String OPENSHIFT_IO_DEPLOYMENT_CONFIG_NAME = "openshift.io/deployment-config.name";
   private final RollingOperationContext rollingOperationContext;
 
-  public DeploymentConfigOperationsImpl(OpenshiftClientState clientState) {
-    this(new RollingOperationContext(), HasMetadataOperationsImpl.defaultContext(clientState));
+  public DeploymentConfigOperationsImpl(OpenshiftClientContext clientContext) {
+    this(new RollingOperationContext(), HasMetadataOperationsImpl.defaultContext(clientContext));
   }
 
   public DeploymentConfigOperationsImpl(RollingOperationContext context, OperationContext superContext) {

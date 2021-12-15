@@ -26,8 +26,8 @@ public class V1AutoscalingAPIGroupClient extends BaseClient implements V1Autosca
     super();
   }
 
-  public V1AutoscalingAPIGroupClient(ClientState clientState) {
-    super(clientState);
+  public V1AutoscalingAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

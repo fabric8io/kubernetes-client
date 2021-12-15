@@ -17,16 +17,16 @@ package io.fabric8.kubernetes.client.extended.run;
 
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
-import io.fabric8.kubernetes.client.ClientState;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
 
 public class RunOperations {
-  private final ClientState clientState;
+  private final ClientContext clientContext;
   private final String namespace;
   private final RunConfigBuilder runConfigBuilder;
 
-  public RunOperations(ClientState clientState, String namespace, RunConfigBuilder runConfigBuilder) {
-    this.clientState = clientState;
+  public RunOperations(ClientContext clientContext, String namespace, RunConfigBuilder runConfigBuilder) {
+    this.clientContext = clientContext;
     this.namespace = namespace;
     this.runConfigBuilder = runConfigBuilder;
   }
@@ -38,7 +38,7 @@ public class RunOperations {
    * @return {@link RunOperations} with injected namespace
    */
   public RunOperations inNamespace(String namespace) {
-    return new RunOperations(clientState, namespace, runConfigBuilder);
+    return new RunOperations(clientContext, namespace, runConfigBuilder);
   }
 
   /**
@@ -48,7 +48,7 @@ public class RunOperations {
    * @return {@link RunOperations} with image injected into {@link RunConfig}
    */
   public RunOperations withImage(String image) {
-    return new RunOperations(clientState, namespace, runConfigBuilder.withImage(image));
+    return new RunOperations(clientContext, namespace, runConfigBuilder.withImage(image));
   }
 
   /**
@@ -58,7 +58,7 @@ public class RunOperations {
    * @return {@link RunOperations} with name injected into {@link RunConfig}
    */
   public RunOperations withName(String name) {
-    return new RunOperations(clientState, namespace, runConfigBuilder.withName(name));
+    return new RunOperations(clientContext, namespace, runConfigBuilder.withName(name));
   }
 
   /**
@@ -68,7 +68,7 @@ public class RunOperations {
    * @return {@link RunOperations} with specified configuration
    */
   public RunOperations withRunConfig(RunConfig generatorRunConfig) {
-    return new RunOperations(clientState, namespace, new RunConfigBuilder(generatorRunConfig));
+    return new RunOperations(clientContext, namespace, new RunConfigBuilder(generatorRunConfig));
   }
 
   /**
@@ -77,7 +77,7 @@ public class RunOperations {
    * @return Pod which got created from the operation
    */
   public Pod done() {
-    return new PodOperationsImpl(clientState, namespace).create(convertRunConfigIntoPod());
+    return new PodOperationsImpl(clientContext, namespace).create(convertRunConfigIntoPod());
   }
 
   Pod convertRunConfigIntoPod() {

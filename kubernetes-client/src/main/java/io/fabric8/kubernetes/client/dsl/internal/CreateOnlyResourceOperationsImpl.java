@@ -16,7 +16,7 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.api.model.KubernetesResource;
-import io.fabric8.kubernetes.client.ClientState;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.dsl.NamespacedInOutCreateable;
 import io.fabric8.kubernetes.client.dsl.base.CreateOnlyResourceOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
@@ -27,8 +27,8 @@ public class CreateOnlyResourceOperationsImpl<I extends KubernetesResource, O ex
   private final ResourceDefinitionContext rdc;
   private Class<I> inputType;
   
-  public CreateOnlyResourceOperationsImpl(ClientState clientState, ResourceDefinitionContext rdc, Class<I> inputType, Class<O> outputType) {
-    this(HasMetadataOperationsImpl.defaultContext(clientState), rdc, inputType, outputType);
+  public CreateOnlyResourceOperationsImpl(ClientContext clientContext, ResourceDefinitionContext rdc, Class<I> inputType, Class<O> outputType) {
+    this(HasMetadataOperationsImpl.defaultContext(clientContext), rdc, inputType, outputType);
   }
   
   public CreateOnlyResourceOperationsImpl(OperationContext context, ResourceDefinitionContext rdc, Class<I> inputType, Class<O> outputType) {

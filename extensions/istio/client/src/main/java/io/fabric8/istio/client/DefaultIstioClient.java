@@ -16,7 +16,7 @@
 package io.fabric8.istio.client;
 
 import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.ClientState;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.RequestConfig;
@@ -33,8 +33,8 @@ public class DefaultIstioClient extends BaseClient implements NamespacedIstioCli
     super(configuration);
   }
 
-  public DefaultIstioClient(ClientState clientState) {
-    super(clientState);
+  public DefaultIstioClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

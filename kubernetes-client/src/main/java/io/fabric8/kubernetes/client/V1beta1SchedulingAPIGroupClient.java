@@ -27,8 +27,8 @@ public class V1beta1SchedulingAPIGroupClient extends BaseClient implements V1bet
     super();
   }
 
-  public V1beta1SchedulingAPIGroupClient(ClientState clientState) {
-    super(clientState);
+  public V1beta1SchedulingAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

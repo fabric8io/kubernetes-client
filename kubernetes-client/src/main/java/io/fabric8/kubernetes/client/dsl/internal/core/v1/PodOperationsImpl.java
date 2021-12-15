@@ -43,7 +43,7 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.Eviction;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.EvictionBuilder;
-import io.fabric8.kubernetes.client.ClientState;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.LocalPortForward;
 import io.fabric8.kubernetes.client.PortForward;
@@ -109,12 +109,12 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
     private final Integer bufferSize;
     private final PodOperationContext podOperationContext;
 
-  public PodOperationsImpl(ClientState clientState) {
-    this(clientState, null);
+  public PodOperationsImpl(ClientContext clientContext) {
+    this(clientContext, null);
   }
 
-  public PodOperationsImpl(ClientState clientState, String namespace) {
-    this(new PodOperationContext(), HasMetadataOperationsImpl.defaultContext(clientState).withNamespace(namespace));
+  public PodOperationsImpl(ClientContext clientContext, String namespace) {
+    this(new PodOperationContext(), HasMetadataOperationsImpl.defaultContext(clientContext).withNamespace(namespace));
   }
 
   public PodOperationsImpl(PodOperationContext context, OperationContext superContext) {

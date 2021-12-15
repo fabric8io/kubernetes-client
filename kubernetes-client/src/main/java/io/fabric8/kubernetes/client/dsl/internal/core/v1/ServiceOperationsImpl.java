@@ -22,7 +22,7 @@ import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.api.model.ServiceList;
-import io.fabric8.kubernetes.client.ClientState;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.LocalPortForward;
@@ -51,12 +51,12 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
 
   public static final String EXTERNAL_NAME = "ExternalName";
 
-  public ServiceOperationsImpl(ClientState clientState) {
-    this(clientState, null);
+  public ServiceOperationsImpl(ClientContext clientContext) {
+    this(clientContext, null);
   }
 
-  public ServiceOperationsImpl(ClientState clientState, String namespace) {
-    this(HasMetadataOperationsImpl.defaultContext(clientState).withNamespace(namespace));
+  public ServiceOperationsImpl(ClientContext clientContext, String namespace) {
+    this(HasMetadataOperationsImpl.defaultContext(clientContext).withNamespace(namespace));
   }
 
   public ServiceOperationsImpl(OperationContext context) {
@@ -109,7 +109,7 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
     // Sort all loaded implementations according to priority
     Collections.sort(servicesList, new ServiceToUrlSortComparator());
     for (ServiceToURLProvider serviceToURLProvider : servicesList) {
-      String url = serviceToURLProvider.getURL(getMandatory(), portName, namespace, new DefaultKubernetesClient(this));
+      String url = serviceToURLProvider.getURL(getMandatory(), portName, namespace, new DefaultKubernetesClient(context));
       if (url != null && URLUtils.isValidURL(url)) {
         return url;
       }
@@ -121,14 +121,14 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
   private Pod matchingPod() {
     Service item = requireFromServer();
     Map<String, String> labels = item.getSpec().getSelector();
-    PodList list = new PodOperationsImpl(this).inNamespace(item.getMetadata().getNamespace()).withLabels(labels).list();
+    PodList list = new PodOperationsImpl(context).inNamespace(item.getMetadata().getNamespace()).withLabels(labels).list();
     return list.getItems().stream().findFirst().orElseThrow(() -> new IllegalStateException("Could not find matching pod for service:" + item + "."));
   }
 
   @Override
   public PortForward portForward(int port, ReadableByteChannel in, WritableByteChannel out) {
     Pod m = matchingPod();
-    return new PodOperationsImpl(this)
+    return new PodOperationsImpl(context)
         .inNamespace(m.getMetadata().getNamespace())
         .withName(m.getMetadata().getName())
         .portForward(port, in, out);
@@ -137,7 +137,7 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
   @Override
   public LocalPortForward portForward(int port, int localPort) {
     Pod m = matchingPod();
-    return new PodOperationsImpl(this)
+    return new PodOperationsImpl(context)
         .inNamespace(m.getMetadata().getNamespace())
         .withName(m.getMetadata().getName())
         .portForward(port, localPort);
@@ -146,7 +146,7 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
   @Override
   public LocalPortForward portForward(int port) {
     Pod m = matchingPod();
-    return new PodOperationsImpl(this)
+    return new PodOperationsImpl(context)
         .inNamespace(m.getMetadata().getNamespace())
         .withName(m.getMetadata().getName())
         .portForward(port);

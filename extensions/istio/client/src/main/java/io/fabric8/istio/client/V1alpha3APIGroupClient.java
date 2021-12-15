@@ -30,7 +30,7 @@ import io.fabric8.istio.api.networking.v1alpha3.VirtualServiceList;
 import io.fabric8.istio.api.networking.v1alpha3.WorkloadEntry;
 import io.fabric8.istio.api.networking.v1alpha3.WorkloadEntryList;
 import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.ClientState;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
@@ -46,8 +46,8 @@ public class V1alpha3APIGroupClient extends BaseClient implements V1alpha3APIGro
     super(configuration);
   }
 
-  public V1alpha3APIGroupClient(ClientState clientState) {
-    super(clientState);
+  public V1alpha3APIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   // networking

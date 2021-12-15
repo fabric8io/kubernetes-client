@@ -16,7 +16,7 @@
 package io.fabric8.verticalpodautoscaler.client;
 
 import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.ClientState;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
@@ -29,8 +29,8 @@ import io.fabric8.verticalpodautoscaler.client.dsl.V1APIGroupDSL;
 public class V1APIGroupClient extends BaseClient implements V1APIGroupDSL {
   public V1APIGroupClient() {super();}
 
-  public V1APIGroupClient(ClientState clientState) {
-    super(clientState);
+  public V1APIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

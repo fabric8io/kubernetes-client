@@ -44,8 +44,8 @@ public class ExtensionsAPIGroupClient extends BaseClient implements ExtensionsAP
     super();
   }
 
-  public ExtensionsAPIGroupClient(ClientState clientState) {
-    super(clientState);
+  public ExtensionsAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

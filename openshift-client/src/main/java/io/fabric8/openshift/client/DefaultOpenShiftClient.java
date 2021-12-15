@@ -22,13 +22,13 @@ import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.client.BaseKubernetesClient;
-import io.fabric8.kubernetes.client.ClientState;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ExtensionsAPIGroupClient;
 import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.RequestConfig;
-import io.fabric8.kubernetes.client.SimpleClientState;
+import io.fabric8.kubernetes.client.SimpleClientContext;
 import io.fabric8.kubernetes.client.VersionInfo;
 import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.kubernetes.client.dsl.CreateOrDeleteable;
@@ -190,7 +190,7 @@ import java.util.function.Supplier;
  * Class for Default Openshift Client implementing KubernetesClient interface.
  * It is thread safe.
  */
-public class DefaultOpenShiftClient extends BaseKubernetesClient<NamespacedOpenShiftClient> implements NamespacedOpenShiftClient, OpenshiftClientState {
+public class DefaultOpenShiftClient extends BaseKubernetesClient<NamespacedOpenShiftClient> implements NamespacedOpenShiftClient, OpenshiftClientContext {
 
   public static final String OPENSHIFT_VERSION_ENDPOINT = "version/openshift";
 
@@ -222,11 +222,11 @@ public class DefaultOpenShiftClient extends BaseKubernetesClient<NamespacedOpenS
   }
 
   public DefaultOpenShiftClient(HttpClient httpClient, OpenShiftConfig config) {
-    this(new SimpleClientState(config, httpClient));
+    this(new SimpleClientContext(config, httpClient));
   }
 
-  public DefaultOpenShiftClient(ClientState clientState) {
-    super(clientState);
+  public DefaultOpenShiftClient(ClientContext clientContext) {
+    super(clientContext);
     try {
       this.openShiftUrl = new URL(getConfiguration().getOpenShiftUrl());
     } catch (MalformedURLException e) {

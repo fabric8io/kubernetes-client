@@ -28,8 +28,8 @@ public class V1APIGroupClient extends BaseClient implements V1APIGroupDSL {
     super();
   }
 
-  public V1APIGroupClient(ClientState clientState) {
-    super(clientState);
+  public V1APIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

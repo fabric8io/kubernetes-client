@@ -17,7 +17,7 @@ package io.fabric8.kubernetes.client.dsl.internal.core.v1;
 
 import io.fabric8.kubernetes.api.model.ComponentStatus;
 import io.fabric8.kubernetes.api.model.ComponentStatusList;
-import io.fabric8.kubernetes.client.ClientState;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
@@ -26,12 +26,12 @@ import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 public class ComponentStatusOperationsImpl extends HasMetadataOperation<ComponentStatus, ComponentStatusList,
   Resource<ComponentStatus>> {
 
-  public ComponentStatusOperationsImpl(ClientState clientState) {
-    this(clientState, null);
+  public ComponentStatusOperationsImpl(ClientContext clientContext) {
+    this(clientContext, null);
   }
 
-  public ComponentStatusOperationsImpl(ClientState clientState, String namespace) {
-    this(HasMetadataOperationsImpl.defaultContext(clientState).withNamespace(namespace));
+  public ComponentStatusOperationsImpl(ClientContext clientContext, String namespace) {
+    this(HasMetadataOperationsImpl.defaultContext(clientContext).withNamespace(namespace));
   }
 
   public ComponentStatusOperationsImpl(OperationContext context) {

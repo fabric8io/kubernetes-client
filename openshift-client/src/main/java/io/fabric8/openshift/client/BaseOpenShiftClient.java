@@ -17,16 +17,16 @@
 package io.fabric8.openshift.client;
 
 import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.ClientState;
+import io.fabric8.kubernetes.client.ClientContext;
 
-public class BaseOpenShiftClient extends BaseClient implements OpenshiftClientState {
+public class BaseOpenShiftClient extends BaseClient implements OpenshiftClientContext {
 
   public BaseOpenShiftClient() {
 
   }
 
-  public BaseOpenShiftClient(ClientState clientState) {
-    super(clientState);
+  public BaseOpenShiftClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

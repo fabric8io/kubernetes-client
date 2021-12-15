@@ -24,7 +24,7 @@ import io.fabric8.knative.serving.v1.RouteList;
 import io.fabric8.knative.serving.v1.Service;
 import io.fabric8.knative.serving.v1.ServiceList;
 import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.ClientState;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.Handlers;
@@ -44,8 +44,8 @@ public class DefaultServingV1Client extends BaseClient implements NamespacedServ
     super(configuration);
   }
 
-  public DefaultServingV1Client(ClientState clientState) {
-    super(clientState);
+  public DefaultServingV1Client(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override
