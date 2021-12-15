@@ -22,7 +22,7 @@ import okhttp3.OkHttpClient;
 public class V1alpha3APIGroupExtensionAdapter extends APIGroupExtensionAdapter<V1alpha3APIGroupClient> {
   @Override
   protected String getAPIGroupName() {
-    return "v1beta1";
+    return "v1alpha3";
   }
 
   @Override
