@@ -58,11 +58,11 @@ public class DefaultIstioClient extends BaseClient implements NamespacedIstioCli
 
   @Override
   public V1alpha3APIGroupDSL v1alpha3() {
-    return adapt(V1alpha3APIGroupDSL.class);
+    return adapt(V1alpha3APIGroupClient.class);
   }
 
   @Override
   public V1beta1APIGroupDSL v1beta1() {
-    return adapt(V1beta1APIGroupDSL.class);
+    return adapt(V1beta1APIGroupClient.class);
   }
 }

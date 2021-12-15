@@ -53,7 +53,7 @@ import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import okhttp3.mockwebserver.RecordedRequest;
 
-@EnableIstioMockClient
+@EnableIstioMockClient(crud = true)
 class VirtualServiceTest {
 
   IstioClient client;
