@@ -185,7 +185,7 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
               InputStreamPumper.pump(InputStreamPumper.asInterruptible(in), this::send, executorService);
             }
         } catch (IOException e) {
-          onError​(webSocket, e);
+          onError(webSocket, e);
         } finally {
             if (listener != null) {
                 listener.onOpen();
@@ -194,7 +194,7 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
     }
 
   @Override
-  public void onError​(WebSocket webSocket, Throwable t) {
+  public void onError(WebSocket webSocket, Throwable t) {
 
       //If we already called onClosed() or onFailed() before, we need to abort.
       if (explicitlyClosed.get() || closed.get() || !failed.compareAndSet(false, true) ) {

@@ -271,7 +271,7 @@ public class PortForwarderWebsocket implements PortForwarder {
       }
 
       @Override
-      public void onError​(WebSocket webSocket, Throwable t) {
+      public void onError(WebSocket webSocket, Throwable t) {
         LOG.debug("{}: onFailure", logPrefix);
         if (alive.get()) {
           serverThrowables.add(t);
@@ -318,7 +318,7 @@ public class PortForwarderWebsocket implements PortForwarder {
     
     socket.whenComplete((w, t) -> {
       if (t != null) {
-        listener.onError​(w, t);
+        listener.onError(w, t);
       }
     });
     

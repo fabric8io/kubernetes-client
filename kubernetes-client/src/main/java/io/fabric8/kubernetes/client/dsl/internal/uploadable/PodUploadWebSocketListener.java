@@ -63,7 +63,7 @@ public class PodUploadWebSocketListener implements WebSocket.Listener {
   }
 
   @Override
-  public void onError​(WebSocket webSocket, Throwable t) {
+  public void onError(WebSocket webSocket, Throwable t) {
     error.set(String.format("PodUploadWebSocketListener failed with - %s", t.getMessage()));
     while (readyLatch.getCount() > 0) {
       readyLatch.countDown();

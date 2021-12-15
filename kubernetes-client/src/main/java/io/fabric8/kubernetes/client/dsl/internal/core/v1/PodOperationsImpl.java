@@ -316,7 +316,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
                 .buildAsync(execWebSocketListener);
             startedFuture.whenComplete((w, t) -> {
               if (t != null) {
-                execWebSocketListener.onError​(w, t);
+                execWebSocketListener.onError(w, t);
               }
             });
             Utils.waitUntilReadyOrFail(startedFuture, config.getWebsocketTimeout(), TimeUnit.MILLISECONDS);

@@ -67,7 +67,7 @@ class OkHttpWebSocketImpl implements WebSocket {
               // can't happen
             } 
           } else {
-            listener.onError​(new OkHttpWebSocketImpl(webSocket), t);
+            listener.onError(new OkHttpWebSocketImpl(webSocket), t);
           }
         }
         

@@ -174,7 +174,7 @@ public class PodUpload {
       .buildAsync(podUploadWebSocketListener);
     startedFuture.whenComplete((w, t) -> {
       if (t != null) {
-        podUploadWebSocketListener.onError​(w, t);
+        podUploadWebSocketListener.onError(w, t);
       }
     });
     return podUploadWebSocketListener;

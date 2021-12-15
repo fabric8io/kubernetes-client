@@ -65,7 +65,7 @@ class PodUploadWebSocketListenerTest {
 
   @Test()
   void testCheckErrorHasErrorFromFailureShouldThrowException() {
-    podUploadWebSocketListener.onError​(null, new IOException("here"));
+    podUploadWebSocketListener.onError(null, new IOException("here"));
 
     assertThrows(KubernetesClientException.class, () -> podUploadWebSocketListener.checkError());
   }

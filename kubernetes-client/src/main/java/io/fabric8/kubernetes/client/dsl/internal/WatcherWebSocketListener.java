@@ -46,7 +46,7 @@ class WatcherWebSocketListener<T extends HasMetadata> implements WebSocket.Liste
   
   
   @Override
-  public void onError​(WebSocket webSocket, Throwable t) {
+  public void onError(WebSocket webSocket, Throwable t) {
     if (manager.isForceClosed()) {
       logger.debug("Ignoring onFailure for already closed/closing websocket", t);
       return;

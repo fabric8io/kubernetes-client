@@ -122,7 +122,7 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
           logger.warn("Exec Failure: HTTP {}, Status: {} - {}", code, status.getCode(), status.getMessage());
           t = OperationSupport.requestFailure(client.newHttpRequestBuilder().url(url).build(), status);
         }
-        listener.onError​(w, t);
+        listener.onError(w, t);
         throw KubernetesClientException.launderThrowable(t);
       }
       return w;
