@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+
+    Copyright (C) 2015 Red Hat, Inc.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+            http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>io.fabric8</groupId>
+    <artifactId>istio-extension-pom</artifactId>
+    <version>5.11-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>istio-model-v1alpha3</artifactId>
+  <packaging>bundle</packaging>
+  <name>Fabric8 :: Istio :: Model v1alpha3</name>
+
+  <properties>
+    <osgi.import>
+      io.fabric8.kubernetes.api.builder,
+      !io.fabric8.istio.*,
+      *
+    </osgi.import>
+    <osgi.export>
+      io.fabric8.istio.*
+    </osgi.export>
+    <osgi.include.resources>
+      {maven-resources},
+      /model.properties=target/classes/model.properties
+    </osgi.include.resources>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>io.sundr</groupId>
+      <artifactId>builder-annotations</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.sundr</groupId>
+      <artifactId>transform-annotations</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.sundr</groupId>
+      <artifactId>sundr-codegen-velocity-nodeps</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-model-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.jsonschema2pojo</groupId>
+        <artifactId>jsonschema2pojo-maven-plugin</artifactId>
+        <version>${jsonschema2pojo.version}</version>
+        <configuration>
+          <sourceDirectory>${project.basedir}/src/main/resources/schema</sourceDirectory>
+          <targetPackage>io.fabric8.istio.api</targetPackage>
+          <includeConstructors>true</includeConstructors>
+          <includeJsr303Annotations>false</includeJsr303Annotations>
+          <includeToString>false</includeToString>
+          <includeHashcodeAndEquals>false</includeHashcodeAndEquals>
+          <outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
+          <customAnnotator>io.fabric8.kubernetes.ModelAnnotator</customAnnotator>
+          <customRuleFactory>io.fabric8.kubernetes.jsonschema2pojo.Fabric8RuleFactory</customRuleFactory>
+        </configuration>
+        <executions>
+          <execution>
+            <id>generate</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>model-annotator</artifactId>
+            <version>${project.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>kubernetes-model-jsonschema2pojo</artifactId>
+            <version>${project.version}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>generate-sources</phase>
+            <configuration>
+              <target>
+                <!-- removing the generated Schema class -->
+                <delete
+                  file="${project.build.directory}/generated-sources/io/fabric8/istio/api/model/IstioSchema.java"
+                  verbose="true" />
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.2.0</version>
+        <executions>
+          <execution>
+            <id>attach-artifacts</id>
+            <phase>package</phase>
+            <goals>
+              <goal>attach-artifact</goal>
+            </goals>
+            <configuration>
+              <artifacts>
+                <artifact>
+                  <file>${project.build.outputDirectory}/schema/istio-schema.json</file>
+                  <type>json</type>
+                  <classifier>schema</classifier>
+                </artifact>
+              </artifacts>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+</project>

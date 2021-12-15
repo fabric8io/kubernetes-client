@@ -8,6 +8,8 @@
 * Fix #3535: ensure clientKeyAlgo is set properly when loading config YAML from `fromKubeconfig`
 * Fix #3598: applying cancel to the correct future for waitUntilCondition and waitUntilReady
 * Fix #3609: adding locking to prevent long running Watcher methods from causing reconnects with concurrent processing
+* Fix #3606: Template getObjects doesn't throw NPE when objects is null
+* Fix #3620: throw a meaningful exception if no kind/plural is on a ResourceDefinitionContext, default plural if possible
 
 #### Improvements
 
@@ -15,6 +17,7 @@
 
 #### New Features
 * Fix #3579: Add support for Volcano extension
+* Fix #3593: Add support for Istio extension
 
 #### _**Note**_: Breaking changes in the API
 * Refactoring #3547: due to an abstraction layer added over okHttp, the following api changes were made:

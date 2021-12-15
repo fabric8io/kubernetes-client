@@ -21,6 +21,7 @@ This client provides access to the full [Kubernetes](http://kubernetes.io/) &
 | servicecatalog-client | [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.fabric8/servicecatalog-client/badge.svg?color=blue)](https://maven-badges.herokuapp.com/maven-central/io.fabric8/servicecatalog-client) | [![Javadocs](https://www.javadoc.io/badge/io.fabric8/servicecatalog-client.svg?color=blue)](https://www.javadoc.io/doc/io.fabric8/servicecatalog-client) |
 | chaosmesh-client | [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.fabric8/chaosmesh-client/badge.svg?color=blue)](https://maven-badges.herokuapp.com/maven-central/io.fabric8/chaosmesh-client) | [![Javadocs](https://www.javadoc.io/badge/io.fabric8/chaosmesh-client.svg?color=blue)](https://www.javadoc.io/doc/io.fabric8/chaosmesh-client) |
 | volumesnapshot-client | [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.fabric8/volumesnapshot-client/badge.svg?color=blue)](https://maven-badges.herokuapp.com/maven-central/io.fabric8/volumesnapshot-client) | [![Javadocs](https://www.javadoc.io/badge/io.fabric8/volumesnapshot-client.svg?color=blue)](https://www.javadoc.io/doc/io.fabric8/volumesnapshot-client) |
+| istio-client | [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.fabric8/istio-client/badge.svg?color=blue)](https://maven-badges.herokuapp.com/maven-central/io.fabric8/istio-client) | [![Javadocs](https://www.javadoc.io/badge/io.fabric8/istio-client.svg?color=blue)](https://www.javadoc.io/doc/io.fabric8/istio-client) |
 
 ## Contents
 - [Usage](#usage)
@@ -561,6 +562,7 @@ All the resource objects used here will be according to OpenShift 3.9.0  and Kub
   - [Knative](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/knative)
   - [Tekton](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/tekton)
   - [Volcano](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/volcano)
+  - [Istio](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/istio)
 
   Frameworks/Libraries/Tools:
   - [Arquillian Cube](http://arquillian.org/arquillian-cube/)

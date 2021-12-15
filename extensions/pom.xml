@@ -38,6 +38,7 @@
     <module>certmanager</module>
     <module>verticalpodautoscaler</module>
     <module>volcano</module>
+    <module>istio</module>
   </modules>
 
 </project>
