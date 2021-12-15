@@ -63,9 +63,7 @@ class VirtualServiceTest {
   @DisplayName("Should get a Virtual Service")
   void testGet() {
     VirtualService service2 = new VirtualServiceBuilder().withNewMetadata().withName("service2").endMetadata().build();
-    server.expect().get().withPath("/apis/networking.istio.io/v1beta1/namespaces/ns2/virtualservices/service2")
-      .andReturn(HttpURLConnection.HTTP_OK, service2)
-      .once();
+    client.v1beta1().virtualServices().inNamespace("ns2").create(service2);
 
     VirtualService service = client.v1beta1().virtualServices().inNamespace("ns2").withName("service2").get();
     assertNotNull(service);
