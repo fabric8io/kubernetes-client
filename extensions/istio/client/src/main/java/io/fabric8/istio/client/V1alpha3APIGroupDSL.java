@@ -39,17 +39,52 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 public interface V1alpha3APIGroupDSL extends Client {
 
   // networking
+  /**
+   * API entrypoint for DestinationRule(https://istio.io/latest/docs/reference/config/networking/destination-rule/)
+   *
+   * @return MixedOperation for DestinationRule class
+   */
   MixedOperation<DestinationRule, DestinationRuleList, Resource<DestinationRule>> destinationRules();
 
+  /**
+   * API entrypoint for EnvoyFilter(https://istio.io/latest/docs/reference/config/networking/envoy-filter/)
+   *
+   * @return MixedOperation for EnvoyFilter class
+   */
   MixedOperation<EnvoyFilter, EnvoyFilterList, Resource<EnvoyFilter>> envoyFilters();
 
+  /**
+   * API entrypoint for Gateway(https://istio.io/latest/docs/reference/config/networking/gateway/)
+   *
+   * @return MixedOperation for Gateway class
+   */
   MixedOperation<Gateway, GatewayList, Resource<Gateway>> gateways();
 
+  /**
+   * API entrypoint for ServiceEntry(https://istio.io/latest/docs/reference/config/networking/service-entry/)
+   *
+   * @return MixedOperation for ServiceEntry class
+   */
   MixedOperation<ServiceEntry, ServiceEntryList, Resource<ServiceEntry>> serviceEntries();
 
+  /**
+   * API entrypoint for Sidecar(https://istio.io/latest/docs/reference/config/networking/sidecar/)
+   *
+   * @return MixedOperation for Sidecar class
+   */
   MixedOperation<Sidecar, SidecarList, Resource<Sidecar>> sidecars();
 
+  /**
+   * API entrypoint for VirtualService(https://istio.io/latest/docs/reference/config/networking/virtual-service/)
+   *
+   * @return MixedOperation for VirtualService class
+   */
   MixedOperation<VirtualService, VirtualServiceList, Resource<VirtualService>> virtualServices();
 
+  /**
+   * API entrypoint for WorkloadEntry(https://istio.io/latest/docs/reference/config/networking/workload-entry/)
+   *
+   * @return MixedOperation for WorkloadEntry class
+   */
   MixedOperation<WorkloadEntry, WorkloadEntryList, Resource<WorkloadEntry>> workloadEntries();
 }

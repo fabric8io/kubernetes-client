@@ -19,15 +19,15 @@ import io.fabric8.kubernetes.client.APIGroupExtensionAdapter;
 import io.fabric8.kubernetes.client.Client;
 import okhttp3.OkHttpClient;
 
-public class V1alpha3APIGroupExtensionAdapter extends APIGroupExtensionAdapter<V1alpha3APIGroupDSL> {
+public class V1alpha3APIGroupExtensionAdapter extends APIGroupExtensionAdapter<V1alpha3APIGroupClient> {
   @Override
   protected String getAPIGroupName() {
     return "v1beta1";
   }
 
   @Override
-  public Class<V1alpha3APIGroupDSL> getExtensionType() {
-    return V1alpha3APIGroupDSL.class;
+  public Class<V1alpha3APIGroupClient> getExtensionType() {
+    return V1alpha3APIGroupClient.class;
   }
 
   @Override

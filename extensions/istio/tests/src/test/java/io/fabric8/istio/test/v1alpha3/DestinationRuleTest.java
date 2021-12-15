@@ -15,8 +15,8 @@
  */
 package io.fabric8.istio.test.v1alpha3;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.InputStream;
 
