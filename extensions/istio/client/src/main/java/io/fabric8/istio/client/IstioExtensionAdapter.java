@@ -15,14 +15,13 @@
  */
 package io.fabric8.istio.client;
 
-import java.net.URL;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.ExtensionAdapter;
 import io.fabric8.kubernetes.client.ExtensionAdapterSupport;
-import okhttp3.OkHttpClient;
+
+import java.net.URL;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class IstioExtensionAdapter extends ExtensionAdapterSupport implements ExtensionAdapter<IstioClient> {
 
@@ -41,6 +40,6 @@ public class IstioExtensionAdapter extends ExtensionAdapterSupport implements Ex
 
   @Override
   public IstioClient adapt(Client client) {
-    return new DefaultIstioClient(client.adapt(OkHttpClient.class), client.getConfiguration());
+    return new DefaultIstioClient(client);
   }
 }

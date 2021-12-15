@@ -30,11 +30,11 @@ import io.fabric8.istio.api.networking.v1alpha3.VirtualServiceList;
 import io.fabric8.istio.api.networking.v1alpha3.WorkloadEntry;
 import io.fabric8.istio.api.networking.v1alpha3.WorkloadEntryList;
 import io.fabric8.kubernetes.client.BaseClient;
+import io.fabric8.kubernetes.client.ClientState;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import okhttp3.OkHttpClient;
 
 public class V1alpha3APIGroupClient extends BaseClient implements V1alpha3APIGroupDSL {
 
@@ -46,46 +46,44 @@ public class V1alpha3APIGroupClient extends BaseClient implements V1alpha3APIGro
     super(configuration);
   }
 
-  public V1alpha3APIGroupClient(OkHttpClient httpClient, Config configuration) {
-    super(httpClient, configuration);
+  public V1alpha3APIGroupClient(ClientState clientState) {
+    super(clientState);
   }
 
   // networking
 
   @Override
   public MixedOperation<DestinationRule, DestinationRuleList, Resource<DestinationRule>> destinationRules() {
-    return Handlers.getOperation(DestinationRule.class, DestinationRuleList.class, this.getHttpClient(),
-      this.getConfiguration());
+    return Handlers.getOperation(DestinationRule.class, DestinationRuleList.class, this);
   }
 
   @Override
   public MixedOperation<EnvoyFilter, EnvoyFilterList, Resource<EnvoyFilter>> envoyFilters() {
-    return Handlers.getOperation(EnvoyFilter.class, EnvoyFilterList.class, this.getHttpClient(),
-      this.getConfiguration());
+    return Handlers.getOperation(EnvoyFilter.class, EnvoyFilterList.class, this);
   }
 
   @Override
   public MixedOperation<Gateway, GatewayList, Resource<Gateway>> gateways() {
-    return Handlers.getOperation(Gateway.class, GatewayList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(Gateway.class, GatewayList.class, this);
   }
 
   @Override
   public MixedOperation<ServiceEntry, ServiceEntryList, Resource<ServiceEntry>> serviceEntries() {
-    return Handlers.getOperation(ServiceEntry.class, ServiceEntryList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(ServiceEntry.class, ServiceEntryList.class, this);
   }
 
   @Override
   public MixedOperation<Sidecar, SidecarList, Resource<Sidecar>> sidecars() {
-    return Handlers.getOperation(Sidecar.class, SidecarList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(Sidecar.class, SidecarList.class, this);
   }
 
   @Override
   public MixedOperation<VirtualService, VirtualServiceList, Resource<VirtualService>> virtualServices() {
-    return Handlers.getOperation(VirtualService.class, VirtualServiceList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(VirtualService.class, VirtualServiceList.class, this);
   }
 
   @Override
   public MixedOperation<WorkloadEntry, WorkloadEntryList, Resource<WorkloadEntry>> workloadEntries() {
-    return Handlers.getOperation(WorkloadEntry.class, WorkloadEntryList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(WorkloadEntry.class, WorkloadEntryList.class, this);
   }
 }
