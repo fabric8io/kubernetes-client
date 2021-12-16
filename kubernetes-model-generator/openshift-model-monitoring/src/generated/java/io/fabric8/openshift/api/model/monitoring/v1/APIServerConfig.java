@@ -33,6 +33,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "authorization",
     "basicAuth",
     "bearerToken",
     "bearerTokenFile",
@@ -60,6 +61,8 @@ import lombok.experimental.Accessors;
 public class APIServerConfig implements KubernetesResource
 {
 
+    @JsonProperty("authorization")
+    private Authorization authorization;
     @JsonProperty("basicAuth")
     private BasicAuth basicAuth;
     @JsonProperty("bearerToken")
@@ -82,19 +85,31 @@ public class APIServerConfig implements KubernetesResource
 
     /**
      * 
+     * @param authorization
      * @param bearerToken
      * @param basicAuth
      * @param host
      * @param bearerTokenFile
      * @param tlsConfig
      */
-    public APIServerConfig(BasicAuth basicAuth, String bearerToken, String bearerTokenFile, String host, TLSConfig tlsConfig) {
+    public APIServerConfig(Authorization authorization, BasicAuth basicAuth, String bearerToken, String bearerTokenFile, String host, TLSConfig tlsConfig) {
         super();
+        this.authorization = authorization;
         this.basicAuth = basicAuth;
         this.bearerToken = bearerToken;
         this.bearerTokenFile = bearerTokenFile;
         this.host = host;
         this.tlsConfig = tlsConfig;
+    }
+
+    @JsonProperty("authorization")
+    public Authorization getAuthorization() {
+        return authorization;
+    }
+
+    @JsonProperty("authorization")
+    public void setAuthorization(Authorization authorization) {
+        this.authorization = authorization;
     }
 
     @JsonProperty("basicAuth")

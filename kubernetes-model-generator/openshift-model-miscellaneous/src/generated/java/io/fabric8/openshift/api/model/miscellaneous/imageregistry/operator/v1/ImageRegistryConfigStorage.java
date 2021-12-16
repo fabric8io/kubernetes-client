@@ -36,6 +36,7 @@ import lombok.experimental.Accessors;
     "azure",
     "emptyDir",
     "gcs",
+    "ibmcos",
     "managementState",
     "pvc",
     "s3",
@@ -68,6 +69,8 @@ public class ImageRegistryConfigStorage implements KubernetesResource
     private ImageRegistryConfigStorageEmptyDir emptyDir;
     @JsonProperty("gcs")
     private ImageRegistryConfigStorageGCS gcs;
+    @JsonProperty("ibmcos")
+    private ImageRegistryConfigStorageIBMCOS ibmcos;
     @JsonProperty("managementState")
     private String managementState;
     @JsonProperty("pvc")
@@ -91,16 +94,18 @@ public class ImageRegistryConfigStorage implements KubernetesResource
      * @param s3
      * @param gcs
      * @param emptyDir
+     * @param ibmcos
      * @param pvc
      * @param azure
      * @param managementState
      * @param swift
      */
-    public ImageRegistryConfigStorage(ImageRegistryConfigStorageAzure azure, ImageRegistryConfigStorageEmptyDir emptyDir, ImageRegistryConfigStorageGCS gcs, String managementState, ImageRegistryConfigStoragePVC pvc, ImageRegistryConfigStorageS3 s3, ImageRegistryConfigStorageSwift swift) {
+    public ImageRegistryConfigStorage(ImageRegistryConfigStorageAzure azure, ImageRegistryConfigStorageEmptyDir emptyDir, ImageRegistryConfigStorageGCS gcs, ImageRegistryConfigStorageIBMCOS ibmcos, String managementState, ImageRegistryConfigStoragePVC pvc, ImageRegistryConfigStorageS3 s3, ImageRegistryConfigStorageSwift swift) {
         super();
         this.azure = azure;
         this.emptyDir = emptyDir;
         this.gcs = gcs;
+        this.ibmcos = ibmcos;
         this.managementState = managementState;
         this.pvc = pvc;
         this.s3 = s3;
@@ -135,6 +140,16 @@ public class ImageRegistryConfigStorage implements KubernetesResource
     @JsonProperty("gcs")
     public void setGcs(ImageRegistryConfigStorageGCS gcs) {
         this.gcs = gcs;
+    }
+
+    @JsonProperty("ibmcos")
+    public ImageRegistryConfigStorageIBMCOS getIbmcos() {
+        return ibmcos;
+    }
+
+    @JsonProperty("ibmcos")
+    public void setIbmcos(ImageRegistryConfigStorageIBMCOS ibmcos) {
+        this.ibmcos = ibmcos;
     }
 
     @JsonProperty("managementState")

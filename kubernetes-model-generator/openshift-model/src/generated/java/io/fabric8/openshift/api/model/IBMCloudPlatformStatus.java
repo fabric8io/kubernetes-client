@@ -33,6 +33,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "cisInstanceCRN",
     "location",
     "providerType",
     "resourceGroupName"
@@ -58,6 +59,8 @@ import lombok.experimental.Accessors;
 public class IBMCloudPlatformStatus implements KubernetesResource
 {
 
+    @JsonProperty("cisInstanceCRN")
+    private String cisInstanceCRN;
     @JsonProperty("location")
     private String location;
     @JsonProperty("providerType")
@@ -76,15 +79,27 @@ public class IBMCloudPlatformStatus implements KubernetesResource
 
     /**
      * 
+     * @param cisInstanceCRN
      * @param resourceGroupName
      * @param location
      * @param providerType
      */
-    public IBMCloudPlatformStatus(String location, String providerType, String resourceGroupName) {
+    public IBMCloudPlatformStatus(String cisInstanceCRN, String location, String providerType, String resourceGroupName) {
         super();
+        this.cisInstanceCRN = cisInstanceCRN;
         this.location = location;
         this.providerType = providerType;
         this.resourceGroupName = resourceGroupName;
+    }
+
+    @JsonProperty("cisInstanceCRN")
+    public String getCisInstanceCRN() {
+        return cisInstanceCRN;
+    }
+
+    @JsonProperty("cisInstanceCRN")
+    public void setCisInstanceCRN(String cisInstanceCRN) {
+        this.cisInstanceCRN = cisInstanceCRN;
     }
 
     @JsonProperty("location")

@@ -19,6 +19,8 @@ import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.version.Info;
+import io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.APIRequestCount;
+import io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.APIRequestCountList;
 import io.fabric8.openshift.api.model.miscellaneous.cloudcredential.v1.CredentialsRequest;
 import io.fabric8.openshift.api.model.miscellaneous.cloudcredential.v1.CredentialsRequestList;
 import io.fabric8.openshift.api.model.miscellaneous.cncf.cni.v1.NetworkAttachmentDefinition;
@@ -27,6 +29,8 @@ import io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.Co
 import io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.ConfigList;
 import io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.BareMetalHost;
 import io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.BareMetalHostList;
+import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.EgressRouter;
+import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.EgressRouterList;
 import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.OperatorPKI;
 import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.OperatorPKIList;
 import io.sundr.builder.annotations.Buildable;
@@ -44,6 +48,8 @@ import lombok.experimental.Accessors;
     "metadata",
     "APIGroup",
     "APIGroupList",
+    "APIRequestCount",
+    "APIRequestCountList",
     "BareMetalHost",
     "BareMetalHostList",
     "BaseKubernetesList",
@@ -51,6 +57,8 @@ import lombok.experimental.Accessors;
     "ConfigList",
     "CredentialsRequest",
     "CredentialsRequestList",
+    "EgressRouter",
+    "EgressRouterList",
     "Info",
     "NetworkAttachmentDefinition",
     "NetworkAttachmentDefinitionList",
@@ -86,6 +94,10 @@ public class KubeSchema {
     private APIGroup aPIGroup;
     @JsonProperty("APIGroupList")
     private APIGroupList aPIGroupList;
+    @JsonProperty("APIRequestCount")
+    private APIRequestCount aPIRequestCount;
+    @JsonProperty("APIRequestCountList")
+    private APIRequestCountList aPIRequestCountList;
     @JsonProperty("BareMetalHost")
     private BareMetalHost bareMetalHost;
     @JsonProperty("BareMetalHostList")
@@ -100,6 +112,10 @@ public class KubeSchema {
     private CredentialsRequest credentialsRequest;
     @JsonProperty("CredentialsRequestList")
     private CredentialsRequestList credentialsRequestList;
+    @JsonProperty("EgressRouter")
+    private EgressRouter egressRouter;
+    @JsonProperty("EgressRouterList")
+    private EgressRouterList egressRouterList;
     @JsonProperty("Info")
     private Info info;
     @JsonProperty("NetworkAttachmentDefinition")
@@ -133,6 +149,7 @@ public class KubeSchema {
     /**
      * 
      * @param aPIGroupList
+     * @param aPIRequestCount
      * @param baseKubernetesList
      * @param networkAttachmentDefinition
      * @param configList
@@ -141,10 +158,13 @@ public class KubeSchema {
      * @param typeMeta
      * @param objectMeta
      * @param operatorPKIList
+     * @param aPIRequestCountList
      * @param bareMetalHostList
+     * @param egressRouterList
      * @param operatorPKI
      * @param networkAttachmentDefinitionList
      * @param time
+     * @param egressRouter
      * @param config
      * @param credentialsRequestList
      * @param bareMetalHost
@@ -152,10 +172,12 @@ public class KubeSchema {
      * @param info
      * @param status
      */
-    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, BareMetalHost bareMetalHost, BareMetalHostList bareMetalHostList, BaseKubernetesList baseKubernetesList, Config config, ConfigList configList, CredentialsRequest credentialsRequest, CredentialsRequestList credentialsRequestList, Info info, NetworkAttachmentDefinition networkAttachmentDefinition, NetworkAttachmentDefinitionList networkAttachmentDefinitionList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, OperatorPKI operatorPKI, OperatorPKIList operatorPKIList, Patch patch, Status status, String time, TypeMeta typeMeta) {
+    public KubeSchema(APIGroup aPIGroup, APIGroupList aPIGroupList, APIRequestCount aPIRequestCount, APIRequestCountList aPIRequestCountList, BareMetalHost bareMetalHost, BareMetalHostList bareMetalHostList, BaseKubernetesList baseKubernetesList, Config config, ConfigList configList, CredentialsRequest credentialsRequest, CredentialsRequestList credentialsRequestList, EgressRouter egressRouter, EgressRouterList egressRouterList, Info info, NetworkAttachmentDefinition networkAttachmentDefinition, NetworkAttachmentDefinitionList networkAttachmentDefinitionList, io.fabric8.kubernetes.api.model.ObjectMeta objectMeta, OperatorPKI operatorPKI, OperatorPKIList operatorPKIList, Patch patch, Status status, String time, TypeMeta typeMeta) {
         super();
         this.aPIGroup = aPIGroup;
         this.aPIGroupList = aPIGroupList;
+        this.aPIRequestCount = aPIRequestCount;
+        this.aPIRequestCountList = aPIRequestCountList;
         this.bareMetalHost = bareMetalHost;
         this.bareMetalHostList = bareMetalHostList;
         this.baseKubernetesList = baseKubernetesList;
@@ -163,6 +185,8 @@ public class KubeSchema {
         this.configList = configList;
         this.credentialsRequest = credentialsRequest;
         this.credentialsRequestList = credentialsRequestList;
+        this.egressRouter = egressRouter;
+        this.egressRouterList = egressRouterList;
         this.info = info;
         this.networkAttachmentDefinition = networkAttachmentDefinition;
         this.networkAttachmentDefinitionList = networkAttachmentDefinitionList;
@@ -193,6 +217,26 @@ public class KubeSchema {
     @JsonProperty("APIGroupList")
     public void setAPIGroupList(APIGroupList aPIGroupList) {
         this.aPIGroupList = aPIGroupList;
+    }
+
+    @JsonProperty("APIRequestCount")
+    public APIRequestCount getAPIRequestCount() {
+        return aPIRequestCount;
+    }
+
+    @JsonProperty("APIRequestCount")
+    public void setAPIRequestCount(APIRequestCount aPIRequestCount) {
+        this.aPIRequestCount = aPIRequestCount;
+    }
+
+    @JsonProperty("APIRequestCountList")
+    public APIRequestCountList getAPIRequestCountList() {
+        return aPIRequestCountList;
+    }
+
+    @JsonProperty("APIRequestCountList")
+    public void setAPIRequestCountList(APIRequestCountList aPIRequestCountList) {
+        this.aPIRequestCountList = aPIRequestCountList;
     }
 
     @JsonProperty("BareMetalHost")
@@ -263,6 +307,26 @@ public class KubeSchema {
     @JsonProperty("CredentialsRequestList")
     public void setCredentialsRequestList(CredentialsRequestList credentialsRequestList) {
         this.credentialsRequestList = credentialsRequestList;
+    }
+
+    @JsonProperty("EgressRouter")
+    public EgressRouter getEgressRouter() {
+        return egressRouter;
+    }
+
+    @JsonProperty("EgressRouter")
+    public void setEgressRouter(EgressRouter egressRouter) {
+        this.egressRouter = egressRouter;
+    }
+
+    @JsonProperty("EgressRouterList")
+    public EgressRouterList getEgressRouterList() {
+        return egressRouterList;
+    }
+
+    @JsonProperty("EgressRouterList")
+    public void setEgressRouterList(EgressRouterList egressRouterList) {
+        this.egressRouterList = egressRouterList;
     }
 
     @JsonProperty("Info")

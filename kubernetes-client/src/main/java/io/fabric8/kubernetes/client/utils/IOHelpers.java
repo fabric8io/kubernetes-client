@@ -25,6 +25,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.nio.charset.Charset;
 
 /**
  */
@@ -32,9 +33,14 @@ public class IOHelpers {
   private IOHelpers() {
     throw new IllegalStateException("Utility class");
   }
+  
+  public static String readFully(InputStream in, Charset charset) throws IOException {
+    Reader r = new BufferedReader(new InputStreamReader(in, charset));
+    return readFully(r);
+  }
+  
     public static String readFully(InputStream in) throws IOException {
-        Reader r = new BufferedReader(new InputStreamReader(in));
-        return readFully(r);
+      return readFully(in, Charset.defaultCharset());
     }
 
     public static String readFully(Reader r) throws IOException {

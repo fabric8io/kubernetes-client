@@ -8,17 +8,29 @@
 * Fix #3535: ensure clientKeyAlgo is set properly when loading config YAML from `fromKubeconfig`
 * Fix #3598: applying cancel to the correct future for waitUntilCondition and waitUntilReady
 * Fix #3609: adding locking to prevent long running Watcher methods from causing reconnects with concurrent processing
+* Fix #3606: Template getObjects doesn't throw NPE when objects is null
+* Fix #3620: throw a meaningful exception if no kind/plural is on a ResourceDefinitionContext, default plural if possible
 
 #### Improvements
 * Fix #3615: opt into bookmarks by default
+* Fix #3600: add owner references support to HasMetadata
 
 #### Dependency Upgrade
+* Fix #3505: Update OpenShift Model to latest version (4.9.x)
 
 #### New Features
 * Fix #3579: Add support for Volcano extension
+* Fix #3593: Add support for Istio extension
 
 #### _**Note**_: Breaking changes in the API
-- If you do not wish to receive bookmarks, then set ListOptions.allowWatchBookmarks=false - otherwise all Watches will default to requesting bookmarks.  If supported by the api-server, bookmarks will avoid 410 exceptions and keep the watch alive longer.  If you are using the mock framework with explicit uris, you may need to update your expected watch endpoints to include the parameter allowWatchBookmarks=true
+* If you do not wish to receive bookmarks, then set ListOptions.allowWatchBookmarks=false - otherwise all Watches will default to requesting bookmarks.  If supported by the api-server, bookmarks will avoid 410 exceptions and keep the watch alive longer.  If you are using the mock framework with explicit uris, you may need to update your expected watch endpoints to include the parameter allowWatchBookmarks=true
+* Refactoring #3547: due to an abstraction layer added over okHttp, the following api changes were made:
+    * OperationContext withOkHttpClient was removed, it should be needed to be directly called
+    * PatchType.getMediaType was replaced with PatchType.getContentType
+    * ExecListener no longer passes the okhttp3.Response to onOpen.  onFailure will pass a simplified ExecListener.Response when possible.
+    * okhttp3.TlsVersions has been replaced by io.fabric8.kubernetes.client.http.TlsVersion
+    * HttpClientUtils.createHttpClient(config, additionalConfig) has been deprecated and now returns an OkHttpClientImpl
+    * The client is no longer adaptable to an OkHttpClient, use Client.getHttpClient instead
 
 ### 5.10.1 (2021-11-12)
 

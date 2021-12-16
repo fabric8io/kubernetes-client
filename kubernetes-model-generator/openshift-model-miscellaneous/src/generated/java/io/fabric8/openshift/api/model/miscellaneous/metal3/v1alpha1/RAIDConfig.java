@@ -60,10 +60,8 @@ public class RAIDConfig implements KubernetesResource
 {
 
     @JsonProperty("hardwareRAIDVolumes")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<HardwareRAIDVolume> hardwareRAIDVolumes = new ArrayList<HardwareRAIDVolume>();
     @JsonProperty("softwareRAIDVolumes")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<SoftwareRAIDVolume> softwareRAIDVolumes = new ArrayList<SoftwareRAIDVolume>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();

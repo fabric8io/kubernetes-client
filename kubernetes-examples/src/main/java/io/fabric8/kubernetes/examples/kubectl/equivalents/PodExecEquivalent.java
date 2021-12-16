@@ -19,7 +19,6 @@ import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
-import okhttp3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,12 +59,12 @@ public class PodExecEquivalent {
 
   private static class MyPodExecListener implements ExecListener {
     @Override
-    public void onOpen(Response response) {
+    public void onOpen() {
       logger.info("Shell was opened");
     }
 
     @Override
-    public void onFailure(Throwable throwable, Response response) {
+    public void onFailure(Throwable t, Response failureResponse) {
       logger.info("Some error encountered");
       execLatch.countDown();
     }

@@ -15,19 +15,16 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Nameable;
-import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.utils.URLUtils;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.utils.URLUtils.URLBuilder;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 public class MetricOperationsImpl<T, L> extends OperationSupport implements Nameable<MetricOperationsImpl<T, L>> {
   public static final String METRIC_ENDPOINT_URL = "apis/metrics.k8s.io/v1beta1/";
@@ -38,8 +35,8 @@ public class MetricOperationsImpl<T, L> extends OperationSupport implements Name
   private final String configuredName;
   private final Map<String, String> configuredLabels;
 
-  public MetricOperationsImpl(OkHttpClient client, Config config, String configuredName, String configuredNamespace, String plural, Map<String, String> configuredLabels, Class<T> apiTypeClass, Class<L> apiTypeListClass) {
-    super(new OperationContext().withOkhttpClient(client).withConfig(config));
+  public MetricOperationsImpl(ClientContext client, String configuredName, String configuredNamespace, String plural, Map<String, String> configuredLabels, Class<T> apiTypeClass, Class<L> apiTypeListClass) {
+    super(HasMetadataOperationsImpl.defaultContext(client));
     this.plural = plural;
     this.apiTypeClass = apiTypeClass;
     this.apiTypeListClass = apiTypeListClass;
@@ -50,7 +47,7 @@ public class MetricOperationsImpl<T, L> extends OperationSupport implements Name
 
   @Override
   public MetricOperationsImpl<T, L> withName(String name) {
-    return new MetricOperationsImpl<>(client, config, name, configuredNamespace, plural, configuredLabels, apiTypeClass, apiTypeListClass);
+    return new MetricOperationsImpl<>(context, name, configuredNamespace, plural, configuredLabels, apiTypeClass, apiTypeListClass);
   }
 
   /**
@@ -60,7 +57,7 @@ public class MetricOperationsImpl<T, L> extends OperationSupport implements Name
    * @return {@link MetricOperationsImpl} with which you can call metrics() for getting filtered Metrics
    */
   public MetricOperationsImpl<T, L> withLabels(Map<String, String> labels) {
-    return new MetricOperationsImpl<>(client, config, name, configuredNamespace, plural, labels, apiTypeClass, apiTypeListClass);
+    return new MetricOperationsImpl<>(context, name, configuredNamespace, plural, labels, apiTypeClass, apiTypeListClass);
   }
 
   /**
@@ -71,7 +68,7 @@ public class MetricOperationsImpl<T, L> extends OperationSupport implements Name
   public L metrics() {
     try {
       return handleMetric(getMetricEndpointUrl(), apiTypeListClass);
-    } catch (IOException | ExecutionException exception) {
+    } catch (IOException exception) {
       throw KubernetesClientException.launderThrowable(exception);
     } catch (InterruptedException interruptedException) {
       Thread.currentThread().interrupt();
@@ -87,7 +84,7 @@ public class MetricOperationsImpl<T, L> extends OperationSupport implements Name
   public T metric() {
     try {
       return handleMetric(getMetricEndpointUrl(), apiTypeClass);
-    } catch (IOException | ExecutionException exception) {
+    } catch (IOException exception) {
       throw KubernetesClientException.launderThrowable(exception);
     } catch (InterruptedException interruptedException) {
       Thread.currentThread().interrupt();
@@ -128,7 +125,7 @@ public class MetricOperationsImpl<T, L> extends OperationSupport implements Name
   }
 
   private String getUrlWithLabels(String baseUrl, Map<String, String> labels) {
-    HttpUrl.Builder httpUrlBuilder = HttpUrl.get(baseUrl).newBuilder();
+    URLBuilder httpUrlBuilder = new URLBuilder(baseUrl);
 
     StringBuilder sb = new StringBuilder();
     for(Map.Entry<String, String> entry : labels.entrySet()) {

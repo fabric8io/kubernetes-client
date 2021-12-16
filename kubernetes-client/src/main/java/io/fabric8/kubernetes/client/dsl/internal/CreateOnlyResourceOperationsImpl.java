@@ -16,20 +16,19 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.api.model.KubernetesResource;
-import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.dsl.NamespacedInOutCreateable;
 import io.fabric8.kubernetes.client.dsl.base.CreateOnlyResourceOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
-import okhttp3.OkHttpClient;
 
 public class CreateOnlyResourceOperationsImpl<I extends KubernetesResource, O extends KubernetesResource> extends CreateOnlyResourceOperation<I, O> implements NamespacedInOutCreateable<I, O> {
   
   private final ResourceDefinitionContext rdc;
   private Class<I> inputType;
   
-  public CreateOnlyResourceOperationsImpl(OkHttpClient client, Config config, ResourceDefinitionContext rdc, Class<I> inputType, Class<O> outputType) {
-    this(HasMetadataOperationsImpl.defaultContext(new OperationContext(), client, config), rdc, inputType, outputType);
+  public CreateOnlyResourceOperationsImpl(ClientContext clientContext, ResourceDefinitionContext rdc, Class<I> inputType, Class<O> outputType) {
+    this(HasMetadataOperationsImpl.defaultContext(clientContext), rdc, inputType, outputType);
   }
   
   public CreateOnlyResourceOperationsImpl(OperationContext context, ResourceDefinitionContext rdc, Class<I> inputType, Class<O> outputType) {

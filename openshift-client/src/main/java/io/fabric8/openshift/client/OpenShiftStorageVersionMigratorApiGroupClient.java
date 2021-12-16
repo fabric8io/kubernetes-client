@@ -15,8 +15,7 @@
  */
 package io.fabric8.openshift.client;
 
-import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.openshift.api.model.storageversionmigrator.v1alpha1.StorageState;
@@ -24,24 +23,23 @@ import io.fabric8.openshift.api.model.storageversionmigrator.v1alpha1.StorageSta
 import io.fabric8.openshift.api.model.storageversionmigrator.v1alpha1.StorageVersionMigration;
 import io.fabric8.openshift.api.model.storageversionmigrator.v1alpha1.StorageVersionMigrationList;
 import io.fabric8.openshift.client.dsl.OpenShiftStorageVersionMigratorApiGroupDSL;
-import okhttp3.OkHttpClient;
 
-public class OpenShiftStorageVersionMigratorApiGroupClient extends BaseClient implements OpenShiftStorageVersionMigratorApiGroupDSL {
+public class OpenShiftStorageVersionMigratorApiGroupClient extends BaseOpenShiftClient implements OpenShiftStorageVersionMigratorApiGroupDSL {
   public OpenShiftStorageVersionMigratorApiGroupClient() {
     super();
   }
 
-  public OpenShiftStorageVersionMigratorApiGroupClient(OkHttpClient httpClient, final Config config) {
-    super(httpClient, config);
+  public OpenShiftStorageVersionMigratorApiGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override
   public NonNamespaceOperation<StorageState, StorageStateList, Resource<StorageState>> storageStates() {
-    return OpenShiftHandlers.getOperation(StorageState.class, StorageStateList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(StorageState.class, StorageStateList.class, this);
   }
 
   @Override
   public NonNamespaceOperation<StorageVersionMigration, StorageVersionMigrationList, Resource<StorageVersionMigration>> storageVersionMigrations() {
-    return OpenShiftHandlers.getOperation(StorageVersionMigration.class, StorageVersionMigrationList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(StorageVersionMigration.class, StorageVersionMigrationList.class, this);
   }
 }

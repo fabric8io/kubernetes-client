@@ -21,18 +21,18 @@ import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSet;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSetList;
-import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.RollingOperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.RollableScalableResourceOperation;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.RollingUpdater;
 import io.fabric8.kubernetes.client.utils.PodOperationUtil;
-import okhttp3.OkHttpClient;
 
 import java.io.OutputStream;
 import java.io.Reader;
@@ -45,12 +45,12 @@ import java.util.concurrent.TimeUnit;
 public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<ReplicaSet, ReplicaSetList, RollableScalableResource<ReplicaSet>>
   implements TimeoutImageEditReplacePatchable<ReplicaSet> {
 
-  public ReplicaSetOperationsImpl(OkHttpClient client, Config config) {
-    this(client, config, null);
+  public ReplicaSetOperationsImpl(ClientContext clientContext) {
+    this(clientContext, null);
   }
 
-  public ReplicaSetOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(new RollingOperationContext(), new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
+  public ReplicaSetOperationsImpl(ClientContext clientContext, String namespace) {
+    this(new RollingOperationContext(), HasMetadataOperationsImpl.defaultContext(clientContext).withNamespace(namespace));
   }
 
   public ReplicaSetOperationsImpl(RollingOperationContext context, OperationContext superContext) {
@@ -134,7 +134,7 @@ public class ReplicaSetOperationsImpl extends RollableScalableResourceOperation<
 
   @Override
   public RollingUpdater<ReplicaSet, ReplicaSetList> getRollingUpdater(long rollingTimeout, TimeUnit rollingTimeUnit) {
-    return new ReplicaSetRollingUpdater(client, config, getNamespace(), rollingTimeUnit.toMillis(rollingTimeout), config.getLoggingInterval());
+    return new ReplicaSetRollingUpdater(context, getNamespace(), rollingTimeUnit.toMillis(rollingTimeout), config.getLoggingInterval());
   }
 
   @Override

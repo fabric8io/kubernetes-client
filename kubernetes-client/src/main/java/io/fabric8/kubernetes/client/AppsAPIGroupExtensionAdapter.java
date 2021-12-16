@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.client;
 
-import okhttp3.OkHttpClient;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Service;
 
@@ -35,7 +34,7 @@ public class AppsAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<AppsA
 
   @Override
   protected AppsAPIGroupClient newInstance(Client client) {
-    return new AppsAPIGroupClient(client.adapt(OkHttpClient.class), client.getConfiguration());
+    return new AppsAPIGroupClient(client);
   }
 
 }

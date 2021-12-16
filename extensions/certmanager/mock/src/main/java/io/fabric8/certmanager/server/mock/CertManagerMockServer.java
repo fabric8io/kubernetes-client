@@ -15,25 +15,20 @@
  */
 package io.fabric8.certmanager.server.mock;
 
+import io.fabric8.certmanager.client.DefaultCertManagerClient;
 import io.fabric8.certmanager.client.NamespacedCertManagerClient;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.mockwebserver.Context;
 import io.fabric8.mockwebserver.ServerRequest;
 import io.fabric8.mockwebserver.ServerResponse;
-import io.fabric8.certmanager.client.DefaultCertManagerClient;
 import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockWebServer;
 
 import java.util.Map;
 import java.util.Queue;
 
-import static io.fabric8.kubernetes.client.utils.HttpClientUtils.createHttpClientForMockServer;
-import static okhttp3.TlsVersion.TLS_1_2;
-
 public class CertManagerMockServer extends KubernetesMockServer {
-  private boolean disableApiGroupCheck = true;
 
   public CertManagerMockServer() {
     super();
@@ -53,12 +48,7 @@ public class CertManagerMockServer extends KubernetesMockServer {
   }
 
   public NamespacedCertManagerClient createCertManager() {
-    Config config = new ConfigBuilder()
-      .withMasterUrl(url("/"))
-      .withNamespace("test")
-      .withTrustCerts(true)
-      .withTlsVersions(TLS_1_2)
-      .build();
-    return new DefaultCertManagerClient(createHttpClientForMockServer(config), config);
+    Config config = getMockConfiguration();
+    return new DefaultCertManagerClient(config);
   }
 }

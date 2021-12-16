@@ -15,26 +15,19 @@
  */
 package io.fabric8.camelk.mock;
 
+import io.fabric8.camelk.client.DefaultCamelKClient;
 import io.fabric8.camelk.client.NamespacedCamelKClient;
-import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.mockwebserver.Context;
 import io.fabric8.mockwebserver.ServerRequest;
 import io.fabric8.mockwebserver.ServerResponse;
-import io.fabric8.camelk.client.DefaultCamelKClient;
-import io.fabric8.camelk.client.CamelKClient;
 import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockWebServer;
 
 import java.util.Map;
 import java.util.Queue;
 
-import static io.fabric8.kubernetes.client.utils.HttpClientUtils.createHttpClientForMockServer;
-import static okhttp3.TlsVersion.TLS_1_2;
-
 public class CamelKMockServer extends KubernetesMockServer {
-  private boolean disableApiGroupCheck = true;
 
   public CamelKMockServer() {
     super();
@@ -54,12 +47,6 @@ public class CamelKMockServer extends KubernetesMockServer {
   }
 
   public NamespacedCamelKClient createCamelKClient() {
-    Config config = new ConfigBuilder()
-      .withMasterUrl(url("/"))
-      .withNamespace("test")
-      .withTrustCerts(true)
-      .withTlsVersions(TLS_1_2)
-      .build();
-    return new DefaultCamelKClient(createHttpClientForMockServer(config), config);
+    return new DefaultCamelKClient(getMockConfiguration());
   }
 }

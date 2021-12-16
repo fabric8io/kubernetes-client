@@ -33,10 +33,12 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "authorization",
     "basicAuth",
     "bearerToken",
     "bearerTokenFile",
     "name",
+    "oauth2",
     "proxyUrl",
     "readRecent",
     "remoteTimeout",
@@ -65,6 +67,8 @@ import lombok.experimental.Accessors;
 public class RemoteReadSpec implements KubernetesResource
 {
 
+    @JsonProperty("authorization")
+    private Authorization authorization;
     @JsonProperty("basicAuth")
     private BasicAuth basicAuth;
     @JsonProperty("bearerToken")
@@ -73,6 +77,8 @@ public class RemoteReadSpec implements KubernetesResource
     private java.lang.String bearerTokenFile;
     @JsonProperty("name")
     private java.lang.String name;
+    @JsonProperty("oauth2")
+    private OAuth2 oauth2;
     @JsonProperty("proxyUrl")
     private java.lang.String proxyUrl;
     @JsonProperty("readRecent")
@@ -97,6 +103,7 @@ public class RemoteReadSpec implements KubernetesResource
 
     /**
      * 
+     * @param authorization
      * @param readRecent
      * @param bearerToken
      * @param remoteTimeout
@@ -104,22 +111,35 @@ public class RemoteReadSpec implements KubernetesResource
      * @param basicAuth
      * @param proxyUrl
      * @param name
+     * @param oauth2
      * @param bearerTokenFile
      * @param url
      * @param tlsConfig
      */
-    public RemoteReadSpec(BasicAuth basicAuth, java.lang.String bearerToken, java.lang.String bearerTokenFile, java.lang.String name, java.lang.String proxyUrl, Boolean readRecent, java.lang.String remoteTimeout, Map<String, String> requiredMatchers, TLSConfig tlsConfig, java.lang.String url) {
+    public RemoteReadSpec(Authorization authorization, BasicAuth basicAuth, java.lang.String bearerToken, java.lang.String bearerTokenFile, java.lang.String name, OAuth2 oauth2, java.lang.String proxyUrl, Boolean readRecent, java.lang.String remoteTimeout, Map<String, String> requiredMatchers, TLSConfig tlsConfig, java.lang.String url) {
         super();
+        this.authorization = authorization;
         this.basicAuth = basicAuth;
         this.bearerToken = bearerToken;
         this.bearerTokenFile = bearerTokenFile;
         this.name = name;
+        this.oauth2 = oauth2;
         this.proxyUrl = proxyUrl;
         this.readRecent = readRecent;
         this.remoteTimeout = remoteTimeout;
         this.requiredMatchers = requiredMatchers;
         this.tlsConfig = tlsConfig;
         this.url = url;
+    }
+
+    @JsonProperty("authorization")
+    public Authorization getAuthorization() {
+        return authorization;
+    }
+
+    @JsonProperty("authorization")
+    public void setAuthorization(Authorization authorization) {
+        this.authorization = authorization;
     }
 
     @JsonProperty("basicAuth")
@@ -160,6 +180,16 @@ public class RemoteReadSpec implements KubernetesResource
     @JsonProperty("name")
     public void setName(java.lang.String name) {
         this.name = name;
+    }
+
+    @JsonProperty("oauth2")
+    public OAuth2 getOauth2() {
+        return oauth2;
+    }
+
+    @JsonProperty("oauth2")
+    public void setOauth2(OAuth2 oauth2) {
+        this.oauth2 = oauth2;
     }
 
     @JsonProperty("proxyUrl")

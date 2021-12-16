@@ -20,209 +20,204 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
-import okhttp3.Call;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Protocol;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
+import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.http.HttpRequest;
+import io.fabric8.kubernetes.client.http.HttpRequest.Builder;
+import io.fabric8.kubernetes.client.http.HttpResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class DryRunTest {
-  private OkHttpClient mockClient;
+  private HttpClient mockClient;
   private KubernetesClient kubernetesClient;
+  private List<HttpRequest.Builder> builders = new ArrayList<>();
 
   @BeforeEach
   public void setUp() throws IOException {
-    this.mockClient = Mockito.mock(OkHttpClient.class, Mockito.RETURNS_DEEP_STUBS);
+    builders.clear();
+    this.mockClient = Mockito.mock(HttpClient.class, Mockito.RETURNS_DEEP_STUBS);
     Config config = new ConfigBuilder().withMasterUrl("https://localhost:8443/").build();
-    Call mockCall = mock(Call.class);
-    Response mockResponse = new Response.Builder()
-      .request(new Request.Builder().url("http://mock").build())
-      .protocol(Protocol.HTTP_1_1)
-      .code(HttpURLConnection.HTTP_OK)
-      .body(ResponseBody.create(MediaType.get("application/json"), "{}"))
-      .message("mock")
-      .build();
-    when(mockCall.execute())
-      .thenReturn(mockResponse);
-    when(mockClient.newCall(any())).thenReturn(mockCall);
+    HttpResponse<InputStream> mockResponse = MockHttpClientUtils.buildResponse(HttpURLConnection.HTTP_OK, "{}");
+    when(mockClient.send(any(), Mockito.eq(InputStream.class))).thenReturn(mockResponse);
     kubernetesClient = new DefaultKubernetesClient(mockClient, config);
+    Mockito.when(mockClient.newHttpRequestBuilder()).thenAnswer(answer -> {
+      HttpRequest.Builder result = Mockito.mock(HttpRequest.Builder.class, Mockito.RETURNS_SELF);
+      builders.add(result);
+      return result;
+    });
   }
 
   @Test
-  void testDryRunDisable() {
-    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
-
+  void testDryRunDisable() throws IOException {
     // When
     Pod pod = kubernetesClient.pods().inNamespace("ns1").withName("foo").dryRun(false).create(getPod("pod1"));
 
     // Then
-    verify(mockClient).newCall(captor.capture());
-    assertRequest(captor.getValue(), "POST", "/api/v1/namespaces/ns1/pods", null);
+    verify(mockClient).send(any(), any());
+    assertRequest("POST", "/api/v1/namespaces/ns1/pods", null);
     assertNotNull(pod);
   }
 
   @Test
-  void testDryRunEnable() {
-    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
-
+  void testDryRunEnable() throws IOException {
     // When
     Pod pod = kubernetesClient.pods().inNamespace("ns1").withName("foo").dryRun(true).create(getPod("pod1"));
 
     // Then
-    verify(mockClient).newCall(captor.capture());
-    assertRequest(captor.getValue(), "POST", "/api/v1/namespaces/ns1/pods", "dryRun=All");
+    verify(mockClient).send(any(), any());
+    assertRequest("POST", "/api/v1/namespaces/ns1/pods", "dryRun=All");
     assertNotNull(pod);
   }
 
   @Test
-  void testCreate() {
+  void testCreate() throws IOException {
     // Given
-    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
 
     // When
     Pod pod = kubernetesClient.pods().inNamespace("ns1").withName("foo").dryRun().create(getPod("pod1"));
 
     // Then
-    verify(mockClient).newCall(captor.capture());
-    assertRequest(captor.getValue(), "POST", "/api/v1/namespaces/ns1/pods", "dryRun=All");
+    verify(mockClient).send(any(), any());
+    assertRequest("POST", "/api/v1/namespaces/ns1/pods", "dryRun=All");
     assertNotNull(pod);
   }
 
   @Test
-  void testCreateOrReplace() {
+  void testCreateOrReplace() throws IOException {
     // Given
-    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
 
     // When
     Pod pod = kubernetesClient.pods().inNamespace("ns1").withName("foo").dryRun().createOrReplace(getPod("pod1"));
 
     // Then
-    verify(mockClient).newCall(captor.capture());
+    verify(mockClient).send(any(), any());
     assertNotNull(pod);
-    assertRequest(captor.getValue(), "POST", "/api/v1/namespaces/ns1/pods", "dryRun=All");
+    assertRequest("POST", "/api/v1/namespaces/ns1/pods", "dryRun=All");
   }
 
   @Test
-  void testPatch() {
+  void testPatch() throws IOException {
     // Given
-    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
 
     // When
     kubernetesClient.pods().inNamespace("ns1").withName("pod1").dryRun().patch(getPod("pod1"));
 
     // Then
-    verify(mockClient, times(2)).newCall(captor.capture());
-    assertRequest(captor.getValue(), "PATCH", "/api/v1/namespaces/ns1/pods/pod1", "dryRun=All");
+    verify(mockClient, times(2)).send(any(), any());
+    assertRequest(1, "PATCH", "/api/v1/namespaces/ns1/pods/pod1", "dryRun=All");
   }
 
   @Test
-  void testReplace() {
+  void testReplace() throws IOException {
     // Given
-    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
 
     // When
     kubernetesClient.pods().inNamespace("ns1").withName("pod1").dryRun().replace(getPod("pod1"));
 
     // Then
-    verify(mockClient, times(2)).newCall(captor.capture());
-    assertRequest(captor.getValue(), "PUT", "/api/v1/namespaces/ns1/pods/pod1", "dryRun=All");
+    verify(mockClient, times(2)).send(any(), any());
+    assertRequest(1, "PUT", "/api/v1/namespaces/ns1/pods/pod1", "dryRun=All");
   }
 
   @Test
-  void testDelete() {
+  void testDelete() throws IOException {
     // Given
-    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
 
     // When
     kubernetesClient.pods().inNamespace("ns1").withName("pod1").dryRun().withPropagationPolicy(DeletionPropagation.BACKGROUND).delete();
 
     // Then
-    verify(mockClient).newCall(captor.capture());
-    assertRequest(captor.getValue(), "DELETE", "/api/v1/namespaces/ns1/pods/pod1", "dryRun=All");
+    verify(mockClient).send(any(), any());
+    assertRequest("DELETE", "/api/v1/namespaces/ns1/pods/pod1", "dryRun=All");
   }
 
   @Test
-  void testResourceCreateOrReplace() {
+  void testResourceCreateOrReplace() throws IOException {
     // Given
-    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
 
     // When
     kubernetesClient.resource(getPod("pod1")).inNamespace("ns1").dryRun().createOrReplace();
 
     // Then
-    verify(mockClient, times(1)).newCall(captor.capture());
-    assertRequest(captor.getValue(), "POST", "/api/v1/namespaces/ns1/pods", "dryRun=All");
+    verify(mockClient).send(any(), any());
+    assertRequest("POST", "/api/v1/namespaces/ns1/pods", "dryRun=All");
   }
 
   @Test
-  void testResourceDelete() {
+  void testResourceDelete() throws IOException {
     // Given
-    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
 
     // When
     kubernetesClient.resource(getPod("pod1")).inNamespace("ns1").dryRun().withPropagationPolicy(DeletionPropagation.BACKGROUND).delete();
 
     // Then
-    verify(mockClient).newCall(captor.capture());
-    assertRequest(captor.getValue(), "DELETE", "/api/v1/namespaces/ns1/pods/pod1", "dryRun=All");
+    verify(mockClient).send(any(), any());
+    assertRequest("DELETE", "/api/v1/namespaces/ns1/pods/pod1", "dryRun=All");
   }
 
   @Test
-  void testResourceListCreateOrReplace() {
+  void testResourceListCreateOrReplace() throws IOException {
     // Given
     Pod pod = getPod("pod1");
     Service svc = new ServiceBuilder().withNewMetadata().withName("svc1").endMetadata().build();
-    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
 
     // When
     kubernetesClient.resourceList(pod, svc).inNamespace("ns1").dryRun().createOrReplace();
 
     // Then
-    verify(mockClient, times(2)).newCall(captor.capture());
-    assertRequest(captor.getAllValues().get(0), "POST", "/api/v1/namespaces/ns1/services", "dryRun=All");
-    assertRequest(captor.getAllValues().get(1), "POST", "/api/v1/namespaces/ns1/pods", "dryRun=All");
+    verify(mockClient, times(2)).send(any(), any());
+    assertRequest("POST", "/api/v1/namespaces/ns1/services", "dryRun=All");
+    assertRequest(1, "POST", "/api/v1/namespaces/ns1/pods", "dryRun=All");
   }
 
   @Test
-  void testResourceListDelete() {
+  void testResourceListDelete() throws IOException {
     // Given
     Pod pod = getPod("pod1");
     Service svc = new ServiceBuilder().withNewMetadata().withName("svc1").endMetadata().build();
-    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
 
     // When
     kubernetesClient.resourceList(pod, svc).inNamespace("ns1").dryRun().withPropagationPolicy(DeletionPropagation.BACKGROUND).delete();
 
     // Then
-    verify(mockClient, times(2)).newCall(captor.capture());
-    assertRequest(captor.getAllValues().get(0), "DELETE", "/api/v1/namespaces/ns1/services/svc1", "dryRun=All");
-    assertRequest(captor.getAllValues().get(1), "DELETE", "/api/v1/namespaces/ns1/pods/pod1", "dryRun=All");
+    verify(mockClient, times(2)).send(any(), any());
+    assertRequest("DELETE", "/api/v1/namespaces/ns1/services/svc1", "dryRun=All");
+    assertRequest(1, "DELETE", "/api/v1/namespaces/ns1/pods/pod1", "dryRun=All");
   }
 
   private Pod getPod(String name) {
     return new PodBuilder().withNewMetadata().withName(name).endMetadata().build();
   }
 
-  private void assertRequest(Request request, String method, String url, String queryParam) {
-    assertEquals(url, request.url().encodedPath());
-    assertEquals(method, request.method());
-    assertEquals(queryParam, request.url().encodedQuery());
+  private void assertRequest(String method, String url, String queryParam) {
+    assertRequest(0, method, url, queryParam);
+  }
+  
+  private void assertRequest(int index, String method, String url, String queryParam) {
+    ArgumentCaptor<URL> urlCaptor = ArgumentCaptor.forClass(URL.class);
+    Builder mock = builders.get(index);
+    verify(mock).url(urlCaptor.capture());
+    
+    URL capturedURL = urlCaptor.getValue();
+    assertEquals(url, capturedURL.getPath());
+    PatchTest.validateMethod(method, null, mock);
+    
+    assertEquals(queryParam, capturedURL.getQuery());
   }
 }

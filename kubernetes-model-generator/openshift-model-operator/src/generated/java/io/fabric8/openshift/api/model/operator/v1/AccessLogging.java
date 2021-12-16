@@ -38,7 +38,8 @@ import lombok.experimental.Accessors;
     "destination",
     "httpCaptureCookies",
     "httpCaptureHeaders",
-    "httpLogFormat"
+    "httpLogFormat",
+    "logEmptyRequests"
 })
 @ToString
 @EqualsAndHashCode
@@ -70,6 +71,8 @@ public class AccessLogging implements KubernetesResource
     private IngressControllerCaptureHTTPHeaders httpCaptureHeaders;
     @JsonProperty("httpLogFormat")
     private String httpLogFormat;
+    @JsonProperty("logEmptyRequests")
+    private String logEmptyRequests;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -86,13 +89,15 @@ public class AccessLogging implements KubernetesResource
      * @param httpCaptureHeaders
      * @param destination
      * @param httpCaptureCookies
+     * @param logEmptyRequests
      */
-    public AccessLogging(LoggingDestination destination, List<IngressControllerCaptureHTTPCookie> httpCaptureCookies, IngressControllerCaptureHTTPHeaders httpCaptureHeaders, String httpLogFormat) {
+    public AccessLogging(LoggingDestination destination, List<IngressControllerCaptureHTTPCookie> httpCaptureCookies, IngressControllerCaptureHTTPHeaders httpCaptureHeaders, String httpLogFormat, String logEmptyRequests) {
         super();
         this.destination = destination;
         this.httpCaptureCookies = httpCaptureCookies;
         this.httpCaptureHeaders = httpCaptureHeaders;
         this.httpLogFormat = httpLogFormat;
+        this.logEmptyRequests = logEmptyRequests;
     }
 
     @JsonProperty("destination")
@@ -133,6 +138,16 @@ public class AccessLogging implements KubernetesResource
     @JsonProperty("httpLogFormat")
     public void setHttpLogFormat(String httpLogFormat) {
         this.httpLogFormat = httpLogFormat;
+    }
+
+    @JsonProperty("logEmptyRequests")
+    public String getLogEmptyRequests() {
+        return logEmptyRequests;
+    }
+
+    @JsonProperty("logEmptyRequests")
+    public void setLogEmptyRequests(String logEmptyRequests) {
+        this.logEmptyRequests = logEmptyRequests;
     }
 
     @JsonAnyGetter

@@ -15,14 +15,43 @@
  */
 package io.fabric8.servicecatalog.client;
 
-import io.fabric8.kubernetes.client.*;
+import io.fabric8.kubernetes.client.BaseClient;
+import io.fabric8.kubernetes.client.ClientContext;
+import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ConfigBuilder;
+import io.fabric8.kubernetes.client.Handlers;
+import io.fabric8.kubernetes.client.RequestConfig;
+import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.servicecatalog.client.internal.*;
-import io.fabric8.servicecatalog.api.model.*;
-import okhttp3.OkHttpClient;
+import io.fabric8.servicecatalog.api.model.ClusterServiceBroker;
+import io.fabric8.servicecatalog.api.model.ClusterServiceBrokerList;
+import io.fabric8.servicecatalog.api.model.ClusterServiceClass;
+import io.fabric8.servicecatalog.api.model.ClusterServiceClassList;
+import io.fabric8.servicecatalog.api.model.ClusterServicePlan;
+import io.fabric8.servicecatalog.api.model.ClusterServicePlanList;
+import io.fabric8.servicecatalog.api.model.ServiceBinding;
+import io.fabric8.servicecatalog.api.model.ServiceBindingList;
+import io.fabric8.servicecatalog.api.model.ServiceBroker;
+import io.fabric8.servicecatalog.api.model.ServiceBrokerList;
+import io.fabric8.servicecatalog.api.model.ServiceClass;
+import io.fabric8.servicecatalog.api.model.ServiceClassList;
+import io.fabric8.servicecatalog.api.model.ServiceInstance;
+import io.fabric8.servicecatalog.api.model.ServiceInstanceList;
+import io.fabric8.servicecatalog.api.model.ServicePlan;
+import io.fabric8.servicecatalog.api.model.ServicePlanList;
+import io.fabric8.servicecatalog.client.internal.ClusterServiceBrokerOperationsImpl;
+import io.fabric8.servicecatalog.client.internal.ClusterServiceBrokerResource;
+import io.fabric8.servicecatalog.client.internal.ClusterServiceClassOperationsImpl;
+import io.fabric8.servicecatalog.client.internal.ClusterServiceClassResource;
+import io.fabric8.servicecatalog.client.internal.ClusterServicePlanOperationsImpl;
+import io.fabric8.servicecatalog.client.internal.ClusterServicePlanResource;
+import io.fabric8.servicecatalog.client.internal.ServiceBindingOperationsImpl;
+import io.fabric8.servicecatalog.client.internal.ServiceBindingResource;
+import io.fabric8.servicecatalog.client.internal.ServiceInstanceOperationsImpl;
+import io.fabric8.servicecatalog.client.internal.ServiceInstanceResource;
 
 public class DefaultServiceCatalogClient extends BaseClient implements NamespacedServiceCatalogClient {
 
@@ -34,48 +63,48 @@ public class DefaultServiceCatalogClient extends BaseClient implements Namespace
     super(configuration);
   }
 
-  public DefaultServiceCatalogClient(OkHttpClient httpClient, Config configuration) {
-    super(httpClient, configuration);
+  public DefaultServiceCatalogClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override
 public NonNamespaceOperation<ClusterServiceBroker, ClusterServiceBrokerList, ClusterServiceBrokerResource> clusterServiceBrokers() {
-    return new ClusterServiceBrokerOperationsImpl(this.getHttpClient(), this.getConfiguration());
+    return new ClusterServiceBrokerOperationsImpl(this);
   }
 
   @Override
 public NonNamespaceOperation<ClusterServiceClass, ClusterServiceClassList, ClusterServiceClassResource> clusterServiceClasses() {
-    return new ClusterServiceClassOperationsImpl(this.getHttpClient(), this.getConfiguration());
+    return new ClusterServiceClassOperationsImpl(this);
   }
 
   @Override
 public NonNamespaceOperation<ClusterServicePlan, ClusterServicePlanList, ClusterServicePlanResource> clusterServicePlans() {
-    return new ClusterServicePlanOperationsImpl(this.getHttpClient(), this.getConfiguration());
+    return new ClusterServicePlanOperationsImpl(this);
   }
 
   @Override
 public MixedOperation<ServiceInstance, ServiceInstanceList, ServiceInstanceResource> serviceInstances() {
-    return new ServiceInstanceOperationsImpl(this.getHttpClient(), this.getConfiguration());
+    return new ServiceInstanceOperationsImpl(this);
   }
 
   @Override
 public MixedOperation<ServiceBinding, ServiceBindingList, ServiceBindingResource> serviceBindings() {
-    return new ServiceBindingOperationsImpl(this.getHttpClient(), this.getConfiguration());
+    return new ServiceBindingOperationsImpl(this);
   }
 
   @Override
   public MixedOperation<ServiceBroker, ServiceBrokerList, Resource<ServiceBroker>> serviceBrokers() {
-    return Handlers.getOperation(ServiceBroker.class, ServiceBrokerList.class, httpClient, getConfiguration());
+    return Handlers.getOperation(ServiceBroker.class, ServiceBrokerList.class, this);
   }
 
   @Override
   public MixedOperation<ServiceClass, ServiceClassList, Resource<ServiceClass>> serviceClasses() {
-    return Handlers.getOperation(ServiceClass.class, ServiceClassList.class, httpClient, getConfiguration());
+    return Handlers.getOperation(ServiceClass.class, ServiceClassList.class, this);
   }
 
   @Override
   public MixedOperation<ServicePlan, ServicePlanList, Resource<ServicePlan>> servicePlans() {
-    return Handlers.getOperation(ServicePlan.class, ServicePlanList.class, httpClient, getConfiguration());
+    return Handlers.getOperation(ServicePlan.class, ServicePlanList.class, this);
   }
 
   @Override
@@ -89,7 +118,7 @@ public MixedOperation<ServiceBinding, ServiceBindingList, ServiceBindingResource
       .withNamespace(namespace)
       .build();
 
-    return new DefaultServiceCatalogClient(getHttpClient(), updated);
+    return new DefaultServiceCatalogClient(newState(updated));
   }
 
   @Override

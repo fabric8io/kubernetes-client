@@ -31,7 +31,6 @@ import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
-import okhttp3.Response;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
@@ -196,12 +195,12 @@ public class PodIT {
     ExecWatch execWatch = client.pods().inNamespace(session.getNamespace()).withName(pod1.getMetadata().getName())
       .writingOutput(out).withTTY().usingListener(new ExecListener() {
         @Override
-        public void onOpen(Response response) {
+        public void onOpen() {
           logger.info("Shell was opened");
         }
 
         @Override
-        public void onFailure(Throwable throwable, Response response) {
+        public void onFailure(Throwable t, Response failureResponse) {
           logger.info("Shell barfed");
           execLatch.countDown();
         }

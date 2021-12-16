@@ -17,12 +17,11 @@ package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.api.model.metrics.v1beta1.NodeMetrics;
 import io.fabric8.kubernetes.api.model.metrics.v1beta1.NodeMetricsList;
-import io.fabric8.kubernetes.client.Config;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.ClientContext;
 
 public class NodeMetricOperationsImpl extends MetricOperationsImpl<NodeMetrics, NodeMetricsList> {
-	public NodeMetricOperationsImpl(OkHttpClient client, Config config) {
-		super(client, config, null, null, "nodes", null, NodeMetrics.class, NodeMetricsList.class);
+	public NodeMetricOperationsImpl(ClientContext clientContext) {
+		super(clientContext, null, null, "nodes", null, NodeMetrics.class, NodeMetricsList.class);
 	}
 
   /**

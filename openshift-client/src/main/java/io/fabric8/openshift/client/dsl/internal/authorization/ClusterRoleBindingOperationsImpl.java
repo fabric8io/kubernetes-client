@@ -18,19 +18,19 @@ package io.fabric8.openshift.client.dsl.internal.authorization;
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.openshift.api.model.ClusterRoleBinding;
 import io.fabric8.openshift.api.model.ClusterRoleBindingBuilder;
 import io.fabric8.openshift.api.model.ClusterRoleBindingList;
-import io.fabric8.openshift.client.OpenShiftConfig;
+import io.fabric8.openshift.client.OpenshiftClientContext;
 import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
-import okhttp3.OkHttpClient;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.AUTHORIZATION;
 
 public class ClusterRoleBindingOperationsImpl extends OpenShiftOperation<ClusterRoleBinding, ClusterRoleBindingList, Resource<ClusterRoleBinding>> {
 
-  public ClusterRoleBindingOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config));
+  public ClusterRoleBindingOperationsImpl(OpenshiftClientContext clientContext) {
+    this(HasMetadataOperationsImpl.defaultContext(clientContext));
   }
 
   public ClusterRoleBindingOperationsImpl(OperationContext context) {

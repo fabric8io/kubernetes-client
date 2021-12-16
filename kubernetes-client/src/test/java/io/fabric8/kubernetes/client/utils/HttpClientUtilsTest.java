@@ -17,10 +17,10 @@ package io.fabric8.kubernetes.client.utils;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
-import okhttp3.Interceptor;
+import io.fabric8.kubernetes.client.http.Interceptor;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
+import java.util.Collection;
 
 import static io.fabric8.kubernetes.client.utils.HttpClientUtils.KUBERNETES_BACKWARDS_COMPATIBILITY_INTERCEPTOR_DISABLE;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,7 +32,7 @@ class HttpClientUtilsTest {
     Config config = new ConfigBuilder().build();
 
     // When
-    List<Interceptor> interceptorList = HttpClientUtils.createApplicableInterceptors(config);
+    Collection<Interceptor> interceptorList = HttpClientUtils.createApplicableInterceptors(config, null).values();
 
     // Then
     assertThat(interceptorList)
@@ -50,7 +50,7 @@ class HttpClientUtilsTest {
     System.setProperty(KUBERNETES_BACKWARDS_COMPATIBILITY_INTERCEPTOR_DISABLE, "true");
 
     // When
-    List<Interceptor> interceptorList = HttpClientUtils.createApplicableInterceptors(config);
+    Collection<Interceptor> interceptorList = HttpClientUtils.createApplicableInterceptors(config, null).values();
 
     // Then
     assertThat(interceptorList)

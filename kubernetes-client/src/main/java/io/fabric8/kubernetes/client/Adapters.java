@@ -28,8 +28,6 @@ import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.Set;
 
-import okhttp3.OkHttpClient;
-
 public final class Adapters {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(Adapters.class);
@@ -37,31 +35,9 @@ public final class Adapters {
   private static final Set<ClassLoader> CLASS_LOADERS = new HashSet<>();
   private static final Map<Class, ExtensionAdapter> EXTENSION_ADAPTER_MAP = new HashMap<>();
 
-  private static final ExtensionAdapter<OkHttpClient> OK_HTTP_CLIENT_EXTENSION_ADAPTER = new ExtensionAdapter<OkHttpClient>() {
-
-    @Override
-    public Class<OkHttpClient> getExtensionType() {
-      return OkHttpClient.class;
-    }
-
-    @Override
-    public Boolean isAdaptable(Client client) {
-      return client instanceof HttpClientAware;
-    }
-
-    @Override
-    public OkHttpClient adapt(Client client) {
-      if (client instanceof HttpClientAware) {
-        return ((HttpClientAware)client).getHttpClient().newBuilder().build();
-      }
-      throw new IllegalArgumentException("This adapter only supports instances of HttpClientAware.");
-    }
-  };
-
   static {
     //Register adapters
     discoverServices(Adapters.class.getClassLoader());
-    register(OK_HTTP_CLIENT_EXTENSION_ADAPTER);
   }
 
   private Adapters() {

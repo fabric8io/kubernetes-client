@@ -585,7 +585,7 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
 
   @Override
   public RunOperations run() {
-    return new RunOperations(httpClient, getConfiguration(), getNamespace(), new RunConfigBuilder());
+    return new RunOperations(this, getNamespace(), new RunConfigBuilder());
   }
 
   @Override

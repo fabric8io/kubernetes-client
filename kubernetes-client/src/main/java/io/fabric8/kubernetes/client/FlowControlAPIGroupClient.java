@@ -17,15 +17,14 @@ package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.client.dsl.FlowControlAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1beta1FlowControlAPIGroupDSL;
-import okhttp3.OkHttpClient;
 
 public class FlowControlAPIGroupClient extends BaseClient implements FlowControlAPIGroupDSL {
   public FlowControlAPIGroupClient() {
     super();
   }
 
-  public FlowControlAPIGroupClient(OkHttpClient httpClient, final Config config) {
-    super(httpClient, config);
+  public FlowControlAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

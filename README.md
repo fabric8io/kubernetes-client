@@ -21,6 +21,7 @@ This client provides access to the full [Kubernetes](http://kubernetes.io/) &
 | servicecatalog-client | [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.fabric8/servicecatalog-client/badge.svg?color=blue)](https://maven-badges.herokuapp.com/maven-central/io.fabric8/servicecatalog-client) | [![Javadocs](https://www.javadoc.io/badge/io.fabric8/servicecatalog-client.svg?color=blue)](https://www.javadoc.io/doc/io.fabric8/servicecatalog-client) |
 | chaosmesh-client | [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.fabric8/chaosmesh-client/badge.svg?color=blue)](https://maven-badges.herokuapp.com/maven-central/io.fabric8/chaosmesh-client) | [![Javadocs](https://www.javadoc.io/badge/io.fabric8/chaosmesh-client.svg?color=blue)](https://www.javadoc.io/doc/io.fabric8/chaosmesh-client) |
 | volumesnapshot-client | [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.fabric8/volumesnapshot-client/badge.svg?color=blue)](https://maven-badges.herokuapp.com/maven-central/io.fabric8/volumesnapshot-client) | [![Javadocs](https://www.javadoc.io/badge/io.fabric8/volumesnapshot-client.svg?color=blue)](https://www.javadoc.io/doc/io.fabric8/volumesnapshot-client) |
+| istio-client | [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.fabric8/istio-client/badge.svg?color=blue)](https://maven-badges.herokuapp.com/maven-central/io.fabric8/istio-client) | [![Javadocs](https://www.javadoc.io/badge/io.fabric8/istio-client.svg?color=blue)](https://www.javadoc.io/doc/io.fabric8/istio-client) |
 
 ## Contents
 - [Usage](#usage)
@@ -470,75 +471,75 @@ class ExampleTest {
 ### OpenShift Compatibility Matrix:
 **Note**: This matrix is prepared by running our integration tests on different versions of OpenShift.
 
-|                           | OCP 4.5.14 | OCP 4.2.0 | OCP 4.1.0 | OCP 3.11.0 | OCP 3.10.0 |  OCP 3.9.0 | OCP 3.7.0 | OCP 3.6.0 |
-|---------------------------|------------|-----------|-----------|------------|------------|------------|-----------|-----------|
-| openshift-client 5.10.1   | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 5.10.0   | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 5.9.0    | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 5.8.0    | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 5.7.3    | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 5.7.2    | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 5.7.1    | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 5.7.0    | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 5.6.0    | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 5.5.0    | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 5.4.1    | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 5.4.0    | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 5.3.1    | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 5.3.0    | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 5.2.1    | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 5.2.0    | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 5.1.1    | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 5.1.0    | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 5.0.2    | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 5.0.1    | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 5.0.0    | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 4.13.3   | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 4.13.2   | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 4.13.1   | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 4.13.0   | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 4.12.0   | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 4.11.2   | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 4.11.1   | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 4.11.0   | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 4.10.3   | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 4.10.2   | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 4.10.1   | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 4.10.0   | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 4.9.2    | -          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 4.9.1    | -          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 4.9.0    | -          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 4.8.0    | -          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 4.7.2    | -          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 4.7.1    | -          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 4.7.0    | -          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 4.6.4    | -          | -         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 4.6.3    | -          | -         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 4.6.2    | -          | -         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 4.6.1    | -          | -         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 4.6.0    | -          | -         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 4.5.2    | -          | -         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 4.5.1    | -          | -         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 4.5.0    | -          | -         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 4.4.2    | -          | -         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 4.4.1    | -          | -         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 4.4.0    | -          | -         | ✓         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 4.3.1    | -          | -         | -         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 4.3.0    | -          | -         | -         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 4.2.2    | -          | -         | -         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 4.2.1    | -          | -         | -         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 4.2.0    | -          | -         | -         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 4.1.3    | -          | -         | -         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 4.1.2    | -          | -         | -         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 4.1.1    | -          | -         | -         | ✓          | ✓          | ✓          | -         | -         |
-| openshift-client 4.1.0    | -          | -         | -         | -          | ✓          | ✓          | ✓         | -         |
-| openshift-client 4.0.0    | -          | -         | -         | -          | -          | ✓          | ✓         | ✓         |
-| openshift-client 3.2.0    | -          | -         | -         | -          | -          | ✓          | ✓         | ✓         |
-| openshift-client 3.1.12   | -          | -         | -         | -          | -          | ✓          | ✓         | ✓         |
-| openshift-client 3.0.11   | -          | -         | -         | -          | -          | ✓          | ✓         | ✓         |
-| openshift-client 3.0.10   | -          | -         | -         | -          | -          | ✓          | ✓         | ✓         |
-| openshift-client 3.0.3    | -          | -         | -         | -          | -          | -          | ✓         | -         |
-| openshift-client 1.3.92   | -          | -         | -         | -          | -          | -          | -         | +         |
+|                           | OCP 4.9.8  | OCP 4.5.14 | OCP 4.2.0 | OCP 4.1.0 | OCP 3.11.0 | OCP 3.10.0 |  OCP 3.9.0 | OCP 3.7.0 | OCP 3.6.0 |
+|---------------------------|------------|------------|-----------|-----------|------------|------------|------------|-----------|-----------|
+| openshift-client 5.10.1   | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 5.10.0   | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 5.9.0    | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 5.8.0    | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 5.7.3    | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 5.7.2    | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 5.7.1    | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 5.7.0    | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 5.6.0    | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 5.5.0    | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 5.4.1    | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 5.4.0    | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 5.3.1    | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 5.3.0    | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 5.2.1    | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 5.2.0    | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 5.1.1    | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 5.1.0    | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 5.0.2    | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 5.0.1    | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 5.0.0    | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 4.13.3   | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 4.13.2   | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 4.13.1   | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 4.13.0   | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 4.12.0   | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 4.11.2   | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 4.11.1   | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 4.11.0   | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 4.10.3   | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 4.10.2   | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 4.10.1   | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 4.10.0   | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 4.9.2    | -          | -          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 4.9.1    | -          | -          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 4.9.0    | -          | -          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 4.8.0    | -          | -          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 4.7.2    | -          | -          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 4.7.1    | -          | -          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 4.7.0    | -          | -          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 4.6.4    | -          | -          | -         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 4.6.3    | -          | -          | -         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 4.6.2    | -          | -          | -         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 4.6.1    | -          | -          | -         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 4.6.0    | -          | -          | -         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 4.5.2    | -          | -          | -         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 4.5.1    | -          | -          | -         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 4.5.0    | -          | -          | -         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 4.4.2    | -          | -          | -         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 4.4.1    | -          | -          | -         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 4.4.0    | -          | -          | -         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 4.3.1    | -          | -          | -         | -         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 4.3.0    | -          | -          | -         | -         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 4.2.2    | -          | -          | -         | -         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 4.2.1    | -          | -          | -         | -         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 4.2.0    | -          | -          | -         | -         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 4.1.3    | -          | -          | -         | -         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 4.1.2    | -          | -          | -         | -         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 4.1.1    | -          | -          | -         | -         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 4.1.0    | -          | -          | -         | -         | -          | ✓          | ✓          | ✓         | -         |
+| openshift-client 4.0.0    | -          | -          | -         | -         | -          | -          | ✓          | ✓         | ✓         |
+| openshift-client 3.2.0    | -          | -          | -         | -         | -          | -          | ✓          | ✓         | ✓         |
+| openshift-client 3.1.12   | -          | -          | -         | -         | -          | -          | ✓          | ✓         | ✓         |
+| openshift-client 3.0.11   | -          | -          | -         | -         | -          | -          | ✓          | ✓         | ✓         |
+| openshift-client 3.0.10   | -          | -          | -         | -         | -          | -          | ✓          | ✓         | ✓         |
+| openshift-client 3.0.3    | -          | -          | -         | -         | -          | -          | -          | ✓         | -         |
+| openshift-client 1.3.92   | -          | -          | -         | -         | -          | -          | -          | -         | +         |
 
 ## Major Changes in Kubernetes Client 4.0.0
 All the resource objects used here will be according to OpenShift 3.9.0  and Kubernetes 1.9.0. All the resource objects will give all the fields according to OpenShift 3.9.0 and Kubernetes 1.9.0
@@ -561,6 +562,7 @@ All the resource objects used here will be according to OpenShift 3.9.0  and Kub
   - [Knative](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/knative)
   - [Tekton](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/tekton)
   - [Volcano](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/volcano)
+  - [Istio](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/istio)
 
   Frameworks/Libraries/Tools:
   - [Arquillian Cube](http://arquillian.org/arquillian-cube/)

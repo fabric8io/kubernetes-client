@@ -15,8 +15,6 @@
  */
 package io.fabric8.kubernetes.client;
 
-import okhttp3.OkHttpClient;
-
 public class MetricAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<MetricAPIGroupClient> {
 
   @Override
@@ -31,6 +29,6 @@ public class MetricAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<Met
 
   @Override
   protected MetricAPIGroupClient newInstance(Client client) {
-    return new MetricAPIGroupClient(client.adapt(OkHttpClient.class), client.getConfiguration());
+    return new MetricAPIGroupClient(client);
   }
 }

@@ -40,6 +40,8 @@ import lombok.experimental.Accessors;
     "affinity",
     "alertDropLabels",
     "alertQueryUrl",
+    "alertRelabelConfigFile",
+    "alertRelabelConfigs",
     "alertmanagersConfig",
     "alertmanagersUrl",
     "containers",
@@ -54,6 +56,7 @@ import lombok.experimental.Accessors;
     "listenLocal",
     "logFormat",
     "logLevel",
+    "minReadySeconds",
     "nodeSelector",
     "objectStorageConfig",
     "objectStorageConfigFile",
@@ -106,6 +109,10 @@ public class ThanosRulerSpec implements KubernetesResource
     private List<java.lang.String> alertDropLabels = new ArrayList<java.lang.String>();
     @JsonProperty("alertQueryUrl")
     private java.lang.String alertQueryUrl;
+    @JsonProperty("alertRelabelConfigFile")
+    private java.lang.String alertRelabelConfigFile;
+    @JsonProperty("alertRelabelConfigs")
+    private SecretKeySelector alertRelabelConfigs;
     @JsonProperty("alertmanagersConfig")
     private SecretKeySelector alertmanagersConfig;
     @JsonProperty("alertmanagersUrl")
@@ -138,6 +145,8 @@ public class ThanosRulerSpec implements KubernetesResource
     private java.lang.String logFormat;
     @JsonProperty("logLevel")
     private java.lang.String logLevel;
+    @JsonProperty("minReadySeconds")
+    private Integer minReadySeconds;
     @JsonProperty("nodeSelector")
     private Map<String, String> nodeSelector;
     @JsonProperty("objectStorageConfig")
@@ -213,6 +222,7 @@ public class ThanosRulerSpec implements KubernetesResource
      * @param securityContext
      * @param storage
      * @param grpcServerTlsConfig
+     * @param alertRelabelConfigFile
      * @param nodeSelector
      * @param alertmanagersConfig
      * @param externalPrefix
@@ -220,6 +230,7 @@ public class ThanosRulerSpec implements KubernetesResource
      * @param tolerations
      * @param logLevel
      * @param queryConfig
+     * @param alertRelabelConfigs
      * @param alertQueryUrl
      * @param objectStorageConfigFile
      * @param alertmanagersUrl
@@ -238,15 +249,18 @@ public class ThanosRulerSpec implements KubernetesResource
      * @param routePrefix
      * @param evaluationInterval
      * @param containers
+     * @param minReadySeconds
      * @param podMetadata
      * @param initContainers
      * @param affinity
      */
-    public ThanosRulerSpec(Affinity affinity, List<java.lang.String> alertDropLabels, java.lang.String alertQueryUrl, SecretKeySelector alertmanagersConfig, List<java.lang.String> alertmanagersUrl, List<io.fabric8.kubernetes.api.model.Container> containers, java.lang.String enforcedNamespaceLabel, java.lang.String evaluationInterval, java.lang.String externalPrefix, TLSConfig grpcServerTlsConfig, java.lang.String image, List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets, List<io.fabric8.kubernetes.api.model.Container> initContainers, Map<String, String> labels, Boolean listenLocal, java.lang.String logFormat, java.lang.String logLevel, Map<String, String> nodeSelector, SecretKeySelector objectStorageConfig, java.lang.String objectStorageConfigFile, Boolean paused, EmbeddedObjectMetadata podMetadata, java.lang.String portName, java.lang.String priorityClassName, List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce, SecretKeySelector queryConfig, List<java.lang.String> queryEndpoints, Integer replicas, io.fabric8.kubernetes.api.model.ResourceRequirements resources, java.lang.String retention, java.lang.String routePrefix, io.fabric8.kubernetes.api.model.LabelSelector ruleNamespaceSelector, io.fabric8.kubernetes.api.model.LabelSelector ruleSelector, PodSecurityContext securityContext, java.lang.String serviceAccountName, StorageSpec storage, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, SecretKeySelector tracingConfig, List<Volume> volumes) {
+    public ThanosRulerSpec(Affinity affinity, List<java.lang.String> alertDropLabels, java.lang.String alertQueryUrl, java.lang.String alertRelabelConfigFile, SecretKeySelector alertRelabelConfigs, SecretKeySelector alertmanagersConfig, List<java.lang.String> alertmanagersUrl, List<io.fabric8.kubernetes.api.model.Container> containers, java.lang.String enforcedNamespaceLabel, java.lang.String evaluationInterval, java.lang.String externalPrefix, TLSConfig grpcServerTlsConfig, java.lang.String image, List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets, List<io.fabric8.kubernetes.api.model.Container> initContainers, Map<String, String> labels, Boolean listenLocal, java.lang.String logFormat, java.lang.String logLevel, Integer minReadySeconds, Map<String, String> nodeSelector, SecretKeySelector objectStorageConfig, java.lang.String objectStorageConfigFile, Boolean paused, EmbeddedObjectMetadata podMetadata, java.lang.String portName, java.lang.String priorityClassName, List<PrometheusRuleExcludeConfig> prometheusRulesExcludedFromEnforce, SecretKeySelector queryConfig, List<java.lang.String> queryEndpoints, Integer replicas, io.fabric8.kubernetes.api.model.ResourceRequirements resources, java.lang.String retention, java.lang.String routePrefix, io.fabric8.kubernetes.api.model.LabelSelector ruleNamespaceSelector, io.fabric8.kubernetes.api.model.LabelSelector ruleSelector, PodSecurityContext securityContext, java.lang.String serviceAccountName, StorageSpec storage, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, SecretKeySelector tracingConfig, List<Volume> volumes) {
         super();
         this.affinity = affinity;
         this.alertDropLabels = alertDropLabels;
         this.alertQueryUrl = alertQueryUrl;
+        this.alertRelabelConfigFile = alertRelabelConfigFile;
+        this.alertRelabelConfigs = alertRelabelConfigs;
         this.alertmanagersConfig = alertmanagersConfig;
         this.alertmanagersUrl = alertmanagersUrl;
         this.containers = containers;
@@ -261,6 +275,7 @@ public class ThanosRulerSpec implements KubernetesResource
         this.listenLocal = listenLocal;
         this.logFormat = logFormat;
         this.logLevel = logLevel;
+        this.minReadySeconds = minReadySeconds;
         this.nodeSelector = nodeSelector;
         this.objectStorageConfig = objectStorageConfig;
         this.objectStorageConfigFile = objectStorageConfigFile;
@@ -314,6 +329,26 @@ public class ThanosRulerSpec implements KubernetesResource
     @JsonProperty("alertQueryUrl")
     public void setAlertQueryUrl(java.lang.String alertQueryUrl) {
         this.alertQueryUrl = alertQueryUrl;
+    }
+
+    @JsonProperty("alertRelabelConfigFile")
+    public java.lang.String getAlertRelabelConfigFile() {
+        return alertRelabelConfigFile;
+    }
+
+    @JsonProperty("alertRelabelConfigFile")
+    public void setAlertRelabelConfigFile(java.lang.String alertRelabelConfigFile) {
+        this.alertRelabelConfigFile = alertRelabelConfigFile;
+    }
+
+    @JsonProperty("alertRelabelConfigs")
+    public SecretKeySelector getAlertRelabelConfigs() {
+        return alertRelabelConfigs;
+    }
+
+    @JsonProperty("alertRelabelConfigs")
+    public void setAlertRelabelConfigs(SecretKeySelector alertRelabelConfigs) {
+        this.alertRelabelConfigs = alertRelabelConfigs;
     }
 
     @JsonProperty("alertmanagersConfig")
@@ -454,6 +489,16 @@ public class ThanosRulerSpec implements KubernetesResource
     @JsonProperty("logLevel")
     public void setLogLevel(java.lang.String logLevel) {
         this.logLevel = logLevel;
+    }
+
+    @JsonProperty("minReadySeconds")
+    public Integer getMinReadySeconds() {
+        return minReadySeconds;
+    }
+
+    @JsonProperty("minReadySeconds")
+    public void setMinReadySeconds(Integer minReadySeconds) {
+        this.minReadySeconds = minReadySeconds;
     }
 
     @JsonProperty("nodeSelector")

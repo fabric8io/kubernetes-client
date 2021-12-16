@@ -15,8 +15,6 @@
  */
 package io.fabric8.kubernetes.client;
 
-import okhttp3.OkHttpClient;
-
 public class V1beta1EventingAPIGroupExtensionAdapter  extends APIGroupExtensionAdapter<V1beta1EventingAPIGroupClient> {
   @Override
   protected String getAPIGroupName() {
@@ -30,6 +28,6 @@ public class V1beta1EventingAPIGroupExtensionAdapter  extends APIGroupExtensionA
 
   @Override
   protected V1beta1EventingAPIGroupClient newInstance(Client client) {
-    return new V1beta1EventingAPIGroupClient(client.adapt(OkHttpClient.class), client.getConfiguration());
+    return new V1beta1EventingAPIGroupClient(client);
   }
 }

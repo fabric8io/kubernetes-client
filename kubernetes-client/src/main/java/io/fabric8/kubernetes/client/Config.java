@@ -28,6 +28,7 @@ import io.fabric8.kubernetes.api.model.Context;
 import io.fabric8.kubernetes.api.model.ExecConfig;
 import io.fabric8.kubernetes.api.model.ExecEnvVar;
 import io.fabric8.kubernetes.api.model.NamedContext;
+import io.fabric8.kubernetes.client.http.TlsVersion;
 import io.fabric8.kubernetes.client.internal.CertUtils;
 import io.fabric8.kubernetes.client.internal.KubeConfigUtils;
 import io.fabric8.kubernetes.client.internal.SSLUtils;
@@ -36,7 +37,6 @@ import io.fabric8.kubernetes.client.utils.IOHelpers;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.sundr.builder.annotations.Buildable;
-import okhttp3.TlsVersion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,8 +53,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
-import static okhttp3.TlsVersion.TLS_1_2;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true, allowGetters = true, allowSetters = true)
@@ -218,7 +216,7 @@ public class Config {
   private String proxyPassword;
   private String[] noProxy;
   private String userAgent;
-  private TlsVersion[] tlsVersions = new TlsVersion[]{TLS_1_2};
+  private TlsVersion[] tlsVersions = new TlsVersion[]{TlsVersion.TLS_1_2};
 
   private Map<Integer, String> errorMessages = new HashMap<>();
 

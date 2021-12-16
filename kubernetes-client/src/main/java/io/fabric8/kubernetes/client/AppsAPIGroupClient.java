@@ -25,15 +25,13 @@ import io.fabric8.kubernetes.api.model.apps.ReplicaSet;
 import io.fabric8.kubernetes.api.model.apps.ReplicaSetList;
 import io.fabric8.kubernetes.api.model.apps.StatefulSet;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetList;
-import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
-import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.AppsAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.DeploymentOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.ReplicaSetOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.StatefulSetOperationsImpl;
-
-import okhttp3.OkHttpClient;
 
 public class AppsAPIGroupClient extends BaseClient implements AppsAPIGroupDSL {
 
@@ -41,32 +39,32 @@ public class AppsAPIGroupClient extends BaseClient implements AppsAPIGroupDSL {
     super();
   }
 
-  public AppsAPIGroupClient(OkHttpClient httpClient, final Config config) {
-    super(httpClient, config);
+  public AppsAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override
   public MixedOperation<DaemonSet, DaemonSetList, Resource<DaemonSet>> daemonSets() {
-    return Handlers.getOperation(DaemonSet.class, DaemonSetList.class, httpClient, getConfiguration());
+    return Handlers.getOperation(DaemonSet.class, DaemonSetList.class, this);
   }
 
   @Override
   public MixedOperation<Deployment, DeploymentList, RollableScalableResource<Deployment>> deployments() {
-    return new DeploymentOperationsImpl(httpClient, getConfiguration());
+    return new DeploymentOperationsImpl(this);
   }
 
   @Override
   public MixedOperation<ReplicaSet, ReplicaSetList, RollableScalableResource<ReplicaSet>> replicaSets() {
-    return new ReplicaSetOperationsImpl(httpClient, getConfiguration());
+    return new ReplicaSetOperationsImpl(this);
   }
 
   @Override
   public MixedOperation<StatefulSet, StatefulSetList, RollableScalableResource<StatefulSet>> statefulSets() {
-    return new StatefulSetOperationsImpl(httpClient, getConfiguration());
+    return new StatefulSetOperationsImpl(this);
   }
 
   @Override
   public MixedOperation<ControllerRevision, ControllerRevisionList, Resource<ControllerRevision>> controllerRevisions() {
-    return Handlers.getOperation(ControllerRevision.class, ControllerRevisionList.class, httpClient, getConfiguration());
+    return Handlers.getOperation(ControllerRevision.class, ControllerRevisionList.class, this);
   }
 }

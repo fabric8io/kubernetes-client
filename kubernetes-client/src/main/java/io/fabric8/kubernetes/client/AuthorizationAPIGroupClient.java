@@ -16,15 +16,14 @@
 package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.client.dsl.AuthorizationAPIGroupDSL;
-import okhttp3.OkHttpClient;
 
 public class AuthorizationAPIGroupClient extends BaseClient implements AuthorizationAPIGroupDSL {
   public AuthorizationAPIGroupClient() {
     super();
   }
 
-  public AuthorizationAPIGroupClient(OkHttpClient httpClient, final Config config) {
-    super(httpClient, config);
+  public AuthorizationAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

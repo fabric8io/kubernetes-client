@@ -501,6 +501,9 @@
       "properties": {
         "id": {
           "type": "string"
+        },
+        "podref": {
+          "type": "string"
         }
       },
       "additionalProperties": true,
@@ -656,6 +659,9 @@
       "type": "object",
       "properties": {
         "containerid": {
+          "type": "string"
+        },
+        "podref": {
           "type": "string"
         }
       },
@@ -838,6 +844,9 @@
     "ipallocation": {
       "properties": {
         "id": {
+          "type": "string"
+        },
+        "podref": {
           "type": "string"
         }
       },
@@ -1113,6 +1122,9 @@
     "overlappingrangeipreservationspec": {
       "properties": {
         "containerid": {
+          "type": "string"
+        },
+        "podref": {
           "type": "string"
         }
       },

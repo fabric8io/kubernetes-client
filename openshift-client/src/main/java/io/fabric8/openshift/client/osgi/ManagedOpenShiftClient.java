@@ -184,6 +184,8 @@ import io.fabric8.openshift.api.model.UserIdentityMapping;
 import io.fabric8.openshift.api.model.UserList;
 import io.fabric8.openshift.api.model.UserOAuthAccessToken;
 import io.fabric8.openshift.api.model.UserOAuthAccessTokenList;
+import io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.APIRequestCount;
+import io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.APIRequestCountList;
 import io.fabric8.openshift.api.model.miscellaneous.cloudcredential.v1.CredentialsRequest;
 import io.fabric8.openshift.api.model.miscellaneous.cloudcredential.v1.CredentialsRequestList;
 import io.fabric8.openshift.api.model.miscellaneous.cncf.cni.v1.NetworkAttachmentDefinition;
@@ -191,6 +193,8 @@ import io.fabric8.openshift.api.model.miscellaneous.cncf.cni.v1.NetworkAttachmen
 import io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.ConfigList;
 import io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.BareMetalHost;
 import io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.BareMetalHostList;
+import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.EgressRouter;
+import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.EgressRouterList;
 import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.OperatorPKI;
 import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.OperatorPKIList;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
@@ -494,6 +498,11 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   @Override
   public MixedOperation<OperatorPKI, OperatorPKIList, Resource<OperatorPKI>> operatorPKIs() {
     return delegate.operatorPKIs();
+  }
+
+  @Override
+  public MixedOperation<EgressRouter, EgressRouterList, Resource<EgressRouter>> egressRouters() {
+    return delegate.egressRouters();
   }
 
   @Override
@@ -907,6 +916,11 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
 
   @Override
   public SchedulingAPIGroupDSL scheduling() { return delegate.scheduling(); }
+
+  @Override
+  public NonNamespaceOperation<APIRequestCount, APIRequestCountList, Resource<APIRequestCount>> apiRequestCounts() {
+    return delegate.apiRequestCounts();
+  }
 
   @Override
   public MixedOperation<BareMetalHost, BareMetalHostList, Resource<BareMetalHost>> bareMetalHosts() {

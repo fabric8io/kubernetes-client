@@ -18,15 +18,14 @@ package io.fabric8.kubernetes.client;
 import io.fabric8.kubernetes.client.dsl.EventingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1EventingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1beta1EventingAPIGroupDSL;
-import okhttp3.OkHttpClient;
 
 public class EventingAPIGroupClient extends BaseClient implements EventingAPIGroupDSL {
   public EventingAPIGroupClient() {
     super();
   }
 
-  public EventingAPIGroupClient(OkHttpClient httpClient, final Config config) {
-    super(httpClient, config);
+  public EventingAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
 

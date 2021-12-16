@@ -1,0 +1,66 @@
+{
+  "apiVersion": "v1",
+  "items": [
+    {
+      "apiVersion": "network.operator.openshift.io/v1",
+      "kind": "EgressRouter",
+      "metadata": {
+        "creationTimestamp": "2021-12-06T09:39:03Z",
+        "generation": 1,
+        "managedFields": [
+          {
+            "apiVersion": "network.operator.openshift.io/v1",
+            "fieldsType": "FieldsV1",
+            "fieldsV1": {
+              "f:spec": {
+                ".": {},
+                "f:addresses": {},
+                "f:mode": {},
+                "f:networkInterface": {
+                  ".": {},
+                  "f:macvlan": {
+                    ".": {},
+                    "f:mode": {}
+                  }
+                },
+                "f:redirect": {
+                  ".": {},
+                  "f:fallbackIP": {}
+                }
+              }
+            },
+            "manager": "oc",
+            "operation": "Update",
+            "time": "2021-12-06T09:39:03Z"
+          }
+        ],
+        "name": "egress-router",
+        "namespace": "default",
+        "resourceVersion": "93649",
+        "uid": "dfc442e6-bce4-4743-9dbf-d7c5d1ae2691"
+      },
+      "spec": {
+        "addresses": [
+          {
+            "gateway": "192.168.3.1",
+            "ip": "192.168.3.10/24"
+          }
+        ],
+        "mode": "Redirect",
+        "networkInterface": {
+          "macvlan": {
+            "mode": "Bridge"
+          }
+        },
+        "redirect": {
+          "fallbackIP": "203.0.113.25"
+        }
+      }
+    }
+  ],
+  "kind": "List",
+  "metadata": {
+    "resourceVersion": "",
+    "selfLink": ""
+  }
+}

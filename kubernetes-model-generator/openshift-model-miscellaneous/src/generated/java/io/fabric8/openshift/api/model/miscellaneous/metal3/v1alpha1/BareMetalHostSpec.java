@@ -41,6 +41,7 @@ import lombok.experimental.Accessors;
     "bootMACAddress",
     "bootMode",
     "consumerRef",
+    "customDeploy",
     "description",
     "externallyProvisioned",
     "firmware",
@@ -49,6 +50,7 @@ import lombok.experimental.Accessors;
     "metaData",
     "networkData",
     "online",
+    "preprovisioningNetworkDataName",
     "raid",
     "rootDeviceHints",
     "taints",
@@ -85,6 +87,8 @@ public class BareMetalHostSpec implements KubernetesResource
     private String bootMode;
     @JsonProperty("consumerRef")
     private io.fabric8.kubernetes.api.model.ObjectReference consumerRef;
+    @JsonProperty("customDeploy")
+    private CustomDeploy customDeploy;
     @JsonProperty("description")
     private String description;
     @JsonProperty("externallyProvisioned")
@@ -101,6 +105,8 @@ public class BareMetalHostSpec implements KubernetesResource
     private SecretReference networkData;
     @JsonProperty("online")
     private Boolean online;
+    @JsonProperty("preprovisioningNetworkDataName")
+    private String preprovisioningNetworkDataName;
     @JsonProperty("raid")
     private RAIDConfig raid;
     @JsonProperty("rootDeviceHints")
@@ -134,19 +140,22 @@ public class BareMetalHostSpec implements KubernetesResource
      * @param bootMode
      * @param metaData
      * @param networkData
+     * @param customDeploy
+     * @param preprovisioningNetworkDataName
      * @param bmc
      * @param online
      * @param externallyProvisioned
      * @param firmware
      * @param raid
      */
-    public BareMetalHostSpec(String automatedCleaningMode, BMCDetails bmc, String bootMACAddress, String bootMode, io.fabric8.kubernetes.api.model.ObjectReference consumerRef, String description, Boolean externallyProvisioned, FirmwareConfig firmware, String hardwareProfile, Image image, SecretReference metaData, SecretReference networkData, Boolean online, RAIDConfig raid, RootDeviceHints rootDeviceHints, List<Taint> taints, SecretReference userData) {
+    public BareMetalHostSpec(String automatedCleaningMode, BMCDetails bmc, String bootMACAddress, String bootMode, io.fabric8.kubernetes.api.model.ObjectReference consumerRef, CustomDeploy customDeploy, String description, Boolean externallyProvisioned, FirmwareConfig firmware, String hardwareProfile, Image image, SecretReference metaData, SecretReference networkData, Boolean online, String preprovisioningNetworkDataName, RAIDConfig raid, RootDeviceHints rootDeviceHints, List<Taint> taints, SecretReference userData) {
         super();
         this.automatedCleaningMode = automatedCleaningMode;
         this.bmc = bmc;
         this.bootMACAddress = bootMACAddress;
         this.bootMode = bootMode;
         this.consumerRef = consumerRef;
+        this.customDeploy = customDeploy;
         this.description = description;
         this.externallyProvisioned = externallyProvisioned;
         this.firmware = firmware;
@@ -155,6 +164,7 @@ public class BareMetalHostSpec implements KubernetesResource
         this.metaData = metaData;
         this.networkData = networkData;
         this.online = online;
+        this.preprovisioningNetworkDataName = preprovisioningNetworkDataName;
         this.raid = raid;
         this.rootDeviceHints = rootDeviceHints;
         this.taints = taints;
@@ -209,6 +219,16 @@ public class BareMetalHostSpec implements KubernetesResource
     @JsonProperty("consumerRef")
     public void setConsumerRef(io.fabric8.kubernetes.api.model.ObjectReference consumerRef) {
         this.consumerRef = consumerRef;
+    }
+
+    @JsonProperty("customDeploy")
+    public CustomDeploy getCustomDeploy() {
+        return customDeploy;
+    }
+
+    @JsonProperty("customDeploy")
+    public void setCustomDeploy(CustomDeploy customDeploy) {
+        this.customDeploy = customDeploy;
     }
 
     @JsonProperty("description")
@@ -289,6 +309,16 @@ public class BareMetalHostSpec implements KubernetesResource
     @JsonProperty("online")
     public void setOnline(Boolean online) {
         this.online = online;
+    }
+
+    @JsonProperty("preprovisioningNetworkDataName")
+    public String getPreprovisioningNetworkDataName() {
+        return preprovisioningNetworkDataName;
+    }
+
+    @JsonProperty("preprovisioningNetworkDataName")
+    public void setPreprovisioningNetworkDataName(String preprovisioningNetworkDataName) {
+        this.preprovisioningNetworkDataName = preprovisioningNetworkDataName;
     }
 
     @JsonProperty("raid")

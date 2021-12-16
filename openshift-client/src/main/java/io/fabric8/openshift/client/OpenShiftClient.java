@@ -22,12 +22,16 @@ import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.VersionInfo;
 import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.openshift.api.model.*;
+import io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.APIRequestCount;
+import io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.APIRequestCountList;
 import io.fabric8.openshift.api.model.miscellaneous.cloudcredential.v1.CredentialsRequest;
 import io.fabric8.openshift.api.model.miscellaneous.cloudcredential.v1.CredentialsRequestList;
 import io.fabric8.openshift.api.model.miscellaneous.cncf.cni.v1.NetworkAttachmentDefinition;
 import io.fabric8.openshift.api.model.miscellaneous.cncf.cni.v1.NetworkAttachmentDefinitionList;
 import io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.BareMetalHost;
 import io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.BareMetalHostList;
+import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.EgressRouter;
+import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.EgressRouterList;
 import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.OperatorPKI;
 import io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.OperatorPKIList;
 import io.fabric8.openshift.client.dsl.*;
@@ -197,6 +201,13 @@ public interface OpenShiftClient extends KubernetesClient {
   SchedulingAPIGroupDSL scheduling();
 
   /**
+   * API entrypoint for APIRequestCount (apiserver.openshift.io/v1)
+   *
+   * @return {@link NonNamespaceOperation} for APIRequestCoutn
+   */
+  NonNamespaceOperation<APIRequestCount, APIRequestCountList, Resource<APIRequestCount>> apiRequestCounts();
+
+  /**
    * API entrypoint for BareMetalHost(metal3.io/v1alpha1)
    *
    * @return {@link MixedOperation} for BareMetalHost
@@ -349,6 +360,13 @@ public interface OpenShiftClient extends KubernetesClient {
    * @return {@link MixedOperation} for OperatorPKI
    */
   MixedOperation<OperatorPKI, OperatorPKIList, Resource<OperatorPKI>> operatorPKIs();
+
+  /**
+   * API entrypoint for EgressRouter (network.operator.openshift.io/v1)
+   *
+   * @return {@link MixedOperation} for EgressRouter
+   */
+  MixedOperation<EgressRouter, EgressRouterList, Resource<EgressRouter>> egressRouters();
 
   /**
    * API entrypoint for accessing PodSecurityPolicyReview (security.openshift.io/v1)
