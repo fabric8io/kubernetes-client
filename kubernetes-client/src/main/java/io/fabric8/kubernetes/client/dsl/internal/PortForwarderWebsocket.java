@@ -19,6 +19,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.URI;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
@@ -29,6 +30,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -37,17 +39,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import io.fabric8.kubernetes.client.LocalPortForward;
 import io.fabric8.kubernetes.client.PortForward;
+import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.WebSocket;
-import okhttp3.WebSocketListener;
-import okio.ByteString;
 
 /**
  * A port-forwarder using the websocket protocol.
@@ -57,9 +54,9 @@ public class PortForwarderWebsocket implements PortForwarder {
 
   private static final Logger LOG = LoggerFactory.getLogger(PortForwarderWebsocket.class);
 
-  private final OkHttpClient client;
+  private final HttpClient client;
 
-  public PortForwarderWebsocket(OkHttpClient client) {
+  public PortForwarderWebsocket(HttpClient client) {
     this.client = client;
   }
 
@@ -184,19 +181,13 @@ public class PortForwarderWebsocket implements PortForwarder {
     final Collection<Throwable> serverThrowables = Collections.synchronizedCollection(new ArrayList<>());
     final String logPrefix = "FWD";
 
-    Request request = new Request.Builder()
-      .get()
-      .url(URLUtils.join(resourceBaseUrl.toString(), "portforward?ports=" + port))
-      .build();
-
-    final WebSocket socket = client.newWebSocket(request, new WebSocketListener() {
-
+    WebSocket.Listener listener = new WebSocket.Listener() {
       private int messagesRead = 0;
 
       private final ExecutorService pumperService = Executors.newSingleThreadExecutor();
 
       @Override
-      public void onOpen(final WebSocket webSocket, Response response) {
+      public void onOpen(final WebSocket webSocket) {
         LOG.debug("{}: onOpen", logPrefix);
 
         if (in != null) {
@@ -210,8 +201,7 @@ public class PortForwarderWebsocket implements PortForwarder {
                 read = in.read(buffer);
                 if (read > 0) {
                   buffer.flip();
-                  ByteString data = ByteString.of(buffer);
-                  webSocket.send(data);
+                  webSocket.send(buffer);
                 }
               } while (alive.get() && read >= 0);
 
@@ -230,15 +220,10 @@ public class PortForwarderWebsocket implements PortForwarder {
       public void onMessage(WebSocket webSocket, String text) {
         LOG.debug("{}: onMessage(String)", logPrefix);
         onMessage(webSocket, ByteBuffer.wrap(text.getBytes(StandardCharsets.UTF_8)));
-	  }
-
-      @Override
-      public void onMessage(WebSocket webSocket, ByteString bytes) {
-        LOG.debug("{}: onMessage(ByteString)", logPrefix);
-        onMessage(webSocket, bytes.asByteBuffer());
       }
 
-      private void onMessage(WebSocket webSocket, ByteBuffer buffer) {
+      @Override
+      public void onMessage(WebSocket webSocket, ByteBuffer buffer) {
         messagesRead++;
         if (messagesRead <= 2) {
           // skip the first two messages, containing the ports used internally
@@ -278,23 +263,15 @@ public class PortForwarderWebsocket implements PortForwarder {
       }
 
       @Override
-      public void onClosing(WebSocket webSocket, int code, String reason) {
-        LOG.debug("{}: onClosing. Code={}, Reason={}", logPrefix, code, reason);
+      public void onClose(WebSocket webSocket, int code, String reason) {
+        LOG.debug("{}: onClose. Code={}, Reason={}", logPrefix, code, reason);
         if (alive.get()) {
           closeForwarder();
         }
       }
 
       @Override
-      public void onClosed(WebSocket webSocket, int code, String reason) {
-        LOG.debug("{}: onClosed. Code={}, Reason={}", logPrefix, code, reason);
-        if (alive.get()) {
-          closeForwarder();
-        }
-      }
-
-      @Override
-      public void onFailure(WebSocket webSocket, Throwable t, Response response) {
+      public void onError(WebSocket webSocket, Throwable t) {
         LOG.debug("{}: onFailure", logPrefix);
         if (alive.get()) {
           serverThrowables.add(t);
@@ -307,7 +284,7 @@ public class PortForwarderWebsocket implements PortForwarder {
         LOG.debug("{}: Closing with code {} and reason: {}", logPrefix, code, message);
         alive.set(false);
         try {
-          webSocket.close(code, message);
+          webSocket.sendClose(code, message);
         } catch (Exception e) {
           serverThrowables.add(e);
           LOG.error("Error while closing the websocket", e);
@@ -333,13 +310,25 @@ public class PortForwarderWebsocket implements PortForwarder {
         }
         closeExecutor(pumperService);
       }
-
+    };
+    CompletableFuture<WebSocket> socket = client
+      .newWebSocketBuilder()
+      .uri(URI.create(URLUtils.join(resourceBaseUrl.toString(), "portforward?ports=" + port)))
+      .buildAsync(listener);
+    
+    socket.whenComplete((w, t) -> {
+      if (t != null) {
+        listener.onError(w, t);
+      }
     });
-
+    
     return new PortForward() {
       @Override
       public void close() throws IOException {
-        socket.close(1001, "User closing");
+        socket.cancel(true);
+        socket.whenComplete((w, t) -> { if (w != null) {
+          w.sendClose(1001, "User closing");
+        }});
       }
 
       @Override

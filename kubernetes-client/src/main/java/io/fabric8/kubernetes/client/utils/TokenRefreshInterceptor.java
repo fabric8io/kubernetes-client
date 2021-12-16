@@ -16,26 +16,31 @@
 package io.fabric8.kubernetes.client.utils;
 
 import io.fabric8.kubernetes.client.Config;
-import okhttp3.Interceptor;
-import okhttp3.Request;
-import okhttp3.Response;
+import io.fabric8.kubernetes.client.http.BasicBuilder;
+import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.http.HttpResponse;
+import io.fabric8.kubernetes.client.http.Interceptor;
 
-import java.io.IOException;
 import java.net.HttpURLConnection;
 
 /**
  * Interceptor for handling expired OIDC tokens.
  */
 public class TokenRefreshInterceptor implements Interceptor {
+  
+  public static final String NAME = "TOKEN"; 
+  
   private final Config config;
-  public TokenRefreshInterceptor(Config config) {
+  private HttpClient.Factory factory;
+  
+  public TokenRefreshInterceptor(Config config, HttpClient.Factory factory) {
     this.config = config;
+    this.factory = factory;
   }
-
+  
   @Override
-  public Response intercept(Chain chain) throws IOException {
-    Request request = chain.request();
-    Response response = chain.proceed(request);
+  public boolean afterFailure(BasicBuilder headerBuilder, HttpResponse<?> response) {
+    boolean resubmit = false;
     if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
       String currentContextName = null;
       String newAccessToken = null;
@@ -45,20 +50,20 @@ public class TokenRefreshInterceptor implements Interceptor {
       }
       Config newestConfig = Config.autoConfigure(currentContextName);
       if (newestConfig.getAuthProvider() != null && newestConfig.getAuthProvider().getName().equalsIgnoreCase("oidc")) {
-        newAccessToken = OpenIDConnectionUtils.resolveOIDCTokenFromAuthConfig(newestConfig.getAuthProvider().getConfig());
+        newAccessToken = OpenIDConnectionUtils.resolveOIDCTokenFromAuthConfig(newestConfig.getAuthProvider().getConfig(), factory.newBuilder());
       } else {
         newAccessToken = newestConfig.getOauthToken();
       }
 
       if (newAccessToken != null) {
-        response.close();
         // Delete old Authorization header and append new one
-        Request authReqWithUpdatedToken = chain.request().newBuilder()
-          .header("Authorization", "Bearer " + newAccessToken).build();
+        headerBuilder
+          .setHeader("Authorization", "Bearer " + newAccessToken);
         config.setOauthToken(newAccessToken);
-        response = chain.proceed(authReqWithUpdatedToken);
+        resubmit = true;
       }
     }
-    return response;
+    return resubmit;
   }
+
 }

@@ -24,7 +24,6 @@ import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.mockwebserver.utils.ResponseProvider;
 import io.fabric8.openshift.client.OpenShiftClient;
 import okhttp3.Headers;
-import okhttp3.OkHttpClient;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.Test;
 
@@ -53,8 +52,8 @@ class AdaptTest {
       .build()).once();
 
     OpenShiftClient oclient = client.adapt(OpenShiftClient.class);
-    assertNotNull(client.adapt(OkHttpClient.class));
-    assertNotNull(oclient.adapt(OkHttpClient.class));
+    assertNotNull(client.getHttpClient());
+    assertNotNull(oclient.getHttpClient());
   }
 
   @Test

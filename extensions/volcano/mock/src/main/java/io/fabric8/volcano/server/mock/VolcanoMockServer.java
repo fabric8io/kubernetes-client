@@ -15,22 +15,18 @@
  */
 package io.fabric8.volcano.server.mock;
 
-import io.fabric8.volcano.client.NamespacedVolcanoClient;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.mockwebserver.Context;
 import io.fabric8.mockwebserver.ServerRequest;
 import io.fabric8.mockwebserver.ServerResponse;
 import io.fabric8.volcano.client.DefaultVolcanoClient;
+import io.fabric8.volcano.client.NamespacedVolcanoClient;
 import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockWebServer;
 
 import java.util.Map;
 import java.util.Queue;
-
-import static io.fabric8.kubernetes.client.utils.HttpClientUtils.createHttpClientForMockServer;
-import static okhttp3.TlsVersion.TLS_1_2;
 
 public class VolcanoMockServer extends KubernetesMockServer {
 
@@ -52,12 +48,7 @@ public class VolcanoMockServer extends KubernetesMockServer {
   }
 
   public NamespacedVolcanoClient createVolcano() {
-    Config config = new ConfigBuilder()
-      .withMasterUrl(url("/"))
-      .withNamespace("test")
-      .withTrustCerts(true)
-      .withTlsVersions(TLS_1_2)
-      .build();
-    return new DefaultVolcanoClient(createHttpClientForMockServer(config), config);
+    Config config = getMockConfiguration();
+    return new DefaultVolcanoClient(config);
   }
 }

@@ -15,40 +15,40 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
-import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.http.BasicBuilder;
+import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.http.HttpHeaders;
+import io.fabric8.kubernetes.client.http.Interceptor;
 import io.fabric8.kubernetes.client.internal.SSLUtils;
-import okhttp3.*;
-import okhttp3.logging.HttpLoggingInterceptor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.fabric8.kubernetes.client.okhttp.OkHttpClientFactory;
+import io.fabric8.kubernetes.client.okhttp.OkHttpClientImpl;
+import okhttp3.OkHttpClient;
+import okhttp3.OkHttpClient.Builder;
 
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
+
 import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
-import java.net.Proxy;
 import java.net.URL;
-import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-import static okhttp3.ConnectionSpec.CLEARTEXT;
-
 public class HttpClientUtils {
+  
+  public static final String HEADER_INTERCEPTOR = "HEADER";
+  
   private HttpClientUtils() { }
 
   private static Pattern VALID_IPV4_PATTERN = null;
@@ -63,198 +63,26 @@ public class HttpClientUtils {
     }
   }
   
-  public static void close(OkHttpClient httpClient) {
-    ConnectionPool connectionPool = httpClient.connectionPool();
-    Dispatcher dispatcher = httpClient.dispatcher();
-    ExecutorService executorService = httpClient.dispatcher() != null ? httpClient.dispatcher().executorService() : null;
-
-    if (dispatcher != null) {
-      dispatcher.cancelAll();
-    }
-
-    if (connectionPool != null) {
-      connectionPool.evictAll();
-    }
-
-    if (executorService != null) {
-      executorService.shutdownNow();
-    } 
-  }
-
-  public static OkHttpClient createHttpClient(final Config config) {
-      return createHttpClient(config, (b) -> {});
-  }
-
-  public static OkHttpClient createHttpClientForMockServer(final Config config) {
-      return createHttpClient(config, b -> b.protocols(Collections.singletonList(Protocol.HTTP_1_1)));
-  }
-
-  public static HttpUrl.Builder appendListOptionParams(HttpUrl.Builder urlBuilder, ListOptions listOptions) {
-    if (listOptions == null) {
-      return urlBuilder;
-    }
-    if (listOptions.getLimit() != null) {
-      urlBuilder.addQueryParameter("limit", listOptions.getLimit().toString());
-    }
-    if (listOptions.getContinue() != null) {
-      urlBuilder.addQueryParameter("continue", listOptions.getContinue());
-    }
-
-    if (listOptions.getFieldSelector() != null) {
-      urlBuilder.addQueryParameter("fieldSelector", listOptions.getFieldSelector());
-    }
-
-    if (listOptions.getLabelSelector() != null) {
-      urlBuilder.addQueryParameter("labelSelector", listOptions.getLabelSelector());
-    }
-    
-    if (listOptions.getResourceVersion() != null) {
-      urlBuilder.addQueryParameter("resourceVersion", listOptions.getResourceVersion());
-    }
-
-    if (listOptions.getTimeoutSeconds() != null) {
-      urlBuilder.addQueryParameter("timeoutSeconds", listOptions.getTimeoutSeconds().toString());
-    }
-
-    if (listOptions.getAllowWatchBookmarks() != null) {
-      urlBuilder.addQueryParameter("allowWatchBookmarks", listOptions.getAllowWatchBookmarks().toString());
-    }
-
-    if (listOptions.getWatch() != null) {
-      urlBuilder.addQueryParameter("watch", listOptions.getWatch().toString());
-    }
-    return urlBuilder;
-  }
-
   /**
    * Creates an HTTP client configured to access the Kubernetes API.
    * @param config Kubernetes API client config
    * @param additionalConfig a consumer that allows overriding HTTP client properties
    * @return returns an HTTP client
+   * @deprecated subclass {@link OkHttpClientFactory} and implement the additionalConfig method
    */
-  public static OkHttpClient createHttpClient(final Config config, final Consumer<OkHttpClient.Builder> additionalConfig) {
-        try {
-            OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
-
-            // Follow any redirects
-            httpClientBuilder.followRedirects(true);
-            httpClientBuilder.followSslRedirects(true);
-
-            if (config.isTrustCerts() || config.isDisableHostnameVerification()) {
-                httpClientBuilder.hostnameVerifier((s, sslSession) -> true);
-            }
-
-            TrustManager[] trustManagers = SSLUtils.trustManagers(config);
-            KeyManager[] keyManagers = SSLUtils.keyManagers(config);
-
-            if (keyManagers != null || trustManagers != null || config.isTrustCerts()) {
-                X509TrustManager trustManager = null;
-                if (trustManagers != null && trustManagers.length == 1) {
-                  trustManager = (X509TrustManager) trustManagers[0];
-                }
-
-                try {
-                    SSLContext sslContext = SSLUtils.sslContext(keyManagers, trustManagers);
-                    httpClientBuilder.sslSocketFactory(sslContext.getSocketFactory(), trustManager);
-                } catch (GeneralSecurityException e) {
-                    throw new AssertionError(); // The system has no TLS. Just give up.
-                }
-            } else {
-              SSLContext context = SSLContext.getInstance("TLSv1.2");
-              context.init(keyManagers, trustManagers, null);
-              httpClientBuilder.sslSocketFactory(context.getSocketFactory(), (X509TrustManager) trustManagers[0]);
-            }
-
-            List<Interceptor> interceptors = createApplicableInterceptors(config);
-            interceptors.forEach(httpClientBuilder::addInterceptor);
-            Logger reqLogger = LoggerFactory.getLogger(HttpLoggingInterceptor.class);
-            if (reqLogger.isTraceEnabled()) {
-                HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-                loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-                httpClientBuilder.addNetworkInterceptor(loggingInterceptor);
-            }
-
-            if (config.getConnectionTimeout() > 0) {
-                httpClientBuilder.connectTimeout(config.getConnectionTimeout(), TimeUnit.MILLISECONDS);
-            }
-
-            if (config.getRequestTimeout() > 0) {
-                httpClientBuilder.readTimeout(config.getRequestTimeout(), TimeUnit.MILLISECONDS);
-            }
-
-            if (config.getWebsocketPingInterval() > 0) {
-              httpClientBuilder.pingInterval(config.getWebsocketPingInterval(), TimeUnit.MILLISECONDS);
-            }
-
-            if (config.getMaxConcurrentRequests() > 0 && config.getMaxConcurrentRequestsPerHost() > 0) {
-              Dispatcher dispatcher = new Dispatcher();
-              dispatcher.setMaxRequests(config.getMaxConcurrentRequests());
-              dispatcher.setMaxRequestsPerHost(config.getMaxConcurrentRequestsPerHost());
-              httpClientBuilder.dispatcher(dispatcher);
-            }
-
-            // Only check proxy if it's a full URL with protocol
-            if (config.getMasterUrl().toLowerCase(Locale.ROOT).startsWith(Config.HTTP_PROTOCOL_PREFIX) || config.getMasterUrl().startsWith(Config.HTTPS_PROTOCOL_PREFIX)) {
-                try {
-                    URL proxyUrl = getProxyUrl(config);
-                    if (proxyUrl != null) {
-                        httpClientBuilder.proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyUrl.getHost(), proxyUrl.getPort())));
-
-                        if (config.getProxyUsername() != null) {
-                          httpClientBuilder.proxyAuthenticator((route, response) -> {
-
-                            String credential = Credentials.basic(config.getProxyUsername(), config.getProxyPassword());
-                            return response.request().newBuilder().header("Proxy-Authorization", credential).build();
-                          });
-                        }
-                    } else {
-                        httpClientBuilder.proxy(Proxy.NO_PROXY);
-                    }
-
-                } catch (MalformedURLException e) {
-                    throw new KubernetesClientException("Invalid proxy server configuration", e);
-                }
-            }
-
-            if (config.getUserAgent() != null && !config.getUserAgent().isEmpty()) {
-                httpClientBuilder.addNetworkInterceptor(chain -> {
-                    Request agent = chain.request().newBuilder().header("User-Agent", config.getUserAgent()).build();
-                    return chain.proceed(agent);
-                });
-            }
-
-            if (config.getTlsVersions() != null && config.getTlsVersions().length > 0) {
-              ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
-                .tlsVersions(config.getTlsVersions())
-                .build();
-              httpClientBuilder.connectionSpecs(Arrays.asList(spec, CLEARTEXT));
-            }
-
-            if (shouldDisableHttp2() || config.isHttp2Disable()) {
-                httpClientBuilder.protocols(Collections.singletonList(Protocol.HTTP_1_1));
-            }
-
-            if(additionalConfig != null) {
-                additionalConfig.accept(httpClientBuilder);
-            }
-
-          if (config.getCustomHeaders() != null && !config.getCustomHeaders().isEmpty()) {
-            httpClientBuilder.addNetworkInterceptor(chain -> {
-              Request.Builder agent = chain.request().newBuilder();
-              for (Map.Entry<String, String> entry : config.getCustomHeaders().entrySet()) {
-                agent.addHeader(entry.getKey(),entry.getValue());
-              }
-              return chain.proceed(agent.build());
-            });
-          }
-
-            return httpClientBuilder.build();
-        } catch (Exception e) {
-            throw KubernetesClientException.launderThrowable(e);
+  @Deprecated
+  public static OkHttpClientImpl createHttpClient(final Config config, final Consumer<OkHttpClient.Builder> additionalConfig) {
+    return new OkHttpClientFactory() {
+      @Override
+      protected void additionalConfig(Builder builder) {
+        if (additionalConfig != null) {
+          additionalConfig.accept(builder);
         }
-    }
+      }
+    }.createHttpClient(config);
+  }
 
-    private static URL getProxyUrl(Config config) throws MalformedURLException {
+    public static URL getProxyUrl(Config config) throws MalformedURLException {
         URL master = new URL(config.getMasterUrl());
         String host = master.getHost();
         if (config.getNoProxy() != null) {
@@ -285,41 +113,103 @@ public class HttpClientUtils {
         return ipMatcher.matches();
     }
 
-  /**
-   * OkHttp wrongfully detects >JDK8u251 as {@link okhttp3.internal.platform.Jdk9Platform} which enables Http2
-   * unsupported for JDK8.
-   *
-   * @return true if JDK8 is detected, false otherwise-
-   * @see <a href="https://github.com/fabric8io/kubernetes-client/issues/2212">#2212</a>
-   */
-  private static boolean shouldDisableHttp2() {
-      return System.getProperty("java.version", "").startsWith("1.8");
-  }
-
-  static List<Interceptor> createApplicableInterceptors(Config config) {
-    List<Interceptor> interceptors = new ArrayList<>();
+  public static Map<String, io.fabric8.kubernetes.client.http.Interceptor> createApplicableInterceptors(Config config, HttpClient.Factory factory) {
+    Map<String, io.fabric8.kubernetes.client.http.Interceptor> interceptors = new LinkedHashMap<>();
+    
     // Header Interceptor
-    interceptors.add(chain -> {
-      Request request = chain.request();
-      if (Utils.isNotNullOrEmpty(config.getUsername()) && Utils.isNotNullOrEmpty(config.getPassword())) {
-        Request authReq = chain.request().newBuilder().addHeader("Authorization", Credentials.basic(config.getUsername(), config.getPassword())).build();
-        return chain.proceed(authReq);
-      } else if (Utils.isNotNullOrEmpty(config.getOauthToken())) {
-        Request authReq = chain.request().newBuilder().addHeader("Authorization", "Bearer " + config.getOauthToken()).build();
-        return chain.proceed(authReq);
+    interceptors.put(HEADER_INTERCEPTOR, new Interceptor() {
+      
+      @Override
+      public void before(BasicBuilder builder, HttpHeaders headers) {
+        if (Utils.isNotNullOrEmpty(config.getUsername()) && Utils.isNotNullOrEmpty(config.getPassword())) {
+          builder.header("Authorization", basicCredentials(config.getUsername(), config.getPassword()));
+        } else if (Utils.isNotNullOrEmpty(config.getOauthToken())) {
+          builder.header("Authorization", "Bearer " + config.getOauthToken());
+        }
+        if (config.getCustomHeaders() != null && !config.getCustomHeaders().isEmpty()) {
+          for (Map.Entry<String, String> entry : config.getCustomHeaders().entrySet()) {
+            builder.header(entry.getKey(),entry.getValue());
+          }
+        }
+        if (config.getUserAgent() != null && !config.getUserAgent().isEmpty()) {
+          builder.setHeader("User-Agent", config.getUserAgent());
+        }
       }
-      return chain.proceed(request);
     });
     // Impersonator Interceptor
-    interceptors.add(new ImpersonatorInterceptor(config));
+    interceptors.put(ImpersonatorInterceptor.NAME, new ImpersonatorInterceptor(config));
     // Token Refresh Interceptor
-    interceptors.add(new TokenRefreshInterceptor(config));
+    interceptors.put(TokenRefreshInterceptor.NAME, new TokenRefreshInterceptor(config, factory));
     // Backwards Compatibility Interceptor
     String shouldDisableBackwardsCompatibilityInterceptor = Utils.getSystemPropertyOrEnvVar(KUBERNETES_BACKWARDS_COMPATIBILITY_INTERCEPTOR_DISABLE, "false");
     if (!Boolean.parseBoolean(shouldDisableBackwardsCompatibilityInterceptor)) {
-      interceptors.add(new BackwardsCompatibilityInterceptor());
+      interceptors.put(BackwardsCompatibilityInterceptor.NAME, new BackwardsCompatibilityInterceptor());
     }
 
     return interceptors;
   }
+  
+  public static String basicCredentials(String username, String password) {
+    String usernameAndPassword = username + ":" + password;
+    String encoded = Base64.getEncoder().encodeToString(usernameAndPassword.getBytes(StandardCharsets.ISO_8859_1));
+    return "Basic " + encoded;
+  }
+
+  public static HttpClient createHttpClient(Config config) {
+    // TODO: replace with reflection / service load and factory interface
+    return new OkHttpClientFactory().createHttpClient(config);
+  }
+  
+  public static void applyCommonConfiguration(Config config, HttpClient.Builder builder, HttpClient.Factory factory) {
+    builder.followAllRedirects();
+    
+    if (config.getConnectionTimeout() > 0) {
+      builder.connectTimeout(config.getConnectionTimeout(), TimeUnit.MILLISECONDS);
+    }
+
+    if (config.getRequestTimeout() > 0) {
+      builder.readTimeout(config.getRequestTimeout(), TimeUnit.MILLISECONDS);
+    }
+    
+    if (config.isHttp2Disable()) {
+      builder.preferHttp11();
+    }
+    
+    try {
+      
+      // Only check proxy if it's a full URL with protocol
+      if (config.getMasterUrl().toLowerCase(Locale.ROOT).startsWith(Config.HTTP_PROTOCOL_PREFIX)
+          || config.getMasterUrl().startsWith(Config.HTTPS_PROTOCOL_PREFIX)) {
+        try {
+          URL proxyUrl = HttpClientUtils.getProxyUrl(config);
+          if (proxyUrl != null) {
+            builder.proxyAddress(new InetSocketAddress(proxyUrl.getHost(), proxyUrl.getPort()));
+
+            if (config.getProxyUsername() != null) {
+              builder.proxyAuthorization(basicCredentials(config.getProxyUsername(), config.getProxyPassword()));
+            }
+          } else {
+            builder.proxyAddress(null);
+          }
+        } catch (MalformedURLException e) {
+          throw new KubernetesClientException("Invalid proxy server configuration", e);
+        }
+      }
+      
+      TrustManager[] trustManagers = SSLUtils.trustManagers(config);
+      KeyManager[] keyManagers = SSLUtils.keyManagers(config);
+  
+      SSLContext sslContext = SSLUtils.sslContext(keyManagers, trustManagers);
+      builder.sslContext(sslContext, trustManagers);
+      
+      if (config.getTlsVersions() != null && config.getTlsVersions().length > 0) {
+        builder.tlsVersions(config.getTlsVersions());
+      }
+      
+    } catch (Exception e) {
+      KubernetesClientException.launderThrowable(e);
+    }
+    HttpClientUtils.createApplicableInterceptors(config, factory).forEach(builder::addOrReplaceInterceptor);
+  }
+  
 }

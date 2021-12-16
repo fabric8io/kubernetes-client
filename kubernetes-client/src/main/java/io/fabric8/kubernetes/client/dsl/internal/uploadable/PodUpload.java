@@ -21,13 +21,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -39,10 +40,10 @@ import java.util.zip.GZIPOutputStream;
 
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
+import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import org.apache.commons.codec.binary.Base64InputStream;
 import org.apache.commons.codec.binary.Base64OutputStream;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
@@ -56,7 +57,7 @@ public class PodUpload {
   private PodUpload() {
   }
 
-  public static boolean upload(OkHttpClient client, PodOperationContext context,
+  public static boolean upload(HttpClient client, PodOperationContext context,
     OperationSupport operationSupport, Path pathToUpload)
     throws IOException, InterruptedException {
 
@@ -68,7 +69,7 @@ public class PodUpload {
     throw new IllegalArgumentException("Provided arguments are not valid (file, directory, path)");
   }
 
-  private static boolean uploadFile(OkHttpClient client, PodOperationContext context,
+  private static boolean uploadFile(HttpClient client, PodOperationContext context,
     OperationSupport operationSupport, Path pathToUpload)
     throws IOException, InterruptedException {
 
@@ -93,7 +94,7 @@ public class PodUpload {
     return "'" + value.replaceAll("'", "'\\\\''") + "'";
   }
 
-  private static boolean uploadDirectory(OkHttpClient client, PodOperationContext context,
+  private static boolean uploadDirectory(HttpClient client, PodOperationContext context,
     OperationSupport operationSupport, Path pathToUpload)
     throws IOException, InterruptedException {
 
@@ -164,17 +165,23 @@ public class PodUpload {
     }
   }
 
-  private static PodUploadWebSocketListener initWebSocket(URL url, OkHttpClient client) {
+  private static PodUploadWebSocketListener initWebSocket(URL url, HttpClient client) {
     final PodUploadWebSocketListener podUploadWebSocketListener = new PodUploadWebSocketListener();
-    final Request.Builder request = new Request.Builder().url(url)
-      .header("Sec-WebSocket-Protocol", "v4.channel.k8s.io").get();
-    final OkHttpClient clone = client.newBuilder().readTimeout(0, TimeUnit.MILLISECONDS).build();
-    clone.newWebSocket(request.build(), podUploadWebSocketListener);
+    final HttpClient clone = client.newBuilder().readTimeout(0, TimeUnit.MILLISECONDS).build();
+    CompletableFuture<WebSocket> startedFuture = clone.newWebSocketBuilder()
+      .setHeader("Sec-WebSocket-Protocol", "v4.channel.k8s.io")
+      .uri(URI.create(url.toString()))
+      .buildAsync(podUploadWebSocketListener);
+    startedFuture.whenComplete((w, t) -> {
+      if (t != null) {
+        podUploadWebSocketListener.onError(w, t);
+      }
+    });
     return podUploadWebSocketListener;
   }
 
   private static URL buildCommandUrl(String command, PodOperationContext context, OperationSupport operationSupport)
-    throws UnsupportedEncodingException, MalformedURLException {
+    throws MalformedURLException {
 
     final StringBuilder commandBuilder = new StringBuilder();
     commandBuilder.append("exec?");

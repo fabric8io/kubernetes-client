@@ -15,6 +15,10 @@
  */
 package io.fabric8.kubernetes.client.dsl.base;
 
+import io.fabric8.kubernetes.api.model.ObjectReference;
+import io.fabric8.kubernetes.client.dsl.WritableOperation;
+import io.fabric8.kubernetes.client.utils.CreateOrReplaceHelper;
+
 import io.fabric8.kubernetes.api.builder.TypedVisitor;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
@@ -23,7 +27,6 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
-import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
@@ -44,22 +47,19 @@ import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ReplaceDeletable;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.WritableOperation;
 import io.fabric8.kubernetes.client.dsl.internal.DefaultOperationInfo;
 import io.fabric8.kubernetes.client.dsl.internal.WatchConnectionManager;
 import io.fabric8.kubernetes.client.dsl.internal.WatchHTTPManager;
+import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.informers.ListerWatcher;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 import io.fabric8.kubernetes.client.informers.impl.DefaultSharedIndexInformer;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
-import io.fabric8.kubernetes.client.utils.CreateOrReplaceHelper;
-import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import io.fabric8.kubernetes.client.utils.URLUtils;
+import io.fabric8.kubernetes.client.utils.URLUtils.URLBuilder;
 import io.fabric8.kubernetes.client.utils.Utils;
 import io.fabric8.kubernetes.client.utils.WatcherToggle;
-import okhttp3.HttpUrl;
-import okhttp3.Request;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -73,7 +73,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -89,6 +88,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   Resource<T>,
   ListerWatcher<T, L> {
 
+  private static final String WATCH = "watch";
   private static final String READ_ONLY_UPDATE_EXCEPTION_MESSAGE = "Cannot update read-only resources";
   private static final String READ_ONLY_EDIT_EXCEPTION_MESSAGE = "Cannot edit read-only resources";
 
@@ -127,22 +127,20 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
    */
   private L listRequestHelper(URL url) {
     try {
-      HttpUrl.Builder requestUrlBuilder = HttpUrl.get(url).newBuilder();
-
-      Request.Builder requestBuilder = new Request.Builder().get().url(requestUrlBuilder.build());
+      HttpRequest.Builder requestBuilder = httpClient.newHttpRequestBuilder().url(url);
       L answer = handleResponse(requestBuilder, listType);
       updateApiVersion(answer);
       return answer;
     } catch (InterruptedException ie) {
       Thread.currentThread().interrupt();
       throw KubernetesClientException.launderThrowable(forOperationType("list"), ie);
-    } catch (ExecutionException | IOException e) {
+    } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("list"), e);
     }
   }
 
-  protected URL fetchListUrl(URL url, ListOptions listOptions) throws MalformedURLException {
-    return new URL(HttpClientUtils.appendListOptionParams(HttpUrl.get(url.toString()).newBuilder(), listOptions).toString());
+  protected URL fetchListUrl(URL url, ListOptions listOptions) {
+    return appendListOptionParams(url, listOptions);
   }
 
   @Override
@@ -185,7 +183,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     } catch (InterruptedException ie) {
       Thread.currentThread().interrupt();
       throw KubernetesClientException.launderThrowable(forOperationType("get"), ie);
-    } catch (ExecutionException | IOException e) {
+    } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("get"), e);
     }
   }
@@ -505,7 +503,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     } catch (InterruptedException ie) {
       Thread.currentThread().interrupt();
       throw KubernetesClientException.launderThrowable(forOperationType("statusUpdate"), ie);
-    } catch (ExecutionException | IOException e) {
+    } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("statusUpdate"), e);
     }
 
@@ -561,7 +559,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     WatchConnectionManager<T, L> watch = null;
     try {
       watch = new WatchConnectionManager<>(
-        client,
+        httpClient,
         this,
         options,
         watcherToggle,
@@ -572,7 +570,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       watch.waitUntilReady();
       return watch;
     } catch (MalformedURLException e) {
-      throw KubernetesClientException.launderThrowable(forOperationType("watch"), e);
+      throw KubernetesClientException.launderThrowable(forOperationType(WATCH), e);
     } catch (KubernetesClientException ke) {
       List<Integer> furtherProcessedCodes = Arrays.asList(200, 503);
       if (!furtherProcessedCodes.contains(ke.getCode())) {
@@ -595,7 +593,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       // websockets. Issue: https://github.com/kubernetes/kubernetes/issues/25126
       try {
         return new WatchHTTPManager<>(
-          client,
+          httpClient,
           this,
           options,
           watcher,
@@ -604,7 +602,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
           config.getConnectionTimeout()
         );
       } catch (MalformedURLException e) {
-        throw KubernetesClientException.launderThrowable(forOperationType("watch"), e);
+        throw KubernetesClientException.launderThrowable(forOperationType(WATCH), e);
       }
     }
   }
@@ -634,27 +632,27 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     return Utils.isResourceNamespaced(getType());
   }
 
-  protected T handleResponse(Request.Builder requestBuilder) throws ExecutionException, InterruptedException, IOException {
+  protected T handleResponse(HttpRequest.Builder requestBuilder) throws InterruptedException, IOException {
     return handleResponse(requestBuilder, getType());
   }
 
   @Override
-  protected T handleCreate(T resource) throws ExecutionException, InterruptedException, IOException {
+  protected T handleCreate(T resource) throws InterruptedException, IOException {
     updateApiVersion(resource);
     return handleCreate(resource, getType());
   }
 
-  protected T handleUpdate(T updated, boolean status) throws ExecutionException, InterruptedException, IOException {
+  protected T handleUpdate(T updated, boolean status) throws InterruptedException, IOException {
     updateApiVersion(updated);
     return handleUpdate(updated, getType(), status);
   }
 
-  protected T handlePatch(PatchContext context, T current, T updated, boolean status) throws ExecutionException, InterruptedException, IOException {
+  protected T handlePatch(PatchContext context, T current, T updated, boolean status) throws InterruptedException, IOException {
     updateApiVersion(updated);
     return handlePatch(context, current, updated, getType(), status);
   }
 
-  protected T handlePatch(T current, Map<String, Object> patchedUpdate) throws ExecutionException, InterruptedException, IOException {
+  protected T handlePatch(T current, Map<String, Object> patchedUpdate) throws InterruptedException, IOException {
     updateApiVersion(current);
     return handlePatch(current, patchedUpdate, getType());
   }
@@ -665,7 +663,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     } catch (InterruptedException interruptedException) {
       Thread.currentThread().interrupt();
       throw KubernetesClientException.launderThrowable(interruptedException);
-    } catch (ExecutionException | IOException e) {
+    } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
   }
@@ -676,7 +674,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     } catch (InterruptedException ie) {
       Thread.currentThread().interrupt();
       throw KubernetesClientException.launderThrowable(forOperationType("scale"), ie);
-    } catch (ExecutionException | IOException e) {
+    } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("scale"), e);
     }
 
@@ -688,13 +686,13 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     } catch (InterruptedException ie) {
       Thread.currentThread().interrupt();
       throw KubernetesClientException.launderThrowable(forOperationType("rollback"), ie);
-    } catch (ExecutionException | IOException e) {
+    } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(forOperationType("rollback"), e);
     }
 
   }
 
-  protected T handleGet(URL resourceUrl) throws InterruptedException, ExecutionException, IOException {
+  protected T handleGet(URL resourceUrl) throws InterruptedException, IOException {
     T answer = handleGet(resourceUrl, getType());
     updateApiVersion(answer);
     return answer;
@@ -966,5 +964,44 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     }
     return informer;
   }
+  
+  public static URL appendListOptionParams(URL base, ListOptions listOptions) {
+    if (listOptions == null) {
+      return base;
+    }
+    URLBuilder urlBuilder = new URLBuilder(base);
+    if (listOptions.getLimit() != null) {
+      urlBuilder.addQueryParameter("limit", listOptions.getLimit().toString());
+    }
+    if (listOptions.getContinue() != null) {
+      urlBuilder.addQueryParameter("continue", listOptions.getContinue());
+    }
+
+    if (listOptions.getFieldSelector() != null) {
+      urlBuilder.addQueryParameter("fieldSelector", listOptions.getFieldSelector());
+    }
+
+    if (listOptions.getLabelSelector() != null) {
+      urlBuilder.addQueryParameter("labelSelector", listOptions.getLabelSelector());
+    }
+    
+    if (listOptions.getResourceVersion() != null) {
+      urlBuilder.addQueryParameter("resourceVersion", listOptions.getResourceVersion());
+    }
+
+    if (listOptions.getTimeoutSeconds() != null) {
+      urlBuilder.addQueryParameter("timeoutSeconds", listOptions.getTimeoutSeconds().toString());
+    }
+
+    if (listOptions.getAllowWatchBookmarks() != null) {
+      urlBuilder.addQueryParameter("allowWatchBookmarks", listOptions.getAllowWatchBookmarks().toString());
+    }
+
+    if (listOptions.getWatch() != null) {
+      urlBuilder.addQueryParameter(WATCH, listOptions.getWatch().toString());
+    }
+    return urlBuilder.build();
+  }
+  
 }
 

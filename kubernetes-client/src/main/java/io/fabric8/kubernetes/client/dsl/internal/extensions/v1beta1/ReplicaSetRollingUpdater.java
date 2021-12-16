@@ -20,21 +20,20 @@ import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSet;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSetBuilder;
 import io.fabric8.kubernetes.api.model.extensions.ReplicaSetList;
-import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.dsl.Operation;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.WatchListDeletable;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.RollingUpdater;
-import okhttp3.OkHttpClient;
 
 class ReplicaSetRollingUpdater extends RollingUpdater<ReplicaSet, ReplicaSetList> {
 
-  ReplicaSetRollingUpdater(OkHttpClient client, Config config, String namespace) {
-    super(client, config, namespace);
+  ReplicaSetRollingUpdater(ClientContext clientContext, String namespace) {
+    super(clientContext, namespace);
   }
 
-  ReplicaSetRollingUpdater(OkHttpClient client, Config config, String namespace, long rollingTimeoutMillis, long loggingIntervalMillis) {
-    super(client, config, namespace, rollingTimeoutMillis, loggingIntervalMillis);
+  ReplicaSetRollingUpdater(ClientContext clientContext, String namespace, long rollingTimeoutMillis, long loggingIntervalMillis) {
+    super(clientContext, namespace, rollingTimeoutMillis, loggingIntervalMillis);
   }
 
   @Override
@@ -89,6 +88,6 @@ class ReplicaSetRollingUpdater extends RollingUpdater<ReplicaSet, ReplicaSetList
 
   @Override
   protected Operation<ReplicaSet, ReplicaSetList, RollableScalableResource<ReplicaSet>> resources() {
-    return new ReplicaSetOperationsImpl(client, config);
+    return new ReplicaSetOperationsImpl(clientContext);
   }
 }

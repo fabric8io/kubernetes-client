@@ -15,12 +15,18 @@
  */
 package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.api.model.rbac.*;
+import io.fabric8.kubernetes.api.model.rbac.ClusterRole;
+import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBinding;
+import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBindingList;
+import io.fabric8.kubernetes.api.model.rbac.ClusterRoleList;
+import io.fabric8.kubernetes.api.model.rbac.Role;
+import io.fabric8.kubernetes.api.model.rbac.RoleBinding;
+import io.fabric8.kubernetes.api.model.rbac.RoleBindingList;
+import io.fabric8.kubernetes.api.model.rbac.RoleList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.RbacAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import okhttp3.OkHttpClient;
 
 public class RbacAPIGroupClient extends BaseClient implements RbacAPIGroupDSL {
 
@@ -28,27 +34,27 @@ public class RbacAPIGroupClient extends BaseClient implements RbacAPIGroupDSL {
     super();
   }
 
-  public RbacAPIGroupClient(OkHttpClient httpClient, final Config config) {
-    super(httpClient, config);
+  public RbacAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override
   public MixedOperation<Role, RoleList, Resource<Role>> roles() {
-    return Handlers.getOperation(Role.class, RoleList.class, httpClient, getConfiguration());
+    return Handlers.getOperation(Role.class, RoleList.class, this);
   }
 
   @Override
   public MixedOperation<RoleBinding, RoleBindingList, Resource<RoleBinding>> roleBindings() {
-    return Handlers.getOperation(RoleBinding.class, RoleBindingList.class, httpClient, getConfiguration());
+    return Handlers.getOperation(RoleBinding.class, RoleBindingList.class, this);
   }
 
   @Override
   public NonNamespaceOperation<ClusterRole, ClusterRoleList, Resource<ClusterRole>> clusterRoles() {
-    return Handlers.getOperation(ClusterRole.class, ClusterRoleList.class, httpClient, getConfiguration());
+    return Handlers.getOperation(ClusterRole.class, ClusterRoleList.class, this);
   }
 
   @Override
   public NonNamespaceOperation<ClusterRoleBinding, ClusterRoleBindingList, Resource<ClusterRoleBinding>> clusterRoleBindings() {
-    return Handlers.getOperation(ClusterRoleBinding.class, ClusterRoleBindingList.class, httpClient, getConfiguration());
+    return Handlers.getOperation(ClusterRoleBinding.class, ClusterRoleBindingList.class, this);
   }
 }

@@ -14,20 +14,24 @@
  * limitations under the License.
  */
 
-package io.fabric8.kubernetes.client;
+package io.fabric8.openshift.client;
 
-import okhttp3.OkHttpClient;
-import org.junit.jupiter.api.Test;
+import io.fabric8.kubernetes.client.BaseClient;
+import io.fabric8.kubernetes.client.ClientContext;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+public class BaseOpenShiftClient extends BaseClient implements OpenshiftClientContext {
 
-public class AdaptTest {
+  public BaseOpenShiftClient() {
 
-    @Test
-    public void testAdaptToHttpClient() {
-        KubernetesClient client = new DefaultKubernetesClient();
-        assertTrue(client.isAdaptable(OkHttpClient.class));
-        assertNotNull(client.adapt(OkHttpClient.class));
-    }
+  }
+
+  public BaseOpenShiftClient(ClientContext clientContext) {
+    super(clientContext);
+  }
+
+  @Override
+  public OpenShiftConfig getConfiguration() {
+    return OpenShiftConfig.wrap(super.getConfiguration());
+  }
+
 }

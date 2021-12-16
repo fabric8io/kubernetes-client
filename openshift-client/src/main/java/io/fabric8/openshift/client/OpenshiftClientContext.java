@@ -13,7 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client;
 
-public class MockOkhttpClientUtils {
+package io.fabric8.openshift.client;
+
+import io.fabric8.kubernetes.client.ClientContext;
+
+public interface OpenshiftClientContext extends ClientContext {
+
+  @Override
+  OpenShiftConfig getConfiguration();
+
 }

@@ -29,7 +29,6 @@ import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.StorageAPIGroupDSL;
-import okhttp3.OkHttpClient;
 
 public class StorageAPIGroupClient extends BaseClient implements StorageAPIGroupDSL {
 
@@ -37,32 +36,32 @@ public class StorageAPIGroupClient extends BaseClient implements StorageAPIGroup
     super();
   }
 
-  public StorageAPIGroupClient(OkHttpClient httpClient, final Config config) {
-    super(httpClient, config);
+  public StorageAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override
   public MixedOperation<StorageClass, StorageClassList, Resource<StorageClass>> storageClasses() {
-    return Handlers.getOperation(StorageClass.class, StorageClassList.class, httpClient, getConfiguration());
+    return Handlers.getOperation(StorageClass.class, StorageClassList.class, this);
   }
 
   @Override
   public NonNamespaceOperation<CSIDriver, CSIDriverList, Resource<CSIDriver>> csiDrivers() {
-    return Handlers.getOperation(CSIDriver.class, CSIDriverList.class, httpClient, getConfiguration());
+    return Handlers.getOperation(CSIDriver.class, CSIDriverList.class, this);
   }
 
   @Override
   public NonNamespaceOperation<CSINode, CSINodeList, Resource<CSINode>> csiNodes() {
-    return Handlers.getOperation(CSINode.class, CSINodeList.class, httpClient, getConfiguration());
+    return Handlers.getOperation(CSINode.class, CSINodeList.class, this);
   }
 
   @Override
   public MixedOperation<CSIStorageCapacity, CSIStorageCapacityList, Resource<CSIStorageCapacity>> csiStorageCapacities() {
-    return Handlers.getOperation(CSIStorageCapacity.class, CSIStorageCapacityList.class, httpClient, getConfiguration());
+    return Handlers.getOperation(CSIStorageCapacity.class, CSIStorageCapacityList.class, this);
   }
 
   @Override
   public NonNamespaceOperation<VolumeAttachment, VolumeAttachmentList, Resource<VolumeAttachment>> volumeAttachments() {
-    return Handlers.getOperation(VolumeAttachment.class, VolumeAttachmentList.class, httpClient, getConfiguration());
+    return Handlers.getOperation(VolumeAttachment.class, VolumeAttachmentList.class, this);
   }
 }

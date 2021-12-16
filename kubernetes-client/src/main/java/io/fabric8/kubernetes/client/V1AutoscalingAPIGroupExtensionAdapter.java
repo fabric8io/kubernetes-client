@@ -15,8 +15,6 @@
  */
 package io.fabric8.kubernetes.client;
 
-import okhttp3.OkHttpClient;
-
 public class V1AutoscalingAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<V1AutoscalingAPIGroupClient> {
 
   @Override
@@ -31,7 +29,7 @@ public class V1AutoscalingAPIGroupExtensionAdapter extends APIGroupExtensionAdap
 
   @Override
   protected V1AutoscalingAPIGroupClient newInstance(Client client) {
-    return new V1AutoscalingAPIGroupClient(client.adapt(OkHttpClient.class), client.getConfiguration());
+    return new V1AutoscalingAPIGroupClient(client);
   }
 
 }

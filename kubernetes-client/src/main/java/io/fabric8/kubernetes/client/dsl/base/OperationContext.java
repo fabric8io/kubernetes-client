@@ -17,9 +17,10 @@ package io.fabric8.kubernetes.client.dsl.base;
 
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.SimpleClientContext;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.utils.ApiVersionUtil;
 import io.fabric8.kubernetes.client.utils.Utils;
-import okhttp3.OkHttpClient;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -28,10 +29,8 @@ import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
-public class OperationContext {
+public class OperationContext extends SimpleClientContext {
 
-  protected OkHttpClient client;
-  protected Config config;
   protected Object item;
   protected String resourceVersion;
   protected String plural;
@@ -67,16 +66,16 @@ public class OperationContext {
   }
 
   public OperationContext(OperationContext other) {
-    this(other.client, other.config, other.plural, other.namespace, other.name, other.apiGroupName, other.apiGroupVersion, other.cascading, other.item, other.labels, other.labelsNot, other.labelsIn, other.labelsNotIn, other.fields, other.fieldsNot, other.resourceVersion, other.reloadingFromServer, other.gracePeriodSeconds, other.propagationPolicy, other.namespaceFromGlobalConfig, other.dryRun, other.selectorAsString);
+    this(other.httpClient, other.config, other.plural, other.namespace, other.name, other.apiGroupName, other.apiGroupVersion, other.cascading, other.item, other.labels, other.labelsNot, other.labelsIn, other.labelsNotIn, other.fields, other.fieldsNot, other.resourceVersion, other.reloadingFromServer, other.gracePeriodSeconds, other.propagationPolicy, other.namespaceFromGlobalConfig, other.dryRun, other.selectorAsString);
   }
 
-  public OperationContext(OkHttpClient client, Config config, String plural, String namespace, String name,
+  public OperationContext(HttpClient client, Config config, String plural, String namespace, String name,
                           String apiGroupName, String apiGroupVersion, boolean cascading, Object item, Map<String, String> labels,
                           Map<String, String[]> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn,
                           Map<String, String> fields, Map<String, String[]> fieldsNot, String resourceVersion, boolean reloadingFromServer,
                           long gracePeriodSeconds, DeletionPropagation propagationPolicy, boolean namespaceFromGlobalConfig,
                           boolean dryRun, String selectorAsString) {
-    this.client = client;
+    this.httpClient = client;
     this.config = config;
     this.item = item;
     this.plural = plural;
@@ -136,8 +135,8 @@ public class OperationContext {
     this.namespace = Utils.isNotNullOrEmpty(namespace) ? namespace : (config != null ? config.getNamespace() : null);
   }
 
-  public OkHttpClient getClient() {
-    return client;
+  public HttpClient getClient() {
+    return httpClient;
   }
 
   public Config getConfig() {
@@ -282,12 +281,12 @@ public class OperationContext {
     return new OperationContext(this);
   }
 
-  public OperationContext withOkhttpClient(OkHttpClient client) {
-    if (this.client == client) {
+  public OperationContext withHttpClient(HttpClient client) {
+    if (this.httpClient == client) {
       return this;
     }
     final OperationContext context = new OperationContext(this);
-    context.client = client;
+    context.httpClient = client;
     return context;
   }
 
@@ -510,5 +509,5 @@ public class OperationContext {
       Utils.getNonNullOrElse(context.selectorAsString, selectorAsString)
     );
   }
-
+  
 }

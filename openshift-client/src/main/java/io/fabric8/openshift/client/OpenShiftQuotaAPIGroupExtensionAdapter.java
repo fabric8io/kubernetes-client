@@ -17,7 +17,6 @@ package io.fabric8.openshift.client;
 
 import io.fabric8.kubernetes.client.APIGroupExtensionAdapter;
 import io.fabric8.kubernetes.client.Client;
-import okhttp3.OkHttpClient;
 
 public class OpenShiftQuotaAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<OpenShiftQuotaAPIGroupClient> {
   @Override
@@ -32,7 +31,7 @@ public class OpenShiftQuotaAPIGroupExtensionAdapter extends APIGroupExtensionAda
 
   @Override
   protected OpenShiftQuotaAPIGroupClient newInstance(Client client) {
-    return new OpenShiftQuotaAPIGroupClient(client.adapt(OkHttpClient.class), client.getConfiguration());
+    return new OpenShiftQuotaAPIGroupClient(client);
   }
 
 }

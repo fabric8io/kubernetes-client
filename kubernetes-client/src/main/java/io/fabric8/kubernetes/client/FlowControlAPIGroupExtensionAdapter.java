@@ -15,8 +15,6 @@
  */
 package io.fabric8.kubernetes.client;
 
-import okhttp3.OkHttpClient;
-
 public class FlowControlAPIGroupExtensionAdapter  extends APIGroupExtensionAdapter<FlowControlAPIGroupClient> {
   @Override
   protected String getAPIGroupName() {
@@ -30,6 +28,6 @@ public class FlowControlAPIGroupExtensionAdapter  extends APIGroupExtensionAdapt
 
   @Override
   protected FlowControlAPIGroupClient newInstance(Client client) {
-    return new FlowControlAPIGroupClient(client.adapt(OkHttpClient.class), client.getConfiguration());
+    return new FlowControlAPIGroupClient(client);
   }
 }

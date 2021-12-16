@@ -18,7 +18,6 @@ package io.fabric8.volcano.client;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.ExtensionAdapter;
 import io.fabric8.kubernetes.client.ExtensionAdapterSupport;
-import okhttp3.OkHttpClient;
 
 import java.net.URL;
 import java.util.concurrent.ConcurrentHashMap;
@@ -42,6 +41,6 @@ public class VolcanoExtensionAdapter extends ExtensionAdapterSupport implements 
 
   @Override
   public VolcanoClient adapt(Client client) {
-    return new DefaultVolcanoClient(client.adapt(OkHttpClient.class), client.getConfiguration());
+    return new DefaultVolcanoClient(client);
   }
 }

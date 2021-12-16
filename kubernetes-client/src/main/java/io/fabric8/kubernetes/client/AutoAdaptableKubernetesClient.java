@@ -48,7 +48,6 @@ import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
 import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.client.extended.run.RunOperations;
-import okhttp3.OkHttpClient;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -61,8 +60,8 @@ public class AutoAdaptableKubernetesClient extends DefaultKubernetesClient {
     delegate = adapt(new DefaultKubernetesClient());
   }
 
-  public AutoAdaptableKubernetesClient(OkHttpClient httpClient, Config config) {
-    delegate = adapt(new DefaultKubernetesClient(httpClient, config));
+  public AutoAdaptableKubernetesClient(ClientContext clientContext) {
+    delegate = adapt(new DefaultKubernetesClient(clientContext));
   }
 
   public AutoAdaptableKubernetesClient(Config config) {
@@ -87,7 +86,7 @@ public class AutoAdaptableKubernetesClient extends DefaultKubernetesClient {
   @Override
   public NamespacedKubernetesClient inNamespace(String namespace) {
     Config updated = new ConfigBuilder(getConfiguration()).withNamespace(namespace).build();
-    return new AutoAdaptableKubernetesClient(httpClient, updated);
+    return new AutoAdaptableKubernetesClient(newState(updated));
   }
 
   @Override

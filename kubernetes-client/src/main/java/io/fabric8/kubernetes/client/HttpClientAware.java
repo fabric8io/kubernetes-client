@@ -16,9 +16,9 @@
 
 package io.fabric8.kubernetes.client;
 
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
 public interface HttpClientAware {
 
-    OkHttpClient getHttpClient();
+    HttpClient getHttpClient();
 }

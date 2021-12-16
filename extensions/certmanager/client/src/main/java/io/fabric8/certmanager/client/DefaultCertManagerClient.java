@@ -19,9 +19,13 @@ import io.fabric8.certmanager.client.dsl.V1APIGroupDSL;
 import io.fabric8.certmanager.client.dsl.V1alpha2APIGroupDSL;
 import io.fabric8.certmanager.client.dsl.V1alpha3APIGroupDSL;
 import io.fabric8.certmanager.client.dsl.V1beta1APIGroupDSL;
-import io.fabric8.kubernetes.client.*;
+import io.fabric8.kubernetes.client.BaseClient;
+import io.fabric8.kubernetes.client.ClientContext;
+import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ConfigBuilder;
+import io.fabric8.kubernetes.client.RequestConfig;
+import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
-import okhttp3.OkHttpClient;
 
 public class DefaultCertManagerClient extends BaseClient implements NamespacedCertManagerClient {
 
@@ -33,8 +37,8 @@ public class DefaultCertManagerClient extends BaseClient implements NamespacedCe
     super(configuration);
   }
 
-  public DefaultCertManagerClient(OkHttpClient httpClient, Config configuration) {
-    super(httpClient, configuration);
+  public DefaultCertManagerClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override
@@ -48,7 +52,7 @@ public class DefaultCertManagerClient extends BaseClient implements NamespacedCe
       .withNamespace(namespace)
       .build();
 
-    return new DefaultCertManagerClient(getHttpClient(), updated);
+    return new DefaultCertManagerClient(newState(updated));
   }
 
   @Override

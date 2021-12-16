@@ -15,9 +15,7 @@
  */
 package io.fabric8.openshift.client;
 
-import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.Handlers;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.openshift.api.model.console.v1.ConsoleCLIDownload;
@@ -35,49 +33,49 @@ import io.fabric8.openshift.api.model.console.v1.ConsoleYAMLSampleList;
 import io.fabric8.openshift.api.model.console.v1alpha1.ConsolePlugin;
 import io.fabric8.openshift.api.model.console.v1alpha1.ConsolePluginList;
 import io.fabric8.openshift.client.dsl.OpenShiftConsoleAPIGroupDSL;
-import okhttp3.OkHttpClient;
 
-public class OpenShiftConsoleAPIGroupClient extends BaseClient implements OpenShiftConsoleAPIGroupDSL {
+public class OpenShiftConsoleAPIGroupClient extends BaseOpenShiftClient implements OpenShiftConsoleAPIGroupDSL {
   public OpenShiftConsoleAPIGroupClient() {
     super();
   }
 
-  public OpenShiftConsoleAPIGroupClient(OkHttpClient httpClient, final Config config) {
-    super(httpClient, config);
+  public OpenShiftConsoleAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override
   public NonNamespaceOperation<ConsoleCLIDownload, ConsoleCLIDownloadList, Resource<ConsoleCLIDownload>> consoleCLIDownloads() {
-    return OpenShiftHandlers.getOperation(ConsoleCLIDownload.class, ConsoleCLIDownloadList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(ConsoleCLIDownload.class, ConsoleCLIDownloadList.class, this);
   }
 
   @Override
   public NonNamespaceOperation<ConsoleExternalLogLink, ConsoleExternalLogLinkList, Resource<ConsoleExternalLogLink>> consoleExternalLogLinks() {
-    return OpenShiftHandlers.getOperation(ConsoleExternalLogLink.class, ConsoleExternalLogLinkList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(ConsoleExternalLogLink.class, ConsoleExternalLogLinkList.class, this);
   }
 
   @Override
   public NonNamespaceOperation<ConsoleLink, ConsoleLinkList, Resource<ConsoleLink>> consoleLinks() {
-    return OpenShiftHandlers.getOperation(ConsoleLink.class, ConsoleLinkList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(ConsoleLink.class, ConsoleLinkList.class, this);
   }
 
   @Override
   public NonNamespaceOperation<ConsoleNotification, ConsoleNotificationList, Resource<ConsoleNotification>> consoleNotifications() {
-    return OpenShiftHandlers.getOperation(ConsoleNotification.class, ConsoleNotificationList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(ConsoleNotification.class, ConsoleNotificationList.class, this);
   }
 
   @Override
   public NonNamespaceOperation<ConsoleYAMLSample, ConsoleYAMLSampleList, Resource<ConsoleYAMLSample>> consoleYAMLSamples() {
-    return OpenShiftHandlers.getOperation(ConsoleYAMLSample.class, ConsoleYAMLSampleList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(ConsoleYAMLSample.class, ConsoleYAMLSampleList.class, this);
   }
 
   @Override
   public NonNamespaceOperation<ConsoleQuickStart, ConsoleQuickStartList, Resource<ConsoleQuickStart>> consoleQuickStarts() {
-    return OpenShiftHandlers.getOperation(ConsoleQuickStart.class, ConsoleQuickStartList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(ConsoleQuickStart.class, ConsoleQuickStartList.class, this);
   }
 
   @Override
   public NonNamespaceOperation<ConsolePlugin, ConsolePluginList, Resource<ConsolePlugin>> consolePlugins() {
-    return OpenShiftHandlers.getOperation(ConsolePlugin.class, ConsolePluginList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(ConsolePlugin.class, ConsolePluginList.class, this);
   }
+
 }

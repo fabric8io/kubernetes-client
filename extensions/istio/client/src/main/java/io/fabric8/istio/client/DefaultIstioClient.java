@@ -16,12 +16,12 @@
 package io.fabric8.istio.client;
 
 import io.fabric8.kubernetes.client.BaseClient;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.WithRequestCallable;
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
-import okhttp3.OkHttpClient;
 
 public class DefaultIstioClient extends BaseClient implements NamespacedIstioClient {
 
@@ -33,8 +33,8 @@ public class DefaultIstioClient extends BaseClient implements NamespacedIstioCli
     super(configuration);
   }
 
-  public DefaultIstioClient(OkHttpClient httpClient, Config configuration) {
-    super(httpClient, configuration);
+  public DefaultIstioClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override
@@ -48,7 +48,7 @@ public class DefaultIstioClient extends BaseClient implements NamespacedIstioCli
       .withNamespace(namespace)
       .build();
 
-    return new DefaultIstioClient(getHttpClient(), updated);
+    return new DefaultIstioClient(newState(updated));
   }
 
   @Override

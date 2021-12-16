@@ -18,36 +18,34 @@ package io.fabric8.kubernetes.client.dsl.internal;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.Status;
-import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
+import io.fabric8.kubernetes.client.dsl.ExecListener.Response;
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
+import io.fabric8.kubernetes.client.http.HttpResponse;
+import io.fabric8.kubernetes.client.http.WebSocket;
+import io.fabric8.kubernetes.client.http.WebSocketHandshakeException;
 import io.fabric8.kubernetes.client.utils.InputStreamPumper;
-import io.fabric8.kubernetes.client.utils.Utils;
-import okhttp3.Response;
-import okhttp3.WebSocket;
-import okhttp3.WebSocketListener;
-import okio.ByteString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static io.fabric8.kubernetes.client.utils.Utils.closeQuietly;
 
 /**
- * A {@link WebSocketListener} for exec operations.
+ * A {@link WebSocket.Listener} for exec operations.
  *
  * This listener, is only responsible for the resources it creates. Externally passed resource, will not get closed,
  * by this listener.
@@ -58,13 +56,30 @@ import static io.fabric8.kubernetes.client.utils.Utils.closeQuietly;
  * Failures that propagate after a close() operation will not be propagated.
  *
  */
-public class ExecWebSocketListener extends WebSocketListener implements ExecWatch, AutoCloseable {
+public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocket.Listener {
+
+    private final class SimpleResponse implements Response {
+    private final HttpResponse<?> response;
+
+    private SimpleResponse(HttpResponse<?> response) {
+      this.response = response;
+    }
+
+    @Override
+    public int code() {
+      return response.code();
+    }
+
+    @Override
+    public String body() throws IOException {
+      return response.bodyString();
+    }
+  }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExecWebSocketListener.class);
     private static final String HEIGHT = "Height";
     private static final String WIDTH = "Width";
 
-    private final Config config;
     private final InputStream in;
     private final OutputStream out;
     private final OutputStream err;
@@ -78,7 +93,6 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
     private final AtomicReference<WebSocket> webSocketRef = new AtomicReference<>();
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-    private final CompletableFuture<Void> startedFuture = new CompletableFuture<>();
     private final ExecListener listener;
 
     private final AtomicBoolean explicitlyClosed = new AtomicBoolean(false);
@@ -91,8 +105,7 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
 
     private ObjectMapper objectMapper;
 
-    public ExecWebSocketListener(Config config, InputStream in, OutputStream out, OutputStream err, OutputStream errChannel, PipedOutputStream inputPipe, PipedInputStream outputPipe, PipedInputStream errorPipe, PipedInputStream errorChannelPipe, ExecListener listener, Integer bufferSize) {
-        this.config = config;
+    public ExecWebSocketListener(InputStream in, OutputStream out, OutputStream err, OutputStream errChannel, PipedOutputStream inputPipe, PipedInputStream outputPipe, PipedInputStream errorPipe, PipedInputStream errorChannelPipe, ExecListener listener, Integer bufferSize) {
         this.listener = listener;
         this.in = inputStreamOrPipe(in, inputPipe, toClose, bufferSize);
         this.out = outputStreamOrPipe(out, outputPipe, toClose);
@@ -113,14 +126,10 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
     }
 
     public void close(int code, String reason) {
-      close(webSocketRef.get(), code, reason);
+      explicitlyClosed.set(true);
+      closeWebSocketOnce(code, reason);
+      onClosed(code, reason);
     }
-
-  private void close(WebSocket ws, int code, String reason) {
-    explicitlyClosed.set(true);
-    closeWebSocketOnce(code, reason);
-    onClosed(ws, code, reason);
-  }
 
   /**
    * Performs the cleanup tasks:
@@ -147,19 +156,15 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
       try {
         WebSocket ws = webSocketRef.get();
         if (ws != null) {
-          ws.close(code, reason);
+          ws.sendClose(code, reason);
         }
       } catch (Throwable t) {
         LOGGER.debug("Error closing WebSocket.", t);
       }
     }
 
-    public void waitUntilReady() {
-      Utils.waitUntilReadyOrFail(startedFuture, config.getWebsocketTimeout(), TimeUnit.MILLISECONDS);
-    }
-
     @Override
-    public void onOpen(WebSocket webSocket, Response response) {
+    public void onOpen(WebSocket webSocket) {
         try {
             if (in instanceof PipedInputStream && input != null) {
                 input.connect((PipedInputStream) in);
@@ -179,62 +184,69 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
               // the task will be cancelled via shutdownNow
               InputStreamPumper.pump(InputStreamPumper.asInterruptible(in), this::send, executorService);
             }
-            startedFuture.complete(null);
         } catch (IOException e) {
-          startedFuture.completeExceptionally(new KubernetesClientException(OperationSupport.createStatus(response)));
+          onError(webSocket, e);
         } finally {
             if (listener != null) {
-                listener.onOpen(response);
+                listener.onOpen();
             }
         }
     }
 
   @Override
-  public void onFailure(WebSocket webSocket, Throwable t, Response response) {
+  public void onError(WebSocket webSocket, Throwable t) {
 
       //If we already called onClosed() or onFailed() before, we need to abort.
       if (explicitlyClosed.get() || closed.get() || !failed.compareAndSet(false, true) ) {
         //We are not going to notify the listener, sicne we've already called onClose(), so let's log a debug/warning.
-        if (LOGGER.isDebugEnabled()) {
+        if (LOGGER.isWarnEnabled()) {
           LOGGER.warn("Received [{}], with message:[{}] after ExecWebSocketListener is closed, Ignoring.",t.getClass().getCanonicalName(),t.getMessage());
         }
         return;
       }
 
+      HttpResponse<?> response = null;
       try {
+        if (t instanceof WebSocketHandshakeException) {
+          response = ((WebSocketHandshakeException)t).getResponse();
+        }
         Status status = OperationSupport.createStatus(response);
-        LOGGER.error("Exec Failure: HTTP:" + status.getCode() + ". Message:" + status.getMessage(), t);
-        startedFuture.completeExceptionally(new KubernetesClientException(status));
-
+        status.setMessage(t.getMessage());
+        LOGGER.error("Exec Failure", t);
         cleanUpOnce();
       } finally {
         if (listener != null) {
-          listener.onFailure(t, response);
+          ExecListener.Response execResponse = null;
+          if (response != null) {
+            execResponse = new SimpleResponse(response);
+          }
+          listener.onFailure(t, execResponse);
         }
       }
     }
 
-    @Override
-    public void onMessage(WebSocket webSocket, ByteString bytes) {
+  @Override
+  public void onMessage(WebSocket webSocket, ByteBuffer bytes) {
         try {
-            byte streamID = bytes.getByte(0);
-            ByteString byteString = bytes.substring(1);
-            if (byteString.size() > 0) {
+            byte streamID = bytes.get(0);
+            bytes.position(1);
+            ByteBuffer byteString = bytes.slice();
+            if (byteString.remaining() > 0) {
                 switch (streamID) {
                     case 1:
                         if (out != null) {
-                            out.write(byteString.toByteArray());
-                            out.flush();
+                          Channels.newChannel(out).write(byteString);
+                          out.flush();
                         }
                         break;
                     case 2:
                         if (err != null) {
-                            err.write(byteString.toByteArray());
+                          Channels.newChannel(err).write(byteString);
                         }
                         break;
                     case 3:
                         if (errChannel != null) {
-                            errChannel.write(byteString.toByteArray());
+                          Channels.newChannel(errChannel).write(byteString);
                         }
                         break;
                     default:
@@ -247,12 +259,11 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
     }
 
   @Override
-  public void onClosing(WebSocket webSocket, int code, String reason) {
-    ExecWebSocketListener.this.close(webSocket, code, reason);
+  public void onClose(WebSocket webSocket, int code, String reason) {
+    ExecWebSocketListener.this.close(code, reason);
   }
 
-  @Override
-    public void onClosed(WebSocket webSocket, int code, String reason) {
+    private void onClosed(int code, String reason) {
        //If we already called onClosed() or onFailed() before, we need to abort.
        if (!closed.compareAndSet(false, true) || failed.get()) {
          return;
@@ -312,7 +323,7 @@ public class ExecWebSocketListener extends WebSocketListener implements ExecWatc
                 byte[] toSend = new byte[length + 1];
                 toSend[0] = flag;
                 System.arraycopy(bytes, offset, toSend, 1, length);
-                ws.send(ByteString.of(toSend));
+                ws.send(ByteBuffer.wrap(toSend));
             }
         }
     }

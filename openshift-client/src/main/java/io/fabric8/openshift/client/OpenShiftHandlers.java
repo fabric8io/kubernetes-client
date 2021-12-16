@@ -24,9 +24,9 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.internal.CreateOnlyResourceOperationsImpl;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 
-import java.util.function.BiFunction;
+import java.util.function.Function;
 
 public final class OpenShiftHandlers {
 
@@ -35,18 +35,29 @@ public final class OpenShiftHandlers {
   }
 
   public static <T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>> void register(
-      Class<T> type, BiFunction<OkHttpClient, OpenShiftConfig, HasMetadataOperation<T, L, R>> operationConstructor) {
-    Handlers.register(type, (o, c) -> operationConstructor.apply(o, OpenShiftConfig.wrap(c)));
+      Class<T> type, Function<OpenshiftClientContext, HasMetadataOperation<T, L, R>> operationConstructor) {
+    Handlers.register(type, c -> operationConstructor.apply(new OpenshiftClientContext() {
+
+      @Override
+      public HttpClient getHttpClient() {
+        return c.getHttpClient();
+      }
+
+      @Override
+      public OpenShiftConfig getConfiguration() {
+        return OpenShiftConfig.wrap(c.getConfiguration());
+      }
+    }));
   }
 
   public static <T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>> HasMetadataOperation<T, L, R> getOperation(
-      Class<T> type, Class<L> listType, OkHttpClient client, OpenShiftConfig config) {
-    return Handlers.getOperation(type, listType, client, config);
+      Class<T> type, Class<L> listType, OpenshiftClientContext clientContext) {
+    return Handlers.getOperation(type, listType, clientContext);
   }
 
   public static <I extends KubernetesResource, O extends KubernetesResource> CreateOnlyResourceOperationsImpl<I, O> getCreateOnlyResourceOperation(
-      Class<I> inputType, Class<O> outputType, OkHttpClient client, OpenShiftConfig config) {
-    return new CreateOnlyResourceOperationsImpl<>(client, config, ResourceDefinitionContext.fromResourceType(inputType), inputType, outputType);
+      Class<I> inputType, Class<O> outputType, OpenshiftClientContext clientContext) {
+    return new CreateOnlyResourceOperationsImpl<>(clientContext, ResourceDefinitionContext.fromResourceType(inputType), inputType, outputType);
   }
 
 }

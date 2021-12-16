@@ -18,11 +18,10 @@ package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.api.model.ExecConfig;
 import io.fabric8.kubernetes.api.model.ExecConfigBuilder;
+import io.fabric8.kubernetes.client.http.TlsVersion;
 import io.fabric8.kubernetes.client.lib.FileSystem;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
-import okhttp3.OkHttpClient;
-import okhttp3.TlsVersion;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,13 +41,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static okhttp3.TlsVersion.TLS_1_1;
-import static okhttp3.TlsVersion.TLS_1_2;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -179,7 +176,7 @@ public class ConfigTest {
       .withUploadConnectionTimeout(60000)
       .withUploadRequestTimeout(600000)
       .withHttpProxy("httpProxy")
-      .withTlsVersions(TLS_1_2, TLS_1_1)
+      .withTlsVersions(TlsVersion.TLS_1_2, TlsVersion.TLS_1_1)
       .withTrustStoreFile("/path/to/truststore")
       .withTrustStorePassphrase("truststorePassphrase")
       .withKeyStoreFile("/path/to/keystore")
@@ -463,32 +460,6 @@ public class ConfigTest {
   }
 
   @Test
-  void shouldRespectMaxRequests() {
-    Config config = new ConfigBuilder()
-      .withMaxConcurrentRequests(120)
-      .build();
-
-    KubernetesClient client = new DefaultKubernetesClient();
-    assertEquals(64, client.adapt(OkHttpClient.class).dispatcher().getMaxRequests());
-
-    client = new DefaultKubernetesClient(config);
-    assertEquals(120, client.adapt(OkHttpClient.class).dispatcher().getMaxRequests());
-  }
-  
-  @Test
-  void shouldRespectMaxRequestsPerHost() {
-    Config config = new ConfigBuilder()
-      .withMaxConcurrentRequestsPerHost(20)
-      .build();
-
-    KubernetesClient client = new DefaultKubernetesClient();
-    assertEquals(5, client.adapt(OkHttpClient.class).dispatcher().getMaxRequestsPerHost());
-
-    client = new DefaultKubernetesClient(config);
-    assertEquals(20, client.adapt(OkHttpClient.class).dispatcher().getMaxRequestsPerHost());
-  }
-
-  @Test
   void shouldPropagateImpersonateSettings() {
 
     final Map<String, List<String>> extras = new HashMap<>();
@@ -615,7 +586,7 @@ public class ConfigTest {
     assertEquals(60000, config.getRequestConfig().getUploadConnectionTimeout());
     assertEquals(600000, config.getRequestConfig().getUploadRequestTimeout());
 
-    assertArrayEquals(new TlsVersion[]{TLS_1_2, TLS_1_1}, config.getTlsVersions());
+    assertArrayEquals(new TlsVersion[]{TlsVersion.TLS_1_2, TlsVersion.TLS_1_1}, config.getTlsVersions());
 
     assertEquals("/path/to/truststore", config.getTrustStoreFile());
     assertEquals("truststorePassphrase", config.getTrustStorePassphrase());

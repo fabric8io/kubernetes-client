@@ -18,11 +18,11 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
+import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.http.HttpRequest;
+import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.utils.InputStreamPumper;
 import io.fabric8.kubernetes.client.utils.Utils;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,6 +32,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
+import java.net.URL;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -39,10 +40,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.BiConsumer;
 
 import static io.fabric8.kubernetes.client.utils.Utils.closeQuietly;
 
-public class LogWatchCallback implements LogWatch, Callback, AutoCloseable {
+public class LogWatchCallback implements LogWatch, AutoCloseable, BiConsumer<HttpResponse<InputStream>, Throwable> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LogWatchCallback.class);
 
@@ -51,14 +53,8 @@ public class LogWatchCallback implements LogWatch, Callback, AutoCloseable {
     private final PipedInputStream output;
     private final Set<Closeable> toClose = new LinkedHashSet<>();
 
-    private final CompletableFuture<Void> startedFuture = new CompletableFuture<>();
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final AtomicBoolean closed = new AtomicBoolean(false);
-
-    @Deprecated
-    public LogWatchCallback(OutputStream out) {
-        this(new Config(), out);
-    }
 
   public LogWatchCallback(Config config, OutputStream out) {
     this.config = config;
@@ -106,42 +102,54 @@ public class LogWatchCallback implements LogWatch, Callback, AutoCloseable {
       closeQuietly(toClose);
     }
 
-    public void waitUntilReady() {
-      if (!Utils.waitUntilReady(startedFuture, config.getRequestTimeout(), TimeUnit.MILLISECONDS)) {
-        if (LOGGER.isDebugEnabled()) {
+    public LogWatchCallback callAndWait(HttpClient client, URL url) {
+      HttpRequest request = client.newHttpRequestBuilder().url(url).build();
+      HttpClient clone = client.newBuilder().readTimeout(0, TimeUnit.MILLISECONDS).build();
+      CompletableFuture<HttpResponse<InputStream>> future = clone.sendAsync(request, InputStream.class).whenComplete(this);
+
+      if (!Utils.waitUntilReady(future, config.getRequestTimeout(), TimeUnit.MILLISECONDS)) {
+        if (LOGGER.isWarnEnabled()) {
           LOGGER.warn("Log watch request has not been opened within: {} millis.",config.getRequestTimeout());
         }
       }
+      return this;
     }
 
     @Override
     public InputStream getOutput() {
         return output;
     }
-
+    
     @Override
-    public void onFailure(Call call, IOException ioe) {
+    public void accept(HttpResponse<InputStream> t, Throwable u) {
+      if (u != null) {
+        onFailure(u);
+      }
+      if (t != null) {
+        onResponse(t);
+      }
+    }
+
+    public void onFailure(Throwable u) {
         //If we have closed the watch ignore everything
         if (closed.get())  {
             return;
         }
 
-        LOGGER.error("Log Callback Failure.", ioe);
+        LOGGER.error("Log Callback Failure.", u);
         cleanUp();
-        startedFuture.completeExceptionally(ioe);
     }
 
-    @Override
-    public void onResponse(Call call, final Response response) throws IOException {
+    public void onResponse(final HttpResponse<InputStream> response) {
+      InputStream body = response.body();
       if (!executorService.isShutdown()) {
         // the task will be cancelled via shutdownNow
-        InputStreamPumper.pump(response.body().byteStream(), out::write, executorService).whenComplete((o, t) -> {
+        InputStreamPumper.pump(body, out::write, executorService).whenComplete((o, t) -> {
           cleanUp();
-          response.close();
+          Utils.closeQuietly(body);
         });
-        startedFuture.complete(null);
       } else {
-        response.close();
+        Utils.closeQuietly(body);
       }
     }
 }

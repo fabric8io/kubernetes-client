@@ -19,19 +19,19 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import io.fabric8.kubernetes.api.model.Binding;
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 
 public class BindingOperationsImpl extends HasMetadataOperation<Binding, KubernetesResourceList<Binding>, Resource<Binding>> {
-  public BindingOperationsImpl(OkHttpClient client, Config config) {
-    this(client, config, null);
+  public BindingOperationsImpl(ClientContext clientContext) {
+    this(clientContext, null);
   }
 
-  public BindingOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
+  public BindingOperationsImpl(ClientContext clientContext, String namespace) {
+    this(HasMetadataOperationsImpl.defaultContext(clientContext).withNamespace(namespace));
   }
 
   public BindingOperationsImpl(OperationContext context) {
@@ -40,6 +40,7 @@ public class BindingOperationsImpl extends HasMetadataOperation<Binding, Kuberne
       .withPlural("bindings"), Binding.class, (Class<KubernetesResourceList<Binding>>) TypeFactory.rawClass(new TypeReference<KubernetesResourceList<Binding>>(){}.getType()));
   }
 
+  @Override
   public BindingOperationsImpl newInstance(OperationContext context) {
     return new BindingOperationsImpl(context);
   }

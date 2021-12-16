@@ -20,6 +20,13 @@
 * Fix #3593: Add support for Istio extension
 
 #### _**Note**_: Breaking changes in the API
+* Refactoring #3547: due to an abstraction layer added over okHttp, the following api changes were made:
+    * OperationContext withOkHttpClient was removed, it should be needed to be directly called
+    * PatchType.getMediaType was replaced with PatchType.getContentType
+    * ExecListener no longer passes the okhttp3.Response to onOpen.  onFailure will pass a simplified ExecListener.Response when possible.
+    * okhttp3.TlsVersions has been replaced by io.fabric8.kubernetes.client.http.TlsVersion
+    * HttpClientUtils.createHttpClient(config, additionalConfig) has been deprecated and now returns an OkHttpClientImpl
+    * The client is no longer adaptable to an OkHttpClient, use Client.getHttpClient instead
 
 ### 5.10.1 (2021-11-12)
 

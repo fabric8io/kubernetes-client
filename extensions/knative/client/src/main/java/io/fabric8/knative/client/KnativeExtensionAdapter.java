@@ -15,10 +15,9 @@
  */
 package io.fabric8.knative.client;
 
-import io.fabric8.kubernetes.client.ExtensionAdapterSupport;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.ExtensionAdapter;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.ExtensionAdapterSupport;
 
 import java.net.URL;
 import java.util.concurrent.ConcurrentHashMap;
@@ -28,7 +27,7 @@ public class KnativeExtensionAdapter extends ExtensionAdapterSupport implements 
 
     static final ConcurrentMap<URL, Boolean> IS_TEKTON = new ConcurrentHashMap<>();
     static final ConcurrentMap<URL, Boolean> USES_TEKTON_APIGROUPS = new ConcurrentHashMap<>();
-    
+
 	@Override
 	public Class<KnativeClient> getExtensionType() {
 		return KnativeClient.class;
@@ -41,6 +40,6 @@ public class KnativeExtensionAdapter extends ExtensionAdapterSupport implements 
 
 	@Override
 	public KnativeClient adapt(Client client) {
-            return new DefaultKnativeClient(client.adapt(OkHttpClient.class), client.getConfiguration());
+            return new DefaultKnativeClient(client);
 	}
 }

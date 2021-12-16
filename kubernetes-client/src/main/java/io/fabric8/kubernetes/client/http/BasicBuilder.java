@@ -14,10 +14,28 @@
  * limitations under the License.
  */
 
-package io.fabric8.kubernetes.client;
+package io.fabric8.kubernetes.client.http;
 
-@Deprecated
-public interface ClientAware<C extends Client> {
+import java.net.URI;
 
-  C getClient();
+public interface BasicBuilder {
+  
+  BasicBuilder uri(URI uri);
+  
+  /**
+   * Add the key value pair.  Will append to an existing key.
+   * @param k key
+   * @param v value
+   * @return the builder
+   */
+  BasicBuilder header(String k, String v);
+  
+  /**
+   * Set the key value pair.  Will overwrite an existing key.
+   * @param k key
+   * @param v value
+   * @return the builder
+   */
+  BasicBuilder setHeader(String k, String v);
+  
 }

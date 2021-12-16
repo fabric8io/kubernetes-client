@@ -34,11 +34,11 @@ import io.fabric8.istio.api.security.v1beta1.PeerAuthenticationList;
 import io.fabric8.istio.api.security.v1beta1.RequestAuthentication;
 import io.fabric8.istio.api.security.v1beta1.RequestAuthenticationList;
 import io.fabric8.kubernetes.client.BaseClient;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import okhttp3.OkHttpClient;
 
 public class V1beta1APIGroupClient extends BaseClient implements V1beta1APIGroupDSL {
 
@@ -50,59 +50,55 @@ public class V1beta1APIGroupClient extends BaseClient implements V1beta1APIGroup
     super(configuration);
   }
 
-  public V1beta1APIGroupClient(OkHttpClient httpClient, Config configuration) {
-    super(httpClient, configuration);
+  public V1beta1APIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   // networking
 
   @Override
   public MixedOperation<DestinationRule, DestinationRuleList, Resource<DestinationRule>> destinationRules() {
-    return Handlers.getOperation(DestinationRule.class, DestinationRuleList.class, this.getHttpClient(),
-      this.getConfiguration());
+    return Handlers.getOperation(DestinationRule.class, DestinationRuleList.class, this);
   }
 
   @Override
   public MixedOperation<Gateway, GatewayList, Resource<Gateway>> gateways() {
-    return Handlers.getOperation(Gateway.class, GatewayList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(Gateway.class, GatewayList.class, this);
   }
 
   @Override
   public MixedOperation<ServiceEntry, ServiceEntryList, Resource<ServiceEntry>> serviceEntries() {
-    return Handlers.getOperation(ServiceEntry.class, ServiceEntryList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(ServiceEntry.class, ServiceEntryList.class, this);
   }
 
   @Override
   public MixedOperation<Sidecar, SidecarList, Resource<Sidecar>> sidecars() {
-    return Handlers.getOperation(Sidecar.class, SidecarList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(Sidecar.class, SidecarList.class, this);
   }
 
   @Override
   public MixedOperation<VirtualService, VirtualServiceList, Resource<VirtualService>> virtualServices() {
-    return Handlers.getOperation(VirtualService.class, VirtualServiceList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(VirtualService.class, VirtualServiceList.class, this);
   }
 
   @Override
   public MixedOperation<WorkloadEntry, WorkloadEntryList, Resource<WorkloadEntry>> workloadEntries() {
-    return Handlers.getOperation(WorkloadEntry.class, WorkloadEntryList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(WorkloadEntry.class, WorkloadEntryList.class, this);
   }
 
   // security
   @Override
   public MixedOperation<PeerAuthentication, PeerAuthenticationList, Resource<PeerAuthentication>> peerAuthentications() {
-    return Handlers.getOperation(PeerAuthentication.class, PeerAuthenticationList.class, this.getHttpClient(),
-      this.getConfiguration());
+    return Handlers.getOperation(PeerAuthentication.class, PeerAuthenticationList.class, this);
   }
 
   @Override
   public MixedOperation<RequestAuthentication, RequestAuthenticationList, Resource<RequestAuthentication>> requestAuthentications() {
-    return Handlers.getOperation(RequestAuthentication.class, RequestAuthenticationList.class, this.getHttpClient(),
-      this.getConfiguration());
+    return Handlers.getOperation(RequestAuthentication.class, RequestAuthenticationList.class, this);
   }
 
   @Override
   public MixedOperation<AuthorizationPolicy, AuthorizationPolicyList, Resource<AuthorizationPolicy>> authorizationPolicies() {
-    return Handlers.getOperation(AuthorizationPolicy.class, AuthorizationPolicyList.class, this.getHttpClient(),
-      this.getConfiguration());
+    return Handlers.getOperation(AuthorizationPolicy.class, AuthorizationPolicyList.class, this);
   }
 }

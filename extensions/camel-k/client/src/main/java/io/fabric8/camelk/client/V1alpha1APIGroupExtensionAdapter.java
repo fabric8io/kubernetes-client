@@ -17,7 +17,6 @@ package io.fabric8.camelk.client;
 
 import io.fabric8.kubernetes.client.APIGroupExtensionAdapter;
 import io.fabric8.kubernetes.client.Client;
-import okhttp3.OkHttpClient;
 
 public class V1alpha1APIGroupExtensionAdapter extends APIGroupExtensionAdapter<V1alpha1APIGroupClient> {
   @Override
@@ -32,6 +31,6 @@ public class V1alpha1APIGroupExtensionAdapter extends APIGroupExtensionAdapter<V
 
   @Override
   protected V1alpha1APIGroupClient newInstance(Client client) {
-    return new V1alpha1APIGroupClient(client.adapt(OkHttpClient.class), client.getConfiguration());
+    return new V1alpha1APIGroupClient(client);
   }
 }

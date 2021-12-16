@@ -18,23 +18,23 @@ package io.fabric8.kubernetes.client.dsl.internal.batch.v1beta1;
 
 import io.fabric8.kubernetes.api.model.batch.v1beta1.CronJob;
 import io.fabric8.kubernetes.api.model.batch.v1beta1.CronJobList;
-import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 
 import java.io.InputStream;
 
 public class CronJobOperationsImpl extends HasMetadataOperation<CronJob, CronJobList, Resource<CronJob>> {
 
-  public CronJobOperationsImpl(OkHttpClient client, Config config) {
-    this(client, config, null);
+  public CronJobOperationsImpl(ClientContext clientContext) {
+    this(clientContext, null);
   }
 
-  public CronJobOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
+  public CronJobOperationsImpl(ClientContext clientContext, String namespace) {
+    this(HasMetadataOperationsImpl.defaultContext(clientContext).withNamespace(namespace));
   }
 
   public CronJobOperationsImpl(OperationContext context) {

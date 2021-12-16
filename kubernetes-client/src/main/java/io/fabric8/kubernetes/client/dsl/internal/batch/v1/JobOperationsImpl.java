@@ -17,19 +17,19 @@ package io.fabric8.kubernetes.client.dsl.internal.batch.v1;
 
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
+import io.fabric8.kubernetes.api.model.batch.v1.Job;
+import io.fabric8.kubernetes.api.model.batch.v1.JobList;
+import io.fabric8.kubernetes.client.ClientContext;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
 import io.fabric8.kubernetes.client.dsl.Loggable;
 import io.fabric8.kubernetes.client.dsl.PodResource;
-import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.kubernetes.client.dsl.internal.PodControllerOperationContext;
-import io.fabric8.kubernetes.client.utils.PodOperationUtil;
-import okhttp3.OkHttpClient;
-import io.fabric8.kubernetes.api.model.batch.v1.Job;
-import io.fabric8.kubernetes.api.model.batch.v1.JobList;
-import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ScalableResource;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
+import io.fabric8.kubernetes.client.dsl.internal.PodControllerOperationContext;
+import io.fabric8.kubernetes.client.utils.PodOperationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,12 +49,12 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
   static final transient Logger LOG = LoggerFactory.getLogger(JobOperationsImpl.class);
   private final PodControllerOperationContext podControllerOperationContext;
 
-  public JobOperationsImpl(OkHttpClient client, Config config) {
-    this(client, config, null);
+  public JobOperationsImpl(ClientContext clientContext) {
+    this(clientContext, null);
   }
 
-  public JobOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(new PodControllerOperationContext(), new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
+  public JobOperationsImpl(ClientContext clientContext, String namespace) {
+    this(new PodControllerOperationContext(), HasMetadataOperationsImpl.defaultContext(clientContext).withNamespace(namespace));
   }
 
   public JobOperationsImpl(PodControllerOperationContext context, OperationContext superContext) {

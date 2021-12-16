@@ -18,15 +18,14 @@ package io.fabric8.kubernetes.client;
 import io.fabric8.kubernetes.client.dsl.DiscoveryAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1DiscoveryAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1beta1DiscoveryAPIGroupDSL;
-import okhttp3.OkHttpClient;
 
 public class DiscoveryAPIGroupClient extends BaseClient implements DiscoveryAPIGroupDSL {
   public DiscoveryAPIGroupClient() {
     super();
   }
 
-  public DiscoveryAPIGroupClient(OkHttpClient httpClient, final Config config) {
-    super(httpClient, config);
+  public DiscoveryAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

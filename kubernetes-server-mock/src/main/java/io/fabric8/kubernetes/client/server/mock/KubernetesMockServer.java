@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
+import io.fabric8.kubernetes.client.http.TlsVersion;
 import io.fabric8.kubernetes.client.VersionInfo;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.mockwebserver.Context;
@@ -34,9 +35,6 @@ import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
-
-import static io.fabric8.kubernetes.client.utils.HttpClientUtils.createHttpClientForMockServer;
-import static okhttp3.TlsVersion.TLS_1_2;
 
 public class KubernetesMockServer extends DefaultMockServer {
 
@@ -96,8 +94,9 @@ public class KubernetesMockServer extends DefaultMockServer {
 
     public NamespacedKubernetesClient createClient() {
         Config config = getMockConfiguration();
-        return new DefaultKubernetesClient(createHttpClientForMockServer(config), config);
+        return new DefaultKubernetesClient(config);
     }
+
 
   /**
    * Removes all recorded expectations.
@@ -110,8 +109,9 @@ public class KubernetesMockServer extends DefaultMockServer {
         return new ConfigBuilder(Config.empty())
                 .withMasterUrl(url("/"))
                 .withTrustCerts(true)
-                .withTlsVersions(TLS_1_2)
+                .withTlsVersions(TlsVersion.TLS_1_2)
                 .withNamespace("test")
+                .withHttp2Disable(true)
                 .build();
     }
 }

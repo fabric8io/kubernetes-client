@@ -17,17 +17,16 @@ package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.api.model.metrics.v1beta1.PodMetrics;
 import io.fabric8.kubernetes.api.model.metrics.v1beta1.PodMetricsList;
-import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.dsl.Namespaceable;
-import okhttp3.OkHttpClient;
 
 public class PodMetricOperationsImpl extends MetricOperationsImpl<PodMetrics, PodMetricsList> implements Namespaceable<PodMetricOperationsImpl> {
-  public PodMetricOperationsImpl(OkHttpClient client, Config config) {
-    super(client, config, null, null, "pods", null, PodMetrics.class, PodMetricsList.class);
+  public PodMetricOperationsImpl(ClientContext clientContext) {
+    super(clientContext, null, null, "pods", null, PodMetrics.class, PodMetricsList.class);
   }
 
-  private PodMetricOperationsImpl(OkHttpClient client, Config config, String name, String namespace) {
-    super(client, config, name, namespace, "pods", null, PodMetrics.class, PodMetricsList.class);
+  private PodMetricOperationsImpl(ClientContext clientContext, String name, String namespace) {
+    super(clientContext, name, namespace, "pods", null, PodMetrics.class, PodMetricsList.class);
   }
 
   /**
@@ -53,6 +52,6 @@ public class PodMetricOperationsImpl extends MetricOperationsImpl<PodMetrics, Po
 
   @Override
   public PodMetricOperationsImpl inNamespace(String namespace) {
-    return new PodMetricOperationsImpl(client, config, null, namespace);
+    return new PodMetricOperationsImpl(context, null, namespace);
   }
 }

@@ -19,7 +19,8 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.SimpleClientContext;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -32,12 +33,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class RunOperationsTest {
-  private OkHttpClient mockClient;
+  private HttpClient mockClient;
   private Config config;
 
   @BeforeEach
   public void init() {
-    this.mockClient = Mockito.mock(OkHttpClient.class, Mockito.RETURNS_DEEP_STUBS);
+    this.mockClient = Mockito.mock(HttpClient.class, Mockito.RETURNS_DEEP_STUBS);
     this.config = new ConfigBuilder().withMasterUrl("https://localhost:8443/").build();
   }
 
@@ -64,7 +65,7 @@ class RunOperationsTest {
       .withPort(5701)
       .withLimits(limits)
       .withRequests(requests);
-    RunOperations deploymentGenerator = new RunOperations(mockClient, config, "ns1", generatorRunConfig);
+    RunOperations deploymentGenerator = new RunOperations(new SimpleClientContext(config, mockClient), "ns1", generatorRunConfig);
 
     // When
     Pod pod = deploymentGenerator.convertRunConfigIntoPod();

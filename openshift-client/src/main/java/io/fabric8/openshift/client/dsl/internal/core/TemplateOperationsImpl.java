@@ -25,6 +25,9 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
+import io.fabric8.kubernetes.client.http.HttpRequest;
+import io.fabric8.kubernetes.client.http.HttpRequest.Builder;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -32,14 +35,11 @@ import io.fabric8.openshift.api.model.Parameter;
 import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateBuilder;
 import io.fabric8.openshift.api.model.TemplateList;
-import io.fabric8.openshift.client.OpenShiftConfig;
+import io.fabric8.openshift.client.OpenshiftClientContext;
 import io.fabric8.openshift.client.ParameterValue;
 import io.fabric8.openshift.client.dsl.TemplateOperation;
 import io.fabric8.openshift.client.dsl.TemplateResource;
 import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,7 +56,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.TEMPLATE;
 
@@ -71,8 +70,8 @@ public class TemplateOperationsImpl
 
   private final Map<String, String> parameters;
 
-  public TemplateOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
-    this(new OperationContext().withOkhttpClient(client).withConfig(config), null);
+  public TemplateOperationsImpl(OpenshiftClientContext clientContext) {
+    this(HasMetadataOperationsImpl.defaultContext(clientContext), null);
   }
 
   public TemplateOperationsImpl(OperationContext context, Map<String, String> parameters) {
@@ -119,8 +118,7 @@ public class TemplateOperationsImpl
         }
       }
 
-      RequestBody body = RequestBody.create(JSON, JSON_MAPPER.writeValueAsString(t));
-      Request.Builder requestBuilder = new Request.Builder().post(body).url(getProcessUrl());
+      HttpRequest.Builder requestBuilder = this.httpClient.newHttpRequestBuilder().post(JSON, JSON_MAPPER.writeValueAsString(t)).url(getProcessUrl());
       t = handleResponse(requestBuilder);
       KubernetesList l = new KubernetesList();
       l.setItems(t.getObjects());
@@ -279,12 +277,13 @@ public class TemplateOperationsImpl
   }
 
   @Override
-  protected Template handleGet(URL resourceUrl) throws InterruptedException, ExecutionException, IOException {
+  protected Template handleGet(URL resourceUrl) throws InterruptedException, IOException {
     return super.handleGet(resourceUrl, getType(), this.parameters);
   }
 
   @Override
-  protected <T> T handleResponse(Request.Builder requestBuilder, Class<T> type) throws ExecutionException, InterruptedException, KubernetesClientException, IOException {
+  protected <T> T handleResponse(Builder requestBuilder, Class<T> type)
+      throws InterruptedException, IOException {
     return handleResponse(requestBuilder, type, parameters);
   }
 
