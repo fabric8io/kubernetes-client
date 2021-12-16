@@ -35,6 +35,7 @@ import lombok.experimental.Accessors;
     "metadata",
     "ID",
     "bootMode",
+    "customDeploy",
     "firmware",
     "image",
     "raid",
@@ -66,6 +67,8 @@ public class ProvisionStatus implements KubernetesResource
     private String id;
     @JsonProperty("bootMode")
     private String bootMode;
+    @JsonProperty("customDeploy")
+    private CustomDeploy customDeploy;
     @JsonProperty("firmware")
     private FirmwareConfig firmware;
     @JsonProperty("image")
@@ -89,6 +92,7 @@ public class ProvisionStatus implements KubernetesResource
     /**
      * 
      * @param image
+     * @param customDeploy
      * @param id
      * @param state
      * @param rootDeviceHints
@@ -96,10 +100,11 @@ public class ProvisionStatus implements KubernetesResource
      * @param firmware
      * @param raid
      */
-    public ProvisionStatus(String id, String bootMode, FirmwareConfig firmware, Image image, RAIDConfig raid, RootDeviceHints rootDeviceHints, String state) {
+    public ProvisionStatus(String id, String bootMode, CustomDeploy customDeploy, FirmwareConfig firmware, Image image, RAIDConfig raid, RootDeviceHints rootDeviceHints, String state) {
         super();
         this.id = id;
         this.bootMode = bootMode;
+        this.customDeploy = customDeploy;
         this.firmware = firmware;
         this.image = image;
         this.raid = raid;
@@ -125,6 +130,16 @@ public class ProvisionStatus implements KubernetesResource
     @JsonProperty("bootMode")
     public void setBootMode(String bootMode) {
         this.bootMode = bootMode;
+    }
+
+    @JsonProperty("customDeploy")
+    public CustomDeploy getCustomDeploy() {
+        return customDeploy;
+    }
+
+    @JsonProperty("customDeploy")
+    public void setCustomDeploy(CustomDeploy customDeploy) {
+        this.customDeploy = customDeploy;
     }
 
     @JsonProperty("firmware")

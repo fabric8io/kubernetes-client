@@ -33,6 +33,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "acceptedRisks",
     "completionTime",
     "image",
     "startedTime",
@@ -61,6 +62,8 @@ import lombok.experimental.Accessors;
 public class UpdateHistory implements KubernetesResource
 {
 
+    @JsonProperty("acceptedRisks")
+    private java.lang.String acceptedRisks;
     @JsonProperty("completionTime")
     private String completionTime;
     @JsonProperty("image")
@@ -88,18 +91,30 @@ public class UpdateHistory implements KubernetesResource
      * @param completionTime
      * @param image
      * @param startedTime
+     * @param acceptedRisks
      * @param verified
      * @param state
      * @param version
      */
-    public UpdateHistory(String completionTime, java.lang.String image, String startedTime, java.lang.String state, Boolean verified, java.lang.String version) {
+    public UpdateHistory(java.lang.String acceptedRisks, String completionTime, java.lang.String image, String startedTime, java.lang.String state, Boolean verified, java.lang.String version) {
         super();
+        this.acceptedRisks = acceptedRisks;
         this.completionTime = completionTime;
         this.image = image;
         this.startedTime = startedTime;
         this.state = state;
         this.verified = verified;
         this.version = version;
+    }
+
+    @JsonProperty("acceptedRisks")
+    public java.lang.String getAcceptedRisks() {
+        return acceptedRisks;
+    }
+
+    @JsonProperty("acceptedRisks")
+    public void setAcceptedRisks(java.lang.String acceptedRisks) {
+        this.acceptedRisks = acceptedRisks;
     }
 
     @JsonProperty("completionTime")

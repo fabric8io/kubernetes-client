@@ -22,6 +22,7 @@ import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.SecretKeySelector;
 import io.fabric8.openshift.api.model.monitoring.v1.BasicAuth;
+import io.fabric8.openshift.api.model.monitoring.v1.SafeAuthorization;
 import io.fabric8.openshift.api.model.monitoring.v1.SafeTLSConfig;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
@@ -36,6 +37,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "authorization",
     "basicAuth",
     "bearerTokenSecret",
     "proxyURL",
@@ -62,6 +64,8 @@ import lombok.experimental.Accessors;
 public class HTTPConfig implements KubernetesResource
 {
 
+    @JsonProperty("authorization")
+    private SafeAuthorization authorization;
     @JsonProperty("basicAuth")
     private BasicAuth basicAuth;
     @JsonProperty("bearerTokenSecret")
@@ -82,17 +86,29 @@ public class HTTPConfig implements KubernetesResource
 
     /**
      * 
+     * @param authorization
      * @param bearerTokenSecret
      * @param basicAuth
      * @param proxyURL
      * @param tlsConfig
      */
-    public HTTPConfig(BasicAuth basicAuth, SecretKeySelector bearerTokenSecret, String proxyURL, SafeTLSConfig tlsConfig) {
+    public HTTPConfig(SafeAuthorization authorization, BasicAuth basicAuth, SecretKeySelector bearerTokenSecret, String proxyURL, SafeTLSConfig tlsConfig) {
         super();
+        this.authorization = authorization;
         this.basicAuth = basicAuth;
         this.bearerTokenSecret = bearerTokenSecret;
         this.proxyURL = proxyURL;
         this.tlsConfig = tlsConfig;
+    }
+
+    @JsonProperty("authorization")
+    public SafeAuthorization getAuthorization() {
+        return authorization;
+    }
+
+    @JsonProperty("authorization")
+    public void setAuthorization(SafeAuthorization authorization) {
+        this.authorization = authorization;
     }
 
     @JsonProperty("basicAuth")

@@ -112,9 +112,9 @@ import io.fabric8.kubernetes.client.dsl.internal.core.v1.ServiceOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.certificates.v1.CertificateSigningRequestOperationsImpl;
 import io.fabric8.kubernetes.client.extended.run.RunConfigBuilder;
 import io.fabric8.kubernetes.client.extended.run.RunOperations;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
 import io.fabric8.kubernetes.client.utils.Serialization;
-import okhttp3.OkHttpClient;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -159,8 +159,12 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
     super(config);
   }
 
-  protected BaseKubernetesClient(OkHttpClient httpClient, Config config) {
+  protected BaseKubernetesClient(HttpClient httpClient, Config config) {
     super(httpClient, config);
+  }
+  
+  protected BaseKubernetesClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   /**
@@ -168,7 +172,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public NonNamespaceOperation<ComponentStatus, ComponentStatusList, Resource<ComponentStatus>> componentstatuses() {
-    return new ComponentStatusOperationsImpl(httpClient, getConfiguration());
+    return new ComponentStatusOperationsImpl(this);
   }
 
   /**
@@ -188,7 +192,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
   }
 
   public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl resourceListFor(Object item) {
-    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(httpClient, getConfiguration(), item);
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl(this, item);
   }
 
   /**
@@ -220,7 +224,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata> resource(HasMetadata item) {
-    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(httpClient, getConfiguration(), item);
+    return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(this, item);
   }
 
   /**
@@ -236,7 +240,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public MixedOperation<Binding, KubernetesResourceList<Binding>, Resource<Binding>> bindings() {
-    return new BindingOperationsImpl(httpClient, getConfiguration());
+    return new BindingOperationsImpl(this);
   }
 
   /**
@@ -244,7 +248,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public MixedOperation<Endpoints, EndpointsList, Resource<Endpoints>> endpoints() {
-    return Handlers.getOperation(Endpoints.class, EndpointsList.class, httpClient, getConfiguration());
+    return Handlers.getOperation(Endpoints.class, EndpointsList.class, this);
   }
 
   /**
@@ -252,7 +256,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public NonNamespaceOperation<Namespace, NamespaceList, Resource<Namespace>> namespaces() {
-    return Handlers.getOperation(Namespace.class, NamespaceList.class, httpClient, getConfiguration());
+    return Handlers.getOperation(Namespace.class, NamespaceList.class, this);
   }
 
   /**
@@ -260,7 +264,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public NonNamespaceOperation<Node, NodeList, Resource<Node>> nodes() {
-    return Handlers.getOperation(Node.class, NodeList.class, httpClient, getConfiguration());
+    return Handlers.getOperation(Node.class, NodeList.class, this);
   }
 
   /**
@@ -268,7 +272,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public NonNamespaceOperation<PersistentVolume, PersistentVolumeList, Resource<PersistentVolume>> persistentVolumes() {
-    return Handlers.getOperation(PersistentVolume.class, PersistentVolumeList.class, httpClient, getConfiguration());
+    return Handlers.getOperation(PersistentVolume.class, PersistentVolumeList.class, this);
   }
 
   /**
@@ -276,7 +280,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public MixedOperation<PersistentVolumeClaim, PersistentVolumeClaimList, Resource<PersistentVolumeClaim>> persistentVolumeClaims() {
-    return Handlers.getOperation(PersistentVolumeClaim.class, PersistentVolumeClaimList.class, httpClient, getConfiguration());
+    return Handlers.getOperation(PersistentVolumeClaim.class, PersistentVolumeClaimList.class, this);
   }
 
   /**
@@ -284,7 +288,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public MixedOperation<Pod, PodList, PodResource<Pod>> pods() {
-    return new PodOperationsImpl(httpClient, getConfiguration());
+    return new PodOperationsImpl(this);
   }
 
   /**
@@ -292,7 +296,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public MixedOperation<ReplicationController, ReplicationControllerList, RollableScalableResource<ReplicationController>> replicationControllers() {
-    return new ReplicationControllerOperationsImpl(httpClient, getConfiguration());
+    return new ReplicationControllerOperationsImpl(this);
   }
 
   /**
@@ -300,7 +304,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public MixedOperation<ResourceQuota, ResourceQuotaList, Resource<ResourceQuota>> resourceQuotas() {
-    return Handlers.getOperation(ResourceQuota.class, ResourceQuotaList.class, httpClient, getConfiguration());
+    return Handlers.getOperation(ResourceQuota.class, ResourceQuotaList.class, this);
   }
 
   /**
@@ -313,7 +317,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
 
   @Override
   public MixedOperation<Secret, SecretList, Resource<Secret>> secrets() {
-    return Handlers.getOperation(Secret.class, SecretList.class, httpClient, getConfiguration());
+    return Handlers.getOperation(Secret.class, SecretList.class, this);
   }
 
   /**
@@ -321,7 +325,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public MixedOperation<Service, ServiceList, ServiceResource<Service>> services() {
-    return new ServiceOperationsImpl(httpClient, getConfiguration());
+    return new ServiceOperationsImpl(this);
   }
 
   /**
@@ -329,7 +333,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public MixedOperation<ServiceAccount, ServiceAccountList, Resource<ServiceAccount>> serviceAccounts() {
-    return Handlers.getOperation(ServiceAccount.class, ServiceAccountList.class, httpClient, getConfiguration());
+    return Handlers.getOperation(ServiceAccount.class, ServiceAccountList.class, this);
   }
 
   /**
@@ -337,7 +341,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public NonNamespaceOperation<APIService, APIServiceList, Resource<APIService>> apiServices() {
-      return Handlers.getOperation(APIService.class, APIServiceList.class, httpClient, getConfiguration());
+      return Handlers.getOperation(APIService.class, APIServiceList.class, this);
   }
 
   /**
@@ -345,7 +349,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public KubernetesListMixedOperation lists() {
-    return new KubernetesListOperationsImpl(httpClient, getConfiguration());
+    return new KubernetesListOperationsImpl(this);
   }
 
   /**
@@ -353,7 +357,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public MixedOperation<ConfigMap, ConfigMapList, Resource<ConfigMap>> configMaps() {
-    return Handlers.getOperation(ConfigMap.class, ConfigMapList.class, httpClient, getConfiguration());
+    return Handlers.getOperation(ConfigMap.class, ConfigMapList.class, this);
   }
 
   /**
@@ -361,7 +365,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public MixedOperation<LimitRange, LimitRangeList, Resource<LimitRange>> limitRanges() {
-    return Handlers.getOperation(LimitRange.class, LimitRangeList.class, httpClient, getConfiguration());
+    return Handlers.getOperation(LimitRange.class, LimitRangeList.class, this);
   }
 
   /**
@@ -377,7 +381,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public NonNamespaceOperation<CertificateSigningRequest, CertificateSigningRequestList, Resource<CertificateSigningRequest>> certificateSigningRequests() {
-    return Handlers.getOperation(CertificateSigningRequest.class, CertificateSigningRequestList.class, httpClient, getConfiguration());
+    return Handlers.getOperation(CertificateSigningRequest.class, CertificateSigningRequestList.class, this);
   }
 
   @Override
@@ -398,7 +402,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public InOutCreateable<TokenReview, TokenReview> tokenReviews() {
-    return Handlers.getNonListingOperation(TokenReview.class, httpClient, getConfiguration());
+    return Handlers.getNonListingOperation(TokenReview.class, this);
   }
 
   /**
@@ -432,7 +436,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
   public <T extends HasMetadata, L extends KubernetesResourceList<T>> HasMetadataOperation<T, L, Resource<T>> resources(
       Class<T> resourceType, Class<L> listClass) {
     try {
-      return Handlers.getOperation(resourceType, listClass, httpClient, getConfiguration());
+      return Handlers.getOperation(resourceType, listClass, this);
     } catch (Exception e) {
       //may be the wrong list type, try more general
       return customResources(ResourceDefinitionContext.fromResourceType(resourceType), resourceType, listClass);
@@ -444,7 +448,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public <T extends HasMetadata, L extends KubernetesResourceList<T>> HasMetadataOperationsImpl<T, L> customResources(ResourceDefinitionContext rdContext, Class<T> resourceType, Class<L> listClass) {
-    return new HasMetadataOperationsImpl<>(httpClient, getConfiguration(), rdContext, resourceType, listClass);
+    return new HasMetadataOperationsImpl<>(this, rdContext, resourceType, listClass);
   }
 
   /**
@@ -452,7 +456,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public RawCustomResourceOperationsImpl customResource(CustomResourceDefinitionContext customResourceDefinition) {
-    return new RawCustomResourceOperationsImpl(httpClient, getConfiguration(), customResourceDefinition);
+    return new RawCustomResourceOperationsImpl(this, customResourceDefinition);
   }
 
   @Override
@@ -588,7 +592,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public MixedOperation<Lease, LeaseList, Resource<Lease>> leases() {
-    return Handlers.getOperation(Lease.class, LeaseList.class, httpClient, getConfiguration());
+    return Handlers.getOperation(Lease.class, LeaseList.class, this);
   }
 
   /**
@@ -596,7 +600,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public RunOperations run() {
-    return new RunOperations(httpClient, getConfiguration(), getNamespace(), new RunConfigBuilder());
+    return new RunOperations(this, getNamespace(), new RunConfigBuilder());
   }
 
   /**
@@ -604,7 +608,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public NonNamespaceOperation<RuntimeClass, RuntimeClassList, Resource<RuntimeClass>> runtimeClasses() {
-    return Handlers.getOperation(RuntimeClass.class, RuntimeClassList.class, httpClient, getConfiguration());
+    return Handlers.getOperation(RuntimeClass.class, RuntimeClassList.class, this);
   }
 
 }

@@ -45,6 +45,15 @@ public class ResourceDefinitionContext {
   public boolean isNamespaceScoped() {
     return namespaced;
   }
+  
+  protected void validate() {
+    if (plural == null) {
+      if (kind == null) {
+        throw new IllegalArgumentException("Neither kind nor plural was set, at least one is required");
+      }
+      plural = Utils.getPluralFromKind(kind);
+    }
+  }
 
   public static ResourceDefinitionContext fromResourceType(Class<? extends KubernetesResource> resource) {
     return new Builder()
@@ -89,6 +98,7 @@ public class ResourceDefinitionContext {
     }
     
     public ResourceDefinitionContext build() {
+      this.resourceDefinitionContext.validate();
       return this.resourceDefinitionContext;
     }
   }

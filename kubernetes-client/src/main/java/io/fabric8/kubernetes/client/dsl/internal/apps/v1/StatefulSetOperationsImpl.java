@@ -24,7 +24,7 @@ import io.fabric8.kubernetes.api.model.apps.ControllerRevisionList;
 import io.fabric8.kubernetes.api.model.apps.StatefulSet;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetList;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
-import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.LogWatch;
@@ -32,9 +32,9 @@ import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.TimeoutImageEditReplacePatchable;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.kubernetes.client.utils.PodOperationUtil;
+import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.RollingOperationContext;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.utils.PodOperationUtil;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -43,18 +43,17 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 public class StatefulSetOperationsImpl extends RollableScalableResourceOperation<StatefulSet, StatefulSetList, RollableScalableResource<StatefulSet>>
   implements TimeoutImageEditReplacePatchable<StatefulSet>
 {
-  public StatefulSetOperationsImpl(OkHttpClient client, Config config) {
-    this(client, config, null);
+  public StatefulSetOperationsImpl(ClientContext clientContext) {
+    this(clientContext, null);
   }
 
-  public StatefulSetOperationsImpl(OkHttpClient client, Config config, String namespace) {
-    this(new RollingOperationContext(), new OperationContext().withOkhttpClient(client).withConfig(config).withNamespace(namespace).withPropagationPolicy(DEFAULT_PROPAGATION_POLICY));
+  public StatefulSetOperationsImpl(ClientContext clientContext, String namespace) {
+    this(new RollingOperationContext(), HasMetadataOperationsImpl.defaultContext(clientContext).withNamespace(namespace));
   }
 
   public StatefulSetOperationsImpl(RollingOperationContext context, OperationContext superContext) {
@@ -80,7 +79,7 @@ public class StatefulSetOperationsImpl extends RollableScalableResourceOperation
 
   @Override
   public RollingUpdater<StatefulSet, StatefulSetList> getRollingUpdater(long rollingTimeout, TimeUnit rollingTimeUnit) {
-    return new StatefulSetRollingUpdater(client, config, getNamespace(), rollingTimeUnit.toMillis(rollingTimeout), config.getLoggingInterval());
+    return new StatefulSetRollingUpdater(context, getNamespace(), rollingTimeUnit.toMillis(rollingTimeout), config.getLoggingInterval());
   }
 
   @Override
@@ -216,7 +215,7 @@ public class StatefulSetOperationsImpl extends RollableScalableResourceOperation
     } catch (InterruptedException interruptedException) {
       Thread.currentThread().interrupt();
       throw KubernetesClientException.launderThrowable(interruptedException);
-    } catch (ExecutionException | IOException e) {
+    } catch (IOException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
   }
@@ -226,7 +225,7 @@ public class StatefulSetOperationsImpl extends RollableScalableResourceOperation
   }
 
   private ControllerRevisionList getControllerRevisionListForStatefulSet(StatefulSet statefulSet) {
-    return Handlers.getOperation(ControllerRevision.class, ControllerRevisionList.class, client, config).inNamespace(namespace).withLabels(statefulSet.getSpec().getSelector().getMatchLabels()).list();
+    return Handlers.getOperation(ControllerRevision.class, ControllerRevisionList.class, this.context).inNamespace(namespace).withLabels(statefulSet.getSpec().getSelector().getMatchLabels()).list();
   }
 
   static Map<String, String> getStatefulSetSelectorLabels(StatefulSet statefulSet) {

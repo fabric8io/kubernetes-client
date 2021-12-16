@@ -26,6 +26,7 @@ import io.fabric8.kubernetes.client.dsl.PrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.TailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.TimeTailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.LogWatchCallback;
 import io.fabric8.kubernetes.client.internal.PatchUtils;
 import io.fabric8.kubernetes.client.utils.PodOperationUtil;
@@ -33,15 +34,11 @@ import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.BuildBuilder;
 import io.fabric8.openshift.api.model.BuildList;
-import io.fabric8.openshift.client.OpenShiftConfig;
+import io.fabric8.openshift.client.OpenshiftClientContext;
 import io.fabric8.openshift.client.dsl.BuildResource;
 import io.fabric8.openshift.client.dsl.internal.BuildOperationContext;
 import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
 import io.fabric8.openshift.client.internal.patchmixins.BuildMixIn;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -50,7 +47,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import static io.fabric8.openshift.client.OpenShiftAPIGroups.BUILD;
 
@@ -71,8 +67,8 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList,
   private Integer podLogWaitTimeout;
   private final BuildOperationContext buildOperationContext;
 
-  public BuildOperationsImpl(OkHttpClient client, OpenShiftConfig config) {
-    this(new BuildOperationContext(), new OperationContext().withOkhttpClient(client).withConfig(config));
+  public BuildOperationsImpl(OpenshiftClientContext clientContext) {
+    this(new BuildOperationContext(), HasMetadataOperationsImpl.defaultContext(clientContext));
   }
 
   public BuildOperationsImpl(BuildOperationContext context, OperationContext superContext) {
@@ -125,15 +121,10 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList,
     return sb.toString();
   }
 
-  protected ResponseBody doGetLog(){
+  protected <T> T doGetLog(Class<T> type){
     try {
       URL url = new URL(URLUtils.join(getResourceUrl().toString(), getLogParameters()));
-      Request.Builder requestBuilder = new Request.Builder().get().url(url);
-      Request request = requestBuilder.build();
-      Response response = client.newCall(request).execute();
-      ResponseBody body = response.body();
-      assertResponseCode(request, response);
-      return body;
+      return handleRawGet(url, type);
     } catch (IOException t) {
       throw KubernetesClientException.launderThrowable(forOperationType("doGetLog"), t);
     }
@@ -141,11 +132,7 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList,
 
   @Override
   public String getLog() {
-    try(ResponseBody body = doGetLog()) {
-      return doGetLog().string();
-    } catch (IOException e) {
-      throw KubernetesClientException.launderThrowable(forOperationType("getLog"), e);
-    }
+    return doGetLog(String.class);
   }
 
   @Override
@@ -159,7 +146,7 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList,
    */
   @Override
   public Reader getLogReader(){
-    return doGetLog().charStream();
+    return doGetLog(Reader.class);
   }
 
   @Override
@@ -173,12 +160,8 @@ public class BuildOperationsImpl extends OpenShiftOperation<Build, BuildList,
       // In case of Build we directly get logs at Build Url, but we need to wait for Pods
       waitUntilBuildPodBecomesReady(fromServer().get());
       URL url = new URL(URLUtils.join(getResourceUrl().toString(), getLogParameters() + "&follow=true"));
-      Request request = new Request.Builder().url(url).get().build();
-      final LogWatchCallback callback = new LogWatchCallback(out);
-      OkHttpClient clone = client.newBuilder().readTimeout(0, TimeUnit.MILLISECONDS).build();
-      clone.newCall(request).enqueue(callback);
-      callback.waitUntilReady();
-      return callback;
+      final LogWatchCallback callback = new LogWatchCallback(this.config, out);
+      return callback.callAndWait(this.httpClient, url);
     } catch (IOException t) {
       throw KubernetesClientException.launderThrowable(forOperationType("watchLog"), t);
     }

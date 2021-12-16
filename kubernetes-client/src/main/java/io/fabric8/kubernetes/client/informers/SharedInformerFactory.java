@@ -67,7 +67,7 @@ public class SharedInformerFactory {
     // ideally this should be bounded.  The current implication is that there
     // can be 1 thread used (not dedicated to) per informer - which
     // could be problematic for a large number of informers.  however
-    // there is already a superceding issue there of thread utilization by okhttp
+    // if okhttp is in use, it will use two threads per watch
     this(client, Utils.getCommonExecutorSerive());
     this.allowShutdown = false;
   }

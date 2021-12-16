@@ -16,7 +16,6 @@
 package io.fabric8.servicecatalog.server.mock;
 
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.mockwebserver.Context;
 import io.fabric8.mockwebserver.ServerRequest;
@@ -29,10 +28,7 @@ import okhttp3.mockwebserver.MockWebServer;
 import java.util.Map;
 import java.util.Queue;
 
-import static okhttp3.TlsVersion.TLS_1_2;
-
 public class ServiceCatalogMockServer extends KubernetesMockServer {
-  private boolean disableApiGroupCheck = true;
 
   public ServiceCatalogMockServer() {
     super();
@@ -52,12 +48,7 @@ public class ServiceCatalogMockServer extends KubernetesMockServer {
   }
 
   public NamespacedServiceCatalogClient createServiceCatalog() {
-    Config config = new ConfigBuilder()
-      .withMasterUrl(url("/"))
-      .withNamespace("test")
-      .withTrustCerts(true)
-      .withTlsVersions(TLS_1_2)
-      .build();
+    Config config = getMockConfiguration();
     return new DefaultServiceCatalogClient(config);
   }
 }

@@ -35,6 +35,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "authorization",
     "basicAuth",
     "bearerTokenFile",
     "bearerTokenSecret",
@@ -42,6 +43,7 @@ import lombok.experimental.Accessors;
     "honorTimestamps",
     "interval",
     "metricRelabelings",
+    "oauth2",
     "params",
     "path",
     "port",
@@ -73,6 +75,8 @@ import lombok.experimental.Accessors;
 public class Endpoint implements KubernetesResource
 {
 
+    @JsonProperty("authorization")
+    private SafeAuthorization authorization;
     @JsonProperty("basicAuth")
     private BasicAuth basicAuth;
     @JsonProperty("bearerTokenFile")
@@ -88,6 +92,8 @@ public class Endpoint implements KubernetesResource
     @JsonProperty("metricRelabelings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<RelabelConfig> metricRelabelings = new ArrayList<RelabelConfig>();
+    @JsonProperty("oauth2")
+    private OAuth2 oauth2;
     @JsonProperty("params")
     private Map<String, ArrayList<String>> params;
     @JsonProperty("path")
@@ -126,18 +132,21 @@ public class Endpoint implements KubernetesResource
      * @param basicAuth
      * @param proxyUrl
      * @param metricRelabelings
+     * @param oauth2
      * @param params
      * @param targetPort
      * @param honorLabels
      * @param tlsConfig
+     * @param authorization
      * @param path
      * @param relabelings
      * @param port
      * @param interval
      * @param bearerTokenFile
      */
-    public Endpoint(BasicAuth basicAuth, java.lang.String bearerTokenFile, SecretKeySelector bearerTokenSecret, Boolean honorLabels, Boolean honorTimestamps, java.lang.String interval, List<RelabelConfig> metricRelabelings, Map<String, ArrayList<String>> params, java.lang.String path, java.lang.String port, java.lang.String proxyUrl, List<RelabelConfig> relabelings, java.lang.String scheme, java.lang.String scrapeTimeout, io.fabric8.kubernetes.api.model.IntOrString targetPort, TLSConfig tlsConfig) {
+    public Endpoint(SafeAuthorization authorization, BasicAuth basicAuth, java.lang.String bearerTokenFile, SecretKeySelector bearerTokenSecret, Boolean honorLabels, Boolean honorTimestamps, java.lang.String interval, List<RelabelConfig> metricRelabelings, OAuth2 oauth2, Map<String, ArrayList<String>> params, java.lang.String path, java.lang.String port, java.lang.String proxyUrl, List<RelabelConfig> relabelings, java.lang.String scheme, java.lang.String scrapeTimeout, io.fabric8.kubernetes.api.model.IntOrString targetPort, TLSConfig tlsConfig) {
         super();
+        this.authorization = authorization;
         this.basicAuth = basicAuth;
         this.bearerTokenFile = bearerTokenFile;
         this.bearerTokenSecret = bearerTokenSecret;
@@ -145,6 +154,7 @@ public class Endpoint implements KubernetesResource
         this.honorTimestamps = honorTimestamps;
         this.interval = interval;
         this.metricRelabelings = metricRelabelings;
+        this.oauth2 = oauth2;
         this.params = params;
         this.path = path;
         this.port = port;
@@ -154,6 +164,16 @@ public class Endpoint implements KubernetesResource
         this.scrapeTimeout = scrapeTimeout;
         this.targetPort = targetPort;
         this.tlsConfig = tlsConfig;
+    }
+
+    @JsonProperty("authorization")
+    public SafeAuthorization getAuthorization() {
+        return authorization;
+    }
+
+    @JsonProperty("authorization")
+    public void setAuthorization(SafeAuthorization authorization) {
+        this.authorization = authorization;
     }
 
     @JsonProperty("basicAuth")
@@ -224,6 +244,16 @@ public class Endpoint implements KubernetesResource
     @JsonProperty("metricRelabelings")
     public void setMetricRelabelings(List<RelabelConfig> metricRelabelings) {
         this.metricRelabelings = metricRelabelings;
+    }
+
+    @JsonProperty("oauth2")
+    public OAuth2 getOauth2() {
+        return oauth2;
+    }
+
+    @JsonProperty("oauth2")
+    public void setOauth2(OAuth2 oauth2) {
+        this.oauth2 = oauth2;
     }
 
     @JsonProperty("params")

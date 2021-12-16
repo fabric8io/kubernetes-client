@@ -18,13 +18,11 @@ package io.fabric8.kubernetes.client.server.mock;
 
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
-
+import io.fabric8.kubernetes.client.http.TlsVersion;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Locale;
-
-import static okhttp3.TlsVersion.TLS_1_2;
 
 class MasterProtocolTest {
 
@@ -37,7 +35,7 @@ class MasterProtocolTest {
         int port = sslServer.getPort();
         Config config = new ConfigBuilder()
                 .withMasterUrl(host + ":" +port)
-                .withTlsVersions(TLS_1_2)
+                .withTlsVersions(TlsVersion.TLS_1_2)
                 .withTrustCerts(true)
                 .build();
         assertTrue(config.getMasterUrl().toLowerCase(Locale.ROOT).startsWith(Config.HTTPS_PROTOCOL_PREFIX));

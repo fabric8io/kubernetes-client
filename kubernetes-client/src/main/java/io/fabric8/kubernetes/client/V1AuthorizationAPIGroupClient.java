@@ -21,7 +21,6 @@ import io.fabric8.kubernetes.api.model.authorization.v1.SelfSubjectRulesReview;
 import io.fabric8.kubernetes.api.model.authorization.v1.SubjectAccessReview;
 import io.fabric8.kubernetes.client.dsl.InOutCreateable;
 import io.fabric8.kubernetes.client.dsl.NamespacedInOutCreateable;
-import okhttp3.OkHttpClient;
 
 public class V1AuthorizationAPIGroupClient extends BaseClient implements V1AuthorizationAPIGroupDSL {
   public static final String AUTHORIZATION_APIGROUP = "authorization.k8s.io";
@@ -31,27 +30,27 @@ public class V1AuthorizationAPIGroupClient extends BaseClient implements V1Autho
     super();
   }
 
-  public V1AuthorizationAPIGroupClient(OkHttpClient httpClient, final Config config) {
-    super(httpClient, config);
+  public V1AuthorizationAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override
   public InOutCreateable<SelfSubjectAccessReview, SelfSubjectAccessReview> selfSubjectAccessReview() {
-    return Handlers.getNonListingOperation(SelfSubjectAccessReview.class, httpClient, getConfiguration());
+    return Handlers.getNonListingOperation(SelfSubjectAccessReview.class, this);
   }
 
   @Override
   public InOutCreateable<SubjectAccessReview, SubjectAccessReview> subjectAccessReview() {
-    return Handlers.getNonListingOperation(SubjectAccessReview.class, httpClient, getConfiguration());
+    return Handlers.getNonListingOperation(SubjectAccessReview.class, this);
   }
 
   @Override
   public NamespacedInOutCreateable<LocalSubjectAccessReview, LocalSubjectAccessReview> localSubjectAccessReview() {
-    return Handlers.getNamespacedHasMetadataCreateOnlyOperation(LocalSubjectAccessReview.class, httpClient, getConfiguration());
+    return Handlers.getNamespacedHasMetadataCreateOnlyOperation(LocalSubjectAccessReview.class, this);
   }
 
   @Override
   public InOutCreateable<SelfSubjectRulesReview, SelfSubjectRulesReview> selfSubjectRulesReview() {
-    return Handlers.getNonListingOperation(SelfSubjectRulesReview.class, httpClient, getConfiguration());
+    return Handlers.getNonListingOperation(SelfSubjectRulesReview.class, this);
   }
 }

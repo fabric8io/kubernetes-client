@@ -67,6 +67,8 @@ declare -a modules=(
     "../extensions/verticalpodautoscaler/generator-v1"
     "../extensions/volcano/generator-v1beta1"
     "../extensions/volumesnapshot/generator"
+    "../extensions/istio/generator-v1alpha3"
+    "../extensions/istio/generator-v1beta1"
 )
 
 declare -a extensionModuleParents=(
@@ -79,6 +81,7 @@ declare -a extensionModuleParents=(
     "../extensions/verticalpodautoscaler/pom.xml"
     "../extensions/volcano/pom.xml"
     "../extensions/volumesnapshot/pom.xml"
+    "../extensions/istio/pom.xml"
 )
 
 generateAll() {

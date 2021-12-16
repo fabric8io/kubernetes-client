@@ -5899,6 +5899,64 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "os_build_BuildVolume": {
+      "type": "object",
+      "properties": {
+        "mounts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/os_build_BuildVolumeMount",
+            "existingJavaType": "io.fabric8.openshift.api.model.BuildVolumeMount"
+          }
+        },
+        "name": {
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/definitions/os_build_BuildVolumeSource",
+          "existingJavaType": "io.fabric8.openshift.api.model.BuildVolumeSource"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.BuildVolume",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_build_BuildVolumeMount": {
+      "type": "object",
+      "properties": {
+        "destinationPath": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.BuildVolumeMount",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_build_BuildVolumeSource": {
+      "type": "object",
+      "properties": {
+        "configMap": {
+          "$ref": "#/definitions/kubernetes_core_ConfigMapVolumeSource",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ConfigMapVolumeSource"
+        },
+        "secret": {
+          "$ref": "#/definitions/kubernetes_core_SecretVolumeSource",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.SecretVolumeSource"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.BuildVolumeSource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "os_build_CommonSpec": {
       "type": "object",
       "properties": {
@@ -6065,6 +6123,14 @@
         "pullSecret": {
           "$ref": "#/definitions/kubernetes_core_LocalObjectReference",
           "existingJavaType": "io.fabric8.kubernetes.api.model.LocalObjectReference"
+        },
+        "volumes": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_build_BuildVolume",
+            "existingJavaType": "io.fabric8.openshift.api.model.BuildVolume"
+          }
         }
       },
       "additionalProperties": true,
@@ -6450,6 +6516,14 @@
         },
         "scripts": {
           "type": "string"
+        },
+        "volumes": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_build_BuildVolume",
+            "existingJavaType": "io.fabric8.openshift.api.model.BuildVolume"
+          }
         }
       },
       "additionalProperties": true,
@@ -6814,15 +6888,87 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "os_config_v1_AlibabaCloudPlatformSpec": {
+      "type": "object",
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.AlibabaCloudPlatformSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_config_v1_AlibabaCloudPlatformStatus": {
+      "type": "object",
+      "properties": {
+        "region": {
+          "type": "string"
+        },
+        "resourceGroupID": {
+          "type": "string"
+        },
+        "resourceTags": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_config_v1_AlibabaCloudResourceTag",
+            "existingJavaType": "io.fabric8.openshift.api.model.AlibabaCloudResourceTag"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.AlibabaCloudPlatformStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_config_v1_AlibabaCloudResourceTag": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.AlibabaCloudResourceTag",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "os_config_v1_Audit": {
       "type": "object",
       "properties": {
+        "customRules": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_config_v1_AuditCustomRule",
+            "existingJavaType": "io.fabric8.openshift.api.model.AuditCustomRule"
+          }
+        },
         "profile": {
           "type": "string"
         }
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.Audit",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_config_v1_AuditCustomRule": {
+      "type": "object",
+      "properties": {
+        "group": {
+          "type": "string"
+        },
+        "profile": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.AuditCustomRule",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -6948,6 +7094,9 @@
     "os_config_v1_AzurePlatformStatus": {
       "type": "object",
       "properties": {
+        "armEndpoint": {
+          "type": "string"
+        },
         "cloudName": {
           "type": "string"
         },
@@ -7012,6 +7161,23 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.BasicAuthIdentityProvider",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_config_v1_ClusterCondition": {
+      "type": "object",
+      "properties": {
+        "promql": {
+          "$ref": "#/definitions/os_config_v1_PromQLClusterCondition",
+          "existingJavaType": "io.fabric8.openshift.api.model.PromQLClusterCondition"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.ClusterCondition",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -7273,6 +7439,14 @@
             "existingJavaType": "io.fabric8.openshift.api.model.Release"
           }
         },
+        "conditionalUpdates": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_config_v1_ConditionalUpdate",
+            "existingJavaType": "io.fabric8.openshift.api.model.ConditionalUpdate"
+          }
+        },
         "conditions": {
           "type": "array",
           "javaOmitEmpty": true,
@@ -7399,6 +7573,61 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.ComponentRouteStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_config_v1_ConditionalUpdate": {
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_apimachinery_Condition",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.Condition"
+          }
+        },
+        "release": {
+          "$ref": "#/definitions/os_config_v1_Release",
+          "existingJavaType": "io.fabric8.openshift.api.model.Release"
+        },
+        "risks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/os_config_v1_ConditionalUpdateRisk",
+            "existingJavaType": "io.fabric8.openshift.api.model.ConditionalUpdateRisk"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.ConditionalUpdate",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_config_v1_ConditionalUpdateRisk": {
+      "type": "object",
+      "properties": {
+        "matchingRules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/os_config_v1_ClusterCondition",
+            "existingJavaType": "io.fabric8.openshift.api.model.ClusterCondition"
+          }
+        },
+        "message": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.ConditionalUpdateRisk",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -8050,6 +8279,9 @@
     "os_config_v1_IBMCloudPlatformStatus": {
       "type": "object",
       "properties": {
+        "cisInstanceCRN": {
+          "type": "string"
+        },
         "location": {
           "type": "string"
         },
@@ -8367,6 +8599,14 @@
         },
         "domain": {
           "type": "string"
+        },
+        "requiredHSTSPolicies": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_config_v1_RequiredHSTSPolicy",
+            "existingJavaType": "io.fabric8.openshift.api.model.RequiredHSTSPolicy"
+          }
         }
       },
       "additionalProperties": true,
@@ -8517,6 +8757,22 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.LDAPIdentityProvider",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_config_v1_MaxAgePolicy": {
+      "type": "object",
+      "properties": {
+        "largestMaxAge": {
+          "type": "integer"
+        },
+        "smallestMaxAge": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.MaxAgePolicy",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -8859,6 +9115,13 @@
             "type": "string"
           }
         },
+        "groups": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        },
         "name": {
           "type": "array",
           "javaOmitEmpty": true,
@@ -9101,6 +9364,10 @@
     "os_config_v1_PlatformSpec": {
       "type": "object",
       "properties": {
+        "alibabaCloud": {
+          "$ref": "#/definitions/os_config_v1_AlibabaCloudPlatformSpec",
+          "existingJavaType": "io.fabric8.openshift.api.model.AlibabaCloudPlatformSpec"
+        },
         "aws": {
           "$ref": "#/definitions/os_config_v1_AWSPlatformSpec",
           "existingJavaType": "io.fabric8.openshift.api.model.AWSPlatformSpec"
@@ -9137,6 +9404,10 @@
           "$ref": "#/definitions/os_config_v1_OvirtPlatformSpec",
           "existingJavaType": "io.fabric8.openshift.api.model.OvirtPlatformSpec"
         },
+        "powervs": {
+          "$ref": "#/definitions/os_config_v1_PowerVSPlatformSpec",
+          "existingJavaType": "io.fabric8.openshift.api.model.PowerVSPlatformSpec"
+        },
         "type": {
           "type": "string"
         },
@@ -9154,6 +9425,10 @@
     "os_config_v1_PlatformStatus": {
       "type": "object",
       "properties": {
+        "alibabaCloud": {
+          "$ref": "#/definitions/os_config_v1_AlibabaCloudPlatformStatus",
+          "existingJavaType": "io.fabric8.openshift.api.model.AlibabaCloudPlatformStatus"
+        },
         "aws": {
           "$ref": "#/definitions/os_config_v1_AWSPlatformStatus",
           "existingJavaType": "io.fabric8.openshift.api.model.AWSPlatformStatus"
@@ -9190,6 +9465,10 @@
           "$ref": "#/definitions/os_config_v1_OvirtPlatformStatus",
           "existingJavaType": "io.fabric8.openshift.api.model.OvirtPlatformStatus"
         },
+        "powervs": {
+          "$ref": "#/definitions/os_config_v1_PowerVSPlatformStatus",
+          "existingJavaType": "io.fabric8.openshift.api.model.PowerVSPlatformStatus"
+        },
         "type": {
           "type": "string"
         },
@@ -9200,6 +9479,80 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.PlatformStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_config_v1_PowerVSPlatformSpec": {
+      "type": "object",
+      "properties": {
+        "serviceEndpoints": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_config_v1_PowerVSServiceEndpoint",
+            "existingJavaType": "io.fabric8.openshift.api.model.PowerVSServiceEndpoint"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.PowerVSPlatformSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_config_v1_PowerVSPlatformStatus": {
+      "type": "object",
+      "properties": {
+        "cisInstanceCRN": {
+          "type": "string"
+        },
+        "region": {
+          "type": "string"
+        },
+        "serviceEndpoints": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_config_v1_PowerVSServiceEndpoint",
+            "existingJavaType": "io.fabric8.openshift.api.model.PowerVSServiceEndpoint"
+          }
+        },
+        "zone": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.PowerVSPlatformStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_config_v1_PowerVSServiceEndpoint": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.PowerVSServiceEndpoint",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_config_v1_PromQLClusterCondition": {
+      "type": "object",
+      "properties": {
+        "promql": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.PromQLClusterCondition",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -9390,6 +9743,36 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.RequestHeaderIdentityProvider",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_config_v1_RequiredHSTSPolicy": {
+      "type": "object",
+      "properties": {
+        "domainPatterns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "includeSubDomainsPolicy": {
+          "type": "string"
+        },
+        "maxAge": {
+          "$ref": "#/definitions/os_config_v1_MaxAgePolicy",
+          "existingJavaType": "io.fabric8.openshift.api.model.MaxAgePolicy"
+        },
+        "namespaceSelector": {
+          "$ref": "#/definitions/kubernetes_apimachinery_LabelSelector",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.LabelSelector"
+        },
+        "preloadPolicy": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.RequiredHSTSPolicy",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -9592,6 +9975,9 @@
     "os_config_v1_UpdateHistory": {
       "type": "object",
       "properties": {
+        "acceptedRisks": {
+          "type": "string"
+        },
         "completionTime": {
           "$ref": "#/definitions/kubernetes_apimachinery_Time",
           "existingJavaType": "String"

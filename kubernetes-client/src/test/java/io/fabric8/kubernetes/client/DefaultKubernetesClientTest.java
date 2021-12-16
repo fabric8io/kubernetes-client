@@ -18,10 +18,14 @@ package io.fabric8.kubernetes.client;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
+import io.fabric8.kubernetes.client.http.BasicBuilder;
+import io.fabric8.kubernetes.client.http.HttpHeaders;
+import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -58,18 +62,19 @@ class DefaultKubernetesClientTest {
     customHeaders.put("cluster-id", "test-cluster");
     final Config configWithCustomerHeaders = new ConfigBuilder().withCustomHeaders(customHeaders).build();
 
-    final DefaultKubernetesClient customHeaderConfigClient = new DefaultKubernetesClient(configWithCustomerHeaders);
-
-    assertThat(customHeaderConfigClient.getHttpClient().networkInterceptors()).hasSize(1);
+    BasicBuilder basicBuilder = Mockito.mock(BasicBuilder.class);
+    HttpClientUtils.createApplicableInterceptors(configWithCustomerHeaders, null).get(HttpClientUtils.HEADER_INTERCEPTOR).before(basicBuilder, Mockito.mock(HttpHeaders.class));
+    Mockito.verify(basicBuilder, Mockito.times(1)).header("user-id", "test-user");
   }
 
   @Test
   void testInitClientWithDefaultConfiguration() {
     final Config defaultEmptyConfig =  new ConfigBuilder().build();
 
-    DefaultKubernetesClient defaultConfigClient = new DefaultKubernetesClient(defaultEmptyConfig);
+    BasicBuilder basicBuilder = Mockito.mock(BasicBuilder.class);
+    HttpClientUtils.createApplicableInterceptors(defaultEmptyConfig, null).get(HttpClientUtils.HEADER_INTERCEPTOR).before(basicBuilder, Mockito.mock(HttpHeaders.class));
 
-    assertThat(defaultConfigClient.getHttpClient().networkInterceptors()).isEmpty();
+    Mockito.verify(basicBuilder, Mockito.never()).header("user-id", "test-user");
   }
 
   @Test

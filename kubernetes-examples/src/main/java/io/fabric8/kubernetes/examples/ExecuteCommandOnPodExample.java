@@ -22,10 +22,7 @@ import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
-import io.fabric8.kubernetes.client.utils.HttpClientUtils;
 import lombok.SneakyThrows;
-import okhttp3.OkHttpClient;
-import okhttp3.Response;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
@@ -35,19 +32,15 @@ import java.util.concurrent.TimeUnit;
 @SuppressWarnings("java:S106")
 public class ExecuteCommandOnPodExample implements AutoCloseable {
 
-  private final OkHttpClient okHttpClient;
   private final KubernetesClient client;
 
   public ExecuteCommandOnPodExample() {
     Config config = new ConfigBuilder().build();
-    this.okHttpClient = HttpClientUtils.createHttpClient(config);
-    this.client = new DefaultKubernetesClient(okHttpClient, config);
+    this.client = new DefaultKubernetesClient(config);
   }
 
   @Override
   public void close() {
-    okHttpClient.dispatcher().executorService().shutdown();
-    okHttpClient.connectionPool().evictAll();
     client.close();
   }
 
@@ -86,13 +79,13 @@ public class ExecuteCommandOnPodExample implements AutoCloseable {
     }
 
     @Override
-    public void onOpen(Response response) {
-      System.out.println("Reading data... " + response.message());
+    public void onOpen() {
+      System.out.println("Reading data... ");
     }
 
     @Override
-    public void onFailure(Throwable t, Response response) {
-      System.err.println(t.getMessage() + " " + response.message());
+    public void onFailure(Throwable t, Response failureResponse) {
+      System.err.println(t.getMessage());
       data.completeExceptionally(t);
     }
 

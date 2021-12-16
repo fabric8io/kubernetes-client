@@ -16,19 +16,18 @@
 package io.fabric8.openshift.client;
 
 import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.openshift.client.dsl.OpenShiftClusterAutoscalingAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.V1ClusterAutoscalingAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.V1beta1ClusterAutoscalingAPIGroupDSL;
-import okhttp3.OkHttpClient;
 
 public class OpenShiftClusterAutoscalingAPIGroupClient extends BaseClient implements OpenShiftClusterAutoscalingAPIGroupDSL {
   public OpenShiftClusterAutoscalingAPIGroupClient() {
     super();
   }
 
-  public OpenShiftClusterAutoscalingAPIGroupClient(OkHttpClient httpClient, final Config config) {
-    super(httpClient, config);
+  public OpenShiftClusterAutoscalingAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override

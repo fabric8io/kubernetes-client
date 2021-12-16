@@ -41,7 +41,6 @@ import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.server.mock.OutputStreamMessage;
 import io.fabric8.kubernetes.client.utils.Utils;
-import okhttp3.Response;
 import okio.ByteString;
 import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
@@ -327,12 +326,9 @@ class PodTest {
     final CountDownLatch execLatch = new CountDownLatch(1);
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     ExecWatch watch = client.pods().withName("pod1").writingOutput(baos).usingListener(new ExecListener() {
-      @Override
-      public void onOpen(Response response) {
-      }
 
       @Override
-      public void onFailure(Throwable t , Response response) {
+      public void onFailure(Throwable t, Response failureResponse) {
         execLatch.countDown();
       }
 

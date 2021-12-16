@@ -15,25 +15,24 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal.apps.v1;
 
-import okhttp3.OkHttpClient;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.apps.DeploymentList;
-import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.dsl.Operation;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.fabric8.kubernetes.client.dsl.WatchListDeletable;
 
 class DeploymentRollingUpdater extends RollingUpdater<Deployment, DeploymentList> {
 
-  DeploymentRollingUpdater(OkHttpClient client, Config config, String namespace) {
-    super(client, config, namespace);
+  DeploymentRollingUpdater(ClientContext clientContext, String namespace) {
+    super(clientContext, namespace);
   }
 
-  DeploymentRollingUpdater(OkHttpClient client, Config config, String namespace, long rollingTimeoutMillis, long loggingIntervalMillis) {
-    super(client, config, namespace, rollingTimeoutMillis, loggingIntervalMillis);
+  DeploymentRollingUpdater(ClientContext clientContext, String namespace, long rollingTimeoutMillis, long loggingIntervalMillis) {
+    super(clientContext, namespace, rollingTimeoutMillis, loggingIntervalMillis);
   }
 
   @Override
@@ -86,6 +85,6 @@ class DeploymentRollingUpdater extends RollingUpdater<Deployment, DeploymentList
 
   @Override
   protected Operation<Deployment, DeploymentList, RollableScalableResource<Deployment>> resources() {
-    return new DeploymentOperationsImpl(client, config);
+    return new DeploymentOperationsImpl(this.clientContext);
   }
 }

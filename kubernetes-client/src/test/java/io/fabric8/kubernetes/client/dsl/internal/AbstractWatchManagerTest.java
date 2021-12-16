@@ -20,15 +20,16 @@ import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
+import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.utils.Utils;
-import okhttp3.Request;
-import okhttp3.WebSocket;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -98,7 +99,7 @@ class AbstractWatchManagerTest {
     // When
     WatchConnectionManager.closeWebSocket(webSocket);
     // Then
-    verify(webSocket, times(1)).close(1000, null);
+    verify(webSocket, times(1)).sendClose(1000, null);
   }
 
   @Test
@@ -201,9 +202,9 @@ class AbstractWatchManagerTest {
     }
 
     @Override
-    protected void run(Request request) {
-      
+    protected void run(URL url, Map<String, String> headers) {
     }
+    
 
     @Override
     protected void closeRequest() {

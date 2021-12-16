@@ -34,6 +34,7 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "displayName",
+    "proxy",
     "service"
 })
 @ToString
@@ -59,6 +60,8 @@ public class ConsolePluginSpec implements KubernetesResource
 
     @JsonProperty("displayName")
     private String displayName;
+    @JsonProperty("proxy")
+    private ConsolePluginProxy proxy;
     @JsonProperty("service")
     private ConsolePluginService service;
     @JsonIgnore
@@ -73,12 +76,14 @@ public class ConsolePluginSpec implements KubernetesResource
 
     /**
      * 
+     * @param proxy
      * @param displayName
      * @param service
      */
-    public ConsolePluginSpec(String displayName, ConsolePluginService service) {
+    public ConsolePluginSpec(String displayName, ConsolePluginProxy proxy, ConsolePluginService service) {
         super();
         this.displayName = displayName;
+        this.proxy = proxy;
         this.service = service;
     }
 
@@ -90,6 +95,16 @@ public class ConsolePluginSpec implements KubernetesResource
     @JsonProperty("displayName")
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
+    }
+
+    @JsonProperty("proxy")
+    public ConsolePluginProxy getProxy() {
+        return proxy;
+    }
+
+    @JsonProperty("proxy")
+    public void setProxy(ConsolePluginProxy proxy) {
+        this.proxy = proxy;
     }
 
     @JsonProperty("service")

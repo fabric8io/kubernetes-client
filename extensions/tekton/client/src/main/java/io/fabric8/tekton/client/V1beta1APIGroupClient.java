@@ -16,7 +16,7 @@
 package io.fabric8.tekton.client;
 
 import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
@@ -32,39 +32,38 @@ import io.fabric8.tekton.pipeline.v1beta1.Task;
 import io.fabric8.tekton.pipeline.v1beta1.TaskList;
 import io.fabric8.tekton.pipeline.v1beta1.TaskRun;
 import io.fabric8.tekton.pipeline.v1beta1.TaskRunList;
-import okhttp3.OkHttpClient;
 
 public class V1beta1APIGroupClient extends BaseClient implements V1beta1APIGroupDSL {
   public V1beta1APIGroupClient() {
     super();
   }
 
-  public V1beta1APIGroupClient(OkHttpClient httpClient, final Config config) {
-    super(httpClient, config);
+  public V1beta1APIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override
   public MixedOperation<Pipeline, PipelineList, Resource<Pipeline>> pipelines() {
-    return Handlers.getOperation(Pipeline.class, PipelineList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(Pipeline.class, PipelineList.class, this);
   }
 
   @Override
   public MixedOperation<PipelineRun, PipelineRunList, Resource<PipelineRun>> pipelineRuns() {
-    return Handlers.getOperation(PipelineRun.class, PipelineRunList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(PipelineRun.class, PipelineRunList.class, this);
   }
 
   @Override
   public MixedOperation<Task, TaskList, Resource<Task>> tasks() {
-    return Handlers.getOperation(Task.class, TaskList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(Task.class, TaskList.class, this);
   }
 
   @Override
   public MixedOperation<TaskRun, TaskRunList, Resource<TaskRun>> taskRuns() {
-    return Handlers.getOperation(TaskRun.class, TaskRunList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(TaskRun.class, TaskRunList.class, this);
   }
 
   @Override
   public NonNamespaceOperation<ClusterTask, ClusterTaskList, Resource<ClusterTask>> clusterTasks() {
-    return Handlers.getOperation(ClusterTask.class, ClusterTaskList.class, this.getHttpClient(), this.getConfiguration());
+    return Handlers.getOperation(ClusterTask.class, ClusterTaskList.class, this);
   }
 }

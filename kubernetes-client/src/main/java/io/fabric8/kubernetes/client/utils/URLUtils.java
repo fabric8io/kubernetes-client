@@ -15,13 +15,52 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
-import java.io.UnsupportedEncodingException;
+import io.fabric8.kubernetes.client.http.HttpRequest;
+
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
+import java.net.URL;
 
 public class URLUtils {
+  
+  public static class URLBuilder {
+    
+    private StringBuilder url;
+    
+    public URLBuilder(String url) {
+      this.url = new StringBuilder(url);
+    }
+    
+    public URLBuilder(URL url) {
+      this(url.toString());
+    }
+
+    public URLBuilder addQueryParameter(String key, String value) {
+      if (url.indexOf("?") == -1) {
+        url.append("?");
+      } else {
+        url.append("&");
+      }
+      url.append(encodeToUTF(key).replaceAll("[+]", "%20")).append("=").append(encodeToUTF(value).replaceAll("[+]", "%20"));
+      return this;
+    }
+
+    public URL build() {
+      try {
+        return new URL(this.url.toString());
+      } catch (MalformedURLException e) {
+        throw new IllegalArgumentException(e.getMessage(), e);
+      }
+    }
+    
+    @Override
+    public String toString() {
+      return build().toString();
+    }
+    
+  }
+  
   private URLUtils() {
     throw new IllegalStateException("Utility class");
   }
@@ -154,7 +193,7 @@ public class URLUtils {
     }
   }
 
-  public static String encodeToUTF(String url) throws UnsupportedEncodingException {
-	  return URLEncoder.encode(url, StandardCharsets.UTF_8.displayName());
+  public static String encodeToUTF(String url) {
+	  return HttpRequest.formURLEncode(url);
   }
 }

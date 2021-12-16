@@ -21,24 +21,23 @@ import io.fabric8.kubernetes.api.model.networking.v1beta1.IngressClassList;
 import io.fabric8.kubernetes.api.model.networking.v1beta1.IngressList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import okhttp3.OkHttpClient;
 
 public class V1beta1NetworkAPIGroupClient extends BaseClient implements V1beta1NetworkAPIGroupDSL {
   public V1beta1NetworkAPIGroupClient() {
     super();
   }
 
-  public V1beta1NetworkAPIGroupClient(OkHttpClient httpClient, final Config config) {
-    super(httpClient, config);
+  public V1beta1NetworkAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override
   public MixedOperation<Ingress, IngressList, Resource<Ingress>> ingresses() {
-    return Handlers.getOperation(Ingress.class, IngressList.class, httpClient, getConfiguration());
+    return Handlers.getOperation(Ingress.class, IngressList.class, this);
   }
 
   @Override
   public MixedOperation<IngressClass, IngressClassList, Resource<IngressClass>> ingressClasses() {
-    return Handlers.getOperation(IngressClass.class, IngressClassList.class, httpClient, getConfiguration());
+    return Handlers.getOperation(IngressClass.class, IngressClassList.class, this);
   }
 }

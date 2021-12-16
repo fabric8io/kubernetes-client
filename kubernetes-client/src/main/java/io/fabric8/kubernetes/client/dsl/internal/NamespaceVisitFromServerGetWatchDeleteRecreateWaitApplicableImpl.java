@@ -15,27 +15,15 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import io.fabric8.kubernetes.api.model.DeletionPropagation;
-import io.fabric8.kubernetes.api.model.ListOptions;
-import io.fabric8.kubernetes.client.dsl.VisitFromServerWritable;
-import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
-import okhttp3.OkHttpClient;
-
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-import java.util.function.UnaryOperator;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
 import io.fabric8.kubernetes.api.builder.TypedVisitor;
 import io.fabric8.kubernetes.api.builder.VisitableBuilder;
 import io.fabric8.kubernetes.api.builder.Visitor;
+import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.Handlers;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.ResourceHandler;
@@ -49,10 +37,20 @@ import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRe
 import io.fabric8.kubernetes.client.dsl.Readiable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.VisitFromServerGetWatchDeleteRecreateWaitApplicable;
+import io.fabric8.kubernetes.client.dsl.VisitFromServerWritable;
 import io.fabric8.kubernetes.client.dsl.Waitable;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
+import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
 
 import static io.fabric8.kubernetes.client.utils.DeleteAndCreateHelper.deleteAndCreateItem;
 
@@ -89,8 +87,8 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl im
     this.namespaceVisitOperationContext = namespaceVisitOperationContext;
   }
 
-  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(OkHttpClient httpClient, Config configuration, HasMetadata item) {
-    this(HasMetadataOperationsImpl.defaultContext(new OperationContext(), httpClient, configuration).withItem(item), new NamespaceVisitOperationContext());
+  public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(ClientContext clientContext, HasMetadata item) {
+    this(HasMetadataOperationsImpl.defaultContext(clientContext).withItem(item), new NamespaceVisitOperationContext());
     handlerOf(item, this.context); // validate the handler
   }
 
@@ -186,7 +184,7 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl im
   Resource<HasMetadata> getResource() {
     HasMetadata meta = (HasMetadata) context.getItem();
     ResourceHandler<HasMetadata, ?> handler = handlerOf(meta, context);
-    HasMetadataOperation<HasMetadata, ?, Resource<HasMetadata>> operation = handler.operation(context.getClient(), context.getConfig(), null);
+    HasMetadataOperation<HasMetadata, ?, Resource<HasMetadata>> operation = handler.operation(context, null);
     return operation.newInstance(context).inNamespace(KubernetesResourceUtil.getNamespace(meta)).withName(KubernetesResourceUtil.getName(meta));
   }
 
@@ -257,7 +255,7 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl im
   }
 
   static <T extends HasMetadata, V extends VisitableBuilder<T, V>> ResourceHandler<T, V> handlerOf(T item, OperationContext context) {
-    ResourceHandler<T, V> result = Handlers.get(item, new BaseClient(context.getClient(), context.getConfig()));
+    ResourceHandler<T, V> result = Handlers.get(item, new BaseClient(context));
     if (result == null) {
       throw new KubernetesClientException("Could not find a registered handler for item: [" + item + "].");
     }

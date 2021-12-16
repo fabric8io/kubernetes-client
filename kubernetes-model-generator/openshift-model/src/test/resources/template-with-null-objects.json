@@ -1,0 +1,8 @@
+{
+  "apiVersion": "v1",
+  "kind": "Template",
+  "metadata": {
+    "name": "template-with-no-objects"
+  },
+  "objects": null
+}

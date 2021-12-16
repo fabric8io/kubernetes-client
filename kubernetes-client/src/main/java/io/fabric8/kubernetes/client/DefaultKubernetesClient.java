@@ -17,6 +17,8 @@ package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectorBuilder;
+import io.fabric8.kubernetes.client.http.HttpClient;
+import io.fabric8.kubernetes.client.okhttp.OkHttpClientImpl;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import okhttp3.OkHttpClient;
 
@@ -39,9 +41,22 @@ public class DefaultKubernetesClient extends BaseKubernetesClient<NamespacedKube
   public DefaultKubernetesClient(Config config) {
     super(config);
   }
-
+  
+  /**
+   * @deprecated use {@link DefaultKubernetesClient#DefaultKubernetesClient(HttpClient, Config)} instead.
+   * use {@link OkHttpClientImpl#OkHttpClientImpl(OkHttpClient)} to wrap the client.
+   */
+  @Deprecated
   public DefaultKubernetesClient(OkHttpClient httpClient, Config config) {
+    super(new OkHttpClientImpl(httpClient), config);
+  }
+  
+  public DefaultKubernetesClient(HttpClient httpClient, Config config) {
     super(httpClient, config);
+  }
+  
+  public DefaultKubernetesClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   public static DefaultKubernetesClient fromConfig(String config) {
@@ -55,7 +70,7 @@ public class DefaultKubernetesClient extends BaseKubernetesClient<NamespacedKube
   @Override
   public NamespacedKubernetesClient inNamespace(String name) {
     Config updated = new ConfigBuilder(getConfiguration()).withNamespace(name).build();
-    return new DefaultKubernetesClient(httpClient, updated);
+    return new DefaultKubernetesClient(newState(updated));
   }
 
   @Override

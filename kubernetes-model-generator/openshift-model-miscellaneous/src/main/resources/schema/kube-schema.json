@@ -190,6 +190,36 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "kubernetes_apimachinery_Condition": {
+      "type": "object",
+      "properties": {
+        "lastTransitionTime": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "existingJavaType": "String"
+        },
+        "message": {
+          "type": "string"
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.kubernetes.api.model.Condition",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "kubernetes_apimachinery_Duration": {
       "type": "object",
       "properties": {
@@ -1067,6 +1097,208 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "os_apiserver_v1_APIRequestCount": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "apiserver.openshift.io/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "APIRequestCount",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/os_apiserver_v1_APIRequestCountSpec",
+          "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.APIRequestCountSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/os_apiserver_v1_APIRequestCountStatus",
+          "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.APIRequestCountStatus"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.APIRequestCount",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "os_apiserver_v1_APIRequestCountList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "apiserver.openshift.io/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/os_apiserver_v1_APIRequestCount",
+            "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.APIRequestCount"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "APIRequestCountList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.APIRequestCountList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openshift.api.model.miscellaneous.apiserver.v1.APIRequestCount\u003e"
+      ]
+    },
+    "os_apiserver_v1_APIRequestCountSpec": {
+      "type": "object",
+      "properties": {
+        "numberOfUsersToReport": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.APIRequestCountSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_apiserver_v1_APIRequestCountStatus": {
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/kubernetes_apimachinery_Condition",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.Condition"
+          }
+        },
+        "currentHour": {
+          "$ref": "#/definitions/os_apiserver_v1_PerResourceAPIRequestLog",
+          "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.PerResourceAPIRequestLog"
+        },
+        "last24h": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/os_apiserver_v1_PerResourceAPIRequestLog",
+            "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.PerResourceAPIRequestLog"
+          }
+        },
+        "removedInRelease": {
+          "type": "string"
+        },
+        "requestCount": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.APIRequestCountStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_apiserver_v1_PerNodeAPIRequestLog": {
+      "type": "object",
+      "properties": {
+        "byUser": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/os_apiserver_v1_PerUserAPIRequestCount",
+            "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.PerUserAPIRequestCount"
+          }
+        },
+        "nodeName": {
+          "type": "string"
+        },
+        "requestCount": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.PerNodeAPIRequestLog",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_apiserver_v1_PerResourceAPIRequestLog": {
+      "type": "object",
+      "properties": {
+        "byNode": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/os_apiserver_v1_PerNodeAPIRequestLog",
+            "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.PerNodeAPIRequestLog"
+          }
+        },
+        "requestCount": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.PerResourceAPIRequestLog",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_apiserver_v1_PerUserAPIRequestCount": {
+      "type": "object",
+      "properties": {
+        "byVerb": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/os_apiserver_v1_PerVerbAPIRequestCount",
+            "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.PerVerbAPIRequestCount"
+          }
+        },
+        "requestCount": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "userAgent": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.PerUserAPIRequestCount",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_apiserver_v1_PerVerbAPIRequestCount": {
+      "type": "object",
+      "properties": {
+        "requestCount": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "verb": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.PerVerbAPIRequestCount",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "os_cloudcredential_v1_CredentialsRequest": {
       "type": "object",
       "properties": {
@@ -1452,6 +1684,10 @@
           "$ref": "#/definitions/os_imageregistry_v1_ImageRegistryConfigStorageGCS",
           "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.ImageRegistryConfigStorageGCS"
         },
+        "ibmcos": {
+          "$ref": "#/definitions/os_imageregistry_v1_ImageRegistryConfigStorageIBMCOS",
+          "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.ImageRegistryConfigStorageIBMCOS"
+        },
         "managementState": {
           "type": "string"
         },
@@ -1519,6 +1755,31 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.ImageRegistryConfigStorageGCS",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_imageregistry_v1_ImageRegistryConfigStorageIBMCOS": {
+      "type": "object",
+      "properties": {
+        "bucket": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        },
+        "resourceGroupName": {
+          "type": "string"
+        },
+        "resourceKeyCRN": {
+          "type": "string"
+        },
+        "serviceInstanceCRN": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.miscellaneous.imageregistry.operator.v1.ImageRegistryConfigStorageIBMCOS",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1884,6 +2145,10 @@
           "$ref": "#/definitions/kubernetes_core_ObjectReference",
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
         },
+        "customDeploy": {
+          "$ref": "#/definitions/os_metal3_v1alpha1_CustomDeploy",
+          "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.CustomDeploy"
+        },
         "description": {
           "type": "string"
         },
@@ -1911,6 +2176,9 @@
         },
         "online": {
           "type": "boolean"
+        },
+        "preprovisioningNetworkDataName": {
+          "type": "string"
         },
         "raid": {
           "$ref": "#/definitions/os_metal3_v1alpha1_RAIDConfig",
@@ -2033,6 +2301,19 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.CredentialsStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_metal3_v1alpha1_CustomDeploy": {
+      "type": "object",
+      "properties": {
+        "method": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.CustomDeploy",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -2272,6 +2553,10 @@
         "bootMode": {
           "type": "string"
         },
+        "customDeploy": {
+          "$ref": "#/definitions/os_metal3_v1alpha1_CustomDeploy",
+          "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.CustomDeploy"
+        },
         "firmware": {
           "$ref": "#/definitions/os_metal3_v1alpha1_FirmwareConfig",
           "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.FirmwareConfig"
@@ -2303,7 +2588,6 @@
       "properties": {
         "hardwareRAIDVolumes": {
           "type": "array",
-          "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_metal3_v1alpha1_HardwareRAIDVolume",
             "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.HardwareRAIDVolume"
@@ -2311,7 +2595,6 @@
         },
         "softwareRAIDVolumes": {
           "type": "array",
-          "javaOmitEmpty": true,
           "items": {
             "$ref": "#/definitions/os_metal3_v1alpha1_SoftwareRAIDVolume",
             "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.SoftwareRAIDVolume"
@@ -2461,6 +2744,211 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "os_network_operator_v1_EgressRouter": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "network.operator.openshift.io/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "EgressRouter",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ObjectMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/os_network_operator_v1_EgressRouterSpec",
+          "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.EgressRouterSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/os_network_operator_v1_EgressRouterStatus",
+          "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.EgressRouterStatus"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.EgressRouter",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "os_network_operator_v1_EgressRouterAddress": {
+      "type": "object",
+      "properties": {
+        "gateway": {
+          "type": "string"
+        },
+        "ip": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.EgressRouterAddress",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_network_operator_v1_EgressRouterInterface": {
+      "type": "object",
+      "properties": {
+        "macvlan": {
+          "$ref": "#/definitions/os_network_operator_v1_MacvlanConfig",
+          "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.MacvlanConfig"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.EgressRouterInterface",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_network_operator_v1_EgressRouterList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "network.operator.openshift.io/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/os_network_operator_v1_EgressRouter",
+            "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.EgressRouter"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "EgressRouterList",
+          "required": true
+        },
+        "metadata": {
+          "$ref": "#/definitions/kubernetes_apimachinery_ListMeta",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.EgressRouterList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openshift.api.model.miscellaneous.network.operator.v1.EgressRouter\u003e"
+      ]
+    },
+    "os_network_operator_v1_EgressRouterSpec": {
+      "type": "object",
+      "properties": {
+        "addresses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/os_network_operator_v1_EgressRouterAddress",
+            "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.EgressRouterAddress"
+          }
+        },
+        "mode": {
+          "type": "string"
+        },
+        "networkInterface": {
+          "$ref": "#/definitions/os_network_operator_v1_EgressRouterInterface",
+          "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.EgressRouterInterface"
+        },
+        "redirect": {
+          "$ref": "#/definitions/os_network_operator_v1_RedirectConfig",
+          "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.RedirectConfig"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.EgressRouterSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_network_operator_v1_EgressRouterStatus": {
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_network_operator_v1_EgressRouterStatusCondition",
+            "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.EgressRouterStatusCondition"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.EgressRouterStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_network_operator_v1_EgressRouterStatusCondition": {
+      "type": "object",
+      "properties": {
+        "lastTransitionTime": {
+          "$ref": "#/definitions/kubernetes_apimachinery_Time",
+          "existingJavaType": "String"
+        },
+        "message": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.EgressRouterStatusCondition",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_network_operator_v1_L4RedirectRule": {
+      "type": "object",
+      "properties": {
+        "destinationIP": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer"
+        },
+        "protocol": {
+          "type": "string"
+        },
+        "targetPort": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.L4RedirectRule",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_network_operator_v1_MacvlanConfig": {
+      "type": "object",
+      "properties": {
+        "master": {
+          "type": "string"
+        },
+        "mode": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.MacvlanConfig",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "os_network_operator_v1_OperatorPKI": {
       "type": "object",
       "properties": {
@@ -2547,6 +3035,27 @@
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
+    },
+    "os_network_operator_v1_RedirectConfig": {
+      "type": "object",
+      "properties": {
+        "fallbackIP": {
+          "type": "string"
+        },
+        "redirectRules": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_network_operator_v1_L4RedirectRule",
+            "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.L4RedirectRule"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.RedirectConfig",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
     }
   },
   "type": "object",
@@ -2558,6 +3067,14 @@
     "APIGroupList": {
       "$ref": "#/definitions/kubernetes_apimachinery_APIGroupList",
       "existingJavaType": "io.fabric8.kubernetes.api.model.APIGroupList"
+    },
+    "APIRequestCount": {
+      "$ref": "#/definitions/os_apiserver_v1_APIRequestCount",
+      "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.APIRequestCount"
+    },
+    "APIRequestCountList": {
+      "$ref": "#/definitions/os_apiserver_v1_APIRequestCountList",
+      "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.apiserver.v1.APIRequestCountList"
     },
     "BareMetalHost": {
       "$ref": "#/definitions/os_metal3_v1alpha1_BareMetalHost",
@@ -2586,6 +3103,14 @@
     "CredentialsRequestList": {
       "$ref": "#/definitions/os_cloudcredential_v1_CredentialsRequestList",
       "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.cloudcredential.v1.CredentialsRequestList"
+    },
+    "EgressRouter": {
+      "$ref": "#/definitions/os_network_operator_v1_EgressRouter",
+      "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.EgressRouter"
+    },
+    "EgressRouterList": {
+      "$ref": "#/definitions/os_network_operator_v1_EgressRouterList",
+      "existingJavaType": "io.fabric8.openshift.api.model.miscellaneous.network.operator.v1.EgressRouterList"
     },
     "Info": {
       "$ref": "#/definitions/kubernetes_apimachinery_pkg_version_Info",

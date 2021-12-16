@@ -687,6 +687,54 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "os_config_v1_AlibabaCloudPlatformSpec": {
+      "type": "object",
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.openshift.api.model.AlibabaCloudPlatformSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_config_v1_AlibabaCloudPlatformStatus": {
+      "type": "object",
+      "properties": {
+        "region": {
+          "type": "string"
+        },
+        "resourceGroupID": {
+          "type": "string"
+        },
+        "resourceTags": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_config_v1_AlibabaCloudResourceTag",
+            "existingJavaType": "io.fabric8.openshift.api.model.AlibabaCloudResourceTag"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.openshift.api.model.AlibabaCloudPlatformStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_config_v1_AlibabaCloudResourceTag": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.openshift.api.model.AlibabaCloudResourceTag",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "os_config_v1_AzurePlatformSpec": {
       "type": "object",
       "additionalProperties": true,
@@ -698,6 +746,9 @@
     "os_config_v1_AzurePlatformStatus": {
       "type": "object",
       "properties": {
+        "armEndpoint": {
+          "type": "string"
+        },
         "cloudName": {
           "type": "string"
         },
@@ -916,6 +967,9 @@
     "os_config_v1_IBMCloudPlatformStatus": {
       "type": "object",
       "properties": {
+        "cisInstanceCRN": {
+          "type": "string"
+        },
         "location": {
           "type": "string"
         },
@@ -1125,6 +1179,10 @@
     "os_config_v1_PlatformSpec": {
       "type": "object",
       "properties": {
+        "alibabaCloud": {
+          "$ref": "#/definitions/os_config_v1_AlibabaCloudPlatformSpec",
+          "existingJavaType": "io.fabric8.openshift.api.model.AlibabaCloudPlatformSpec"
+        },
         "aws": {
           "$ref": "#/definitions/os_config_v1_AWSPlatformSpec",
           "existingJavaType": "io.fabric8.openshift.api.model.AWSPlatformSpec"
@@ -1161,6 +1219,10 @@
           "$ref": "#/definitions/os_config_v1_OvirtPlatformSpec",
           "existingJavaType": "io.fabric8.openshift.api.model.OvirtPlatformSpec"
         },
+        "powervs": {
+          "$ref": "#/definitions/os_config_v1_PowerVSPlatformSpec",
+          "existingJavaType": "io.fabric8.openshift.api.model.PowerVSPlatformSpec"
+        },
         "type": {
           "type": "string"
         },
@@ -1178,6 +1240,10 @@
     "os_config_v1_PlatformStatus": {
       "type": "object",
       "properties": {
+        "alibabaCloud": {
+          "$ref": "#/definitions/os_config_v1_AlibabaCloudPlatformStatus",
+          "existingJavaType": "io.fabric8.openshift.api.model.AlibabaCloudPlatformStatus"
+        },
         "aws": {
           "$ref": "#/definitions/os_config_v1_AWSPlatformStatus",
           "existingJavaType": "io.fabric8.openshift.api.model.AWSPlatformStatus"
@@ -1214,6 +1280,10 @@
           "$ref": "#/definitions/os_config_v1_OvirtPlatformStatus",
           "existingJavaType": "io.fabric8.openshift.api.model.OvirtPlatformStatus"
         },
+        "powervs": {
+          "$ref": "#/definitions/os_config_v1_PowerVSPlatformStatus",
+          "existingJavaType": "io.fabric8.openshift.api.model.PowerVSPlatformStatus"
+        },
         "type": {
           "type": "string"
         },
@@ -1224,6 +1294,67 @@
       },
       "additionalProperties": true,
       "existingJavaType": "io.fabric8.openshift.api.model.PlatformStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_config_v1_PowerVSPlatformSpec": {
+      "type": "object",
+      "properties": {
+        "serviceEndpoints": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_config_v1_PowerVSServiceEndpoint",
+            "existingJavaType": "io.fabric8.openshift.api.model.PowerVSServiceEndpoint"
+          }
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.openshift.api.model.PowerVSPlatformSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_config_v1_PowerVSPlatformStatus": {
+      "type": "object",
+      "properties": {
+        "cisInstanceCRN": {
+          "type": "string"
+        },
+        "region": {
+          "type": "string"
+        },
+        "serviceEndpoints": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_config_v1_PowerVSServiceEndpoint",
+            "existingJavaType": "io.fabric8.openshift.api.model.PowerVSServiceEndpoint"
+          }
+        },
+        "zone": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.openshift.api.model.PowerVSPlatformStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "os_config_v1_PowerVSServiceEndpoint": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "existingJavaType": "io.fabric8.openshift.api.model.PowerVSServiceEndpoint",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -2174,6 +2305,39 @@
   },
   "additionalProperties": true,
   "resources": {
+    "alibabacloudplatformspec": {
+      "additionalProperties": true
+    },
+    "alibabacloudplatformstatus": {
+      "properties": {
+        "region": {
+          "type": "string"
+        },
+        "resourceGroupID": {
+          "type": "string"
+        },
+        "resourceTags": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_config_v1_AlibabaCloudResourceTag",
+            "existingJavaType": "io.fabric8.openshift.api.model.AlibabaCloudResourceTag"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "alibabacloudresourcetag": {
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
     "apigroup": {
       "properties": {
         "apiVersion": {
@@ -2297,6 +2461,9 @@
     },
     "azureplatformstatus": {
       "properties": {
+        "armEndpoint": {
+          "type": "string"
+        },
         "cloudName": {
           "type": "string"
         },
@@ -2736,6 +2903,9 @@
     },
     "ibmcloudplatformstatus": {
       "properties": {
+        "cisInstanceCRN": {
+          "type": "string"
+        },
         "location": {
           "type": "string"
         },
@@ -3536,6 +3706,10 @@
     },
     "platformspec": {
       "properties": {
+        "alibabaCloud": {
+          "$ref": "#/definitions/os_config_v1_AlibabaCloudPlatformSpec",
+          "existingJavaType": "io.fabric8.openshift.api.model.AlibabaCloudPlatformSpec"
+        },
         "aws": {
           "$ref": "#/definitions/os_config_v1_AWSPlatformSpec",
           "existingJavaType": "io.fabric8.openshift.api.model.AWSPlatformSpec"
@@ -3572,6 +3746,10 @@
           "$ref": "#/definitions/os_config_v1_OvirtPlatformSpec",
           "existingJavaType": "io.fabric8.openshift.api.model.OvirtPlatformSpec"
         },
+        "powervs": {
+          "$ref": "#/definitions/os_config_v1_PowerVSPlatformSpec",
+          "existingJavaType": "io.fabric8.openshift.api.model.PowerVSPlatformSpec"
+        },
         "type": {
           "type": "string"
         },
@@ -3584,6 +3762,10 @@
     },
     "platformstatus": {
       "properties": {
+        "alibabaCloud": {
+          "$ref": "#/definitions/os_config_v1_AlibabaCloudPlatformStatus",
+          "existingJavaType": "io.fabric8.openshift.api.model.AlibabaCloudPlatformStatus"
+        },
         "aws": {
           "$ref": "#/definitions/os_config_v1_AWSPlatformStatus",
           "existingJavaType": "io.fabric8.openshift.api.model.AWSPlatformStatus"
@@ -3620,12 +3802,62 @@
           "$ref": "#/definitions/os_config_v1_OvirtPlatformStatus",
           "existingJavaType": "io.fabric8.openshift.api.model.OvirtPlatformStatus"
         },
+        "powervs": {
+          "$ref": "#/definitions/os_config_v1_PowerVSPlatformStatus",
+          "existingJavaType": "io.fabric8.openshift.api.model.PowerVSPlatformStatus"
+        },
         "type": {
           "type": "string"
         },
         "vsphere": {
           "$ref": "#/definitions/os_config_v1_VSpherePlatformStatus",
           "existingJavaType": "io.fabric8.openshift.api.model.VSpherePlatformStatus"
+        }
+      },
+      "additionalProperties": true
+    },
+    "powervsplatformspec": {
+      "properties": {
+        "serviceEndpoints": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_config_v1_PowerVSServiceEndpoint",
+            "existingJavaType": "io.fabric8.openshift.api.model.PowerVSServiceEndpoint"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "powervsplatformstatus": {
+      "properties": {
+        "cisInstanceCRN": {
+          "type": "string"
+        },
+        "region": {
+          "type": "string"
+        },
+        "serviceEndpoints": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/os_config_v1_PowerVSServiceEndpoint",
+            "existingJavaType": "io.fabric8.openshift.api.model.PowerVSServiceEndpoint"
+          }
+        },
+        "zone": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "powervsserviceendpoint": {
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
         }
       },
       "additionalProperties": true

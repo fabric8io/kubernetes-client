@@ -18,23 +18,12 @@ package io.fabric8.openshift.client.dsl;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftConfigBuilder;
-import okhttp3.OkHttpClient;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AdaptTest {
-
-  @Test
-  void testAdaptToHttpClient() {
-    // Given
-    OpenShiftClient client = new DefaultOpenShiftClient();
-
-    // When + Then
-    assertTrue(client.isAdaptable(OkHttpClient.class));
-    assertNotNull(client.adapt(OkHttpClient.class));
-  }
 
   @Test
   void testAdaptDisabledCheck() {

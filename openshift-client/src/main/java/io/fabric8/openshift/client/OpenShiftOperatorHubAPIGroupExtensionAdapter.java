@@ -17,7 +17,6 @@ package io.fabric8.openshift.client;
 
 import io.fabric8.kubernetes.client.APIGroupExtensionAdapter;
 import io.fabric8.kubernetes.client.Client;
-import okhttp3.OkHttpClient;
 
 public class OpenShiftOperatorHubAPIGroupExtensionAdapter extends APIGroupExtensionAdapter<OpenShiftOperatorHubAPIGroupClient> {
   @Override
@@ -32,6 +31,6 @@ public class OpenShiftOperatorHubAPIGroupExtensionAdapter extends APIGroupExtens
 
   @Override
   protected OpenShiftOperatorHubAPIGroupClient newInstance(Client client) {
-    return new OpenShiftOperatorHubAPIGroupClient(client.adapt(OkHttpClient.class), client.getConfiguration());
+    return new OpenShiftOperatorHubAPIGroupClient(client);
   }
 }

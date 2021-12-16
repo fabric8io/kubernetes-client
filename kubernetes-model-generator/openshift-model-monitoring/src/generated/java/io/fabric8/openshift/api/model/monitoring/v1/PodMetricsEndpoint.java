@@ -35,12 +35,14 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "authorization",
     "basicAuth",
     "bearerTokenSecret",
     "honorLabels",
     "honorTimestamps",
     "interval",
     "metricRelabelings",
+    "oauth2",
     "params",
     "path",
     "port",
@@ -72,6 +74,8 @@ import lombok.experimental.Accessors;
 public class PodMetricsEndpoint implements KubernetesResource
 {
 
+    @JsonProperty("authorization")
+    private SafeAuthorization authorization;
     @JsonProperty("basicAuth")
     private BasicAuth basicAuth;
     @JsonProperty("bearerTokenSecret")
@@ -85,6 +89,8 @@ public class PodMetricsEndpoint implements KubernetesResource
     @JsonProperty("metricRelabelings")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<RelabelConfig> metricRelabelings = new ArrayList<RelabelConfig>();
+    @JsonProperty("oauth2")
+    private OAuth2 oauth2;
     @JsonProperty("params")
     private Map<String, ArrayList<String>> params;
     @JsonProperty("path")
@@ -123,23 +129,27 @@ public class PodMetricsEndpoint implements KubernetesResource
      * @param basicAuth
      * @param proxyUrl
      * @param metricRelabelings
+     * @param oauth2
      * @param params
      * @param targetPort
      * @param honorLabels
      * @param tlsConfig
+     * @param authorization
      * @param path
      * @param relabelings
      * @param port
      * @param interval
      */
-    public PodMetricsEndpoint(BasicAuth basicAuth, SecretKeySelector bearerTokenSecret, Boolean honorLabels, Boolean honorTimestamps, java.lang.String interval, List<RelabelConfig> metricRelabelings, Map<String, ArrayList<String>> params, java.lang.String path, java.lang.String port, java.lang.String proxyUrl, List<RelabelConfig> relabelings, java.lang.String scheme, java.lang.String scrapeTimeout, io.fabric8.kubernetes.api.model.IntOrString targetPort, PodMetricsEndpointTLSConfig tlsConfig) {
+    public PodMetricsEndpoint(SafeAuthorization authorization, BasicAuth basicAuth, SecretKeySelector bearerTokenSecret, Boolean honorLabels, Boolean honorTimestamps, java.lang.String interval, List<RelabelConfig> metricRelabelings, OAuth2 oauth2, Map<String, ArrayList<String>> params, java.lang.String path, java.lang.String port, java.lang.String proxyUrl, List<RelabelConfig> relabelings, java.lang.String scheme, java.lang.String scrapeTimeout, io.fabric8.kubernetes.api.model.IntOrString targetPort, PodMetricsEndpointTLSConfig tlsConfig) {
         super();
+        this.authorization = authorization;
         this.basicAuth = basicAuth;
         this.bearerTokenSecret = bearerTokenSecret;
         this.honorLabels = honorLabels;
         this.honorTimestamps = honorTimestamps;
         this.interval = interval;
         this.metricRelabelings = metricRelabelings;
+        this.oauth2 = oauth2;
         this.params = params;
         this.path = path;
         this.port = port;
@@ -149,6 +159,16 @@ public class PodMetricsEndpoint implements KubernetesResource
         this.scrapeTimeout = scrapeTimeout;
         this.targetPort = targetPort;
         this.tlsConfig = tlsConfig;
+    }
+
+    @JsonProperty("authorization")
+    public SafeAuthorization getAuthorization() {
+        return authorization;
+    }
+
+    @JsonProperty("authorization")
+    public void setAuthorization(SafeAuthorization authorization) {
+        this.authorization = authorization;
     }
 
     @JsonProperty("basicAuth")
@@ -209,6 +229,16 @@ public class PodMetricsEndpoint implements KubernetesResource
     @JsonProperty("metricRelabelings")
     public void setMetricRelabelings(List<RelabelConfig> metricRelabelings) {
         this.metricRelabelings = metricRelabelings;
+    }
+
+    @JsonProperty("oauth2")
+    public OAuth2 getOauth2() {
+        return oauth2;
+    }
+
+    @JsonProperty("oauth2")
+    public void setOauth2(OAuth2 oauth2) {
+        this.oauth2 = oauth2;
     }
 
     @JsonProperty("params")

@@ -1,7 +1,9 @@
 
 package io.fabric8.openshift.api.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -33,6 +35,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "customRules",
     "profile"
 })
 @ToString
@@ -56,6 +59,9 @@ import lombok.experimental.Accessors;
 public class Audit implements KubernetesResource
 {
 
+    @JsonProperty("customRules")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<AuditCustomRule> customRules = new ArrayList<AuditCustomRule>();
     @JsonProperty("profile")
     private String profile;
     @JsonIgnore
@@ -70,11 +76,23 @@ public class Audit implements KubernetesResource
 
     /**
      * 
+     * @param customRules
      * @param profile
      */
-    public Audit(String profile) {
+    public Audit(List<AuditCustomRule> customRules, String profile) {
         super();
+        this.customRules = customRules;
         this.profile = profile;
+    }
+
+    @JsonProperty("customRules")
+    public List<AuditCustomRule> getCustomRules() {
+        return customRules;
+    }
+
+    @JsonProperty("customRules")
+    public void setCustomRules(List<AuditCustomRule> customRules) {
+        this.customRules = customRules;
     }
 
     @JsonProperty("profile")

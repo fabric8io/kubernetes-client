@@ -34,6 +34,7 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "path",
+    "proxyUrl",
     "scheme",
     "url"
 })
@@ -60,6 +61,8 @@ public class ProberSpec implements KubernetesResource
 
     @JsonProperty("path")
     private String path;
+    @JsonProperty("proxyUrl")
+    private String proxyUrl;
     @JsonProperty("scheme")
     private String scheme;
     @JsonProperty("url")
@@ -78,11 +81,13 @@ public class ProberSpec implements KubernetesResource
      * 
      * @param path
      * @param scheme
+     * @param proxyUrl
      * @param url
      */
-    public ProberSpec(String path, String scheme, String url) {
+    public ProberSpec(String path, String proxyUrl, String scheme, String url) {
         super();
         this.path = path;
+        this.proxyUrl = proxyUrl;
         this.scheme = scheme;
         this.url = url;
     }
@@ -95,6 +100,16 @@ public class ProberSpec implements KubernetesResource
     @JsonProperty("path")
     public void setPath(String path) {
         this.path = path;
+    }
+
+    @JsonProperty("proxyUrl")
+    public String getProxyUrl() {
+        return proxyUrl;
+    }
+
+    @JsonProperty("proxyUrl")
+    public void setProxyUrl(String proxyUrl) {
+        this.proxyUrl = proxyUrl;
     }
 
     @JsonProperty("scheme")

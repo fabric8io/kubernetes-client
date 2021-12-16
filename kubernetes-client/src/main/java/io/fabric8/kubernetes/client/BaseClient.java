@@ -17,9 +17,7 @@
 package io.fabric8.kubernetes.client;
 
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
-import okhttp3.ConnectionPool;
-import okhttp3.Dispatcher;
-import okhttp3.OkHttpClient;
+import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.api.model.APIGroup;
 import io.fabric8.kubernetes.api.model.APIGroupList;
 import io.fabric8.kubernetes.api.model.APIResourceList;
@@ -29,17 +27,14 @@ import io.fabric8.kubernetes.client.utils.Utils;
 
 import java.net.URL;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 
-public class BaseClient implements Client, HttpClientAware {
+public class BaseClient extends SimpleClientContext implements Client {
 
   public static final String APIS = "/apis";
 
-  protected OkHttpClient httpClient;
   private URL masterUrl;
   private String apiVersion;
   private String namespace;
-  private Config configuration;
 
   public BaseClient() {
     this(new ConfigBuilder().build());
@@ -53,10 +48,15 @@ public class BaseClient implements Client, HttpClientAware {
     this(HttpClientUtils.createHttpClient(config), config);
   }
 
-  public BaseClient(final OkHttpClient httpClient, Config config) {
+  public BaseClient(final HttpClient httpClient, Config config) {
+    this(new SimpleClientContext(config, httpClient));
+  }
+  
+  public BaseClient(ClientContext clientContext) {
     try {
-      this.configuration = config;
-      this.httpClient = adaptOkHttpClient(httpClient);
+      this.config = clientContext.getConfiguration();
+      this.httpClient = clientContext.getHttpClient();
+      adaptState();
       this.namespace = config.getNamespace();
       this.apiVersion = config.getApiVersion();
       if (config.getMasterUrl() == null) {
@@ -72,21 +72,7 @@ public class BaseClient implements Client, HttpClientAware {
 
   @Override
   public void close() {
-    ConnectionPool connectionPool = httpClient.connectionPool();
-    Dispatcher dispatcher = httpClient.dispatcher();
-    ExecutorService executorService = httpClient.dispatcher() != null ? httpClient.dispatcher().executorService() : null;
-
-    if (dispatcher != null) {
-      dispatcher.cancelAll();
-    }
-
-    if (connectionPool != null) {
-      connectionPool.evictAll();
-    }
-
-    if (executorService != null) {
-      executorService.shutdownNow();
-    }
+    httpClient.close();
   }
 
   @Override
@@ -102,17 +88,6 @@ public class BaseClient implements Client, HttpClientAware {
   @Override
   public String getNamespace() {
     return namespace;
-  }
-
-
-  @Override
-  public Config getConfiguration() {
-    return configuration;
-  }
-
-  @Override
-  public OkHttpClient getHttpClient() {
-    return httpClient;
   }
 
   @Override
@@ -136,7 +111,7 @@ public class BaseClient implements Client, HttpClientAware {
 
   @Override
   public RootPaths rootPaths() {
-    return new OperationSupport(httpClient, configuration).restCall(RootPaths.class);
+    return new OperationSupport(httpClient, config).restCall(RootPaths.class);
   }
 
   @Override
@@ -157,24 +132,31 @@ public class BaseClient implements Client, HttpClientAware {
 
   @Override
   public APIGroupList getApiGroups() {
-    return new OperationSupport(httpClient, configuration).restCall(APIGroupList.class, APIS);
+    return new OperationSupport(httpClient, config).restCall(APIGroupList.class, APIS);
   }
 
   @Override
   public APIGroup getApiGroup(String name) {
-    return new OperationSupport(httpClient, configuration).restCall(APIGroup.class, APIS, name);
+    return new OperationSupport(httpClient, config).restCall(APIGroup.class, APIS, name);
   }
 
   @Override
   public APIResourceList getApiResources(String groupVersion) {
-    return new OperationSupport(httpClient, configuration).restCall(APIResourceList.class, APIS, groupVersion);
+    return new OperationSupport(httpClient, config).restCall(APIResourceList.class, APIS, groupVersion);
   }
 
   protected VersionInfo getVersionInfo(String path) {
     return new OperationSupport(this.httpClient, this.getConfiguration()).restCall(VersionInfo.class, path);
   }
 
-  protected OkHttpClient adaptOkHttpClient(OkHttpClient okHttpClient) {
-    return okHttpClient;
+  /**
+   * For subclasses to adapt the client state
+   */
+  protected void adaptState() {
+    // nothing by default
+  }
+  
+  protected SimpleClientContext newState(Config updated) {
+    return new SimpleClientContext(updated, httpClient);
   }
 }

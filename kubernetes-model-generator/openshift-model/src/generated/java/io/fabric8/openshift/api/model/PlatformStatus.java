@@ -33,6 +33,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
+    "alibabaCloud",
     "aws",
     "azure",
     "baremetal",
@@ -42,6 +43,7 @@ import lombok.experimental.Accessors;
     "kubevirt",
     "openstack",
     "ovirt",
+    "powervs",
     "type",
     "vsphere"
 })
@@ -66,6 +68,8 @@ import lombok.experimental.Accessors;
 public class PlatformStatus implements KubernetesResource
 {
 
+    @JsonProperty("alibabaCloud")
+    private AlibabaCloudPlatformStatus alibabaCloud;
     @JsonProperty("aws")
     private AWSPlatformStatus aws;
     @JsonProperty("azure")
@@ -84,6 +88,8 @@ public class PlatformStatus implements KubernetesResource
     private OpenStackPlatformStatus openstack;
     @JsonProperty("ovirt")
     private OvirtPlatformStatus ovirt;
+    @JsonProperty("powervs")
+    private PowerVSPlatformStatus powervs;
     @JsonProperty("type")
     private String type;
     @JsonProperty("vsphere")
@@ -101,19 +107,22 @@ public class PlatformStatus implements KubernetesResource
     /**
      * 
      * @param baremetal
-     * @param vsphere
-     * @param gcp
+     * @param powervs
+     * @param alibabaCloud
      * @param ibmcloud
      * @param equinixMetal
+     * @param type
+     * @param vsphere
+     * @param gcp
      * @param ovirt
      * @param kubevirt
      * @param openstack
      * @param aws
-     * @param type
      * @param azure
      */
-    public PlatformStatus(AWSPlatformStatus aws, AzurePlatformStatus azure, BareMetalPlatformStatus baremetal, EquinixMetalPlatformStatus equinixMetal, GCPPlatformStatus gcp, IBMCloudPlatformStatus ibmcloud, KubevirtPlatformStatus kubevirt, OpenStackPlatformStatus openstack, OvirtPlatformStatus ovirt, String type, VSpherePlatformStatus vsphere) {
+    public PlatformStatus(AlibabaCloudPlatformStatus alibabaCloud, AWSPlatformStatus aws, AzurePlatformStatus azure, BareMetalPlatformStatus baremetal, EquinixMetalPlatformStatus equinixMetal, GCPPlatformStatus gcp, IBMCloudPlatformStatus ibmcloud, KubevirtPlatformStatus kubevirt, OpenStackPlatformStatus openstack, OvirtPlatformStatus ovirt, PowerVSPlatformStatus powervs, String type, VSpherePlatformStatus vsphere) {
         super();
+        this.alibabaCloud = alibabaCloud;
         this.aws = aws;
         this.azure = azure;
         this.baremetal = baremetal;
@@ -123,8 +132,19 @@ public class PlatformStatus implements KubernetesResource
         this.kubevirt = kubevirt;
         this.openstack = openstack;
         this.ovirt = ovirt;
+        this.powervs = powervs;
         this.type = type;
         this.vsphere = vsphere;
+    }
+
+    @JsonProperty("alibabaCloud")
+    public AlibabaCloudPlatformStatus getAlibabaCloud() {
+        return alibabaCloud;
+    }
+
+    @JsonProperty("alibabaCloud")
+    public void setAlibabaCloud(AlibabaCloudPlatformStatus alibabaCloud) {
+        this.alibabaCloud = alibabaCloud;
     }
 
     @JsonProperty("aws")
@@ -215,6 +235,16 @@ public class PlatformStatus implements KubernetesResource
     @JsonProperty("ovirt")
     public void setOvirt(OvirtPlatformStatus ovirt) {
         this.ovirt = ovirt;
+    }
+
+    @JsonProperty("powervs")
+    public PowerVSPlatformStatus getPowervs() {
+        return powervs;
+    }
+
+    @JsonProperty("powervs")
+    public void setPowervs(PowerVSPlatformStatus powervs) {
+        this.powervs = powervs;
     }
 
     @JsonProperty("type")

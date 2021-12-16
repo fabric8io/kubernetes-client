@@ -36,6 +36,7 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "email",
+    "groups",
     "name",
     "preferredUsername"
 })
@@ -63,6 +64,9 @@ public class OpenIDClaims implements KubernetesResource
     @JsonProperty("email")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> email = new ArrayList<String>();
+    @JsonProperty("groups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> groups = new ArrayList<String>();
     @JsonProperty("name")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> name = new ArrayList<String>();
@@ -83,11 +87,13 @@ public class OpenIDClaims implements KubernetesResource
      * 
      * @param preferredUsername
      * @param name
+     * @param groups
      * @param email
      */
-    public OpenIDClaims(List<String> email, List<String> name, List<String> preferredUsername) {
+    public OpenIDClaims(List<String> email, List<String> groups, List<String> name, List<String> preferredUsername) {
         super();
         this.email = email;
+        this.groups = groups;
         this.name = name;
         this.preferredUsername = preferredUsername;
     }
@@ -100,6 +106,16 @@ public class OpenIDClaims implements KubernetesResource
     @JsonProperty("email")
     public void setEmail(List<String> email) {
         this.email = email;
+    }
+
+    @JsonProperty("groups")
+    public List<String> getGroups() {
+        return groups;
+    }
+
+    @JsonProperty("groups")
+    public void setGroups(List<String> groups) {
+        this.groups = groups;
     }
 
     @JsonProperty("name")

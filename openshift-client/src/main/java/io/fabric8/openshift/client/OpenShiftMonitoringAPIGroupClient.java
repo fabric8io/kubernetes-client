@@ -15,8 +15,7 @@
  */
 package io.fabric8.openshift.client;
 
-import io.fabric8.kubernetes.client.BaseClient;
-import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.openshift.api.model.monitoring.v1.Alertmanager;
@@ -36,54 +35,53 @@ import io.fabric8.openshift.api.model.monitoring.v1.ThanosRulerList;
 import io.fabric8.openshift.api.model.monitoring.v1alpha1.AlertmanagerConfig;
 import io.fabric8.openshift.api.model.monitoring.v1alpha1.AlertmanagerConfigList;
 import io.fabric8.openshift.client.dsl.OpenShiftMonitoringAPIGroupDSL;
-import okhttp3.OkHttpClient;
 
-public class OpenShiftMonitoringAPIGroupClient extends BaseClient implements OpenShiftMonitoringAPIGroupDSL {
+public class OpenShiftMonitoringAPIGroupClient extends BaseOpenShiftClient implements OpenShiftMonitoringAPIGroupDSL {
   public OpenShiftMonitoringAPIGroupClient() {
     super();
   }
 
-  public OpenShiftMonitoringAPIGroupClient(OkHttpClient httpClient, final Config config) {
-    super(httpClient, config);
+  public OpenShiftMonitoringAPIGroupClient(ClientContext clientContext) {
+    super(clientContext);
   }
 
   @Override
   public MixedOperation<AlertmanagerConfig, AlertmanagerConfigList, Resource<AlertmanagerConfig>> alertmanagerConfigs() {
-    return OpenShiftHandlers.getOperation(AlertmanagerConfig.class, AlertmanagerConfigList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(AlertmanagerConfig.class, AlertmanagerConfigList.class, this);
   }
 
   @Override
   public MixedOperation<Prometheus, PrometheusList, Resource<Prometheus>> prometheuses() {
-    return OpenShiftHandlers.getOperation(Prometheus.class, PrometheusList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(Prometheus.class, PrometheusList.class, this);
   }
 
   @Override
   public MixedOperation<PodMonitor, PodMonitorList, Resource<PodMonitor>> podMonitors() {
-    return OpenShiftHandlers.getOperation(PodMonitor.class, PodMonitorList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(PodMonitor.class, PodMonitorList.class, this);
   }
 
   @Override
   public MixedOperation<Probe, ProbeList, Resource<Probe>> probes() {
-    return OpenShiftHandlers.getOperation(Probe.class, ProbeList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(Probe.class, ProbeList.class, this);
   }
 
   @Override
   public MixedOperation<Alertmanager, AlertmanagerList, Resource<Alertmanager>> alertmanagers() {
-    return OpenShiftHandlers.getOperation(Alertmanager.class, AlertmanagerList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(Alertmanager.class, AlertmanagerList.class, this);
   }
 
   @Override
   public MixedOperation<PrometheusRule, PrometheusRuleList, Resource<PrometheusRule>> prometheusRules() {
-    return OpenShiftHandlers.getOperation(PrometheusRule.class, PrometheusRuleList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(PrometheusRule.class, PrometheusRuleList.class, this);
   }
 
   @Override
   public MixedOperation<ServiceMonitor, ServiceMonitorList, Resource<ServiceMonitor>> serviceMonitors() {
-    return OpenShiftHandlers.getOperation(ServiceMonitor.class, ServiceMonitorList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(ServiceMonitor.class, ServiceMonitorList.class, this);
   }
 
   @Override
   public MixedOperation<ThanosRuler, ThanosRulerList, Resource<ThanosRuler>> thanosRulers() {
-    return OpenShiftHandlers.getOperation(ThanosRuler.class, ThanosRulerList.class, httpClient, OpenShiftConfig.wrap(getConfiguration()));
+    return OpenShiftHandlers.getOperation(ThanosRuler.class, ThanosRulerList.class, this);
   }
 }

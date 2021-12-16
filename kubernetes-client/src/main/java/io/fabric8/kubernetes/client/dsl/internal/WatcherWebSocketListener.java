@@ -16,25 +16,15 @@
 package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.api.model.Status;
-import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.WatcherException;
-import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
-import io.fabric8.kubernetes.client.utils.Utils;
-import okhttp3.Response;
-import okhttp3.WebSocket;
-import okhttp3.WebSocketListener;
-import okio.ByteString;
+import io.fabric8.kubernetes.client.http.WebSocket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 
-import static java.net.HttpURLConnection.HTTP_OK;
-import static java.net.HttpURLConnection.HTTP_UNAVAILABLE;
-
-class WatcherWebSocketListener<T extends HasMetadata> extends WebSocketListener {
+class WatcherWebSocketListener<T extends HasMetadata> implements WebSocket.Listener {
   protected static final Logger logger = LoggerFactory.getLogger(WatcherWebSocketListener.class);
   
   // don't allow for concurrent failure and message processing
@@ -42,7 +32,6 @@ class WatcherWebSocketListener<T extends HasMetadata> extends WebSocketListener 
   // or worse additional reconnection attempts while the previous threads are still held
   private final Object reconnectLock = new Object();
   
-  private final CompletableFuture<Void> startedFuture = new CompletableFuture<>();
   protected final AbstractWatchManager<T> manager;
   
   protected WatcherWebSocketListener(AbstractWatchManager<T> manager) {
@@ -50,39 +39,17 @@ class WatcherWebSocketListener<T extends HasMetadata> extends WebSocketListener 
   }
   
   @Override
-  public void onOpen(final WebSocket webSocket, Response response) {
-    WatchConnectionManager.closeBody(response);
+  public void onOpen(final WebSocket webSocket) {
     logger.debug("WebSocket successfully opened");
     manager.resetReconnectAttempts();
-    startedFuture.complete(null);
   }
   
+  
   @Override
-  public void onFailure(WebSocket webSocket, Throwable t, Response response) {
-    try {
-      if (manager.isForceClosed()) {
-        logger.debug("Ignoring onFailure for already closed/closing websocket", t);
-        return;
-      }
-    
-      if (response != null) {
-        final int code = response.code();
-        // We do not expect a 200 in response to the websocket connection. If it occurs, we throw
-        // an exception and try the watch via a persistent HTTP Get.
-        // Newer Kubernetes might also return 503 Service Unavailable in case WebSockets are not supported
-        Status status = OperationSupport.createStatus(response);
-        if (HTTP_OK == code || HTTP_UNAVAILABLE == code) {
-          pushException(OperationSupport.requestFailure(response.request(), status, "Received " + code + " on websocket"));
-          return;
-        }
-        logger.warn("Exec Failure: HTTP {}, Status: {} - {}", code, status.getCode(), status.getMessage());
-        pushException(OperationSupport.requestFailure(response.request(), status));
-      } else {
-        logger.warn("Exec Failure {} {}", t.getClass().getName(), t.getMessage());
-        pushException(new KubernetesClientException("Failed to start websocket", t));
-      }
-    } finally {
-      WatchConnectionManager.closeBody(response);
+  public void onError(WebSocket webSocket, Throwable t) {
+    if (manager.isForceClosed()) {
+      logger.debug("Ignoring onFailure for already closed/closing websocket", t);
+      return;
     }
     
     if (manager.cannotReconnect()) {
@@ -102,30 +69,16 @@ class WatcherWebSocketListener<T extends HasMetadata> extends WebSocketListener 
     }
   }
   
-  private void pushException(KubernetesClientException exception) {
-    if (!startedFuture.completeExceptionally(exception)) {
-      logger.debug("Couldn't report exception", exception);
-    }
+  @Override
+  public void onMessage(WebSocket webSocket, ByteBuffer bytes) {
+    onMessage(webSocket, StandardCharsets.UTF_8.decode(bytes).toString());
   }
   
   @Override
-  public void onMessage(WebSocket webSocket, ByteString bytes) {
-    onMessage(webSocket, bytes.utf8());
-  }
-  
-  @Override
-  public void onClosing(WebSocket webSocket, int code, String reason) {
-    logger.debug("Socket closing: {}", reason);
-    webSocket.close(code, reason);
-  }
-  
-  @Override
-  public void onClosed(WebSocket webSocket, int code, String reason) {
+  public void onClose(WebSocket webSocket, int code, String reason) {
     logger.debug("WebSocket close received. code: {}, reason: {}", code, reason);
+    webSocket.sendClose(code, reason);
     manager.scheduleReconnect();
   }
   
-  protected void waitUntilReady() {
-    Utils.waitUntilReadyOrFail(startedFuture, 10, TimeUnit.SECONDS);
-  }
 }

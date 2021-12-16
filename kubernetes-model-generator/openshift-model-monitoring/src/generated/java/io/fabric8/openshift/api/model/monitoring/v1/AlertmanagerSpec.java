@@ -57,6 +57,7 @@ import lombok.experimental.Accessors;
     "listenLocal",
     "logFormat",
     "logLevel",
+    "minReadySeconds",
     "nodeSelector",
     "paused",
     "podMetadata",
@@ -144,6 +145,8 @@ public class AlertmanagerSpec implements KubernetesResource
     private java.lang.String logFormat;
     @JsonProperty("logLevel")
     private java.lang.String logLevel;
+    @JsonProperty("minReadySeconds")
+    private Integer minReadySeconds;
     @JsonProperty("nodeSelector")
     private Map<String, String> nodeSelector;
     @JsonProperty("paused")
@@ -237,12 +240,13 @@ public class AlertmanagerSpec implements KubernetesResource
      * @param additionalPeers
      * @param containers
      * @param clusterGossipInterval
+     * @param minReadySeconds
      * @param podMetadata
      * @param initContainers
      * @param affinity
      * @param clusterPeerTimeout
      */
-    public AlertmanagerSpec(List<java.lang.String> additionalPeers, Affinity affinity, io.fabric8.kubernetes.api.model.LabelSelector alertmanagerConfigNamespaceSelector, io.fabric8.kubernetes.api.model.LabelSelector alertmanagerConfigSelector, java.lang.String baseImage, java.lang.String clusterAdvertiseAddress, java.lang.String clusterGossipInterval, java.lang.String clusterPeerTimeout, java.lang.String clusterPushpullInterval, List<java.lang.String> configMaps, java.lang.String configSecret, List<io.fabric8.kubernetes.api.model.Container> containers, java.lang.String externalUrl, Boolean forceEnableClusterMode, java.lang.String image, List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets, List<io.fabric8.kubernetes.api.model.Container> initContainers, Boolean listenLocal, java.lang.String logFormat, java.lang.String logLevel, Map<String, String> nodeSelector, Boolean paused, EmbeddedObjectMetadata podMetadata, java.lang.String portName, java.lang.String priorityClassName, Integer replicas, io.fabric8.kubernetes.api.model.ResourceRequirements resources, java.lang.String retention, java.lang.String routePrefix, List<java.lang.String> secrets, PodSecurityContext securityContext, java.lang.String serviceAccountName, java.lang.String sha, StorageSpec storage, java.lang.String tag, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, java.lang.String version, List<VolumeMount> volumeMounts, List<Volume> volumes) {
+    public AlertmanagerSpec(List<java.lang.String> additionalPeers, Affinity affinity, io.fabric8.kubernetes.api.model.LabelSelector alertmanagerConfigNamespaceSelector, io.fabric8.kubernetes.api.model.LabelSelector alertmanagerConfigSelector, java.lang.String baseImage, java.lang.String clusterAdvertiseAddress, java.lang.String clusterGossipInterval, java.lang.String clusterPeerTimeout, java.lang.String clusterPushpullInterval, List<java.lang.String> configMaps, java.lang.String configSecret, List<io.fabric8.kubernetes.api.model.Container> containers, java.lang.String externalUrl, Boolean forceEnableClusterMode, java.lang.String image, List<io.fabric8.kubernetes.api.model.LocalObjectReference> imagePullSecrets, List<io.fabric8.kubernetes.api.model.Container> initContainers, Boolean listenLocal, java.lang.String logFormat, java.lang.String logLevel, Integer minReadySeconds, Map<String, String> nodeSelector, Boolean paused, EmbeddedObjectMetadata podMetadata, java.lang.String portName, java.lang.String priorityClassName, Integer replicas, io.fabric8.kubernetes.api.model.ResourceRequirements resources, java.lang.String retention, java.lang.String routePrefix, List<java.lang.String> secrets, PodSecurityContext securityContext, java.lang.String serviceAccountName, java.lang.String sha, StorageSpec storage, java.lang.String tag, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, java.lang.String version, List<VolumeMount> volumeMounts, List<Volume> volumes) {
         super();
         this.additionalPeers = additionalPeers;
         this.affinity = affinity;
@@ -264,6 +268,7 @@ public class AlertmanagerSpec implements KubernetesResource
         this.listenLocal = listenLocal;
         this.logFormat = logFormat;
         this.logLevel = logLevel;
+        this.minReadySeconds = minReadySeconds;
         this.nodeSelector = nodeSelector;
         this.paused = paused;
         this.podMetadata = podMetadata;
@@ -484,6 +489,16 @@ public class AlertmanagerSpec implements KubernetesResource
     @JsonProperty("logLevel")
     public void setLogLevel(java.lang.String logLevel) {
         this.logLevel = logLevel;
+    }
+
+    @JsonProperty("minReadySeconds")
+    public Integer getMinReadySeconds() {
+        return minReadySeconds;
+    }
+
+    @JsonProperty("minReadySeconds")
+    public void setMinReadySeconds(Integer minReadySeconds) {
+        this.minReadySeconds = minReadySeconds;
     }
 
     @JsonProperty("nodeSelector")

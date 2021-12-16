@@ -39,7 +39,8 @@ import lombok.experimental.Accessors;
     "from",
     "incremental",
     "pullSecret",
-    "scripts"
+    "scripts",
+    "volumes"
 })
 @ToString
 @EqualsAndHashCode
@@ -75,6 +76,9 @@ public class SourceBuildStrategy implements KubernetesResource
     private io.fabric8.kubernetes.api.model.LocalObjectReference pullSecret;
     @JsonProperty("scripts")
     private String scripts;
+    @JsonProperty("volumes")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<BuildVolume> volumes = new ArrayList<BuildVolume>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -88,13 +92,14 @@ public class SourceBuildStrategy implements KubernetesResource
     /**
      * 
      * @param forcePull
+     * @param volumes
      * @param from
      * @param incremental
      * @param env
      * @param scripts
      * @param pullSecret
      */
-    public SourceBuildStrategy(List<EnvVar> env, Boolean forcePull, io.fabric8.kubernetes.api.model.ObjectReference from, Boolean incremental, io.fabric8.kubernetes.api.model.LocalObjectReference pullSecret, String scripts) {
+    public SourceBuildStrategy(List<EnvVar> env, Boolean forcePull, io.fabric8.kubernetes.api.model.ObjectReference from, Boolean incremental, io.fabric8.kubernetes.api.model.LocalObjectReference pullSecret, String scripts, List<BuildVolume> volumes) {
         super();
         this.env = env;
         this.forcePull = forcePull;
@@ -102,6 +107,7 @@ public class SourceBuildStrategy implements KubernetesResource
         this.incremental = incremental;
         this.pullSecret = pullSecret;
         this.scripts = scripts;
+        this.volumes = volumes;
     }
 
     @JsonProperty("env")
@@ -162,6 +168,16 @@ public class SourceBuildStrategy implements KubernetesResource
     @JsonProperty("scripts")
     public void setScripts(String scripts) {
         this.scripts = scripts;
+    }
+
+    @JsonProperty("volumes")
+    public List<BuildVolume> getVolumes() {
+        return volumes;
+    }
+
+    @JsonProperty("volumes")
+    public void setVolumes(List<BuildVolume> volumes) {
+        this.volumes = volumes;
     }
 
     @JsonAnyGetter
