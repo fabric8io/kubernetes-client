@@ -436,7 +436,7 @@ public class DefaultOpenShiftClient extends BaseKubernetesClient<NamespacedOpenS
 
   @Override
   public MixedOperation<EgressRouter, EgressRouterList, Resource<EgressRouter>> egressRouters() {
-    return OpenShiftHandlers.getOperation(EgressRouter.class, EgressRouterList.class, httpClient, getConfiguration());
+    return OpenShiftHandlers.getOperation(EgressRouter.class, EgressRouterList.class, this);
   }
 
   @Override
@@ -629,7 +629,7 @@ public class DefaultOpenShiftClient extends BaseKubernetesClient<NamespacedOpenS
 
   @Override
   public NonNamespaceOperation<APIRequestCount, APIRequestCountList, Resource<APIRequestCount>> apiRequestCounts() {
-    return OpenShiftHandlers.getOperation(APIRequestCount.class, APIRequestCountList.class, httpClient, getConfiguration());
+    return OpenShiftHandlers.getOperation(APIRequestCount.class, APIRequestCountList.class, this);
   }
 
   @Override
