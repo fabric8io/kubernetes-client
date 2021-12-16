@@ -362,7 +362,7 @@ class PodTest {
       .addToItems(pod1)
       .build()
     ).once();
-    server.expect().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&watch=true")
+    server.expect().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&allowWatchBookmarks=true&watch=true")
       .andUpgradeToWebSocket()
       .open()
       .waitFor(50).andEmit(new WatchEvent(pod1, "DELETED"))
@@ -436,7 +436,7 @@ class PodTest {
 
     server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1").andReturn(200, notReady).once();
 
-    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true").andUpgradeToWebSocket()
+    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true").andUpgradeToWebSocket()
       .open()
       .waitFor(50).andEmit(new WatchEvent(ready, "MODIFIED"))
       .done()

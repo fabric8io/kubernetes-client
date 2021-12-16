@@ -211,7 +211,7 @@ class ResourceTest {
       server.expect().get().withPath("/api/v1/namespaces/test/pods").andReturn(200, pod1).once();
       server.expect().post().withPath("/api/v1/namespaces/test/pods").andReturn(201, pod1).once();
 
-     server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&watch=true").andUpgradeToWebSocket()
+     server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&allowWatchBookmarks=true&watch=true").andUpgradeToWebSocket()
         .open()
           .waitFor(1000).andEmit(new WatchEvent(pod1, "DELETED"))
         .done()
@@ -247,7 +247,7 @@ class ResourceTest {
 
     list(noReady);
 
-    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true").andUpgradeToWebSocket()
+    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true").andUpgradeToWebSocket()
       .open()
       .waitFor(500).andEmit(new WatchEvent(ready, "MODIFIED"))
       .done()
@@ -284,7 +284,7 @@ class ResourceTest {
     // and again so that "periodicWatchUntilReady" successfully begins
     server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1").andReturn(200, noReady).times(2);
 
-    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true").andUpgradeToWebSocket()
+    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true").andUpgradeToWebSocket()
       .open()
       .waitFor(100).andEmit(new WatchEvent(ready, "MODIFIED"))
       .done()
@@ -332,7 +332,7 @@ class ResourceTest {
     // at first the pod is non-ready
     list(noReady);
 
-    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true").andUpgradeToWebSocket()
+    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true").andUpgradeToWebSocket()
       .open()
       .waitFor(1000).andEmit(new WatchEvent(ready, "MODIFIED"))
       .waitFor(2000).andEmit(new WatchEvent(withConditionBeingFalse, "MODIFIED"))
@@ -370,7 +370,7 @@ class ResourceTest {
     // once not ready, to begin watch
     list(noReady);
 
-    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true").andUpgradeToWebSocket()
+    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true").andUpgradeToWebSocket()
       .open()
       .waitFor(500).andEmit(new WatchEvent(status, "ERROR"))
       .waitFor(500).andEmit(new WatchEvent(ready, "MODIFIED"))
@@ -398,13 +398,13 @@ class ResourceTest {
     // once not ready, to begin watch
     list(noReady);
 
-    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true").andUpgradeToWebSocket()
+    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true").andUpgradeToWebSocket()
       .open()
       .waitFor(500).andEmit(new WatchEvent(status, "ERROR"))
       .done()
       .once();
 
-    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true").andUpgradeToWebSocket()
+    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true").andUpgradeToWebSocket()
       .open()
       .waitFor(500).andEmit(new WatchEvent(ready, "MODIFIED"))
       .done()
@@ -449,7 +449,7 @@ class ResourceTest {
     // once not ready, to begin watch
     list(noReady);
 
-    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true").andUpgradeToWebSocket()
+    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true").andUpgradeToWebSocket()
       .open()
       .waitFor(500).andEmit(new WatchEvent(status, "ERROR"))
       .done()
@@ -475,7 +475,7 @@ class ResourceTest {
 
     list(ready);
 
-    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true").andUpgradeToWebSocket()
+    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true").andUpgradeToWebSocket()
       .open()
       .waitFor(1000).andEmit(new WatchEvent(ready, "DELETED"))
       .done()
@@ -499,7 +499,7 @@ class ResourceTest {
     list(noReady);
     server.expect().post().withPath("/api/v1/namespaces/test/pods").andReturn(201, noReady).once();
 
-    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true").andUpgradeToWebSocket()
+    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true").andUpgradeToWebSocket()
       .open()
       .waitFor(1000).andEmit(new WatchEvent(ready, "MODIFIED"))
       .done()
@@ -543,7 +543,7 @@ class ResourceTest {
       .endMetadata()
       .build();
     list(conditionNotMetPod);
-    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod&resourceVersion=1&watch=true")
+    server.expect().get().withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod&resourceVersion=1&allowWatchBookmarks=true&watch=true")
       .andUpgradeToWebSocket().open()
       .immediately().andEmit(new WatchEvent(conditionNotMetPod, "MODIFIED"))
       .waitFor(10).andEmit(new WatchEvent(conditionMetPod, "MODIFIED"))

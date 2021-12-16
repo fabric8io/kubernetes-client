@@ -39,8 +39,8 @@ import java.net.HttpURLConnection;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import static io.fabric8.kubernetes.client.Watcher.Action.DELETED;
 import static io.fabric8.kubernetes.client.Watcher.Action.BOOKMARK;
+import static io.fabric8.kubernetes.client.Watcher.Action.DELETED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -67,7 +67,7 @@ class WatchTest {
   void testTryWithResourcesConnectsThenReceivesEvent() throws InterruptedException {
     // Given
     server.expect()
-        .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true")
+        .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket().open()
         .waitFor(EVENT_WAIT_PERIOD_MS).andEmit(new WatchEvent(pod1, "DELETED"))
         .waitFor(EVENT_WAIT_PERIOD_MS).andEmit(outdatedEvent()).done().once();
@@ -103,7 +103,7 @@ class WatchTest {
     // Given
     final CountDownLatch closeLatch = new CountDownLatch(1);
     server.expect()
-      .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true")
+      .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true")
       .andReturn(410, outdatedEvent()).once();
     final Watcher<Pod> watcher = new Watcher<Pod>() {
       @Override
@@ -138,7 +138,7 @@ class WatchTest {
   void testWithTimeoutSecondsShouldAddQueryParam() throws InterruptedException {
     // Given
     server.expect()
-      .withPath("/api/v1/namespaces/test/pods?timeoutSeconds=30&watch=true")
+      .withPath("/api/v1/namespaces/test/pods?timeoutSeconds=30&allowWatchBookmarks=true&watch=true")
       .andUpgradeToWebSocket().open()
       .waitFor(EVENT_WAIT_PERIOD_MS).andEmit(new WatchEvent(pod1, "DELETED"))
       .waitFor(EVENT_WAIT_PERIOD_MS).andEmit(outdatedEvent()).done().once();
@@ -166,7 +166,7 @@ class WatchTest {
   void testHttpErrorReconnect() throws InterruptedException {
     // Given
     client.getConfiguration().setWatchReconnectInterval(10);
-    final String path = "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true";
+    final String path = "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true";
     // accept watch and disconnect
     server.expect().withPath(path).andUpgradeToWebSocket().open().done().once();
     // refuse reconnect attempts 6 times
@@ -200,7 +200,7 @@ class WatchTest {
     final CountDownLatch closeLatch = new CountDownLatch(1);
 
     server.expect()
-      .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true")
+      .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true")
       .andUpgradeToWebSocket().open().waitFor(EVENT_WAIT_PERIOD_MS).andEmit(new WatchEvent(pod1, "MODIFIED")).waitFor(EVENT_WAIT_PERIOD_MS)
       .andEmit(new WatchEvent(pod1, "MODIFIED")).done().once();
 
@@ -237,7 +237,7 @@ class WatchTest {
     final Pod pod1update = new PodBuilder().withNewMetadata().withNamespace("test").withName("pod1")
       .withResourceVersion("10").endMetadata().build();
 
-    final String path = "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true";
+    final String path = "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true";
 
     server.expect()
       .withPath(path)
@@ -246,7 +246,7 @@ class WatchTest {
       .waitFor(EVENT_WAIT_PERIOD_MS).andEmit(new WatchEvent(pod1update, "MODIFIED"))
       .done().once();
 
-    final String reconnectPath = "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=10&watch=true";
+    final String reconnectPath = "/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=10&allowWatchBookmarks=true&watch=true";
 
     server.expect()
       .withPath(reconnectPath)
@@ -284,7 +284,7 @@ class WatchTest {
   void testTryWithResourcesConnectsThenReceivesEventBookmark() throws InterruptedException {
     // Given
     server.expect()
-      .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true")
+      .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true")
       .andUpgradeToWebSocket().open()
       .waitFor(EVENT_WAIT_PERIOD_MS).andEmit(new WatchEvent(pod1, "BOOKMARK"))
       .waitFor(EVENT_WAIT_PERIOD_MS).andEmit(outdatedEvent()).done().once();
@@ -306,7 +306,7 @@ class WatchTest {
       }
     };
     // When
-    try (Watch watch = client.pods().withName("pod1").withResourceVersion("1").watch(watcher)) {
+    try (Watch watch = client.pods().withName("pod1").withResourceVersion("1").watch(new ListOptionsBuilder().withAllowWatchBookmarks(true).build(), watcher)) {
       // Then
       assertNotNull(watch);
       assertTrue(bookmarkLatch.await(10, TimeUnit.SECONDS));

@@ -188,13 +188,13 @@ public class ResourceListTest {
     ResourceTest.list(server, noReady1);
     ResourceTest.list(server, noReady2);
 
-    server.expect().get().withPath("/api/v1/namespaces/ns1/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true").andUpgradeToWebSocket()
+    server.expect().get().withPath("/api/v1/namespaces/ns1/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true").andUpgradeToWebSocket()
       .open()
       .waitFor(500).andEmit(new WatchEvent(ready1, "MODIFIED"))
       .done()
       .once();
 
-    server.expect().get().withPath("/api/v1/namespaces/ns1/pods?fieldSelector=metadata.name%3Dpod2&resourceVersion=1&watch=true").andUpgradeToWebSocket()
+    server.expect().get().withPath("/api/v1/namespaces/ns1/pods?fieldSelector=metadata.name%3Dpod2&resourceVersion=1&allowWatchBookmarks=true&watch=true").andUpgradeToWebSocket()
       .open()
       .waitFor(500).andEmit(new WatchEvent(ready2, "MODIFIED"))
       .done()
@@ -234,7 +234,7 @@ public class ResourceListTest {
       .build();
 
     // This pod has a non-retryable error.
-    server.expect().get().withPath("/api/v1/namespaces/ns1/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true")
+    server.expect().get().withPath("/api/v1/namespaces/ns1/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true")
       .andUpgradeToWebSocket()
       .open()
       .waitFor(500).andEmit(new WatchEvent(gone, "ERROR"))
@@ -242,7 +242,7 @@ public class ResourceListTest {
       .once();
 
     // This pod succeeds.
-    server.expect().get().withPath("/api/v1/namespaces/ns1/pods?fieldSelector=metadata.name%3Dpod2&resourceVersion=1&watch=true")
+    server.expect().get().withPath("/api/v1/namespaces/ns1/pods?fieldSelector=metadata.name%3Dpod2&resourceVersion=1&allowWatchBookmarks=true&watch=true")
       .andUpgradeToWebSocket()
       .open()
       .waitFor(500).andEmit(new WatchEvent(ready2, "MODIFIED"))
@@ -284,14 +284,14 @@ public class ResourceListTest {
       .build();
 
     // Both pods have a non-retryable error.
-    server.expect().get().withPath("/api/v1/namespaces/ns1/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true")
+    server.expect().get().withPath("/api/v1/namespaces/ns1/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true")
       .andUpgradeToWebSocket()
       .open()
       .waitFor(500).andEmit(new WatchEvent(gone, "ERROR"))
       .done()
       .once();
 
-    server.expect().get().withPath("/api/v1/namespaces/ns1/pods?fieldSelector=metadata.name%3Dpod2&resourceVersion=1&watch=true")
+    server.expect().get().withPath("/api/v1/namespaces/ns1/pods?fieldSelector=metadata.name%3Dpod2&resourceVersion=1&allowWatchBookmarks=true&watch=true")
       .andUpgradeToWebSocket()
       .open()
       .waitFor(500).andEmit(new WatchEvent(gone, "ERROR"))

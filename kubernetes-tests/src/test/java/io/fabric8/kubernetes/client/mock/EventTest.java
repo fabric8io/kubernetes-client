@@ -56,7 +56,7 @@ class EventTest {
       .build();
 
     server.expect()
-      .withPath("/api/v1/namespaces/ns1/events?watch=true")
+      .withPath("/api/v1/namespaces/ns1/events?allowWatchBookmarks=true&watch=true")
       .andUpgradeToWebSocket().open().waitFor(50)
       .andEmit(new WatchEvent(testEvent, "ADDED"))
       .done().once();

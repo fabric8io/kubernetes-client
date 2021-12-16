@@ -61,7 +61,7 @@ class InformTest {
         .once();
 
     server.expect()
-        .withPath("/api/v1/namespaces/test/pods?labelSelector=my-label&resourceVersion=1&watch=true")
+        .withPath("/api/v1/namespaces/test/pods?labelSelector=my-label&resourceVersion=1&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .waitFor(EVENT_WAIT_PERIOD_MS)
@@ -114,7 +114,7 @@ class InformTest {
         .once();
 
     server.expect()
-        .withPath("/apis/demos.fabric8.io/v1/namespaces/test/dummies?labelSelector=my-label&resourceVersion=1&watch=true")
+        .withPath("/apis/demos.fabric8.io/v1/namespaces/test/dummies?labelSelector=my-label&resourceVersion=1&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .waitFor(EVENT_WAIT_PERIOD_MS)
@@ -176,7 +176,7 @@ class InformTest {
         .once();
 
     server.expect()
-        .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&watch=true")
+        .withPath("/api/v1/namespaces/test/pods?fieldSelector=metadata.name%3Dpod1&resourceVersion=1&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .waitFor(EVENT_WAIT_PERIOD_MS)
@@ -235,7 +235,7 @@ class InformTest {
         .once();
 
     server.expect()
-        .withPath("/api/v1/namespaces/test/pods?labelSelector=my-label&resourceVersion=1&watch=true")
+        .withPath("/api/v1/namespaces/test/pods?labelSelector=my-label&resourceVersion=1&allowWatchBookmarks=true&watch=true")
         .andUpgradeToWebSocket()
         .open()
         .waitFor(EVENT_WAIT_PERIOD_MS)

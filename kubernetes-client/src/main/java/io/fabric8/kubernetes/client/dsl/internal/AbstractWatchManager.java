@@ -67,6 +67,8 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
   private URL requestUrl;
 
   private final AtomicBoolean reconnectPending = new AtomicBoolean(false);
+  
+  private final boolean receiveBookmarks;
 
   AbstractWatchManager(
     Watcher<T> watcher, BaseOperation<T, ?, ?> baseOperation, ListOptions listOptions, int reconnectLimit, int reconnectInterval, int maxIntervalExponent, Supplier<HttpClient> clientSupplier
@@ -77,6 +79,11 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     this.resourceVersion = new AtomicReference<>(listOptions.getResourceVersion());
     this.currentReconnectAttempt = new AtomicInteger(0);
     this.forceClosed = new AtomicBoolean();
+    this.receiveBookmarks = Boolean.TRUE.equals(listOptions.getAllowWatchBookmarks());
+    // opt into bookmarks by default 
+    if (listOptions.getAllowWatchBookmarks() == null) {
+      listOptions.setAllowWatchBookmarks(true);
+    }
     this.baseOperation = baseOperation;
     this.requestUrl = baseOperation.getNamespacedUrl();
     this.listOptions = listOptions;
@@ -184,6 +191,10 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
   }
   
   void eventReceived(Watcher.Action action, HasMetadata resource) {
+    if (!receiveBookmarks && action == Action.BOOKMARK) {
+      // the user didn't ask for bookmarks, just filter them
+      return; 
+    }
     // the WatchEvent deserialization is not specifically typed
     // modify the type here if needed
     if (resource != null && !baseOperation.getType().isAssignableFrom(resource.getClass())) {
