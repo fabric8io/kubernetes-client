@@ -77,15 +77,17 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
       }
       if (response != null) {
         try (InputStream body = response.body()){
-          resetReconnectAttempts();
-          if (!response.isSuccessful() 
-              && onStatus(OperationSupport.createStatus(response.code(), response.message()))) {
-            return;
-          }
-          BufferedReader source = new BufferedReader(new InputStreamReader(body, StandardCharsets.UTF_8));
-          String message = null;
-          while ((message = source.readLine()) != null) {
-            onMessage(message);
+          if (!response.isSuccessful()) {
+            if (onStatus(OperationSupport.createStatus(response.code(), response.message()))) {
+              return; // terminal state
+            }
+          } else {
+            resetReconnectAttempts();
+            BufferedReader source = new BufferedReader(new InputStreamReader(body, StandardCharsets.UTF_8));
+            String message = null;
+            while ((message = source.readLine()) != null) {
+              onMessage(message);
+            }
           }
         } catch (Exception e) {
           logger.info("Watch terminated unexpectedly. reason: {}", e.getMessage());
@@ -105,5 +107,4 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
       call = null;
     }
   }
-  
 }

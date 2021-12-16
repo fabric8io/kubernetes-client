@@ -30,6 +30,7 @@ import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.dsl.Watchable;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
+import org.awaitility.Awaitility;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -312,5 +313,28 @@ class WatchTest {
       assertTrue(bookmarkLatch.await(10, TimeUnit.SECONDS));
       assertTrue(closeLatch.await(10, TimeUnit.SECONDS));
     }
+  }
+
+  @Test
+  void testErrorResponse() throws InterruptedException {
+    // Given
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods?watch=true")
+        .andReturn(503, "may not be a status")
+        .once();
+
+    client.pods().watch(new Watcher<Pod>() {
+
+      @Override
+      public void eventReceived(Action action, Pod resource) {
+
+      }
+
+      @Override
+      public void onClose(WatcherException cause) {
+      }});
+
+    // initial failure, then the http retry
+    Awaitility.await().atMost(10, TimeUnit.SECONDS).until(() -> server.getRequestCount() == 2);
   }
 }
