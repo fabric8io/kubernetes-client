@@ -319,7 +319,7 @@ class WatchTest {
   void testErrorResponse() throws InterruptedException {
     // Given
     server.expect()
-        .withPath("/api/v1/namespaces/test/pods?watch=true")
+        .withPath("/api/v1/namespaces/test/pods?allowWatchBookmarks=true&watch=true")
         .andReturn(503, "may not be a status")
         .once();
 
