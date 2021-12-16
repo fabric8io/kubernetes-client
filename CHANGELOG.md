@@ -12,6 +12,7 @@
 * Fix #3620: throw a meaningful exception if no kind/plural is on a ResourceDefinitionContext, default plural if possible
 
 #### Improvements
+* Fix #3600: add owner references support to HasMetadata
 
 #### Dependency Upgrade
 
