@@ -43,6 +43,7 @@ This document contains common usages of different resources using Fabric8 Kubern
   * [Log Options](#log-options)
   * [Serializing to yaml](#serializing-to-yaml)
   * [Running a Pod](#running-a-pod)
+  * [ClusterRole](#clusterrole)
 
 * [OpenShift Client DSL Usage](#openshift-client-dsl-usage)  
   * [Initializing OpenShift Client](#initializing-openshift-client)
@@ -2176,6 +2177,31 @@ try (KubernetesClient client = new DefaultKubernetesClient()) {
             .done();
 }
 ```
+
+### ClusterRole
+`ClusterRole` is available in Kubernetes Client API via `client.rbac().clusterRoles()`. Here are some of the common usages:
+- Load `ClusterRole` from yaml:
+```
+ClusterRole clusterRole = client.rbac().clusterRoles().load(new FileInputStream("clusterRoles-test.yml")).get();
+```
+- Get `ClusterRole` from Kubernetes API server:
+```
+ClusterRole clusterRole = client.rbac().clusterRoles().withName("ClusterRole1").get();
+```
+- List `ClusterRole` objects:
+```
+ClusterRoleList clusterRoleList = client.rbac().clusterRoles().list();
+```
+- List `ClusterRole` objects with some labels:
+```
+ClusterRoleList clusterRoleList = client.rbac().clusterRoles().withLabel("key1", "value1").list();
+```
+- Delete `ClusterRole` objects:
+```
+Boolean isDeleted = rbac().clusterRoles().withName("ClusterRole1").delete();
+```
+
+
 
 ### OpenShift Client DSL Usage
 
