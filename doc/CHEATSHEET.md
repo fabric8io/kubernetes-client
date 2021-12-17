@@ -29,6 +29,7 @@ This document contains common usages of different resources using Fabric8 Kubern
   * [SubjectAccessReview](#subjectaccessreview)
   * [LocalSubjectAccessReview](#localsubjectaccessreview)
   * [SelfSubjectRulesReview](#selfsubjectrulesreview)
+  * [ClusterRole](#clusterrole)
   * [Top/Metrics](#fetching-metrics)
   * [Generic Resource API](#resource-api)
   * [Generic ResourceList API](#resourcelist-api)
@@ -43,7 +44,6 @@ This document contains common usages of different resources using Fabric8 Kubern
   * [Log Options](#log-options)
   * [Serializing to yaml](#serializing-to-yaml)
   * [Running a Pod](#running-a-pod)
-  * [ClusterRole](#clusterrole)
 
 * [OpenShift Client DSL Usage](#openshift-client-dsl-usage)  
   * [Initializing OpenShift Client](#initializing-openshift-client)
@@ -1524,6 +1524,29 @@ try (KubernetesClient client = new DefaultKubernetesClient()) {
 }
 ```
 
+### ClusterRole
+`ClusterRole` is available in Kubernetes Client API via `client.rbac().clusterRoles()`. Here are some of the common usages:
+- Load `ClusterRole` from yaml:
+```
+ClusterRole clusterRole = client.rbac().clusterRoles().load(new FileInputStream("clusterroles-test.yml")).get();
+```
+- Get `ClusterRole` from Kubernetes API server:
+```
+ClusterRole clusterRole = client.rbac().clusterRoles().withName("clusterrole1").get();
+```
+- List `ClusterRole` objects:
+```
+ClusterRoleList clusterRoleList = client.rbac().clusterRoles().list();
+```
+- List `ClusterRole` objects with some labels:
+```
+ClusterRoleList clusterRoleList = client.rbac().clusterRoles().withLabel("key1", "value1").list();
+```
+- Delete `ClusterRole` objects:
+```
+Boolean isDeleted = client.rbac().clusterRoles().withName("clusterrole1").delete();
+```
+
 ### Fetching Metrics
 Kubernetes Client also supports fetching metrics from API server if metrics are enabled on it. You can access metrics via `client.top()`. Here are some examples of its usage:
 - Get `NodeMetrics` for all nodes:
@@ -2176,29 +2199,6 @@ try (KubernetesClient client = new DefaultKubernetesClient()) {
                     .build())
             .done();
 }
-```
-
-### ClusterRole
-`ClusterRole` is available in Kubernetes Client API via `client.rbac().clusterRoles()`. Here are some of the common usages:
-- Load `ClusterRole` from yaml:
-```
-ClusterRole clusterRole = client.rbac().clusterRoles().load(new FileInputStream("clusterRoles-test.yml")).get();
-```
-- Get `ClusterRole` from Kubernetes API server:
-```
-ClusterRole clusterRole = client.rbac().clusterRoles().withName("ClusterRole1").get();
-```
-- List `ClusterRole` objects:
-```
-ClusterRoleList clusterRoleList = client.rbac().clusterRoles().list();
-```
-- List `ClusterRole` objects with some labels:
-```
-ClusterRoleList clusterRoleList = client.rbac().clusterRoles().withLabel("key1", "value1").list();
-```
-- Delete `ClusterRole` objects:
-```
-Boolean isDeleted = rbac().clusterRoles().withName("ClusterRole1").delete();
 ```
 
 
