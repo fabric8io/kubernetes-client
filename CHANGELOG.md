@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 5.11-SNAPSHOT
+### 5.11.0 (2021-12-16)
 
 #### Bugs
 * Fix #3538: Update Plural rule to work with Prometheus
@@ -8,7 +8,7 @@
 * Fix #3535: ensure clientKeyAlgo is set properly when loading config YAML from `fromKubeconfig`
 * Fix #3598: applying cancel to the correct future for waitUntilCondition and waitUntilReady
 * Fix #3609: adding locking to prevent long running Watcher methods from causing reconnects with concurrent processing
-- Fix #3629: correcting the watch 200/503 exception handling 
+* Fix #3629: correcting the watch 200/503 exception handling 
 * Fix #3606: Template getObjects doesn't throw NPE when objects is null
 * Fix #3620: throw a meaningful exception if no kind/plural is on a ResourceDefinitionContext, default plural if possible
 * Fix #3636: ensure proper handling of LogWatch closure wrt its streams
@@ -1445,5 +1445,5 @@ like the delete of a custom resource.
 
   Improvements
    * Fixed issue of SecurityContextConstraints not working - https://github.com/fabric8io/kubernetes-client/pull/982
-	Note :- This got fixed by fixing model - https://github.com/fabric8io/kubernetes-model/pull/274
-  Dependencies Upgrade
+     Note :- This got fixed by fixing model - https://github.com/fabric8io/kubernetes-model/pull/274
+     Dependencies Upgrade
