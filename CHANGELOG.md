@@ -1,6 +1,19 @@
 ## CHANGELOG
 
-### 5.11.0 (2021-12-16)
+### 5.12-SNAPSHOT
+
+#### Bugs
+
+#### Improvements
+
+#### Dependency Upgrade
+
+#### New Features
+
+#### _**Note**_: Breaking changes in the API
+
+
+### 5.11.0 (2021-12-17)
 
 #### Bugs
 * Fix #3538: Update Plural rule to work with Prometheus
