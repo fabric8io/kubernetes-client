@@ -36,7 +36,7 @@ import java.util.function.Function;
  *
  * @param <T> type for cache object
  */
-public class Cache<T> implements Indexer<T> {
+public class CacheImpl<T> implements Cache<T> {
   // Defines how to map objects into indices
   private Function<T, String> keyFunc;
 
@@ -54,11 +54,11 @@ public class Cache<T> implements Indexer<T> {
   
   private BooleanSupplier isRunning = () -> false;
 
-  public Cache() {
+  public CacheImpl() {
     this(NAMESPACE_INDEX, Cache::metaNamespaceIndexFunc, Cache::metaNamespaceKeyFunc);
   }
 
-  public Cache(String indexName, Function<T, List<String>> indexFunc, Function<T, String> keyFunc) {
+  public CacheImpl(String indexName, Function<T, List<String>> indexFunc, Function<T, String> keyFunc) {
     this.indexers.put(indexName, indexFunc);
     this.keyFunc = keyFunc;
     this.indices.put(indexName, new HashMap<>());

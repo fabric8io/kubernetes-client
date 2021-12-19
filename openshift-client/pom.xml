@@ -100,7 +100,12 @@
       <groupId>io.fabric8</groupId>
       <artifactId>openshift-model-miscellaneous</artifactId>
     </dependency>
-
+    <dependency>
+      <groupId>com.github.mifmif</groupId>
+      <artifactId>generex</artifactId>
+      <version>${generex.version}</version>
+    </dependency>
+    
     <!-- Compile Only Dependencies -->
     <dependency>
       <groupId>io.sundr</groupId>

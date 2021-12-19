@@ -100,9 +100,7 @@ import io.fabric8.kubernetes.client.dsl.SchedulingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.ServiceResource;
 import io.fabric8.kubernetes.client.dsl.StorageAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1APIGroupDSL;
-import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
-import io.fabric8.kubernetes.client.dsl.internal.RawCustomResourceOperationsImpl;
 import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectorBuilder;
 import io.fabric8.kubernetes.client.extended.run.RunOperations;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
@@ -759,11 +757,6 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   @Override
   public InOutCreateable<TokenReview, TokenReview> tokenReviews() {
     return delegate.tokenReviews();
-  }
-
-  @Override
-  public RawCustomResourceOperationsImpl customResource(CustomResourceDefinitionContext customResourceDefinition) {
-    return delegate.customResource(customResourceDefinition);
   }
 
   @Override

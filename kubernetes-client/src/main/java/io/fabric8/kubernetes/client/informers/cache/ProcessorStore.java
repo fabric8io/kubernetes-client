@@ -28,10 +28,10 @@ import java.util.Objects;
  */
 public class ProcessorStore<T extends HasMetadata> implements SyncableStore<T> {
 
-  private Cache<T> cache;
+  private CacheImpl<T> cache;
   private SharedProcessor<T> processor;
 
-  public ProcessorStore(Cache<T> cache, SharedProcessor<T> processor) {
+  public ProcessorStore(CacheImpl<T> cache, SharedProcessor<T> processor) {
     this.cache = cache;
     this.processor = processor;
   }

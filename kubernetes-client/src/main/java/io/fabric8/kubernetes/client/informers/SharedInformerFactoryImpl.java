@@ -47,8 +47,8 @@ import java.util.concurrent.Future;
  * This has been taken from https://github.com/kubernetes-client/java/blob/master/util/src/main/java/io/kubernetes/client/informer/SharedInformerFactory.java
  * which is ported from official go client https://github.com/kubernetes/client-go/blob/master/informers/factory.go
  */
-public class SharedInformerFactory {
-  private static final Logger log = LoggerFactory.getLogger(SharedInformerFactory.class);
+public class SharedInformerFactoryImpl implements SharedInformerFactory {
+  private static final Logger log = LoggerFactory.getLogger(SharedInformerFactoryImpl.class);
 
   private final List<Map.Entry<OperationContext, SharedIndexInformer>> informers = new ArrayList<>();
 
@@ -63,7 +63,7 @@ public class SharedInformerFactory {
 
   private BaseKubernetesClient<?> client;
 
-  public SharedInformerFactory(BaseKubernetesClient<?> client) {
+  public SharedInformerFactoryImpl(BaseKubernetesClient<?> client) {
     // ideally this should be bounded.  The current implication is that there
     // can be 1 thread used (not dedicated to) per informer - which
     // could be problematic for a large number of informers.  however
@@ -75,7 +75,7 @@ public class SharedInformerFactory {
    * Constructor with thread pool specified.
    * @param threadPool specified thread pool.
    */
-  public SharedInformerFactory(BaseKubernetesClient<?> client, ExecutorService threadPool) {
+  public SharedInformerFactoryImpl(BaseKubernetesClient<?> client, ExecutorService threadPool) {
     this.informerExecutor = threadPool;
     this.client = client;
   }
@@ -87,6 +87,7 @@ public class SharedInformerFactory {
    * @return {@link SharedInformerFactory} with namespace configured
    * @deprecated use {@link Informable} instead
    */
+  @Override
   @Deprecated
   public SharedInformerFactory inNamespace(String namespace) {
     this.namespace = namespace;
@@ -100,6 +101,7 @@ public class SharedInformerFactory {
    * @return {@link SharedInformerFactory} with name configured
    * @deprecated use {@link Informable} instead
    */
+  @Override
   @Deprecated
   public SharedInformerFactory withName(String name) {
     this.name = name;
@@ -117,6 +119,7 @@ public class SharedInformerFactory {
    * @param <T> the type parameter (should extend {@link io.fabric8.kubernetes.api.model.HasMetadata} and implement {@link io.fabric8.kubernetes.api.model.Namespaced}) if Namespace scoped resource
    * @return the shared index informer
    */
+  @Override
   public synchronized <T extends HasMetadata> SharedIndexInformer<T> sharedIndexInformerFor(Class<T> apiTypeClass, long resyncPeriodInMillis) {
     return sharedIndexInformerFor(apiTypeClass, null, null, resyncPeriodInMillis, ResourceDefinitionContext.fromResourceType(apiTypeClass));
   }
@@ -152,6 +155,7 @@ public class SharedInformerFactory {
    * @return the shared index informer
    * @deprecated Since 5.x versions of client {@link CustomResourceDefinitionContext} are configured via annotations in CustomResource implementations, please use any of the alternative sharedIndexInformerForCustomResource methods
    */
+  @Override
   @Deprecated
   public synchronized <T extends CustomResource<?, ?>, L extends KubernetesResourceList<T>> SharedIndexInformer<T> sharedIndexInformerForCustomResource(
     CustomResourceDefinitionContext customResourceContext, Class<T> apiTypeClass, Class<L> apiListTypeClass, long resyncPeriodInMillis) {
@@ -170,6 +174,7 @@ public class SharedInformerFactory {
    * @return {@link SharedIndexInformer} for GenericKubernetesResource
    * @deprecated use {@link #sharedIndexInformerFor(Class, long)}
    */
+  @Override
   @Deprecated
   public synchronized SharedIndexInformer<GenericKubernetesResource> sharedIndexInformerForCustomResource(ResourceDefinitionContext genericResourceContext, long resyncPeriodInMillis) {
     return sharedIndexInformerFor(GenericKubernetesResource.class, GenericKubernetesResourceList.class, null, resyncPeriodInMillis, genericResourceContext);
@@ -200,6 +205,7 @@ public class SharedInformerFactory {
    * @return the shared index informer
    * @deprecated use {@link #sharedIndexInformerFor(Class, long)} instead
    */
+  @Override
   @Deprecated
   public synchronized <T extends CustomResource<?, ?>> SharedIndexInformer<T> sharedIndexInformerForCustomResource(
     Class<T> apiTypeClass, long resyncPeriodInMillis) {
@@ -219,6 +225,7 @@ public class SharedInformerFactory {
    * @return the shared index informer
    * @deprecated use {@link #sharedIndexInformerFor(Class, Class, OperationContext, long, ResourceDefinitionContext)}
    */
+  @Override
   @Deprecated
   public synchronized <T extends CustomResource<?,?>, L extends KubernetesResourceList<T>> SharedIndexInformer<T> sharedIndexInformerForCustomResource(Class<T> apiTypeClass, Class<L> apiListTypeClass, long resyncPeriodInMillis) {
     return sharedIndexInformerFor(apiTypeClass, apiListTypeClass, null, resyncPeriodInMillis, ResourceDefinitionContext.fromResourceType(apiTypeClass));
@@ -292,6 +299,7 @@ public class SharedInformerFactory {
    * @param <T> type of API type
    * @return SharedIndexInformer object
    */
+  @Override
   public synchronized <T> SharedIndexInformer<T> getExistingSharedIndexInformer(Class<T> apiTypeClass) {
     for (Map.Entry<OperationContext, SharedIndexInformer> entry : this.informers) {
       if (entry.getValue().getApiTypeClass().equals(apiTypeClass)) {
@@ -318,6 +326,7 @@ public class SharedInformerFactory {
    *
    * @return {@link Future} for status of all started informer tasks.
    */
+  @Override
   public synchronized Future<Void> startAllRegisteredInformers() {
     List<CompletableFuture<Boolean>> startInformerTasks = new ArrayList<>();
 
@@ -332,6 +341,7 @@ public class SharedInformerFactory {
   /**
    * Stop all registered informers and shut down thread pool.
    */
+  @Override
   public synchronized void stopAllRegisteredInformers() {
     stopAllRegisteredInformers(true);
   }
@@ -341,6 +351,7 @@ public class SharedInformerFactory {
    *
    * @param shutDownThreadPool Whether to shut down thread pool or not.
    */
+  @Override
   public synchronized void stopAllRegisteredInformers(boolean shutDownThreadPool) {
     informers.forEach(e -> e.getValue().stop());
     if (shutDownThreadPool && allowShutdown) {
@@ -348,6 +359,7 @@ public class SharedInformerFactory {
     }
   }
 
+  @Override
   public void addSharedInformerEventListener(SharedInformerEventListener event) {
     this.eventListeners.add(event);
   }

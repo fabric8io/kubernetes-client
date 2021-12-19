@@ -15,17 +15,13 @@
  */
 package io.fabric8.kubernetes.client.dsl.base;
 
-import static io.fabric8.kubernetes.client.dsl.base.OperationSupport.JSON_PATCH;
-import static io.fabric8.kubernetes.client.dsl.base.OperationSupport.JSON_MERGE_PATCH;
-import static io.fabric8.kubernetes.client.dsl.base.OperationSupport.STRATEGIC_MERGE_JSON_PATCH;
-
 /**
  * Enum for different Patch types supported by Patch
  */
 public enum PatchType {
-  JSON(JSON_PATCH),
-  JSON_MERGE(JSON_MERGE_PATCH),
-  STRATEGIC_MERGE(STRATEGIC_MERGE_JSON_PATCH);
+  JSON("application/json-patch+json"),
+  JSON_MERGE("application/merge-patch+json"),
+  STRATEGIC_MERGE("application/strategic-merge-patch+json");
 
   private final String contentType;
 

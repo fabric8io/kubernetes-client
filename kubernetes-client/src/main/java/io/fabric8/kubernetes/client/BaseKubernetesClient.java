@@ -103,7 +103,6 @@ import io.fabric8.kubernetes.client.dsl.internal.batch.v1beta1.CronJobOperations
 import io.fabric8.kubernetes.client.dsl.internal.KubernetesListOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl;
 import io.fabric8.kubernetes.client.dsl.internal.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl;
-import io.fabric8.kubernetes.client.dsl.internal.RawCustomResourceOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.BindingOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.ComponentStatusOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
@@ -112,8 +111,10 @@ import io.fabric8.kubernetes.client.dsl.internal.core.v1.ServiceOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.certificates.v1.CertificateSigningRequestOperationsImpl;
 import io.fabric8.kubernetes.client.extended.run.RunConfigBuilder;
 import io.fabric8.kubernetes.client.extended.run.RunOperations;
+import io.fabric8.kubernetes.client.extended.run.RunOperationsImpl;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
+import io.fabric8.kubernetes.client.informers.SharedInformerFactoryImpl;
 import io.fabric8.kubernetes.client.utils.Serialization;
 
 import java.io.InputStream;
@@ -451,14 +452,6 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
     return new HasMetadataOperationsImpl<>(this, rdContext, resourceType, listClass);
   }
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public RawCustomResourceOperationsImpl customResource(CustomResourceDefinitionContext customResourceDefinition) {
-    return new RawCustomResourceOperationsImpl(this, customResourceDefinition);
-  }
-
   @Override
   public DiscoveryAPIGroupDSL discovery() {
     return adapt(DiscoveryAPIGroupClient.class);
@@ -576,7 +569,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public SharedInformerFactory informers() {
-    return new SharedInformerFactory(this);
+    return new SharedInformerFactoryImpl(this);
   }
 
   /**
@@ -584,7 +577,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public SharedInformerFactory informers(ExecutorService executorService) {
-    return new SharedInformerFactory(this, executorService);
+    return new SharedInformerFactoryImpl(this, executorService);
   }
 
   /**
@@ -600,7 +593,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public RunOperations run() {
-    return new RunOperations(this, getNamespace(), new RunConfigBuilder());
+    return new RunOperationsImpl(this, getNamespace(), new RunConfigBuilder());
   }
 
   /**

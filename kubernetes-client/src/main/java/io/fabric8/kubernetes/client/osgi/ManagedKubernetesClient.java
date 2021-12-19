@@ -103,10 +103,10 @@ import io.fabric8.kubernetes.client.dsl.StorageAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1APIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
-import io.fabric8.kubernetes.client.dsl.internal.RawCustomResourceOperationsImpl;
 import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectorBuilder;
 import io.fabric8.kubernetes.client.extended.run.RunConfigBuilder;
 import io.fabric8.kubernetes.client.extended.run.RunOperations;
+import io.fabric8.kubernetes.client.extended.run.RunOperationsImpl;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
@@ -480,11 +480,6 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
   }
 
   @Override
-  public RawCustomResourceOperationsImpl customResource(CustomResourceDefinitionContext customResourceDefinition) {
-    return delegate.customResource(customResourceDefinition);
-  }
-
-  @Override
   public SharedInformerFactory informers() {
     return delegate.informers();
   }
@@ -585,7 +580,7 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
 
   @Override
   public RunOperations run() {
-    return new RunOperations(this, getNamespace(), new RunConfigBuilder());
+    return new RunOperationsImpl(this, getNamespace(), new RunConfigBuilder());
   }
 
   @Override

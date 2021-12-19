@@ -15,6 +15,9 @@
  */
 package io.fabric8.kubernetes.examples;
 
+import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
+import io.fabric8.kubernetes.api.model.GenericKubernetesResourceList;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
@@ -22,18 +25,20 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
+import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
+import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
+import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-public class RawCustomResourceExample {
+public class GenericKubernetesResourceExample {
 
-  private static final Logger logger = LoggerFactory.getLogger(RawCustomResourceExample.class);
+  private static final Logger logger = LoggerFactory.getLogger(GenericKubernetesResourceExample.class);
 
   public static void main(String[] args) throws Exception {
 
@@ -44,33 +49,36 @@ public class RawCustomResourceExample {
 
       String namespace = "default";
       CustomResourceDefinition prometheousRuleCrd = client.apiextensions().v1beta1().customResourceDefinitions()
-        .load(RawCustomResourceExample.class.getResourceAsStream("/prometheous-rule-crd.yml")).get();
+        .load(GenericKubernetesResourceExample.class.getResourceAsStream("/prometheous-rule-crd.yml")).get();
       client.apiextensions().v1beta1().customResourceDefinitions().createOrReplace(prometheousRuleCrd);
       logger.info("Successfully created Prometheous custom resource definition");
 
       // Creating Custom Resources Now:
-      CustomResourceDefinitionContext crdContext = CustomResourceDefinitionContext.fromCrd(prometheousRuleCrd);
+      ResourceDefinitionContext crdContext = CustomResourceDefinitionContext.fromCrd(prometheousRuleCrd);
 
-      client.customResource(crdContext)
-        .createOrReplace(namespace, RawCustomResourceExample.class.getResourceAsStream("/prometheous-rule-cr.yml"));
+      client.load(GenericKubernetesResourceExample.class.getResourceAsStream("/prometheous-rule-cr.yml"))
+              .inNamespace(namespace)
+              .createOrReplace();
       logger.info("Created Custom Resource successfully too");
 
       // Listing all custom resources in given namespace:
-      Map<String, Object> list = client.customResource(crdContext).list(namespace);
-      List<Map<String, Object>> items = (List<Map<String, Object>>) list.get("items");
+      NonNamespaceOperation<GenericKubernetesResource, GenericKubernetesResourceList, Resource<GenericKubernetesResource>> resourcesInNamespace =
+            client.genericKubernetesResources(crdContext).inNamespace(namespace);
+    GenericKubernetesResourceList list = resourcesInNamespace.list();
+      List<GenericKubernetesResource> items = list.getItems();
       logger.info("Custom Resources :- ");
-      for(Map<String, Object> customResource : items) {
-        Map<String, Object> metadata = (Map<String, Object>) customResource.get("metadata");
-        final String name = metadata.get("name").toString();
+      for(GenericKubernetesResource customResource : items) {
+        ObjectMeta metadata = customResource.getMetadata();
+        final String name = metadata.getName();
         logger.info(name);
       }
 
       // Watching custom resources now
       logger.info("Watching custom resources now");
       final CountDownLatch closeLatch = new CountDownLatch(1);
-      client.customResource(crdContext).watch(namespace, new Watcher<String>() {
+      resourcesInNamespace.watch(new Watcher<GenericKubernetesResource>() {
         @Override
-        public void eventReceived(Action action, String resource) {
+        public void eventReceived(Action action, GenericKubernetesResource resource) {
           logger.info("{}: {}", action, resource);
         }
 
@@ -87,7 +95,7 @@ public class RawCustomResourceExample {
 
       // Cleanup
       logger.info("Deleting custom resources...");
-      client.customResource(crdContext).delete(namespace, "prometheus-example-rules");
+      resourcesInNamespace.withName("prometheus-example-rules").delete();
       client.apiextensions().v1beta1().customResourceDefinitions()
         .withName(prometheousRuleCrd.getMetadata().getName()).delete();
     } catch (KubernetesClientException e) {

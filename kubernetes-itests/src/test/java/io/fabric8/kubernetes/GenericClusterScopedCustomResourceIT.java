@@ -17,8 +17,11 @@ package io.fabric8.kubernetes;
 
 import io.fabric8.commons.AssumingK8sVersionAtLeast;
 import io.fabric8.commons.ClusterEntity;
+import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
+import io.fabric8.kubernetes.api.model.GenericKubernetesResourceList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
+import io.fabric8.kubernetes.clnt.v4_0.utils.Serialization;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
@@ -30,7 +33,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,7 +41,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(ArquillianConditionalRunner.class)
 @RequiresKubernetes
-public class RawClusterScopedCustomResourceIT {
+public class GenericClusterScopedCustomResourceIT {
   @ArquillianResource
   public KubernetesClient client;
 
@@ -59,41 +61,40 @@ public class RawClusterScopedCustomResourceIT {
   @BeforeClass
   public static void initCrd() {
     // Create a Custom Resource Definition Animals:
-    ClusterEntity.apply(RawCustomResourceIT.class.getResourceAsStream("/rawclusterscopedcustomresource-it.yml"));
+    ClusterEntity.apply(GenericClusterScopedCustomResourceIT.class.getResourceAsStream("/rawclusterscopedcustomresource-it.yml"));
   }
 
   @Test
   public void testCrud() throws IOException {
     // Create
-    Map<String, Object> satellite = createSatellite("moon", "earth", "1.7371e+3", "7.34767309e+22");
-    Map<String, Object> createdSatellite = client.customResource(customResourceDefinitionContext).create(satellite);
+    GenericKubernetesResource satellite = createSatellite("moon", "earth", "1.7371e+3", "7.34767309e+22");
+    GenericKubernetesResource createdSatellite = client.genericKubernetesResources(customResourceDefinitionContext).create(satellite);
 
     assertThat(createdSatellite)
       .isNotNull()
       .hasFieldOrPropertyWithValue("metadata.name", "moon");
 
     // Get
-    Map<String, Object> satelliteFromServer = client.customResource(customResourceDefinitionContext).withName("moon").get();
+    GenericKubernetesResource satelliteFromServer = client.genericKubernetesResources(customResourceDefinitionContext).withName("moon").get();
     assertThat(satelliteFromServer).isNotNull()
       .hasFieldOrPropertyWithValue("metadata.name", "moon");
 
     // List
-    Map<String, Object> satellites = client.customResource(customResourceDefinitionContext).list();
+    GenericKubernetesResourceList satellites = client.genericKubernetesResources(customResourceDefinitionContext).list();
     assertThat(satellites).isNotNull();
-    assertThat(satellites.get("items")).isInstanceOfAny(ArrayList.class);
-    assertThat((ArrayList<Object>)satellites.get("items")).hasSize(1);
+    assertThat(satellites.getItems()).hasSize(1);
 
     // Delete
-    Boolean isDeleted = client.customResource(customResourceDefinitionContext).withName("moon").delete();
+    Boolean isDeleted = client.genericKubernetesResources(customResourceDefinitionContext).withName("moon").delete();
     assertThat(isDeleted).isTrue();
   }
 
   @AfterClass
   public static void cleanup() {
-    ClusterEntity.remove(RawCustomResourceIT.class.getResourceAsStream("/rawclusterscopedcustomresource-it.yml"));
+    ClusterEntity.remove(GenericClusterScopedCustomResourceIT.class.getResourceAsStream("/rawclusterscopedcustomresource-it.yml"));
   }
 
-  private Map<String, Object> createSatellite(String name, String planet, String radius, String mass) {
+  private GenericKubernetesResource createSatellite(String name, String planet, String radius, String mass) {
     Map<String, Object> crAsMap = new HashMap<>();
     crAsMap.put("apiVersion", "demos.fabric8.io/v1alpha1");
     crAsMap.put("kind", "Satellite");
@@ -109,6 +110,6 @@ public class RawClusterScopedCustomResourceIT {
     crAsMap.put("metadata", crMetadata);
     crAsMap.put("spec", crSpec);
 
-    return crAsMap;
+    return Serialization.jsonMapper().convertValue(crAsMap, GenericKubernetesResource.class);
   }
 }

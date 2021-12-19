@@ -20,12 +20,12 @@ import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
 
-public class RunOperations {
+public class RunOperationsImpl implements RunOperations {
   private final ClientContext clientContext;
   private final String namespace;
   private final RunConfigBuilder runConfigBuilder;
 
-  public RunOperations(ClientContext clientContext, String namespace, RunConfigBuilder runConfigBuilder) {
+  public RunOperationsImpl(ClientContext clientContext, String namespace, RunConfigBuilder runConfigBuilder) {
     this.clientContext = clientContext;
     this.namespace = namespace;
     this.runConfigBuilder = runConfigBuilder;
@@ -37,8 +37,9 @@ public class RunOperations {
    * @param namespace namespace in which resource needs to be created
    * @return {@link RunOperations} with injected namespace
    */
+  @Override
   public RunOperations inNamespace(String namespace) {
-    return new RunOperations(clientContext, namespace, runConfigBuilder);
+    return new RunOperationsImpl(clientContext, namespace, runConfigBuilder);
   }
 
   /**
@@ -47,8 +48,9 @@ public class RunOperations {
    * @param image image as a string
    * @return {@link RunOperations} with image injected into {@link RunConfig}
    */
+  @Override
   public RunOperations withImage(String image) {
-    return new RunOperations(clientContext, namespace, runConfigBuilder.withImage(image));
+    return new RunOperationsImpl(clientContext, namespace, runConfigBuilder.withImage(image));
   }
 
   /**
@@ -57,8 +59,9 @@ public class RunOperations {
    * @param name name of the pod to be created
    * @return {@link RunOperations} with name injected into {@link RunConfig}
    */
+  @Override
   public RunOperations withName(String name) {
-    return new RunOperations(clientContext, namespace, runConfigBuilder.withName(name));
+    return new RunOperationsImpl(clientContext, namespace, runConfigBuilder.withName(name));
   }
 
   /**
@@ -67,8 +70,9 @@ public class RunOperations {
    * @param generatorRunConfig {@link RunConfig} which allows to provide configuring environment variables, labels, resources, ports etc
    * @return {@link RunOperations} with specified configuration
    */
+  @Override
   public RunOperations withRunConfig(RunConfig generatorRunConfig) {
-    return new RunOperations(clientContext, namespace, new RunConfigBuilder(generatorRunConfig));
+    return new RunOperationsImpl(clientContext, namespace, new RunConfigBuilder(generatorRunConfig));
   }
 
   /**
@@ -76,6 +80,7 @@ public class RunOperations {
    *
    * @return Pod which got created from the operation
    */
+  @Override
   public Pod done() {
     return new PodOperationsImpl(clientContext, namespace).create(convertRunConfigIntoPod());
   }

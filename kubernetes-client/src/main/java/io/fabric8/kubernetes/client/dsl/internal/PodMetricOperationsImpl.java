@@ -18,40 +18,47 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import io.fabric8.kubernetes.api.model.metrics.v1beta1.PodMetrics;
 import io.fabric8.kubernetes.api.model.metrics.v1beta1.PodMetricsList;
 import io.fabric8.kubernetes.client.ClientContext;
-import io.fabric8.kubernetes.client.dsl.Namespaceable;
+import io.fabric8.kubernetes.client.ConfigBuilder;
+import io.fabric8.kubernetes.client.dsl.PodMetricOperation;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 
-public class PodMetricOperationsImpl extends MetricOperationsImpl<PodMetrics, PodMetricsList> implements Namespaceable<PodMetricOperationsImpl> {
+import java.util.Map;
+
+public class PodMetricOperationsImpl extends MetricOperationsImpl<PodMetrics, PodMetricsList> implements PodMetricOperation {
+  
   public PodMetricOperationsImpl(ClientContext clientContext) {
-    super(clientContext, null, null, "pods", null, PodMetrics.class, PodMetricsList.class);
+    // default to any namespace
+    this(HasMetadataOperationsImpl.defaultContext(clientContext)
+        .withConfig(new ConfigBuilder(clientContext.getConfiguration()).withNamespace(null).build())
+        .withNamespace(null));
   }
-
-  private PodMetricOperationsImpl(ClientContext clientContext, String name, String namespace) {
-    super(clientContext, name, namespace, "pods", null, PodMetrics.class, PodMetricsList.class);
+  
+  public PodMetricOperationsImpl(OperationContext context) {
+    super(context.withPlural("pods"), PodMetrics.class, PodMetricsList.class);
   }
-
-  /**
-   * Get PodMetrics in a namespace with a name.
-   *
-   * @param namespace namespace of pod
-   * @param podName name of pod
-   * @return PodMetric corresponding to specified Pod
-   */
+  
+  @Override
   public PodMetrics metrics(String namespace, String podName) {
     return inNamespace(namespace).withName(podName).metric();
   }
 
-  /**
-   * Get PodMetricsList for a namespace.
-   *
-   * @param namespace namespace for which PodMetrics are queries
-   * @return PodMetricsList for all pods in specified namespace
-   */
+  @Override
   public PodMetricsList metrics(String namespace) {
     return inNamespace(namespace).metrics();
   }
 
   @Override
   public PodMetricOperationsImpl inNamespace(String namespace) {
-    return new PodMetricOperationsImpl(context, null, namespace);
+    return new PodMetricOperationsImpl(context.withNamespace(namespace));
+  }
+
+  @Override
+  public PodMetricOperation withName(String name) {
+    return new PodMetricOperationsImpl(context.withName(name));
+  }
+
+  @Override
+  public PodMetricOperation withLabels(Map<String, String> labels) {
+    return new PodMetricOperationsImpl(context.withLabels(labels));
   }
 }

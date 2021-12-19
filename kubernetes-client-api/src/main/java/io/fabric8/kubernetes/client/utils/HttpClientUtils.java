@@ -22,15 +22,12 @@ import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpHeaders;
 import io.fabric8.kubernetes.client.http.Interceptor;
 import io.fabric8.kubernetes.client.internal.SSLUtils;
-import io.fabric8.kubernetes.client.okhttp.OkHttpClientFactory;
-import io.fabric8.kubernetes.client.okhttp.OkHttpClientImpl;
-import okhttp3.OkHttpClient;
-import okhttp3.OkHttpClient.Builder;
 
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 
+import java.lang.reflect.InvocationTargetException;
 import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -40,15 +37,14 @@ import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 public class HttpClientUtils {
-  
+
   public static final String HEADER_INTERCEPTOR = "HEADER";
-  
+
   private HttpClientUtils() { }
 
   private static Pattern VALID_IPV4_PATTERN = null;
@@ -61,25 +57,6 @@ public class HttpClientUtils {
     } catch (PatternSyntaxException e) {
       throw KubernetesClientException.launderThrowable("Unable to compile ipv4address pattern.", e);
     }
-  }
-  
-  /**
-   * Creates an HTTP client configured to access the Kubernetes API.
-   * @param config Kubernetes API client config
-   * @param additionalConfig a consumer that allows overriding HTTP client properties
-   * @return returns an HTTP client
-   * @deprecated subclass {@link OkHttpClientFactory} and implement the additionalConfig method
-   */
-  @Deprecated
-  public static OkHttpClientImpl createHttpClient(final Config config, final Consumer<OkHttpClient.Builder> additionalConfig) {
-    return new OkHttpClientFactory() {
-      @Override
-      protected void additionalConfig(Builder builder) {
-        if (additionalConfig != null) {
-          additionalConfig.accept(builder);
-        }
-      }
-    }.createHttpClient(config);
   }
 
     public static URL getProxyUrl(Config config) throws MalformedURLException {
@@ -115,10 +92,10 @@ public class HttpClientUtils {
 
   public static Map<String, io.fabric8.kubernetes.client.http.Interceptor> createApplicableInterceptors(Config config, HttpClient.Factory factory) {
     Map<String, io.fabric8.kubernetes.client.http.Interceptor> interceptors = new LinkedHashMap<>();
-    
+
     // Header Interceptor
     interceptors.put(HEADER_INTERCEPTOR, new Interceptor() {
-      
+
       @Override
       public void before(BasicBuilder builder, HttpHeaders headers) {
         if (Utils.isNotNullOrEmpty(config.getUsername()) && Utils.isNotNullOrEmpty(config.getPassword())) {
@@ -148,7 +125,7 @@ public class HttpClientUtils {
 
     return interceptors;
   }
-  
+
   public static String basicCredentials(String username, String password) {
     String usernameAndPassword = username + ":" + password;
     String encoded = Base64.getEncoder().encodeToString(usernameAndPassword.getBytes(StandardCharsets.ISO_8859_1));
@@ -156,13 +133,20 @@ public class HttpClientUtils {
   }
 
   public static HttpClient createHttpClient(Config config) {
-    // TODO: replace with reflection / service load and factory interface
-    return new OkHttpClientFactory().createHttpClient(config);
+    // TODO: replace with service load
+    try {
+        return ((HttpClient.Factory) Class.forName("io.fabric8.kubernetes.client.okhttp.OkHttpClientFactory")
+                .getDeclaredConstructor()
+                .newInstance()).createHttpClient(config);
+    } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+            | NoSuchMethodException | SecurityException | ClassNotFoundException e) {
+        throw KubernetesClientException.launderThrowable(e);
+    }
   }
-  
+
   public static void applyCommonConfiguration(Config config, HttpClient.Builder builder, HttpClient.Factory factory) {
     builder.followAllRedirects();
-    
+
     if (config.getConnectionTimeout() > 0) {
       builder.connectTimeout(config.getConnectionTimeout(), TimeUnit.MILLISECONDS);
     }
@@ -170,13 +154,13 @@ public class HttpClientUtils {
     if (config.getRequestTimeout() > 0) {
       builder.readTimeout(config.getRequestTimeout(), TimeUnit.MILLISECONDS);
     }
-    
+
     if (config.isHttp2Disable()) {
       builder.preferHttp11();
     }
-    
+
     try {
-      
+
       // Only check proxy if it's a full URL with protocol
       if (config.getMasterUrl().toLowerCase(Locale.ROOT).startsWith(Config.HTTP_PROTOCOL_PREFIX)
           || config.getMasterUrl().startsWith(Config.HTTPS_PROTOCOL_PREFIX)) {
@@ -195,21 +179,21 @@ public class HttpClientUtils {
           throw new KubernetesClientException("Invalid proxy server configuration", e);
         }
       }
-      
+
       TrustManager[] trustManagers = SSLUtils.trustManagers(config);
       KeyManager[] keyManagers = SSLUtils.keyManagers(config);
-  
+
       SSLContext sslContext = SSLUtils.sslContext(keyManagers, trustManagers);
       builder.sslContext(sslContext, trustManagers);
-      
+
       if (config.getTlsVersions() != null && config.getTlsVersions().length > 0) {
         builder.tlsVersions(config.getTlsVersions());
       }
-      
+
     } catch (Exception e) {
       KubernetesClientException.launderThrowable(e);
     }
     HttpClientUtils.createApplicableInterceptors(config, factory).forEach(builder::addOrReplaceInterceptor);
   }
-  
+
 }

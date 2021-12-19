@@ -38,7 +38,7 @@ public class ProcessorStoreTest {
   public void testEvents() {
     ArgumentCaptor<Notification<Pod>> notificationCaptor = ArgumentCaptor.forClass(Notification.class);
     ArgumentCaptor<Boolean> syncCaptor = ArgumentCaptor.forClass(Boolean.class);
-    Cache<Pod> podCache = Mockito.mock(Cache.class);
+    CacheImpl<Pod> podCache = Mockito.mock(CacheImpl.class);
     SharedProcessor<Pod> processor = Mockito.mock(SharedProcessor.class);
 
     ProcessorStore<Pod> processorStore = new ProcessorStore<>(podCache, processor);
@@ -77,7 +77,7 @@ public class ProcessorStoreTest {
   public void testSyncEvents() {
     ArgumentCaptor<Notification<Pod>> notificationCaptor = ArgumentCaptor.forClass(Notification.class);
     ArgumentCaptor<Boolean> syncCaptor = ArgumentCaptor.forClass(Boolean.class);
-    Cache<Pod> podCache = new Cache<>();
+    CacheImpl<Pod> podCache = new CacheImpl<>();
     SharedProcessor<Pod> processor = Mockito.mock(SharedProcessor.class);
 
     ProcessorStore<Pod> processorStore = new ProcessorStore<>(podCache, processor);

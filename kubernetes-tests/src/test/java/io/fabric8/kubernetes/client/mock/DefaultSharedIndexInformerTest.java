@@ -26,8 +26,6 @@ import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodListBuilder;
-import io.fabric8.kubernetes.api.model.ServiceAccount;
-import io.fabric8.kubernetes.api.model.ServiceAccountBuilder;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.api.model.WatchEvent;
@@ -39,7 +37,7 @@ import io.fabric8.kubernetes.api.model.rbac.ClusterRoleBindingBuilder;
 import io.fabric8.kubernetes.client.CustomResourceList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
-import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
@@ -464,46 +462,6 @@ class DefaultSharedIndexInformerTest {
   }
 
   @Test
-  void testServiceAccountInformerWatchAllNamespacesWithLabels() throws InterruptedException {
-    // Given
-    setupMockServerExpectations(ServiceAccount.class, null, this::getList, r -> new WatchEvent(new ServiceAccountBuilder()
-      .withNewMetadata().withName("sa1")
-      .withResourceVersion(r).endMetadata().build(), "ADDED"), Utils.toUrlEncoded("foo=bar"), null);
-    CountDownLatch serviceAccountEventReceived = new CountDownLatch(1);
-
-    // When
-    SharedIndexInformer<ServiceAccount> serviceAccountInformer = factory.sharedIndexInformerFor(ServiceAccount.class,
-      new OperationContext().withLabels(Collections.singletonMap("foo", "bar")),
-      60 * WATCH_EVENT_EMIT_TIME);
-    serviceAccountInformer.addEventHandler(new TestResourceHandler<>(serviceAccountEventReceived, "sa1"));
-    factory.startAllRegisteredInformers();
-    serviceAccountEventReceived.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
-
-    // Then
-    assertEquals(0, serviceAccountEventReceived.getCount());
-  }
-
-  @Test
-  void testServiceAccountInformerWatchSingleNamespacesWithLabels() throws InterruptedException {
-    // Given
-    setupMockServerExpectations(ServiceAccount.class, "ns1", this::getList, r -> new WatchEvent(new ServiceAccountBuilder()
-      .withNewMetadata().withName("sa1")
-      .withResourceVersion(r).endMetadata().build(), "ADDED"), Utils.toUrlEncoded("foo=bar"), null);
-    CountDownLatch serviceAccountEventReceived = new CountDownLatch(1);
-
-    // When
-    SharedIndexInformer<ServiceAccount> serviceAccountInformer = factory.inNamespace("ns1").sharedIndexInformerFor(ServiceAccount.class,
-      new OperationContext().withLabels(Collections.singletonMap("foo", "bar")),
-      60 * WATCH_EVENT_EMIT_TIME);
-    serviceAccountInformer.addEventHandler(new TestResourceHandler<>(serviceAccountEventReceived, "sa1"));
-    factory.startAllRegisteredInformers();
-    serviceAccountEventReceived.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
-
-    // Then
-    assertEquals(0, serviceAccountEventReceived.getCount());
-  }
-
-  @Test
   @DisplayName("Should create informer for Deployment resource")
   void testWithDeploymentInformer() throws InterruptedException {
     // Given
@@ -534,41 +492,6 @@ class DefaultSharedIndexInformerTest {
     SharedIndexInformer<Pod> podInformer = factory.inNamespace("ns1").sharedIndexInformerFor(Pod.class, 100L);
     CountDownLatch foundExistingPod = new CountDownLatch(1);
     podInformer.addEventHandler(new TestResourceHandler<>(foundExistingPod, "pod1"));
-    factory.startAllRegisteredInformers();
-    foundExistingPod.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
-
-    // Then
-    assertEquals(0, foundExistingPod.getCount());
-  }
-
-  @Test
-  @DisplayName("PodSet Informer should filter watch with labels provided")
-  void testPodSetInformerShouldWatchWithLabelSelectors() throws InterruptedException {
-    // Given
-    setupMockServerExpectations(PodSet.class, "ns1", this::getList, r -> new WatchEvent(getPodSet("podset1", r), "ADDED"), Utils.toUrlEncoded("foo=bar"), null);
-
-    // When
-    SharedIndexInformer<PodSet> podSetSharedIndexInformer = factory.inNamespace("ns1").sharedIndexInformerForCustomResource(PodSet.class,
-      new OperationContext().withLabels(Collections.singletonMap("foo", "bar")), 100L);
-    CountDownLatch foundExistingPod = new CountDownLatch(1);
-    podSetSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingPod, "podset1"));
-    factory.startAllRegisteredInformers();
-    foundExistingPod.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
-
-    // Then
-    assertEquals(0, foundExistingPod.getCount());
-  }
-
-  @Test
-  @DisplayName("PodSet Informer with List type provided should filter watch with labels provided")
-  void testPodSetInformerWithListTypeShouldWatchWithLabelSelectors() throws InterruptedException {
-    // Given
-    setupMockServerExpectations(PodSet.class, "ns1", this::getList, r -> new WatchEvent(getPodSet("podset1", r), "ADDED"), Utils.toUrlEncoded("foo=bar"), null);
-
-    // When
-    SharedIndexInformer<PodSet> podSetSharedIndexInformer = factory.inNamespace("ns1").sharedIndexInformerForCustomResource(PodSet.class, new OperationContext().withLabels(Collections.singletonMap("foo", "bar")), 100L);
-    CountDownLatch foundExistingPod = new CountDownLatch(1);
-    podSetSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingPod, "podset1"));
     factory.startAllRegisteredInformers();
     foundExistingPod.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
 
@@ -810,8 +733,14 @@ class DefaultSharedIndexInformerTest {
     // When
     SharedIndexInformer<CronTab> v1CronTabSharedIndexInformer = factory.inNamespace("default")
       .sharedIndexInformerForCustomResource(CronTab.class, 60 * WATCH_EVENT_EMIT_TIME);
-    SharedIndexInformer<CronTab> v1beta1CronTabSharedIndexInformer = factory.inNamespace("default")
-      .sharedIndexInformerForCustomResource(CronTab.class, new OperationContext().withApiGroupVersion("v1beta1"), 60 * WATCH_EVENT_EMIT_TIME);
+    ResourceDefinitionContext context =
+        new ResourceDefinitionContext.Builder().withPlural(HasMetadata.getPlural(CronTab.class))
+            .withGroup(HasMetadata.getGroup(CronTab.class))
+            .withVersion("v1beta1")
+            .withNamespaced(true)
+            .build();
+    SharedIndexInformer<GenericKubernetesResource> v1beta1CronTabSharedIndexInformer =
+        client.genericKubernetesResources(context).inNamespace("default").inform();
     v1CronTabSharedIndexInformer.addEventHandler(new TestResourceHandler<>(v1CronTabFound, "v1-crontab"));
     v1beta1CronTabSharedIndexInformer.addEventHandler(new TestResourceHandler<>(v1beta1CronTabFound, "v1beta1-crontab"));
     factory.startAllRegisteredInformers();

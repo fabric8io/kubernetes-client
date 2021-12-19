@@ -33,7 +33,6 @@ import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
-import okhttp3.OkHttpClient;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 

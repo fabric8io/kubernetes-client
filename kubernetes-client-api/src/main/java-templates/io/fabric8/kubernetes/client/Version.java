@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.dsl;
+package io.fabric8.kubernetes.client;
 
-import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.dsl.internal.NodeMetricOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.PodMetricOperationsImpl;
+public final class Version {
+  public static String clientVersion() {
+    return "${project.version}";
+  }
 
-public interface MetricAPIGroupDSL extends Client {
-  PodMetricOperationsImpl pods();
-  NodeMetricOperationsImpl nodes();
+  private Version() {
+  }
 }

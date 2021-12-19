@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.api.model.ExecConfig;
 import io.fabric8.kubernetes.api.model.ExecConfigBuilder;
 import io.fabric8.kubernetes.client.http.TlsVersion;
 import io.fabric8.kubernetes.client.lib.FileSystem;
-import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -28,9 +27,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -47,7 +44,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 public class ConfigTest {
 
@@ -55,15 +51,13 @@ public class ConfigTest {
   private static final String TEST_EC_KUBECONFIG_FILE = Utils.filePath(ConfigTest.class.getResource("/test-ec-kubeconfig"));
   private static final String TEST_NAMESPACE_FILE = Utils.filePath(ConfigTest.class.getResource("/test-namespace"));
 
-  private static final String TEST_CONFIG_YML_FILE = Utils.filePath(ConfigTest.class.getResource("/test-config.yml"));
-
   private static final String TEST_KUBECONFIG_EXEC_FILE = Utils.filePath(ConfigTest.class.getResource("/test-kubeconfig-exec"));
   private static final String TEST_TOKEN_GENERATOR_FILE = Utils.filePath(ConfigTest.class.getResource("/token-generator"));
 
   private static final String TEST_KUBECONFIG_EXEC_WIN_FILE = Utils.filePath(ConfigTest.class.getResource("/test-kubeconfig-exec-win"));
 
   private static final String TEST_KUBECONFIG_NO_CURRENT_CONTEXT_FILE = Utils.filePath(ConfigTest.class.getResource("/test-kubeconfig-nocurrentctxt.yml"));
-  
+
   @BeforeEach
   public void setUp() {
     System.getProperties().remove(Config.KUBERNETES_MASTER_SYSTEM_PROPERTY);
@@ -433,50 +427,6 @@ public class ConfigTest {
     assertArrayEquals(new String[]{"group"}, config.getImpersonateGroups());
     assertEquals(Collections.singletonList("d"), config.getImpersonateExtras().get("c"));
 
-  }
-
-  @Test
-  void shouldInstantiateClientUsingYaml() {
-    File configYml = new File(TEST_CONFIG_YML_FILE);
-    try (InputStream is = new FileInputStream(configYml)){
-      KubernetesClient client = DefaultKubernetesClient.fromConfig(is);
-      assertEquals("http://some.url", client.getMasterUrl().toString());
-    } catch (Exception e) {
-      fail();
-    }
-  }
-
-  @Test
-  void shouldInstantiateClientUsingSerializeDeserialize() {
-    DefaultKubernetesClient original = new DefaultKubernetesClient();
-    String json = Serialization.asJson(original.getConfiguration());
-    DefaultKubernetesClient copy = DefaultKubernetesClient.fromConfig(json);
-
-    assertEquals(original.getConfiguration().getMasterUrl(), copy.getConfiguration().getMasterUrl());
-    assertEquals(original.getConfiguration().getOauthToken(), copy.getConfiguration().getOauthToken());
-    assertEquals(original.getConfiguration().getNamespace(), copy.getConfiguration().getNamespace());
-    assertEquals(original.getConfiguration().getUsername(), copy.getConfiguration().getUsername());
-    assertEquals(original.getConfiguration().getPassword(), copy.getConfiguration().getPassword());
-  }
-
-  @Test
-  void shouldPropagateImpersonateSettings() {
-
-    final Map<String, List<String>> extras = new HashMap<>();
-    extras.put("c", Collections.singletonList("d"));
-
-    final Config config = new ConfigBuilder()
-      .withImpersonateUsername("a")
-      .withImpersonateGroup("b")
-      .withImpersonateExtras(extras)
-      .build();
-
-    final DefaultKubernetesClient client = new DefaultKubernetesClient(config);
-    final Config currentConfig = client.getConfiguration();
-
-    assertEquals("a", currentConfig.getImpersonateUsername());
-    assertArrayEquals(new String[]{"b"}, currentConfig.getImpersonateGroups());
-    assertEquals(Collections.singletonList("d"), currentConfig.getImpersonateExtras().get("c"));
   }
 
   @Test

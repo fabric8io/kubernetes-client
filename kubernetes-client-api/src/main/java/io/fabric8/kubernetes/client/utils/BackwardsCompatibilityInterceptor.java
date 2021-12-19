@@ -16,23 +16,24 @@
 package io.fabric8.kubernetes.client.utils;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.http.BasicBuilder;
 import io.fabric8.kubernetes.client.http.HttpRequest;
+import io.fabric8.kubernetes.client.http.HttpRequest.Builder;
 import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.http.Interceptor;
-import io.fabric8.kubernetes.client.http.HttpRequest.Builder;
 
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class BackwardsCompatibilityInterceptor implements Interceptor {
-  
+
+  public static final String JSON = "application/json";
+
   public static final String NAME = "BACKWARDS";
 
   private static final int API_GROUP = 1;
@@ -129,14 +130,14 @@ public class BackwardsCompatibilityInterceptor implements Interceptor {
     openshiftOAPITransformations.put("imagestreamtags", new ResourceKey("ImageStream", "imagestreamtags", "image.openshift.io", "v1"));
     openshiftOAPITransformations.put("securitycontextconstraints", new ResourceKey("SecurityContextConstraints", "securitycontextconstraints", "security.openshift.io", "v1"));
   }
-  
+
   @Override
   public boolean afterFailure(Builder builder, HttpResponse<?> response) {
     ResourceKey target = findNewTarget(builder, response);
     if (target == null) {
       return false;
     }
-    
+
     HttpRequest request = response.request();
     if (request.bodyString() != null && !request.method().equalsIgnoreCase(PATCH)) {
       Object object = Serialization.unmarshal(request.bodyString());
@@ -145,13 +146,13 @@ public class BackwardsCompatibilityInterceptor implements Interceptor {
         h.setApiVersion(target.group + "/" + target.version);
         switch (request.method()) {
         case "POST":
-          builder.post(OperationSupport.JSON, Serialization.asJson(h));
+          builder.post(JSON, Serialization.asJson(h));
           break;
         case "PUT":
-          builder.put(OperationSupport.JSON, Serialization.asJson(h));
+          builder.put(JSON, Serialization.asJson(h));
           break;
         case "DELETE":
-          builder.delete(OperationSupport.JSON, Serialization.asJson(h));
+          builder.delete(JSON, Serialization.asJson(h));
           break;
         default:
           return false;
@@ -161,7 +162,7 @@ public class BackwardsCompatibilityInterceptor implements Interceptor {
 
     return true;
   }
-  
+
   public ResourceKey findNewTarget(BasicBuilder basicBuilder, HttpResponse<?> response) {
     HttpRequest request = response.request();
     if (isDeprecatedOpenshiftOapiRequest(request)) {
@@ -182,7 +183,7 @@ public class BackwardsCompatibilityInterceptor implements Interceptor {
     }
     return null;
   }
-  
+
   @Override
   public boolean afterFailure(BasicBuilder basicBuilder, HttpResponse<?> response) {
     return findNewTarget(basicBuilder, response) != null;

@@ -19,16 +19,16 @@ package io.fabric8.kubernetes.client;
 import io.fabric8.kubernetes.api.model.APIService;
 import io.fabric8.kubernetes.api.model.APIServiceList;
 import io.fabric8.kubernetes.api.model.Binding;
-import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.api.model.ConfigMap;
-import io.fabric8.kubernetes.api.model.ConfigMapList;
 import io.fabric8.kubernetes.api.model.ComponentStatus;
 import io.fabric8.kubernetes.api.model.ComponentStatusList;
+import io.fabric8.kubernetes.api.model.ConfigMap;
+import io.fabric8.kubernetes.api.model.ConfigMapList;
 import io.fabric8.kubernetes.api.model.Endpoints;
 import io.fabric8.kubernetes.api.model.EndpointsList;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResourceList;
+import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LimitRange;
 import io.fabric8.kubernetes.api.model.LimitRangeList;
 import io.fabric8.kubernetes.api.model.Namespace;
@@ -36,9 +36,9 @@ import io.fabric8.kubernetes.api.model.NamespaceList;
 import io.fabric8.kubernetes.api.model.Node;
 import io.fabric8.kubernetes.api.model.NodeList;
 import io.fabric8.kubernetes.api.model.PersistentVolume;
-import io.fabric8.kubernetes.api.model.PersistentVolumeList;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaimList;
+import io.fabric8.kubernetes.api.model.PersistentVolumeList;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
 import io.fabric8.kubernetes.api.model.ReplicationController;
@@ -48,20 +48,47 @@ import io.fabric8.kubernetes.api.model.ResourceQuotaList;
 import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.api.model.SecretList;
 import io.fabric8.kubernetes.api.model.Service;
-import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.api.model.ServiceAccount;
 import io.fabric8.kubernetes.api.model.ServiceAccountList;
+import io.fabric8.kubernetes.api.model.ServiceList;
+import io.fabric8.kubernetes.api.model.authentication.TokenReview;
 import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequest;
 import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestList;
-import io.fabric8.kubernetes.api.model.authentication.TokenReview;
 import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseList;
 import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClass;
 import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClassList;
-import io.fabric8.kubernetes.client.dsl.*;
+import io.fabric8.kubernetes.client.dsl.ApiextensionsAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.AppsAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.AuthorizationAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.AutoscalingAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.BatchAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.CertificatesAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.DiscoveryAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.EventingAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.ExtensionsAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.FlowControlAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.InOutCreateable;
+import io.fabric8.kubernetes.client.dsl.KubernetesListMixedOperation;
+import io.fabric8.kubernetes.client.dsl.MetricAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
+import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable;
+import io.fabric8.kubernetes.client.dsl.Namespaceable;
+import io.fabric8.kubernetes.client.dsl.NetworkAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
+import io.fabric8.kubernetes.client.dsl.ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
+import io.fabric8.kubernetes.client.dsl.PodResource;
+import io.fabric8.kubernetes.client.dsl.PolicyAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.RbacAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
+import io.fabric8.kubernetes.client.dsl.SchedulingAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.ServiceResource;
+import io.fabric8.kubernetes.client.dsl.StorageAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.V1APIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
-import io.fabric8.kubernetes.client.dsl.internal.RawCustomResourceOperationsImpl;
 import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectorBuilder;
 import io.fabric8.kubernetes.client.extended.run.RunOperations;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
@@ -117,7 +144,7 @@ public interface KubernetesClient extends Client {
    */
   @Deprecated
   <T extends CustomResource> MixedOperation<T, KubernetesResourceList<T>, Resource<T>> customResources(Class<T> resourceType);
-  
+
   /**
    * Typed API for managing resources. Any properly annotated POJO can be utilized as a resource.
    *
@@ -134,7 +161,7 @@ public interface KubernetesClient extends Client {
   default <T extends HasMetadata> MixedOperation<T, KubernetesResourceList<T>, Resource<T>> resources(Class<T> resourceType) {
     return resources(resourceType, null);
   }
-  
+
   /**
    * Typed API for managing resources. Any properly annotated POJO can be utilized as a resource.
    *
@@ -196,7 +223,7 @@ public interface KubernetesClient extends Client {
    */
   @Deprecated
   <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> customResources(ResourceDefinitionContext context, Class<T> resourceType, Class<L> listClass);
-  
+
   /**
    * Semi-Typed API for managing {@link GenericKubernetesResource}s which can represent any resource.
    *
@@ -207,13 +234,13 @@ public interface KubernetesClient extends Client {
       ResourceDefinitionContext context) {
     return customResources(context, GenericKubernetesResource.class, GenericKubernetesResourceList.class);
   }
-  
+
   /**
-   * Semi-typed API for managing resources. 
-   * 
+   * Semi-typed API for managing resources.
+   *
    * Will perform a look-up if needed for additional metadata about the resource.
-   * 
-   * @param apiVersion the api/version 
+   *
+   * @param apiVersion the api/version
    * @param kind the resource kind
    * @return returns a MixedOperation object with which you can do basic resource operations.
    */
@@ -264,18 +291,6 @@ public interface KubernetesClient extends Client {
    * @return VersionInfo object containing versioning information
    */
   VersionInfo getKubernetesVersion();
-
-  /**
-   * Typeless API for interacting with CustomResources. You can do basic operations with CustomResources
-   * without having any model. You just need to pass an object providing basic information of
-   * CustomResource. CustomResource objects are parsed as HashMaps.
-   *
-   * @param customResourceDefinition CustomResourceDefinitionContext - information about CustomResource like versioning, namespaced or not and group etc
-   * @return a RawCustomResourceOperations object which offers several functions for creating, deleting, updating, watching CustomResources.
-   * @deprecated Use {@link #genericKubernetesResources(ResourceDefinitionContext)} instead
-   */
-  @Deprecated
-  RawCustomResourceOperationsImpl customResource(CustomResourceDefinitionContext customResourceDefinition);
 
   /**
    * API entrypoint for kubernetes resources with APIGroup admissionregistration.k8s.io/v1beta1
