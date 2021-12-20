@@ -116,7 +116,6 @@ public abstract class AbstractJsonSchema<T, B> {
   }
 
   private T internalFromImpl(TypeDef definition, Set<String> visited, String... ignore) {
-    visited.add(definition.getFullyQualifiedName());
     final B builder = newBuilder();
     Set<String> ignores =
       ignore.length > 0 ? new LinkedHashSet<>(Arrays.asList(ignore)) : Collections
@@ -417,9 +416,11 @@ public abstract class AbstractJsonSchema<T, B> {
               .toArray(JsonNode[]::new);
             return enumProperty(enumValues);
           } else {
-            if (!def.getFullyQualifiedName().startsWith("java") && visited.contains(def.getFullyQualifiedName())) {
-              throw new IllegalArgumentException("Found a cyclic reference involving " + def.getFullyQualifiedName());
+            String visitedName = def.getFullyQualifiedName() + "-" + name;
+            if (!def.getFullyQualifiedName().startsWith("java") && visited.contains(visitedName)) {
+              throw new IllegalArgumentException("Found a cyclic reference involving the field " + name + " of type " + def.getFullyQualifiedName());
             }
+            visited.add(visitedName);
             return internalFromImpl(def, visited);
           }
 
