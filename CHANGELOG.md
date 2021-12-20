@@ -16,6 +16,7 @@
 
 ### Bugs
 * Fix #3672: Native image builds of Fabric8 work (commons-codec no longer required)
+* Fix #3639: Support for NodeMetrics and PodMetrics informers
 
 ### 5.11.0 (2021-12-17)
 
