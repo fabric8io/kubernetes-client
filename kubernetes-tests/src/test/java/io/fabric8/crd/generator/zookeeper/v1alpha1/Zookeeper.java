@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.model.annotation.Version;
 @Version(value="v1alpha1", storage=false)
 @Group("io.zookeeper")
 public class Zookeeper extends CustomResource<ZookeeperSpec, ZookeeperStatus> implements Namespaced {
-
+  private ZookeeperSpec spec;
+  private ZookeeperStatus status;
 }
 
