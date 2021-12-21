@@ -19,4 +19,8 @@ public class Ref {
 
   private int ref;
 
+  protected Inner inner;
+
+  public static class Inner { }
+
 }

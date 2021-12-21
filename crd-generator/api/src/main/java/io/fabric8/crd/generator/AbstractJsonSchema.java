@@ -416,12 +416,20 @@ public abstract class AbstractJsonSchema<T, B> {
               .toArray(JsonNode[]::new);
             return enumProperty(enumValues);
           } else {
-            String visitedName = def.getFullyQualifiedName() + "-" + name;
-            if (!def.getFullyQualifiedName().startsWith("java") && visited.contains(visitedName)) {
-              throw new IllegalArgumentException("Found a cyclic reference involving the field " + name + " of type " + def.getFullyQualifiedName());
+            if (!resolving) {
+              visited.clear();
+              resolving = true;
+            } else {
+              String visitedName = name + ":" + classRef;
+              if (!def.getFullyQualifiedName().startsWith("java") && visited.contains(visitedName)) {
+                throw new IllegalArgumentException("Found a cyclic reference involving the field " + name + " of type " + classRef.getFullyQualifiedName());
+              }
+              visited.add(visitedName);
             }
-            visited.add(visitedName);
-            return internalFromImpl(def, visited);
+
+            T res = internalFromImpl(def, visited);
+            resolving = false;
+            return res;
           }
 
         }
@@ -429,6 +437,9 @@ public abstract class AbstractJsonSchema<T, B> {
       }
     }
   }
+
+  // Flag to detect cycles
+  private boolean resolving = false;
 
   /**
    * Builds the schema for specifically handled property types (e.g. intOrString properties)
