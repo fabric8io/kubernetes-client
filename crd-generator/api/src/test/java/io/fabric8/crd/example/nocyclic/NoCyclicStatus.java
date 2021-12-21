@@ -17,13 +17,5 @@ package io.fabric8.crd.example.nocyclic;
 
 public class NoCyclicStatus {
   private String message;
-  // private Ref ref1;
-
-  public String getMessage() {
-    return message;
-  }
-
-  public void setMessage(String message) {
-    this.message = message;
-  }
+  private Ref ref1;
 }
