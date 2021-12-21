@@ -416,20 +416,7 @@ public abstract class AbstractJsonSchema<T, B> {
               .toArray(JsonNode[]::new);
             return enumProperty(enumValues);
           } else {
-            if (!resolving) {
-              visited.clear();
-              resolving = true;
-            } else {
-              String visitedName = name + ":" + classRef;
-              if (!def.getFullyQualifiedName().startsWith("java") && visited.contains(visitedName)) {
-                throw new IllegalArgumentException("Found a cyclic reference involving the field " + name + " of type " + classRef.getFullyQualifiedName());
-              }
-              visited.add(visitedName);
-            }
-
-            T res = internalFromImpl(def, visited);
-            resolving = false;
-            return res;
+            return resolveNestedClass(name, def, visited);
           }
 
         }
@@ -440,6 +427,23 @@ public abstract class AbstractJsonSchema<T, B> {
 
   // Flag to detect cycles
   private boolean resolving = false;
+
+  private T resolveNestedClass(String name, TypeDef def, Set<String> visited) {
+    if (!resolving) {
+      visited.clear();
+      resolving = true;
+    } else {
+      String visitedName = name + ":" + def.getFullyQualifiedName();
+      if (!def.getFullyQualifiedName().startsWith("java") && visited.contains(visitedName)) {
+        throw new IllegalArgumentException("Found a cyclic reference involving the field " + name + " of type " + def.getFullyQualifiedName());
+      }
+      visited.add(visitedName);
+    }
+
+    T res = internalFromImpl(def, visited);
+    resolving = false;
+    return res;
+  }
 
   /**
    * Builds the schema for specifically handled property types (e.g. intOrString properties)
