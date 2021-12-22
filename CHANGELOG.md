@@ -3,6 +3,7 @@
 ### 5.12-SNAPSHOT
 
 #### Bugs
+* Fix #3672: Remove dependency on `commons-codec`
 
 #### Improvements
 

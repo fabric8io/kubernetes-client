@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.dsl.internal.core.v1;
 import static io.fabric8.kubernetes.client.utils.OptionalDependencyWrapper.wrapRunWithOptionalDependency;
 
 import java.io.File;
+import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -32,6 +33,7 @@ import java.nio.channels.WritableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
@@ -406,37 +408,31 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   }
 
   private InputStream readFile(String source) {
-    //Let's wrap the code to a callable inner class to avoid NoClassDef when loading this class.
+    return readExecuting("sh", "-c", String.format("cat %s | base64", PodUpload.shellQuote(source)));
+  }
+
+  private InputStream readExecuting(String... cmd) {
     try {
-      return new Callable<InputStream>() {
-        @Override
-        public InputStream call() {
+      PipedOutputStream out = new PipedOutputStream();
+      PipedInputStream in = new PipedInputStream(out, 1024);
+      ExecWatch watch = writingOutput(out).usingListener((int code, String reason) -> {
           try {
-            PipedOutputStream out = new PipedOutputStream();
-            PipedInputStream in = new PipedInputStream(out, 1024);
-            ExecWatch watch = writingOutput(out).usingListener((int code, String reason) -> {
-                try {
-                  out.flush();
-                  out.close();
-                } catch (IOException e) {
-                  e.printStackTrace();
-                }
-              }
-            ).exec("sh", "-c", String.format("cat %s | base64", PodUpload.shellQuote(source)));
-            return new org.apache.commons.codec.binary.Base64InputStream(in) {
-              @Override
-              public void close() throws IOException {
-                watch.close();
-                super.close();
-              }
-            };
-          } catch (Exception e) {
-            throw KubernetesClientException.launderThrowable(e);
+            out.flush();
+            out.close();
+          } catch (IOException e) {
+            e.printStackTrace();
           }
         }
-      }.call();
-    } catch (NoClassDefFoundError e) {
-      throw new KubernetesClientException("Base64InputStream class is provided by commons-codec, an optional dependency. To use the read/copy functionality you must explicitly add this dependency to the classpath.");
+      ).exec(cmd);
+      return new FilterInputStream(Base64.getDecoder().wrap(in)) {
+        @Override
+        public void close() throws IOException {
+          watch.close();
+          super.close();
+        }
+      };
+    } catch (Exception e) {
+      throw KubernetesClientException.launderThrowable(e);
     }
   }
 
@@ -447,70 +443,29 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   //
 
   private void copyFile(String source, File target)  {
-    //Let's wrap the code to a runnable inner class to avoid NoClassDef on Option classes.
-    try {
-    new Runnable() {
-      @Override
-      public void run() {
-        File destination = target;
-        if (!destination.exists() && !destination.getParentFile().exists() && !destination.getParentFile().mkdirs()) {
-            throw KubernetesClientException.launderThrowable(new IOException("Failed to create directory: " + destination.getParentFile()));
-        }
-        if (destination.isDirectory()) {
-            String[] parts = source.split("\\/|\\\\");
-            String filename = parts[parts.length - 1];
-            destination = destination.toPath().resolve(filename).toFile();
-        }
-        try (InputStream is = readFile(source);) {
-          Files.copy(is, destination.toPath(), StandardCopyOption.REPLACE_EXISTING);
-        } catch (Exception e) {
-          throw KubernetesClientException.launderThrowable(e);
-        }
-      }
-    }.run();
-    } catch (NoClassDefFoundError e) {
-      throw new KubernetesClientException("Base64InputStream class is provided by commons-codec, an optional dependency. To use the read/copy functionality you must explicitly add this dependency to the classpath.");
+    File destination = target;
+    if (!destination.exists() && !destination.getParentFile().exists()
+      && !destination.getParentFile().mkdirs()) {
+      throw KubernetesClientException.launderThrowable(
+        new IOException("Failed to create directory: " + destination.getParentFile()));
+    }
+    if (destination.isDirectory()) {
+      String[] parts = source.split("\\/|\\\\");
+      String filename = parts[parts.length - 1];
+      destination = destination.toPath().resolve(filename).toFile();
+    }
+    try (InputStream is = readFile(source);) {
+      Files.copy(is, destination.toPath(), StandardCopyOption.REPLACE_EXISTING);
+    } catch (Exception e) {
+      throw KubernetesClientException.launderThrowable(e);
     }
   }
 
-  public InputStream readTar(String source) throws Exception {
-    //Let's wrap the code to a callable inner class to avoid NoClassDef on Option classes.
-    try {
-      return new Callable<InputStream>() {
-        @Override
-        public InputStream call() throws Exception {
-          try {
-            PipedOutputStream out = new PipedOutputStream();
-            PipedInputStream in = new PipedInputStream(out, 1024);
-            ExecWatch watch = writingOutput(out).usingListener((int code, String reason) -> {
-                try {
-                  out.flush();
-                  out.close();
-                } catch (IOException e) {
-                  e.printStackTrace();
-                }
-              }
-            ).exec("sh", "-c", "tar -cf - " + source + "|" + "base64");
-            return new org.apache.commons.codec.binary.Base64InputStream(in) {
-              @Override
-              public void close() throws IOException {
-                watch.close();
-                super.close();
-              }
-            };
-          } catch (Exception e) {
-            throw KubernetesClientException.launderThrowable(e);
-          } catch (NoClassDefFoundError n) {
-            throw KubernetesClientException.launderThrowable(n);
-          }
-        }
-      }.call();
-    }  catch (NoClassDefFoundError e) {
-      throw new KubernetesClientException("Base64InputStream class is provided by commons-codec, an optional dependency. To use the read/copy functionality you must explicitly add this dependency to the classpath.");
-    }
+  public InputStream readTar(String source) {
+    return readExecuting("sh", "-c", "tar -cf - " + source + "|" + "base64");
   }
 
-  private void copyDir(String source, File target) throws Exception {
+  private void copyDir(String source, File target) {
     //Let's wrap the code to a runnable inner class to avoid NoClassDef on Option classes.
     try {
     new Runnable() {

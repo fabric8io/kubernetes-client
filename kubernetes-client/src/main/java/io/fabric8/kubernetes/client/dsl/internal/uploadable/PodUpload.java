@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.net.MalformedURLException;
@@ -26,6 +27,7 @@ import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Base64;
 import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
@@ -44,8 +46,6 @@ import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
-import org.apache.commons.codec.binary.Base64InputStream;
-import org.apache.commons.codec.binary.Base64OutputStream;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 
@@ -81,7 +81,7 @@ public class PodUpload {
       buildCommandUrl(command, context, operationSupport), client);
     try (
       final FileInputStream fis = new FileInputStream(pathToUpload.toFile());
-      final Base64InputStream b64In = new Base64InputStream(fis, true, 0, new byte[]{'\r', '\n'})
+      final InputStream b64In = Base64.getDecoder().wrap(fis);
     ) {
       podUploadWebSocketListener.waitUntilReady(operationSupport.getConfig().getRequestConfig().getUploadConnectionTimeout());
       copy(b64In, podUploadWebSocketListener::send);
@@ -105,7 +105,7 @@ public class PodUpload {
     try (
       final PipedOutputStream pos = new PipedOutputStream();
       final PipedInputStream pis = new PipedInputStream(pos);
-      final Base64OutputStream b64Out = new Base64OutputStream(pos, true, 0, new byte[]{'\r', '\n'});
+      final OutputStream b64Out = Base64.getEncoder().wrap(pos);
       final GZIPOutputStream gzip = new GZIPOutputStream(b64Out)
 
     ) {
