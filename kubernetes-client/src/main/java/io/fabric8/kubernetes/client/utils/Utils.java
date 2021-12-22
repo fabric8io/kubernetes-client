@@ -145,14 +145,18 @@ public class Utils {
    * Wait until an other thread signals the completion of a task.
    * If an exception is passed, it will be propagated to the caller.
    * @param future    The communication channel.
-   * @param amount    The amount of time to wait.
+   * @param amount    The amount of time to wait.  If less than 0, wait indefinitely
    * @param timeUnit  The time unit.
    *
    * @return a boolean value indicating resource is ready or not.
    */
   public static boolean waitUntilReady(Future<?> future, long amount, TimeUnit timeUnit) {
     try {
-      future.get(amount, timeUnit);
+      if (amount < 0) {
+        future.get();
+      } else {
+        future.get(amount, timeUnit);
+      }
       return true;
     } catch (TimeoutException e) {
       return false;

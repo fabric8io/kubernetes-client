@@ -60,12 +60,16 @@ class OkHttpWebSocketImpl implements WebSocket {
           if (response != null) {
             response.close();
           }
-          if (!opened && response != null) {
-            try {
-              future.completeExceptionally(new WebSocketHandshakeException(new OkHttpResponseImpl<>(response, null)).initCause(t));
-            } catch (IOException e) {
-              // can't happen
-            } 
+          if (!opened) {
+            if (response != null) {
+              try {
+                future.completeExceptionally(new WebSocketHandshakeException(new OkHttpResponseImpl<>(response, null)).initCause(t));
+              } catch (IOException e) {
+                // can't happen
+              } 
+            } else {
+              future.completeExceptionally(t);
+            }
           } else {
             listener.onError(new OkHttpWebSocketImpl(webSocket), t);
           }

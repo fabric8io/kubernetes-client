@@ -5,6 +5,7 @@
 #### Bugs
 
 #### Improvements
+* Fix #3674: allows the connect and websocket timeouts to apply to watches instead of a hardcoded timeout
 
 #### Dependency Upgrade
 
