@@ -16,7 +16,6 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
-import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
@@ -66,7 +65,7 @@ import lombok.experimental.Accessors;
 @TemplateTransformations({
     @TemplateTransformation(value = "/manifest.vm", outputPath = "metrics.properties", gather = true)
 })
-public class NodeMetrics implements HasMetadata, Namespaced
+public class NodeMetrics implements HasMetadata
 {
 
     /**

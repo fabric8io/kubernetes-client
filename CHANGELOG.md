@@ -3,6 +3,7 @@
 ### 5.12-SNAPSHOT
 
 #### Bugs
+* Fix #3662: NodeMetrics should be marked as Cluster scoped resource
 
 #### Improvements
 
