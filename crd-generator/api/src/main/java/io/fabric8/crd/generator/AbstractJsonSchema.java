@@ -80,6 +80,7 @@ public abstract class AbstractJsonSchema<T, B> {
   private static final Map<TypeRef, String> COMMON_MAPPINGS = new HashMap<>();
   public static final String ANNOTATION_JSON_PROPERTY = "com.fasterxml.jackson.annotation.JsonProperty";
   public static final String ANNOTATION_JSON_PROPERTY_DESCRIPTION = "com.fasterxml.jackson.annotation.JsonPropertyDescription";
+  public static final String ANNOTATION_JSON_IGNORE = "com.fasterxml.jackson.annotation.JsonIgnore";
   public static final String ANNOTATION_NOT_NULL = "javax.validation.constraints.NotNull";
 
   static {
@@ -139,6 +140,8 @@ public abstract class AbstractJsonSchema<T, B> {
 
       if (facade.required) {
         required.add(name);
+      } else if (facade.ignored) {
+        continue;
       }
       final T schema = internalFrom(name, possiblyRenamedProperty.getTypeRef());
       // if we got a description from the field or an accessor, use it
@@ -171,6 +174,7 @@ public abstract class AbstractJsonSchema<T, B> {
     private final String type;
     private String renamedTo;
     private boolean required;
+    private boolean ignored;
     private String description;
 
     private PropertyOrAccessor(Collection<AnnotationRef> annotations, String name, String propertyName, boolean isMethod) {
@@ -206,6 +210,9 @@ public abstract class AbstractJsonSchema<T, B> {
               description = descriptionFromAnnotation;
             }
             break;
+          case ANNOTATION_JSON_IGNORE:
+            ignored = true;
+            break;
         }
       });
     }
@@ -216,6 +223,10 @@ public abstract class AbstractJsonSchema<T, B> {
 
     public boolean isRequired() {
       return required;
+    }
+
+    public boolean isIgnored() {
+      return ignored;
     }
 
     public String getDescription() {
@@ -241,6 +252,7 @@ public abstract class AbstractJsonSchema<T, B> {
     private String renamedTo;
     private String description;
     private boolean required;
+    private boolean ignored;
     private final Property original;
     private String nameContributedBy;
     private String descriptionContributedBy;
@@ -290,6 +302,8 @@ public abstract class AbstractJsonSchema<T, B> {
 
         if (p.isRequired()) {
           required = true;
+        } else if (p.isIgnored()) {
+          ignored = true;
         }
       });
       

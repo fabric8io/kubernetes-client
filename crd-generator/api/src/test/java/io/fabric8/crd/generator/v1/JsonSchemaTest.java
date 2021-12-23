@@ -103,5 +103,8 @@ class JsonSchemaTest {
     final List<JsonNode> enumValues = anEnum.getEnum();
     assertEquals(2, enumValues.size());
     enumValues.stream().map(JsonNode::textValue).forEach(s -> assertTrue("oui".equals(s) || "non".equals(s)));
+
+    // check ignored fields
+    assertFalse(spec.containsKey("ignoredFoo"));
   }
 }
