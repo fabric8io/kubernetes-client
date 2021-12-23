@@ -63,8 +63,12 @@ public class JsonSchema extends AbstractJsonSchema<JSONSchemaProps, JSONSchemaPr
   }
 
   @Override
-  public JSONSchemaProps build(JSONSchemaPropsBuilder builder, List<String> required) {
-    return builder.withRequired(required).build();
+  public JSONSchemaProps build(JSONSchemaPropsBuilder builder, List<String> required, boolean preserveUnknownFields) {
+    builder = builder.withRequired(required);
+    if (preserveUnknownFields) {
+      builder.withXKubernetesPreserveUnknownFields(preserveUnknownFields);
+    }
+    return builder.build();
   }
 
   @Override

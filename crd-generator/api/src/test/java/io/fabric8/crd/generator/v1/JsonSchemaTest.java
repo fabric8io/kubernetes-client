@@ -18,6 +18,7 @@ package io.fabric8.crd.generator.v1;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.crd.example.annotated.Annotated;
 import io.fabric8.crd.example.basic.Basic;
+import io.fabric8.crd.example.json.ContainingJson;
 import io.fabric8.crd.example.person.Person;
 import io.fabric8.crd.generator.utils.Types;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
@@ -106,5 +107,28 @@ class JsonSchemaTest {
 
     // check ignored fields
     assertFalse(spec.containsKey("ignoredFoo"));
+  }
+
+  @Test
+  void shouldProbuceKubernetesPreserveFields() {
+    TypeDef containingJson = Types.typeDefFrom(ContainingJson.class);
+    JSONSchemaProps schema = JsonSchema.from(containingJson);
+    assertNotNull(schema);
+    Map<String, JSONSchemaProps> properties = schema.getProperties();
+    assertEquals(2, properties.size());
+    final JSONSchemaProps specSchema = properties.get("spec");
+    Map<String, JSONSchemaProps> spec = specSchema.getProperties();
+    assertEquals(2, spec.size());
+
+    // check descriptions are present
+    assertTrue(spec.containsKey("free"));
+    JSONSchemaProps freeField = spec.get("free");
+
+    assertTrue(freeField.getXKubernetesPreserveUnknownFields());
+
+    assertTrue(spec.containsKey("field"));
+    JSONSchemaProps field = spec.get("field");
+
+    assertNull(field.getXKubernetesPreserveUnknownFields());
   }
 }

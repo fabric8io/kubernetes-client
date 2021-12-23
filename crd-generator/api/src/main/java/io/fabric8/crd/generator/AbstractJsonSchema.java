@@ -78,6 +78,8 @@ public abstract class AbstractJsonSchema<T, B> {
   public static final String ANNOTATION_JSON_IGNORE = "com.fasterxml.jackson.annotation.JsonIgnore";
   public static final String ANNOTATION_NOT_NULL = "javax.validation.constraints.NotNull";
 
+  public static final String JSON_NODE_TYPE = "com.fasterxml.jackson.databind.JsonNode";
+
   static {
     COMMON_MAPPINGS.put(STRING_REF, STRING_MARKER);
     COMMON_MAPPINGS.put(DATE_REF, STRING_MARKER);
@@ -123,6 +125,10 @@ public abstract class AbstractJsonSchema<T, B> {
         .emptySet();
     List<String> required = new ArrayList<>();
 
+    final boolean preserveUnknownFields = (
+      definition.getFullyQualifiedName() != null &&
+        definition.getFullyQualifiedName().equals(JSON_NODE_TYPE));
+
     // index potential accessors by name for faster lookup
     final Map<String, Method> accessors = indexPotentialAccessors(definition);
 
@@ -153,7 +159,7 @@ public abstract class AbstractJsonSchema<T, B> {
       }
       addProperty(possiblyRenamedProperty, builder, possiblyUpdatedSchema);
     }
-    return build(builder, required);
+    return build(builder, required, preserveUnknownFields);
   }
 
   private Map<String, Method> indexPotentialAccessors(TypeDef definition) {
@@ -364,7 +370,7 @@ public abstract class AbstractJsonSchema<T, B> {
    * @param required the list of names of required fields
    * @return the built JSON schema
    */
-  public abstract T build(B builder, List<String> required);
+  public abstract T build(B builder, List<String> required, boolean preserveUnknownFields);
 
   /**
    * Builds the specific JSON schema representing the structural schema for the specified property
