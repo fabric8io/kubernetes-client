@@ -15,6 +15,8 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
+import io.fabric8.kubernetes.client.KubernetesClientException;
+
 /**
  * <p>Encodes and decodes to and from Base64 notation.</p>
  * <p>Homepage: <a href="http://iharder.net/base64">http://iharder.net/base64</a>.</p>
@@ -22,7 +24,7 @@ package io.fabric8.kubernetes.client.utils;
  * <p>Example:</p>
  *
  * <code>String encoded = Base64.encode( myByteArray );</code>
- * <br />
+ * <br>
  * <code>byte[] myByteArray = Base64.decode( encoded );</code>
  *
  * <p>The <tt>options</tt> parameter, which appears in a few places, is used to pass
@@ -1298,9 +1300,9 @@ public class Base64
         }   // end try
         catch( java.io.IOException e ) {
           if (e.getMessage().equals("Unsupported compression method")) {
-            System.out.println("Base64 decoding: Ignoring GZIP header and just returning originally-decoded bytes."); // Better to log as debug, but jboss logging not available in the module :/
+            throw KubernetesClientException.launderThrowable("Base64 decoding: Ignoring GZIP header and just returning originally-decoded bytes.", e);
           } else {
-            e.printStackTrace();
+            throw KubernetesClientException.launderThrowable(e);
           }
 
           // Just return originally-decoded bytes
@@ -1358,7 +1360,7 @@ public class Base64
      * Valid options:<pre>
      *   ENCODE or DECODE: Encode or Decode as data is read.
      *   DO_BREAK_LINES: break lines at 76 characters
-     *     (only meaningful when encoding)</i>
+     *     <i>(only meaningful when encoding)</i>
      * </pre>
      * <p>
      * Example: <code>new Base64.InputStream( in, Base64.DECODE )</code>
@@ -1571,7 +1573,7 @@ public class Base64
      * Valid options:<pre>
      *   ENCODE or DECODE: Encode or Decode as data is read.
      *   DO_BREAK_LINES: don't break lines at 76 characters
-     *     (only meaningful when encoding)</i>
+     *     <i>(only meaningful when encoding)</i>
      * </pre>
      * <p>
      * Example: <code>new Base64.OutputStream( out, Base64.ENCODE )</code>
