@@ -837,8 +837,7 @@
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.metrics.v1beta1.NodeMetrics",
       "javaInterfaces": [
-        "io.fabric8.kubernetes.api.model.HasMetadata",
-        "io.fabric8.kubernetes.api.model.Namespaced"
+        "io.fabric8.kubernetes.api.model.HasMetadata"
       ]
     },
     "kubernetes_metrics_v1beta1_NodeMetricsList": {

@@ -637,6 +637,7 @@ func (g *schemaGenerator) isClusterScopedResource(t reflect.Type) bool {
 		"k8s.io/api/storage/v1/CSIDriver",
 		"k8s.io/api/storage/v1/CSINode",
 		"k8s.io/api/storage/v1/VolumeAttachment",
+		"k8s.io/metrics/pkg/apis/metrics/v1beta1/NodeMetrics",
 		"k8s.io/api/node/v1beta1/RuntimeClass",
 		"k8s.io/api/node/v1/RuntimeClass",
 		"k8s.io/api/node/v1alpha1/RuntimeClass",

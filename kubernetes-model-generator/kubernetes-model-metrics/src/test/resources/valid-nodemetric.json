@@ -1,0 +1,15 @@
+{
+  "kind": "NodeMetrics",
+  "apiVersion": "metrics.k8s.io/v1beta1",
+  "metadata": {
+    "name": "minikube",
+    "selfLink": "/apis/metrics.k8s.io/v1beta1/nodes/minikube",
+    "creationTimestamp": "2021-12-23T16:05:25Z"
+  },
+  "timestamp": "2021-12-23T16:05:09Z",
+  "window": "30s",
+  "usage": {
+    "cpu": "134994244n",
+    "memory": "1275716Ki"
+  }
+}
