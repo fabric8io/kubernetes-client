@@ -119,9 +119,9 @@ class JsonSchemaTest {
     assertEquals(2, properties.size());
     final JSONSchemaProps specSchema = properties.get("spec");
     Map<String, JSONSchemaProps> spec = specSchema.getProperties();
-    assertEquals(2, spec.size());
+    assertEquals(3, spec.size());
 
-    // check descriptions are present
+    // check preserve unknown fields is present
     assertTrue(spec.containsKey("free"));
     JSONSchemaProps freeField = spec.get("free");
 
@@ -131,5 +131,10 @@ class JsonSchemaTest {
     JSONSchemaProps field = spec.get("field");
 
     assertNull(field.getXKubernetesPreserveUnknownFields());
+
+    assertTrue(spec.containsKey("foo"));
+    JSONSchemaProps fooField = spec.get("foo");
+
+    assertTrue(fooField.getXKubernetesPreserveUnknownFields());
   }
 }
