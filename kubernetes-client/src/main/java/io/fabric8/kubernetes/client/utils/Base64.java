@@ -1715,8 +1715,10 @@ public class Base64
       // Base class both flushes and closes.
       super.close();
 
-      buffer = null;
-      out    = null;
+      // Nulling these references breaks the method's idempotency
+      // This causes a NullPointerException in JDK8 FilterOutputStream implementation;
+//      buffer = null;
+//      out    = null;
     }   // end close
 
 
