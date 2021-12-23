@@ -81,6 +81,7 @@ public abstract class AbstractJsonSchema<T, B> {
   public static final String ANNOTATION_JSON_ANY_GETTER = "com.fasterxml.jackson.annotation.JsonAnyGetter";
   public static final String ANNOTATION_JSON_ANY_SETTER = "com.fasterxml.jackson.annotation.JsonAnySetter";
   public static final String ANNOTATION_NOT_NULL = "javax.validation.constraints.NotNull";
+  public static final String ANNOTATION_SCHEMA_FROM = "io.fabric8.crd.generator.annotation.SchemaFrom";
 
   public static final String JSON_NODE_TYPE = "com.fasterxml.jackson.databind.JsonNode";
 
@@ -190,6 +191,7 @@ public abstract class AbstractJsonSchema<T, B> {
     private boolean ignored;
     private boolean preserveUnknownFields;
     private String description;
+    private Class schemaFrom;
 
     private PropertyOrAccessor(Collection<AnnotationRef> annotations, String name, String propertyName, boolean isMethod) {
       this.annotations = annotations;
@@ -230,6 +232,12 @@ public abstract class AbstractJsonSchema<T, B> {
           case ANNOTATION_JSON_ANY_SETTER:
             preserveUnknownFields = true;
             break;
+          case ANNOTATION_SCHEMA_FROM:
+            final Class extractedType = (Class) a.getParameters().get("type");
+            if (extractedType != null) {
+              schemaFrom = extractedType;
+            }
+            break;
         }
       });
     }
@@ -262,6 +270,14 @@ public abstract class AbstractJsonSchema<T, B> {
       return description != null;
     }
 
+    public Class getSchemaFrom() {
+      return schemaFrom;
+    }
+
+    public boolean contributeSchemaFrom() {
+      return schemaFrom != null;
+    }
+
     @Override
     public String toString() {
       return "'" + name + "' " + type;
@@ -278,6 +294,7 @@ public abstract class AbstractJsonSchema<T, B> {
     private final Property original;
     private String nameContributedBy;
     private String descriptionContributedBy;
+    private TypeRef schemaFrom;
 
     public PropertyFacade(Property property, Map<String, Method> potentialAccessors) {
       original = property;
@@ -331,10 +348,17 @@ public abstract class AbstractJsonSchema<T, B> {
         if (p.isPreserveUnknownFields()) {
           preserveUnknownFields = true;
         }
+
+        if (p.contributeSchemaFrom()) {
+          schemaFrom = Types.typeDefFrom(p.getSchemaFrom()).toReference();
+        }
       });
-      
-      return renamedTo != null ? new Property(original.getAnnotations(), original.getTypeRef(), renamedTo,
-        original.getComments(), original.getModifiers(), original.getAttributes()) : original;
+
+      TypeRef typeRef = schemaFrom != null ? schemaFrom : original.getTypeRef();
+      String finalName = renamedTo != null ? renamedTo : original.getName();
+
+      return new Property(original.getAnnotations(), typeRef, finalName,
+        original.getComments(), original.getModifiers(), original.getAttributes());
     }
   }
 
