@@ -15,8 +15,13 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal.uploadable;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -25,6 +30,7 @@ import java.io.PipedOutputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Base64;
@@ -79,10 +85,9 @@ public class PodUpload {
       "mkdir -p %s && base64 -d - > %s", shellQuote(directory), shellQuote(file));
     final PodUploadWebSocketListener podUploadWebSocketListener = initWebSocket(
       buildCommandUrl(command, context, operationSupport), client);
-    try (
-      final FileInputStream fis = new FileInputStream(pathToUpload.toFile());
-      final InputStream b64In = Base64.getDecoder().wrap(fis);
-    ) {
+    final byte[] fromFile = Files.readAllBytes(pathToUpload);
+    final byte[] encoded = Base64.getEncoder().encode(fromFile);
+    try ( final InputStream b64In = new ByteArrayInputStream(encoded) ) {
       podUploadWebSocketListener.waitUntilReady(operationSupport.getConfig().getRequestConfig().getUploadConnectionTimeout());
       copy(b64In, podUploadWebSocketListener::send);
       podUploadWebSocketListener.waitUntilComplete(operationSupport.getConfig().getRequestConfig().getUploadRequestTimeout());
