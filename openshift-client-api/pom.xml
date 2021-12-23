@@ -24,9 +24,9 @@
     <version>5.12-SNAPSHOT</version>
   </parent>
 
-  <artifactId>openshift-client</artifactId>
+  <artifactId>openshift-client-api</artifactId>
   <packaging>jar</packaging>
-  <name>Fabric8 :: Openshift :: Java Client</name>
+  <name>Fabric8 :: Openshift :: Java Client API</name>
 
   <properties>
     <osgi.require-capability>
@@ -41,7 +41,6 @@
       io.fabric8.openshift.client*;-noimport:=true
     </osgi.export>
     <osgi.private>
-      io.fabric8.openshift.client.handlers,
       io.fabric8.openshift.client.internal,
       io.fabric8.openshift.client.dsl.internal
     </osgi.private>
@@ -50,17 +49,55 @@
  <dependencies>
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-client</artifactId>
+      <artifactId>kubernetes-client-api</artifactId>
+    </dependency>
+   <dependency>
+     <groupId>io.fabric8</groupId>
+     <artifactId>openshift-model</artifactId>
+   </dependency>
+   <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>openshift-model-clusterautoscaling</artifactId>
+    </dependency>
+   <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>openshift-model-operator</artifactId>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>openshift-client-api</artifactId>
+      <artifactId>openshift-model-operatorhub</artifactId>
     </dependency>
-   
     <dependency>
-      <groupId>com.github.mifmif</groupId>
-      <artifactId>generex</artifactId>
-      <version>${generex.version}</version>
+      <groupId>io.fabric8</groupId>
+      <artifactId>openshift-model-machine</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>openshift-model-whereabouts</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>openshift-model-monitoring</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>openshift-model-storageversionmigrator</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>openshift-model-tuned</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>openshift-model-console</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>openshift-model-machineconfig</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>openshift-model-miscellaneous</artifactId>
     </dependency>
     
     <!-- Compile Only Dependencies -->
@@ -210,10 +247,6 @@
                 <Require-Bundle>${osgi.bundles}</Require-Bundle>
                 <Bundle-Activator>${osgi.activator}</Bundle-Activator>
                 <Export-Service>${osgi.export.service}</Export-Service>
-                <Include-Resource>
-                  /META-INF/services/io.fabric8.kubernetes.client.ServiceToURLProvider=target/classes/META-INF/services/io.fabric8.kubernetes.client.ServiceToURLProvider,
-                  /META-INF/services/io.fabric8.kubernetes.client.ExtensionAdapter=target/classes/META-INF/services/io.fabric8.kubernetes.client.ExtensionAdapter
-                </Include-Resource>
               </instructions>
               <classifier>bundle</classifier>
             </configuration>

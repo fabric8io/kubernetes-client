@@ -177,6 +177,7 @@
     <module>kubernetes-client-api</module>
     <module>kubernetes-client</module>
     <module>kubernetes-server-mock</module>
+    <module>openshift-client-api</module>
     <module>openshift-client</module>
     <module>extensions</module>
     <module>openshift-server-mock</module>
@@ -366,6 +367,11 @@
         <version>${project.version}</version>
         <type>test-jar</type>
         <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>openshift-client-api</artifactId>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>io.fabric8</groupId>
