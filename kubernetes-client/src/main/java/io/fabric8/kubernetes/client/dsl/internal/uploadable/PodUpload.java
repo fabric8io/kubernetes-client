@@ -42,12 +42,13 @@ import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.WebSocket;
+import io.fabric8.kubernetes.client.utils.Base64;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
-import org.apache.commons.codec.binary.Base64InputStream;
-import org.apache.commons.codec.binary.Base64OutputStream;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
+
+import static io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl.shellQuote;
 
 public class PodUpload {
 
@@ -81,17 +82,13 @@ public class PodUpload {
       buildCommandUrl(command, context, operationSupport), client);
     try (
       final FileInputStream fis = new FileInputStream(pathToUpload.toFile());
-      final Base64InputStream b64In = new Base64InputStream(fis, true, 0, new byte[]{'\r', '\n'})
+      final Base64.InputStream b64In = new Base64.InputStream(fis, Base64.ENCODE)
     ) {
       podUploadWebSocketListener.waitUntilReady(operationSupport.getConfig().getRequestConfig().getUploadConnectionTimeout());
       copy(b64In, podUploadWebSocketListener::send);
       podUploadWebSocketListener.waitUntilComplete(operationSupport.getConfig().getRequestConfig().getUploadRequestTimeout());
       return true;
     }
-  }
-  
-  public static String shellQuote(String value) {
-    return "'" + value.replaceAll("'", "'\\\\''") + "'";
   }
 
   private static boolean uploadDirectory(HttpClient client, PodOperationContext context,
@@ -105,7 +102,7 @@ public class PodUpload {
     try (
       final PipedOutputStream pos = new PipedOutputStream();
       final PipedInputStream pis = new PipedInputStream(pos);
-      final Base64OutputStream b64Out = new Base64OutputStream(pos, true, 0, new byte[]{'\r', '\n'});
+      final Base64.OutputStream b64Out = new Base64.OutputStream(pos, Base64.ENCODE);
       final GZIPOutputStream gzip = new GZIPOutputStream(b64Out)
 
     ) {
