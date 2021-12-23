@@ -133,6 +133,9 @@
         "fieldManager": {
           "type": "string"
         },
+        "fieldValidation": {
+          "type": "string"
+        },
         "kind": {
           "type": "string",
           "default": "CreateOptions",
@@ -558,6 +561,9 @@
         "fieldManager": {
           "type": "string"
         },
+        "fieldValidation": {
+          "type": "string"
+        },
         "force": {
           "type": "boolean"
         },
@@ -758,6 +764,9 @@
           }
         },
         "fieldManager": {
+          "type": "string"
+        },
+        "fieldValidation": {
           "type": "string"
         },
         "kind": {
@@ -1848,6 +1857,9 @@
         "fieldManager": {
           "type": "string"
         },
+        "fieldValidation": {
+          "type": "string"
+        },
         "kind": {
           "type": "string",
           "default": "CreateOptions",
@@ -1896,7 +1908,7 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "policy/v1",
+          "default": "policy/v1beta1",
           "required": true
         },
         "deleteOptions": {
@@ -2341,6 +2353,9 @@
         "fieldManager": {
           "type": "string"
         },
+        "fieldValidation": {
+          "type": "string"
+        },
         "force": {
           "type": "boolean"
         },
@@ -2383,14 +2398,14 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "policy/v1",
+          "default": "policy/v1beta1",
           "required": true
         },
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_policy_v1_PodDisruptionBudget",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1.PodDisruptionBudget"
+            "$ref": "#/definitions/kubernetes_policy_v1beta1_PodDisruptionBudget",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudget"
           }
         },
         "kind": {
@@ -2885,6 +2900,9 @@
           }
         },
         "fieldManager": {
+          "type": "string"
+        },
+        "fieldValidation": {
           "type": "string"
         },
         "kind": {

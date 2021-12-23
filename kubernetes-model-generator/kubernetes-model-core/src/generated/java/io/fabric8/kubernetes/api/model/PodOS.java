@@ -22,8 +22,7 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "postStart",
-    "preStop"
+    "name"
 })
 @ToString
 @EqualsAndHashCode
@@ -33,13 +32,11 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
-public class Lifecycle implements KubernetesResource
+public class PodOS implements KubernetesResource
 {
 
-    @JsonProperty("postStart")
-    private LifecycleHandler postStart;
-    @JsonProperty("preStop")
-    private LifecycleHandler preStop;
+    @JsonProperty("name")
+    private String name;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -47,38 +44,26 @@ public class Lifecycle implements KubernetesResource
      * No args constructor for use in serialization
      * 
      */
-    public Lifecycle() {
+    public PodOS() {
     }
 
     /**
      * 
-     * @param postStart
-     * @param preStop
+     * @param name
      */
-    public Lifecycle(LifecycleHandler postStart, LifecycleHandler preStop) {
+    public PodOS(String name) {
         super();
-        this.postStart = postStart;
-        this.preStop = preStop;
+        this.name = name;
     }
 
-    @JsonProperty("postStart")
-    public LifecycleHandler getPostStart() {
-        return postStart;
+    @JsonProperty("name")
+    public String getName() {
+        return name;
     }
 
-    @JsonProperty("postStart")
-    public void setPostStart(LifecycleHandler postStart) {
-        this.postStart = postStart;
-    }
-
-    @JsonProperty("preStop")
-    public LifecycleHandler getPreStop() {
-        return preStop;
-    }
-
-    @JsonProperty("preStop")
-    public void setPreStop(LifecycleHandler preStop) {
-        this.preStop = preStop;
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
     }
 
     @JsonAnyGetter
