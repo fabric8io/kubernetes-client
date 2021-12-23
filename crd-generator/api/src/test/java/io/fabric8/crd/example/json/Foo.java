@@ -15,22 +15,24 @@
  */
 package io.fabric8.crd.example.json;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 
-public class ContainingJsonSpec {
+import java.util.HashMap;
+import java.util.Map;
 
-  private int field;
+public class Foo {
 
-  public int getField() { return field; }
+  private Map<String, Object> configAsMap = new HashMap<>();
 
-  private JsonNode free;
-
-  public JsonNode getFree() {
-    return free;
+  @JsonAnyGetter
+  public Map<String, Object> getConfigAsMap() {
+    return configAsMap;
   }
 
-  private Foo foo;
-
-  public Foo getFoo() { return foo; }
+  @JsonAnySetter
+  public void setConfigAsMap(String name, Object value) {
+    this.configAsMap.put(name, value);
+  }
 
 }

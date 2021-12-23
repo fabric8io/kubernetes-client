@@ -76,6 +76,8 @@ public abstract class AbstractJsonSchema<T, B> {
   public static final String ANNOTATION_JSON_PROPERTY = "com.fasterxml.jackson.annotation.JsonProperty";
   public static final String ANNOTATION_JSON_PROPERTY_DESCRIPTION = "com.fasterxml.jackson.annotation.JsonPropertyDescription";
   public static final String ANNOTATION_JSON_IGNORE = "com.fasterxml.jackson.annotation.JsonIgnore";
+  public static final String ANNOTATION_JSON_ANY_GETTER = "com.fasterxml.jackson.annotation.JsonAnyGetter";
+  public static final String ANNOTATION_JSON_ANY_SETTER = "com.fasterxml.jackson.annotation.JsonAnySetter";
   public static final String ANNOTATION_NOT_NULL = "javax.validation.constraints.NotNull";
 
   public static final String JSON_NODE_TYPE = "com.fasterxml.jackson.databind.JsonNode";
@@ -125,7 +127,7 @@ public abstract class AbstractJsonSchema<T, B> {
         .emptySet();
     List<String> required = new ArrayList<>();
 
-    final boolean preserveUnknownFields = (
+    boolean preserveUnknownFields = (
       definition.getFullyQualifiedName() != null &&
         definition.getFullyQualifiedName().equals(JSON_NODE_TYPE));
 
@@ -149,6 +151,10 @@ public abstract class AbstractJsonSchema<T, B> {
         continue;
       }
       final T schema = internalFromImpl(name, possiblyRenamedProperty.getTypeRef(), visited);
+      if (facade.preserveUnknownFields) {
+        preserveUnknownFields = true;
+      }
+
       // if we got a description from the field or an accessor, use it
       final String description = facade.description;
       final T possiblyUpdatedSchema;
@@ -180,6 +186,7 @@ public abstract class AbstractJsonSchema<T, B> {
     private String renamedTo;
     private boolean required;
     private boolean ignored;
+    private boolean preserveUnknownFields;
     private String description;
 
     private PropertyOrAccessor(Collection<AnnotationRef> annotations, String name, String propertyName, boolean isMethod) {
@@ -217,6 +224,9 @@ public abstract class AbstractJsonSchema<T, B> {
             break;
           case ANNOTATION_JSON_IGNORE:
             ignored = true;
+          case ANNOTATION_JSON_ANY_GETTER:
+          case ANNOTATION_JSON_ANY_SETTER:
+            preserveUnknownFields = true;
             break;
         }
       });
@@ -232,6 +242,10 @@ public abstract class AbstractJsonSchema<T, B> {
 
     public boolean isIgnored() {
       return ignored;
+    }
+
+    public boolean isPreserveUnknownFields() {
+      return preserveUnknownFields;
     }
 
     public String getDescription() {
@@ -258,6 +272,7 @@ public abstract class AbstractJsonSchema<T, B> {
     private String description;
     private boolean required;
     private boolean ignored;
+    private boolean preserveUnknownFields;
     private final Property original;
     private String nameContributedBy;
     private String descriptionContributedBy;
@@ -309,6 +324,10 @@ public abstract class AbstractJsonSchema<T, B> {
           required = true;
         } else if (p.isIgnored()) {
           ignored = true;
+        }
+
+        if (p.isPreserveUnknownFields()) {
+          preserveUnknownFields = true;
         }
       });
       
