@@ -33,6 +33,7 @@ import java.nio.channels.WritableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.concurrent.Callable;
@@ -424,7 +425,28 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
           }
         }
       ).exec(cmd);
-      return new FilterInputStream(Base64.getDecoder().wrap(in)) {
+      return new FilterInputStream(in) {
+        private final Base64.Decoder decoder = Base64.getDecoder();
+
+        @Override
+        public int read(byte[] b, int off, int len) throws IOException {
+          byte[] buffer = new byte[b.length];
+          int initRead = super.read(buffer, off, len);
+          if (initRead < 0) {
+            return initRead;
+          }
+          int count = 0;
+          while(count < initRead) {
+            final byte read = buffer[count];
+            // not sure that's the proper behavior…
+            if(read != '+' && read != '/' && !Character.isLetterOrDigit(read)){
+              break;
+            }
+            count++;
+          }
+          return decoder.decode(Arrays.copyOf(buffer, count), b);
+        }
+
         @Override
         public void close() throws IOException {
           watch.close();
