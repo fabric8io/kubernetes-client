@@ -22,9 +22,8 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "exec",
-    "httpGet",
-    "tcpSocket"
+    "port",
+    "service"
 })
 @ToString
 @EqualsAndHashCode
@@ -34,15 +33,13 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
-public class Handler implements KubernetesResource
+public class GRPCAction implements KubernetesResource
 {
 
-    @JsonProperty("exec")
-    private ExecAction exec;
-    @JsonProperty("httpGet")
-    private HTTPGetAction httpGet;
-    @JsonProperty("tcpSocket")
-    private TCPSocketAction tcpSocket;
+    @JsonProperty("port")
+    private Integer port;
+    @JsonProperty("service")
+    private String service;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -50,50 +47,38 @@ public class Handler implements KubernetesResource
      * No args constructor for use in serialization
      * 
      */
-    public Handler() {
+    public GRPCAction() {
     }
 
     /**
      * 
-     * @param tcpSocket
-     * @param exec
-     * @param httpGet
+     * @param port
+     * @param service
      */
-    public Handler(ExecAction exec, HTTPGetAction httpGet, TCPSocketAction tcpSocket) {
+    public GRPCAction(Integer port, String service) {
         super();
-        this.exec = exec;
-        this.httpGet = httpGet;
-        this.tcpSocket = tcpSocket;
+        this.port = port;
+        this.service = service;
     }
 
-    @JsonProperty("exec")
-    public ExecAction getExec() {
-        return exec;
+    @JsonProperty("port")
+    public Integer getPort() {
+        return port;
     }
 
-    @JsonProperty("exec")
-    public void setExec(ExecAction exec) {
-        this.exec = exec;
+    @JsonProperty("port")
+    public void setPort(Integer port) {
+        this.port = port;
     }
 
-    @JsonProperty("httpGet")
-    public HTTPGetAction getHttpGet() {
-        return httpGet;
+    @JsonProperty("service")
+    public String getService() {
+        return service;
     }
 
-    @JsonProperty("httpGet")
-    public void setHttpGet(HTTPGetAction httpGet) {
-        this.httpGet = httpGet;
-    }
-
-    @JsonProperty("tcpSocket")
-    public TCPSocketAction getTcpSocket() {
-        return tcpSocket;
-    }
-
-    @JsonProperty("tcpSocket")
-    public void setTcpSocket(TCPSocketAction tcpSocket) {
-        this.tcpSocket = tcpSocket;
+    @JsonProperty("service")
+    public void setService(String service) {
+        this.service = service;
     }
 
     @JsonAnyGetter

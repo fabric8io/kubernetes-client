@@ -103,6 +103,9 @@
         "fieldManager": {
           "type": "string"
         },
+        "fieldValidation": {
+          "type": "string"
+        },
         "kind": {
           "type": "string",
           "default": "CreateOptions",
@@ -493,6 +496,9 @@
         "fieldManager": {
           "type": "string"
         },
+        "fieldValidation": {
+          "type": "string"
+        },
         "force": {
           "type": "boolean"
         },
@@ -693,6 +699,9 @@
           }
         },
         "fieldManager": {
+          "type": "string"
+        },
+        "fieldValidation": {
           "type": "string"
         },
         "kind": {
@@ -1231,6 +1240,9 @@
         "fieldManager": {
           "type": "string"
         },
+        "fieldValidation": {
+          "type": "string"
+        },
         "kind": {
           "type": "string",
           "default": "CreateOptions",
@@ -1347,14 +1359,14 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "events.k8s.io/v1",
+          "default": "events.k8s.io/v1beta1",
           "required": true
         },
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_events_v1_Event",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.events.v1.Event"
+            "$ref": "#/definitions/kubernetes_events_v1beta1_Event",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.events.v1beta1.Event"
           }
         },
         "kind": {
@@ -1733,6 +1745,9 @@
         "fieldManager": {
           "type": "string"
         },
+        "fieldValidation": {
+          "type": "string"
+        },
         "force": {
           "type": "boolean"
         },
@@ -1899,6 +1914,9 @@
           }
         },
         "fieldManager": {
+          "type": "string"
+        },
+        "fieldValidation": {
           "type": "string"
         },
         "kind": {

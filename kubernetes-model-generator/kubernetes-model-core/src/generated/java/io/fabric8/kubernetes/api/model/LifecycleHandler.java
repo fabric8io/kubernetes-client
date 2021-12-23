@@ -22,8 +22,9 @@ import lombok.experimental.Accessors;
     "apiVersion",
     "kind",
     "metadata",
-    "postStart",
-    "preStop"
+    "exec",
+    "httpGet",
+    "tcpSocket"
 })
 @ToString
 @EqualsAndHashCode
@@ -33,13 +34,15 @@ import lombok.experimental.Accessors;
     ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = true, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
-public class Lifecycle implements KubernetesResource
+public class LifecycleHandler implements KubernetesResource
 {
 
-    @JsonProperty("postStart")
-    private LifecycleHandler postStart;
-    @JsonProperty("preStop")
-    private LifecycleHandler preStop;
+    @JsonProperty("exec")
+    private ExecAction exec;
+    @JsonProperty("httpGet")
+    private HTTPGetAction httpGet;
+    @JsonProperty("tcpSocket")
+    private TCPSocketAction tcpSocket;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -47,38 +50,50 @@ public class Lifecycle implements KubernetesResource
      * No args constructor for use in serialization
      * 
      */
-    public Lifecycle() {
+    public LifecycleHandler() {
     }
 
     /**
      * 
-     * @param postStart
-     * @param preStop
+     * @param tcpSocket
+     * @param exec
+     * @param httpGet
      */
-    public Lifecycle(LifecycleHandler postStart, LifecycleHandler preStop) {
+    public LifecycleHandler(ExecAction exec, HTTPGetAction httpGet, TCPSocketAction tcpSocket) {
         super();
-        this.postStart = postStart;
-        this.preStop = preStop;
+        this.exec = exec;
+        this.httpGet = httpGet;
+        this.tcpSocket = tcpSocket;
     }
 
-    @JsonProperty("postStart")
-    public LifecycleHandler getPostStart() {
-        return postStart;
+    @JsonProperty("exec")
+    public ExecAction getExec() {
+        return exec;
     }
 
-    @JsonProperty("postStart")
-    public void setPostStart(LifecycleHandler postStart) {
-        this.postStart = postStart;
+    @JsonProperty("exec")
+    public void setExec(ExecAction exec) {
+        this.exec = exec;
     }
 
-    @JsonProperty("preStop")
-    public LifecycleHandler getPreStop() {
-        return preStop;
+    @JsonProperty("httpGet")
+    public HTTPGetAction getHttpGet() {
+        return httpGet;
     }
 
-    @JsonProperty("preStop")
-    public void setPreStop(LifecycleHandler preStop) {
-        this.preStop = preStop;
+    @JsonProperty("httpGet")
+    public void setHttpGet(HTTPGetAction httpGet) {
+        this.httpGet = httpGet;
+    }
+
+    @JsonProperty("tcpSocket")
+    public TCPSocketAction getTcpSocket() {
+        return tcpSocket;
+    }
+
+    @JsonProperty("tcpSocket")
+    public void setTcpSocket(TCPSocketAction tcpSocket) {
+        this.tcpSocket = tcpSocket;
     }
 
     @JsonAnyGetter

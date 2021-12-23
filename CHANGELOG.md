@@ -14,6 +14,7 @@
 * Fix #3651: Introduce SchemaFrom annotation as escape hatch (CRD Generator)
 
 #### Dependency Upgrade
+* Fix #3637: Update Fabric8 Kubernetes Model to v1.23.0
 
 #### New Features
 

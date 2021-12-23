@@ -74,7 +74,8 @@ import lombok.experimental.Accessors;
     "x-kubernetes-list-map-keys",
     "x-kubernetes-list-type",
     "x-kubernetes-map-type",
-    "x-kubernetes-preserve-unknown-fields"
+    "x-kubernetes-preserve-unknown-fields",
+    "x-kubernetes-validations"
 })
 @ToString
 @EqualsAndHashCode
@@ -189,6 +190,9 @@ public class JSONSchemaProps implements KubernetesResource
     private java.lang.String xKubernetesMapType;
     @JsonProperty("x-kubernetes-preserve-unknown-fields")
     private Boolean xKubernetesPreserveUnknownFields;
+    @JsonProperty("x-kubernetes-validations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<ValidationRule> xKubernetesValidations = new ArrayList<ValidationRule>();
 
     /**
      * No args constructor for use in serialization
@@ -219,6 +223,7 @@ public class JSONSchemaProps implements KubernetesResource
      * @param not
      * @param oneOf
      * @param xKubernetesEmbeddedResource
+     * @param xKubernetesValidations
      * @param additionalItems
      * @param id
      * @param maxProperties
@@ -243,7 +248,7 @@ public class JSONSchemaProps implements KubernetesResource
      * @param maxLength
      * @param properties
      */
-    public JSONSchemaProps(java.lang.String $ref, java.lang.String $schema, JSONSchemaPropsOrBool additionalItems, JSONSchemaPropsOrBool additionalProperties, List<JSONSchemaProps> allOf, List<JSONSchemaProps> anyOf, JsonNode _default, Map<String, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps> definitions, Map<String, JSONSchemaPropsOrStringArray> dependencies, java.lang.String description, List<JsonNode> _enum, JsonNode example, Boolean exclusiveMaximum, Boolean exclusiveMinimum, ExternalDocumentation externalDocs, java.lang.String format, java.lang.String id, JSONSchemaPropsOrArray items, Long maxItems, Long maxLength, Long maxProperties, Double maximum, Long minItems, Long minLength, Long minProperties, Double minimum, Double multipleOf, JSONSchemaProps not, Boolean nullable, List<JSONSchemaProps> oneOf, java.lang.String pattern, Map<String, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps> patternProperties, Map<String, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps> properties, List<java.lang.String> required, java.lang.String title, java.lang.String type, Boolean uniqueItems, Boolean xKubernetesEmbeddedResource, Boolean xKubernetesIntOrString, List<java.lang.String> xKubernetesListMapKeys, java.lang.String xKubernetesListType, java.lang.String xKubernetesMapType, Boolean xKubernetesPreserveUnknownFields) {
+    public JSONSchemaProps(java.lang.String $ref, java.lang.String $schema, JSONSchemaPropsOrBool additionalItems, JSONSchemaPropsOrBool additionalProperties, List<JSONSchemaProps> allOf, List<JSONSchemaProps> anyOf, JsonNode _default, Map<String, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps> definitions, Map<String, JSONSchemaPropsOrStringArray> dependencies, java.lang.String description, List<JsonNode> _enum, JsonNode example, Boolean exclusiveMaximum, Boolean exclusiveMinimum, ExternalDocumentation externalDocs, java.lang.String format, java.lang.String id, JSONSchemaPropsOrArray items, Long maxItems, Long maxLength, Long maxProperties, Double maximum, Long minItems, Long minLength, Long minProperties, Double minimum, Double multipleOf, JSONSchemaProps not, Boolean nullable, List<JSONSchemaProps> oneOf, java.lang.String pattern, Map<String, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps> patternProperties, Map<String, io.fabric8.kubernetes.api.model.apiextensions.v1beta1.JSONSchemaProps> properties, List<java.lang.String> required, java.lang.String title, java.lang.String type, Boolean uniqueItems, Boolean xKubernetesEmbeddedResource, Boolean xKubernetesIntOrString, List<java.lang.String> xKubernetesListMapKeys, java.lang.String xKubernetesListType, java.lang.String xKubernetesMapType, Boolean xKubernetesPreserveUnknownFields, List<ValidationRule> xKubernetesValidations) {
         super();
         this.$ref = $ref;
         this.$schema = $schema;
@@ -288,6 +293,7 @@ public class JSONSchemaProps implements KubernetesResource
         this.xKubernetesListType = xKubernetesListType;
         this.xKubernetesMapType = xKubernetesMapType;
         this.xKubernetesPreserveUnknownFields = xKubernetesPreserveUnknownFields;
+        this.xKubernetesValidations = xKubernetesValidations;
     }
 
     @JsonProperty("$ref")
@@ -718,6 +724,16 @@ public class JSONSchemaProps implements KubernetesResource
     @JsonProperty("x-kubernetes-preserve-unknown-fields")
     public void setXKubernetesPreserveUnknownFields(Boolean xKubernetesPreserveUnknownFields) {
         this.xKubernetesPreserveUnknownFields = xKubernetesPreserveUnknownFields;
+    }
+
+    @JsonProperty("x-kubernetes-validations")
+    public List<ValidationRule> getXKubernetesValidations() {
+        return xKubernetesValidations;
+    }
+
+    @JsonProperty("x-kubernetes-validations")
+    public void setXKubernetesValidations(List<ValidationRule> xKubernetesValidations) {
+        this.xKubernetesValidations = xKubernetesValidations;
     }
 
 }

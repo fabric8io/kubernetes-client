@@ -40,6 +40,7 @@ import lombok.experimental.Accessors;
     "completionTime",
     "conditions",
     "failed",
+    "ready",
     "startTime",
     "succeeded",
     "uncountedTerminatedPods"
@@ -76,6 +77,8 @@ public class JobStatus implements KubernetesResource
     private List<JobCondition> conditions = new ArrayList<JobCondition>();
     @JsonProperty("failed")
     private Integer failed;
+    @JsonProperty("ready")
+    private Integer ready;
     @JsonProperty("startTime")
     private String startTime;
     @JsonProperty("succeeded")
@@ -96,6 +99,7 @@ public class JobStatus implements KubernetesResource
      * 
      * @param completionTime
      * @param completedIndexes
+     * @param ready
      * @param active
      * @param startTime
      * @param uncountedTerminatedPods
@@ -103,13 +107,14 @@ public class JobStatus implements KubernetesResource
      * @param conditions
      * @param succeeded
      */
-    public JobStatus(Integer active, java.lang.String completedIndexes, String completionTime, List<JobCondition> conditions, Integer failed, String startTime, Integer succeeded, UncountedTerminatedPods uncountedTerminatedPods) {
+    public JobStatus(Integer active, java.lang.String completedIndexes, String completionTime, List<JobCondition> conditions, Integer failed, Integer ready, String startTime, Integer succeeded, UncountedTerminatedPods uncountedTerminatedPods) {
         super();
         this.active = active;
         this.completedIndexes = completedIndexes;
         this.completionTime = completionTime;
         this.conditions = conditions;
         this.failed = failed;
+        this.ready = ready;
         this.startTime = startTime;
         this.succeeded = succeeded;
         this.uncountedTerminatedPods = uncountedTerminatedPods;
@@ -163,6 +168,16 @@ public class JobStatus implements KubernetesResource
     @JsonProperty("failed")
     public void setFailed(Integer failed) {
         this.failed = failed;
+    }
+
+    @JsonProperty("ready")
+    public Integer getReady() {
+        return ready;
+    }
+
+    @JsonProperty("ready")
+    public void setReady(Integer ready) {
+        this.ready = ready;
     }
 
     @JsonProperty("startTime")
