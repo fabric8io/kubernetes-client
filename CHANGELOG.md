@@ -5,6 +5,7 @@
 #### Bugs
 * Fix #3683: Handle JsonNode fields by adding x-kubernetes-preserve-unknown-fields
 * Fix #3697: addresses response that aren't closed by interceptors that issue new requests
+* Fix #3255: adding basic crud mock resourceVersion support - the field will be set and updated, but not utilized by list/watch queries
 * Fix #3712: properly return the full resource name for resources with empty group
 * Fix #3588: `openshift-server-mock` is not listed in dependencyManagement in main pom
 

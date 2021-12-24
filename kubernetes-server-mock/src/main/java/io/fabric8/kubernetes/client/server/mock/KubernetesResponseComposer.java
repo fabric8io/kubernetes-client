@@ -21,26 +21,15 @@ import java.util.Collection;
 
 public class KubernetesResponseComposer implements ResponseComposer {
 
-  // This is a reimplementation of Java 8's String.join.
-  private static String join(String sep, Collection<String> collection) {
-    StringBuilder builder = new StringBuilder();
-    boolean first = true;
-    for (String element : collection) {
-      if (first) {
-        first = false;
-      } else {
-        builder.append(sep);
-      }
-      builder.append(element);
-    }
-    return builder.toString();
-  }
-
   @Override
   public String compose(Collection<String> collection) {
+    return compose(collection, "");
+  }
+
+  public String compose(Collection<String> collection, String resourceVersion) {
     return String.format(
         "{\"apiVersion\":\"v1\",\"kind\":\"List\", \"items\": [%s], " +
-         "\"metadata\": {\"resourceVersion\": \"\", \"selfLink\": \"\"}}",
-        join(",", collection));
+         "\"metadata\": {\"resourceVersion\": \"%s\", \"selfLink\": \"\"}}",
+        String.join(",", collection), resourceVersion);
   }
 }
