@@ -107,6 +107,7 @@ class JsonSchemaTest {
 
     // check ignored fields
     assertFalse(spec.containsKey("ignoredFoo"));
+    assertFalse(spec.containsKey("ignoredBar"));
   }
 
   @Test

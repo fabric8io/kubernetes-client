@@ -38,6 +38,8 @@ public class AnnotatedSpec {
   @JsonIgnore
   private int ignoredFoo;
 
+  private boolean ignoredBar;
+
   @JsonProperty("from-getter")
   @JsonPropertyDescription("from-getter-description")
   @NotNull
@@ -47,6 +49,11 @@ public class AnnotatedSpec {
 
   public int getIgnoredFoo() {
     return ignoredFoo;
+  }
+
+  @JsonIgnore
+  public boolean getIgnoredBar() {
+    return ignoredBar;
   }
 
   @JsonProperty
