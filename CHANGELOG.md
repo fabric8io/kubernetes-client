@@ -12,7 +12,7 @@
 
 #### _**Note**_: Breaking changes in the API
 
-### 5.11.1
+### 5.11.1 (2021-12-24)
 
 ### Bugs
 * Fix #3672: Native image builds of Fabric8 work (commons-codec no longer required)
