@@ -3,7 +3,6 @@
 ### 5.12-SNAPSHOT
 
 #### Bugs
-* Fix #3662: NodeMetrics should be marked as Cluster scoped resource
 
 #### Improvements
 
@@ -18,6 +17,7 @@
 ### Bugs
 * Fix #3672: Native image builds of Fabric8 work (commons-codec no longer required)
 * Fix #3639: Support for NodeMetrics and PodMetrics informers
+* Fix #3662: NodeMetrics should be marked as Cluster scoped resource
 
 ### 5.11.0 (2021-12-17)
 
