@@ -1,0 +1,146 @@
+JokeRequestJavaCr[0] = package org.test.v1alpha1;
+
+@io.fabric8.kubernetes.model.annotation.Version("v1alpha1")
+@io.fabric8.kubernetes.model.annotation.Group("samples.javaoperatorsdk.io")
+public class JokeRequest extends io.fabric8.kubernetes.client.CustomResource<JokeRequestSpec, JokeRequestStatus> implements io.fabric8.kubernetes.api.model.Namespaced {
+}
+JokeRequestJavaCr[1] = package org.test.v1alpha1;
+
+@com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
+@com.fasterxml.jackson.annotation.JsonPropertyOrder({"category","excluded","safe"})
+@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@lombok.ToString()
+@lombok.EqualsAndHashCode()
+@lombok.Setter()
+@lombok.experimental.Accessors(prefix = {
+    "_",
+    ""
+})
+@io.sundr.builder.annotations.Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.LabelSelector.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.Container.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.EnvVar.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ContainerPort.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.Volume.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.VolumeMount.class)
+})
+public class JokeRequestSpec implements io.fabric8.kubernetes.api.model.KubernetesResource {
+
+    public enum Category {
+
+        Pun,
+        Christmas,
+        Spooky,
+        Any,
+        Misc,
+        Programming,
+        Dark
+    }
+
+    @com.fasterxml.jackson.annotation.JsonProperty("category")
+    private Category category;
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public enum Excluded {
+
+        sexist,
+        nsfw,
+        religious,
+        explicit,
+        racist,
+        political
+    }
+
+    @com.fasterxml.jackson.annotation.JsonProperty("excluded")
+    private java.util.List<Excluded> excluded;
+
+    public java.util.List<Excluded> getExcluded() {
+        return excluded;
+    }
+
+    public void setExcluded(java.util.List<Excluded> excluded) {
+        this.excluded = excluded;
+    }
+
+    @com.fasterxml.jackson.annotation.JsonProperty("safe")
+    private Boolean safe;
+
+    public Boolean getSafe() {
+        return safe;
+    }
+
+    public void setSafe(Boolean safe) {
+        this.safe = safe;
+    }
+}
+JokeRequestJavaCr[2] = package org.test.v1alpha1;
+
+@com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
+@com.fasterxml.jackson.annotation.JsonPropertyOrder({"error","message","state"})
+@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@lombok.ToString()
+@lombok.EqualsAndHashCode()
+@lombok.Setter()
+@lombok.experimental.Accessors(prefix = {
+    "_",
+    ""
+})
+@io.sundr.builder.annotations.Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.LabelSelector.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.Container.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.EnvVar.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ContainerPort.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.Volume.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.VolumeMount.class)
+})
+public class JokeRequestStatus implements io.fabric8.kubernetes.api.model.KubernetesResource {
+
+    @com.fasterxml.jackson.annotation.JsonProperty("error")
+    private Boolean error;
+
+    public Boolean getError() {
+        return error;
+    }
+
+    public void setError(Boolean error) {
+        this.error = error;
+    }
+
+    @com.fasterxml.jackson.annotation.JsonProperty("message")
+    private String message;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public enum State {
+
+        PROCESSING, CREATED, UNKNOWN, ERROR, ALREADY_PRESENT
+    }
+
+    @com.fasterxml.jackson.annotation.JsonProperty("state")
+    private State state;
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+}

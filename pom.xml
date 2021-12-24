@@ -188,11 +188,17 @@
     <module>kubernetes-tests</module>
     <module>uberjar</module>
     <module>crd-generator</module>
+    <module>java-generator</module>
   </modules>
 
   <dependencyManagement>
     <dependencies>
       <!-- Internal -->
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>java-generator-core</artifactId>
+        <version>${project.version}</version>
+      </dependency>
       <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>crd-generator-apt</artifactId>
@@ -946,6 +952,7 @@
             <exclude>kubernetes-client/src/test/resources/**/*</exclude>
             <exclude>kubernetes-client/src/test/resources/mockito-extensions/*</exclude>
             <exclude>**/src/test/resources/ssl/*</exclude>
+            <exclude>**/src/test/resources/io/fabric8/java/generator/approvals/*.*.approved.txt</exclude>
             <exclude>Jenkinsfile</exclude>
           </excludes>
           <mapping>
