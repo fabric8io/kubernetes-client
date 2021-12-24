@@ -78,13 +78,11 @@ public class JsonSchema extends AbstractJsonSchema<JSONSchemaProps, JSONSchemaPr
   }
 
   @Override
-  protected JSONSchemaProps mapLikeProperty() {
+  protected JSONSchemaProps mapLikeProperty(JSONSchemaProps schema) {
     return new JSONSchemaPropsBuilder()
       .withType("object")
       .withNewAdditionalProperties()
-      .withNewSchema()
-      .withType("string")
-      .endSchema()
+      .withSchema(schema)
       .endAdditionalProperties()
       .build();
   }

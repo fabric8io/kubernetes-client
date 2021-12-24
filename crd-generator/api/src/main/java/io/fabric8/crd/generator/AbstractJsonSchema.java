@@ -49,10 +49,12 @@ public abstract class AbstractJsonSchema<T, B> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(AbstractJsonSchema.class);
 
+  protected static final TypeDef OBJECT = TypeDef.forName(Object.class.getName());
   protected static final TypeDef QUANTITY = TypeDef.forName(Quantity.class.getName());
   protected static final TypeDef DURATION = TypeDef.forName(Duration.class.getName());
-  protected static final TypeDef INT_OR_STRING =TypeDef.forName(IntOrString.class.getName());  
+  protected static final TypeDef INT_OR_STRING =TypeDef.forName(IntOrString.class.getName());
 
+  protected static final TypeRef OBJECT_REF = OBJECT.toReference();
   protected static final TypeRef QUANTITY_REF = QUANTITY.toReference();
   protected static final TypeRef DURATION_REF = DURATION.toReference();
   protected static final TypeRef INT_OR_STRING_REF = INT_OR_STRING.toReference();
@@ -387,25 +389,20 @@ public abstract class AbstractJsonSchema<T, B> {
       return arrayLikeProperty(schema);
     } else if (io.sundr.model.utils.Collections.IS_MAP.apply(typeRef)) { // Handle Maps
       final TypeRef keyType = TypeAs.UNWRAP_MAP_KEY_OF.apply(typeRef);
-      boolean degraded = false;
-      if (keyType instanceof ClassRef) {
-        ClassRef classRef = (ClassRef) keyType;
-        if (!classRef.getFullyQualifiedName().equals("java.lang.String")) {
-          degraded = true;
-        } else {
-          final TypeRef valueType = TypeAs.UNWRAP_MAP_VALUE_OF.apply(typeRef);
-          classRef = (ClassRef) valueType;
-          if (!classRef.getFullyQualifiedName().equals("java.lang.String")) {
-            degraded = true;
-          }
-        }
-      } else {
-        degraded = true;
+
+      if (!(keyType instanceof ClassRef && ((ClassRef) keyType).getFullyQualifiedName().equals("java.lang.String"))) {
+        LOGGER.warn("Property '{}' with '{}' key type is mapped to 'string' because of CRD schemas limitations", name, typeRef);
       }
-      if (degraded) {
-        LOGGER.warn("Property '{}' with '{}' type is mapped to a string to string mapping because of CRD schemas limitations", name, typeRef);
+
+      final TypeRef valueType = TypeAs.UNWRAP_MAP_VALUE_OF.apply(typeRef);
+      T schema = internalFromImpl(name, valueType, visited);
+
+      if (schema == null) {
+        LOGGER.warn("Property '{}' with '{}' value type is mapped to 'object' because it's CRD representation cannot be extracted.", name, typeRef);
+        schema = internalFromImpl(name, OBJECT_REF, visited);
       }
-      return mapLikeProperty();
+
+      return mapLikeProperty(schema);
     } else if (io.sundr.model.utils.Optionals.isOptional(typeRef)) { // Handle Optionals
       return internalFromImpl(name, TypeAs.UNWRAP_OPTIONAL_OF.apply(typeRef), visited);
     } else {
@@ -478,9 +475,10 @@ public abstract class AbstractJsonSchema<T, B> {
   /**
    * Builds the schema for map-like properties
    *
+   * @param schema the schema for the extracted element type for the values of this map-like property
    * @return the schema for the map-like property
    */
-  protected abstract T mapLikeProperty();
+  protected abstract T mapLikeProperty(T schema);
 
   /**
    * Builds the schema for standard, simple (e.g. string) property types
