@@ -3,6 +3,7 @@
 ### 5.12-SNAPSHOT
 
 #### Bugs
+* Fix #3697: addresses response that aren't closed by interceptors that issue new requests
 
 #### Improvements
 

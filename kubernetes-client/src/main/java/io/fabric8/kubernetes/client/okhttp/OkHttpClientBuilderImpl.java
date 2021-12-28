@@ -49,7 +49,7 @@ class OkHttpClientBuilderImpl implements Builder {
     private final io.fabric8.kubernetes.client.http.Interceptor interceptor;
     private final String name;
 
-    private InteceptorAdapter(io.fabric8.kubernetes.client.http.Interceptor interceptor, String name) {
+    InteceptorAdapter(io.fabric8.kubernetes.client.http.Interceptor interceptor, String name) {
       this.interceptor = interceptor;
       this.name = name;
     }
@@ -63,6 +63,7 @@ class OkHttpClientBuilderImpl implements Builder {
       if (!response.isSuccessful()) {
         boolean call = interceptor.afterFailure(builderImpl, new OkHttpResponseImpl<>(response, InputStream.class));
         if (call) {
+          response.close();
           return chain.proceed(requestBuilder.build());
         }
       }
