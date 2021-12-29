@@ -1,0 +1,15 @@
+{
+  "apiVersion": "hive.openshift.io/v1",
+  "kind": "DNSZone",
+  "metadata": {
+    "name": "dnszone-sample"
+  },
+  "spec": {
+    "zone": "testzone.testdomain.com",
+    "aws": {
+      "credentialsSecretRef": {
+        "name": "route53-creds-secret"
+      }
+    }
+  }
+}

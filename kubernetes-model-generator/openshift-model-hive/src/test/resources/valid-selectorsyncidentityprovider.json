@@ -1,0 +1,27 @@
+{
+  "apiVersion": "hive.openshift.io/v1",
+  "kind": "SelectorSyncIdentityProvider",
+  "metadata": {
+    "name": "allowall-identity-provider"
+  },
+  "spec": {
+    "identityProviders": [
+      {
+        "name": "my_allow_provider",
+        "type": "GitHubIdentityProvider",
+        "github": {
+          "clientID": "sample-client-id",
+          "clientSecret": {
+            "name": "foo"
+          },
+          "hostname": "github.com"
+        }
+      }
+    ],
+    "clusterDeploymentSelector": {
+      "matchLabels": {
+        "cluster-group": "abutcher"
+      }
+    }
+  }
+}
