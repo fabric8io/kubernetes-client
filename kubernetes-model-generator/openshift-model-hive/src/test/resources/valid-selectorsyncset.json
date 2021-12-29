@@ -1,0 +1,26 @@
+{
+  "apiVersion": "hive.openshift.io/v1",
+  "kind": "SelectorSyncSet",
+  "metadata": {
+    "name": "mygroup"
+  },
+  "spec": {
+    "resources": [
+      {
+        "apiVersion": "user.openshift.io/v1",
+        "kind": "Group",
+        "metadata": {
+          "name": "mygroup"
+        },
+        "users": [
+          "abutcher"
+        ]
+      }
+    ],
+    "clusterDeploymentSelector": {
+      "matchLabels": {
+        "cluster-group": "abutcher"
+      }
+    }
+  }
+}

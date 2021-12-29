@@ -55,6 +55,8 @@
     <module>kubernetes-model-storageclass</module>
     <module>openshift-model</module>
     <module>openshift-model-clusterautoscaling</module>
+    <module>openshift-model-hive</module>
+    <module>openshift-model-installer</module>
     <module>openshift-model-operator</module>
     <module>openshift-model-operatorhub</module>
     <module>openshift-model-machine</module>

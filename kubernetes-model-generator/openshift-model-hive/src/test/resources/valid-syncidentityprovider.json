@@ -1,0 +1,27 @@
+{
+  "apiVersion": "hive.openshift.io/v1",
+  "kind": "SyncIdentityProvider",
+  "metadata": {
+    "name": "allowall-identity-provider"
+  },
+  "spec": {
+    "identityProviders": [
+      {
+        "name": "myprovider",
+        "type": "GitHubIdentityProvider",
+        "github": {
+          "clientID": "sample-client-id",
+          "clientSecret": {
+            "name": "foo"
+          },
+          "hostname": "github.com"
+        }
+      }
+    ],
+    "clusterDeploymentRefs": [
+      {
+        "name": "MyCluster"
+      }
+    ]
+  }
+}

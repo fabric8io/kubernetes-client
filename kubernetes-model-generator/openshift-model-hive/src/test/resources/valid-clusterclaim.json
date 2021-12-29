@@ -1,0 +1,25 @@
+{
+  "apiVersion": "hive.openshift.io/v1",
+  "kind": "ClusterClaim",
+  "metadata": {
+    "name": "foo",
+    "namespace": "my-project"
+  },
+  "spec": {
+    "clusterPoolName": "openshift-46-aws-us-east-1",
+    "lifetime": "8h",
+    "namespace": "openshift-46-aws-us-east-1-j495p"
+  },
+  "status": {
+    "conditions": [
+      {
+        "lastProbeTime": "2020-11-05T14:49:26Z",
+        "lastTransitionTime": "2020-11-05T14:49:26Z",
+        "message": "Cluster claimed",
+        "reason": "ClusterClaimed",
+        "status": "False",
+        "type": "Pending"
+      }
+    ]
+  }
+}

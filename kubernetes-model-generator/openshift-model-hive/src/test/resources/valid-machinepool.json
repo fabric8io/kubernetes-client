@@ -1,0 +1,24 @@
+{
+  "apiVersion": "hive.openshift.io/v1",
+  "kind": "MachinePool",
+  "metadata": {
+    "name": "foo-worker"
+  },
+  "spec": {
+    "clusterDeploymentRef": {
+      "name": "foo"
+    },
+    "name": "worker",
+    "replicas": 3,
+    "platform": {
+      "aws": {
+        "type": "m4.large",
+        "rootVolume": {
+          "iops": 100,
+          "size": 22,
+          "type": "gp2"
+        }
+      }
+    }
+  }
+}

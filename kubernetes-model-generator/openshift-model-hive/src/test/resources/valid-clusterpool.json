@@ -1,0 +1,27 @@
+{
+  "apiVersion": "hive.openshift.io/v1",
+  "kind": "ClusterPool",
+  "metadata": {
+    "name": "openshift-46-aws-us-east-1",
+    "namespace": "my-project"
+  },
+  "spec": {
+    "baseDomain": "new-installer.openshift.com",
+    "imageSetRef": {
+      "name": "openshift-4.6"
+    },
+    "platform": {
+      "aws": {
+        "credentialsSecretRef": {
+          "name": "hive-team-aws-creds"
+        },
+        "region": "us-east-1"
+      }
+    },
+    "pullSecretRef": {
+      "name": "hive-team-pull-secret"
+    },
+    "runningCount": 1,
+    "size": 3
+  }
+}

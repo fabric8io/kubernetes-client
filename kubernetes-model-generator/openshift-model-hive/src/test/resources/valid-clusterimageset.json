@@ -1,0 +1,10 @@
+{
+  "apiVersion": "hive.openshift.io/v1",
+  "kind": "ClusterImageSet",
+  "metadata": {
+    "name": "clusterimageset-sample"
+  },
+  "spec": {
+    "releaseImage": "quay.io/openshift-release-dev/ocp-release:4.0.0-0.6"
+  }
+}

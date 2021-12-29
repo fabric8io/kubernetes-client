@@ -46,6 +46,8 @@ declare -a modules=(
     "openshift-model-operatorhub"
     "openshift-model-console"
     "openshift-model-clusterautoscaling"
+    "openshift-model-hive"
+    "openshift-model-installer"
     "openshift-model-machineconfig"
     "openshift-model-machine"
     "openshift-model-miscellaneous"

@@ -1,0 +1,18 @@
+{
+  "apiVersion": "hive.openshift.io/v1",
+  "kind": "ClusterRelocate",
+  "metadata": {
+    "name": "hive2-cluster-relocator"
+  },
+  "spec": {
+    "kubeconfigSecretRef": {
+      "name": "hive2-remote-kubeconfig-secret",
+      "namespace": "hive"
+    },
+    "clusterDeploymentSelector": {
+      "matchLabels": {
+        "hive-instance": "hive2"
+      }
+    }
+  }
+}

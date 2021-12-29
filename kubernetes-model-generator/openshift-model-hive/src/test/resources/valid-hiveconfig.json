@@ -1,0 +1,21 @@
+{
+  "apiVersion": "hive.openshift.io/v1",
+  "kind": "HiveConfig",
+  "metadata": {
+    "name": "hive"
+  },
+  "spec": {
+    "managedDomains": [
+      {
+        "gcp": {
+          "credentialsSecretRef": {
+            "name": "gcp-creds"
+          }
+        },
+        "domains": [
+          "hive.example.com"
+        ]
+      }
+    ]
+  }
+}
