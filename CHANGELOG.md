@@ -9,6 +9,8 @@
 * Fix #3712: properly return the full resource name for resources with empty group
 * Fix #3588: `openshift-server-mock` is not listed in dependencyManagement in main pom
 * Fix #3679: output additionalProperties field with correct value type for map-like fields (CRD Generator)
+* Fix #3648: `Serialization.unmarshal` fails to deserialize YAML with single document in presence of document delimiter(`---`)
+
 #### Improvements
 * Fix #3674: allows the connect and websocket timeouts to apply to watches instead of a hardcoded timeout
 * Fix #3651: Introduce SchemaFrom annotation as escape hatch (CRD Generator)
