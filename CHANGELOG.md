@@ -3,6 +3,7 @@
 ### 5.12-SNAPSHOT
 
 #### Bugs
+* Fix #3683: Handle JsonNode fields by adding x-kubernetes-preserve-unknown-fields
 * Fix #3697: addresses response that aren't closed by interceptors that issue new requests
 
 #### Improvements
@@ -124,6 +125,7 @@
 * Fix #3468: Add method to get non-running `Informer` from context specific dsl
 * Fix #3398: Added javadocs explaining the wait parameter
 * Fix #3491: Add more metadata to `KubernetesClientException` when possible
+* Fix #3465: Allowing for more super class event handlers
 
 #### Dependency Upgrade
   * Fix #3326: Upgrade Kubernetes Model to v1.22.1
