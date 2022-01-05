@@ -1,5 +1,21 @@
 ## CHANGELOG
 
+### 5.3.2 (2022-01-05)
+
+#### Bugs
+* Fix #3653: SnakeYAML uses only standard Java types
+
+### 5.1.2 (2022-01-05)
+
+#### Bugs
+* Fix #3653: SnakeYAML uses only standard Java types
+
+### 5.0.3 (2022-01-05)
+
+#### Bugs
+* Fix #3653: SnakeYAML uses only standard Java types
+
+
 ### 5.4.1 (2021-06-01)
 
 #### Bugs
