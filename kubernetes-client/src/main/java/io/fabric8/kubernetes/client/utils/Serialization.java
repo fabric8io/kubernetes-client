@@ -23,6 +23,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.SafeConstructor;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -296,7 +297,7 @@ public class Serialization {
   }
 
   private static <T> T unmarshalYaml(InputStream is, TypeReference<T> type) throws JsonProcessingException {
-    final Yaml yaml = new Yaml();
+    final Yaml yaml = new Yaml(new SafeConstructor());
     Map<String, Object> obj = yaml.load(is);
     String objAsJsonStr = JSON_MAPPER.writeValueAsString(obj);
     return unmarshalJsonStr(objAsJsonStr, type);
