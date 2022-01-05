@@ -901,10 +901,6 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
             <version>${maven.gpg.plugin.version}</version>
-            <configuration>
-              <passphrase>4uds0n</passphrase>
-              <useAgent>true</useAgent>
-            </configuration>
             <executions>
               <execution>
                 <id>sign-artifacts</id>
