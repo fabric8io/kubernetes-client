@@ -20,6 +20,31 @@
 #### New Features
 #### _**Note**_: Breaking changes in the API
 
+### 5.7.4 (2022-01-05)
+
+#### Bugs
+* Fix #3653: SnakeYAML uses only standard Java types
+
+### 5.4.2 (2022-01-05)
+
+#### Bugs
+* Fix #3653: SnakeYAML uses only standard Java types
+
+### 5.3.2 (2022-01-05)
+
+#### Bugs
+* Fix #3653: SnakeYAML uses only standard Java types
+
+### 5.1.2 (2022-01-05)
+
+#### Bugs
+* Fix #3653: SnakeYAML uses only standard Java types
+
+### 5.0.3 (2022-01-05)
+
+#### Bugs
+* Fix #3653: SnakeYAML uses only standard Java types
+
 ### 5.7.3 (2021-09-09)
 
 #### Bugs
