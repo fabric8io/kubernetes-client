@@ -127,7 +127,7 @@ import java.util.concurrent.ExecutorService;
 
 import static io.fabric8.kubernetes.client.Config.*;
 
-@Component(immediate = true, configurationPid = "io.fabric8.kubernetes.client", policy = ConfigurationPolicy.OPTIONAL)
+@Component(immediate = true, configurationPid = "io.fabric8.kubernetes.client", policy = ConfigurationPolicy.REQUIRE)
 @Service({KubernetesClient.class,NamespacedKubernetesClient.class})
 @References({
   @Reference(referenceInterface = io.fabric8.kubernetes.client.ResourceHandler.class, cardinality = ReferenceCardinality.OPTIONAL_MULTIPLE, policy = ReferencePolicy.DYNAMIC, bind = "bindResourceHandler", unbind = "unbindResourceHandler"),
