@@ -6,6 +6,7 @@
 * Fix #3683: Handle JsonNode fields by adding x-kubernetes-preserve-unknown-fields
 * Fix #3697: addresses response that aren't closed by interceptors that issue new requests
 * Fix #3712: properly return the full resource name for resources with empty group
+* Fix #3588: `openshift-server-mock` is not listed in dependencyManagement in main pom
 
 #### Improvements
 * Fix #3674: allows the connect and websocket timeouts to apply to watches instead of a hardcoded timeout
