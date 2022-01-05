@@ -28,6 +28,10 @@ on:
       tag:
         description: Tag to release
         required: true
+      java_version:
+        description: Java Version to use for release
+        required: true
+        default: '8'
 
 jobs:
   release:
@@ -44,7 +48,7 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v2
         with:
-          java-version: 8
+          java-version: ${{ github.event.inputs.java_version }}
           distribution: 'temurin'
           server-id: ossrh
           server-username: OSSRHUSERNAME
