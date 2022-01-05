@@ -17,6 +17,7 @@
 name: Release to Maven Central
 
 env:
+  MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e -DuseIncrementalCompilation=false
   OSSRHUSERNAME: ${{ secrets.OSSRHUSERNAME }}
   OSSRHPASSWORD: ${{ secrets.OSSRHPASSWORD }}
   SIGNINGPASSWORD: ${{ secrets.SIGNINGPASSWORD }}
@@ -51,4 +52,4 @@ jobs:
           gpg-private-key: ${{ secrets.SIGNINGKEY }}
           gpg-passphrase: SIGNINGPASSWORD
       - name: Build and Release Project
-        run: mvn -B -Prelease install deploy -DstagingProgressTimeoutMinutes=20
+        run: mvn ${MAVEN_ARGS} -Prelease install deploy -DstagingProgressTimeoutMinutes=20
