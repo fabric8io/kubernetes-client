@@ -53,6 +53,8 @@ public class TestBase {
         configureSecurity().disableKarafMBeanServerBuilder(),
         features,
         editConfigurationFileExtend(
+          "etc/io.fabric8.kubernetes.client.cfg", "junit", "ignored"),
+        editConfigurationFileExtend(
           "etc/org.ops4j.pax.url.mvn.cfg",
           "org.ops4j.pax.url.mvn.repositories",
           "https://repo1.maven.org/maven2/"),
@@ -62,10 +64,10 @@ public class TestBase {
           + "org.apache.karaf.specs.locator=java.xml,ALL-UNNAMED"),
         new VMOption("--patch-module"),
         new VMOption("java.base=lib/endorsed/org.apache.karaf.specs.locator-"
-          + System.getProperty("karaf.version", "4.2.2-SNAPSHOT") + ".jar"),
+          + System.getProperty("karaf.version", "4.3.5") + ".jar"),
         new VMOption("--patch-module"),
         new VMOption("java.xml=lib/endorsed/org.apache.karaf.specs.java.xml-"
-          + System.getProperty("karaf.version", "4.2.2-SNAPSHOT") + ".jar"),
+          + System.getProperty("karaf.version", "4.3.5") + ".jar"),
         new VMOption("--add-opens"),
         new VMOption("java.base/java.security=ALL-UNNAMED"),
         new VMOption("--add-opens"),
@@ -90,6 +92,8 @@ public class TestBase {
         karafDistributionConfiguration().frameworkUrl(karafUrl).name("Apache Karaf").unpackDirectory(new File("target/exam")),
         configureSecurity().disableKarafMBeanServerBuilder(),
         features,
+        editConfigurationFileExtend(
+          "etc/io.fabric8.kubernetes.client.cfg", "junit", "ignored"),
         editConfigurationFileExtend(
           "etc/org.ops4j.pax.url.mvn.cfg",
           "org.ops4j.pax.url.mvn.repositories",
