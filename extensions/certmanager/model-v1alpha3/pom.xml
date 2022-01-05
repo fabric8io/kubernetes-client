@@ -22,7 +22,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>certmanager-extension-pom</artifactId>
-    <version>5.7.3</version>
+    <version>5.7.4</version>
   </parent>
 
   <artifactId>certmanager-model-v1alpha3</artifactId>
