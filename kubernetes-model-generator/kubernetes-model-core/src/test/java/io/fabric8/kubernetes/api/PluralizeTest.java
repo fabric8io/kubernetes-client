@@ -56,7 +56,9 @@ class PluralizeTest {
       arguments("statuses", "status"),
       arguments("endpoints", "endpoints"),
       arguments("pods", "podmetrics"),
-      arguments("nodes", "nodemetrics")
+      arguments("nodes", "nodemetrics"),
+      arguments("women", "woman"),
+      arguments("men", "man")
     );
   }
 
