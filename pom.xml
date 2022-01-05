@@ -64,13 +64,14 @@
 
   <distributionManagement>
     <snapshotRepository>
-      <id>oss-sonatype-staging</id>
+      <id>ossrh</id>
+      <name>Sonatype OSS Repository (Snapshots)</name>
       <url>https://oss.sonatype.org/content/repositories/snapshots</url>
     </snapshotRepository>
     <repository>
-      <id>oss-sonatype-staging</id>
-      <name>Sonatype Staging Repository</name>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+      <id>ossrh</id>
+      <name>Sonatype OSS Repository</name>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
     </repository>
   </distributionManagement>
 
@@ -142,6 +143,7 @@
     <jandex.version>2.4.1.Final</jandex.version>
     <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
     <sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
+    <nexus-staging-maven-plugin>1.6.8</nexus-staging-maven-plugin>
 
     <!-- Other options -->
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -875,17 +877,6 @@
           </execution>
         </executions>
       </plugin>
-      <plugin>
-        <groupId>org.sonatype.plugins</groupId>
-        <artifactId>nexus-staging-maven-plugin</artifactId>
-        <version>1.6.8</version>
-        <extensions>true</extensions>
-        <configuration>
-          <serverId>oss-sonatype-staging</serverId>
-          <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-          <autoReleaseAfterClose>true</autoReleaseAfterClose>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
 
@@ -901,10 +892,6 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
             <version>${maven.gpg.plugin.version}</version>
-            <configuration>
-              <passphrase>4uds0n</passphrase>
-              <useAgent>true</useAgent>
-            </configuration>
             <executions>
               <execution>
                 <id>sign-artifacts</id>
@@ -914,6 +901,24 @@
                 </goals>
               </execution>
             </executions>
+            <configuration>
+              <gpgArguments>
+                <arg>--batch</arg>
+                <arg>--pinentry-mode</arg>
+                <arg>loopback</arg>
+              </gpgArguments>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.sonatype.plugins</groupId>
+            <artifactId>nexus-staging-maven-plugin</artifactId>
+            <version>${nexus-staging-maven-plugin}</version>
+            <extensions>true</extensions>
+            <configuration>
+              <serverId>ossrh</serverId>
+              <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+              <autoReleaseAfterClose>false</autoReleaseAfterClose>
+            </configuration>
           </plugin>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
