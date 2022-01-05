@@ -38,7 +38,7 @@ class HasMetadataTest {
 
   @Test
   void fullResourceNameShouldConcatenatePluralAndGroup() {
-    assertEquals("foos.fabric8.io", HasMetadata.getFullResourceName(Foo.class));
+    assertEquals("women.fabric8.io", HasMetadata.getFullResourceName(Woman.class));
     assertEquals("overridden.fabric8.io", HasMetadata.getFullResourceName(Over.class));
   }
 
@@ -210,7 +210,7 @@ class HasMetadataTest {
 
   @Group("fabric8.io")
   @Version("v1")
-  private static class Foo implements HasMetadata {
+  private static class Woman implements HasMetadata {
 
     @Override
     public ObjectMeta getMetadata() {
