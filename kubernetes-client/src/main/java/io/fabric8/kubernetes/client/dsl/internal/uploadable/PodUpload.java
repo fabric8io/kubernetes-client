@@ -73,13 +73,8 @@ public class PodUpload {
   private static boolean uploadFile(HttpClient client, PodOperationContext context,
     OperationSupport operationSupport, Path pathToUpload)
     throws IOException, InterruptedException {
-
-    final String file = context.getFile();
-    final String directory = file.substring(0, file.lastIndexOf('/'));
-    final String command = String.format(
-      "mkdir -p %s && base64 -d - > %s", shellQuote(directory), shellQuote(file));
     final PodUploadWebSocketListener podUploadWebSocketListener = initWebSocket(
-      buildCommandUrl(command, context, operationSupport), client);
+      buildCommandUrl(createExecCommandForUpload(context), context, operationSupport), client);
     try (
       final FileInputStream fis = new FileInputStream(pathToUpload.toFile());
       final Base64.InputStream b64In = new Base64.InputStream(fis, Base64.ENCODE)
@@ -192,5 +187,13 @@ public class PodUpload {
     commandBuilder.append("&stderr=true");
     return new URL(
       URLUtils.join(operationSupport.getResourceUrl().toString(), commandBuilder.toString()));
+  }
+
+  static String createExecCommandForUpload(PodOperationContext context) {
+    final String file = context.getFile();
+    String directoryTrimmedFromFilePath = file.substring(0, file.lastIndexOf('/'));
+    final String directory = directoryTrimmedFromFilePath.isEmpty() ? "/" : directoryTrimmedFromFilePath;
+    return String.format(
+      "mkdir -p %s && base64 -d - > %s", shellQuote(directory), shellQuote(file));
   }
 }

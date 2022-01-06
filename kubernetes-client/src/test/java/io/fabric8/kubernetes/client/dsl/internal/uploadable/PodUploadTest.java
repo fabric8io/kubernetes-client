@@ -80,7 +80,7 @@ class PodUploadTest {
   }
 
   @Test
-  void testUploadInvalidParametersShouldThrowException() throws Exception {
+  void testUploadInvalidParametersShouldThrowException() {
     final IllegalArgumentException result = assertThrows(IllegalArgumentException.class,
       () -> PodUpload.upload(mockClient, mockContext, operationSupport, mockPathToUpload));
 
@@ -169,6 +169,30 @@ class PodUploadTest {
     };
 
     PodUpload.copy(input, consumer);
+  }
+
+  @Test
+  void createExecCommandForUpload_withFileInRootPath_shouldCreateValidExecCommandForUpload() {
+    // Given
+    when(mockContext.getFile()).thenReturn("/cp.log");
+
+    // When
+    String result = PodUpload.createExecCommandForUpload(mockContext);
+
+    // Then
+    assertThat(result, equalTo("mkdir -p '/' && base64 -d - > '/cp.log'"));
+  }
+
+  @Test
+  void createExecCommandForUpload_withNormalFile_shouldCreateValidExecCommandForUpload() {
+    // Given
+    when(mockContext.getFile()).thenReturn("/tmp/foo/cp.log");
+
+    // When
+    String result = PodUpload.createExecCommandForUpload(mockContext);
+
+    // Then
+    assertThat(result, equalTo("mkdir -p '/tmp/foo' && base64 -d - > '/tmp/foo/cp.log'"));
   }
 
 }
