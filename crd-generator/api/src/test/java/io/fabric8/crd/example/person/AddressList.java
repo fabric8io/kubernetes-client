@@ -15,20 +15,7 @@
  */
 package io.fabric8.crd.example.person;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.ArrayList;
 
-public class Person {
-
-  private String firstName;
-  private Optional<String> middleName;
-  private String lastName;
-  private int birthYear;
-  private List<String> hobbies;
-  private AddressList addresses;
-  private Type type;
-
-  public enum Type {
-    crazy, crazier
-  }
+public class AddressList extends ArrayList<Address> {
 }
