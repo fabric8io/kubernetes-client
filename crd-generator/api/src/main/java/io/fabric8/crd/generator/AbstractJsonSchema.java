@@ -398,7 +398,7 @@ public abstract class AbstractJsonSchema<T, B> {
       T schema = internalFromImpl(name, valueType, visited);
 
       if (schema == null) {
-        LOGGER.warn("Property '{}' with '{}' value type is mapped to 'object' because it's CRD representation cannot be extracted.", name, typeRef);
+        LOGGER.warn("Property '{}' with '{}' value type is mapped to 'object' because its CRD representation cannot be extracted.", name, typeRef);
         schema = internalFromImpl(name, OBJECT_REF, visited);
       }
 
