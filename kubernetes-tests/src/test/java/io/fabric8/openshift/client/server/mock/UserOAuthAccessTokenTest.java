@@ -85,7 +85,7 @@ class UserOAuthAccessTokenTest {
       .withNewMetadata().withName(name).endMetadata()
       .withUserName("user1")
       .withUserUID("uid")
-      .addNewScope("user:check-access")
+      .addToScopes("user:check-access")
       .withRedirectURI("https://oauth-openshift.apps-crc.testing/oauth/token/implicit")
       .withClientName("openshift-challenging-client")
       .withExpiresIn(86400L)

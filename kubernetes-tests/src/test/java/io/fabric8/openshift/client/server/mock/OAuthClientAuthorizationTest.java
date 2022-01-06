@@ -86,7 +86,7 @@ class OAuthClientAuthorizationTest {
       .withUserName("developer")
       .withUserUID("uidda8a03a4-be11-498e-8673-b2c072935e7b")
       .withClientName("openshift-challenging-client")
-      .addNewScope("user:check-access")
+      .addToScopes("user:check-access")
       .build();
   }
 }

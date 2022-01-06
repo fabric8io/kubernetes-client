@@ -64,7 +64,7 @@ class HiveConfigTest {
       .withNewGcp()
       .withNewCredentialsSecretRef("gcp-creds")
       .endGcp()
-      .addNewDomain("hive.example.com")
+      .addToDomains("hive.example.com")
       .endManagedDomain()
       .endSpec();
 

@@ -57,7 +57,7 @@ class TokenReviewTest {
           .withUid("4afdf4d0-46d2-11e9-8716-005056bf4b40")
           .withGroups("system:serviceaccounts", "system:serviceaccounts:dev", "system:authenticated")
           .endUser()
-          .addNewAudience("factors")
+          .addToAudiences("factors")
           .build());
 
         return tokenReviewReq;

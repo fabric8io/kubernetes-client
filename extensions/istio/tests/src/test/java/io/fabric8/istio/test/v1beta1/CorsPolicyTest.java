@@ -38,7 +38,7 @@ public class CorsPolicyTest {
 				.addNewAllowOrigin()
       .withNewStringMatchPrefixType(prefix)
 				.endAllowOrigin()
-				.addNewDeprecatedAllowOrigin(allowOrigin)
+        .addToDeprecatedAllowOrigin(allowOrigin)
 				.build();
 
 		final String output = Serialization.yamlMapper().writeValueAsString(policy);

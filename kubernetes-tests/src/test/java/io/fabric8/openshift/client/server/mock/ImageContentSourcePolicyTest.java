@@ -104,8 +104,8 @@ class ImageContentSourcePolicyTest {
       .withNewMetadata().withName("foo").endMetadata()
       .withNewSpec()
       .addNewRepositoryDigestMirror()
-      .withNewSource("registry.redhat.io/openshift-service-mesh/proxyv2-rhel8")
-      .addNewMirror("image-registry.openshift-image-registry.svc:5000/openshift/proxyv2-rhel8")
+      .withSource("registry.redhat.io/openshift-service-mesh/proxyv2-rhel8")
+      .addToMirrors("image-registry.openshift-image-registry.svc:5000/openshift/proxyv2-rhel8")
       .endRepositoryDigestMirror()
       .endSpec()
       .build();
