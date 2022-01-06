@@ -69,7 +69,7 @@ public class V1CustomResourceDefinitionTest {
       .withPlural("sparkclusters")
       .withSingular("sparkcluster")
       .withKind("SparkCluster")
-      .addNewShortName("sc")
+      .addToShortNames("sc")
       .endNames()
       .endSpec()
       .build();

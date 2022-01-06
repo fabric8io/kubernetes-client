@@ -110,7 +110,7 @@ public class CustomResourceDefinitionIT {
     // When
     final CustomResourceDefinition result = client.apiextensions().v1().customResourceDefinitions()
       .withName(name).edit(c -> new CustomResourceDefinitionBuilder(c)
-        .editSpec().editOrNewNames().addNewShortName("its").endNames().endSpec().build());
+        .editSpec().editOrNewNames().addToShortNames("its").endNames().endSpec().build());
     // Then
     assertThat(result.getSpec().getNames().getShortNames())
       .containsExactlyInAnyOrder("its");

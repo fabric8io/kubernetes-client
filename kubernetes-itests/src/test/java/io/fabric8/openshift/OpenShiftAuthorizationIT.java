@@ -166,7 +166,7 @@ public class OpenShiftAuthorizationIT {
       .withNewMetadata().withName(name).endMetadata()
       .withNewSpec()
       .withNewGrouprestriction()
-      .addNewGroup("groups-rolebindingrestriction")
+      .addToGroups("groups-rolebindingrestriction")
       .endGrouprestriction()
       .endSpec()
       .build();

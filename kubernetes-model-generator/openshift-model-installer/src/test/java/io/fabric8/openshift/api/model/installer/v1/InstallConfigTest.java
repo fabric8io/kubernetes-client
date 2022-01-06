@@ -108,7 +108,7 @@ class InstallConfigTest {
       .endClusterNetwork()
       .withMachineCIDR("10.0.0.0/16")
       .withNetworkType("OpenShiftSDN")
-      .addNewServiceNetwork("172.30.0.0/16")
+      .addToServiceNetwork("172.30.0.0/16")
       .endNetworking()
       .withNewPlatform()
       .withAws(new io.fabric8.openshift.api.model.installer.aws.v1.PlatformBuilder()
