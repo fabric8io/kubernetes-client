@@ -52,6 +52,8 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
   protected WatcherWebSocketListener<T> listener;
   private CompletableFuture<WebSocket> websocketFuture;
   private WebSocket websocket;
+
+  private volatile boolean ready;
   
   static void closeWebSocket(WebSocket webSocket) {
     if (webSocket != null) {
@@ -91,7 +93,8 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
   }
 
   public void waitUntilReady() {
-    Utils.waitUntilReadyOrFail(websocketFuture, 10, TimeUnit.SECONDS);
+    Utils.waitUntilReadyOrFail(websocketFuture, -1, TimeUnit.SECONDS);
+    ready = true;
     this.websocket = websocketFuture.getNow(null);
   }
 
@@ -122,7 +125,11 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
           logger.warn("Exec Failure: HTTP {}, Status: {} - {}", code, status.getCode(), status.getMessage());
           t = OperationSupport.requestFailure(client.newHttpRequestBuilder().url(url).build(), status);
         }
-        listener.onError(w, t);
+        if (ready) {
+          // if we're not ready yet, that means we're waiting on the future and there's
+          // no need to invoke the reconnect logic
+          listener.onError(w, t);
+        }
         throw KubernetesClientException.launderThrowable(t);
       }
       return w;

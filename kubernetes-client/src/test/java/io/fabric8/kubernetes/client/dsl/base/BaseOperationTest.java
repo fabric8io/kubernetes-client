@@ -55,10 +55,10 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -274,8 +274,7 @@ class BaseOperationTest {
     });
 
     // Then
-    assertTrue("As the first failure is an IOException the message of the causedBy expected to contain the given text: 'For example java.net.ConnectException'!",
-      exception.getCause().getMessage().contains("For example java.net.ConnectException"));
+    assertTrue(exception.getCause().getMessage().contains("For example java.net.ConnectException"), "As the first failure is an IOException the message of the causedBy expected to contain the given text: 'For example java.net.ConnectException'!");
     assertEquals(1, httpExecutionCounter.get());
   }
 
@@ -296,9 +295,8 @@ class BaseOperationTest {
     });
 
     // Then
-    assertTrue("As the last failure, the 3rd one, is not an IOException the message expected to contain: 'Internal Server Error'!",
-        exception.getMessage().contains("Internal Server Error"));
-    assertEquals("Expected 4 calls: one normal try and 3 backoff retries!", 4, httpExecutionCounter.get());
+    assertTrue(exception.getMessage().contains("Internal Server Error"), "As the last failure, the 3rd one, is not an IOException the message expected to contain: 'Internal Server Error'!");
+    assertEquals(4, httpExecutionCounter.get(),  "Expected 4 calls: one normal try and 3 backoff retries!");
   }
 
   @Test
@@ -317,7 +315,7 @@ class BaseOperationTest {
 
     // Then
     assertNotNull(result);
-    assertEquals("Expected 3 calls: 2 failures and 1 success!", 3, httpExecutionCounter.get());
+    assertEquals(3, httpExecutionCounter.get(), "Expected 3 calls: 2 failures and 1 success!");
   }
   
   @Test

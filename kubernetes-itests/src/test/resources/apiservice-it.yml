@@ -15,43 +15,27 @@
 #
 
 ---
-apiVersion: apiregistration.k8s.io/v1
-kind: APIService
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
 metadata:
-  name: v1beta1.get.fabric8.io
+  name: apiservices.tests.example.com
 spec:
-  group: get.fabric8.io
-  groupPriorityMinimum: 1000
-  versionPriority: 5
-  version: v1beta1
----
-apiVersion: apiregistration.k8s.io/v1
-kind: APIService
-metadata:
-  name: v1beta1.list.fabric8.io
-spec:
-  group: list.fabric8.io
-  groupPriorityMinimum: 1000
-  versionPriority: 5
-  version: v1beta1
----
-apiVersion: apiregistration.k8s.io/v1
-kind: APIService
-metadata:
-  name: v1beta1.update.fabric8.io
-spec:
-  group: update.fabric8.io
-  groupPriorityMinimum: 1000
-  versionPriority: 5
-  version: v1beta1
----
-apiVersion: apiregistration.k8s.io/v1
-kind: APIService
-metadata:
-  name: v1beta1.delete.fabric8.io
-spec:
-  group: delete.fabric8.io
-  groupPriorityMinimum: 1000
-  versionPriority: 5
-  version: v1beta1
-
+  group: tests.example.com
+  scope: Namespaced
+  names:
+    kind: ApiService
+    plural: apiservices
+    singular: apiservice
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                image:
+                  type: string

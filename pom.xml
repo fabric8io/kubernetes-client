@@ -64,13 +64,14 @@
 
   <distributionManagement>
     <snapshotRepository>
-      <id>oss-sonatype-staging</id>
+      <id>ossrh</id>
+      <name>Sonatype OSS Repository (Snapshots)</name>
       <url>https://oss.sonatype.org/content/repositories/snapshots</url>
     </snapshotRepository>
     <repository>
-      <id>oss-sonatype-staging</id>
-      <name>Sonatype Staging Repository</name>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+      <id>ossrh</id>
+      <name>Sonatype OSS Repository</name>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
     </repository>
   </distributionManagement>
 
@@ -84,14 +85,14 @@
     <okhttp.bundle.version>3.12.1_1</okhttp.bundle.version>
     <okio.version>1.15.0</okio.version>
     <okio.bundle.version>1.15.0_1</okio.bundle.version>
-    <jackson.version>2.13.0</jackson.version>
+    <jackson.version>2.13.1</jackson.version>
     <mockwebserver.version>0.2.2</mockwebserver.version>
 
     <!-- API versions -->
     <jsr305.version>3.0.2</jsr305.version>
 
     <!-- Testing versions -->
-    <assertj.core.version>3.21.0</assertj.core.version>
+    <assertj.core.version>3.22.0</assertj.core.version>
     <arquillian.core.version>1.2.0.Final</arquillian.core.version>
     <awaitility.version>4.1.1</awaitility.version>
 
@@ -114,7 +115,6 @@
     <lombok.version>1.18.22</lombok.version>
     <snakeyaml.version>1.28</snakeyaml.version>
     <bouncycastle.version>1.70</bouncycastle.version>
-    <commons-codec.version>1.15</commons-codec.version>
     <commons-compress.version>1.21</commons-compress.version>
     <scr.annotations.version>1.12.0</scr.annotations.version>
     <jsonschema2pojo.version>1.1.0</jsonschema2pojo.version>
@@ -133,7 +133,7 @@
     <maven.javadoc.plugin.version>3.3.1</maven.javadoc.plugin.version>
     <maven.source.plugin.version>3.2.1</maven.source.plugin.version>
     <maven.enforcer.plugin.version>3.0.0</maven.enforcer.plugin.version>
-    <maven.deploy.plugin.version>3.0.0-M1</maven.deploy.plugin.version>
+    <maven.deploy.plugin.version>3.0.0-M2</maven.deploy.plugin.version>
     <maven.gpg.plugin.version>3.0.1</maven.gpg.plugin.version>
     <maven.antrun.plugin.version>3.0.0</maven.antrun.plugin.version>
     <maven.dependency.plugin.version>3.2.0</maven.dependency.plugin.version>
@@ -143,6 +143,7 @@
     <jandex.version>2.4.1.Final</jandex.version>
     <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
     <sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
+    <nexus-staging-maven-plugin>1.6.8</nexus-staging-maven-plugin>
 
     <!-- Other options -->
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -902,17 +903,6 @@
           </execution>
         </executions>
       </plugin>
-      <plugin>
-        <groupId>org.sonatype.plugins</groupId>
-        <artifactId>nexus-staging-maven-plugin</artifactId>
-        <version>1.6.8</version>
-        <extensions>true</extensions>
-        <configuration>
-          <serverId>oss-sonatype-staging</serverId>
-          <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-          <autoReleaseAfterClose>true</autoReleaseAfterClose>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
 
@@ -928,10 +918,6 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
             <version>${maven.gpg.plugin.version}</version>
-            <configuration>
-              <passphrase>4uds0n</passphrase>
-              <useAgent>true</useAgent>
-            </configuration>
             <executions>
               <execution>
                 <id>sign-artifacts</id>
@@ -941,6 +927,24 @@
                 </goals>
               </execution>
             </executions>
+            <configuration>
+              <gpgArguments>
+                <arg>--batch</arg>
+                <arg>--pinentry-mode</arg>
+                <arg>loopback</arg>
+              </gpgArguments>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.sonatype.plugins</groupId>
+            <artifactId>nexus-staging-maven-plugin</artifactId>
+            <version>${nexus-staging-maven-plugin}</version>
+            <extensions>true</extensions>
+            <configuration>
+              <serverId>ossrh</serverId>
+              <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+              <autoReleaseAfterClose>false</autoReleaseAfterClose>
+            </configuration>
           </plugin>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>

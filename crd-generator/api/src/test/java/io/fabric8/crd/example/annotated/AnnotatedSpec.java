@@ -15,6 +15,7 @@
  */
 package io.fabric8.crd.example.annotated;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 
@@ -34,11 +35,25 @@ public class AnnotatedSpec {
   @Min(0) // a non-string value attribute
   private int sizedField;
 
+  @JsonIgnore
+  private int ignoredFoo;
+
+  private boolean ignoredBar;
+
   @JsonProperty("from-getter")
   @JsonPropertyDescription("from-getter-description")
   @NotNull
   public int getFoo() {
     return foo;
+  }
+
+  public int getIgnoredFoo() {
+    return ignoredFoo;
+  }
+
+  @JsonIgnore
+  public boolean getIgnoredBar() {
+    return ignoredBar;
   }
 
   @JsonProperty

@@ -18,6 +18,7 @@ package io.fabric8.crd.generator;
 import io.fabric8.crd.example.basic.Basic;
 import io.fabric8.crd.example.basic.BasicSpec;
 import io.fabric8.crd.example.basic.BasicStatus;
+import io.fabric8.crd.example.cyclic.Cyclic;
 import io.fabric8.crd.example.inherited.*;
 import io.fabric8.crd.example.joke.Joke;
 import io.fabric8.crd.example.joke.JokeRequest;
@@ -25,6 +26,7 @@ import io.fabric8.crd.example.joke.JokeRequestSpec;
 import io.fabric8.crd.example.joke.JokeRequestStatus;
 import io.fabric8.crd.example.multiple.v1.Multiple;
 import io.fabric8.crd.example.multiple.v1.MultipleSpec;
+import io.fabric8.crd.example.nocyclic.NoCyclic;
 import io.fabric8.crd.example.simplest.Simplest;
 import io.fabric8.crd.example.simplest.SimplestSpec;
 import io.fabric8.crd.example.simplest.SimplestStatus;
@@ -197,6 +199,28 @@ class CRDGeneratorTest {
     assertEquals(0, generator.generate());
   }
 
+  @Test void generatingACycleShouldFail() {
+    final CRDGenerator generator = new CRDGenerator()
+      .customResourceClasses(Cyclic.class)
+      .forCRDVersions("v1", "v1beta1")
+      .withOutput(output);
+
+    assertThrows(
+      IllegalArgumentException.class,
+      () -> generator.detailedGenerate(),
+      "An IllegalArgument Exception hasn't been thrown when generating a CRD with cyclic references"
+    );
+  }
+
+  @Test void notGeneratingACycleShouldSucceed() {
+    final CRDGenerator generator = new CRDGenerator()
+      .customResourceClasses(NoCyclic.class)
+      .forCRDVersions("v1", "v1beta1")
+      .withOutput(output);
+
+    CRDGenerationInfo info = generator.detailedGenerate();
+    assertEquals(2, info.numberOfGeneratedCRDs());
+  }
 
   @FunctionalInterface
   private interface CRTest {

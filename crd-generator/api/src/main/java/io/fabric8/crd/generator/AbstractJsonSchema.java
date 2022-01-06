@@ -29,19 +29,14 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-import static io.sundr.model.utils.Types.BOOLEAN;
 import static io.sundr.model.utils.Types.BOOLEAN_REF;
 
-import static io.sundr.model.utils.Types.STRING;
 import static io.sundr.model.utils.Types.STRING_REF;
 
-import static io.sundr.model.utils.Types.INT;
 import static io.sundr.model.utils.Types.INT_REF;
 
-import static io.sundr.model.utils.Types.LONG;
 import static io.sundr.model.utils.Types.LONG_REF;
 
-import static io.sundr.model.utils.Types.DOUBLE;
 import static io.sundr.model.utils.Types.DOUBLE_REF;
 
 /**
@@ -80,7 +75,10 @@ public abstract class AbstractJsonSchema<T, B> {
   private static final Map<TypeRef, String> COMMON_MAPPINGS = new HashMap<>();
   public static final String ANNOTATION_JSON_PROPERTY = "com.fasterxml.jackson.annotation.JsonProperty";
   public static final String ANNOTATION_JSON_PROPERTY_DESCRIPTION = "com.fasterxml.jackson.annotation.JsonPropertyDescription";
+  public static final String ANNOTATION_JSON_IGNORE = "com.fasterxml.jackson.annotation.JsonIgnore";
   public static final String ANNOTATION_NOT_NULL = "javax.validation.constraints.NotNull";
+
+  public static final String JSON_NODE_TYPE = "com.fasterxml.jackson.databind.JsonNode";
 
   static {
     COMMON_MAPPINGS.put(STRING_REF, STRING_MARKER);
@@ -117,11 +115,19 @@ public abstract class AbstractJsonSchema<T, B> {
    * @return The schema.
    */
   protected T internalFrom(TypeDef definition, String... ignore) {
+    return internalFromImpl(definition, new HashSet<>(), ignore);
+  }
+
+  private T internalFromImpl(TypeDef definition, Set<String> visited, String... ignore) {
     final B builder = newBuilder();
     Set<String> ignores =
       ignore.length > 0 ? new LinkedHashSet<>(Arrays.asList(ignore)) : Collections
         .emptySet();
     List<String> required = new ArrayList<>();
+
+    final boolean preserveUnknownFields = (
+      definition.getFullyQualifiedName() != null &&
+        definition.getFullyQualifiedName().equals(JSON_NODE_TYPE));
 
     // index potential accessors by name for faster lookup
     final Map<String, Method> accessors = indexPotentialAccessors(definition);
@@ -139,8 +145,10 @@ public abstract class AbstractJsonSchema<T, B> {
 
       if (facade.required) {
         required.add(name);
+      } else if (facade.ignored) {
+        continue;
       }
-      final T schema = internalFrom(name, possiblyRenamedProperty.getTypeRef());
+      final T schema = internalFromImpl(name, possiblyRenamedProperty.getTypeRef(), visited);
       // if we got a description from the field or an accessor, use it
       final String description = facade.description;
       final T possiblyUpdatedSchema;
@@ -151,7 +159,7 @@ public abstract class AbstractJsonSchema<T, B> {
       }
       addProperty(possiblyRenamedProperty, builder, possiblyUpdatedSchema);
     }
-    return build(builder, required);
+    return build(builder, required, preserveUnknownFields);
   }
 
   private Map<String, Method> indexPotentialAccessors(TypeDef definition) {
@@ -171,6 +179,7 @@ public abstract class AbstractJsonSchema<T, B> {
     private final String type;
     private String renamedTo;
     private boolean required;
+    private boolean ignored;
     private String description;
 
     private PropertyOrAccessor(Collection<AnnotationRef> annotations, String name, String propertyName, boolean isMethod) {
@@ -206,6 +215,9 @@ public abstract class AbstractJsonSchema<T, B> {
               description = descriptionFromAnnotation;
             }
             break;
+          case ANNOTATION_JSON_IGNORE:
+            ignored = true;
+            break;
         }
       });
     }
@@ -216,6 +228,10 @@ public abstract class AbstractJsonSchema<T, B> {
 
     public boolean isRequired() {
       return required;
+    }
+
+    public boolean isIgnored() {
+      return ignored;
     }
 
     public String getDescription() {
@@ -241,6 +257,7 @@ public abstract class AbstractJsonSchema<T, B> {
     private String renamedTo;
     private String description;
     private boolean required;
+    private boolean ignored;
     private final Property original;
     private String nameContributedBy;
     private String descriptionContributedBy;
@@ -290,6 +307,8 @@ public abstract class AbstractJsonSchema<T, B> {
 
         if (p.isRequired()) {
           required = true;
+        } else if (p.isIgnored()) {
+          ignored = true;
         }
       });
       
@@ -351,7 +370,7 @@ public abstract class AbstractJsonSchema<T, B> {
    * @param required the list of names of required fields
    * @return the built JSON schema
    */
-  public abstract T build(B builder, List<String> required);
+  public abstract T build(B builder, List<String> required, boolean preserveUnknownFields);
 
   /**
    * Builds the specific JSON schema representing the structural schema for the specified property
@@ -361,12 +380,16 @@ public abstract class AbstractJsonSchema<T, B> {
    * @return the structural schema associated with the specified property
    */
   public T internalFrom(String name, TypeRef typeRef) {
+    return internalFromImpl(name, typeRef, new HashSet<>());
+  }
+
+  private T internalFromImpl(String name, TypeRef typeRef, Set<String> visited) {
     // Note that ordering of the checks here is meaningful: we need to check for complex types last
     // in case some "complex" types are handled specifically
     if (typeRef.getDimensions() > 0 || io.sundr.model.utils.Collections.isCollection(typeRef)) { // Handle Collections & Arrays
       final TypeRef collectionType = TypeAs.combine(TypeAs.UNWRAP_ARRAY_OF, TypeAs.UNWRAP_COLLECTION_OF)
         .apply(typeRef);
-      final T schema = internalFrom(name, collectionType);
+      final T schema = internalFromImpl(name, collectionType, visited);
       return arrayLikeProperty(schema);
     } else if (io.sundr.model.utils.Collections.IS_MAP.apply(typeRef)) { // Handle Maps
       final TypeRef keyType = TypeAs.UNWRAP_MAP_KEY_OF.apply(typeRef);
@@ -390,7 +413,7 @@ public abstract class AbstractJsonSchema<T, B> {
       }
       return mapLikeProperty();
     } else if (io.sundr.model.utils.Optionals.isOptional(typeRef)) { // Handle Optionals
-      return internalFrom(name, TypeAs.UNWRAP_OPTIONAL_OF.apply(typeRef));
+      return internalFromImpl(name, TypeAs.UNWRAP_OPTIONAL_OF.apply(typeRef), visited);
     } else {
       final String typeName = COMMON_MAPPINGS.get(typeRef);
       if (typeName != null) { // we have a type that we handle specifically
@@ -413,13 +436,33 @@ public abstract class AbstractJsonSchema<T, B> {
               .toArray(JsonNode[]::new);
             return enumProperty(enumValues);
           } else {
-            return internalFrom(def);
+            return resolveNestedClass(name, def, visited);
           }
 
         }
         return null;
       }
     }
+  }
+
+  // Flag to detect cycles
+  private boolean resolving = false;
+
+  private T resolveNestedClass(String name, TypeDef def, Set<String> visited) {
+    if (!resolving) {
+      visited.clear();
+      resolving = true;
+    } else {
+      String visitedName = name + ":" + def.getFullyQualifiedName();
+      if (!def.getFullyQualifiedName().startsWith("java") && visited.contains(visitedName)) {
+        throw new IllegalArgumentException("Found a cyclic reference involving the field " + name + " of type " + def.getFullyQualifiedName());
+      }
+      visited.add(visitedName);
+    }
+
+    T res = internalFromImpl(def, visited);
+    resolving = false;
+    return res;
   }
 
   /**

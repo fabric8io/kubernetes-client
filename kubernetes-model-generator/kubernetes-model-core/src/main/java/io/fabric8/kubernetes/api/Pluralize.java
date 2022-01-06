@@ -38,6 +38,8 @@ public class Pluralize implements UnaryOperator<String> {
     EXCEPTIONS.put("child", "children");
     EXCEPTIONS.put("ox", "oxen");
     EXCEPTIONS.put("die", "dice");
+    EXCEPTIONS.put("podmetrics", "pods");
+    EXCEPTIONS.put("nodemetrics", "nodes");
   }
 
   private static final List<UnaryOperator<String>> PLURALS = Arrays.asList(

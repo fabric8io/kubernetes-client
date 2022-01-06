@@ -106,10 +106,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-gpg-plugin</artifactId>
-        <configuration>
-          <passphrase>4uds0n</passphrase>
-          <useAgent>true</useAgent>
-        </configuration>
       </plugin>
     </plugins>
   </build>

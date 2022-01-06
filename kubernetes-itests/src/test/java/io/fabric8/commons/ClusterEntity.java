@@ -74,7 +74,7 @@ public class ClusterEntity {
 
   public static boolean kubernetesVersionAtLeast(String majorVersion, String minorVersion) {
     try (KubernetesClient client = new DefaultKubernetesClient()) {
-      VersionInfo versionInfo = client.getVersion();
+      VersionInfo versionInfo = client.getKubernetesVersion();
       String clusterMajorVersion = versionInfo.getMajor().replaceAll(NON_NUMERIC_CHARACTERS, EMPTY);
       String clusterMinorVersion = versionInfo.getMinor().replaceAll(NON_NUMERIC_CHARACTERS, EMPTY);
 

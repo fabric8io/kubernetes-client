@@ -3,8 +3,11 @@
 ### 5.12-SNAPSHOT
 
 #### Bugs
+* Fix #3683: Handle JsonNode fields by adding x-kubernetes-preserve-unknown-fields
+* Fix #3697: addresses response that aren't closed by interceptors that issue new requests
 
 #### Improvements
+* Fix #3674: allows the connect and websocket timeouts to apply to watches instead of a hardcoded timeout
 
 #### Dependency Upgrade
 
@@ -12,6 +15,50 @@
 
 #### _**Note**_: Breaking changes in the API
 
+### 5.11.2 (2022-01-05)
+
+#### Bugs
+* Fix #3653: SnakeYAML uses only standard Java types
+* Fix #3697: addresses response that aren't closed by interceptors that issue new requests
+
+### 5.8.1 (2022-01-05)
+
+#### Bugs
+* Fix #3653: SnakeYAML uses only standard Java types
+
+### 5.7.4 (2022-01-05)
+
+#### Bugs
+* Fix #3653: SnakeYAML uses only standard Java types
+
+### 5.4.2 (2022-01-05)
+
+#### Bugs
+* Fix #3653: SnakeYAML uses only standard Java types
+
+### 5.3.2 (2022-01-05)
+
+#### Bugs
+* Fix #3653: SnakeYAML uses only standard Java types
+
+### 5.1.2 (2022-01-05)
+
+#### Bugs
+* Fix #3653: SnakeYAML uses only standard Java types
+
+### 5.0.3 (2022-01-05)
+
+#### Bugs
+* Fix #3653: SnakeYAML uses only standard Java types
+
+### 5.11.1 (2021-12-24)
+
+#### Bugs
+* Fix #3672: Native image builds of Fabric8 work (commons-codec no longer required)
+* Fix #3639: Support for NodeMetrics and PodMetrics informers
+* Fix #3662: NodeMetrics should be marked as Cluster scoped resource
+* Fix #3686: Ignore fields annotated with JsonIgnore during CRD generation
+* Fix #3652: Avoid a StackOverflow and properly fail on cyclic references in CRD generation
 
 ### 5.11.0 (2021-12-17)
 
@@ -114,6 +161,7 @@
 * Fix #3468: Add method to get non-running `Informer` from context specific dsl
 * Fix #3398: Added javadocs explaining the wait parameter
 * Fix #3491: Add more metadata to `KubernetesClientException` when possible
+* Fix #3465: Allowing for more super class event handlers
 
 #### Dependency Upgrade
   * Fix #3326: Upgrade Kubernetes Model to v1.22.1
