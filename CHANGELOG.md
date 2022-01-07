@@ -8,9 +8,10 @@
 * Fix #3255: adding basic crud mock resourceVersion support - the field will be set and updated, but not utilized by list/watch queries
 * Fix #3712: properly return the full resource name for resources with empty group
 * Fix #3588: `openshift-server-mock` is not listed in dependencyManagement in main pom
-
+* Fix #3679: output additionalProperties field with correct value type for map-like fields (CRD Generator)
 #### Improvements
 * Fix #3674: allows the connect and websocket timeouts to apply to watches instead of a hardcoded timeout
+* Fix #3651: Introduce SchemaFrom annotation as escape hatch (CRD Generator)
 
 #### Dependency Upgrade
 
