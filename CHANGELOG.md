@@ -15,6 +15,12 @@
 
 #### _**Note**_: Breaking changes in the API
 
+### 5.10.2 (2022-01-07)
+
+#### Bugs
+* Fix #3653: SnakeYAML uses only standard Java types
+
+
 ### 5.11.2 (2022-01-05)
 
 #### Bugs
