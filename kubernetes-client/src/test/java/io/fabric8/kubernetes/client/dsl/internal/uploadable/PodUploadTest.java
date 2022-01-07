@@ -19,6 +19,7 @@ package io.fabric8.kubernetes.client.dsl.internal.uploadable;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
@@ -58,6 +59,11 @@ class PodUploadTest {
   private Path mockPathToUpload;
   private WebSocket mockWebSocket;
 
+  @FunctionalInterface
+  public interface PodUploadTester<R> {
+    R apply() throws IOException, InterruptedException;
+  }
+
   @BeforeEach
   void setUp() throws IOException {
     mockClient = Mockito.mock(HttpClient.class, Mockito.RETURNS_DEEP_STUBS);
@@ -89,34 +95,17 @@ class PodUploadTest {
   }
 
   @Test
-  void testUploadFileHappyScenarioShouldUploadFile() throws Exception {
-    when(mockContext.getFile()).thenReturn("/mock/dir/file");
+  void upload_whenFilePathProvided_shouldUploadFile() throws IOException, InterruptedException {
     when(mockPathToUpload.toFile())
       .thenReturn(new File(PodUpload.class.getResource("/upload/upload-sample.txt").getFile()));
-    WebSocket.Builder builder = Mockito.mock(WebSocket.Builder.class, Mockito.RETURNS_SELF);
-    when(builder.buildAsync(any())).thenAnswer(newWebSocket -> {
-      final PodUploadWebSocketListener wsl = newWebSocket.getArgument(0, PodUploadWebSocketListener.class);
-      // Set ready status
-      wsl.onOpen(mockWebSocket);
-      wsl.onMessage(mockWebSocket, ByteBuffer.wrap(new byte[] {(byte) 0}));
-      // Set complete status
-      Mockito.doAnswer(close -> {
-        wsl.onClose(mockWebSocket, close.getArgument(0), close.getArgument(1));
-        return null;
-      }).when(mockWebSocket).sendClose(anyInt(), anyString());
-      return CompletableFuture.completedFuture(mockWebSocket);  
-    });
-    when(mockClient.newWebSocketBuilder()).thenReturn(builder);
-
-    final boolean result = PodUpload.upload(mockClient, mockContext, operationSupport, mockPathToUpload);
-
-    assertThat(result, equalTo(true));
+    uploadFileAndVerify(() -> PodUpload.upload(mockClient, mockContext, operationSupport, mockPathToUpload));
     verify(mockPathToUpload, atLeast(1)).toFile();
-    verify(builder, times(1)).uri(argThat(request -> {
-      assertThat(request.toString(), equalTo("https://openshift.com:8443/api/v1/namespaces/default/pods/mock-pod/exec?command=sh&command=-c&command=mkdir+-p+%27%2Fmock%2Fdir%27+%26%26+base64+-d+-+%3E+%27%2Fmock%2Fdir%2Ffile%27&stdin=true&stderr=true"));
-      return true;
-    }));
-    verify(mockWebSocket, atLeast(1)).send(any(ByteBuffer.class));
+  }
+
+  @Test
+  void uploadFileData_whenByteArrayInputStreamProvided_shouldUploadFile() throws IOException, InterruptedException {
+    InputStream inputStream = new ByteArrayInputStream("test data".getBytes());
+    uploadFileAndVerify(() ->  PodUpload.uploadFileData(mockClient, mockContext, operationSupport, inputStream));
   }
   
   @Test
@@ -193,6 +182,33 @@ class PodUploadTest {
 
     // Then
     assertThat(result, equalTo("mkdir -p '/tmp/foo' && base64 -d - > '/tmp/foo/cp.log'"));
+  }
+
+  void uploadFileAndVerify(PodUploadTester<Boolean> fileUploadMethodToTest) throws IOException, InterruptedException {
+    when(mockContext.getFile()).thenReturn("/mock/dir/file");
+    WebSocket.Builder builder = Mockito.mock(WebSocket.Builder.class, Mockito.RETURNS_SELF);
+    when(builder.buildAsync(any())).thenAnswer(newWebSocket -> {
+      final PodUploadWebSocketListener wsl = newWebSocket.getArgument(0, PodUploadWebSocketListener.class);
+      // Set ready status
+      wsl.onOpen(mockWebSocket);
+      wsl.onMessage(mockWebSocket, ByteBuffer.wrap(new byte[]{(byte) 0}));
+      // Set complete status
+      Mockito.doAnswer(close -> {
+        wsl.onClose(mockWebSocket, close.getArgument(0), close.getArgument(1));
+        return null;
+      }).when(mockWebSocket).sendClose(anyInt(), anyString());
+      return CompletableFuture.completedFuture(mockWebSocket);
+    });
+    when(mockClient.newWebSocketBuilder()).thenReturn(builder);
+
+    final boolean result = fileUploadMethodToTest.apply();
+
+    assertThat(result, equalTo(true));
+    verify(builder, times(1)).uri(argThat(request -> {
+      assertThat(request.toString(), equalTo("https://openshift.com:8443/api/v1/namespaces/default/pods/mock-pod/exec?command=sh&command=-c&command=mkdir+-p+%27%2Fmock%2Fdir%27+%26%26+base64+-d+-+%3E+%27%2Fmock%2Fdir%2Ffile%27&stdin=true&stderr=true"));
+      return true;
+    }));
+    verify(mockWebSocket, atLeast(1)).send(any(ByteBuffer.class));
   }
 
 }
