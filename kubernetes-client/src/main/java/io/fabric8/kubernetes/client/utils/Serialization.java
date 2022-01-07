@@ -40,6 +40,7 @@ import java.util.stream.Collectors;
 
 import io.fabric8.kubernetes.client.utils.serialization.UnmatchedFieldTypeModule;
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.SafeConstructor;
 
 public class Serialization {
   private Serialization() { }
@@ -365,7 +366,7 @@ public class Serialization {
   }
 
   private static <T> T unmarshalYaml(InputStream is, TypeReference<T> type) throws JsonProcessingException {
-    final Yaml yaml = new Yaml();
+    final Yaml yaml = new Yaml(new SafeConstructor());
     Map<String, Object> obj = yaml.load(is);
     String objAsJsonStr = JSON_MAPPER.writeValueAsString(obj);
     return unmarshalJsonStr(objAsJsonStr, type);
