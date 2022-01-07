@@ -20,6 +20,7 @@
 * Fix #3637: Update Fabric8 Kubernetes Model to v1.23.0
 
 #### New Features
+* Fix #3721: Add support for uploading file via InputStream
 
 #### _**Note**_: Breaking changes in the API
 

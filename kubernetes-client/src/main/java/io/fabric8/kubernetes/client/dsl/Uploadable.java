@@ -15,9 +15,24 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
+import java.io.InputStream;
 import java.nio.file.Path;
 
 public interface Uploadable<T> {
 
+  /**
+   * Upload file located at specified {@link Path} to Pod
+   *
+   * @param path path of the file which needs to be uploaded
+   * @return boolean value regarding upload was successful or not.
+   */
   T upload(Path path);
+
+  /**
+   * Upload file extracted from provided InputStream to Pod
+   *
+   * @param inputStream {@link InputStream} which will be uploaded
+   * @return boolean value regarding upload was successful or not.
+   */
+  T upload(InputStream inputStream);
 }

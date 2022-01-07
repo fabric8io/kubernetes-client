@@ -70,19 +70,26 @@ public class PodUpload {
     throw new IllegalArgumentException("Provided arguments are not valid (file, directory, path)");
   }
 
-  private static boolean uploadFile(HttpClient client, PodOperationContext context,
-    OperationSupport operationSupport, Path pathToUpload)
+  public static boolean uploadFileData(HttpClient client, PodOperationContext context,
+    OperationSupport operationSupport, InputStream inputStream)
     throws IOException, InterruptedException {
     final PodUploadWebSocketListener podUploadWebSocketListener = initWebSocket(
       buildCommandUrl(createExecCommandForUpload(context), context, operationSupport), client);
     try (
-      final FileInputStream fis = new FileInputStream(pathToUpload.toFile());
-      final Base64.InputStream b64In = new Base64.InputStream(fis, Base64.ENCODE)
+      final Base64.InputStream b64In = new Base64.InputStream(inputStream, Base64.ENCODE)
     ) {
       podUploadWebSocketListener.waitUntilReady(operationSupport.getConfig().getRequestConfig().getUploadConnectionTimeout());
       copy(b64In, podUploadWebSocketListener::send);
       podUploadWebSocketListener.waitUntilComplete(operationSupport.getConfig().getRequestConfig().getUploadRequestTimeout());
       return true;
+    }
+  }
+
+  private static boolean uploadFile(HttpClient client, PodOperationContext context,
+    OperationSupport operationSupport, Path pathToUpload)
+    throws IOException, InterruptedException {
+    try (final FileInputStream fis = new FileInputStream(pathToUpload.toFile())) {
+      return uploadFileData(client, context, operationSupport, fis);
     }
   }
 
