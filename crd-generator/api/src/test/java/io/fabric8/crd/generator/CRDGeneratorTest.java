@@ -24,6 +24,8 @@ import io.fabric8.crd.example.joke.Joke;
 import io.fabric8.crd.example.joke.JokeRequest;
 import io.fabric8.crd.example.joke.JokeRequestSpec;
 import io.fabric8.crd.example.joke.JokeRequestStatus;
+import io.fabric8.crd.example.map.ContainingMaps;
+import io.fabric8.crd.example.map.ContainingMapsSpec;
 import io.fabric8.crd.example.multiple.v1.Multiple;
 import io.fabric8.crd.example.multiple.v1.MultipleSpec;
 import io.fabric8.crd.example.nocyclic.NoCyclic;
@@ -257,16 +259,41 @@ class CRDGeneratorTest {
         .getProperties().get("spec").getProperties();
       assertEquals(4, specProps.size());
       assertEquals("integer", specProps.get("baseInt").getType());
-      checkMapProp(specProps, "unsupported");
-      checkMapProp(specProps, "unsupported2");
-      checkMapProp(specProps, "supported");
+      checkMapProp(specProps, "unsupported", "object");
+      checkMapProp(specProps, "unsupported2", "object");
+      checkMapProp(specProps, "supported", "string");
     });
   }
 
-  private void checkMapProp(Map<String, JSONSchemaProps> specProps, String name) {
+  @Test
+  void mapPropertyShouldHaveCorrectValueType() {
+    outputCRDIfFailed(ContainingMaps.class, (customResource) -> {
+      final CustomResourceDefinitionVersion version = checkCRD(customResource, "ContainingMaps", "containingmaps",
+        Scope.CLUSTER, ContainingMapsSpec.class);
+      assertNotNull(version.getSchema());
+
+      final Map<String, JSONSchemaProps> specProps = version.getSchema().getOpenAPIV3Schema()
+        .getProperties().get("spec").getProperties();
+
+      assertEquals(2, specProps.size());
+
+      checkMapProp(specProps, "test", "array");
+      String arrayType = specProps.get("test").getAdditionalProperties().getSchema().getItems().getSchema().getType();
+      assertEquals("string", arrayType);
+
+      checkMapProp(specProps, "test2", "object");
+      JSONSchemaProps valueSchema = specProps.get("test2").getAdditionalProperties().getSchema().getAdditionalProperties().getSchema();
+      String valueType = valueSchema.getType();
+      assertEquals("array", valueType);
+
+      assertEquals("boolean", valueSchema.getItems().getSchema().getType());
+    });
+  }
+
+  private void checkMapProp(Map<String, JSONSchemaProps> specProps, String name, String valueType) {
     final JSONSchemaProps props = specProps.get(name);
     assertEquals("object", props.getType());
-    assertEquals("string", props.getAdditionalProperties().getSchema().getType());
+    assertEquals(valueType, props.getAdditionalProperties().getSchema().getType());
   }
 
   @Test
