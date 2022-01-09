@@ -13,24 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crd.example.json;
+package io.fabric8.crd.example.extraction;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class ContainingJsonSpec {
+import javax.validation.constraints.NotNull;
 
-  private int field;
+public class FooExtractor {
 
-  public int getField() { return field; }
-
-  private JsonNode free;
-
-  public JsonNode getFree() {
-    return free;
-  }
-
-  private Foo foo;
-
-  public Foo getFoo() { return foo; }
+  @JsonProperty("BAZ")
+  @NotNull
+  public int bar;
 
 }

@@ -15,6 +15,9 @@
  */
 package io.fabric8.kubernetes.api.model;
 
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Plural;
+import io.fabric8.kubernetes.model.annotation.Version;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
@@ -27,6 +30,18 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 class HasMetadataTest {
+  @Test
+  void fullResourceNameShouldNotEndWithPeriodForHistoricResources() {
+    assertEquals("pods", HasMetadata.getFullResourceName(Pod.class));
+    assertEquals("services", HasMetadata.getFullResourceName(Service.class));
+  }
+
+  @Test
+  void fullResourceNameShouldConcatenatePluralAndGroup() {
+    assertEquals("women.fabric8.io", HasMetadata.getFullResourceName(Woman.class));
+    assertEquals("overridden.fabric8.io", HasMetadata.getFullResourceName(Over.class));
+  }
+
   @Test
   void validFinalizersShouldBeAddedAndCanBeRemoved() {
     HasMetadata hasMetadata = new Default();
@@ -191,6 +206,43 @@ class HasMetadataTest {
     hasMetadata.addOwnerReference(owner);
     hasMetadata.addOwnerReference(owner);
     assertEquals(1, hasMetadata.getMetadata().getOwnerReferences().size());
+  }
+
+  @Group("fabric8.io")
+  @Version("v1")
+  private static class Woman implements HasMetadata {
+
+    @Override
+    public ObjectMeta getMetadata() {
+      return null;
+    }
+
+    @Override
+    public void setMetadata(ObjectMeta metadata) {
+    }
+
+    @Override
+    public void setApiVersion(String version) {
+    }
+  }
+
+  @Group("fabric8.io")
+  @Version("v1")
+  @Plural("overridden")
+  private static class Over implements HasMetadata {
+
+    @Override
+    public ObjectMeta getMetadata() {
+      return null;
+    }
+
+    @Override
+    public void setMetadata(ObjectMeta metadata) {
+    }
+
+    @Override
+    public void setApiVersion(String version) {
+    }
   }
 
   private static class Empty implements HasMetadata {

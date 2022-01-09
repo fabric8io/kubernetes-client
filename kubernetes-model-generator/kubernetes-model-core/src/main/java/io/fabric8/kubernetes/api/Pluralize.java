@@ -34,6 +34,7 @@ public class Pluralize implements UnaryOperator<String> {
 
   static {
     EXCEPTIONS.put("person", "people");
+    EXCEPTIONS.put("woman", "women");
     EXCEPTIONS.put("man", "men");
     EXCEPTIONS.put("child", "children");
     EXCEPTIONS.put("ox", "oxen");

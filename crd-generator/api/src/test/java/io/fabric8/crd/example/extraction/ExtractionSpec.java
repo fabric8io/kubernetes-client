@@ -13,24 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crd.example.json;
+package io.fabric8.crd.example.extraction;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import io.fabric8.crd.generator.annotation.SchemaFrom;
 
-public class ContainingJsonSpec {
+public class ExtractionSpec {
 
-  private int field;
-
-  public int getField() { return field; }
-
-  private JsonNode free;
-
-  public JsonNode getFree() {
-    return free;
-  }
-
+  @SchemaFrom(type = FooExtractor.class)
   private Foo foo;
-
-  public Foo getFoo() { return foo; }
 
 }

@@ -13,24 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crd.example.json;
+package io.fabric8.crd.example.map;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import java.util.List;
+import java.util.Map;
 
-public class ContainingJsonSpec {
+public class ContainingMapsSpec {
 
-  private int field;
+  private Map<String, List<String>> test = null;
 
-  public int getField() { return field; }
-
-  private JsonNode free;
-
-  public JsonNode getFree() {
-    return free;
+  public Map<String, List<String>> getTest() {
+    return test;
   }
 
-  private Foo foo;
+  private Map<String, Map<String, List<Boolean>>> test2 = null;
 
-  public Foo getFoo() { return foo; }
+  public Map<String, Map<String, List<Boolean>>> getTest2() {
+    return test2;
+  }
 
 }

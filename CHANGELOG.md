@@ -5,15 +5,25 @@
 #### Bugs
 * Fix #3683: Handle JsonNode fields by adding x-kubernetes-preserve-unknown-fields
 * Fix #3697: addresses response that aren't closed by interceptors that issue new requests
-
+* Fix #3255: adding basic crud mock resourceVersion support - the field will be set and updated, but not utilized by list/watch queries
+* Fix #3712: properly return the full resource name for resources with empty group
+* Fix #3588: `openshift-server-mock` is not listed in dependencyManagement in main pom
+* Fix #3679: output additionalProperties field with correct value type for map-like fields (CRD Generator)
 #### Improvements
 * Fix #3674: allows the connect and websocket timeouts to apply to watches instead of a hardcoded timeout
+* Fix #3651: Introduce SchemaFrom annotation as escape hatch (CRD Generator)
 
 #### Dependency Upgrade
 
 #### New Features
 
 #### _**Note**_: Breaking changes in the API
+
+### 5.10.2 (2022-01-07)
+
+#### Bugs
+* Fix #3653: SnakeYAML uses only standard Java types
+
 
 ### 5.11.2 (2022-01-05)
 

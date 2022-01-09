@@ -164,7 +164,7 @@ public interface HasMetadata extends KubernetesResource {
   static String getFullResourceName(String plural, String group) {
     Objects.requireNonNull(plural);
     Objects.requireNonNull(group);
-    return plural + "." + group;
+    return group.isEmpty() ? plural : plural + "." + group;
   }
 
   @JsonIgnore

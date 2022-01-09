@@ -216,7 +216,7 @@ public abstract class CustomResource<S, T> implements HasMetadata {
    * @return the CRD name associated with the CustomResource
    */
   public static String getCRDName(Class<?> clazz) {
-    return HasMetadata.getPlural(clazz) + "." + HasMetadata.getGroup(clazz);
+    return HasMetadata.getFullResourceName(clazz);
   }
 
   @JsonIgnore

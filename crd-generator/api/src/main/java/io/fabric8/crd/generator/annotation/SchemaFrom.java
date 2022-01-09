@@ -13,24 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crd.example.json;
+package io.fabric8.crd.generator.annotation;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import java.lang.annotation.*;
 
-public class ContainingJsonSpec {
-
-  private int field;
-
-  public int getField() { return field; }
-
-  private JsonNode free;
-
-  public JsonNode getFree() {
-    return free;
-  }
-
-  private Foo foo;
-
-  public Foo getFoo() { return foo; }
-
+@Target({ElementType.ANNOTATION_TYPE, ElementType.FIELD})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface SchemaFrom {
+  Class<?> type() default void.class;
 }

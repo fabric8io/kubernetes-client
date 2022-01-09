@@ -27,7 +27,6 @@ import io.fabric8.kubernetes.api.model.StatusCauseBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watcher.Action;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
-import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.okhttp.OkHttpClientImpl;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import io.fabric8.kubernetes.client.utils.Serialization;
@@ -36,7 +35,6 @@ import io.fabric8.mockwebserver.Context;
 import io.fabric8.mockwebserver.crud.Attribute;
 import io.fabric8.mockwebserver.crud.AttributeSet;
 import io.fabric8.mockwebserver.crud.CrudDispatcher;
-import io.fabric8.mockwebserver.crud.ResponseComposer;
 import io.fabric8.zjsonpatch.JsonDiff;
 import io.fabric8.zjsonpatch.JsonPatch;
 import okhttp3.MediaType;
@@ -62,6 +60,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -70,6 +69,7 @@ import static io.fabric8.kubernetes.client.server.mock.KubernetesAttributesExtra
 
 public class KubernetesCrudDispatcher extends CrudDispatcher {
 
+  private static final String RESOURCE_VERSION = "resourceVersion";
   private static final String GENERATION = "generation";
   private static final String STATUS = "status";
 
@@ -79,6 +79,9 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
   private final CustomResourceDefinitionProcessor crdProcessor;
   private final KubernetesAttributesExtractor kubernetesAttributesExtractor;
 
+  private AtomicLong resourceVersion = new AtomicLong();
+  private KubernetesResponseComposer kubernetesResponseComposer;
+
   public KubernetesCrudDispatcher() {
     this(Collections.emptyList());
   }
@@ -87,9 +90,10 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
     this(new KubernetesAttributesExtractor(crdContexts), new KubernetesResponseComposer());
   }
 
-  public KubernetesCrudDispatcher(KubernetesAttributesExtractor attributeExtractor, ResponseComposer responseComposer) {
+  public KubernetesCrudDispatcher(KubernetesAttributesExtractor attributeExtractor, KubernetesResponseComposer responseComposer) {
     super(new Context(Serialization.jsonMapper()), attributeExtractor, responseComposer);
     this.kubernetesAttributesExtractor = attributeExtractor;
+    this.kubernetesResponseComposer = responseComposer;
     crdProcessor = new CustomResourceDefinitionProcessor(kubernetesAttributesExtractor);
   }
 
@@ -146,7 +150,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
         response.setResponseCode(HttpURLConnection.HTTP_NOT_FOUND);
       }
     } else {
-      response.setBody(responseComposer.compose(items));
+      response.setBody(kubernetesResponseComposer.compose(items, String.valueOf(resourceVersion.get())));
       response.setResponseCode(HttpURLConnection.HTTP_OK);
     }
     return response;
@@ -432,6 +436,10 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
   static boolean shouldIncreaseGeneration(JsonNode existing, JsonNode source) {
     final JsonNode differences = Optional.ofNullable(existing).map(e -> JsonDiff.asJson(e, source))
       .orElse(null);
+    return shouldIncreaseGeneration(differences);
+  }
+
+  static boolean shouldIncreaseGeneration(JsonNode differences) {
     if (differences != null && !differences.isEmpty()) {
       return StreamSupport.stream(differences.spliterator(), false)
         .filter(n -> !n.get("path").asText().startsWith("/metadata/"))
@@ -454,16 +462,21 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
       metadata.put("namespace", pathValues.get(KubernetesAttributesExtractor.NAMESPACE));
     }
     metadata.put("uid", getOrDefault(existingMetadata, "uid", uuid.toString()));
-    // resourceVersion is not yet handled appropriately
-    metadata.put("resourceVersion", "1");
-
-    if (shouldIncreaseGeneration(existing, source)) {
-      metadata.put(GENERATION, Integer.parseInt(getOrDefault(existingMetadata, GENERATION, "0")) + 1);
-    } else {
-      metadata.put(GENERATION, getOrDefault(existingMetadata, GENERATION, "1"));
-    }
-
+    metadata.put(GENERATION, getOrDefault(existingMetadata, GENERATION, "1"));
     metadata.put("creationTimestamp", getOrDefault(existingMetadata, "creationTimestamp", ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT)));
+
+    if (existing == null) {
+      metadata.put(RESOURCE_VERSION, String.valueOf(resourceVersion.incrementAndGet()));
+    } else {
+      metadata.put(RESOURCE_VERSION, getOrDefault(existingMetadata, RESOURCE_VERSION, "0"));
+      JsonNode diff = JsonDiff.asJson(existing, source);
+      if (!diff.isEmpty()) {
+        metadata.put(RESOURCE_VERSION, String.valueOf(resourceVersion.incrementAndGet()));
+        if (shouldIncreaseGeneration(diff)) {
+          metadata.put(GENERATION, Integer.parseInt(getOrDefault(existingMetadata, GENERATION, "0")) + 1);
+        }
+      }
+    }
   }
 
   private String getOrDefault(JsonNode node, String name, String defaultValue) {

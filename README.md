@@ -403,6 +403,7 @@ class ExampleTest {
 | kubernetes-client 5.11.2 | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         | -         | -         |           |
 | kubernetes-client 5.11.1 | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         | -         | -         |           |
 | kubernetes-client 5.11.0 | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         | -         | -         |           |
+| kubernetes-client 5.10.2 | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         | -         | -         |           |
 | kubernetes-client 5.10.1 | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         | -         | -         |           |
 | kubernetes-client 5.10.0 | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         | -         | -         |           |
 | kubernetes-client 5.9.0  | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         | -         | -         |           |
@@ -486,6 +487,7 @@ class ExampleTest {
 | openshift-client 5.11.2 | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
 | openshift-client 5.11.1 | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
 | openshift-client 5.11.0 | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
+| openshift-client 5.10.2 | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
 | openshift-client 5.10.1 | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
 | openshift-client 5.10.0 | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
 | openshift-client 5.9.0  | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
