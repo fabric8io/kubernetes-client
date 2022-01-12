@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.crd.example.annotated.Annotated;
 import io.fabric8.crd.example.basic.Basic;
 import io.fabric8.crd.example.json.ContainingJson;
+import io.fabric8.crd.example.extraction.Extraction;
 import io.fabric8.crd.example.person.Person;
 import io.fabric8.crd.generator.utils.Types;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
@@ -119,9 +120,9 @@ class JsonSchemaTest {
     assertEquals(2, properties.size());
     final JSONSchemaProps specSchema = properties.get("spec");
     Map<String, JSONSchemaProps> spec = specSchema.getProperties();
-    assertEquals(2, spec.size());
+    assertEquals(3, spec.size());
 
-    // check descriptions are present
+    // check preserve unknown fields is present
     assertTrue(spec.containsKey("free"));
     JSONSchemaProps freeField = spec.get("free");
 
@@ -131,5 +132,35 @@ class JsonSchemaTest {
     JSONSchemaProps field = spec.get("field");
 
     assertNull(field.getXKubernetesPreserveUnknownFields());
+
+    assertTrue(spec.containsKey("foo"));
+    JSONSchemaProps fooField = spec.get("foo");
+
+    assertTrue(fooField.getXKubernetesPreserveUnknownFields());
   }
+
+  @Test
+  void shouldExtractPropertiesSchemaFromExtractValueAnnotation() {
+    TypeDef extraction = Types.typeDefFrom(Extraction.class);
+    JSONSchemaProps schema = JsonSchema.from(extraction);
+    assertNotNull(schema);
+    Map<String, JSONSchemaProps> properties = schema.getProperties();
+    assertEquals(2, properties.size());
+    final JSONSchemaProps specSchema = properties.get("spec");
+    Map<String, JSONSchemaProps> spec = specSchema.getProperties();
+    assertEquals(1, spec.size());
+
+    // check typed SchemaFrom
+    JSONSchemaProps foo = spec.get("foo");
+    Map<String, JSONSchemaProps> fooProps = foo.getProperties();
+    assertNotNull(fooProps);
+
+    // you can change everything
+    assertEquals(fooProps.get("BAZ").getType(), "integer");
+    assertTrue(foo.getRequired().contains("BAZ"));
+
+    // you can exclude fields
+    assertNull(fooProps.get("baz"));
+  }
+
 }

@@ -26,6 +26,7 @@ import lombok.experimental.Accessors;
     "metadata",
     "as",
     "as-groups",
+    "as-uid",
     "as-user-extra",
     "auth-provider",
     "client-certificate",
@@ -55,6 +56,8 @@ public class AuthInfo implements KubernetesResource
     @JsonProperty("as-groups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<java.lang.String> asGroups = new ArrayList<java.lang.String>();
+    @JsonProperty("as-uid")
+    private java.lang.String asUid;
     @JsonProperty("as-user-extra")
     private Map<String, ArrayList<String>> asUserExtra;
     @JsonProperty("auth-provider")
@@ -97,6 +100,7 @@ public class AuthInfo implements KubernetesResource
      * @param token
      * @param authProvider
      * @param as
+     * @param asUid
      * @param extensions
      * @param password
      * @param clientKeyData
@@ -107,10 +111,11 @@ public class AuthInfo implements KubernetesResource
      * @param exec
      * @param username
      */
-    public AuthInfo(java.lang.String as, List<java.lang.String> asGroups, Map<String, ArrayList<String>> asUserExtra, AuthProviderConfig authProvider, java.lang.String clientCertificate, java.lang.String clientCertificateData, java.lang.String clientKey, java.lang.String clientKeyData, ExecConfig exec, List<NamedExtension> extensions, java.lang.String password, java.lang.String token, java.lang.String tokenFile, java.lang.String username) {
+    public AuthInfo(java.lang.String as, List<java.lang.String> asGroups, java.lang.String asUid, Map<String, ArrayList<String>> asUserExtra, AuthProviderConfig authProvider, java.lang.String clientCertificate, java.lang.String clientCertificateData, java.lang.String clientKey, java.lang.String clientKeyData, ExecConfig exec, List<NamedExtension> extensions, java.lang.String password, java.lang.String token, java.lang.String tokenFile, java.lang.String username) {
         super();
         this.as = as;
         this.asGroups = asGroups;
+        this.asUid = asUid;
         this.asUserExtra = asUserExtra;
         this.authProvider = authProvider;
         this.clientCertificate = clientCertificate;
@@ -143,6 +148,16 @@ public class AuthInfo implements KubernetesResource
     @JsonProperty("as-groups")
     public void setAsGroups(List<java.lang.String> asGroups) {
         this.asGroups = asGroups;
+    }
+
+    @JsonProperty("as-uid")
+    public java.lang.String getAsUid() {
+        return asUid;
+    }
+
+    @JsonProperty("as-uid")
+    public void setAsUid(java.lang.String asUid) {
+        this.asUid = asUid;
     }
 
     @JsonProperty("as-user-extra")

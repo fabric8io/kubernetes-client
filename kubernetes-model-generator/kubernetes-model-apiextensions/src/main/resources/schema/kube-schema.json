@@ -644,6 +644,14 @@
         },
         "x-kubernetes-preserve-unknown-fields": {
           "type": "boolean"
+        },
+        "x-kubernetes-validations": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_apiextensions_v1_ValidationRule",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1.ValidationRule"
+          }
         }
       },
       "additionalProperties": false,
@@ -734,6 +742,22 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.apiextensions.v1.ServiceReference",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_apiextensions_v1_ValidationRule": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "rule": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.apiextensions.v1.ValidationRule",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1358,6 +1382,14 @@
         },
         "x-kubernetes-preserve-unknown-fields": {
           "type": "boolean"
+        },
+        "x-kubernetes-validations": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/kubernetes_apiextensions_v1beta1_ValidationRule",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.ValidationRule"
+          }
         }
       },
       "additionalProperties": false,
@@ -1448,6 +1480,22 @@
       },
       "additionalProperties": true,
       "javaType": "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.ServiceReference",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "kubernetes_apiextensions_v1beta1_ValidationRule": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "rule": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true,
+      "javaType": "io.fabric8.kubernetes.api.model.apiextensions.v1beta1.ValidationRule",
       "javaInterfaces": [
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
@@ -1557,6 +1605,9 @@
           }
         },
         "fieldManager": {
+          "type": "string"
+        },
+        "fieldValidation": {
           "type": "string"
         },
         "kind": {
@@ -1936,6 +1987,9 @@
         "fieldManager": {
           "type": "string"
         },
+        "fieldValidation": {
+          "type": "string"
+        },
         "force": {
           "type": "boolean"
         },
@@ -2136,6 +2190,9 @@
           }
         },
         "fieldManager": {
+          "type": "string"
+        },
+        "fieldValidation": {
           "type": "string"
         },
         "kind": {

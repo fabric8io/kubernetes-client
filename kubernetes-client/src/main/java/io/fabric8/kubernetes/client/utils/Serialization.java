@@ -153,6 +153,9 @@ public class Serialization {
     String specFile = readSpecFileFromInputStream(is);
     if (containsMultipleDocuments(specFile)) {
       return (T) getKubernetesResourceList(parameters, specFile);
+    } else if (specFile.contains(DOCUMENT_DELIMITER)) {
+      specFile = specFile.replaceAll("^---([ \\t].*?)?\\r?\\n","");
+      specFile = specFile.replaceAll("\\n---([ \\t].*?)?\\r?\\n?$","\n");
     }
     return unmarshal(new ByteArrayInputStream(specFile.getBytes()), JSON_MAPPER, parameters);
   }

@@ -380,6 +380,18 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
    }
 
   @Override
+  public Boolean upload(InputStream inputStream) {
+    return wrapRunWithOptionalDependency(() -> {
+      try {
+        return PodUpload.uploadFileData(httpClient, getContext(), this, inputStream);
+      } catch (Exception ex) {
+        Thread.currentThread().interrupt();
+        throw KubernetesClientException.launderThrowable(ex);
+      }
+    }, "TarArchiveOutputStream is provided by commons-compress");
+  }
+
+  @Override
   public Boolean upload(Path path) {
     return wrapRunWithOptionalDependency(() -> {
       try {

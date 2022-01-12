@@ -32,7 +32,6 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>${maven.buildhelper.plugin.version}</version>
         <inherited>false</inherited>
         <executions>
           <execution>

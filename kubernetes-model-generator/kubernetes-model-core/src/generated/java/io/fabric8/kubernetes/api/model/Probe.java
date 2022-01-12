@@ -24,6 +24,7 @@ import lombok.experimental.Accessors;
     "metadata",
     "exec",
     "failureThreshold",
+    "grpc",
     "httpGet",
     "initialDelaySeconds",
     "periodSeconds",
@@ -47,6 +48,8 @@ public class Probe implements KubernetesResource
     private ExecAction exec;
     @JsonProperty("failureThreshold")
     private Integer failureThreshold;
+    @JsonProperty("grpc")
+    private GRPCAction grpc;
     @JsonProperty("httpGet")
     private HTTPGetAction httpGet;
     @JsonProperty("initialDelaySeconds")
@@ -81,12 +84,14 @@ public class Probe implements KubernetesResource
      * @param successThreshold
      * @param initialDelaySeconds
      * @param exec
+     * @param grpc
      * @param httpGet
      */
-    public Probe(ExecAction exec, Integer failureThreshold, HTTPGetAction httpGet, Integer initialDelaySeconds, Integer periodSeconds, Integer successThreshold, TCPSocketAction tcpSocket, Long terminationGracePeriodSeconds, Integer timeoutSeconds) {
+    public Probe(ExecAction exec, Integer failureThreshold, GRPCAction grpc, HTTPGetAction httpGet, Integer initialDelaySeconds, Integer periodSeconds, Integer successThreshold, TCPSocketAction tcpSocket, Long terminationGracePeriodSeconds, Integer timeoutSeconds) {
         super();
         this.exec = exec;
         this.failureThreshold = failureThreshold;
+        this.grpc = grpc;
         this.httpGet = httpGet;
         this.initialDelaySeconds = initialDelaySeconds;
         this.periodSeconds = periodSeconds;
@@ -114,6 +119,16 @@ public class Probe implements KubernetesResource
     @JsonProperty("failureThreshold")
     public void setFailureThreshold(Integer failureThreshold) {
         this.failureThreshold = failureThreshold;
+    }
+
+    @JsonProperty("grpc")
+    public GRPCAction getGrpc() {
+        return grpc;
+    }
+
+    @JsonProperty("grpc")
+    public void setGrpc(GRPCAction grpc) {
+        this.grpc = grpc;
     }
 
     @JsonProperty("httpGet")

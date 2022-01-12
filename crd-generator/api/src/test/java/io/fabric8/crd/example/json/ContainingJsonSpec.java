@@ -29,4 +29,8 @@ public class ContainingJsonSpec {
     return free;
   }
 
+  private Foo foo;
+
+  public Foo getFoo() { return foo; }
+
 }

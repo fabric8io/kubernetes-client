@@ -27,7 +27,8 @@ import lombok.experimental.Accessors;
     "kind",
     "metadata",
     "dryRun",
-    "fieldManager"
+    "fieldManager",
+    "fieldValidation"
 })
 @ToString
 @EqualsAndHashCode
@@ -54,6 +55,8 @@ public class UpdateOptions implements KubernetesResource
     private List<String> dryRun = new ArrayList<String>();
     @JsonProperty("fieldManager")
     private String fieldManager;
+    @JsonProperty("fieldValidation")
+    private String fieldValidation;
     /**
      * 
      * (Required)
@@ -75,14 +78,16 @@ public class UpdateOptions implements KubernetesResource
      * 
      * @param apiVersion
      * @param dryRun
+     * @param fieldValidation
      * @param kind
      * @param fieldManager
      */
-    public UpdateOptions(String apiVersion, List<String> dryRun, String fieldManager, String kind) {
+    public UpdateOptions(String apiVersion, List<String> dryRun, String fieldManager, String fieldValidation, String kind) {
         super();
         this.apiVersion = apiVersion;
         this.dryRun = dryRun;
         this.fieldManager = fieldManager;
+        this.fieldValidation = fieldValidation;
         this.kind = kind;
     }
 
@@ -124,6 +129,16 @@ public class UpdateOptions implements KubernetesResource
     @JsonProperty("fieldManager")
     public void setFieldManager(String fieldManager) {
         this.fieldManager = fieldManager;
+    }
+
+    @JsonProperty("fieldValidation")
+    public String getFieldValidation() {
+        return fieldValidation;
+    }
+
+    @JsonProperty("fieldValidation")
+    public void setFieldValidation(String fieldValidation) {
+        this.fieldValidation = fieldValidation;
     }
 
     /**
