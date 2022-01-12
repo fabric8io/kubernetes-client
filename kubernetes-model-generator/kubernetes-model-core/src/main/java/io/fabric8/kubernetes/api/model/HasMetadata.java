@@ -228,7 +228,7 @@ public interface HasMetadata extends KubernetesResource {
 
   /**
    * Determines whether the specified finalizer is valid according to the
-   * <a href='https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizer'>finalizer
+   * <a href='https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizers'>finalizer
    * specification</a>.
    *
    * @param finalizer the identifier of the finalizer which validity we want to check
