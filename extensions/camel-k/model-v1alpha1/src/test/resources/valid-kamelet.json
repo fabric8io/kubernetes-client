@@ -1,0 +1,39 @@
+{
+  "apiVersion": "camel.apache.org/v1alpha1",
+  "kind": "Kamelet",
+  "metadata": {
+    "name": "beans-source",
+    "labels": {
+      "camel.apache.org/kamelet.type": "source"
+    }
+  },
+  "spec": {
+    "template": {
+      "beans": [
+        {
+          "name": "myBean",
+          "type": "#class:java.util.Date",
+          "property": [
+            {
+              "key": "time",
+              "value": 0
+            }
+          ]
+        }
+      ],
+      "from": {
+        "uri": "timer:tick",
+        "steps": [
+          {
+            "set-body": {
+              "simple": "Bean time is ${bean:{{myBean}}?method=getTime}!"
+            }
+          },
+          {
+            "to": "kamelet:sink"
+          }
+        ]
+      }
+    }
+  }
+}
