@@ -1,20 +1,22 @@
 module github.com/fabric8io/kubernetes-client/extensions/camel-k/generator
 
 require (
-	github.com/apache/camel-k v1.3.1 // indirect
-	github.com/apache/camel-k/pkg/apis/camel v1.3.1
+	contrib.go.opencensus.io/exporter/stackdriver v0.13.2 // indirect
+	github.com/apache/camel-k v1.7.0 // indirect
+	github.com/apache/camel-k/pkg/apis/camel v1.7.0
 	github.com/fabric8io/kubernetes-client/generator v0.0.0
 	github.com/tektoncd/pipeline v0.13.1-0.20200625065359-44f22a067b75 // indirect
-	k8s.io/apimachinery v0.19.0
-	knative.dev/pkg v0.0.0-20200922164940-4bf40ad82aab
+	k8s.io/apimachinery v0.21.4
+	knative.dev/pkg v0.0.0-20211104101302-51b9e7f161b4
+	knative.dev/test-infra v0.0.0-20200921012245-37f1a12adbd3 // indirect
 )
 
 replace (
 	github.com/fabric8io/kubernetes-client/generator v0.0.0 => ./../../../generator
-	github.com/openshift/api => github.com/openshift/api v0.0.0-20190927182313-d4a64ec2cbd8 // invalid pseudo-version: preceding tag (v3.9.0) not found
-	k8s.io/api => k8s.io/api v0.16.5
-	k8s.io/apimachinery => k8s.io/apimachinery v0.16.5
-	k8s.io/client-go => k8s.io/client-go v0.16.5
+	github.com/openshift/api => github.com/openshift/api v3.9.1-0.20190927182313-d4a64ec2cbd8+incompatible
+	k8s.io/api => k8s.io/api v0.21.4
+	k8s.io/apimachinery => k8s.io/apimachinery v0.21.4
+	k8s.io/client-go => k8s.io/client-go v0.21.4
 )
 
 exclude github.com/mikefarah/yaml/v2 v2.4.0

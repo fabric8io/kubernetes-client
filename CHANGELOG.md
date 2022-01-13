@@ -18,6 +18,7 @@
 
 #### Dependency Upgrade
 * Fix #3637: Update Fabric8 Kubernetes Model to v1.23.0
+* Fix #3670: Point CamelK Extension model to latest released version v1.7.0 
 
 #### New Features
 * Fix #3721: Add support for uploading file via InputStream

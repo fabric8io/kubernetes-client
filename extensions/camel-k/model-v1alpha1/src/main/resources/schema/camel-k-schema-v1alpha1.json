@@ -40,6 +40,13 @@
         "io.fabric8.kubernetes.api.model.KubernetesResource"
       ]
     },
+    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_ErrorHandlerSpec": {
+      "type": "object",
+      "javaType": "io.fabric8.camelk.v1alpha1.ErrorHandlerSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
     "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_EventTypeSpec": {
       "type": "object",
       "properties": {
@@ -177,8 +184,16 @@
     "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_KameletBindingSpec": {
       "type": "object",
       "properties": {
+        "errorHandler": {
+          "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_ErrorHandlerSpec",
+          "existingJavaType": "io.fabric8.camelk.v1alpha1.ErrorHandlerSpec"
+        },
         "integration": {
           "existingJavaType": "io.fabric8.camelk.v1.IntegrationSpec"
+        },
+        "replicas": {
+          "type": "integer",
+          "existingJavaType": "Integer"
         },
         "sink": {
           "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_Endpoint",
@@ -187,6 +202,14 @@
         "source": {
           "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_Endpoint",
           "existingJavaType": "io.fabric8.camelk.v1alpha1.Endpoint"
+        },
+        "steps": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_Endpoint",
+            "existingJavaType": "io.fabric8.camelk.v1alpha1.Endpoint"
+          }
         }
       },
       "javaType": "io.fabric8.camelk.v1alpha1.KameletBindingSpec",
@@ -206,6 +229,13 @@
           }
         },
         "phase": {
+          "type": "string"
+        },
+        "replicas": {
+          "type": "integer",
+          "existingJavaType": "Integer"
+        },
+        "selector": {
           "type": "string"
         }
       },
@@ -313,6 +343,9 @@
             "existingJavaType": "io.fabric8.camelk.v1.SourceSpec"
           }
         },
+        "template": {
+          "existingJavaType": "java.util.Map\u003cString, Object\u003e"
+        },
         "types": {
           "type": "object",
           "existingJavaType": "java.util.Map\u003cString,io.fabric8.camelk.v1alpha1.EventTypeSpec\u003e"
@@ -365,6 +398,10 @@
     "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_EndpointProperties": {
       "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_EndpointProperties",
       "existingJavaType": "io.fabric8.camelk.v1alpha1.EndpointProperties"
+    },
+    "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_ErrorHandlerSpec": {
+      "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_ErrorHandlerSpec",
+      "existingJavaType": "io.fabric8.camelk.v1alpha1.ErrorHandlerSpec"
     },
     "github_com_apache_camel-k_pkg_apis_camel_v1alpha1_EventTypeSpec": {
       "$ref": "#/definitions/github_com_apache_camel-k_pkg_apis_camel_v1alpha1_EventTypeSpec",
