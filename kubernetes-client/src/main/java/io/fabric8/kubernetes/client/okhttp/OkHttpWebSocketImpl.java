@@ -117,6 +117,12 @@ class OkHttpWebSocketImpl implements WebSocket {
       return this;
     }
     
+    @Override
+    public Builder subprotocol(String protocol) {
+      builder.header("Sec-WebSocket-Protocol", protocol);
+      return this;
+    }
+    
   }
   
   private okhttp3.WebSocket webSocket;
