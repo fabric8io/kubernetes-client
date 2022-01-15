@@ -66,7 +66,7 @@ public class TunedRecommend implements KubernetesResource
     private Map<String, String> machineConfigLabels;
     @JsonProperty("match")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TunedMatch> match = new ArrayList<TunedMatch>();
+    private List<TunedMatch> match = new ArrayList<>();
     @JsonProperty("operand")
     private OperandConfig operand;
     @JsonProperty("priority")
@@ -74,7 +74,7 @@ public class TunedRecommend implements KubernetesResource
     @JsonProperty("profile")
     private java.lang.String profile;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new HashMap<>();
 
     /**
      * No args constructor for use in serialization

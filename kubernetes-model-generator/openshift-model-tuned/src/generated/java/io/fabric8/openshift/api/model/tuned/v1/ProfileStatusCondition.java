@@ -71,7 +71,7 @@ public class ProfileStatusCondition implements KubernetesResource
     @JsonProperty("type")
     private java.lang.String type;
     @JsonIgnore
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private Map<java.lang.String, Object> additionalProperties = new HashMap<>();
 
     /**
      * No args constructor for use in serialization

@@ -72,7 +72,7 @@ public class TunedList implements KubernetesResource, KubernetesResourceList<io.
     @JsonProperty("apiVersion")
     private String apiVersion = "tuned.openshift.io/v1";
     @JsonProperty("items")
-    private List<io.fabric8.openshift.api.model.tuned.v1.Tuned> items = new ArrayList<io.fabric8.openshift.api.model.tuned.v1.Tuned>();
+    private List<io.fabric8.openshift.api.model.tuned.v1.Tuned> items = new ArrayList<>();
     /**
      * 
      * (Required)
@@ -83,7 +83,7 @@ public class TunedList implements KubernetesResource, KubernetesResourceList<io.
     @JsonProperty("metadata")
     private ListMeta metadata;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new HashMap<>();
 
     /**
      * No args constructor for use in serialization

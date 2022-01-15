@@ -63,11 +63,11 @@ public class TunedSpec implements KubernetesResource
     @JsonProperty("managementState")
     private String managementState;
     @JsonProperty("profile")
-    private List<TunedProfile> profile = new ArrayList<TunedProfile>();
+    private List<TunedProfile> profile = new ArrayList<>();
     @JsonProperty("recommend")
-    private List<TunedRecommend> recommend = new ArrayList<TunedRecommend>();
+    private List<TunedRecommend> recommend = new ArrayList<>();
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new HashMap<>();
 
     /**
      * No args constructor for use in serialization
