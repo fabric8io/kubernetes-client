@@ -65,13 +65,13 @@ public class TunedMatch implements KubernetesResource
     private String label;
     @JsonProperty("match")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<TunedMatch> match = new ArrayList<TunedMatch>();
+    private List<TunedMatch> match = new ArrayList<>();
     @JsonProperty("type")
     private String type;
     @JsonProperty("value")
     private String value;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new HashMap<>();
 
     /**
      * No args constructor for use in serialization
