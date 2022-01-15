@@ -275,4 +275,58 @@ class InformTest {
     informer.stop();
   }
 
+  @Test
+  void testListLimit() throws InterruptedException {
+    // Given
+    Pod pod1 = new PodBuilder().withNewMetadata().withNamespace("test").withName("pod1")
+        .withResourceVersion("1").endMetadata().build();
+
+    Pod pod2 = new PodBuilder().withNewMetadata().withNamespace("test").withName("pod2")
+        .withResourceVersion("2").endMetadata().build();
+
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods?limit=1")
+        .andReturn(HttpURLConnection.HTTP_OK,
+            new PodListBuilder().withNewMetadata().withResourceVersion("2").withContinue("x").endMetadata().withItems(pod1).build())
+        .once();
+
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods?limit=1&continue=x")
+        .andReturn(HttpURLConnection.HTTP_OK,
+            new PodListBuilder().withNewMetadata().withResourceVersion("2").endMetadata().withItems(pod2).build())
+        .once();
+
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods?resourceVersion=2&allowWatchBookmarks=true&watch=true")
+        .andUpgradeToWebSocket()
+        .open()
+        .done()
+        .once();
+    final CountDownLatch addLatch = new CountDownLatch(2);
+    final ResourceEventHandler<Pod> handler = new ResourceEventHandler<Pod>() {
+
+      @Override
+      public void onAdd(Pod obj) {
+        addLatch.countDown();
+      }
+
+      @Override
+      public void onDelete(Pod obj, boolean deletedFinalStateUnknown) {
+
+      }
+
+      @Override
+      public void onUpdate(Pod oldObj, Pod newObj) {
+
+      }
+
+    };
+    // When
+    SharedIndexInformer<Pod> informer = client.pods().withLimit(1L).inform(handler);
+
+    assertTrue(addLatch.await(10, TimeUnit.SECONDS));
+
+    informer.stop();
+  }
+
 }

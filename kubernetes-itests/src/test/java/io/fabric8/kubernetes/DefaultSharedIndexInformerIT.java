@@ -87,6 +87,30 @@ public class DefaultSharedIndexInformerIT {
     }
   }
 
+  @Test
+  public void testLimit() throws Exception {
+    client.configMaps().delete();
+
+    client.configMaps().create(new ConfigMapBuilder().withNewMetadata().withName("my-map1").endMetadata().build());
+    client.configMaps().create(new ConfigMapBuilder().withNewMetadata().withName("my-map2").endMetadata().build());
+
+    CountDownLatch addEvents = new CountDownLatch(2);
+
+    TestResourceEventHandler<HasMetadata> eventHandler = new TestResourceEventHandler<>(addEvents, new CountDownLatch(1));
+
+    SharedIndexInformer<ConfigMap> informer = client.configMaps().withLimit(1L).inform(eventHandler, RESYNC_PERIOD);
+
+    try {
+      // When
+      addEvents.await(30000, TimeUnit.MILLISECONDS);
+
+      // Then
+      assertThat(addEvents.getCount()).isZero();
+    } finally {
+      informer.stop();
+    }
+  }
+
   private static class TestResourceEventHandler<T extends HasMetadata> implements ResourceEventHandler<T> {
     private final CountDownLatch addEventRecievedLatch;
     private final CountDownLatch updateEventRecievedLatch;

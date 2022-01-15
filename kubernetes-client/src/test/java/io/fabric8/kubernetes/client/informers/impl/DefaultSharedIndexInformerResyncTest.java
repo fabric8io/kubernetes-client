@@ -17,7 +17,6 @@ package io.fabric8.kubernetes.client.informers.impl;
 
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
-import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.informers.ListerWatcher;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
