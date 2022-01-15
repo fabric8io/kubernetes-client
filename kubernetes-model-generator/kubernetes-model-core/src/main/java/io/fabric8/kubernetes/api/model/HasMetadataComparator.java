@@ -22,46 +22,26 @@ public class HasMetadataComparator implements Comparator<HasMetadata> {
 
     private Integer getKindValue(String kind) {
         try {
-            switch (kind) {
-                case "SecurityContextConstraints":
-                    return 0;
-                case "Namespace":
-                case "Project":
-                case "ProjectRequest":
-                    return 1;
-                case "LimitRange":
-                    return 2;
-                case "ResourceQuota":
-                    return 3;
-                case "RoleBindingRestriction":
-                    return 4;
-                case "Secret":
-                    return 12;
-                case "ServiceAccount":
-                    return 13;
-                case "OAuthClient":
-                    return 14;
-                case "Service":
-                    return 15;
-                case "PolicyBinding":
-                    return 16;
-                case "ClusterPolicyBinding":
-                    return 17;
-                case "Role":
-                    return 18;
-                case "RoleBinding":
-                    return 19;
-                case "PersistentVolume":
-                    return 20;
-                case "PersistentVolumeClaim":
-                    return 21;
-                case "ImageStream":
-                    return 30;
-                case "ImageStreamTag":
-                    return 31;
-                default:
-                    return 100;
-            }
+          return switch (kind) {
+            case "SecurityContextConstraints" -> 0;
+            case "Namespace", "Project", "ProjectRequest" -> 1;
+            case "LimitRange" -> 2;
+            case "ResourceQuota" -> 3;
+            case "RoleBindingRestriction" -> 4;
+            case "Secret" -> 12;
+            case "ServiceAccount" -> 13;
+            case "OAuthClient" -> 14;
+            case "Service" -> 15;
+            case "PolicyBinding" -> 16;
+            case "ClusterPolicyBinding" -> 17;
+            case "Role" -> 18;
+            case "RoleBinding" -> 19;
+            case "PersistentVolume" -> 20;
+            case "PersistentVolumeClaim" -> 21;
+            case "ImageStream" -> 30;
+            case "ImageStreamTag" -> 31;
+            default -> 100;
+          };
         } catch (IllegalArgumentException e) {
             return 100;
         }
