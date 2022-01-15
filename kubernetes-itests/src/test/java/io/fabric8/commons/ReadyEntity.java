@@ -34,43 +34,25 @@ public class ReadyEntity<T> implements Callable<Boolean> {
 
   @Override
   public Boolean call() {
-    switch (this.typeParameterClass.getSimpleName()) {
-      case "Route":
-        return ((OpenShiftClient)this.client).routes().inNamespace(this.namespace).withName(this.name).get() != null;
-      case "Template":
-        return ((OpenShiftClient)this.client).templates().inNamespace(this.namespace).withName(this.name).get() != null;
-      case "ImageStream":
-        return ((OpenShiftClient)this.client).imageStreams().inNamespace(this.namespace).withName(this.name).get()!= null;
-      case "ImageStreamTag":
-        return ((OpenShiftClient)this.client).imageStreamTags().inNamespace(this.namespace).withName(this.name).get() != null;
-      case "DeploymentConfig":
-        return ((OpenShiftClient)this.client).deploymentConfigs().inNamespace(this.namespace).withName(this.name).get()!= null;
-      case "BuildConfig":
-        return ((OpenShiftClient)this.client).buildConfigs().inNamespace(this.namespace).withName(this.name).get()!= null;
-      case "ConfigMap":
-        return this.client.configMaps().inNamespace(this.namespace).withName(this.name).get()!= null;
-      case "CustomResourceDefinition":
-        return this.client.apiextensions().v1beta1().customResourceDefinitions().withName(this.namespace).get() != null;
-      case "StatefulSet":
-        return this.client.apps().statefulSets().inNamespace(this.namespace).withName(this.name).get()!= null;
-      case "Deployment":
-        return this.client.apps().deployments().inNamespace(this.namespace).withName(this.name).isReady();
-      case "Service":
-        return this.client.services().inNamespace(this.namespace).withName(this.name).get()!= null;
-      case "ServiceAccount":
-        return this.client.serviceAccounts().inNamespace(this.namespace).withName(this.name).get()!= null;
-      case "Secret":
-        return this.client.secrets().inNamespace(this.namespace).withName(this.name).get()!= null;
-      case "ReplicationController":
-        return this.client.replicationControllers().inNamespace(this.namespace).withName(this.name).isReady();
-      case "ReplicaSet":
-        return this.client.apps().replicaSets().inNamespace(this.namespace).withName(this.name).get()!= null;
-      case "NetworkPolicy":
-        return this.client.network().networkPolicies().inNamespace(this.namespace).withName(this.name).get()!= null;
-      case "Pod":
-        return this.client.pods().inNamespace(this.namespace).withName(this.name).isReady();
-      default:
-        return false;
+    return switch (this.typeParameterClass.getSimpleName()) {
+      case "Route" -> ((OpenShiftClient) this.client).routes().inNamespace(this.namespace).withName(this.name).get() != null;
+      case "Template" -> ((OpenShiftClient) this.client).templates().inNamespace(this.namespace).withName(this.name).get() != null;
+      case "ImageStream" -> ((OpenShiftClient) this.client).imageStreams().inNamespace(this.namespace).withName(this.name).get() != null;
+      case "ImageStreamTag" -> ((OpenShiftClient) this.client).imageStreamTags().inNamespace(this.namespace).withName(this.name).get() != null;
+      case "DeploymentConfig" -> ((OpenShiftClient) this.client).deploymentConfigs().inNamespace(this.namespace).withName(this.name).get() != null;
+      case "BuildConfig" -> ((OpenShiftClient) this.client).buildConfigs().inNamespace(this.namespace).withName(this.name).get() != null;
+      case "ConfigMap" -> this.client.configMaps().inNamespace(this.namespace).withName(this.name).get() != null;
+      case "CustomResourceDefinition" -> this.client.apiextensions().v1beta1().customResourceDefinitions().withName(this.namespace).get() != null;
+      case "StatefulSet" -> this.client.apps().statefulSets().inNamespace(this.namespace).withName(this.name).get() != null;
+      case "Deployment" -> this.client.apps().deployments().inNamespace(this.namespace).withName(this.name).isReady();
+      case "Service" -> this.client.services().inNamespace(this.namespace).withName(this.name).get() != null;
+      case "ServiceAccount" -> this.client.serviceAccounts().inNamespace(this.namespace).withName(this.name).get() != null;
+      case "Secret" -> this.client.secrets().inNamespace(this.namespace).withName(this.name).get() != null;
+      case "ReplicationController" -> this.client.replicationControllers().inNamespace(this.namespace).withName(this.name).isReady();
+      case "ReplicaSet" -> this.client.apps().replicaSets().inNamespace(this.namespace).withName(this.name).get() != null;
+      case "NetworkPolicy" -> this.client.network().networkPolicies().inNamespace(this.namespace).withName(this.name).get() != null;
+      case "Pod" -> this.client.pods().inNamespace(this.namespace).withName(this.name).isReady();
+      default -> false;
+    };
     }
   }
-}
