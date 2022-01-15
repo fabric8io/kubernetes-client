@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.client.informers.cache;
 
-import java.util.List;
+import java.util.Set;
 
 public interface SyncableStore<T> extends Store<T> {
 
@@ -41,17 +41,21 @@ public interface SyncableStore<T> extends Store<T> {
   void delete(T obj);
   
   /**
-   * Deletes the contents of the store, using instead the given list.
-   * Store takes ownership of the list, you should not reference it
-   * after calling this function
-   *
-   * @param list list of objects
-   */
-  void replace(List<T> list);
-
-  /**
    * Sends a resync event for each item.
    */
   void resync();
+  
+  /**
+   * Get the key for the given object
+   * @param obj object
+   * @return the key
+   */
+  String getKey(T obj);
+
+  /**
+   * Retain only the values with keys in the given set
+   * @param nextKeys to retain
+   */
+  void retainAll(Set<String> nextKeys);
 
 }

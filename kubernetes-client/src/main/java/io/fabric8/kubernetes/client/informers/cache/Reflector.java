@@ -23,9 +23,12 @@ import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.WatcherException;
 import io.fabric8.kubernetes.client.informers.ListerWatcher;
+import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T>> {
@@ -49,10 +52,6 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
     this.watch = new AtomicReference<>(null);
   }
 
-  protected L getList() {
-    return listerWatcher.list();
-  }
-
   public void stop() {
     running = false;
     stopWatcher();
@@ -74,11 +73,26 @@ public class Reflector<T extends HasMetadata, L extends KubernetesResourceList<T
    */
   public void listSyncAndWatch() {
     running = true;
-    final L list = getList();
-    final String latestResourceVersion = list.getMetadata().getResourceVersion();
+    KubernetesResourceList<T> result = null;
+    String continueVal = null;
+    Set<String> nextKeys = new LinkedHashSet<>();
+    do {
+      result = listerWatcher
+          .list(new ListOptionsBuilder().withLimit(listerWatcher.getLimit()).withContinue(continueVal).build());
+      result.getItems().forEach(i -> {
+        String key = store.getKey(i);
+        // process the updates immediately so we don't need to hold the item
+        store.update(i);
+        nextKeys.add(key);
+      });
+      continueVal = result.getMetadata().getContinue();
+    } while (Utils.isNotNullOrEmpty(continueVal));
+    
+    store.retainAll(nextKeys);
+    
+    final String latestResourceVersion = result.getMetadata().getResourceVersion();
     lastSyncResourceVersion = latestResourceVersion;
-    log.debug("Listing items ({}) for resource {} v{}", list.getItems().size(), apiTypeClass, latestResourceVersion);
-    store.replace(list.getItems());
+    log.debug("Listing items ({}) for resource {} v{}", nextKeys.size(), apiTypeClass, latestResourceVersion);
     startWatcher(latestResourceVersion);
   }
 

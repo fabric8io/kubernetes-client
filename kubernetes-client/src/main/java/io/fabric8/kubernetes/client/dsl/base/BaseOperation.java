@@ -103,7 +103,9 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   protected String apiVersion;
 
   protected Class<L> listType;
+  // informable state
   private Map<String, Function<T, List<String>>> indexers;
+  private Long limit;
 
   protected BaseOperation(OperationContext ctx) {
     super(ctx);
@@ -404,7 +406,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public L list(Integer limitVal, String continueVal) {
-    return list(new ListOptionsBuilder().withLimit(Long.parseLong(limitVal.toString())).withContinue(continueVal).build());
+    return list(new ListOptionsBuilder().withLimit(limitVal.longValue()).withContinue(continueVal).build());
   }
 
   @Override
@@ -931,7 +933,21 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   public Informable<T> withIndexers(Map<String, Function<T, List<String>>> indexers) {
     BaseOperation<T, L, R> result = newInstance(context);
     result.indexers = indexers;
+    result.limit = this.limit;
     return result;
+  }
+  
+  @Override
+  public BaseOperation<T, L, R> withLimit(Long limit) {
+    BaseOperation<T, L, R> result = newInstance(context);
+    result.indexers = this.indexers;
+    result.limit = limit;
+    return result;
+  }
+  
+  @Override
+  public Long getLimit() {
+    return this.limit;
   }
 
   @Override
@@ -958,7 +974,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     }
 
     // use the local context / namespace but without a resourceVersion
-    DefaultSharedIndexInformer<T, L> informer = new DefaultSharedIndexInformer<>(getType(), this.withResourceVersion(null), resync, Runnable::run); // just run the event notification in the websocket thread
+    DefaultSharedIndexInformer<T, L> informer = new DefaultSharedIndexInformer<>(getType(), this.withResourceVersion(null).withLimit(this.limit), resync, Runnable::run); // just run the event notification in the websocket thread
     if (indexers != null) {
       informer.addIndexers(indexers);
     }

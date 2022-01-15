@@ -17,11 +17,10 @@
 package io.fabric8.kubernetes.client.informers.cache;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Wraps a {@link Cache} and a {@link SharedProcessor} to distribute events related to changes and syncs
@@ -45,7 +44,8 @@ public class ProcessorStore<T extends HasMetadata> implements SyncableStore<T> {
   public void update(T obj) {
     T oldObj = this.cache.put(obj);
     if (oldObj != null) {
-      this.processor.distribute(new ProcessorListener.UpdateNotification<>(oldObj, obj), false);
+      this.processor.distribute(new ProcessorListener.UpdateNotification<>(oldObj, obj),
+          Objects.equals(oldObj.getMetadata().getResourceVersion(), obj.getMetadata().getResourceVersion()));
     } else {
       this.processor.distribute(new ProcessorListener.AddNotification<>(obj), false);
     }
@@ -80,26 +80,24 @@ public class ProcessorStore<T extends HasMetadata> implements SyncableStore<T> {
   }
 
   @Override
-  public void replace(List<T> list) {
-    Map<String, T> oldState = cache.replace(list);
-    
-    if (list.isEmpty() && oldState.isEmpty()) {
-      this.processor.distribute(l -> l.getHandler().onNothing(), false);      
+  public void retainAll(Set<String> nextKeys) {
+    List<T> current = cache.list();
+    if (nextKeys.isEmpty() && current.isEmpty()) {
+      this.processor.distribute(l -> l.getHandler().onNothing(), false);
+      return;
     }
-
-    // now that the store is up-to-date, process the notifications
-    for (T newValue : list) {
-      T old = oldState.remove(cache.getKey(newValue));
-      if (old == null) {
-        this.processor.distribute(new ProcessorListener.AddNotification<>(newValue), false);
-      } else {
-        boolean same = Objects.equals(KubernetesResourceUtil.getResourceVersion(old), KubernetesResourceUtil.getResourceVersion(newValue));
-        this.processor.distribute(new ProcessorListener.UpdateNotification<>(old, newValue), same);
+    current.forEach(v -> {
+      String key = cache.getKey(v);
+      if (!nextKeys.contains(key)) {
+        cache.remove(v);
+        this.processor.distribute(new ProcessorListener.DeleteNotification<>(v, true), false);        
       }
-    }
-    // deletes are not marked as sync=true in keeping with the old code
-    oldState.values()
-        .forEach(old -> this.processor.distribute(new ProcessorListener.DeleteNotification<>(old, true), false));
+    });
+  }
+  
+  @Override
+  public String getKey(T obj) {
+    return cache.getKey(obj);
   }
 
   @Override
