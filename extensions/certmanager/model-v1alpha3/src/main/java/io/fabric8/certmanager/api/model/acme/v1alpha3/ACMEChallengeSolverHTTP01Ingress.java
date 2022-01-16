@@ -73,13 +73,13 @@ public class ACMEChallengeSolverHTTP01Ingress implements KubernetesResource
   @JsonProperty("ingressTemplate")
   private ACMEChallengeSolverHTTP01IngressTemplate ingressTemplate;
   @JsonProperty("name")
-  private java.lang.String name;
+  private String name;
   @JsonProperty("podTemplate")
   private ACMEChallengeSolverHTTP01IngressPodTemplate podTemplate;
   @JsonProperty("serviceType")
-  private java.lang.String serviceType;
+  private String serviceType;
   @JsonIgnore
-  private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+  private Map<String, Object> additionalProperties = new HashMap<>();
 
   /**
    * No args constructor for use in serialization
@@ -96,7 +96,7 @@ public class ACMEChallengeSolverHTTP01Ingress implements KubernetesResource
    * @param podTemplate
    * @param className
    */
-  public ACMEChallengeSolverHTTP01Ingress(String className, ACMEChallengeSolverHTTP01IngressTemplate ingressTemplate, java.lang.String name, ACMEChallengeSolverHTTP01IngressPodTemplate podTemplate, java.lang.String serviceType) {
+  public ACMEChallengeSolverHTTP01Ingress(String className, ACMEChallengeSolverHTTP01IngressTemplate ingressTemplate, String name, ACMEChallengeSolverHTTP01IngressPodTemplate podTemplate, String serviceType) {
     super();
     this.className = className;
     this.ingressTemplate = ingressTemplate;
@@ -126,12 +126,12 @@ public class ACMEChallengeSolverHTTP01Ingress implements KubernetesResource
   }
 
   @JsonProperty("name")
-  public java.lang.String getName() {
+  public String getName() {
     return name;
   }
 
   @JsonProperty("name")
-  public void setName(java.lang.String name) {
+  public void setName(String name) {
     this.name = name;
   }
 
@@ -146,22 +146,22 @@ public class ACMEChallengeSolverHTTP01Ingress implements KubernetesResource
   }
 
   @JsonProperty("serviceType")
-  public java.lang.String getServiceType() {
+  public String getServiceType() {
     return serviceType;
   }
 
   @JsonProperty("serviceType")
-  public void setServiceType(java.lang.String serviceType) {
+  public void setServiceType(String serviceType) {
     this.serviceType = serviceType;
   }
 
   @JsonAnyGetter
-  public Map<java.lang.String, Object> getAdditionalProperties() {
+  public Map<String, Object> getAdditionalProperties() {
     return this.additionalProperties;
   }
 
   @JsonAnySetter
-  public void setAdditionalProperty(java.lang.String name, Object value) {
+  public void setAdditionalProperty(String name, Object value) {
     this.additionalProperties.put(name, value);
   }
 
