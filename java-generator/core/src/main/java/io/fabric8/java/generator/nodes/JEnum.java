@@ -37,6 +37,11 @@ public class JEnum extends AbstractJSONSchema2Pojo {
     private final List<String> values;
 
     public JEnum(String type, List<JsonNode> values) {
+        this(type, values, null);
+    }
+
+    public JEnum(String type, List<JsonNode> values, String description) {
+        super(description);
         this.type =
                 AbstractJSONSchema2Pojo.sanitizeString(
                         type.substring(0, 1).toUpperCase() + type.substring(1));

@@ -29,6 +29,7 @@ import com.github.javaparser.ast.expr.*;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import io.fabric8.java.generator.exceptions.JavaGeneratorException;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
+import io.fabric8.kubernetes.client.utils.Utils;
 import java.util.*;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
@@ -52,10 +53,22 @@ public class JObject extends AbstractJSONSchema2Pojo {
     private JObjectOptions options;
 
     public JObject(
+        String type,
+        Map<String, JSONSchemaProps> fields,
+        List<String> required,
+        JObjectOptions options) {
+        this(type, fields, required, options, null);
+    }
+    
+    public JObject(
             String type,
             Map<String, JSONSchemaProps> fields,
             List<String> required,
-            JObjectOptions options) {
+            JObjectOptions options,
+            String description) {
+
+        super(description);
+
         this.options = options;
         this.required =
                 new HashSet<>(Optional.ofNullable(required).orElse(Collections.emptyList()));
@@ -101,7 +114,7 @@ public class JObject extends AbstractJSONSchema2Pojo {
         if (clz != null) {
             // TODO: investigate a more nested structure for the generated code
             LOGGER.warn(
-                    "A class named {} has been already processed, if this class have multiple implementations the resulting code might be incorrect",
+                    "A class named {} has been already processed, if this class has multiple implementations the resulting code might be incorrect",
                     this.type);
             return new GeneratorResult();
         }
@@ -236,6 +249,10 @@ public class JObject extends AbstractJSONSchema2Pojo {
 
                     objField.createGetter();
                     objField.createSetter();
+
+                    if (Utils.isNotNullOrEmpty(prop.getDescription())) {
+                      objField.setJavadocComment(prop.getDescription());
+                    }
                 } catch (Exception cause) {
                     throw new JavaGeneratorException(
                             "Error generating field " + fieldName + " with type " + prop.getType(),

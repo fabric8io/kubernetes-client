@@ -26,6 +26,11 @@ public class JArray extends AbstractJSONSchema2Pojo {
     private final AbstractJSONSchema2Pojo nested;
 
     public JArray(AbstractJSONSchema2Pojo nested) {
+        this(nested, null);
+    }
+
+    public JArray(AbstractJSONSchema2Pojo nested, String description) {
+        super(description);
         this.type =
                 new ClassOrInterfaceType()
                         .setName(JAVA_UTIL_LIST)

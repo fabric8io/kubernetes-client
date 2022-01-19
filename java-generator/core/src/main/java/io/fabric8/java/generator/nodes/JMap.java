@@ -28,6 +28,11 @@ public class JMap extends AbstractJSONSchema2Pojo {
     private final AbstractJSONSchema2Pojo nested;
 
     public JMap(AbstractJSONSchema2Pojo nested) {
+        this(nested, null);
+    }
+
+    public JMap(AbstractJSONSchema2Pojo nested, String description) {
+        super(description);
         this.type =
                 new ClassOrInterfaceType()
                         .setName(JAVA_UTIL_MAP)
