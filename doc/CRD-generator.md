@@ -50,7 +50,7 @@ Running the `compile` task will generate 2 files
 `target/classes/META-INF/fabric8/examples.org.example-v1beta1.yml`,
 the file name is calculated as `<plural>.<group>-<CRD spec version>.yml`.
 
-The content of the `v1` looks similar to follow:
+The content of the `v1` looks similar to:
 
 ```yaml
 apiVersion: apiextensions.k8s.io/v1
