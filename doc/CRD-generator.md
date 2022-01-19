@@ -187,7 +187,7 @@ public class ExampleSpec {
 }
 ```
 
-For all the purposes of the CRD generator the type of the field will be picked up from the `class` passed as a parameter, such as:
+The CRD generator will substitute the default type inferred from the field and replace it by the computed schema associated with the Java class provided as a value of the `SchemaFrom` annotation, as seen below, where `ExampleStatus` is the class defined in the example above:
 
 ```yaml
           spec:
