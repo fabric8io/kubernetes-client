@@ -35,9 +35,23 @@ public abstract class AbstractJSONSchema2Pojo {
     static final String OBJECT_CRD_TYPE = "object";
     static final String ARRAY_CRD_TYPE = "array";
 
+    private final String description;
+
     public abstract String getType();
 
     public abstract GeneratorResult generateJava(CompilationUnit cu);
+
+    public String getDescription() {
+      return description;
+    }
+
+    protected AbstractJSONSchema2Pojo() {
+        this(null);
+    }
+
+    protected AbstractJSONSchema2Pojo(String description) {
+        this.description = description;
+    }
 
     /** Takes a random string and manipulate it to be a valid Java identifier */
     public static String sanitizeString(String str) {
@@ -129,13 +143,13 @@ public abstract class AbstractJSONSchema2Pojo {
             String key, JavaNameAndType nt, JSONSchemaProps prop, String prefix, String suffix) {
         switch (nt.getType()) {
             case PRIMITIVE:
-                return new JPrimitive(nt.getName());
+                return new JPrimitive(nt.getName(), prop.getDescription());
             case ARRAY:
-                return new JArray(fromJsonSchema(key, prop.getItems().getSchema(), prefix, suffix));
+                return new JArray(fromJsonSchema(key, prop.getItems().getSchema(), prefix, suffix), prop.getDescription());
             case MAP:
                 return new JMap(
                         fromJsonSchema(
-                                key, prop.getAdditionalProperties().getSchema(), prefix, suffix));
+                                key, prop.getAdditionalProperties().getSchema(), prefix, suffix), prop.getDescription());
             case OBJECT:
                 boolean preserveUnknownFields =
                         Boolean.TRUE.equals(prop.getXKubernetesPreserveUnknownFields());
@@ -143,9 +157,10 @@ public abstract class AbstractJSONSchema2Pojo {
                         key,
                         prop.getProperties(),
                         prop.getRequired(),
-                        new JObjectOptions(preserveUnknownFields, prefix, suffix));
+                        new JObjectOptions(preserveUnknownFields, prefix, suffix),
+                        prop.getDescription());
             case ENUM:
-                return new JEnum(key, prop.getEnum());
+                return new JEnum(key, prop.getEnum(), prop.getDescription());
             default:
                 throw new JavaGeneratorException("Unreachable " + nt.getType());
         }
