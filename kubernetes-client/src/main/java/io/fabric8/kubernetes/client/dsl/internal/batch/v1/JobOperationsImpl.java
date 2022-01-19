@@ -42,6 +42,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 
 public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, ScalableResource<Job>>
   implements ScalableResource<Job> {
@@ -175,15 +176,10 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
   public Loggable<LogWatch> withLogWaitTimeout(Integer logWaitTimeout) {
     return new JobOperationsImpl(podControllerOperationContext.withLogWaitTimout(logWaitTimeout), context);
   }
-
+  
   @Override
-  public Job replace(Job job) {
-    if (job == null) {
-      job = getItem();
-    }
-    // Fetch item from server and patch Selector and PodTemplate
-    // metadata in case not present already in order to avoid 422
-    Job jobFromServer = requireFromServer();
+  protected Job modifyItemForReplaceOrPatch(Supplier<Job> current, Job job) {
+    Job jobFromServer = current.get();
     if (job.getSpec().getSelector() == null) {
       job.getSpec().setSelector(jobFromServer.getSpec().getSelector());
     }
@@ -192,8 +188,7 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
     } else {
       job.getSpec().getTemplate().setMetadata(jobFromServer.getSpec().getTemplate().getMetadata());
     }
-
-    return super.replace(job);
+    return job;
   }
 
   static Map<String, String> getJobPodLabels(Job job) {

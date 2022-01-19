@@ -15,12 +15,10 @@
  */
 package io.fabric8.openshift.client.dsl.internal.core;
 
-import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.openshift.api.model.miscellaneous.cncf.cni.v1.NetworkAttachmentDefinition;
-import io.fabric8.openshift.api.model.miscellaneous.cncf.cni.v1.NetworkAttachmentDefinitionBuilder;
 import io.fabric8.openshift.api.model.miscellaneous.cncf.cni.v1.NetworkAttachmentDefinitionList;
 import io.fabric8.openshift.client.OpenshiftClientContext;
 import io.fabric8.openshift.client.dsl.internal.OpenShiftOperation;
@@ -40,11 +38,6 @@ public class NetworkAttachmentDefinitionOperationsImpl extends OpenShiftOperatio
   @Override
   public NetworkAttachmentDefinitionOperationsImpl newInstance(OperationContext context) {
     return new NetworkAttachmentDefinitionOperationsImpl(context);
-  }
-
-  @Override
-  public NetworkAttachmentDefinition edit(Visitor... visitors) {
-    return patch(new NetworkAttachmentDefinitionBuilder(getMandatory()).accept(visitors).build());
   }
 
   @Override

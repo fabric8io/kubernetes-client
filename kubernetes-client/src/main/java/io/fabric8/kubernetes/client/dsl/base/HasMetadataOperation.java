@@ -163,6 +163,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
     String fixedResourceVersion = getResourceVersion();
     Exception caught = null;
     int maxTries = 10;
+    item = clone(item);
     if (item.getMetadata() == null) {
       item.setMetadata(new ObjectMeta());
     }
@@ -249,12 +250,12 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   
   @Override
   public T patchStatus(T item) {
-    return patch(PatchContext.of(PatchType.JSON_MERGE), null, item, true);
+    return patch(PatchContext.of(PatchType.JSON_MERGE), null, clone(item), true);
   }
   
   @Override
   public T patch(PatchContext patchContext, T item) {
-    return patch(patchContext, null, item, false);
+    return patch(patchContext, null, clone(item), false);
   }
 
   @Override

@@ -24,9 +24,9 @@ import org.mockito.Mockito;
 
 import java.net.HttpURLConnection;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -49,13 +49,17 @@ class CreateOrReplaceHelperTest {
       p -> getPod(),
       p -> getPod()
     );
+    
+    Pod p = getPod();
+    p.getMetadata().setResourceVersion("1");
 
     // When
-    Pod podCreated = podCreateOrReplaceHelper.createOrReplace(getPod());
+    Pod podCreated = podCreateOrReplaceHelper.createOrReplace(p);
 
     // Then
     assertNotNull(podCreated);
     assertTrue(wasPodCreated.get());
+    assertEquals("1", p.getMetadata().getResourceVersion());
   }
 
   @Test

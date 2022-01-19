@@ -37,9 +37,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
-import java.nio.charset.Charset;
 import java.util.List;
 
+import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -249,10 +249,12 @@ class CreateOrReplaceResourceTest {
     server.expect().put().withPath("/api/v1/namespaces/test/configmaps/map1").andReturn(HttpURLConnection.HTTP_OK, new ConfigMapBuilder()
       .withNewMetadata().withResourceVersion("1001").and().build()).once();
 
-    ConfigMap map = client.configMaps().withName("map1").replace(new ConfigMapBuilder()
-      .withNewMetadata().withName("map1").and().build());
+    ConfigMap original = new ConfigMapBuilder()
+      .withNewMetadata().withName("map1").and().build();
+    ConfigMap map = client.configMaps().withName("map1").replace(original);
     assertNotNull(map);
     assertEquals("1001", map.getMetadata().getResourceVersion());
+    assertNull(original.getMetadata().getResourceVersion());
 
     ConfigMap replacedMap = new ObjectMapper().readerFor(ConfigMap.class).readValue(server.getLastRequest().getBody().inputStream());
     assertEquals("1000", replacedMap.getMetadata().getResourceVersion());

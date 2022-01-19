@@ -18,7 +18,7 @@ package io.fabric8.kubernetes.client.dsl.base;
 import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.client.dsl.WritableOperation;
 import io.fabric8.kubernetes.client.utils.CreateOrReplaceHelper;
-
+import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.api.builder.TypedVisitor;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
@@ -177,7 +177,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   public T getMandatory() {
     if (item != null && !reloadingFromServer) {
-      return item;
+      return Serialization.clone(item);
     }
     try {
       URL requestUrl = getCompleteResourceUrl();
