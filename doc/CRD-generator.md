@@ -146,7 +146,7 @@ public class ExampleSpec {
 }
 ```
 
-The field will be skipped in the generated CRD, such as:
+The field will be skipped in the generated CRD and will not appear in the schema for this type, such as:
 
 ```yaml
           spec:
