@@ -65,6 +65,7 @@ public abstract class AbstractJsonSchema<T, B> {
 
   private static final String INT_OR_STRING_MARKER = "int_or_string";
   private static final String STRING_MARKER = "string";
+  private static final String INTEGER_MARKER = "integer";
   private static final String NUMBER_MARKER = "number";
   private static final String BOOLEAN_MARKER = "boolean";
 
@@ -88,10 +89,10 @@ public abstract class AbstractJsonSchema<T, B> {
   static {
     COMMON_MAPPINGS.put(STRING_REF, STRING_MARKER);
     COMMON_MAPPINGS.put(DATE_REF, STRING_MARKER);
-    COMMON_MAPPINGS.put(INT_REF, "integer");
-    COMMON_MAPPINGS.put(P_INT_REF, "integer");
-    COMMON_MAPPINGS.put(LONG_REF, NUMBER_MARKER);
-    COMMON_MAPPINGS.put(P_LONG_REF, NUMBER_MARKER);
+    COMMON_MAPPINGS.put(INT_REF, INTEGER_MARKER);
+    COMMON_MAPPINGS.put(P_INT_REF, INTEGER_MARKER);
+    COMMON_MAPPINGS.put(LONG_REF, INTEGER_MARKER);
+    COMMON_MAPPINGS.put(P_LONG_REF, INTEGER_MARKER);
     COMMON_MAPPINGS.put(DOUBLE_REF, NUMBER_MARKER);
     COMMON_MAPPINGS.put(P_DOUBLE_REF, NUMBER_MARKER);
     COMMON_MAPPINGS.put(BOOLEAN_REF, BOOLEAN_MARKER);
