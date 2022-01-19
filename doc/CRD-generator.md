@@ -32,7 +32,6 @@ For example, code similar to:
 @Group("org.example")
 @Version("v1alpha1")
 @ShortNames("ex")
-@Plural("examples")
 public class Example extends CustomResource<ExampleSpec, ExampleStatus> implements Namespaced {}
 
 public class ExampleSpec {
@@ -92,9 +91,9 @@ spec:
 
 ## Features
 
-### JsonProperty
+### com.fasterxml.jackson.annotation.JsonProperty
 
-If a field or one of its accessors is annotated with `JsonProperty`
+If a field or one of its accessors is annotated with `com.fasterxml.jackson.annotation.JsonProperty`
 
 ```java
 public class ExampleSpec {
@@ -113,9 +112,9 @@ The generated field in the CRD will be named after the value provided in the ann
             type: object
 ```
 
-### JsonPropertyDescription
+### com.fasterxml.jackson.annotation.JsonPropertyDescription
 
-If a field or one of its accessors is annotated with `JsonPropertyDescription`
+If a field or one of its accessors is annotated with `com.fasterxml.jackson.annotation.JsonPropertyDescription`
 
 ```java
 public class ExampleSpec {
@@ -135,9 +134,9 @@ The generated field in the CRD will preserve the provided description, such as:
             type: object
 ```
 
-### JsonIgnore
+### com.fasterxml.jackson.annotation.JsonIgnore
 
-If a field or one of its accessors is annotated with `JsonIgnore`
+If a field or one of its accessors is annotated with `com.fasterxml.jackson.annotation.JsonIgnore`
 
 ```java
 public class ExampleSpec {
@@ -153,9 +152,9 @@ The field will be skipped in the generated CRD and will not appear in the schema
             type: object
 ```
 
-### NotNull
+### javax.validation.constraints.NotNull
 
-If a field or one of its accessors is annotated with `NotNull`
+If a field or one of its accessors is annotated with `javax.validation.constraints.NotNull`
 
 ```java
 public class ExampleSpec {
@@ -176,9 +175,9 @@ The field will be marked as `required` in the generated CRD, such as:
             type: object
 ```
 
-### SchemaFrom
+### io.fabric8.crd.generator.annotation.SchemaFrom
 
-If a field or one of its accessors is annotated with `SchemaFrom`
+If a field or one of its accessors is annotated with `io.fabric8.crd.generator.annotation.SchemaFrom`
 
 ```java
 public class ExampleSpec {
@@ -204,7 +203,9 @@ The CRD generator will substitute the default type inferred from the field and r
 
 ### Generating `x-kubernetes-preserve-unknown-fields: true`
 
-If a field or one of its accessors is annotated with `JsonAnyGetter`/`JsonAnySetter` or the field type is `JsonNode`
+If a field or one of its accessors is annotated with
+`com.fasterxml.jackson.annotation.JsonAnyGetter`/`com.fasterxml.jackson.annotation.JsonAnySetter`
+or the field type is `com.fasterxml.jackson.databind.JsonNode`
 
 ```java
 public class ExampleSpec {
