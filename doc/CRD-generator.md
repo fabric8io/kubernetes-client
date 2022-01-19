@@ -48,7 +48,7 @@ public class ExampleStatus {
 Running the `compile` task will generate 2 files
 `target/classes/META-INF/fabric8/examples.org.example-v1.yml` and
 `target/classes/META-INF/fabric8/examples.org.example-v1beta1.yml`,
-the file name is calculated as `<plural>.<group>-<apiVersion>.yml`.
+the file name is calculated as `<plural>.<group>-<CRD spec version>.yml`.
 
 The content of the `v1` looks similar to follow:
 
