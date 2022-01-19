@@ -15,6 +15,7 @@
 #### Improvements
 * Fix #3674: allows the connect and websocket timeouts to apply to watches instead of a hardcoded timeout
 * Fix #3651: Introduce SchemaFrom annotation as escape hatch (CRD Generator)
+* Fix #3734: extract static finalizer validation method
 
 #### Dependency Upgrade
 * Fix #3637: Update Fabric8 Kubernetes Model to v1.23.0

@@ -228,12 +228,13 @@ public interface HasMetadata extends KubernetesResource {
 
   /**
    * Determines whether the specified finalizer is valid according to the
-   * <a href='https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizer'>finalizer specification</a>.
+   * <a href='https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#finalizers'>finalizer
+   * specification</a>.
    *
    * @param finalizer the identifier of the finalizer which validity we want to check
    * @return {@code true} if the identifier is valid, {@code false} otherwise
    */
-  default boolean isFinalizerValid(String finalizer) {
+  static boolean validateFinalizer(String finalizer) {
     if (finalizer == null) {
       return false;
     }
@@ -244,6 +245,15 @@ public interface HasMetadata extends KubernetesResource {
     } else {
       return false;
     }
+  }
+  /**
+   * @see HasMetadata#validateFinalizer(String)
+   *
+   * @param finalizer the identifier of the finalizer which validity we want to check
+   * @return {@code true} if the identifier is valid, {@code false} otherwise
+   */
+  default boolean isFinalizerValid(String finalizer) {
+     return HasMetadata.validateFinalizer(finalizer);
   }
 
   /**
