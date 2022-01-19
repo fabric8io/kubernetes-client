@@ -31,6 +31,7 @@ import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.dsl.base.PatchType;
 import io.fabric8.kubernetes.client.dsl.internal.RollingOperationContext;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -139,7 +140,7 @@ public abstract class RollableScalableResourceOperation<T extends HasMetadata, L
     }
     try {
         T oldObj = getMandatory();
-        T newObj = function.apply(oldObj);
+        T newObj = function.apply(Serialization.clone(oldObj));
         return getRollingUpdater(rollingTimeout, rollingTimeUnit).rollUpdate(oldObj, newObj);
     } catch (Exception e) {
         throw KubernetesClientException.launderThrowable(e);
