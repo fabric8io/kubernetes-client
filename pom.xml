@@ -663,6 +663,20 @@
       </dependency>
 
       <dependency>
+        <groupId>org.arquillian.cube</groupId>
+        <artifactId>arquillian-cube-requirement</artifactId>
+        <version>${arquillian.cube.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.arquillian.cube</groupId>
+        <artifactId>arquillian-cube-openshift-starter</artifactId>
+        <version>${arquillian.cube.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
         <groupId>javax.validation</groupId>
         <artifactId>validation-api</artifactId>
         <version>${validation-api.version}</version>
@@ -1115,28 +1129,12 @@
           </plugin>
         </plugins>
       </build>
-      <dependencies>
-        <dependency>
-          <groupId>org.arquillian.cube</groupId>
-          <artifactId>arquillian-cube-kubernetes-starter</artifactId>
-          <version>${arquillian.cube.version}</version>
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
     </profile>
     <profile>
       <id>itests-openshift</id>
       <modules>
         <module>kubernetes-itests</module>
       </modules>
-      <dependencies>
-        <dependency>
-          <groupId>org.arquillian.cube</groupId>
-          <artifactId>arquillian-cube-openshift-starter</artifactId>
-          <version>${arquillian.cube.version}</version>
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
       <build>
         <plugins>
           <plugin>
