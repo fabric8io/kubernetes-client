@@ -40,6 +40,7 @@
       io.fabric8.camelk.*
     </osgi.export>
     <osgi.include.resources>
+      ${osgi.include.resources.default},
       {maven-resources},
       /camel-k-v1.properties=target/classes/model.properties
     </osgi.include.resources>

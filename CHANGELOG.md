@@ -14,6 +14,7 @@
 * Fix #3763: A Java Long should generate a field of type integer in the CRD
 * Fix #3769: Fix for ClassCastException from SchemaFrom
 * Fix #3756 prevent modifications by standard operations to user objects
+* Fix #3761: Extension Jar packages don't contain the META-INF/jandex.idx index file
 
 #### Improvements
 * Fix #3674: allows the connect and websocket timeouts to apply to watches instead of a hardcoded timeout
