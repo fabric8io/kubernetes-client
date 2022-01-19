@@ -26,7 +26,7 @@ dependencies {
 Now you can define a `class` that extends `io.fabric8.kubernetes.client.CustomResource`
 and the corresponding CRD is generated in the folder: `target/classes/META-INF/fabric8`
 
-For example, code similar to:
+For example, for code similar to:
 
 ```java
 @Group("org.example")
