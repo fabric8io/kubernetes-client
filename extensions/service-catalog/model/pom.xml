@@ -38,6 +38,7 @@
       io.fabric8.servicecatalog.api.model.*
     </osgi.export>
     <osgi.include.resources>
+      ${osgi.include.resources.default},
       {maven-resources},
       /model.properties=target/classes/model.properties
     </osgi.include.resources>

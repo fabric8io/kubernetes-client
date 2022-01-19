@@ -12,6 +12,7 @@
 * Fix #3648: `Serialization.unmarshal` fails to deserialize YAML with single document in presence of document delimiter(`---`)
 * Fix #3568: Pod file upload fails if the path is `/`
 * Fix #3756 prevent modifications by standard operations to user objects
+* Fix #3761: Extension Jar packages don't contain the META-INF/jandex.idx index file
 
 #### Improvements
 * Fix #3674: allows the connect and websocket timeouts to apply to watches instead of a hardcoded timeout

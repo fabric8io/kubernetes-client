@@ -42,6 +42,7 @@
       io.fabric8.camelk.client.*
     </osgi.export>
     <osgi.include.resources>
+      ${osgi.include.resources.default},
       /META-INF/services/io.fabric8.kubernetes.client.ExtensionAdapter=target/classes/META-INF/services/io.fabric8.kubernetes.client.ExtensionAdapter
     </osgi.include.resources>
   </properties>
