@@ -64,6 +64,7 @@ class JsonSchemaTest {
     assertEquals(2, properties.size());
     Map<String, JSONSchemaProps> spec = properties.get("spec").getProperties();
     assertEquals("integer", spec.get("myInt").getType());
+    assertEquals("integer", spec.get("myLong").getType());
     Map<String, JSONSchemaProps> status = properties.get("status").getProperties();
     assertEquals("string", status.get("message").getType());
   }

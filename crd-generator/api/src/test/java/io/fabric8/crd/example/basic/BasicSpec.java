@@ -25,4 +25,14 @@ public class BasicSpec {
   public void setMyInt(int myInt) {
     this.myInt = myInt;
   }
+
+  private long myLong;
+
+  public long getMyLong() {
+    return myLong;
+  }
+
+  public void setMyLong(long myLong) {
+    this.myLong = myLong;
+  }
 }
