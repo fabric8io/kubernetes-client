@@ -103,7 +103,7 @@ public class ExampleSpec {
 }
 ```
 
-The generated field in the CRD will be named after the value provided in the annotation, such as:
+The generated field in the CRD will be named after the value provided in the annotation instead of using the default name derived from the field name, such as:
 
 ```yaml
           spec:
