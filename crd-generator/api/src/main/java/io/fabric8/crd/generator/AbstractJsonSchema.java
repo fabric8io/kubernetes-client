@@ -191,7 +191,7 @@ public abstract class AbstractJsonSchema<T, B> {
     private boolean ignored;
     private boolean preserveUnknownFields;
     private String description;
-    private Class schemaFrom;
+    private TypeRef schemaFrom;
 
     private PropertyOrAccessor(Collection<AnnotationRef> annotations, String name, String propertyName, boolean isMethod) {
       this.annotations = annotations;
@@ -233,9 +233,15 @@ public abstract class AbstractJsonSchema<T, B> {
             preserveUnknownFields = true;
             break;
           case ANNOTATION_SCHEMA_FROM:
-            final Class extractedType = (Class) a.getParameters().get("type");
-            if (extractedType != null) {
-              schemaFrom = extractedType;
+            Object type = a.getParameters().get("type");
+            if (type != null) {
+              if (type instanceof ClassRef) {
+                schemaFrom = (ClassRef) type;
+              } else if (type instanceof Class) {
+                schemaFrom = Types.typeDefFrom((Class) type).toReference();
+              } else {
+                throw new IllegalArgumentException("Unmanaged type passed to the SchemaFrom annotation " + type);
+              }
             }
             break;
         }
@@ -270,7 +276,7 @@ public abstract class AbstractJsonSchema<T, B> {
       return description != null;
     }
 
-    public Class getSchemaFrom() {
+    public TypeRef getSchemaFrom() {
       return schemaFrom;
     }
 
@@ -350,7 +356,7 @@ public abstract class AbstractJsonSchema<T, B> {
         }
 
         if (p.contributeSchemaFrom()) {
-          schemaFrom = Types.typeDefFrom(p.getSchemaFrom()).toReference();
+          schemaFrom = p.getSchemaFrom();
         }
       });
 
