@@ -102,7 +102,7 @@ class ConfigMapCrudTest {
       .build();
     client.configMaps().create(cm);
     // When
-    client.configMaps().edit(c -> new ConfigMapBuilder(c).removeFromData("one").addToData("two", "2").build());
+    client.configMaps().withName("config-map").edit(c -> new ConfigMapBuilder(c).removeFromData("one").addToData("two", "2").build());
     // Then
     assertThat(client.configMaps().withName("config-map").get().getData())
       .hasSize(1)
