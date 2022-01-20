@@ -14,20 +14,22 @@
 # limitations under the License.
 #
 
-apiVersion: batch/v1beta1
-kind: CronJob
+apiVersion: extensions/v1beta1
+kind: Ingress
 metadata:
-  name: hello
+  name: test-multiple-paths
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
-  schedule: "*/1 * * * *"
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          containers:
-          - name: hello
-            image: busybox
-            args:
-            - /bin/sh
-            - -c
-            - date; echo Hello from the Kubernetes cluster
+  rules:
+  - host: foo.bar.com
+    http:
+      paths:
+      - path: /foo
+        backend:
+          serviceName: svc2
+          servicePort: 80
+      - path: /bar
+        backend:
+          serviceName: s2
+          servicePort: 80

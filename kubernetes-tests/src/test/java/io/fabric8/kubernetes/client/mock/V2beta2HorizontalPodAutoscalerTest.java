@@ -162,7 +162,7 @@ public class V2beta2HorizontalPodAutoscalerTest {
 
   @Test
   public void testLoadFromFile() {
-    HorizontalPodAutoscaler horizontalPodAutoscaler = client.autoscaling().v2beta2().horizontalPodAutoscalers().load(getClass().getResourceAsStream("/test-horizontalpodautoscaler.yml")).get();
+    HorizontalPodAutoscaler horizontalPodAutoscaler = client.autoscaling().v2beta2().horizontalPodAutoscalers().load(getClass().getResourceAsStream("/test-v2beta2-horizontalpodautoscaler.yml")).get();
     assertEquals("php-apache", horizontalPodAutoscaler.getMetadata().getName());
   }
 
