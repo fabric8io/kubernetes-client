@@ -94,7 +94,7 @@ public class ServiceToURLIT {
     assertNotNull(url);
 
     // Testing Ingress Impl
-    Ingress ingress = client.extensions().ingresses().load(getClass().getResourceAsStream("/test-ingress.yml")).get();
+    Ingress ingress = client.extensions().ingresses().load(getClass().getResourceAsStream("/test-ingress-extensions.yml")).get();
     client.extensions().ingresses().inNamespace(currentNamespace).create(ingress);
 
     url = client.services().inNamespace(currentNamespace).withName("svc2").getURL("80");
