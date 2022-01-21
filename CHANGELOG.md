@@ -11,6 +11,8 @@
 * Fix #3679: output additionalProperties field with correct value type for map-like fields (CRD Generator)
 * Fix #3648: `Serialization.unmarshal` fails to deserialize YAML with single document in presence of document delimiter(`---`)
 * Fix #3568: Pod file upload fails if the path is `/`
+* Fix #3763: A Java Long should generate a field of type integer in the CRD
+* Fix #3769: Fix for ClassCastException from SchemaFrom
 * Fix #3756 prevent modifications by standard operations to user objects
 
 #### Improvements
@@ -21,7 +23,8 @@
 
 #### Dependency Upgrade
 * Fix #3637: Update Fabric8 Kubernetes Model to v1.23.0
-* Fix #3670: Point CamelK Extension model to latest released version v1.7.0 
+* Fix #3670: Point CamelK Extension model to latest released version v1.7.0
+* Fix #3725: Bump sundrio to v0.50.3
 
 #### New Features
 * Fix #3721: Add support for uploading file via InputStream
