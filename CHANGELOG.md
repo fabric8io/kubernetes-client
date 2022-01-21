@@ -6,15 +6,16 @@
 * Fix #3683: Handle JsonNode fields by adding x-kubernetes-preserve-unknown-fields
 * Fix #3697: addresses response that aren't closed by interceptors that issue new requests
 * Fix #3255: adding basic crud mock resourceVersion support - the field will be set and updated, but not utilized by list/watch queries
-* Fix #3712: properly return the full resource name for resources with empty group
-* Fix #3588: `openshift-server-mock` is not listed in dependencyManagement in main pom
-* Fix #3679: output additionalProperties field with correct value type for map-like fields (CRD Generator)
-* Fix #3648: `Serialization.unmarshal` fails to deserialize YAML with single document in presence of document delimiter(`---`)
 * Fix #3568: Pod file upload fails if the path is `/`
+* Fix #3588: `openshift-server-mock` is not listed in dependencyManagement in main pom
+* Fix #3648: `Serialization.unmarshal` fails to deserialize YAML with single document in presence of document delimiter(`---`)
+* Fix #3679: output additionalProperties field with correct value type for map-like fields (CRD Generator)
+* Fix #3671: HTTP(s) Proxy port is not defaulted or validated
+* Fix #3712: properly return the full resource name for resources with empty group
+* Fix #3761: Extension Jar packages don't contain the META-INF/jandex.idx index file
 * Fix #3763: A Java Long should generate a field of type integer in the CRD
 * Fix #3769: Fix for ClassCastException from SchemaFrom
 * Fix #3756 prevent modifications by standard operations to user objects
-* Fix #3761: Extension Jar packages don't contain the META-INF/jandex.idx index file
 
 #### Improvements
 * Fix #3674: allows the connect and websocket timeouts to apply to watches instead of a hardcoded timeout
