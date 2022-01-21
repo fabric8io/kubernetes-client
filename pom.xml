@@ -166,12 +166,15 @@
     <osgi.bundles />
     <osgi.activator />
     <osgi.export.service />
-    <osgi.include.resources>{maven-resources}</osgi.include.resources>
+    <osgi.include.resources.default>
+      {maven-resources},
+      /META-INF/jandex.idx=target/classes/META-INF/jandex.idx
+    </osgi.include.resources.default>
+    <osgi.include.resources>${osgi.include.resources.default}</osgi.include.resources>
     <karaf.itest.skip>false</karaf.itest.skip>
     <project.build.outputTimestamp>2020-11-14T12:24:00Z</project.build.outputTimestamp>
     <validation-api.version>2.0.1.Final</validation-api.version>
   </properties>
-
   <modules>
     <module>model-annotator</module>
     <module>kubernetes-model-generator</module>

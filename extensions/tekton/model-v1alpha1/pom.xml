@@ -39,7 +39,6 @@
         </osgi.export>
         <osgi.include.resources>
           ${osgi.include.resources.default},
-          {maven-resources},
           /tekton-v1alpha1.properties=target/classes/model.properties
         </osgi.include.resources>
     </properties>

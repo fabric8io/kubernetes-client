@@ -28,12 +28,6 @@
   <packaging>pom</packaging>
   <name>Fabric8 :: Kubernetes :: Extensions</name>
 
-  <properties>
-    <osgi.include.resources.default>
-      /META-INF/jandex.idx=target/classes/META-INF/jandex.idx
-    </osgi.include.resources.default>
-  </properties>
-
   <modules>
     <module>knative</module>
     <module>tekton</module>

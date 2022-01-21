@@ -40,7 +40,6 @@
     </osgi.export>
     <osgi.include.resources>
       ${osgi.include.resources.default},
-      {maven-resources},
       /model-v1.properties=target/classes/model.properties
     </osgi.include.resources>
 

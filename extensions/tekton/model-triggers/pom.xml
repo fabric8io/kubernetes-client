@@ -41,7 +41,6 @@
     </osgi.export>
     <osgi.include.resources>
       ${osgi.include.resources.default},
-      {maven-resources},
       /tekton-triggers.properties=target/classes/model.properties
     </osgi.include.resources>
   </properties>
