@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 5.12-SNAPSHOT
+### 5.12.0 (2022-01-24)
 
 #### Bugs
 * Fix #3683: Handle JsonNode fields by adding x-kubernetes-preserve-unknown-fields

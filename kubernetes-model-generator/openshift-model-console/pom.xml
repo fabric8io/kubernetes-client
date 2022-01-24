@@ -23,7 +23,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>kubernetes-model-generator</artifactId>
-    <version>5.12-SNAPSHOT</version>
+    <version>5.12.0</version>
   </parent>
 
   <artifactId>openshift-model-console</artifactId>
