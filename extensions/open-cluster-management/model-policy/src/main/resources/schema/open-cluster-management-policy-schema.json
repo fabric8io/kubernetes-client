@@ -1,0 +1,546 @@
+{
+  "id": "http://fabric8.io/OpenClusterManagement#Policy",
+  "$schema": "http://json-schema.org/draft-05/schema#",
+  "definitions": {
+    "github_com_open-cluster-management_governance-policy-propagator_api_v1_ComplianceHistory": {
+      "type": "object",
+      "properties": {
+        "eventName": {
+          "type": "string"
+        },
+        "lastTimestamp": {
+          "existingJavaType": "java.lang.String"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.ComplianceHistory",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_governance-policy-propagator_api_v1_CompliancePerClusterStatus": {
+      "type": "object",
+      "properties": {
+        "clustername": {
+          "type": "string"
+        },
+        "clusternamespace": {
+          "type": "string"
+        },
+        "compliant": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.CompliancePerClusterStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_governance-policy-propagator_api_v1_DetailsPerTemplate": {
+      "type": "object",
+      "properties": {
+        "compliant": {
+          "type": "string"
+        },
+        "history": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_open-cluster-management_governance-policy-propagator_api_v1_ComplianceHistory",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.ComplianceHistory"
+          }
+        },
+        "templateMeta": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.DetailsPerTemplate",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_governance-policy-propagator_api_v1_Placement": {
+      "type": "object",
+      "properties": {
+        "decisions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_open-cluster-management_multicloud-operators-placementrule_pkg_apis_apps_v1_PlacementDecision",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorsplacementrule.apps.v1.PlacementDecision"
+          }
+        },
+        "placement": {
+          "type": "string"
+        },
+        "placementBinding": {
+          "type": "string"
+        },
+        "placementRule": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.Placement",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_governance-policy-propagator_api_v1_PlacementBinding": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "policy.open-cluster-management.io/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "PlacementBinding",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "placementRef": {
+          "$ref": "#/definitions/github_com_open-cluster-management_governance-policy-propagator_api_v1_PlacementSubject",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PlacementSubject"
+        },
+        "status": {
+          "$ref": "#/definitions/github_com_open-cluster-management_governance-policy-propagator_api_v1_PlacementBindingStatus",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PlacementBindingStatus"
+        },
+        "subjects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/github_com_open-cluster-management_governance-policy-propagator_api_v1_Subject",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.Subject"
+          }
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PlacementBinding",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "github_com_open-cluster-management_governance-policy-propagator_api_v1_PlacementBindingList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "policy.open-cluster-management.io/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/github_com_open-cluster-management_governance-policy-propagator_api_v1_PlacementBinding",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PlacementBinding"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "PlacementBindingList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PlacementBindingList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PlacementBinding\u003e"
+      ]
+    },
+    "github_com_open-cluster-management_governance-policy-propagator_api_v1_PlacementBindingStatus": {
+      "type": "object",
+      "javaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PlacementBindingStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_governance-policy-propagator_api_v1_PlacementSubject": {
+      "type": "object",
+      "properties": {
+        "apiGroup": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PlacementSubject",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_governance-policy-propagator_api_v1_Policy": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "policy.open-cluster-management.io/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "Policy",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/github_com_open-cluster-management_governance-policy-propagator_api_v1_PolicySpec",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PolicySpec"
+        },
+        "status": {
+          "$ref": "#/definitions/github_com_open-cluster-management_governance-policy-propagator_api_v1_PolicyStatus",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PolicyStatus"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.Policy",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "github_com_open-cluster-management_governance-policy-propagator_api_v1_PolicyList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "policy.open-cluster-management.io/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/github_com_open-cluster-management_governance-policy-propagator_api_v1_Policy",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.Policy"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "PolicyList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PolicyList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.Policy\u003e"
+      ]
+    },
+    "github_com_open-cluster-management_governance-policy-propagator_api_v1_PolicySpec": {
+      "type": "object",
+      "properties": {
+        "disabled": {
+          "type": "boolean"
+        },
+        "policy-templates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/github_com_open-cluster-management_governance-policy-propagator_api_v1_PolicyTemplate",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PolicyTemplate"
+          }
+        },
+        "remediationAction": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PolicySpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_governance-policy-propagator_api_v1_PolicyStatus": {
+      "type": "object",
+      "properties": {
+        "compliant": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_open-cluster-management_governance-policy-propagator_api_v1_DetailsPerTemplate",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.DetailsPerTemplate"
+          }
+        },
+        "placement": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_open-cluster-management_governance-policy-propagator_api_v1_Placement",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.Placement"
+          }
+        },
+        "status": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_open-cluster-management_governance-policy-propagator_api_v1_CompliancePerClusterStatus",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.CompliancePerClusterStatus"
+          }
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PolicyStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_governance-policy-propagator_api_v1_PolicyTemplate": {
+      "type": "object",
+      "properties": {
+        "objectDefinition": {
+          "existingJavaType": "java.util.Map\u003cString, Object\u003e"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PolicyTemplate",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_governance-policy-propagator_api_v1_Subject": {
+      "type": "object",
+      "properties": {
+        "apiGroup": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.Subject",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_governance-policy-propagator_api_v1beta1_AutomationDef": {
+      "type": "object",
+      "properties": {
+        "extra_vars": {
+          "existingJavaType": "java.util.Map\u003cString, Object\u003e"
+        },
+        "name": {
+          "type": "string"
+        },
+        "secret": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1beta1.AutomationDef",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_governance-policy-propagator_api_v1beta1_PolicyAutomation": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "policy.open-cluster-management.io/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "PolicyAutomation",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/github_com_open-cluster-management_governance-policy-propagator_api_v1beta1_PolicyAutomationSpec",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1beta1.PolicyAutomationSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/github_com_open-cluster-management_governance-policy-propagator_api_v1beta1_PolicyAutomationStatus",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1beta1.PolicyAutomationStatus"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1beta1.PolicyAutomation",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "github_com_open-cluster-management_governance-policy-propagator_api_v1beta1_PolicyAutomationList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "policy.open-cluster-management.io/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/github_com_open-cluster-management_governance-policy-propagator_api_v1beta1_PolicyAutomation",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1beta1.PolicyAutomation"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "PolicyAutomationList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1beta1.PolicyAutomationList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1beta1.PolicyAutomation\u003e"
+      ]
+    },
+    "github_com_open-cluster-management_governance-policy-propagator_api_v1beta1_PolicyAutomationSpec": {
+      "type": "object",
+      "properties": {
+        "automationDef": {
+          "$ref": "#/definitions/github_com_open-cluster-management_governance-policy-propagator_api_v1beta1_AutomationDef",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1beta1.AutomationDef"
+        },
+        "eventHook": {
+          "type": "string"
+        },
+        "mode": {
+          "type": "string"
+        },
+        "policyRef": {
+          "type": "string"
+        },
+        "rescanAfter": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1beta1.PolicyAutomationSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_governance-policy-propagator_api_v1beta1_PolicyAutomationStatus": {
+      "type": "object",
+      "javaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1beta1.PolicyAutomationStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_multicloud-operators-placementrule_pkg_apis_apps_v1_PlacementDecision": {
+      "type": "object",
+      "properties": {
+        "clusterName": {
+          "type": "string"
+        },
+        "clusterNamespace": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorsplacementrule.apps.v1.PlacementDecision",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "github_com_open-cluster-management_governance-policy-propagator_api_v1_ComplianceHistory": {
+      "$ref": "#/definitions/github_com_open-cluster-management_governance-policy-propagator_api_v1_ComplianceHistory",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.ComplianceHistory"
+    },
+    "github_com_open-cluster-management_governance-policy-propagator_api_v1_CompliancePerClusterStatus": {
+      "$ref": "#/definitions/github_com_open-cluster-management_governance-policy-propagator_api_v1_CompliancePerClusterStatus",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.CompliancePerClusterStatus"
+    },
+    "github_com_open-cluster-management_governance-policy-propagator_api_v1_DetailsPerTemplate": {
+      "$ref": "#/definitions/github_com_open-cluster-management_governance-policy-propagator_api_v1_DetailsPerTemplate",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.DetailsPerTemplate"
+    },
+    "github_com_open-cluster-management_governance-policy-propagator_api_v1_Placement": {
+      "$ref": "#/definitions/github_com_open-cluster-management_governance-policy-propagator_api_v1_Placement",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.Placement"
+    },
+    "github_com_open-cluster-management_governance-policy-propagator_api_v1_PlacementBinding": {
+      "$ref": "#/definitions/github_com_open-cluster-management_governance-policy-propagator_api_v1_PlacementBinding",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PlacementBinding"
+    },
+    "github_com_open-cluster-management_governance-policy-propagator_api_v1_PlacementBindingList": {
+      "$ref": "#/definitions/github_com_open-cluster-management_governance-policy-propagator_api_v1_PlacementBindingList",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PlacementBindingList"
+    },
+    "github_com_open-cluster-management_governance-policy-propagator_api_v1_PlacementBindingStatus": {
+      "$ref": "#/definitions/github_com_open-cluster-management_governance-policy-propagator_api_v1_PlacementBindingStatus",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PlacementBindingStatus"
+    },
+    "github_com_open-cluster-management_governance-policy-propagator_api_v1_PlacementSubject": {
+      "$ref": "#/definitions/github_com_open-cluster-management_governance-policy-propagator_api_v1_PlacementSubject",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PlacementSubject"
+    },
+    "github_com_open-cluster-management_governance-policy-propagator_api_v1_Policy": {
+      "$ref": "#/definitions/github_com_open-cluster-management_governance-policy-propagator_api_v1_Policy",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.Policy"
+    },
+    "github_com_open-cluster-management_governance-policy-propagator_api_v1_PolicyList": {
+      "$ref": "#/definitions/github_com_open-cluster-management_governance-policy-propagator_api_v1_PolicyList",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PolicyList"
+    },
+    "github_com_open-cluster-management_governance-policy-propagator_api_v1_PolicySpec": {
+      "$ref": "#/definitions/github_com_open-cluster-management_governance-policy-propagator_api_v1_PolicySpec",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PolicySpec"
+    },
+    "github_com_open-cluster-management_governance-policy-propagator_api_v1_PolicyStatus": {
+      "$ref": "#/definitions/github_com_open-cluster-management_governance-policy-propagator_api_v1_PolicyStatus",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PolicyStatus"
+    },
+    "github_com_open-cluster-management_governance-policy-propagator_api_v1_PolicyTemplate": {
+      "$ref": "#/definitions/github_com_open-cluster-management_governance-policy-propagator_api_v1_PolicyTemplate",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.PolicyTemplate"
+    },
+    "github_com_open-cluster-management_governance-policy-propagator_api_v1_Subject": {
+      "$ref": "#/definitions/github_com_open-cluster-management_governance-policy-propagator_api_v1_Subject",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1.Subject"
+    },
+    "github_com_open-cluster-management_governance-policy-propagator_api_v1beta1_AutomationDef": {
+      "$ref": "#/definitions/github_com_open-cluster-management_governance-policy-propagator_api_v1beta1_AutomationDef",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1beta1.AutomationDef"
+    },
+    "github_com_open-cluster-management_governance-policy-propagator_api_v1beta1_PolicyAutomation": {
+      "$ref": "#/definitions/github_com_open-cluster-management_governance-policy-propagator_api_v1beta1_PolicyAutomation",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1beta1.PolicyAutomation"
+    },
+    "github_com_open-cluster-management_governance-policy-propagator_api_v1beta1_PolicyAutomationList": {
+      "$ref": "#/definitions/github_com_open-cluster-management_governance-policy-propagator_api_v1beta1_PolicyAutomationList",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1beta1.PolicyAutomationList"
+    },
+    "github_com_open-cluster-management_governance-policy-propagator_api_v1beta1_PolicyAutomationSpec": {
+      "$ref": "#/definitions/github_com_open-cluster-management_governance-policy-propagator_api_v1beta1_PolicyAutomationSpec",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1beta1.PolicyAutomationSpec"
+    },
+    "github_com_open-cluster-management_governance-policy-propagator_api_v1beta1_PolicyAutomationStatus": {
+      "$ref": "#/definitions/github_com_open-cluster-management_governance-policy-propagator_api_v1beta1_PolicyAutomationStatus",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.governancepolicypropagator.policy.v1beta1.PolicyAutomationStatus"
+    },
+    "github_com_open-cluster-management_multicloud-operators-placementrule_pkg_apis_apps_v1_PlacementDecision": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multicloud-operators-placementrule_pkg_apis_apps_v1_PlacementDecision",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multicloudoperatorsplacementrule.apps.v1.PlacementDecision"
+    }
+  },
+  "additionalProperties": false
+}

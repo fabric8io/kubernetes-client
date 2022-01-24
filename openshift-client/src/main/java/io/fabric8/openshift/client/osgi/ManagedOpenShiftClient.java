@@ -207,6 +207,7 @@ import io.fabric8.openshift.client.dsl.MachineConfigurationAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftClusterAutoscalingAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftConfigAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftConsoleAPIGroupDSL;
+import io.fabric8.openshift.client.dsl.OpenShiftHiveAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftMachineAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftMonitoringAPIGroupDSL;
 import io.fabric8.openshift.client.dsl.OpenShiftOperatorAPIGroupDSL;
@@ -370,6 +371,11 @@ public class ManagedOpenShiftClient extends BaseClient implements NamespacedOpen
   @Override
   public OpenShiftClusterAutoscalingAPIGroupDSL clusterAutoscaling() {
     return delegate.clusterAutoscaling();
+  }
+
+  @Override
+  public OpenShiftHiveAPIGroupDSL hive() {
+    return delegate.hive();
   }
 
   @Override

@@ -25,7 +25,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -70,7 +69,12 @@ public class ProcessorStoreTest {
     assertThat(notifications.get(2)).isInstanceOf(UpdateNotification.class);
     assertThat(notifications.get(3)).isInstanceOf(DeleteNotification.class);
     
-    assertTrue(syncCaptor.getAllValues().stream().allMatch(s->!s.booleanValue()));
+    List<Boolean> syncValues = syncCaptor.getAllValues();
+    
+    assertThat(syncValues.get(0)).isFalse();
+    assertThat(syncValues.get(1)).isFalse();
+    assertThat(syncValues.get(2)).isTrue(); // same object/revision, so it's sync
+    assertThat(syncValues.get(3)).isFalse();
   }
   
   @Test
@@ -86,13 +90,14 @@ public class ProcessorStoreTest {
     Pod pod2 = new PodBuilder().withNewMetadata().withName("pod2").endMetadata().build();
     
     // replace empty store with two values
-    processorStore.replace(Arrays.asList(pod, pod2));
+    processorStore.add(pod);
+    processorStore.add(pod2);
 
     // resync two values
     processorStore.resync();
     
     // relist with deletes
-    processorStore.replace(Collections.emptyList());
+    processorStore.retainAll(Collections.emptySet());
     
     Mockito.verify(processor, Mockito.times(6)).distribute(notificationCaptor.capture(), syncCaptor.capture());
     

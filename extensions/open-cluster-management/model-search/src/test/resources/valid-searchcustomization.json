@@ -1,0 +1,10 @@
+{
+  "apiVersion": "search.open-cluster-management.io/v1alpha1",
+  "kind": "SearchCustomization",
+  "metadata": {
+    "name": "searchcustomization"
+  },
+  "spec": {
+    "persistence": true
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "apiVersion": "policy.open-cluster-management.io/v1",
+  "kind": "PlacementBinding",
+  "metadata": {
+    "name": "test-policy-pb"
+  },
+  "placementRef": {
+    "apiGroup": "apps.open-cluster-management.io",
+    "kind": "PlacementRule",
+    "name": "test-policy-plr"
+  },
+  "subjects": [
+    {
+      "apiGroup": "policy.open-cluster-management.io",
+      "kind": "Policy",
+      "name": "test-policy"
+    }
+  ]
+}

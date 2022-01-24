@@ -1,0 +1,262 @@
+{
+  "id": "http://fabric8.io/OpenClusterManagement#Discovery",
+  "$schema": "http://json-schema.org/draft-05/schema#",
+  "definitions": {
+    "github_com_open-cluster-management_discovery_api_v1alpha1_DiscoveredCluster": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "discovery.open-cluster-management.io/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "DiscoveredCluster",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/github_com_open-cluster-management_discovery_api_v1alpha1_DiscoveredClusterSpec",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveredClusterSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/github_com_open-cluster-management_discovery_api_v1alpha1_DiscoveredClusterStatus",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveredClusterStatus"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveredCluster",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "github_com_open-cluster-management_discovery_api_v1alpha1_DiscoveredClusterList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "discovery.open-cluster-management.io/v1alpha1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/github_com_open-cluster-management_discovery_api_v1alpha1_DiscoveredCluster",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveredCluster"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "DiscoveredClusterList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveredClusterList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveredCluster\u003e"
+      ]
+    },
+    "github_com_open-cluster-management_discovery_api_v1alpha1_DiscoveredClusterSpec": {
+      "type": "object",
+      "properties": {
+        "activityTimestamp": {
+          "existingJavaType": "java.lang.String"
+        },
+        "apiUrl": {
+          "type": "string"
+        },
+        "cloudProvider": {
+          "type": "string"
+        },
+        "console": {
+          "type": "string"
+        },
+        "creationTimestamp": {
+          "existingJavaType": "java.lang.String"
+        },
+        "credential": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectReference"
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "isManagedCluster": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string"
+        },
+        "openshiftVersion": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveredClusterSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_discovery_api_v1alpha1_DiscoveredClusterStatus": {
+      "type": "object",
+      "javaType": "io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveredClusterStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_discovery_api_v1alpha1_DiscoveryConfig": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "discovery.open-cluster-management.io/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "DiscoveryConfig",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/github_com_open-cluster-management_discovery_api_v1alpha1_DiscoveryConfigSpec",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveryConfigSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/github_com_open-cluster-management_discovery_api_v1alpha1_DiscoveryConfigStatus",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveryConfigStatus"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveryConfig",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "github_com_open-cluster-management_discovery_api_v1alpha1_DiscoveryConfigList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "discovery.open-cluster-management.io/v1alpha1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/github_com_open-cluster-management_discovery_api_v1alpha1_DiscoveryConfig",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveryConfig"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "DiscoveryConfigList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveryConfigList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveryConfig\u003e"
+      ]
+    },
+    "github_com_open-cluster-management_discovery_api_v1alpha1_DiscoveryConfigSpec": {
+      "type": "object",
+      "properties": {
+        "credential": {
+          "type": "string"
+        },
+        "filters": {
+          "$ref": "#/definitions/github_com_open-cluster-management_discovery_api_v1alpha1_Filter",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.Filter"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveryConfigSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_discovery_api_v1alpha1_DiscoveryConfigStatus": {
+      "type": "object",
+      "javaType": "io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveryConfigStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_discovery_api_v1alpha1_Filter": {
+      "type": "object",
+      "properties": {
+        "lastActive": {
+          "type": "integer"
+        },
+        "openShiftVersions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.Filter",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "github_com_open-cluster-management_discovery_api_v1alpha1_DiscoveredCluster": {
+      "$ref": "#/definitions/github_com_open-cluster-management_discovery_api_v1alpha1_DiscoveredCluster",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveredCluster"
+    },
+    "github_com_open-cluster-management_discovery_api_v1alpha1_DiscoveredClusterList": {
+      "$ref": "#/definitions/github_com_open-cluster-management_discovery_api_v1alpha1_DiscoveredClusterList",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveredClusterList"
+    },
+    "github_com_open-cluster-management_discovery_api_v1alpha1_DiscoveredClusterSpec": {
+      "$ref": "#/definitions/github_com_open-cluster-management_discovery_api_v1alpha1_DiscoveredClusterSpec",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveredClusterSpec"
+    },
+    "github_com_open-cluster-management_discovery_api_v1alpha1_DiscoveredClusterStatus": {
+      "$ref": "#/definitions/github_com_open-cluster-management_discovery_api_v1alpha1_DiscoveredClusterStatus",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveredClusterStatus"
+    },
+    "github_com_open-cluster-management_discovery_api_v1alpha1_DiscoveryConfig": {
+      "$ref": "#/definitions/github_com_open-cluster-management_discovery_api_v1alpha1_DiscoveryConfig",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveryConfig"
+    },
+    "github_com_open-cluster-management_discovery_api_v1alpha1_DiscoveryConfigList": {
+      "$ref": "#/definitions/github_com_open-cluster-management_discovery_api_v1alpha1_DiscoveryConfigList",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveryConfigList"
+    },
+    "github_com_open-cluster-management_discovery_api_v1alpha1_DiscoveryConfigSpec": {
+      "$ref": "#/definitions/github_com_open-cluster-management_discovery_api_v1alpha1_DiscoveryConfigSpec",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveryConfigSpec"
+    },
+    "github_com_open-cluster-management_discovery_api_v1alpha1_DiscoveryConfigStatus": {
+      "$ref": "#/definitions/github_com_open-cluster-management_discovery_api_v1alpha1_DiscoveryConfigStatus",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.DiscoveryConfigStatus"
+    },
+    "github_com_open-cluster-management_discovery_api_v1alpha1_Filter": {
+      "$ref": "#/definitions/github_com_open-cluster-management_discovery_api_v1alpha1_Filter",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.discovery.v1alpha1.Filter"
+    }
+  },
+  "additionalProperties": false
+}

@@ -38,6 +38,21 @@ public interface Informable<T> {
   Informable<T> withIndexers(Map<String, Function<T, List<String>>> indexers);
   
   /**
+   * Set the limit to the number of resources to list at one time.  This means that longer
+   * lists will take multiple requests to fetch.
+   * <p>If the list fails to complete it will be re-attempted with this limit, rather than
+   * falling back to the full list.  You should ensure that your handlers are either async or 
+   * fast acting to prevent long delays in list processing that may cause results to expire
+   * before reaching the end of the list.
+   * <p>WARNING As noted in the go client: "paginated lists are always served directly from
+   * etcd, which is significantly less efficient and may lead to serious performance and
+   * scalability problems."
+   * @param limit of a items in a list fetch
+   * @return the current {@link Informable}
+   */
+  Informable<T> withLimit(Long limit);
+  
+  /**
    * Similar to a {@link Watch}, but will attempt to handle failures after successfully started.
    * and provides a store of all the current resources.
    * <p>This returned informer will not support resync.

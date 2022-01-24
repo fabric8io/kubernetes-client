@@ -23,7 +23,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>kubernetes-client-project</artifactId>
-    <version>5.12-SNAPSHOT</version>
+    <version>6.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>kubernetes-model-generator</artifactId>
@@ -55,6 +55,8 @@
     <module>kubernetes-model-storageclass</module>
     <module>openshift-model</module>
     <module>openshift-model-clusterautoscaling</module>
+    <module>openshift-model-hive</module>
+    <module>openshift-model-installer</module>
     <module>openshift-model-operator</module>
     <module>openshift-model-operatorhub</module>
     <module>openshift-model-machine</module>
@@ -168,7 +170,6 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>build-helper-maven-plugin</artifactId>
-          <version>${maven.buildhelper.plugin.version}</version>
           <executions>
             <execution>
               <phase>generate-sources</phase>

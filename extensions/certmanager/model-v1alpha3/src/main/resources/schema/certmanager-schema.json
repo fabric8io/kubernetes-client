@@ -732,10 +732,7 @@
           "type": "string"
         },
         "csr": {
-          "type": "array",
-          "items": {
-            "type": "integer"
-          }
+          "type": "string"
         },
         "dnsNames": {
           "type": "array",
@@ -776,11 +773,8 @@
           }
         },
         "certificate": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "integer"
-          }
+          "type": "string",
+          "javaOmitEmpty": true
         },
         "failureTime": {
           "existingJavaType": "java.lang.String"
@@ -1025,10 +1019,7 @@
       "type": "object",
       "properties": {
         "csr": {
-          "type": "array",
-          "items": {
-            "type": "integer"
-          }
+          "type": "string"
         },
         "duration": {
           "existingJavaType": "io.fabric8.kubernetes.api.model.Duration"
@@ -1057,18 +1048,12 @@
       "type": "object",
       "properties": {
         "ca": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "integer"
-          }
+          "type": "string",
+          "javaOmitEmpty": true
         },
         "certificate": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "integer"
-          }
+          "type": "string",
+          "javaOmitEmpty": true
         },
         "conditions": {
           "type": "array",
@@ -1503,11 +1488,8 @@
           "existingJavaType": "io.fabric8.certmanager.api.model.v1alpha3.VaultAuth"
         },
         "caBundle": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "integer"
-          }
+          "type": "string",
+          "javaOmitEmpty": true
         },
         "namespace": {
           "type": "string"
@@ -1583,11 +1565,8 @@
       "type": "object",
       "properties": {
         "caBundle": {
-          "type": "array",
-          "javaOmitEmpty": true,
-          "items": {
-            "type": "integer"
-          }
+          "type": "string",
+          "javaOmitEmpty": true
         },
         "credentialsRef": {
           "$ref": "#/definitions/github_com_jetstack_cert-manager_pkg_apis_meta_v1_LocalObjectReference",

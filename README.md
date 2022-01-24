@@ -23,6 +23,7 @@ This client provides access to the full [Kubernetes](http://kubernetes.io/) &
 | volumesnapshot-client | [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.fabric8/volumesnapshot-client/badge.svg?color=blue)](https://maven-badges.herokuapp.com/maven-central/io.fabric8/volumesnapshot-client) | [![Javadocs](https://www.javadoc.io/badge/io.fabric8/volumesnapshot-client.svg?color=blue)](https://www.javadoc.io/doc/io.fabric8/volumesnapshot-client) |
 | volcano-client | [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.fabric8/volcano-client/badge.svg?color=blue)](https://maven-badges.herokuapp.com/maven-central/io.fabric8/volcano-client) | [![Javadocs](https://www.javadoc.io/badge/io.fabric8/volcano-client.svg?color=blue)](https://www.javadoc.io/doc/io.fabric8/volcano-client) |
 | istio-client | [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.fabric8/istio-client/badge.svg?color=blue)](https://maven-badges.herokuapp.com/maven-central/io.fabric8/istio-client) | [![Javadocs](https://www.javadoc.io/badge/io.fabric8/istio-client.svg?color=blue)](https://www.javadoc.io/doc/io.fabric8/istio-client) |
+| open-cluster-management-client | [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.fabric8/open-cluster-management-client/badge.svg?color=blue)](https://maven-badges.herokuapp.com/maven-central/io.fabric8/open-cluster-management-client) | [![Javadocs](https://www.javadoc.io/badge/io.fabric8/open-cluster-management-client.svg?color=blue)](https://www.javadoc.io/doc/io.fabric8/open-cluster-management-client) |
 
 ## Contents
 - [Usage](#usage)
@@ -400,6 +401,7 @@ class ExampleTest {
 ### Kubernetes Compatibility Matrix:
 |                          | K8s 1.22.1 | K8s 1.21.1 | K8s 1.20.2 | K8s 1.19.1 | K8s 1.18.0 | K8s 1.17.0 | K8s 1.16.0 | K8s 1.15.3 | K8s 1.14.2 | K8s 1.12.0 | K8s 1.11.0 | K8s 1.10.0 | K8s 1.9.0 | K8s 1.7.0 | K8s 1.6.0 | K8s 1.4.9 |
 |--------------------------|------------|------------|------------|------------|------------|------------|------------|------------|------------|------------|------------|------------|-----------|-----------|-----------|-----------|
+| kubernetes-client 5.12.0 | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         | -         | -         |           |
 | kubernetes-client 5.11.2 | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         | -         | -         |           |
 | kubernetes-client 5.11.1 | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         | -         | -         |           |
 | kubernetes-client 5.11.0 | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | ✓          | -         | -         | -         |           |
@@ -484,6 +486,7 @@ class ExampleTest {
 
 |                         | OCP 4.9.8  | OCP 4.5.14 | OCP 4.2.0 | OCP 4.1.0 | OCP 3.11.0 | OCP 3.10.0 |  OCP 3.9.0 | OCP 3.7.0 | OCP 3.6.0 |
 |-------------------------|------------|------------|-----------|-----------|------------|------------|------------|-----------|-----------|
+| openshift-client 5.12.0 | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
 | openshift-client 5.11.2 | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
 | openshift-client 5.11.1 | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
 | openshift-client 5.11.0 | ✓          | ✓          | ✓         | ✓         | ✓          | ✓          | ✓          | -         | -         |
@@ -578,12 +581,12 @@ All the resource objects used here will be according to OpenShift 3.9.0  and Kub
 ## Who uses Kubernetes & OpenShift Java client?
 
   Extensions:
-  - [Istio API](https://github.com/snowdrop/istio-java-api)
   - [Service Catalog API](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/service-catalog)
   - [Knative](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/knative)
   - [Tekton](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/tekton)
   - [Volcano](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/volcano)
   - [Istio](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/istio)
+  - [Open Cluster Management](https://github.com/fabric8io/kubernetes-client/tree/master/extensions/open-cluster-management)
 
   Frameworks/Libraries/Tools:
   - [Arquillian Cube](http://arquillian.org/arquillian-cube/)

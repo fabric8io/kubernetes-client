@@ -1,0 +1,24 @@
+{
+  "apiVersion": "agent.open-cluster-management.io/v1",
+  "kind": "KlusterletAddonConfig",
+  "metadata": {
+    "name": "test-kac"
+  },
+  "spec": {
+    "applicationManager": {
+      "enabled": true
+    },
+    "policyController": {
+      "enabled": true
+    },
+    "searchCollector": {
+      "enabled": true
+    },
+    "certPolicyController": {
+      "enabled": true
+    },
+    "iamPolicyController": {
+      "enabled": true
+    }
+  }
+}

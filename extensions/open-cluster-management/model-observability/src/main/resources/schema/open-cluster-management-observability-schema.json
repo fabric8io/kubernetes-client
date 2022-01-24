@@ -1,0 +1,578 @@
+{
+  "id": "http://fabric8.io/OpenClusterManagement#PlacementRuleApps",
+  "$schema": "http://json-schema.org/draft-05/schema#",
+  "definitions": {
+    "github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_shared_Condition": {
+      "type": "object",
+      "properties": {
+        "lastTransitionTime": {
+          "existingJavaType": "java.lang.String"
+        },
+        "message": {
+          "type": "string"
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.shared.Condition",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_shared_ObservabilityAddonSpec": {
+      "type": "object",
+      "properties": {
+        "enableMetrics": {
+          "type": "boolean"
+        },
+        "interval": {
+          "type": "integer"
+        },
+        "resources": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.shared.ObservabilityAddonSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_shared_PreConfiguredStorage": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.shared.PreConfiguredStorage",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta1_ObservabilityAddon": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "observability.open-cluster-management.io/v1beta1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "ObservabilityAddon",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_shared_ObservabilityAddonSpec",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.shared.ObservabilityAddonSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta1_ObservabilityAddonStatus",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta1.ObservabilityAddonStatus"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta1.ObservabilityAddon",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta1_ObservabilityAddonList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "observability.open-cluster-management.io/v1beta1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta1_ObservabilityAddon",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta1.ObservabilityAddon"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "ObservabilityAddonList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta1.ObservabilityAddonList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta1.ObservabilityAddon\u003e"
+      ]
+    },
+    "github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta1_ObservabilityAddonStatus": {
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta1_StatusCondition",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta1.StatusCondition"
+          }
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta1.ObservabilityAddonStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta1_StatusCondition": {
+      "type": "object",
+      "properties": {
+        "lastTransitionTime": {
+          "existingJavaType": "java.lang.String"
+        },
+        "message": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta1.StatusCondition",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_AdvancedConfig": {
+      "type": "object",
+      "properties": {
+        "alertmanager": {
+          "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_CommonSpec",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.CommonSpec"
+        },
+        "compact": {
+          "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_CompactSpec",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.CompactSpec"
+        },
+        "grafana": {
+          "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_CommonSpec",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.CommonSpec"
+        },
+        "observatoriumAPI": {
+          "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_CommonSpec",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.CommonSpec"
+        },
+        "observatoriumConfig": {
+          "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_ObservatoriumConfig",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.ObservatoriumConfig"
+        },
+        "query": {
+          "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_CommonSpec",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.CommonSpec"
+        },
+        "queryFrontend": {
+          "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_CommonSpec",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.CommonSpec"
+        },
+        "queryFrontendMemcached": {
+          "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_CacheConfig",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.CacheConfig"
+        },
+        "rbacQueryProxy": {
+          "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_CommonSpec",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.CommonSpec"
+        },
+        "receive": {
+          "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_CommonSpec",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.CommonSpec"
+        },
+        "retentionConfig": {
+          "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_RetentionConfig",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.RetentionConfig"
+        },
+        "rule": {
+          "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_RuleSpec",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.RuleSpec"
+        },
+        "store": {
+          "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_CommonSpec",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.CommonSpec"
+        },
+        "storeMemcached": {
+          "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_CacheConfig",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.CacheConfig"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.AdvancedConfig",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_CacheConfig": {
+      "type": "object",
+      "properties": {
+        "connectionLimit": {
+          "type": "integer",
+          "existingJavaType": "Integer"
+        },
+        "maxItemSize": {
+          "type": "string"
+        },
+        "memoryLimitMb": {
+          "type": "integer",
+          "existingJavaType": "Integer"
+        },
+        "replicas": {
+          "type": "integer",
+          "existingJavaType": "Integer"
+        },
+        "resources": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.CacheConfig",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_CommonSpec": {
+      "type": "object",
+      "properties": {
+        "replicas": {
+          "type": "integer",
+          "existingJavaType": "Integer"
+        },
+        "resources": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.CommonSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_CompactSpec": {
+      "type": "object",
+      "properties": {
+        "resources": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.CompactSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_MultiClusterObservability": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "observability.open-cluster-management.io/v1beta2",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "MultiClusterObservability",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_MultiClusterObservabilitySpec",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.MultiClusterObservabilitySpec"
+        },
+        "status": {
+          "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_MultiClusterObservabilityStatus",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.MultiClusterObservabilityStatus"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.MultiClusterObservability",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_MultiClusterObservabilityList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "observability.open-cluster-management.io/v1beta2",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_MultiClusterObservability",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.MultiClusterObservability"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "MultiClusterObservabilityList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.MultiClusterObservabilityList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.MultiClusterObservability\u003e"
+      ]
+    },
+    "github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_MultiClusterObservabilitySpec": {
+      "type": "object",
+      "properties": {
+        "advanced": {
+          "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_AdvancedConfig",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.AdvancedConfig"
+        },
+        "enableDownsampling": {
+          "type": "boolean"
+        },
+        "imagePullPolicy": {
+          "type": "string"
+        },
+        "imagePullSecret": {
+          "type": "string"
+        },
+        "nodeSelector": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "observabilityAddonSpec": {
+          "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_shared_ObservabilityAddonSpec",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.shared.ObservabilityAddonSpec"
+        },
+        "storageConfig": {
+          "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_StorageConfig",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.StorageConfig"
+        },
+        "tolerations": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "existingJavaType": "io.fabric8.kubernetes.api.model.Toleration"
+          }
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.MultiClusterObservabilitySpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_MultiClusterObservabilityStatus": {
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_shared_Condition",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.shared.Condition"
+          }
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.MultiClusterObservabilityStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_ObservatoriumConfig": {
+      "type": "object",
+      "properties": {
+        "tenantHeader": {
+          "type": "string"
+        },
+        "writeEndpoint": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.ObservatoriumConfig",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_RetentionConfig": {
+      "type": "object",
+      "properties": {
+        "blockDuration": {
+          "type": "string"
+        },
+        "deleteDelay": {
+          "type": "string"
+        },
+        "retentionInLocal": {
+          "type": "string"
+        },
+        "retentionResolution1h": {
+          "type": "string"
+        },
+        "retentionResolution5m": {
+          "type": "string"
+        },
+        "retentionResolutionRaw": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.RetentionConfig",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_RuleSpec": {
+      "type": "object",
+      "properties": {
+        "evalInterval": {
+          "type": "string"
+        },
+        "replicas": {
+          "type": "integer",
+          "existingJavaType": "Integer"
+        },
+        "resources": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ResourceRequirements"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.RuleSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_StorageConfig": {
+      "type": "object",
+      "properties": {
+        "alertmanagerStorageSize": {
+          "type": "string"
+        },
+        "compactStorageSize": {
+          "type": "string"
+        },
+        "metricObjectStorage": {
+          "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_shared_PreConfiguredStorage",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.shared.PreConfiguredStorage"
+        },
+        "receiveStorageSize": {
+          "type": "string"
+        },
+        "ruleStorageSize": {
+          "type": "string"
+        },
+        "storageClass": {
+          "type": "string"
+        },
+        "storeStorageSize": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.StorageConfig",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_shared_Condition": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_shared_Condition",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.shared.Condition"
+    },
+    "github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_shared_ObservabilityAddonSpec": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_shared_ObservabilityAddonSpec",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.shared.ObservabilityAddonSpec"
+    },
+    "github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_shared_PreConfiguredStorage": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_shared_PreConfiguredStorage",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.shared.PreConfiguredStorage"
+    },
+    "github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta1_ObservabilityAddon": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta1_ObservabilityAddon",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta1.ObservabilityAddon"
+    },
+    "github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta1_ObservabilityAddonList": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta1_ObservabilityAddonList",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta1.ObservabilityAddonList"
+    },
+    "github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta1_ObservabilityAddonStatus": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta1_ObservabilityAddonStatus",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta1.ObservabilityAddonStatus"
+    },
+    "github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta1_StatusCondition": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta1_StatusCondition",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta1.StatusCondition"
+    },
+    "github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_AdvancedConfig": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_AdvancedConfig",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.AdvancedConfig"
+    },
+    "github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_CacheConfig": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_CacheConfig",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.CacheConfig"
+    },
+    "github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_CommonSpec": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_CommonSpec",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.CommonSpec"
+    },
+    "github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_CompactSpec": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_CompactSpec",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.CompactSpec"
+    },
+    "github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_MultiClusterObservability": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_MultiClusterObservability",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.MultiClusterObservability"
+    },
+    "github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_MultiClusterObservabilityList": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_MultiClusterObservabilityList",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.MultiClusterObservabilityList"
+    },
+    "github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_MultiClusterObservabilitySpec": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_MultiClusterObservabilitySpec",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.MultiClusterObservabilitySpec"
+    },
+    "github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_MultiClusterObservabilityStatus": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_MultiClusterObservabilityStatus",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.MultiClusterObservabilityStatus"
+    },
+    "github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_ObservatoriumConfig": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_ObservatoriumConfig",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.ObservatoriumConfig"
+    },
+    "github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_RetentionConfig": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_RetentionConfig",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.RetentionConfig"
+    },
+    "github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_RuleSpec": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_RuleSpec",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.RuleSpec"
+    },
+    "github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_StorageConfig": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multicluster-observability-operator_operators_multiclusterobservability_api_v1beta2_StorageConfig",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterobservabilityoperator.apps.v1beta2.StorageConfig"
+    }
+  },
+  "additionalProperties": false
+}

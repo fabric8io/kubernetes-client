@@ -1,0 +1,20 @@
+{
+  "apiVersion" : "cluster.open-cluster-management.io/v1",
+  "kind" : "ManagedCluster",
+  "metadata" : {
+    "labels" : {
+      "vendor" : "OpenShift"
+    },
+    "name" : "cluster1"
+  },
+  "spec": {
+    "hubAcceptsClient": true,
+    "managedClusterClientConfigs": [
+      {
+        "caBundle": "test",
+        "url": "https://test.com"
+      }
+    ]
+  },
+  "status" : { }
+}

@@ -21,7 +21,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>knative-extension-pom</artifactId>
-    <version>5.12-SNAPSHOT</version>
+    <version>6.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>knative-client</artifactId>
@@ -38,6 +38,7 @@
       io.fabric8.knative.client.*
     </osgi.export>
     <osgi.include.resources>
+      ${osgi.include.resources.default},
       /META-INF/services/io.fabric8.kubernetes.client.ExtensionAdapter=target/classes/META-INF/services/io.fabric8.kubernetes.client.ExtensionAdapter,
     </osgi.include.resources>
   </properties>

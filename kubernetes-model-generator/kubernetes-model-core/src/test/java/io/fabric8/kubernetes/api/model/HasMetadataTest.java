@@ -64,17 +64,22 @@ class HasMetadataTest {
     
     assertFalse(hasMetadata.addFinalizer("example.fabric8.io/finalizer"));
   }
+
+  @Test
+  void finalizerValidationShouldWork() {
+    assertFalse(HasMetadata.validateFinalizer(null));
+    assertFalse(HasMetadata.validateFinalizer(""));
+    assertFalse(HasMetadata.validateFinalizer("/"));
+    assertTrue(HasMetadata.validateFinalizer("fabric8.io/finalizer"));
+    // other cases are indirectly validated in invalidFinalizersShouldFail
+  }
   
   @Test
   void invalidFinalizersShouldFail() {
     HasMetadata hasMetadata = new Default();
     assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer(null));
-    assertFalse(hasMetadata.isFinalizerValid(null));
     assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer(""));
-    assertFalse(hasMetadata.isFinalizerValid(""));
     assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer("/"));
-    assertFalse(hasMetadata.isFinalizerValid("/"));
-    assertTrue(hasMetadata.isFinalizerValid("fabric8.io/finalizer"));
     assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer("-fabric8.io/finalizer"));
     assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer("fabric8.i/finalizer"));
     assertThrows(IllegalArgumentException.class, () -> hasMetadata.addFinalizer("fabric8./finalizer"));

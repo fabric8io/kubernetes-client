@@ -1,0 +1,18 @@
+{
+  "apiVersion": "hive.openshift.io/v1",
+  "kind": "ClusterDeprovision",
+  "metadata": {
+    "name": "clusterdeprovision-sample"
+  },
+  "spec": {
+    "infraID": "cluster-infra-id",
+    "platform": {
+      "aws": {
+        "credentialsSecretRef": {
+          "name": "cluster-aws-creds"
+        },
+        "region": "us-east-1"
+      }
+    }
+  }
+}

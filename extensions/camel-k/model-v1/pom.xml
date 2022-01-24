@@ -23,7 +23,7 @@
   <parent>
     <groupId>io.fabric8</groupId>
     <artifactId>camel-k-extension-pom</artifactId>
-    <version>5.12-SNAPSHOT</version>
+    <version>6.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>camel-k-model-v1</artifactId>
@@ -40,7 +40,7 @@
       io.fabric8.camelk.*
     </osgi.export>
     <osgi.include.resources>
-      {maven-resources},
+      ${osgi.include.resources.default},
       /camel-k-v1.properties=target/classes/model.properties
     </osgi.include.resources>
   </properties>

@@ -1,17 +1,10 @@
 ## CHANGELOG
 
-### 5.12-SNAPSHOT
+### 6.0-SNAPSHOT
 
 #### Bugs
-* Fix #3683: Handle JsonNode fields by adding x-kubernetes-preserve-unknown-fields
-* Fix #3697: addresses response that aren't closed by interceptors that issue new requests
-* Fix #3255: adding basic crud mock resourceVersion support - the field will be set and updated, but not utilized by list/watch queries
-* Fix #3712: properly return the full resource name for resources with empty group
-* Fix #3588: `openshift-server-mock` is not listed in dependencyManagement in main pom
-* Fix #3679: output additionalProperties field with correct value type for map-like fields (CRD Generator)
+
 #### Improvements
-* Fix #3674: allows the connect and websocket timeouts to apply to watches instead of a hardcoded timeout
-* Fix #3651: Introduce SchemaFrom annotation as escape hatch (CRD Generator)
 
 #### Dependency Upgrade
 
@@ -19,11 +12,43 @@
 
 #### _**Note**_: Breaking changes in the API
 
+### 5.12.0 (2022-01-24)
+
+#### Bugs
+* Fix #3683: Handle JsonNode fields by adding x-kubernetes-preserve-unknown-fields
+* Fix #3697: addresses response that aren't closed by interceptors that issue new requests
+* Fix #3255: adding basic crud mock resourceVersion support - the field will be set and updated, but not utilized by list/watch queries
+* Fix #3568: Pod file upload fails if the path is `/`
+* Fix #3588: `openshift-server-mock` is not listed in dependencyManagement in main pom
+* Fix #3648: `Serialization.unmarshal` fails to deserialize YAML with single document in presence of document delimiter(`---`)
+* Fix #3679: output additionalProperties field with correct value type for map-like fields (CRD Generator)
+* Fix #3671: HTTP(s) Proxy port is not defaulted or validated
+* Fix #3712: properly return the full resource name for resources with empty group
+* Fix #3761: Extension Jar packages don't contain the META-INF/jandex.idx index file
+* Fix #3763: A Java Long should generate a field of type integer in the CRD
+* Fix #3769: Fix for ClassCastException from SchemaFrom
+* Fix #3756 prevent modifications by standard operations to user objects
+
+#### Improvements
+* Fix #3674: allows the connect and websocket timeouts to apply to watches instead of a hardcoded timeout
+* Fix #3651: Introduce SchemaFrom annotation as escape hatch (CRD Generator)
+* Fix #3587: adding inform support for limit/batch fetching
+* Fix #3734: extract static finalizer validation method
+
+#### Dependency Upgrade
+* Fix #3637: Update Fabric8 Kubernetes Model to v1.23.0
+* Fix #3670: Point CamelK Extension model to latest released version v1.7.0
+* Fix #3725: Bump sundrio to v0.50.3
+
+#### New Features
+* Fix #3721: Add support for uploading file via InputStream
+* Fix #3234: Allow specifying specific localhost while port-forwarding
+* Fix #3506: Add support for Open Cluster Management extension
+
 ### 5.10.2 (2022-01-07)
 
 #### Bugs
 * Fix #3653: SnakeYAML uses only standard Java types
-
 
 ### 5.11.2 (2022-01-05)
 

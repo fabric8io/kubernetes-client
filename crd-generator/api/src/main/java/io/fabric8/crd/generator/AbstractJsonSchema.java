@@ -65,6 +65,7 @@ public abstract class AbstractJsonSchema<T, B> {
 
   private static final String INT_OR_STRING_MARKER = "int_or_string";
   private static final String STRING_MARKER = "string";
+  private static final String INTEGER_MARKER = "integer";
   private static final String NUMBER_MARKER = "number";
   private static final String BOOLEAN_MARKER = "boolean";
 
@@ -88,10 +89,10 @@ public abstract class AbstractJsonSchema<T, B> {
   static {
     COMMON_MAPPINGS.put(STRING_REF, STRING_MARKER);
     COMMON_MAPPINGS.put(DATE_REF, STRING_MARKER);
-    COMMON_MAPPINGS.put(INT_REF, "integer");
-    COMMON_MAPPINGS.put(P_INT_REF, "integer");
-    COMMON_MAPPINGS.put(LONG_REF, NUMBER_MARKER);
-    COMMON_MAPPINGS.put(P_LONG_REF, NUMBER_MARKER);
+    COMMON_MAPPINGS.put(INT_REF, INTEGER_MARKER);
+    COMMON_MAPPINGS.put(P_INT_REF, INTEGER_MARKER);
+    COMMON_MAPPINGS.put(LONG_REF, INTEGER_MARKER);
+    COMMON_MAPPINGS.put(P_LONG_REF, INTEGER_MARKER);
     COMMON_MAPPINGS.put(DOUBLE_REF, NUMBER_MARKER);
     COMMON_MAPPINGS.put(P_DOUBLE_REF, NUMBER_MARKER);
     COMMON_MAPPINGS.put(BOOLEAN_REF, BOOLEAN_MARKER);
@@ -191,7 +192,7 @@ public abstract class AbstractJsonSchema<T, B> {
     private boolean ignored;
     private boolean preserveUnknownFields;
     private String description;
-    private Class schemaFrom;
+    private TypeRef schemaFrom;
 
     private PropertyOrAccessor(Collection<AnnotationRef> annotations, String name, String propertyName, boolean isMethod) {
       this.annotations = annotations;
@@ -233,9 +234,15 @@ public abstract class AbstractJsonSchema<T, B> {
             preserveUnknownFields = true;
             break;
           case ANNOTATION_SCHEMA_FROM:
-            final Class extractedType = (Class) a.getParameters().get("type");
-            if (extractedType != null) {
-              schemaFrom = extractedType;
+            Object type = a.getParameters().get("type");
+            if (type != null) {
+              if (type instanceof ClassRef) {
+                schemaFrom = (ClassRef) type;
+              } else if (type instanceof Class) {
+                schemaFrom = Types.typeDefFrom((Class) type).toReference();
+              } else {
+                throw new IllegalArgumentException("Unmanaged type passed to the SchemaFrom annotation " + type);
+              }
             }
             break;
         }
@@ -270,7 +277,7 @@ public abstract class AbstractJsonSchema<T, B> {
       return description != null;
     }
 
-    public Class getSchemaFrom() {
+    public TypeRef getSchemaFrom() {
       return schemaFrom;
     }
 
@@ -350,7 +357,7 @@ public abstract class AbstractJsonSchema<T, B> {
         }
 
         if (p.contributeSchemaFrom()) {
-          schemaFrom = Types.typeDefFrom(p.getSchemaFrom()).toReference();
+          schemaFrom = p.getSchemaFrom();
         }
       });
 

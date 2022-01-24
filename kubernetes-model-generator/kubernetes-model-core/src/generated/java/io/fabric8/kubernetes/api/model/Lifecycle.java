@@ -37,9 +37,9 @@ public class Lifecycle implements KubernetesResource
 {
 
     @JsonProperty("postStart")
-    private Handler postStart;
+    private LifecycleHandler postStart;
     @JsonProperty("preStop")
-    private Handler preStop;
+    private LifecycleHandler preStop;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -55,29 +55,29 @@ public class Lifecycle implements KubernetesResource
      * @param postStart
      * @param preStop
      */
-    public Lifecycle(Handler postStart, Handler preStop) {
+    public Lifecycle(LifecycleHandler postStart, LifecycleHandler preStop) {
         super();
         this.postStart = postStart;
         this.preStop = preStop;
     }
 
     @JsonProperty("postStart")
-    public Handler getPostStart() {
+    public LifecycleHandler getPostStart() {
         return postStart;
     }
 
     @JsonProperty("postStart")
-    public void setPostStart(Handler postStart) {
+    public void setPostStart(LifecycleHandler postStart) {
         this.postStart = postStart;
     }
 
     @JsonProperty("preStop")
-    public Handler getPreStop() {
+    public LifecycleHandler getPreStop() {
         return preStop;
     }
 
     @JsonProperty("preStop")
-    public void setPreStop(Handler preStop) {
+    public void setPreStop(LifecycleHandler preStop) {
         this.preStop = preStop;
     }
 

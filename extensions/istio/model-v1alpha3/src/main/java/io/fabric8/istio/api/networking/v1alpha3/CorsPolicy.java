@@ -71,23 +71,23 @@ public class CorsPolicy implements KubernetesResource {
   private Boolean allowCredentials;
   @JsonProperty("allowHeaders")
   @JsonInclude(JsonInclude.Include.NON_EMPTY)
-  private List<String> allowHeaders = new ArrayList<String>();
+  private List<String> allowHeaders = new ArrayList<>();
   @JsonProperty("allowMethods")
   @JsonInclude(JsonInclude.Include.NON_EMPTY)
-  private List<String> allowMethods = new ArrayList<String>();
+  private List<String> allowMethods = new ArrayList<>();
   @JsonProperty("allowOrigin")
   @JsonInclude(JsonInclude.Include.NON_EMPTY)
-  private List<String> deprecatedAllowOrigin = new ArrayList<String>();
+  private List<String> deprecatedAllowOrigin = new ArrayList<>();
   @JsonProperty("allowOrigins")
   @JsonInclude(JsonInclude.Include.NON_EMPTY)
-  private List<StringMatch> allowOrigins = new ArrayList<StringMatch>();
+  private List<StringMatch> allowOrigins = new ArrayList<>();
   @JsonProperty("exposeHeaders")
   @JsonInclude(JsonInclude.Include.NON_EMPTY)
-  private List<String> exposeHeaders = new ArrayList<String>();
+  private List<String> exposeHeaders = new ArrayList<>();
   @JsonProperty("maxAge")
   private String maxAge;
   @JsonIgnore
-  private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+  private Map<String, Object> additionalProperties = new HashMap<>();
 
   /**
    * No args constructor for use in serialization

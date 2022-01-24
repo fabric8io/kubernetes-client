@@ -83,9 +83,9 @@ public class CertificateRequestSpec implements KubernetesResource
   private String request;
   @JsonProperty("usages")
   @JsonInclude(JsonInclude.Include.NON_EMPTY)
-  private List<String> usages = new ArrayList<String>();
+  private List<String> usages = new ArrayList<>();
   @JsonIgnore
-  private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+  private Map<String, Object> additionalProperties = new HashMap<>();
 
   /**
    * No args constructor for use in serialization

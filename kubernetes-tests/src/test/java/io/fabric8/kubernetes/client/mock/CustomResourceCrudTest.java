@@ -17,7 +17,7 @@ package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
-import io.fabric8.kubernetes.api.model.apiextensions.v1beta1.CustomResourceDefinition;
+import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
@@ -50,11 +50,11 @@ class CustomResourceCrudTest {
   void setUp() {
     KubernetesDeserializer.registerCustomKind("stable.example.com/v1", "CronTab", CronTab.class);
     cronTabCrd = client
-      .apiextensions().v1beta1()
+      .apiextensions().v1()
       .customResourceDefinitions()
       .load(getClass().getResourceAsStream("/crontab-crd.yml"))
       .get();
-    client.apiextensions().v1beta1().customResourceDefinitions().create(cronTabCrd);
+    client.apiextensions().v1().customResourceDefinitions().create(cronTabCrd);
   }
 
   @Test

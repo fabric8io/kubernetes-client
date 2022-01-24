@@ -40,6 +40,7 @@ public class CreateOrReplaceHelper<T extends HasMetadata> {
     String resourceVersion = KubernetesResourceUtil.getResourceVersion(item);
     final CompletableFuture<T> future = new CompletableFuture<>();
     int nTries = 0;
+    item = Serialization.clone(item);
     while (!future.isDone() && nTries < CREATE_OR_REPLACE_RETRIES) {
       try {
         // Create

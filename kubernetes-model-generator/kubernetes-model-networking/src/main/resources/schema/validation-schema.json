@@ -103,6 +103,9 @@
         "fieldManager": {
           "type": "string"
         },
+        "fieldValidation": {
+          "type": "string"
+        },
         "kind": {
           "type": "string",
           "default": "CreateOptions",
@@ -528,6 +531,9 @@
         "fieldManager": {
           "type": "string"
         },
+        "fieldValidation": {
+          "type": "string"
+        },
         "force": {
           "type": "boolean"
         },
@@ -728,6 +734,9 @@
           }
         },
         "fieldManager": {
+          "type": "string"
+        },
+        "fieldValidation": {
           "type": "string"
         },
         "kind": {
@@ -2008,6 +2017,9 @@
         "fieldManager": {
           "type": "string"
         },
+        "fieldValidation": {
+          "type": "string"
+        },
         "kind": {
           "type": "string",
           "default": "CreateOptions",
@@ -2104,8 +2116,8 @@
         "paths": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_networking_v1beta1_HTTPIngressPath",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1beta1.HTTPIngressPath"
+            "$ref": "#/definitions/kubernetes_networking_v1_HTTPIngressPath",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1.HTTPIngressPath"
           }
         }
       },
@@ -2179,12 +2191,9 @@
           "$ref": "#/definitions/kubernetes_core_TypedLocalObjectReference",
           "existingJavaType": "io.fabric8.kubernetes.api.model.TypedLocalObjectReference"
         },
-        "serviceName": {
-          "type": "string"
-        },
-        "servicePort": {
-          "$ref": "#/definitions/kubernetes_apimachinery_pkg_util_intstr_IntOrString",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.IntOrString"
+        "service": {
+          "$ref": "#/definitions/kubernetes_networking_v1_IngressServiceBackend",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1.IngressServiceBackend"
         }
       },
       "additionalProperties": true
@@ -2193,7 +2202,7 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "networking.k8s.io/v1",
+          "default": "networking.k8s.io/v1beta1",
           "required": true
         },
         "kind": {
@@ -2206,8 +2215,8 @@
           "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
         },
         "spec": {
-          "$ref": "#/definitions/kubernetes_networking_v1_IngressClassSpec",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1.IngressClassSpec"
+          "$ref": "#/definitions/kubernetes_networking_v1beta1_IngressClassSpec",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1beta1.IngressClassSpec"
         }
       },
       "additionalProperties": true
@@ -2216,14 +2225,14 @@
       "properties": {
         "apiVersion": {
           "type": "string",
-          "default": "networking.k8s.io/v1",
+          "default": "networking.k8s.io/v1beta1",
           "required": true
         },
         "items": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/kubernetes_networking_v1_IngressClass",
-            "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1.IngressClass"
+            "$ref": "#/definitions/kubernetes_networking_v1beta1_IngressClass",
+            "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1beta1.IngressClass"
           }
         },
         "kind": {
@@ -2311,8 +2320,8 @@
     "ingressrulevalue": {
       "properties": {
         "http": {
-          "$ref": "#/definitions/kubernetes_networking_v1_HTTPIngressRuleValue",
-          "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1.HTTPIngressRuleValue"
+          "$ref": "#/definitions/kubernetes_networking_v1beta1_HTTPIngressRuleValue",
+          "existingJavaType": "io.fabric8.kubernetes.api.model.networking.v1beta1.HTTPIngressRuleValue"
         }
       },
       "additionalProperties": true
@@ -2902,6 +2911,9 @@
         "fieldManager": {
           "type": "string"
         },
+        "fieldValidation": {
+          "type": "string"
+        },
         "force": {
           "type": "boolean"
         },
@@ -3107,6 +3119,9 @@
           }
         },
         "fieldManager": {
+          "type": "string"
+        },
+        "fieldValidation": {
           "type": "string"
         },
         "kind": {

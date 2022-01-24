@@ -59,6 +59,8 @@
 * openshift-model-storageversionmigrator: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/openshift-model-storageversionmigrator.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Aopenshift-model-storageversionmigrator)
 [![javadoc](https://javadoc.io/badge2/io.fabric8/openshift-model-storageversionmigrator/javadoc.svg)](https://javadoc.io/doc/io.fabric8/openshift-model-storageversionmigrator)
 * openshift-model-miscellaneous: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/openshift-model-miscellaneous.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Aopenshift-model-miscellaneous)
+* openshift-model-hive: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/openshift-model-hive.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Aopenshift-model-hive)
+* openshift-model-installer: [![Maven Central](https://img.shields.io/maven-central/v/io.fabric8/openshift-model-installer.svg?maxAge=2592000)](http://search.maven.org/#search%7Cga%7C1%7Cg%3Aio.fabric8%20a%3Aopenshift-model-installer)
 [![javadoc](https://javadoc.io/badge2/io.fabric8/openshift-model-miscellaneous/javadoc.svg)](https://javadoc.io/doc/io.fabric8/openshift-model-miscellaneous)
 
 Uses [Go reflection](https://blog.golang.org/laws-of-reflection) to generate a JSON schema that describes one or more

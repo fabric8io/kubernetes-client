@@ -15,6 +15,8 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
+import java.net.InetAddress;
+
 public interface PortForwardable<H, L, I, O> {
 
   /**
@@ -35,6 +37,17 @@ public interface PortForwardable<H, L, I, O> {
    * @return returns local port forward interface
    */
   L portForward(int port, int localPort);
+
+  /**
+   * Listen on port <code>localPort</code> on selected IP <code>inetAddress</code>, forwarding to <code>port</code>
+   * in the pod
+   *
+   * @param port port in integer
+   * @param localInetAddress {@link InetAddress} selected IP Address
+   * @param localPort local port in integer
+   * @return PortForward interface
+   */
+  L portForward(int port, InetAddress localInetAddress, int localPort);
 
   /**
    * Create a server socket on a random local port. Every connection to the local port will be forwarded to the remote port on the resource.

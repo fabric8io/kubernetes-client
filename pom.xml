@@ -23,7 +23,7 @@
 
   <groupId>io.fabric8</groupId>
   <artifactId>kubernetes-client-project</artifactId>
-  <version>5.12-SNAPSHOT</version>
+  <version>6.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Fabric8 :: Kubernetes :: Project</name>
@@ -80,7 +80,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <!-- Core versions -->
-    <sundrio.version>0.50.1</sundrio.version>
+    <sundrio.version>0.50.3</sundrio.version>
     <okhttp.version>3.12.12</okhttp.version>
     <okhttp.bundle.version>3.12.1_1</okhttp.bundle.version>
     <okio.version>1.15.0</okio.version>
@@ -110,7 +110,7 @@
     <junit.compatible-with-arquillian.version>4.13.2</junit.compatible-with-arquillian.version>
     <zjsonpatch.version>0.3.0</zjsonpatch.version>
     <arquillian.cube.version>1.18.2</arquillian.cube.version>
-    <slf4j.version>1.7.32</slf4j.version>
+    <slf4j.version>1.7.33</slf4j.version>
     <mockito.version>4.2.0</mockito.version>
     <lombok.version>1.18.22</lombok.version>
     <snakeyaml.version>1.28</snakeyaml.version>
@@ -122,10 +122,10 @@
 
     <!-- Maven plugin versions -->
     <buildnumber.plugin.version>3.0.0</buildnumber.plugin.version>
-    <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
+    <maven.compiler.plugin.version>3.9.0</maven.compiler.plugin.version>
     <maven.bundle.plugin.version>5.1.4</maven.bundle.plugin.version>
-    <maven.buildhelper.plugin.version>3.2.0</maven.buildhelper.plugin.version>
-    <maven.jar.plugin.version>3.2.0</maven.jar.plugin.version>
+    <maven.buildhelper.plugin.version>3.3.0</maven.buildhelper.plugin.version>
+    <maven.jar.plugin.version>3.2.2</maven.jar.plugin.version>
     <maven.surefire.plugin.version>3.0.0-M5</maven.surefire.plugin.version>
     <maven.scr.plugin.version>1.26.4</maven.scr.plugin.version>
     <maven.resources.plugin.version>3.2.0</maven.resources.plugin.version>
@@ -139,7 +139,7 @@
     <maven.dependency.plugin.version>3.2.0</maven.dependency.plugin.version>
     <maven.shade.plugin.version>3.2.4</maven.shade.plugin.version>
     <maven.install.plugin.version>3.0.0-M1</maven.install.plugin.version>
-    <jandex.plugin.version>1.2.1</jandex.plugin.version>
+    <jandex.plugin.version>1.2.2</jandex.plugin.version>
     <jandex.version>2.4.2.Final</jandex.version>
     <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
     <sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
@@ -166,12 +166,15 @@
     <osgi.bundles />
     <osgi.activator />
     <osgi.export.service />
-    <osgi.include.resources>{maven-resources}</osgi.include.resources>
+    <osgi.include.resources.default>
+      {maven-resources},
+      /META-INF/jandex.idx=target/classes/META-INF/jandex.idx
+    </osgi.include.resources.default>
+    <osgi.include.resources>${osgi.include.resources.default}</osgi.include.resources>
     <karaf.itest.skip>false</karaf.itest.skip>
     <project.build.outputTimestamp>2020-11-14T12:24:00Z</project.build.outputTimestamp>
     <validation-api.version>2.0.1.Final</validation-api.version>
   </properties>
-
   <modules>
     <module>model-annotator</module>
     <module>kubernetes-model-generator</module>
@@ -359,6 +362,16 @@
       </dependency>
       <dependency>
         <groupId>io.fabric8</groupId>
+        <artifactId>openshift-model-hive</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>openshift-model-installer</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
         <artifactId>openshift-model</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -494,6 +507,61 @@
       <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>volcano-server-mock</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>open-cluster-management-agent-model</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>open-cluster-management-apps-model</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>open-cluster-management-cluster-model</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>open-cluster-management-discovery-model</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>open-cluster-management-observability-model</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>open-cluster-management-operator-model</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>open-cluster-management-placementruleapps-model</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>open-cluster-management-policy-model</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>open-cluster-management-search-model</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>open-cluster-management-client</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>open-cluster-management-server-mock</artifactId>
         <version>${project.version}</version>
       </dependency>
 
@@ -685,6 +753,20 @@
         <groupId>org.awaitility</groupId>
         <artifactId>awaitility</artifactId>
         <version>${awaitility.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.arquillian.cube</groupId>
+        <artifactId>arquillian-cube-requirement</artifactId>
+        <version>${arquillian.cube.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.arquillian.cube</groupId>
+        <artifactId>arquillian-cube-openshift-starter</artifactId>
+        <version>${arquillian.cube.version}</version>
         <scope>test</scope>
       </dependency>
 
@@ -1141,28 +1223,12 @@
           </plugin>
         </plugins>
       </build>
-      <dependencies>
-        <dependency>
-          <groupId>org.arquillian.cube</groupId>
-          <artifactId>arquillian-cube-kubernetes-starter</artifactId>
-          <version>${arquillian.cube.version}</version>
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
     </profile>
     <profile>
       <id>itests-openshift</id>
       <modules>
         <module>kubernetes-itests</module>
       </modules>
-      <dependencies>
-        <dependency>
-          <groupId>org.arquillian.cube</groupId>
-          <artifactId>arquillian-cube-openshift-starter</artifactId>
-          <version>${arquillian.cube.version}</version>
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
       <build>
         <plugins>
           <plugin>

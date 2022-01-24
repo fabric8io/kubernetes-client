@@ -29,7 +29,9 @@ import io.fabric8.kubernetes.client.Watcher;
 public interface ListerWatcher<T, L> {
   Watch watch(ListOptions params, Watcher<T> watcher);
 
-  L list();
+  L list(ListOptions listOptions);
+  
+  Long getLimit();
 
   String getNamespace();
 }

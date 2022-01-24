@@ -1,0 +1,34 @@
+{
+  "apiVersion": "hive.openshift.io/v1",
+  "kind": "ClusterDeployment",
+  "metadata": {
+    "annotations": {
+      "hive.openshift.io/delete-after": "8h"
+    },
+    "name": "foo"
+  },
+  "spec": {
+    "preserveOnDelete": false,
+    "clusterName": "foo",
+    "baseDomain": "bar.baz",
+    "platform": {
+      "aws": {
+        "credentialsSecretRef": {
+          "name": "foo-aws-creds"
+        },
+        "region": "us-east-1"
+      }
+    },
+    "provisioning": {
+      "installConfigSecretRef": {
+        "name": "foo-install-config"
+      },
+      "imageSetRef": {
+        "name": "clusterimageset-sample"
+      }
+    },
+    "pullSecretRef": {
+      "name": "foo-pull-secret"
+    }
+  }
+}

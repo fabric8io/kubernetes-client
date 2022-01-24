@@ -18,7 +18,7 @@ package io.fabric8.kubernetes.client.dsl;
 public interface Replaceable<T> {
 
   /**
-   * Replace the server's state with the given item. The resourceVersion and other fields of the item may be modified by this call.
+   * Replace the server's state with the given item.
    * 
    * <p>If {@link Lockable#lockResourceVersion(String)} has been used to lock the resourceVersion, 
    * this operation is effectively a single update attempt against that version.

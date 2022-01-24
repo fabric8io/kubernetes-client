@@ -1,0 +1,49 @@
+{
+  "apiVersion": "hive.openshift.io/v1",
+  "kind": "SyncSet",
+  "metadata": {
+    "name": "mygroup"
+  },
+  "spec": {
+    "clusterDeploymentRefs": [
+      {
+        "name": "ClusterName"
+      }
+    ],
+    "resourceApplyMode": "Upsert",
+    "resources": [
+      {
+        "apiVersion": "user.openshift.io/v1",
+        "kind": "Group",
+        "metadata": {
+          "name": "mygroup"
+        },
+        "users": [
+          "myuser"
+        ]
+      }
+    ],
+    "patches": [
+      {
+        "kind": "ConfigMap",
+        "apiVersion": "v1",
+        "name": "foo",
+        "namespace": "default",
+        "patch": "{ \"data\": { \"foo\": \"new-bar\" } }",
+        "patchType": "merge"
+      }
+    ],
+    "secretMappings": [
+      {
+        "sourceRef": {
+          "name": "ad-bind-password",
+          "namespace": "default"
+        },
+        "targetRef": {
+          "name": "ad-bind-password",
+          "namespace": "openshift-config"
+        }
+      }
+    ]
+  }
+}

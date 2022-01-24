@@ -1,0 +1,12 @@
+{
+  "apiVersion" : "cluster.open-cluster-management.io/v1alpha1",
+  "kind" : "PlacementDecision",
+  "metadata" : {
+    "labels" : {
+      "cluster.open-cluster-management.io/placement" : "placement1"
+    },
+    "name" : "placement1-decision1",
+    "namespace": "ns1"
+  },
+  "status" : { }
+}

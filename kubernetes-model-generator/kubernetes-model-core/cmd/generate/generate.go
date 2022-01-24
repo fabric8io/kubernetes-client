@@ -55,6 +55,7 @@ type Schema struct {
 	Time                 metav1.Time
 	MicroTime            metav1.MicroTime
 	RootPaths            metav1.RootPaths
+	GroupKind            metav1.GroupKind
 	GroupVersionKind     metav1.GroupVersionKind
 	GroupVersionResource metav1.GroupVersionResource
 	Quantity             resource.Quantity

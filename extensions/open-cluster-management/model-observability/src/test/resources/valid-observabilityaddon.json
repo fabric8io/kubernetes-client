@@ -1,0 +1,11 @@
+{
+  "apiVersion": "observability.open-cluster-management.io/v1beta1",
+  "kind": "ObservabilityAddon",
+  "metadata": {
+    "name": "observability-addon"
+  },
+  "spec": {
+    "enableMetrics": true,
+    "interval": 30
+  }
+}

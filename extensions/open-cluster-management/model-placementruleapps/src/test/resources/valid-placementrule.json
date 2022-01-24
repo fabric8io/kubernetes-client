@@ -1,0 +1,28 @@
+{
+  "apiVersion": "apps.open-cluster-management.io/v1",
+  "kind": "PlacementRule",
+  "metadata": {
+    "name": "all-ready-clusters",
+    "namespace": "default"
+  },
+  "spec": {
+    "clusterReplicas": 1,
+    "clusters": [
+      {
+        "name": "cluster1"
+      },
+      {
+        "name": "cluster2"
+      },
+      {
+        "name": "cluster3"
+      }
+    ],
+    "clusterConditions": [
+      {
+        "type": "ManagedClusterConditionAvailable",
+        "status": "True"
+      }
+    ]
+  }
+}

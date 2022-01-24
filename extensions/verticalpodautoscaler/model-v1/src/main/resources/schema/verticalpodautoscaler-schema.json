@@ -48,7 +48,7 @@
           "existingJavaType": "java.lang.String"
         },
         "totalWeight": {
-          "type": "float"
+          "type": "number"
         }
       },
       "javaType": "io.fabric8.verticalpodautoscaler.api.model.v1.HistogramCheckpoint",

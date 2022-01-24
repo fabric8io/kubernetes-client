@@ -73,12 +73,8 @@ public class PortForwarderWebsocket implements PortForwarder {
   @Override
   public LocalPortForward forward(final URL resourceBaseUrl, final int port, final InetAddress localHost, final int localPort) {
     try {
-      final ServerSocketChannel server;
-      if (localHost == null) {
-        server = ServerSocketChannel.open().bind(new InetSocketAddress(localPort));
-      } else {
-        server = ServerSocketChannel.open().bind(new InetSocketAddress(localHost, localPort));
-      }
+      InetSocketAddress inetSocketAddress = createNewInetSocketAddress(localHost, localPort);
+      final ServerSocketChannel server = ServerSocketChannel.open().bind(inetSocketAddress);
 
       final AtomicBoolean alive = new AtomicBoolean(true);
       final CopyOnWriteArrayList<PortForward> handles = new CopyOnWriteArrayList<>();
@@ -381,6 +377,13 @@ public class PortForwarderWebsocket implements PortForwarder {
         }
       }
     }
+  }
+
+  InetSocketAddress createNewInetSocketAddress(InetAddress localHost, int localPort) {
+    if (localHost == null) {
+      return new InetSocketAddress(localPort);
+    }
+    return new InetSocketAddress(localHost, localPort);
   }
 
 }

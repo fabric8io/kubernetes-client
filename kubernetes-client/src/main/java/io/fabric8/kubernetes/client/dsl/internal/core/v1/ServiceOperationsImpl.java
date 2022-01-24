@@ -35,6 +35,7 @@ import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 
+import java.net.InetAddress;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.util.ArrayList;
@@ -141,6 +142,15 @@ public class ServiceOperationsImpl extends HasMetadataOperation<Service, Service
         .inNamespace(m.getMetadata().getNamespace())
         .withName(m.getMetadata().getName())
         .portForward(port, localPort);
+  }
+
+  @Override
+  public LocalPortForward portForward(int port, InetAddress localInetAddress, int localPort) {
+    Pod m = matchingPod();
+    return new PodOperationsImpl(context)
+      .inNamespace(m.getMetadata().getNamespace())
+      .withName(m.getMetadata().getName())
+      .portForward(port, localInetAddress, localPort);
   }
 
   @Override

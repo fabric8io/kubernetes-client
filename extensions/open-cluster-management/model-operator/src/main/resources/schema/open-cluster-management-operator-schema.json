@@ -1,0 +1,787 @@
+{
+  "id": "http://fabric8.io/OpenClusterManagement#PlacementRuleApps",
+  "$schema": "http://json-schema.org/draft-05/schema#",
+  "definitions": {
+    "github_com_open-cluster-management_multiclusterhub-operator_api_v1_BackupConfig": {
+      "type": "object",
+      "properties": {
+        "minBackupPeriodSeconds": {
+          "type": "integer",
+          "existingJavaType": "Integer"
+        },
+        "velero": {
+          "$ref": "#/definitions/github_com_open-cluster-management_multiclusterhub-operator_api_v1_VeleroBackupConfig",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.VeleroBackupConfig"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.BackupConfig",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_multiclusterhub-operator_api_v1_ExternalDNSAWSConfig": {
+      "type": "object",
+      "properties": {
+        "credentials": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.LocalObjectReference"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.ExternalDNSAWSConfig",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_multiclusterhub-operator_api_v1_ExternalDNSConfig": {
+      "type": "object",
+      "properties": {
+        "aws": {
+          "$ref": "#/definitions/github_com_open-cluster-management_multiclusterhub-operator_api_v1_ExternalDNSAWSConfig",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.ExternalDNSAWSConfig"
+        },
+        "gcp": {
+          "$ref": "#/definitions/github_com_open-cluster-management_multiclusterhub-operator_api_v1_ExternalDNSGCPConfig",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.ExternalDNSGCPConfig"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.ExternalDNSConfig",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_multiclusterhub-operator_api_v1_ExternalDNSGCPConfig": {
+      "type": "object",
+      "properties": {
+        "credentials": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.LocalObjectReference"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.ExternalDNSGCPConfig",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_multiclusterhub-operator_api_v1_FailedProvisionConfig": {
+      "type": "object",
+      "properties": {
+        "skipGatherLogs": {
+          "type": "boolean"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.FailedProvisionConfig",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_multiclusterhub-operator_api_v1_HiveConfigSpec": {
+      "type": "object",
+      "properties": {
+        "additionalCertificateAuthorities": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "existingJavaType": "io.fabric8.kubernetes.api.model.LocalObjectReference"
+          }
+        },
+        "backup": {
+          "$ref": "#/definitions/github_com_open-cluster-management_multiclusterhub-operator_api_v1_BackupConfig",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.BackupConfig"
+        },
+        "externalDNS": {
+          "$ref": "#/definitions/github_com_open-cluster-management_multiclusterhub-operator_api_v1_ExternalDNSConfig",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.ExternalDNSConfig"
+        },
+        "failedProvisionConfig": {
+          "$ref": "#/definitions/github_com_open-cluster-management_multiclusterhub-operator_api_v1_FailedProvisionConfig",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.FailedProvisionConfig"
+        },
+        "globalPullSecret": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.LocalObjectReference"
+        },
+        "maintenanceMode": {
+          "type": "boolean",
+          "existingJavaType": "Boolean"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.HiveConfigSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_multiclusterhub-operator_api_v1_HubCondition": {
+      "type": "object",
+      "properties": {
+        "lastTransitionTime": {
+          "existingJavaType": "java.lang.String"
+        },
+        "lastUpdateTime": {
+          "existingJavaType": "java.lang.String"
+        },
+        "message": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.HubCondition",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_multiclusterhub-operator_api_v1_IngressSpec": {
+      "type": "object",
+      "properties": {
+        "sslCiphers": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.IngressSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_multiclusterhub-operator_api_v1_MultiClusterHub": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "operator.open-cluster-management.io/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "MultiClusterHub",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/github_com_open-cluster-management_multiclusterhub-operator_api_v1_MultiClusterHubSpec",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.MultiClusterHubSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/github_com_open-cluster-management_multiclusterhub-operator_api_v1_MultiClusterHubStatus",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.MultiClusterHubStatus"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.MultiClusterHub",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "github_com_open-cluster-management_multiclusterhub-operator_api_v1_MultiClusterHubList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "operator.open-cluster-management.io/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/github_com_open-cluster-management_multiclusterhub-operator_api_v1_MultiClusterHub",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.MultiClusterHub"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "MultiClusterHubList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.MultiClusterHubList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.MultiClusterHub\u003e"
+      ]
+    },
+    "github_com_open-cluster-management_multiclusterhub-operator_api_v1_MultiClusterHubSpec": {
+      "type": "object",
+      "properties": {
+        "availabilityConfig": {
+          "type": "string"
+        },
+        "customCAConfigmap": {
+          "type": "string"
+        },
+        "disableHubSelfManagement": {
+          "type": "boolean"
+        },
+        "disableUpdateClusterImageSets": {
+          "type": "boolean"
+        },
+        "enableClusterBackup": {
+          "type": "boolean"
+        },
+        "enableClusterProxyAddon": {
+          "type": "boolean"
+        },
+        "hive": {
+          "$ref": "#/definitions/github_com_open-cluster-management_multiclusterhub-operator_api_v1_HiveConfigSpec",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.HiveConfigSpec"
+        },
+        "imagePullSecret": {
+          "type": "string"
+        },
+        "ingress": {
+          "$ref": "#/definitions/github_com_open-cluster-management_multiclusterhub-operator_api_v1_IngressSpec",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.IngressSpec"
+        },
+        "nodeSelector": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "overrides": {
+          "$ref": "#/definitions/github_com_open-cluster-management_multiclusterhub-operator_api_v1_Overrides",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.Overrides"
+        },
+        "separateCertificateManagement": {
+          "type": "boolean"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.MultiClusterHubSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_multiclusterhub-operator_api_v1_MultiClusterHubStatus": {
+      "type": "object",
+      "properties": {
+        "components": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.StatusCondition\u003e"
+        },
+        "conditions": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/github_com_open-cluster-management_multiclusterhub-operator_api_v1_HubCondition",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.HubCondition"
+          }
+        },
+        "currentVersion": {
+          "type": "string"
+        },
+        "desiredVersion": {
+          "type": "string"
+        },
+        "phase": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.MultiClusterHubStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_multiclusterhub-operator_api_v1_Overrides": {
+      "type": "object",
+      "properties": {
+        "imagePullPolicy": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.Overrides",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_multiclusterhub-operator_api_v1_StatusCondition": {
+      "type": "object",
+      "properties": {
+        "lastTransitionTime": {
+          "existingJavaType": "java.lang.String"
+        },
+        "message": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.StatusCondition",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_multiclusterhub-operator_api_v1_VeleroBackupConfig": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.VeleroBackupConfig",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_api_operator_v1_ClusterManager": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "operator.open-cluster-management.io/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "ClusterManager",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/open-cluster-management_io_api_operator_v1_ClusterManagerSpec",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.operator.v1.ClusterManagerSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/open-cluster-management_io_api_operator_v1_ClusterManagerStatus",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.operator.v1.ClusterManagerStatus"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.operator.v1.ClusterManager",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "open-cluster-management_io_api_operator_v1_ClusterManagerList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "operator.open-cluster-management.io/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/open-cluster-management_io_api_operator_v1_ClusterManager",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.operator.v1.ClusterManager"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "ClusterManagerList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.operator.v1.ClusterManagerList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openclustermanagement.api.model.operator.v1.ClusterManager\u003e"
+      ]
+    },
+    "open-cluster-management_io_api_operator_v1_ClusterManagerSpec": {
+      "type": "object",
+      "properties": {
+        "nodePlacement": {
+          "$ref": "#/definitions/open-cluster-management_io_api_operator_v1_NodePlacement",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.operator.v1.NodePlacement"
+        },
+        "placementImagePullSpec": {
+          "type": "string"
+        },
+        "registrationImagePullSpec": {
+          "type": "string"
+        },
+        "workImagePullSpec": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.operator.v1.ClusterManagerSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_api_operator_v1_ClusterManagerStatus": {
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "items": {
+            "existingJavaType": "io.fabric8.kubernetes.api.model.Condition"
+          }
+        },
+        "generations": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/open-cluster-management_io_api_operator_v1_GenerationStatus",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.operator.v1.GenerationStatus"
+          }
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "relatedResources": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/open-cluster-management_io_api_operator_v1_RelatedResourceMeta",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.operator.v1.RelatedResourceMeta"
+          }
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.operator.v1.ClusterManagerStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_api_operator_v1_GenerationStatus": {
+      "type": "object",
+      "properties": {
+        "group": {
+          "type": "string"
+        },
+        "lastGeneration": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "resource": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.operator.v1.GenerationStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_api_operator_v1_Klusterlet": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "operator.open-cluster-management.io/v1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "Klusterlet",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/open-cluster-management_io_api_operator_v1_KlusterletSpec",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.operator.v1.KlusterletSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/open-cluster-management_io_api_operator_v1_KlusterletStatus",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.operator.v1.KlusterletStatus"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.operator.v1.Klusterlet",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata"
+      ]
+    },
+    "open-cluster-management_io_api_operator_v1_KlusterletList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "operator.open-cluster-management.io/v1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/open-cluster-management_io_api_operator_v1_Klusterlet",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.operator.v1.Klusterlet"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "KlusterletList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.operator.v1.KlusterletList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openclustermanagement.api.model.operator.v1.Klusterlet\u003e"
+      ]
+    },
+    "open-cluster-management_io_api_operator_v1_KlusterletSpec": {
+      "type": "object",
+      "properties": {
+        "clusterName": {
+          "type": "string"
+        },
+        "externalServerURLs": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/open-cluster-management_io_api_operator_v1_ServerURL",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.operator.v1.ServerURL"
+          }
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "nodePlacement": {
+          "$ref": "#/definitions/open-cluster-management_io_api_operator_v1_NodePlacement",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.operator.v1.NodePlacement"
+        },
+        "registrationImagePullSpec": {
+          "type": "string"
+        },
+        "workImagePullSpec": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.operator.v1.KlusterletSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_api_operator_v1_KlusterletStatus": {
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "items": {
+            "existingJavaType": "io.fabric8.kubernetes.api.model.Condition"
+          }
+        },
+        "generations": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/open-cluster-management_io_api_operator_v1_GenerationStatus",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.operator.v1.GenerationStatus"
+          }
+        },
+        "observedGeneration": {
+          "type": "integer",
+          "existingJavaType": "Long"
+        },
+        "relatedResources": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "$ref": "#/definitions/open-cluster-management_io_api_operator_v1_RelatedResourceMeta",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.operator.v1.RelatedResourceMeta"
+          }
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.operator.v1.KlusterletStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_api_operator_v1_NodePlacement": {
+      "type": "object",
+      "properties": {
+        "nodeSelector": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "tolerations": {
+          "type": "array",
+          "javaOmitEmpty": true,
+          "items": {
+            "existingJavaType": "io.fabric8.kubernetes.api.model.Toleration"
+          }
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.operator.v1.NodePlacement",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_api_operator_v1_RelatedResourceMeta": {
+      "type": "object",
+      "properties": {
+        "group": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "resource": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.operator.v1.RelatedResourceMeta",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "open-cluster-management_io_api_operator_v1_ServerURL": {
+      "type": "object",
+      "properties": {
+        "caBundle": {
+          "type": "string",
+          "javaOmitEmpty": true
+        },
+        "url": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.operator.v1.ServerURL",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "github_com_open-cluster-management_multiclusterhub-operator_api_v1_BackupConfig": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multiclusterhub-operator_api_v1_BackupConfig",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.BackupConfig"
+    },
+    "github_com_open-cluster-management_multiclusterhub-operator_api_v1_ExternalDNSAWSConfig": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multiclusterhub-operator_api_v1_ExternalDNSAWSConfig",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.ExternalDNSAWSConfig"
+    },
+    "github_com_open-cluster-management_multiclusterhub-operator_api_v1_ExternalDNSConfig": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multiclusterhub-operator_api_v1_ExternalDNSConfig",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.ExternalDNSConfig"
+    },
+    "github_com_open-cluster-management_multiclusterhub-operator_api_v1_ExternalDNSGCPConfig": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multiclusterhub-operator_api_v1_ExternalDNSGCPConfig",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.ExternalDNSGCPConfig"
+    },
+    "github_com_open-cluster-management_multiclusterhub-operator_api_v1_FailedProvisionConfig": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multiclusterhub-operator_api_v1_FailedProvisionConfig",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.FailedProvisionConfig"
+    },
+    "github_com_open-cluster-management_multiclusterhub-operator_api_v1_HiveConfigSpec": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multiclusterhub-operator_api_v1_HiveConfigSpec",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.HiveConfigSpec"
+    },
+    "github_com_open-cluster-management_multiclusterhub-operator_api_v1_HubCondition": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multiclusterhub-operator_api_v1_HubCondition",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.HubCondition"
+    },
+    "github_com_open-cluster-management_multiclusterhub-operator_api_v1_IngressSpec": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multiclusterhub-operator_api_v1_IngressSpec",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.IngressSpec"
+    },
+    "github_com_open-cluster-management_multiclusterhub-operator_api_v1_MultiClusterHub": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multiclusterhub-operator_api_v1_MultiClusterHub",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.MultiClusterHub"
+    },
+    "github_com_open-cluster-management_multiclusterhub-operator_api_v1_MultiClusterHubList": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multiclusterhub-operator_api_v1_MultiClusterHubList",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.MultiClusterHubList"
+    },
+    "github_com_open-cluster-management_multiclusterhub-operator_api_v1_MultiClusterHubSpec": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multiclusterhub-operator_api_v1_MultiClusterHubSpec",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.MultiClusterHubSpec"
+    },
+    "github_com_open-cluster-management_multiclusterhub-operator_api_v1_MultiClusterHubStatus": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multiclusterhub-operator_api_v1_MultiClusterHubStatus",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.MultiClusterHubStatus"
+    },
+    "github_com_open-cluster-management_multiclusterhub-operator_api_v1_Overrides": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multiclusterhub-operator_api_v1_Overrides",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.Overrides"
+    },
+    "github_com_open-cluster-management_multiclusterhub-operator_api_v1_StatusCondition": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multiclusterhub-operator_api_v1_StatusCondition",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.StatusCondition"
+    },
+    "github_com_open-cluster-management_multiclusterhub-operator_api_v1_VeleroBackupConfig": {
+      "$ref": "#/definitions/github_com_open-cluster-management_multiclusterhub-operator_api_v1_VeleroBackupConfig",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.multiclusterhub.operator.v1.VeleroBackupConfig"
+    },
+    "open-cluster-management_io_api_operator_v1_ClusterManager": {
+      "$ref": "#/definitions/open-cluster-management_io_api_operator_v1_ClusterManager",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.operator.v1.ClusterManager"
+    },
+    "open-cluster-management_io_api_operator_v1_ClusterManagerList": {
+      "$ref": "#/definitions/open-cluster-management_io_api_operator_v1_ClusterManagerList",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.operator.v1.ClusterManagerList"
+    },
+    "open-cluster-management_io_api_operator_v1_ClusterManagerSpec": {
+      "$ref": "#/definitions/open-cluster-management_io_api_operator_v1_ClusterManagerSpec",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.operator.v1.ClusterManagerSpec"
+    },
+    "open-cluster-management_io_api_operator_v1_ClusterManagerStatus": {
+      "$ref": "#/definitions/open-cluster-management_io_api_operator_v1_ClusterManagerStatus",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.operator.v1.ClusterManagerStatus"
+    },
+    "open-cluster-management_io_api_operator_v1_GenerationStatus": {
+      "$ref": "#/definitions/open-cluster-management_io_api_operator_v1_GenerationStatus",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.operator.v1.GenerationStatus"
+    },
+    "open-cluster-management_io_api_operator_v1_Klusterlet": {
+      "$ref": "#/definitions/open-cluster-management_io_api_operator_v1_Klusterlet",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.operator.v1.Klusterlet"
+    },
+    "open-cluster-management_io_api_operator_v1_KlusterletList": {
+      "$ref": "#/definitions/open-cluster-management_io_api_operator_v1_KlusterletList",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.operator.v1.KlusterletList"
+    },
+    "open-cluster-management_io_api_operator_v1_KlusterletSpec": {
+      "$ref": "#/definitions/open-cluster-management_io_api_operator_v1_KlusterletSpec",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.operator.v1.KlusterletSpec"
+    },
+    "open-cluster-management_io_api_operator_v1_KlusterletStatus": {
+      "$ref": "#/definitions/open-cluster-management_io_api_operator_v1_KlusterletStatus",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.operator.v1.KlusterletStatus"
+    },
+    "open-cluster-management_io_api_operator_v1_NodePlacement": {
+      "$ref": "#/definitions/open-cluster-management_io_api_operator_v1_NodePlacement",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.operator.v1.NodePlacement"
+    },
+    "open-cluster-management_io_api_operator_v1_RelatedResourceMeta": {
+      "$ref": "#/definitions/open-cluster-management_io_api_operator_v1_RelatedResourceMeta",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.operator.v1.RelatedResourceMeta"
+    },
+    "open-cluster-management_io_api_operator_v1_ServerURL": {
+      "$ref": "#/definitions/open-cluster-management_io_api_operator_v1_ServerURL",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.operator.v1.ServerURL"
+    }
+  },
+  "additionalProperties": false
+}

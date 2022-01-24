@@ -30,6 +30,9 @@ This document contains common usages of different resources using Fabric8 Kubern
   * [LocalSubjectAccessReview](#localsubjectaccessreview)
   * [SelfSubjectRulesReview](#selfsubjectrulesreview)
   * [ClusterRole](#clusterrole)
+  * [ClusterRoleBinding](#clusterrolebinding)
+  * [Role](#role)
+  * [RoleBinding](#rolebinding)
   * [Top/Metrics](#fetching-metrics)
   * [Generic Resource API](#resource-api)
   * [Generic ResourceList API](#resourcelist-api)
@@ -1547,6 +1550,127 @@ ClusterRoleList clusterRoleList = client.rbac().clusterRoles().withLabel("key1",
 Boolean isDeleted = client.rbac().clusterRoles().withName("clusterrole1").delete();
 ```
 
+### ClusterRoleBinding
+`ClusterRoleBinding` is available in Kubernetes Client API via `client.rbac().clusterRoleBindings()`. Here are some of the common usages:
+- Load `ClusterRoleBinding` from yaml:
+```
+ClusterRoleBinding clusterRoleBinding = client.rbac().clusterRoleBindings().load(new FileInputStream("clusterrolebinding-test.yml")).get();
+```
+- Create `ClusterRoleBinding` from Kubernetes API server:
+```
+List<Subject> subjects = new ArrayList<>();
+    Subject subject = new Subject();
+    subject.setKind("ServiceAccount");
+    subject.setName("serviceaccountname");
+    subject.setNamespace("default");
+    subjects.add(subject);
+    RoleRef roleRef = new RoleRef();
+    roleRef.setApiGroup("rbac.authorization.k8s.io");
+    roleRef.setKind("ClusterRole");
+    roleRef.setName("clusterrolename");
+    ClusterRoleBinding clusterRoleBindingCreated = new ClusterRoleBindingBuilder()
+            .withNewMetadata().withName("clusterrolebindingname").withNamespace("default").endMetadata()
+            .withRoleRef(roleRef)
+            .addAllToSubjects(subjects)
+            .build();
+ClusterRoleBinding clusterRoleBinding = client.rbac().clusterRoleBindings().createOrReplace(clusterRoleBindingCreated);
+```
+- Get `ClusterRoleBinding` from Kubernetes API server:
+```
+ClusterRoleBinding clusterRoleBinding = client.rbac().clusterRoleBindings().withName("clusterrolebindingname").get();
+```
+- List `ClusterRoleBinding` objects:
+```
+ClusterRoleBindingList clusterRoleBindingList = client.rbac().clusterRoleBindings().list();
+```
+- List `ClusterRoleBinding` objects with some labels:
+```
+ClusterRoleBindingList clusterRoleBindingList = client.rbac().clusterRoleBindings().withLabel("key1", "value1").list();
+```
+- Delete `ClusterRoleBinding` objects:
+```
+Boolean isDeleted = client.rbac().clusterRoleBindings().withName("clusterrolebindingname").delete();
+```
+
+### Role
+`Role` is available in Kubernetes Client API via `client.rbac().roles()`. Here are some of the common usages:
+- Load `Role` from yaml:
+```
+Role role = client.rbac().roles().load(new FileInputStream("role-test.yml")).get();
+```
+- Create `Role` from Kubernetes API server:
+```
+List<PolicyRule> policyRuleList = new ArrayList<>();
+    PolicyRule endpoints = new PolicyRule();
+    endpoints.setApiGroups(Arrays.asList(""));
+    endpoints.setResources(Arrays.asList("endpoints"));
+    endpoints.setVerbs(Arrays.asList("get", "list", "watch", "create", "update", "patch"));
+    policyRuleList.add(endpoints);
+    Role roleCreated = new RoleBuilder()
+            .withNewMetadata().withName("rolename").withNamespace("default").endMetadata()
+            .addAllToRules(policyRuleList)
+            .build();
+Role role = client.rbac().roles().createOrReplace(roleCreated);
+```
+- Get `Role` from Kubernetes API server:
+```
+Role role = client.rbac().roles().inNamespace("default").withName("rolename").get();
+```
+- List `Role` objects:
+```
+RoleList roleList = client.rbac().roles().inNamespace("default").list();
+```
+- List `Role` objects with some labels:
+```
+RoleList roleList = client.rbac().roles().inNamespace("default").withLabel("key1", "value1").list();
+```
+- Delete `Role` objects:
+```
+Boolean isDeleted = client.rbac().roles().withName("rolename").delete();
+```
+
+### RoleBinding
+`RoleBinding` is available in Kubernetes Client API via `client.rbac().roleBindings()`. Here are some of the common usages:
+- Load `RoleBinding` from yaml:
+```
+RoleBinding roleBinding = client.rbac().roleBindings().load(new FileInputStream("rolebinding-test.yml")).get();
+```
+- Create `RoleBinding` from Kubernetes API server:
+```
+List<Subject> subjects = new ArrayList<>();
+    Subject subject = new Subject();
+    subject.setNamespace("default");
+    subject.setKind("ServiceAccount");
+    subject.setName("servicecccountname");
+    subjects.add(subject);
+    RoleRef roleRef = new RoleRef();
+    roleRef.setName("rolename");
+    roleRef.setKind("Role");
+    roleRef.setApiGroup("rbac.authorization.k8s.io");
+    RoleBinding roleBindingCreated = new RoleBindingBuilder()
+            .withNewMetadata().withName("rolename").withNamespace("default").endMetadata()
+            .addAllToSubjects(subjects)
+            .withRoleRef(roleRef)
+            .build();
+RoleBinding roleBinding = client.rbac().roleBindings().createOrReplace(roleBindingCreated);
+```
+- Get `RoleBinding` from Kubernetes API server:
+```
+RoleBinding roleBinding = client.rbac().roleBindings().inNamespace("default").withName("rolename").get();
+```
+- List `RoleBinding` objects:
+```
+RoleBindingList roleBindingList = client.rbac().roleBindings().inNamespace("default").list();
+```
+- List `RoleBinding` objects with some labels:
+```
+RoleBindingList roleBindingList = client.rbac().roleBindings().inNamespace("default").withLabel("key1", "value1").list();
+```
+- Delete `RoleBinding` objects:
+```
+Boolean isDeleted = client.rbac().roleBindings().inNamespace("default").withName("rolename").delete();
+```
+
 ### Fetching Metrics
 Kubernetes Client also supports fetching metrics from API server if metrics are enabled on it. You can access metrics via `client.top()`. Here are some examples of its usage:
 - Get `NodeMetrics` for all nodes:
@@ -2200,8 +2324,6 @@ try (KubernetesClient client = new DefaultKubernetesClient()) {
             .done();
 }
 ```
-
-
 
 ### OpenShift Client DSL Usage
 

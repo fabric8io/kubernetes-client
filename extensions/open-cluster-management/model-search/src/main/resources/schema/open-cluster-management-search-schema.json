@@ -1,0 +1,294 @@
+{
+  "id": "http://fabric8.io/OpenClusterManagement#PlacementRuleApps",
+  "$schema": "http://json-schema.org/draft-05/schema#",
+  "definitions": {
+    "github_com_open-cluster-management_search-operator_api_v1alpha1_ImageOverrides": {
+      "type": "object",
+      "properties": {
+        "redisgraph_tls": {
+          "type": "string"
+        },
+        "search_aggregator": {
+          "type": "string"
+        },
+        "search_api": {
+          "type": "string"
+        },
+        "search_collector": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.ImageOverrides",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_search-operator_api_v1alpha1_PodResource": {
+      "type": "object",
+      "properties": {
+        "limit_cpu": {
+          "type": "string"
+        },
+        "limit_memory": {
+          "type": "string"
+        },
+        "request_cpu": {
+          "type": "string"
+        },
+        "request_memory": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.PodResource",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_search-operator_api_v1alpha1_SearchCustomization": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "search.open-cluster-management.io/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "SearchCustomization",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/github_com_open-cluster-management_search-operator_api_v1alpha1_SearchCustomizationSpec",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchCustomizationSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/github_com_open-cluster-management_search-operator_api_v1alpha1_SearchCustomizationStatus",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchCustomizationStatus"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchCustomization",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "github_com_open-cluster-management_search-operator_api_v1alpha1_SearchCustomizationList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "search.open-cluster-management.io/v1alpha1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/github_com_open-cluster-management_search-operator_api_v1alpha1_SearchCustomization",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchCustomization"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "SearchCustomizationList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchCustomizationList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchCustomization\u003e"
+      ]
+    },
+    "github_com_open-cluster-management_search-operator_api_v1alpha1_SearchCustomizationSpec": {
+      "type": "object",
+      "properties": {
+        "persistence": {
+          "type": "boolean",
+          "existingJavaType": "Boolean"
+        },
+        "storageClass": {
+          "type": "string"
+        },
+        "storageSize": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchCustomizationSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_search-operator_api_v1alpha1_SearchCustomizationStatus": {
+      "type": "object",
+      "properties": {
+        "persistence": {
+          "type": "boolean"
+        },
+        "storageClass": {
+          "type": "string"
+        },
+        "storageSize": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchCustomizationStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_search-operator_api_v1alpha1_SearchOperator": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "search.open-cluster-management.io/v1alpha1",
+          "required": true
+        },
+        "kind": {
+          "type": "string",
+          "default": "SearchOperator",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ObjectMeta"
+        },
+        "spec": {
+          "$ref": "#/definitions/github_com_open-cluster-management_search-operator_api_v1alpha1_SearchOperatorSpec",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchOperatorSpec"
+        },
+        "status": {
+          "$ref": "#/definitions/github_com_open-cluster-management_search-operator_api_v1alpha1_SearchOperatorStatus",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchOperatorStatus"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchOperator",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.HasMetadata",
+        "io.fabric8.kubernetes.api.model.Namespaced"
+      ]
+    },
+    "github_com_open-cluster-management_search-operator_api_v1alpha1_SearchOperatorList": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "type": "string",
+          "default": "search.open-cluster-management.io/v1alpha1",
+          "required": true
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/github_com_open-cluster-management_search-operator_api_v1alpha1_SearchOperator",
+            "existingJavaType": "io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchOperator"
+          }
+        },
+        "kind": {
+          "type": "string",
+          "default": "SearchOperatorList",
+          "required": true
+        },
+        "metadata": {
+          "existingJavaType": "io.fabric8.kubernetes.api.model.ListMeta"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchOperatorList",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource",
+        "io.fabric8.kubernetes.api.model.KubernetesResourceList\u003cio.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchOperator\u003e"
+      ]
+    },
+    "github_com_open-cluster-management_search-operator_api_v1alpha1_SearchOperatorSpec": {
+      "type": "object",
+      "properties": {
+        "nodeSelector": {
+          "type": "object",
+          "existingJavaType": "java.util.Map\u003cString,String\u003e"
+        },
+        "pullpolicy": {
+          "type": "string"
+        },
+        "pullsecret": {
+          "type": "string"
+        },
+        "redisgraph_resource": {
+          "$ref": "#/definitions/github_com_open-cluster-management_search-operator_api_v1alpha1_PodResource",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.PodResource"
+        },
+        "searchimageoverrides": {
+          "$ref": "#/definitions/github_com_open-cluster-management_search-operator_api_v1alpha1_ImageOverrides",
+          "existingJavaType": "io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.ImageOverrides"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchOperatorSpec",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    },
+    "github_com_open-cluster-management_search-operator_api_v1alpha1_SearchOperatorStatus": {
+      "type": "object",
+      "properties": {
+        "deployredisgraph": {
+          "type": "boolean",
+          "existingJavaType": "Boolean"
+        },
+        "persistence": {
+          "type": "string"
+        }
+      },
+      "javaType": "io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchOperatorStatus",
+      "javaInterfaces": [
+        "io.fabric8.kubernetes.api.model.KubernetesResource"
+      ]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "github_com_open-cluster-management_search-operator_api_v1alpha1_ImageOverrides": {
+      "$ref": "#/definitions/github_com_open-cluster-management_search-operator_api_v1alpha1_ImageOverrides",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.ImageOverrides"
+    },
+    "github_com_open-cluster-management_search-operator_api_v1alpha1_PodResource": {
+      "$ref": "#/definitions/github_com_open-cluster-management_search-operator_api_v1alpha1_PodResource",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.PodResource"
+    },
+    "github_com_open-cluster-management_search-operator_api_v1alpha1_SearchCustomization": {
+      "$ref": "#/definitions/github_com_open-cluster-management_search-operator_api_v1alpha1_SearchCustomization",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchCustomization"
+    },
+    "github_com_open-cluster-management_search-operator_api_v1alpha1_SearchCustomizationList": {
+      "$ref": "#/definitions/github_com_open-cluster-management_search-operator_api_v1alpha1_SearchCustomizationList",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchCustomizationList"
+    },
+    "github_com_open-cluster-management_search-operator_api_v1alpha1_SearchCustomizationSpec": {
+      "$ref": "#/definitions/github_com_open-cluster-management_search-operator_api_v1alpha1_SearchCustomizationSpec",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchCustomizationSpec"
+    },
+    "github_com_open-cluster-management_search-operator_api_v1alpha1_SearchCustomizationStatus": {
+      "$ref": "#/definitions/github_com_open-cluster-management_search-operator_api_v1alpha1_SearchCustomizationStatus",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchCustomizationStatus"
+    },
+    "github_com_open-cluster-management_search-operator_api_v1alpha1_SearchOperator": {
+      "$ref": "#/definitions/github_com_open-cluster-management_search-operator_api_v1alpha1_SearchOperator",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchOperator"
+    },
+    "github_com_open-cluster-management_search-operator_api_v1alpha1_SearchOperatorList": {
+      "$ref": "#/definitions/github_com_open-cluster-management_search-operator_api_v1alpha1_SearchOperatorList",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchOperatorList"
+    },
+    "github_com_open-cluster-management_search-operator_api_v1alpha1_SearchOperatorSpec": {
+      "$ref": "#/definitions/github_com_open-cluster-management_search-operator_api_v1alpha1_SearchOperatorSpec",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchOperatorSpec"
+    },
+    "github_com_open-cluster-management_search-operator_api_v1alpha1_SearchOperatorStatus": {
+      "$ref": "#/definitions/github_com_open-cluster-management_search-operator_api_v1alpha1_SearchOperatorStatus",
+      "existingJavaType": "io.fabric8.openclustermanagement.api.model.searchoperator.v1alpha1.SearchOperatorStatus"
+    }
+  },
+  "additionalProperties": false
+}

@@ -23,6 +23,7 @@ import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.Reader;
 import java.net.HttpURLConnection;
+import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.channels.ReadableByteChannel;
@@ -256,6 +257,15 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   }
 
   @Override
+  public LocalPortForward portForward(int port, InetAddress localInetAddress,  int localPort) {
+    try {
+      return new PortForwarderWebsocket(httpClient).forward(getResourceUrl(), port, localInetAddress, localPort);
+    } catch (MalformedURLException ex) {
+      throw KubernetesClientException.launderThrowable(ex);
+    }
+  }
+
+  @Override
   public Boolean evict() {
     Eviction eviction = new EvictionBuilder()
       .withNewMetadata()
@@ -378,6 +388,18 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
       throw KubernetesClientException.launderThrowable(e);
     }
    }
+
+  @Override
+  public Boolean upload(InputStream inputStream) {
+    return wrapRunWithOptionalDependency(() -> {
+      try {
+        return PodUpload.uploadFileData(httpClient, getContext(), this, inputStream);
+      } catch (Exception ex) {
+        Thread.currentThread().interrupt();
+        throw KubernetesClientException.launderThrowable(ex);
+      }
+    }, "TarArchiveOutputStream is provided by commons-compress");
+  }
 
   @Override
   public Boolean upload(Path path) {

@@ -22,7 +22,7 @@
   <parent>
     <artifactId>kubernetes-client-project</artifactId>
     <groupId>io.fabric8</groupId>
-    <version>5.12-SNAPSHOT</version>
+    <version>6.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>kubernetes-itests</artifactId>
@@ -44,13 +44,11 @@
     <dependency>
       <groupId>org.arquillian.cube</groupId>
       <artifactId>arquillian-cube-requirement</artifactId>
-      <version>${arquillian.cube.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.arquillian.cube</groupId>
       <artifactId>arquillian-cube-openshift-starter</artifactId>
-      <version>${arquillian.cube.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>

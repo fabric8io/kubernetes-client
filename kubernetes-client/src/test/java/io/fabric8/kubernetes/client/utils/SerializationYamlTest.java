@@ -30,7 +30,7 @@ class SerializationYamlTest {
   @Test
   @DisplayName("unmarshal, evaluates non standard Java classes (needs fix)")
   @Disabled("This test should only pass in case SnakeYAML is set to evaluate non standard Java classes (which implies a security threat)")
-  void unmarshalEvaluatesStandardClasses() {
+  void unmarshalEvaluatesNonStandardClasses() {
     // Given
     final String genericResourceYaml = "kind: MyCustomResource\n" +
       "apiVersion: my.custom.resource.example.com/v1\n" +
