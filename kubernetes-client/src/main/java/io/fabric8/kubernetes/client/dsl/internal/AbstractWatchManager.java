@@ -235,25 +235,25 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
 
   private WatchEvent contextAwareWatchEventDeserializer(String messageSource) {
     try {
-      JsonNode json = Serialization.jsonMapper().readTree(messageSource);
-      JsonNode objectJson = null;
-      if (json instanceof ObjectNode) {
-        if (json.has("object")) {
-          objectJson = ((ObjectNode)json).remove("object");
-        }
-      }
-
-      WatchEvent watchEvent = Serialization.jsonMapper().treeToValue(json, WatchEvent.class);
-      KubernetesResource object = null;
+      return Serialization.unmarshal(messageSource, WatchEvent.class);
+    } catch (Exception ex1) {
       try {
-        object = Serialization.jsonMapper().treeToValue(objectJson, baseOperation.getType());
-      } catch (JsonProcessingException e) {
-        object = Serialization.jsonMapper().treeToValue(objectJson, KubernetesResource.class);
+        JsonNode json = Serialization.jsonMapper().readTree(messageSource);
+        JsonNode objectJson = null;
+        if (json instanceof ObjectNode) {
+          if (json.has("object")) {
+            objectJson = ((ObjectNode) json).remove("object");
+          }
+        }
+
+        WatchEvent watchEvent = Serialization.jsonMapper().treeToValue(json, WatchEvent.class);
+        KubernetesResource object = Serialization.jsonMapper().treeToValue(objectJson, baseOperation.getType());
+
+        watchEvent.setObject(object);
+        return watchEvent;
+      } catch (JsonProcessingException ex2) {
+        throw new IllegalArgumentException("Failed to deserialize WatchEvent", ex2);
       }
-      watchEvent.setObject(object);
-      return watchEvent;
-    } catch (JsonProcessingException e) {
-      throw new RuntimeException("Failed to deserialize WatchEvent", e);
     }
   }
   
@@ -285,12 +285,10 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     try {
       WatchEvent event = readWatchEvent(message);
       Object object = event.getObject();
-      if (object instanceof HasMetadata) {
-        @SuppressWarnings("unchecked")
-        T obj = (T) object;
-        updateResourceVersion(obj.getMetadata().getResourceVersion());
-        Action action = Action.valueOf(event.getType());
-        eventReceived(action, obj);
+      if (object instanceof Status) {
+        Status status = (Status) object;
+
+        onStatus(status);
       } else if (object instanceof KubernetesResourceList) {
         // Dirty cast - should always be valid though
         KubernetesResourceList list = (KubernetesResourceList) object;
@@ -302,10 +300,12 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
             eventReceived(action, item);
           }
         }
-      } else if (object instanceof Status) {
-        Status status = (Status) object;
-      
-        onStatus(status);
+      } else if (object instanceof HasMetadata) {
+        @SuppressWarnings("unchecked")
+        T obj = (T) object;
+        updateResourceVersion(obj.getMetadata().getResourceVersion());
+        Action action = Action.valueOf(event.getType());
+        eventReceived(action, obj);
       } else {
         logger.error("Unknown message received: {}", message);
       }
