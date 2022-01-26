@@ -244,7 +244,12 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
       }
 
       WatchEvent watchEvent = Serialization.jsonMapper().treeToValue(json, WatchEvent.class);
-      T object = Serialization.jsonMapper().treeToValue(objectJson, baseOperation.getType());
+      KubernetesResource object = null;
+      try {
+        object = Serialization.jsonMapper().treeToValue(objectJson, baseOperation.getType());
+      } catch (JsonProcessingException e) {
+        object = Serialization.jsonMapper().treeToValue(objectJson, KubernetesResource.class);
+      }
       watchEvent.setObject(object);
       return watchEvent;
     } catch (JsonProcessingException e) {
