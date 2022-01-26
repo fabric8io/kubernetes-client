@@ -240,10 +240,8 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
       try {
         JsonNode json = Serialization.jsonMapper().readTree(messageSource);
         JsonNode objectJson = null;
-        if (json instanceof ObjectNode) {
-          if (json.has("object")) {
-            objectJson = ((ObjectNode) json).remove("object");
-          }
+        if (json instanceof ObjectNode && json.has("object")) {
+          objectJson = ((ObjectNode) json).remove("object");
         }
 
         WatchEvent watchEvent = Serialization.jsonMapper().treeToValue(json, WatchEvent.class);
