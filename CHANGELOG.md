@@ -3,6 +3,7 @@
 ### 6.0-SNAPSHOT
 
 #### Bugs
+* Fix #3776: VerticalPodAutoscaler cannot load yaml with "controlledResources"
 
 #### Improvements
 

@@ -83,6 +83,9 @@ class V1VerticalPodAutoscalerCrudTest {
     assertEquals("my-app-vpa", verticalPodAutoscaler.getMetadata().getName());
     assertEquals("my-app", verticalPodAutoscaler.getSpec().getTargetRef().getName());
     assertEquals("Auto", verticalPodAutoscaler.getSpec().getUpdatePolicy().getUpdateMode());
+    assertEquals("container", verticalPodAutoscaler.getSpec().getResourcePolicy().getContainerPolicies().get(0).getContainerName());
+    assertEquals(Arrays.asList("cpu", "memory"), verticalPodAutoscaler.getSpec().getResourcePolicy().getContainerPolicies().get(0).getControlledResources());
+    assertEquals("RequestsOnly", verticalPodAutoscaler.getSpec().getResourcePolicy().getContainerPolicies().get(0).getControlledValues());
   }
 
 }
