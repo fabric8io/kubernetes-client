@@ -95,7 +95,7 @@ public class OpenshiftAdapterSupport {
     if (httpClient == null) {
       httpClient = HttpClientUtils.createHttpClient(config);
     }
-    HttpClient.Builder builder = httpClient.newBuilder().authenticatorNone();
+    HttpClient.DerivedClientBuilder builder = httpClient.newBuilder().authenticatorNone();
     return builder.addOrReplaceInterceptor(TokenRefreshInterceptor.NAME, new OpenShiftOAuthInterceptor(httpClient, config)).build();
   }
 }

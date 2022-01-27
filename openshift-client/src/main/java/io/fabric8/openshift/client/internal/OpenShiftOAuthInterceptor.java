@@ -126,7 +126,7 @@ public class OpenShiftOAuthInterceptor implements Interceptor {
 
   private  String authorize() {
     try {
-      HttpClient.Builder builder = client.newBuilder();
+      HttpClient.DerivedClientBuilder builder = client.newBuilder();
       builder.addOrReplaceInterceptor(TokenRefreshInterceptor.NAME, null);
       HttpClient clone = builder.build();
 

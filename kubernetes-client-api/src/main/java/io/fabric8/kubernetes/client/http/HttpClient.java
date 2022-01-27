@@ -27,53 +27,75 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 public interface HttpClient extends AutoCloseable {
-  
+
   public interface Factory {
-      
+
     HttpClient createHttpClient(Config config);
-    
+
     HttpClient.Builder newBuilder();
 
   }
-  
-  public interface Builder {
+
+  public interface DerivedClientBuilder {
 
     HttpClient build();
 
+    DerivedClientBuilder readTimeout(long readTimeout, TimeUnit unit);
+
+    DerivedClientBuilder forStreaming();
+
+    DerivedClientBuilder authenticatorNone();
+
+    DerivedClientBuilder writeTimeout(long timeout, TimeUnit timeoutUnit);
+
+    DerivedClientBuilder addOrReplaceInterceptor(String name, Interceptor interceptor);
+  }
+
+  public interface Builder extends DerivedClientBuilder {
+
+    @Override
+    HttpClient build();
+
+    @Override
     Builder readTimeout(long readTimeout, TimeUnit unit);
 
     Builder connectTimeout(long connectTimeout, TimeUnit unit);
-    
+
+    @Override
     Builder forStreaming();
 
+    @Override
     Builder writeTimeout(long timeout, TimeUnit timeoutUnit);
-    
+
+    @Override
     Builder addOrReplaceInterceptor(String name, Interceptor interceptor);
-    
+
+    @Override
     Builder authenticatorNone();
-    
+
     Builder sslContext(SSLContext context, TrustManager[] trustManagers);
-    
+
     Builder followAllRedirects();
-    
+
     Builder proxyAddress(InetSocketAddress proxyAddress);
 
     Builder proxyAuthorization(String credentials);
 
     Builder tlsVersions(TlsVersion[] tlsVersions);
-    
+
     Builder preferHttp11();
   }
 
   @Override
   void close();
-  
+
   /**
-   * Create a builder that starts with the same state as this client
+   * Create a builder that starts with the same state as this client.
+   * <br>The client resources will be shared across derived instances.
    * @return a new builder
    */
-  Builder newBuilder();
-  
+  DerivedClientBuilder newBuilder();
+
   /**
    * Send a request an wait for the result
    * @param <T> return type
@@ -83,7 +105,7 @@ public interface HttpClient extends AutoCloseable {
    * @throws IOException
    */
   <T> HttpResponse<T> send(HttpRequest request, Class<T> type) throws IOException;
-  
+
   /**
    * Send an async request
    * @param <T> return type
@@ -94,7 +116,7 @@ public interface HttpClient extends AutoCloseable {
   <T> CompletableFuture<HttpResponse<T>> sendAsync(HttpRequest request, Class<T> type);
 
   WebSocket.Builder newWebSocketBuilder();
-  
+
   HttpRequest.Builder newHttpRequestBuilder();
 
 }
