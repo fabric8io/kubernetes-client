@@ -3,7 +3,7 @@ module github.com/fabric8io/kubernetes-client/extensions/camel-k/generator
 require (
 	contrib.go.opencensus.io/exporter/stackdriver v0.13.2 // indirect
 	github.com/apache/camel-k v1.7.0 // indirect
-	github.com/apache/camel-k/pkg/apis/camel v1.7.0
+	github.com/apache/camel-k/pkg/apis/camel v1.8.0
 	github.com/fabric8io/kubernetes-client/generator v0.0.0
 	github.com/tektoncd/pipeline v0.13.1-0.20200625065359-44f22a067b75 // indirect
 	k8s.io/apimachinery v0.21.4
