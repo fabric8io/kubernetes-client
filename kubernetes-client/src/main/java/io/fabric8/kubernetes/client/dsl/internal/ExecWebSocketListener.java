@@ -234,20 +234,13 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
             if (byteString.remaining() > 0) {
                 switch (streamID) {
                     case 1:
-                        if (out != null) {
-                          Channels.newChannel(out).write(byteString);
-                          out.flush();
-                        }
+                        writeAndFlush(out, byteString);
                         break;
                     case 2:
-                        if (err != null) {
-                          Channels.newChannel(err).write(byteString);
-                        }
+                        writeAndFlush(err, byteString);
                         break;
                     case 3:
-                        if (errChannel != null) {
-                          Channels.newChannel(errChannel).write(byteString);
-                        }
+                        writeAndFlush(errChannel, byteString);
                         break;
                     default:
                         throw new IOException("Unknown stream ID " + streamID);
@@ -257,6 +250,16 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
             throw KubernetesClientException.launderThrowable(e);
         }
     }
+
+
+  private void writeAndFlush(OutputStream stream, ByteBuffer byteString) throws IOException {
+    if (stream != null) {
+      Channels.newChannel(stream).write(byteString);
+      if (stream instanceof PipedOutputStream) {
+        stream.flush(); // immediately wake up the reader
+      }
+    }
+  }
 
   @Override
   public void onClose(WebSocket webSocket, int code, String reason) {
