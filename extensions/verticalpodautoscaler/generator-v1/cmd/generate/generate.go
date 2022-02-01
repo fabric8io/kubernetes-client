@@ -65,7 +65,7 @@ func main() {
 	// overwriting some times
 	manualTypeMap := map[reflect.Type]string{
 		reflect.TypeOf(metav1.Time{}):          "java.lang.String",
-		reflect.TypeOf([]v1.ResourceName{}):    "java.util.List<String>",
+		reflect.TypeOf([]v1.ResourceName{}):    "java.lang.String",
 		reflect.TypeOf(apiextensionsv1.JSON{}): "com.fasterxml.jackson.databind.JsonNode",
 	}
 
