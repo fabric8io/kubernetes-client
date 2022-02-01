@@ -1,5 +1,10 @@
 ## CHANGELOG
 
+### 5.12.1-SNAPSHOT
+
+#### Bugs
+* Fix #3776: VerticalPodAutoscaler cannot load yaml with "controlledResources"
+
 ### 5.12.0 (2022-01-24)
 
 #### Bugs
@@ -33,13 +38,10 @@
 * Fix #3234: Allow specifying specific localhost while port-forwarding
 * Fix #3506: Add support for Open Cluster Management extension
 
-#### _**Note**_: Breaking changes in the API
-
 ### 5.10.2 (2022-01-07)
 
 #### Bugs
 * Fix #3653: SnakeYAML uses only standard Java types
-
 
 ### 5.11.2 (2022-01-05)
 

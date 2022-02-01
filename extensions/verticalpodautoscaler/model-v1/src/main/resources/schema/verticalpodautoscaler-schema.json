@@ -12,7 +12,7 @@
           "type": "array",
           "javaOmitEmpty": true,
           "items": {
-            "existingJavaType": "java.util.List\u003cString\u003e"
+            "existingJavaType": "java.lang.String"
           }
         },
         "controlledValues": {
