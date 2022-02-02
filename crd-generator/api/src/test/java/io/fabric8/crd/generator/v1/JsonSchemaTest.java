@@ -18,6 +18,8 @@ package io.fabric8.crd.generator.v1;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.crd.example.annotated.Annotated;
 import io.fabric8.crd.example.basic.Basic;
+import io.fabric8.crd.example.extraction.IncorrectExtraction;
+import io.fabric8.crd.example.extraction.IncorrectExtraction2;
 import io.fabric8.crd.example.json.ContainingJson;
 import io.fabric8.crd.example.extraction.Extraction;
 import io.fabric8.crd.example.person.Person;
@@ -113,7 +115,7 @@ class JsonSchemaTest {
   }
 
   @Test
-  void shouldProbuceKubernetesPreserveFields() {
+  void shouldProduceKubernetesPreserveFields() {
     TypeDef containingJson = Types.typeDefFrom(ContainingJson.class);
     JSONSchemaProps schema = JsonSchema.from(containingJson);
     assertNotNull(schema);
@@ -149,7 +151,7 @@ class JsonSchemaTest {
     assertEquals(2, properties.size());
     final JSONSchemaProps specSchema = properties.get("spec");
     Map<String, JSONSchemaProps> spec = specSchema.getProperties();
-    assertEquals(1, spec.size());
+    assertEquals(2, spec.size());
 
     // check typed SchemaFrom
     JSONSchemaProps foo = spec.get("foo");
@@ -157,11 +159,34 @@ class JsonSchemaTest {
     assertNotNull(fooProps);
 
     // you can change everything
-    assertEquals(fooProps.get("BAZ").getType(), "integer");
+    assertEquals("integer", fooProps.get("BAZ").getType());
     assertTrue(foo.getRequired().contains("BAZ"));
 
     // you can exclude fields
     assertNull(fooProps.get("baz"));
+
+    // check typed SchemaSwap
+    JSONSchemaProps bar = spec.get("bar");
+    Map<String, JSONSchemaProps> barProps = bar.getProperties();
+    assertNotNull(barProps);
+
+    // you can change everything
+    assertEquals("integer", barProps.get("BAZ").getType());
+    assertTrue(bar.getRequired().contains("BAZ"));
+
+    // you can exclude fields
+    assertNull(barProps.get("baz"));
   }
 
+  @Test
+  void shouldThrowIfSchemaSwapHasUnmatchedField() {
+    TypeDef incorrectExtraction = Types.typeDefFrom(IncorrectExtraction.class);
+    assertThrows(IllegalArgumentException.class, () -> JsonSchema.from(incorrectExtraction));
+  }
+
+  @Test
+  void shouldThrowIfSchemaSwapHasUnmatchedClass() {
+    TypeDef incorrectExtraction2 = Types.typeDefFrom(IncorrectExtraction2.class);
+    assertThrows(IllegalArgumentException.class, () -> JsonSchema.from(incorrectExtraction2));
+  }
 }
