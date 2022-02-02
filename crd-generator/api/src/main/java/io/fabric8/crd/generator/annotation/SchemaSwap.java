@@ -13,12 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.crd.example.extraction;
+package io.fabric8.crd.generator.annotation;
 
-import io.fabric8.crd.generator.annotation.SchemaSwap;
-import io.fabric8.kubernetes.client.CustomResource;
+import java.lang.annotation.*;
 
-@SchemaSwap(originalType = ExtractionSpec.class, fieldName = "bar", targetType = FooExtractor.class)
-public class Extraction extends  CustomResource<ExtractionSpec, Void> {
-
+@Target({ElementType.ANNOTATION_TYPE, ElementType.TYPE_USE, ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface SchemaSwap {
+  Class<?> originalType();
+  String fieldName();
+  Class<?> targetType() default void.class;
 }
