@@ -269,7 +269,7 @@ public class Config {
    * @return Config object
    */
   public static Config autoConfigure(String context) {
-    Config config = new Config();
+    Config config = new Config(false);
     return autoConfigure(config, context);
   }
 
