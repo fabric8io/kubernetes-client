@@ -4,6 +4,7 @@
 
 #### Bugs
 * Fix #3776: VerticalPodAutoscaler cannot load yaml with "controlledResources"
+* Fix #3772: `edit()` should not be allowed as a NonNamespaceOperation
 
 #### Improvements
 
