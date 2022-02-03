@@ -128,7 +128,7 @@ public class PatchIT {
     // When
     ConfigMap configMapFromServer = client.configMaps().inNamespace(currentNamespace).withName(name).get();
     configMapFromServer.setData(Collections.singletonMap("foo", "bar"));
-    ConfigMap patchedConfigMap = client.configMaps().patch(configMapFromServer);
+    ConfigMap patchedConfigMap = client.configMaps().inNamespace(currentNamespace).withName(name).patch(configMapFromServer);
 
     // Then
     assertThat(patchedConfigMap).isNotNull();
@@ -148,7 +148,7 @@ public class PatchIT {
     // concurrent change to empty
     ConfigMap baseCopy = new ConfigMapBuilder(base).build();
     baseCopy.setData(Collections.emptyMap());
-    client.configMaps().patch(baseCopy);
+    client.configMaps().inNamespace(currentNamespace).withName(name).patch(baseCopy);
 
     // concurrent change to empty
     ConfigMap baseCopy2 = new ConfigMapBuilder(base).build();
