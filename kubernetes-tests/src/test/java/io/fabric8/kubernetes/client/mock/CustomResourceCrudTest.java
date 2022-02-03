@@ -175,7 +175,7 @@ class CustomResourceCrudTest {
 
     cronTab.getMetadata().setLabels(labels);
 
-    result = cronTabClient.replace(cronTab);
+    result = cronTabClient.withName(cronTab.getMetadata().getName()).replace(cronTab);
 
     String originalUid = result.getMetadata().getUid();
 
@@ -187,13 +187,13 @@ class CustomResourceCrudTest {
     labels.put("other", "label");
     cronTab.setStatus(null);
 
-    result = cronTabClient.replace(cronTab);
+    result = cronTabClient.withName(cronTab.getMetadata().getName()).replace(cronTab);
 
     // should retain the existing
     assertNotNull(result.getStatus());
 
     labels.put("another", "label");
-    result = cronTabClient.patch(cronTab);
+    result = cronTabClient.withName(cronTab.getMetadata().getName()).patch(cronTab);
 
     // should retain the existing
     assertNotNull(result.getStatus());
@@ -220,7 +220,7 @@ class CustomResourceCrudTest {
 
     result.setStatus(status);
 
-    result = cronTabClient.patchStatus(result);
+    result = cronTabClient.withName(cronTab.getMetadata().getName()).patchStatus(result);
     assertNotNull(result.getStatus());
   }
 

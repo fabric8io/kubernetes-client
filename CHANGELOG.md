@@ -6,6 +6,7 @@
 * Fix #3786: Deserialize WatchEvents using the specific object type
 * Fix #3776: VerticalPodAutoscaler cannot load yaml with "controlledResources"
 * Fix #3796: Limit usage of YAML Serializer
+* Fix #3772: `edit()` should not be allowed as a NonNamespaceOperation
 
 ### 5.12.0 (2022-01-24)
 
