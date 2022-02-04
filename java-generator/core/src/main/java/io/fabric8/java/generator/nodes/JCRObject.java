@@ -18,6 +18,7 @@ package io.fabric8.java.generator.nodes;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.expr.Name;
+import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
@@ -31,13 +32,24 @@ public class JCRObject extends AbstractJSONSchema2Pojo {
     private final boolean withSpec;
     private final boolean withStatus;
 
+    private final boolean storage;
+    private final boolean served;
+
     public JCRObject(
-            String type, String group, String version, boolean withSpec, boolean withStatus) {
+            String type,
+            String group,
+            String version,
+            boolean withSpec,
+            boolean withStatus,
+            boolean storage,
+            boolean served) {
         this.type = type;
         this.group = group;
         this.version = version;
         this.withSpec = withSpec;
         this.withStatus = withStatus;
+        this.storage = storage;
+        this.served = served;
     }
 
     @Override
@@ -53,7 +65,13 @@ public class JCRObject extends AbstractJSONSchema2Pojo {
         clz.addAnnotation(
                 new SingleMemberAnnotationExpr(
                         new Name("io.fabric8.kubernetes.model.annotation.Version"),
-                        new StringLiteralExpr(version)));
+                        new NameExpr(
+                                "value = \""
+                                        + version
+                                        + "\" , storage = "
+                                        + storage
+                                        + " , served = "
+                                        + served)));
         clz.addAnnotation(
                 new SingleMemberAnnotationExpr(
                         new Name("io.fabric8.kubernetes.model.annotation.Group"),
