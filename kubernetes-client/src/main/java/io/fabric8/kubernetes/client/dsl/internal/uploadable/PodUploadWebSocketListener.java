@@ -22,7 +22,6 @@ import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -62,7 +61,7 @@ public class PodUploadWebSocketListener implements WebSocket.Listener {
           }
         } catch (Exception e) {
           // can't determine an exit code, just use the whole message as the error
-        }  
+        }
       }
       if (exception == null) {
         exception = new KubernetesClientException(stringValue);
@@ -70,7 +69,7 @@ public class PodUploadWebSocketListener implements WebSocket.Listener {
       completeFuture.completeExceptionally(exception);
     }
   }
-  
+
   @Override
   public void onClose(WebSocket webSocket, int code, String reason) {
     completeFuture.complete(null);
@@ -92,11 +91,11 @@ public class PodUploadWebSocketListener implements WebSocket.Listener {
     }
   }
 
-  final void waitUntilReady(int timeoutMilliseconds) throws IOException, InterruptedException {
+  final void waitUntilReady(int timeoutMilliseconds) {
     Utils.waitUntilReadyOrFail(webSocketRef, timeoutMilliseconds, TimeUnit.MILLISECONDS);
   }
 
-  final void waitUntilComplete(int timeoutMilliseconds) throws IOException, InterruptedException {
+  final void waitUntilComplete(int timeoutMilliseconds) throws InterruptedException {
     while (webSocketRef.getNow(null).queueSize() > 0 && !completeFuture.isDone()) {
       checkError();
       Thread.sleep(50);
@@ -125,7 +124,7 @@ public class PodUploadWebSocketListener implements WebSocket.Listener {
       Thread.currentThread().interrupt();
     }
   }
-  
+
   private int parseExitCode(Status status) {
     if ("Success".equals(status.getStatus())) {
       return 0;
