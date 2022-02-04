@@ -62,6 +62,7 @@ public class CRGeneratorRunner {
         List<WritableCRCompilationUnit> writableCUs = new ArrayList<>(crSpec.getVersions().size());
         for (CustomResourceDefinitionVersion crdv : crSpec.getVersions()) {
             CompilationUnit cu = new CompilationUnit();
+            AbstractJSONSchema2Pojo.resetClassNames();
 
             String version = crdv.getName();
 

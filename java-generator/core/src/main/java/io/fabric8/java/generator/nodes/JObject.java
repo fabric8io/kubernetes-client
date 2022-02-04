@@ -15,14 +15,12 @@
  */
 package io.fabric8.java.generator.nodes;
 
-import static io.fabric8.java.generator.nodes.Keywords.ADDITIONAL_PROPERTIES;
-import static io.fabric8.java.generator.nodes.Keywords.JAVA_UTIL_MAP;
+import static io.fabric8.java.generator.nodes.Keywords.*;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.github.javaparser.ast.body.EnumDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.*;
@@ -64,17 +62,18 @@ public class JObject extends AbstractJSONSchema2Pojo {
         String nextPrefix = options.getPrefix();
         String nextSuffix = options.getSuffix();
 
-        if (type.toLowerCase(Locale.ROOT).equals("spec")) {
+        if (type.toLowerCase(Locale.ROOT).endsWith("spec")) {
             nextPrefix = "";
             nextSuffix = "Spec";
         }
 
         this.type =
-                AbstractJSONSchema2Pojo.sanitizeString(
-                        options.getPrefix()
-                                + type.substring(0, 1).toUpperCase()
-                                + type.substring(1)
-                                + options.getSuffix());
+                AbstractJSONSchema2Pojo.uniqueClassName(
+                        AbstractJSONSchema2Pojo.sanitizeString(
+                                options.getPrefix()
+                                        + type.substring(0, 1).toUpperCase()
+                                        + type.substring(1)
+                                        + options.getSuffix()));
 
         if (fields == null) {
             // no fields
@@ -94,26 +93,7 @@ public class JObject extends AbstractJSONSchema2Pojo {
         return this.type;
     }
 
-    @Override
-    public GeneratorResult generateJava(CompilationUnit cu) {
-        ClassOrInterfaceDeclaration clz = cu.getClassByName(this.type).orElse(null);
-
-        if (clz != null) {
-            // TODO: investigate a more nested structure for the generated code
-            LOGGER.warn(
-                    "A class named {} has been already processed, if this class have multiple implementations the resulting code might be incorrect",
-                    this.type);
-            return new GeneratorResult();
-        }
-
-        clz = cu.addClass(this.type);
-
-        clz.addAnnotation(
-                new SingleMemberAnnotationExpr(
-                        new Name("com.fasterxml.jackson.annotation.JsonInclude"),
-                        new NameExpr(
-                                "com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL")));
-
+    private String toStringSortedFields() {
         List<String> sortedFields =
                 this.fields.keySet().stream().sorted().collect(Collectors.toList());
         StringBuilder sb = new StringBuilder();
@@ -126,10 +106,20 @@ public class JObject extends AbstractJSONSchema2Pojo {
         }
         sb.append("}");
 
+        return sb.toString();
+    }
+
+    private void addClassAnnotations(ClassOrInterfaceDeclaration clz) {
+        clz.addAnnotation(
+                new SingleMemberAnnotationExpr(
+                        new Name("com.fasterxml.jackson.annotation.JsonInclude"),
+                        new NameExpr(
+                                "com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL")));
+
         clz.addAnnotation(
                 new SingleMemberAnnotationExpr(
                         new Name("com.fasterxml.jackson.annotation.JsonPropertyOrder"),
-                        new NameExpr(sb.toString())));
+                        new NameExpr(toStringSortedFields())));
 
         clz.addAnnotation(
                 new SingleMemberAnnotationExpr(
@@ -162,34 +152,37 @@ public class JObject extends AbstractJSONSchema2Pojo {
                                         + "}")));
 
         clz.addImplementedType("io.fabric8.kubernetes.api.model.KubernetesResource");
+    }
+
+    @Override
+    public GeneratorResult generateJava(CompilationUnit cu) {
+        ClassOrInterfaceDeclaration clz = cu.addClass(this.type);
+
+        addClassAnnotations(clz);
 
         if (this.options.isPreserveUnknownFields()) {
-            if (!clz.getFieldByName(ADDITIONAL_PROPERTIES).isPresent()) {
-                ClassOrInterfaceType mapType =
-                        new ClassOrInterfaceType()
-                                .setName(JAVA_UTIL_MAP)
-                                .setTypeArguments(
-                                        new ClassOrInterfaceType().setName("String"),
-                                        new ClassOrInterfaceType().setName("Object"));
-                FieldDeclaration objField =
-                        clz.addField(mapType, ADDITIONAL_PROPERTIES, Modifier.Keyword.PRIVATE);
-                objField.setVariables(
-                        new NodeList<>(
-                                new VariableDeclarator()
-                                        .setName(ADDITIONAL_PROPERTIES)
-                                        .setType(mapType)
-                                        .setInitializer(
-                                                "new java.util.HashMap<String, Object>()")));
+            String fieldName =
+                    clz.getFieldByName(ADDITIONAL_PROPERTIES).isPresent()
+                            ? GENERATED_ADDITIONAL_PROPERTIES
+                            : ADDITIONAL_PROPERTIES;
+            ClassOrInterfaceType mapType =
+                    new ClassOrInterfaceType()
+                            .setName(JAVA_UTIL_MAP)
+                            .setTypeArguments(
+                                    new ClassOrInterfaceType().setName("String"),
+                                    new ClassOrInterfaceType().setName("Object"));
+            FieldDeclaration objField = clz.addField(mapType, fieldName, Modifier.Keyword.PRIVATE);
+            objField.setVariables(
+                    new NodeList<>(
+                            new VariableDeclarator()
+                                    .setName(fieldName)
+                                    .setType(mapType)
+                                    .setInitializer("new java.util.HashMap<String, Object>()")));
 
-                objField.addAnnotation("com.fasterxml.jackson.annotation.JsonIgnore");
+            objField.addAnnotation("com.fasterxml.jackson.annotation.JsonIgnore");
 
-                objField.createGetter()
-                        .addAnnotation("com.fasterxml.jackson.annotation.JsonAnyGetter");
-                objField.createSetter()
-                        .addAnnotation("com.fasterxml.jackson.annotation.JsonAnySetter");
-            } else {
-                // Warning ???
-            }
+            objField.createGetter().addAnnotation("com.fasterxml.jackson.annotation.JsonAnyGetter");
+            objField.createSetter().addAnnotation("com.fasterxml.jackson.annotation.JsonAnySetter");
         }
 
         List<String> buffer = new ArrayList<>(this.fields.size() + 1);
@@ -205,13 +198,8 @@ public class JObject extends AbstractJSONSchema2Pojo {
             GeneratorResult gr = prop.generateJava(supportCU);
 
             // For now the inner types are only for enums
-            if (!gr.getInnerClasses().isEmpty()) {
-                for (String enumName : gr.getInnerClasses()) {
-                    Optional<EnumDeclaration> ed = supportCU.getEnumByName(enumName);
-                    if (ed.isPresent()) {
-                        clz.addMember(ed.get());
-                    }
-                }
+            for (String enumName : gr.getInnerClasses()) {
+                supportCU.getEnumByName(enumName).ifPresent(ed -> clz.addMember(ed));
             }
 
             gr = prop.generateJava(cu);
@@ -221,28 +209,29 @@ public class JObject extends AbstractJSONSchema2Pojo {
             String fieldName = AbstractJSONSchema2Pojo.sanitizeString(k);
             String fieldType = AbstractJSONSchema2Pojo.sanitizeString(prop.getType());
 
-            if (!clz.getFieldByName(fieldName).isPresent()) {
-                try {
-                    FieldDeclaration objField =
-                            clz.addField(fieldType, fieldName, Modifier.Keyword.PRIVATE);
-                    objField.addAnnotation(
-                            new SingleMemberAnnotationExpr(
-                                    new Name("com.fasterxml.jackson.annotation.JsonProperty"),
-                                    new StringLiteralExpr(originalFieldName)));
+            if (clz.getFieldByName(fieldName).isPresent()) {
+                throw new JavaGeneratorException(
+                        "Field " + fieldName + "have been already declared on class " + this.type);
+            }
 
-                    if (isRequired) {
-                        objField.addAnnotation("javax.validation.constraints.NotNull");
-                    }
+            try {
+                FieldDeclaration objField =
+                        clz.addField(fieldType, fieldName, Modifier.Keyword.PRIVATE);
+                objField.addAnnotation(
+                        new SingleMemberAnnotationExpr(
+                                new Name("com.fasterxml.jackson.annotation.JsonProperty"),
+                                new StringLiteralExpr(originalFieldName)));
 
-                    objField.createGetter();
-                    objField.createSetter();
-                } catch (Exception cause) {
-                    throw new JavaGeneratorException(
-                            "Error generating field " + fieldName + " with type " + prop.getType(),
-                            cause);
+                if (isRequired) {
+                    objField.addAnnotation("javax.validation.constraints.NotNull");
                 }
-            } else {
-                // Warning ???
+
+                objField.createGetter();
+                objField.createSetter();
+            } catch (Exception cause) {
+                throw new JavaGeneratorException(
+                        "Error generating field " + fieldName + " with type " + prop.getType(),
+                        cause);
             }
         }
         buffer.add(this.type);

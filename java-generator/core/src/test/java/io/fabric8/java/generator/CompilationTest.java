@@ -91,7 +91,7 @@ class CompilationTest {
 
         // Assert
         assertTrue(compilation.errors().isEmpty());
-        assertEquals(32, compilation.sourceFiles().size());
+        assertEquals(50, compilation.sourceFiles().size());
         assertEquals(Compilation.Status.SUCCESS, compilation.status());
     }
 
@@ -107,7 +107,7 @@ class CompilationTest {
 
         // Assert
         assertTrue(compilation.errors().isEmpty());
-        assertEquals(27, compilation.sourceFiles().size());
+        assertEquals(28, compilation.sourceFiles().size());
         assertEquals(Compilation.Status.SUCCESS, compilation.status());
     }
 
@@ -123,7 +123,7 @@ class CompilationTest {
 
         // Assert
         assertTrue(compilation.errors().isEmpty());
-        assertEquals(72, compilation.sourceFiles().size());
+        assertEquals(704, compilation.sourceFiles().size());
         assertEquals(Compilation.Status.SUCCESS, compilation.status());
     }
 
@@ -139,7 +139,7 @@ class CompilationTest {
 
         // Assert
         assertTrue(compilation.errors().isEmpty());
-        assertEquals(97, compilation.sourceFiles().size());
+        assertEquals(358, compilation.sourceFiles().size());
         assertEquals(Compilation.Status.SUCCESS, compilation.status());
     }
 
@@ -155,7 +155,7 @@ class CompilationTest {
 
         // Assert
         assertTrue(compilation.errors().isEmpty());
-        assertEquals(73, compilation.sourceFiles().size());
+        assertEquals(267, compilation.sourceFiles().size());
         assertEquals(Compilation.Status.SUCCESS, compilation.status());
     }
 

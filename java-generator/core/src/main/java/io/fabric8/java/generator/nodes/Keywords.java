@@ -82,4 +82,5 @@ public class Keywords {
     static final String JAVA_UTIL_LIST = "java.util.List";
     static final String JAVA_LANG_STRING = "java.lang.String";
     static final String ADDITIONAL_PROPERTIES = "additionalProperties";
+    static final String GENERATED_ADDITIONAL_PROPERTIES = "generatedAdditionalProperties";
 }

@@ -26,11 +26,17 @@ import com.github.javaparser.ast.body.EnumDeclaration;
 import io.fabric8.java.generator.nodes.*;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 import java.util.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class GeneratorTest {
 
     static final JObjectOptions dummyOptions = new JObjectOptions(false, "", "");
+
+    @BeforeEach
+    void beforeEach() {
+        AbstractJSONSchema2Pojo.resetClassNames();
+    }
 
     @Test
     void testCorrectInterpolationOfPackage() {
@@ -255,5 +261,49 @@ class GeneratorTest {
         Optional<ClassOrInterfaceDeclaration> clzT = cu.getClassByName("T");
         assertTrue(clzT.isPresent());
         assertTrue(clzT.get().getFieldByName("additionalProperties").isPresent());
+    }
+
+    @Test
+    void testClassNamesDisambiguation() {
+        // Arrange
+        CompilationUnit cu = new CompilationUnit();
+        Map<String, JSONSchemaProps> props = new HashMap<>();
+        JSONSchemaProps newObj1 = new JSONSchemaProps();
+        JSONSchemaProps newObj2 = new JSONSchemaProps();
+        newObj1.setType("object");
+        newObj2.setType("object");
+        Map<String, JSONSchemaProps> obj2Props = new HashMap<>();
+        obj2Props.put("o1", newObj1);
+        obj2Props.put("o2", newObj1);
+        obj2Props.put("o3", newObj1);
+        newObj2.setProperties(obj2Props);
+        props.put("o1", newObj1);
+        props.put("o2", newObj2);
+        JObject obj = new JObject("t", props, null, dummyOptions);
+
+        // Act
+        GeneratorResult res = obj.generateJava(cu);
+
+        // Assert
+        assertEquals(6, res.getTopLevelClasses().size());
+        // The order here is not important
+        assertEquals("O1", res.getTopLevelClasses().get(0));
+        assertEquals("O10", res.getTopLevelClasses().get(1));
+        assertEquals("O20", res.getTopLevelClasses().get(2));
+        assertEquals("O3", res.getTopLevelClasses().get(3));
+        assertEquals("O2", res.getTopLevelClasses().get(4));
+        assertEquals("T", res.getTopLevelClasses().get(5));
+
+        Optional<ClassOrInterfaceDeclaration> clzT = cu.getClassByName("T");
+        assertTrue(clzT.isPresent());
+        assertEquals(2, clzT.get().getFields().size());
+        assertTrue(clzT.get().getFieldByName("o1").isPresent());
+        Optional<ClassOrInterfaceDeclaration> clzO1 = cu.getClassByName("O1");
+        assertTrue(clzO1.isPresent());
+        Optional<ClassOrInterfaceDeclaration> clzO2 = cu.getClassByName("O2");
+        assertTrue(clzO2.isPresent());
+        assertTrue(clzO2.get().getFieldByName("o1").isPresent());
+        assertTrue(clzO2.get().getFieldByName("o2").isPresent());
+        assertTrue(clzO2.get().getFieldByName("o3").isPresent());
     }
 }

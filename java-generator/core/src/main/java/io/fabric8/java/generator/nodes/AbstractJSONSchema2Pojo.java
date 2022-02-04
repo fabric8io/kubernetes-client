@@ -20,6 +20,8 @@ import static io.fabric8.java.generator.nodes.Keywords.JAVA_KEYWORDS;
 import com.github.javaparser.ast.CompilationUnit;
 import io.fabric8.java.generator.exceptions.JavaGeneratorException;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.Function;
 
 public abstract class AbstractJSONSchema2Pojo {
@@ -64,6 +66,26 @@ public abstract class AbstractJSONSchema2Pojo {
         }
 
         return sanitized;
+    }
+
+    private static Set<String> classNames = new TreeSet<>();
+
+    public static void resetClassNames() {
+        classNames.clear();
+    }
+
+    public static String uniqueClassName(String name) {
+        String finalTypeName = uniqueClassName(name, name, 0);
+        classNames.add(finalTypeName);
+        return finalTypeName;
+    }
+
+    private static String uniqueClassName(String base, String name, int num) {
+        if (classNames.contains(name)) {
+            return uniqueClassName(base, base + num, num + 1);
+        } else {
+            return name;
+        }
     }
 
     public static AbstractJSONSchema2Pojo fromJsonSchema(
