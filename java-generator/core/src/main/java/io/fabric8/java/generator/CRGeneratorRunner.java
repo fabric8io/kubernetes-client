@@ -20,6 +20,7 @@ import io.fabric8.java.generator.exceptions.JavaGeneratorException;
 import io.fabric8.java.generator.nodes.AbstractJSONSchema2Pojo;
 import io.fabric8.java.generator.nodes.GeneratorResult;
 import io.fabric8.java.generator.nodes.JCRObject;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionSpec;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinitionVersion;
@@ -31,20 +32,40 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CRGeneratorRunner {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(CRGeneratorRunner.class);
+
     public void run(File source, File basePath) {
         try (FileInputStream fis = new FileInputStream(source)) {
-            // Parse CRD with fabric8
-            CustomResourceDefinition crd =
-                    Serialization.unmarshal(fis, CustomResourceDefinition.class);
+            List<HasMetadata> resources = new ArrayList<>();
 
-            List<WritableCRCompilationUnit> writables =
-                    generate(crd, getPackage(crd.getSpec().getGroup()));
+            Object deserialized = Serialization.unmarshal(fis, Collections.emptyMap());
+            if (deserialized instanceof List) {
+                resources.addAll((List<HasMetadata>) deserialized);
+            } else {
+                resources.add((CustomResourceDefinition) deserialized);
+            }
 
-            for (WritableCRCompilationUnit w : writables) {
-                w.writeAllJavaClasses(basePath);
+            for (HasMetadata resource : resources) {
+                if (resource.getKind()
+                        .toLowerCase(Locale.ROOT)
+                        .equals("customresourcedefinition")) {
+                    CustomResourceDefinition crd = (CustomResourceDefinition) resource;
+
+                    List<WritableCRCompilationUnit> writables =
+                            generate(crd, getPackage(crd.getSpec().getGroup()));
+
+                    for (WritableCRCompilationUnit w : writables) {
+                        w.writeAllJavaClasses(basePath);
+                    }
+                } else {
+                    LOGGER.warn(
+                            "Not generating nothing for resource of kind: " + resource.getKind());
+                }
             }
         } catch (FileNotFoundException e) {
             throw new JavaGeneratorException("File " + source.getAbsolutePath() + " not found", e);
