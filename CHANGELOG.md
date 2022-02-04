@@ -3,7 +3,9 @@
 ### 5.12.1-SNAPSHOT
 
 #### Bugs
+* Fix #3786: Deserialize WatchEvents using the specific object type
 * Fix #3776: VerticalPodAutoscaler cannot load yaml with "controlledResources"
+* Fix #3796: Limit usage of YAML Serializer
 
 ### 5.12.0 (2022-01-24)
 
