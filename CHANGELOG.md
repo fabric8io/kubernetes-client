@@ -6,6 +6,8 @@
 * Fix #3776: VerticalPodAutoscaler cannot load yaml with "controlledResources"
 * Fix #3772: `edit()` should not be allowed as a NonNamespaceOperation
 
+* Fix #3477: Handle exit code status messages with pod uploads
+
 #### Improvements
 
 #### Dependency Upgrade
