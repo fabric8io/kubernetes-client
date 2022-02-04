@@ -48,7 +48,7 @@ class GeneratorTest {
     void testCR() {
         // Arrange
         CompilationUnit cu = new CompilationUnit();
-        JCRObject cro = new JCRObject("t", "g", "v", true, true);
+        JCRObject cro = new JCRObject("t", "g", "v", true, true, true, true);
 
         // Act
         GeneratorResult res = cro.generateJava(cu);

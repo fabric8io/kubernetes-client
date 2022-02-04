@@ -90,7 +90,13 @@ public class CRGeneratorRunner {
 
             AbstractJSONSchema2Pojo crGenerator =
                     new JCRObject(
-                            crName, group, version, specGenerator != null, statusGenerator != null);
+                            crName,
+                            group,
+                            version,
+                            specGenerator != null,
+                            statusGenerator != null,
+                            crdv.getStorage(),
+                            crdv.getServed());
 
             List<String> classNames =
                     validateAndAggregate(cu, crGenerator, specGenerator, statusGenerator);
