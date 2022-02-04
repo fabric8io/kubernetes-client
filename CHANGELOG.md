@@ -7,6 +7,7 @@
 * Fix #3776: VerticalPodAutoscaler cannot load yaml with "controlledResources"
 * Fix #3796: Limit usage of YAML Serializer
 * Fix #3772: `edit()` should not be allowed as a NonNamespaceOperation
+* Fix #3477: Handle exit code status messages with pod uploads
 
 ### 5.12.0 (2022-01-24)
 
