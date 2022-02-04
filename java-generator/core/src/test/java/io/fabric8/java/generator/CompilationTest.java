@@ -207,6 +207,22 @@ class CompilationTest {
         assertEquals(Compilation.Status.SUCCESS, compilation.status());
     }
 
+    @Test
+    void testMultipleCRDsCompiles() throws Exception {
+        // Arrange
+        File crd = getCRD("two-crds.yml");
+        File dest = tmpFolder.newFolder("two-crds");
+
+        // Act
+        runner.run(crd, dest);
+        Compilation compilation = javac().compile(getSources(dest));
+
+        // Assert
+        assertTrue(compilation.errors().isEmpty());
+        assertEquals(6, compilation.sourceFiles().size());
+        assertEquals(Compilation.Status.SUCCESS, compilation.status());
+    }
+
     @AfterAll
     public static void afterAll() {
         tmpFolder.delete();
