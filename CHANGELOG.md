@@ -4,6 +4,8 @@
 
 #### Bugs
 
+* Fix #3477: Handle exit code status messages with pod uploads
+
 #### Improvements
 
 #### Dependency Upgrade
