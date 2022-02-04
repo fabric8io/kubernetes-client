@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 5.12.1-SNAPSHOT
+### 5.12.1 (2022-02-04)
 
 #### Bugs
 * Fix #3786: Deserialize WatchEvents using the specific object type

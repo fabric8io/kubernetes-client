@@ -22,7 +22,7 @@
   <parent>
     <artifactId>crd-generator-parent</artifactId>
     <groupId>io.fabric8</groupId>
-    <version>5.12.0</version>
+    <version>5.12.1</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
