@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudget;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudgetBuilder;
 import io.fabric8.kubernetes.api.model.policy.v1beta1.PodDisruptionBudgetSpecBuilder;
@@ -31,6 +32,7 @@ import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.internal.readiness.Readiness;
+import io.fabric8.kubernetes.client.utils.IOHelpers;
 import org.arquillian.cube.kubernetes.api.Session;
 import org.arquillian.cube.kubernetes.impl.requirement.RequiresKubernetes;
 import org.arquillian.cube.requirement.ArquillianConditionalRunner;
@@ -185,15 +187,18 @@ public class PodIT {
   }
 
   @Test
-  public void exec() throws InterruptedException {
+  public void exec() throws InterruptedException, IOException {
     // Wait for resources to get ready
     Pod pod1 = client.pods().inNamespace(session.getNamespace()).withName("pod-standard").get();
     ReadyEntity<Pod> podReady = new ReadyEntity<>(Pod.class, client, pod1.getMetadata().getName(), session.getNamespace());
     await().atMost(POD_READY_WAIT_IN_SECONDS, TimeUnit.SECONDS).until(podReady);
     final CountDownLatch execLatch = new CountDownLatch(1);
     ByteArrayOutputStream out = new ByteArrayOutputStream();
+    int[] exitCode = new int[] {Integer.MAX_VALUE};
     ExecWatch execWatch = client.pods().inNamespace(session.getNamespace()).withName(pod1.getMetadata().getName())
-      .writingOutput(out).withTTY().usingListener(new ExecListener() {
+      .writingOutput(out)
+      .redirectingErrorChannel()
+      .withTTY().usingListener(new ExecListener() {
         @Override
         public void onOpen() {
           logger.info("Shell was opened");
@@ -210,11 +215,18 @@ public class PodIT {
           logger.info("Shell closed");
           execLatch.countDown();
         }
+
+        @Override
+        public void onExit(int code, Status status) {
+          exitCode[0] = code;
+        }
       }).exec("date");
 
     execLatch.await(5, TimeUnit.SECONDS);
     assertNotNull(execWatch);
     assertNotNull(out.toString());
+    assertEquals(0, exitCode[0]);
+    assertEquals("{\"metadata\":{},\"status\":\"Success\"}", IOHelpers.readFully(execWatch.getErrorChannel()));
   }
 
   @Test

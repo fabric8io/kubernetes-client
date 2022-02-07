@@ -33,6 +33,8 @@ import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.WebSocket;
+import io.fabric8.kubernetes.client.utils.InputStreamPumper;
+import io.fabric8.kubernetes.client.utils.InputStreamPumper.Writable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -151,13 +153,13 @@ class PodUploadTest {
   @Test
   void testCopy() throws Exception {
     final ByteArrayInputStream input = new ByteArrayInputStream("I'LL BE COPIED".getBytes(Charset.defaultCharset()));
-    final ObjIntConsumer<byte[]> consumer = (bytes, length) -> {
+    final Writable consumer = (bytes, offset, length) -> {
       assertThat(length, equalTo(14));
       assertThat(new String(Arrays.copyOf(bytes, 14), Charset.defaultCharset()),
         equalTo("I'LL BE COPIED"));
     };
 
-    PodUpload.copy(input, consumer);
+    InputStreamPumper.transferTo(input, consumer);
   }
 
   @Test
