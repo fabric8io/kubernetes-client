@@ -39,6 +39,12 @@ public class CRGeneratorRunner {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CRGeneratorRunner.class);
 
+    private final Config config;
+
+    public CRGeneratorRunner(Config config) {
+        this.config = config;
+    }
+
     public void run(File source, File basePath) {
         try (FileInputStream fis = new FileInputStream(source)) {
             List<HasMetadata> resources = new ArrayList<>();
@@ -98,7 +104,8 @@ public class CRGeneratorRunner {
             JSONSchemaProps spec =
                     crdv.getSchema().getOpenAPIV3Schema().getProperties().get("spec");
             if (spec != null) {
-                specGenerator = AbstractJSONSchema2Pojo.fromJsonSchema("spec", spec, crName, "");
+                specGenerator =
+                        AbstractJSONSchema2Pojo.fromJsonSchema("spec", spec, crName, "", config);
             }
 
             AbstractJSONSchema2Pojo statusGenerator = null;
@@ -106,7 +113,8 @@ public class CRGeneratorRunner {
                     crdv.getSchema().getOpenAPIV3Schema().getProperties().get("status");
             if (status != null) {
                 statusGenerator =
-                        AbstractJSONSchema2Pojo.fromJsonSchema("status", status, crName, "");
+                        AbstractJSONSchema2Pojo.fromJsonSchema(
+                                "status", status, crName, "", config);
             }
 
             AbstractJSONSchema2Pojo crGenerator =
@@ -117,7 +125,8 @@ public class CRGeneratorRunner {
                             specGenerator != null,
                             statusGenerator != null,
                             crdv.getStorage(),
-                            crdv.getServed());
+                            crdv.getServed(),
+                            config);
 
             List<String> classNames =
                     validateAndAggregate(cu, crGenerator, specGenerator, statusGenerator);

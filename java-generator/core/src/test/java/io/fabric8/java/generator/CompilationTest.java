@@ -39,7 +39,7 @@ class CompilationTest {
 
     private static TemporaryFolder tmpFolder = TemporaryFolder.builder().build();
 
-    CRGeneratorRunner runner = new CRGeneratorRunner();
+    CRGeneratorRunner runner = new CRGeneratorRunner(new Config());
 
     List<JavaFileObject> getSources(File basePath) throws IOException {
         List<JavaFileObject> sources = new ArrayList<JavaFileObject>();

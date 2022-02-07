@@ -28,8 +28,8 @@ Usage: java-gen [-hV] -crd=<crdFile> -dest=<destFolder>
 
 ### Formatting code
 
-Code formatting is automated but remember to fix the headers before committing:
+Code formatting is automated but remember to fix the headers before committing, e.g.:
 
 ```bash
-mvn license:format -f java-generator/pom.xml
+mvn spotless:apply license:format -f java-generator/pom.xml
 ```

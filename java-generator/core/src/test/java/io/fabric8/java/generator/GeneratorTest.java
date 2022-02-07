@@ -31,11 +31,12 @@ import org.junit.jupiter.api.Test;
 class GeneratorTest {
 
     static final JObjectOptions dummyOptions = new JObjectOptions(false, "", "");
+    static final Config defaultConfig = new Config();
 
     @Test
     void testCorrectInterpolationOfPackage() {
         // Arrange
-        CRGeneratorRunner runner = new CRGeneratorRunner();
+        CRGeneratorRunner runner = new CRGeneratorRunner(defaultConfig);
 
         // Act
         String packageName = runner.getPackage("test.org");
@@ -48,7 +49,7 @@ class GeneratorTest {
     void testCR() {
         // Arrange
         CompilationUnit cu = new CompilationUnit();
-        JCRObject cro = new JCRObject("t", "g", "v", true, true, true, true);
+        JCRObject cro = new JCRObject("t", "g", "v", true, true, true, true, defaultConfig);
 
         // Act
         GeneratorResult res = cro.generateJava(cu);
@@ -61,7 +62,7 @@ class GeneratorTest {
     @Test
     void testPrimitive() {
         // Arrange
-        JPrimitive primitive = new JPrimitive("test");
+        JPrimitive primitive = new JPrimitive("test", defaultConfig, null);
 
         // Act
         GeneratorResult res = primitive.generateJava(new CompilationUnit());
@@ -74,7 +75,8 @@ class GeneratorTest {
     @Test
     void testArrayOfPrimitives() {
         // Arrange
-        JArray array = new JArray(new JPrimitive("primitive"));
+        JArray array =
+                new JArray(new JPrimitive("primitive", defaultConfig, null), defaultConfig, null);
 
         // Act
         GeneratorResult res = array.generateJava(new CompilationUnit());
@@ -87,7 +89,7 @@ class GeneratorTest {
     @Test
     void testMapOfPrimitives() {
         // Arrange
-        JMap map = new JMap(new JPrimitive("primitive"));
+        JMap map = new JMap(new JPrimitive("primitive", defaultConfig, null), defaultConfig, null);
 
         // Act
         GeneratorResult res = map.generateJava(new CompilationUnit());
@@ -100,7 +102,7 @@ class GeneratorTest {
     @Test
     void testEmptyObject() {
         // Arrange
-        JObject obj = new JObject("t", null, null, dummyOptions);
+        JObject obj = new JObject("t", null, null, dummyOptions, defaultConfig, null);
 
         // Act
         GeneratorResult res = obj.generateJava(new CompilationUnit());
@@ -119,7 +121,7 @@ class GeneratorTest {
         JSONSchemaProps newBool = new JSONSchemaProps();
         newBool.setType("boolean");
         props.put("o1", newBool);
-        JObject obj = new JObject("t", props, null, dummyOptions);
+        JObject obj = new JObject("t", props, null, dummyOptions, defaultConfig, null);
 
         // Act
         GeneratorResult res = obj.generateJava(cu);
@@ -145,7 +147,7 @@ class GeneratorTest {
         props.put("o1", newBool);
         List<String> req = new ArrayList<>(1);
         req.add("o1");
-        JObject obj = new JObject("t", props, req, dummyOptions);
+        JObject obj = new JObject("t", props, req, dummyOptions, defaultConfig, null);
 
         // Act
         GeneratorResult res = obj.generateJava(cu);
@@ -156,7 +158,7 @@ class GeneratorTest {
     }
 
     @Test
-    void testEnum() {
+    void testDefaultEnum() {
         // Arrange
         CompilationUnit cu = new CompilationUnit();
         Map<String, JSONSchemaProps> props = new HashMap<>();
@@ -167,7 +169,37 @@ class GeneratorTest {
         enumValues.add(new TextNode("bar"));
         enumValues.add(new TextNode("baz"));
         props.put("e1", newEnum);
-        JEnum enu = new JEnum("t", enumValues);
+        JEnum enu = new JEnum("t", enumValues, defaultConfig, null);
+
+        // Act
+        GeneratorResult res = enu.generateJava(cu);
+
+        // Assert
+        assertEquals("T", enu.getType());
+        assertEquals(1, res.getInnerClasses().size());
+        assertEquals("T", res.getInnerClasses().get(0));
+
+        Optional<EnumDeclaration> en = cu.getEnumByName("T");
+        assertTrue(en.isPresent());
+        assertEquals(3, en.get().getEntries().size());
+        assertEquals("FOO", en.get().getEntries().get(0).getName().asString());
+        assertEquals("BAR", en.get().getEntries().get(1).getName().asString());
+        assertEquals("BAZ", en.get().getEntries().get(2).getName().asString());
+    }
+
+    @Test
+    void testNotUppercaseEnum() {
+        // Arrange
+        CompilationUnit cu = new CompilationUnit();
+        Map<String, JSONSchemaProps> props = new HashMap<>();
+        JSONSchemaProps newEnum = new JSONSchemaProps();
+        newEnum.setType("string");
+        List<JsonNode> enumValues = new ArrayList<>();
+        enumValues.add(new TextNode("foo"));
+        enumValues.add(new TextNode("bar"));
+        enumValues.add(new TextNode("baz"));
+        props.put("e1", newEnum);
+        JEnum enu = new JEnum("t", enumValues, new Config(false), null);
 
         // Act
         GeneratorResult res = enu.generateJava(cu);
@@ -188,7 +220,11 @@ class GeneratorTest {
     @Test
     void testArrayOfObjects() {
         // Arrange
-        JArray array = new JArray(new JObject("t", null, null, dummyOptions));
+        JArray array =
+                new JArray(
+                        new JObject("t", null, null, dummyOptions, defaultConfig, null),
+                        defaultConfig,
+                        null);
 
         // Act
         GeneratorResult res = array.generateJava(new CompilationUnit());
@@ -202,7 +238,11 @@ class GeneratorTest {
     @Test
     void testMapOfObjects() {
         // Arrange
-        JMap map = new JMap(new JObject("t", null, null, dummyOptions));
+        JMap map =
+                new JMap(
+                        new JObject("t", null, null, dummyOptions, defaultConfig, null),
+                        defaultConfig,
+                        null);
 
         // Act
         GeneratorResult res = map.generateJava(new CompilationUnit());
@@ -221,7 +261,7 @@ class GeneratorTest {
         JSONSchemaProps newObj = new JSONSchemaProps();
         newObj.setType("object");
         props.put("o1", newObj);
-        JObject obj = new JObject("t", props, null, dummyOptions);
+        JObject obj = new JObject("t", props, null, dummyOptions, defaultConfig, null);
 
         // Act
         GeneratorResult res = obj.generateJava(cu);
@@ -243,7 +283,8 @@ class GeneratorTest {
     void testObjectWithPreservedFields() {
         // Arrange
         CompilationUnit cu = new CompilationUnit();
-        JObject obj = new JObject("t", null, null, new JObjectOptions(true, "", ""));
+        JObject obj =
+                new JObject("t", null, null, new JObjectOptions(true, "", ""), defaultConfig, null);
 
         // Act
         GeneratorResult res = obj.generateJava(cu);
