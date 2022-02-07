@@ -157,7 +157,7 @@ class TypedClusterScopeCustomResourceApiTest {
       server.expect().put().withPath("/apis/example.crd.com/v1alpha1/stars/sun/status").andReturn(200, "{\"apiVersion\":\"example.crd.com/v1alpha1\",\"kind\":\"Star\",\"metadata\":{\"name\":\"sun\",\"resourceVersion\":\"2\"},\"spec\":{\"type\":\"G\",\"location\":\"Galaxy\"},\"status\":{\"location\":\"M\"}}").once();
       starClient = client.customResources(Star.class);
 
-      Star replaced = starClient.inNamespace("test").withName(updatedStar.getMetadata().getName()).replaceStatus(updatedStar);
+      Star replaced = starClient.inNamespace("test").replaceStatus(updatedStar);
       assertEquals("2", replaced.getMetadata().getResourceVersion());
       RecordedRequest recordedRequest = server.getLastRequest();
       // get of the latest version, put of status
