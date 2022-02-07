@@ -61,7 +61,7 @@ public class RouteTest {
                 .withNewSpec()
                 .withHost("www.example.com")
                 .withPath("/test")
-                .withNewPort().withNewTargetPort().withIntVal(8080).endTargetPort().endPort()
+                .withNewPort().withNewTargetPort().withValue(8080).endTargetPort().endPort()
                 .withNewTo().withKind("Service")
                             .withName("fabric8-maven-sample-zero-config")
                             .withWeight(5)
