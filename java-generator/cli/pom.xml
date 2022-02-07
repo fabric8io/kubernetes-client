@@ -118,7 +118,7 @@
     <plugin>
         <groupId>org.skife.maven</groupId>
         <artifactId>really-executable-jar-maven-plugin</artifactId>
-        <version>1.4.1</version>
+        <version>1.5.0</version>
         <configuration>
             <flags>-Xmx1G</flags>
             <programFile>java-gen</programFile>
