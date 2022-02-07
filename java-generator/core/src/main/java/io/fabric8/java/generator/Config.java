@@ -13,11 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import static org.junit.jupiter.api.Assertions.assertEquals
+package io.fabric8.java.generator;
 
-// TODO: This should be modified to test against the current extension sources
-assertEquals(
-  new File(basedir, "/expected/AuthSpec.expected").getText("UTF-8").replace("\r\n", "\n"),
-  new File(basedir, "/target/generated-sources/java/io/cert_manager/v1/AuthSpec.java").getText("UTF-8").replace("\r\n", "\n")
-)
+public class Config {
+    private static final boolean DEFAULT_UPPERCASE_ENUM = true;
 
+    private Boolean uppercaseEnums = DEFAULT_UPPERCASE_ENUM;
+
+    public Config() {}
+
+    public Config(Boolean uppercaseEnums) {
+        if (uppercaseEnums != null) {
+            this.uppercaseEnums = uppercaseEnums;
+        }
+    }
+
+    public boolean isUppercaseEnums() {
+        return (uppercaseEnums == null) ? DEFAULT_UPPERCASE_ENUM : uppercaseEnums;
+    }
+}

@@ -16,6 +16,7 @@
 package io.fabric8.java.generator.cli;
 
 import io.fabric8.java.generator.CRGeneratorRunner;
+import io.fabric8.java.generator.Config;
 import java.io.File;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
@@ -40,9 +41,16 @@ public class GenerateJavaSources implements Runnable {
             required = true)
     File destFolder;
 
+    @Option(
+            names = {"-enum-uppercase", "--enum-uppercase"},
+            description = "Uppercase the enum values",
+            required = false)
+    Boolean uppercaseEnum = null;
+
     @Override
     public void run() {
-        CRGeneratorRunner runner = new CRGeneratorRunner();
+        final Config config = new Config(uppercaseEnum);
+        final CRGeneratorRunner runner = new CRGeneratorRunner(config);
         runner.run(crdFile, destFolder);
     }
 

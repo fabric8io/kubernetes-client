@@ -16,31 +16,37 @@
 package io.fabric8.java.generator.maven.plugin;
 
 import io.fabric8.java.generator.CRGeneratorRunner;
+import io.fabric8.java.generator.Config;
+import java.io.File;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
-import java.io.File;
-
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
 public class JavaGeneratorMojo extends AbstractMojo {
 
-  @Parameter(defaultValue = "${project}")
-  private MavenProject project;
+    @Parameter(defaultValue = "${project}")
+    private MavenProject project;
 
-  // TODO: Modify CRGeneratorRunner to allow passing in a directory too
-  @Parameter(property = "fabric8.java-generator.source", required = true)
-  File crdFile;
+    // TODO: Modify CRGeneratorRunner to allow passing in a directory too
+    @Parameter(property = "fabric8.java-generator.source", required = true)
+    File crdFile;
 
-  @Parameter(property = "fabric8.java-generator.target", defaultValue = "${basedir}/target/generated-sources/java")
-  File targetDirectory;
+    @Parameter(
+            property = "fabric8.java-generator.target",
+            defaultValue = "${basedir}/target/generated-sources/java")
+    File targetDirectory;
 
-  @Override
-  public void execute() {
-    final CRGeneratorRunner runner = new CRGeneratorRunner();
-    runner.run(crdFile, targetDirectory);
-    project.addCompileSourceRoot(targetDirectory.getAbsolutePath());
-  }
+    @Parameter(property = "fabric8.java-generator.enum-uppercase", required = false)
+    Boolean enumUppercase = null;
+
+    @Override
+    public void execute() {
+        final Config config = new Config(enumUppercase);
+        final CRGeneratorRunner runner = new CRGeneratorRunner(config);
+        runner.run(crdFile, targetDirectory);
+        project.addCompileSourceRoot(targetDirectory.getAbsolutePath());
+    }
 }

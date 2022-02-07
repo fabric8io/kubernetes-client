@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Test;
 
 class ApprovalTest {
 
-    CRGeneratorRunner runner = new CRGeneratorRunner();
+    CRGeneratorRunner runner = new CRGeneratorRunner(new Config());
 
     CustomResourceDefinition getCRD(String name) {
         return Serialization.unmarshal(

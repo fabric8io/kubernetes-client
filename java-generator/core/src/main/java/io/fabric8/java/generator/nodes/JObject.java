@@ -27,6 +27,7 @@ import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.*;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
+import io.fabric8.java.generator.Config;
 import io.fabric8.java.generator.exceptions.JavaGeneratorException;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -50,25 +51,16 @@ public class JObject extends AbstractJSONSchema2Pojo {
     private final String type;
     private final Map<String, AbstractJSONSchema2Pojo> fields;
     private final Set<String> required;
-    private JObjectOptions options;
+    private final JObjectOptions options;
 
-    public JObject(
-        String type,
-        Map<String, JSONSchemaProps> fields,
-        List<String> required,
-        JObjectOptions options) {
-        this(type, fields, required, options, null);
-    }
-    
     public JObject(
             String type,
             Map<String, JSONSchemaProps> fields,
             List<String> required,
             JObjectOptions options,
+            Config config,
             String description) {
-
-        super(description);
-
+        super(config, description);
         this.options = options;
         this.required =
                 new HashSet<>(Optional.ofNullable(required).orElse(Collections.emptyList()));
@@ -97,7 +89,11 @@ public class JObject extends AbstractJSONSchema2Pojo {
                     this.fields.put(
                             field.getKey(),
                             AbstractJSONSchema2Pojo.fromJsonSchema(
-                                    field.getKey(), field.getValue(), nextPrefix, nextSuffix));
+                                    field.getKey(),
+                                    field.getValue(),
+                                    nextPrefix,
+                                    nextSuffix,
+                                    config));
             }
         }
     }
@@ -251,7 +247,7 @@ public class JObject extends AbstractJSONSchema2Pojo {
                     objField.createSetter();
 
                     if (Utils.isNotNullOrEmpty(prop.getDescription())) {
-                      objField.setJavadocComment(prop.getDescription());
+                        objField.setJavadocComment(prop.getDescription());
                     }
                 } catch (Exception cause) {
                     throw new JavaGeneratorException(
