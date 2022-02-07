@@ -4,6 +4,7 @@
 #### Bugs
 
 #### Improvements
+* Fix #3811: Reintroduce `Replaceable` interface in `NonNamespaceOperation`
 
 #### Dependency Upgrade
 * Fix #3788: Point CamelK Extension model to latest released version v1.8.0

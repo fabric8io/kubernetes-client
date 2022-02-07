@@ -28,6 +28,8 @@ public interface NonNamespaceOperation<T, L, R> extends
   Createable<T>,
   CreateOrReplaceable<T>,
   DryRunable<WritableOperation<T>>,
+  Replaceable<T>,
+  StatusReplaceable<T>,
   Loadable<R> {
 }
 
