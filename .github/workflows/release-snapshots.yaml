@@ -1,0 +1,92 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+name: Release to SNAPSHOTS Maven Central
+
+on:
+  workflow_dispatch:
+    inputs:
+      additional_args:
+        description: Additional Maven Args
+        required: false
+        default: ''
+  schedule:
+    - cron: '0 2 * * *' # Every day at 2am
+
+env:
+  MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e ${{ github.event.inputs.additional_args }}
+  RELEASE_MAVEN_ARGS: -Prelease -Denforcer.skip=true
+  OSSRHUSERNAME: ${{ secrets.OSSRHUSERNAME }}
+  OSSRHPASSWORD: ${{ secrets.OSSRHPASSWORD }}
+  SIGNINGPASSWORD: ${{ secrets.SIGNINGPASSWORD }}
+
+#permissions:
+#  contents: read
+
+jobs:
+  build-release-java-8-snapshot:
+    name: Release Java 8 SNAPSHOT
+    # Cheap way to prevent accidental releases
+    # Modify the list to add users with release permissions
+    if: contains('["manusa","rohanKanojia"]', github.actor)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Cache .m2 registry
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: cache-snapshot-release-${{ github.sha }}-${{ github.run_id }}
+      - name: Setup Java 8
+        uses: actions/setup-java@v3
+        with:
+          java-version: 8
+          distribution: temurin
+          server-id: ossrh
+          server-username: OSSRHUSERNAME
+          server-password: OSSRHPASSWORD
+          gpg-private-key: ${{ secrets.SIGNINGKEY }}
+          gpg-passphrase: SIGNINGPASSWORD
+      - name: Build and release Java 8 modules
+        run: ./mvnw ${MAVEN_ARGS} ${RELEASE_MAVEN_ARGS} clean deploy
+  build-release-java-11-snapshot:
+    needs: build-release-java-8-snapshot
+    name: Release Java 11 SNAPSHOT
+    # Cheap way to prevent accidental releases
+    # Modify the list to add users with release permissions
+    if: contains('["manusa","rohanKanojia"]', github.actor)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Cache .m2 registry
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: cache-snapshot-release-${{ github.sha }}-${{ github.run_id }}
+      - name: Setup Java 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: 11
+          distribution: temurin
+          server-id: ossrh
+          server-username: OSSRHUSERNAME
+          server-password: OSSRHPASSWORD
+          gpg-private-key: ${{ secrets.SIGNINGKEY }}
+          gpg-passphrase: SIGNINGPASSWORD
+      - name: Build and release Java 11 modules
+        run: ./mvnw ${MAVEN_ARGS} ${RELEASE_MAVEN_ARGS} -pl "httpclient-jdk" -pl "httpclient-jetty" clean deploy
