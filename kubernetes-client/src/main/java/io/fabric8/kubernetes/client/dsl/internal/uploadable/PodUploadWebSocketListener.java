@@ -16,15 +16,14 @@
 package io.fabric8.kubernetes.client.dsl.internal.uploadable;
 
 import io.fabric8.kubernetes.api.model.Status;
-import io.fabric8.kubernetes.api.model.StatusCause;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.internal.ExecWebSocketListener;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.TimeUnit;
@@ -53,7 +52,7 @@ public class PodUploadWebSocketListener implements WebSocket.Listener {
         try {
           Status status = Serialization.unmarshal(stringValue, Status.class);
           if (status != null) {
-            if (parseExitCode(status) == 0) {
+            if (ExecWebSocketListener.parseExitCode(status) == 0) {
               completeFuture.complete(null);
               return;
             }
@@ -105,12 +104,12 @@ public class PodUploadWebSocketListener implements WebSocket.Listener {
     checkError();
   }
 
-  final void send(byte[] data, int length) {
+  final void send(byte[] data, int offset, int length) {
     checkError();
     waitForQueue(length);
     byte[] toSend = new byte[length + 1];
     toSend[0] = FLAG_STDIN;
-    System.arraycopy(data, 0, toSend, 1, length);
+    System.arraycopy(data, offset, toSend, 1, length);
     webSocketRef.getNow(null).send(ByteBuffer.wrap(toSend));
   }
 
@@ -123,28 +122,6 @@ public class PodUploadWebSocketListener implements WebSocket.Listener {
     } catch(InterruptedException ex) {
       Thread.currentThread().interrupt();
     }
-  }
-
-  private int parseExitCode(Status status) {
-    if ("Success".equals(status.getStatus())) {
-      return 0;
-    }
-    if ("NonZeroExitCode".equals(status.getReason())) {
-      if (status.getDetails() == null) {
-        return -1;
-      }
-      List<StatusCause> causes = status.getDetails().getCauses();
-      if (causes == null) {
-        return -1;
-      }
-      return causes.stream()
-          .filter(c -> "ExitCode".equals(c.getReason()))
-          .map(StatusCause::getMessage)
-          .map(Integer::valueOf)
-          .findFirst()
-          .orElse(-1);
-    }
-    return 1;
   }
 
 }

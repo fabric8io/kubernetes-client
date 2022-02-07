@@ -50,7 +50,7 @@ class PodUploadWebSocketListenerTest {
     podUploadWebSocketListener.onOpen(mockedWebSocket);
     final byte[] toSend = new byte[]{1, 3, 3, 7, 0};
 
-    podUploadWebSocketListener.send(toSend, 4);
+    podUploadWebSocketListener.send(toSend, 0, 4);
 
     verify(mockedWebSocket, times(1))
       .send(eq(ByteBuffer.wrap(new byte[] {(byte) 0, (byte) 1, (byte) 3, (byte) 3, (byte) 7})));

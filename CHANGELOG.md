@@ -8,6 +8,7 @@
 
 #### Dependency Upgrade
 * Fix #3788: Point CamelK Extension model to latest released version v1.8.0
+* Fix #3813: Handle exit code status messages with pod uploads
 
 #### New Features
 

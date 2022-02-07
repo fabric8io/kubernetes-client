@@ -15,7 +15,10 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
+import io.fabric8.kubernetes.api.model.Status;
+
 import java.io.IOException;
+import java.util.Optional;
 
 public interface ExecListener {
   
@@ -53,4 +56,13 @@ public interface ExecListener {
      * @param reason Reason for close or an empty string.
      */
     void onClose(int code, String reason);
+  
+  /**
+   * Called after a Status message is seen on channel 3.
+   * 
+   * Use {@link ExecWatch#getErrorChannel()} if you need the raw channel 3 contents.
+   * @param code the exit code, -1 will be used if the code cannot be determined
+   * @param status may be null if no valid status was received
+   */
+  default void onExit(int code, Status status) {}
 }
