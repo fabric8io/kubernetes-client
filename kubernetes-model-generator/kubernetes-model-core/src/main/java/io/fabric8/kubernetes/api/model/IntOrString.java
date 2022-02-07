@@ -15,15 +15,9 @@
  */
 package io.fabric8.kubernetes.api.model;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
@@ -40,17 +34,10 @@ import lombok.experimental.Accessors;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonDeserialize(using = IntOrString.Deserializer.class)
 @JsonSerialize(using = IntOrString.Serializer.class)
-@JsonPropertyOrder({
-    "IntVal",
-    "Kind",
-    "StrVal"
-})
 @ToString
 @EqualsAndHashCode
 @Setter
@@ -58,153 +45,92 @@ import java.util.Map;
     "_",
     ""
 })
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage=true, builderPackage = "io.fabric8.kubernetes.api.builder")
 public class IntOrString implements Serializable {
 
-    @JsonProperty("IntVal")
-    private Integer IntVal;
-    @JsonProperty("Kind")
-    private Integer Kind;
-    @JsonProperty("StrVal")
-    private String StrVal;
-    @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<>();
+  private Object value;
 
-    public IntOrString() {
+  public IntOrString() { }
+
+  //Builders are generated for the first non-empty constructor found.
+  @Buildable(editableEnabled = false, generateBuilderPackage=true, builderPackage = "io.fabric8.kubernetes.api.builder")
+  public IntOrString(Object value) {
+    if (value instanceof Integer || value instanceof String) {
+      this.value = value;
+    } else {
+      throw new IllegalArgumentException("Either integer or string value needs to be provided");
     }
+  }
 
-    //Builders are generated for the first non-empty constructor found.
-    public IntOrString(Integer intVal, Integer kind, String strVal, Map<String, Object> additionalProperties) {
-        IntVal = intVal;
-        Kind = kind;
-        StrVal = strVal;
-        this.additionalProperties = additionalProperties;
+  /**
+   * Get Raw enclosed object.
+   *
+   * @return Object value
+   */
+  public Object getValue() {
+    return value;
+  }
+
+  /**
+   * Get Integer value
+   *
+   * @return Integer value if set
+   */
+  public Integer getIntVal() {
+    if (value instanceof Integer) {
+      return (Integer) value;
     }
+    return null;
+  }
 
-    public IntOrString(Integer intVal) {
-        this(intVal, 0, null, new HashMap<>());
+  /**
+   * Get String value
+   *
+   * @return string value if set
+   */
+  public String getStrVal() {
+    if (value instanceof String) {
+      return (String) value;
     }
+    return null;
+  }
 
-    public IntOrString(String strVal) {
-        this(null, 1, strVal, new HashMap<>());
-    }
+  public static class Serializer extends JsonSerializer<IntOrString> {
 
-
-    /**
-     *
-     * @return
-     *     The IntVal
-     */
-    @JsonProperty("IntVal")
-    public Integer getIntVal() {
-        return IntVal;
-    }
-
-    /**
-     *
-     * @param IntVal
-     *     The IntVal
-     */
-    @JsonProperty("IntVal")
-    public void setIntVal(Integer IntVal) {
-        this.IntVal = IntVal;
-    }
-
-    /**
-     *
-     * @return
-     *     The Kind
-     */
-    @JsonProperty("Kind")
-    public Integer getKind() {
-        return Kind;
-    }
-
-    /**
-     *
-     * @param Kind
-     *     The Kind
-     */
-    @JsonProperty("Kind")
-    public void setKind(Integer Kind) {
-        this.Kind = Kind;
-    }
-
-    /**
-     *
-     * @return
-     *     The StrVal
-     */
-    @JsonProperty("StrVal")
-    public String getStrVal() {
-        return StrVal;
-    }
-
-    /**
-     *
-     * @param StrVal
-     *     The StrVal
-     */
-    @JsonProperty("StrVal")
-    public void setStrVal(String StrVal) {
-        this.StrVal = StrVal;
-    }
-
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
-
-    public static class Serializer extends JsonSerializer<IntOrString> {
-
-        @Override
-        public void serialize(IntOrString value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
-            if (value != null) {
-                if (value.getKind() == null) {
-                    Integer intValue = value.getIntVal();
-                    if (intValue != null) {
-                        jgen.writeNumber(intValue);
-                    } else {
-                        String stringValue = value.getStrVal();
-                        if (stringValue != null) {
-                            jgen.writeString(stringValue);
-                        } else {
-                            jgen.writeNull();
-                        }
-                    }
-                } else if (value.getKind() == 0) {
-                    jgen.writeNumber(value.getIntVal());
-                } else if (value.getKind() == 1) {
-                    jgen.writeString(value.getStrVal());
-                } else {
-                    jgen.writeNull();
-                }
-            } else {
-                jgen.writeNull();
-            }
+    @Override
+    public void serialize(IntOrString value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
+      if (value != null) {
+        Integer intValue = value.getIntVal();
+        if (intValue != null) {
+          jgen.writeNumber(intValue);
+        } else {
+          String stringValue = value.getStrVal();
+          if (stringValue != null) {
+            jgen.writeString(stringValue);
+          } else {
+            jgen.writeNull();
+          }
         }
+      } else {
+        jgen.writeNull();
+      }
+    }
+  }
 
+  public static class Deserializer extends JsonDeserializer<IntOrString> {
+
+    @Override
+    public IntOrString deserialize(JsonParser jsonParser, DeserializationContext ctxt)
+        throws IOException {
+      ObjectCodec oc = jsonParser.getCodec();
+      JsonNode node = oc.readTree(jsonParser);
+      IntOrString intOrString;
+      if (node.isInt()) {
+        intOrString = new IntOrString(node.asInt());
+      } else {
+        intOrString = new IntOrString(node.asText());
+      }
+      return intOrString;
     }
 
-    public static class Deserializer extends JsonDeserializer<IntOrString> {
-
-        @Override
-        public IntOrString deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException, JsonProcessingException {
-            ObjectCodec oc = jsonParser.getCodec();
-            JsonNode node = oc.readTree(jsonParser);
-            IntOrString intOrString;
-            if (node.isInt()) {
-                intOrString = new IntOrString(node.asInt());
-            } else {
-                intOrString = new IntOrString(node.asText());
-            }
-            return intOrString;
-        }
-
-    }
+  }
 }

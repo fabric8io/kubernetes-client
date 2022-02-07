@@ -182,7 +182,7 @@ class ServiceTest {
       .withName("http")
       .withPort(8080)
       .withProtocol("TCP")
-      .withNewTargetPort().withIntVal(8080).endTargetPort()
+      .withNewTargetPort(8080)
       .endPort()
       .withType("ClusterIP")
       .endSpec()
