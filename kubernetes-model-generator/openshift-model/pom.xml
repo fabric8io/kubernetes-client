@@ -32,6 +32,15 @@
 
   <properties>
     <clone-kube>true</clone-kube>
+    <osgi.include.resources>
+      ${osgi.include.resources.default},
+      /openshift.properties=target/classes/openshift.properties
+    </osgi.include.resources>
+    <osgi.import>*</osgi.import>
+    <osgi.export>
+      io.fabric8.openshift.api.model**,
+      io.fabric8.openshift.api.model.helm.v1beta1**
+    </osgi.export>
   </properties>
 
   <dependencies>
@@ -77,27 +86,6 @@
             </configuration>
           </execution>
         </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>maven-bundle-plugin</artifactId>
-        <version>${maven.bundle.plugin.version}</version>
-        <extensions>true</extensions>
-        <configuration>
-          <instructions>
-            <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
-            <Import-Package>*</Import-Package>
-            <Export-Package>
-              io.fabric8.openshift.api.model**,
-              io.fabric8.openshift.api.model.helm.v1beta1**
-            </Export-Package>
-            <Include-Resource>
-              {maven-resources},
-              /META-INF/jandex.idx=target/classes/META-INF/jandex.idx,
-              /openshift.properties=target/classes/openshift.properties
-            </Include-Resource>
-          </instructions>
-        </configuration>
       </plugin>
     </plugins>
   </build>
