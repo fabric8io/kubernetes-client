@@ -26,6 +26,26 @@ Usage: java-gen [-hV] -crd=<crdFile> -dest=<destFolder>
   -V, --version   Print version information and exit.
 ```
 
+### Docker
+
+The above CLI can also be packaged as a container into a running Docker daemon by running:
+
+```
+mvn -Pdocker clean package -f cli/pom.xml
+```
+
+Afterwards, a CRD can be mounted into the container and used to generate output. Example usage
+
+```sh
+$ mkdir k8s-java-gen
+$ docker run --rm \
+  -v /path/to/crd.yaml:/workdir/crd.yaml:ro \
+  -v $PWD/k8s-java-gen:/out \
+  fabric8io/java-generator-cli \
+  --custom-resource-definition=/workdir/crd.yaml --destination-folder=/out
+$ ls -lR k8s-java-gen # see generated files
+```
+
 ### Formatting code
 
 Code formatting is automated but remember to fix the headers before committing:
