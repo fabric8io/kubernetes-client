@@ -77,6 +77,10 @@
         </executions>
         <configuration>
           <crdFile>src/main/resources/cert-manager.crds.1.7.1.yaml</crdFile>
+          <codeStructure>FLAT</codeStructure>
+          <extraAnnotations>true</extraAnnotations>
+          <alwaysPreserveUnknown>true</alwaysPreserveUnknown>
+          <suffixStrategy>TOP_LEVEL</suffixStrategy>
         </configuration>
       </plugin>
     </plugins>

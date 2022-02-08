@@ -27,9 +27,13 @@ import java.util.Collections;
 
 public class JCRObject extends AbstractJSONSchema2Pojo {
 
+    private final String pkg;
     private final String type;
+    private final String className;
     private final String group;
     private final String version;
+    private final String specClassName;
+    private final String statusClassName;
     private final boolean withSpec;
     private final boolean withStatus;
 
@@ -37,18 +41,26 @@ public class JCRObject extends AbstractJSONSchema2Pojo {
     private final boolean served;
 
     public JCRObject(
+            String pkg,
             String type,
             String group,
             String version,
+            String specClassName,
+            String statusClassName,
             boolean withSpec,
             boolean withStatus,
             boolean storage,
             boolean served,
             Config config) {
         super(config, null);
-        this.type = type;
+
+        this.pkg = (pkg == null) ? "" : pkg.trim();
+        this.type = (this.pkg.isEmpty()) ? type : pkg + "." + type;
+        this.className = type;
         this.group = group;
         this.version = version;
+        this.specClassName = specClassName;
+        this.statusClassName = statusClassName;
         this.withSpec = withSpec;
         this.withStatus = withStatus;
         this.storage = storage;
@@ -61,9 +73,12 @@ public class JCRObject extends AbstractJSONSchema2Pojo {
     }
 
     @Override
-    public GeneratorResult generateJava(CompilationUnit cu) {
-        ClassOrInterfaceDeclaration clz =
-                cu.getClassByName(this.type).orElse(cu.addClass(this.type));
+    public GeneratorResult generateJava() {
+        CompilationUnit cu = new CompilationUnit();
+        if (!pkg.isEmpty()) {
+            cu.setPackageDeclaration(pkg);
+        }
+        ClassOrInterfaceDeclaration clz = cu.addClass(className);
 
         clz.addAnnotation(
                 new SingleMemberAnnotationExpr(
@@ -80,15 +95,17 @@ public class JCRObject extends AbstractJSONSchema2Pojo {
                         new Name("io.fabric8.kubernetes.model.annotation.Group"),
                         new StringLiteralExpr(group)));
 
-        ClassOrInterfaceType spec = new ClassOrInterfaceType().setName(this.type + "Spec");
-        if (!withSpec) {
-            spec = new ClassOrInterfaceType().setName("java.lang.Void");
-        }
+        ClassOrInterfaceType jlVoid = new ClassOrInterfaceType().setName("java.lang.Void");
 
-        ClassOrInterfaceType status = new ClassOrInterfaceType().setName(this.type + "Status");
-        if (!withStatus) {
-            status = new ClassOrInterfaceType().setName("java.lang.Void");
-        }
+        ClassOrInterfaceType spec =
+                (withSpec)
+                        ? new ClassOrInterfaceType().setName(this.pkg + "." + this.specClassName)
+                        : jlVoid;
+
+        ClassOrInterfaceType status =
+                (withStatus)
+                        ? new ClassOrInterfaceType().setName(this.pkg + "." + this.statusClassName)
+                        : jlVoid;
 
         ClassOrInterfaceType crType =
                 new ClassOrInterfaceType()
@@ -98,6 +115,7 @@ public class JCRObject extends AbstractJSONSchema2Pojo {
         clz.addExtendedType(crType);
         clz.addImplementedType("io.fabric8.kubernetes.api.model.Namespaced");
 
-        return new GeneratorResult(Collections.singletonList(getType()));
+        return new GeneratorResult(
+                Collections.singletonList(new GeneratorResult.ClassResult(className, cu)));
     }
 }

@@ -39,7 +39,7 @@ class CompilationTest {
 
     private static TemporaryFolder tmpFolder = TemporaryFolder.builder().build();
 
-    CRGeneratorRunner runner = new CRGeneratorRunner(new Config());
+    CRGeneratorRunner defaultRunner = new CRGeneratorRunner(new Config());
 
     List<JavaFileObject> getSources(File basePath) throws IOException {
         List<JavaFileObject> sources = new ArrayList<JavaFileObject>();
@@ -67,7 +67,44 @@ class CompilationTest {
     void testCrontabCRDCompiles() throws Exception {
         // Arrange
         File crd = getCRD("crontab-crd.yml");
-        File dest = tmpFolder.newFolder("crontab");
+        File dest = tmpFolder.newFolder("crontab-default");
+
+        // Act
+        defaultRunner.run(crd, dest);
+        Compilation compilation = javac().compile(getSources(dest));
+
+        // Assert
+        assertTrue(compilation.errors().isEmpty());
+        assertEquals(3, compilation.sourceFiles().size());
+        assertEquals(Compilation.Status.SUCCESS, compilation.status());
+    }
+
+    @Test
+    void testCrontabCRDCompilesWithFlatPackage() throws Exception {
+        // Arrange
+        File crd = getCRD("crontab-crd.yml");
+        File dest = tmpFolder.newFolder("crontab-flat");
+        CRGeneratorRunner runner =
+                new CRGeneratorRunner(
+                        new Config(null, null, null, null, null, Config.CodeStructure.FLAT));
+
+        // Act
+        runner.run(crd, dest);
+        Compilation compilation = javac().compile(getSources(dest));
+
+        // Assert
+        assertTrue(compilation.errors().isEmpty());
+        assertEquals(3, compilation.sourceFiles().size());
+        assertEquals(Compilation.Status.SUCCESS, compilation.status());
+    }
+
+    @Test
+    void testCrontabCRDCompilesWithExtraAnnotationsAndUnknownFields() throws Exception {
+        // Arrange
+        File crd = getCRD("crontab-crd.yml");
+        File dest = tmpFolder.newFolder("crontab-extra-annot");
+        CRGeneratorRunner runner =
+                new CRGeneratorRunner(new Config(null, null, null, true, true, null));
 
         // Act
         runner.run(crd, dest);
@@ -86,12 +123,12 @@ class CompilationTest {
         File dest = tmpFolder.newFolder("keycloak");
 
         // Act
-        runner.run(crd, dest);
+        defaultRunner.run(crd, dest);
         Compilation compilation = javac().compile(getSources(dest));
 
         // Assert
         assertTrue(compilation.errors().isEmpty());
-        assertEquals(32, compilation.sourceFiles().size());
+        assertEquals(50, compilation.sourceFiles().size());
         assertEquals(Compilation.Status.SUCCESS, compilation.status());
     }
 
@@ -102,12 +139,12 @@ class CompilationTest {
         File dest = tmpFolder.newFolder("akka-microservices");
 
         // Act
-        runner.run(crd, dest);
+        defaultRunner.run(crd, dest);
         Compilation compilation = javac().compile(getSources(dest));
 
         // Assert
         assertTrue(compilation.errors().isEmpty());
-        assertEquals(27, compilation.sourceFiles().size());
+        assertEquals(28, compilation.sourceFiles().size());
         assertEquals(Compilation.Status.SUCCESS, compilation.status());
     }
 
@@ -118,12 +155,12 @@ class CompilationTest {
         File dest = tmpFolder.newFolder("strimzi");
 
         // Act
-        runner.run(crd, dest);
+        defaultRunner.run(crd, dest);
         Compilation compilation = javac().compile(getSources(dest));
 
         // Assert
         assertTrue(compilation.errors().isEmpty());
-        assertEquals(72, compilation.sourceFiles().size());
+        assertEquals(704, compilation.sourceFiles().size());
         assertEquals(Compilation.Status.SUCCESS, compilation.status());
     }
 
@@ -134,12 +171,12 @@ class CompilationTest {
         File dest = tmpFolder.newFolder("spark");
 
         // Act
-        runner.run(crd, dest);
+        defaultRunner.run(crd, dest);
         Compilation compilation = javac().compile(getSources(dest));
 
         // Assert
         assertTrue(compilation.errors().isEmpty());
-        assertEquals(97, compilation.sourceFiles().size());
+        assertEquals(358, compilation.sourceFiles().size());
         assertEquals(Compilation.Status.SUCCESS, compilation.status());
     }
 
@@ -150,12 +187,12 @@ class CompilationTest {
         File dest = tmpFolder.newFolder("crunchy");
 
         // Act
-        runner.run(crd, dest);
+        defaultRunner.run(crd, dest);
         Compilation compilation = javac().compile(getSources(dest));
 
         // Assert
         assertTrue(compilation.errors().isEmpty());
-        assertEquals(73, compilation.sourceFiles().size());
+        assertEquals(267, compilation.sourceFiles().size());
         assertEquals(Compilation.Status.SUCCESS, compilation.status());
     }
 
@@ -166,7 +203,7 @@ class CompilationTest {
         File dest = tmpFolder.newFolder("kamelet");
 
         // Act
-        runner.run(crd, dest);
+        defaultRunner.run(crd, dest);
         Compilation compilation = javac().compile(getSources(dest));
 
         // Assert
@@ -182,7 +219,7 @@ class CompilationTest {
         File dest = tmpFolder.newFolder("jokes");
 
         // Act
-        runner.run(crd, dest);
+        defaultRunner.run(crd, dest);
         Compilation compilation = javac().compile(getSources(dest));
 
         // Assert
@@ -198,7 +235,7 @@ class CompilationTest {
         File dest = tmpFolder.newFolder("cert-manager");
 
         // Act
-        runner.run(crd, dest);
+        defaultRunner.run(crd, dest);
         Compilation compilation = javac().compile(getSources(dest));
 
         // Assert
@@ -214,7 +251,7 @@ class CompilationTest {
         File dest = tmpFolder.newFolder("two-crds");
 
         // Act
-        runner.run(crd, dest);
+        defaultRunner.run(crd, dest);
         Compilation compilation = javac().compile(getSources(dest));
 
         // Assert

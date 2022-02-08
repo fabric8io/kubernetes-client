@@ -15,7 +15,6 @@
  */
 package io.fabric8.java.generator.nodes;
 
-import com.github.javaparser.ast.CompilationUnit;
 import io.fabric8.java.generator.Config;
 import java.util.ArrayList;
 
@@ -36,7 +35,7 @@ public class JPrimitive extends AbstractJSONSchema2Pojo {
     }
 
     @Override
-    public GeneratorResult generateJava(CompilationUnit cu) {
+    public GeneratorResult generateJava() {
         return empty;
     }
 }

@@ -15,7 +15,6 @@
  */
 package io.fabric8.java.generator;
 
-import com.github.javaparser.ast.CompilationUnit;
 import io.fabric8.java.generator.exceptions.JavaGeneratorException;
 import io.fabric8.java.generator.nodes.AbstractJSONSchema2Pojo;
 import io.fabric8.java.generator.nodes.GeneratorResult;
@@ -62,11 +61,11 @@ public class CRGeneratorRunner {
                         .equals("customresourcedefinition")) {
                     CustomResourceDefinition crd = (CustomResourceDefinition) resource;
 
-                    List<WritableCRCompilationUnit> writables =
-                            generate(crd, getPackage(crd.getSpec().getGroup()));
+                    String pkg = getPackage(crd.getSpec().getGroup());
+                    List<WritableCRCompilationUnit> writables = generate(crd, pkg);
 
                     for (WritableCRCompilationUnit w : writables) {
-                        w.writeAllJavaClasses(basePath);
+                        w.writeAllJavaClasses(basePath, pkg);
                     }
                 } else {
                     LOGGER.warn(
@@ -88,8 +87,6 @@ public class CRGeneratorRunner {
 
         List<WritableCRCompilationUnit> writableCUs = new ArrayList<>(crSpec.getVersions().size());
         for (CustomResourceDefinitionVersion crdv : crSpec.getVersions()) {
-            CompilationUnit cu = new CompilationUnit();
-
             String version = crdv.getName();
 
             String pkg =
@@ -97,51 +94,60 @@ public class CRGeneratorRunner {
                             .map(p -> p + "." + version)
                             .orElse(version);
 
-            cu.setPackageDeclaration(pkg);
-
             AbstractJSONSchema2Pojo specGenerator = null;
+
+            String prefix = crName;
+            if (config.getPrefixStrategy() == Config.Prefix.NEVER) {
+                prefix = "";
+            }
 
             JSONSchemaProps spec =
                     crdv.getSchema().getOpenAPIV3Schema().getProperties().get("spec");
             if (spec != null) {
+                String suffix = (config.getSuffixStrategy() != Config.Suffix.NEVER) ? "Spec" : "";
                 specGenerator =
-                        AbstractJSONSchema2Pojo.fromJsonSchema("spec", spec, crName, "", config);
+                        AbstractJSONSchema2Pojo.fromJsonSchema(
+                                "spec", spec, pkg, prefix, suffix, config);
             }
 
             AbstractJSONSchema2Pojo statusGenerator = null;
             JSONSchemaProps status =
                     crdv.getSchema().getOpenAPIV3Schema().getProperties().get("status");
             if (status != null) {
+                String suffix = (config.getSuffixStrategy() != Config.Suffix.NEVER) ? "Status" : "";
                 statusGenerator =
                         AbstractJSONSchema2Pojo.fromJsonSchema(
-                                "status", status, crName, "", config);
+                                "status", status, pkg, prefix, suffix, config);
             }
 
             AbstractJSONSchema2Pojo crGenerator =
                     new JCRObject(
+                            pkg,
                             crName,
                             group,
                             version,
+                            prefix + "Spec",
+                            prefix + "Status",
                             specGenerator != null,
                             statusGenerator != null,
                             crdv.getStorage(),
                             crdv.getServed(),
                             config);
 
-            List<String> classNames =
-                    validateAndAggregate(cu, crGenerator, specGenerator, statusGenerator);
+            List<GeneratorResult.ClassResult> classResults =
+                    validateAndAggregate(crGenerator, specGenerator, statusGenerator);
 
-            writableCUs.add(new WritableCRCompilationUnit(cu, classNames));
+            writableCUs.add(new WritableCRCompilationUnit(classResults));
         }
 
         return writableCUs;
     }
 
-    private List<String> validateAndAggregate(
-            CompilationUnit cu, AbstractJSONSchema2Pojo... generators) {
+    private List<GeneratorResult.ClassResult> validateAndAggregate(
+            AbstractJSONSchema2Pojo... generators) {
         return Arrays.stream(generators)
                 .filter(Objects::nonNull)
-                .map(g -> g.generateJava(cu))
+                .map(AbstractJSONSchema2Pojo::generateJava)
                 .map(CRGeneratorRunner::validateTopLevel)
                 .flatMap(g -> g.getTopLevelClasses().stream())
                 .collect(Collectors.toList());

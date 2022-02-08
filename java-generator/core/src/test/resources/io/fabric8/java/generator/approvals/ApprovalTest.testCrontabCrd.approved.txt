@@ -2,30 +2,14 @@ CrontabJavaCr[0] = package org.test.v1;
 
 @io.fabric8.kubernetes.model.annotation.Version(value = "v1" , storage = true , served = true)
 @io.fabric8.kubernetes.model.annotation.Group("stable.example.com")
-public class CronTab extends io.fabric8.kubernetes.client.CustomResource<CronTabSpec, CronTabStatus> implements io.fabric8.kubernetes.api.model.Namespaced {
+public class CronTab extends io.fabric8.kubernetes.client.CustomResource<org.test.v1.CronTabSpec, org.test.v1.CronTabStatus> implements io.fabric8.kubernetes.api.model.Namespaced {
 }
+
 CrontabJavaCr[1] = package org.test.v1;
 
 @com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
 @com.fasterxml.jackson.annotation.JsonPropertyOrder({"cronSpec","image","replicas"})
 @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
-@lombok.ToString()
-@lombok.EqualsAndHashCode()
-@lombok.Setter()
-@lombok.experimental.Accessors(prefix = {
-    "_",
-    ""
-})
-@io.sundr.builder.annotations.Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
-    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
-    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.LabelSelector.class),
-    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.Container.class),
-    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.EnvVar.class),
-    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ContainerPort.class),
-    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.Volume.class),
-    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.VolumeMount.class)
-})
 public class CronTabSpec implements io.fabric8.kubernetes.api.model.KubernetesResource {
 
     @com.fasterxml.jackson.annotation.JsonProperty("cronSpec")
@@ -61,28 +45,12 @@ public class CronTabSpec implements io.fabric8.kubernetes.api.model.KubernetesRe
         this.replicas = replicas;
     }
 }
+
 CrontabJavaCr[2] = package org.test.v1;
 
 @com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
 @com.fasterxml.jackson.annotation.JsonPropertyOrder({"labelSelector","replicas"})
 @com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
-@lombok.ToString()
-@lombok.EqualsAndHashCode()
-@lombok.Setter()
-@lombok.experimental.Accessors(prefix = {
-    "_",
-    ""
-})
-@io.sundr.builder.annotations.Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
-    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
-    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
-    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.LabelSelector.class),
-    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.Container.class),
-    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.EnvVar.class),
-    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ContainerPort.class),
-    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.Volume.class),
-    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.VolumeMount.class)
-})
 public class CronTabStatus implements io.fabric8.kubernetes.api.model.KubernetesResource {
 
     @com.fasterxml.jackson.annotation.JsonProperty("labelSelector")
@@ -107,3 +75,4 @@ public class CronTabStatus implements io.fabric8.kubernetes.api.model.Kubernetes
         this.replicas = replicas;
     }
 }
+
