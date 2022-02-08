@@ -24,6 +24,8 @@ env:
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '0 2 * * *' # Every day at 3am
 
 jobs:
   release-snapshots:
