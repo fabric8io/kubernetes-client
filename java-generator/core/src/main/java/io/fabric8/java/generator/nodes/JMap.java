@@ -19,7 +19,6 @@ package io.fabric8.java.generator.nodes;
 import static io.fabric8.java.generator.nodes.Keywords.JAVA_LANG_STRING;
 import static io.fabric8.java.generator.nodes.Keywords.JAVA_UTIL_MAP;
 
-import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import io.fabric8.java.generator.Config;
 
@@ -46,7 +45,7 @@ public class JMap extends AbstractJSONSchema2Pojo {
     }
 
     @Override
-    public GeneratorResult generateJava(CompilationUnit cu) {
-        return nested.generateJava(cu);
+    public GeneratorResult generateJava() {
+        return nested.generateJava();
     }
 }
