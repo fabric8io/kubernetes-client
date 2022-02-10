@@ -33,6 +33,8 @@
   <modules>
     <module>core</module>
     <module>cli</module>
+    <module>maven-plugin</module>
+    <module>it</module>
   </modules>
 
   <build>
