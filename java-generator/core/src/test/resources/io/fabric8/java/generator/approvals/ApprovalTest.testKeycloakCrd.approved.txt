@@ -1,0 +1,291 @@
+KeycloakJavaCr[0] = package org.test.v1alpha1;
+
+@io.fabric8.kubernetes.model.annotation.Version(value = "v1alpha1" , storage = true , served = true)
+@io.fabric8.kubernetes.model.annotation.Group("keycloak.org")
+public class Keycloak extends io.fabric8.kubernetes.client.CustomResource<KeycloakSpec, KeycloakStatus> implements io.fabric8.kubernetes.api.model.Namespaced {
+}
+KeycloakJavaCr[1] = package org.test.v1alpha1;
+
+@com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
+@com.fasterxml.jackson.annotation.JsonPropertyOrder({"extensions","external","externalAccess","externalDatabase","instances","keycloakDeploymentSpec","migration","multiAvailablityZones","podDisruptionBudget","postgresDeploymentSpec","profile","storageClassName","unmanaged"})
+@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@lombok.ToString()
+@lombok.EqualsAndHashCode()
+@lombok.Setter()
+@lombok.experimental.Accessors(prefix = {
+    "_",
+    ""
+})
+@io.sundr.builder.annotations.Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.LabelSelector.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.Container.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.EnvVar.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ContainerPort.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.Volume.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.VolumeMount.class)
+})
+public class KeycloakSpec implements io.fabric8.kubernetes.api.model.KubernetesResource {
+
+    @com.fasterxml.jackson.annotation.JsonProperty("extensions")
+    private java.util.List<String> extensions;
+
+    public java.util.List<String> getExtensions() {
+        return extensions;
+    }
+
+    public void setExtensions(java.util.List<String> extensions) {
+        this.extensions = extensions;
+    }
+
+    @com.fasterxml.jackson.annotation.JsonProperty("external")
+    private ExternalSpec external;
+
+    public ExternalSpec getExternal() {
+        return external;
+    }
+
+    public void setExternal(ExternalSpec external) {
+        this.external = external;
+    }
+
+    @com.fasterxml.jackson.annotation.JsonProperty("externalAccess")
+    private ExternalAccessSpec externalAccess;
+
+    public ExternalAccessSpec getExternalAccess() {
+        return externalAccess;
+    }
+
+    public void setExternalAccess(ExternalAccessSpec externalAccess) {
+        this.externalAccess = externalAccess;
+    }
+
+    @com.fasterxml.jackson.annotation.JsonProperty("externalDatabase")
+    private ExternalDatabaseSpec externalDatabase;
+
+    public ExternalDatabaseSpec getExternalDatabase() {
+        return externalDatabase;
+    }
+
+    public void setExternalDatabase(ExternalDatabaseSpec externalDatabase) {
+        this.externalDatabase = externalDatabase;
+    }
+
+    @com.fasterxml.jackson.annotation.JsonProperty("instances")
+    private Long instances;
+
+    public Long getInstances() {
+        return instances;
+    }
+
+    public void setInstances(Long instances) {
+        this.instances = instances;
+    }
+
+    @com.fasterxml.jackson.annotation.JsonProperty("keycloakDeploymentSpec")
+    private KeycloakDeploymentSpecSpec keycloakDeploymentSpec;
+
+    public KeycloakDeploymentSpecSpec getKeycloakDeploymentSpec() {
+        return keycloakDeploymentSpec;
+    }
+
+    public void setKeycloakDeploymentSpec(KeycloakDeploymentSpecSpec keycloakDeploymentSpec) {
+        this.keycloakDeploymentSpec = keycloakDeploymentSpec;
+    }
+
+    @com.fasterxml.jackson.annotation.JsonProperty("migration")
+    private MigrationSpec migration;
+
+    public MigrationSpec getMigration() {
+        return migration;
+    }
+
+    public void setMigration(MigrationSpec migration) {
+        this.migration = migration;
+    }
+
+    @com.fasterxml.jackson.annotation.JsonProperty("multiAvailablityZones")
+    private MultiAvailablityZonesSpec multiAvailablityZones;
+
+    public MultiAvailablityZonesSpec getMultiAvailablityZones() {
+        return multiAvailablityZones;
+    }
+
+    public void setMultiAvailablityZones(MultiAvailablityZonesSpec multiAvailablityZones) {
+        this.multiAvailablityZones = multiAvailablityZones;
+    }
+
+    @com.fasterxml.jackson.annotation.JsonProperty("podDisruptionBudget")
+    private PodDisruptionBudgetSpec podDisruptionBudget;
+
+    public PodDisruptionBudgetSpec getPodDisruptionBudget() {
+        return podDisruptionBudget;
+    }
+
+    public void setPodDisruptionBudget(PodDisruptionBudgetSpec podDisruptionBudget) {
+        this.podDisruptionBudget = podDisruptionBudget;
+    }
+
+    @com.fasterxml.jackson.annotation.JsonProperty("postgresDeploymentSpec")
+    private PostgresDeploymentSpecSpec postgresDeploymentSpec;
+
+    public PostgresDeploymentSpecSpec getPostgresDeploymentSpec() {
+        return postgresDeploymentSpec;
+    }
+
+    public void setPostgresDeploymentSpec(PostgresDeploymentSpecSpec postgresDeploymentSpec) {
+        this.postgresDeploymentSpec = postgresDeploymentSpec;
+    }
+
+    @com.fasterxml.jackson.annotation.JsonProperty("profile")
+    private String profile;
+
+    public String getProfile() {
+        return profile;
+    }
+
+    public void setProfile(String profile) {
+        this.profile = profile;
+    }
+
+    @com.fasterxml.jackson.annotation.JsonProperty("storageClassName")
+    private String storageClassName;
+
+    public String getStorageClassName() {
+        return storageClassName;
+    }
+
+    public void setStorageClassName(String storageClassName) {
+        this.storageClassName = storageClassName;
+    }
+
+    @com.fasterxml.jackson.annotation.JsonProperty("unmanaged")
+    private Boolean unmanaged;
+
+    public Boolean getUnmanaged() {
+        return unmanaged;
+    }
+
+    public void setUnmanaged(Boolean unmanaged) {
+        this.unmanaged = unmanaged;
+    }
+}
+KeycloakJavaCr[2] = package org.test.v1alpha1;
+
+@com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
+@com.fasterxml.jackson.annotation.JsonPropertyOrder({"credentialSecret","externalURL","internalURL","message","phase","ready","secondaryResources","version"})
+@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@lombok.ToString()
+@lombok.EqualsAndHashCode()
+@lombok.Setter()
+@lombok.experimental.Accessors(prefix = {
+    "_",
+    ""
+})
+@io.sundr.builder.annotations.Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ObjectReference.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.LabelSelector.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.Container.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.EnvVar.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ContainerPort.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.Volume.class),
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.VolumeMount.class)
+})
+public class KeycloakStatus implements io.fabric8.kubernetes.api.model.KubernetesResource {
+
+    @com.fasterxml.jackson.annotation.JsonProperty("credentialSecret")
+    @javax.validation.constraints.NotNull()
+    private String credentialSecret;
+
+    public String getCredentialSecret() {
+        return credentialSecret;
+    }
+
+    public void setCredentialSecret(String credentialSecret) {
+        this.credentialSecret = credentialSecret;
+    }
+
+    @com.fasterxml.jackson.annotation.JsonProperty("externalURL")
+    private String externalURL;
+
+    public String getExternalURL() {
+        return externalURL;
+    }
+
+    public void setExternalURL(String externalURL) {
+        this.externalURL = externalURL;
+    }
+
+    @com.fasterxml.jackson.annotation.JsonProperty("internalURL")
+    @javax.validation.constraints.NotNull()
+    private String internalURL;
+
+    public String getInternalURL() {
+        return internalURL;
+    }
+
+    public void setInternalURL(String internalURL) {
+        this.internalURL = internalURL;
+    }
+
+    @com.fasterxml.jackson.annotation.JsonProperty("message")
+    @javax.validation.constraints.NotNull()
+    private String message;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    @com.fasterxml.jackson.annotation.JsonProperty("phase")
+    @javax.validation.constraints.NotNull()
+    private String phase;
+
+    public String getPhase() {
+        return phase;
+    }
+
+    public void setPhase(String phase) {
+        this.phase = phase;
+    }
+
+    @com.fasterxml.jackson.annotation.JsonProperty("ready")
+    @javax.validation.constraints.NotNull()
+    private Boolean ready;
+
+    public Boolean getReady() {
+        return ready;
+    }
+
+    public void setReady(Boolean ready) {
+        this.ready = ready;
+    }
+
+    @com.fasterxml.jackson.annotation.JsonProperty("secondaryResources")
+    private java.util.Map<java.lang.String, java.util.List<String>> secondaryResources;
+
+    public java.util.Map<java.lang.String, java.util.List<String>> getSecondaryResources() {
+        return secondaryResources;
+    }
+
+    public void setSecondaryResources(java.util.Map<java.lang.String, java.util.List<String>> secondaryResources) {
+        this.secondaryResources = secondaryResources;
+    }
+
+    @com.fasterxml.jackson.annotation.JsonProperty("version")
+    @javax.validation.constraints.NotNull()
+    private String version;
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+}

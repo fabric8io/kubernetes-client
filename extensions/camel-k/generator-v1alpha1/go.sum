@@ -234,6 +234,8 @@ github.com/apache/camel-k/pkg/apis/camel v1.3.1 h1:8w3oXV1gQbTeazfOGuvYiSy52s3Zx
 github.com/apache/camel-k/pkg/apis/camel v1.3.1/go.mod h1:N3N41+jPM447J8CvnzUcIdGZVvMh1dxP31xDSpZDeUk=
 github.com/apache/camel-k/pkg/apis/camel v1.7.0 h1:RTBwvkXjvqjRFbQddyYGw87HCq2xVjq7mw6n5sSZ5mM=
 github.com/apache/camel-k/pkg/apis/camel v1.7.0/go.mod h1:Hhz357DYpDkok7owIXAsn0RKfZwQmL+3rCiNu8jqkpY=
+github.com/apache/camel-k/pkg/apis/camel v1.8.0 h1:MnWFNaqS36coOVoKIOdyscPVDsKKc0uOEk+zJUsxGi4=
+github.com/apache/camel-k/pkg/apis/camel v1.8.0/go.mod h1:Hhz357DYpDkok7owIXAsn0RKfZwQmL+3rCiNu8jqkpY=
 github.com/apache/camel-k/pkg/client/camel v1.3.1/go.mod h1:i2DOm/Qm24BNzfCMRttuGHwLodcy1eb6YvGEEMvNUSw=
 github.com/apache/camel-k/pkg/client/camel v1.7.0/go.mod h1:/sAkigKicrsI6NdBJa4ql26+if3xL6N1A9qah1jzLE0=
 github.com/apache/camel-k/pkg/kamelet/repository v1.3.1/go.mod h1:13WqOFlEs7b0OxTRrEZ9vZDB1TIFE/hrOef4NyFJaPA=

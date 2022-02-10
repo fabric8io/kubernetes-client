@@ -35,7 +35,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.function.ObjIntConsumer;
 import java.util.zip.GZIPOutputStream;
 
 import io.fabric8.kubernetes.client.dsl.base.OperationSupport;
@@ -43,6 +42,7 @@ import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.utils.Base64;
+import io.fabric8.kubernetes.client.utils.InputStreamPumper;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
@@ -52,7 +52,6 @@ import static io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImp
 
 public class PodUpload {
 
-  private static final int DEFAULT_BUFFER_SIZE = 8192;
   private static final String TAR_PATH_DELIMITER = "/";
 
   private PodUpload() {
@@ -79,7 +78,7 @@ public class PodUpload {
       final Base64.InputStream b64In = new Base64.InputStream(inputStream, Base64.ENCODE)
     ) {
       podUploadWebSocketListener.waitUntilReady(operationSupport.getConfig().getRequestConfig().getUploadConnectionTimeout());
-      copy(b64In, podUploadWebSocketListener::send);
+      InputStreamPumper.transferTo(b64In, podUploadWebSocketListener::send);
       podUploadWebSocketListener.waitUntilComplete(operationSupport.getConfig().getRequestConfig().getUploadRequestTimeout());
       return true;
     }
@@ -121,7 +120,7 @@ public class PodUpload {
       };
       final ExecutorService es = Executors.newSingleThreadExecutor();
       Future<?> readFilesFuture = es.submit(readFiles);
-      copy(pis, podUploadWebSocketListener::send);
+      InputStreamPumper.transferTo(pis, podUploadWebSocketListener::send);
       podUploadWebSocketListener.waitUntilComplete(operationSupport.getConfig().getRequestConfig().getUploadRequestTimeout());
       try {
         readFilesFuture.get(100, TimeUnit.SECONDS);
@@ -136,14 +135,6 @@ public class PodUpload {
       } finally {
         es.shutdown();
       }
-    }
-  }
-
-  static void copy(InputStream inputStream, ObjIntConsumer<byte[]> consumer) throws IOException {
-    final byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
-    int n;
-    while (-1 != (n = inputStream.read(buffer))) {
-      consumer.accept(buffer, n);
     }
   }
 

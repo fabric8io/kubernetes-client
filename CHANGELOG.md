@@ -1,16 +1,28 @@
 ## CHANGELOG
-
 ### 6.0-SNAPSHOT
 
 #### Bugs
 
 #### Improvements
+* Fix #3811: Reintroduce `Replaceable` interface in `NonNamespaceOperation`
+* Remove `setIntVal`, `setStrVal`, `setKind` setters from `IntOrString` class to avoid invalid combinations
 
 #### Dependency Upgrade
+* Fix #3788: Point CamelK Extension model to latest released version v1.8.0
+* Fix #3813: Handle exit code status messages with pod uploads
 
 #### New Features
 
 #### _**Note**_: Breaking changes in the API
+
+### 5.12.1 (2022-02-04)
+
+#### Bugs
+* Fix #3786: Deserialize WatchEvents using the specific object type
+* Fix #3776: VerticalPodAutoscaler cannot load yaml with "controlledResources"
+* Fix #3796: Limit usage of YAML Serializer
+* Fix #3772: `edit()` should not be allowed as a NonNamespaceOperation
+* Fix #3477: Handle exit code status messages with pod uploads
 
 ### 5.12.0 (2022-01-24)
 

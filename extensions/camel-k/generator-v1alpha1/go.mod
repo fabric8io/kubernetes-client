@@ -2,7 +2,7 @@ module github.com/fabric8io/kubernetes-client/extensions/camel-k/generator
 
 require (
 	github.com/apache/camel-k v1.7.0 // indirect
-	github.com/apache/camel-k/pkg/apis/camel v1.7.0
+	github.com/apache/camel-k/pkg/apis/camel v1.8.0
 	github.com/fabric8io/kubernetes-client/generator v0.0.0
 	k8s.io/apimachinery v0.21.4
         knative.dev/pkg v0.0.0-20211206113427-18589ac7627e

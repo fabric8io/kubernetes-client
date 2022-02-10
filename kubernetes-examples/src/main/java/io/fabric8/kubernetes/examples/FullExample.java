@@ -199,7 +199,7 @@ public class FullExample {
                     client.services().inNamespace("thisisatest").create(new ServiceBuilder()
                                 .withNewMetadata().withName("testservice").endMetadata()
                                 .withNewSpec()
-                                .addNewPort().withPort(80).withNewTargetPort().withIntVal(80).endTargetPort().endPort()
+                                .addNewPort().withPort(80).withNewTargetPort(80).endPort()
                                 .endSpec()
                                 .build()));
                 log("Updated service", client.services().inNamespace("thisisatest").withName("testservice").edit(s -> new ServiceBuilder(s).editMetadata().addToLabels("test", "label").endMetadata().build()));

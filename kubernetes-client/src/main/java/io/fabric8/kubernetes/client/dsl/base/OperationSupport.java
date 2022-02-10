@@ -61,7 +61,6 @@ public class OperationSupport {
   public static final String JSON_MERGE_PATCH = "application/merge-patch+json";
   
   protected static final ObjectMapper JSON_MAPPER = Serialization.jsonMapper();
-  protected static final ObjectMapper YAML_MAPPER = Serialization.yamlMapper();
   private static final Logger LOG = LoggerFactory.getLogger(OperationSupport.class);
   private static final String CLIENT_STATUS_FLAG = "CLIENT_STATUS_FLAG";
   private static final int maxRetryIntervalExponent = 5;

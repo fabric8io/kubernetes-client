@@ -1,0 +1,51 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+name: Release to SNAPSHOTS Maven Central
+
+env:
+  MAVEN_ARGS: -B -C -V -ntp -Dhttp.keepAlive=false -e
+  OSSRHUSERNAME: ${{ secrets.OSSRHUSERNAME }}
+  OSSRHPASSWORD: ${{ secrets.OSSRHPASSWORD }}
+  SIGNINGPASSWORD: ${{ secrets.SIGNINGPASSWORD }}
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 2 * * *' # Every day at 3am
+
+jobs:
+  release-snapshots:
+    name: Release SNAPSHOT
+    # Cheap way to prevent accidental releases
+    # Modify the list to add users with release permissions
+    if: contains('["manusa","rohanKanojia"]', github.actor)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.4.0
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: 8
+          distribution: temurin
+          server-id: ossrh
+          server-username: OSSRHUSERNAME
+          server-password: OSSRHPASSWORD
+          gpg-private-key: ${{ secrets.SIGNINGKEY }}
+          gpg-passphrase: SIGNINGPASSWORD
+      - name: Build and Release Project
+        run: mvn ${MAVEN_ARGS} -Prelease clean deploy -DstagingProgressTimeoutMinutes=20 -Denforcer.skip=true

@@ -52,6 +52,7 @@ import io.fabric8.kubernetes.client.mock.crd.StarSpec;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.Utils;
+import io.fabric8.kubernetes.internal.KubernetesDeserializer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -846,6 +847,23 @@ class DefaultSharedIndexInformerTest {
     setupMockServerExpectations(Animal.class, "ns1", this::getList, r -> new WatchEvent(getAnimal("red-panda", "Carnivora", r), "ADDED"), null, null);
 
     // When
+    SharedIndexInformer<GenericKubernetesResource> animalSharedIndexInformer = factory.inNamespace("ns1").sharedIndexInformerForCustomResource(animalContext, 60 * WATCH_EVENT_EMIT_TIME);
+    CountDownLatch foundExistingAnimal = new CountDownLatch(1);
+    animalSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingAnimal, "red-panda"));
+    factory.startAllRegisteredInformers();
+    foundExistingAnimal.await(LATCH_AWAIT_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
+
+    // Then
+    assertEquals(0, foundExistingAnimal.getCount());
+  }
+
+  @Test
+  void testGenericKubernetesResourceSharedIndexInformerWithAdditionalDeserializers() throws InterruptedException {
+    // Given
+    setupMockServerExpectations(Animal.class, "ns1", this::getList, r -> new WatchEvent(getAnimal("red-panda", "Carnivora", r), "ADDED"), null, null);
+
+    // When
+    KubernetesDeserializer.registerCustomKind("jungle.example.com/v1","Animal", CronTab.class);
     SharedIndexInformer<GenericKubernetesResource> animalSharedIndexInformer = factory.inNamespace("ns1").sharedIndexInformerForCustomResource(animalContext, 60 * WATCH_EVENT_EMIT_TIME);
     CountDownLatch foundExistingAnimal = new CountDownLatch(1);
     animalSharedIndexInformer.addEventHandler(new TestResourceHandler<>(foundExistingAnimal, "red-panda"));

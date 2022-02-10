@@ -234,7 +234,7 @@ public class TypedCustomResourceIT {
     // use the original pet, no need to pick up the resourceVersion
     pet.getSpec().setType("shouldn't change");
     pet.setStatus(petStatusToUpdate);
-    Pet updatedPet = petClient.inNamespace(currentNamespace).patchStatus(pet);
+    Pet updatedPet = petClient.inNamespace(currentNamespace).withName(pet.getMetadata().getName()).patchStatus(pet);
 
     // Then
     assertPet(updatedPet, "pet-applystatus", "Pigeon", "Sleeping");

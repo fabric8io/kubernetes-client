@@ -23,7 +23,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
@@ -54,11 +53,13 @@ public class BeanPropertyWriterDelegate extends BeanPropertyWriter {
 
   @Override
   public void serializeAsField(Object bean, JsonGenerator gen, SerializerProvider prov) throws Exception {
-    final Object valueInAnyGetter = Optional.ofNullable(anyGetter)
-      .map(ag -> ag.getValue(bean))
-      .map(Map.class::cast)
-      .map(m -> m.get(delegate.getName()))
-      .orElse(null);
+    Object valueInAnyGetter = null;
+    if (anyGetter != null) {
+      Object anyGetterValue = anyGetter.getValue(bean);
+      if (anyGetterValue != null) {
+        valueInAnyGetter = ((Map<?, ?>) anyGetterValue).get(delegate.getName());
+      }
+    }
     if (valueInAnyGetter == null) {
       delegate.serializeAsField(bean, gen, prov);
     } else if (Boolean.TRUE.equals(logDuplicateWarning.get())) {

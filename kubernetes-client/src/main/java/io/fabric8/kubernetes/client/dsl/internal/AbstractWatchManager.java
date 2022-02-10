@@ -15,12 +15,12 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.api.model.KubernetesResource;
-import io.fabric8.kubernetes.api.model.KubernetesResourceList;
-import io.fabric8.kubernetes.api.model.ListOptions;
-import io.fabric8.kubernetes.api.model.Status;
-import io.fabric8.kubernetes.api.model.WatchEvent;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
@@ -232,9 +232,31 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     closeRequest();
     cancelReconnect();
   }
+
+  private WatchEvent contextAwareWatchEventDeserializer(String messageSource) {
+    try {
+      return Serialization.unmarshal(messageSource, WatchEvent.class);
+    } catch (Exception ex1) {
+      try {
+        JsonNode json = Serialization.jsonMapper().readTree(messageSource);
+        JsonNode objectJson = null;
+        if (json instanceof ObjectNode && json.has("object")) {
+          objectJson = ((ObjectNode) json).remove("object");
+        }
+
+        WatchEvent watchEvent = Serialization.jsonMapper().treeToValue(json, WatchEvent.class);
+        KubernetesResource object = Serialization.jsonMapper().treeToValue(objectJson, baseOperation.getType());
+
+        watchEvent.setObject(object);
+        return watchEvent;
+      } catch (JsonProcessingException ex2) {
+        throw new IllegalArgumentException("Failed to deserialize WatchEvent", ex2);
+      }
+    }
+  }
   
   protected WatchEvent readWatchEvent(String messageSource) {
-    WatchEvent event = Serialization.unmarshal(messageSource, WatchEvent.class);
+    WatchEvent event = contextAwareWatchEventDeserializer(messageSource);
     KubernetesResource object = null;
     if (event != null) {
       object = event.getObject();
@@ -261,12 +283,10 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
     try {
       WatchEvent event = readWatchEvent(message);
       Object object = event.getObject();
-      if (object instanceof HasMetadata) {
-        @SuppressWarnings("unchecked")
-        T obj = (T) object;
-        updateResourceVersion(obj.getMetadata().getResourceVersion());
-        Action action = Action.valueOf(event.getType());
-        eventReceived(action, obj);
+      if (object instanceof Status) {
+        Status status = (Status) object;
+
+        onStatus(status);
       } else if (object instanceof KubernetesResourceList) {
         // Dirty cast - should always be valid though
         KubernetesResourceList list = (KubernetesResourceList) object;
@@ -278,10 +298,12 @@ public abstract class AbstractWatchManager<T extends HasMetadata> implements Wat
             eventReceived(action, item);
           }
         }
-      } else if (object instanceof Status) {
-        Status status = (Status) object;
-      
-        onStatus(status);
+      } else if (object instanceof HasMetadata) {
+        @SuppressWarnings("unchecked")
+        T obj = (T) object;
+        updateResourceVersion(obj.getMetadata().getResourceVersion());
+        Action action = Action.valueOf(event.getType());
+        eventReceived(action, obj);
       } else {
         logger.error("Unknown message received: {}", message);
       }

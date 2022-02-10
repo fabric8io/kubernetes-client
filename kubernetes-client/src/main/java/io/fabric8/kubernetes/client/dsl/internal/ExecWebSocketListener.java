@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.dsl.internal;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.Status;
+import io.fabric8.kubernetes.api.model.StatusCause;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.ExecListener;
 import io.fabric8.kubernetes.client.dsl.ExecWatch;
@@ -27,14 +28,17 @@ import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.kubernetes.client.http.WebSocketHandshakeException;
 import io.fabric8.kubernetes.client.utils.InputStreamPumper;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
@@ -57,6 +61,10 @@ import static io.fabric8.kubernetes.client.utils.Utils.closeQuietly;
  *
  */
 public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocket.Listener {
+
+    static final String CAUSE_REASON_EXIT_CODE = "ExitCode";
+    static final String REASON_NON_ZERO_EXIT_CODE = "NonZeroExitCode";
+    static final String STATUS_SUCCESS = "Success";
 
     private final class SimpleResponse implements Response {
     private final HttpResponse<?> response;
@@ -95,11 +103,7 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
 
     private final ExecListener listener;
 
-    private final AtomicBoolean explicitlyClosed = new AtomicBoolean(false);
-
-    private final AtomicBoolean failed = new AtomicBoolean(false);
     private final AtomicBoolean closed = new AtomicBoolean(false);
-    private final AtomicBoolean cleaned = new AtomicBoolean(false);
 
     private final Set<Closeable> toClose = new LinkedHashSet<>();
 
@@ -125,8 +129,7 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
       close(1000, "Closing...");
     }
 
-    public void close(int code, String reason) {
-      explicitlyClosed.set(true);
+    private void close(int code, String reason) {
       closeWebSocketOnce(code, reason);
       onClosed(code, reason);
     }
@@ -140,12 +143,8 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
    * if the stream it uses closes before the pumper it self.
    */
   private void cleanUpOnce() {
-   if (!cleaned.compareAndSet(false, true)) {
-        return;
-   }
-
-   executorService.shutdownNow();
-   closeQuietly(toClose);
+     executorService.shutdownNow();
+     closeQuietly(toClose);
   }
 
     private void closeWebSocketOnce(int code, String reason) {
@@ -197,7 +196,7 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
   public void onError(WebSocket webSocket, Throwable t) {
 
       //If we already called onClosed() or onFailed() before, we need to abort.
-      if (explicitlyClosed.get() || closed.get() || !failed.compareAndSet(false, true) ) {
+      if (closed.compareAndSet(false, true) ) {
         //We are not going to notify the listener, sicne we've already called onClose(), so let's log a debug/warning.
         if (LOGGER.isWarnEnabled()) {
           LOGGER.warn("Received [{}], with message:[{}] after ExecWebSocketListener is closed, Ignoring.",t.getClass().getCanonicalName(),t.getMessage());
@@ -234,20 +233,16 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
             if (byteString.remaining() > 0) {
                 switch (streamID) {
                     case 1:
-                        if (out != null) {
-                          Channels.newChannel(out).write(byteString);
-                          out.flush();
-                        }
+                        writeAndFlush(out, byteString);
                         break;
                     case 2:
-                        if (err != null) {
-                          Channels.newChannel(err).write(byteString);
-                        }
+                        writeAndFlush(err, byteString);
                         break;
                     case 3:
-                        if (errChannel != null) {
-                          Channels.newChannel(errChannel).write(byteString);
-                        }
+                        handleExitStatus(bytes);
+                        writeAndFlush(errChannel, byteString);
+                        // once the process is done, we can proactively close
+                        this.close(); 
                         break;
                     default:
                         throw new IOException("Unknown stream ID " + streamID);
@@ -258,6 +253,33 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
         }
     }
 
+
+  private void handleExitStatus(ByteBuffer bytes) {
+    Status status = null;
+    int code = -1;
+    try {
+      String stringValue = StandardCharsets.UTF_8.decode(bytes).toString();
+      status = Serialization.unmarshal(stringValue, Status.class);
+      if (status != null) {
+        code = parseExitCode(status);
+      }
+    } catch (Exception e) {
+      LOGGER.warn("Could not determine exit code", e);
+    }
+    if (this.listener != null) {
+      this.listener.onExit(code, status);
+    }
+  }
+
+  private void writeAndFlush(OutputStream stream, ByteBuffer byteString) throws IOException {
+    if (stream != null) {
+      Channels.newChannel(stream).write(byteString);
+      if (stream instanceof PipedOutputStream) {
+        stream.flush(); // immediately wake up the reader
+      }
+    }
+  }
+
   @Override
   public void onClose(WebSocket webSocket, int code, String reason) {
     ExecWebSocketListener.this.close(code, reason);
@@ -265,14 +287,12 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
 
     private void onClosed(int code, String reason) {
        //If we already called onClosed() or onFailed() before, we need to abort.
-       if (!closed.compareAndSet(false, true) || failed.get()) {
+       if (!closed.compareAndSet(false, true)) {
          return;
        }
        LOGGER.debug("Exec Web Socket: On Close with code:[{}], due to: [{}]", code, reason);
         try {
-            if (explicitlyClosed.get()) {
-              cleanUpOnce();
-            }
+            cleanUpOnce();
         } finally {
             if (listener != null) {
               listener.onClose(code, reason);
@@ -356,4 +376,27 @@ public class ExecWebSocketListener implements ExecWatch, AutoCloseable, WebSocke
             return null;
         }
     }
+    
+    public static int parseExitCode(Status status) {
+      if (STATUS_SUCCESS.equals(status.getStatus())) {
+        return 0;
+      }
+      if (REASON_NON_ZERO_EXIT_CODE.equals(status.getReason())) {
+        if (status.getDetails() == null) {
+          return -1;
+        }
+        List<StatusCause> causes = status.getDetails().getCauses();
+        if (causes == null) {
+          return -1;
+        }
+        return causes.stream()
+            .filter(c -> CAUSE_REASON_EXIT_CODE.equals(c.getReason()))
+            .map(StatusCause::getMessage)
+            .map(Integer::valueOf)
+            .findFirst()
+            .orElse(-1);
+      }
+      return -1;
+    }
+
  }

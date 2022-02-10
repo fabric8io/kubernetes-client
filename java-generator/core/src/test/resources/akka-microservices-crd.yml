@@ -1,0 +1,482 @@
+#
+# Copyright (C) 2015 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: akkamicroservices.akka.lightbend.com
+spec:
+  group: akka.lightbend.com
+  names:
+    kind: AkkaMicroservice
+    listKind: AkkaMicroserviceList
+    singular: akkamicroservice
+    plural: akkamicroservices
+  scope: Namespaced
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      subresources:
+        status: {}
+        scale:
+          specReplicasPath: .spec.replicas
+          statusReplicasPath: .status.availableReplicas
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                replicas:
+                  type: integer
+                  default: 1
+                  minimum: 0
+                  maximum: 1000
+                  description: 'Number of desired pods.'
+                image:
+                  type: string
+                  description: 'Docker image name. More info: https://kubernetes.io/docs/concepts/containers/images'
+                imagePullPolicy:
+                  type: string
+                  description: 'Image pull policy. One of Always, Never, IfNotPresent. No setting falls back to the container default. More info: https://kubernetes.io/docs/concepts/containers/images#updating-images'
+                  pattern: '^Always$|^Never$|^IfNotPresent$'
+                appVersion:
+                  type: string
+                  description: 'Application version of the deployment. Used by rolling update features to distinguish between old and new nodes. Unlike "deployment.kubernetes.io/revision", the appVersion may span multiple "Deployment" resources.'
+                imagePullSecrets:
+                  type: array
+                  description: 'List of the image pull secrets to be used. More info: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/#create-a-pod-that-uses-your-secret'
+                  items:
+                    type: string
+                    description: 'Name of the secret to be used to pull images from the Docker registry. More info: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/#create-a-secret-by-providing-credentials-on-the-command-line'
+                  default: []
+                splitBrainResolver:
+                  type: object
+                  properties:
+                    useKubernetesLease:
+                      type: boolean
+                      default: false
+                grpcPort:
+                  type: string
+                  pattern: '^(off)$|^(102[4-9]|10[3-9][0-9]|1[1-9][0-9]{2}|[2-9][0-9]{3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$'
+                  default: "8101"
+                  description: 'gRPC port in the range 1024 - 65535. Can be disabled with "off". This port is exposed as GRPC_PORT environment variable if it is enabled.'
+                akkaManagementPort:
+                  type: string
+                  pattern: '^(off)$|^(102[4-9]|10[3-9][0-9]|1[1-9][0-9]{2}|[2-9][0-9]{3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$'
+                  default: "8558"
+                  description: 'Akka Management (Cluster Bootstrap) HTTP port in the range 1024 - 65535. Can be disabled with "off". This port is exposed as HTTP_MGMT_PORT environment variable if it is enabled.'
+                httpPort:
+                  type: string
+                  pattern: '^(off)$|^(102[4-9]|10[3-9][0-9]|1[1-9][0-9]{2}|[2-9][0-9]{3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$'
+                  default: "off"
+                  description: 'HTTP port in the range 1024 - 65535. Disabled by default. This port is exposed as HTTP_PORT environment variable if it is enabled.'
+                prometheusPort:
+                  type: string
+                  pattern: '^(off)$|^(102[4-9]|10[3-9][0-9]|1[1-9][0-9]{2}|[2-9][0-9]{3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$'
+                  default: "off"
+                  description: 'HTTP port to expose metrics for Prometheus to scrape. Must be  in the range 1024 - 65535. Disabled by default. This port is exposed as HTTP_PROMETHEUS_PORT environment variable if it is enabled.'
+                readinessProbe:
+                  type: object
+                  x-kubernetes-preserve-unknown-fields: true
+                  default:
+                    httpGet:
+                      port: management
+                      path: "/ready"
+                    periodSeconds: 10
+                    initialDelaySeconds: 20
+                    failureThreshold: 10
+                  description: 'The readiness probe, can be configured as any standard probe or disabled by using an empty object. More info: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes'
+                livenessProbe:
+                  type: object
+                  x-kubernetes-preserve-unknown-fields: true
+                  default:
+                    httpGet:
+                      port: management
+                      path: "/alive"
+                    periodSeconds: 10
+                    initialDelaySeconds: 20
+                    failureThreshold: 10
+                  description: 'The liveness probe, can be configured as any standard probe or disabled by using an empty object. More info: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes'
+                grpcIngress:
+                  type: object
+                  properties:
+                    enabled:
+                      type: boolean
+                    certificate:
+                      type: string
+                    class:
+                      type: string
+                      default: ""
+                    annotations:
+                      type: object
+                      properties:
+                        ingress:
+                          type: object
+                          description: "Annotations.ingress is an unstructured key value map stored as annotations on the Ingress serving gRPC. They are not queryable and should be preserved when modifying objects. More info: http://kubernetes.io/docs/user-guide/annotations"
+                          additionalProperties:
+                            type: string
+                        service:
+                          type: object
+                          description: "Annotations.service is an unstructured key value map stored as annotations on the Service proxying the Ingress traffic for gRPC. They are not queryable and should be preserved when modifying objects. More info: http://kubernetes.io/docs/user-guide/annotations"
+                          additionalProperties:
+                            type: string
+                  description: 'Enable ingress for gRPC'
+                  required:
+                    - enabled
+                    - certificate
+                httpIngress:
+                    type: object
+                    properties:
+                      enabled:
+                        type: boolean
+                      certificate:
+                        type: string
+                      class:
+                        type: string
+                        default: ""
+                      annotations:
+                        type: object
+                        properties:
+                          ingress:
+                            type: object
+                            description: "Annotations.ingress is an unstructured key value map stored as annotations on the Ingress serving HTTP. They are not queryable and should be preserved when modifying objects. More info: http://kubernetes.io/docs/user-guide/annotations"
+                            additionalProperties:
+                              type: string
+                          service:
+                            type: object
+                            description: "Annotations.service is an unstructured key value map stored as annotations on the Service proxying the Ingress traffic for HTTP. They are not queryable and should be preserved when modifying objects. More info: http://kubernetes.io/docs/user-guide/annotations"
+                            additionalProperties:
+                              type: string
+                    description: 'Enable ingress for http'
+                    required:
+                      - enabled
+                      - certificate
+                configSecret:
+                  type: object
+                  description: |-
+                    Name of Secret with config entries that will be concatenated into main.conf together with
+                    configuration provided by the operator. The main.conf includes application.conf and the JVM system
+                    property config.file is set to main.conf. The purpose of this configuration is to be able to
+                    override environment specific configuration.
+                  properties:
+                    secretName:
+                      type: string
+                  required:
+                    - secretName
+                envFrom:
+                  type: array
+                  description: 'A list of Secret and/or ConfigMap references with entries that will be included as environment variables.'
+                  items:
+                    type: object
+                    x-kubernetes-preserve-unknown-fields: true
+                    description: 'A reference to a ConfigMap or to a Secret that populate the environment variables. More info: https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/#configure-all-key-value-pairs-in-a-configmap-as-container-environment-variables'
+                envSecret:
+                  type: object
+                  description: '*DEPRECATED use envFrom instead* Name of Secret with entries that will be included as environment variables.'
+                  properties:
+                    secretName:
+                      type: string
+                logbackSecret:
+                  type: object
+                  description: 'Name of Secret with entries that will be used as logback.xml configuration.'
+                  properties:
+                    secretName:
+                      type: string
+                secretVolumes:
+                  type: array
+                  description: 'List of Secrets with entries that will be mounted as files in the mountPath directory.'
+                  items:
+                    type: object
+                    description: 'Secrets with entries that will be mounted as files in the mountPath directory.'
+                    properties:
+                      secretName:
+                        type: string
+                      mountPath:
+                        type: string
+                    required:
+                      - secretName
+                      - mountPath
+                  default: []
+                extraVolumeMounts:
+                  type: array
+                  description: 'List of extra volume mounts to be provided to the main container.'
+                  items:
+                    type: object
+                    x-kubernetes-preserve-unknown-fields: true
+                    description: 'Additional volume mounts to be added to the microservice container. More info: https://kubernetes.io/docs/concepts/storage/volumes/'
+                  default: [ ]
+                javaOptions:
+                  type: string
+                  description: 'Additional arguments to the application JVM. It will be added to the `JAVA_TOOL_OPTIONS` environment variable, which will be used by most JVM implementations.'
+                  default: ""
+                env:
+                  type: array
+                  description: 'List of environment variables to set in the container.'
+                  items:
+                    type: object
+                    x-kubernetes-preserve-unknown-fields: true
+                    description: 'EnvVar represents an environment variable present in a Container. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-environment-variable-container/'
+                deploymentStrategy:
+                  type: object
+                  x-kubernetes-preserve-unknown-fields: true
+                  description: |-
+                    The deployment strategy to use to replace existing pods with new ones.
+                    For more information see https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy
+                  default:
+                    type: 'RollingUpdate'
+                    rollingUpdate:
+                      maxSurge: '25%'
+                      maxUnavailable: '25%'
+                resources:
+                  type: object
+                  description: 'ResourceRequirements describes the compute resource requirements.'
+                  properties:
+                    limits:
+                      type: object
+                      description: 'Limits describes the maximum amount of compute resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/'
+                      properties:
+                        memory:
+                          description: 'Sets the memory limit. An empty value overwrites the default limit.'
+                          type: string # '#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity'
+                          default: "1024Mi"
+                        cpu:
+                          description: 'While not recommended, this allows to set a CPU limit. See https://doc.akka.io/docs/akka/current/additional/deploying.html#resource-limits'
+                          type: string
+                          default: ""
+                      default:
+                        memory: "1024Mi"
+                        cpu: ""
+                    requests:
+                      type: object
+                      description: 'Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/'
+                      properties:
+                        memory:
+                          description: 'Sets the memory request. An empty value overwrites the default request.'
+                          type: string # '#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity'
+                          default: "1024Mi"
+                        cpu:
+                          description: 'Sets the CPU request. An empty value overwrites the default request.'
+                          type: string
+                          default: "1"
+                      default:
+                        memory: "1024Mi"
+                        cpu: "1"
+                  default:
+                    limits:
+                      memory: "1024Mi"
+                      cpu: ""
+                    requests:
+                      memory: "1024Mi"
+                      cpu: "1"
+                kafka:
+                  type: object
+                  description: 'Integration with Kafka'
+                  properties:
+                    credentialsSecret:
+                      type: string
+                      description: |-
+                        The name of the Secret that contains bootstrap servers.
+                        It is enabled by defining the this credentialsSecret property. The operator will provide
+                        configuration for the connection in the main.conf, which is automatically loaded by the application.
+                    bootstrapServersKey:
+                      type: string
+                      default: "bootstrapServers"
+                  required:
+                    - credentialsSecret
+                kafkaConfluentCloud:
+                  type: object
+                  description: 'Integration with Confluent Cloud'
+                  properties:
+                    credentialsSecret:
+                      type: string
+                      description: |-
+                        The name of the Secret that contains bootstrap server, api key, and api secret.
+                        See https://docs.confluent.io/cloud/current/using/api-keys.html
+                        It is enabled by defining the this credentialsSecret property. The operator will provide
+                        configuration for the connection in the main.conf, which is automatically loaded by the application.
+                    bootstrapServerKey:
+                      type: string
+                      default: "bootstrapServer"
+                    apiKeyKey:
+                      type: string
+                      default: "apiKey"
+                    apiSecretKey:
+                      type: string
+                      default: "apiSecret"
+                  required:
+                    - credentialsSecret
+                jdbc:
+                  type: object
+                  description: 'Integration with JDBC data source'
+                  properties:
+                    credentialsSecret:
+                      type: string
+                      description: |-
+                        The name of the Secret that contains database connection url, username and password.
+                        It is enabled by defining this credentialsSecret property. The operator will provide
+                        configuration for the connection in the main.conf, which is automatically loaded by the application.
+                    connectionUrlKey:
+                      type: string
+                      default: "connectionUrl"
+                    usernameKey:
+                      type: string
+                      default: "username"
+                    passwordKey:
+                      type: string
+                      default: "password"
+                  required:
+                    - credentialsSecret
+                cassandraDataStaxAstra:
+                  type: object
+                  description: 'Integration with DataStax Astra (Cloud-Native Cassandra-as-a-Service)'
+                  properties:
+                    credentialsSecret:
+                      type: string
+                      description: |-
+                        The name of the Secret that contains database username, password and secureConnectBundle.
+                        See https://docs.astra.datastax.com/docs/obtaining-database-credentials
+                        It is enabled by defining this credentialsSecret property. The operator will provide
+                        configuration for the connection in the main.conf, which is automatically loaded by the application.
+                    usernameKey:
+                      type: string
+                      default: "username"
+                    passwordKey:
+                      type: string
+                      default: "password"
+                    secureConnectBundleKey:
+                      type: string
+                      default: "secureConnectBundle"
+                  required:
+                    - credentialsSecret
+                roles:
+                  type: array
+                  description: 'Scale by Akka Cluster node role. https://doc.akka.io/docs/akka/current/typed/cluster.html#node-roles'
+                  items:
+                    type: object
+                    description:  |-
+                      A role with a name and what ratio of the replicas that should be used for Pods with this role.
+                      For example, role A with replicasRatio 40 and role B with replicasRatio 60 means that 10
+                      replicas will result in 4 replicas for role A and 6 replicas for role B. Scaling to 15 will
+                      result in 6 for A and 9 for B.
+                      Each role can can optionally have minimum and maximum bounds. When allocating the total number
+                      of replicas to the roles those bounds will be honored if possible, but it is not guaranteed.
+                      The sum of the role replicas will always be equal to the number of total replicas.
+                      If total replicas are less than the sum of replicasMin of all roles the minimum bounds cannot
+                      be satisfied. If the total replicas are greater than the sum of replicasMax of all roles the
+                      maximum bounds cannot be satisfied.
+                    properties:
+                      name:
+                        type: string
+                      replicasRatio:
+                        type: integer
+                        minimum: 0
+                      replicasMin:
+                        type: integer
+                        minimum: 0
+                        default: 1
+                      replicasMax:
+                        type: integer
+                        minimum: 0
+                        default: 1000
+                    required:
+                      - name
+                      - replicasRatio
+                  default: []
+                podTemplateSpec:
+                  type: object
+                  x-kubernetes-preserve-unknown-fields: true
+                  description: 'A Pod Template to be merged with the one generated by the operator. More info: https://kubernetes.io/docs/concepts/workloads/pods/#pod-templates'
+                serviceAccount:
+                  type: string
+                  description: 'The service account to be used by the microservice, instead of the one generated one. More info: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/'
+              required:
+                - image
+            status:
+              type: object
+              properties:
+                phase:
+                  type: string
+                  description: 'The phase of an AkkaMicroservice is a simple, high-level summary of where the AkkaMicroservice is in its lifecycle.'
+                availableReplicas:
+                  description: 'Total number of available pods targeted by this AkkaMicroservice.'
+                  format: int32
+                  type: integer
+                message:
+                  type: string
+                  description: 'A human readable message indicating details about why the AkkaMicroservice is in this condition.'
+                podStatus:
+                  type: array
+                  description: 'The pods state in case of failures.'
+                  items:
+                    type: string
+                oldestPodStartTime:
+                  type: string
+                  description: 'The start time of the oldest pod.'
+                akkaClusterStatus:
+                  type: object
+                  description: 'Status summary about the Akka Cluster members.'
+                  properties:
+                    upMembers:
+                      description: 'Number of Akka Cluster members in UP state.'
+                      type: integer
+                    nonUpMembers:
+                      description: 'Number of Akka Cluster members in other states than UP.'
+                      type: integer
+                    unreachableMembers:
+                      description: 'Number of unreachable members in the Akka Cluster (as seen from the queried node).'
+                      type: integer
+                    lastChangeTime:
+                      description: 'Timestamp when the Akka Cluster status summary last changed.'
+                      type: string
+      # Columns in kubectl get
+      additionalPrinterColumns:
+        - name: Phase
+          type: string
+          description: High-level summary of lifecycle
+          jsonPath: .status.phase
+        - name: Replicas
+          type: integer
+          description: Current number of Pods
+          jsonPath: .status.availableReplicas
+        - name: Desired
+          type: integer
+          description: Desired number of Pods
+          jsonPath: .spec.replicas
+        - name: Age
+          type: date
+          jsonPath: .status.oldestPodStartTime
+        - name: Up
+          type: integer
+          jsonPath: .status.akkaClusterStatus.upMembers
+        - name: Non-Up
+          type: integer
+          jsonPath: .status.akkaClusterStatus.nonUpMembers
+          priority: 1 # only in wide view
+        - name: Unreachable
+          type: integer
+          jsonPath: .status.akkaClusterStatus.unreachableMembers
+          priority: 1 # only in wide view
+        - name: Message
+          type: string
+          jsonPath: .status.message
+          priority: 1 # only in wide view
+        - name: Image
+          type: string
+          jsonPath: .spec.image
+          priority: 1 # only in wide view
