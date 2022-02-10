@@ -4,6 +4,7 @@
 #### Bugs
 * Fix #3848: Supports Queue (cluster) API for Volcano extension
 * Fix #3582: SSL truststore can be loaded in FIPS enabled environments
+* Fix #3818: adding missing throws to launderThrowable
 
 #### Improvements
 * Fix #3811: Reintroduce `Replaceable` interface in `NonNamespaceOperation`
