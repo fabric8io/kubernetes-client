@@ -30,7 +30,7 @@ import io.fabric8.kubernetes.client.dsl.*;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.http.HttpClient;
-import io.fabric8.kubernetes.client.internal.readiness.Readiness;
+import io.fabric8.kubernetes.client.readiness.Readiness;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;

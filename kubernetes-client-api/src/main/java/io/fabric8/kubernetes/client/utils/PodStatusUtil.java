@@ -20,7 +20,7 @@ import io.fabric8.kubernetes.api.model.ContainerState;
 import io.fabric8.kubernetes.api.model.ContainerStatus;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodStatus;
-import io.fabric8.kubernetes.client.internal.readiness.Readiness;
+import io.fabric8.kubernetes.client.readiness.Readiness;
 
 import java.util.Collections;
 import java.util.List;

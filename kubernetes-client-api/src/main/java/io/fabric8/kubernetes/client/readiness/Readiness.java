@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.internal.readiness;
+package io.fabric8.kubernetes.client.readiness;
 
 import io.fabric8.kubernetes.api.model.EndpointSubset;
 import io.fabric8.kubernetes.api.model.Endpoints;

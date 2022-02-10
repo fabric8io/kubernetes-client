@@ -41,7 +41,7 @@ import io.fabric8.kubernetes.client.dsl.VisitFromServerWritable;
 import io.fabric8.kubernetes.client.dsl.Waitable;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.kubernetes.client.internal.readiness.Readiness;
+import io.fabric8.kubernetes.client.readiness.Readiness;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 
 import java.util.Arrays;

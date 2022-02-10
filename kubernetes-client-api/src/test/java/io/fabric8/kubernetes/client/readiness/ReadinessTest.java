@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.internal.readiness;
+package io.fabric8.kubernetes.client.readiness;
 
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.api.model.apps.StatefulSet;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetSpec;
 import io.fabric8.kubernetes.api.model.apps.StatefulSetStatus;
+import io.fabric8.kubernetes.client.readiness.Readiness;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.openshift.client.internal.readiness;
+package io.fabric8.openshift.client.readiness;
 
-import io.fabric8.kubernetes.client.internal.readiness.Readiness;
+import io.fabric8.kubernetes.client.readiness.Readiness;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.api.model.DeploymentConfigBuilder;
 import io.fabric8.openshift.api.model.ImageStreamBuilder;

@@ -32,7 +32,7 @@ import io.fabric8.kubernetes.client.http.TlsVersion;
 import io.fabric8.kubernetes.client.internal.CertUtils;
 import io.fabric8.kubernetes.client.internal.KubeConfigUtils;
 import io.fabric8.kubernetes.client.internal.SSLUtils;
-import io.fabric8.kubernetes.client.internal.readiness.Readiness;
+import io.fabric8.kubernetes.client.readiness.Readiness;
 import io.fabric8.kubernetes.client.utils.IOHelpers;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;

@@ -29,7 +29,7 @@ import io.fabric8.kubernetes.api.model.OwnerReference;
 import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.api.model.SecretBuilder;
 import io.fabric8.kubernetes.client.CustomResourceList;
-import io.fabric8.kubernetes.client.internal.readiness.Readiness;
+import io.fabric8.kubernetes.client.readiness.Readiness;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
