@@ -87,6 +87,8 @@
     <okio.bundle.version>1.15.0_1</okio.bundle.version>
     <jackson.version>2.13.1</jackson.version>
     <mockwebserver.version>0.2.2</mockwebserver.version>
+    <maven-core.version>3.8.4</maven-core.version>
+    <maven-plugin-annotations.version>3.6.0</maven-plugin-annotations.version>
 
     <!-- API versions -->
     <jsr305.version>3.0.2</jsr305.version>
@@ -95,6 +97,7 @@
     <assertj.core.version>3.22.0</assertj.core.version>
     <arquillian.core.version>1.2.0.Final</arquillian.core.version>
     <awaitility.version>4.1.1</awaitility.version>
+    <approvaltests.version>13.3.0</approvaltests.version>
 
     <retrofit.bundle.version>2.5.0_1</retrofit.bundle.version>
     <conscrypt-openjdk-uber.version>1.4.2</conscrypt-openjdk-uber.version>
@@ -139,6 +142,8 @@
     <maven.dependency.plugin.version>3.2.0</maven.dependency.plugin.version>
     <maven.shade.plugin.version>3.2.4</maven.shade.plugin.version>
     <maven.install.plugin.version>3.0.0-M1</maven.install.plugin.version>
+    <maven.invoker.plugin.version>3.2.2</maven.invoker.plugin.version>
+    <maven.plugin.plugin.version>3.6.0</maven.plugin.plugin.version>
     <jandex.plugin.version>1.2.2</jandex.plugin.version>
     <jandex.version>2.4.2.Final</jandex.version>
     <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
@@ -695,6 +700,16 @@
         <scope>provided</scope>
       </dependency>
       <dependency>
+        <groupId>org.apache.maven</groupId>
+        <artifactId>maven-core</artifactId>
+        <version>${maven-core.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.maven.plugin-tools</groupId>
+        <artifactId>maven-plugin-annotations</artifactId>
+        <version>${maven-plugin-annotations.version}</version>
+      </dependency>
+      <dependency>
         <groupId>io.sundr</groupId>
         <artifactId>sundr-codegen-velocity-nodeps</artifactId>
         <version>${sundrio.version}</version>
@@ -780,6 +795,13 @@
         <groupId>javax.validation</groupId>
         <artifactId>validation-api</artifactId>
         <version>${validation-api.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>com.approvaltests</groupId>
+        <artifactId>approvaltests</artifactId>
+        <version>${approvaltests.version}</version>
         <scope>test</scope>
       </dependency>
     </dependencies>
@@ -875,6 +897,16 @@
               </configuration>
             </execution>
           </executions> -->
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-plugin-plugin</artifactId>
+          <version>${maven.plugin.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-invoker-plugin</artifactId>
+          <version>${maven.invoker.plugin.version}</version>
         </plugin>
         <plugin>
           <groupId>org.jboss.jandex</groupId>
@@ -979,6 +1011,7 @@
             <exclude>kubernetes-client/src/test/resources/mockito-extensions/*</exclude>
             <exclude>**/src/test/resources/ssl/*</exclude>
             <exclude>**/src/test/resources/io/fabric8/java/generator/approvals/*.*.approved.txt</exclude>
+            <exclude>**/java-generator/it/**/expected/**/*</exclude>
             <exclude>Jenkinsfile</exclude>
           </excludes>
           <mapping>

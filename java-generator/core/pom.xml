@@ -99,8 +99,6 @@
     <dependency>
       <groupId>com.approvaltests</groupId>
       <artifactId>approvaltests</artifactId>
-      <version>13.3.0</version>
-      <scope>test</scope>
     </dependency>
   </dependencies>
   <build>
