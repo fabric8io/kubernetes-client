@@ -436,7 +436,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
             out.flush();
             out.close();
           } catch (IOException e) {
-            KubernetesClientException.launderThrowable(e);
+            throw KubernetesClientException.launderThrowable(e);
           }
         }
       ).exec("sh", "-c", String.format("cat %s | base64", shellQuote(source)));
@@ -484,7 +484,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
             out.flush();
             out.close();
           } catch (IOException e) {
-            KubernetesClientException.launderThrowable(e);
+            throw KubernetesClientException.launderThrowable(e);
           }
         }
       ).exec("sh", "-c", "tar -cf - " + source + "|" + "base64");
