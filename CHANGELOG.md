@@ -18,6 +18,7 @@
     * Removed deprecated KubernetesClient.customResource / RawCustomResourceOperationsImpl, please use the generic resource api instead 
     * Removed deprecatedHttpClientUtils.createHttpClient(final Config config, final Consumer<OkHttpClient.Builder> additionalConfig), please use the OkHttpClientFactory instead
     * Removed deprecated methods on SharedInformerFactory dealing with the OperationContext
+* Refactoring #2838: Readiness/OpenShiftReadiness moved from client.internal.readiness to client.readiness
 
 ### 5.12.1 (2022-02-04)
 
