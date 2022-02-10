@@ -65,7 +65,7 @@ class RunOperationsTest {
       .withPort(5701)
       .withLimits(limits)
       .withRequests(requests);
-    RunOperations deploymentGenerator = new RunOperations(new SimpleClientContext(config, mockClient), "ns1", generatorRunConfig);
+    RunOperationsImpl deploymentGenerator = new RunOperationsImpl(new SimpleClientContext(config, mockClient), "ns1", generatorRunConfig);
 
     // When
     Pod pod = deploymentGenerator.convertRunConfigIntoPod();

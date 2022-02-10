@@ -600,8 +600,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
           options,
           watcher,
           config.getWatchReconnectInterval(),
-          config.getWatchReconnectLimit(),
-          config.getConnectionTimeout()
+          config.getWatchReconnectLimit()
         );
       } catch (MalformedURLException e) {
         throw KubernetesClientException.launderThrowable(forOperationType(WATCH), e);

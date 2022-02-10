@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Map;
 
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
-import io.fabric8.kubernetes.client.utils.Serialization;
 import org.junit.jupiter.api.Test;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.ObjectMetaBuilder;
@@ -566,12 +565,12 @@ public class KubernetesAttributesExtractorTest {
     gkr.setKind("CustomDatabase");
     gkr.setApiVersion("demo.fabric8.io/v1");
 
-    kubernetesClient.customResource(crdContextV1).create(Serialization.asJson(gkr));
+    kubernetesClient.genericKubernetesResources(crdContextV1).create(gkr);
 
     gkr.setApiVersion("demo.fabric8.io/v1alpha1");
-    kubernetesClient.customResource(crdContextV1Alpha1).create(Serialization.asJson(gkr));
+    kubernetesClient.genericKubernetesResources(crdContextV1Alpha1).create(gkr);
 
-    assertEquals(1, (((List)kubernetesClient.customResource(crdContextV1).list().get("items")).size()));
-    assertEquals(1, (((List)kubernetesClient.customResource(crdContextV1Alpha1).list().get("items")).size()));
+    assertEquals(1, kubernetesClient.genericKubernetesResources(crdContextV1).list().getItems().size());
+    assertEquals(1, kubernetesClient.genericKubernetesResources(crdContextV1Alpha1).list().getItems().size());
   }
 }

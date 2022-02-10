@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 class CacheTest {
-  private static Cache cache = new Cache("mock", CacheTest::mockIndexFunction, CacheTest::mockKeyFunction);
+  private static CacheImpl cache = new CacheImpl("mock", CacheTest::mockIndexFunction, CacheTest::mockKeyFunction);
 
   @Test
   void testCacheIndex() {
@@ -105,7 +105,7 @@ class CacheTest {
 
   @Test
   void testAddIndexers() {
-    Cache<Pod> podCache = new Cache<>();
+    CacheImpl<Pod> podCache = new CacheImpl<>();
     String nodeIndex = "node-index";
     String clusterIndex = "cluster-index";
 

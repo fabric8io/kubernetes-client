@@ -321,7 +321,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
             HttpClient clone = httpClient.newBuilder().readTimeout(0, TimeUnit.MILLISECONDS).build();
             final ExecWebSocketListener execWebSocketListener = new ExecWebSocketListener(in, out, err, errChannel, inPipe, outPipe, errPipe, errChannelPipe, execListener, bufferSize);
             CompletableFuture<WebSocket> startedFuture = clone.newWebSocketBuilder()
-                .setHeader("Sec-WebSocket-Protocol", "v4.channel.k8s.io")
+                .subprotocol("v4.channel.k8s.io")
                 .uri(url.toURI())
                 .buildAsync(execWebSocketListener);
             startedFuture.whenComplete((w, t) -> {

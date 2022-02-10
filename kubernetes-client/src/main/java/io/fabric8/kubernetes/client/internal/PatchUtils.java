@@ -18,7 +18,7 @@ package io.fabric8.kubernetes.client.internal;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.client.internal.patchmixins.ObjectMetaMixIn;
+import io.fabric8.kubernetes.client.internal.serializationmixins.ObjectMetaMixIn;
 
 public class PatchUtils {
   private PatchUtils() { }

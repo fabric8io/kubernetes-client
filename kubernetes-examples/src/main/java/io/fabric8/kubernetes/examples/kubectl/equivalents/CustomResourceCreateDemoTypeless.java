@@ -15,41 +15,37 @@
  */
 package io.fabric8.kubernetes.examples.kubectl.equivalents;
 
+import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
-
-import java.io.IOException;
-import java.util.Map;
+import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
 
 /**
  * This example is Java equivalent to `kubectl create -f test-customresource.yaml`. It applies
- * the specified Custom Resource. It assumes that CustomResourceDefinition for the particular
+ * the specified Resource. It assumes that CustomResourceDefinition for the particular
  * CustomResource is already created. Note that with this approach, you don't need to provide
  * POJOs for your custom types but you're also losing type safety since it would be upto the
- * user to manipulate raw CustomResource as HashMaps.
+ * user to manipulate raw Resources as GenericKubernetesResource.
  */
 public class CustomResourceCreateDemoTypeless {
   public static void main(String[] args) {
     try (final KubernetesClient k8s = new DefaultKubernetesClient()) {
       // Create Custom Resource Context
-      CustomResourceDefinitionContext context = new CustomResourceDefinitionContext
+      ResourceDefinitionContext context = new ResourceDefinitionContext
         .Builder()
         .withGroup("demo.fabric8.io")
         .withKind("Dummy")
-        .withName("dummies.demo.fabric8.io")
         .withPlural("dummies")
-        .withScope("Namespaced")
+        .withNamespaced(true)
         .withVersion("v1")
         .build();
 
       // Load from Yaml
-      Map<String, Object> dummyObject = k8s.customResource(context)
+      Resource<GenericKubernetesResource> dummyObject = k8s.genericKubernetesResources(context)
         .load(CustomResourceCreateDemoTypeless.class.getResourceAsStream("/test-customresource.yaml"));
       // Create Custom Resource
-      k8s.customResource(context).create("default", dummyObject);
-    } catch (IOException e) {
-      e.printStackTrace();
+      dummyObject.create();
     }
   }
 }

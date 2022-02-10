@@ -52,63 +52,17 @@
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-client</artifactId>
     </dependency>
-   <dependency>
-     <groupId>io.fabric8</groupId>
-     <artifactId>openshift-model</artifactId>
-   </dependency>
-   <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>openshift-model-clusterautoscaling</artifactId>
-    </dependency>
-   <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>openshift-model-operator</artifactId>
-    </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>openshift-model-operatorhub</artifactId>
+      <artifactId>openshift-client-api</artifactId>
     </dependency>
+   
     <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>openshift-model-machine</artifactId>
+      <groupId>com.github.mifmif</groupId>
+      <artifactId>generex</artifactId>
+      <version>${generex.version}</version>
     </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>openshift-model-whereabouts</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>openshift-model-monitoring</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>openshift-model-storageversionmigrator</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>openshift-model-tuned</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>openshift-model-console</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>openshift-model-machineconfig</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>openshift-model-miscellaneous</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>openshift-model-hive</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>openshift-model-installer</artifactId>
-    </dependency>
-
+    
     <!-- Compile Only Dependencies -->
     <dependency>
       <groupId>io.sundr</groupId>

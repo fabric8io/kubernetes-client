@@ -17,14 +17,12 @@ package io.fabric8.kubernetes.client.informers;
 
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.api.model.Pod;
-import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.client.BaseKubernetesClient;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
-import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Kind;
 import io.fabric8.kubernetes.model.annotation.Plural;
@@ -34,8 +32,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -95,27 +91,9 @@ class SharedInformerFactoryTest {
   }
 
   @Test
-  void testInformersCreatedWithSameNameButDifferentCRDContext() {
-    // Given
-    SharedInformerFactory sharedInformerFactory = new SharedInformerFactory(mockBaseClient, executorService);
-
-    // When
-    sharedInformerFactory.sharedIndexInformerForCustomResource(TestCustomResource.class, new OperationContext()
-      .withApiGroupVersion("v1")
-      .withPlural("testcustomresources"), RESYNC_PERIOD);
-    sharedInformerFactory.sharedIndexInformerForCustomResource(TestCustomResource.class, new OperationContext()
-      .withApiGroupVersion("v1beta1")
-      .withPlural("testcustomresources"), RESYNC_PERIOD);
-
-    // Then
-    assertThat(sharedInformerFactory.getExistingSharedIndexInformers())
-      .hasSize(2);
-  }
-
-  @Test
   void testSharedIndexInformerForCustomResourceNoType() {
     // Given
-    SharedInformerFactory sharedInformerFactory = new SharedInformerFactory(mockBaseClient, executorService);
+    SharedInformerFactory sharedInformerFactory = new SharedInformerFactoryImpl(mockBaseClient, executorService);
     CustomResourceDefinitionContext context = new CustomResourceDefinitionContext.Builder()
       .withKind("Dummy")
       .withScope("Namespaced")
@@ -129,13 +107,12 @@ class SharedInformerFactoryTest {
 
     // Then
     assertThat(informer).isNotNull();
-    assertThat(sharedInformerFactory.getExistingSharedIndexInformers()).hasSize(1);
   }
 
   @Test
   void testGetExistingSharedIndexInformer() {
     // Given
-    SharedInformerFactory sharedInformerFactory = new SharedInformerFactory(mockBaseClient, executorService);
+    SharedInformerFactory sharedInformerFactory = new SharedInformerFactoryImpl(mockBaseClient, executorService);
 
     // When
     sharedInformerFactory.sharedIndexInformerFor(Deployment.class, RESYNC_PERIOD);
@@ -149,7 +126,7 @@ class SharedInformerFactoryTest {
   @Test
   void testGetExistingSharedIndexInformerWithKindDifferentFromClassName() {
     // Given
-    SharedInformerFactory sharedInformerFactory = new SharedInformerFactory(mockBaseClient, executorService);
+    SharedInformerFactory sharedInformerFactory = new SharedInformerFactoryImpl(mockBaseClient, executorService);
 
     // When
     SharedIndexInformer<MyAppCustomResource> createdInformer = sharedInformerFactory.sharedIndexInformerFor(MyAppCustomResource.class, RESYNC_PERIOD);
@@ -164,7 +141,7 @@ class SharedInformerFactoryTest {
   @Test
   void testGetExistingSharedIndexInformerWithTwoClassesSimilarNames() {
     // Given
-    SharedInformerFactory sharedInformerFactory = new SharedInformerFactory(mockBaseClient, executorService);
+    SharedInformerFactory sharedInformerFactory = new SharedInformerFactoryImpl(mockBaseClient, executorService);
     sharedInformerFactory.sharedIndexInformerFor(VirtualService.class, RESYNC_PERIOD);
     sharedInformerFactory.sharedIndexInformerFor(Service.class, RESYNC_PERIOD);
 
@@ -175,29 +152,6 @@ class SharedInformerFactoryTest {
     // Then
     assertThat(sharedIndexInformerSvc.getApiTypeClass()).isEqualTo(Service.class);
     assertThat(sharedIndexInformerVSvc.getApiTypeClass()).isEqualTo(VirtualService.class);
-  }
-
-  @Test
-  void testGetExistingSharedIndexInformersReturnsListOfOperationContextAndSharedIndexInformerEntries() {
-    // Given
-    SharedInformerFactory sharedInformerFactory = new SharedInformerFactory(mockBaseClient, executorService);
-    sharedInformerFactory.sharedIndexInformerFor(MyAppCustomResource.class, RESYNC_PERIOD);
-    sharedInformerFactory.sharedIndexInformerFor(Secret.class, RESYNC_PERIOD);
-    sharedInformerFactory.sharedIndexInformerFor(MyAppCustomResourceCopy.class, RESYNC_PERIOD);
-
-    // When
-    List<Map.Entry<OperationContext, SharedIndexInformer>> existingInformers = sharedInformerFactory.getExistingSharedIndexInformers();
-
-    // Then
-    assertThat(existingInformers)
-      .isNotNull()
-      .hasSize(3);
-    assertThat(existingInformers.get(0).getKey().getPlural())
-      .isEqualTo("myapps");
-    assertThat(existingInformers.get(1).getKey().getPlural())
-      .isEqualTo("secrets");
-    assertThat(existingInformers.get(2).getKey().getPlural())
-      .isEqualTo("myapps");
   }
 
 }

@@ -21,7 +21,7 @@ import io.fabric8.kubernetes.client.informers.ListerWatcher;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.ResyncRunnable;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
-import io.fabric8.kubernetes.client.informers.cache.Cache;
+import io.fabric8.kubernetes.client.informers.cache.CacheImpl;
 import io.fabric8.kubernetes.client.informers.cache.Indexer;
 import io.fabric8.kubernetes.client.informers.cache.ProcessorStore;
 import io.fabric8.kubernetes.client.informers.cache.Reflector;
@@ -58,7 +58,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
   private final Reflector<T, L> reflector;
   private final Class<T> apiTypeClass;
   private final ProcessorStore<T> processorStore;
-  private final Cache<T> indexer;
+  private final CacheImpl<T> indexer;
   private final SharedProcessor<T> processor;
   private final Executor informerExecutor;
 
@@ -78,7 +78,7 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
     this.informerExecutor = informerExecutor;
     // reuse the informer executor, but ensure serial processing
     this.processor = new SharedProcessor<>(new SerialExecutor(informerExecutor));
-    this.indexer = new Cache<>();
+    this.indexer = new CacheImpl<>();
     this.indexer.setIsRunning(this::isRunning);
 
     processorStore = new ProcessorStore<>(this.indexer, this.processor);

@@ -1940,7 +1940,7 @@ GenericKubernetesResource result = client.genericKubernetesResources(resourceDef
 ```java
 
 final CountDownLatch closeLatch = new CountDownLatch(1);
-client.customResource(crdContext).inNamespace(namespace).watch(new Watcher<GenericKubernetesResource>() {
+client.genericKubernetesResources(crdContext).inNamespace(namespace).watch(new Watcher<GenericKubernetesResource>() {
     @Override
     public void eventReceived(Action action, GenericKubernetesResource resource) {
         logger.info("{}: {}", action, resource);

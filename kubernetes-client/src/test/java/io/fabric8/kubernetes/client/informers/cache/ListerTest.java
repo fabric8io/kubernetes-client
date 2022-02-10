@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class ListerTest {
   @Test
   void testListerBasic() {
-    Cache<Pod> podCache = new Cache<>();
+    CacheImpl<Pod> podCache = new CacheImpl<>();
 
     Lister<Pod> namespacedPodLister = new Lister<>(podCache, "default");
     List<Pod> emptyPodList = namespacedPodLister.list();

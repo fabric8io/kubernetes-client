@@ -22,8 +22,6 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
-import io.fabric8.kubernetes.client.dsl.internal.RawCustomResourceOperationsImpl;
 import io.fabric8.kubernetes.client.mock.crd.CronTab;
 import io.fabric8.kubernetes.client.mock.crd.CronTabSpec;
 import io.fabric8.kubernetes.client.mock.crd.CronTabStatus;
@@ -32,18 +30,14 @@ import io.fabric8.kubernetes.internal.KubernetesDeserializer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableKubernetesMockClient(crud = true)
 class CustomResourceCrudTest {
@@ -94,31 +88,6 @@ class CustomResourceCrudTest {
     cronTabClient.inNamespace("test-ns").withName("my-third-cron-object").delete();
     cronTabList = cronTabClient.inNamespace("test-ns").list();
     assertEquals(2, cronTabList.getItems().size());
-  }
-
-  @Test
-  void testCreateOrReplaceRaw() throws IOException {
-    RawCustomResourceOperationsImpl raw = client.customResource(CustomResourceDefinitionContext.fromCrd(cronTabCrd));
-
-    Map<String, Object> object = new HashMap<>();
-    Map<String, Object> metadata = new HashMap<>();
-    metadata.put("name", "foo");
-
-    object.put("apiVersion", "stable.example.com/v1");
-    object.put("kind", "CronTab");
-    object.put("metadata", metadata);
-    object.put("spec", new HashMap<>());
-
-    Map<String, Object> created = raw.createOrReplace(object);
-
-    assertEquals(Collections.emptyMap(), created.get("spec"));
-    assertTrue(((Map)created.get("metadata")).entrySet().containsAll(metadata.entrySet()));
-
-    object.put("spec", Collections.singletonMap("image", "value"));
-
-    Map<String, Object> updated = raw.createOrReplace(object);
-    assertNotEquals(created, updated);
-    assertEquals(Collections.singletonMap("image", "value"), updated.get("spec"));
   }
 
   @Test

@@ -44,22 +44,21 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
   public WatchHTTPManager(final HttpClient client,
                           final BaseOperation<T, L, ?> baseOperation,
                           final ListOptions listOptions, final Watcher<T> watcher, final int reconnectInterval,
-                          final int reconnectLimit, long connectTimeout)
+                          final int reconnectLimit)
     throws MalformedURLException {
     // Default max 32x slowdown from base interval
-    this(client, baseOperation, listOptions, watcher, reconnectInterval, reconnectLimit, connectTimeout, 5);
+    this(client, baseOperation, listOptions, watcher, reconnectInterval, reconnectLimit, 5);
   }
   
   public WatchHTTPManager(final HttpClient client,
                           final BaseOperation<T, L, ?> baseOperation,
                           final ListOptions listOptions, final Watcher<T> watcher, final int reconnectInterval,
-                          final int reconnectLimit, long connectTimeout, int maxIntervalExponent)
+                          final int reconnectLimit, int maxIntervalExponent)
     throws MalformedURLException {
     
     super(
         watcher, baseOperation, listOptions, reconnectLimit, reconnectInterval, maxIntervalExponent,
         () -> client.newBuilder()
-            .connectTimeout(connectTimeout, TimeUnit.MILLISECONDS)
             .readTimeout(0, TimeUnit.MILLISECONDS)
             .forStreaming()
             .build());

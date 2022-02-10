@@ -45,8 +45,8 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableKubernetesMockClient
 class PropagationPolicyTest {
@@ -415,14 +415,14 @@ class PropagationPolicyTest {
       .andReturn(HttpURLConnection.HTTP_OK, "{\"metadata\":{},\"apiVersion\":\"v1\",\"kind\":\"Status\",\"details\":{\"name\":\"prometheus-example-rules\",\"group\":\"monitoring.coreos.com\",\"kind\":\"prometheusrules\",\"uid\":\"b3d085bd-6a5c-11e9-8787-525400b18c1d\"},\"status\":\"Success\"}").once();
 
     // When
-    boolean result = client.customResource(new CustomResourceDefinitionContext.Builder()
+    boolean result = client.genericKubernetesResources(new CustomResourceDefinitionContext.Builder()
       .withGroup("test.fabric8.io")
       .withName("hellos.test.fabric8.io")
       .withPlural("hellos")
       .withScope("Namespaced")
       .withVersion("v1alpha1")
       .build())
-      .delete("ns1", "example-hello");
+        .inNamespace("ns1").withName("example-hello").delete();
 
     // Then
     assertTrue(result);
