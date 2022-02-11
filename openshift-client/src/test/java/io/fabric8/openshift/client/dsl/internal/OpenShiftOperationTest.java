@@ -15,7 +15,7 @@
  */
 package io.fabric8.openshift.client.dsl.internal;
 
-import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
 import io.fabric8.openshift.client.OpenShiftConfigBuilder;
 import org.junit.jupiter.api.Test;
 

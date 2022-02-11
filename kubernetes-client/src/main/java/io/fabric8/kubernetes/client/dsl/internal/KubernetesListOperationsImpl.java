@@ -30,7 +30,6 @@ import io.fabric8.kubernetes.client.dsl.KubernetesListOperation;
 import io.fabric8.kubernetes.client.dsl.Loadable;
 import io.fabric8.kubernetes.client.dsl.RecreateFromServerGettable;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.utils.Serialization;
 
 import java.io.File;
