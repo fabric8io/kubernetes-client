@@ -161,7 +161,10 @@ public class PodIT {
 
     client.policy().v1beta1().podDisruptionBudget().inNamespace(session.getNamespace()).createOrReplace(pdb);
 
-    assertTrue(client.pods().inNamespace(session.getNamespace()).withName(pod2.getMetadata().getName()).evict());
+    // the server needs to process the pdb before the eviction can proceed, so we'll need to wait here
+    await().atMost(5, TimeUnit.MINUTES)
+        .until(() -> client.pods().inNamespace(session.getNamespace()).withName(pod2.getMetadata().getName()).evict());
+
     // cant evict because only one left
     assertFalse(client.pods().inNamespace(session.getNamespace()).withName(pod1.getMetadata().getName()).evict());
     // ensure it really is still up
