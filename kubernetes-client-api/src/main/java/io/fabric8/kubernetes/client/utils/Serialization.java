@@ -53,12 +53,7 @@ public class Serialization {
     JSON_MAPPER.registerModules(new JavaTimeModule(), UNMATCHED_FIELD_TYPE_MODULE);
   }
 
-  private static final ObjectMapper YAML_MAPPER = new ObjectMapper(
-    new YAMLFactory().disable(YAMLGenerator.Feature.USE_NATIVE_TYPE_ID)
-  );
-  static {
-    YAML_MAPPER.registerModules(UNMATCHED_FIELD_TYPE_MODULE);
-  }
+  private static volatile ObjectMapper YAML_MAPPER;
 
   private static final String DOCUMENT_DELIMITER = "---";
 
@@ -89,7 +84,27 @@ public class Serialization {
    * one from the additionalProperties Map will be serialized.
    */
   public static ObjectMapper yamlMapper() {
+    if (YAML_MAPPER == null) {
+      synchronized (Serialization.class) {
+        if (YAML_MAPPER == null) {
+          YAML_MAPPER = new ObjectMapper(
+            new YAMLFactory().disable(YAMLGenerator.Feature.USE_NATIVE_TYPE_ID)
+          );
+          YAML_MAPPER.registerModules(UNMATCHED_FIELD_TYPE_MODULE);
+        }
+      }
+    }
     return YAML_MAPPER;
+  }
+
+  /**
+   * Allow application to clear out the YAML mapper in order to allow its garbage collection.
+   * This is useful because in a lot of cases the YAML mapper is only need at application startup
+   * when the client is created, so there is no reason to keep the very heavy (in terms of memory) mapper
+   * around indefinitely.
+   */
+  public static void clearYamlMapper() {
+    YAML_MAPPER = null;
   }
 
   /**
@@ -124,7 +139,7 @@ public class Serialization {
    */
   public static <T> String asYaml(T object) {
     try {
-      return YAML_MAPPER.writeValueAsString(object);
+      return yamlMapper().writeValueAsString(object);
     } catch (JsonProcessingException e) {
       throw KubernetesClientException.launderThrowable(e);
     }
