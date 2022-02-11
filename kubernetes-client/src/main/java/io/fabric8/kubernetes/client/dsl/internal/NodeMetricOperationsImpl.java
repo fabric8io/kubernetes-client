@@ -19,7 +19,6 @@ import io.fabric8.kubernetes.api.model.metrics.v1beta1.NodeMetrics;
 import io.fabric8.kubernetes.api.model.metrics.v1beta1.NodeMetricsList;
 import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.dsl.NodeMetricOperation;
-import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 
 import java.util.Map;
 

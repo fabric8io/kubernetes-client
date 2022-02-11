@@ -13,12 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.dsl.base;
+package io.fabric8.kubernetes.client.dsl.internal;
 
-import io.fabric8.kubernetes.api.model.ObjectReference;
-import io.fabric8.kubernetes.client.dsl.WritableOperation;
-import io.fabric8.kubernetes.client.utils.CreateOrReplaceHelper;
-import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.api.builder.TypedVisitor;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
@@ -27,6 +23,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
@@ -47,19 +44,18 @@ import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ReplaceDeletable;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.internal.DefaultOperationInfo;
-import io.fabric8.kubernetes.client.dsl.internal.WatchConnectionManager;
-import io.fabric8.kubernetes.client.dsl.internal.WatchHTTPManager;
+import io.fabric8.kubernetes.client.dsl.WritableOperation;
+import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.informers.ListerWatcher;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 import io.fabric8.kubernetes.client.informers.impl.DefaultSharedIndexInformer;
 import io.fabric8.kubernetes.client.readiness.Readiness;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.URLUtils.URLBuilder;
 import io.fabric8.kubernetes.client.utils.Utils;
-import io.fabric8.kubernetes.client.utils.WatcherToggle;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -849,7 +845,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
       }
       return condition.test(l.get(0));
     });
-    
+
     if (!Utils.waitUntilReady(futureCondition, amount, timeUnit)) {
       futureCondition.cancel(true);
       T i = getItem();
@@ -935,7 +931,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     result.limit = this.limit;
     return result;
   }
-  
+
   @Override
   public BaseOperation<T, L, R> withLimit(Long limit) {
     BaseOperation<T, L, R> result = newInstance(context);
@@ -943,7 +939,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     result.limit = limit;
     return result;
   }
-  
+
   @Override
   public Long getLimit() {
     return this.limit;
@@ -979,7 +975,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     }
     return informer;
   }
-  
+
   public static URL appendListOptionParams(URL base, ListOptions listOptions) {
     if (listOptions == null) {
       return base;
@@ -999,7 +995,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     if (listOptions.getLabelSelector() != null) {
       urlBuilder.addQueryParameter("labelSelector", listOptions.getLabelSelector());
     }
-    
+
     if (listOptions.getResourceVersion() != null) {
       urlBuilder.addQueryParameter("resourceVersion", listOptions.getResourceVersion());
     }
@@ -1017,6 +1013,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     }
     return urlBuilder.build();
   }
-  
+
 }
 

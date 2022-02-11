@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.api.model.metrics.v1beta1.PodMetricsList;
 import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.dsl.PodMetricOperation;
-import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 
 import java.util.Map;
 

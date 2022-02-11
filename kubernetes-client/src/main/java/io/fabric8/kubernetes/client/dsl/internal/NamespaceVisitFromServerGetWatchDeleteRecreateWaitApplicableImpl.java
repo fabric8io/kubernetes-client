@@ -39,8 +39,6 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.VisitFromServerGetWatchDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.VisitFromServerWritable;
 import io.fabric8.kubernetes.client.dsl.Waitable;
-import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
-import io.fabric8.kubernetes.client.dsl.base.OperationContext;
 import io.fabric8.kubernetes.client.readiness.Readiness;
 import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 
@@ -180,7 +178,7 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl im
   public Watch watch(ListOptions options, Watcher<HasMetadata> watcher) {
     return getResource().watch(options, watcher);
   }
-  
+
   Resource<HasMetadata> getResource() {
     HasMetadata meta = (HasMetadata) context.getItem();
     ResourceHandler<HasMetadata, ?> handler = handlerOf(meta, context);
@@ -214,32 +212,32 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl im
   public NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl newInstance(OperationContext context, NamespaceVisitOperationContext namespaceVisitOperationContext) {
     return new NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl(context, namespaceVisitOperationContext);
   }
-  
+
   @Override
   public HasMetadata waitUntilCondition(Predicate<HasMetadata> condition, long amount, TimeUnit timeUnit) {
     return getResource().waitUntilCondition(condition, amount, timeUnit);
   }
-  
+
   @Override
   public <V> HasMetadata edit(Class<V> visitorType, Visitor<V> visitor) {
     return getResource().edit(visitorType, visitor);
   }
-  
+
   @Override
   public HasMetadata edit(UnaryOperator<HasMetadata> function) {
     return getResource().edit(function);
   }
-  
+
   @Override
   public HasMetadata edit(Visitor... visitors) {
     return getResource().edit(visitors);
   }
-  
+
   @Override
   public HasMetadata accept(Consumer<HasMetadata> function) {
     return getResource().accept(function);
   }
-  
+
   static HasMetadata acceptVisitors(HasMetadata item, List<Visitor> visitors, String explicitNamespace, OperationContext context) {
     ResourceHandler<HasMetadata, ?> h = handlerOf(item, context);
     VisitableBuilder<HasMetadata, ?> builder = h.edit(item);
