@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package io.fabric8.kubernetes.client.informers.cache;
+package io.fabric8.kubernetes.client.informers.impl.cache;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.client.informers.cache.Cache;
 
 import java.util.List;
 import java.util.Objects;

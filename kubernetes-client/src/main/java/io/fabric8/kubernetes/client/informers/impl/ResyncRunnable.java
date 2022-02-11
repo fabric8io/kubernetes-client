@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.informers;
+package io.fabric8.kubernetes.client.informers.impl;
 
-import io.fabric8.kubernetes.client.informers.cache.SyncableStore;
+import io.fabric8.kubernetes.client.informers.impl.cache.SyncableStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

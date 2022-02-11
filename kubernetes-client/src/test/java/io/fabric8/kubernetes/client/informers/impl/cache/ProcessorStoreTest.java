@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.informers.cache;
+package io.fabric8.kubernetes.client.informers.impl.cache;
 
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
-import io.fabric8.kubernetes.client.informers.cache.ProcessorListener.AddNotification;
-import io.fabric8.kubernetes.client.informers.cache.ProcessorListener.DeleteNotification;
-import io.fabric8.kubernetes.client.informers.cache.ProcessorListener.Notification;
-import io.fabric8.kubernetes.client.informers.cache.ProcessorListener.UpdateNotification;
+import io.fabric8.kubernetes.client.informers.impl.cache.ProcessorListener.AddNotification;
+import io.fabric8.kubernetes.client.informers.impl.cache.ProcessorListener.DeleteNotification;
+import io.fabric8.kubernetes.client.informers.impl.cache.ProcessorListener.Notification;
+import io.fabric8.kubernetes.client.informers.impl.cache.ProcessorListener.UpdateNotification;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
