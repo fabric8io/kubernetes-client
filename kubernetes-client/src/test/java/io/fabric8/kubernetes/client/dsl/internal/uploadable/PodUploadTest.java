@@ -27,7 +27,6 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
-import java.util.function.ObjIntConsumer;
 
 import io.fabric8.kubernetes.client.dsl.internal.OperationSupport;
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;

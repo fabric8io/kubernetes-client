@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.fabric8.kubernetes.client.informers.cache;
+package io.fabric8.kubernetes.client.informers.impl.cache;
 
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;

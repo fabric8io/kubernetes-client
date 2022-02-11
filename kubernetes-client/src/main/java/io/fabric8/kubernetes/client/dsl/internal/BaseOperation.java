@@ -56,6 +56,8 @@ import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.URLUtils.URLBuilder;
 import io.fabric8.kubernetes.client.utils.Utils;
+import io.fabric8.kubernetes.client.utils.internal.CreateOrReplaceHelper;
+import io.fabric8.kubernetes.client.utils.internal.WatcherToggle;
 
 import java.io.File;
 import java.io.FileInputStream;

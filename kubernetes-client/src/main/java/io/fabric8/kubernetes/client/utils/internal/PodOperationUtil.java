@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.kubernetes.client.utils;
+package io.fabric8.kubernetes.client.utils.internal;
 
 import io.fabric8.kubernetes.api.model.OwnerReference;
 import io.fabric8.kubernetes.api.model.Pod;
@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.internal.OperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.PodOperationContext;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
+import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -97,7 +98,7 @@ public class PodOperationUtil {
     return stringBuilder.toString();
   }
 
-  static List<PodResource<Pod>> getPodOperationsForController(PodOperationsImpl podOperations, String controllerUid, Map<String, String> selectorLabels) {
+  public static List<PodResource<Pod>> getPodOperationsForController(PodOperationsImpl podOperations, String controllerUid, Map<String, String> selectorLabels) {
     PodList controllerPodList = podOperations.withLabels(selectorLabels).list();
 
     return PodOperationUtil.getFilteredPodsForLogs(podOperations, controllerPodList, controllerUid);

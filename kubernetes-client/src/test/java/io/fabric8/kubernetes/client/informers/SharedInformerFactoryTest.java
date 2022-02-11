@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.client.BaseKubernetesClient;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.dsl.base.CustomResourceDefinitionContext;
+import io.fabric8.kubernetes.client.informers.impl.SharedInformerFactoryImpl;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Kind;
 import io.fabric8.kubernetes.model.annotation.Plural;

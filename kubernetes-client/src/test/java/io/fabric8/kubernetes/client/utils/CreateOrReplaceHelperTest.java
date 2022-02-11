@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.utils.internal.CreateOrReplaceHelper;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 

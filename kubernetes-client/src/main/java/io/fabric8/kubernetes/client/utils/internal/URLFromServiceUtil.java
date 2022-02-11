@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package io.fabric8.kubernetes.client.utils;
+package io.fabric8.kubernetes.client.utils.internal;
 
 import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.api.model.extensions.*;
+import io.fabric8.kubernetes.client.utils.URLUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

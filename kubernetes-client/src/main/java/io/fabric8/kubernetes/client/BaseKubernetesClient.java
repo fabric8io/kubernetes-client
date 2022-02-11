@@ -113,7 +113,7 @@ import io.fabric8.kubernetes.client.extended.run.RunConfigBuilder;
 import io.fabric8.kubernetes.client.extended.run.RunOperations;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
-import io.fabric8.kubernetes.client.informers.SharedInformerFactoryImpl;
+import io.fabric8.kubernetes.client.informers.impl.SharedInformerFactoryImpl;
 import io.fabric8.kubernetes.client.utils.Serialization;
 
 import java.io.InputStream;

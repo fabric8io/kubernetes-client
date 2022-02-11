@@ -50,7 +50,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
-import static io.fabric8.kubernetes.client.utils.DeleteAndCreateHelper.deleteAndCreateItem;
+import static io.fabric8.kubernetes.client.utils.internal.DeleteAndCreateHelper.deleteAndCreateItem;
 
 /**
  * Resource like operation with specific namespace rules.

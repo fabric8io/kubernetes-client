@@ -19,7 +19,7 @@ package io.fabric8.kubernetes.client;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServicePort;
 import io.fabric8.kubernetes.api.model.extensions.*;
-import io.fabric8.kubernetes.client.utils.URLFromServiceUtil;
+import io.fabric8.kubernetes.client.utils.internal.URLFromServiceUtil;
 
 public class URLFromIngressImpl implements ServiceToURLProvider {
 
