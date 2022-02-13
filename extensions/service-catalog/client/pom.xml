@@ -52,12 +52,17 @@
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>servicecatalog-model</artifactId>
-      <version>${project.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-client</artifactId>
+      <scope>runtime</scope>
     </dependency>
 
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-client</artifactId>
+      <artifactId>kubernetes-client-api</artifactId>
       <exclusions>
         <exclusion>
           <groupId>io.sundr</groupId>

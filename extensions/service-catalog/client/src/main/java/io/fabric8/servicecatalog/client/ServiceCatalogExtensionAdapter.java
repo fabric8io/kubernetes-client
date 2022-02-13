@@ -18,8 +18,6 @@ package io.fabric8.servicecatalog.client;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.ExtensionAdapter;
 import io.fabric8.kubernetes.client.ExtensionAdapterSupport;
-import io.fabric8.kubernetes.client.Handlers;
-import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.servicecatalog.api.model.ClusterServiceBroker;
 import io.fabric8.servicecatalog.api.model.ClusterServiceClass;
 import io.fabric8.servicecatalog.api.model.ClusterServicePlan;
@@ -35,31 +33,33 @@ import java.net.URL;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-public class ServiceCatalogExtensionAdapter extends ExtensionAdapterSupport implements ExtensionAdapter<ServiceCatalogClient> {
+public class ServiceCatalogExtensionAdapter extends ExtensionAdapterSupport
+        implements ExtensionAdapter<ServiceCatalogClient> {
 
     static final ConcurrentMap<URL, Boolean> IS_SERVICE_CATALOG = new ConcurrentHashMap<>();
     static final ConcurrentMap<URL, Boolean> USES_SERVICE_CATALOG_APIGROUPS = new ConcurrentHashMap<>();
 
-    static {
-        Handlers.register(ClusterServiceBroker.class, ClusterServiceBrokerOperationsImpl::new);
-        Handlers.register(ClusterServiceClass.class, ClusterServiceClassOperationsImpl::new);
-        Handlers.register(ClusterServicePlan.class, ClusterServicePlanOperationsImpl::new);
-        Handlers.register(ServiceBinding.class, ServiceBindingOperationsImpl::new);
-        Handlers.register(ServiceInstance.class, ServiceInstanceOperationsImpl::new);
+    @Override
+    public Class<ServiceCatalogClient> getExtensionType() {
+        return ServiceCatalogClient.class;
     }
 
-	@Override
-	public Class<ServiceCatalogClient> getExtensionType() {
-		return ServiceCatalogClient.class;
-	}
+    @Override
+    public Boolean isAdaptable(Client client) {
+        return isAdaptable(client, IS_SERVICE_CATALOG, USES_SERVICE_CATALOG_APIGROUPS, "servicecatalog.k8s.io");
+    }
 
-	@Override
-	public Boolean isAdaptable(Client client) {
-		return isAdaptable(client, IS_SERVICE_CATALOG, USES_SERVICE_CATALOG_APIGROUPS, "servicecatalog.k8s.io");
-	}
+    @Override
+    public ServiceCatalogClient adapt(Client client) {
+        return new DefaultServiceCatalogClient(client);
+    }
 
-	@Override
-	public ServiceCatalogClient adapt(Client client) {
-            return new DefaultServiceCatalogClient(client);
-	}
+    @Override
+    public void registerHandlers(HandlerFactory factory) {
+        factory.register(ClusterServiceBroker.class, ClusterServiceBrokerOperationsImpl::new);
+        factory.register(ClusterServiceClass.class, ClusterServiceClassOperationsImpl::new);
+        factory.register(ClusterServicePlan.class, ClusterServicePlanOperationsImpl::new);
+        factory.register(ServiceBinding.class, ServiceBindingOperationsImpl::new);
+        factory.register(ServiceInstance.class, ServiceInstanceOperationsImpl::new);
+    }
 }

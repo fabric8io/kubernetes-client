@@ -15,35 +15,17 @@
  */
 package io.fabric8.servicecatalog.client.internal;
 
-import io.fabric8.kubernetes.client.ClientContext;
-import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
-import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
-import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
+import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.extension.ResourceAdapter;
 import io.fabric8.servicecatalog.api.model.ServiceBinding;
 import io.fabric8.servicecatalog.api.model.ServiceBindingBuilder;
 import io.fabric8.servicecatalog.api.model.ServiceInstance;
-import io.fabric8.servicecatalog.api.model.ServiceInstanceList;
 
-public class ServiceInstanceOperationsImpl extends HasMetadataOperation<ServiceInstance, ServiceInstanceList, ServiceInstanceResource> implements ServiceInstanceResource {
+public class ServiceInstanceOperationsImpl extends ResourceAdapter<ServiceInstance> implements ServiceInstanceResource {
 
-    public ServiceInstanceOperationsImpl(ClientContext clientContext) {
-        this(HasMetadataOperationsImpl.defaultContext(clientContext));
-    }
-
-    public ServiceInstanceOperationsImpl(OperationContext ctx) {
-        super(ctx.withApiGroupName("servicecatalog.k8s.io").withApiGroupVersion("v1beta1").withPlural("serviceinstances"),
-                ServiceInstance.class, ServiceInstanceList.class);
-    }
-
-    @Override
-    public BaseOperation<ServiceInstance, ServiceInstanceList, ServiceInstanceResource> newInstance(OperationContext context) {
-        return new ServiceInstanceOperationsImpl(context);
-    }
-
-    @Override
-    public boolean isResourceNamespaced() {
-        return true;
+    public ServiceInstanceOperationsImpl(Resource<ServiceInstance> resource, Client client) {
+        super(resource, client);
     }
 
     @Override

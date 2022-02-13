@@ -120,6 +120,10 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   public BaseOperation<T, L, R> newInstance(OperationContext context) {
     return new BaseOperation<>(context);
   }
+  
+  protected R newResource(OperationContext context) {
+    return (R) newInstance(context);
+  }
 
   /**
    * Helper method for list() and list(limit, continue) methods
@@ -231,7 +235,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     if (name == null || name.length() == 0) {
       throw new IllegalArgumentException("Name must be provided.");
     }
-    return (R) newInstance(context.withName(name));
+    return newResource(context.withName(name));
   }
 
   @Override
@@ -258,7 +262,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public R load(InputStream is) {
-    return (R) newInstance(context.withItem(unmarshal(is, type)));
+    return newResource(context.withItem(unmarshal(is, type)));
   }
 
   @Override

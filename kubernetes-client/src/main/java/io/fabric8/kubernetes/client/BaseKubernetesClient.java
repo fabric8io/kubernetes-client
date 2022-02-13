@@ -144,8 +144,40 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
     Handlers.register(ReplicationController.class, ReplicationControllerOperationsImpl::new);
     Handlers.register(StatefulSet.class, StatefulSetOperationsImpl::new);
     Handlers.register(io.fabric8.kubernetes.api.model.certificates.v1.CertificateSigningRequest.class, CertificateSigningRequestOperationsImpl::new);
-    // trigger a load of the other client handlers
-    Adapters.list(Client.class);
+    // trigger a load of the other client handlers and make KubernetesClient and DefaultKubernetesClietn
+    Adapters.initializeHandlers(ResourcedHasMetadataOperation::register);
+    Adapters.register(new ExtensionAdapter<KubernetesClient> () {
+      @Override
+      public KubernetesClient adapt(Client client) {
+        return new DefaultKubernetesClient(client);
+      }
+      
+      @Override
+      public Class<KubernetesClient> getExtensionType() {
+        return KubernetesClient.class;
+      }
+
+      @Override
+      public Boolean isAdaptable(Client client) {
+        return true;
+      }
+    });
+    Adapters.register(new ExtensionAdapter<NamespacedKubernetesClient> () {
+      @Override
+      public NamespacedKubernetesClient adapt(Client client) {
+        return new DefaultKubernetesClient(client);
+      }
+      
+      @Override
+      public Class<NamespacedKubernetesClient> getExtensionType() {
+        return NamespacedKubernetesClient.class;
+      }
+
+      @Override
+      public Boolean isAdaptable(Client client) {
+        return true;
+      }
+    });
   }
 
   protected BaseKubernetesClient() {

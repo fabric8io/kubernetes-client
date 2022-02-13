@@ -34,6 +34,7 @@ public final class Adapters {
 
   private static final Set<ClassLoader> CLASS_LOADERS = new HashSet<>();
   private static final Map<Class, ExtensionAdapter> EXTENSION_ADAPTER_MAP = new HashMap<>();
+  private static volatile ExtensionAdapter.HandlerFactory HANDLER_FACTORY;
 
   static {
     //Register adapters
@@ -46,17 +47,21 @@ public final class Adapters {
 
   public static <C> void register(ExtensionAdapter<C> adapter) {
     EXTENSION_ADAPTER_MAP.put(adapter.getExtensionType(), adapter);
+    if (HANDLER_FACTORY != null) {
+      adapter.registerHandlers(HANDLER_FACTORY);
+    }
   }
 
   public static <C> void unregister(ExtensionAdapter<C> adapter) {
     EXTENSION_ADAPTER_MAP.remove(adapter.getExtensionType());
+    // TODO: remove handlers
   }
 
   public static <C> ExtensionAdapter<C> get(Class<C> type) {
     if (EXTENSION_ADAPTER_MAP.containsKey(type)) {
       return EXTENSION_ADAPTER_MAP.get(type);
     } else {
-
+      // TODO: should handlers be registered as a side effect
       try {
         for (ExtensionAdapter adapter : ServiceLoader.load(ExtensionAdapter.class, ExtensionAdapter.class.getClassLoader())) {
           if (adapter.getExtensionType().equals(type)) {
@@ -106,5 +111,10 @@ public final class Adapters {
         register(adapter);
       }
     }
+  }
+
+  public static void initializeHandlers(ExtensionAdapter.HandlerFactory handlerFactory) {
+    HANDLER_FACTORY = handlerFactory;
+    EXTENSION_ADAPTER_MAP.values().forEach(ea -> ea.registerHandlers(handlerFactory));
   }
 }

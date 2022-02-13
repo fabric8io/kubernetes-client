@@ -15,39 +15,19 @@
  */
 package io.fabric8.servicecatalog.client.internal;
 
-import io.fabric8.kubernetes.client.ClientContext;
-import io.fabric8.kubernetes.client.dsl.base.BaseOperation;
-import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
-import io.fabric8.kubernetes.client.dsl.base.OperationContext;
-import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
+import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.extension.ResourceAdapter;
 import io.fabric8.servicecatalog.api.model.ClusterServicePlan;
-import io.fabric8.servicecatalog.api.model.ClusterServicePlanList;
 import io.fabric8.servicecatalog.api.model.ServiceInstance;
 import io.fabric8.servicecatalog.api.model.ServiceInstanceBuilder;
 
 
-public class ClusterServicePlanOperationsImpl extends HasMetadataOperation<ClusterServicePlan, ClusterServicePlanList, ClusterServicePlanResource>
-    implements ClusterServicePlanResource {
+public class ClusterServicePlanOperationsImpl extends ResourceAdapter<ClusterServicePlan> implements ClusterServicePlanResource {
 
-    public ClusterServicePlanOperationsImpl(ClientContext clientContext) {
-      this(HasMetadataOperationsImpl.defaultContext(clientContext));
+    public ClusterServicePlanOperationsImpl(Resource<ClusterServicePlan> resource, Client client) {
+        super(resource, client);
     }
-
-    public ClusterServicePlanOperationsImpl(OperationContext ctx) {
-        super(ctx.withApiGroupName("servicecatalog.k8s.io").withApiGroupVersion("v1beta1").withPlural("clusterserviceplans"),
-                ClusterServicePlan.class, ClusterServicePlanList.class);
-    }
-
-    @Override
-    public BaseOperation<ClusterServicePlan, ClusterServicePlanList, ClusterServicePlanResource> newInstance(OperationContext context) {
-        return new ClusterServicePlanOperationsImpl(context);
-    }
-
-    @Override
-    public boolean isResourceNamespaced() {
-        return false;
-    }
-
 
     @Override
     public ServiceInstance instantiate(String... args) {
