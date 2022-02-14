@@ -13,17 +13,28 @@ If you are directly relying on classes in the -client jars other than DefaultKub
 
 When you rely solely on a compile dependency to the respective -api dependencies you will not be able to use DefaultKubernetesClient nor DefaultOpenShiftClient directly to create your client instances.  You should instead - TBD 
 
+### OkHttp HttpClient
+
+The -client dependencies still default to the OkHttp client If you are doing any customization to OkHttp clients directly, you'll need to include the kubernetes-httpclient-okhttp dependency in the compile scope - instead of the default runtime scope
+
+### JDK HttpClient
+
+The JDK client should be considered experimental, please consult the [README](../httpclient-jdk/README.md).
+
+To use it, exclude the kubernetes-httpclient-okhttp dependency and add the kubernetes-httpclient-jdk dependency.
+
 ### Package Changes
 
 - Readiness/OpenShiftReadiness moved from client.internal.readiness to client.readiness
 - client.utils classes including Base64, CreateOrReplaceHelper, DeleteOrCreateHelper, OptionalDendencyWrapper, etc. are not in the -api jar, they are still in the -client jar under utils.internal.
 - Some other effectively internal classes in dsl.base and other packages were moved to corresponding internal packages - it is unlikely this will affect you unless you developed a custom extension.
 
-## Deprecation Removals
+### Deprecation Removals
 
 - Removed KubernetesClient.customResource / RawCustomResourceOperationsImpl, please use the generic resource api instead 
-- Removed deprecatedHttpClientUtils.createHttpClient(final Config config, final Consumer<OkHttpClient.Builder> additionalConfig), please use the OkHttpClientFactory instead
-- Removed deprecated methods on SharedInformerFactory dealing with the OperationContext
+- Removed HttpClientUtils.createHttpClient(final Config config, final Consumer<OkHttpClient.Builder> additionalConfig), please use the OkHttpClientFactory instead
+- Removed methods on SharedInformerFactory dealing with the OperationContext
+- Removed DefaultKubernetesClient and DefaultOpenShiftClient constructors directly referencing OkHttp - use OkHttpClientImpl to wrap the OkHttpClient, or the OkHttpClientFactory instead.
 
 ## IntOrString changes
 

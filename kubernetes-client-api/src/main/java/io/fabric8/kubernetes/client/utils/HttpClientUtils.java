@@ -22,6 +22,8 @@ import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpHeaders;
 import io.fabric8.kubernetes.client.http.Interceptor;
 import io.fabric8.kubernetes.client.internal.SSLUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
@@ -38,11 +40,14 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 public class HttpClientUtils {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(HttpClientUtils.class);
 
   public static final String HEADER_INTERCEPTOR = "HEADER";
 
@@ -137,13 +142,17 @@ public class HttpClientUtils {
     return "Basic " + encoded;
   }
 
+  private static final AtomicBoolean WARNED = new AtomicBoolean();
+
   public static HttpClient createHttpClient(Config config) {
     ServiceLoader<HttpClient.Factory> loader = ServiceLoader.load(HttpClient.Factory.class);
     HttpClient.Factory factory = null;
     for (Iterator<HttpClient.Factory> iter = loader.iterator(); iter.hasNext();) {
       HttpClient.Factory possible = iter.next();
-      if (factory != null) {
-        // log warning about multiple implementations
+      if (factory != null && WARNED.compareAndSet(false, true)) {
+        LOGGER.warn("There are multiple httpclient implementation in the classpath, "
+            + "choosing the first non-okhttp implementation. "
+            + "You should exclude dependencies that aren't needed or use an explicit association of the HttpClient.Factory.");
       }
       if (factory == null || !possible.getClass().getName().equals("io.fabric8.kubernetes.client.okhttp.OkHttpClientFactory")) {
         factory = possible;

@@ -137,7 +137,7 @@ public class JdkHttpClientImpl implements HttpClient {
     } else if (type == String.class) {
       bodyHandler = (BodyHandler<T>) BodyHandlers.ofString();
     } else {
-      bodyHandler = (responseInfo) -> {
+      bodyHandler = responseInfo -> {
         BodySubscriber<InputStream> upstream = BodyHandlers.ofInputStream().apply(responseInfo);
 
         BodySubscriber<Reader> downstream = BodySubscribers.mapping(
@@ -152,7 +152,7 @@ public class JdkHttpClientImpl implements HttpClient {
     for (Interceptor interceptor : builder.interceptors.values()) {
       cf = cf.thenCompose(response -> {
         if (response != null && !HttpResponse.isSuccessful(response.statusCode())
-            && interceptor.afterFailure(builderImpl, new JdkHttpResponseImpl<T>(response))) {
+            && interceptor.afterFailure(builderImpl, new JdkHttpResponseImpl<>(response))) {
           return this.httpClient.sendAsync(builderImpl.build().request, bodyHandler);
         }
         return CompletableFuture.completedFuture(response);
@@ -192,12 +192,12 @@ public class JdkHttpClientImpl implements HttpClient {
       interceptor.before(copy, new JdkHttpRequestImpl(null, copy.asRequest()));
     }
 
-    CompletableFuture<WebSocket> result = new CompletableFuture<WebSocket>();
+    CompletableFuture<WebSocket> result = new CompletableFuture<>();
 
     CompletableFuture<WebSocketResponse> cf = internalBuildAsync(webSocketBuilder, listener);
 
     for (Interceptor interceptor : builder.interceptors.values()) {
-      cf = cf.thenCompose((response) -> {
+      cf = cf.thenCompose(response -> {
         if (response.wshse != null && response.wshse.getResponse() != null
             && interceptor.afterFailure(copy, new JdkHttpResponseImpl<>(response.wshse.getResponse()))) {
           return this.internalBuildAsync(webSocketBuilder, listener);
@@ -231,23 +231,21 @@ public class JdkHttpClientImpl implements HttpClient {
    */
   public CompletableFuture<WebSocketResponse> internalBuildAsync(JdkWebSocketImpl.BuilderImpl webSocketBuilder, Listener listener) {
     java.net.http.HttpRequest request = webSocketBuilder.asRequest();
-    java.net.http.WebSocket.Builder builder = this.httpClient.newWebSocketBuilder();
-    request.headers().map().forEach((k, v) -> {
-      v.forEach(s -> builder.header(k, s));
-    });
+    java.net.http.WebSocket.Builder newBuilder = this.httpClient.newWebSocketBuilder();
+    request.headers().map().forEach((k, v) -> v.forEach(s -> newBuilder.header(k, s)));
     if (webSocketBuilder.subprotocol != null) {
-      builder.subprotocols(webSocketBuilder.subprotocol);
+      newBuilder.subprotocols(webSocketBuilder.subprotocol);
     }
     // the Watch logic sets a websocketTimeout as the readTimeout
     // TODO: this should probably be made clearer in the docs
     if (this.builder.readTimeout != null) {
-      builder.connectTimeout(this.builder.readTimeout);
+      newBuilder.connectTimeout(this.builder.readTimeout);
     }
 
     AtomicLong queueSize = new AtomicLong();
 
     // use a responseholder to convey both the exception and the websocket
-    CompletableFuture<WebSocketResponse> response = new CompletableFuture<JdkHttpClientImpl.WebSocketResponse>();
+    CompletableFuture<WebSocketResponse> response = new CompletableFuture<>();
 
     URI uri = request.uri();
     if (uri.getScheme().startsWith("http")) {
@@ -256,7 +254,7 @@ public class JdkHttpClientImpl implements HttpClient {
       // to convert back to http(s) ...
       uri = URI.create("ws" + uri.toString().substring(4));
     }
-    builder.buildAsync(uri, new JdkWebSocketImpl.ListenerAdapter(listener, queueSize)).whenComplete((w, t) -> {
+    newBuilder.buildAsync(uri, new JdkWebSocketImpl.ListenerAdapter(listener, queueSize)).whenComplete((w, t) -> {
       if (t instanceof CompletionException && t.getCause() != null) {
         t = t.getCause();
       }

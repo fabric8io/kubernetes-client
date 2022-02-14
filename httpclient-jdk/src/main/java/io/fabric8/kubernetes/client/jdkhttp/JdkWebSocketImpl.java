@@ -157,9 +157,7 @@ class JdkWebSocketImpl implements WebSocket {
     final int size = buffer.remaining();
     queueSize.addAndGet(size);
     CompletableFuture<java.net.http.WebSocket> cf = webSocket.sendBinary(buffer, true);
-    cf.whenComplete((b, t) -> {
-      queueSize.addAndGet(-size);
-    });
+    cf.whenComplete((b, t) -> queueSize.addAndGet(-size));
     return asBoolean(cf);
   }
 
