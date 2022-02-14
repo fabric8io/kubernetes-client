@@ -19,6 +19,8 @@ import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.QuantityBuilder;
 import io.fabric8.volcano.scheduling.v1beta1.PodGroup;
 import io.fabric8.volcano.scheduling.v1beta1.PodGroupBuilder;
+import io.fabric8.volcano.scheduling.v1beta1.Queue;
+import io.fabric8.volcano.scheduling.v1beta1.QueueBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +30,7 @@ public class Utils {
   private Utils() {
   }
 
-  public static PodGroup buildDefaultPodGroups(String namespace, String groupName) {
+  public static Map<String, Quantity> buildDefaultResourceMap() {
     Quantity cpu = new QuantityBuilder(false)
       .withAmount("1")
       .build();
@@ -38,7 +40,10 @@ public class Utils {
     Map<String, Quantity> resourceMap = new HashMap<>();
     resourceMap.put("cpu", cpu);
     resourceMap.put("memory", memory);
+    return resourceMap;
+  }
 
+  public static PodGroup buildDefaultPodGroups(String namespace, String groupName) {
     // Build PodGroup with metadata and spec
     return new PodGroupBuilder()
       .editOrNewMetadata()
@@ -46,7 +51,20 @@ public class Utils {
       .withNamespace(namespace)
       .endMetadata()
       .editOrNewSpec()
-      .withMinResources(resourceMap)
+      .withMinResources(buildDefaultResourceMap())
+      .endSpec()
+      .build();
+  }
+
+  public static Queue buildDefaultQueues(String queueName) {
+    // Build Queue with metadata and spec
+    return new QueueBuilder()
+      .editOrNewMetadata()
+      .withName(queueName)
+      .endMetadata()
+      .editOrNewSpec()
+      .withCapability(buildDefaultResourceMap())
+      .withWeight(1)
       .endSpec()
       .build();
   }

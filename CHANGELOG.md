@@ -2,6 +2,7 @@
 ### 6.0-SNAPSHOT
 
 #### Bugs
+* Fix #3848: Supports Queue (cluster) API for Volcano extension
 
 #### Improvements
 * Fix #3811: Reintroduce `Replaceable` interface in `NonNamespaceOperation`
