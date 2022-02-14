@@ -37,10 +37,18 @@ public class JdkHttpClientFactory implements HttpClient.Factory {
     return new JdkHttpClientBuilderImpl(this);
   }
 
+  /**
+   * Additional configuration to be applied to the builder after the {@link Config} has been processed.
+   * @param builder
+   */
   protected void additionalConfig(java.net.http.HttpClient.Builder builder) {
-
+    // no default implementation
   }
 
+  /**
+   * Create a new builder. This can be overridden to modify the builder prior to the {@link Config} being processed.
+   * @return the builder
+   */
   protected java.net.http.HttpClient.Builder createNewHttpClientBuilder() {
     return java.net.http.HttpClient.newBuilder();
   }
@@ -50,7 +58,7 @@ public class JdkHttpClientFactory implements HttpClient.Factory {
    * @param jdkHttpClientImpl
    */
   protected void closeHttpClient(JdkHttpClientImpl jdkHttpClientImpl) {
-
+    // no default implementation
   }
 
 }

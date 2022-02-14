@@ -235,6 +235,9 @@
               <goal>bundle</goal>
             </goals>
             <configuration>
+              <excludeDependencies>
+                kubernetes-httpclient-okhttp
+              </excludeDependencies>
               <instructions>
                 <Bundle-Name>${project.name}</Bundle-Name>
                 <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>

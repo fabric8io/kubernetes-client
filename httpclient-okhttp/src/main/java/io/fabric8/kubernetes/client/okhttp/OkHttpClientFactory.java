@@ -37,16 +37,16 @@ public class OkHttpClientFactory implements HttpClient.Factory {
   protected OkHttpClient.Builder newOkHttpClientBuilder() {
     return new OkHttpClient.Builder();
   }
-  
+
   /**
    * Subclasses may use this to apply additional configuration after the Config has been applied
    * This method is only called for clients constructed using the Config.
    * @param builder
    */
   protected void additionalConfig(OkHttpClient.Builder builder) {
-    
+    // no default implementation
   }
-  
+
   @Override
   public Builder newBuilder() {
     return new OkHttpClientBuilderImpl(newOkHttpClientBuilder());
@@ -87,11 +87,11 @@ public class OkHttpClientFactory implements HttpClient.Factory {
       OkHttpClientBuilderImpl builderWrapper = new OkHttpClientBuilderImpl(httpClientBuilder);
 
       HttpClientUtils.applyCommonConfiguration(config, builderWrapper, this);
-      
+
       if (shouldDisableHttp2() && !config.isHttp2Disable()) {
         builderWrapper.preferHttp11();
       }
-      
+
       additionalConfig(httpClientBuilder);
 
       return builderWrapper.build();
