@@ -24,7 +24,6 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.openclustermanagement.api.model.agent.v1.KlusterletAddonConfig;
 import io.fabric8.openclustermanagement.api.model.agent.v1.KlusterletAddonConfigList;
 import io.fabric8.openclustermanagement.client.dsl.OpenClusterManagementAgentAPIGroupDSL;
-import okhttp3.OkHttpClient;
 
 public class OpenClusterManagementAgentAPIGroupClient  extends BaseClient implements OpenClusterManagementAgentAPIGroupDSL {
   public OpenClusterManagementAgentAPIGroupClient() {

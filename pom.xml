@@ -196,6 +196,7 @@
     <module>uberjar</module>
     <module>crd-generator</module>
     <module>java-generator</module>
+    <module>httpclient-okhttp</module>
   </modules>
 
   <dependencyManagement>
@@ -397,6 +398,21 @@
         <version>${project.version}</version>
         <type>test-jar</type>
         <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-httpclient-okhttp</artifactId>
+	    <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.squareup.okhttp3</groupId>
+        <artifactId>okhttp</artifactId>
+        <version>${okhttp.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-httpclient-jdk</artifactId>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>io.fabric8</groupId>
@@ -1339,6 +1355,15 @@
       <properties>
         <maven.compiler.release>8</maven.compiler.release>
       </properties>
+    </profile>
+    <profile>
+      <id>java-11</id>
+      <activation>
+        <jdk>11</jdk>
+      </activation>
+      <modules>
+        <module>httpclient-jdk</module>
+      </modules>
     </profile>
     <profile>
       <id>javadoc-test</id>
