@@ -49,9 +49,9 @@ class V1Beta1VolcanoTest {
         .withName("queue1")
       .endMetadata()
       .build();
-    client.v1beta1().queues().inNamespace("ns1").create(queue);
+    client.v1beta1().queues().create(queue);
 
-    QueueList queueList = client.v1beta1().queues().inNamespace("ns1").list();
+    QueueList queueList = client.v1beta1().queues().list();
     assertNotNull(queueList);
     assertEquals(1, queueList.getItems().size());
   }
