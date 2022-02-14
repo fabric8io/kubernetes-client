@@ -3,6 +3,7 @@
 ### 5.12-SNAPSHOT
 
 #### Bugs
+* Fix #3848: Supports Queue (cluster) API for Volcano extension
 
 #### Improvements
 
