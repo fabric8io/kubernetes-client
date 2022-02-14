@@ -15,10 +15,6 @@
  */
 package io.fabric8.kubernetes.client.dsl.base;
 
-import io.fabric8.kubernetes.api.model.ObjectReference;
-import io.fabric8.kubernetes.client.dsl.WritableOperation;
-import io.fabric8.kubernetes.client.utils.CreateOrReplaceHelper;
-import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.api.builder.TypedVisitor;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
@@ -27,6 +23,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.ListOptions;
 import io.fabric8.kubernetes.api.model.ListOptionsBuilder;
+import io.fabric8.kubernetes.api.model.ObjectReference;
 import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
@@ -38,24 +35,23 @@ import io.fabric8.kubernetes.client.OperationInfo;
 import io.fabric8.kubernetes.client.ResourceNotFoundException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
-import io.fabric8.kubernetes.client.dsl.EditReplacePatchDeletable;
 import io.fabric8.kubernetes.client.dsl.FilterNested;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
-import io.fabric8.kubernetes.client.dsl.Gettable;
-import io.fabric8.kubernetes.client.dsl.Informable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
-import io.fabric8.kubernetes.client.dsl.ReplaceDeletable;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.internal.DefaultOperationInfo;
 import io.fabric8.kubernetes.client.dsl.internal.WatchConnectionManager;
 import io.fabric8.kubernetes.client.dsl.internal.WatchHTTPManager;
+import io.fabric8.kubernetes.client.extension.ExtensibleResource;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.informers.ListerWatcher;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 import io.fabric8.kubernetes.client.informers.impl.DefaultSharedIndexInformer;
 import io.fabric8.kubernetes.client.readiness.Readiness;
+import io.fabric8.kubernetes.client.utils.CreateOrReplaceHelper;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.URLUtils;
 import io.fabric8.kubernetes.client.utils.URLUtils.URLBuilder;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -85,7 +81,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   implements
   OperationInfo,
   MixedOperation<T, L, R>,
-  Resource<T>,
+  ExtensibleResource<T>,
   ListerWatcher<T, L> {
 
   private static final String WATCH = "watch";
@@ -239,7 +235,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public ReplaceDeletable<T> lockResourceVersion(String resourceVersion) {
+  public ExtensibleResource<T> lockResourceVersion(String resourceVersion) {
     return newInstance(context.withResourceVersion(resourceVersion));
   }
 
@@ -256,7 +252,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
 
   @Override
-  public EditReplacePatchDeletable<T> cascading(boolean cascading) {
+  public ExtensibleResource<T> cascading(boolean cascading) {
     return newInstance(context.withCascading(cascading).withPropagationPolicy(null));
   }
 
@@ -289,7 +285,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public Gettable<T> fromServer() {
+  public ExtensibleResource<T> fromServer() {
     return newInstance(context.withReloadingFromServer(true));
   }
 
@@ -520,8 +516,9 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     throw new KubernetesClientException(READ_ONLY_UPDATE_EXCEPTION_MESSAGE);
   }
 
-  public BaseOperation<T, L, R> withItem(T item) {
-    return newInstance(context.withItem(item));
+  @Override
+  public R withItem(T item) {
+    return newResource(context.withItem(item));
   }
 
   void deleteThis() {
@@ -778,12 +775,12 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public FilterWatchListDeletable<T, L> withGracePeriod(long gracePeriodSeconds) {
+  public ExtensibleResource<T> withGracePeriod(long gracePeriodSeconds) {
     return newInstance(context.withGracePeriodSeconds(gracePeriodSeconds));
   }
 
   @Override
-  public EditReplacePatchDeletable<T> withPropagationPolicy(DeletionPropagation propagationPolicy) {
+  public ExtensibleResource<T> withPropagationPolicy(DeletionPropagation propagationPolicy) {
     return newInstance(context.withPropagationPolicy(propagationPolicy));
   }
 
@@ -928,12 +925,12 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public WritableOperation<T> dryRun(boolean isDryRun) {
+  public ExtensibleResource<T> dryRun(boolean isDryRun) {
     return newInstance(context.withDryRun(isDryRun));
   }
 
   @Override
-  public Informable<T> withIndexers(Map<String, Function<T, List<String>>> indexers) {
+  public ExtensibleResource<T> withIndexers(Map<String, Function<T, List<String>>> indexers) {
     BaseOperation<T, L, R> result = newInstance(context);
     result.indexers = indexers;
     result.limit = this.limit;

@@ -117,16 +117,16 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   protected T requireFromServer(ObjectMeta metadata) {
     try {
       if (Utils.isNotNullOrEmpty(getName())) {
-        return withItem(null).require();
+        return newInstance(context.withItem(null)).require();
       }
       if (getItem() != null) {
         String name = KubernetesResourceUtil.getName(getItem());
         if (Utils.isNotNullOrEmpty(name)) {
-          return withItem(null).withName(name).require();
+          return newInstance(context.withItem(null)).withName(name).require();
         } 
       }
       if (metadata != null && Utils.isNotNullOrEmpty(metadata.getName())) {
-        return withItem(null).withName(metadata.getName()).require();
+        return newInstance(context.withItem(null)).withName(metadata.getName()).require();
       }
     } catch (ResourceNotFoundException e) {
       if (e.getCause() instanceof KubernetesClientException) {

@@ -15,20 +15,19 @@
  */
 package io.fabric8.camelk.client.dsl;
 
-import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.dsl.MixedOperation;
-import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
-import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.camelk.v1.Build;
 import io.fabric8.camelk.v1.BuildList;
 import io.fabric8.camelk.v1.CamelCatalog;
 import io.fabric8.camelk.v1.CamelCatalogList;
 import io.fabric8.camelk.v1.Integration;
-import io.fabric8.camelk.v1.IntegrationList;
 import io.fabric8.camelk.v1.IntegrationKit;
 import io.fabric8.camelk.v1.IntegrationKitList;
+import io.fabric8.camelk.v1.IntegrationList;
 import io.fabric8.camelk.v1.IntegrationPlatform;
 import io.fabric8.camelk.v1.IntegrationPlatformList;
+import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
+import io.fabric8.kubernetes.client.dsl.Resource;
 
 public interface V1APIGroupDSL extends Client {
 

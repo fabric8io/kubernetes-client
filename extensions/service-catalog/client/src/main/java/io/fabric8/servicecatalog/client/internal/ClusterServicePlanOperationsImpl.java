@@ -16,16 +16,19 @@
 package io.fabric8.servicecatalog.client.internal;
 
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.extension.ExtensibleResource;
 import io.fabric8.kubernetes.client.extension.ResourceAdapter;
 import io.fabric8.servicecatalog.api.model.ClusterServicePlan;
 import io.fabric8.servicecatalog.api.model.ServiceInstance;
 import io.fabric8.servicecatalog.api.model.ServiceInstanceBuilder;
+import io.fabric8.servicecatalog.client.ServiceCatalogClient;
+import io.fabric8.servicecatalog.client.dsl.ClusterServicePlanResource;
+import io.fabric8.servicecatalog.client.dsl.ServiceInstanceResource;
 
 
 public class ClusterServicePlanOperationsImpl extends ResourceAdapter<ClusterServicePlan> implements ClusterServicePlanResource {
 
-    public ClusterServicePlanOperationsImpl(Resource<ClusterServicePlan> resource, Client client) {
+    public ClusterServicePlanOperationsImpl(ExtensibleResource<ClusterServicePlan> resource, Client client) {
         super(resource, client);
     }
 
@@ -36,7 +39,7 @@ public class ClusterServicePlanOperationsImpl extends ResourceAdapter<ClusterSer
 
         if (args.length == 1) {
             instanceName = args[0];
-            instanceNamespace = config.getNamespace();
+            instanceNamespace = client.getConfiguration().getNamespace();
         } else if (args.length == 2) {
             instanceNamespace = args[0];
             instanceName = args[1];
@@ -45,8 +48,8 @@ public class ClusterServicePlanOperationsImpl extends ResourceAdapter<ClusterSer
         }
 
         ClusterServicePlan item = get();
-        return new ServiceInstanceOperationsImpl(context.withItem(null))
-            .create(new ServiceInstanceBuilder()
+        return client.adapt(ServiceCatalogClient.class).serviceInstances()
+                .inNamespace(instanceNamespace).create(new ServiceInstanceBuilder()
                 .withNewMetadata()
                 .withName(instanceName)
                 .withNamespace(instanceNamespace)
@@ -61,7 +64,7 @@ public class ClusterServicePlanOperationsImpl extends ResourceAdapter<ClusterSer
     @Override
     public ServiceInstanceResource instantiateAnd(String... args) {
         ServiceInstance item = instantiate(args);
-        return new ServiceInstanceOperationsImpl(context.withItem(item));
+        return client.adapt(ServiceCatalogClient.class).serviceInstances().withItem(item);
     }
 
 }

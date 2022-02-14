@@ -1,3 +1,19 @@
+/**
+ * Copyright (C) 2015 Red Hat, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package io.fabric8.kubernetes.client.extension;
 
 import io.fabric8.kubernetes.api.model.APIGroup;
@@ -8,22 +24,31 @@ import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.RootPaths;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.http.HttpClient;
 
 import java.net.URL;
-import java.util.function.Function;
 
-public abstract class ClientAdapter<T extends Client> implements Client {
+/**
+ * To be used as the base class for creating extension clients
+ */
+public abstract class ClientAdapter<C extends Client> implements Client {
 
   protected Client client;
-  private Function<Client, T> newInstance;
 
-  public ClientAdapter(Client client, Function<Client, T> newInstance) {
+  public ClientAdapter() {
+    this(new KubernetesClientBuilder().build());
+  }
+
+  public ClientAdapter(Config configuration) {
+    this(new KubernetesClientBuilder().withConfig(configuration).build());
+  }
+
+  public ClientAdapter(Client client) {
     this.client = client;
-    this.newInstance = newInstance;
   }
 
   @Override
@@ -37,12 +62,12 @@ public abstract class ClientAdapter<T extends Client> implements Client {
   }
 
   @Override
-  public <C> Boolean isAdaptable(Class<C> type) {
+  public <A> Boolean isAdaptable(Class<A> type) {
     return client.isAdaptable(type);
   }
 
   @Override
-  public <C> C adapt(Class<C> type) {
+  public <A> A adapt(Class<A> type) {
     return client.adapt(type);
   }
 
@@ -91,20 +116,20 @@ public abstract class ClientAdapter<T extends Client> implements Client {
     return client.getApiResources(groupVersion);
   }
 
+  @Override
   public <T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>> MixedOperation<T, L, R> resources(
       Class<T> resourceType, Class<L> listClass, Class<R> resourceClass) {
+    return client.resources(resourceType, listClass, resourceClass);
   }
 
-  public <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> resources(
-      Class<T> resourceType, Class<L> listClass) {
-  }
-
-  public T inAnyNamespace() {
+  public C inAnyNamespace() {
     return inNamespace(null);
   }
 
-  public T inNamespace(String namespace) {
-    return newInstance.apply(client.adapt(NamespacedKubernetesClient.class).inNamespace(namespace));
+  public C inNamespace(String namespace) {
+    return newInstance(client.adapt(NamespacedKubernetesClient.class).inNamespace(namespace));
   }
+
+  protected abstract C newInstance(Client client);
 
 }

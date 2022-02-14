@@ -16,23 +16,22 @@
 package io.fabric8.servicecatalog.client.internal;
 
 import io.fabric8.kubernetes.api.model.Secret;
-import io.fabric8.kubernetes.api.model.SecretList;
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.extension.ExtensibleResource;
 import io.fabric8.kubernetes.client.extension.ResourceAdapter;
 import io.fabric8.servicecatalog.api.model.ServiceBinding;
+import io.fabric8.servicecatalog.client.dsl.ServiceBindingResource;
 
 public class ServiceBindingOperationsImpl extends ResourceAdapter<ServiceBinding> implements ServiceBindingResource {
 
-    public ServiceBindingOperationsImpl(Resource<ServiceBinding> resource, Client client) {
+    public ServiceBindingOperationsImpl(ExtensibleResource<ServiceBinding> resource, Client client) {
         super(resource, client);
     }
 
     @Override
     public Secret getSecret() {
         ServiceBinding instance = get();
-        return Handlers.getOperation(Secret.class, SecretList.class, context)
-                .newInstance(context.withItem(null).withName(instance.getSpec().getSecretName()))
-                .get();
+        return client.adapt(KubernetesClient.class).secrets().withName(instance.getSpec().getSecretName()).get();
     }
 }

@@ -16,25 +16,28 @@
 package io.fabric8.servicecatalog.client.internal;
 
 import io.fabric8.kubernetes.client.Client;
-import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.kubernetes.client.extension.ExtensibleResource;
 import io.fabric8.kubernetes.client.extension.ResourceAdapter;
 import io.fabric8.servicecatalog.api.model.ServiceBinding;
 import io.fabric8.servicecatalog.api.model.ServiceBindingBuilder;
 import io.fabric8.servicecatalog.api.model.ServiceInstance;
+import io.fabric8.servicecatalog.client.ServiceCatalogClient;
+import io.fabric8.servicecatalog.client.dsl.ServiceInstanceResource;
 
 public class ServiceInstanceOperationsImpl extends ResourceAdapter<ServiceInstance> implements ServiceInstanceResource {
 
-    public ServiceInstanceOperationsImpl(Resource<ServiceInstance> resource, Client client) {
+    public ServiceInstanceOperationsImpl(ExtensibleResource<ServiceInstance> resource, Client client) {
         super(resource, client);
     }
 
     @Override
     public ServiceBinding bind(String secretName) {
         ServiceInstance item = get();
-        return new ServiceBindingOperationsImpl(context.withItem(null))
-            .create(new ServiceBindingBuilder()
+        return client.adapt(ServiceCatalogClient.class)
+                .serviceBindings().create(new ServiceBindingBuilder()
                 .withNewMetadata()
                     .withName(item.getMetadata().getName())
+                    .withNamespace(item.getMetadata().getNamespace())
                 .endMetadata()
                 .withNewSpec()
                     .withSecretName(secretName)

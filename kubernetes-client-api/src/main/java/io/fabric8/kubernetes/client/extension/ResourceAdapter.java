@@ -1,3 +1,19 @@
+/**
+ * Copyright (C) 2015 Red Hat, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package io.fabric8.kubernetes.client.extension;
 
 import io.fabric8.kubernetes.api.builder.Visitor;
@@ -31,10 +47,10 @@ import java.util.function.UnaryOperator;
 
 public class ResourceAdapter<T> implements Resource<T> {
 
-  protected Resource<T> resource;
+  protected ExtensibleResource<T> resource;
   protected Client client;
 
-  public ResourceAdapter(Resource<T> resource, Client client) {
+  public ResourceAdapter(ExtensibleResource<T> resource, Client client) {
     this.resource = resource;
     this.client = client;
   }
@@ -56,17 +72,12 @@ public class ResourceAdapter<T> implements Resource<T> {
 
   @Override
   public ReplaceDeletable<T> lockResourceVersion(String resourceVersion) {
-    return resource.lockResourceVersion(resourceVersion);
+    return new ResourceAdapter<>(resource.lockResourceVersion(resourceVersion), client);
   }
 
   @Override
   public EditReplacePatchDeletable<T> cascading(boolean enabled) {
-    return resource.cascading(enabled);
-  }
-
-  @Override
-  public WritableOperation<T> dryRun() {
-    return resource.dryRun();
+    return new ResourceAdapter<>(resource.cascading(enabled), client);
   }
 
   @Override
@@ -81,12 +92,12 @@ public class ResourceAdapter<T> implements Resource<T> {
 
   @Override
   public WatchAndWaitable<T> withResourceVersion(String resourceVersion) {
-    return resource.withResourceVersion(resourceVersion);
+    return new ResourceAdapter<>(resource.withResourceVersion(resourceVersion), client);
   }
 
   @Override
   public Gettable<T> fromServer() {
-    return resource.fromServer();
+    return new ResourceAdapter<>(resource.fromServer(), client);
   }
 
   @Override
@@ -101,7 +112,7 @@ public class ResourceAdapter<T> implements Resource<T> {
 
   @Override
   public Deletable withGracePeriod(long gracePeriodSeconds) {
-    return resource.withGracePeriod(gracePeriodSeconds);
+    return new ResourceAdapter<>(resource.withGracePeriod(gracePeriodSeconds), client);
   }
 
   @Override
@@ -126,7 +137,7 @@ public class ResourceAdapter<T> implements Resource<T> {
 
   @Override
   public EditReplacePatchDeletable<T> withPropagationPolicy(DeletionPropagation propagationPolicy) {
-    return resource.withPropagationPolicy(propagationPolicy);
+    return new ResourceAdapter<>(resource.withPropagationPolicy(propagationPolicy), client);
   }
 
   @Override
@@ -166,17 +177,17 @@ public class ResourceAdapter<T> implements Resource<T> {
 
   @Override
   public Waitable<T, T> withWaitRetryBackoff(long initialBackoff, TimeUnit backoffUnit, double backoffMultiplier) {
-    return resource.withWaitRetryBackoff(initialBackoff, backoffUnit, backoffMultiplier);
+    return new ResourceAdapter<>(resource.withWaitRetryBackoff(initialBackoff, backoffUnit, backoffMultiplier), client);
   }
 
   @Override
   public Informable<T> withIndexers(Map<String, Function<T, List<String>>> indexers) {
-    return resource.withIndexers(indexers);
+    return new ResourceAdapter<>(resource.withIndexers(indexers), client);
   }
 
   @Override
   public WritableOperation<T> dryRun(boolean isDryRun) {
-    return resource.dryRun(isDryRun);
+    return new ResourceAdapter<>(resource.dryRun(isDryRun), client);
   }
 
   @Override
@@ -191,7 +202,7 @@ public class ResourceAdapter<T> implements Resource<T> {
 
   @Override
   public Informable<T> withLimit(Long limit) {
-    return resource.withLimit(limit);
+    return new ResourceAdapter<>(resource.withLimit(limit), client);
   }
 
   @Override

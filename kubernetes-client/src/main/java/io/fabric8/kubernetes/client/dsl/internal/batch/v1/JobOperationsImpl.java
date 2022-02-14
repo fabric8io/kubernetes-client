@@ -81,11 +81,6 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
   }
 
   @Override
-  public ScalableResource<Job> fromServer() {
-    return newInstance(context.withReloadingFromServer(true));
-  }
-
-  @Override
   public Job scale(int count) {
     return scale(count, false);
   }

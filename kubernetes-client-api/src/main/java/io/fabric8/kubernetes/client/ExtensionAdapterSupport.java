@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentMap;
 
 public abstract class ExtensionAdapterSupport {
+
   protected Boolean isAdaptable(Client client, ConcurrentMap<URL, Boolean> isApi, ConcurrentMap<URL, Boolean> usesApiGroups, String apiGroup) {
     URL masterUrl = client.getMasterUrl();
     if (isApi.containsKey(masterUrl)) {
