@@ -68,7 +68,8 @@
                 <java>
                     <importOrder />
                     <googleJavaFormat>
-                        <version>1.13.0</version>
+                        <!-- Latest version available for Java 8 -->
+                        <version>1.7</version>
                         <style>AOSP</style>
                     </googleJavaFormat>
                 </java>
