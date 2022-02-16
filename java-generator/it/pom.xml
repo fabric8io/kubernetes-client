@@ -36,6 +36,10 @@
     </dependency>
   </dependencies>
 
+  <properties>
+    <root.basedir>${project.parent.parent.basedir}</root.basedir>
+  </properties>
+
   <build>
     <plugins>
       <plugin>

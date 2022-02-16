@@ -53,13 +53,13 @@ public class JObject extends AbstractJSONSchema2Pojo {
     private JObjectOptions options;
 
     public JObject(
-        String type,
-        Map<String, JSONSchemaProps> fields,
-        List<String> required,
-        JObjectOptions options) {
+            String type,
+            Map<String, JSONSchemaProps> fields,
+            List<String> required,
+            JObjectOptions options) {
         this(type, fields, required, options, null);
     }
-    
+
     public JObject(
             String type,
             Map<String, JSONSchemaProps> fields,
@@ -251,7 +251,7 @@ public class JObject extends AbstractJSONSchema2Pojo {
                     objField.createSetter();
 
                     if (Utils.isNotNullOrEmpty(prop.getDescription())) {
-                      objField.setJavadocComment(prop.getDescription());
+                        objField.setJavadocComment(prop.getDescription());
                     }
                 } catch (Exception cause) {
                     throw new JavaGeneratorException(

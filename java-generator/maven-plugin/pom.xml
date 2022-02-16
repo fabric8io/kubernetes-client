@@ -29,6 +29,10 @@
   <packaging>maven-plugin</packaging>
   <name>Fabric8 :: Java generator :: Maven Plugin</name>
 
+  <properties>
+    <root.basedir>${project.parent.parent.basedir}</root.basedir>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>io.fabric8</groupId>

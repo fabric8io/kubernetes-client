@@ -27,6 +27,7 @@ public class JPrimitive extends AbstractJSONSchema2Pojo {
     public JPrimitive(String type) {
         this(type, null);
     }
+
     public JPrimitive(String type, String description) {
         super(description);
         this.type = type;

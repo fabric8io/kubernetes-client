@@ -30,6 +30,10 @@
   <packaging>pom</packaging>
   <name>Fabric8 :: Java generator :: Parent</name>
 
+  <properties>
+    <root.basedir>${project.parent.basedir}</root.basedir>
+  </properties>
+
   <modules>
     <module>core</module>
     <module>cli</module>
@@ -75,6 +79,28 @@
                   <goal>apply</goal>
                 </goals>
               </execution>
+            </executions>
+        </plugin>
+        <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <configuration>
+              <executable>mvn</executable>
+              <arguments>
+                  <argument>spotless:apply</argument>
+                  <argument>license:format</argument>
+                  <argument>-f</argument>
+                  <argument>java-generator/pom.xml</argument>
+              </arguments>
+              <workingDirectory>${root.basedir}</workingDirectory>
+            </configuration>
+            <executions>
+                <execution>
+                  <goals>
+                      <goal>exec</goal>
+                  </goals>
+                  <phase>compile</phase>
+                </execution>
             </executions>
         </plugin>
     </plugins>

@@ -29,6 +29,10 @@
   <artifactId>java-generator-core</artifactId>
   <name>Fabric8 :: Java generator :: Core</name>
 
+  <properties>
+    <root.basedir>${project.parent.parent.basedir}</root.basedir>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>io.fabric8</groupId>

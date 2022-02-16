@@ -42,7 +42,7 @@ public abstract class AbstractJSONSchema2Pojo {
     public abstract GeneratorResult generateJava(CompilationUnit cu);
 
     public String getDescription() {
-      return description;
+        return description;
     }
 
     protected AbstractJSONSchema2Pojo() {
@@ -145,11 +145,14 @@ public abstract class AbstractJSONSchema2Pojo {
             case PRIMITIVE:
                 return new JPrimitive(nt.getName(), prop.getDescription());
             case ARRAY:
-                return new JArray(fromJsonSchema(key, prop.getItems().getSchema(), prefix, suffix), prop.getDescription());
+                return new JArray(
+                        fromJsonSchema(key, prop.getItems().getSchema(), prefix, suffix),
+                        prop.getDescription());
             case MAP:
                 return new JMap(
                         fromJsonSchema(
-                                key, prop.getAdditionalProperties().getSchema(), prefix, suffix), prop.getDescription());
+                                key, prop.getAdditionalProperties().getSchema(), prefix, suffix),
+                        prop.getDescription());
             case OBJECT:
                 boolean preserveUnknownFields =
                         Boolean.TRUE.equals(prop.getXKubernetesPreserveUnknownFields());

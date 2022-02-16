@@ -31,6 +31,7 @@
 
   <properties>
     <picocli.version>4.6.3</picocli.version>
+    <root.basedir>${project.parent.parent.basedir}</root.basedir>
   </properties>
 
   <dependencies>
