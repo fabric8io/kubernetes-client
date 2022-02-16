@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-package io.fabric8.kubernetes.client.dsl;
+package io.fabric8.kubernetes.client.dsl.internal;
+
+import io.fabric8.kubernetes.client.dsl.Namespaceable;
 
 public interface NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<T> extends
   VisitFromServerGetWatchDeleteRecreateWaitApplicable<T>,

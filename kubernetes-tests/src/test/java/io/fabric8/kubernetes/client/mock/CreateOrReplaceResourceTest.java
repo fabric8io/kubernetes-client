@@ -27,7 +27,7 @@ import io.fabric8.kubernetes.api.model.StatusBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
-import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable;
+import io.fabric8.kubernetes.client.dsl.NamespaceableResource;
 import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
@@ -85,7 +85,7 @@ class CreateOrReplaceResourceTest {
     // Given
     server.expect().post().withPath("/api/v1/namespaces/test/pods").andReturn(HttpURLConnection.HTTP_BAD_REQUEST, new PodBuilder()
       .withNewMetadata().withResourceVersion("12345").endMetadata().build()).once();
-    NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<Pod> podOperation = client.resource(new PodBuilder().withNewMetadata().withName("pod123").endMetadata().build());
+    NamespaceableResource<Pod> podOperation = client.resource(new PodBuilder().withNewMetadata().withName("pod123").endMetadata().build());
 
     // When
     assertThrows(KubernetesClientException.class, podOperation::createOrReplace);

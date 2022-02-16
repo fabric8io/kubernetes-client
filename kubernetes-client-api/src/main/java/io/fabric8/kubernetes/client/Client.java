@@ -112,6 +112,6 @@ public interface Client extends ClientContext, Closeable {
    */
   default <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> resources(
       Class<T> resourceType, Class<L> listClass) {
-    return resources(resourceType, listClass, Resource.class);
+    return resources(resourceType, listClass, null);
   }
 }

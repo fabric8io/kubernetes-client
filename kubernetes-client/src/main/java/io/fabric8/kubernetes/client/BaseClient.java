@@ -167,7 +167,7 @@ public class BaseClient extends SimpleClientContext implements Client {
   @Override
   public <T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>> MixedOperation<T, L, R> resources(
       Class<T> resourceType, Class<L> listClass, Class<R> resourceClass) {
-    // TODO: make this more robust
+    // TODO: make this more robust - list and resource class could be null
     return Handlers.getOperation(resourceType, listClass, this);
   }
 

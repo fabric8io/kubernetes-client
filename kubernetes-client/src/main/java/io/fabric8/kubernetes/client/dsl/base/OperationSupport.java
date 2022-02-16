@@ -94,9 +94,9 @@ public class OperationSupport {
     this.name = ctx.getName() ;
     this.apiGroupName = ctx.getApiGroupName();
     this.dryRun = ctx.getDryRun();
-    if (ctx.getApiGroupVersion() != null) {
+    if (Utils.isNotNullOrEmpty(ctx.getApiGroupVersion())) {
       this.apiGroupVersion = ctx.getApiGroupVersion();
-    } else if (ctx.getConfig() != null) {
+    } else if (ctx.getConfig() != null && Utils.isNotNullOrEmpty(ctx.getConfig().getApiVersion())) {
       this.apiGroupVersion = ctx.getConfig().getApiVersion();
     } else {
       this.apiGroupVersion = "v1";

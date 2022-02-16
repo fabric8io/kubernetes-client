@@ -28,7 +28,7 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
-import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable;
+import io.fabric8.kubernetes.client.dsl.NamespaceableResource;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.clnt.v4_0.utils.Serialization;
 import org.arquillian.cube.kubernetes.api.Session;
@@ -71,7 +71,7 @@ public class GenericResourceIT {
     configMap.setKind("ConfigMap");
     configMap.setApiVersion("v1");
     configMap.setMetadata(new ObjectMetaBuilder().withName("my-map").build());
-    NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<GenericKubernetesResource> resource = client.resource(configMap);
+    NamespaceableResource<GenericKubernetesResource> resource = client.resource(configMap);
     GenericKubernetesResource result = resource.createOrReplace();
     assertNotNull(result);
 
@@ -93,7 +93,7 @@ public class GenericResourceIT {
     itest.setApiVersion("examples.fabric8.io/v1");
     itest.setMetadata(new ObjectMetaBuilder().withName("my-itest").build());
 
-    NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<GenericKubernetesResource> resource = client.resource(itest);
+    NamespaceableResource<GenericKubernetesResource> resource = client.resource(itest);
 
     GenericKubernetesResource result = resource.createOrReplace();
     assertNotNull(result);

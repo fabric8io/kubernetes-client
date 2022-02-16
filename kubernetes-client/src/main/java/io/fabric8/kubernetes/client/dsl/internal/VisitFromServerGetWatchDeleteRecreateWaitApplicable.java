@@ -14,13 +14,19 @@
  * limitations under the License.
  */
 
-package io.fabric8.kubernetes.client.dsl;
+package io.fabric8.kubernetes.client.dsl.internal;
 
 import io.fabric8.kubernetes.api.builder.TypedVisitor;
 import io.fabric8.kubernetes.api.builder.Visitable;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.client.FromServerGettable;
 import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.dsl.DryRunable;
+import io.fabric8.kubernetes.client.dsl.Editable;
+import io.fabric8.kubernetes.client.dsl.Readiable;
+import io.fabric8.kubernetes.client.dsl.VisitFromServerWritable;
+import io.fabric8.kubernetes.client.dsl.Waitable;
+import io.fabric8.kubernetes.client.dsl.Watchable;
 
 public interface VisitFromServerGetWatchDeleteRecreateWaitApplicable<T> extends Visitable<VisitFromServerGetWatchDeleteRecreateWaitApplicable<T>>,
   FromServerGettable<T>,

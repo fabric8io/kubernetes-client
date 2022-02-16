@@ -17,6 +17,7 @@ package io.fabric8.kubernetes.client.dsl.base;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.utils.Utils;
 
 public class ResourceDefinitionContext {
@@ -41,11 +42,11 @@ public class ResourceDefinitionContext {
   public String getKind() {
     return kind;
   }
-  
+
   public boolean isNamespaceScoped() {
     return namespaced;
   }
-  
+
   protected void validate() {
     if (plural == null) {
       if (kind == null) {
@@ -56,13 +57,18 @@ public class ResourceDefinitionContext {
   }
 
   public static ResourceDefinitionContext fromResourceType(Class<? extends KubernetesResource> resource) {
-    return new Builder()
-      .withGroup(HasMetadata.getGroup(resource))
-      .withVersion(HasMetadata.getVersion(resource))
-      .withNamespaced(Utils.isResourceNamespaced(resource))
-      .withPlural(HasMetadata.getPlural(resource))
-      .withKind(HasMetadata.getKind(resource))
-      .build();
+    try {
+      return new Builder()
+        .withGroup(HasMetadata.getGroup(resource))
+        .withVersion(HasMetadata.getVersion(resource))
+        .withNamespaced(Utils.isResourceNamespaced(resource))
+        .withPlural(HasMetadata.getPlural(resource))
+        .withKind(HasMetadata.getKind(resource))
+        .build();
+    } catch (IllegalArgumentException e) {
+      throw new KubernetesClientException(
+          String.format("%s is not annotated appropriately: %s", resource.getName(), e.getMessage()), e);
+    }
   }
 
   public static class Builder {
@@ -96,7 +102,7 @@ public class ResourceDefinitionContext {
       this.resourceDefinitionContext.kind = kind;
       return this;
     }
-    
+
     public ResourceDefinitionContext build() {
       this.resourceDefinitionContext.validate();
       return this.resourceDefinitionContext;

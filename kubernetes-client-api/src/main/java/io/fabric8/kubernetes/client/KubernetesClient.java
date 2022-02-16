@@ -73,8 +73,8 @@ import io.fabric8.kubernetes.client.dsl.KubernetesListMixedOperation;
 import io.fabric8.kubernetes.client.dsl.MetricAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
-import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.Namespaceable;
+import io.fabric8.kubernetes.client.dsl.NamespaceableResource;
 import io.fabric8.kubernetes.client.dsl.NetworkAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
@@ -176,6 +176,7 @@ public interface KubernetesClient extends Client {
    * @param <L> L type represents resource list type
    * @return returns a MixedOperation object with which you can do basic resource operations.  If the class is a known type the dsl operation logic will be used.
    */
+  @Override
   <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> resources(Class<T> resourceType, Class<L> listClass);
 
   /**
@@ -417,7 +418,7 @@ public interface KubernetesClient extends Client {
    * @param <T> type of Kubernetes resource
    * @return operations object for Kubernetes resource
    */
-  <T extends HasMetadata> NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<T> resource(T is);
+  <T extends HasMetadata> NamespaceableResource<T> resource(T is);
 
   /**
    * KubernetesResource operations. You can pass any Kubernetes resource as string object and do
@@ -426,7 +427,7 @@ public interface KubernetesClient extends Client {
    * @param s Kubernetes resource object as string
    * @return operations object for Kubernetes resource
    */
-  NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable<HasMetadata> resource(String s);
+  NamespaceableResource<HasMetadata> resource(String s);
 
   /**
    * Operations for Binding resource in APIgroup core/v1

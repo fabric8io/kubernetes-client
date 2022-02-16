@@ -33,10 +33,8 @@ import io.fabric8.kubernetes.client.dsl.Applicable;
 import io.fabric8.kubernetes.client.dsl.CascadingDeletable;
 import io.fabric8.kubernetes.client.dsl.Deletable;
 import io.fabric8.kubernetes.client.dsl.Gettable;
-import io.fabric8.kubernetes.client.dsl.NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.Readiable;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.fabric8.kubernetes.client.dsl.VisitFromServerGetWatchDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.VisitFromServerWritable;
 import io.fabric8.kubernetes.client.dsl.Waitable;
 import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
@@ -255,11 +253,7 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl im
   }
 
   static <T extends HasMetadata, V extends VisitableBuilder<T, V>> ResourceHandler<T, V> handlerOf(T item, OperationContext context) {
-    ResourceHandler<T, V> result = Handlers.get(item, new BaseClient(context));
-    if (result == null) {
-      throw new KubernetesClientException("Could not find a registered handler for item: [" + item + "].");
-    }
-    return result;
+    return Handlers.get(item, new BaseClient(context));
   }
 
 }
