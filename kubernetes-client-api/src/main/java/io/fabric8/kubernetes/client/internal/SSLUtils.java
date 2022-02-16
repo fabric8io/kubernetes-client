@@ -63,6 +63,7 @@ public final class SSLUtils {
         SSLContext sslContext = SSLUtils.sslContext(config);
         conn.setSSLSocketFactory(sslContext.getSocketFactory());
         conn.setConnectTimeout(1000);
+        conn.setReadTimeout(1000);
         conn.connect();
         return true;
       } catch (Throwable t) {
