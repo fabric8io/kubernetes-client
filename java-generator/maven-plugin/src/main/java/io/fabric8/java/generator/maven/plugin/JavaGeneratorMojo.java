@@ -30,14 +30,13 @@ public class JavaGeneratorMojo extends AbstractMojo {
     @Parameter(defaultValue = "${project}")
     private MavenProject project;
 
-    // TODO: Modify CRGeneratorRunner to allow passing in a directory too
     @Parameter(property = "fabric8.java-generator.source", required = true)
-    File crdFile;
+    File source;
 
     @Parameter(
             property = "fabric8.java-generator.target",
             defaultValue = "${basedir}/target/generated-sources/java")
-    File targetDirectory;
+    File target;
 
     @Parameter(property = "fabric8.java-generator.enum-uppercase", required = false)
     Boolean enumUppercase = null;
@@ -68,7 +67,7 @@ public class JavaGeneratorMojo extends AbstractMojo {
                         extraAnnotations,
                         codeStructure);
         final CRGeneratorRunner runner = new CRGeneratorRunner(config);
-        runner.run(crdFile, targetDirectory);
-        project.addCompileSourceRoot(targetDirectory.getAbsolutePath());
+        runner.run(source, target);
+        project.addCompileSourceRoot(target.getAbsolutePath());
     }
 }
