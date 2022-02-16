@@ -148,7 +148,7 @@
     <jandex.version>2.4.2.Final</jandex.version>
     <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
     <sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
-    <nexus-staging-maven-plugin>1.6.10</nexus-staging-maven-plugin>
+    <nexus-staging-maven-plugin>1.6.11</nexus-staging-maven-plugin>
 
     <!-- Other options -->
     <maven.compiler.source>1.8</maven.compiler.source>
