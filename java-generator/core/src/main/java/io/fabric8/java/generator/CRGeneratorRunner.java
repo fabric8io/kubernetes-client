@@ -29,8 +29,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.FileVisitOption;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,6 +49,24 @@ public class CRGeneratorRunner {
     }
 
     public void run(File source, File basePath) {
+        if (source.isDirectory()) {
+            try (Stream<Path> walk = Files.walk(source.toPath(), FileVisitOption.FOLLOW_LINKS)) {
+                walk.forEach(
+                        f -> {
+                            if (!f.toFile().getAbsolutePath().equals(source.getAbsolutePath())) {
+                                run(f.toFile(), basePath);
+                            }
+                        });
+            } catch (IOException e) {
+                throw new JavaGeneratorException(
+                        "Error visiting the folder " + source.getAbsolutePath(), e);
+            }
+        } else {
+            runOnSingleSource(source, basePath);
+        }
+    }
+
+    private void runOnSingleSource(File source, File basePath) {
         try (FileInputStream fis = new FileInputStream(source)) {
             List<HasMetadata> resources = new ArrayList<>();
 

@@ -30,16 +30,16 @@ import picocli.CommandLine.Option;
 public class GenerateJavaSources implements Runnable {
 
     @Option(
-            names = {"-crd", "--custom-resource-definition"},
-            description = "The file with the CustomResourceDefinition to use",
+            names = {"-s", "--source"},
+            description = "The source(file or folder) with the CustomResourceDefinition(s) to use",
             required = true)
-    File crdFile;
+    File source;
 
     @Option(
-            names = {"-dest", "--destination-folder"},
+            names = {"-t", "--target"},
             description = "The folder to write the generated sources",
             required = true)
-    File destFolder;
+    File target;
 
     @Option(
             names = {"-enum-uppercase", "--enum-uppercase"},
@@ -97,7 +97,7 @@ public class GenerateJavaSources implements Runnable {
                         addExtraAnnotations,
                         structure);
         final CRGeneratorRunner runner = new CRGeneratorRunner(config);
-        runner.run(crdFile, destFolder);
+        runner.run(source, target);
     }
 
     public static void main(String[] args) {

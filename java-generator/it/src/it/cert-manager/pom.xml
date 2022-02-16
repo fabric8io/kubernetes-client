@@ -76,7 +76,7 @@
           </execution>
         </executions>
         <configuration>
-          <crdFile>src/main/resources/cert-manager.crds.1.7.1.yaml</crdFile>
+          <source>src/main/resources/</source>
           <codeStructure>FLAT</codeStructure>
           <extraAnnotations>true</extraAnnotations>
           <alwaysPreserveUnknown>true</alwaysPreserveUnknown>
