@@ -54,10 +54,11 @@ public class CertUtils {
   private CertUtils() { }
 
   private static final Logger LOG = LoggerFactory.getLogger(CertUtils.class);
-  public static final String TRUST_STORE_SYSTEM_PROPERTY = "javax.net.ssl.trustStore";
-  public static final String TRUST_STORE_PASSWORD_SYSTEM_PROPERTY = "javax.net.ssl.trustStorePassword";
-  public static final String KEY_STORE_SYSTEM_PROPERTY = "javax.net.ssl.keyStore";
-  public static final String KEY_STORE_PASSWORD_SYSTEM_PROPERTY = "javax.net.ssl.keyStorePassword";
+  private static final String TRUST_STORE_SYSTEM_PROPERTY = "javax.net.ssl.trustStore";
+  private static final String TRUST_STORE_PASSWORD_SYSTEM_PROPERTY = "javax.net.ssl.trustStorePassword";
+  private static final String TRUST_STORE_TYPE_SYSTEM_PROPERTY = "javax.net.ssl.trustStoreType";
+  private static final String KEY_STORE_SYSTEM_PROPERTY = "javax.net.ssl.keyStore";
+  private static final String KEY_STORE_PASSWORD_SYSTEM_PROPERTY = "javax.net.ssl.keyStorePassword";
 
   public static InputStream getInputStreamFromDataOrFile(String data, String file) throws IOException {
     if (data != null) {
@@ -82,8 +83,11 @@ public class CertUtils {
     return trustStorePassphrase.toCharArray();
   }
 
-  public static KeyStore createTrustStore(InputStream pemInputStream, String trustStoreFile, char[] trustStorePassphrase) throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException {
-    KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
+  private static KeyStore createTrustStore(InputStream pemInputStream, String trustStoreFile, char[] trustStorePassphrase)
+    throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException {
+
+    final String trustStoreType = System.getProperty(TRUST_STORE_TYPE_SYSTEM_PROPERTY, KeyStore.getDefaultType());
+    KeyStore trustStore = KeyStore.getInstance(trustStoreType);
 
     if (Utils.isNotNullOrEmpty(trustStoreFile)) {
       try (FileInputStream fis = new FileInputStream(trustStoreFile)) {
@@ -135,7 +139,7 @@ public class CertUtils {
       throw new InvalidKeySpecException("Unknown type of PKCS8 Private Key, tried RSA and ECDSA");
   }
 
-  private static PrivateKey handleECKey(InputStream keyInputStream) throws IOException {
+  private static PrivateKey handleECKey(InputStream keyInputStream) {
     // Let's wrap the code to a callable inner class to avoid NoClassDef when loading this class.
     try {
       return new Callable<PrivateKey>() {
@@ -216,8 +220,7 @@ public class CertUtils {
     keyStore.load(null);
   }
 
-  private static boolean loadDefaultStoreFile(KeyStore keyStore, File fileToLoad, char[] passphrase)
-    throws CertificateException, NoSuchAlgorithmException, IOException {
+  private static boolean loadDefaultStoreFile(KeyStore keyStore, File fileToLoad, char[] passphrase) {
 
     String notLoadedMessage = "There is a problem with reading default keystore/truststore file %s with the passphrase %s "
       + "- the file won't be loaded. The reason is: %s";
@@ -257,8 +260,7 @@ public class CertUtils {
   // http://oauth.googlecode.com/svn/code/java/
   // All credits to belong to them.
   private static byte[] decodePem(InputStream keyInputStream) throws IOException {
-    BufferedReader reader = new BufferedReader(new InputStreamReader(keyInputStream));
-    try {
+    try (BufferedReader reader = new BufferedReader(new InputStreamReader(keyInputStream))) {
       String line;
       while ((line = reader.readLine()) != null) {
         if (line.contains("-----BEGIN ")) {
@@ -266,8 +268,6 @@ public class CertUtils {
         }
       }
       throw new IOException("PEM is invalid: no begin marker");
-    } finally {
-      reader.close();
     }
   }
 
