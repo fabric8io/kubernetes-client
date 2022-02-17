@@ -163,23 +163,6 @@ public interface KubernetesClient extends Client {
   }
 
   /**
-   * Typed API for managing resources. Any properly annotated POJO can be utilized as a resource.
-   *
-   * <p>
-   *   Note: your resource POJO (T in this context) must implement
-   *   {@link io.fabric8.kubernetes.api.model.Namespaced} if it is a namespace-scoped resource.
-   * </p>
-   *
-   * @param resourceType Class for resource
-   * @param <T> T type represents resource type. If it's a namespaced resource, it must implement
-   *           {@link io.fabric8.kubernetes.api.model.Namespaced}
-   * @param <L> L type represents resource list type
-   * @return returns a MixedOperation object with which you can do basic resource operations.  If the class is a known type the dsl operation logic will be used.
-   */
-  @Override
-  <T extends HasMetadata, L extends KubernetesResourceList<T>> MixedOperation<T, L, Resource<T>> resources(Class<T> resourceType, Class<L> listClass);
-
-  /**
    * Typed API for managing CustomResources. You would need to provide POJOs for
    * CustomResource into this and with it you would be able to instantiate a client
    * specific to CustomResource.

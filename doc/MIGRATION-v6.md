@@ -3,7 +3,10 @@
 ## Contents:
 - [API/Impl split](#api-impl-split)
 - [Deprecation Removals](#deprecation-removals)
+- [Resource Changes](#resource-changes)
 - [IntOrString changes](#intorstring-changes)
+- [ServiceCatalog changes](#service-catalog-changes)
+- [Deprecations](#deprecations)
 
 ## API/Impl split
 
@@ -24,6 +27,25 @@ When you rely solely on a compile dependency to the respective -api dependencies
 - Removed KubernetesClient.customResource / RawCustomResourceOperationsImpl, please use the generic resource api instead 
 - Removed deprecatedHttpClientUtils.createHttpClient(final Config config, final Consumer<OkHttpClient.Builder> additionalConfig), please use the OkHttpClientFactory instead
 - Removed deprecated methods on SharedInformerFactory dealing with the OperationContext
+
+### Extension Development
+
+Extension development may now be done using only the kubernetes-client-api dependency.  Please see the [extensions](../extensions).
+
+## Resource Changes
+
+KubernetesClient.resource no longer returns NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicable, use NamespaceableResource instead.
+
+This may require you to implement previously deprecated methods on your own.  For example, instead of:
+
+client.resource(deployment).inNamespace(session.getNamespace()).deletingExisting().createOrReplace();
+    
+Use:
+
+var resource = client.resource(deployment).inNamespace(session.getNamespace());
+resource.delete();
+resource.waitUntilCondition(Objects::isNull, 30, TimeUnit.SECONDS);
+resource.create();
 
 ## IntOrString changes
 
@@ -53,3 +75,11 @@ We've removed setter methods `setIntVal`, `setKind`, `setStrVal` from the class.
   IntOrString i2 = new IntOrString("3000");
   String strValue = i2.getStrVal();
   ```
+
+## Service Catalog Changes
+
+io.fabric8.servicecatalog.client.internal.XXXResource interfaces moved to io.fabric8.servicecatalog.client.dsl.XXXResource to no longer be in an internal package.
+
+## Deprecations
+
+- ApiVersionUtil classes in each extension have been deprecated, you should use io.fabric8.kubernetes.client.utils.ApiVersionUtil instead. 

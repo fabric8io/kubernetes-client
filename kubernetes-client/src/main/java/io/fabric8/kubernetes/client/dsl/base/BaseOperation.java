@@ -38,7 +38,6 @@ import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.FilterNested;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
-import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.internal.DefaultOperationInfo;
 import io.fabric8.kubernetes.client.dsl.internal.WatchConnectionManager;
@@ -241,16 +240,15 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
   }
 
   @Override
-  public NonNamespaceOperation<T, L, R> inNamespace(String namespace) {
+  public BaseOperation<T, L, R> inNamespace(String namespace) {
     return newInstance(context.withNamespace(namespace));
   }
 
   @Override
-  public NonNamespaceOperation<T, L, R> inAnyNamespace() {
+  public BaseOperation<T, L, R> inAnyNamespace() {
     Config updated = new ConfigBuilder(config).withNamespace(null).build();
     return newInstance(context.withConfig(updated).withNamespace(null));
   }
-
 
   @Override
   public ExtensibleResource<T> cascading(boolean cascading) {
@@ -259,7 +257,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public R load(InputStream is) {
-    return newResource(context.withItem(unmarshal(is, type)));
+    return withItem(unmarshal(is, type));
   }
 
   @Override
@@ -519,6 +517,8 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public R withItem(T item) {
+    // set both the item and the name - not all operations are looking at the item for the name
+    // things like configMaps().load(...).watch(...) for example
     return newResource(context.withItem(item).withName(KubernetesResourceUtil.getName(item)));
   }
 

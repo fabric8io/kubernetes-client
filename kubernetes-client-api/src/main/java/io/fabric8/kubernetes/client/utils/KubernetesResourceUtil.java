@@ -85,6 +85,21 @@ public class KubernetesResourceUtil {
   }
 
   /**
+   * Set namespace of a kubernetes resource if possible
+   *
+   * @param entity entity provided
+   * @param namespace the new namesapce
+   */
+  public static void setNamespace(HasMetadata entity, String namespace) {
+    if (entity != null) {
+      ObjectMeta metadata = entity.getMetadata();
+      if (metadata != null) {
+        metadata.setNamespace(namespace);
+      }
+    }
+  }
+
+  /**
    * Returns the kind of the entity
    *
    * @param entity provided entity
@@ -386,7 +401,7 @@ public class KubernetesResourceUtil {
   public static <T extends HasMetadata> Class<? extends KubernetesResourceList> inferListType(Class<T> type) {
     return (Class<? extends KubernetesResourceList>) loadRelated(type, "List", CustomResourceList.class);
   }
-  
+
   public static <T extends HasMetadata, V extends VisitableBuilder<T, V>> Class<V> inferBuilderType(Class<T> type) {
     return (Class<V>) loadRelated(type, "Builder", null);
   }

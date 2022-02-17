@@ -47,12 +47,12 @@ class ResourcedHasMetadataOperation<T extends HasMetadata, L extends KubernetesR
     return new ResourcedHasMetadataOperation<>(context, this.rdc, type, listType, adapter);
   }
   
-  public static <T extends HasMetadata, L extends KubernetesResourceList<T>, R extends Resource<T>> void register(
+  public static <T extends HasMetadata, R extends Resource<T>> void register(
       Class<T> type, BiFunction<ExtensibleResource<T>, Client, R> target) {
-    Handlers.register(type, (c) -> {
-      return new ResourcedHasMetadataOperation<>(HasMetadataOperationsImpl.defaultContext(c), ResourceDefinitionContext.fromResourceType(type), type,
-          KubernetesResourceUtil.inferListType(type), target);
-    });
+    Handlers.register(type,
+        c -> new ResourcedHasMetadataOperation<>(HasMetadataOperationsImpl.defaultContext(c),
+            ResourceDefinitionContext.fromResourceType(type), type,
+            KubernetesResourceUtil.inferListType(type), target));
   }
 
 }

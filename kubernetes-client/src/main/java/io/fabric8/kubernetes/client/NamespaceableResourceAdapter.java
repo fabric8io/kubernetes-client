@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ListOptions;
-import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.dsl.Deletable;
 import io.fabric8.kubernetes.client.dsl.EditReplacePatchDeletable;
 import io.fabric8.kubernetes.client.dsl.Gettable;
@@ -70,12 +69,15 @@ public class NamespaceableResourceAdapter<T extends HasMetadata> implements Name
   public NamespaceableResourceAdapter(T item, HasMetadataOperation<T, ?, ?> op) {
     this.operation = op;
     this.item = item;
+    this.resource = getResource(item, op);
+  }
+
+  public static <T extends HasMetadata> Resource<T> getResource(T item, HasMetadataOperation<T, ?, ?> op) {
     String namespace = KubernetesResourceUtil.getNamespace(item);
     if (namespace != null) {
-      this.resource = op.inNamespace(namespace).withItem(item);
-    } else {
-      this.resource = op.withItem(item);
+      return op.inNamespace(namespace).withItem(item);
     }
+    return op.withItem(item);
   }
 
   @Override
@@ -83,13 +85,9 @@ public class NamespaceableResourceAdapter<T extends HasMetadata> implements Name
     return operation.inNamespace(name).withItem(setItemNamespace(item, name));
   }
 
-  // TODO: move to KubernetesResourceUtil
   static <T extends HasMetadata> T setItemNamespace(T item, String name) {
     item = Serialization.clone(item);
-    if (item.getMetadata() == null) {
-      item.setMetadata(new ObjectMeta());
-    }
-    item.getMetadata().setNamespace(name);
+    KubernetesResourceUtil.setNamespace(item, name);
     return item;
   }
   

@@ -18,9 +18,9 @@ package io.fabric8.kubernetes.client.dsl.internal;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
-import io.fabric8.kubernetes.client.BaseClient;
 import io.fabric8.kubernetes.client.ClientContext;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.NamespaceableResourceAdapter;
 import io.fabric8.kubernetes.client.ResourceHandler;
 import io.fabric8.kubernetes.client.dsl.Createable;
 import io.fabric8.kubernetes.client.dsl.Gettable;
@@ -124,9 +124,14 @@ public class KubernetesListOperationsImpl
     return new KubernetesListBuilder(list).withItems(list.getItems().stream().map(meta -> getResource(meta).get()).collect(Collectors.toList())).build();
   }
 
+  /**
+   * Similar to Loadable.load - does not use the namespace from the resource
+   * 
+   * see also {@link NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl#getResource(OperationContext, HasMetadata)}
+   */
   private Resource<HasMetadata> getResource(HasMetadata resource) {
-    ResourceHandler<HasMetadata, ?> handler = NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableImpl.handlerOf(resource, context);
-    return handler.operation(this.context, null).newInstance(context.withItem(resource));
+    ResourceHandler<HasMetadata, ?> handler = NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl.handlerOf(resource, context);
+    return handler.operation(context, null).newInstance(context.withItem(null)).withItem(resource);
   }
 
   @Override

@@ -267,7 +267,7 @@ public class HasMetadataOperation<T extends HasMetadata, L extends KubernetesRes
   }
   
   @Override
-  public BaseOperation<T, L, R> newInstance(OperationContext context) {
+  public HasMetadataOperation<T, L, R> newInstance(OperationContext context) {
     return new HasMetadataOperation<>(context, type, listType);
   }
   

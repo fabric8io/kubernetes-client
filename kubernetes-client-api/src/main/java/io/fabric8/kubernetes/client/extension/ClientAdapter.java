@@ -39,15 +39,15 @@ public abstract class ClientAdapter<C extends Client> implements Client {
 
   protected Client client;
 
-  public ClientAdapter() {
+  protected ClientAdapter() {
     this(new KubernetesClientBuilder().build());
   }
 
-  public ClientAdapter(Config configuration) {
+  protected ClientAdapter(Config configuration) {
     this(new KubernetesClientBuilder().withConfig(configuration).build());
   }
 
-  public ClientAdapter(Client client) {
+  protected ClientAdapter(Client client) {
     this.client = client;
   }
 

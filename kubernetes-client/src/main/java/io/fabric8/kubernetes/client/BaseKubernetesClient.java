@@ -256,7 +256,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
     // lookup the operation given the item
     ResourceHandler<T, ?> resourceHandler = Handlers.get(item, this);
     HasMetadataOperation<T, ?, ?> op = resourceHandler.operation(this, null);
-    return new NamespaceableResourceAdapter<T>(item, op);
+    return new NamespaceableResourceAdapter<>(item, op);
   }
 
   /**
@@ -464,28 +464,14 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
     return genericKubernetesResources(context);
   }
   
-  @Override
-  public <T extends HasMetadata, L extends KubernetesResourceList<T>> HasMetadataOperation<T, L, Resource<T>> resources(
-      Class<T> resourceType, Class<L> listClass) {
-    try {
-      if (GenericKubernetesResource.class.equals(resourceType)) {
-        throw new KubernetesClientException("resources cannot be called with a generic type");
-      }
-      return Handlers.getOperation(resourceType, listClass, this);
-    } catch (Exception e) {
-      //may be the wrong list type, try more general
-      return customResources(ResourceDefinitionContext.fromResourceType(resourceType), resourceType, listClass);
-    }
-  }
-
   /**
    * {@inheritDoc}
    */
   @Override
   public <T extends HasMetadata, L extends KubernetesResourceList<T>> HasMetadataOperationsImpl<T, L> customResources(ResourceDefinitionContext rdContext, Class<T> resourceType, Class<L> listClass) {
-    return new HasMetadataOperationsImpl<>(this, rdContext, resourceType, listClass);
+    return newHasMetadataOperation(rdContext, resourceType, listClass);
   }
-
+  
   @Override
   public DiscoveryAPIGroupDSL discovery() {
     return adapt(DiscoveryAPIGroupClient.class);
