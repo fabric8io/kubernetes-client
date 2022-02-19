@@ -51,11 +51,7 @@ public class JobOperationsImpl extends HasMetadataOperation<Job, JobList, Scalab
   private final PodControllerOperationContext podControllerOperationContext;
 
   public JobOperationsImpl(ClientContext clientContext) {
-    this(clientContext, null);
-  }
-
-  public JobOperationsImpl(ClientContext clientContext, String namespace) {
-    this(new PodControllerOperationContext(), HasMetadataOperationsImpl.defaultContext(clientContext).withNamespace(namespace));
+    this(new PodControllerOperationContext(), HasMetadataOperationsImpl.defaultContext(clientContext));
   }
 
   public JobOperationsImpl(PodControllerOperationContext context, OperationContext superContext) {

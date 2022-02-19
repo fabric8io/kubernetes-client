@@ -15,6 +15,8 @@
  */
 package io.fabric8.kubernetes.client;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import io.fabric8.kubernetes.api.model.APIService;
 import io.fabric8.kubernetes.api.model.APIServiceList;
 import io.fabric8.kubernetes.api.model.Binding;
@@ -101,10 +103,7 @@ import io.fabric8.kubernetes.client.dsl.internal.apps.v1.DeploymentOperationsImp
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.ReplicaSetOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.apps.v1.StatefulSetOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.batch.v1.JobOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.batch.v1beta1.CronJobOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.certificates.v1.CertificateSigningRequestOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.core.v1.BindingOperationsImpl;
-import io.fabric8.kubernetes.client.dsl.internal.core.v1.ComponentStatusOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.ReplicationControllerOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.ServiceOperationsImpl;
@@ -132,9 +131,6 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
   static {
     Handlers.register(Pod.class, PodOperationsImpl::new);
     Handlers.register(Job.class, JobOperationsImpl::new);
-    Handlers.register(CronJob.class, CronJobOperationsImpl::new);
-    Handlers.register(Binding.class, BindingOperationsImpl::new);
-    Handlers.register(ComponentStatus.class, ComponentStatusOperationsImpl::new);
     Handlers.register(Service.class, ServiceOperationsImpl::new);
     Handlers.register(Deployment.class, DeploymentOperationsImpl::new);
     Handlers.register(io.fabric8.kubernetes.api.model.extensions.Deployment.class, io.fabric8.kubernetes.client.dsl.internal.extensions.v1beta1.DeploymentOperationsImpl::new);
@@ -204,7 +200,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public NonNamespaceOperation<ComponentStatus, ComponentStatusList, Resource<ComponentStatus>> componentstatuses() {
-    return new ComponentStatusOperationsImpl(this);
+    return resources(ComponentStatus.class, ComponentStatusList.class);
   }
 
   /**
@@ -272,7 +268,7 @@ public abstract class BaseKubernetesClient<C extends Client> extends BaseClient 
    */
   @Override
   public MixedOperation<Binding, KubernetesResourceList<Binding>, Resource<Binding>> bindings() {
-    return new BindingOperationsImpl(this);
+    return resources(Binding.class, (Class<KubernetesResourceList<Binding>>) TypeFactory.rawClass(new TypeReference<KubernetesResourceList<Binding>>(){}.getType()));
   }
 
   /**

@@ -56,7 +56,6 @@ class OperationContextTest {
 
     // Then
     assertNotNull(operationContext);
-    assertFalse(operationContext.isNamespaceFromGlobalConfig());
     assertEquals("operation-namespace", operationContext.getNamespace());
   }
 

@@ -43,12 +43,6 @@ public class OperationContext extends SimpleClientContext {
   protected boolean cascading;
   protected boolean reloadingFromServer;
   protected boolean dryRun;
-  /*
-   * This field is added in order to distinguish whether namespace is picked from global
-   * Configuration (either your KUBECONFIG or /var/run/secrets/kubernetes.io/serviceaccount/namespace)
-   * if inside a Pod
-   */
-  protected boolean namespaceFromGlobalConfig;
 
   // Default to -1 to respect the value set in the resource or the Kubernetes default (30 seconds)
   protected long gracePeriodSeconds = -1L;
@@ -66,14 +60,14 @@ public class OperationContext extends SimpleClientContext {
   }
 
   public OperationContext(OperationContext other) {
-    this(other.httpClient, other.config, other.plural, other.namespace, other.name, other.apiGroupName, other.apiGroupVersion, other.cascading, other.item, other.labels, other.labelsNot, other.labelsIn, other.labelsNotIn, other.fields, other.fieldsNot, other.resourceVersion, other.reloadingFromServer, other.gracePeriodSeconds, other.propagationPolicy, other.namespaceFromGlobalConfig, other.dryRun, other.selectorAsString);
+    this(other.httpClient, other.config, other.plural, other.namespace, other.name, other.apiGroupName, other.apiGroupVersion, other.cascading, other.item, other.labels, other.labelsNot, other.labelsIn, other.labelsNotIn, other.fields, other.fieldsNot, other.resourceVersion, other.reloadingFromServer, other.gracePeriodSeconds, other.propagationPolicy, other.dryRun, other.selectorAsString);
   }
 
   public OperationContext(HttpClient client, Config config, String plural, String namespace, String name,
                           String apiGroupName, String apiGroupVersion, boolean cascading, Object item, Map<String, String> labels,
                           Map<String, String[]> labelsNot, Map<String, String[]> labelsIn, Map<String, String[]> labelsNotIn,
                           Map<String, String> fields, Map<String, String[]> fieldsNot, String resourceVersion, boolean reloadingFromServer,
-                          long gracePeriodSeconds, DeletionPropagation propagationPolicy, boolean namespaceFromGlobalConfig,
+                          long gracePeriodSeconds, DeletionPropagation propagationPolicy,
                           boolean dryRun, String selectorAsString) {
     this.httpClient = client;
     this.config = config;
@@ -94,7 +88,6 @@ public class OperationContext extends SimpleClientContext {
     this.reloadingFromServer = reloadingFromServer;
     this.gracePeriodSeconds = gracePeriodSeconds;
     this.propagationPolicy = propagationPolicy;
-    this.namespaceFromGlobalConfig = namespaceFromGlobalConfig;
     this.dryRun = dryRun;
     this.selectorAsString = selectorAsString;
   }
@@ -209,10 +202,6 @@ public class OperationContext extends SimpleClientContext {
 
   public DeletionPropagation getPropagationPolicy() {
     return propagationPolicy;
-  }
-
-  public boolean isNamespaceFromGlobalConfig() {
-    return namespaceFromGlobalConfig;
   }
 
   public boolean getDryRun() {
@@ -452,15 +441,6 @@ public class OperationContext extends SimpleClientContext {
     return context;
   }
 
-  public OperationContext withIsNamespaceConfiguredFromGlobalConfig(boolean namespaceFromGlobalConfig) {
-    if (this.namespaceFromGlobalConfig == namespaceFromGlobalConfig) {
-      return this;
-    }
-    final OperationContext context = new OperationContext(this);
-    context.namespaceFromGlobalConfig = namespaceFromGlobalConfig;
-    return context;
-  }
-
   public OperationContext withDryRun(boolean dryRun) {
     if(this.dryRun == dryRun) {
       return this;
@@ -505,7 +485,7 @@ public class OperationContext extends SimpleClientContext {
       context.isReloadingFromServer() ? context.isReloadingFromServer() : isReloadingFromServer(),
       context.getGracePeriodSeconds() > 0 ? context.getGracePeriodSeconds() : getGracePeriodSeconds(),
       Utils.getNonNullOrElse(context.getPropagationPolicy(), getPropagationPolicy()),
-      context.isNamespaceFromGlobalConfig() ? context.isNamespaceFromGlobalConfig() : isNamespaceFromGlobalConfig(), context.getDryRun() ? context.getDryRun() : getDryRun(),
+      context.getDryRun() ? context.getDryRun() : getDryRun(),
       Utils.getNonNullOrElse(context.selectorAsString, selectorAsString)
     );
   }
