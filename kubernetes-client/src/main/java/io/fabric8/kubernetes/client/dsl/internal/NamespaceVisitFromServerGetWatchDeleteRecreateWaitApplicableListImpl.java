@@ -39,6 +39,7 @@ import io.fabric8.kubernetes.client.dsl.Gettable;
 import io.fabric8.kubernetes.client.dsl.ListVisitFromServerGetDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.ListVisitFromServerWritable;
 import io.fabric8.kubernetes.client.dsl.NamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
+import io.fabric8.kubernetes.client.dsl.NamespaceableResource;
 import io.fabric8.kubernetes.client.dsl.ParameterNamespaceListVisitFromServerGetDeleteRecreateWaitApplicable;
 import io.fabric8.kubernetes.client.dsl.Readiable;
 import io.fabric8.kubernetes.client.dsl.Resource;
@@ -119,7 +120,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
   }
   
   @Override
-  public List<Resource<HasMetadata>> getResources() {
+  public List<NamespaceableResource<io.fabric8.kubernetes.api.model.HasMetadata>> getResources() {
     return getItems().stream()
         .map(this::getResource)
         .collect(Collectors.toList());
@@ -129,17 +130,16 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
    * similar to {@link KubernetesClient#resource(HasMetadata)}, but we want to inherit the context
    * The namespacing is the same - use the item namespace if available 
    */
-  Resource<HasMetadata> getResource(HasMetadata meta) {
+  NamespaceableResource<HasMetadata> getResource(HasMetadata meta) {
     ResourceHandler<HasMetadata, ?> handler = handlerOf(meta, context);
-    return NamespaceableResourceAdapter.getResource(meta,
-        handler.operation(context, null).newInstance(context.withItem(null)));
+    return new NamespaceableResourceAdapter<>(meta, handler.operation(context, null).newInstance(context.withItem(null)));
   }
 
   @Override
   public List<HasMetadata> waitUntilCondition(Predicate<HasMetadata> condition,
                                               long amount,
                                               TimeUnit timeUnit) {
-    List<Resource<HasMetadata>> operations = getResources();
+    List<? extends Resource<HasMetadata>> operations = getResources();
     if (operations.isEmpty()) {
       return Collections.emptyList();
     }
@@ -209,7 +209,7 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
 
   @Override
   public List<HasMetadata> createOrReplace() {
-    List<Resource<HasMetadata>> operations = getResources();
+    List<? extends Resource<HasMetadata>> operations = getResources();
 
     if (!namespaceVisitOperationContext.isDeletingExisting()) {
       return operations.stream()
