@@ -517,9 +517,20 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public R withItem(T item) {
-    // set both the item and the name - not all operations are looking at the item for the name
+    // set the name - not all operations are looking at the item for the name
     // things like configMaps().load(...).watch(...) for example
-    return newResource(context.withItem(item).withName(KubernetesResourceUtil.getName(item)));
+    OperationContext ctx = context.withName(KubernetesResourceUtil.getName(item));
+    /*if (this.context.isDefaultNamespace()) {
+      String namespace = KubernetesResourceUtil.getNamespace(item);
+      if (Utils.isNotNullOrEmpty(namespace)) {
+        ctx = ctx.withNamespace(namespace);
+      }
+    } else {
+      item = Serialization.clone(item);
+      KubernetesResourceUtil.setNamespace(item, context.getNamespace());
+    }*/
+    ctx = ctx.withItem(item);
+    return newResource(ctx);
   }
 
   void deleteThis() {
@@ -919,10 +930,6 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   public void setListType(Class<L> listType) {
     this.listType = listType;
-  }
-
-  public void setNamespace(String namespace) {
-    this.namespace = namespace;
   }
 
   @Override

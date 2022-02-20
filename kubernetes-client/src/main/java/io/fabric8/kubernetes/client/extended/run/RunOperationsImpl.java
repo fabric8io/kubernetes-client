@@ -18,16 +18,20 @@ package io.fabric8.kubernetes.client.extended.run;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.client.ClientContext;
+import io.fabric8.kubernetes.client.dsl.base.OperationContext;
+import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.dsl.internal.core.v1.PodOperationsImpl;
 
 public class RunOperationsImpl implements RunOperations {
-  private final ClientContext clientContext;
-  private final String namespace;
+  private final OperationContext operationContext;
   private final RunConfigBuilder runConfigBuilder;
 
-  public RunOperationsImpl(ClientContext clientContext, String namespace, RunConfigBuilder runConfigBuilder) {
-    this.clientContext = clientContext;
-    this.namespace = namespace;
+  public RunOperationsImpl(ClientContext clientContext) {
+    this(HasMetadataOperationsImpl.defaultContext(clientContext), new RunConfigBuilder());
+  }
+  
+  public RunOperationsImpl(OperationContext operationContext, RunConfigBuilder runConfigBuilder) {
+    this.operationContext = operationContext;
     this.runConfigBuilder = runConfigBuilder;
   }
 
@@ -39,7 +43,7 @@ public class RunOperationsImpl implements RunOperations {
    */
   @Override
   public RunOperations inNamespace(String namespace) {
-    return new RunOperationsImpl(clientContext, namespace, runConfigBuilder);
+    return new RunOperationsImpl(operationContext.withNamespace(namespace), runConfigBuilder);
   }
 
   /**
@@ -50,7 +54,7 @@ public class RunOperationsImpl implements RunOperations {
    */
   @Override
   public RunOperations withImage(String image) {
-    return new RunOperationsImpl(clientContext, namespace, runConfigBuilder.withImage(image));
+    return new RunOperationsImpl(operationContext, runConfigBuilder.withImage(image));
   }
 
   /**
@@ -61,7 +65,7 @@ public class RunOperationsImpl implements RunOperations {
    */
   @Override
   public RunOperations withName(String name) {
-    return new RunOperationsImpl(clientContext, namespace, runConfigBuilder.withName(name));
+    return new RunOperationsImpl(operationContext, runConfigBuilder.withName(name));
   }
 
   /**
@@ -72,7 +76,7 @@ public class RunOperationsImpl implements RunOperations {
    */
   @Override
   public RunOperations withRunConfig(RunConfig generatorRunConfig) {
-    return new RunOperationsImpl(clientContext, namespace, new RunConfigBuilder(generatorRunConfig));
+    return new RunOperationsImpl(operationContext, new RunConfigBuilder(generatorRunConfig));
   }
 
   /**
@@ -82,7 +86,7 @@ public class RunOperationsImpl implements RunOperations {
    */
   @Override
   public Pod done() {
-    return new PodOperationsImpl(clientContext, namespace).create(convertRunConfigIntoPod());
+    return new PodOperationsImpl(operationContext).create(convertRunConfigIntoPod());
   }
 
   Pod convertRunConfigIntoPod() {

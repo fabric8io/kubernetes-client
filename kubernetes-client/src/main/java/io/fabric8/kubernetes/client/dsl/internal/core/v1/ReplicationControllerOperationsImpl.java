@@ -47,11 +47,7 @@ public class ReplicationControllerOperationsImpl extends RollableScalableResourc
   implements TimeoutImageEditReplacePatchable<ReplicationController> {
 
   public ReplicationControllerOperationsImpl(ClientContext clientContext) {
-    this(clientContext, null);
-  }
-
-  public ReplicationControllerOperationsImpl(ClientContext clientContext, String namespace) {
-    this(new RollingOperationContext(), HasMetadataOperationsImpl.defaultContext(clientContext).withNamespace(namespace));
+    this(new RollingOperationContext(), HasMetadataOperationsImpl.defaultContext(clientContext));
   }
 
   public ReplicationControllerOperationsImpl(RollingOperationContext context, OperationContext superContext) {

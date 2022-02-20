@@ -20,6 +20,7 @@ import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.SimpleClientContext;
+import io.fabric8.kubernetes.client.dsl.internal.HasMetadataOperationsImpl;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -65,7 +66,7 @@ class RunOperationsTest {
       .withPort(5701)
       .withLimits(limits)
       .withRequests(requests);
-    RunOperationsImpl deploymentGenerator = new RunOperationsImpl(new SimpleClientContext(config, mockClient), "ns1", generatorRunConfig);
+    RunOperationsImpl deploymentGenerator = new RunOperationsImpl(HasMetadataOperationsImpl.defaultContext(new SimpleClientContext(config, mockClient)).withNamespace("ns1"), generatorRunConfig);
 
     // When
     Pod pod = deploymentGenerator.convertRunConfigIntoPod();

@@ -111,11 +111,7 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
     private final PodOperationContext podOperationContext;
 
   public PodOperationsImpl(ClientContext clientContext) {
-    this(clientContext, null);
-  }
-
-  public PodOperationsImpl(ClientContext clientContext, String namespace) {
-    this(new PodOperationContext(), HasMetadataOperationsImpl.defaultContext(clientContext).withNamespace(namespace));
+    this(new PodOperationContext(), HasMetadataOperationsImpl.defaultContext(clientContext));
   }
 
   public PodOperationsImpl(PodOperationContext context, OperationContext superContext) {

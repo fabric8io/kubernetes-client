@@ -34,14 +34,10 @@ import java.io.IOException;
 
 public class CertificateSigningRequestOperationsImpl extends HasMetadataOperation<CertificateSigningRequest, CertificateSigningRequestList, CertificateSigningRequestResource<CertificateSigningRequest>> implements CertificateSigningRequestResource<CertificateSigningRequest> {
   public CertificateSigningRequestOperationsImpl(ClientContext clientContext) {
-    this(clientContext, null);
+    this(HasMetadataOperationsImpl.defaultContext(clientContext));
   }
 
-  public CertificateSigningRequestOperationsImpl(ClientContext clientContext, String namespace) {
-    this(HasMetadataOperationsImpl.defaultContext(clientContext).withNamespace(namespace));
-  }
-
-  public CertificateSigningRequestOperationsImpl(OperationContext context) {
+  CertificateSigningRequestOperationsImpl(OperationContext context) {
     super(context.withApiGroupName("certificates.k8s.io")
       .withApiGroupVersion("v1")
       .withCascading(true)

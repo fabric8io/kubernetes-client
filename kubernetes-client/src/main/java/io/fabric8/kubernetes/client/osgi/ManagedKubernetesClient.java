@@ -603,7 +603,7 @@ public class ManagedKubernetesClient extends BaseClient implements NamespacedKub
 
   @Override
   public RunOperations run() {
-    return new RunOperationsImpl(this, getNamespace(), new RunConfigBuilder());
+    return delegate.run();
   }
 
   @Override
