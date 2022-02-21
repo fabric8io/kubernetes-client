@@ -28,7 +28,6 @@ import io.fabric8.kubernetes.api.model.Status;
 import io.fabric8.kubernetes.api.model.autoscaling.v1.Scale;
 import io.fabric8.kubernetes.api.model.extensions.DeploymentRollback;
 import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.KubernetesClientTimeoutException;
 import io.fabric8.kubernetes.client.OperationInfo;
@@ -246,8 +245,7 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
 
   @Override
   public BaseOperation<T, L, R> inAnyNamespace() {
-    Config updated = new ConfigBuilder(config).withNamespace(null).build();
-    return newInstance(context.withConfig(updated).withNamespace(null));
+    return inNamespace(null);
   }
 
   @Override
@@ -520,15 +518,22 @@ public class BaseOperation<T extends HasMetadata, L extends KubernetesResourceLi
     // set the name - not all operations are looking at the item for the name
     // things like configMaps().load(...).watch(...) for example
     OperationContext ctx = context.withName(KubernetesResourceUtil.getName(item));
-    /*if (this.context.isDefaultNamespace()) {
+    if (this.isResourceNamespaced()) {
       String namespace = KubernetesResourceUtil.getNamespace(item);
-      if (Utils.isNotNullOrEmpty(namespace)) {
-        ctx = ctx.withNamespace(namespace);
+      if (this.context.isDefaultNamespace()) {
+        if (Utils.isNotNullOrEmpty(namespace)) {
+          ctx = ctx.withNamespace(namespace);
+        }
+      } else if (Utils.isNotNullOrEmpty(context.getNamespace())){
+        if (!Objects.equals(namespace, context.getNamespace())) {
+          item = Serialization.clone(item);
+          KubernetesResourceUtil.setNamespace(item, context.getNamespace());
+        }
+      } else {
+        // logic error - no default namespace, or inAnyNamespace has been called
+        throw new KubernetesClientException("namespace cannot be determined - was inNamespace called with a null value?");
       }
-    } else {
-      item = Serialization.clone(item);
-      KubernetesResourceUtil.setNamespace(item, context.getNamespace());
-    }*/
+    }
     ctx = ctx.withItem(item);
     return newResource(ctx);
   }

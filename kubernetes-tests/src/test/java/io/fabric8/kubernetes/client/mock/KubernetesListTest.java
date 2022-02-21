@@ -25,10 +25,8 @@ import io.fabric8.kubernetes.api.model.ReplicationControllerBuilder;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
@@ -100,10 +98,8 @@ public class KubernetesListTest {
 
   @Test
   public void testDeleteWithMismatch() {
-    Assertions.assertThrows(KubernetesClientException.class, () -> {
-      Boolean result = client.lists().inNamespace("test1").delete(list);
+    Boolean result = client.lists().inNamespace("test1").delete(list);
 
-      assertFalse(result);
-    });
+    assertFalse(result);
   }
 }

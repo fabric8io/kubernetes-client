@@ -85,13 +85,8 @@ public class AutoAdaptableKubernetesClient extends DefaultKubernetesClient {
 
   @Override
   public NamespacedKubernetesClient inNamespace(String namespace) {
-    Config updated = new ConfigBuilder(getConfiguration()).withNamespace(namespace).build();
+    Config updated = new ConfigBuilder(getConfiguration()).withNamespace(namespace).withDefaultNamespace(false).build();
     return new AutoAdaptableKubernetesClient(newState(updated));
-  }
-
-  @Override
-  public NamespacedKubernetesClient inAnyNamespace() {
-    return inNamespace(null);
   }
 
   @Override

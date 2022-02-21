@@ -525,14 +525,9 @@ public class DefaultOpenShiftClient extends BaseKubernetesClient<NamespacedOpenS
   @Override
   public NamespacedOpenShiftClient inNamespace(String namespace) {
     OpenShiftConfig updated = new OpenShiftConfigBuilder(getConfiguration())
-      .withNamespace(namespace)
+      .withNamespace(namespace).withDefaultNamespace(false)
       .build();
     return new DefaultOpenShiftClient(newState(updated));
-  }
-
-  @Override
-  public NamespacedOpenShiftClient inAnyNamespace() {
-    return inNamespace(null);
   }
 
   @Override

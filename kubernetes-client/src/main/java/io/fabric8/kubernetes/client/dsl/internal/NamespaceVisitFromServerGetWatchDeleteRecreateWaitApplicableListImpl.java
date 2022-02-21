@@ -131,8 +131,9 @@ Waitable<List<HasMetadata>, HasMetadata>, Readiable {
    * The namespacing is the same - use the item namespace if available 
    */
   NamespaceableResource<HasMetadata> getResource(HasMetadata meta) {
+    OperationContext ctx = context.withItem(null);
     ResourceHandler<HasMetadata, ?> handler = handlerOf(meta, context);
-    return new NamespaceableResourceAdapter<>(meta, handler.operation(context, null).newInstance(context.withItem(null)));
+    return new NamespaceableResourceAdapter<>(meta, handler.operation(ctx, null).newInstance(ctx));
   }
 
   @Override

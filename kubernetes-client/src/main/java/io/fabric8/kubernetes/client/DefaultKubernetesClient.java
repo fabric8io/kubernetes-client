@@ -69,7 +69,7 @@ public class DefaultKubernetesClient extends BaseKubernetesClient<NamespacedKube
 
   @Override
   public NamespacedKubernetesClient inNamespace(String name) {
-    Config updated = new ConfigBuilder(getConfiguration()).withNamespace(name).build();
+    Config updated = new ConfigBuilder(getConfiguration()).withNamespace(name).withDefaultNamespace(false).build();
     return new DefaultKubernetesClient(newState(updated));
   }
 

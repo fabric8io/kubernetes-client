@@ -35,8 +35,6 @@ import io.fabric8.kubernetes.client.dsl.base.HasMetadataOperation;
 import io.fabric8.kubernetes.client.dsl.base.PatchContext;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
-import io.fabric8.kubernetes.client.utils.KubernetesResourceUtil;
-import io.fabric8.kubernetes.client.utils.Serialization;
 
 import java.util.List;
 import java.util.Map;
@@ -69,28 +67,14 @@ public class NamespaceableResourceAdapter<T extends HasMetadata> implements Name
   public NamespaceableResourceAdapter(T item, HasMetadataOperation<T, ?, ?> op) {
     this.operation = op;
     this.item = item;
-    this.resource = getResource(item, op);
-  }
-
-  public static <T extends HasMetadata> Resource<T> getResource(T item, HasMetadataOperation<T, ?, ?> op) {
-    String namespace = KubernetesResourceUtil.getNamespace(item);
-    if (namespace != null) {
-      return op.inNamespace(namespace).withItem(item);
-    }
-    return op.withItem(item);
+    this.resource = op.withItem(item);
   }
 
   @Override
   public Resource<T> inNamespace(String name) {
-    return operation.inNamespace(name).withItem(setItemNamespace(item, name));
+    return operation.inNamespace(name).withItem(item);
   }
 
-  static <T extends HasMetadata> T setItemNamespace(T item, String name) {
-    item = Serialization.clone(item);
-    KubernetesResourceUtil.setNamespace(item, name);
-    return item;
-  }
-  
   @Override
   public Boolean delete() {
     return resource.delete();

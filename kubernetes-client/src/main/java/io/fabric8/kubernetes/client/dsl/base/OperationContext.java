@@ -39,7 +39,7 @@ public class OperationContext extends SimpleClientContext {
   protected String apiGroupVersion;
 
   protected String namespace;
-  protected boolean defaultNamespace;
+  protected boolean defaultNamespace = true;
   protected String name;
   protected boolean cascading;
   protected boolean reloadingFromServer;
@@ -74,7 +74,7 @@ public class OperationContext extends SimpleClientContext {
     this.config = config;
     this.item = item;
     this.plural = plural;
-    setNamespace(namespace);
+    setNamespace(namespace, defaultNamespace);
     this.name = name;
     setApiGroupName(apiGroupName);
     setApiGroupVersion(apiGroupVersion);
@@ -91,7 +91,6 @@ public class OperationContext extends SimpleClientContext {
     this.propagationPolicy = propagationPolicy;
     this.dryRun = dryRun;
     this.selectorAsString = selectorAsString;
-    this.defaultNamespace = defaultNamespace;
   }
 
   private void setFieldsNot(Map<String, String[]> fieldsNot) {
@@ -126,8 +125,14 @@ public class OperationContext extends SimpleClientContext {
     this.apiGroupName = ApiVersionUtil.apiGroup(item, apiGroupName);
   }
 
-  private void setNamespace(String namespace) {
-    this.namespace = Utils.isNotNullOrEmpty(namespace) ? namespace : (config != null ? config.getNamespace() : null);
+  private void setNamespace(String namespace, boolean defaultNamespace) {
+    if (!defaultNamespace || Utils.isNotNullOrEmpty(namespace)) {
+      this.namespace = namespace;
+      this.defaultNamespace = defaultNamespace;
+    } else {
+      this.namespace = config != null && Utils.isNotNullOrEmpty(config.getNamespace()) ? config.getNamespace() : null;
+      this.defaultNamespace = config != null ? config.isDefaultNamespace() : true;
+    }
   }
 
   public HttpClient getClient() {
@@ -304,11 +309,11 @@ public class OperationContext extends SimpleClientContext {
   }
 
   public OperationContext withNamespace(String namespace) {
-    if (Objects.equals(this.namespace, namespace)) {
+    if (Objects.equals(this.namespace, namespace) && !this.defaultNamespace) {
       return this;
     }
     final OperationContext context = new OperationContext(this);
-    context.setNamespace(namespace);
+    context.setNamespace(namespace, false);
     return context;
   }
 

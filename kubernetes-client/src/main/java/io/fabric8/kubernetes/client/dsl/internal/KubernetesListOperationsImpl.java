@@ -124,7 +124,7 @@ public class KubernetesListOperationsImpl
   }
 
   /**
-   * Similar to Loadable.load - does not use the namespace from the resource
+   * Similar to Loadable.load
    * 
    * see also {@link NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl#getResource(OperationContext, HasMetadata)}
    */
