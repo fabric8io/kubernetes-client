@@ -135,12 +135,14 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
     List<String> items = new ArrayList<>();
     AttributeSet query = attributeExtractor.fromPath(path);
 
-    map.entrySet().stream()
-      .filter(entry -> entry.getKey().matches(query))
-      .forEach(entry -> {
-        LOGGER.debug("Entry found for query {} : {}", query, entry);
-        items.add(entry.getValue());
-      });
+    synchronized (map) {
+      map.entrySet().stream()
+        .filter(entry -> entry.getKey().matches(query))
+        .forEach(entry -> {
+          LOGGER.debug("Entry found for query {} : {}", query, entry);
+          items.add(entry.getValue());
+        });
+    }
 
     if (query.containsKey(KubernetesAttributesExtractor.NAME)) {
       if (!items.isEmpty()) {
@@ -170,9 +172,12 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
 
     AttributeSet query = attributeExtractor.fromPath(path);
 
-    Optional<Map.Entry<AttributeSet, String>> bodyEntry = map.entrySet().stream()
+    Optional<Map.Entry<AttributeSet, String>> bodyEntry;
+    synchronized (map) {
+      bodyEntry = map.entrySet().stream()
         .filter(entry -> entry.getKey().matches(query))
         .findFirst();
+    }
 
     if (!bodyEntry.isPresent()) {
       response.setResponseCode(HttpURLConnection.HTTP_NOT_FOUND);
@@ -274,7 +279,7 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
     }
     WatchEventsListener watchEventListener = new WatchEventsListener(context, query, watchEventListeners, LOGGER,
       watch -> {
-        synchronized (KubernetesCrudDispatcher.this) {
+        synchronized (map) {
           map.entrySet().stream()
             .filter(entry -> watch.attributeMatches(entry.getKey()))
             .forEach(entry -> watch.sendWebSocketResponse(entry.getValue(), Action.ADDED));
@@ -363,9 +368,11 @@ public class KubernetesCrudDispatcher extends CrudDispatcher {
   }
 
   private List<AttributeSet> findItems(AttributeSet query) {
-    return map.keySet().stream()
-      .filter(entry -> entry.matches(query))
-      .collect(Collectors.toList());
+    synchronized (map) {
+      return map.keySet().stream()
+        .filter(entry -> entry.matches(query))
+        .collect(Collectors.toList());
+    }
   }
 
   private MockResponse doCreateOrModify(String path, String initial, HasMetadata value, Action event) {
