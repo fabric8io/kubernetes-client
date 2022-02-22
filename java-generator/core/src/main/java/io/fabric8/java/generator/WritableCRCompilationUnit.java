@@ -24,8 +24,12 @@ import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class WritableCRCompilationUnit {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(WritableCRCompilationUnit.class);
 
     private final List<GeneratorResult.ClassResult> classResults;
 
@@ -58,6 +62,9 @@ public class WritableCRCompilationUnit {
     }
 
     private void writeToFile(File file, String str) throws IOException {
+        if (file.exists()) {
+            LOGGER.warn("File " + file.getAbsolutePath() + "already exists, overwriting");
+        }
         try (FileWriter fileWriter = new FileWriter(file);
                 PrintWriter printWriter = new PrintWriter(fileWriter)) {
             printWriter.println(str);
