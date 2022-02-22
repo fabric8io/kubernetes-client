@@ -24,7 +24,7 @@ import static junit.framework.TestCase.assertTrue;
 
 class SharedProcessorTest {
   @Test
-  void testListenerAddition() throws InterruptedException {
+  void testListenerAddition() {
     SharedProcessor<Pod> sharedProcessor = new SharedProcessor<>();
 
     Pod foo1 = new PodBuilder().withNewMetadata().withName("foo1").withNamespace("default").endMetadata().build();
@@ -48,11 +48,11 @@ class SharedProcessorTest {
     assertTrue(expectUpdateHandler.isSatisfied());
     assertTrue(expectDeleteHandler.isSatisfied());
   }
-  
+
   @Test
-  void testDistributeAfterStop() throws InterruptedException {
+  void testDistributeAfterStop() {
     SharedProcessor<Pod> sharedProcessor = new SharedProcessor<>();
-    
+
     sharedProcessor.stop();
 
     Pod foo1 = new PodBuilder().withNewMetadata().withName("foo1").withNamespace("default").endMetadata().build();

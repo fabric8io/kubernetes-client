@@ -49,7 +49,7 @@ class ReflectorTest {
         .thenThrow(new KubernetesClientException("error"))
         .thenReturn(Mockito.mock(Watch.class));
 
-    assertThrows(KubernetesClientException.class, () -> reflector.listSyncAndWatch());
+    assertThrows(KubernetesClientException.class, reflector::listSyncAndWatch);
 
     // running but watch failed
     assertFalse(reflector.isWatching());
@@ -65,7 +65,7 @@ class ReflectorTest {
     assertFalse(reflector.isWatching());
     assertFalse(reflector.isRunning());
   }
-  
+
   @Test
   void testNonHttpGone() {
     ListerWatcher<Pod, PodList> mock = Mockito.mock(ListerWatcher.class);
