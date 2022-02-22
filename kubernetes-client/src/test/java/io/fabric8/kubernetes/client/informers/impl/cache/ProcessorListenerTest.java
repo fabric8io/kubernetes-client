@@ -18,15 +18,18 @@ package io.fabric8.kubernetes.client.informers.impl.cache;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ProcessorListenerTest {
-  private static boolean addNotificationReceived, updateNotificationReceived, deleteNotificationReceived;
+
+  private boolean addNotificationReceived, updateNotificationReceived, deleteNotificationReceived;
+
   @Test
-  void testNotificationHandling() throws InterruptedException {
+  void testNotificationHandling() {
     Pod pod = new PodBuilder().withNewMetadata().withName("foo").withNamespace("default").endMetadata().build();
 
     ProcessorListener<Pod> listener = new ProcessorListener<>(

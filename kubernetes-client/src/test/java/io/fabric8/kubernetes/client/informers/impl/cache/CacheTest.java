@@ -18,9 +18,9 @@ package io.fabric8.kubernetes.client.informers.impl.cache;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.client.informers.cache.Cache;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -30,19 +30,25 @@ import java.util.function.Function;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CacheTest {
-  private static CacheImpl cache = new CacheImpl("mock", CacheTest::mockIndexFunction, CacheTest::mockKeyFunction);
+
+  private CacheImpl<Pod> cache;
+
+  @BeforeEach
+  void setUp() {
+    cache = new CacheImpl<>("mock", CacheTest::mockIndexFunction, CacheTest::mockKeyFunction);
+  }
 
   @Test
   void testCacheIndex() {
     Pod testPodObj = new PodBuilder().withNewMetadata().withName("test-pod").endMetadata().build();
 
     cache.put(testPodObj);
-    cache.replace(Arrays.asList(testPodObj));
+    cache.replace(Collections.singletonList(testPodObj));
 
     String index = mockIndexFunction(testPodObj).get(0);
     String key = mockKeyFunction(testPodObj);
 
-    List indexedObjectList = cache.byIndex("mock", index);
+    List<Pod> indexedObjectList = cache.byIndex("mock", index);
     assertEquals(testPodObj, indexedObjectList.get(0));
 
     indexedObjectList = cache.index("mock", testPodObj);
@@ -51,7 +57,7 @@ class CacheTest {
     List<String> allExistingKeys = cache.listKeys();
     assertEquals(1, allExistingKeys.size());
     assertEquals(key, allExistingKeys.get(0));
-    
+
     cache.replace(Collections.emptyList());
     assertEquals(0, cache.byIndex("mock", "y").size());
   }
@@ -61,10 +67,10 @@ class CacheTest {
     Pod testPodObj = new PodBuilder().withNewMetadata().withName("test-pod2").endMetadata().build();
     String index = mockIndexFunction(testPodObj).get(0);
 
-    cache.replace(Arrays.asList(testPodObj));
+    cache.replace(Collections.singletonList(testPodObj));
     cache.remove(testPodObj);
 
-    List indexedObjectList = cache.byIndex("mock", index);
+    List<Pod> indexedObjectList = cache.byIndex("mock", index);
     assertEquals(0, indexedObjectList.size());
 
     cache.put(testPodObj);
@@ -110,8 +116,8 @@ class CacheTest {
     String clusterIndex = "cluster-index";
 
     Map<String, Function<Pod, List<String>>> indexers = new HashMap<>();
-    indexers.put(nodeIndex, (Pod pod) -> Arrays.asList(pod.getSpec().getNodeName()));
-    indexers.put(clusterIndex, (Pod pod) -> Arrays.asList(pod.getMetadata().getClusterName()));
+    indexers.put(nodeIndex, pod -> Collections.singletonList(pod.getSpec().getNodeName()));
+    indexers.put(clusterIndex, pod -> Collections.singletonList(pod.getMetadata().getClusterName()));
 
     podCache.addIndexers(indexers);
 
@@ -133,9 +139,9 @@ class CacheTest {
 
   private static List<String> mockIndexFunction(Object obj) {
     if (obj == null) {
-      return Arrays.asList("null");
+      return Collections.singletonList("null");
     }
-    return Arrays.asList(obj.getClass().getName());
+    return Collections.singletonList(obj.getClass().getName());
   }
 
   private static String mockKeyFunction(Object obj)  {

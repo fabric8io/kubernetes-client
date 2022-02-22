@@ -23,11 +23,11 @@ import java.util.List;
  * @param <T> the object type
  */
 public class Lister<T> {
-  private String namespace;
+  private final String namespace;
 
-  private String indexName;
+  private final String indexName;
 
-  private Indexer<T> indexer;
+  private final Indexer<T> indexer;
 
   public Lister(Indexer<T> indexer) {
     this(indexer, null, Cache.NAMESPACE_INDEX);

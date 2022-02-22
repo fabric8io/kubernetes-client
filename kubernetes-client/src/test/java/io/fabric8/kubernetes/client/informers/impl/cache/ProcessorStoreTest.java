@@ -31,10 +31,10 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ProcessorStoreTest {
+class ProcessorStoreTest {
 
   @Test
-  public void testEvents() {
+  void testEvents() {
     ArgumentCaptor<Notification<Pod>> notificationCaptor = ArgumentCaptor.forClass(Notification.class);
     ArgumentCaptor<Boolean> syncCaptor = ArgumentCaptor.forClass(Boolean.class);
     CacheImpl<Pod> podCache = Mockito.mock(CacheImpl.class);
@@ -42,77 +42,77 @@ public class ProcessorStoreTest {
 
     ProcessorStore<Pod> processorStore = new ProcessorStore<>(podCache, processor);
     Pod pod = new PodBuilder().withNewMetadata().withName("pod").endMetadata().build();
-    
+
     // add notification
     processorStore.add(pod);
 
     // add notification, because the pod doesn't exist in the store
     processorStore.update(pod);
-    
+
     // ignored
     processorStore.delete(pod);
-    
+
     // update notification
     Mockito.when(podCache.put(pod)).thenReturn(pod);
     processorStore.update(pod);
-    
+
     // delete notification
     Mockito.when(podCache.remove(pod)).thenReturn(pod);
     processorStore.delete(pod);
 
     Mockito.verify(processor, Mockito.times(4)).distribute(notificationCaptor.capture(), syncCaptor.capture());
-    
+
     List<Notification<Pod>> notifications = notificationCaptor.getAllValues();
-    
+
     assertThat(notifications.get(0)).isInstanceOf(AddNotification.class);
     assertThat(notifications.get(1)).isInstanceOf(AddNotification.class);
     assertThat(notifications.get(2)).isInstanceOf(UpdateNotification.class);
     assertThat(notifications.get(3)).isInstanceOf(DeleteNotification.class);
-    
+
     List<Boolean> syncValues = syncCaptor.getAllValues();
-    
+
     assertThat(syncValues.get(0)).isFalse();
     assertThat(syncValues.get(1)).isFalse();
     assertThat(syncValues.get(2)).isTrue(); // same object/revision, so it's sync
     assertThat(syncValues.get(3)).isFalse();
   }
-  
+
   @Test
-  public void testSyncEvents() {
+  void testSyncEvents() {
     ArgumentCaptor<Notification<Pod>> notificationCaptor = ArgumentCaptor.forClass(Notification.class);
     ArgumentCaptor<Boolean> syncCaptor = ArgumentCaptor.forClass(Boolean.class);
     CacheImpl<Pod> podCache = new CacheImpl<>();
     SharedProcessor<Pod> processor = Mockito.mock(SharedProcessor.class);
 
     ProcessorStore<Pod> processorStore = new ProcessorStore<>(podCache, processor);
-    
+
     Pod pod = new PodBuilder().withNewMetadata().endMetadata().build();
     Pod pod2 = new PodBuilder().withNewMetadata().withName("pod2").endMetadata().build();
-    
+
     // replace empty store with two values
     processorStore.add(pod);
     processorStore.add(pod2);
 
     // resync two values
     processorStore.resync();
-    
+
     // relist with deletes
     processorStore.retainAll(Collections.emptySet());
-    
+
     Mockito.verify(processor, Mockito.times(6)).distribute(notificationCaptor.capture(), syncCaptor.capture());
-    
+
     List<Notification<Pod>> notifications = notificationCaptor.getAllValues();
-    
+
     assertThat(notifications.get(0)).isInstanceOf(AddNotification.class);
     assertThat(notifications.get(1)).isInstanceOf(AddNotification.class);
     assertThat(notifications.get(2)).isInstanceOf(UpdateNotification.class);
     assertThat(notifications.get(3)).isInstanceOf(UpdateNotification.class);
     assertTrue(syncCaptor.getAllValues().subList(0, 2).stream().allMatch(s->!s.booleanValue()));
     assertTrue(syncCaptor.getAllValues().subList(2, 4).stream().allMatch(s->s.booleanValue()));
-    
+
     assertThat(notifications.get(4)).isInstanceOf(DeleteNotification.class);
     assertThat(notifications.get(5)).isInstanceOf(DeleteNotification.class);
-    assertTrue(syncCaptor.getAllValues().subList(4, 6).stream().allMatch(s->!s.booleanValue()));    
+    assertTrue(syncCaptor.getAllValues().subList(4, 6).stream().allMatch(s->!s.booleanValue()));
   }
-  
+
 }
