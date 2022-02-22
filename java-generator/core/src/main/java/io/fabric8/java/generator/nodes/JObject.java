@@ -214,8 +214,6 @@ public class JObject extends AbstractJSONSchema2Pojo {
                     }
                 }
             }
-
-            gr = prop.generateJava();
             buffer.addAll(gr.getTopLevelClasses());
 
             String originalFieldName = k;

@@ -55,23 +55,26 @@ public class CRGeneratorRunner {
                 resources.add((CustomResourceDefinition) deserialized);
             }
 
-            for (HasMetadata resource : resources) {
-                if (resource.getKind()
-                        .toLowerCase(Locale.ROOT)
-                        .equals("customresourcedefinition")) {
-                    CustomResourceDefinition crd = (CustomResourceDefinition) resource;
+            resources.parallelStream()
+                    .forEach(
+                            resource -> {
+                                if (resource.getKind()
+                                        .toLowerCase(Locale.ROOT)
+                                        .equals("customresourcedefinition")) {
+                                    CustomResourceDefinition crd =
+                                            (CustomResourceDefinition) resource;
 
-                    String pkg = getPackage(crd.getSpec().getGroup());
-                    List<WritableCRCompilationUnit> writables = generate(crd, pkg);
+                                    String pkg = getPackage(crd.getSpec().getGroup());
+                                    List<WritableCRCompilationUnit> writables = generate(crd, pkg);
 
-                    for (WritableCRCompilationUnit w : writables) {
-                        w.writeAllJavaClasses(basePath, pkg);
-                    }
-                } else {
-                    LOGGER.warn(
-                            "Not generating nothing for resource of kind: " + resource.getKind());
-                }
-            }
+                                    writables.parallelStream()
+                                            .forEach(w -> w.writeAllJavaClasses(basePath, pkg));
+                                } else {
+                                    LOGGER.warn(
+                                            "Not generating nothing for resource of kind: "
+                                                    + resource.getKind());
+                                }
+                            });
         } catch (FileNotFoundException e) {
             throw new JavaGeneratorException("File " + source.getAbsolutePath() + " not found", e);
         } catch (IOException e) {
